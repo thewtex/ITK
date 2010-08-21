@@ -1,4 +1,3 @@
-
 Welcome to the Insight Registration and Segmentation Toolkit (ITK)
 -----------------------------------------------------------------
 
@@ -123,5 +122,4 @@ ITK resources are available at the following locations.
     quality dashboard
   + http://public.kitware.com/Dart - what manages the testing process in ITK
   + http://public.kitware.com/Cable - the automated C++ wrapping system
-    
 
