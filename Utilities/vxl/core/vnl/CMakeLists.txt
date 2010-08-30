@@ -1,43 +1,43 @@
 # vxl/core/vnl/CMakeLists.txt
 
 # Create vnl_config.h
-OPTION(VNL_CONFIG_CHECK_BOUNDS
+option(VNL_CONFIG_CHECK_BOUNDS
   "Whether vnl_vector/vnl_matrix accessor methods check index bounds." ON)
-OPTION(VNL_CONFIG_LEGACY_METHODS
+option(VNL_CONFIG_LEGACY_METHODS
   "Whether backward-compatibility methods are provided by vnl." OFF)
-OPTION(VNL_CONFIG_THREAD_SAFE
+option(VNL_CONFIG_THREAD_SAFE
   "Whether thread-safe vnl implementations are used." ON)
 
 
-#IF( VXL_HAS_EMMINTRIN_H AND VXL_HAS_SSE2_HARDWARE_SUPPORT )
-#  OPTION(VNL_CONFIG_ENABLE_SSE2
+#if( VXL_HAS_EMMINTRIN_H AND VXL_HAS_SSE2_HARDWARE_SUPPORT )
+#  option(VNL_CONFIG_ENABLE_SSE2
 #    "Enable Streaming SIMD Extensions 2 optimisations (hardware dependant)." ON)
-#ELSE ( VXL_HAS_EMMINTRIN_H AND VXL_HAS_SSE2_HARDWARE_SUPPORT )
-  OPTION(VNL_CONFIG_ENABLE_SSE2
+#else( VXL_HAS_EMMINTRIN_H AND VXL_HAS_SSE2_HARDWARE_SUPPORT )
+  option(VNL_CONFIG_ENABLE_SSE2
     "Enable Streaming SIMD Extensions 2 optimisations (hardware dependant). Currently broken. For use by VNL developers only." OFF)
-#ENDIF( VXL_HAS_EMMINTRIN_H AND VXL_HAS_SSE2_HARDWARE_SUPPORT )
+#endif( VXL_HAS_EMMINTRIN_H AND VXL_HAS_SSE2_HARDWARE_SUPPORT )
 
-OPTION(VNL_CONFIG_ENABLE_SSE2_ROUNDING
+option(VNL_CONFIG_ENABLE_SSE2_ROUNDING
   "Enable Streaming SIMD Extensions 2 implementation of rounding (hardware dependant)."
   ${VXL_HAS_SSE2_HARDWARE_SUPPORT} )
-IF( VNL_CONFIG_ENABLE_SSE2_ROUNDING )
-  IF( NOT VXL_HAS_SSE2_HARDWARE_SUPPORT )
-    IF( VXL_SSE2_HARDWARE_SUPPORT_POSSIBLE )
-      MESSAGE( ${VXL_SSE2_HARDWARE_SUPPORT_POSSIBLE_HELP} )
+if( VNL_CONFIG_ENABLE_SSE2_ROUNDING )
+  if( NOT VXL_HAS_SSE2_HARDWARE_SUPPORT )
+    if( VXL_SSE2_HARDWARE_SUPPORT_POSSIBLE )
+      message( ${VXL_SSE2_HARDWARE_SUPPORT_POSSIBLE_HELP} )
       # Reset the update configuration flag
-      SET( VXL_UPDATE_CONFIGURATION "ON" CACHE BOOL "Re-run the configuration tests?" FORCE )
-      MESSAGE( SEND_ERROR "VXL_UPDATE_CONFIGURATION has been forced to ON. "
+      set( VXL_UPDATE_CONFIGURATION "ON" CACHE BOOL "Re-run the configuration tests?" FORCE )
+      message( SEND_ERROR "VXL_UPDATE_CONFIGURATION has been forced to ON. "
         "Please rerun the cmake configure step" )
-    ELSE( VXL_SSE2_HARDWARE_SUPPORT_POSSIBLE )
-      MESSAGE( SEND_ERROR "Cannot have VNL_CONFIG_ENABLE_SSE2_ROUNDING because"
+    else( VXL_SSE2_HARDWARE_SUPPORT_POSSIBLE )
+      message( SEND_ERROR "Cannot have VNL_CONFIG_ENABLE_SSE2_ROUNDING because"
         " there is no SSE2 hardware support. VNL_CONFIG_ENABLE_SSE2_ROUNDING is thus forced to OFF" )
-      SET(VNL_CONFIG_ENABLE_SSE2_ROUNDING "OFF" CACHE BOOL "Enable Streaming SIMD Extensions 2 implementation of rounding (hardware dependant)." FORCE)
-    ENDIF( VXL_SSE2_HARDWARE_SUPPORT_POSSIBLE )
-  ENDIF( NOT VXL_HAS_SSE2_HARDWARE_SUPPORT )
-ENDIF( VNL_CONFIG_ENABLE_SSE2_ROUNDING )
+      set(VNL_CONFIG_ENABLE_SSE2_ROUNDING "OFF" CACHE BOOL "Enable Streaming SIMD Extensions 2 implementation of rounding (hardware dependant)." FORCE)
+    endif( VXL_SSE2_HARDWARE_SUPPORT_POSSIBLE )
+  endif( NOT VXL_HAS_SSE2_HARDWARE_SUPPORT )
+endif( VNL_CONFIG_ENABLE_SSE2_ROUNDING )
 
 
-MARK_AS_ADVANCED(
+mark_as_advanced(
   VNL_CONFIG_CHECK_BOUNDS
   VNL_CONFIG_LEGACY_METHODS
   VNL_CONFIG_THREAD_SAFE
@@ -45,35 +45,35 @@ MARK_AS_ADVANCED(
   VNL_CONFIG_ENABLE_SSE2
   )
 # Need to enforce 1/0 values for configuration.
-IF(VNL_CONFIG_CHECK_BOUNDS)
-  SET(VNL_CONFIG_CHECK_BOUNDS 1)
-ELSE(VNL_CONFIG_CHECK_BOUNDS)
-  SET(VNL_CONFIG_CHECK_BOUNDS 0)
-ENDIF(VNL_CONFIG_CHECK_BOUNDS)
-IF(VNL_CONFIG_LEGACY_METHODS)
-  SET(VNL_CONFIG_LEGACY_METHODS 1)
-ELSE(VNL_CONFIG_LEGACY_METHODS)
-  SET(VNL_CONFIG_LEGACY_METHODS 0)
-ENDIF(VNL_CONFIG_LEGACY_METHODS)
-IF(VNL_CONFIG_THREAD_SAFE)
-  SET(VNL_CONFIG_THREAD_SAFE 1)
-ELSE(VNL_CONFIG_THREAD_SAFE)
-  SET(VNL_CONFIG_THREAD_SAFE 0)
-ENDIF(VNL_CONFIG_THREAD_SAFE)
-IF(VNL_CONFIG_ENABLE_SSE2) 
-  SET(VNL_CONFIG_ENABLE_SSE2 1)
-ELSE(VNL_CONFIG_ENABLE_SSE2)
-  SET(VNL_CONFIG_ENABLE_SSE2 0)
-ENDIF(VNL_CONFIG_ENABLE_SSE2)
-IF(VNL_CONFIG_ENABLE_SSE2_ROUNDING)
-  SET(VNL_CONFIG_ENABLE_SSE2_ROUNDING 1)
-ELSE(VNL_CONFIG_ENABLE_SSE2_ROUNDING)
-  SET(VNL_CONFIG_ENABLE_SSE2_ROUNDING 0)
-ENDIF(VNL_CONFIG_ENABLE_SSE2_ROUNDING)
-CONFIGURE_FILE(${vxl_SOURCE_DIR}/core/vnl/vnl_config.h.in
+if(VNL_CONFIG_CHECK_BOUNDS)
+  set(VNL_CONFIG_CHECK_BOUNDS 1)
+else(VNL_CONFIG_CHECK_BOUNDS)
+  set(VNL_CONFIG_CHECK_BOUNDS 0)
+endif(VNL_CONFIG_CHECK_BOUNDS)
+if(VNL_CONFIG_LEGACY_METHODS)
+  set(VNL_CONFIG_LEGACY_METHODS 1)
+else(VNL_CONFIG_LEGACY_METHODS)
+  set(VNL_CONFIG_LEGACY_METHODS 0)
+endif(VNL_CONFIG_LEGACY_METHODS)
+if(VNL_CONFIG_THREAD_SAFE)
+  set(VNL_CONFIG_THREAD_SAFE 1)
+else(VNL_CONFIG_THREAD_SAFE)
+  set(VNL_CONFIG_THREAD_SAFE 0)
+endif(VNL_CONFIG_THREAD_SAFE)
+if(VNL_CONFIG_ENABLE_SSE2)
+  set(VNL_CONFIG_ENABLE_SSE2 1)
+else(VNL_CONFIG_ENABLE_SSE2)
+  set(VNL_CONFIG_ENABLE_SSE2 0)
+endif(VNL_CONFIG_ENABLE_SSE2)
+if(VNL_CONFIG_ENABLE_SSE2_ROUNDING)
+  set(VNL_CONFIG_ENABLE_SSE2_ROUNDING 1)
+else(VNL_CONFIG_ENABLE_SSE2_ROUNDING)
+  set(VNL_CONFIG_ENABLE_SSE2_ROUNDING 0)
+endif(VNL_CONFIG_ENABLE_SSE2_ROUNDING)
+configure_file(${vxl_SOURCE_DIR}/core/vnl/vnl_config.h.in
                ${vxl_BINARY_DIR}/core/vnl/vnl_config.h @ONLY IMMEDIATE)
 
-SET( vnl_sources
+set( vnl_sources
   dll.h
 
   vnl_config.h.in
@@ -222,42 +222,42 @@ SET( vnl_sources
                                vnl_sse.h
 )
 
-AUX_SOURCE_DIRECTORY(Templates vnl_sources)
+aux_source_directory(Templates vnl_sources)
 
-IF(CMAKE_COMPILER_IS_GNUCXX)
+if(CMAKE_COMPILER_IS_GNUCXX)
   # with optimisation, the is_finite etc functions fail on Alpha for long double:
-  SET_SOURCE_FILES_PROPERTIES(vnl_math.cxx PROPERTIES COMPILE_FLAGS -O0)
-  SET_SOURCE_FILES_PROPERTIES(vnl_bignum.cxx PROPERTIES COMPILE_FLAGS -O0)
+  set_source_files_properties(vnl_math.cxx PROPERTIES COMPILE_FLAGS -O0)
+  set_source_files_properties(vnl_bignum.cxx PROPERTIES COMPILE_FLAGS -O0)
   # and these need too much memory with gcc 3.0 on Alpha:
-  SET_SOURCE_FILES_PROPERTIES(Templates/vnl_matrix+long-.cxx PROPERTIES COMPILE_FLAGS -O0)
-  SET_SOURCE_FILES_PROPERTIES(Templates/vnl_matrix+ulong-.cxx PROPERTIES COMPILE_FLAGS -O0)
-  SET_SOURCE_FILES_PROPERTIES(Templates/vnl_matrix+vcl_complex+double--.cxx PROPERTIES COMPILE_FLAGS -O0)
-  SET_SOURCE_FILES_PROPERTIES(Templates/vnl_matrix+vcl_complex+long_double--.cxx PROPERTIES COMPILE_FLAGS -O0)
-  SET_SOURCE_FILES_PROPERTIES(Templates/vnl_matrix_fixed+vnl_bignum.3.3-.cxx PROPERTIES COMPILE_FLAGS -O0)
-  SET_SOURCE_FILES_PROPERTIES(Templates/vnl_vector+vnl_rational-.cxx PROPERTIES COMPILE_FLAGS -O0)
-  SET_SOURCE_FILES_PROPERTIES(Templates/vnl_vector_fixed+vnl_rational.3-.cxx PROPERTIES COMPILE_FLAGS -O0)
-ENDIF(CMAKE_COMPILER_IS_GNUCXX)
+  set_source_files_properties(Templates/vnl_matrix+long-.cxx PROPERTIES COMPILE_FLAGS -O0)
+  set_source_files_properties(Templates/vnl_matrix+ulong-.cxx PROPERTIES COMPILE_FLAGS -O0)
+  set_source_files_properties(Templates/vnl_matrix+vcl_complex+double--.cxx PROPERTIES COMPILE_FLAGS -O0)
+  set_source_files_properties(Templates/vnl_matrix+vcl_complex+long_double--.cxx PROPERTIES COMPILE_FLAGS -O0)
+  set_source_files_properties(Templates/vnl_matrix_fixed+vnl_bignum.3.3-.cxx PROPERTIES COMPILE_FLAGS -O0)
+  set_source_files_properties(Templates/vnl_vector+vnl_rational-.cxx PROPERTIES COMPILE_FLAGS -O0)
+  set_source_files_properties(Templates/vnl_vector_fixed+vnl_rational.3-.cxx PROPERTIES COMPILE_FLAGS -O0)
+endif(CMAKE_COMPILER_IS_GNUCXX)
 
-ADD_LIBRARY(itkvnl ${vnl_sources})
-TARGET_LINK_LIBRARIES( itkvnl itkvcl )
+add_library(itkvnl ${vnl_sources})
+target_link_libraries( itkvnl itkvcl )
 
-IF(NOT VXL_INSTALL_NO_DEVELOPMENT)
+if(NOT VXL_INSTALL_NO_DEVELOPMENT)
   INSTALL_NOBASE_HEADER_FILES(${VXL_INSTALL_ROOT}/core/vnl ${vnl_sources})
-ENDIF(NOT VXL_INSTALL_NO_DEVELOPMENT)
+endif(NOT VXL_INSTALL_NO_DEVELOPMENT)
 
-IF(ITK_LIBRARY_PROPERTIES)
-  SET_TARGET_PROPERTIES(itkvnl PROPERTIES ${ITK_LIBRARY_PROPERTIES})
-ENDIF(ITK_LIBRARY_PROPERTIES)
+if(ITK_LIBRARY_PROPERTIES)
+  set_target_properties(itkvnl PROPERTIES ${ITK_LIBRARY_PROPERTIES})
+endif(ITK_LIBRARY_PROPERTIES)
 
-IF(NOT VXL_INSTALL_NO_LIBRARIES)
-  INSTALL(TARGETS itkvnl
+if(NOT VXL_INSTALL_NO_LIBRARIES)
+  install(TARGETS itkvnl
     RUNTIME DESTINATION ${VXL_INSTALL_BIN_DIR_CM24} COMPONENT RuntimeLibraries
     LIBRARY DESTINATION ${VXL_INSTALL_LIB_DIR_CM24} COMPONENT RuntimeLibraries
     ARCHIVE DESTINATION ${VXL_INSTALL_LIB_DIR_CM24} COMPONENT Development)
-ENDIF(NOT VXL_INSTALL_NO_LIBRARIES)
+endif(NOT VXL_INSTALL_NO_LIBRARIES)
 
-SUBDIRS(algo)
+subdirs(algo)
 
-IF( BUILD_TESTING )
-  SUBDIRS(tests)
-ENDIF( BUILD_TESTING )
+if( BUILD_TESTING )
+  subdirs(tests)
+endif( BUILD_TESTING )

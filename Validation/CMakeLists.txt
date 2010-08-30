@@ -1,1 +1,1 @@
-SUBDIRS(StatisticalClustering)
+subdirs(StatisticalClustering)

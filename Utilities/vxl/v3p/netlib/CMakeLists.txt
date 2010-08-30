@@ -1,41 +1,41 @@
 # v3p/netlib/CMakeLists.txt
 
-PROJECT( netlib C )
+project( netlib C )
 
 #
 # Begin NOTE:
 #
-# The following lines should be removed because the 
+# The following lines should be removed because the
 # "Triangle" program by Jonathan Richard Shewchuk is
 # distributed under a restrictive license that is
 # incompatible with the BDS license used by ITK.
 #
-# SET(netlib_sources
+# set(netlib_sources
 #     # The "Triangle" program of Jonathan Richard Shewchuk
 #     triangle.c triangle.h
 #   )
 #
-#ADD_LIBRARY( netlib ${netlib_sources} )
-#IF(UNIX)
-#  TARGET_LINK_LIBRARIES( netlib m )
-#ENDIF(UNIX)
+#add_library( netlib ${netlib_sources} )
+#if(UNIX)
+#  target_link_libraries( netlib m )
+#endif(UNIX)
 #
 # End NOTE.
 #
 
-IF(BUILD_TESTING)
-  SUBDIRS(tests)
-ENDIF(BUILD_TESTING)
+if(BUILD_TESTING)
+  subdirs(tests)
+endif(BUILD_TESTING)
 
 # Allow sources in subdirectories to see the include files.
-INCLUDE_DIRECTORIES(${netlib_SOURCE_DIR})
+include_directories(${netlib_SOURCE_DIR})
 
 # Inform header files they are being included from a source inside the
 # v3p_netlib library.
-ADD_DEFINITIONS(-DV3P_NETLIB_SRC)
+add_definitions(-DV3P_NETLIB_SRC)
 
 # List sources for each library component.
-SET(V3P_NETLIB_base_SOURCES
+set(V3P_NETLIB_base_SOURCES
      v3p_f2c.h
      v3p_f2c_mangle.h
      v3p_f2c_original.h
@@ -46,7 +46,7 @@ SET(V3P_NETLIB_base_SOURCES
      v3p_netlib_unmangle.h
      v3p_netlib_init.c
    )
-SET(V3P_NETLIB_libf2c_SOURCES
+set(V3P_NETLIB_libf2c_SOURCES
      libf2c/f77_aloc.c
      libf2c/exit_.c
      libf2c/c_abs.c
@@ -73,7 +73,7 @@ SET(V3P_NETLIB_libf2c_SOURCES
      libf2c/z_div.c
      libf2c/z_sqrt.c
    )
-SET(V3P_NETLIB_blas_SOURCES
+set(V3P_NETLIB_blas_SOURCES
      blas/caxpy.c blas/caxpy.h
      blas/ccopy.c blas/ccopy.h
      blas/cdotc.c blas/cdotc.h
@@ -130,7 +130,7 @@ SET(V3P_NETLIB_blas_SOURCES
      blas/ztrmv.c blas/ztrmv.h
      blas/ztrsv.c blas/ztrsv.h
    )
-SET(V3P_NETLIB_linpack_SOURCES
+set(V3P_NETLIB_linpack_SOURCES
      linpack/sqrdc.c linpack/sqrdc.h
      linpack/dqrdc.c linpack/dqrdc.h
      linpack/cqrdc.c linpack/cqrdc.h
@@ -150,7 +150,7 @@ SET(V3P_NETLIB_linpack_SOURCES
      linpack/dpofa.c linpack/dpofa.h
      linpack/dposl.c linpack/dposl.h
    )
-SET(V3P_NETLIB_temperton_SOURCES
+set(V3P_NETLIB_temperton_SOURCES
      temperton/dgpfa.c temperton/dgpfa.h
      temperton/dgpfa2f.c temperton/dgpfa2f.h
      temperton/dgpfa3f.c temperton/dgpfa3f.h
@@ -162,7 +162,7 @@ SET(V3P_NETLIB_temperton_SOURCES
      temperton/setdgpfa.c temperton/setdgpfa.h
      temperton/setgpfa.c temperton/setgpfa.h
    )
-SET(V3P_NETLIB_eispack_SOURCES
+set(V3P_NETLIB_eispack_SOURCES
      eispack/balanc.c eispack/balanc.h
      eispack/balbak.c eispack/balbak.h
      eispack/cdiv.c eispack/cdiv.h
@@ -183,7 +183,7 @@ SET(V3P_NETLIB_eispack_SOURCES
      eispack/tred1.c eispack/tred1.h
      eispack/tred2.c eispack/tred2.h
    )
-SET(V3P_NETLIB_laso_SOURCES
+set(V3P_NETLIB_laso_SOURCES
      laso/dlabax.c laso/dlabax.h
      laso/dlabcm.c laso/dlabcm.h
      laso/dlabfc.c laso/dlabfc.h
@@ -197,7 +197,7 @@ SET(V3P_NETLIB_laso_SOURCES
      laso/dvsort.c laso/dvsort.h
      laso/urand.c laso/urand.h
    )
-SET(V3P_NETLIB_lapack_SOURCES
+set(V3P_NETLIB_lapack_SOURCES
      lapack/complex16/zgebak.c lapack/complex16/zgebak.h
      lapack/complex16/zgebal.c lapack/complex16/zgebal.h
      lapack/complex16/zgeev.c lapack/complex16/zgeev.h
@@ -299,10 +299,10 @@ SET(V3P_NETLIB_lapack_SOURCES
      lapack/util/ilaenv.c lapack/util/ilaenv.h
      lapack/util/lsame.c lapack/util/lsame.h
    )
-SET(V3P_NETLIB_napack_SOURCES
+set(V3P_NETLIB_napack_SOURCES
      napack/cg.c napack/cg.h
    )
-SET(V3P_NETLIB_minpack_SOURCES
+set(V3P_NETLIB_minpack_SOURCES
      minpack/dpmpar.c minpack/dpmpar.h
      minpack/enorm.c minpack/enorm.h
      minpack/fdjac2.c minpack/fdjac2.h
@@ -313,21 +313,21 @@ SET(V3P_NETLIB_minpack_SOURCES
      minpack/qrfac.c minpack/qrfac.h
      minpack/qrsolv.c minpack/qrsolv.h
    )
-SET(V3P_NETLIB_opt_SOURCES
+set(V3P_NETLIB_opt_SOURCES
      opt/lbfgs.c opt/lbfgs.h
      opt/lbfgsb.c opt/lbfgsb.h
    )
-SET(V3P_NETLIB_linalg_SOURCES
+set(V3P_NETLIB_linalg_SOURCES
    )
-SET(V3P_NETLIB_datapac_SOURCES
+set(V3P_NETLIB_datapac_SOURCES
      datapac/camsun.c datapac/camsun.h
    )
-SET(V3P_NETLIB_mathews_SOURCES
+set(V3P_NETLIB_mathews_SOURCES
      mathews/simpson.c mathews/simpson.h
      mathews/trapezod.c mathews/trapezod.h
      mathews/adaquad.c mathews/adaquad.h
    )
-SET(V3P_NETLIB_sparse_SOURCES
+set(V3P_NETLIB_sparse_SOURCES
      sparse/spAllocate.c
      sparse/spBuild.c
      sparse/spFactor.c
@@ -340,7 +340,7 @@ SET(V3P_NETLIB_sparse_SOURCES
    )
 
 # Collect full source list.
-SET(v3p_netlib_sources
+set(v3p_netlib_sources
      ${V3P_NETLIB_base_SOURCES}
      ${V3P_NETLIB_libf2c_SOURCES}
      ${V3P_NETLIB_blas_SOURCES}
@@ -359,22 +359,22 @@ SET(v3p_netlib_sources
    )
 
 # Adjust the compiler flags to avoid problems with f2c-generated code.
-IF(CMAKE_COMPILER_IS_GNUCC)
+if(CMAKE_COMPILER_IS_GNUCC)
   # Hide warnings in f2c-generated code.
-  #SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -w")
+  #set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -w")
 
   # CMake versions before 2.4 did not put the source-file-specific flags
   # after the directory-level flags.  Remove optimization flags from the
   # CMAKE_C_FLAGS* variables so they can be overridden.
-  IF("${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}" LESS 2.4)
-    FOREACH(c "" "_DEBUG" "_RELEASE" "_MINSIZEREL" "_RELWITHDEBINFO")
-      STRING(REGEX REPLACE
+  if("${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}" LESS 2.4)
+    foreach(c "" "_DEBUG" "_RELEASE" "_MINSIZEREL" "_RELWITHDEBINFO")
+      string(REGEX REPLACE
         "-O[^ ]*( |$)" "" CMAKE_C_FLAGS${c} "${CMAKE_C_FLAGS${c}}")
-    ENDFOREACH(c)
-  ENDIF("${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}" LESS 2.4)
+    endforeach(c)
+  endif("${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}" LESS 2.4)
 
   # Disable buggy optimization on some source files.
-  #SET_SOURCE_FILES_PROPERTIES(
+  #set_source_files_properties(
   #  temperton/gpfa5f.c
   #  temperton/dgpfa5f.c
   #  laso/dnlaso.c
@@ -383,7 +383,7 @@ IF(CMAKE_COMPILER_IS_GNUCC)
 
   # Adjust optimization of floating point computation for some sources.
   # See comments in the sources for details.
-  SET_SOURCE_FILES_PROPERTIES(
+  set_source_files_properties(
      linpack/ssvdc.c
      linpack/dsvdc.c
      PROPERTIES COMPILE_FLAGS -ffloat-store
@@ -391,7 +391,7 @@ IF(CMAKE_COMPILER_IS_GNUCC)
 
   # Disable global optimizations for some source files.
   # See comments in the sources for details.
-  SET_SOURCE_FILES_PROPERTIES(
+  set_source_files_properties(
      lapack/complex16/zlarfx.c
      PROPERTIES COMPILE_FLAGS -fno-gcse
     )
@@ -399,41 +399,41 @@ IF(CMAKE_COMPILER_IS_GNUCC)
   # Adjust optimization of floating point computation and disable global
   # optimizations for some sources.
   # See comments in the sources for details.
-  SET_SOURCE_FILES_PROPERTIES(
+  set_source_files_properties(
      blas/slamch.c
      blas/dlamch.c
      PROPERTIES COMPILE_FLAGS "-fno-gcse -ffloat-store"
     )
-ENDIF(CMAKE_COMPILER_IS_GNUCC)
+endif(CMAKE_COMPILER_IS_GNUCC)
 
-IF(CMAKE_C_COMPILER MATCHES "icc")
+if(CMAKE_C_COMPILER MATCHES "icc")
   # Adjust optimization of floating point computation for some sources.
-  SET_SOURCE_FILES_PROPERTIES(
+  set_source_files_properties(
     blas/slamch.c
     blas/dlamch.c
 #     PROPERTIES COMPILE_FLAGS -O0
     PROPERTIES COMPILE_FLAGS -fp_port
     )
-ENDIF(CMAKE_C_COMPILER MATCHES "icc")
+endif(CMAKE_C_COMPILER MATCHES "icc")
 
 
 # Create a netlib library with mangled symbols.
-ADD_LIBRARY(itkv3p_netlib ${v3p_netlib_sources})
-IF(UNIX)
-  TARGET_LINK_LIBRARIES( itkv3p_netlib m )
-ENDIF(UNIX)
-IF(ITK_LIBRARY_PROPERTIES)
-  SET_TARGET_PROPERTIES(itkv3p_netlib PROPERTIES ${ITK_LIBRARY_PROPERTIES})
-ENDIF(ITK_LIBRARY_PROPERTIES)
+add_library(itkv3p_netlib ${v3p_netlib_sources})
+if(UNIX)
+  target_link_libraries( itkv3p_netlib m )
+endif(UNIX)
+if(ITK_LIBRARY_PROPERTIES)
+  set_target_properties(itkv3p_netlib PROPERTIES ${ITK_LIBRARY_PROPERTIES})
+endif(ITK_LIBRARY_PROPERTIES)
 
-IF(NOT VXL_INSTALL_NO_LIBRARIES)
-  INSTALL(TARGETS itkv3p_netlib
+if(NOT VXL_INSTALL_NO_LIBRARIES)
+  install(TARGETS itkv3p_netlib
     RUNTIME DESTINATION ${VXL_INSTALL_BIN_DIR_CM24} COMPONENT RuntimeLibraries
     LIBRARY DESTINATION ${VXL_INSTALL_LIB_DIR_CM24} COMPONENT RuntimeLibraries
     ARCHIVE DESTINATION ${VXL_INSTALL_LIB_DIR_CM24} COMPONENT Development)
-ENDIF(NOT VXL_INSTALL_NO_LIBRARIES)
-IF(NOT VXL_INSTALL_NO_DEVELOPMENT)
+endif(NOT VXL_INSTALL_NO_LIBRARIES)
+if(NOT VXL_INSTALL_NO_DEVELOPMENT)
   INSTALL_NOBASE_HEADER_FILES(${VXL_INSTALL_ROOT}/v3p/netlib ${v3p_netlib_sources})
-ENDIF(NOT VXL_INSTALL_NO_DEVELOPMENT)
+endif(NOT VXL_INSTALL_NO_DEVELOPMENT)
 
-SUBDIRS(linalg)
+subdirs(linalg)

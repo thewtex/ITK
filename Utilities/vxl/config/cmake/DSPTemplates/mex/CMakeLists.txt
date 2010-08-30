@@ -1,3 +1,3 @@
 # just install the modules
-INSTALL_FILES(/share/CMake/Templates "" CMakeSystemConfig.cmake.in)
-INSTALL_PROGRAMS(/share/CMake/Templates configure install-sh)
+install_files(/share/CMake/Templates "" CMakeSystemConfig.cmake.in)
+install_programs(/share/CMake/Templates configure install-sh)

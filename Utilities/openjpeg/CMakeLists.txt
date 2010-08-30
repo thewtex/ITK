@@ -1,8 +1,8 @@
-PROJECT(ITKOpenJPEG C)
-INCLUDE_REGULAR_EXPRESSION("^.*$")
+project(ITKOpenJPEG C)
+include_regular_expression("^.*$")
 
 # Defines the source code for the library
-SET(OpenJPEG_SRCS
+set(OpenJPEG_SRCS
   tcd.c
   bio.c
   cio.c
@@ -48,35 +48,35 @@ SET(OpenJPEG_SRCS
   function_list.h
 )
 
-CONFIGURE_FILE(${ITKOpenJPEG_SOURCE_DIR}/.NoDartCoverage
+configure_file(${ITKOpenJPEG_SOURCE_DIR}/.NoDartCoverage
                ${ITKOpenJPEG_BINARY_DIR}/.NoDartCoverage)
 
 
 # Pass proper definition to preprocessor to generate shared lib
-IF(WIN32)
-  IF(BUILD_SHARED_LIBS)
-    ADD_DEFINITIONS(-DOPJ_EXPORTS)
-  ELSE(BUILD_SHARED_LIBS)
-    ADD_DEFINITIONS(-DOPJ_STATIC)
-  ENDIF(BUILD_SHARED_LIBS)
-ENDIF(WIN32)
+if(WIN32)
+  if(BUILD_SHARED_LIBS)
+    add_definitions(-DOPJ_EXPORTS)
+  else(BUILD_SHARED_LIBS)
+    add_definitions(-DOPJ_STATIC)
+  endif(BUILD_SHARED_LIBS)
+endif(WIN32)
 
 # Create the library
-ADD_LIBRARY(${OPJ_PREFIX}openjpeg ${OpenJPEG_SRCS})
+add_library(${OPJ_PREFIX}openjpeg ${OpenJPEG_SRCS})
 
-IF(UNIX)
-  TARGET_LINK_LIBRARIES(${OPENJPEG_LIBRARY_NAME} m)
-ENDIF(UNIX)
+if(UNIX)
+  target_link_libraries(${OPENJPEG_LIBRARY_NAME} m)
+endif(UNIX)
 
 # Install library
-IF(ITK_LIBRARY_PROPERTIES)
-  SET_TARGET_PROPERTIES(${OPJ_PREFIX}openjpeg PROPERTIES ${ITK_LIBRARY_PROPERTIES})
-ENDIF(ITK_LIBRARY_PROPERTIES)
+if(ITK_LIBRARY_PROPERTIES)
+  set_target_properties(${OPJ_PREFIX}openjpeg PROPERTIES ${ITK_LIBRARY_PROPERTIES})
+endif(ITK_LIBRARY_PROPERTIES)
 
-IF(NOT ITK_INSTALL_NO_LIBRARIES)
-  INSTALL(TARGETS ${OPJ_PREFIX}openjpeg
+if(NOT ITK_INSTALL_NO_LIBRARIES)
+  install(TARGETS ${OPJ_PREFIX}openjpeg
     EXPORT ITKTargets
     RUNTIME DESTINATION ${ITK_INSTALL_BIN_DIR_CM24} COMPONENT RuntimeLibraries
     LIBRARY DESTINATION ${ITK_INSTALL_LIB_DIR_CM24} COMPONENT RuntimeLibraries
     ARCHIVE DESTINATION ${ITK_INSTALL_LIB_DIR_CM24} COMPONENT Development)
-ENDIF(NOT ITK_INSTALL_NO_LIBRARIES)
+endif(NOT ITK_INSTALL_NO_LIBRARIES)

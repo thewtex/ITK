@@ -1,7 +1,7 @@
 # This is core/vnl/io/tests/CMakeLists.txt
-SET(EXECUTABLE_OUTPUT_PATH ${vxl_BINARY_DIR}/core/vnl/io/tests)
+set(EXECUTABLE_OUTPUT_PATH ${vxl_BINARY_DIR}/core/vnl/io/tests)
 
-ADD_EXECUTABLE( vnl_io_test_all
+add_executable( vnl_io_test_all
   # Driver source
   test_driver.cxx
 
@@ -21,21 +21,21 @@ ADD_EXECUTABLE( vnl_io_test_all
   test_vector_io.cxx
 )
 
-TARGET_LINK_LIBRARIES( vnl_io_test_all vnl_io vsl testlib vpl )
+target_link_libraries( vnl_io_test_all vnl_io vsl testlib vpl )
 
-ADD_TEST( vnl_io_test_bignum_io                ${EXECUTABLE_OUTPUT_PATH}/vnl_io_test_all test_bignum_io               )
-ADD_TEST( vnl_io_test_diag_matrix_io           ${EXECUTABLE_OUTPUT_PATH}/vnl_io_test_all test_diag_matrix_io          )
-ADD_TEST( vnl_io_test_matrix_fixed_io          ${EXECUTABLE_OUTPUT_PATH}/vnl_io_test_all test_matrix_fixed_io         )
-ADD_TEST( vnl_io_test_matrix_io                ${EXECUTABLE_OUTPUT_PATH}/vnl_io_test_all test_matrix_io               )
-ADD_TEST( vnl_io_test_nonlinear_minimizer_io   ${EXECUTABLE_OUTPUT_PATH}/vnl_io_test_all test_nonlinear_minimizer_io  )
-ADD_TEST( vnl_io_test_rational_io              ${EXECUTABLE_OUTPUT_PATH}/vnl_io_test_all test_rational_io             )
-ADD_TEST( vnl_io_test_real_npolynomial_io      ${EXECUTABLE_OUTPUT_PATH}/vnl_io_test_all test_real_npolynomial_io     )
-ADD_TEST( vnl_io_test_real_polynomial_io       ${EXECUTABLE_OUTPUT_PATH}/vnl_io_test_all test_real_polynomial_io      )
-ADD_TEST( vnl_io_test_sparse_matrix_io         ${EXECUTABLE_OUTPUT_PATH}/vnl_io_test_all test_sparse_matrix_io        )
-ADD_TEST( vnl_io_test_sym_matrix_io            ${EXECUTABLE_OUTPUT_PATH}/vnl_io_test_all test_sym_matrix_io           )
-ADD_TEST( vnl_io_test_vector_fixed_io          ${EXECUTABLE_OUTPUT_PATH}/vnl_io_test_all test_vector_fixed_io         )
-ADD_TEST( vnl_io_test_vector_io                ${EXECUTABLE_OUTPUT_PATH}/vnl_io_test_all test_vector_io               )
-ADD_TEST( vnl_io_golden_test_vnl_io            ${EXECUTABLE_OUTPUT_PATH}/vnl_io_test_all golden_test_vnl_io           )
+add_test( vnl_io_test_bignum_io                ${EXECUTABLE_OUTPUT_PATH}/vnl_io_test_all test_bignum_io               )
+add_test( vnl_io_test_diag_matrix_io           ${EXECUTABLE_OUTPUT_PATH}/vnl_io_test_all test_diag_matrix_io          )
+add_test( vnl_io_test_matrix_fixed_io          ${EXECUTABLE_OUTPUT_PATH}/vnl_io_test_all test_matrix_fixed_io         )
+add_test( vnl_io_test_matrix_io                ${EXECUTABLE_OUTPUT_PATH}/vnl_io_test_all test_matrix_io               )
+add_test( vnl_io_test_nonlinear_minimizer_io   ${EXECUTABLE_OUTPUT_PATH}/vnl_io_test_all test_nonlinear_minimizer_io  )
+add_test( vnl_io_test_rational_io              ${EXECUTABLE_OUTPUT_PATH}/vnl_io_test_all test_rational_io             )
+add_test( vnl_io_test_real_npolynomial_io      ${EXECUTABLE_OUTPUT_PATH}/vnl_io_test_all test_real_npolynomial_io     )
+add_test( vnl_io_test_real_polynomial_io       ${EXECUTABLE_OUTPUT_PATH}/vnl_io_test_all test_real_polynomial_io      )
+add_test( vnl_io_test_sparse_matrix_io         ${EXECUTABLE_OUTPUT_PATH}/vnl_io_test_all test_sparse_matrix_io        )
+add_test( vnl_io_test_sym_matrix_io            ${EXECUTABLE_OUTPUT_PATH}/vnl_io_test_all test_sym_matrix_io           )
+add_test( vnl_io_test_vector_fixed_io          ${EXECUTABLE_OUTPUT_PATH}/vnl_io_test_all test_vector_fixed_io         )
+add_test( vnl_io_test_vector_io                ${EXECUTABLE_OUTPUT_PATH}/vnl_io_test_all test_vector_io               )
+add_test( vnl_io_golden_test_vnl_io            ${EXECUTABLE_OUTPUT_PATH}/vnl_io_test_all golden_test_vnl_io           )
 
-ADD_EXECUTABLE( vnl_io_test_include test_include.cxx )
-TARGET_LINK_LIBRARIES( vnl_io_test_include vnl_io )
+add_executable( vnl_io_test_include test_include.cxx )
+target_link_libraries( vnl_io_test_include vnl_io )

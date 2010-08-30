@@ -1,9 +1,9 @@
 # vxl/vnl/algo/CMakeLists.txt
 
-INCLUDE( ${MODULE_PATH}/FindNetlib.cmake )
+include( ${MODULE_PATH}/FindNetlib.cmake )
 
 # most of vnl_algo is simply a wrapper around netlib, so we must have netlib.
-IF(NETLIB_FOUND)
+if(NETLIB_FOUND)
 
 # Direct netlib dependencies are:
 # vnl_chi_squared                  dchscdf_
@@ -26,12 +26,12 @@ IF(NETLIB_FOUND)
 # vnl_svd_economy                  csvdc_ dsvdc_ ssvdc_ zsvdc_
 # vnl_symmetric_eigensystem        rs_
 
-  INCLUDE_DIRECTORIES( 
+  include_directories(
     ${NETLIB_INCLUDE_DIR}
     ${NETLIB_INCLUDE_DIR}/linalg
     )
 
-  SET( vnl_algo_sources
+  set( vnl_algo_sources
     vnl_algo_fwd.h
     vnl_netlib.h
 
@@ -91,26 +91,26 @@ IF(NETLIB_FOUND)
     vnl_adaptsimpson_integral.cxx vnl_adaptsimpson_integral.h
   )
 
-  AUX_SOURCE_DIRECTORY(Templates vnl_algo_sources)
+  aux_source_directory(Templates vnl_algo_sources)
 
-  ADD_LIBRARY( itkvnl_algo ${vnl_algo_sources})
-  TARGET_LINK_LIBRARIES( itkvnl_algo ${NETLIB_LIBRARIES} itkvnl itkv3p_lsqr )
-  IF(ITK_LIBRARY_PROPERTIES)
-    SET_TARGET_PROPERTIES(itkvnl_algo PROPERTIES ${ITK_LIBRARY_PROPERTIES})
-  ENDIF(ITK_LIBRARY_PROPERTIES)
+  add_library( itkvnl_algo ${vnl_algo_sources})
+  target_link_libraries( itkvnl_algo ${NETLIB_LIBRARIES} itkvnl itkv3p_lsqr )
+  if(ITK_LIBRARY_PROPERTIES)
+    set_target_properties(itkvnl_algo PROPERTIES ${ITK_LIBRARY_PROPERTIES})
+  endif(ITK_LIBRARY_PROPERTIES)
 
-  IF(NOT VXL_INSTALL_NO_LIBRARIES)
-    INSTALL(TARGETS itkvnl_algo
+  if(NOT VXL_INSTALL_NO_LIBRARIES)
+    install(TARGETS itkvnl_algo
       RUNTIME DESTINATION ${VXL_INSTALL_BIN_DIR_CM24} COMPONENT RuntimeLibraries
       LIBRARY DESTINATION ${VXL_INSTALL_LIB_DIR_CM24} COMPONENT RuntimeLibraries
       ARCHIVE DESTINATION ${VXL_INSTALL_LIB_DIR_CM24} COMPONENT Development)
-  ENDIF(NOT VXL_INSTALL_NO_LIBRARIES)
-  IF(NOT VXL_INSTALL_NO_DEVELOPMENT)
+  endif(NOT VXL_INSTALL_NO_LIBRARIES)
+  if(NOT VXL_INSTALL_NO_DEVELOPMENT)
     INSTALL_NOBASE_HEADER_FILES(${VXL_INSTALL_ROOT}/core/vnl/algo ${vnl_algo_sources})
-  ENDIF(NOT VXL_INSTALL_NO_DEVELOPMENT)
+  endif(NOT VXL_INSTALL_NO_DEVELOPMENT)
 
-  IF( BUILD_TESTING )
-    SUBDIRS(tests)
-  ENDIF( BUILD_TESTING )
+  if( BUILD_TESTING )
+    subdirs(tests)
+  endif( BUILD_TESTING )
 
-ENDIF(NETLIB_FOUND)
+endif(NETLIB_FOUND)

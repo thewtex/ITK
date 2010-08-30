@@ -1,4 +1,4 @@
-SUBDIRS(
+subdirs(
   Iterators
   DataRepresentation
   Filtering
@@ -11,13 +11,13 @@ SUBDIRS(
 
 #This code looks like it needs to be updated to the new statistics framework
 #It was never updated as part of the refactoring to review statistics.
-#TMP_RMV20100801 SUBDIRS( Statistics )
+#TMP_RMV20100801 subdirs( Statistics )
 
-IF( ITK_USE_REVIEW )
-  SUBDIRS( Review )
-ENDIF( ITK_USE_REVIEW )
+if( ITK_USE_REVIEW )
+  subdirs( Review )
+endif( ITK_USE_REVIEW )
 
-IF( ITK_USE_PATENTED )
-  SUBDIRS( Patented )
-ENDIF( ITK_USE_PATENTED )
+if( ITK_USE_PATENTED )
+  subdirs( Patented )
+endif( ITK_USE_PATENTED )
 

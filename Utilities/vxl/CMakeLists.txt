@@ -1,57 +1,57 @@
 # Root vxl ported to ITK Utilities.
-PROJECT(vxl)
+project(vxl)
 
-INCLUDE_REGULAR_EXPRESSION("^.*$")
+include_regular_expression("^.*$")
 
-IF(NOT ITK_SOURCE_DIR)
-  SET(BUILD_TESTING 1)
-  SET(LIBRARY_OUTPUT_PATH ${vxl_BINARY_DIR}/bin)
-  SET(EXECUTABLE_OUTPUT_PATH ${vxl_BINARY_DIR}/bin)
-ENDIF(NOT ITK_SOURCE_DIR)
+if(NOT ITK_SOURCE_DIR)
+  set(BUILD_TESTING 1)
+  set(LIBRARY_OUTPUT_PATH ${vxl_BINARY_DIR}/bin)
+  set(EXECUTABLE_OUTPUT_PATH ${vxl_BINARY_DIR}/bin)
+endif(NOT ITK_SOURCE_DIR)
 
 # CMake support directory.
-INCLUDE(${vxl_SOURCE_DIR}/config/cmake/config/vxl_utils.cmake)
-SET(VXL_CMAKE_DIR ${vxl_SOURCE_DIR}/config/cmake/Modules)
-SET(MODULE_PATH ${vxl_SOURCE_DIR}/config/cmake/Modules)
+include(${vxl_SOURCE_DIR}/config/cmake/config/vxl_utils.cmake)
+set(VXL_CMAKE_DIR ${vxl_SOURCE_DIR}/config/cmake/Modules)
+set(MODULE_PATH ${vxl_SOURCE_DIR}/config/cmake/Modules)
 
 # Do platform-specific configuration.
-SUBDIRS(config/cmake/config)
+subdirs(config/cmake/config)
 
 # Build the core vxl + support libraries
-SUBDIRS(vcl v3p core)
+subdirs(vcl v3p core)
 
 # Standard include directories.
-SET(VXLCORE_INCLUDE_DIR ${vxl_BINARY_DIR}/core ${vxl_SOURCE_DIR}/core)
-SET(VXLCORE_INSTALL_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/include/vxl/core)
-SET(VCL_INCLUDE_DIR ${vxl_BINARY_DIR}/vcl ${vxl_SOURCE_DIR}/vcl)
-SET(VCL_INSTALL_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/include/vxl/vcl)
+set(VXLCORE_INCLUDE_DIR ${vxl_BINARY_DIR}/core ${vxl_SOURCE_DIR}/core)
+set(VXLCORE_INSTALL_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/include/vxl/core)
+set(VCL_INCLUDE_DIR ${vxl_BINARY_DIR}/vcl ${vxl_SOURCE_DIR}/vcl)
+set(VCL_INSTALL_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/include/vxl/vcl)
 
-INCLUDE_DIRECTORIES(${VCL_INCLUDE_DIR} ${VXLCORE_INCLUDE_DIR})
+include_directories(${VCL_INCLUDE_DIR} ${VXLCORE_INCLUDE_DIR})
 
-SET(VXL_INSTALL_ROOT ${ITK_INSTALL_INCLUDE_DIR}/Utilities/vxl)
-SET(VXL_INSTALL_LIB_DIR ${ITK_INSTALL_LIB_DIR})
-SET(VXL_INSTALL_BIN_DIR ${ITK_INSTALL_BIN_DIR})
-SET(VXL_INSTALL_NO_DEVELOPMENT ${ITK_INSTALL_NO_DEVELOPMENT})
-SET(VXL_INSTALL_NO_LIBRARIES ${ITK_INSTALL_NO_LIBRARIES})
+set(VXL_INSTALL_ROOT ${ITK_INSTALL_INCLUDE_DIR}/Utilities/vxl)
+set(VXL_INSTALL_LIB_DIR ${ITK_INSTALL_LIB_DIR})
+set(VXL_INSTALL_BIN_DIR ${ITK_INSTALL_BIN_DIR})
+set(VXL_INSTALL_NO_DEVELOPMENT ${ITK_INSTALL_NO_DEVELOPMENT})
+set(VXL_INSTALL_NO_LIBRARIES ${ITK_INSTALL_NO_LIBRARIES})
 
-STRING(REGEX REPLACE "^/" "" VXL_INSTALL_LIB_DIR_CM24 "${VXL_INSTALL_LIB_DIR}")
-STRING(REGEX REPLACE "^/" "" VXL_INSTALL_BIN_DIR_CM24 "${VXL_INSTALL_BIN_DIR}")
+string(REGEX REPLACE "^/" "" VXL_INSTALL_LIB_DIR_CM24 "${VXL_INSTALL_LIB_DIR}")
+string(REGEX REPLACE "^/" "" VXL_INSTALL_BIN_DIR_CM24 "${VXL_INSTALL_BIN_DIR}")
 
-IF(WIN32)
-  IF(NOT UNIX)
-    IF(NOT BORLAND)
-      IF(NOT MINGW)
-        SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4244")
+if(WIN32)
+  if(NOT UNIX)
+    if(NOT BORLAND)
+      if(NOT MINGW)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4244")
         # Revert: /wd8004 /wd8057 produces warnings on .Net2003:
         #         invalid value '8004' for '/wd'; assuming '4999
         # you probably do not want to disable 4999, do you?
         # Which compiler were 8004 and 8057 referring to?
-      ENDIF(NOT MINGW)
-    ENDIF(NOT BORLAND)
-  ENDIF(NOT UNIX)
-ENDIF(WIN32)
+      endif(NOT MINGW)
+    endif(NOT BORLAND)
+  endif(NOT UNIX)
+endif(WIN32)
 
-IF(CMAKE_COMPILER_IS_GNUCXX)
-  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w")
-ENDIF(CMAKE_COMPILER_IS_GNUCXX)
-  
+if(CMAKE_COMPILER_IS_GNUCXX)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w")
+endif(CMAKE_COMPILER_IS_GNUCXX)
+

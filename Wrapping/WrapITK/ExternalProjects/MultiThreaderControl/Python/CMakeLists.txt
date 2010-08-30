@@ -1,5 +1,5 @@
 
-SUBDIRS(Tests)
+subdirs(Tests)
 
 # something else to do ?
 

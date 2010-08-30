@@ -1,26 +1,26 @@
 # vcl/CMakeLists.txt
 
-IF(WIN32)
+if(WIN32)
   # MSVC.NET produces lots of warnings like
   # "warning LNK4221: no public symbols found; archive member will be inaccessible"
   # that depend on subtle logic at compile time.
   # This is a bit indescriminate, but it may be the only feasible way to suppress them.
-  IF (CMAKE_CXX_COMPILER MATCHES "^cl$")
-    SET ( CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} /WARN:0")
-    SET ( CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /WARN:0")
-  ENDIF (CMAKE_CXX_COMPILER MATCHES "^cl$")
-ENDIF(WIN32)
+  if(CMAKE_CXX_COMPILER MATCHES "^cl$")
+    set( CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} /WARN:0")
+    set( CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /WARN:0")
+  endif(CMAKE_CXX_COMPILER MATCHES "^cl$")
+endif(WIN32)
 
 
-PROJECT( vcl )
+project( vcl )
 
 # Set up vcl_where_root_dir.h to have a macro set to $VCL_SOURCE_ROOT_DIR
-CONFIGURE_FILE(
+configure_file(
   ${vxl_SOURCE_DIR}/vcl/vcl_where_root_dir.h.in
   ${vxl_BINARY_DIR}/vcl/vcl_where_root_dir.h ESCAPE_QUOTES
 )
 
-SET( vcl_sources
+set( vcl_sources
   vcl_compiler.h
   vcl_deprecated.cxx     vcl_deprecated.h
 
@@ -340,37 +340,37 @@ SET( vcl_sources
 # so we shouldn't be explicitly instantiating anything.
 # This also avoid trouble where the instantiation hack conflict
 # with modern, more compliant compilers.
-#AUX_SOURCE_DIRECTORY(Templates vcl_sources)
+#aux_source_directory(Templates vcl_sources)
 
-ADD_LIBRARY(itkvcl ${vcl_sources})
+add_library(itkvcl ${vcl_sources})
 
-IF(WIN32)
-  IF(NOT CYGWIN)
-    ADD_DEFINITIONS( -DBUILDING_VCL_DLL )
-  ENDIF(NOT CYGWIN)
-ENDIF(WIN32)
+if(WIN32)
+  if(NOT CYGWIN)
+    add_definitions( -DBUILDING_VCL_DLL )
+  endif(NOT CYGWIN)
+endif(WIN32)
 
-IF(UNIX)
-  TARGET_LINK_LIBRARIES( itkvcl m )
-ENDIF(UNIX)
+if(UNIX)
+  target_link_libraries( itkvcl m )
+endif(UNIX)
 
-IF(ITK_LIBRARY_PROPERTIES)
-  SET_TARGET_PROPERTIES(itkvcl PROPERTIES ${ITK_LIBRARY_PROPERTIES})
-ENDIF(ITK_LIBRARY_PROPERTIES)
+if(ITK_LIBRARY_PROPERTIES)
+  set_target_properties(itkvcl PROPERTIES ${ITK_LIBRARY_PROPERTIES})
+endif(ITK_LIBRARY_PROPERTIES)
 
 # Installation
-IF(NOT VXL_INSTALL_NO_LIBRARIES)
-  INSTALL(TARGETS itkvcl
+if(NOT VXL_INSTALL_NO_LIBRARIES)
+  install(TARGETS itkvcl
     RUNTIME DESTINATION ${VXL_INSTALL_BIN_DIR_CM24} COMPONENT RuntimeLibraries
     LIBRARY DESTINATION ${VXL_INSTALL_LIB_DIR_CM24} COMPONENT RuntimeLibraries
     ARCHIVE DESTINATION ${VXL_INSTALL_LIB_DIR_CM24} COMPONENT Development)
-ENDIF(NOT VXL_INSTALL_NO_LIBRARIES)
-IF(NOT VXL_INSTALL_NO_DEVELOPMENT)
+endif(NOT VXL_INSTALL_NO_LIBRARIES)
+if(NOT VXL_INSTALL_NO_DEVELOPMENT)
   INSTALL_NOBASE_HEADER_FILES(${VXL_INSTALL_ROOT}/vcl ${vcl_sources})
-ENDIF(NOT VXL_INSTALL_NO_DEVELOPMENT)
+endif(NOT VXL_INSTALL_NO_DEVELOPMENT)
 
-# INCLUDE( ${vxl_SOURCE_DIR}/vcl/LinkSTLPort.cmake )
+# include( ${vxl_SOURCE_DIR}/vcl/LinkSTLPort.cmake )
 
-IF( BUILD_TESTING)
-  SUBDIRS(tests)
-ENDIF( BUILD_TESTING)
+if( BUILD_TESTING)
+  subdirs(tests)
+endif( BUILD_TESTING)

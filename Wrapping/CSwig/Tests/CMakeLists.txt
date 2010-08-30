@@ -1,1 +1,1 @@
-SUBDIRS(Tcl)
+subdirs(Tcl)
