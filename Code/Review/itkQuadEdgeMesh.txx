@@ -546,14 +546,31 @@ template< typename TPixel, unsigned int VDimension, typename TTraits >
 void QuadEdgeMesh< TPixel, VDimension, TTraits >
 ::DeletePoint( const PointIdentifier& pid )
 {
+  // We suppose point index is valid
+  // otherwise we should test with
+  // this->GetPoints()->IndexExists( pid );
   PointType pointToDelete = this->GetPoint( pid);
+
+  // Check that there is no cell that use this point anymore
+  // i.e. that the o-next-ring is empty
   if( pointToDelete.GetEdge() )
     {
     itkDebugMacro("Point is not isolated.");
     return;
     }
 
+  // Remove the point from the points container
   this->GetPoints()->DeleteIndex( pid );
+
+  // Check if there is associated poindata and eventually delete them
+  if( this->GetPointData()->Size() > 0 )
+    {
+    this->GetPointData()->DeleteIndex( pid );
+    }
+
+  // store the delete index to later squeeze the ID list
+  // needed to write files that expect incremental IDs
+  // like vtk
   m_FreePointIndexes.push( pid );
 }
 
