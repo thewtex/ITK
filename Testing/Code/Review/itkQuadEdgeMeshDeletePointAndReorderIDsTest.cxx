@@ -20,7 +20,6 @@
 
 #include "itkQuadEdgeMesh.h"
 #include "itkQuadEdgeMeshPolygonCell.h"
-#include "itkVTKPolyDataWriter.h"
 
 int itkQuadEdgeMeshDeletePointAndReorderIDsTest( int , char* [] )
 {
@@ -32,12 +31,10 @@ int itkQuadEdgeMeshDeletePointAndReorderIDsTest( int , char* [] )
   typedef CellTraits::QuadEdgeType                  QEType;
   typedef MeshType::CellType                        CellType;
   typedef itk::QuadEdgeMeshPolygonCell< CellType >  QEPolygonCellType;
-  typedef itk::VTKPolyDataWriter< MeshType >        WriterType;
 
   MeshType::Pointer  mesh = MeshType::New();
   MeshType::PointType pts[ 5 ];
- 
-  WriterType::Pointer writer = WriterType::New( );
+  MeshType::PixelType ptData;
  
   pts[ 0 ][ 0 ] = -1.0; pts[ 0 ][ 1 ] = -1.0; pts[ 0 ][ 2 ] = 0.0;
   pts[ 1 ][ 0 ] =  1.0; pts[ 1 ][ 1 ] = -1.0; pts[ 1 ][ 2 ] = 0.0;
@@ -70,17 +67,37 @@ int itkQuadEdgeMeshDeletePointAndReorderIDsTest( int , char* [] )
     mesh->SetCell( i, cellpointer );
     }
 
-  writer->SetInput( mesh );
-  writer->SetFileName( "BeforeDeletePoint.vtk" );
-  writer->Update( );
+  // Point exists along with pointData
+  if(   ! mesh->GetPoints()->IndexExists( 0 )
+     || ! mesh->GetPointData()->IndexExists( 0 ) )
+    {
+    return EXIT_FAILURE;
+    }
 
+  // delete point and check that point and pointdata have been removed
+  // form corresponding containers
   mesh->DeletePoint( 0 );
-  writer->SetFileName( "AfterDeletePoint.vtk" );
-  writer->Update( );
- 
-  mesh->SqueezePointsIds( );  
-  writer->SetFileName( "AfterSqueeze.vtk" );
-  writer->Update( );
+  if(   mesh->GetPoints()->IndexExists( 0 )
+     || mesh->GetPointData()->IndexExists( 0 ) )
+    {
+    return EXIT_FAILURE;
+    }
+
+  // Squeeze point IDs. ID=0 should reappear but have a different value
+  // actually it should have the value of the previously last point
+  mesh->SqueezePointsIds( );
+  if(   ! mesh->GetPoints()->IndexExists( 0 )
+     || ! mesh->GetPointData()->IndexExists( 0 ) )
+    {
+    // should check coordinates
+
+    // check data
+    mesh->GetPointData( 0, &ptData );
+    if( ptData != 4 )
+      {
+      return EXIT_FAILURE;
+      }
+    }
 
   return EXIT_SUCCESS;
 }
