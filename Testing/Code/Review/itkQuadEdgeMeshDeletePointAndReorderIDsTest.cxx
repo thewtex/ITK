@@ -45,12 +45,11 @@ int itkQuadEdgeMeshDeletePointAndReorderIDsTest( int , char* [] )
   pts[ 3 ][ 0 ] = -1.0; pts[ 3 ][ 1 ] =  1.0; pts[ 3 ][ 2 ] = 0.0;
   pts[ 4 ][ 0 ] =  0.0; pts[ 4 ][ 1 ] =  0.0; pts[ 4 ][ 2 ] = 1.0;
 
-  mesh->SetPoint( 0, pts[ 0 ] );
-  mesh->SetPoint( 1, pts[ 1 ] );
-  mesh->SetPoint( 2, pts[ 2 ] );
-  mesh->SetPoint( 3, pts[ 3 ] );
-  mesh->SetPoint( 4, pts[ 4 ] );
-
+  for( unsigned int e = 0; e < 5; e++ )
+    {
+    mesh->SetPoint( e, pts[ e ] );
+    mesh->SetPointData( e, e );
+    }
 
   // create a tetahedra and one isolated point: id = 0 
   int specialCells[12] =
