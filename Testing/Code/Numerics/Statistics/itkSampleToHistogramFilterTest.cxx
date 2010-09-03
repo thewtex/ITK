@@ -78,22 +78,6 @@ int itkSampleToHistogramFilterTest( int , char * [] )
 
 
   // Test exception when calling Update() without having
-  // defined the number of components in the sample
-  try
-    {
-    filter->Update();
-    std::cerr << "Failure to throw expected exception due to lack";
-    std::cerr << " of calling SetMeasurementVectorSize() in the sample";
-    return EXIT_FAILURE;
-    }
-  catch( itk::ExceptionObject & )
-    {
-    std::cout << "Expected exception received" << std::endl;
-    }
-
-  sample->SetMeasurementVectorSize( numberOfComponents );
-
-  // Test exception when calling Update() without having
   // defined the size of the histogram in the filter.
   try
     {
@@ -102,15 +86,41 @@ int itkSampleToHistogramFilterTest( int , char * [] )
     std::cerr << " of calling SetHistogramSize() in the filter ";
     return EXIT_FAILURE;
     }
-  catch( itk::ExceptionObject & )
+  catch( itk::MissingHistogramSizeInputException &e )
     {
-    std::cout << "Expected exception received" << std::endl;
+    std::cout << "Exception received:" << std::endl;
+    std::cout << e.what() << std::endl;
     }
-
+  catch( ... )
+    {
+    std::cerr << "Histogram Size input exception not received.\n";
+    return EXIT_FAILURE;
+    }
 
   HistogramSizeType histogramSize0( numberOfComponents );
   histogramSize0.Fill(1);
   filter->SetHistogramSize( histogramSize0 );
+
+  // Test exception when calling Update() without having
+  // defined the number of components in the sample
+  try
+    {
+    filter->Update();
+    std::cerr << "Failure to throw expected exception due to lack";
+    std::cerr << " of calling SetMeasurementVectorSize() in the sample";
+    }
+  catch( itk::NullSizeHistogramInputMeasurementVectorSize &e )
+    {
+    std::cout << "Exception received:" << std::endl;
+    std::cout << e.what() << std::endl;
+    }
+  catch( ... )
+    {
+    std::cerr << "MeasurementVectorSize exception not received.\n";
+    return EXIT_FAILURE;
+    }
+
+  sample->SetMeasurementVectorSize( numberOfComponents );
 
   try
     {
@@ -154,7 +164,6 @@ int itkSampleToHistogramFilterTest( int , char * [] )
       return EXIT_FAILURE;
       }
     }
-
 
   filter->SetHistogramSize( histogramSize2 );
 
@@ -696,9 +705,15 @@ int itkSampleToHistogramFilterTest( int , char * [] )
     std::cerr << " due to NULL SetHistogramSizeInput()";
     return EXIT_FAILURE;
     }
-  catch( itk::ExceptionObject & )
+  catch( itk::MissingHistogramSizeInputException &e )
     {
-    std::cout << "Expected exception received" << std::endl;
+    std::cout << "Exception received:" << std::endl;
+    std::cout << e.what() << std::endl;
+    }
+  catch(...)
+    {
+    std::cerr << "Histogram Size input exception not received.\n";
+    return EXIT_FAILURE;
     }
 
   filter->SetHistogramSizeInput( histogramSizeObject );
@@ -717,9 +732,15 @@ int itkSampleToHistogramFilterTest( int , char * [] )
     std::cerr << " due to NULL SetMarginalScaleInput()";
     return EXIT_FAILURE;
     }
-  catch( itk::ExceptionObject & )
+  catch( itk::MissingHistogramMarginalScaleInput &e )
     {
-    std::cout << "Expected exception received" << std::endl;
+    std::cout << "Exception received:" << std::endl;
+    std::cout << e.what() << std::endl;
+    }
+  catch(...)
+    {
+    std::cerr << "Marginal scale input exception not received.\n";
+    return EXIT_FAILURE;
     }
 
   marginalScaleObject1->Set( 100 );
@@ -744,9 +765,15 @@ int itkSampleToHistogramFilterTest( int , char * [] )
     std::cerr << " due to NULL SetHistogramBinMinimumInput()";
     return EXIT_FAILURE;
     }
-  catch( itk::ExceptionObject & )
+  catch( itk::MissingHistogramBinMinimumInput &e )
     {
-    std::cout << "Expected exception received" << std::endl;
+    std::cout << "Exception received:" << std::endl;
+    std::cout << e.what() << std::endl;
+    }
+  catch(...)
+    {
+    std::cerr << "Histogram Bin Minimum input exception not received.\n";
+    return EXIT_FAILURE;
     }
 
   histogramBinMinimumObject->Set( histogramBinMinimum1 );
@@ -766,9 +793,15 @@ int itkSampleToHistogramFilterTest( int , char * [] )
     std::cerr << " due to NULL SetHistogramBinMaximumInput()";
     return EXIT_FAILURE;
     }
-  catch( itk::ExceptionObject & )
+  catch( itk::MissingHistogramBinMaximumInput &e )
     {
-    std::cout << "Expected exception received" << std::endl;
+    std::cout << "Exception received:" << std::endl;
+    std::cout << e.what() << std::endl;
+    }
+  catch(...)
+    {
+    std::cerr << "Histogram Bin Maximum input exception not received.\n";
+    return EXIT_FAILURE;
     }
 
   histogramBinMaximumObject->Set( histogramBinMaximum1 );

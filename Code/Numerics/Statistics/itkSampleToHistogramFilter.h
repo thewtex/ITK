@@ -22,10 +22,19 @@
 #include "itkMeasurementVectorTraits.h"
 #include "itkSimpleDataObjectDecorator.h"
 
+itkDeclareExceptionMacro( HistogramException, ExceptionObject, "Histogram-related Exception");
+itkDeclareExceptionMacro( MissingHistogramSizeInputException, HistogramException, "Histogram Size input is missing");
+itkDeclareExceptionMacro( MissingHistogramMarginalScaleInput, HistogramException, "Histogram marginal scale input is missing");
+itkDeclareExceptionMacro( NullSizeHistogramInputMeasurementVectorSize, HistogramException, "Input sample MeasurementVectorSize is zero");
+itkDeclareExceptionMacro( MissingHistogramBinMaximumInput, HistogramException, "Histogram Bin Maximum input is missing");
+itkDeclareExceptionMacro( MissingHistogramBinMinimumInput, HistogramException, "Histogram Bin Minimum input is missing");
+itkDeclareExceptionMacro( HistogramWrongNumberOfComponents, HistogramException, "Histogram has wrong number of components");
+
 namespace itk
 {
 namespace Statistics
 {
+
 /** \class SampleToHistogramFilter
  *  \brief Computes the Histogram corresponding to a Sample.
  *
