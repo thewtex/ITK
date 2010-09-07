@@ -99,6 +99,28 @@ protected:
 
   void ReadHeaderSize(std::ifstream & file);
 
+  /** Convenient method to read a buffer as ASCII text. */
+  virtual void ReadBufferAsASCII(std::istream & os, void *buffer,
+                         IOComponentType ctype,
+                         SizeType numberOfBytesToBeRead);
+
+  /** Convenient method to write a buffer as ASCII text. */
+  virtual void WriteBufferAsASCII(std::ostream & os, const void *buffer,
+                          IOComponentType ctype,
+                          SizeType numberOfBytesToWrite);
+
+  /** We have a special method to read symmetric second rank tensors because
+   * the VTK file format expands the symmetry and only supports 3D tensors. */
+  virtual void ReadSymmetricTensorBufferAsBinary(std::istream& os,
+    void *buffer,
+    StreamingImageIOBase::SizeType num);
+
+  /** We have a special method to write symmetric second rank tensors because
+   * the VTK file format expands the symmetry and only supports 3D tensors. */
+  virtual void WriteSymmetricTensorBufferAsBinary(std::ostream& os,
+    const void *buffer,
+    StreamingImageIOBase::SizeType num);
+
 private:
   VTKImageIO2(const Self &);    //purposely not implemented
   void operator=(const Self &); //purposely not implemented
