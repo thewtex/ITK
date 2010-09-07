@@ -91,6 +91,32 @@ protected:
 
   void ReadHeaderSize(std::ifstream & file);
 
+  /** Convenient method to read a buffer as ASCII text. */
+  virtual void ReadBufferAsASCII(std::istream& is, void *buffer,
+                        IOComponentType ctype,
+                        const ImageIOBase::SizeType numberOfComponentsToBeRead,
+                        const ImageIOBase::IOPixelType pixelType,
+                        const SizeType components );
+
+  /** Convenient method to write a buffer as ASCII text. */
+  virtual void WriteBufferAsASCII(std::ostream& os, const void *buffer,
+                        IOComponentType ctype,
+                        const SizeType numberOfComponentsToWrite,
+                        const ImageIOBase::IOPixelType pixelType,
+                        const SizeType components );
+
+  /** We have a special method to read symmetric second rank tensors because
+   * the VTK file format expands the symmetry and only supports 3D tensors. */
+  virtual void ReadSymmetricTensorBufferAsBinary(std::istream& os,
+    void *buffer,
+    StreamingImageIOBase::SizeType num);
+
+  /** We have a special method to write symmetric second rank tensors because
+   * the VTK file format expands the symmetry and only supports 3D tensors. */
+  virtual void WriteSymmetricTensorBufferAsBinary(std::ostream& os,
+    const void *buffer,
+    StreamingImageIOBase::SizeType num);
+
 private:
   VTKImageIO2(const Self &);    //purposely not implemented
   void operator=(const Self &); //purposely not implemented
