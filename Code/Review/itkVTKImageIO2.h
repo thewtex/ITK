@@ -91,6 +91,20 @@ protected:
 
   void ReadHeaderSize(std::ifstream & file);
 
+  /** Convenient method to read a buffer as ASCII text. */
+  virtual void ReadBufferAsASCII(std::istream& os, void *buffer,
+                        IOComponentType ctype,
+                        const ImageIOBase::SizeType numberOfComponentsToBeRead,
+                        const ImageIOBase::IOPixelType pixelType,
+                        const SizeType components );
+
+  /** Convenient method to write a buffer as ASCII text. */
+  virtual void WriteBufferAsASCII(std::ostream& os, const void *buffer,
+                        IOComponentType ctype,
+                        const SizeType numberOfComponentsToWrite,
+                        const ImageIOBase::IOPixelType pixelType,
+                        const SizeType components );
+
 private:
   VTKImageIO2(const Self &);    //purposely not implemented
   void operator=(const Self &); //purposely not implemented
