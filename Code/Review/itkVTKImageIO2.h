@@ -60,6 +60,21 @@ public:
   /** Run-time type information (and related methods). */
   itkTypeMacro(VTKImageIO2, StreamingImageIOBase);
 
+  // see ImageIOBase for documentation
+  //
+  // If UseStreamedReading is true, then the returned region is the
+  // requested region parameter, unless the pixel type is a symmetric second
+  // rank tensor.
+  virtual ImageIORegion GenerateStreamableReadRegionFromRequestedRegion(const ImageIORegion & requested) const;
+
+  // see ImageIOBase for documentation
+  //
+  // Verifies the set file name meets the pasting requirements, then calls
+  // GetActualNumberOfSplitsForWritingCanStreamWrite
+  virtual unsigned int GetActualNumberOfSplitsForWriting(unsigned int numberOfRequestedSplits,
+                                                         const ImageIORegion & pasteRegion,
+                                                         const ImageIORegion & largestPossibleRegion);
+
   /*-------- This part of the interface deals with reading data. ------ */
 
   /** Determine the file type. Returns true if this ImageIO can read the
@@ -98,6 +113,28 @@ protected:
   void WriteImageInformation(const void *buffer);
 
   void ReadHeaderSize(std::ifstream & file);
+
+  /** Convenient method to read a buffer as ASCII text. */
+  virtual void ReadBufferAsASCII(std::istream & os, void *buffer,
+                         IOComponentType ctype,
+                         SizeType numberOfBytesToBeRead);
+
+  /** Convenient method to write a buffer as ASCII text. */
+  virtual void WriteBufferAsASCII(std::ostream & os, const void *buffer,
+                          IOComponentType ctype,
+                          SizeType numberOfBytesToWrite);
+
+  /** We have a special method to read symmetric second rank tensors because
+   * the VTK file format expands the symmetry and only supports 3D tensors. */
+  virtual void ReadSymmetricTensorBufferAsBinary(std::istream& os,
+    void *buffer,
+    StreamingImageIOBase::SizeType num);
+
+  /** We have a special method to write symmetric second rank tensors because
+   * the VTK file format expands the symmetry and only supports 3D tensors. */
+  virtual void WriteSymmetricTensorBufferAsBinary(std::ostream& os,
+    const void *buffer,
+    StreamingImageIOBase::SizeType num);
 
 private:
   VTKImageIO2(const Self &);    //purposely not implemented
