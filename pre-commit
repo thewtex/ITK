@@ -239,3 +239,23 @@ while read src_mode dst_mode src_obj dst_obj status file; do
 done
 )
 test -z "$bad" || die "$bad"
+
+#-----------------------------------------------------------------------------
+# Style hooks.
+. "$GIT_DIR/hooks/pre-commit-style"
+
+do_KWStyle=$(git config --bool hooks.KWStyle || echo false)
+
+do_uncrustify=$(git config --bool hooks.uncrustify || echo false)
+
+if $do_uncrustify; then
+  check_for_uncrustify || exit
+  run_uncrustify       || exit
+fi
+
+# do_uncrustify will run KWStyle on the files incrementally so excessive
+# uncrustify merges do not have to occur.
+if $do_KWStyle && ! $do_uncrustify; then
+  check_for_KWStyle || exit
+  run_KWStyle       || exit
+fi

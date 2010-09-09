@@ -1,0 +1,186 @@
+#=============================================================================
+# Copyright 2010 Kitware, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#=============================================================================
+
+cxx_src_files_expr='.*\.\(h\|h\.in|cpp\|cpp\.in\|cxx\|cxx\.in\|txx\|txx\.in\)$'
+
+#-----------------------------------------------------------------------------
+# KWStyle.
+check_for_KWStyle() {
+  if git config hooks.KWStyle.path &> /dev/null; then
+    KWStyle_path=$(git config hooks.KWStyle.path)
+  elif which KWStyle &> /dev/null; then
+    KWStyle_path=$(which KWStyle)
+  fi
+
+  if ! test -x "$KWStyle_path"; then
+    die "KWStyle executable was not found.
+
+Please install KWStyle or set the executable location with
+
+  git config hooks.KWStyle.path /path/to/KWStyle
+
+See http://public.kitware.com/KWStyle/"
+  fi
+
+  KWStyle_conf=$(git config hooks.KWStyle.conf)
+  if ! test -f "$KWStyle_conf"; then
+    die "The file '$KWStyle_conf' does not exist.
+
+Please run
+
+  git config hooks.KWStyle.conf path/to/KWStyle.conf.xml"
+  fi
+  KWStyle_overWriteRulesConf=$(git config hooks.KWStyle.overwriteRulesConf)
+  if test -z "$KWStyle_overWriteRulesConf" && \
+    test -f "$KWStyle_overWriteRulesConf"; then
+    die "The hooks.KWStyle.overwriteRulesConf file '$KWStyle_overWriteRulesConf' does not exist."
+  fi
+}
+
+run_KWStyle_on_file() {
+  if test -z "$KWStyle_overWriteRulesConf"; then
+    "$KWStyle_path" -v -xml "$KWStyle_conf" "$1"
+  else
+    "$KWStyle_path" -v -xml "$KWStyle_conf" -o "$KWStyle_overWriteRulesConf" "$1"
+  fi
+
+  if test $? -ne 0; then
+    cp -- "$1"{,.kws}
+    die "KWStyle check failed.
+
+Line numbers in the errors shown refer to the file:
+${1}.kws"
+  fi
+}
+
+run_KWStyle() {
+  git diff-index --cached --diff-filter=ACMR --name-only $against -- |
+  while read f; do
+    if expr match "$f" "$cxx_src_files_expr"; then
+      run_KWStyle_on_file "$f"
+    fi
+  done
+}
+
+#-----------------------------------------------------------------------------
+# uncrustify.
+check_for_uncrustify() {
+  if git config hooks.uncrustify.path &> /dev/null; then
+    uncrustify_path=$(git config hooks.uncrustify.path)
+  elif which uncrustify &> /dev/null; then
+    uncrustify_path=$(which uncrustify)
+  fi
+
+  if ! test -x "$uncrustify_path"; then
+    die "uncrustify executable was not found.
+
+Please install uncrustify or set the executable location with
+
+  git config hooks.uncrustify.path /path/to/uncrustify
+
+  See http://uncrustify.sourceforge.net/"
+  fi
+
+  uncrustify_conf=$(git config hooks.uncrustify.conf)
+  if ! test -f "$uncrustify_conf"; then
+    die "The file '$uncrustify_conf' does not exist.
+
+Please run
+
+  git config hooks.uncrustify.conf path/to/uncrustify.conf"
+  fi
+}
+
+# We use git-mergetool settings to review the uncrustify changes.
+TOOL_MODE=merge
+. "$(git --exec-path)/git-mergetool--lib"
+# Redefine check_unchanged because we do not need to check if the merge was
+# successful.
+check_unchanged() {
+  status=0
+}
+
+run_uncrustify() {
+  $do_KWStyle && check_for_KWStyle
+
+  merge_tool=$(get_merge_tool "$merge_tool") || exit
+  merge_keep_backup="$(git config --bool mergetool.keepBackup || echo true)"
+  merge_keep_temporaries="$(git config --bool mergetool.keepTemporaries || echo false)"
+  git diff-index --cached --diff-filter=ACMR --name-only $against -- |
+  while read MERGED; do
+    if expr match "$MERGED" "$cxx_src_files_expr"; then
+      ext="$$$(expr "$MERGED" : '.*\(\.[^/]*\)$')"
+      BACKUP="./$MERGED.BACKUP.$ext"
+      LOCAL="./$MERGED.LOCAL.$ext"
+      REMOTE="./$MERGED.REMOTE.$ext"
+      NEW_MERGED="./$MERGED.NEW.$ext"
+      OLD_MERGED="$MERGED"
+
+      mv -- "$MERGED" "$BACKUP"
+      # We temporarily change MERGED because the file might already be open, and
+      # the text editor may complain.
+      MERGED="$NEW_MERGED"
+      cp -- "$BACKUP" "$MERGED"
+      cp -- "$BACKUP" "$LOCAL"
+
+      if ! uncrustify -c "$uncrustify_conf" -l CPP -f "$LOCAL" \
+        -o "$REMOTE" 2> /dev/null; then
+          mv -- "$BACKUP" "$OLD_MERGED"
+
+          if test "$merge_keep_temporaries" = "false"; then
+              rm -f -- "$LOCAL" "$REMOTE" "$BACKUP"
+          fi
+
+          die "error when running uncrustify on $OLD_MERGED"
+      fi
+
+      if test -c /proc/$PPID/fd/0; then
+        # Without this, vimdiff and other terminal merge tools will be
+        # broken.
+        my_tty=$(ls -l /proc/$PPID/fd/0 | cut -d ' ' -f 11)
+        run_merge_tool "$merge_tool" "false" <$my_tty
+      else
+        run_merge_tool "$merge_tool" "false"
+      fi
+      if test $? -ne 0; then
+          mv -- "$BACKUP" "$OLD_MERGED"
+
+          if test "$merge_keep_temporaries" = "false"; then
+              rm -f -- "$LOCAL" "$REMOTE" "$BACKUP" "$NEW_MERGED"
+          fi
+
+          die "uncrustify merge of $OLD_MERGED failed"
+      fi
+
+      mv -- "$NEW_MERGED" "$OLD_MERGED"
+      MERGED="$OLD_MERGED"
+
+      if test "$merge_keep_backup" = "true"; then
+          mv -- "$BACKUP" "$MERGED.orig"
+      else
+          rm -- "$BACKUP"
+      fi
+
+      git add -- "$MERGED"
+      rm -f -- "$LOCAL" "$REMOTE" "$BACKUP"
+
+      $do_KWStyle && run_KWStyle_on_file "$MERGED"
+    fi # end if CXX file
+  done # end for changed files
+}
+
+
+# vim: set filetype=sh :
