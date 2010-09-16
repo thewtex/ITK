@@ -47,6 +47,7 @@ namespace itk
  * \sa Image
  * \sa Neighborhood
  * \sa NeighborhoodOperator
+ * \sa RecursiveGaussianImageFilter
  *
  * \ingroup ImageEnhancement
  * \ingroup ImageFeatureExtraction
