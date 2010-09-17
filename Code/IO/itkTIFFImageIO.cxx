@@ -29,6 +29,7 @@
 #include <sys/stat.h>
 
 #include "itk_tiff.h"
+#include "tif_dir.h"
 
 namespace itk
 {
@@ -1861,7 +1862,7 @@ bool TIFFImageIO::CanFindTIFFTag(unsigned int t)
     }
 
   ttag_t               tag = t; // 32bits integer
-  const TIFFFieldInfo *fld = TIFFFieldWithTag(m_InternalImage->m_Image, tag);
+  const TIFFField *fld = TIFFFieldWithTag(m_InternalImage->m_Image, tag);
   if ( fld == NULL )
     {
     return false;
@@ -1879,7 +1880,7 @@ void * TIFFImageIO::ReadRawByteFromTag(unsigned int t, short & value_count)
     }
   ttag_t               tag = t;
   void *               raw_data = NULL;
-  const TIFFFieldInfo *fld = TIFFFieldWithTag(m_InternalImage->m_Image, tag);
+  const TIFFField *fld = TIFFFieldWithTag(m_InternalImage->m_Image, tag);
   if ( fld == NULL )
     {
     itkExceptionMacro(<< "fld is NULL");
