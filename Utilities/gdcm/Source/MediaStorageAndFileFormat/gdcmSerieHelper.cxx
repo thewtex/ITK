@@ -258,11 +258,25 @@ bool SerieHelper::UserOrdering(FileList *fileList)
   return true;
 }
 
+namespace details {
+bool MyFileNameSortPredicate(const SmartPointer<FileWithName>& d1, const SmartPointer<FileWithName>& d2)
+{
+  return d1->filename < d2->filename;
+}
+}
+
+bool SerieHelper::FileNameOrdering( FileList *fileList )
+{
+  std::sort(fileList->begin(), fileList->end(), details::MyFileNameSortPredicate);
+
+  return true;
+}
+
 bool SerieHelper::ImagePositionPatientOrdering( FileList *fileList )
 {
   //iop is calculated based on the file file
   std::vector<double> cosines;
-  double normal[3];
+  double normal[3] = {};
   std::vector<double> ipp;
   double dist;
   double min = 0, max = 0;
@@ -396,12 +410,11 @@ void SerieHelper::OrderFileList(FileList *fileSet)
   else if ( ImageNumberOrdering(fileSet ) )
   {
   return ;
-  }
+  }*/
   else
   {
   FileNameOrdering(fileSet );
   }
-  */
 }
 
 

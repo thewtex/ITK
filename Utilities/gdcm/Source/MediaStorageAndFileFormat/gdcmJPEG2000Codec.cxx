@@ -108,7 +108,7 @@ OPJ_UINT32 opj_write_from_memory (void * p_buffer, OPJ_UINT32 p_nb_bytes, myfile
   OPJ_UINT32 l_nb_write;
   //if( p_file->cur + p_nb_bytes < p_file->mem + p_file->len )
   //  {
-  //  l_nb_write = 1*p_nb_bytes;
+  l_nb_write = 1*p_nb_bytes;
   //  }
   //else
   //  {
@@ -119,8 +119,8 @@ OPJ_UINT32 opj_write_from_memory (void * p_buffer, OPJ_UINT32 p_nb_bytes, myfile
   p_file->cur += l_nb_write;
   p_file->len += l_nb_write;
   //assert( p_file->cur < p_file->mem + p_file->len );
-  //return l_nb_write;
-  return p_nb_bytes;
+  return l_nb_write;
+  //return p_nb_bytes;
 }
 
 OPJ_SIZE_T opj_skip_from_memory (OPJ_SIZE_T p_nb_bytes, myfile * p_file)
@@ -501,8 +501,8 @@ bool JPEG2000Codec::Decode(std::istream &is, std::ostream &os)
     }
 #endif
 
-#if OPENJPEG_MAJOR_VERSION == 1
   int reversible;
+#if OPENJPEG_MAJOR_VERSION == 1
   opj_j2k_t* j2k = NULL;
   opj_jp2_t* jp2 = NULL;
 
@@ -522,8 +522,10 @@ bool JPEG2000Codec::Decode(std::istream &is, std::ostream &os)
     gdcmErrorMacro( "Impossible happen" );
     return false;
     }
-  LossyFlag = !reversible;
+#else
+    reversible = 1;
 #endif // OPENJPEG_MAJOR_VERSION == 1
+  LossyFlag = !reversible;
 
 #if 0
 #ifndef GDCM_USE_SYSTEM_OPENJPEG
@@ -548,7 +550,8 @@ bool JPEG2000Codec::Decode(std::istream &is, std::ostream &os)
   // Copy buffer
   unsigned long len = Dimensions[0]*Dimensions[1] * (PF.GetBitsAllocated() / 8) * image->numcomps;
   char *raw = new char[len];
-  for (int compno = 0; compno < image->numcomps; compno++)
+  //assert( len == fsrc->len );
+  for (unsigned int compno = 0; compno < image->numcomps; compno++)
     {
     opj_image_comp_t *comp = &image->comps[compno];
 
@@ -629,7 +632,7 @@ bool JPEG2000Codec::Decode(std::istream &is, std::ostream &os)
   if(dinfo) {
     opj_destroy_decompress(dinfo);
   }
-#elif OPENJPEG_MAJOR_VERSION == 1
+#elif OPENJPEG_MAJOR_VERSION == 2
   /* free remaining structures */
   if (dinfo)
     {
@@ -1162,8 +1165,10 @@ bool JPEG2000Codec::GetHeaderInfo(const char * dummy_buffer, size_t buf_size, Tr
     gdcmErrorMacro( "Impossible happen" );
     return false;
     }
-  LossyFlag = !reversible;
+#else
+    reversible = 1;
 #endif // OPENJPEG_MAJOR_VERSION == 1
+  LossyFlag = !reversible;
 
 #if 0
 #ifndef GDCM_USE_SYSTEM_OPENJPEG

@@ -719,6 +719,7 @@ void GDCMImageIO::Read(void *pointer)
     }
 
   gdcm::Image & image = reader.GetImage();
+  gdcm::PixelFormat pixeltype_debug = image.GetPixelFormat();
   assert(image.GetNumberOfDimensions() == 2 || image.GetNumberOfDimensions() == 3);
   unsigned long len = image.GetBufferLength();
 
@@ -744,19 +745,8 @@ void GDCMImageIO::Read(void *pointer)
   image.GetBuffer( (char *)pointer );
 
   const gdcm::PixelFormat & pixeltype = image.GetPixelFormat();
-  if ( pixeltype == gdcm::PixelFormat::UINT12 || pixeltype == gdcm::PixelFormat::INT12 )
-    {
-    assert(m_RescaleSlope == 1.0 && m_RescaleIntercept == 0.0);
-    assert(pixeltype.GetSamplesPerPixel() == 1);
-    // FIXME: I could avoid this extra copy:
-    char *copy = new char[len];
-    memcpy(copy, pointer, len);
-    gdcm::Unpacker12Bits u12;
-    u12.Unpack( (char *)pointer, copy, len );
-    // update len just in case:
-    len = 16 * len / 12;
-    delete[] copy;
-    }
+  assert( pixeltype_debug == pixeltype ); (void)pixeltype_debug;
+
   if ( m_RescaleSlope != 1.0 || m_RescaleIntercept != 0.0 )
     {
     gdcm::Rescaler r;
@@ -1898,6 +1888,7 @@ void GDCMImageIO::Write(const void *buffer)
   gdcm::FileMetaInformation::SetSourceApplicationEntityTitle( project_name.c_str() );
 
   gdcm::ImageWriter   writer;
+  gdcm::FileMetaInformation &     fmi = writer.GetFile().GetHeader();
   gdcm::DataSet &     header = writer.GetFile().GetDataSet();
   gdcm::Global &      g = gdcm::Global::GetInstance();
   const gdcm::Dicts & dicts = g.GetDicts();
@@ -1947,7 +1938,8 @@ void GDCMImageIO::Write(const void *buffer)
           gdcm::DataElement de(tag);
           de.SetByteValue( (char *)bin, decodedLengthActual );
           de.SetVR( dictEntry.GetVR() );
-          header.Insert(de);
+          if ( tag.GetGroup() == 0x2 ) fmi.Insert(de);
+          else header.Insert(de);
           }
         delete[] bin;
         }
@@ -1974,7 +1966,8 @@ void GDCMImageIO::Write(const void *buffer)
           std::string si = sf.FromString( tag, value.c_str(), value.size() );
           de.SetByteValue( si.c_str(), si.size() );
 #endif
-          header.Insert(de);   //value, tag.GetGroup(), tag.GetElement());
+          if ( tag.GetGroup() == 0x2 ) fmi.Insert(de);
+          else header.Insert(de);   //value, tag.GetGroup(), tag.GetElement());
           }
         }
       }
@@ -2029,10 +2022,20 @@ void GDCMImageIO::Write(const void *buffer)
   //image.SetDimension(2, m_Dimensions[2] );
   image.SetSpacing(0, m_Spacing[0]);
   image.SetSpacing(1, m_Spacing[1]);
-  image.SetSpacing(2, m_Spacing[2]);
+  if ( m_NumberOfDimensions > 2 && m_Dimensions[2] != 1 )
+    {
+    image.SetSpacing(2, m_Spacing[2]);
+    }
   image.SetOrigin(0, m_Origin[0]);
   image.SetOrigin(1, m_Origin[1]);
-  image.SetOrigin(2, m_Origin[2]);
+  if ( m_Origin.size() == 3 )
+    {
+    image.SetOrigin(2, m_Origin[2]);
+    }
+  else
+    {
+    image.SetOrigin(2, 0);
+    }
   if ( m_NumberOfDimensions > 2 && m_Dimensions[2] != 1 )
     {
     // resize num of dim to 3:
@@ -2043,10 +2046,24 @@ void GDCMImageIO::Write(const void *buffer)
   // Do the direction now:
   image.SetDirectionCosines(0, m_Direction[0][0]);
   image.SetDirectionCosines(1, m_Direction[0][1]);
-  image.SetDirectionCosines(2, m_Direction[0][2]);
+  if ( m_Direction.size() == 3 )
+    {
+    image.SetDirectionCosines(2, m_Direction[0][2]);
+    }
+  else
+    {
+    image.SetDirectionCosines(2, 0);
+    }
   image.SetDirectionCosines(3, m_Direction[1][0]);
   image.SetDirectionCosines(4, m_Direction[1][1]);
-  image.SetDirectionCosines(5, m_Direction[1][2]);
+  if ( m_Direction.size() == 3 )
+    {
+    image.SetDirectionCosines(5, m_Direction[1][2]);
+    }
+  else
+    {
+    image.SetDirectionCosines(5, 0);
+    }
 
   // reset any previous value:
   m_RescaleSlope = 1.0;

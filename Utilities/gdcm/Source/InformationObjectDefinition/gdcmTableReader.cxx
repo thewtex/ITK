@@ -24,6 +24,7 @@
 
 namespace gdcm
 {
+#if 0
 #ifdef XML_LARGE_SIZE
 #if defined(XML_USE_MSC_EXTENSIONS) && _MSC_VER < 1400
 #define XML_FMT_INT_MOD "I64"
@@ -32,6 +33,9 @@ namespace gdcm
 #endif
 #else
 #define XML_FMT_INT_MOD "l"
+#endif
+#else
+#define XML_FMT_INT_MOD ""
 #endif
 
 #ifndef BUFSIZ
@@ -76,6 +80,7 @@ void TableReader::HandleModuleInclude(const char **atts)
 {
   const char *ref = *atts;
   assert( strcmp(ref, "ref") == 0 );
+  (void)ref; //removing warning
   const char *include = *(atts+1);
   CurrentModule.AddMacro( include );
   //assert( *(atts+2) == 0 ); // description ?
@@ -107,6 +112,7 @@ void TableReader::HandleMacroEntry(const char **atts)
       int r = sscanf(raw, "%04x", &v);
       assert( r == 1 );
       assert( v <= 0xFFFF );
+      (void)r; //removing warning
       tag.SetGroup( v );
       }
     else if( strelt == *current )
@@ -116,6 +122,7 @@ void TableReader::HandleMacroEntry(const char **atts)
       int r = sscanf(raw, "%04x", &v);
       assert( r == 1 );
       assert( v <= 0xFFFF );
+      (void)r; //removing warning
       tag.SetElement( v );
       }
     else if( strname == *current )
@@ -155,6 +162,7 @@ void TableReader::HandleModuleEntry(const char **atts)
       int r = sscanf(raw, "%04x", &v);
       assert( r == 1 );
       assert( v <= 0xFFFF );
+      (void)r; //removing warning
       tag.SetGroup( v );
       }
     else if( strelt == *current )
@@ -164,6 +172,7 @@ void TableReader::HandleModuleEntry(const char **atts)
       int r = sscanf(raw, "%04x", &v);
       assert( r == 1 );
       assert( v <= 0xFFFF );
+      (void)r; //removing warning
       tag.SetElement( v );
       }
     else if( strname == *current )
