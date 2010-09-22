@@ -3,9 +3,7 @@
   Program:   Insight Segmentation & Registration Toolkit
   Module:    itkDICOMImageSeriesTest.cxx
   Language:  C++
-  Date:      $Date$xgoto-l
 
-  Version:   $Revision$
 
   Copyright (c) Insight Software Consortium. All rights reserved.
   See ITKCopyright.txt or http://www.itk.org/HTML/Copyright.htm for details.

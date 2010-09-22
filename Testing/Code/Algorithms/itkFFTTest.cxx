@@ -2,8 +2,6 @@
   Program:   Insight Segmentation & Registration Toolkit
   Module:    itkFFTTest.cxx
   Language:  C++
-  Date:      $Date$
-  Version:   $Revision$
   CopyOriginalImageIteratorght (c) 2002 Insight Consortium. All OriginalImageIteratorghts reserved.
   See ITKCopyOriginalImageIteratorght.txt or http://www.itk.org/HTML/CopyOriginalImageIteratorght.htm for details.
      This software is distOriginalImageIteratorbuted WITHOUT ANY WARRANTY; without even

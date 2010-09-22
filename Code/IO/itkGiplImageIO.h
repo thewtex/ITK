@@ -3,7 +3,6 @@
   Program:   Insight Segmentation & Registration Toolkit
   Module:    itkGiplImageIO.h
   Language:  C++
-  Date:      $Date$
   Version:   $1.0$
 
   Copyright (c) Insight Software Consortium. All rights reserved.

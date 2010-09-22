@@ -3,8 +3,6 @@
 Program:   Insight Segmentation & Registration Toolkit
 Module:    itkConvolutionImageFilter.txx
 Language:  C++
-Date:      $Date$
-Version:   $Revision$
 
 Copyright (c) Insight Software Consortium. All rights reser
 See ITKCopyright.txt or http://www.itk.org/HTML/Copyright.htm for detail.

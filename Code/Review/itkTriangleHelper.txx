@@ -3,7 +3,6 @@
   Program:   Insight Segmentation & Registration Toolkit
   Module:    itkTriangleHelper.txx
   Language:  C++
-  Date:      $Date$
   Version:   $Rev$
 
   Copyright (c) Insight Software Consortium. All rights reserved.

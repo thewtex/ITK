@@ -3,8 +3,6 @@
   Program:   Insight Segmentation & Registration Toolkit
   Module:    itkLandmarkSpatialObject.h
   Language:  C++
-  Date:      $Date$
-  Version:   $Revision$
 
   Copyright (c) Insight Software Consortium. All rights reserved.
   See ITKCopyright.txt or http://www.itk.org/HTML/Copyright.htm for details.

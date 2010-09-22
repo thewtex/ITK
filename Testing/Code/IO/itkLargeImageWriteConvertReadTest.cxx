@@ -3,9 +3,7 @@
   Program:   Insight Segmentation & Registration Toolkit
   Module:    itkLargeImageWriteConvertReadTest.cxx
   Language:  C++
-  Date:      $Date$xgoto-l
 
-  Version:   $Revision$
 
   Copyright (c) 2002 Insight Consortium. All rights reserved.
   See ITKCopyright.txt or http://www.itk.org/HTML/Copyright.htm for details.
