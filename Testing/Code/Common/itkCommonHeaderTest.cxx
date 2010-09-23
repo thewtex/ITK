@@ -289,7 +289,6 @@
 #include "itkPixelAccessor.h"
 #include "itkPixelTraits.h"
 #include "itkPoint.txx"
-#include "itkPointLocator.txx"
 #include "itkPointSet.txx"
 #include "itkPolyLineParametricPath.txx"
 #include "itkPolygonCell.txx"
