@@ -18,7 +18,6 @@
 #define __itkSimpleFuzzyConnectednessRGBImageFilter_h
 
 #include "itkImage.h"
-#include "itkImageToImageFilter.h"
 #include "itkSimpleFuzzyConnectednessImageFilterBase.h"
 #include <vnl/vnl_matrix_fixed.h>
 

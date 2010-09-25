@@ -17,7 +17,6 @@
 #ifndef __itkSemaphore_h
 #define __itkSemaphore_h
 
-#include "itkObjectFactory.h"
 #include "itkLightObject.h"
 #include "itkConfigure.h"
 #include <string>
@@ -42,7 +41,9 @@
 #endif
 
 #ifdef ITK_USE_WIN32_THREADS
-#include "itkWindows.h"
+# include "itkWindows.h"
+#else
+# include "itkObjectFactory.h"
 #endif
 
 namespace itk
