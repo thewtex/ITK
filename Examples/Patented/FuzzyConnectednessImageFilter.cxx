@@ -38,7 +38,6 @@
 
 // Software Guide : BeginCodeSnippet
 #include "itkSimpleFuzzyConnectednessScalarImageFilter.h"
-#include "itkImage.h"
 // Software Guide : EndCodeSnippet
 
 

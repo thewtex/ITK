@@ -17,8 +17,6 @@
 #ifndef __itkSimpleFuzzyConnectednessScalarImageFilter_h
 #define __itkSimpleFuzzyConnectednessScalarImageFilter_h
 
-#include "itkImage.h"
-#include "itkImageToImageFilter.h"
 #include "itkSimpleFuzzyConnectednessImageFilterBase.h"
 
 #include <queue>

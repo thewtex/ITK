@@ -24,9 +24,7 @@
 #include "vnl/vnl_matrix.h"
 #include "vnl/vnl_math.h"
 
-#include "itkImageToImageFilter.h"
 #include "itkImage.h"
-#include "itkNumericTraits.h"
 
 #include "itkImageRegionConstIterator.h"
 

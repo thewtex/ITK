@@ -17,7 +17,6 @@
 #ifndef __itkSimpleFuzzyConnectednessImageFilterBase_h
 #define __itkSimpleFuzzyConnectednessImageFilterBase_h
 
-#include "itkImage.h"
 #include "itkImageToImageFilter.h"
 #include <vnl/vnl_matrix_fixed.h>
 

@@ -41,7 +41,6 @@
 #include "itkListSample.h"
 #include "itkExceptionObject.h"
 
-#include "itkConceptChecking.h"
 
 #include <vector>
 #include <list>
