@@ -18,7 +18,6 @@
 #define __itkVectorFuzzyConnectednessImageFilter_txx
 #include "itkVectorFuzzyConnectednessImageFilter.h"
 #include "itkImageRegionIterator.h"
-#include "itkImageRegionConstIterator.h"
 #include "itkStatisticsImageFilter.h"
 #include "itkConstNeighborhoodIterator.h"
 

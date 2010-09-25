@@ -18,14 +18,10 @@
 #pragma warning ( disable : 4786 )
 #endif
 
-#include "itkImage.h"
-#include "itkVector.h"
 #include "itkPoint.h"
 #include "itkMesh.h"
 
-#include "itkShapeDetectionLevelSetFunction.h"
 #include "itkShapeDetectionLevelSetImageFilter.h"
-#include "itkSimpleFuzzyConnectednessImageFilterBase.h"
 #include "itkSimpleFuzzyConnectednessRGBImageFilter.h"
 #include "itkSimpleFuzzyConnectednessScalarImageFilter.h"
 #include "itkVectorFuzzyConnectednessImageFilter.h"
