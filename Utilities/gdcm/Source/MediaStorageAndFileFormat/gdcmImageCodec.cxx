@@ -47,10 +47,9 @@ ImageCodec::~ImageCodec()
 {
 }
 
-bool ImageCodec::GetHeaderInfo(std::istream &is, TransferSyntax &ts)
+bool ImageCodec::GetHeaderInfo(std::istream &, TransferSyntax &)
 {
-  (void)is;
-  (void)ts;
+  // This function should really be virtual pure.
   assert( 0 );
   return false;
 }
