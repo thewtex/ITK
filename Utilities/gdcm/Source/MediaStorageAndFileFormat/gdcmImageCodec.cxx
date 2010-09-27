@@ -49,6 +49,8 @@ ImageCodec::~ImageCodec()
 
 bool ImageCodec::GetHeaderInfo(std::istream &is, TransferSyntax &ts)
 {
+  (void)is;
+  (void)ts;
   assert( 0 );
   return false;
 }
@@ -448,7 +450,7 @@ bool ImageCodec::DoOverlayCleanup(std::istream &is, std::ostream &os)
   return true;
 }
 
-bool ImageCodec::Decode(DataElement const &is, DataElement &os)
+bool ImageCodec::Decode(DataElement const &, DataElement &)
 {
   return true;
 }

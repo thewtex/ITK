@@ -38,18 +38,21 @@ namespace gdcm
 sample error callback expecting a FILE* client object
 */
 void error_callback(const char *msg, void *) {
+  (void)msg;
   gdcmErrorMacro( "Error in gdcmopenjpeg" << msg );
 }
 /**
 sample warning callback expecting a FILE* client object
 */
 void warning_callback(const char *msg, void *) {
+  (void)msg;
   gdcmWarningMacro( "Warning in gdcmopenjpeg" << msg );
 }
 /**
 sample debug callback expecting no client object
 */
 void info_callback(const char *msg, void *) {
+  (void)msg;
   gdcmDebugMacro( "Info in gdcmopenjpeg" << msg );
 }
 
@@ -681,6 +684,7 @@ opj_image_t* rawtoimage(char *inputbuffer, opj_cparameters_t *parameters,
   int bitsallocated, int bitsstored, int sign, int quality, int pc)
 {
   (void)quality;
+  (void)fragment_size;
   int w, h;
   int numcomps;
   OPJ_COLOR_SPACE color_space;
