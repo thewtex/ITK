@@ -40,7 +40,7 @@ namespace byteswap
 // byteswap routines, stolen from 
 // ITK
 inline void
-swap32(void *ptr)
+swapIt32(void *ptr)
 {
   char one_byte;
   char *p = reinterpret_cast<char *>(ptr);
@@ -54,7 +54,7 @@ swap32(void *ptr)
   p[2] = one_byte;
 }
 inline void
-swap64(void *ptr)
+swapIt64(void *ptr)
 {
   char one_byte;
   char *p = reinterpret_cast<char *>(ptr);

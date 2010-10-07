@@ -20,7 +20,7 @@
 # include "iso/vcl_valarray.h"
 #endif
 
-#if !VCL_COMPLEX_POW_WORKS
+#if !defined(VCL_COMPLEX_POW_WORKS)
 // deal with corrections to pow(complex...)
 # undef vcl_pow
 # define vcl_pow vcl_pow

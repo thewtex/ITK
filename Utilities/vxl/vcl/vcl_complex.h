@@ -63,7 +63,7 @@
 #endif
 
 
-# if !VCL_COMPLEX_POW_WORKS && !defined(VCL_SGI_CC_7)
+# if !defined(VCL_COMPLEX_POW_WORKS) && !defined(VCL_SGI_CC_7)
 #  undef vcl_pow
 #  define vcl_pow vcl_pow
 // several implementations of pow are wrong.

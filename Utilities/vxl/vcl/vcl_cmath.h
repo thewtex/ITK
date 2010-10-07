@@ -61,7 +61,7 @@
 #endif
 
 
-#if !VCL_COMPLEX_POW_WORKS && !defined VCL_CMATH_POW_DECLARED
+#if !defined(VCL_COMPLEX_POW_WORKS) && !defined (VCL_CMATH_POW_DECLARED)
 // deal with corrections to pow(complex...)
 # undef vcl_pow
 # define vcl_pow vcl_pow
