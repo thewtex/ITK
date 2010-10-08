@@ -4,6 +4,9 @@
 #ifdef VCL_NEEDS_PRAGMA_INTERFACE
 #pragma interface
 #endif
+
+#undef swap32
+#undef swap64
 //:
 //  \file
 //  \brief MATLAB header structure
