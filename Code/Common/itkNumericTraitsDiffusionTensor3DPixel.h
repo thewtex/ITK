@@ -114,6 +114,21 @@ public:
     return Self( NumericTraits< T >::OneValue() );
   }
 
+  static void SetLength(DiffusionTensor3D< T > & m, const unsigned int s)
+  {
+    if ( s != 6 )
+      {
+      itkGenericExceptionMacro(<< "Cannot set the size of a DiffusionTensor3D "
+                               "to anything other than 6.");
+      }
+    m.Fill(NumericTraits< T >::Zero);
+  }
+
+  static unsigned int GetLength(const DiffusionTensor3D< T > &)
+  {
+    return 6;
+  }
+
   /** \note: the functions are prefered over the member variables as
    * they are defined for all partial specialization
    */
