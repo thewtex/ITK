@@ -112,6 +112,21 @@ public:
     return Self(NumericTraits< T >::One);
   }
 
+  static void SetLength(RGBPixel< T > & m, const unsigned int s)
+  {
+    if ( s != 3 )
+      {
+      itkGenericExceptionMacro(<< "Cannot set the size of a RGBPixel to anything other "
+                               "than 3.");
+      }
+    m.Fill(NumericTraits< T >::Zero);
+  }
+
+  static unsigned int GetLength(const RGBPixel< T > &)
+  {
+    return 3;
+  }
+
   /** \note: the functions are prefered over the member variables as
    * they are defined for all partial specialization
    */

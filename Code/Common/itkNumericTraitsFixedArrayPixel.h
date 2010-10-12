@@ -112,6 +112,21 @@ public:
     return Self( NumericTraits< T >::OneValue() );
   }
 
+  static void SetLength(FixedArray< T, D > & m, const unsigned int s)
+  {
+    if ( s != D )
+      {
+      itkGenericExceptionMacro(<< "Cannot set the size of a FixedArray of length "
+                               << D << " to " << s);
+      }
+    m.Fill(NumericTraits< T >::Zero);
+  }
+
+  static unsigned int GetLength(const FixedArray< T, D > &)
+  {
+    return D;
+  }
+
   /** \note: the functions are prefered over the member variables as
    * they are defined for all partial specialization
    */

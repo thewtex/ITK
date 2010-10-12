@@ -97,6 +97,17 @@ public:
     return Self( NumericTraits< T >::OneValue() );
   }
 
+  static void SetLength(Array< T > & m, const unsigned int s)
+  {
+    m.SetSize(s);
+    m.Fill(NumericTraits< T >::Zero);
+  }
+
+  static unsigned int GetLength(const Array< T > & m)
+  {
+    return m.GetSize();
+  }
+
   /** \note: the functions are prefered over the member variables as
    * they are defined for all partial specialization
    */
