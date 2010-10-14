@@ -18,7 +18,7 @@
 #include "itkFloatingPointExceptionsConfigure.h"
 #include <iostream>
 #include <sstream>
-
+#include <cstring>
 //
 // invariant over all targets -- set a preference for what
 // happens when an exception occurs
