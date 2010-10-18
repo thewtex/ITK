@@ -163,7 +163,6 @@ target_link_libraries(ModelToImageRegistration1 ITKStatistics ITKIO ITKNumerics)
 add_executable(ModelToImageRegistration2 ModelToImageRegistration2.cxx )
 target_link_libraries(ModelToImageRegistration2 ITKStatistics ITKIO ITKNumerics)
 
-
 add_executable(ImageRegistration1 ImageRegistration1.cxx )
 target_link_libraries(ImageRegistration1 ITKIO ITKNumerics)
 
