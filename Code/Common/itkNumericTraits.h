@@ -18,6 +18,7 @@
 #define __itkNumericTraits_h
 
 #include "itkMacro.h"
+
 #undef min
 #undef max
 
@@ -74,6 +75,9 @@ public:
   /** Accumulation of addition and multiplication. */
   typedef double AccumulateType;
 
+  /** Measurement vector type */
+  typedef ValueType MeasurementVectorType[1];
+
   // This primary template is never used but we need this definition
   // to avoid an ICE on VS 7.0.  This definition cannot be present for
   // VS 7.1 though or it generates bogus errors.
@@ -125,6 +129,38 @@ public:
   static T min(const T & val) { return TraitsType::min(); }
 };
 
+
+/** \class NumericTraits<T[1]>
+ * \brief Define GetLength and SetLength for arrays of size 1
+ *
+ * \ingroup DataRepresentation
+ */
+template <typename T>
+class NumericTraits< T[1] >
+{
+public:
+
+  /** Fixed length arrays cannot be resized, so an exception will
+   *  be thrown if the input size is not valid.  If the size is valid
+   *  the vector will be filled with zeros. */
+  static void SetLength(T m[1], const unsigned int s)
+  {
+    if ( s != 1 )
+      {
+      itkGenericExceptionMacro(<< "Cannot set the size of an array of length 1 "
+                               << "to " << s);
+      }
+    m[0] = NumericTraits<T>::Zero;
+  }
+
+  /** Return the length of the array. */
+  static int GetLength(T m[1])
+  {
+    return 1;
+  }
+};
+
+
 /** \class NumericTraits<bool>
  * \brief Define traits for type bool.
  *
@@ -142,6 +178,7 @@ public:
   typedef double        RealType;
   typedef RealType      ScalarRealType;
   typedef float         FloatType;
+  typedef ValueType     MeasurementVectorType[1];
 
   static const bool ITKCommon_EXPORT Zero;
   static const bool ITKCommon_EXPORT One;
@@ -174,6 +211,7 @@ public:
   typedef double        RealType;
   typedef RealType      ScalarRealType;
   typedef float         FloatType;
+  typedef ValueType     MeasurementVectorType[1];
 
   static const char ITKCommon_EXPORT Zero;
   static const char ITKCommon_EXPORT One;
@@ -214,6 +252,7 @@ public:
   typedef double        RealType;
   typedef RealType      ScalarRealType;
   typedef float         FloatType;
+  typedef ValueType     MeasurementVectorType[1];
 
   static const signed char ITKCommon_EXPORT Zero;
   static const signed char ITKCommon_EXPORT One;
@@ -246,6 +285,7 @@ public:
   typedef double         RealType;
   typedef RealType       ScalarRealType;
   typedef float          FloatType;
+  typedef ValueType      MeasurementVectorType[1];
 
   static const unsigned char ITKCommon_EXPORT Zero;
   static const unsigned char ITKCommon_EXPORT One;
@@ -275,6 +315,7 @@ public:
   typedef double         RealType;
   typedef RealType       ScalarRealType;
   typedef float          FloatType;
+  typedef ValueType      MeasurementVectorType[1];
 
   static const short ITKCommon_EXPORT Zero;
   static const short ITKCommon_EXPORT One;
@@ -304,6 +345,7 @@ public:
   typedef double         RealType;
   typedef RealType       ScalarRealType;
   typedef float          FloatType;
+  typedef ValueType      MeasurementVectorType[1];
 
   static const unsigned short ITKCommon_EXPORT Zero;
   static const unsigned short ITKCommon_EXPORT One;
@@ -332,6 +374,7 @@ public:
   typedef double       RealType;
   typedef RealType     ScalarRealType;
   typedef float        FloatType;
+  typedef ValueType    MeasurementVectorType[1];
 
   static const int ITKCommon_EXPORT Zero;
   static const int ITKCommon_EXPORT One;
@@ -361,6 +404,7 @@ public:
   typedef double       RealType;
   typedef RealType     ScalarRealType;
   typedef float        FloatType;
+  typedef ValueType    MeasurementVectorType[1];
 
   static const unsigned int ITKCommon_EXPORT Zero;
   static const unsigned int ITKCommon_EXPORT One;
@@ -393,6 +437,7 @@ public:
   typedef double        RealType;
   typedef RealType      ScalarRealType;
   typedef float         FloatType;
+  typedef ValueType     MeasurementVectorType[1];
 
   static const long ITKCommon_EXPORT Zero;
   static const long ITKCommon_EXPORT One;
@@ -422,6 +467,7 @@ public:
   typedef double        RealType;
   typedef RealType      ScalarRealType;
   typedef float         FloatType;
+  typedef ValueType     MeasurementVectorType[1];
 
   static const unsigned long ITKCommon_EXPORT Zero;
   static const unsigned long ITKCommon_EXPORT One;
@@ -444,13 +490,14 @@ template< >
 class NumericTraits< float > :public vcl_numeric_limits< float >
 {
 public:
-  typedef float    ValueType;
-  typedef float    PrintType;
-  typedef float    AbsType;
-  typedef double   AccumulateType;
-  typedef double   RealType;
-  typedef RealType ScalarRealType;
-  typedef float    FloatType;
+  typedef float     ValueType;
+  typedef float     PrintType;
+  typedef float     AbsType;
+  typedef double    AccumulateType;
+  typedef double    RealType;
+  typedef RealType  ScalarRealType;
+  typedef float     FloatType;
+  typedef ValueType MeasurementVectorType[1];
 
   static const float ITKCommon_EXPORT Zero;
   static const float ITKCommon_EXPORT One;
@@ -473,13 +520,14 @@ template< >
 class NumericTraits< double > :public vcl_numeric_limits< double >
 {
 public:
-  typedef double   ValueType;
-  typedef double   PrintType;
-  typedef double   AbsType;
-  typedef double   AccumulateType;
-  typedef double   RealType;
-  typedef RealType ScalarRealType;
-  typedef float    FloatType;
+  typedef double    ValueType;
+  typedef double    PrintType;
+  typedef double    AbsType;
+  typedef double    AccumulateType;
+  typedef double    RealType;
+  typedef RealType  ScalarRealType;
+  typedef float     FloatType;
+  typedef ValueType MeasurementVectorType[1];
 
   static const double ITKCommon_EXPORT Zero;
   static const double ITKCommon_EXPORT One;
@@ -517,6 +565,7 @@ public:
   typedef long double RealType;
   typedef RealType    ScalarRealType;
   typedef float       FloatType;
+  typedef ValueType   MeasurementVectorType[1];
 
   static const long double ITKCommon_EXPORT Zero;
   static const long double ITKCommon_EXPORT One;
@@ -547,6 +596,7 @@ public:
   typedef std::complex< double > RealType;
   typedef double                 ScalarRealType;
   typedef std::complex< float >  FloatType;
+  typedef TheType                MeasurementVectorType[1];
 
   static const TheType ITKCommon_EXPORT Zero;
   static const TheType ITKCommon_EXPORT One;
@@ -582,6 +632,7 @@ public:
   typedef std::complex< double > RealType;
   typedef double                 ScalarRealType;
   typedef std::complex< float >  FloatType;
+  typedef TheType                MeasurementVectorType[1];
 
   static const TheType ITKCommon_EXPORT Zero;
   static const TheType ITKCommon_EXPORT One;
@@ -617,6 +668,7 @@ public:
   typedef double    RealType;
   typedef RealType  ScalarRealType;
   typedef float     FloatType;
+  typedef ValueType MeasurementVectorType[1];
 
   static const ValueType ITKCommon_EXPORT Zero;
   static const ValueType ITKCommon_EXPORT One;
@@ -647,6 +699,7 @@ public:
   typedef double             RealType;
   typedef RealType           ScalarRealType;
   typedef float              FloatType;
+  typedef ValueType          MeasurementVectorType[1];
 
   static const ValueType ITKCommon_EXPORT Zero;
   static const ValueType ITKCommon_EXPORT One;
