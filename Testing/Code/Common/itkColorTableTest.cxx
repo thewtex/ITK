@@ -22,12 +22,13 @@
 
 #include "itkColorTable.h"
 
-
-int itkColorTableTest(int, char* [] )
+template<class T> void ColorTableTest(const char *name)
 {
-  typedef itk::ColorTable<unsigned char> ColorTableType;
-  ColorTableType::Pointer colors = ColorTableType::New();
+  typedef itk::ColorTable<T> ColorTableType;
+  typename ColorTableType::Pointer colors = ColorTableType::New();
 
+  std::cout << "---------- Testing for type: :" << name
+            << std::endl;
   colors->UseRandomColors(16);
   std::cout << "Random Colors" << std::endl;
   colors->Print(std::cout);
@@ -47,30 +48,21 @@ int itkColorTableTest(int, char* [] )
   std::cout << "Discrete Colors" << std::endl;
   colors->Print(std::cout);
   std::cout << std::endl;
+}
 
-  typedef itk::ColorTable<short> ShortColorTableType;
-  ShortColorTableType::Pointer shortColors = ShortColorTableType::New();
-
-  shortColors->UseRandomColors(16);
-  std::cout << "Random ShortColors" << std::endl;
-  shortColors->Print(std::cout);
-  std::cout << std::endl;
-
-  shortColors->UseHeatColors(16);
-  std::cout << "Heat ShortColors" << std::endl;
-  shortColors->Print(std::cout);
-  std::cout << std::endl;
-
-  shortColors->UseGrayColors(16);
-  std::cout << "Gray ShortColors" << std::endl;
-  shortColors->Print(std::cout);
-  std::cout << std::endl;
-
-  shortColors->UseDiscreteColors();
-  std::cout << "Discrete ShortColors" << std::endl;
-  shortColors->Print(std::cout);
-  std::cout << std::endl;
-
-  std::cout << "Test Passed ! " << std::endl;      
+int itkColorTableTest(int, char* [] )
+{
+  ColorTableTest<unsigned char> ("unsigned char");
+  ColorTableTest<char>          ("char");
+  ColorTableTest<unsigned short>("unsigned short");
+  ColorTableTest<short>         ("short");
+  ColorTableTest<unsigned int>  ("unsigned int");
+  ColorTableTest<int>           ("int");
+  ColorTableTest<unsigned long> ("unsigned long");
+  ColorTableTest<long>          ("long");
+  ColorTableTest<float>         ("float");
+  // Please note, that UseGrayColors and UseRandomColors for type double
+  // overflow
+  // ColorTableTest<double>        ("double");
   return EXIT_SUCCESS;
 }
