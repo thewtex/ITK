@@ -23,6 +23,7 @@
 #include "itkImageFileWriter.h"
 #include "itkSimpleFilterWatcher.h"
 #include "itkLabelToRGBImageFilter.h"
+#include "itkNumericTraitsRGBPixel.h"
 
 
 int itkLabelToRGBImageFilterTest(int argc, char * argv[])

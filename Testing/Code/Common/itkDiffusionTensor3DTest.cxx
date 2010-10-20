@@ -23,6 +23,7 @@
 #include "itkDiffusionTensor3D.h"
 #include "itkImage.h"
 #include "itkImageRegionIterator.h"
+#include "itkNumericTraitsDiffusionTensor3DPixel.h"
 
 int itkDiffusionTensor3DTest(int, char* [] )
 {

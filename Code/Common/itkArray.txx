@@ -18,7 +18,6 @@
 #define __itkArray_txx
 
 #include "itkArray.h"
-#include "itkNumericTraitsArrayPixel.h"
 
 namespace itk
 {

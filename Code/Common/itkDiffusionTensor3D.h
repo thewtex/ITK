@@ -136,7 +136,6 @@ public:
   RealValueType GetInnerScalarProduct() const;
 };
 } // end namespace itk
-#include "itkNumericTraitsDiffusionTensor3DPixel.h"
 
 // Define instantiation macro for this template.
 #define ITK_TEMPLATE_DiffusionTensor3D(_, EXPORT, TypeX, TypeY)     \

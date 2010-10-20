@@ -27,6 +27,7 @@
 #include "itkImageRegionIteratorWithIndex.h"
 #include "itkImageFileWriter.h"
 #include "itkFilterWatcher.h"
+#include "itkNumericTraitsRGBPixel.h"
 
 
 int itkVectorResampleImageFilterTest( int argc, char * argv[] )

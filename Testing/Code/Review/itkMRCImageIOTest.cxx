@@ -21,6 +21,7 @@
 #include "itkNumericTraits.h"
 #include "itkMRCImageIO.h"
 #include "itkTestingMacros.h"
+#include "itkNumericTraitsRGBPixel.h"
 
 
 static unsigned int m_CallNumber = 0;

@@ -21,6 +21,7 @@
 #include "itkImage.h"
 #include "itkVector.h"
 #include "itkExponentialDeformationFieldImageFilter.h"
+#include "itkNumericTraitsVectorPixel.h"
 
 #include "vnl/vnl_random.h"
 

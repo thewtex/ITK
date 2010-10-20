@@ -26,6 +26,7 @@ PURPOSE.  See the above copyright notices for more information.
 #include "itkKdTree.h"
 #include "itkKdTreeBasedKmeansEstimator.h"
 #include "itkWeightedCentroidKdTreeGenerator.h"
+#include "itkNumericTraitsVariableLengthVectorPixel.h"
 
 
 //run sample classifer using itk::Array type measurment vector

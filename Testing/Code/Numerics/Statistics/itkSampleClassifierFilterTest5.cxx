@@ -19,7 +19,6 @@ PURPOSE.  See the above copyright notices for more information.
 #endif
 
 #include "itkVariableLengthVector.h"
-#include "itkVariableLengthVector.h"
 #include "itkListSample.h"
 #include "itkSampleClassifierFilter.h"
 #include "itkMinimumDecisionRule2.h"
@@ -27,6 +26,7 @@ PURPOSE.  See the above copyright notices for more information.
 #include "itkKdTree.h"
 #include "itkKdTreeBasedKmeansEstimator.h"
 #include "itkWeightedCentroidKdTreeGenerator.h"
+#include "itkNumericTraitsVariableLengthVectorPixel.h"
 
 
 //run sample classifer using itk::VariableLengthVector type measurment vector

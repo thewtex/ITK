@@ -24,6 +24,7 @@
 #include "itkAffineTransform.h"
 #include "itkLinearInterpolateImageFunction.h"
 #include "itkTimeProbesCollectorBase.h"
+#include "itkNumericTraitsVectorPixel.h"
 #include "vnl/vnl_sample.h"
 
 #include <iostream>

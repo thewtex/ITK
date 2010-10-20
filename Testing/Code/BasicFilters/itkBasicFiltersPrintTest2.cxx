@@ -101,6 +101,8 @@
 #include <itkSphereSpatialFunction.h>
 #include "itkGaussianSpatialFunction.h"
 
+#include "itkNumericTraitsVectorPixel.h"
+
 
 struct node_type
 {

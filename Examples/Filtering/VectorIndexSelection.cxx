@@ -23,6 +23,8 @@
 #include "itkImageFileWriter.h"
 #include "itkVectorIndexSelectionCastImageFilter.h"
 #include "itkRGBPixel.h"
+#include "itkNumericTraitsRGBPixel.h"
+#include "itkNumericTraitsCovariantVectorPixel.h"
 
 // Software Guide : EndCodeSnippet
 
