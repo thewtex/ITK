@@ -21,6 +21,7 @@
 #include <iostream>
 #include "itkMembershipSample.h"
 #include "itkVariableLengthVector.h"
+#include "itkNumericTraitsVariableLengthVectorPixel.h"
 #include "itkListSample.h"
 
 // MembershipSample test using VariableLength type measurement vector

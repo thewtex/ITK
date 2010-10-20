@@ -26,6 +26,7 @@
 #include "itkIndex.h"
 #include "itkImageRegionIteratorWithIndex.h"
 #include "itkCommand.h"
+#include "itkNumericTraitsVectorPixel.h"
 #include "vnl/vnl_math.h"
 
 // tyepdefs necessary for FEM visitor dispatcher

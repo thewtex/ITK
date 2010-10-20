@@ -32,6 +32,7 @@
 #include "itkExtensionVelocitiesImageFilter.h"
 #include "itkFEMRegistrationFilter.h"
 #include "itkFastMarchingImageFilter.h"
+#include "itkNumericTraitsVectorPixel.h"
 
 int main (int , char* [])
 {

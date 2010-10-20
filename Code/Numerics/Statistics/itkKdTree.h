@@ -24,6 +24,7 @@
 #include "itkSize.h"
 #include "itkObject.h"
 #include "itkArray.h"
+#include "itkNumericTraitsArrayPixel.h"
 
 #include "itkSubsample.h"
 

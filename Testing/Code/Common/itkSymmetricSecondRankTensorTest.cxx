@@ -23,6 +23,7 @@
 #include "itkSymmetricSecondRankTensor.h"
 #include "itkImage.h"
 #include "itkImageRegionIterator.h"
+#include "itkNumericTraitsTensorPixel.h"
 
 int itkSymmetricSecondRankTensorTest(int, char* [] )
 { 

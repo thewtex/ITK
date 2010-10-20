@@ -21,6 +21,7 @@
 #include "itkNearestNeighborExtrapolateImageFunction.h"
 #include "itkImage.h"
 #include "itkImageRegionIterator.h"
+#include "itkNumericTraitsVectorPixel.h"
 
 /**
  * This module tests the functionality of the

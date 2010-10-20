@@ -22,9 +22,21 @@
 #include "itkRGBPixel.h"
 #include "itkMatrix.h"
 #include "itkVariableSizeMatrix.h"
+#include "itkSize.h"
+
 #include "itkNumericTraits.h"
 #include "itkNumericTraitsStdVector.h"
-#include "itkSize.h"
+#include "itkNumericTraitsArrayPixel.h"
+#include "itkNumericTraitsFixedArrayPixel.h"
+#include "itkNumericTraitsCovariantVectorPixel.h"
+#include "itkNumericTraitsDiffusionTensor3DPixel.h"
+#include "itkNumericTraitsPointPixel.h"
+#include "itkNumericTraitsRGBAPixel.h"
+#include "itkNumericTraitsRGBPixel.h"
+#include "itkNumericTraitsTensorPixel.h"
+#include "itkNumericTraitsVariableLengthVectorPixel.h"
+#include "itkNumericTraitsVectorPixel.h"
+
 #include <vector>
 
 namespace itk

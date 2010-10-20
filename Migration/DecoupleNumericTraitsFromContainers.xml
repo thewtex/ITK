@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--***************************************************************************
+**
+** DecoupleNumericTraitsFromContainers.xml
+**
+** This is the second sample Migration Guide XML document. For full details,
+** see MoveGetSetLengthMeasurementVectorTraits.xml.  One aditional required
+** element has been added which is <Title>. This will be used for the title of
+** the migration guide page.
+**
+****************************************************************************-->
+
+<Change>
+
+  <!--
+  ** Title for the Migration Guide page
+  **-->
+  <Title>
+  Decouple NumericTraits From Containers
+  </Title>
+
+  <!--
+  ** English language description of what was changed and why
+  **-->
+  <Description>
+  The original design principle behind the NumericTraits system was that the
+  classes that had numeric traits did not need to know about them, but that
+  instead there would be a centralized system for accessing these traits. This
+  purpose was somewhat defeated when the itkNumericTraitsXXXPixel.h files were
+  included with the header files for XXX (where XXX is one of the container
+  types that has a special NumericTraits file). This patch simply removes that
+  coupling by removing the include statements from the container class headers
+  for their NumericTraits. The other changes are simply places where those
+  NumericTraits headers had to be added in to compensate for the fact that they
+  were not automatically included with the containers' header files. The
+  effected containers were: Arrray, CovariantVector, DiffusionTensor3D,
+  FixedArray, Point, RGBAPixel, RGBPixel, SymmetricSecondRankTensor, and
+  VariableLengthVector.
+- Vector
+  </Description>
+
+  <!--
+  ** Sample code to illustrate the fix process
+  **-->
+  <SampleCode>
+    <OldCode>
+    #include "itkVector.h"
+    </OldCode>
+
+    <NewCode>
+    #include "itkVector.h"
+    #include "itkNumericTraitsVectorPixel.h"
+    </NewCode>
+  </SampleCode>
+
+  <!--
+  ** List of all files that were changed (might be automatically populated by
+  ** git hook?)
+  **-->
+  <FileList>
+  Code/BasicFilters/itkVectorIndexSelectionCastImageFilter.h
+  Code/Common/itkArray.txx
+  Code/Common/itkCovariantVector.h
+  Code/Common/itkDiffusionTensor3D.h
+  Code/Common/itkPoint.txx
+  Code/Common/itkRGBAPixel.h
+  Code/Common/itkRGBPixel.h
+  Code/Common/itkSymmetricSecondRankTensor.h
+  Code/Common/itkVariableLengthVector.h
+  Code/Common/itkVector.h
+  Code/Common/itkVector.txx
+  Code/Numerics/Statistics/itkKdTree.h
+  Code/Numerics/Statistics/itkMahalanobisDistanceMetric.h
+  Code/Numerics/Statistics/itkMeasurementVectorTraits.h
+  Examples/Filtering/ResampleImageFilter6.cxx
+  Examples/Filtering/ResampleImageFilter9.cxx
+  Examples/Filtering/VectorIndexSelection.cxx
+  Testing/Code/Algorithms/itkAlgorithmsPrintTest.cxx
+  Testing/Code/Algorithms/itkFEMRegistrationFilterTest.cxx
+  Testing/Code/Algorithms/itkKullbackLeiblerCompareHistogramImageToImageMetricTest.cxx
+  Testing/Code/Algorithms/itkMultiResolutionPDEDeformableRegistrationTest.cxx
+  Testing/Code/BasicFilters/itkBasicFiltersPrintTest2.cxx
+  Testing/Code/BasicFilters/itkConnectedComponentImageFilterTestRGB.cxx
+  Testing/Code/BasicFilters/itkGrayscaleMorphologicalOpeningImageFilterTest.cxx
+  Testing/Code/BasicFilters/itkInverseDeformationFieldImageFilterTest.cxx
+  Testing/Code/BasicFilters/itkIterativeInverseDeformationFieldImageFilterTest.cxx
+  Testing/Code/BasicFilters/itkNaryAddImageFilterTest.cxx
+  Testing/Code/BasicFilters/itkSparseFieldFourthOrderLevelSetImageFilterTest.cxx
+  Testing/Code/BasicFilters/itkStreamingImageFilterTest3.cxx
+  Testing/Code/BasicFilters/itkVectorExpandImageFilterTest.cxx
+  Testing/Code/BasicFilters/itkVectorResampleImageFilterTest.cxx
+  Testing/Code/BasicFilters/itkWarpVectorImageFilterTest.cxx
+  Testing/Code/Common/itkCommonPrintTest.cxx
+  Testing/Code/Common/itkDiffusionTensor3DTest.cxx
+  Testing/Code/Common/itkLinearInterpolateImageFunctionTest.cxx
+  Testing/Code/Common/itkNearestNeighborExtrapolateImageFunctionTest.cxx
+  Testing/Code/Common/itkRGBInterpolateImageFunctionTest.cxx
+  Testing/Code/Common/itkSymmetricSecondRankTensorTest.cxx
+  Testing/Code/Common/itkVectorInterpolateImageFunctionTest.cxx
+  Testing/Code/Numerics/Statistics/itkListSampleTest.cxx
+  Testing/Code/Numerics/Statistics/itkMembershipSampleTest3.cxx
+  Testing/Code/Numerics/Statistics/itkSampleClassifierFilterTest2.cxx
+  Testing/Code/Numerics/Statistics/itkSampleClassifierFilterTest3.cxx
+  Testing/Code/Numerics/Statistics/itkSampleClassifierFilterTest5.cxx
+  Testing/Code/Numerics/Statistics/itkSampleClassifierFilterTest6.cxx
+  </FileList>
+
+  <!--
+  ** The asociated Gerrit entry for this API change
+  **-->
+  <Gerrit-ChangeId>
+  Iae62a8f4f4ed6c472f38aace08d7b4f566bfe78d
+  </Gerrit-ChangeId>
+
+
+  <!--
+  ** Migration guide rules
+  **-->
+  <MigrationFix-Manual type="GeneralRefactor">
+    <Old>
+    #include "itkVector.h"
+    </Old>
+    <New>
+    #include "itkVector.h"
+    #include "itkNumericTraitsVectorPixel.h"
+    </New>
+  </MigrationFix-Manual>
+
+  <MigrationFix-Manual type="GeneralRefactor">
+    <Old>
+    #include "itkCovariantVector.h"
+    </Old>
+    <New>
+    #include "itkCovariantVector.h"
+    #include "itkNumericTraitsCovariantVectorPixel.h"
+    </New>
+  </MigrationFix-Manual>
+
+  <MigrationFix-Manual type="GeneralRefactor">
+    <Old>
+    #include "itkDiffusionTensor3D.h"
+    </Old>
+    <New>
+    #include "itkDiffusionTensor3D.h"
+    #include "itkNumericTraitsDiffusionTensor3DPixel.h"
+    </New>
+  </MigrationFix-Manual>
+
+  <MigrationFix-Manual type="GeneralRefactor">
+    <Old>
+    #include "itkFixedArray.h"
+    </Old>
+    <New>
+    #include "itkFixedArray.h"
+    #include "itkNumericTraitsFixedArrayPixel.h"
+    </New>
+  </MigrationFix-Manual>
+
+  <MigrationFix-Manual type="GeneralRefactor">
+    <Old>
+    #include "itkPoint.h"
+    </Old>
+    <New>
+    #include "itkPoint.h"
+    #include "itkNumericTraitsPointPixel.h"
+    </New>
+  </MigrationFix-Manual>
+
+  <MigrationFix-Manual type="GeneralRefactor">
+    <Old>
+    #include "itkRGBAPixel.h"
+    </Old>
+    <New>
+    #include "itkRGBAPixel.h"
+    #include "itkNumericTraitsRGBAPixel.h"
+    </New>
+  </MigrationFix-Manual>
+
+  <MigrationFix-Manual type="GeneralRefactor">
+    <Old>
+    #include "itkRGBPixel.h"
+    </Old>
+    <New>
+    #include "itkRGBPixel.h"
+    #include "itkNumericTraitsRGBPixel.h"
+    </New>
+  </MigrationFix-Manual>
+
+  <MigrationFix-Manual type="GeneralRefactor">
+    <Old>
+    #include "itkSymmetricSecondRankTensor.h"
+    </Old>
+    <New>
+    #include "itkSymmetricSecondRankTensor.h"
+    #include "itkNumericTraitsTensorPixel.h"
+    </New>
+  </MigrationFix-Manual>
+
+  <MigrationFix-Manual type="GeneralRefactor">
+    <Old>
+    #include "itkVariableLengthVector.h"
+    </Old>
+    <New>
+    #include "itkVariableLengthVector.h"
+    #include "itkNumericTraitsVariableLengthVectorPixel.h"
+    </New>
+  </MigrationFix-Manual>
+
+  <MigrationFix-Manual type="GeneralRefactor">
+    <Old>
+    #include &lt;itkVector,h&gt;
+    </Old>
+    <New>
+    #include &lt;itkVector,h&gt;
+    #include &lt;itkNumericTraitsVectorPixel,h&gt;
+    </New>
+  </MigrationFix-Manual>
+
+  <MigrationFix-Manual type="GeneralRefactor">
+    <Old>
+    #include &lt;itkCovariantVector,h&gt;
+    </Old>
+    <New>
+    #include &lt;itkCovariantVector,h&gt;
+    #include &lt;itkNumericTraitsCovariantVectorPixel,h&gt;
+    </New>
+  </MigrationFix-Manual>
+
+  <MigrationFix-Manual type="GeneralRefactor">
+    <Old>
+    #include &lt;itkDiffusionTensor3D,h&gt;
+    </Old>
+    <New>
+    #include &lt;itkDiffusionTensor3D,h&gt;
+    #include &lt;itkNumericTraitsDiffusionTensor3DPixel,h&gt;
+    </New>
+  </MigrationFix-Manual>
+
+  <MigrationFix-Manual type="GeneralRefactor">
+    <Old>
+    #include &lt;itkFixedArray,h&gt;
+    </Old>
+    <New>
+    #include &lt;itkFixedArray,h&gt;
+    #include &lt;itkNumericTraitsFixedArrayPixel,h&gt;
+    </New>
+  </MigrationFix-Manual>
+
+  <MigrationFix-Manual type="GeneralRefactor">
+    <Old>
+    #include &lt;itkPoint,h&gt;
+    </Old>
+    <New>
+    #include &lt;itkPoint,h&gt;
+    #include &lt;itkNumericTraitsPointPixel,h&gt;
+    </New>
+  </MigrationFix-Manual>
+
+  <MigrationFix-Manual type="GeneralRefactor">
+    <Old>
+    #include &lt;itkRGBAPixel,h&gt;
+    </Old>
+    <New>
+    #include &lt;itkRGBAPixel,h&gt;
+    #include &lt;itkNumericTraitsRGBAPixel,h&gt;
+    </New>
+  </MigrationFix-Manual>
+
+  <MigrationFix-Manual type="GeneralRefactor">
+    <Old>
+    #include &lt;itkRGBPixel,h&gt;
+    </Old>
+    <New>
+    #include &lt;itkRGBPixel,h&gt;
+    #include &lt;itkNumericTraitsRGBPixel,h&gt;
+    </New>
+  </MigrationFix-Manual>
+
+  <MigrationFix-Manual type="GeneralRefactor">
+    <Old>
+    #include &lt;itkSymmetricSecondRankTensor,h&gt;
+    </Old>
+    <New>
+    #include &lt;itkSymmetricSecondRankTensor,h&gt;
+    #include &lt;itkNumericTraitsTensorPixel,h&gt;
+    </New>
+  </MigrationFix-Manual>
+
+  <MigrationFix-Manual type="GeneralRefactor">
+    <Old>
+    #include &lt;itkVariableLengthVector,h&gt;
+    </Old>
+    <New>
+    #include &lt;itkVariableLengthVector,h&gt;
+    #include &lt;itkNumericTraitsVariableLengthVectorPixel,h&gt;
+    </New>
+  </MigrationFix-Manual>
+
+</Change>

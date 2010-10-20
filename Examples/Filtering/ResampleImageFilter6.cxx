@@ -34,6 +34,7 @@
 #include "itkIdentityTransform.h"
 #include "itkVectorLinearInterpolateImageFunction.h"
 #include "itkRGBPixel.h"
+#include "itkNumericTraitsRGBPixel.h"
 
 
 int main( int argc, char * argv[] )

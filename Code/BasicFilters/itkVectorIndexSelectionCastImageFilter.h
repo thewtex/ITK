@@ -18,6 +18,7 @@
 #define __itkVectorIndexSelectionCastImageFilter_h
 
 #include "itkUnaryFunctorImageFilter.h"
+#include "itkNumericTraitsCovariantVectorPixel.h"
 
 namespace itk
 {

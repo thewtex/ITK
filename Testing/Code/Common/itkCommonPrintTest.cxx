@@ -110,6 +110,8 @@
 
 #include "itkRedPixelAccessor.h"
 
+#include "itkNumericTraitsVectorPixel.h"
+
 struct TestObject
 {
   float vector[3];

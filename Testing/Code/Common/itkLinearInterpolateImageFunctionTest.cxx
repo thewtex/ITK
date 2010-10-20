@@ -23,6 +23,7 @@
 #include "itkImage.h"
 #include "itkTranslationTransform.h"
 #include "itkLinearInterpolateImageFunction.h"
+#include "itkNumericTraitsVectorPixel.h"
 
 
 int itkLinearInterpolateImageFunctionTest( int , char*[] )

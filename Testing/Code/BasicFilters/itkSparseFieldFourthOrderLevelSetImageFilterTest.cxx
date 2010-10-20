@@ -20,6 +20,7 @@
 
 #include "itkImageRegionIterator.h"
 #include "itkSparseFieldFourthOrderLevelSetImageFilter.h"
+#include "itkNumericTraitsVectorPixel.h"
 #include <iostream>
 
 /*

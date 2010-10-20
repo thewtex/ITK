@@ -25,6 +25,7 @@
 #include "itkImageRegionIteratorWithIndex.h"
 #include "itkImageFileWriter.h"
 #include "itkFilterWatcher.h"
+#include "itkNumericTraitsVectorPixel.h"
 
 
 int itkIterativeInverseDeformationFieldImageFilterTest( int argc, char * argv[] )
