@@ -42,6 +42,8 @@
 #include "itkHessianToObjectnessMeasureImageFilter.h"
 #include "itkMultiScaleHessianBasedMeasureImageFilter.h"
 
+#include "itkNumericTraitsRGBPixel.h"
+
 int main(int , char* [])
 {
   typedef itk::Image<float,2>           Input2DImageType;

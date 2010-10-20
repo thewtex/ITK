@@ -29,6 +29,7 @@
 #include "itkStreamingImageFilter.h"
 #include "vnl/vnl_math.h"
 #include "itkCommand.h"
+#include "itkNumericTraitsVectorPixel.h"
 
 // class to produce a linear image pattern
 template <int VDimension>

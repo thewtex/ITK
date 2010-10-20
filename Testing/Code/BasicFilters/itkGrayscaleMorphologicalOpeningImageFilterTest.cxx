@@ -25,6 +25,7 @@
 #include "itkFilterWatcher.h"
 #include <itkImageFileReader.h>
 #include <itkImageFileWriter.h>
+#include <itkNumericTraitsVectorPixel.h>
 
 int itkGrayscaleMorphologicalOpeningImageFilterTest(int argc, char* argv [] ) 
 {

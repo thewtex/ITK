@@ -28,6 +28,7 @@
 #include "vnl/vnl_math.h"
 #include "itkVectorCastImageFilter.h"
 #include "itkImageFileWriter.h"
+#include "itkNumericTraitsVectorPixel.h"
 
 
 // The following class is used to support callbacks

@@ -45,6 +45,7 @@
 #include "itkRescaleIntensityImageFilter.h"
 #include "itkGradientRecursiveGaussianImageFilter.h"
 #include "itkVectorIndexSelectionCastImageFilter.h"
+#include "itkNumericTraitsCovariantVectorPixel.h"
 
 
 //  Software Guide : BeginLatex

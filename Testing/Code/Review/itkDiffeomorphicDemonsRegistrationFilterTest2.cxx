@@ -29,6 +29,7 @@
 #include "itkVectorCastImageFilter.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
+#include "itkNumericTraitsVectorPixel.h"
 
 
 namespace{

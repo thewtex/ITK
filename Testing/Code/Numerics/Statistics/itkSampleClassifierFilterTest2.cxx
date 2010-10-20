@@ -24,6 +24,7 @@ PURPOSE.  See the above copyright notices for more information.
 #include "itkMaximumDecisionRule2.h"
 #include "itkGaussianMembershipFunction.h"
 #include "itkNormalVariateGenerator.h"
+#include "itkNumericTraitsVariableLengthVectorPixel.h"
 
 
 //Test if the SampleClassifier filter labels observations correctly

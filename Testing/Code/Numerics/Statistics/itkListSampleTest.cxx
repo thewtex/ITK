@@ -21,6 +21,7 @@ PURPOSE.  See the above copyright notices for more information.
 #include "itkArray.h"
 #include "itkVariableLengthVector.h"
 #include "itkListSample.h"
+#include "itkNumericTraitsVariableLengthVectorPixel.h"
 
 int itkListSampleTest(int argc, char *argv[] )
 {

@@ -23,6 +23,7 @@
 #include "itkWarpImageFilter.h"
 #include "itkNearestNeighborInterpolateImageFunction.h"
 #include "itkCommand.h"
+#include "itkNumericTraitsVectorPixel.h"
 #include "vnl/vnl_math.h"
 
 #include "itkImageFileWriter.h"

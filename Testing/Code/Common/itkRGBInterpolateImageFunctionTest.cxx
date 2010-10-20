@@ -23,6 +23,7 @@
 #include "itkRGBPixel.h"
 #include "itkVectorLinearInterpolateImageFunction.h"
 #include "itkImageRegionIteratorWithIndex.h"
+#include "itkNumericTraitsRGBPixel.h"
 
 namespace RGBInterpolate {
 

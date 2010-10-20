@@ -26,6 +26,7 @@
 #include "itkShiftScaleImageFilter.h"
 #include "itkStreamingImageFilter.h"
 #include "itkImageRegionMultidimensionalSplitter.h"
+#include "itkNumericTraitsVectorPixel.h"
 #include "../IO/itkPipelineMonitorImageFilter.h"
 
 

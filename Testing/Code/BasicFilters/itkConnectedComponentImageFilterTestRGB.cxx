@@ -26,6 +26,7 @@
 #include "itkSimpleFilterWatcher.h"
 #include "itkImageRegionIterator.h"
 #include "vnl/vnl_sample.h"
+#include "itkNumericTraitsRGBPixel.h"
 
 int itkConnectedComponentImageFilterTestRGB(int argc, char* argv[] )
 {

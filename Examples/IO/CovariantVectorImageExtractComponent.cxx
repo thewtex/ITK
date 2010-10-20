@@ -41,6 +41,7 @@
 #include "itkImageFileWriter.h"
 #include "itkVectorIndexSelectionCastImageFilter.h"
 #include "itkRescaleIntensityImageFilter.h"
+#include "itkNumericTraitsCovariantVectorPixel.h"
 // Software Guide : EndCodeSnippet
 
 

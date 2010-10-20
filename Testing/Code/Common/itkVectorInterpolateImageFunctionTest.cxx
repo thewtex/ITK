@@ -23,6 +23,7 @@
 #include "itkVector.h"
 #include "itkVectorLinearInterpolateImageFunction.h"
 #include "itkImageRegionIteratorWithIndex.h"
+#include "itkNumericTraitsVectorPixel.h"
 
 enum{ VectorDimension = 3 };
 enum{ ImageDimension = 3 };
