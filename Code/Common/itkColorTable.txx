@@ -23,6 +23,7 @@
 #include <stdio.h>
 #include <cstring>
 
+
 namespace itk
 {
 template< class TPixel >
@@ -92,7 +93,7 @@ ColorTable< TPixel >
   m_ColorName = new char *[m_NumberOfColors];
   for ( unsigned int i = 0; i < m_NumberOfColors; i++ )
     {
-    m_ColorName[i] = new char[80];
+    m_ColorName[i] = new char[255];
     }
 
   m_Color[0].Set( (TPixel)0.9, (TPixel)0.0, (TPixel)0.0 );
@@ -134,19 +135,22 @@ ColorTable< TPixel >
   m_ColorName = new char *[m_NumberOfColors];
   for ( i = 0; i < m_NumberOfColors; i++ )
     {
-    m_ColorName[i] = new char[80];
+    m_ColorName[i] = new char[255];
     }
 
   typename NumericTraits< TPixel >::RealType range =
-    NumericTraits< TPixel >::max() - NumericTraits< TPixel >::NonpositiveMin();
-  typename NumericTraits< TPixel >::RealType delta = range / ( n - 1 );
+    static_cast< typename NumericTraits< TPixel >::RealType>(NumericTraits< TPixel >::max()) -
+    static_cast<  typename NumericTraits< TPixel >::RealType>(NumericTraits< TPixel >::NonpositiveMin());
+
+  typename NumericTraits< TPixel >::RealType delta =
+    range / ( m_NumberOfColors - 1 );
   TPixel gray;
-  for ( i = 0; i < n; i++ )
+
+  for ( i = 0; i < m_NumberOfColors; i++ )
     {
-    gray = NumericTraits< TPixel >::NonpositiveMin()
-           + static_cast< TPixel >( i * delta );
+    gray =  NumericTraits< TPixel >::NonpositiveMin() + i * delta;
     m_Color[i].Set(gray, gray, gray);
-    sprintf( m_ColorName[i], "Gray%.02f", static_cast< float >( gray ) );
+    sprintf( m_ColorName[i], "Gray%.02f", static_cast< double >( gray ) );
     }
 }
 
@@ -164,7 +168,7 @@ ColorTable< TPixel >
   m_ColorName = new char *[m_NumberOfColors];
   for ( i = 0; i < m_NumberOfColors; i++ )
     {
-    m_ColorName[i] = new char[80];
+    m_ColorName[i] = new char[255];
     }
 
   for ( i = 0; i < n / 2.0; i++ )
@@ -191,6 +195,7 @@ ColorTable< TPixel >
 {
   unsigned int i;
 
+  std::cout << "n: " << n << std::endl;
   this->DeleteColors();
 
   m_NumberOfColors = n;
@@ -198,7 +203,7 @@ ColorTable< TPixel >
   m_ColorName = new char *[m_NumberOfColors];
   for ( i = 0; i < m_NumberOfColors; i++ )
     {
-    m_ColorName[i] = new char[80];
+    m_ColorName[i] = new char[255];
     }
 
   TPixel r, g, b;
