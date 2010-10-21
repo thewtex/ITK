@@ -33,6 +33,14 @@ fi
 
 read -ep "Do you have git push access to itk.org? [y/N]: " access
 if test "$access" = "y"; then
+  echo "Configuring push urls..."
+  git config remote.origin.pushurl git@itk.org:ITK.git
+
+  pushd ../../Testing/Data >/dev/null
+  git config remote.origin.pushurl git@itk.org:ITKData.git
+  popd >/dev/null
+  echo -e "Done.\n"
+
   # We will have the private key corresponding the public key at itk.org at
   # ~/.ssh/id_git_itk.  This allows the developer to keep a single public key
   # on file with the server across multiple machines.

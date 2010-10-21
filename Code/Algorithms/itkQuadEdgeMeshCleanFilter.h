@@ -31,7 +31,7 @@ namespace itk
  * \brief
  */
 template< class TInput, class TOutput >
-class QuadEdgeMeshCleanFilter:
+class ITK_EXPORT QuadEdgeMeshCleanFilter:
   public QuadEdgeMeshToQuadEdgeMeshFilter< TInput, TOutput >
 {
 public:
@@ -223,6 +223,14 @@ protected:
       }
 
     output->SqueezePointsIds();
+  }
+
+  void PrintSelf(std::ostream & os, Indent indent) const
+  {
+    Superclass::PrintSelf(os, indent);
+    os << indent << "AbsoluteTolerance2: " << m_AbsoluteTolerance2 << std::endl;
+    os << indent << "AbsoluteTolerance: " << m_AbsoluteTolerance << std::endl;
+    os << indent << "RelativeTolerance: " << m_RelativeTolerance << std::endl;
   }
 
 private:

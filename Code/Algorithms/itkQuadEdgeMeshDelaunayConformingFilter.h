@@ -31,7 +31,7 @@ namespace itk
  *
  */
 template< class TInputMesh, class TOutputMesh >
-class QuadEdgeMeshDelaunayConformingFilter:
+class ITK_EXPORT QuadEdgeMeshDelaunayConformingFilter:
   public QuadEdgeMeshToQuadEdgeMeshFilter< TInputMesh, TOutputMesh >
 {
 public:
@@ -121,6 +121,7 @@ public:
 protected:
   QuadEdgeMeshDelaunayConformingFilter();
   virtual ~QuadEdgeMeshDelaunayConformingFilter();
+  void PrintSelf(std::ostream & os, Indent indent) const;
 
   OutputEdgeCellListType m_ListOfConstrainedEdges;
   PriorityQueuePointer   m_PriorityQueue;

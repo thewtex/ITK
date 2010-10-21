@@ -32,7 +32,7 @@ template< class TMesh,
           class TPriorityQueueWrapper =
             MinPriorityQueueElementWrapper< typename TMesh::QEType *,
                                             std::pair< bool, TMeasure > > >
-class QuadEdgeMeshDecimationCriterion:public Object
+class ITK_EXPORT QuadEdgeMeshDecimationCriterion:public Object
 {
 public:
   typedef QuadEdgeMeshDecimationCriterion Self;
@@ -78,6 +78,22 @@ protected:
   }
 
   ~QuadEdgeMeshDecimationCriterion() {}
+  void PrintSelf(std::ostream & os, Indent indent) const
+  {
+    Superclass::PrintSelf(os, indent);
+    os << indent << "TopologicalChange: "
+              << (m_TopologicalChange ? "On" : "Off")
+              << std::endl;
+    os << indent << "SizeCriterion: "
+              << (m_SizeCriterion ? "On" : "Off")
+              << std::endl;
+    os << indent << "NumberOfElements: "
+              << m_NumberOfElements
+              << std::endl;
+    os << indent << "MeasureBound: "
+              << m_MeasureBound
+              << std::endl;
+  }
 
   bool m_TopologicalChange;
   bool m_SizeCriterion;

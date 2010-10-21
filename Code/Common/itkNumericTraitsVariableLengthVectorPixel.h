@@ -118,6 +118,20 @@ public:
     b.Fill(NumericTraits< T >::One);
     return b;
   }
+
+  /** Resize the input vector to the specified size. */
+  static void SetLength(VariableLengthVector< T > & m, const unsigned int s)
+  {
+    m.SetSize(s);
+    m.Fill(NumericTraits< T >::Zero);
+  }
+
+  /** Return the size of the vector. */
+  static unsigned int GetLength(const VariableLengthVector< T > & m)
+  {
+    return m.GetSize();
+  }
+
 };
 } // end namespace itk
 

@@ -19,6 +19,7 @@
 
 #include "itkFunctionBase.h"
 #include "itkMeasurementVectorTraits.h"
+#include "itkNumericTraitsCovariantVectorPixel.h"
 
 namespace itk
 {
@@ -83,7 +84,8 @@ public:
       {
       // If this is a non-resizable vector type
       MeasurementVectorType     m3;
-      MeasurementVectorSizeType defaultLength = MeasurementVectorTraits::GetLength(m3);
+      MeasurementVectorSizeType defaultLength =
+        NumericTraits<MeasurementVectorType>::GetLength(m3);
       // and the new length is different from the default one, then throw an
       // exception
       if ( defaultLength != s )
@@ -100,7 +102,7 @@ public:
 protected:
   MembershipFunctionBase()
   {
-    m_MeasurementVectorSize = MeasurementVectorTraits::GetLength(
+    m_MeasurementVectorSize = NumericTraits<MeasurementVectorType>::GetLength(
       MeasurementVectorType() );
   }
 

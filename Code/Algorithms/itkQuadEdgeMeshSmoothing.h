@@ -28,7 +28,7 @@ namespace itk
  * \brief Quad Edge Mesh Smoothing Filter
  */
 template< class TInputMesh, class TOutputMesh >
-class QuadEdgeMeshSmoothing:
+class ITK_EXPORT QuadEdgeMeshSmoothing:
   public QuadEdgeMeshToQuadEdgeMeshFilter< TInputMesh, TOutputMesh >
 {
 public:
@@ -84,6 +84,7 @@ public:
 protected:
   QuadEdgeMeshSmoothing();
   ~QuadEdgeMeshSmoothing();
+  void PrintSelf(std::ostream & os, Indent indent) const;
 
   CoefficientsComputation *m_CoefficientsMethod;
 
