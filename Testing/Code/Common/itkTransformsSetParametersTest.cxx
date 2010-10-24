@@ -1,4 +1,21 @@
 /*=========================================================================
+ *
+ *  Copyright Insight Software Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
+/*=========================================================================
 
   Program:   Insight Segmentation & Registration Toolkit
   Module:    itkTransformsSetParametersTest.cxx
@@ -9,8 +26,8 @@
   Copyright (c) 2002 Insight Consortium. All rights reserved.
   See ITKCopyright.txt or http://www.itk.org/HTML/Copyright.htm for details.
 
-     This software is distributed WITHOUT ANY WARRANTY; without even 
-     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+     This software is distributed WITHOUT ANY WARRANTY; without even
+     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
      PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
@@ -62,19 +79,19 @@ template<class KernelType> int TestKernelTransform(const char *name, KernelType 
   typename KernelPointSetType::CoordRepType randomCoords[3];
   for(int i=0; i < 4 ; ++i)
     {
-    randomCoords[0] = (typename KernelPointSetType::CoordRepType) 
+    randomCoords[0] = (typename KernelPointSetType::CoordRepType)
       vnl_sample_uniform((double)-1.0,(double)1.0);
-    randomCoords[1] = (typename KernelPointSetType::CoordRepType) 
+    randomCoords[1] = (typename KernelPointSetType::CoordRepType)
       vnl_sample_uniform((double)-1.0,(double)1.0);
-    randomCoords[2] = (typename KernelPointSetType::CoordRepType) 
+    randomCoords[2] = (typename KernelPointSetType::CoordRepType)
       vnl_sample_uniform((double)-1.0,(double)1.0);
     targetLandmarks->GetPoints()->SetElement(i, randomCoords);
 
-    randomCoords[0] = (typename KernelPointSetType::CoordRepType) 
+    randomCoords[0] = (typename KernelPointSetType::CoordRepType)
       vnl_sample_uniform((double)-1.0,(double)1.0);
-    randomCoords[1] = (typename KernelPointSetType::CoordRepType) 
+    randomCoords[1] = (typename KernelPointSetType::CoordRepType)
       vnl_sample_uniform((double)-1.0,(double)1.0);
-    randomCoords[2] = (typename KernelPointSetType::CoordRepType) 
+    randomCoords[2] = (typename KernelPointSetType::CoordRepType)
       vnl_sample_uniform((double)-1.0,(double)1.0);
     sourceLandmarks->GetPoints()->SetElement(i, randomCoords);
     }
@@ -89,7 +106,7 @@ template<class KernelType> int TestKernelTransform(const char *name, KernelType 
   kernelParams[0] = 1.0;
   kernel->SetParameters( kernelParams );
   endMTime = kernel->GetMTime();
-  if ( endMTime > beginMTime) 
+  if ( endMTime > beginMTime)
     {
     std::cout << "PASS" << std::endl;
     return 0;
@@ -121,7 +138,7 @@ int itkTransformsSetParametersTest( int , char *[] )
   affineParams[0] = 1.0;
   affine->SetParameters( affineParams );
   endMTime = affine->GetMTime();
-  if ( endMTime > beginMTime) 
+  if ( endMTime > beginMTime)
     std::cout << "PASS" << std::endl;
   else
     std::cout << "FAIL" << std::endl;
@@ -137,7 +154,7 @@ int itkTransformsSetParametersTest( int , char *[] )
   centeredAffineParams[0] = 1.0;
   centeredAffine->SetParameters( centeredAffineParams );
   endMTime = centeredAffine->GetMTime();
-  if ( endMTime > beginMTime) 
+  if ( endMTime > beginMTime)
     std::cout << "PASS" << std::endl;
   else
     std::cout << "FAIL" << std::endl;
@@ -154,7 +171,7 @@ int itkTransformsSetParametersTest( int , char *[] )
   centeredEuler3DParams[0] = 1.0;
   centeredEuler3D->SetParameters( centeredEuler3DParams );
   endMTime = centeredEuler3D->GetMTime();
-  if ( endMTime > beginMTime) 
+  if ( endMTime > beginMTime)
     std::cout << "PASS" << std::endl;
   else
     std::cout << "FAIL" << std::endl;
@@ -171,7 +188,7 @@ int itkTransformsSetParametersTest( int , char *[] )
   centeredRigid2DParams[0] = 1.0;
   centeredRigid2D->SetParameters( centeredRigid2DParams );
   endMTime = centeredRigid2D->GetMTime();
-  if ( endMTime > beginMTime) 
+  if ( endMTime > beginMTime)
     std::cout << "PASS" << std::endl;
   else
     std::cout << "FAIL" << std::endl;
@@ -188,7 +205,7 @@ int itkTransformsSetParametersTest( int , char *[] )
   centeredSimilarity2DParams[0] = 1.0;
   centeredSimilarity2D->SetParameters( centeredSimilarity2DParams );
   endMTime = centeredSimilarity2D->GetMTime();
-  if ( endMTime > beginMTime) 
+  if ( endMTime > beginMTime)
     std::cout << "PASS" << std::endl;
   else
     std::cout << "FAIL" << std::endl;
@@ -205,7 +222,7 @@ int itkTransformsSetParametersTest( int , char *[] )
   euler2DParams[0] = 1.0;
   euler2D->SetParameters( euler2DParams );
   endMTime = euler2D->GetMTime();
-  if ( endMTime > beginMTime) 
+  if ( endMTime > beginMTime)
     std::cout << "PASS" << std::endl;
   else
     std::cout << "FAIL" << std::endl;
@@ -222,7 +239,7 @@ int itkTransformsSetParametersTest( int , char *[] )
   euler3DParams[0] = 1.0;
   euler3D->SetParameters( euler3DParams );
   endMTime = euler3D->GetMTime();
-  if ( endMTime > beginMTime) 
+  if ( endMTime > beginMTime)
     std::cout << "PASS" << std::endl;
   else
     std::cout << "FAIL" << std::endl;
@@ -239,7 +256,7 @@ int itkTransformsSetParametersTest( int , char *[] )
   fixedCenteredAffineParams[0] = 1.0;
   fixedCenteredAffine->SetParameters( fixedCenteredAffineParams );
   endMTime = fixedCenteredAffine->GetMTime();
-  if ( endMTime > beginMTime) 
+  if ( endMTime > beginMTime)
     std::cout << "PASS" << std::endl;
   else
     std::cout << "FAIL" << std::endl;
@@ -255,7 +272,7 @@ int itkTransformsSetParametersTest( int , char *[] )
   quaternionRigidParams[0] = 1.0;
   quaternionRigid->SetParameters( quaternionRigidParams );
   endMTime = quaternionRigid->GetMTime();
-  if ( endMTime > beginMTime) 
+  if ( endMTime > beginMTime)
     std::cout << "PASS" << std::endl;
   else
     std::cout << "FAIL" << std::endl;
@@ -272,7 +289,7 @@ int itkTransformsSetParametersTest( int , char *[] )
   rigid2DParams[0] = 1.0;
   rigid2D->SetParameters( rigid2DParams );
   endMTime = rigid2D->GetMTime();
-  if ( endMTime > beginMTime) 
+  if ( endMTime > beginMTime)
     std::cout << "PASS" << std::endl;
   else
     std::cout << "FAIL" << std::endl;
@@ -288,7 +305,7 @@ int itkTransformsSetParametersTest( int , char *[] )
   rigid3DPerspectiveParams[0] = 1.0;
   rigid3DPerspective->SetParameters( rigid3DPerspectiveParams );
   endMTime = rigid3DPerspective->GetMTime();
-  if ( endMTime > beginMTime) 
+  if ( endMTime > beginMTime)
     std::cout << "PASS" << std::endl;
   else
     std::cout << "FAIL" << std::endl;
@@ -305,13 +322,13 @@ int itkTransformsSetParametersTest( int , char *[] )
   scalableAffineParams[0] = 1.0;
   scalableAffine->SetParameters( scalableAffineParams );
   endMTime = scalableAffine->GetMTime();
-  if ( endMTime > beginMTime) 
+  if ( endMTime > beginMTime)
     std::cout << "PASS" << std::endl;
   else
     std::cout << "FAIL" << std::endl;
 
 
-  
+
   std::cout << "ScaleLogarithmicTransform->SetParameters() - " << std::flush;
   typedef itk::ScaleLogarithmicTransform< double, 3 > ScaleLogarithmic;
   ScaleLogarithmic::Pointer scaleLogarithmic =
@@ -322,13 +339,13 @@ int itkTransformsSetParametersTest( int , char *[] )
   scaleLogarithmicParams[0] = 1.0;
   scaleLogarithmic->SetParameters( scaleLogarithmicParams );
   endMTime = scaleLogarithmic->GetMTime();
-  if ( endMTime > beginMTime) 
+  if ( endMTime > beginMTime)
     std::cout << "PASS" << std::endl;
   else
     std::cout << "FAIL" << std::endl;
 
 
-  
+
   std::cout << "ScaleSkewVersor3DTransform->SetParameters() - " << std::flush;
   typedef itk::ScaleSkewVersor3DTransform< double > ScaleSkewVersor3D;
   ScaleSkewVersor3D::Pointer scaleSkewVersor3D =
@@ -339,13 +356,13 @@ int itkTransformsSetParametersTest( int , char *[] )
   scaleSkewVersor3DParams[0] = 1.0;
   scaleSkewVersor3D->SetParameters( scaleSkewVersor3DParams );
   endMTime = scaleSkewVersor3D->GetMTime();
-  if ( endMTime > beginMTime) 
+  if ( endMTime > beginMTime)
     std::cout << "PASS" << std::endl;
   else
     std::cout << "FAIL" << std::endl;
 
 
-  
+
   std::cout << "ScaleTransform->SetParameters() - " << std::flush;
   typedef itk::ScaleTransform< double, 3 > Scale;
   Scale::Pointer scale =
@@ -356,13 +373,13 @@ int itkTransformsSetParametersTest( int , char *[] )
   scaleParams[0] = 1.0;
   scale->SetParameters( scaleParams );
   endMTime = scale->GetMTime();
-  if ( endMTime > beginMTime) 
+  if ( endMTime > beginMTime)
     std::cout << "PASS" << std::endl;
   else
     std::cout << "FAIL" << std::endl;
 
 
-  
+
   std::cout << "Similarity2DTransform->SetParameters() - " << std::flush;
   typedef itk::Similarity2DTransform< double > Similarity2D;
   Similarity2D::Pointer similarity2D =
@@ -373,13 +390,13 @@ int itkTransformsSetParametersTest( int , char *[] )
   similarity2DParams[0] = 1.0;
   similarity2D->SetParameters( similarity2DParams );
   endMTime = similarity2D->GetMTime();
-  if ( endMTime > beginMTime) 
+  if ( endMTime > beginMTime)
     std::cout << "PASS" << std::endl;
   else
     std::cout << "FAIL" << std::endl;
 
 
-  
+
   std::cout << "Similarity3DTransform->SetParameters() - " << std::flush;
   typedef itk::Similarity3DTransform< double > Similarity3D;
   Similarity3D::Pointer similarity3D =
@@ -390,7 +407,7 @@ int itkTransformsSetParametersTest( int , char *[] )
   similarity3DParams[0] = 1.0;
   similarity3D->SetParameters( similarity3DParams );
   endMTime = similarity3D->GetMTime();
-  if ( endMTime > beginMTime) 
+  if ( endMTime > beginMTime)
     std::cout << "PASS" << std::endl;
   else
     std::cout << "FAIL" << std::endl;
@@ -407,7 +424,7 @@ int itkTransformsSetParametersTest( int , char *[] )
   translationParams[0] = 1.0;
   translation->SetParameters( translationParams );
   endMTime = translation->GetMTime();
-  if ( endMTime > beginMTime) 
+  if ( endMTime > beginMTime)
     std::cout << "PASS" << std::endl;
   else
     std::cout << "FAIL" << std::endl;
@@ -424,7 +441,7 @@ int itkTransformsSetParametersTest( int , char *[] )
   versorParams[0] = 1.0;
   versor->SetParameters( versorParams );
   endMTime = versor->GetMTime();
-  if ( endMTime > beginMTime) 
+  if ( endMTime > beginMTime)
     std::cout << "PASS" << std::endl;
   else
     std::cout << "FAIL" << std::endl;
@@ -443,7 +460,7 @@ int itkTransformsSetParametersTest( int , char *[] )
   azimuthElevationParams[0] = 1.0;
   azimuthElevation->SetParameters( azimuthElevationParams );
   endMTime = azimuthElevation->GetMTime();
-  if ( endMTime > beginMTime) 
+  if ( endMTime > beginMTime)
     std::cout << "PASS" << std::endl;
   else
     std::cout << "FAIL" << std::endl;
@@ -458,7 +475,7 @@ int itkTransformsSetParametersTest( int , char *[] )
   versorRigid3DParams[0] = 1.0;
   versorRigid3D->SetParameters( versorRigid3DParams );
   endMTime = versorRigid3D->GetMTime();
-  if ( endMTime > beginMTime) 
+  if ( endMTime > beginMTime)
     std::cout << "PASS" << std::endl;
   else
     std::cout << "FAIL" << std::endl;
@@ -474,7 +491,7 @@ int itkTransformsSetParametersTest( int , char *[] )
 //    bSplineDeformableParams[0] = 1.0;
 //    bSplineDeformable->SetParameters( bSplineDeformableParams );
 //   endMTime = bSplineDeformable->GetMTime();
-//   if ( endMTime > beginMTime) 
+//   if ( endMTime > beginMTime)
 //     std::cout << "PASS" << std::endl;
 //   else
 //     std::cout << "FAIL" << std::endl;

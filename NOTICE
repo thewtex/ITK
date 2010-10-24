@@ -31,6 +31,35 @@ Apache 2.0 License
 
 -----------------------------------------------------------------------
 
+MICRO FAQ:
+
+*** What is a copyright?
+ Copyright is assigned at the moment of expressing a creative work
+ into a tangible medium.  All copyrights are equal.  What can change
+ is the licenses that the copyright holder give to the recipients of the
+ software.
+
+ Copyrights can be cumulative.  This is because you can create "derivative works"
+ and you deserve the copyright of the creative aspect that you added to the work,
+ but that doesn't take away from the rights of the original creator.
+
+ If I compose a song, I hold the copyright to it If you create a new arrangement
+ of it, you will hold the copyright of the modifications that you added.  The
+ combination is now copyrighted by both of us.
+
+ Note that as the original creator I have the right to exclude you
+ from creating derivative works, so that arrangement need a
+ permission from the original author.
+
+ Removing a copyright notice is a Federal offense in the US
+ (it is a misdemeanor)
+
+*** I see both Apache 2.0 and BSD licenses, is there a conflict?
+ The Apache 2.0 License and the BSD licenses are compatible.
+ So, there is no conflict there.
+
+----------------------------------------------------------------------
+
 
 The Toolkit contains code from third parties that have different
 copyrights.
