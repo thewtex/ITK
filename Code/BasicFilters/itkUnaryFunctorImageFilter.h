@@ -38,7 +38,7 @@ namespace itk
  *
  * \ingroup   IntensityImageFilters     Multithreaded
  */
-template< class TInputImage, class TOutputImage, class TFunction >
+template< class TInputImage, class TOutputImage, class TFunction, class TMaskImage = TInputImage >
 class ITK_EXPORT UnaryFunctorImageFilter:public InPlaceImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -67,12 +67,23 @@ public:
   typedef typename     OutputImageType::RegionType OutputImageRegionType;
   typedef typename     OutputImageType::PixelType  OutputImagePixelType;
 
+  typedef TMaskImage                               MaskImageType;
+  typedef typename     MaskImageType::Pointer      MaskImagePointer;
+
   /** Get the functor object.  The functor is returned by reference.
    * (Functors do not have to derive from itk::LightObject, so they do
    * not necessarily have a reference count. So we cannot return a
    * SmartPointer.) */
   FunctorType &       GetFunctor() { return m_Functor; }
   const FunctorType & GetFunctor() const { return m_Functor; }
+
+  /** Set the mask. If a mask is specified, the Functor is only applied
+   * to the input image at pixels which are non zero in the mask image.
+   * The mask image must be the same size as the input image.*/
+  void SetMask(MaskImagePointer mask)
+  {
+    this->Mask = mask;
+  }
 
   /** Set the functor object.  This replaces the current Functor with a
    * copy of the specified Functor. This allows the user to specify a
@@ -115,6 +126,8 @@ protected:
    *     ImageToImageFilter::GenerateData()  */
   void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
                             int threadId);
+
+  MaskImagePointer Mask;
 
 private:
   UnaryFunctorImageFilter(const Self &); //purposely not implemented

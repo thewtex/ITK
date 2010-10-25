@@ -26,12 +26,13 @@ namespace itk
 /**
  * Constructor
  */
-template< class TInputImage, class TOutputImage, class TFunction  >
-UnaryFunctorImageFilter< TInputImage, TOutputImage, TFunction >
+template< class TInputImage, class TOutputImage, class TFunction, class TMaskImage  >
+UnaryFunctorImageFilter< TInputImage, TOutputImage, TFunction, TMaskImage >
 ::UnaryFunctorImageFilter()
 {
   this->SetNumberOfRequiredInputs(1);
   this->InPlaceOff();
+  this->Mask = NULL;
 }
 
 /**
@@ -43,9 +44,9 @@ UnaryFunctorImageFilter< TInputImage, TOutputImage, TFunction >
  *
  * \sa ProcessObject::GenerateOutputInformaton()
  */
-template< class TInputImage, class TOutputImage, class TFunction >
+template< class TInputImage, class TOutputImage, class TFunction, class TMaskImage  >
 void
-UnaryFunctorImageFilter< TInputImage, TOutputImage, TFunction >
+UnaryFunctorImageFilter< TInputImage, TOutputImage, TFunction, TMaskImage >
 ::GenerateOutputInformation()
 {
   // do not call the superclass' implementation of this method since
@@ -144,9 +145,9 @@ UnaryFunctorImageFilter< TInputImage, TOutputImage, TFunction >
 /**
  * ThreadedGenerateData Performs the pixel-wise addition
  */
-template< class TInputImage, class TOutputImage, class TFunction  >
+template< class TInputImage, class TOutputImage, class TFunction, class TMaskImage   >
 void
-UnaryFunctorImageFilter< TInputImage, TOutputImage, TFunction >
+UnaryFunctorImageFilter< TInputImage, TOutputImage, TFunction, TMaskImage >
 ::ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
                        int threadId)
 {
@@ -169,12 +170,40 @@ UnaryFunctorImageFilter< TInputImage, TOutputImage, TFunction >
   inputIt.GoToBegin();
   outputIt.GoToBegin();
 
-  while ( !inputIt.IsAtEnd() )
+  if(this->Mask)
     {
-    outputIt.Set( m_Functor( inputIt.Get() ) );
-    ++inputIt;
-    ++outputIt;
-    progress.CompletedPixel();  // potential exception thrown here
+    ImageRegionConstIterator< TMaskImage > maskIt(this->Mask, inputRegionForThread); // Is it ok to set the mask iterator region to the input region?
+    maskIt.GoToBegin();
+    while ( !inputIt.IsAtEnd() )
+      {
+      // Create a "blank" pixel
+      OutputImagePixelType blankPixel;
+      if(maskIt.Get() == blankPixel)
+        {
+        outputIt.Set(blankPixel);
+        ++inputIt;
+        ++outputIt;
+        ++maskIt;
+        }
+      else // mask pixel is non zero
+        {
+        outputIt.Set( m_Functor( inputIt.Get() ) );
+        ++inputIt;
+        ++outputIt;
+        ++maskIt;
+        }
+      progress.CompletedPixel();  // potential exception thrown here
+      }
+    }
+  else // no mask specified
+    {
+    while ( !inputIt.IsAtEnd() )
+      {
+      outputIt.Set( m_Functor( inputIt.Get() ) );
+      ++inputIt;
+      ++outputIt;
+      progress.CompletedPixel();  // potential exception thrown here
+      }
     }
 }
 } // end namespace itk
