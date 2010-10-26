@@ -90,7 +90,13 @@ void CannySegmentationLevelSetFunction< TImageType, TFeatureImageType >
   // Only cast if we need to
   if ( typeid( TImageType ) == typeid( TFeatureImageType ) )
     {
-    m_Canny->SetInput(tempFeature);
+    // this is an error if TImageType != TFeatureImageType
+    // m_Canny->SetInput(tempFeature);
+    // The following is ugly but is the most concise workaround.
+    // if TImageType != TFeatureImageType, this is dead code that
+    // will never be executed, & if TImageType == TFeatureType,
+    // the reinterpret_cast is guaranteed safe.
+    m_Canny->SetInput(reinterpret_cast<TImageType *>(tempFeature.GetPointer()));
     }
   else
     {
