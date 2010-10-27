@@ -76,7 +76,6 @@ AnchorOpenCloseLine< TInputPix, THistogramCompare, TFunction1, TFunction2 >
   // arithmetic rather than pointer arithmetic
   unsigned outLeftP = 0, outRightP = bufflength - 1;
   // left side
-  assert(outLeftP >= 0);
   assert(outLeftP < bufflength);
   while ( ( outLeftP < outRightP ) && m_TF1(buffer[outLeftP], buffer[outLeftP + 1]) )
     {
@@ -146,7 +145,6 @@ AnchorOpenCloseLine< TInputPix, THistogramCompare, TFunction1, TFunction2 >
 
   while ( ( currentP < outRightP ) && m_TF2(buffer[currentP], Extreme) )
     {
-    assert(currentP >= 0);
     assert(currentP < bufflength);
     Extreme = buffer[currentP];
     ++outLeftP;
@@ -163,7 +161,6 @@ AnchorOpenCloseLine< TInputPix, THistogramCompare, TFunction1, TFunction2 >
   // ran m_Size pixels ahead
   while ( currentP < sentinel )
     {
-    assert(currentP >= 0);
     assert(currentP < bufflength);
     if ( m_TF2(buffer[currentP], Extreme) )
       {
@@ -171,7 +168,6 @@ AnchorOpenCloseLine< TInputPix, THistogramCompare, TFunction1, TFunction2 >
 #if 1
       for ( unsigned PP = outLeftP + 1; PP < endP; ++PP )
         {
-        assert(PP >= 0);
         assert(PP < bufflength);
         buffer[PP] = Extreme;
         }
@@ -190,7 +186,6 @@ AnchorOpenCloseLine< TInputPix, THistogramCompare, TFunction1, TFunction2 >
   // We didn't find a smaller (for opening) value in the segment of
   // reach of outLeftP. currentP is the first position outside the
   // reach of outLeftP
-  assert(currentP >= 0);
   assert(currentP < bufflength);
   if ( m_TF2(buffer[currentP], Extreme) )
     {
@@ -198,7 +193,6 @@ AnchorOpenCloseLine< TInputPix, THistogramCompare, TFunction1, TFunction2 >
 #if 1
     for ( unsigned PP = outLeftP + 1; PP < endP; ++PP )
       {
-      assert(PP >= 0);
       assert(PP < bufflength);
       buffer[PP] = Extreme;
       }
@@ -221,7 +215,6 @@ AnchorOpenCloseLine< TInputPix, THistogramCompare, TFunction1, TFunction2 >
     outLeftP++;
     for ( unsigned aux = outLeftP; aux <= currentP; ++aux )
       {
-      assert(aux >= 0);
       assert(aux < bufflength);
       histo.AddPixel(buffer[aux]);
       }
@@ -230,7 +223,6 @@ AnchorOpenCloseLine< TInputPix, THistogramCompare, TFunction1, TFunction2 >
     // search to the current extreme. Hopefully the latter is an
     // optimization step.
     Extreme = histo.GetValue();
-    assert(outLeftP >= 0);
     assert(outLeftP < bufflength);
     histo.RemovePixel(buffer[outLeftP]);
     buffer[outLeftP] = Extreme;
@@ -240,7 +232,6 @@ AnchorOpenCloseLine< TInputPix, THistogramCompare, TFunction1, TFunction2 >
   while ( currentP < outRightP )
     {
     ++currentP;
-    assert(currentP >= 0);
     assert(currentP < bufflength);
     if ( m_TF2(buffer[currentP], Extreme) )
       {
@@ -249,7 +240,6 @@ AnchorOpenCloseLine< TInputPix, THistogramCompare, TFunction1, TFunction2 >
 #if 1
       for ( unsigned PP = outLeftP + 1; PP < endP; PP++ )
         {
-        assert(PP >= 0);
         assert(PP < bufflength);
         buffer[PP] = Extreme;
         }
@@ -267,15 +257,12 @@ AnchorOpenCloseLine< TInputPix, THistogramCompare, TFunction1, TFunction2 >
     else
       {
       /* histogram update */
-      assert(currentP >= 0);
       assert(currentP < bufflength);
-      assert(outLeftP >= 0);
       assert(outLeftP < bufflength);
       histo.AddPixel(buffer[currentP]);
       histo.RemovePixel(buffer[outLeftP]);
       Extreme = histo.GetValue();
       ++outLeftP;
-      assert(outLeftP >= 0);
       assert(outLeftP < bufflength);
       histo.RemovePixel(buffer[outLeftP]);
       buffer[outLeftP] = Extreme;
@@ -285,12 +272,10 @@ AnchorOpenCloseLine< TInputPix, THistogramCompare, TFunction1, TFunction2 >
   // Finish the line
   while ( outLeftP < outRightP )
     {
-    assert(outLeftP >= 0);
     assert(outLeftP < bufflength);
     histo.RemovePixel(buffer[outLeftP]);
     Extreme = histo.GetValue();
     ++outLeftP;
-    assert(outLeftP >= 0);
     assert(outLeftP < bufflength);
     histo.RemovePixel(buffer[outLeftP]);
     buffer[outLeftP] = Extreme;
@@ -314,15 +299,13 @@ AnchorOpenCloseLine< TInputPix,  THistogramCompare, TFunction1, TFunction2 >
 {
   while ( outLeftP < outRightP )
     {
-    assert(outLeftP >= 0);
     assert(outLeftP < bufflength);
-    assert(outRightP >= 0);
     assert(outRightP < bufflength);
     if ( m_TF2(buffer[outLeftP], buffer[outRightP]) )
       {
       Extreme = buffer[outRightP];
+      assert(outRightP >= 1); // replaces nonsense assert below
       --outRightP;
-      assert(outRightP >= 0);
       assert(outRightP < bufflength);
       if ( !m_TF2(buffer[outRightP], Extreme) )
         {
@@ -333,7 +316,6 @@ AnchorOpenCloseLine< TInputPix,  THistogramCompare, TFunction1, TFunction2 >
       {
       Extreme = buffer[outLeftP];
       ++outLeftP;
-      assert(outLeftP >= 0);
       assert(outLeftP < bufflength);
       if ( !m_TF2(buffer[outLeftP], Extreme) )
         {

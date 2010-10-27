@@ -265,14 +265,13 @@ void FillForwardExt(PixelType *pixbuffer, PixelType *fExtBuffer,
 
   for ( unsigned j = 0; j < blocks; j++ )
     {
-    assert(i >= 0);
     assert(i < len);
     PixelType Ext = pixbuffer[i];
     fExtBuffer[i] = Ext;
     ++i;
     for ( unsigned k = 1; k < KernLen; k++ )
       {
-      assert( ( i - 1 ) >= 0 );
+      assert(i >= 1); // assert( ( i - 1 ) >= 0 );
       assert(i < len);
       PixelType V = pixbuffer[i];
       fExtBuffer[i] = m_TF(V, fExtBuffer[i - 1]);
@@ -283,7 +282,6 @@ void FillForwardExt(PixelType *pixbuffer, PixelType *fExtBuffer,
 //  if ((i != size - 1) && (i < size))
   if ( i < size )
     {
-    assert(i >= 0);
     assert(i < len);
     PixelType V = pixbuffer[i];
     fExtBuffer[i] = V;
@@ -291,7 +289,7 @@ void FillForwardExt(PixelType *pixbuffer, PixelType *fExtBuffer,
     }
   while ( i < size )
     {
-    assert( ( i - 1 ) >= 0 );
+    assert(i >= 1); // assert( ( i - 1 ) >= 0 );
     assert(i < len);
     PixelType V = pixbuffer[i];
     fExtBuffer[i] = m_TF(V, fExtBuffer[i - 1]);
@@ -394,7 +392,6 @@ void DoFace(typename TImage::ConstPointer input,
         {
         for ( unsigned j = 0; j < size; j++ )
           {
-          assert(j >= 0);
           assert(j < size);
           pixbuffer[j] = fExtBuffer[size - 1];
           }
@@ -419,18 +416,14 @@ void DoFace(typename TImage::ConstPointer input,
         // line beginning
         for ( unsigned j = 0; j < KernLen / 2; j++ )
           {
-          assert(j >= 0);
           assert( ( j + KernLen / 2 ) < size );
           pixbuffer[j] = fExtBuffer[j + KernLen / 2];
           }
         for ( unsigned j = KernLen / 2, k = KernLen / 2 + KernLen / 2, l = KernLen / 2 - KernLen / 2;
               j < size - KernLen / 2; j++, k++, l++ )
           {
-          assert(k >= 0);
           assert(k < size);
-          assert(l >= 0);
           assert(l < size);
-          assert(j >= 0);
           assert(j < size);
 
           typename TImage::PixelType V1 = fExtBuffer[k];
@@ -439,15 +432,16 @@ void DoFace(typename TImage::ConstPointer input,
           }
         // line end -- involves reseting the end of the reverse
         // extreme array
+        assert(size >= 2); // supplant meaningless assert(j >= 0) below
         for ( unsigned j = size - 2; ( j > 0 ) && ( j >= ( size - KernLen - 1 ) ); j-- )
           {
-          assert(j >= 0);
+          // assert(j >= 0);
           assert( ( j + 1 ) < size );
           rExtBuffer[j] = m_TF(rExtBuffer[j + 1], rExtBuffer[j]);
           }
         for ( unsigned j = size - KernLen / 2; j < size; j++ )
           {
-          assert( ( j - KernLen / 2 ) >= 0 );
+          assert(j >= KernLen / 2); // assert( ( j - KernLen / 2 ) >= 0 );
           assert( ( j - KernLen / 2 ) < size );
           assert( ( j ) < size );
           pixbuffer[j] = rExtBuffer[j - KernLen / 2];
