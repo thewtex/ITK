@@ -15,6 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
+
+#include "itkArray.h"
 #include "itkVTKImageIO2.h"
 #include "itkByteSwapper.h"
 
@@ -467,16 +469,16 @@ void VTKImageIO2::ReadBufferAsASCII( std::istream & is, void * buffer, IOCompone
     }
 }
 
-void VTKImageIO2::ReadSymmetricTensorBufferAsBinary( std::istream & is,
-  void * buffer,
+void VTKImageIO2::StripSymmetricTensorBinaryBufferSymmetry( const void *fullBuffer,
+  void *strippedBuffer,
   StreamingImageIOBase::SizeType num )
 {
   std::streamsize bytesRemaining = num;
   const SizeType  componentSize = this->GetComponentSize();
-  SizeType        pixelSize = componentSize * 6;
+  SizeType        pixelSize = componentSize * 9;
   char            zero[1024];
 
-  memset( zero, 0, 1024 );
+  std::memset( zero, 0, 1024 );
 
   if( this->GetNumberOfComponents() != 6 )
     {
@@ -485,22 +487,20 @@ void VTKImageIO2::ReadSymmetricTensorBufferAsBinary( std::istream & is,
   while( bytesRemaining )
     {
     // row 1
-    is.read( static_cast< char * >(buffer), 3 * componentSize );
-    buffer = static_cast< char * >(buffer) + 3 * componentSize;
+    std::memcpy( strippedBuffer, fullBuffer, 3 * componentSize );
+    strippedBuffer = static_cast< char * >(strippedBuffer)   + 3 * componentSize;
+    fullBuffer     = static_cast< const char * >(fullBuffer) + 3 * componentSize;
     // row 2
-    is.seekg( componentSize, std::ios::cur );
-    is.read( static_cast< char * >(buffer), 2 * componentSize );
-    buffer = static_cast< char * >(buffer) + 2 * componentSize;
+    fullBuffer     = static_cast< const char * >(fullBuffer) + componentSize;
+    std::memcpy( strippedBuffer, fullBuffer, 2 * componentSize );
+    strippedBuffer = static_cast< char * >(strippedBuffer)   + 2 * componentSize;
+    fullBuffer     = static_cast< const char * >(fullBuffer) + 2 * componentSize;
     // row 3
-    is.seekg( 2 * componentSize, std::ios::cur );
-    is.read( static_cast< char * >(buffer), componentSize );
-    buffer = static_cast< char * >(buffer) + componentSize;
+    fullBuffer     = static_cast< const char * >(fullBuffer) + 2 * componentSize;
+    std::memcpy( strippedBuffer, fullBuffer, componentSize );
+    strippedBuffer = static_cast< char * >(strippedBuffer)   + componentSize;
+    fullBuffer     = static_cast< const char * >(fullBuffer) + componentSize;
     bytesRemaining -= pixelSize;
-    }
-
-  if( is.fail() )
-    {
-    itkExceptionMacro(<< "Failure during writing of file.");
     }
 }
 
@@ -512,16 +512,25 @@ void VTKImageIO2::Read(void *buffer)
     {
     itkAssertOrThrowMacro(m_FileType != ASCII, "Can not stream with ASCII type files");
 
-    if( this->GetPixelType() == ImageIOBase::SYMMETRICSECONDRANKTENSOR )
-      {
-      itkExceptionMacro(<< "Cannot stream read binary second rank tensors.");
-      }
-
     // open and stream read
     this->OpenFileForReading( file, this->m_FileName.c_str() );
 
     itkAssertOrThrowMacro(this->GetHeaderSize() != 0, "Header size is unknown when it shouldn't be!");
-    this->StreamReadBufferAsBinary(file, buffer);
+
+    if( this->GetPixelType() == ImageIOBase::SYMMETRICSECONDRANKTENSOR )
+      {
+      SizeType pixelSize = ( this->GetPixelSize() * 2 * this->GetNumberOfDimensions() ) /
+        ( this->GetNumberOfDimensions() + 1 );
+      SizeType tempBufferSize = static_cast< std::streamsize >( this->m_IORegion.GetNumberOfPixels() ) * pixelSize;
+      itk::Array< char > tempArray( tempBufferSize );
+      void* tempBuffer = tempArray.data_block();
+      this->StreamReadBufferAsBinary( file, tempBuffer, pixelSize );
+      this->StripSymmetricTensorBinaryBufferSymmetry( tempBuffer, buffer, tempBufferSize );
+      }
+    else
+      {
+      this->StreamReadBufferAsBinary( file, buffer );
+      }
     }
   else
     {
@@ -552,7 +561,12 @@ void VTKImageIO2::Read(void *buffer)
       // read the image
       if( this->GetPixelType() == ImageIOBase::SYMMETRICSECONDRANKTENSOR )
         {
-        this->ReadSymmetricTensorBufferAsBinary( file, buffer, this->GetImageSizeInBytes() );
+        SizeType tempBufferSize = ( this->GetImageSizeInBytes() * 2 * this->GetNumberOfDimensions() ) /
+          ( this->GetNumberOfDimensions() + 1 );
+        itk::Array< char > tempArray( tempBufferSize );
+        char* tempBuffer = tempArray.data_block();
+        this->ReadBufferAsBinary( file, tempBuffer, tempBufferSize );
+        this->StripSymmetricTensorBinaryBufferSymmetry( tempBuffer, buffer, tempBufferSize );
         }
       else
         {
@@ -791,33 +805,38 @@ void VTKImageIO2::WriteBufferAsASCII( std::ostream & os, const void * buffer, IO
     }
 }
 
-void VTKImageIO2::WriteSymmetricTensorBufferAsBinary(std::ostream & os, const void * buffer,
-                                                     StreamingImageIOBase::SizeType num)
+void VTKImageIO2::ExpandSymmetricTensorBinaryBufferSymmetry(const void *originalBuffer,
+  void *expandedBuffer,
+  StreamingImageIOBase::SizeType num)
 {
   std::streamsize bytesRemaining = num;
   const SizeType  componentSize = this->GetComponentSize();
-  SizeType        pixelSize;
+  SizeType        pixelSize = componentSize * 9;
   char            zero[1024];
 
-  memset( zero, 0, 1024 );
+  std::memset( zero, 0, 1024 );
 
   switch( this->GetNumberOfComponents() )
     {
     case 3 :
       {
-      pixelSize = componentSize * 3;
       while( bytesRemaining )
         {
         // row 1
-        os.write( static_cast< const char * >(buffer), 2 * componentSize );
-        os.write( zero, componentSize );
-        buffer = static_cast< const char * >(buffer) + componentSize;
+        std::memcpy( expandedBuffer, originalBuffer, 2 * componentSize );
+        expandedBuffer = static_cast< char * >(expandedBuffer)       + 2 * componentSize;
+        originalBuffer = static_cast< const char * >(originalBuffer) + componentSize;
+        std::memcpy( expandedBuffer, zero, componentSize );
+        expandedBuffer = static_cast< char * >(expandedBuffer)       + componentSize;
         // row 2
-        os.write( static_cast< const char * >(buffer), 2 * componentSize );
-        buffer = static_cast< const char * >(buffer) + 2 * componentSize;
-        os.write( zero, componentSize );
+        std::memcpy( expandedBuffer, originalBuffer, 2 * componentSize );
+        expandedBuffer = static_cast< char * >(expandedBuffer)       + 2 * componentSize;
+        originalBuffer = static_cast< const char * >(originalBuffer) + 2 * componentSize;
+        std::memcpy( expandedBuffer, zero, componentSize );
+        expandedBuffer = static_cast< char * >(expandedBuffer)       + componentSize;
         // row 3
-        os.write( zero, 3 * componentSize );
+        std::memcpy( expandedBuffer, zero, 3 * componentSize );
+        expandedBuffer = static_cast< char * >(expandedBuffer)       + 3 * componentSize;
         bytesRemaining -= pixelSize;
         }
 
@@ -825,22 +844,26 @@ void VTKImageIO2::WriteSymmetricTensorBufferAsBinary(std::ostream & os, const vo
       }
     case 6 :
       {
-      pixelSize = componentSize * 6;
       while( bytesRemaining )
         {
         // row 1
-        os.write( static_cast< const char * >(buffer), 3 * componentSize );
-        buffer = static_cast< const char * >(buffer) + componentSize;
+        std::memcpy( expandedBuffer, originalBuffer, 3 * componentSize );
+        expandedBuffer = static_cast< char * >(expandedBuffer)       + 3 * componentSize;
+        originalBuffer = static_cast< const char * >(originalBuffer) + componentSize;
         // row 2
-        os.write( static_cast< const char * >(buffer), componentSize );
-        buffer = static_cast< const char * >(buffer) + 2 * componentSize;
-        os.write( static_cast< const char * >(buffer), 2 * componentSize );
-        buffer = static_cast< const char * >(buffer) - componentSize;
+        std::memcpy( expandedBuffer, originalBuffer, componentSize );
+        expandedBuffer = static_cast< char * >(expandedBuffer)       + componentSize;
+        originalBuffer = static_cast< const char * >(originalBuffer) + 2 * componentSize;
+        std::memcpy( expandedBuffer, originalBuffer, 2 * componentSize );
+        expandedBuffer = static_cast< char * >(expandedBuffer)       + 2 * componentSize;
+        originalBuffer = static_cast< const char * >(originalBuffer) - componentSize;
         // row 3
-        os.write( static_cast< const char * >(buffer), componentSize );
-        buffer = static_cast< const char * >(buffer) + 2 * componentSize;
-        os.write( static_cast< const char * >(buffer), 2 * componentSize );
-        buffer = static_cast< const char * >(buffer) + 2 * componentSize;
+        std::memcpy( expandedBuffer, originalBuffer, componentSize );
+        expandedBuffer = static_cast< char * >(expandedBuffer)       + componentSize;
+        originalBuffer = static_cast< const char * >(originalBuffer) + 2 * componentSize;
+        std::memcpy( expandedBuffer, originalBuffer, 2 * componentSize );
+        expandedBuffer = static_cast< char * >(expandedBuffer)       + 2 * componentSize;
+        originalBuffer = static_cast< const char * >(originalBuffer) + 2 * componentSize;
         bytesRemaining -= pixelSize;
         }
 
@@ -850,11 +873,6 @@ void VTKImageIO2::WriteSymmetricTensorBufferAsBinary(std::ostream & os, const vo
       itkExceptionMacro(<< "Unsupported tensor dimension.");
       break;
     }
-
-  if( os.fail() )
-    {
-    itkExceptionMacro(<< "Failure during writing of file.");
-    }
 }
 
 void VTKImageIO2::Write(const void *buffer)
@@ -862,11 +880,6 @@ void VTKImageIO2::Write(const void *buffer)
   if ( this->RequestedToStream() )
     {
     itkAssertOrThrowMacro(m_FileType != ASCII, "Can not stream with ASCII type files");
-
-    if( this->GetPixelType() == ImageIOBase::SYMMETRICSECONDRANKTENSOR )
-      {
-      itkExceptionMacro(<< "Cannot stream write binary second rank tensors.");
-      }
 
     std::ofstream file;
 
@@ -900,7 +913,20 @@ void VTKImageIO2::Write(const void *buffer)
       this->OpenFileForWriting(file, this->m_FileName.c_str(), false);
       }
 
-    this->StreamWriteBufferAsBinary(file, buffer);
+    if( this->GetPixelType() == ImageIOBase::SYMMETRICSECONDRANKTENSOR )
+      {
+      SizeType pixelSize = this->GetComponentSize() * 9;
+      SizeType tempBufferSize = static_cast< std::streamsize >( this->m_IORegion.GetNumberOfPixels() ) *
+        pixelSize;
+      itk::Array< char > tempArray( tempBufferSize );
+      void* tempBuffer = tempArray.data_block();
+      this->ExpandSymmetricTensorBinaryBufferSymmetry( buffer, tempBuffer, tempBufferSize );
+      this->StreamWriteBufferAsBinary( file, tempBuffer, pixelSize );
+      }
+    else
+      {
+      this->StreamWriteBufferAsBinary( file, buffer );
+      }
     }
 
   else
@@ -965,7 +991,12 @@ void VTKImageIO2::Write(const void *buffer)
         // write the image
         if( this->GetPixelType() == ImageIOBase::SYMMETRICSECONDRANKTENSOR )
           {
-          this->WriteSymmetricTensorBufferAsBinary( file, tempmemory, this->GetImageSizeInBytes() );
+          SizeType pixelSize = this->GetComponentSize() * 9;
+          SizeType tempBufferSize = this->GetImageSizeInPixels() * pixelSize;
+          itk::Array< char > tempArray( tempBufferSize );
+          char* tempBuffer = tempArray.data_block();
+          this->ExpandSymmetricTensorBinaryBufferSymmetry( tempmemory, tempBuffer, tempBufferSize );
+          this->WriteBufferAsBinary( file, tempBuffer, tempBufferSize );
           }
         else
           {
@@ -981,7 +1012,12 @@ void VTKImageIO2::Write(const void *buffer)
         // write the image
         if( this->GetPixelType() == ImageIOBase::SYMMETRICSECONDRANKTENSOR )
           {
-          this->WriteSymmetricTensorBufferAsBinary( file, buffer, this->GetImageSizeInBytes() );
+          SizeType pixelSize = this->GetComponentSize() * 9;
+          SizeType tempBufferSize = this->GetImageSizeInPixels() * pixelSize;
+          itk::Array< char > tempArray( tempBufferSize );
+          char* tempBuffer = tempArray.data_block();
+          this->ExpandSymmetricTensorBinaryBufferSymmetry( buffer, tempBuffer, tempBufferSize );
+          this->WriteBufferAsBinary( file, tempBuffer, tempBufferSize );
           }
         else
           {

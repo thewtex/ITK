@@ -113,6 +113,8 @@ protected:
    * mode
    * \param buffer is pointer to an allocated block of memory
    * suitable to hold the IORegion of the pixel type
+   * \param pixelSize is the size in bytes of a pixel.  If 0, it is obtained
+   * with this->GetPixelSize().
    *
    * This methods relies on GetDataPosition to determin where the
    * data is located in the file. It uses m_IORegion to determin the
@@ -123,7 +125,9 @@ protected:
    * m_IORegion. This means that the image file could be broken into
    * slices, but not blocks for this methods to be used.
    */
-  virtual bool StreamReadBufferAsBinary(std::istream & os, void *buffer);
+  virtual bool StreamReadBufferAsBinary(std::istream & os,
+    void *buffer,
+    SizeType pixelSize = 0);
 
   /** \brief Writes the set IORegion from buffer into os
    *
@@ -131,12 +135,16 @@ protected:
    * reading
    * \param buffer is a pointer to the data in a continuous block
    * for the region
+   * \param pixelSize is the size in bytes of a pixel.  If 0, it is obtained
+   * with this->GetPixelSize().
    *
    * This methods relies on GetDataPosition to determin where the data
    * is located in the file. It usesy m_IORegion determin the requested
    * region to written.
    */
-  virtual bool StreamWriteBufferAsBinary(std::ostream & os, const void *buffer);
+  virtual bool StreamWriteBufferAsBinary(std::ostream & os,
+    const void *buffer,
+    SizeType pixelSize = 0);
 
   /** \brief Returns the size of the header in the file */
   virtual SizeType GetHeaderSize(void) const = 0;

@@ -31,16 +31,20 @@ void StreamingImageIOBase::PrintSelf(std::ostream & os, Indent indent) const
 }
 
 bool StreamingImageIOBase
-::StreamReadBufferAsBinary(std::istream & file, void *_buffer)
+::StreamReadBufferAsBinary(std::istream & file, void *_buffer, SizeType pixelSize)
 {
   itkDebugMacro(<< "StreamingReadBufferAsBinary called");
 
   char *buffer = static_cast< char * >( _buffer );
   // Offset into file
   std::streampos dataPos = this->GetDataPosition();
+  if( pixelSize == 0 )
+    {
+    pixelSize = this->GetPixelSize();
+    }
 
   std::streamsize sizeOfRegion = static_cast< std::streamsize >( m_IORegion.GetNumberOfPixels() )
-                                 * this->GetPixelSize();
+                                 * pixelSize;
 
   // compute the number of continuous bytes to be read
   std::streamsize sizeOfChunk = 1;
@@ -52,7 +56,7 @@ bool StreamingImageIOBase
     }
   while ( movingDirection < m_IORegion.GetImageDimension()
           && m_IORegion.GetSize(movingDirection - 1) == this->GetDimensions(movingDirection - 1) );
-  sizeOfChunk *= this->GetPixelSize();
+  sizeOfChunk *= pixelSize;
 
   ImageIORegion::IndexType currentIndex = m_IORegion.GetIndex();
   std::streamsize          gcount = 0;
@@ -64,7 +68,7 @@ bool StreamingImageIOBase
     for ( unsigned int i = 0; i < m_IORegion.GetImageDimension(); ++i )
       {
       seekPos = seekPos + static_cast< std::streamoff >( subDimensionQuantity
-                                                         * this->GetPixelSize()
+                                                         * pixelSize
                                                          * currentIndex[i] );
       subDimensionQuantity *= this->GetDimensions(i);
       }
@@ -168,13 +172,19 @@ bool StreamingImageIOBase::WriteBufferAsBinary(std::ostream & os,
   return true;
 }
 
-bool StreamingImageIOBase::StreamWriteBufferAsBinary(std::ostream & file, const void *_buffer)
+bool StreamingImageIOBase::StreamWriteBufferAsBinary(std::ostream & file,
+  const void *_buffer,
+  SizeType pixelSize )
 {
   itkDebugMacro(<< "StreamingWriteBufferAsBinary called");
 
   const char *buffer = static_cast< const char * >( _buffer );
   // Offset into file
   std::streampos dataPos = this->GetDataPosition();
+  if( pixelSize == 0 )
+    {
+    pixelSize = this->GetPixelSize();
+    }
 
   // compute the number of continuous bytes to be written
   std::streamsize sizeOfChunk = 1;
@@ -186,7 +196,7 @@ bool StreamingImageIOBase::StreamWriteBufferAsBinary(std::ostream & file, const 
     }
   while ( movingDirection < m_IORegion.GetImageDimension()
           && m_IORegion.GetSize(movingDirection - 1) == this->GetDimensions(movingDirection - 1) );
-  sizeOfChunk *= this->GetPixelSize();
+  sizeOfChunk *= pixelSize;
 
   ImageIORegion::IndexType currentIndex = m_IORegion.GetIndex();
   while ( m_IORegion.IsInside(currentIndex) )
@@ -197,7 +207,7 @@ bool StreamingImageIOBase::StreamWriteBufferAsBinary(std::ostream & file, const 
     for ( unsigned int i = 0; i < m_IORegion.GetImageDimension(); ++i )
       {
       seekPos = seekPos + static_cast< std::streamoff >( subDimensionQuantity
-                                                         * this->GetPixelSize()
+                                                         * pixelSize
                                                          * currentIndex[i] );
       subDimensionQuantity *= this->GetDimensions(i);
       }
