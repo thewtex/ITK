@@ -113,17 +113,28 @@ protected:
    * mode
    * \param buffer is pointer to an allocated block of memory
    * suitable to hold the IORegion of the pixel type
+   * \param bufferSize is the number of bytes to read.  This is an optional
+   * argument.  The following parameter must be set to true for it to be used or
+   * the value will be calculated from m_IORegion and this->GetPixelSize().
+   * \param useBufferSize
+   * \param seekPos  This is the byte offset from this->GetDataPosition() to the
+   * start of the buffer.  The following parameter must be set to true for it to
+   * be used or the value will be calculated from m_IORegion and
+   * this->GetPixelSize().
+   * \param useSeekPos
    *
-   * This methods relies on GetDataPosition to determin where the
-   * data is located in the file. It uses m_IORegion to determin the
+   * This methods relies on GetDataPosition to determine where the
+   * data is located in the file. It uses m_IORegion to determine the
    * requested region to read.
    *
-   * The files data is assumed to be unpadded and continuous in the
+   * The file's data is assumed to be unpadded and continuous in the
    * file for the size of the image in the dimensions of the
    * m_IORegion. This means that the image file could be broken into
    * slices, but not blocks for this methods to be used.
    */
-  virtual bool StreamReadBufferAsBinary(std::istream & os, void *buffer);
+  virtual bool StreamReadBufferAsBinary(std::istream & os, void *buffer,
+    SizeType bufferSize = 0, bool useBufferSize = false,
+    SizeType seekPos = 0, bool useSeekPos = false );
 
   /** \brief Writes the set IORegion from buffer into os
    *
@@ -131,12 +142,23 @@ protected:
    * reading
    * \param buffer is a pointer to the data in a continuous block
    * for the region
+   * \param bufferSize is the number of bytes to write.  This is an optional
+   * argument.  The following parameter must be set to true for it to be used or
+   * the value will be calculated from m_IORegion and this->GetPixelSize().
+   * \param useBufferSize
+   * \param seekPos  This is the byte offset from this->GetDataPosition() to the
+   * start of the buffer.  The following parameter must be set to true for it to
+   * be used or the value will be calculated from m_IORegion and
+   * this->GetPixelSize().
+   * \param useSeekPos
    *
-   * This methods relies on GetDataPosition to determin where the data
-   * is located in the file. It usesy m_IORegion determin the requested
+   * This methods relies on GetDataPosition to determine where the data
+   * is located in the file. It usesy m_IORegion determine the requested
    * region to written.
    */
-  virtual bool StreamWriteBufferAsBinary(std::ostream & os, const void *buffer);
+  virtual bool StreamWriteBufferAsBinary(std::ostream & os, const void *buffer,
+    SizeType bufferSize = 0, bool useBufferSize = false,
+    SizeType seekPos = 0, bool useSeekPos = false );
 
   /** \brief Returns the size of the header in the file */
   virtual SizeType GetHeaderSize(void) const = 0;

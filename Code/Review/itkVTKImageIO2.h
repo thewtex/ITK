@@ -111,14 +111,14 @@ protected:
 
   /** We have a special method to read symmetric second rank tensors because
    * the VTK file format expands the symmetry and only supports 3D tensors. */
-  virtual void ReadSymmetricTensorBufferAsBinary(std::istream& os,
-    void *buffer,
+  virtual void StripSymmetricTensorBinaryBufferSymmetry(const void *fullBuffer,
+    void *strippedBuffer,
     StreamingImageIOBase::SizeType num);
 
   /** We have a special method to write symmetric second rank tensors because
    * the VTK file format expands the symmetry and only supports 3D tensors. */
-  virtual void WriteSymmetricTensorBufferAsBinary(std::ostream& os,
-    const void *buffer,
+  virtual void ExpandSymmetricTensorBinaryBufferSymmetry(const void *originalBuffer,
+    void *expandedBuffer,
     StreamingImageIOBase::SizeType num);
 
 private:

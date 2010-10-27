@@ -31,7 +31,9 @@ void StreamingImageIOBase::PrintSelf(std::ostream & os, Indent indent) const
 }
 
 bool StreamingImageIOBase
-::StreamReadBufferAsBinary(std::istream & file, void *_buffer)
+::StreamReadBufferAsBinary(std::istream & file, void *_buffer,
+    SizeType bufferSize, bool useBufferSize,
+    SizeType seekPos, bool useSeekPos )
 {
   itkDebugMacro(<< "StreamingReadBufferAsBinary called");
 
@@ -39,27 +41,16 @@ bool StreamingImageIOBase
   // Offset into file
   std::streampos dataPos = this->GetDataPosition();
 
-  std::streamsize sizeOfRegion = static_cast< std::streamsize >( m_IORegion.GetNumberOfPixels() )
+  if( ! useBufferSize )
+    {
+    bufferSize = static_cast< std::streamsize >( m_IORegion.GetNumberOfPixels() )
                                  * this->GetPixelSize();
-
-  // compute the number of continuous bytes to be read
-  std::streamsize sizeOfChunk = 1;
-  unsigned int    movingDirection = 0;
-  do
-    {
-    sizeOfChunk *= m_IORegion.GetSize(movingDirection);
-    ++movingDirection;
     }
-  while ( movingDirection < m_IORegion.GetImageDimension()
-          && m_IORegion.GetSize(movingDirection - 1) == this->GetDimensions(movingDirection - 1) );
-  sizeOfChunk *= this->GetPixelSize();
 
-  ImageIORegion::IndexType currentIndex = m_IORegion.GetIndex();
-  std::streamsize          gcount = 0;
-  while ( m_IORegion.IsInside(currentIndex) )
+  if( ! useSeekPos )
     {
+    ImageIORegion::IndexType currentIndex = m_IORegion.GetIndex();
     // calculate the position to seek to in the file
-    std::streampos seekPos = 0;
     size_t         subDimensionQuantity = 1;
     for ( unsigned int i = 0; i < m_IORegion.GetImageDimension(); ++i )
       {
@@ -68,47 +59,21 @@ bool StreamingImageIOBase
                                                          * currentIndex[i] );
       subDimensionQuantity *= this->GetDimensions(i);
       }
-
-    itkDebugMacro(
-      << "Reading " << sizeOfChunk << " of " << sizeOfRegion << " bytes for " << m_FileName << " at " << dataPos
-      + seekPos << " position in file");
-
-    file.seekg(dataPos + seekPos, std::ios::beg);
-    this->ReadBufferAsBinary(file, buffer, sizeOfChunk);
-
-    // increment the buffer pointer
-    buffer += sizeOfChunk;
-    gcount += file.gcount();
-
-    if ( file.fail() )
-      {
-      itkExceptionMacro(<< "Fail reading");
-      }
-
-    if ( movingDirection == m_IORegion.GetImageDimension() )
-      {
-      break;
-      }
-
-    // increment index to next chunk
-    ++currentIndex[movingDirection];
-    for ( unsigned int i = movingDirection; i < m_IORegion.GetImageDimension() - 1; ++i )
-      {
-      // when reaching the end of the moving index dimension carry to
-      // higher dimensions
-      if ( static_cast< ImageIORegion::SizeValueType >( currentIndex[i]  - m_IORegion.GetIndex(i) ) >=
-           m_IORegion.GetSize(i) )
-        {
-        currentIndex[i] = m_IORegion.GetIndex(i);
-        ++currentIndex[i + 1];
-        }
-      }
     }
 
-  if ( gcount != sizeOfRegion )
+  file.seekg(dataPos + seekPos, std::ios::beg);
+  this->ReadBufferAsBinary(file, buffer, bufferSize);
+
+
+  if ( file.fail() )
+    {
+    itkExceptionMacro(<< "Fail reading");
+    }
+
+  if ( file.gcount() != bufferSize )
     {
     itkExceptionMacro(
-      "Data not read completely. Expected = " << sizeOfRegion << ", but only read " <<  gcount <<  " bytes.");
+      "Data not read completely. Expected = " << bufferSize << ", but only read " <<  file.gcount() <<  " bytes.");
     }
 
   return true;
@@ -168,31 +133,24 @@ bool StreamingImageIOBase::WriteBufferAsBinary(std::ostream & os,
   return true;
 }
 
-bool StreamingImageIOBase::StreamWriteBufferAsBinary(std::ostream & file, const void *_buffer)
+bool StreamingImageIOBase::StreamWriteBufferAsBinary(std::ostream & file, const void *_buffer,
+    SizeType bufferSize, bool useBufferSize,
+    SizeType seekPos, bool useSeekPos )
 {
-  itkDebugMacro(<< "StreamingWriteBufferAsBinary called");
-
   const char *buffer = static_cast< const char * >( _buffer );
   // Offset into file
   std::streampos dataPos = this->GetDataPosition();
 
-  // compute the number of continuous bytes to be written
-  std::streamsize sizeOfChunk = 1;
-  unsigned int    movingDirection = 0;
-  do
+  if( ! useBufferSize )
     {
-    sizeOfChunk *= m_IORegion.GetSize(movingDirection);
-    ++movingDirection;
+    bufferSize = static_cast< std::streamsize >( m_IORegion.GetNumberOfPixels() )
+                                 * this->GetPixelSize();
     }
-  while ( movingDirection < m_IORegion.GetImageDimension()
-          && m_IORegion.GetSize(movingDirection - 1) == this->GetDimensions(movingDirection - 1) );
-  sizeOfChunk *= this->GetPixelSize();
 
-  ImageIORegion::IndexType currentIndex = m_IORegion.GetIndex();
-  while ( m_IORegion.IsInside(currentIndex) )
+  if( ! useSeekPos )
     {
+    ImageIORegion::IndexType currentIndex = m_IORegion.GetIndex();
     // calculate the position to seek to in the file
-    std::streampos seekPos = 0;
     size_t         subDimensionQuantity = 1;
     for ( unsigned int i = 0; i < m_IORegion.GetImageDimension(); ++i )
       {
@@ -201,40 +159,14 @@ bool StreamingImageIOBase::StreamWriteBufferAsBinary(std::ostream & file, const 
                                                          * currentIndex[i] );
       subDimensionQuantity *= this->GetDimensions(i);
       }
+    }
 
-    file.seekp(dataPos + seekPos, std::ios::beg);
-    this->WriteBufferAsBinary(file, buffer, sizeOfChunk);
+  file.seekp(dataPos + seekPos, std::ios::beg);
+  this->WriteBufferAsBinary(file, buffer, bufferSize);
 
-    // increment the buffer pointer
-    buffer += sizeOfChunk;
-
-    itkDebugMacro(
-      << "Writing " << sizeOfChunk << " of " <<  " ?? bytes for " << m_FileName << " at " << dataPos + seekPos
-      << " position in file");
-
-    if ( file.fail() )
-      {
-      itkExceptionMacro(<< "Fail writing");
-      }
-
-    if ( movingDirection == m_IORegion.GetImageDimension() )
-      {
-      break;
-      }
-
-    // increment index to next chunk
-    ++currentIndex[movingDirection];
-    for ( unsigned int i = movingDirection; i < m_IORegion.GetImageDimension() - 1; ++i )
-      {
-      // when reaching the end of the movingDirection dimension carry to
-      // higher dimensions
-      if ( static_cast< ImageIORegion::SizeValueType >( currentIndex[i] - m_IORegion.GetIndex(i) )
-           >=  m_IORegion.GetSize(i) )
-        {
-        currentIndex[i] = m_IORegion.GetIndex(i);
-        ++currentIndex[i + 1];
-        }
-      }
+  if ( file.fail() )
+    {
+    itkExceptionMacro(<< "Fail writing");
     }
 
   return true;
