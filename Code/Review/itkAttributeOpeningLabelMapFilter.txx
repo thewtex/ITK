@@ -58,9 +58,9 @@ AttributeOpeningLabelMapFilter<TImage, TAttributeAccessor>
   typename ImageType::LabelObjectContainerType::const_iterator it = labelObjectContainer.begin();
   while( it != labelObjectContainer.end() )
     {
-    typedef typename ImageType::LabelObjectType LabelObjectType;
-    typename LabelObjectType::LabelType label = it->first;
-    LabelObjectType * labelObject = it->second;
+    typedef typename ImageType::LabelObjectType LocalLabelObjectType;
+    typename LocalLabelObjectType::LabelType label = it->first;
+    LocalLabelObjectType * labelObject = it->second;
 
     if( ( !m_ReverseOrdering && accessor( labelObject ) < m_Lambda )
       || ( m_ReverseOrdering && accessor( labelObject ) > m_Lambda ) )

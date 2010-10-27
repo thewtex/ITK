@@ -41,8 +41,8 @@ AttributeRelabelLabelMapFilter<TImage, TAttributeAccessor>
 
   ImageType * output = this->GetOutput();
 
-  typedef typename ImageType::LabelObjectContainerType LabelObjectContainerType;
-  const LabelObjectContainerType & labelObjectContainer = output->GetLabelObjectContainer();
+  typedef typename ImageType::LabelObjectContainerType LocalLabelObjectContainerType;
+  const LocalLabelObjectContainerType & labelObjectContainer = output->GetLabelObjectContainer();
   typedef typename std::vector< typename LabelObjectType::Pointer > VectorType;
 
   ProgressReporter progress( this, 0, 2 * labelObjectContainer.size() );
@@ -50,7 +50,7 @@ AttributeRelabelLabelMapFilter<TImage, TAttributeAccessor>
   // get the label objects in a vector, so they can be sorted
   VectorType labelObjects;
   labelObjects.reserve( labelObjectContainer.size() );
-  for( typename LabelObjectContainerType::const_iterator it = labelObjectContainer.begin();
+  for( typename LocalLabelObjectContainerType::const_iterator it = labelObjectContainer.begin();
     it != labelObjectContainer.end();
     it++ )
     {
@@ -72,7 +72,7 @@ AttributeRelabelLabelMapFilter<TImage, TAttributeAccessor>
 //   progress.CompletedPixel();
 
   // and put back the objects in the map
-  typedef typename ImageType::LabelObjectType LabelObjectType;
+  // typedef typename ImageType::LabelObjectType LabelObjectType;
   output->ClearLabels();
   unsigned int label = 0;
   for( typename VectorType::const_iterator it = labelObjects.begin();

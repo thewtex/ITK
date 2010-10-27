@@ -49,8 +49,8 @@ AttributeKeepNObjectsLabelMapFilter<TImage, TAttributeAccessor>
   // set the background value for the second output - this is not done in the superclasses
   output2->SetBackgroundValue( output->GetBackgroundValue() );
 
-  typedef typename ImageType::LabelObjectContainerType LabelObjectContainerType;
-  const LabelObjectContainerType & labelObjectContainer = output->GetLabelObjectContainer();
+  typedef typename ImageType::LabelObjectContainerType LocalLabelObjectContainerType;
+  const LocalLabelObjectContainerType & labelObjectContainer = output->GetLabelObjectContainer();
   typedef typename std::vector< typename LabelObjectType::Pointer > VectorType;
 
   ProgressReporter progress( this, 0, 2 * labelObjectContainer.size() );
@@ -58,7 +58,7 @@ AttributeKeepNObjectsLabelMapFilter<TImage, TAttributeAccessor>
   // get the label objects in a vector, so they can be sorted
   VectorType labelObjects;
   labelObjects.reserve( labelObjectContainer.size() );
-  for( typename LabelObjectContainerType::const_iterator it = labelObjectContainer.begin();
+  for( typename LocalLabelObjectContainerType::const_iterator it = labelObjectContainer.begin();
     it != labelObjectContainer.end();
     it++ )
     {
