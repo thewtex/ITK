@@ -77,15 +77,20 @@ Allow skipping the style check for this commit with
 # KWStyle.
 check_for_KWStyle() {
 	KWStyle_path=$(git config hooks.KWStyle.path) ||
-	KWStyle_path=$(which KWStyle) ||
-	die "KWStyle executable was not found.
+	KWStyle_path=$(which KWStyle)
+	if [ $? != 0 ] ; then
+		echo "KWStyle executable was not found.
+
+  No style verification will be performed with KWStyle!
 
 Please install KWStyle or set the executable location with
 
   git config hooks.KWStyle.path /path/to/KWStyle
 
-See http://public.kitware.com/KWStyle/"
-
+See http://public.kitware.com/KWStyle/
+"
+		return 1
+	fi
 	KWStyle_conf=$(git config hooks.KWStyle.conf)
 	if ! test -f "$KWStyle_conf"; then
 		die "The file '$KWStyle_conf' does not exist.
@@ -245,8 +250,9 @@ elif $do_uncrustify; then
 # do_uncrustify will run KWStyle on the files incrementally so excessive
 # uncrustify merges do not have to occur.
 elif $do_KWStyle; then
-	check_for_KWStyle
-	run_KWStyle
+	if check_for_KWStyle; then
+		run_KWStyle
+	fi
 fi
 
 # vim: set filetype=sh tabstop=8 softtabstop=8 shiftwidth=8 noexpandtab :
