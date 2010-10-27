@@ -250,7 +250,6 @@ void CopyLineToImage(const typename TImage::Pointer output,
 
   for ( unsigned i = 0; i < size; i++ )
     {
-    assert(start + i >= 0);
     assert( start + i < LineOffsets.size() );
 #if 1
     output->SetPixel(StartIndex + LineOffsets[start + i], outbuffer[i + 1]);  //compat
@@ -437,7 +436,6 @@ int FillLineBuffer(typename TImage::ConstPointer input,
   // compat
   for ( unsigned i = 0; i < size; i++ )
     {
-    assert(start + i >= 0);
     assert( start + i < LineOffsets.size() );
     inbuffer[i + 1] = input->GetPixel(StartIndex + LineOffsets[start + i]);
     }
