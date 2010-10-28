@@ -154,6 +154,13 @@ public:
     this->Write(); \
   }
 
+  /** Aliased to the Write() method to be consistent with the rest of the
+   * pipeline. */
+  virtual void UpdateLargestPossibleRegion()
+  {
+    this->Write(); \
+  }
+
   /** Set the compression On or Off */
   itkSetMacro(UseCompression, bool);
   itkGetConstReferenceMacro(UseCompression, bool);
