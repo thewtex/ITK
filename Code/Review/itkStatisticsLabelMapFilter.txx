@@ -160,10 +160,26 @@ StatisticsLabelMapFilter< TImage, TFeatureImage >
   const double variance = ( sum2 - ( vcl_pow(sum, 2) / totalFreq ) ) / ( totalFreq - 1 );
   const double sigma = vcl_sqrt(variance);
   const double mean2 = mean * mean;
-  const double skewness = ( ( sum3 - 3.0 * mean * sum2 ) / totalFreq + 2.0 * mean * mean2 ) / ( variance * sigma );
-  const double kurtosis =
-    ( ( sum4 - 4.0 * mean * sum3 + 6.0 * mean2
-        * sum2 ) / totalFreq - 3.0 * mean2 * mean2 ) / ( variance * variance ) - 3.0;
+  double skewness;
+  if((variance * sigma) != 0.0)
+    {
+    skewness = ( ( sum3 - 3.0 * mean * sum2 ) / totalFreq + 2.0 * mean * mean2 ) / ( variance * sigma );
+    }
+  else
+    {
+    skewness = 0.0;
+    }
+  double kurtosis;
+  if(variance != 0.0)
+    {
+    kurtosis = ( ( sum4 - 4.0 * mean * sum3 + 6.0 * mean2
+                   * sum2 ) / totalFreq - 3.0 * mean2 * mean2 ) /
+      ( variance * variance ) - 3.0;
+    }
+  else
+    {
+    kurtosis = 0.0;
+    }
 
   // the median
   double median = 0;
