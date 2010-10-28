@@ -154,6 +154,14 @@ public:
     this->Write(); \
   }
 
+  /** Clear the PasteIORegion and write the image */
+  virtual void UpdateLargestPossibleRegion()
+  {
+    m_PasteIORegion = ImageIORegion(TInputImage::ImageDimension);
+    m_UserSpecifiedIORegion = false;
+    this->Write(); \
+  }
+
   /** Set the compression On or Off */
   itkSetMacro(UseCompression, bool);
   itkGetConstReferenceMacro(UseCompression, bool);
