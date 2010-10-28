@@ -960,6 +960,8 @@ ProcessObject
   DataObjectPointerArraySizeType ninputs = this->GetNumberOfValidRequiredInputs();
   if ( ninputs < m_NumberOfRequiredInputs )
     {
+    this->ResetPipeline();
+    this->RestoreInputReleaseDataFlags();
     itkExceptionMacro(<< "At least " << m_NumberOfRequiredInputs
                       << " inputs are required but only " << ninputs
                       << " are specified.");
@@ -977,11 +979,11 @@ ProcessObject
       this->RestoreInputReleaseDataFlags();
       throw excp;
       }
-    catch ( ExceptionObject & excp )
+    catch (...)
       {
       this->ResetPipeline();
       this->RestoreInputReleaseDataFlags();
-      throw excp;
+      throw;
       }
     }
 
