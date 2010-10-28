@@ -4,6 +4,16 @@ if(COMMAND CMAKE_POLICY)
   cmake_policy(SET CMP0003 NEW)
 endif(COMMAND CMAKE_POLICY)
 
+#-----------------------------------------------------------------------------
+# Sanity check -- prevent in-source builds
+#
+option(ALLOW_IN_SOURCE_BUILDS
+"Allow the user to build ITK inside the source tree"
+OFF)
+
+if(NOT ALLOW_IN_SOURCE_BUILDS)
+  include(${CMAKE_CURRENT_SOURCE_DIR}/CMake/PreventInSourceBuilds.cmake)
+endif(NOT ALLOW_IN_SOURCE_BUILDS)
 
 project(ITK)
 include_regular_expression("^([Nn]rrd|itk|vtk|vnl|vcl|vxl|v3p|f2c|netlib|ce|itpack|DICOM|meta|png|dbh|tif|jpeg|zlib|gdcm).*$")
@@ -191,6 +201,8 @@ endif(ITK_USE_TRANSFORM_IO_FACTORIES)
 option(ITK_USE_FLAT_DIRECTORY_INSTALL  "When ON, ITK will install all the header files in a single directory. This reduces the number of directories that must be searched for headers in projects based on ITK" OFF)
 mark_as_advanced(ITK_USE_FLAT_DIRECTORY_INSTALL)
 
+set(ITK_VERSIONED_INSTALL_DIRECTORY "InsightToolkit-${ITK_VERSION_MAJOR}.${ITK_VERSION_MINOR}")
+
 if(NOT ITK_INSTALL_BIN_DIR)
   # Solaris: unlike libraries, 64 bit executables should be installed in "bin${sun64}" only
   # if the 32 version is installed in  "bin/sparcv7" or "bin/i86", and a isaexec
@@ -224,15 +236,15 @@ if(NOT ITK_INSTALL_LIB_DIR)
     endif("${sun64}" STREQUAL "")
   endif(CMAKE_SYSTEM MATCHES "SunOS.*" AND CMAKE_SIZEOF_VOID_P EQUAL 8)
 
-  set(ITK_INSTALL_LIB_DIR "/lib/InsightToolkit${sun64}")
+  set(ITK_INSTALL_LIB_DIR "/lib/${ITK_VERSIONED_INSTALL_DIRECTORY}${sun64}")
 endif(NOT ITK_INSTALL_LIB_DIR)
 
 if(NOT ITK_INSTALL_DATA_DIR)
-  set(ITK_INSTALL_DATA_DIR "/share/InsightToolkit")
+  set(ITK_INSTALL_DATA_DIR "/share/${ITK_VERSIONED_INSTALL_DIRECTORY}")
 endif(NOT ITK_INSTALL_DATA_DIR)
 
 if(NOT ITK_INSTALL_INCLUDE_DIR)
-  set(ITK_INSTALL_INCLUDE_DIR "/include/InsightToolkit")
+  set(ITK_INSTALL_INCLUDE_DIR "/include/${ITK_VERSIONED_INSTALL_DIRECTORY}")
 endif(NOT ITK_INSTALL_INCLUDE_DIR)
 
 if(NOT ITK_INSTALL_PACKAGE_DIR)
@@ -305,7 +317,7 @@ set(CPACK_PACKAGE_VENDOR "ISC")
 set(CPACK_PACKAGE_VERSION_MAJOR "${ITK_VERSION_MAJOR}")
 set(CPACK_PACKAGE_VERSION_MINOR "${ITK_VERSION_MINOR}")
 set(CPACK_PACKAGE_VERSION_PATCH "${ITK_VERSION_PATCH}")
-set(CPACK_PACKAGE_INSTALL_DIRECTORY "InsightToolkit-${ITK_VERSION_MAJOR}.${ITK_VERSION_MINOR}")
+set(CPACK_PACKAGE_INSTALL_DIRECTORY "${ITK_VERSIONED_INSTALL_DIRECTORY}")
 # set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/README")
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/Copyright/ITKCopyright.txt")
 include(CPack)
@@ -525,6 +537,14 @@ if(QNANHIBIT_VALUE)
 else(QNANHIBIT_VALUE)
    set(QNANHIBIT 0 CACHE INTERNAL "The 22nd bit of 32-bit floating-point quiet NaN.")
 endif(QNANHIBIT_VALUE)
+
+#-----------------------------------------------------------------------------
+# turn on exceptions for floating point errors
+option(ITK_USE_FLOATINGPOINTEXCEPTIONS
+  "Enable Floating Point Exceptions for Testing"
+  OFF)
+mark_as_advanced(ITK_USE_FLOATINGPOINTEXCEPTIONS)
+
 
 include(CheckTypeSize)
 
