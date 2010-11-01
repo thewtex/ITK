@@ -51,6 +51,7 @@ namespace itk
  *
  * \ingroup ImageEnhancement Singlethreaded
  * \see DiscreteGaussianImageFilter
+ * \see DiscreteGaussianImageFilter - 2nd edit
  */
 template< typename TInputImage, typename TOutputImage = TInputImage >
 class ITK_EXPORT RecursiveGaussianImageFilter:
