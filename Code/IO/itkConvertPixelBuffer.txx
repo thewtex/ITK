@@ -174,7 +174,7 @@ ConvertPixelBuffer< InputPixelType, OutputPixelType, OutputConvertTraits >
 {
   // Weights convert from linear RGB to CIE luminance assuming a
   // modern monitor.  See Charles Pontyon's Colour FAQ
-  // http://www.inforamp.net/~poynton/notes/colour_and_gamma/ColorFAQ.html
+  // http://www.poynton.com/notes/colour_and_gamma/ColorFAQ.html
   // NOTE: The scale factors are converted to whole numbers for precision
 
   InputPixelType *endInput = inputData + size * 3;
@@ -201,19 +201,38 @@ ConvertPixelBuffer< InputPixelType, OutputPixelType, OutputConvertTraits >
 {
   // Weights convert from linear RGB to CIE luminance assuming a
   // modern monitor.  See Charles Pontyon's Colour FAQ
-  // http://www.inforamp.net/~poynton/notes/colour_and_gamma/ColorFAQ.html
+  // http://www.poynton.com/notes/colour_and_gamma/ColorFAQ.html
   // NOTE: The scale factors are converted to whole numbers for
   // precision
   InputPixelType *endInput = inputData + size * 4;
+  double alpha_divisor;
+
+  // the most common case, where InputComponentType == unsigned
+  // char, the alpha is in the range 0..255. I presume in the
+  // mythical world of rgba<X> for all integral scalar types X, alpha
+  // will be in the range 0..X::max().  In the even more fantastical
+  // world of rgb<float> or rgb<double> alpha would have to be 1.0
+  if(NumericTraits<InputPixelType>::is_integer)
+    {
+    alpha_divisor = static_cast<double>(NumericTraits<InputPixelType>::max());
+    }
+  else
+    {
+    alpha_divisor = static_cast<double>(NumericTraits<InputPixelType>::One);
+    }
+
 
   while ( inputData != endInput )
     {
+    // this is an ugly implementation of the simple equation
+    // greval = (.2125 * red + .7154 * green + .0721 * blue) / alpha
+    //
     double tempval =
-      (
-        ( 2125.0 * static_cast< double >( *inputData )
-          + 7154.0 * static_cast< double >( *( inputData + 1 ) )
-          + 0721.0 * static_cast< double >( *( inputData + 2 ) ) ) / 10000.0
-      ) * static_cast< double >( *( inputData + 3 ) );
+      ((2125.0 * static_cast< double >( * inputData)
+        + 7154.0 * static_cast< double >( *( inputData + 1 ))
+        + 0721.0 * static_cast< double >( *( inputData + 2 ))) / 10000.0)
+      * static_cast< double >(*( inputData + 3))
+      / alpha_divisor;
     inputData += 4;
     OutputComponentType val = static_cast< OutputComponentType >( tempval );
     OutputConvertTraits::SetNthComponent(0, *outputData++, val);
@@ -248,7 +267,7 @@ ConvertPixelBuffer< InputPixelType, OutputPixelType, OutputConvertTraits >
     {
     // Weights convert from linear RGB to CIE luminance assuming a
     // modern monitor.  See Charles Pontyon's Colour FAQ
-    // http://www.inforamp.net/~poynton/notes/colour_and_gamma/ColorFAQ.html
+    // http://www.poynton.com/notes/colour_and_gamma/ColorFAQ.html
     // NOTE: The scale factors are converted to whole numbers for
     // precision
     ptrdiff_t       diff = inputNumberOfComponents - 4;
