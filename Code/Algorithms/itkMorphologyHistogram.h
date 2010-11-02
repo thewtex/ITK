@@ -106,8 +106,8 @@ public:
     // too much memory. Other types are not usable with that algorithm
     return typeid( TInputPixel ) == typeid( unsigned char )
            || typeid( TInputPixel ) == typeid( signed char )
-           || typeid( TInputPixel ) == typeid( unsigned short )
-           || typeid( TInputPixel ) == typeid( signed short )
+//           || typeid( TInputPixel ) == typeid( unsigned short )
+//           || typeid( TInputPixel ) == typeid( signed short )
            || typeid( TInputPixel ) == typeid( bool );
   }
 
