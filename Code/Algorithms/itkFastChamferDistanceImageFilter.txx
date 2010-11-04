@@ -31,9 +31,10 @@ FastChamferDistanceImageFilter< TInputImage, TOutputImage >
 ::FastChamferDistanceImageFilter()
 {
   unsigned int i;
-  unsigned int dim = ImageDimension;
+  unsigned int t_dimension = static_cast< unsigned int >( ImageDimension );
+  unsigned int dim = t_dimension;
 
-  switch ( ImageDimension )
+  switch ( t_dimension )
     {
     // Note the fall through the cases to set all the components
     case 3:
@@ -44,10 +45,10 @@ FastChamferDistanceImageFilter< TInputImage, TOutputImage >
       m_Weights[--dim] = 0.92644;
       break;
     default:
-      itkWarningMacro(<< "Dimension " << ImageDimension << " with Default weights ");
-      for ( i = 1; i <= ImageDimension; i++ )
+      itkWarningMacro(<< "Dimension " << t_dimension << " with Default weights ");
+      for ( i = 1; i <= t_dimension; i++ )
         {
-        m_Weights[i - 1] = vcl_sqrt( (float)i );
+        m_Weights[i - 1] = vcl_sqrt( static_cast< float >( i ) );
         }
     }
 
