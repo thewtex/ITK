@@ -558,11 +558,11 @@ add_test(itkImageFileWriterPastingTest1 ${IO_TESTS}
             ${ITK_TEST_OUTPUT_DIR}/itkImageFileWriterPastingTest1_01.mha)
 
 
-add_test(itkImageFileWriterUpdateLargestPossibleRegionTest ${IO_TESTS}
-  --compare ${ITK_DATA_ROOT}/Input/cthead1.png
+midas_add_test(itkImageFileWriterUpdateLargestPossibleRegionTest ${IO_TESTS}
+  --compare MIDAS{cthead1.png.md5}
             ${ITK_TEST_OUTPUT_DIR}/itkImageFileWriterUpdateLargestPossibleRegionTest.png
   itkImageFileWriterUpdateLargestPossibleRegionTest
-            ${ITK_DATA_ROOT}/Input/cthead1.png
+            MIDAS{cthead1.png.md5}
             ${ITK_TEST_OUTPUT_DIR}/itkImageFileWriterUpdateLargestPossibleRegionTest.png)
 
 

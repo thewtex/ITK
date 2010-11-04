@@ -67,6 +67,13 @@ set(ITK_VERSION_STRING "${ITK_VERSION_MAJOR}.${ITK_VERSION_MINOR}")
 include(${ITK_SOURCE_DIR}/Utilities/itkThirdParty.cmake)
 
 #-----------------------------------------------------------------------------
+# Load macro to manage data download from MIDAS
+include(${ITK_SOURCE_DIR}/CMake/MIDAS.cmake)
+set(MIDAS_REST_URL "http://midas.kitware.com/api/rest")
+set(MIDAS_KEY_DIR "${PROJECT_SOURCE_DIR}/Testing/MIDAS_Keys")
+
+
+#-----------------------------------------------------------------------------
 # Test for some required system information.
 include(${CMAKE_ROOT}/Modules/CMakeBackwardCompatibilityC.cmake)
 include(${CMAKE_ROOT}/Modules/CMakeBackwardCompatibilityCXX.cmake)
