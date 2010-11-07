@@ -94,6 +94,7 @@ void RegisterTests()
   REGISTER_TEST(itkWeightedCovarianceSampleFilterTest2);
   REGISTER_TEST(itkImageToListSampleAdaptorTest);
   REGISTER_TEST(itkImageToListSampleAdaptorTest2);
+  REGISTER_TEST(itkImageToListSampleAdaptorTest3);
   REGISTER_TEST(itkPointSetToListSampleAdaptorTest);
   REGISTER_TEST(itkProbabilityDistributionTest);
 

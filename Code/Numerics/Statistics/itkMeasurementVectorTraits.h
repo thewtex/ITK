@@ -413,6 +413,13 @@ public:
   {
     m[0] = v;
   }
+
+  template< class TValueType >
+  static void  Assign(VariableLengthVector< TValueType > & m, const TValueType & v)
+  {
+    m[0] = v;
+  }
+
 };
 
 /** \class MeasurementVectorTraitsTypes
