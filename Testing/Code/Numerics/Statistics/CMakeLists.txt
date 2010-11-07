@@ -113,6 +113,7 @@ add_test(itkWeightedCovarianceSampleFilterTest ${STATISTICS_TESTS} itkWeightedCo
 add_test(itkWeightedCovarianceSampleFilterTest2 ${STATISTICS_TESTS} itkWeightedCovarianceSampleFilterTest2)
 add_test(itkImageToListSampleAdaptorTest ${STATISTICS_TESTS} itkImageToListSampleAdaptorTest)
 add_test(itkImageToListSampleAdaptorTest2 ${STATISTICS_TESTS} itkImageToListSampleAdaptorTest2)
+add_test(itkImageToListSampleAdaptorTest3 ${STATISTICS_TESTS} itkImageToListSampleAdaptorTest3)
 add_test(itkJointDomainImageToListSampleAdaptorTest ${STATISTICS_TESTS} itkJointDomainImageToListSampleAdaptorTest)
 add_test(itkPointSetToListSampleAdaptorTest ${STATISTICS_TESTS} itkPointSetToListSampleAdaptorTest)
 add_test(itkProbabilityDistributionTest ${STATISTICS_TESTS} itkProbabilityDistributionTest)
@@ -274,6 +275,7 @@ set(Statistics_SRCS
   itkWeightedCovarianceSampleFilterTest2.cxx
   itkImageToListSampleAdaptorTest.cxx
   itkImageToListSampleAdaptorTest2.cxx
+  itkImageToListSampleAdaptorTest3.cxx
   itkJointDomainImageToListSampleAdaptorTest.cxx
   itkPointSetToListSampleAdaptorTest.cxx
   itkProbabilityDistributionTest.cxx
