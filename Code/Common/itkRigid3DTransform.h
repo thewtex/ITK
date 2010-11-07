@@ -28,6 +28,11 @@ namespace itk
  * \brief Rigid3DTransform of a vector space (e.g. space coordinates)
  *
  * This transform applies a rotation and translation in 3D space.
+ *
+ * This is an abstract class and can not be instantiated. You should use one
+ * of its derived classes, that provide specific parameterizations of the
+ * transform parameters.
+ *
  * The transform is specified as a rotation matrix around a arbitrary center
  * and is followed by a translation.
  *
@@ -58,9 +63,6 @@ public:
 
   /** Run-time type information (and related methods). */
   itkTypeMacro(Rigid3DTransform, MatrixOffsetTransformBase);
-
-  /** New macro for creation of through a Smart Pointer */
-  itkNewMacro(Self);
 
   /** Dimension of the space. */
   itkStaticConstMacro(SpaceDimension, unsigned int, 3);
@@ -147,9 +149,6 @@ public:
 
   /** Get an inverse of this transform. */
   bool GetInverse(Self *inverse) const;
-
-  /** Return an inverse of this transform. */
-  virtual InverseTransformBasePointer GetInverseTransform() const;
 
   /**
    * Back transform by an affine transformation

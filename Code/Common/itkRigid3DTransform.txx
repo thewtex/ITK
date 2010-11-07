@@ -157,16 +157,6 @@ Rigid3DTransform< TScalarType >
   return this->Superclass::GetInverse(inverse);
 }
 
-// Return an inverse of this transform
-template< class TScalarType >
-typename Rigid3DTransform< TScalarType >::InverseTransformBasePointer
-Rigid3DTransform< TScalarType >
-::GetInverseTransform() const
-{
-  Pointer inv = New();
-
-  return this->GetInverse(inv) ? inv.GetPointer() : NULL;
-}
 
 // Back transform a point
 template< class TScalarType >

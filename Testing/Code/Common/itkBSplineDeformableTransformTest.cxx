@@ -32,7 +32,7 @@
 #include "itkBSplineDeformableTransform.h"
 #include "itkBSplineInterpolateImageFunction.h"
 
-#include "itkRigid3DTransform.h"
+#include "itkVersorRigid3DTransform.h"
 
 #include "itkTextOutput.h"
 
@@ -171,7 +171,7 @@ int itkBSplineDeformableTransformTest1()
   /**
    * Set a bulk transform
    */
-  typedef itk::Rigid3DTransform<CoordinateRepType> BulkTransformType;
+  typedef itk::VersorRigid3DTransform<CoordinateRepType> BulkTransformType;
   BulkTransformType::Pointer bulkTransform = BulkTransformType::New();
 
   // optional: set bulk transform parameters
