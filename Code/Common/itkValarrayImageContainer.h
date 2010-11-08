@@ -22,7 +22,7 @@
 #include "itkObjectFactory.h"
 
 #include <utility>
-#include <valarray>
+#include "valarray"
 
 namespace itk
 {
