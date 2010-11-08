@@ -33,13 +33,14 @@ HessianRecursiveGaussianImageFilter< TInputImage, TOutputImage >
 {
   m_NormalizeAcrossScale = false;
 
-  unsigned int numberOfSmoothingFilters = NumberOfSmoothingFilters;
+  const unsigned int numberOfSmoothingFilters = NumberOfSmoothingFilters;
 
   for ( unsigned int i = 0; i < numberOfSmoothingFilters; i++ )
     {
     GaussianFilterPointer filter = GaussianFilterType::New();
     filter->SetOrder(GaussianFilterType::ZeroOrder);
     filter->SetNormalizeAcrossScale(m_NormalizeAcrossScale);
+    filter->InPlaceOn();
     filter->ReleaseDataFlagOn();
     m_SmoothingFilters.push_back(filter);
     }
@@ -55,6 +56,13 @@ HessianRecursiveGaussianImageFilter< TInputImage, TOutputImage >
 
   m_DerivativeFilterA->SetInput( this->GetInput() );
   m_DerivativeFilterB->SetInput( m_DerivativeFilterA->GetOutput() );
+
+  m_DerivativeFilterA->InPlaceOff();
+  m_DerivativeFilterA->ReleaseDataFlagOff(); // output may be used
+                                             // more then once
+
+  m_DerivativeFilterB->InPlaceOn();
+  m_DerivativeFilterB->ReleaseDataFlagOn(); // output is only used once
 
   // Deal with the 2D case.
   if ( numberOfSmoothingFilters > 0 )
@@ -168,7 +176,7 @@ HessianRecursiveGaussianImageFilter< TInputImage, TOutputImage >
   const double weight =
     1.0 / ( ImageDimension * ( ImageDimension * ( ImageDimension + 1 ) / 2 ) );
 
-  unsigned int numberOfSmoothingFilters = NumberOfSmoothingFilters;
+  const unsigned int numberOfSmoothingFilters = NumberOfSmoothingFilters;
 
   for ( unsigned int i = 0; i < numberOfSmoothingFilters; i++ )
     {
@@ -209,6 +217,9 @@ HessianRecursiveGaussianImageFilter< TInputImage, TOutputImage >
         m_DerivativeFilterA->SetOrder(DerivativeFilterAType::SecondOrder);
         m_DerivativeFilterB->SetOrder(DerivativeFilterBType::ZeroOrder);
 
+        // only need the output of m_DerivativeFilterA once
+        m_DerivativeFilterB->InPlaceOn();
+
         unsigned int i = 0;
         unsigned int j = 0;
         // find the direction for the first filter.
@@ -245,6 +256,16 @@ HessianRecursiveGaussianImageFilter< TInputImage, TOutputImage >
         m_DerivativeFilterA->SetOrder(DerivativeFilterAType::FirstOrder);
         m_DerivativeFilterB->SetOrder(DerivativeFilterBType::FirstOrder);
 
+        if ( dimb < ImageDimension - 1 )
+          {
+          // can reuse the output of m_DerivativeFilterA
+          m_DerivativeFilterB->InPlaceOff();
+          }
+        else
+          {
+          m_DerivativeFilterB->InPlaceOn();
+          }
+
         unsigned int i = 0;
         unsigned int j = 0;
         while ( i < numberOfSmoothingFilters )
@@ -272,12 +293,12 @@ HessianRecursiveGaussianImageFilter< TInputImage, TOutputImage >
       if ( numberOfSmoothingFilters > 0 )
         {
         GaussianFilterPointer lastFilter = m_SmoothingFilters[ImageDimension - 3];
-        lastFilter->Update();
+        lastFilter->UpdateLargestPossibleRegion();
         derivativeImage = lastFilter->GetOutput();
         }
       else
         {
-        m_DerivativeFilterB->Update();
+        m_DerivativeFilterB->UpdateLargestPossibleRegion();
         derivativeImage = m_DerivativeFilterB->GetOutput();
         }
 
@@ -287,29 +308,75 @@ HessianRecursiveGaussianImageFilter< TInputImage, TOutputImage >
       // on the output image of vectors
       m_ImageAdaptor->SelectNthElement(element++);
 
-      ImageRegionIteratorWithIndex< RealImageType > it(
-        derivativeImage,
-        derivativeImage->GetRequestedRegion() );
-
-      ImageRegionIteratorWithIndex< OutputImageAdaptorType > ot(
-        m_ImageAdaptor,
-        m_ImageAdaptor->GetRequestedRegion() );
-
       const RealType spacingA = inputImage->GetSpacing()[dima];
       const RealType spacingB = inputImage->GetSpacing()[dimb];
+      m_ThreadingScaleFactor = spacingA * spacingB;
 
-      const RealType factor = spacingA * spacingB;
+      // Set up the multithreaded processing of the outputs
+      typename Superclass::ThreadStruct str;
+      str.Filter = this;
 
-      it.GoToBegin();
-      ot.GoToBegin();
-      while ( !it.IsAtEnd() )
-        {
-        ot.Set(it.Get() / factor);
-        ++it;
-        ++ot;
-        }
+      this->GetMultiThreader()->SetNumberOfThreads( this->GetNumberOfThreads() );
+      this->GetMultiThreader()->SetSingleMethod( Self::ThreaderCallback, &str );
+
+      // multithread the execution
+      this->GetMultiThreader()->SingleMethodExecute();
+
+      derivativeImage->ReleaseData();
       }
     }
+
+  // manually release memory in last filter in the pipeline
+  if (  numberOfSmoothingFilters > 0 )
+    {
+    m_SmoothingFilters[numberOfSmoothingFilters - 1]->GetOutput()->ReleaseData();
+    }
+  else
+    {
+    m_DerivativeFilterB->GetOutput()->ReleaseData();
+    }
+  m_DerivativeFilterA->GetOutput()->ReleaseData();
+}
+
+
+template< typename TInputImage, typename TOutputImage >
+void
+HessianRecursiveGaussianImageFilter< TInputImage, TOutputImage >
+::ThreadedGenerateData(const OutputImageRegionType &outputRegionForThread, int threadId )
+{
+
+  const typename TInputImage::ConstPointer inputImage( this->GetInput() );
+
+  const unsigned int numberOfSmoothingFilters = NumberOfSmoothingFilters;
+
+  typename RealImageType::Pointer derivativeImage;
+
+  // Deal with the 2D case.
+  if ( numberOfSmoothingFilters > 0 )
+    {
+    derivativeImage = m_SmoothingFilters[ImageDimension - 3]->GetOutput();
+    }
+  else
+    {
+    derivativeImage = m_DerivativeFilterB->GetOutput();
+    }
+
+  ImageRegionIteratorWithIndex< RealImageType > it( derivativeImage, outputRegionForThread );
+
+  ImageRegionIteratorWithIndex< OutputImageAdaptorType > ot( m_ImageAdaptor, outputRegionForThread );
+
+
+  const RealType factor = m_ThreadingScaleFactor;
+
+  it.GoToBegin();
+  ot.GoToBegin();
+  while ( !it.IsAtEnd() )
+    {
+    ot.Set(it.Get() / factor);
+    ++it;
+    ++ot;
+    }
+
 }
 
 template< typename TInputImage, typename TOutputImage >

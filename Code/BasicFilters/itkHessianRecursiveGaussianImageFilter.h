@@ -23,7 +23,6 @@
 #include "itkImage.h"
 #include "itkSymmetricSecondRankTensor.h"
 #include "itkPixelTraits.h"
-#include "itkCommand.h"
 
 namespace itk
 {
@@ -120,6 +119,8 @@ public:
   typedef typename          OutputImageType::PixelType       OutputPixelType;
   typedef typename PixelTraits< OutputPixelType >::ValueType OutputComponentType;
 
+  typedef typename Superclass::OutputImageRegionType OutputImageRegionType;
+
   /** Run-time type information (and related methods).   */
   itkTypeMacro(HessianRecursiveGaussianImageFilter, ImageToImageFilter);
 
@@ -162,10 +163,15 @@ protected:
   // Override since the filter produces the entire dataset
   void EnlargeOutputRequestedRegion(DataObject *output);
 
+  // Overide to be called multiple times for scaling and asignement to adaptor
+  void ThreadedGenerateData(const OutputImageRegionType &outputRegionForThread, int threadId );
+
 private:
 
   HessianRecursiveGaussianImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);                      //purposely not implemented
+
+  RealType                  m_ThreadingScaleFactor;
 
   GaussianFiltersArray      m_SmoothingFilters;
   DerivativeFilterAPointer  m_DerivativeFilterA;
