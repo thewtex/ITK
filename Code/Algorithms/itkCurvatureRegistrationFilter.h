@@ -21,7 +21,6 @@
 #include "itkPDEDeformableRegistrationFilter.h"
 #include "itkMeanSquareRegistrationFunction.h"
 
-#if defined( USE_FFTWF ) || defined( USE_FFTWD )
 #include "fftw3.h"
 
 namespace itk
@@ -204,7 +203,5 @@ private:
 #ifndef ITK_MANUAL_INSTANTIATION
 #include "itkCurvatureRegistrationFilter.txx"
 #endif
-
-#endif //defined(USE_FFTWF) || defined(USE_FFTWD)
 
 #endif
