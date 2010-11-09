@@ -18,6 +18,14 @@ target_link_libraries(ImageCompareCommand ITKIO)
 set(IMAGE_COMPARE_COMMAND "${EXECUTABLE_OUTPUT_PATH}/ImageCompareCommand" CACHE INTERNAL "ImageCompare path to be used by subprojects")
 
 #
+# Build ImageCompareCommand2: a helper application for comparing tests outputs.
+# This is a duplicate of ImageCompareCommand but with fixed argument parsing.
+#
+add_executable(ImageCompareCommand2 ImageCompareCommand2.cxx)
+target_link_libraries(ImageCompareCommand2 ITKIO)
+set(IMAGE_COMPARE_COMMAND2 "${EXECUTABLE_OUTPUT_PATH}/ImageCompareCommand2" CACHE INTERNAL "ImageCompare path to be used by subprojects")
+
+#
 # Build ImageCopy: a helper application for moving images around
 #
 add_executable(ImageCopy ImageCopy.cxx)
