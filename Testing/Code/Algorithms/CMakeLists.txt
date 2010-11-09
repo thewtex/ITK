@@ -277,7 +277,18 @@ add_test( itkQuadEdgeMeshCleanFilterTest
 add_test( itkQuadEdgeMeshNormalFilterTest ${ALGORITHMS_TESTS4}
   itkQuadEdgeMeshNormalFilterTest
   ${INPUTDATA}/mushroom.vtk
-  )
+  0
+)
+add_test( itkQuadEdgeMeshNormalFilterTest ${ALGORITHMS_TESTS4}
+  itkQuadEdgeMeshNormalFilterTest
+  ${INPUTDATA}/mushroom.vtk
+  1
+)
+add_test( itkQuadEdgeMeshNormalFilterTest ${ALGORITHMS_TESTS4}
+  itkQuadEdgeMeshNormalFilterTest
+  ${INPUTDATA}/mushroom.vtk
+  2
+)
 
 add_test( itkQuadEdgeMeshSmoothingTest0 ${ALGORITHMS_TESTS4}
   itkQuadEdgeMeshSmoothingTest
