@@ -217,203 +217,93 @@ itkSetPixelType( ImageIOBase *This,
                  ImageIOBase::IOComponentType ntype,
                  T itkNotUsed(dummy) )
 {
+  bool rval(true);
   if ( ptype == typeid( T ) )
     {
     This->SetNumberOfComponents(1);
-    This->SetComponentType(ntype);
     This->SetPixelType(ImageIOBase::SCALAR);
-    return true;
     }
   else if ( ptype == typeid( RGBPixel< T > ) )
     {
     This->SetNumberOfComponents(3);
-    This->SetComponentType(ntype);
     This->SetPixelType(ImageIOBase::RGB);
-    return true;
     }
   else if ( ptype == typeid( RGBAPixel< T > ) )
     {
     This->SetNumberOfComponents(4);
-    This->SetComponentType(ntype);
     This->SetPixelType(ImageIOBase::RGBA);
-    return true;
     }
-  else if ( ptype == typeid( Vector< T, 2 > ) )
-    {
-    This->SetNumberOfComponents(2);
-    This->SetPixelType(ImageIOBase::VECTOR);
-    This->SetComponentType(ntype);
-    return true;
+#define __VECTOR_CASE(vSize) \
+  else if (ptype == typeid( Vector< T, vSize > ) ) \
+    { \
+    This->SetNumberOfComponents(vSize); \
+    This->SetPixelType(ImageIOBase::VECTOR); \
+    } \
+  else if ( ptype == typeid( CovariantVector< T, vSize > ) ) \
+    { \
+    This->SetNumberOfComponents(vSize); \
+    This->SetPixelType(ImageIOBase::COVARIANTVECTOR); \
+    } \
+  else if ( ptype == typeid( FixedArray< T, vSize > ) ) \
+    { \
+    This->SetNumberOfComponents(vSize); \
+    This->SetPixelType(ImageIOBase::FIXEDARRAY); \
     }
-  else if ( ptype == typeid( Vector< T, 3 > ) )
-    {
-    This->SetNumberOfComponents(3);
-    This->SetPixelType(ImageIOBase::VECTOR);
-    This->SetComponentType(ntype);
-    return true;
+  // In response to ITK BUG11426, increase the length
+  // of vectors suppored from 6 to 12
+  __VECTOR_CASE(2)
+  __VECTOR_CASE(3)
+  __VECTOR_CASE(4)
+  __VECTOR_CASE(5)
+  __VECTOR_CASE(6)
+  __VECTOR_CASE(7)
+  __VECTOR_CASE(8)
+  __VECTOR_CASE(9)
+  __VECTOR_CASE(10)
+  __VECTOR_CASE(11)
+  __VECTOR_CASE(12)
+#undef __VECTOR_CASE
+#define __SYMMETRICSECONDRANKTENSOR_CASE(tSize,numComponents) \
+  else if ( ptype == typeid( SymmetricSecondRankTensor< T, tSize > ) ) \
+    { \
+    This->SetNumberOfComponents(numComponents); \
+    This->SetPixelType(ImageIOBase::SYMMETRICSECONDRANKTENSOR); \
     }
-  else if ( ptype == typeid( Vector< T, 4 > ) )
-    {
-    This->SetNumberOfComponents(4);
-    This->SetPixelType(ImageIOBase::VECTOR);
-    This->SetComponentType(ntype);
-    return true;
-    }
-  else if ( ptype == typeid( Vector< T, 5 > ) )
-    {
-    This->SetNumberOfComponents(5);
-    This->SetPixelType(ImageIOBase::VECTOR);
-    This->SetComponentType(ntype);
-    return true;
-    }
-  else if ( ptype == typeid( Vector< T, 6 > ) )
-    {
-    This->SetNumberOfComponents(6);
-    This->SetPixelType(ImageIOBase::VECTOR);
-    This->SetComponentType(ntype);
-    return true;
-    }
-  else if ( ptype == typeid( Vector< T, 7 > ) )
-    {
-    This->SetNumberOfComponents(7);
-    This->SetPixelType(ImageIOBase::VECTOR);
-    This->SetComponentType(ntype);
-    return true;
-    }
-  else if ( ptype == typeid( CovariantVector< T, 2 > ) )
-    {
-    This->SetNumberOfComponents(2);
-    This->SetPixelType(ImageIOBase::COVARIANTVECTOR);
-    This->SetComponentType(ntype);
-    return true;
-    }
-  else if ( ptype == typeid( CovariantVector< T, 3 > ) )
-    {
-    This->SetNumberOfComponents(3);
-    This->SetPixelType(ImageIOBase::COVARIANTVECTOR);
-    This->SetComponentType(ntype);
-    return true;
-    }
-  else if ( ptype == typeid( CovariantVector< T, 4 > ) )
-    {
-    This->SetNumberOfComponents(4);
-    This->SetPixelType(ImageIOBase::COVARIANTVECTOR);
-    This->SetComponentType(ntype);
-    return true;
-    }
-  else if ( ptype == typeid( CovariantVector< T, 5 > ) )
-    {
-    This->SetNumberOfComponents(5);
-    This->SetPixelType(ImageIOBase::COVARIANTVECTOR);
-    This->SetComponentType(ntype);
-    return true;
-    }
-  else if ( ptype == typeid( CovariantVector< T, 6 > ) )
-    {
-    This->SetNumberOfComponents(6);
-    This->SetPixelType(ImageIOBase::COVARIANTVECTOR);
-    This->SetComponentType(ntype);
-    return true;
-    }
-  else if ( ptype == typeid( CovariantVector< T, 7 > ) )
-    {
-    This->SetNumberOfComponents(7);
-    This->SetPixelType(ImageIOBase::COVARIANTVECTOR);
-    This->SetComponentType(ntype);
-    return true;
-    }
-  else if ( ptype == typeid( FixedArray< T, 2 > ) )
-    {
-    This->SetNumberOfComponents(2);
-    This->SetPixelType(ImageIOBase::FIXEDARRAY);
-    This->SetComponentType(ntype);
-    return true;
-    }
-  else if ( ptype == typeid( FixedArray< T, 3 > ) )
-    {
-    This->SetNumberOfComponents(3);
-    This->SetPixelType(ImageIOBase::FIXEDARRAY);
-    This->SetComponentType(ntype);
-    return true;
-    }
-  else if ( ptype == typeid( FixedArray< T, 4 > ) )
-    {
-    This->SetNumberOfComponents(4);
-    This->SetPixelType(ImageIOBase::FIXEDARRAY);
-    This->SetComponentType(ntype);
-    return true;
-    }
-  else if ( ptype == typeid( SymmetricSecondRankTensor< T, 2 > ) )
-    {
-    This->SetNumberOfComponents(3);
-    This->SetPixelType(ImageIOBase::SYMMETRICSECONDRANKTENSOR);
-    This->SetComponentType(ntype);
-    return true;
-    }
-  else if ( ptype == typeid( SymmetricSecondRankTensor< T, 3 > ) )
-    {
-    This->SetNumberOfComponents(6);
-    This->SetPixelType(ImageIOBase::SYMMETRICSECONDRANKTENSOR);
-    This->SetComponentType(ntype);
-    return true;
-    }
-  else if ( ptype == typeid( SymmetricSecondRankTensor< T, 4 > ) )
-    {
-    This->SetNumberOfComponents(10);
-    This->SetPixelType(ImageIOBase::SYMMETRICSECONDRANKTENSOR);
-    This->SetComponentType(ntype);
-    return true;
-    }
-  else if ( ptype == typeid( SymmetricSecondRankTensor< T, 5 > ) )
-    {
-    This->SetNumberOfComponents(15);
-    This->SetPixelType(ImageIOBase::SYMMETRICSECONDRANKTENSOR);
-    This->SetComponentType(ntype);
-    return true;
-    }
-  else if ( ptype == typeid( SymmetricSecondRankTensor< T, 6 > ) )
-    {
-    This->SetNumberOfComponents(21);
-    This->SetPixelType(ImageIOBase::SYMMETRICSECONDRANKTENSOR);
-    This->SetComponentType(ntype);
-    return true;
-    }
+  __SYMMETRICSECONDRANKTENSOR_CASE(2,3)
+  __SYMMETRICSECONDRANKTENSOR_CASE(3,6)
+  __SYMMETRICSECONDRANKTENSOR_CASE(4,10)
+  __SYMMETRICSECONDRANKTENSOR_CASE(5,15)
+  __SYMMETRICSECONDRANKTENSOR_CASE(6,21)
+#undef __SYMMETRICSECONDRANKTENSOR_CASE
   else if ( ptype == typeid( DiffusionTensor3D< T > ) )
     {
     This->SetNumberOfComponents(6);
-    This->SetComponentType(ntype);
     This->SetPixelType(ImageIOBase::DIFFUSIONTENSOR3D);
-    return true;
     }
-  else if ( ptype == typeid( Matrix< T, 2, 2 > ) )
-    {
-    This->SetNumberOfComponents(4);
-    This->SetComponentType(ntype);
-    This->SetPixelType(ImageIOBase::MATRIX);
-    return true;
+#define __MATRIX_CASE(nDim) \
+  else if ( ptype == typeid( Matrix< T, nDim, nDim > ) ) \
+    { \
+    This->SetNumberOfComponents(nDim*nDim); \
+    This->SetPixelType(ImageIOBase::MATRIX); \
     }
-  else if ( ptype == typeid( Matrix< T, 3, 3 > ) )
-    {
-    This->SetNumberOfComponents(9);
-    This->SetComponentType(ntype);
-    This->SetPixelType(ImageIOBase::MATRIX);
-    return true;
-    }
-  else if ( ptype == typeid( Matrix< T, 4, 4 > ) )
-    {
-    This->SetNumberOfComponents(16);
-    This->SetComponentType(ntype);
-    This->SetPixelType(ImageIOBase::MATRIX);
-    return true;
-    }
+  __MATRIX_CASE(2)
+  __MATRIX_CASE(3)
+  __MATRIX_CASE(4)
+#undef __MATRIX_CASE
   else if ( ptype == typeid( std::complex< T > ) )
     {
     This->SetNumberOfComponents(2);
-    This->SetComponentType(ntype);
     This->SetPixelType(ImageIOBase::COMPLEX);
-    return true;
     }
-  return false;
+  else
+    {
+    rval = false;
+    }
+  if(rval)
+    {
+    This->SetComponentType(ntype);
+    }
+  return rval;
 }
 
 bool ImageIOBase::SetPixelTypeInfo(const std::type_info & ptype)
