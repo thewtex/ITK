@@ -103,6 +103,7 @@ void MetaImageIO::ReadImageInformation()
 
   this->SetNumberOfComponents( m_MetaImage.ElementNumberOfChannels() );
 
+  itk::MetaDataDictionary & thisMetaDict = this->GetMetaDataDictionary();
   switch ( m_MetaImage.ElementType() )
     {
     default:
@@ -375,15 +376,6 @@ void MetaImageIO::ReadImageInformation()
     this->SetOrigin( i, m_MetaImage.Position(i) );
     }
 
-#if defined( ITKIO_DEPRECATED_METADATA_ORIENTATION )
-  MetaDataDictionary & thisMetaDict = this->GetMetaDataDictionary();
-#endif
-  /* TO - DO */
-  /*
-  Record type read - as in:
-  EncapsulateMetaData<std::string>(thisMetaDict, ITK_OnDiskStorageTypeName,
-                                        std::string(typeid(float).name()));
-  */
   if ( m_NumberOfDimensions == 3 )
     {
     SpatialOrientation::ValidCoordinateOrientationFlags coordOrient;
@@ -835,6 +827,19 @@ void MetaImageIO::ReadImageInformation()
     this->SetDirection(ii, directionAxis);
     }
 
+  std::string classname( this->GetNameOfClass() );
+  EncapsulateMetaData< std::string >(thisMetaDict, ITK_InputFilterName,
+                                     classname);
+  //
+  // save the metadatadictionary in the MetaImage header.
+  int dictFields = m_MetaImage.GetNumberOfAdditionalReadFields();
+  for ( int f = 0; f < dictFields; f++ )
+    {
+    std::string key( m_MetaImage.GetAdditionalReadFieldName(f) ),
+      std::string value ( m_MetaImage.GetAdditionalReadFieldValue(f) );
+    EncapsulateMetaData< std::string >( thisMetaDict,key,value );
+    }
+
   //
   // Read some metadata
   //
@@ -1116,11 +1121,9 @@ MetaImageIO
   //Write the image Information
   this->WriteImageInformation();
 
+  itk::MetaDataDictionary & thisMetaDict = this->GetMetaDataDictionary();
   if ( nDims == 3 )
     {
-#if defined( ITKIO_DEPRECATED_METADATA_ORIENTATION )
-    MetaDataDictionary & thisMetaDict = this->GetMetaDataDictionary();
-#endif
     SpatialOrientation::ValidCoordinateOrientationFlags coordOrient =
       SpatialOrientation::ITK_COORDINATE_ORIENTATION_INVALID;
 #if defined( ITKIO_DEPRECATED_METADATA_ORIENTATION )
@@ -1144,6 +1147,23 @@ MetaImageIO
 #if defined( ITKIO_DEPRECATED_METADATA_ORIENTATION )
     }
 #endif
+
+    // Save out the metadatadictionary key/value pairs as part of
+    // the metaio header.
+    std::vector< std::string > keys = thisMetaDict.GetKeys();
+    std::vector< std::string >::const_iterator keyIt;
+    for ( keyIt = keys.begin(); keyIt != keys.end(); ++keyIt )
+      {
+      std::string value;
+      ExposeMetaData< std::string >(thisMetaDict, *keyIt, value);
+      m_MetaImage.AddUserField( (*keyIt).c_str(),
+                                MET_STRING,
+                                value.size(),
+                                value.c_str(),
+                                false,
+                                -1 );
+      }
+
 
     switch ( coordOrient )
       {
