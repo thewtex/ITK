@@ -21,6 +21,8 @@
 #include "itkImageToParametricSpaceFilter.h"
 #include "itkNumericTraits.h"
 #include "itkImageIterator.h"
+#include "itkImageRegionConstIterator.h"
+#include "itkImageRegionConstIteratorWithIndex.h"
 #include "itkProgressReporter.h"
 
 namespace itk
@@ -120,7 +122,8 @@ ImageToParametricSpaceFilter< TInputImage, TOutputMesh >
   for ( unsigned int component = 0; component < PointDimension; component++ )
     {
     image = this->GetInput(component);
-    InputImageIterator it( image, image->GetRequestedRegion() );
+    typename itk::ImageRegionConstIterator< InputImageType >
+      it( image, image->GetRequestedRegion() );
 
     PointsContainerIterator point  = points->Begin();
 
@@ -128,7 +131,6 @@ ImageToParametricSpaceFilter< TInputImage, TOutputMesh >
     while ( !it.IsAtEnd() )
       {
       ( point.Value() )[component] = it.Get();
-      it.GetIndex();
       ++it;
       ++point;
       progress.CompletedPixel();
@@ -139,7 +141,8 @@ ImageToParametricSpaceFilter< TInputImage, TOutputMesh >
     {
     PointDataContainerIterator data   = pointData->Begin();
     image = this->GetInput(0);
-    InputImageIterator it( image, image->GetRequestedRegion() );
+    typename itk::ImageRegionConstIteratorWithIndex< InputImageType >
+      it( image, image->GetRequestedRegion() );
     it.GoToBegin();
     while ( !it.IsAtEnd() )
       {
