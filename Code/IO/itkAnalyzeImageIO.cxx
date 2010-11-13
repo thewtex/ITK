@@ -1164,11 +1164,6 @@ void AnalyzeImageIO::ReadImageInformation()
         }
       }
     }
-#if defined( ITKIO_DEPRECATED_METADATA_ORIENTATION )
-  itk::EncapsulateMetaData
-  < itk::SpatialOrientation::ValidCoordinateOrientationFlags >
-    (thisDic, ITK_CoordinateOrientation, coord_orient);
-#endif
 
   itk::EncapsulateMetaData< std::string >
     ( thisDic, ITK_FileOriginator,
@@ -1301,12 +1296,6 @@ AnalyzeImageIO
 
   itk::SpatialOrientation::ValidCoordinateOrientationFlags coord_orient =
     itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_INVALID;
-#if defined( ITKIO_DEPRECATED_METADATA_ORIENTATION )
-  if ( !itk::ExposeMetaData
-       < itk::SpatialOrientation::ValidCoordinateOrientationFlags >
-         (thisDic, ITK_CoordinateOrientation, coord_orient) )
-    {
-#endif
   typedef itk::SpatialOrientationAdapter::DirectionType DirectionType;
   DirectionType dir;
   unsigned int dims = this->GetNumberOfDimensions();
@@ -1339,10 +1328,6 @@ AnalyzeImageIO
     }
   coord_orient =
     itk::SpatialOrientationAdapter().FromDirectionCosines(dir);
-#if defined( ITKIO_DEPRECATED_METADATA_ORIENTATION )
-}
-
-#endif
   switch ( coord_orient )
     {
     case itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_RPI:
