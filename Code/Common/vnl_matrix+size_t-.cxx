@@ -17,6 +17,6 @@
  *=========================================================================*/
 #ifdef _WIN64
 #include "itkWin64.h"
-#include <vnl/vnl_vector.txx>
-VNL_VECTOR_INSTANTIATE(size_t);
+#include <vnl/vnl_matrix.txx>
+VNL_MATRIX_INSTANTIATE(size_t);
 #endif

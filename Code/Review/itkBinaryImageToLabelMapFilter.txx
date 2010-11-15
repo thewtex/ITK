@@ -18,6 +18,7 @@
 #ifndef __itkBinaryImageToLabelMapFilter_txx
 #define __itkBinaryImageToLabelMapFilter_txx
 
+#include "itkWin64.h"
 #include "itkBinaryImageToLabelMapFilter.h"
 #include "itkNumericTraits.h"
 

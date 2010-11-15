@@ -18,6 +18,7 @@
 #ifndef __itkBinaryContourImageFilter_txx
 #define __itkBinaryContourImageFilter_txx
 
+#include "itkWin64.h"
 #include "itkBinaryContourImageFilter.h"
 
 // don't think we need the indexed version as we only compute the

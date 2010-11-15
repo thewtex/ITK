@@ -19,6 +19,7 @@
 #pragma warning ( disable : 4786 )
 #endif
 
+#include "itkWin64.h"
 #include "itkBSplineInterpolationWeightFunction.h"
 
 /*

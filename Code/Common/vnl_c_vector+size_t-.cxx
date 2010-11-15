@@ -17,6 +17,21 @@
  *=========================================================================*/
 #ifdef _WIN64
 #include "itkWin64.h"
-#include <vnl/vnl_vector.txx>
-VNL_VECTOR_INSTANTIATE(size_t);
+#include <vnl/vnl_c_vector.txx>
+
+//#include <vnl_complex_traits+size_t-.h>
+#include <vnl/vnl_complex_traits.h>
+// The following macro is a complement to the ones
+// in vxl/core/vnl/vnl_complex_traits.h lines 34-49.
+#define VCL_DEFINE_SPECIALIZATION_MACRO(T)                                        \
+  VCL_DEFINE_SPECIALIZATION struct vnl_complex_traits< T > {                      \
+    enum { isreal = true };                                                       \
+    static T conjugate(T x) { return x; }                                         \
+    static vcl_complex< T > complexify(T x) { return vcl_complex< T >(x, (T)0); } \
+  }
+// end of macro
+VCL_DEFINE_SPECIALIZATION_MACRO(size_t);
+#undef VCL_DEFINE_SPECIALIZATION_MACRO
+
+VNL_C_VECTOR_INSTANTIATE_ordered(size_t);
 #endif

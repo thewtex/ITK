@@ -18,6 +18,7 @@
 #ifndef __itkLabelContourImageFilter_txx
 #define __itkLabelContourImageFilter_txx
 
+#include "itkWin64.h"
 #include "itkLabelContourImageFilter.h"
 
 // don't think we need the indexed version as we only compute the

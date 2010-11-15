@@ -18,6 +18,7 @@
 #ifndef __itkBresenhamLine_txx
 #define __itkBresenhamLine_txx
 
+#include "itkWin64.h"
 #include "itkBresenhamLine.h"
 
 namespace itk

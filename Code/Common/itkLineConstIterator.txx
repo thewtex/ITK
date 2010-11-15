@@ -18,6 +18,7 @@
 #ifndef __itkLineConstIterator_txx
 #define __itkLineConstIterator_txx
 
+#include "itkWin64.h"
 #include "itkLineConstIterator.h"
 
 namespace itk

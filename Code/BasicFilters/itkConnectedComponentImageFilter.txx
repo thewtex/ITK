@@ -18,6 +18,7 @@
 #ifndef __itkConnectedComponentImageFilter_txx
 #define __itkConnectedComponentImageFilter_txx
 
+#include "itkWin64.h"
 #include "itkConnectedComponentImageFilter.h"
 
 // don't think we need the indexed version as we only compute the

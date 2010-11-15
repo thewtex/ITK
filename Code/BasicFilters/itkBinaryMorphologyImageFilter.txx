@@ -18,6 +18,7 @@
 #ifndef __itkBinaryMorphologyImageFilter_txx
 #define __itkBinaryMorphologyImageFilter_txx
 
+#include "itkWin64.h"
 #include "itkImageRegionIteratorWithIndex.h"
 #include "itkNeighborhoodInnerProduct.h"
 #include "itkImageRegionConstIterator.h"

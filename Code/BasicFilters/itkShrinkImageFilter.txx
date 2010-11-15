@@ -28,6 +28,7 @@
 #ifndef __itkShrinkImageFilter_txx
 #define __itkShrinkImageFilter_txx
 
+#include "itkWin64.h"
 #include "itkShrinkImageFilter.h"
 #include "itkImageRegionIteratorWithIndex.h"
 #include "itkContinuousIndex.h"
