@@ -48,9 +48,6 @@ namespace itk
  *
  * The histogram type is a class which has to implements seven methods:
  * + a default constructor which takes no parameter.
- * + HistogramType * Clone() must produce a new identical histogram. It is
- * used internally to optimize the filter, by avoiding reverse iteration
- * over the image.
  * + void AddPixel( const InputPixelType &p ) is called when a new pixel
  * is added to the histogram.
  * + void RemovePixel( const InputPixelType &p ) is called when a pixel
@@ -138,6 +135,7 @@ public:
   void SetKernel(const KernelType & kernel);
 
   itkGetConstMacro(PixelsPerTranslation, unsigned long);
+
 protected:
   MovingHistogramImageFilterBase();
   ~MovingHistogramImageFilterBase() {}

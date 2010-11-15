@@ -20,8 +20,6 @@
 
 #include "itkMovingHistogramImageFilterBase.h"
 
-//#define zigzag
-
 namespace itk
 {
 /**
@@ -45,11 +43,8 @@ namespace itk
  * the structuring element (or kernel) type, and the histogram type.
  * The input and output image must have the same number of dimension.
  *
- * The histogram type is a class which has to implements seven methods:
+ * The histogram type is a class which has to implements six methods:
  * + a default constructor which takes no parameter.
- * + HistogramType * Clone() must produce a new identical histogram. It is
- * used internally to optimize the filter, by avoiding reverse iteration
- * over the image.
  * + void AddPixel( const InputPixelType &p ) is called when a new pixel
  * is added to the histogram.
  * + void RemovePixel( const InputPixelType &p ) is called when a pixel
@@ -132,6 +127,10 @@ public:
   typedef typename std::list< OffsetType > OffsetListType;
 
   typedef typename std::map< OffsetType, OffsetListType, typename OffsetType::LexicographicCompare > OffsetMapType;
+
+  /** ConfigurewHistogram can be used to configure the histogram. The default version just do nothing. */
+  virtual void ConfigureHistogram(THistogram &) {}
+
 protected:
   MovingHistogramImageFilter();
   ~MovingHistogramImageFilter() {}
@@ -141,18 +140,10 @@ protected:
                              outputRegionForThread,
                              int threadId);
 
-  /** NewHistogram must return an histogram object. It's also the good place to
-   * pass parameters to the histogram.
-   * A default version is provided which just create a new Historgram and return
-   * it.
-   */
-  virtual THistogram * NewHistogram();
-
-#ifndef zigzag
   // declare the type used to store the histogram
   typedef THistogram HistogramType;
 
-  void PushHistogram(HistogramType *histogram,
+  void PushHistogram(HistogramType & histogram,
                      const OffsetListType *addedList,
                      const OffsetListType *removedList,
                      const RegionType & inputRegion,
@@ -160,9 +151,6 @@ protected:
                      const InputImageType *inputImage,
                      const IndexType currentIdx);
 
-  void PrintHistogram(const HistogramType & H);
-
-#endif
 private:
   MovingHistogramImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);             //purposely not implemented
