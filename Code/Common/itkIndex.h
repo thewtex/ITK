@@ -71,7 +71,7 @@ public:
 
   /** Compatible Index and value typedef */
   typedef   Index< VIndexDimension > IndexType;
-  typedef   long                     IndexValueType;
+  typedef   ptrdiff_t                IndexValueType;
 
   /** Get the dimension (size) of the index. */
   static unsigned int GetIndexDimension() { return VIndexDimension; }
