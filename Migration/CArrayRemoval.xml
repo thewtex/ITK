@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--**
+**
+** CArrayRemoval.xml
+**
+** >>>>>>>>>>>>>>>>>>>>>>>>>>>>
+** THIS FILE HAS BEEN AUTOMATICALLY GENERATED. EDIT IT BEFORE COMMITING
+** <<<<<<<<<<<<<<<<<<<<<<<<<<<
+**
+**-->
+<Change>
+    <!--**
+    ** Title for the online migration page
+    **-->
+    <Title>
+      C Array Removal
+    </Title>
+
+    <!--**
+    ** Plain text description of the change
+    ** -->Extracted from git commit messages
+    **-->
+    <Description>
+      ---- 0ef0734ee9fa9e9a0c08dd94c7b8ed29a7207ead ----
+      ENH: don&apos;t use C array as method parameter or return value
+
+      There are several places in ITK where C arrays are used as method
+      parameter or return value instead of stronger array like types, like
+      itk::Index, itk::Size, itk::Offset, itk::FixedArray or itk::Array.
+      Using stronger types makes more efficient the error checking at compile
+      time and enhance the user integration by using the same types and
+      conventions than elsewhere.
+
+      More important, the C arrays are not wrappable without further
+      information that we don&apos;t have at wrap time. As a consequence, the
+      classes which are using them are at best partially usable in Python,
+      Java or Tcl. Using stronger types completely fix that problem.
+
+      Backward compatibility is fully preserved for input parameters, but
+      not for return values. Usually, return values will require an additional
+      call to GetDataPointer() to be fully compatible.
+    </Description>
+
+    <!--**
+    ** Sample code snippets
+    ** Extracted from git diff of changed files in Examples and Testing
+    **-->
+    <SampleCode>
+      <Old>
+        ---- Examples/Registration/DeformableRegistration16.cxx ----
+
+
+
+        ---- Examples/Registration/DeformableRegistration17.cxx ----
+        ---- Testing/Code/BasicFilters/itkImportImageTest.cxx ----
+        const double * spacingValue = import-&gt;GetSpacing();
+        const double * originValue = import-&gt;GetOrigin();
+        ---- Testing/Code/BasicFilters/itkWrapPadImageTest.cxx ----
+        ---- Testing/Code/IO/itkStimulateImageIOTest2.cxx ----
+        ---- Examples/Registration/DeformableRegistration16.cxx ----
+
+
+
+        ---- Testing/Code/BasicFilters/itkImportImageTest.cxx ----
+        const double * spacingValue = import-&gt;GetSpacing();
+        const double * originValue = import-&gt;GetOrigin();
+        ---- Examples/Registration/DeformableRegistration16.cxx ----
+
+
+
+        ---- Testing/Code/BasicFilters/itkImportImageTest.cxx ----
+        const double * spacingValue = import-&gt;GetSpacing();
+        const double * originValue = import-&gt;GetOrigin();
+      </Old>
+
+      <New>
+        ---- Examples/Registration/DeformableRegistration16.cxx ----
+        ---- Examples/Registration/DeformableRegistration17.cxx ----
+        ---- Testing/Code/BasicFilters/itkImportImageTest.cxx ----
+        const double * spacingValue = import-&gt;GetSpacing().GetDataPointer();
+        const double * originValue = import-&gt;GetOrigin().GetDataPointer();
+        ---- Testing/Code/BasicFilters/itkWrapPadImageTest.cxx ----
+        ---- Testing/Code/IO/itkStimulateImageIOTest2.cxx ----
+        ---- Examples/Registration/DeformableRegistration16.cxx ----
+        ---- Testing/Code/BasicFilters/itkImportImageTest.cxx ----
+        const double * spacingValue = import-&gt;GetSpacing().GetDataPointer();
+        const double * originValue = import-&gt;GetOrigin().GetDataPointer();
+        ---- Examples/Registration/DeformableRegistration16.cxx ----
+        ---- Testing/Code/BasicFilters/itkImportImageTest.cxx ----
+        const double * spacingValue = import-&gt;GetSpacing().GetDataPointer();
+        const double * originValue = import-&gt;GetOrigin().GetDataPointer();
+      </New>
+
+    </SampleCode>
+
+    <!--**
+    ** The change-ids for all commits in the topic branch
+    **-->
+    <Gerrit-ChangeId>
+      Id1f1993ab89fac86dfcd3225dd30e352f01a433e
+    </Gerrit-ChangeId>
+
+    <!--**
+    ** List of all changed files from the topic branch
+    **-->
+    <FileList>
+      Code/Algorithms/itkFEMRegistrationFilter.h
+      Code/Algorithms/itkFEMRegistrationFilter.txx
+      .../Algorithms/itkFastChamferDistanceImageFilter.h
+      .../itkMultiResolutionPDEDeformableRegistration.h
+      ...itkMultiResolutionPDEDeformableRegistration.txx
+      .../itkPDEDeformableRegistrationFilter.h
+      Code/BasicFilters/itkBilateralImageFilter.txx
+      .../BasicFilters/itkChangeInformationImageFilter.h
+      .../itkChangeInformationImageFilter.txx
+      ...itkDisplacementFieldJacobianDeterminantFilter.h
+      ...kDisplacementFieldJacobianDeterminantFilter.txx
+      Code/BasicFilters/itkExpandImageFilter.h
+      Code/BasicFilters/itkExpandImageFilter.txx
+      Code/BasicFilters/itkGaussianImageSource.h
+      Code/BasicFilters/itkGaussianImageSource.txx
+      ...tkGradientImageToBloxBoundaryPointImageFilter.h
+      ...GradientImageToBloxBoundaryPointImageFilter.txx
+      ...itkGrayscaleMorphologicalClosingImageFilter.txx
+      ...itkGrayscaleMorphologicalOpeningImageFilter.txx
+      Code/BasicFilters/itkImportImageFilter.h
+      Code/BasicFilters/itkImportImageFilter.txx
+      Code/BasicFilters/itkPadImageFilter.h
+      Code/BasicFilters/itkReconstructionImageFilter.txx
+      Code/BasicFilters/itkShrinkImageFilter.h
+      Code/BasicFilters/itkShrinkImageFilter.txx
+      Code/BasicFilters/itkVectorExpandImageFilter.h
+      Code/BasicFilters/itkVectorExpandImageFilter.txx
+      .../itkVectorGradientMagnitudeImageFilter.h
+      .../itkVectorGradientMagnitudeImageFilter.txx
+      Code/IO/itkStimulateImageIO.cxx
+      Code/IO/itkStimulateImageIO.h
+      .../itkBinaryMorphologicalClosingImageFilter.txx
+      .../itkDiscreteGaussianDerivativeImageFunction.h
+      ...iscreteGradientMagnitudeGaussianImageFunction.h
+      .../itkDiscreteHessianGaussianImageFunction.h
+      Code/Review/itkWarpHarmonicEnergyCalculator.h
+      Code/Review/itkWarpHarmonicEnergyCalculator.txx
+      Examples/Registration/DeformableRegistration16.cxx
+      Examples/Registration/DeformableRegistration17.cxx
+      .../itkCompareHistogramImageToImageMetricTest.cxx
+      ...nCoefficientHistogramImageToImageMetricTest.cxx
+      .../itkFastChamferDistanceImageFilterTest.cxx
+      ...itkGradientDifferenceImageToImageMetricTest.cxx
+      .../itkHistogramImageToImageMetricTest.cxx
+      .../Algorithms/itkMIRegistrationFunctionTest.cxx
+      ...anReciprocalSquareDifferenceImageMetricTest.cxx
+      ...alSquareDifferencePointSetToImageMetricTest.cxx
+      ...kMeanSquaresHistogramImageToImageMetricTest.cxx
+      .../Algorithms/itkMeanSquaresImageMetricTest.cxx
+      .../itkMeanSquaresPointSetToImageMetricTest.cxx
+      ...ultiResolutionPDEDeformableRegistrationTest.cxx
+      ...lInformationHistogramImageToImageMetricTest.cxx
+      .../itkNormalizedCorrelationImageMetricTest.cxx
+      ...malizedCorrelationPointSetToImageMetricTest.cxx
+      .../itkChangeInformationImageFilterTest.cxx
+      .../Code/BasicFilters/itkConstantPadImageTest.cxx
+      .../BasicFilters/itkGaussianImageSourceTest.cxx
+      Testing/Code/BasicFilters/itkImportImageTest.cxx
+      .../itkInterpolateImagePointsFilterTest.cxx
+      .../Code/BasicFilters/itkMirrorPadImageTest.cxx
+      .../itkVectorExpandImageFilterTest.cxx
+      Testing/Code/BasicFilters/itkWrapPadImageTest.cxx
+      Testing/Code/IO/itkStimulateImageIOTest2.cxx
+    </FileList>
+
+</Change>
