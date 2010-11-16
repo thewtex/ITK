@@ -92,8 +92,9 @@ int itkWrapPadImageTest(int, char* [] )
   wrapPad = itk::WrapPadImageFilter< ShortImage, ShortImage >::New();
   wrapPad->SetInput( if2 );
 
-  ShortImage::SizeValueType upperfactors[2] = { 0, 0};
-  ShortImage::SizeValueType lowerfactors[2] = { 0, 0};
+  typedef ShortImage::SizeType   SizeType;
+  SizeType upperfactors = {{ 0, 0 }};
+  SizeType lowerfactors = {{ 0, 0 }};
 
   wrapPad->SetPadLowerBound(lowerfactors);
   wrapPad->SetPadUpperBound(upperfactors);

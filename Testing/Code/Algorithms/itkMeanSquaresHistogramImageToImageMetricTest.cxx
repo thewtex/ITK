@@ -47,8 +47,8 @@ int itkMeanSquaresHistogramImageToImageMetricTest(int , char* [])
     typedef FixedImageSourceType::Pointer FixedImageSourcePointer;
 
     // Note: the following declarations are classical arrays
-    FixedImageType::SizeValueType fixedImageSize[] = {100,  100};
-    MovingImageType::SizeValueType movingImageSize[] = {100,  100};
+    FixedImageType::SizeType fixedImageSize = {{100,  100}};
+    MovingImageType::SizeType movingImageSize = {{100,  100}};
 
     FixedImageType::SpacingValueType fixedImageSpacing[]  = {1.0f, 1.0f};
     MovingImageType::SpacingValueType movingImageSpacing[] = {1.0f, 1.0f};

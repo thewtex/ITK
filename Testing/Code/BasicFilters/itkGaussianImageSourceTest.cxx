@@ -38,7 +38,7 @@ int itkGaussianImageSourceTest(int, char* [] )
 
   ImageType::SpacingValueType   spacing[] = { 1.2f, 1.3f, 1.4f };
   ImageType::PointValueType     origin[] = { 1.0f, 4.0f, 2.0f };
-  ImageType::SizeValueType      size[] = {  130,  150,  120 };
+  ImageType::SizeType           size = {{ 130,  150,  120 }};
 
   GaussianSourceType::ArrayType mean;
   mean[0] = size[0]/2.0f + origin[0];

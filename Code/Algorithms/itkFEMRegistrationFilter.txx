@@ -1376,11 +1376,11 @@ void FEMRegistrationFilter< TMovingImage, TFixedImage >::EnforceDiffeomorphism(f
     std::cout << " Enforcing diffeomorphism " << std::endl;
     // resize the vector field to full size
     typename FieldType::Pointer fullField = NULL;
-    ExpandFactorsType expandFactors[ImageDimension];
+    ExpandFactorsType expandFactors;
     bool resize = false;
     for ( unsigned int ef = 0; ef < ImageDimension; ef++ )
       {
-      ExpandFactorsType factor = (ExpandFactorsType)
+      float factor = (float)
                                  ( (float)m_FullImageSize[ef] / (float)m_CurrentLevelImageSize[ef] );
       expandFactors[ef] = factor;
       if ( factor != 1. ) { resize = true; }
@@ -1648,7 +1648,7 @@ void FEMRegistrationFilter< TMovingImage, TFixedImage >::WriteWarpedImage(const 
 
 template< class TMovingImage, class TFixedImage >
 typename FEMRegistrationFilter< TMovingImage, TFixedImage >::FieldPointer
-FEMRegistrationFilter< TMovingImage, TFixedImage >::ExpandVectorField(ExpandFactorsType *expandFactors,
+FEMRegistrationFilter< TMovingImage, TFixedImage >::ExpandVectorField(ExpandFactorsType & expandFactors,
                                                                       FieldType *field)
 {
   // re-size the vector field
@@ -1869,10 +1869,10 @@ void FEMRegistrationFilter< TMovingImage, TFixedImage >::MultiResSolve()
       }
     else if ( m_CurrentLevel < m_MaxLevel - 1 && m_Field )
       {
-      ExpandFactorsType expandFactors[ImageDimension];
+      ExpandFactorsType expandFactors;
       for ( unsigned int ef = 0; ef < ImageDimension; ef++ )
         {
-        expandFactors[ef] = (ExpandFactorsType)
+        expandFactors[ef] = (float)
                             ( (float)nextLevelSize[ef] / (float)m_CurrentLevelImageSize[ef] );
         }
       m_Field = ExpandVectorField(expandFactors, m_Field);

@@ -120,8 +120,7 @@ public:
    * the units are pixels.
    */
   itkSetMacro(Variance, VarianceArrayType);
-  itkGetConstMacro(Variance, const VarianceArrayType);
-  itkSetVectorMacro(Variance, double, VarianceArrayType::Length);
+  itkGetConstMacro(Variance, VarianceArrayType);
 
   /** Convenience method for setting the variance for all dimensions. */
   virtual void SetVariance(double variance)
@@ -149,8 +148,7 @@ public:
 
   /** Set/Get the derivative order for an individual dimension. */
   itkSetMacro(Order, OrderArrayType);
-  itkGetConstMacro(Order, const OrderArrayType);
-  itkSetVectorMacro(Order, unsigned int, OrderArrayType::Length);
+  itkGetConstMacro(Order, OrderArrayType);
 
   /** Convenience method for setting the order for all dimensions. */
   virtual void SetOrder(unsigned int order)

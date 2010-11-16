@@ -510,7 +510,7 @@ protected:
 
   /** Re-size the vector field (smaller to larger). */
   typedef  typename FieldType::Pointer FieldPointer;
-  FieldPointer ExpandVectorField(ExpandFactorsType *expandFactors, FieldType *f);
+  FieldPointer ExpandVectorField(ExpandFactorsType & expandFactors, FieldType *f);
 
   /** This is used for changing between mesh resolutions. */
   void      SampleVectorFieldAtNodes(SolverType & S);

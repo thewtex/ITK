@@ -119,12 +119,12 @@ protected:
   CommandIterationUpdate() {};
 
   // define ITK short-hand types
-  typedef short PixelType;
-  typedef float InternalPixelType;
-  typedef itk::Image< PixelType, 2 > ImageType;
+  typedef short                              PixelType;
+  typedef float                              InternalPixelType;
+  typedef itk::Image< PixelType, 2 >         ImageType;
   typedef itk::Image< InternalPixelType, 2 > InternalImageType;
-  typedef itk::Vector< float, 2 > VectorPixelType;
-  typedef itk::Image< VectorPixelType, 2 > DeformationFieldType;
+  typedef itk::Vector< float, 2 >            VectorPixelType;
+  typedef itk::Image< VectorPixelType, 2 >   DeformationFieldType;
   typedef itk::DemonsRegistrationFilter< InternalImageType,
     InternalImageType, DeformationFieldType> RegistrationFilterType;
 
@@ -164,8 +164,8 @@ class CommandResolutionLevelUpdate : public itk::Command
 {
 public:
   typedef  CommandResolutionLevelUpdate   Self;
-  typedef  itk::Command             Superclass;
-  typedef  itk::SmartPointer<Self>  Pointer;
+  typedef  itk::Command                   Superclass;
+  typedef  itk::SmartPointer<Self>        Pointer;
   itkNewMacro( Self );
 
 protected:
@@ -175,7 +175,7 @@ public:
   void Execute(itk::Object *caller, const itk::EventObject & event)
     {
     Execute( (const itk::Object *)caller, event);
-    };
+    }
   void Execute(const itk::Object *, const itk::EventObject & )
     {
     std::cout << "----------------------------------" << std::endl;
@@ -198,10 +198,10 @@ int main( int argc, char * argv [] )
 
   // define ITK short-hand types
   const unsigned int Dimension = 2;
-  typedef short PixelType;
-  typedef float InternalPixelType;
-  typedef itk::Image< PixelType, Dimension > ImageType;
-  typedef itk::Image< InternalPixelType, Dimension > InternalImageType;
+  typedef short                                                PixelType;
+  typedef float                                                InternalPixelType;
+  typedef itk::Image< PixelType, Dimension >                   ImageType;
+  typedef itk::Image< InternalPixelType, Dimension >           InternalImageType;
   typedef itk::CastImageFilter< ImageType, InternalImageType > ImageCasterType;
 
 
@@ -269,7 +269,8 @@ int main( int argc, char * argv [] )
   multires->SetFixedImage( targetImageCaster->GetOutput() );
   multires->SetMovingImage( matcher->GetOutput() );
   unsigned int nIterations[4] = {40, 40, 32, 32 };
-  multires->SetNumberOfIterations( nIterations );
+  MultiResRegistrationFilterType::NumberOfIterationsType nbIterations(nIterations, 4);
+  multires->SetNumberOfIterations( nbIterations );
 
   //
   // Create the Command observer and register it with the registration filter.
@@ -337,6 +338,3 @@ int main( int argc, char * argv [] )
 
   return EXIT_SUCCESS;
 }
-
-
-

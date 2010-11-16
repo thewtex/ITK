@@ -166,9 +166,8 @@ int itkFastChamferDistanceImageFilterTest(int, char* [] )
   float inweights[2];
   inweights[0]=0.926;
   inweights[1]=1.34;
-  const float *outweights;
   filter->SetWeights(inweights);
-  outweights =  filter->GetWeights();
+  const ChamferFilterType::WeightsType & outweights =  filter->GetWeights();
 
   std::cout << "outweights = " << outweights << std::endl;
 

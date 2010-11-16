@@ -71,11 +71,11 @@ int itkConstantPadImageTest(int, char* [] )
   FilterWatcher watch(constantPad);
   constantPad->SetInput( if2 );
 
-  typedef ShortImage::SizeValueType   SizeValueType;
+  typedef ShortImage::SizeType   SizeType;
   typedef ShortImage::IndexValueType  IndexValueType;
 
-  SizeValueType upperfactors[2] = { 0, 0};
-  SizeValueType lowerfactors[2] = { 0, 0};
+  SizeType upperfactors = {{ 0, 0 }};
+  SizeType lowerfactors = {{ 0, 0 }};
 
   constantPad->SetConstant(13);
   // check the method using the SizeType rather than the simple table type.

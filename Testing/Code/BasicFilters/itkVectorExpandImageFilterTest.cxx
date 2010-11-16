@@ -143,7 +143,7 @@ int itkVectorExpandImageFilterTest(int, char* [] )
 
   expander->SetExpandFactors( 5 );
 
-  unsigned int factors[ImageDimension] = {2,3};
+  float factors[ImageDimension] = {2,3};
   expander->SetExpandFactors( factors );
 
   typedef ImageType::PixelType PixelType;

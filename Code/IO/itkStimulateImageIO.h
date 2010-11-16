@@ -106,7 +106,9 @@ public:
    *  high_value will be displayed as white. Pixels with values within the display
    *  range are displayed with a grey value that is scaled linearly between the
    *  low_value and high_value. */
-  itkGetVectorMacro(DisplayRange, const float, 2);
+  itkGetConstMacro(HighDisplayValue, float);
+  itkGetConstMacro(LowDisplayValue, float);
+
 protected:
   StimulateImageIO();
   ~StimulateImageIO();
@@ -121,7 +123,8 @@ protected:
 private:
   std::string m_DataFileName;
   char m_SdtOrient[256];
-  float m_DisplayRange[2];
+  float m_HighDisplayValue;
+  float m_LowDisplayValue;
   float m_DisplayThresh;
   char m_FidName[256];
 

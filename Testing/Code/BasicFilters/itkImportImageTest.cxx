@@ -72,19 +72,19 @@ int itkImportImageTest(int, char* [] )
   const double data[2] = {1.0,1.0};
   import->SetSpacing(data);
 
-  const float data2[2] = {1.0,1.0};
+  double data2[] = {1.0,1.0};
   import->SetSpacing(data2);
 
-  const double * spacingValue = import->GetSpacing();
+  ImportImageFilter::SpacingType spacingValue = import->GetSpacing();
   std::cout << "import->GetSpacing(): " << spacingValue << std::endl;
 
   const double data3[2] = {1.0,1.0};
   import->SetOrigin(data3);
 
-  const float data4[2] = {1.0,1.0};
+  const double data4[2] = {1.0,1.0};
   import->SetOrigin(data4);
 
-  const double * originValue = import->GetOrigin();
+  ImportImageFilter::OriginType originValue = import->GetOrigin();
   std::cout << "import->GetOrigin(): " << originValue << std::endl;
 
   //

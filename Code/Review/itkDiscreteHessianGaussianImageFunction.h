@@ -128,7 +128,6 @@ public:
    * If UseImageSpacing is false then the units are pixels. */
   itkSetMacro(Variance, VarianceArrayType);
   itkGetConstMacro(Variance, const VarianceArrayType);
-  itkSetVectorMacro(Variance, double, VarianceArrayType::Length);
 
   /** Convenience method for setting the variance for all dimensions */
   virtual void SetVariance(double variance)

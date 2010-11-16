@@ -273,7 +273,8 @@ int main( int argc, char * argv [] )
   multires->SetFixedImage( targetImageCaster->GetOutput() );
   multires->SetMovingImage( matcher->GetOutput() );
   unsigned int nIterations[4] = {40, 40, 32, 32 };
-  multires->SetNumberOfIterations( nIterations );
+  MultiResRegistrationFilterType::NumberOfIterationsType nbIterations(nIterations, 4);
+  multires->SetNumberOfIterations( nbIterations );
 
   //
   // Create the Command observer and register it with the registration filter.

@@ -39,8 +39,8 @@ StimulateImageIO::StimulateImageIO()
   this->SetNumberOfDimensions(4);
   m_ByteOrder = BigEndian;
   m_FileType = Binary;
-  m_DisplayRange[0] = 0;
-  m_DisplayRange[1] = 0;
+  m_HighDisplayValue = 0;
+  m_LowDisplayValue = 0;
 }
 
 StimulateImageIO::~StimulateImageIO()
@@ -422,8 +422,8 @@ void StimulateImageIO::InternalReadImageInformation(std::ifstream & file)
       //low_value and high_value.
 
       sscanf(line, "%*s %f %f", range, range + 1);
-      m_DisplayRange[0] = range[0];
-      m_DisplayRange[1] = range[1];
+      m_LowDisplayValue = range[0];
+      m_HighDisplayValue = range[1];
       }
     else if ( text.find("fidName") < text.length() )
       {
@@ -670,6 +670,7 @@ void StimulateImageIO::Write(const void *buffer)
 void StimulateImageIO::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
-  os << indent << "\nDisplayRange: " << m_DisplayRange[0] << " " << m_DisplayRange[1];
+  os << indent << "LowDisplayValue: " << m_LowDisplayValue << std::endl;
+  os << indent << "HighDisplayValue: " << m_HighDisplayValue << std::endl;
 }
 } // end namespace itk

@@ -134,11 +134,11 @@ int itkMirrorPadImageTest(int, char* [] )
 
   mirrorPad->SetInput( if2 );
 
-  typedef ShortImage::SizeValueType    SizeValueType;
-  typedef ShortImage::IndexValueType   IndexValueType;
+  typedef ShortImage::SizeType   SizeType;
+  typedef ShortImage::IndexValueType  IndexValueType;
 
-  SizeValueType upperfactors[2] = { 0, 0};
-  SizeValueType lowerfactors[2] = { 0, 0};
+  SizeType upperfactors = {{ 0, 0 }};
+  SizeType lowerfactors = {{ 0, 0 }};
 
   mirrorPad->SetPadLowerBound(lowerfactors);
   mirrorPad->SetPadUpperBound(upperfactors);
