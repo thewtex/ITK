@@ -67,11 +67,11 @@ DanielssonDistanceMapImageFilter< TInputImage, TOutputImage >
  */
 template< class TInputImage, class TOutputImage >
 typename
-DanielssonDistanceMapImageFilter< TInputImage, TOutputImage >::OutputImageType *
+DanielssonDistanceMapImageFilter< TInputImage, TOutputImage >::InputImageType *
 DanielssonDistanceMapImageFilter< TInputImage, TOutputImage >
 ::GetVoronoiMap(void)
 {
-  return dynamic_cast< OutputImageType * >(
+  return dynamic_cast< InputImageType * >(
            this->ProcessObject::GetOutput(1) );
 }
 
@@ -97,7 +97,7 @@ DanielssonDistanceMapImageFilter< TInputImage, TOutputImage >
 ::PrepareData(void)
 {
   itkDebugMacro(<< "PrepareData Start");
-  OutputImagePointer voronoiMap = this->GetVoronoiMap();
+  typename InputImageType::Pointer voronoiMap = this->GetVoronoiMap();
 
   InputImagePointer inputImage  =
     dynamic_cast< const TInputImage  * >( ProcessObject::GetInput(0) );
@@ -126,7 +126,7 @@ DanielssonDistanceMapImageFilter< TInputImage, TOutputImage >
 
   distanceMap->Allocate();
 
-  typename OutputImageType::RegionType region  = voronoiMap->GetRequestedRegion();
+  typename InputImageType::RegionType region  = voronoiMap->GetRequestedRegion();
 
   // find the largest of the image dimensions
   typename TInputImage::SizeType size = region.GetSize();
@@ -140,7 +140,7 @@ DanielssonDistanceMapImageFilter< TInputImage, TOutputImage >
     }
 
   ImageRegionConstIteratorWithIndex< TInputImage > it(inputImage,  region);
-  ImageRegionIteratorWithIndex< TOutputImage >     ot(voronoiMap,  region);
+  ImageRegionIteratorWithIndex< TInputImage >     ot(voronoiMap,  region);
 
   it.GoToBegin();
   ot.GoToBegin();
@@ -226,13 +226,13 @@ DanielssonDistanceMapImageFilter< TInputImage, TOutputImage >
 ::ComputeVoronoiMap()
 {
   itkDebugMacro(<< "ComputeVoronoiMap Start");
-  OutputImagePointer voronoiMap          =  this->GetVoronoiMap();
-  OutputImagePointer distanceMap         =  this->GetDistanceMap();
-  VectorImagePointer distanceComponents  =  this->GetVectorDistanceMap();
+  typename InputImageType::Pointer voronoiMap =  this->GetVoronoiMap();
+  OutputImagePointer distanceMap              =  this->GetDistanceMap();
+  VectorImagePointer distanceComponents       =  this->GetVectorDistanceMap();
 
-  typename OutputImageType::RegionType region  = voronoiMap->GetRequestedRegion();
+  typename InputImageType::RegionType region  = voronoiMap->GetRequestedRegion();
 
-  ImageRegionIteratorWithIndex< OutputImageType > ot(voronoiMap,          region);
+  ImageRegionIteratorWithIndex< InputImageType > ot(voronoiMap,          region);
   ImageRegionIteratorWithIndex< VectorImageType > ct(distanceComponents,  region);
   ImageRegionIteratorWithIndex< OutputImageType > dt(distanceMap,         region);
 
@@ -335,7 +335,7 @@ DanielssonDistanceMapImageFilter< TInputImage, TOutputImage >
 
   // Specify images and regions.
 
-  OutputImagePointer voronoiMap             =  this->GetVoronoiMap();
+  InputImagePointer voronoiMap             =  this->GetVoronoiMap();
   VectorImagePointer distanceComponents     =  this->GetVectorDistanceMap();
 
   typename InputImageType::RegionType region  = voronoiMap->GetRequestedRegion();

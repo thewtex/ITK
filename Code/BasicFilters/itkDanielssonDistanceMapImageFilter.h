@@ -146,7 +146,7 @@ public:
    * Each object should be labeled by a number (larger than 0),
    * so the map has a value for each pixel corresponding to the label
    * of the closest object.  */
-  OutputImageType * GetVoronoiMap(void);
+  InputImageType * GetVoronoiMap(void);
 
   /** Get Distance map image.  The distance map is shown as a gray
    * value image depending on the pixel type of the output image.
