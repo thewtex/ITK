@@ -27,6 +27,12 @@ namespace itk
 namespace NeighborhoodAlgorithm
 {
 template< class TImage >
+ImageBoundaryFacesCalculator< TImage >::ImageBoundaryFacesCalculator()
+{
+  m_DuplicateOverlap = true;  
+}
+
+template< class TImage >
 typename ImageBoundaryFacesCalculator< TImage >::FaceListType
 ImageBoundaryFacesCalculator< TImage >
 ::operator()(const TImage *img, RegionType regionToProcess, RadiusType radius)
@@ -52,6 +58,9 @@ ImageBoundaryFacesCalculator< TImage >
   IndexType    nbStart = regionToProcess.GetIndex(); // data.
   RegionType   nbRegion;
 
+  IndexType    rrStart = rStart;
+  SizeType     rrSize = rSize;
+
   for ( i = 0; i < ImageDimension; ++i )
     {
     overlapLow = static_cast< long >( ( rStart[i] - radius[i] ) - bStart[i] );
@@ -62,14 +71,19 @@ ImageBoundaryFacesCalculator< TImage >
       {                                      // iteration along this face
       for ( j = 0; j < ImageDimension; ++j ) // define the starting index
         {                                    // and size of the face region
-        fStart[j] = rStart[j];
+        fStart[j] = rrStart[j];
         if ( j == i )
           {
           fSize[j] = -overlapLow;
+          if ( !m_DuplicateOverlap )
+            {
+            rrSize[j] += overlapLow;
+            rrStart[j] -= overlapLow;
+            }
           }
         else                                 // NOTE: this algorithm
           {                                  // results in duplicate
-          fSize[j] = rSize[j];               // pixels at corners between
+          fSize[j] = rrSize[j];               // pixels at corners between
           }                                  // adjacent faces.
 
         // Boundary region cannot be outside the region to process
@@ -78,7 +92,6 @@ ImageBoundaryFacesCalculator< TImage >
           fSize[j] = rSize[j];
           }
         }
-
       // avoid unsigned overflow if the non-boundary region is too small to
       // process
       if ( fSize[i] > nbSize[i] )
@@ -102,6 +115,8 @@ ImageBoundaryFacesCalculator< TImage >
           {
           fStart[j] = rStart[j] + static_cast< IndexValueType >( rSize[j] ) + overlapHigh;
           fSize[j] = -overlapHigh;
+          if ( !m_DuplicateOverlap )
+            rrSize[j] += overlapHigh;
 
           // Start of the boundary condition region cannot be to the
           // left of the region to process
@@ -113,8 +128,8 @@ ImageBoundaryFacesCalculator< TImage >
           }
         else
           {
-          fStart[j] = rStart[j];
-          fSize[j] = rSize[j];
+          fStart[j] = rrStart[j];
+          fSize[j] = rrSize[j];
           }
         }
       // avoid unsigned overflow if the non-boundary region is too small to
@@ -127,6 +142,7 @@ ImageBoundaryFacesCalculator< TImage >
         {
         nbSize[i] -= fSize[i];
         }
+
       fRegion.SetIndex(fStart);
       fRegion.SetSize(fSize);
       faceList.push_back(fRegion);

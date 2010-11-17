@@ -39,7 +39,15 @@ struct ITK_EXPORT ImageBoundaryFacesCalculator {
   typedef std::list< RegionType >                             FaceListType;
   itkStaticConstMacro(ImageDimension, unsigned int, TImage::ImageDimension);
 
+  ImageBoundaryFacesCalculator();
+  
+  void SetDuplicateOverlap(bool duplicate){ m_DuplicateOverlap = duplicate; }
+  bool GetDuplicateOverlap(){return m_DuplicateOverlap;}
+  void DuplicateOverlapOn (){ SetDuplicateOverlap( true ); }
+  void DuplicateOverlapOff (){ SetDuplicateOverlap( false ); }
+  
   FaceListType operator()(const TImage *, RegionType, RadiusType);
+  bool m_DuplicateOverlap;
 };
 
 /** \class CalculateOutputWrapOffsetModifiers
