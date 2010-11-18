@@ -580,6 +580,7 @@ void VoxBoCUBImageIO::ReadImageInformation()
         std::string code;
         iss >> code;
 
+#if 0  //HACK:  This is the wrong way to deal with orientation in ITKv4
         // Set the orientation code in the data dictionary
         OrientationMap::const_iterator it = m_OrientationMap.find(code);
         if ( it != m_OrientationMap.end() )
@@ -589,6 +590,8 @@ void VoxBoCUBImageIO::ReadImageInformation()
             dic, ITK_CoordinateOrientation, it->second);
           }
         }
+#else
+#endif
 
       else
         {
@@ -685,6 +688,8 @@ VoxBoCUBImageIO
   header << m_VB_BYTEORDER << ":\t"
          << ( ( ByteSwapper< short >::SystemIsBigEndian() ) ? m_VB_BYTEORDER_MSB : m_VB_BYTEORDER_LSB ) << std::endl;
 
+
+#if 0  //HACK:  This is the wrong way to deal with orientation in ITKv4
   // Write the orientation code
   MetaDataDictionary & dic = GetMetaDataDictionary();
   OrientationFlags     oflag = SpatialOrientation::ITK_COORDINATE_ORIENTATION_INVALID;
@@ -723,6 +728,8 @@ VoxBoCUBImageIO
         }
       }
     }
+#else
+#endif
   // Write the terminating characters
   header << "\f\n";
 
