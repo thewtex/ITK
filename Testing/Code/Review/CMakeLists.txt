@@ -61,6 +61,8 @@ set(ReviewTest_SRCS
   itkBinaryMorphologicalClosingImageFilterTest.cxx
   itkBinaryMorphologicalOpeningImageFilterTest.cxx
 
+  itkObjectToObjectMetricTest.cxx
+
   itkOptImageToImageMetricsTest.cxx
   itkOptMattesMutualInformationImageToImageMetricThreadsTest1.cxx
 
@@ -333,6 +335,10 @@ add_test(itkOptMattesImageToImageMetricsTest01
   0
   100
   )
+
+add_test(itkObjectToObjectMetricTest
+  ${REVIEW_TESTS} itkObjectToObjectMetricTest
+ )
 
 
 if(ITK_USE_MINC2 AND MINC2_FOUND)
