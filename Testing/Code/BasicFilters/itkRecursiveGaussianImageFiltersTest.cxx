@@ -220,14 +220,19 @@ int itkRecursiveGaussianImageFiltersTest(int, char* [] )
 
     const PixelType valueA = filter->GetOutput()->GetPixel( index );
 
-    const double sigmaB = 4.0;
+
+    filter->SetNormalizeAcrossScale( false );
+    const double sigmaB = 2.0;
     filter->SetSigma( sigmaB );
 
     filter->Update();
 
     const PixelType valueB = filter->GetOutput()->GetPixel( index );
 
-    if( vcl_fabs( (valueB - valueA) / valueA ) > 1e-4 )
+    // note: for scale space normalization, no scaling should occour
+    // The addtional scale-space testing is performed in a separate
+    // test.
+    if( vcl_fabs( valueB - valueA  ) > 1e-4 )
       {
       std::cout << "FAILED !" << std::endl;
       std::cerr << "Error, Normalization across scales is failing" << std::endl;
