@@ -77,7 +77,7 @@ bool Test(TImage * image, const typename TImage::RegionType & region, const type
 int itkNeighborhoodAlgorithmTest(int, char * [] )
 {
   const unsigned int dimension = 2;
-  typedef int PixelType;
+  typedef int                                 PixelType;
   typedef itk::Image<PixelType, dimension>    ImageType;
   typedef ImageType::RegionType               RegionType;
   typedef ImageType::IndexType                IndexType;
