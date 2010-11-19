@@ -238,6 +238,8 @@ add_test(itkImageRandomIteratorTest ${COMMON_TESTS} itkImageRandomIteratorTest)
 add_test(itkImageRandomIteratorTest2 ${COMMON_TESTS} itkImageRandomIteratorTest2
       ${TEMP}/itkImageRandomIteratorTest2Output.mha)
 add_test(itkImageRandomNonRepeatingIteratorWithIndexTest ${COMMON_TESTS} itkImageRandomNonRepeatingIteratorWithIndexTest)
+add_test(itkImageRandomNonRepeatingIteratorWithIndexTest2
+  ${COMMON_TESTS} itkImageRandomNonRepeatingIteratorWithIndexTest2)
 add_test(itkImageRegionTest ${COMMON_TESTS} itkImageRegionTest)
 add_test(itkImageRegionExclusionIteratorWithIndexTest ${COMMON_TESTS} itkImageRegionExclusionIteratorWithIndexTest)
 add_test(itkImageReverseIteratorTest ${COMMON_TESTS} itkImageReverseIteratorTest)
@@ -330,6 +332,7 @@ add_test(itkMetaDataDictionaryTest ${COMMON_TESTS2} itkMetaDataDictionaryTest)
 add_test(itkMinimumDecisionRuleTest ${COMMON_TESTS2} itkMinimumDecisionRuleTest)
 add_test(itkMultiThreaderTest ${COMMON_TESTS2} itkMultiThreaderTest)
 add_test(itkNearestNeighborExtrapolateImageFunctionTest ${COMMON_TESTS2} itkNearestNeighborExtrapolateImageFunctionTest)
+add_test(itkNeighborhoodAlgorithmTest ${COMMON_TESTS2} itkNeighborhoodAlgorithmTest)
 add_test(itkNeighborhoodTest ${COMMON_TESTS2} itkNeighborhoodTest)
 add_test(itkNeighborhoodIteratorTest ${COMMON_TESTS2} itkNeighborhoodIteratorTest)
 add_test(itkNeighborhoodOperatorImageFunctionTest ${COMMON_TESTS2} itkNeighborhoodOperatorImageFunctionTest)
@@ -624,6 +627,7 @@ itkMetaDataDictionaryTest.cxx
 itkMinimumDecisionRuleTest.cxx
 itkMultiThreaderTest.cxx
 itkNearestNeighborExtrapolateImageFunctionTest.cxx
+itkNeighborhoodAlgorithmTest.cxx
 itkNeighborhoodTest.cxx
 itkNeighborhoodIteratorTest.cxx
 itkNeighborhoodOperatorImageFunctionTest.cxx
