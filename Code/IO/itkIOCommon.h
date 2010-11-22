@@ -36,7 +36,7 @@ namespace itk
    * \ingroup IOFilters
    *
    */
-class ITK_EXPORT IOCommon
+class ITKIO_EXPORT IOCommon
 {
 public:
   typedef enum {

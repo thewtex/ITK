@@ -69,7 +69,7 @@ namespace itk
  * (http://www.ia.unc.edu/~styner/docs/StynerTR97.pdf)
  */
 
-class ITK_EXPORT MultivariateLegendrePolynomial
+class ITKNumerics_EXPORT MultivariateLegendrePolynomial
 {
 public:
   typedef MultivariateLegendrePolynomial Self;

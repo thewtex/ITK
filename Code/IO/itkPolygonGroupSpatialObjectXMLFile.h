@@ -34,7 +34,7 @@ typedef PolygonGroupSpatialObject< 3 > PGroupSpatialObjectType;
  * Reads an XML-format file containing a list of polygons, and
  * creates a corresponding PolygonGroupSpatialObject
  */
-class PolygonGroupSpatialObjectXMLFileReader:
+class ITKIO_EXPORT PolygonGroupSpatialObjectXMLFileReader:
   public XMLReader< PGroupSpatialObjectType >
 {
 public:

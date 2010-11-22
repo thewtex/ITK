@@ -47,7 +47,7 @@ namespace itk
  * \sa MeshRegion
  */
 
-class ITK_EXPORT ImageIORegion:public Region
+class ITKIO_EXPORT ImageIORegion:public Region
 {
 public:
   /** Standard class typedefs. */
