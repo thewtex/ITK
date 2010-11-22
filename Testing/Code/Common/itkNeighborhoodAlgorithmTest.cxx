@@ -25,15 +25,8 @@
 #include "itkNeighborhoodAlgorithm.h"
 
 template<class TImage>
-bool Test(TImage * image, const typename TImage::RegionType & region, const typename TImage::SizeType & radius)
+bool ImageBoundaryFaceCalculatorTest(TImage * image, const typename TImage::RegionType & region, const typename TImage::SizeType & radius)
 {
-  int m = 0;
-  itk::ImageRegionIterator<TImage> iter(image, image->GetBufferedRegion());
-  for(iter.GoToBegin(); !iter.IsAtEnd(); ++iter)
-  {
-    iter.Set(m++);
-  }
-
   typedef itk::NeighborhoodAlgorithm::ImageBoundaryFacesCalculator<TImage> FaceCalculatorType;
   typedef typename FaceCalculatorType::FaceListType FaceListType;
   FaceCalculatorType faceCalculator;
@@ -44,13 +37,7 @@ bool Test(TImage * image, const typename TImage::RegionType & region, const type
     {
     std::cout<<"Number of pixels : "<<fit->GetNumberOfPixels()<<std::endl;
     std::cout<<*fit<<std::endl;
-    itk::ImageRegionIterator<TImage> it(image, *fit);
-    for(it.GoToBegin(); !it.IsAtEnd(); ++it)
-      {
-      std::cout<<it.Get()<<std::endl;
-      }
     }
-
 
   image->FillBuffer(0);
   for(typename FaceListType::iterator fit = faceList.begin(); fit != faceList.end(); ++fit)
@@ -74,14 +61,13 @@ bool Test(TImage * image, const typename TImage::RegionType & region, const type
     return true;
 }
 
-int itkNeighborhoodAlgorithmTest(int, char * [] )
+template<class TPixel, unsigned int VDimension>
+bool NeighborhoodAlgorithmTest()
 {
-  const unsigned int dimension = 2;
-  typedef int                                 PixelType;
-  typedef itk::Image<PixelType, dimension>    ImageType;
-  typedef ImageType::RegionType               RegionType;
-  typedef ImageType::IndexType                IndexType;
-  typedef ImageType::SizeType                 SizeType;
+  typedef itk::Image<TPixel, VDimension>      ImageType;
+  typedef typename ImageType::RegionType      RegionType;
+  typedef typename ImageType::IndexType       IndexType;
+  typedef typename ImageType::SizeType        SizeType;
 
   IndexType ind;
   ind.Fill(0);
@@ -94,20 +80,37 @@ int itkNeighborhoodAlgorithmTest(int, char * [] )
 
   RegionType region(ind, size);
 
-  ImageType::Pointer image = ImageType::New();
+  typename ImageType::Pointer image = ImageType::New();
   image->SetRegions(region);
   image->Allocate();
 
-  if ( !Test( image.GetPointer(), region, radius ))
-    return EXIT_FAILURE;
+  if ( !ImageBoundaryFaceCalculatorTest( image.GetPointer(), region, radius ))
+    return false;
 
   ind.Fill(1);
   size.Fill(4);
   region.SetIndex(ind);
   region.SetSize(size);
 
-  if ( !Test( image.GetPointer(), region, radius ))
-    return EXIT_FAILURE;
+  if ( !ImageBoundaryFaceCalculatorTest( image.GetPointer(), region, radius ))
+    return false;
+
+  return true;
+}
+
+int itkNeighborhoodAlgorithmTest(int, char * [] )
+{
+  if( !NeighborhoodAlgorithmTest<int, 1>( ) )
+      return EXIT_FAILURE;
+
+  if( !NeighborhoodAlgorithmTest<int, 2>( ) )
+      return EXIT_FAILURE;
+
+  if( !NeighborhoodAlgorithmTest<int, 3>( ) )
+      return EXIT_FAILURE;
+
+  if( !NeighborhoodAlgorithmTest<int, 4>( ) )
+      return EXIT_FAILURE;
 
   return EXIT_SUCCESS;
 }
