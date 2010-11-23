@@ -66,13 +66,13 @@ public:
   typedef typename SimplexMeshGeometry::IndexArray IndexArray;
 
   /** definition for a set of neighbor indices */
-  typedef std::set< unsigned long > NeighborSetType;
+  typedef std::set< size_t > NeighborSetType;
 
   /** */
   typedef typename NeighborSetType::iterator NeighborSetIterator;
 
   /** */
-  typedef std::vector< unsigned long > NeighborListType;
+  typedef std::vector< size_t > NeighborListType;
 
   /** */
   typedef typename TMeshTraits::PointType PointType;
@@ -96,7 +96,7 @@ public:
 
   /** map containing a SimplexMeshGeometry data object for each mesh
    * point */
-  typedef itk::MapContainer< unsigned long, SimplexMeshGeometry * > GeometryMapType;
+  typedef itk::MapContainer< size_t, SimplexMeshGeometry * > GeometryMapType;
 
   /** smartpointer def for the geometry map */
   typedef typename GeometryMapType::Pointer GeometryMapPointer;
@@ -129,10 +129,10 @@ public:
   itkGetConstReferenceMacro(GeometryData, GeometryMapPointer);
 
   /** Get the first free id for new cells */
-  itkSetMacro(LastCellId, unsigned long);
+  itkSetMacro(LastCellId, size_t);
 
   /** Set the id value valid for new cells */
-  itkGetConstMacro(LastCellId, unsigned long);
+  itkGetConstMacro(LastCellId, size_t);
 
   /**
    * copy all necessary information from passed object
@@ -146,7 +146,7 @@ public:
    * Note: This can destroy the simplex mesh structure! Better use the
    * simplex mesh modification or creation filters
    */
-  unsigned long AddEdge(unsigned long startPointId, unsigned long endPointId);
+  size_t AddEdge(PointIdentifier startPointId, PointIdentifier endPointId);
 
   /**
    * Add a new simplex mesh cell to the mesh by passing an AutoPointer of a
@@ -155,108 +155,108 @@ public:
    * Note: This can destroy the simplex mesh structure! You should use the
    * simplex mesh modification or creation filters.
    */
-  unsigned long AddFace(CellAutoPointer & cellPointer);
+  size_t AddFace(CellAutoPointer & cellPointer);
 
   /**
    * Replaces the cell specified by replaceIndex with the new cell passed by its
    * AutoPopinter
    */
-  unsigned long ReplaceFace(unsigned long replaceIndex, CellAutoPointer & cellPointer);
+  size_t ReplaceFace(size_t replaceIndex, CellAutoPointer & cellPointer);
 
   /**
    * Get the three direct neighbors of a point
    */
-  IndexArray GetNeighbors(unsigned long pointId) const;
+  IndexArray GetNeighbors(PointIdentifier pointId) const;
 
   /**
    * Get all neighbor points with a specified radius
    */
-  NeighborListType * GetNeighbors(unsigned long pointId, unsigned int radius, NeighborListType *list = NULL) const;
+  NeighborListType * GetNeighbors(PointIdentifier pointId, unsigned int radius, NeighborListType *list = NULL) const;
 
   /**
    * Add a neighbor to a point.
    * Note: This can destroy the simplex mesh topology!
    * Better use te simplex mesh creation filters.
    */
-  void AddNeighbor(unsigned long pointId, unsigned long neighborId);
+  void AddNeighbor(PointIdentifier pointId, size_t neighborId);
 
   /**
    * Replace a neighbor of a specific point by a new one
    */
-  void ReplaceNeighbor(unsigned long pointId, unsigned long oldNeighborId, unsigned long newNeighborIdx);
+  void ReplaceNeighbor(PointIdentifier pointId, size_t oldNeighborId, size_t newNeighborIdx);
 
   /**
    * Swap the order of two neighbors
    */
-  void SwapNeighbors(unsigned long pointId, unsigned long firstNeighborId, unsigned long secondNeighborId);
+  void SwapNeighbors(PointIdentifier pointId, size_t firstNeighborId, size_t secondNeighborId);
 
   /**
    * Set the geometry data for a specified point
    */
-  void SetGeometryData(unsigned long pointId, SimplexMeshGeometry *);
+  void SetGeometryData(PointIdentifier pointId, SimplexMeshGeometry *);
 
   /**
    * Set the geometry data for a specified point
    */
-  void SetBarycentricCoordinates(unsigned long idx, PointType values);
+  void SetBarycentricCoordinates(PointIdentifier idx, PointType values);
 
   /**
    * Set the barycentric coordinates for a specified point
    */
-  PointType GetBarycentricCoordinates(unsigned long idx) const;
+  PointType GetBarycentricCoordinates(PointIdentifier idx) const;
 
   /**
    * Set the reference metrics for a specified point
    */
-  void SetReferenceMetrics(unsigned long idx, PointType values);
+  void SetReferenceMetrics(PointIdentifier idx, PointType values);
 
   /**
    *  Return the reference metrics for the specified point
    */
-  PointType GetReferenceMetrics(unsigned long idx) const;
+  PointType GetReferenceMetrics(PointIdentifier idx) const;
 
   /**
    * Set the simplex angle for the specified point
    */
-  void SetPhi(unsigned long idx, double values);
+  void SetPhi(PointIdentifier idx, double values);
 
   /**
    * Get the simplex angle for the specified point
    */
-  double GetPhi(unsigned long idx) const;
+  double GetPhi(PointIdentifier idx) const;
 
   /**
    * Set the mean curvature for the specified point
    */
-  void SetMeanCurvature(unsigned long idx, double values);
+  void SetMeanCurvature(PointIdentifier idx, double values);
 
   /**
    * Get the mean curvature for the specified point
    */
-  double GetMeanCurvature(unsigned long idx) const;
+  double GetMeanCurvature(PointIdentifier idx) const;
 
   /**
    * Set the circum circles radius for the specified point
    */
-  void SetRadius(unsigned long idx, double values);
+  void SetRadius(PointIdentifier idx, double values);
 
   /**
    * Get the circum circles radius for the specified point
    */
-  double GetRadius(unsigned long idx) const;
+  double GetRadius(PointIdentifier idx) const;
 
   /**
    * Set the distance to the foot point for the specified point
    */
-  void SetDistance(unsigned long idx, double values);
+  void SetDistance(PointIdentifier idx, double values);
 
   /**
    * Get the distance to the foot point for the specified point
    */
-  double GetDistance(unsigned long idx) const;
+  double GetDistance(PointIdentifier idx) const;
 
   /** compute the normal vector in the specified mesh point */
-  CovariantVectorType ComputeNormal(unsigned long idx) const;
+  CovariantVectorType ComputeNormal(PointIdentifier idx) const;
 
 protected:
   //  /** Constructor for use by New() method. */
@@ -275,7 +275,8 @@ protected:
    * one cannot rely on the size of the map or the highest index when
    * cells are removed.
    */
-  unsigned long m_LastCellId;
+  size_t m_LastCellId;
+
 private:
   SimplexMesh(const Self &); //purposely not implemented
   //  void operator=(const Self&); //purposely not implemented

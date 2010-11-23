@@ -24,6 +24,7 @@
 #include "itkSliceIterator.h"
 #include "vnl/vnl_vector.h"
 #include "itkOffset.h"
+#include "itkIndex.h"
 #include <vector>
 #include <stdlib.h>
 #include <string.h>
@@ -82,7 +83,12 @@ public:
   typedef::itk::Size< VDimension > RadiusType;
 
   /** Offset type used to reference neighbor locations */
-  typedef Offset< VDimension > OffsetType;
+  typedef Offset< VDimension >                 OffsetType;
+  typedef typename OffsetType::OffsetValueType OffsetValueType;
+
+  /** Index and value typedef support. */
+  typedef Index< VDimension >                IndexType;
+  typedef typename IndexType::IndexValueType IndexValueType;
 
   /** External slice iterator type typedef support. */
   typedef SliceIterator< TPixel, Self > SliceIteratorType;
@@ -130,12 +136,12 @@ public:
 
   /** Returns the radius of the neighborhood along a specified
    * dimension. */
-  unsigned long GetRadius(const unsigned long n) const
+  SizeValueType GetRadius(const unsigned long n) const
   { return m_Radius[n]; }
 
   /** Returns the size (total length) of the neighborhood along
    * a specified dimension. */
-  unsigned long GetSize(const unsigned long n) const
+  SizeValueType GetSize(const unsigned long n) const
   { return m_Size[n]; }
 
   /** Returns the size (total length of sides) of the neighborhood. */
@@ -180,18 +186,18 @@ public:
 
   /** Sets the radius for the neighborhood. Overloaded to support an unsigned
    * long array. */
-  void SetRadius(const unsigned long *rad)
+  void SetRadius(const SizeValueType *rad)
   {
     SizeType s;
 
-    memcpy(s.m_Size, rad, sizeof( unsigned long ) * VDimension);
+    memcpy(s.m_Size, rad, sizeof( SizeValueType ) * VDimension);
     this->SetRadius(s);
   }
 
   /** Overloads SetRadius to allow a single long integer argument
    * that is used as the radius of all the dimensions of the
    * Neighborhood (resulting in a "square" neighborhood). */
-  void SetRadius(const unsigned long);
+  void SetRadius(const SizeValueType);
 
   /** Standard itk object method. */
   void Print(std::ostream & os) const
@@ -211,14 +217,14 @@ public:
 
   /** Returns the itk::Offset from the center of the Neighborhood to
       the requested neighbor index. */
-  OffsetType GetOffset(unsigned int i) const
+  OffsetType GetOffset(IndexValueType i) const
   { return m_OffsetTable[i]; }
 
-  virtual unsigned int GetNeighborhoodIndex(const OffsetType &) const;
+  virtual IndexValueType GetNeighborhoodIndex(const OffsetType &) const;
 
-  unsigned int GetCenterNeighborhoodIndex() const
+  IndexValueType GetCenterNeighborhoodIndex() const
   {
-    return static_cast< unsigned int >( this->Size() / 2 );
+    return static_cast< IndexValueType >( this->Size() / 2 );
   }
 
   std::slice GetSlice(unsigned int) const;

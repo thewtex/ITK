@@ -118,7 +118,7 @@ public:
   itkBooleanMacro(FullyConnected);
 
   // only set after completion
-  itkGetConstReferenceMacro(NumberOfObjects, unsigned long);
+  itkGetConstReferenceMacro(NumberOfObjects, SizeValueType);
 
   /**
    * Set/Get the value used as "background" in the output image.

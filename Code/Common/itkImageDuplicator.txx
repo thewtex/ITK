@@ -69,7 +69,7 @@ ImageDuplicator< TInputImage >
   m_Output->Allocate();
 
   // Do the copy
-  unsigned long size = 1;
+  ImageType::SizeValueType size = 1;
   for ( unsigned int i = 0; i < itkGetStaticConstMacro(ImageDimension); i++ )
     {
     size *= m_InputImage->GetBufferedRegion().GetSize()[i];

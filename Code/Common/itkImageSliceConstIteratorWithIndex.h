@@ -207,8 +207,8 @@ public:
   inline Self & operator--();
 
 private:
-  unsigned long m_PixelJump;
-  unsigned long m_LineJump;
+  SizeValueType m_PixelJump;
+  SizeValueType m_LineJump;
   unsigned int  m_Direction_A;
   unsigned int  m_Direction_B;
 };

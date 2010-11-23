@@ -99,7 +99,7 @@ SimplexMesh< TPixelType, VDimension, TMeshTraits >
 template< typename TPixelType, unsigned int VDimension, typename TMeshTraits >
 void
 SimplexMesh< TPixelType, VDimension, TMeshTraits >
-::SetBarycentricCoordinates(unsigned long idx, PointType value)
+::SetBarycentricCoordinates(PointIdentifier idx, PointType value)
 {
   SimplexMeshGeometry *geometry = m_GeometryData->GetElement(idx);
 
@@ -109,7 +109,7 @@ SimplexMesh< TPixelType, VDimension, TMeshTraits >
 template< typename TPixelType, unsigned int VDimension, typename TMeshTraits >
 typename SimplexMesh< TPixelType, VDimension, TMeshTraits >::PointType
 SimplexMesh< TPixelType, VDimension, TMeshTraits >
-::GetBarycentricCoordinates(unsigned long idx) const
+::GetBarycentricCoordinates(PointIdentifier idx) const
 {
   return m_GeometryData->GetElement(idx)->eps;
 }
@@ -117,7 +117,7 @@ SimplexMesh< TPixelType, VDimension, TMeshTraits >
 template< typename TPixelType, unsigned int VDimension, typename TMeshTraits >
 void
 SimplexMesh< TPixelType, VDimension, TMeshTraits >
-::SetReferenceMetrics(unsigned long idx, PointType value)
+::SetReferenceMetrics(PointIdentifier idx, PointType value)
 {
   SimplexMeshGeometry *geometry = m_GeometryData->GetElement(idx);
 
@@ -127,7 +127,7 @@ SimplexMesh< TPixelType, VDimension, TMeshTraits >
 template< typename TPixelType, unsigned int VDimension, typename TMeshTraits >
 typename SimplexMesh< TPixelType, VDimension, TMeshTraits >::PointType
 SimplexMesh< TPixelType, VDimension, TMeshTraits >
-::GetReferenceMetrics(unsigned long idx) const
+::GetReferenceMetrics(PointIdentifier idx) const
 {
   return m_GeometryData->GetElement(idx)->referenceMetrics;
 }
@@ -135,7 +135,7 @@ SimplexMesh< TPixelType, VDimension, TMeshTraits >
 template< typename TPixelType, unsigned int VDimension, typename TMeshTraits >
 void
 SimplexMesh< TPixelType, VDimension, TMeshTraits >
-::SetPhi(unsigned long idx, double value)
+::SetPhi(PointIdentifier idx, double value)
 {
   SimplexMeshGeometry *geometry = m_GeometryData->GetElement(idx);
 
@@ -145,7 +145,7 @@ SimplexMesh< TPixelType, VDimension, TMeshTraits >
 template< typename TPixelType, unsigned int VDimension, typename TMeshTraits >
 double
 SimplexMesh< TPixelType, VDimension, TMeshTraits >
-::GetPhi(unsigned long idx) const
+::GetPhi(PointIdentifier idx) const
 {
   SimplexMeshGeometry *geometry = m_GeometryData->GetElement(idx);
   PointType            test;
@@ -158,7 +158,7 @@ SimplexMesh< TPixelType, VDimension, TMeshTraits >
 template< typename TPixelType, unsigned int VDimension, typename TMeshTraits >
 void
 SimplexMesh< TPixelType, VDimension, TMeshTraits >
-::SetMeanCurvature(unsigned long idx, double value)
+::SetMeanCurvature(PointIdentifier idx, double value)
 {
   SimplexMeshGeometry *geometry = m_GeometryData->GetElement(idx);
 
@@ -168,7 +168,7 @@ SimplexMesh< TPixelType, VDimension, TMeshTraits >
 template< typename TPixelType, unsigned int VDimension, typename TMeshTraits >
 double
 SimplexMesh< TPixelType, VDimension, TMeshTraits >
-::GetMeanCurvature(unsigned long idx) const
+::GetMeanCurvature(PointIdentifier idx) const
 {
   return m_GeometryData->GetElement(idx)->meanCurvature;
 }
@@ -176,7 +176,7 @@ SimplexMesh< TPixelType, VDimension, TMeshTraits >
 template< typename TPixelType, unsigned int VDimension, typename TMeshTraits >
 void
 SimplexMesh< TPixelType, VDimension, TMeshTraits >
-::SetRadius(unsigned long idx, double value)
+::SetRadius(PointIdentifier idx, double value)
 {
   SimplexMeshGeometry *geometry = m_GeometryData->GetElement(idx);
 
@@ -186,7 +186,7 @@ SimplexMesh< TPixelType, VDimension, TMeshTraits >
 template< typename TPixelType, unsigned int VDimension, typename TMeshTraits >
 double
 SimplexMesh< TPixelType, VDimension, TMeshTraits >
-::GetRadius(unsigned long idx) const
+::GetRadius(PointIdentifier idx) const
 {
   return m_GeometryData->GetElement(idx)->circleRadius;
 }
@@ -194,7 +194,7 @@ SimplexMesh< TPixelType, VDimension, TMeshTraits >
 template< typename TPixelType, unsigned int VDimension, typename TMeshTraits >
 void
 SimplexMesh< TPixelType, VDimension, TMeshTraits >
-::SetDistance(unsigned long idx, double value)
+::SetDistance(PointIdentifier idx, double value)
 {
   SimplexMeshGeometry *geometry = m_GeometryData->GetElement(idx);
 
@@ -204,18 +204,18 @@ SimplexMesh< TPixelType, VDimension, TMeshTraits >
 template< typename TPixelType, unsigned int VDimension, typename TMeshTraits >
 double
 SimplexMesh< TPixelType, VDimension, TMeshTraits >
-::GetDistance(unsigned long idx) const
+::GetDistance(PointIdentifier idx) const
 {
   return m_GeometryData->GetElement(idx)->distance;
 }
 
 template< typename TPixelType, unsigned int VDimension, typename TMeshTraits >
-unsigned long
+size_t
 SimplexMesh< TPixelType, VDimension, TMeshTraits >
-::AddEdge(unsigned long startPointId, unsigned long endPointId)
+::AddEdge(PointIdentifier startPointId, PointIdentifier endPointId)
 {
   CellAutoPointer NewCellPointer(new LineType, true);
-  unsigned long   edgeId = m_LastCellId;
+  size_t          edgeId = m_LastCellId;
 
   NewCellPointer->SetPointId(0, startPointId);
   NewCellPointer->SetPointId(1, endPointId);
@@ -226,7 +226,7 @@ SimplexMesh< TPixelType, VDimension, TMeshTraits >
 }
 
 template< typename TPixelType, unsigned int VDimension, typename TMeshTraits >
-unsigned long
+size_t
 SimplexMesh< TPixelType, VDimension, TMeshTraits >
 ::AddFace(CellAutoPointer & cellPointer)
 {
@@ -236,9 +236,9 @@ SimplexMesh< TPixelType, VDimension, TMeshTraits >
 }
 
 template< typename TPixelType, unsigned int VDimension, typename TMeshTraits >
-unsigned long
+size_t
 SimplexMesh< TPixelType, VDimension, TMeshTraits >
-::ReplaceFace(unsigned long replaceIndex, CellAutoPointer & cellPointer)
+::ReplaceFace(size_t replaceIndex, CellAutoPointer & cellPointer)
 {
   this->GetCells()->DeleteIndex(replaceIndex);
   this->SetCell(replaceIndex, cellPointer);
@@ -300,7 +300,7 @@ SimplexMesh< TPixelType, VDimension, TMeshTraits >
 template< typename TPixelType, unsigned int VDimension, typename TMeshTraits >
 void
 SimplexMesh< TPixelType, VDimension, TMeshTraits >
-::SetGeometryData(unsigned long pointId, SimplexMeshGeometry *geometryData)
+::SetGeometryData(PointIdentifier pointId, SimplexMeshGeometry *geometryData)
 {
   if ( m_GeometryData->IndexExists(pointId) )
     {
@@ -312,7 +312,7 @@ SimplexMesh< TPixelType, VDimension, TMeshTraits >
 template< typename TPixelType, unsigned int VDimension, typename TMeshTraits >
 typename SimplexMesh< TPixelType, VDimension, TMeshTraits >::IndexArray
 SimplexMesh< TPixelType, VDimension, TMeshTraits >
-::GetNeighbors(unsigned long idx) const
+::GetNeighbors(PointIdentifier idx) const
 {
   return m_GeometryData->GetElement(idx)->neighborIndices;
 }
@@ -320,7 +320,7 @@ SimplexMesh< TPixelType, VDimension, TMeshTraits >
 template< typename TPixelType, unsigned int VDimension, typename TMeshTraits >
 typename SimplexMesh< TPixelType, VDimension, TMeshTraits >::NeighborListType *
 SimplexMesh< TPixelType, VDimension, TMeshTraits >
-::GetNeighbors(unsigned long idx, unsigned int radius, NeighborListType *list) const
+::GetNeighbors(PointIdentifier idx, unsigned int radius, NeighborListType *list) const
 {
   if ( list == NULL )
     {
@@ -376,13 +376,13 @@ SimplexMesh< TPixelType, VDimension, TMeshTraits >
 template< typename TPixelType, unsigned int VDimension, typename TMeshTraits >
 void
 SimplexMesh< TPixelType, VDimension, TMeshTraits >
-::AddNeighbor(unsigned long pointIdx, unsigned long neighborIdx)
+::AddNeighbor(PointIdentifier pointIdx, size_t neighborIdx)
 {
   SimplexMeshGeometry *data = m_GeometryData->GetElement(pointIdx);
 
   for ( int i = 0; i < 3; i++ )
     {
-    if ( data->neighborIndices[i] == ( (unsigned long)NumericTraits< unsigned long >::max() ) )
+    if ( data->neighborIndices[i] == ( (size_t)NumericTraits< size_t >::max() ) )
       {
       data->neighborIndices[i] = neighborIdx;
       break;
@@ -393,7 +393,7 @@ SimplexMesh< TPixelType, VDimension, TMeshTraits >
 template< typename TPixelType, unsigned int VDimension, typename TMeshTraits >
 void
 SimplexMesh< TPixelType, VDimension, TMeshTraits >
-::ReplaceNeighbor(unsigned long pointIdx, unsigned long oldIdx, unsigned long newIdx)
+::ReplaceNeighbor(PointIdentifier pointIdx, size_t oldIdx, size_t newIdx)
 {
   SimplexMeshGeometry *data = m_GeometryData->GetElement(pointIdx);
 
@@ -409,7 +409,7 @@ SimplexMesh< TPixelType, VDimension, TMeshTraits >
 template< typename TPixelType, unsigned int VDimension, typename TMeshTraits >
 void
 SimplexMesh< TPixelType, VDimension, TMeshTraits >
-::SwapNeighbors(unsigned long pointIdx, unsigned long firstIdx, unsigned long secondIdx)
+::SwapNeighbors(PointIdentifier pointIdx, size_t firstIdx, size_t secondIdx)
 {
   SimplexMeshGeometry *data = m_GeometryData->GetElement(pointIdx);
   int                  i;
@@ -438,7 +438,7 @@ SimplexMesh< TPixelType, VDimension, TMeshTraits >
 template< typename TPixelType, unsigned int VDimension, typename TMeshTraits >
 typename SimplexMesh< TPixelType, VDimension, TMeshTraits >::CovariantVectorType
 SimplexMesh< TPixelType, VDimension, TMeshTraits >
-::ComputeNormal(unsigned long idx) const
+::ComputeNormal(PointIdentifier idx) const
 {
   PointType p, n1, n2, n3;
 

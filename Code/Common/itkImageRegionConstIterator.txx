@@ -112,7 +112,7 @@ ImageRegionConstIterator< TImage >
       }
     }
   this->m_Offset = this->m_Image->ComputeOffset(ind);
-  m_SpanEndOffset = this->m_Offset + static_cast< long >( size[0] );
+  m_SpanEndOffset = this->m_Offset + static_cast< OffsetValueType >( size[0] );
   m_SpanBeginOffset = this->m_Offset;
 }
 
@@ -163,7 +163,7 @@ ImageRegionConstIterator< TImage >
     }
   this->m_Offset = this->m_Image->ComputeOffset(ind);
   m_SpanEndOffset = this->m_Offset + 1;
-  m_SpanBeginOffset = m_SpanEndOffset - static_cast< long >( size[0] );
+  m_SpanBeginOffset = m_SpanEndOffset - static_cast< OffsetValueType >( size[0] );
 }
 } // end namespace itk
 

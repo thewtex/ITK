@@ -445,7 +445,7 @@ BinaryImageToLabelMapFilter< TInputImage, TOutputImage >
 
   for ( unsigned i = 1; i < OutputImageDimension; i++ )
     {
-    if ( abs(Off[i]) > 1 )
+    if ( vnl_math_abs(Off[i]) > 1 )
       {
       return ( false );
       }

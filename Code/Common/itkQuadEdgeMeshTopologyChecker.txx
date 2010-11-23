@@ -47,15 +47,15 @@ QuadEdgeMeshTopologyChecker< TMesh >
   typename BoundaryEdges::Pointer boundaryEdges = BoundaryEdges::New();
 
   // Number of USED points
-  unsigned long numPoints = m_Mesh->ComputeNumberOfPoints();
+  IdentifierType numPoints = m_Mesh->ComputeNumberOfPoints();
   // Number of USED edges
-  unsigned long numEdges  = m_Mesh->ComputeNumberOfEdges();
+  IdentifierType numEdges  = m_Mesh->ComputeNumberOfEdges();
   // Number of USED faces
-  unsigned long numFaces  = m_Mesh->ComputeNumberOfFaces();
+  IdentifierType numFaces  = m_Mesh->ComputeNumberOfFaces();
   // Number of Boundaries
   typename BoundaryEdges::OutputType
   listOfBoundaries = boundaryEdges->Evaluate( ( *m_Mesh ) );
-  unsigned long numBounds = listOfBoundaries->size();
+  IdentifierType numBounds = listOfBoundaries->size();
   delete listOfBoundaries;
 
   /**
@@ -82,7 +82,7 @@ QuadEdgeMeshTopologyChecker< TMesh >
   // hence ( 2 - numBounds - numFaces + numEdges - numPoints ) must
   // be an odd number. Let's check it out:
   // Note that genus can take a negative value...
-  long twiceGenus = 2 - numBounds - numFaces + numEdges - numPoints;
+  ptrdiff_t twiceGenus = 2 - numBounds - numFaces + numEdges - numPoints;
 
   if ( twiceGenus % 2 )
     {
@@ -130,15 +130,15 @@ QuadEdgeMeshTopologyChecker< TMesh >
   Superclass::PrintSelf(os, indent);
 
   os << indent << "ExpectedNumberOfPoints: "
-     << static_cast< long >( m_ExpectedNumberOfPoints ) << std::endl;
+     << static_cast< ptrdiff_t >( m_ExpectedNumberOfPoints ) << std::endl;
   os << indent << "ExpectedNumberOfEdges: "
-     << static_cast< long >( m_ExpectedNumberOfEdges ) << std::endl;
+     << static_cast< ptrdiff_t >( m_ExpectedNumberOfEdges ) << std::endl;
   os << indent << "ExpectedNumberOfFaces: "
-     << static_cast< long >( m_ExpectedNumberOfFaces ) << std::endl;
+     << static_cast< ptrdiff_t >( m_ExpectedNumberOfFaces ) << std::endl;
   os << indent << "ExpectedNumberOfBoundaries: "
-     << static_cast< long >( m_ExpectedNumberOfBoundaries ) << std::endl;
+     << static_cast< ptrdiff_t >( m_ExpectedNumberOfBoundaries ) << std::endl;
   os << indent << "ExpectedGenus: "
-     << static_cast< long >( m_ExpectedGenus ) << std::endl;
+     << static_cast< ptrdiff_t >( m_ExpectedGenus ) << std::endl;
   os << indent << "Mesh: " << m_Mesh << std::endl;
 }
 }

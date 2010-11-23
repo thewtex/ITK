@@ -55,7 +55,7 @@ template< typename TInputMesh, typename TOutputMesh >
 void TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
 ::Initialize()
 {
-  const unsigned long *tp;
+  const TInputMesh::PointIdentifier *tp;
 
   const InputMeshType *input = this->GetInput(0);
 
@@ -387,7 +387,7 @@ TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
 {
   const InputMeshType *input = this->GetInput(0);
 
-  const unsigned long *tp;
+  const typename OutputMeshType::PointIdentifier *tp;
   InputPointType       v1, v2, v3;
 
   CellAutoPointer cellPointer;

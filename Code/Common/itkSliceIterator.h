@@ -63,7 +63,7 @@ public:
   {
     SliceIterator ans = *this;
 
-    ans.m_Pos = static_cast< unsigned long >( m_Slice.size() );
+    ans.m_Pos = static_cast< size_t >( m_Slice.size() );
     return ans;
   }
 
@@ -85,7 +85,7 @@ public:
 
   /** Returns the element at position n of the slice. Sets the
    * iterator to point to position n. */
-  TPixel & operator[](unsigned long n)
+  TPixel & operator[](size_t n)
   { return this->Loc(m_Pos = n); }
 
   /** Dereferences the iterator, returning the value that it points
@@ -120,10 +120,10 @@ public:
 
 private:
   /** Returns the value located at position n of the slice. */
-  TPixel & Loc(unsigned long n) const
+  TPixel & Loc(size_t n) const
   {
-    const unsigned long start  = static_cast< unsigned long >( m_Slice.start() );
-    const unsigned long stride = static_cast< unsigned long >( m_Slice.stride() );
+    const size_t start  = static_cast< size_t >( m_Slice.start() );
+    const size_t stride = static_cast< size_t >( m_Slice.stride() );
 
     return ( *m_ContainerPointer )[start + n * stride];
   }
@@ -132,7 +132,7 @@ private:
   TContainer *m_ContainerPointer;
 
   /** Current position within the slice. */
-  unsigned long m_Pos;
+  size_t m_Pos;
 
   /** Slice structure information. */
   std::slice m_Slice;

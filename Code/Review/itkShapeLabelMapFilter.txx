@@ -558,7 +558,7 @@ ShapeLabelMapFilter< TImage, TLabelImage >
       no[0] = 0;
       for( int i=0; i<ImageDimension-1; i++ )
         {
-        no[i+1] = vcl_abs(lno[i]);
+        no[i+1] = vnl_math_abs(lno[i]);
         }
       OffsetType dno = no; // offset for the diagonal
       dno[0] = 1;

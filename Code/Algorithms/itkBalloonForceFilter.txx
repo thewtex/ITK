@@ -267,8 +267,8 @@ BalloonForceFilter< TInputMesh, TOutputMesh >
     }
 
   typename TriCell::CellAutoPointer insertCell;
-  unsigned long        tripoints[3];
-  const unsigned long *tp;
+  InputMeshType::PointIdentifier        tripoints[3];
+  const InputMeshType::PointIdentifier *tp;
   float                x;
 
   for ( unsigned int i = 0; i < m_NumberOfCells; i++ )
@@ -598,7 +598,7 @@ void
 BalloonForceFilter< TInputMesh, TOutputMesh >
 ::ComputeDt()
 {
-  const unsigned long *tp;
+  const InputMeshType::PointIdentifier *tp;
 
   InputCellsContainerPointer  myCells = m_Locations->GetCells();
   InputCellsContainerIterator cells_it = myCells->Begin();
@@ -932,8 +932,8 @@ BalloonForceFilter< TInputMesh, TOutputMesh >
 ::ComputeOutput()
 {
   typename TriCell::CellAutoPointer insertCell;
-  unsigned long        tripoints[3];
-  const unsigned long *tp;
+  InputMeshType::PointIdentifier    tripoints[3];
+  const InputMeshType::PointIdentifier *tp;
   double               x;
 
   m_Output = this->GetOutput();
@@ -1194,7 +1194,7 @@ void
 BalloonForceFilter< TInputMesh, TOutputMesh >
 ::ComputeNormals()
 {
-  const unsigned long *tp;
+  const InputMeshType::PointIdentifier *tp;
   IPixelType           v1, v2, v3, v4;
 
   v1.Fill(0.);

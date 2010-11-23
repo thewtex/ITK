@@ -259,7 +259,7 @@ GaussianBlurImageFunction< TInputImage, TOutput >
   IndexType centerIndex;
   for ( unsigned int i = 0; i < itkGetStaticConstMacro(ImageDimension); i++ )
     {
-    centerIndex[i] = (unsigned long)( (float)m_InternalImage->GetBufferedRegion().GetSize()[i] / 2.0 );
+    centerIndex[i] = (IndexValueType)( (float)m_InternalImage->GetBufferedRegion().GetSize()[i] / 2.0 );
     }
 
   // first direction
@@ -369,7 +369,7 @@ GaussianBlurImageFunction< TInputImage, TOutput >
     typename GaussianFunctionType::InputType pt;
     typename NeighborhoodType::SizeType size;
     size.Fill(0);
-    size[direction] = (unsigned long)( m_Sigma[direction] * m_Extent[direction] );
+    size[direction] = (NeighborhoodType::SizeValueType)( m_Sigma[direction] * m_Extent[direction] );
 
     gaussianNeighborhood.SetRadius(size);
 
