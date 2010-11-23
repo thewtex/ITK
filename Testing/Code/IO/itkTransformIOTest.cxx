@@ -117,8 +117,6 @@ static int oneTest(const char *goodname,const char *badname)
     }
   Bogus->SetFixedParameters ( p );
 
-
-
   itk::TransformFileWriter::Pointer badwriter;
   itk::TransformFileReader::Pointer badreader;
   badreader = itk::TransformFileReader::New();
@@ -196,24 +194,12 @@ secondTest()
   try
     {
     reader->Update();
-    std::cerr << "FAILED to throw expected exception" << std::endl;
-    itk::TransformFileReader::TransformListType *list;
-    list = reader->GetTransformList();
-    itk::TransformFileReader::TransformListType::iterator lit =
-      list->begin();
-    while ( lit != list->end() )
-      {
-      (*lit)->Print ( std::cout );
-      lit++;
-      }
-    return EXIT_FAILURE;
     }
   catch( itk::ExceptionObject & excp )
     {
-    std::cerr << "EXPECTED Error while reading the transforms" << std::endl;
+    std::cerr << "Error while reading the transforms" << std::endl;
     std::cerr << excp << std::endl;
-    std::cout << "[SUCCESS]" << std::endl;
-    return EXIT_SUCCESS;
+    return EXIT_FAILURE;
     }
   return EXIT_SUCCESS;
 }
