@@ -34,7 +34,7 @@ static int oneTest(const char *goodname,const char *badname)
   unsigned int i;
   // Create an odd type of transform, and register it
   typedef itk::AffineTransform<double,4> AffineTransformType;
-  typedef itk::AffineTransform<double,6> AffineTransformTypeNotRegistered;
+  typedef itk::AffineTransform<double,10> AffineTransformTypeNotRegistered;
   itk::TransformFactory<AffineTransformType>::RegisterTransform();
   AffineTransformType::Pointer affine = AffineTransformType::New();
   AffineTransformType::InputPointType cor;
