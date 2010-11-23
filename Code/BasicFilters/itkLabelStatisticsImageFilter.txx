@@ -481,7 +481,7 @@ LabelStatisticsImageFilter< TInputImage, TLabelImage >
 }
 
 template< class TInputImage, class TLabelImage >
-unsigned long
+typename LabelStatisticsImageFilter< TInputImage, TLabelImage >::MapSizeType
 LabelStatisticsImageFilter< TInputImage, TLabelImage >
 ::GetCount(LabelPixelType label) const
 {

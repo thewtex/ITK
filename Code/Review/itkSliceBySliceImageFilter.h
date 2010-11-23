@@ -103,6 +103,8 @@ public:
   typedef typename TInputImage::PixelType  PixelType;
   typedef typename TInputImage::OffsetType OffsetType;
 
+  typedef typename TInputImage::IndexValueType  IndexValueType;
+
   typedef TOutputImage                     OutputImageType;
   typedef typename TOutputImage::PixelType OutputPixelType;
 
@@ -153,7 +155,7 @@ public:
    * used with the IterationEvent sent before the processing of each object. It contains
    * a relevant value only during the filter update.
    */
-  itkGetConstMacro(SliceIndex, long);
+  itkGetConstMacro(SliceIndex, IndexValueType);
 protected:
   SliceBySliceImageFilter();
   ~SliceBySliceImageFilter() {}
@@ -175,7 +177,7 @@ private:
 
   typename OutputFilterType::Pointer m_OutputFilter;
 
-  long m_SliceIndex;
+  IndexValueType m_SliceIndex;
 };
 }
 

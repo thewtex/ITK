@@ -305,8 +305,8 @@ HistogramMatchingImageFilter< TInputImage, TOutputImage, THistogramMeasurement >
   OutputIterator     outIter(output, outputRegionForThread);
 
   // support progress methods/callbacks
-  unsigned long updateVisits = 0;
-  unsigned long totalPixels = 0;
+  SizeValueType updateVisits = 0;
+  SizeValueType totalPixels = 0;
   if ( threadId == 0 )
     {
     totalPixels = outputRegionForThread.GetNumberOfPixels();
@@ -371,8 +371,8 @@ HistogramMatchingImageFilter< TInputImage, TOutputImage, THistogramMeasurement >
   typedef ImageRegionConstIterator< InputImageType > ConstIterator;
   ConstIterator iter( image, image->GetBufferedRegion() );
 
-  double   sum = 0.0;
-  long int count = 0;
+  double        sum = 0.0;
+  SizeValueType count = 0;
 
   minValue = static_cast< THistogramMeasurement >( iter.Get() );
   maxValue = minValue;

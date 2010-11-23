@@ -48,7 +48,7 @@ template< class TInputPixel >
 class MaximumAccumulator
 {
 public:
-  MaximumAccumulator(unsigned long) {}
+  MaximumAccumulator(size_t) {}
   ~MaximumAccumulator(){}
 
   inline void Initialize()

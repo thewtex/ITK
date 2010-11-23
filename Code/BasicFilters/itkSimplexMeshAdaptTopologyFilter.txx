@@ -84,9 +84,9 @@ void SimplexMeshAdaptTopologyFilter< TInputMesh, TOutputMesh >
   mv->AddVisitor(simplexVisitor);
   this->GetInput(0)->Accept(mv);
 
-  DoubleValueMapType::Pointer areas = simplexVisitor->GetAreaMap();
+  typename DoubleValueMapType::Pointer areas = simplexVisitor->GetAreaMap();
   DoubleContainerIterator     areaIt = areas->Begin();
-  DoubleValueMapType::Pointer curvatures = simplexVisitor->GetCurvatureMap();
+  typename DoubleValueMapType::Pointer curvatures = simplexVisitor->GetCurvatureMap();
   DoubleContainerIterator     curvatureIt = curvatures->Begin();
 
   double averageCurvature = simplexVisitor->GetTotalMeanCurvature();
@@ -135,9 +135,9 @@ void SimplexMeshAdaptTopologyFilter< TInputMesh, TOutputMesh >
 
       typename InputPolygonType::PointIdIterator pointIds = poly->PointIdsBegin();
 
-      unsigned long lineOneFirstIdx = *pointIds;
+      PointIdentifier lineOneFirstIdx = *pointIds;
       pointIds++;
-      unsigned long lineOneSecondIdx = *pointIds;
+      PointIdentifier lineOneSecondIdx = *pointIds;
 
       unsigned short cnt = 0;
 
@@ -146,13 +146,13 @@ void SimplexMeshAdaptTopologyFilter< TInputMesh, TOutputMesh >
         pointIds++;
         cnt++;
         }
-      unsigned long lineTwoFirstIdx = *pointIds;
+      PointIdentifier lineTwoFirstIdx = *pointIds;
       pointIds++;
-      unsigned long lineTwoSecondIdx = *pointIds;
+      PointIdentifier lineTwoSecondIdx = *pointIds;
 
-      unsigned long newPointId = inputMesh->GetNumberOfPoints();
-      unsigned long firstNewIndex = newPointId;
-      unsigned long secondNewIndex = newPointId + 1;
+      PointIdentifier newPointId = inputMesh->GetNumberOfPoints();
+      PointIdentifier firstNewIndex = newPointId;
+      PointIdentifier secondNewIndex = newPointId + 1;
 
       //create first new point
       InputPointType newMidPoint, helperPoint;
@@ -218,12 +218,12 @@ void SimplexMeshAdaptTopologyFilter< TInputMesh, TOutputMesh >
       nonConstInput->AddEdge(firstNewIndex, secondNewIndex);
 
       // splitting cell
-      unsigned long      newPointIndex = 0;
+      PointIdentifier    newPointIndex = 0;
       OutputPolygonType *polygon = new OutputPolygonType;
       m_NewSimplexCellPointer.TakeOwnership(polygon);
 
       pointIds = poly->PointIdsBegin();
-      unsigned long firstPointId = *pointIds++;
+      PointIdentifier firstPointId = *pointIds++;
 
       while ( *pointIds != lineTwoSecondIdx )
         {
@@ -279,13 +279,13 @@ void SimplexMeshAdaptTopologyFilter< TInputMesh, TOutputMesh >
 template< typename TInputMesh, typename TOutputMesh >
 void
 SimplexMeshAdaptTopologyFilter< TInputMesh, TOutputMesh >
-::ModifyNeighborCells(unsigned long id1, unsigned long id2, unsigned long insertPointId)
+::ModifyNeighborCells(CellIdentifier id1, CellIdentifier id2, PointIdentifier insertPointId)
 {
-  std::set< unsigned long >           cells1 =   this->GetInput(0)->GetCellLinks()->GetElement(id1);
-  std::set< unsigned long >           cells2 =   this->GetInput(0)->GetCellLinks()->GetElement(id2);
-  std::set< unsigned long >::iterator cellIt = cells1.begin();
+  std::set< typename InputMeshType::PointIdentifier >           cells1 =   this->GetInput(0)->GetCellLinks()->GetElement(id1);
+  std::set< typename InputMeshType::PointIdentifier >           cells2 =   this->GetInput(0)->GetCellLinks()->GetElement(id2);
+  typename std::set< typename InputMeshType::PointIdentifier >::iterator cellIt = cells1.begin();
 
-  std::set< unsigned long > result;
+  std::set< typename InputMeshType::PointIdentifier > result;
 
   const InputMeshType *inputMesh = this->GetInput(0);
 
@@ -295,7 +295,7 @@ SimplexMeshAdaptTopologyFilter< TInputMesh, TOutputMesh >
 
   while ( cellIt != cells1.end() )
     {
-    std::set< unsigned long >::iterator found = std::find(cells2.begin(), cells2.end(), *cellIt);
+    typename std::set< typename InputMeshType::PointIdentifier >::iterator found = std::find(cells2.begin(), cells2.end(), *cellIt);
     if ( found != cells2.end() )
       {
       result.insert(*cellIt);
@@ -313,8 +313,8 @@ SimplexMeshAdaptTopologyFilter< TInputMesh, TOutputMesh >
     if ( nextCell->GetNumberOfPoints() == 2 )
       {
       InputCellPointIdIterator lineIt =  nextCell->PointIdsBegin();
-      unsigned long            first = *lineIt++;
-      unsigned long            second = *lineIt;
+      PointIdentifier          first = *lineIt++;
+      PointIdentifier          second = *lineIt;
 
       nonConstInput->AddEdge(first, insertPointId);
       nonConstInput->AddEdge(insertPointId, second);
@@ -323,12 +323,12 @@ SimplexMeshAdaptTopologyFilter< TInputMesh, TOutputMesh >
     else if ( nextCell->GetNumberOfPoints() > 3 )
       {
       m_NewSimplexCellPointer.TakeOwnership(new OutputPolygonType);
-      InputPolygonPointIdIterator pointIt =  nextCell->PointIdsBegin();
-      unsigned long               cnt = 0;
-      unsigned long               first = *pointIt++;
-      unsigned long               startId = first;
+      InputPolygonPointIdIterator             pointIt =  nextCell->PointIdsBegin();
+      typename InputMeshType::PointIdentifier cnt = 0;
+      typename InputMeshType::PointIdentifier first = *pointIt++;
+      typename InputMeshType::PointIdentifier startId = first;
 
-      unsigned long second = 0;
+      typename InputMeshType::PointIdentifier second = 0;
 
       while ( pointIt != nextCell->PointIdsEnd() )
         {

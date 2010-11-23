@@ -365,9 +365,9 @@ protected: //made protected so other iterators can access
 
   RegionType m_Region;                             // region to iterate over
 
-  unsigned long m_Offset;
-  unsigned long m_BeginOffset; // offset to first pixel in region
-  unsigned long m_EndOffset;   // offset to one pixel past last pixel in region
+  OffsetValueType m_Offset;
+  OffsetValueType m_BeginOffset; // offset to first pixel in region
+  OffsetValueType m_EndOffset;   // offset to one pixel past last pixel in region
 
   const InternalPixelType *m_Buffer;
 

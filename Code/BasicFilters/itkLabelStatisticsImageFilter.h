@@ -206,7 +206,7 @@ public:
       m_Histogram = l.m_Histogram;
     }
 
-    unsigned long   m_Count;
+    size_t          m_Count;
     RealType        m_Minimum;
     RealType        m_Maximum;
     RealType        m_Mean;
@@ -222,6 +222,7 @@ public:
   typedef itk::hash_map< LabelPixelType, LabelStatistics >                          MapType;
   typedef typename itk::hash_map< LabelPixelType, LabelStatistics >::iterator       MapIterator;
   typedef typename itk::hash_map< LabelPixelType, LabelStatistics >::const_iterator MapConstIterator;
+  typedef typename itk::hash_map< LabelPixelType, LabelStatistics >::size_type      MapSizeType;
 
   // macros for Histogram enables
   itkSetMacro(UseHistograms, bool);
@@ -249,12 +250,12 @@ public:
   }
 
   /** Get the number of labels used */
-  unsigned long GetNumberOfObjects() const
+  MapSizeType GetNumberOfObjects() const
   {
     return m_LabelStatistics.size();
   }
 
-  unsigned long GetNumberOfLabels() const
+  MapSizeType GetNumberOfLabels() const
   {
     return this->GetNumberOfObjects();
   }
@@ -288,7 +289,7 @@ public:
   RealType GetSum(LabelPixelType label) const;
 
   /** Return the number of pixels for a label. */
-  unsigned long GetCount(LabelPixelType label) const;
+  MapSizeType GetCount(LabelPixelType label) const;
 
   /** Return the histogram for a label */
   HistogramPointer GetHistogram(LabelPixelType label) const;

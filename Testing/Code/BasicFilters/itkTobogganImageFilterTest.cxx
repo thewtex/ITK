@@ -47,7 +47,7 @@ int itkTobogganImageFilterTest(int ac, char* av[] )
   typedef itk::Image<unsigned char, 2> InputImageType;
   typedef itk::Image<float, 2> FloatImageType;
   typedef itk::Image<unsigned char, 2> OutputImageType;
-  typedef itk::Image<unsigned long, 2> LongImageType;
+  typedef itk::Image<size_t, 2> SizeTImageType;
 
 
   // Create a pipeline
@@ -55,7 +55,7 @@ int itkTobogganImageFilterTest(int ac, char* av[] )
   typedef itk::RecursiveGaussianImageFilter<InputImageType,FloatImageType> GaussianFilterType;
   typedef itk::GradientMagnitudeImageFilter<FloatImageType,FloatImageType> GradientMagnitudeFilterType;
   typedef itk::TobogganImageFilter<FloatImageType> FilterType;
-  typedef itk::CastImageFilter<LongImageType, OutputImageType> CastType;
+  typedef itk::CastImageFilter<SizeTImageType, OutputImageType> CastType;
   typedef itk::DiscreteGaussianImageFilter<FloatImageType,FloatImageType> DGIFType;
   typedef itk::GradientMagnitudeRecursiveGaussianImageFilter<FloatImageType,FloatImageType> GMGaussianType;
 

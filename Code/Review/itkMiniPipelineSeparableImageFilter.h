@@ -71,12 +71,15 @@ public:
 
   /** Image related typedefs. */
   itkStaticConstMacro(ImageDimension, unsigned int, TInputImage::ImageDimension);
+
   /** n-dimensional Kernel radius. */
   typedef typename TInputImage::SizeType RadiusType;
 
+  typedef typename TInputImage::SizeValueType SizeValueType;
+
   virtual void SetRadius(const RadiusType &);
 
-  virtual void SetRadius(const unsigned long & radius)
+  virtual void SetRadius(const SizeValueType & radius)
   {
     // needed because of the overloading of the method
     Superclass::SetRadius(radius);

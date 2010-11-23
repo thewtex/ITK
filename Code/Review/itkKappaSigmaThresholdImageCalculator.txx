@@ -57,7 +57,8 @@ void
 KappaSigmaThresholdImageCalculator< TInputImage, TMaskImage >
 ::Compute()
 {
-  typedef typename InputImageType::IndexType IndexType;
+  typedef typename InputImageType::IndexType      IndexType;
+  typedef typename InputImageType::SizeValueType  SizeValueType;
 
   if ( !this->m_Image )
     {
@@ -77,7 +78,7 @@ KappaSigmaThresholdImageCalculator< TInputImage, TMaskImage >
 
     // compute the mean
     iIt.GoToBegin();
-    unsigned long count = 0;
+    SizeValueType count = 0;
     double        mean = 0;
     while ( !iIt.IsAtEnd() )
       {

@@ -355,7 +355,7 @@ private:
   ValueType m_NormalProcessUnsharpWeight;
 
   /** Constants used in the computations. */
-  static const unsigned long m_NumVertex;
+  static const typename TInputImage::SizeValueType m_NumVertex;
   static const ValueType m_DimConst;
 
   SparseFieldFourthOrderLevelSetImageFilter(const Self &);

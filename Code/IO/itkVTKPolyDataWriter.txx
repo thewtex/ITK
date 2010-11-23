@@ -219,7 +219,7 @@ VTKPolyDataWriter< TInputMesh >
       // mesh can be saved.
       cellIterator = cells->Begin();
 
-      unsigned long n(0);
+      SizeValueType n(0);
       while ( cellIterator != cells->End() )
         {
         CellType *cellPointer = cellIterator.Value();

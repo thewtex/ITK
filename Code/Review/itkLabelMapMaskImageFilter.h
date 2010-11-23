@@ -62,14 +62,18 @@ public:
   typedef typename InputImageType::PixelType       InputImagePixelType;
   typedef typename InputImageType::LabelObjectType LabelObjectType;
   typedef typename LabelObjectType::LabelType      LabelType;
+  typedef typename LabelObjectType::LengthType     LengthType;
 
-  typedef typename OutputImageType::Pointer        OutputImagePointer;
-  typedef typename OutputImageType::ConstPointer   OutputImageConstPointer;
-  typedef typename OutputImageType::RegionType     OutputImageRegionType;
-  typedef typename OutputImageType::PixelType      OutputImagePixelType;
-  typedef typename OutputImageType::IndexType      IndexType;
-  typedef typename OutputImageType::SizeType       SizeType;
-  typedef typename OutputImageType::RegionType     RegionType;
+  typedef typename OutputImageType::Pointer         OutputImagePointer;
+  typedef typename OutputImageType::ConstPointer    OutputImageConstPointer;
+  typedef typename OutputImageType::RegionType      OutputImageRegionType;
+  typedef typename OutputImageType::PixelType       OutputImagePixelType;
+  typedef typename OutputImageType::IndexType       IndexType;
+  typedef typename OutputImageType::IndexValueType  IndexValueType;
+  typedef typename OutputImageType::OffsetValueType OffsetValueType;
+  typedef typename OutputImageType::SizeType        SizeType;
+  typedef typename OutputImageType::RegionType      RegionType;
+
 
   /** ImageDimension constants */
   itkStaticConstMacro(InputImageDimension, unsigned int,

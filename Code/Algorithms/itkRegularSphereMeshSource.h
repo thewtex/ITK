@@ -18,6 +18,7 @@
 #ifndef __itkRegularSphereMeshSource_h
 #define __itkRegularSphereMeshSource_h
 
+#include "itkIntTypes.h"
 #include "itkMesh.h"
 #include "itkMeshSource.h"
 #include "itkTriangleCell.h"
@@ -69,9 +70,9 @@ public:
   typedef typename TriCellType::SelfAutoPointer       TriCellAutoPointer;
   typedef typename TriCellType::CellAutoPointer       CellAutoPointer;
 
-  typedef std::pair< unsigned long, unsigned long >         IndexPairType;
-  typedef itk::MapContainer< IndexPairType, unsigned long > PointMapType;
-  typedef typename PointType::VectorType                    VectorType;
+  typedef std::pair< size_t, size_t >                 IndexPairType;
+  typedef itk::MapContainer< IndexPairType, size_t >  PointMapType;
+  typedef typename PointType::VectorType              VectorType;
 
   /** Set the resolution level to be used for generating cells in the Sphere.
    *  High values of this parameter will produce sphere with more triangles. */
@@ -96,7 +97,7 @@ protected:
 
   PointType Divide(const PointType & p1, const PointType & p2) const;
 
-  void AddCell(OutputMeshType *mesh, const unsigned long *pointIds, unsigned long idx);
+  void AddCell(OutputMeshType *mesh, const typename OutputMeshType::PointIdentifier *pointIds, IdentifierType idx);
 
   /** model center */
   PointType m_Center;

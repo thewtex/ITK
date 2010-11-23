@@ -112,6 +112,9 @@ public:
    * confused with ImageIterator::Index. */
   typedef typename TImage::IndexType IndexType;
 
+  /** OffsetValueType typedef support. */
+  typedef typename TImage::OffsetValueType OffsetValueType;
+
   /** Region typedef support. While this was already typdef'ed in the superclass
    * it needs to be redone here for this subclass to compile properly with gcc.
    * Note that we have to rescope Region back to itk::ImageRegion so that is
@@ -209,8 +212,8 @@ public:
   }
 
 private:
-  unsigned long m_Jump;
-  unsigned int  m_Direction;
+  OffsetValueType m_Jump;
+  unsigned int    m_Direction;
 };
 
 //----------------------------------------------------------------------

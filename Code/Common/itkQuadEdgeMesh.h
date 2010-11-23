@@ -352,7 +352,7 @@ public:
   }
 
   /** overloaded method for backward compatibility */
-  unsigned long GetCellBoundaryFeatureNeighbors(int dimension,
+  size_t GetCellBoundaryFeatureNeighbors(int dimension,
                                                 CellIdentifier cellId,
                                                 CellFeatureIdentifier featureId,
                                                 std::set< CellIdentifier > *cellSet)
@@ -361,16 +361,16 @@ public:
     (void)cellId;
     (void)featureId;
     cellSet = ( std::set< CellIdentifier > * ) 0;
-    return ( (unsigned long)0 );
+    return ( (size_t)0 );
   }
 
   /** NOTE ALEX: this method do not use CellFeature and thus could be recoded */
-  unsigned long GetCellNeighbors(CellIdentifier cellId,
+  size_t GetCellNeighbors(CellIdentifier cellId,
                                  std::set< CellIdentifier > *cellSet)
   {
     (void)cellId;
     cellSet = ( std::set< CellIdentifier > * ) 0;
-    return ( (unsigned long)0 );
+    return ( (size_t)0 );
   }
 
   /** overloaded method for backward compatibility */
@@ -463,11 +463,11 @@ public:
   ///  Compute the euclidian length of argument edge
   CoordRepType ComputeEdgeLength(QEPrimal *e);
 
-  unsigned long ComputeNumberOfPoints() const;
+  size_t ComputeNumberOfPoints() const;
 
-  unsigned long ComputeNumberOfFaces() const;
+  size_t ComputeNumberOfFaces() const;
 
-  unsigned long ComputeNumberOfEdges() const;
+  size_t ComputeNumberOfEdges() const;
 
   PointIdentifier Splice(QEPrimal *a, QEPrimal *b);
 

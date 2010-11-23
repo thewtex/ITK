@@ -158,7 +158,7 @@ InverseDeformationFieldImageFilter< TInputImage, TOutputImage >
 
   // allocate a landmark pair for each
   // pixel in the subsampled field
-  const unsigned long numberOfLandmarks = subsampledRegion.GetNumberOfPixels();
+  const typename InputSizeType::SizeValueType numberOfLandmarks = subsampledRegion.GetNumberOfPixels();
   source->Reserve(numberOfLandmarks);
   target->Reserve(numberOfLandmarks);
 

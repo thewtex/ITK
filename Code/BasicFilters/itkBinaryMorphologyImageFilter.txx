@@ -60,7 +60,7 @@ BinaryMorphologyImageFilter< TInputImage, TOutputImage, TKernel >
 
   std::vector< unsigned int > kernelOnElements;
 
-  unsigned long i, k;
+  IndexValueType i, k;
 
   // **************************
   // Structuring element ( SE ) coding
@@ -68,8 +68,8 @@ BinaryMorphologyImageFilter< TInputImage, TOutputImage, TKernel >
 
   // Get symmetrical structuring element in order to satisfy
   // our definition of binary dilation
-//   unsigned long kernelSize      = this->GetKernel().Size();
-//   unsigned long kernelCenter    = kernelSize / 2;
+//   InputSizeValueType kernelSize      = this->GetKernel().Size();
+//   InputSizeValueType kernelCenter    = kernelSize / 2;
 //
 //   for( i = kernelCenter + 1, k = kernelCenter - 1; i < kernelSize; ++i, --k )
 //     {

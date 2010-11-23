@@ -88,18 +88,18 @@ public:
   typedef          itk::TriangleCell< InputCellType > TriangleType;
   typedef          itk::VertexCell< InputCellType >   VertexType;
 
-  typedef          std::pair< unsigned long, unsigned long > EdgeIdentifierType;
-  typedef          std::set< unsigned long >                 IndexSetType;
+  typedef          std::pair< size_t, size_t >        EdgeIdentifierType;
+  typedef          std::set< size_t >                 IndexSetType;
 
-  typedef          itk::MapContainer< unsigned long, EdgeIdentifierType > EdgeNeighborListType;
-  typedef          itk::MapContainer< EdgeIdentifierType, unsigned long > LineCellIndexType;
+  typedef          itk::MapContainer< size_t, EdgeIdentifierType > EdgeNeighborListType;
+  typedef          itk::MapContainer< EdgeIdentifierType, size_t > LineCellIndexType;
 
-  typedef          itk::MapContainer< unsigned long, IndexSetType >       VertexNeighborListType;
-  typedef          itk::MapContainer< EdgeIdentifierType, unsigned long > EdgeMapType;
-  typedef typename EdgeMapType::Pointer                                   EdgeMapPointer;
+  typedef          itk::MapContainer< size_t, IndexSetType >       VertexNeighborListType;
+  typedef          itk::MapContainer< EdgeIdentifierType, size_t > EdgeMapType;
+  typedef typename EdgeMapType::Pointer                            EdgeMapPointer;
 
-  typedef          itk::VectorContainer< unsigned long, unsigned long > IdVectorType;
-  typedef typename IdVectorType::Pointer                                IdVectorPointer;
+  typedef          itk::VectorContainer< size_t, size_t > IdVectorType;
+  typedef typename IdVectorType::Pointer                  IdVectorPointer;
 
   typedef typename TOutputMesh::CellType              OutputCellType;
   typedef typename TOutputMesh::CellAutoPointer       OutputCellAutoPointer;
@@ -135,7 +135,7 @@ protected:
    * two neighboring triangles of the input mesh over the
    * edge the both triangles have in common.
    */
-  void CreateEdgeForTrianglePair(unsigned long pointIndex, unsigned long boundaryId);
+  void CreateEdgeForTrianglePair(size_t pointIndex, size_t boundaryId);
 
   /**
    * Constructs the neighborhood relations for all simplex mesh points
@@ -151,13 +151,13 @@ protected:
   /**
    * \brief add edge cells to the input mesh
    */
-  void CreateNewEdge(unsigned long currentCellId, unsigned int featureId,
-                     unsigned long startPointId, unsigned long endPointId);
+  void CreateNewEdge(size_t currentCellId, unsigned int featureId,
+                     size_t startPointId, size_t endPointId);
 
   /**
    *  Computes the center of a face
    */
-  InputPointType ComputeFaceCenter(unsigned long faceId);
+  InputPointType ComputeFaceCenter(size_t faceId);
 
   /**
    * \brief stores all faces (triangles) of the input mesh
@@ -190,17 +190,17 @@ protected:
   /**
    * offset for ids of new simplex polygon cells
    */
-  unsigned long m_CellIdxOffset;
+  size_t m_CellIdxOffset;
 
   /**
    * offset for point ids
    */
-  unsigned long m_IdOffset;
+  size_t m_IdOffset;
 
   /**
    * offset for edge cell ids
    */
-  unsigned long m_EdgeCellId;
+  size_t m_EdgeCellId;
 
   /**
    * stores algorithmic data

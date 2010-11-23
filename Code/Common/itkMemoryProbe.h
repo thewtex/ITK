@@ -35,7 +35,7 @@ namespace itk
  *
  */
 class ITKCommon_EXPORT MemoryProbe:
-  public ResourceProbe< long, double >
+  public ResourceProbe< size_t, double >
 {
 public:
 
@@ -43,7 +43,7 @@ public:
   ~MemoryProbe();
 
   /** Type for measuring memory. */
-  typedef long MemoryLoadType;
+  typedef size_t MemoryLoadType;
 
   /** Type for measuring the average memory. */
   typedef double MeanMemoryLoadType;

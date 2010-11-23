@@ -198,6 +198,7 @@ BoxMeanCalculatorFunction(const TInputImage *accImage,
   typedef TInputImage                           InputImageType;
   typedef typename TInputImage::RegionType      RegionType;
   typedef typename TInputImage::SizeType        SizeType;
+  typedef typename TInputImage::SizeValueType   SizeValueType;
   typedef typename TInputImage::IndexType       IndexType;
   typedef typename TInputImage::PixelType       PixelType;
   typedef typename TInputImage::OffsetType      OffsetType;
@@ -323,7 +324,7 @@ BoxMeanCalculatorFunction(const TInputImage *accImage,
           }
         currentKernelRegion.SetIndex(kernelRegionIdx);
         currentKernelRegion.Crop(inputRegion);
-        long       edgepixelscount = currentKernelRegion.GetNumberOfPixels();
+        OffsetValueType edgepixelscount = currentKernelRegion.GetNumberOfPixels();
         AccPixType Sum = 0;
         // rules are : for each corner,
         //               for each dimension
@@ -387,6 +388,7 @@ BoxSigmaCalculatorFunction(const TInputImage *accImage,
   typedef typename TInputImage::PixelType       PixelType;
   typedef typename TInputImage::OffsetType      OffsetType;
   typedef typename TInputImage::OffsetValueType OffsetValueType;
+  typedef typename TInputImage::SizeValueType   SizeValueType;
   typedef TOutputImage                          OutputImageType;
   typedef typename TOutputImage::PixelType      OutputPixelType;
   typedef typename TInputImage::PixelType       InputPixelType;
@@ -512,7 +514,7 @@ BoxSigmaCalculatorFunction(const TInputImage *accImage,
           }
         currentKernelRegion.SetIndex(kernelRegionIdx);
         currentKernelRegion.Crop(inputRegion);
-        long       edgepixelscount = currentKernelRegion.GetNumberOfPixels();
+        SizeValueType edgepixelscount = currentKernelRegion.GetNumberOfPixels();
         AccPixType Sum = 0;
         AccPixType SquareSum = 0;
         // rules are : for each corner,

@@ -66,9 +66,12 @@ public:
   typedef typename ImageType::ConstPointer     ImageConstPointer;
   typedef typename ImageType::PixelType        PixelType;
   typedef typename ImageType::IndexType        IndexType;
+  typedef typename ImageType::IndexValueType   IndexValueType;
   typedef typename ImageType::SizeType         SizeType;
+  typedef typename ImageType::SizeValueType    SizeValueType;
   typedef typename ImageType::RegionType       RegionType;
   typedef typename ImageType::OffsetType       OffsetType;
+  typedef typename ImageType::OffsetValueType  OffsetValueType;
   typedef typename ImageType::LabelObjectType  LabelObjectType;
   typedef typename LabelObjectType::MatrixType MatrixType;
   typedef typename LabelObjectType::VectorType VectorType;
@@ -143,13 +146,12 @@ private:
   void ComputeFeretDiameter(LabelObjectType *labelObject);
   void ComputePerimeter(LabelObjectType *labelObject);
 
-  // typedef typename std::map<OffsetType, unsigned long, typename OffsetType::LexicographicCompare> MapInterceptType;
   typedef itk::Offset<2>                                                          Offset2Type;
   typedef itk::Offset<3>                                                          Offset3Type;
   typedef itk::Vector<double, 2>                                                  Spacing2Type;
   typedef itk::Vector<double, 3>                                                  Spacing3Type;
-  typedef std::map<Offset2Type, unsigned long, Offset2Type::LexicographicCompare> MapIntercept2Type;
-  typedef std::map<Offset3Type, unsigned long, Offset3Type::LexicographicCompare> MapIntercept3Type;
+  typedef std::map<Offset2Type, SizeValueType, Offset2Type::LexicographicCompare> MapIntercept2Type;
+  typedef std::map<Offset3Type, SizeValueType, Offset3Type::LexicographicCompare> MapIntercept3Type;
 
   // it seems impossible to specialize a method without specializing the whole class, but we
   // can use simple overloading

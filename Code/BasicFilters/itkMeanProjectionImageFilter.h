@@ -51,7 +51,7 @@ class MeanAccumulator
 public:
   typedef typename NumericTraits< TInputPixel >::RealType RealType;
 
-  MeanAccumulator(unsigned long size)
+  MeanAccumulator(size_t size)
   {
     m_Size = size;
   }
@@ -74,7 +74,7 @@ public:
   }
 
   TAccumulate   m_Sum;
-  unsigned long m_Size;
+  size_t        m_Size;
 };
 } // end namespace Function
 

@@ -55,7 +55,6 @@ template< typename TInputMesh, typename TOutputMesh >
 void TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
 ::Initialize()
 {
-  const unsigned long *tp;
 
   const InputMeshType *input = this->GetInput(0);
 
@@ -81,7 +80,7 @@ void TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
 
     CellAutoPointer triCellPointer;
     input->GetCell(idx1, triCellPointer);
-    tp = triCellPointer->GetPointIds();
+    const typename TInputMesh::PointIdentifier *tp = triCellPointer->GetPointIds();
     if ( !input->GetPoint(tp[0], &v1) )
       {
       itkExceptionMacro ("Point with id " << tp[0]
@@ -127,7 +126,7 @@ void TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
 template< typename TInputMesh, typename TOutputMesh >
 void
 TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
-::CreateEdgeForTrianglePair(unsigned long pointIndex, unsigned long boundaryId)
+::CreateEdgeForTrianglePair(size_t pointIndex, size_t boundaryId)
 {
   EdgeIdentifierType facePair = m_EdgeNeighborList->GetElement(boundaryId);
 
@@ -142,7 +141,7 @@ TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
 
   if ( !m_HandledEdgeIds->IndexExists(boundaryId) )
     {
-    unsigned long edgeId = this->GetOutput()->AddEdge(facePair.first, facePair.second);
+    size_t edgeId = this->GetOutput()->AddEdge(facePair.first, facePair.second);
     m_LineCellIndices->InsertElement(facePair, edgeId);
     m_HandledEdgeIds->InsertElement(boundaryId, edgeId);
     }
@@ -158,13 +157,13 @@ void TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
   OutputPointsContainerPointer  outputPointsContainer =  this->GetOutput(0)->GetPoints();
   OutputPointsContainerIterator points =  outputPointsContainer->Begin();
 
-  unsigned long tp0, tp1, tp2;
+  size_t tp0, tp1, tp2;
 
   InputBoundaryAssignmentsContainerPointer cntlines = this->GetInput(0)->GetBoundaryAssignments(1);
 
   while ( points != outputPointsContainer->End() )
     {
-    unsigned long                      idx = points.Index();
+    size_t                             idx = points.Index();
     InputBoundnaryAssignmentIdentifier key0(idx, 0);
     InputBoundnaryAssignmentIdentifier key1(idx, 1);
     InputBoundnaryAssignmentIdentifier key2(idx, 2);
@@ -183,10 +182,10 @@ void TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
 
 template< typename TInputMesh, typename TOutputMesh >
 void TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
-::CreateNewEdge(unsigned long currentCellId, unsigned int featureId,
-                unsigned long startPointId, unsigned long endPointId)
+::CreateNewEdge(size_t currentCellId, unsigned int featureId,
+                size_t startPointId, size_t endPointId)
 {
-  unsigned long boundaryId;
+  size_t boundaryId;
 
   const InputMeshType *input = this->GetInput(0);
 
@@ -222,14 +221,14 @@ void TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
   if ( !m_EdgeNeighborList->IndexExists(boundaryId) )
     {
     EdgeIdentifierType neighboringCells = std::make_pair( currentCellId,
-                                                          (unsigned long)NumericTraits< unsigned long >::max() );
+                                                          (size_t)NumericTraits< size_t >::max() );
     m_EdgeNeighborList->InsertElement(boundaryId, neighboringCells);
     }
   else
     {
     EdgeIdentifierType neighboringCells = m_EdgeNeighborList->GetElement(boundaryId);
 
-    if ( neighboringCells.second == (unsigned long)NumericTraits< unsigned long >::max() )
+    if ( neighboringCells.second == (size_t)NumericTraits< size_t >::max() )
       {
       neighboringCells.second = currentCellId;
       }
@@ -238,26 +237,26 @@ void TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
 
   if ( !m_VertexNeighborList->IndexExists(startPointId) )
     {
-    std::set< unsigned long > neighborEdges;
+    std::set< size_t > neighborEdges;
     neighborEdges.insert(boundaryId);
     m_VertexNeighborList->InsertElement(startPointId, neighborEdges);
     }
   else
     {
-    std::set< unsigned long > neighborEdges = m_VertexNeighborList->GetElement(startPointId);
+    std::set< size_t > neighborEdges = m_VertexNeighborList->GetElement(startPointId);
     neighborEdges.insert(boundaryId);
     m_VertexNeighborList->InsertElement(startPointId, neighborEdges);
     }
 
   if ( !m_VertexNeighborList->IndexExists(endPointId) )
     {
-    std::set< unsigned long > neighborEdges;
+    std::set< size_t > neighborEdges;
     neighborEdges.insert(boundaryId);
     m_VertexNeighborList->InsertElement(endPointId, neighborEdges);
     }
   else
     {
-    std::set< unsigned long > neighborEdges = m_VertexNeighborList->GetElement(endPointId);
+    std::set< size_t > neighborEdges = m_VertexNeighborList->GetElement(endPointId);
     neighborEdges.insert(boundaryId);
     m_VertexNeighborList->InsertElement(endPointId, neighborEdges);
     }
@@ -281,9 +280,9 @@ TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
   const InputPointsContainer *      pointsContainer =  this->GetInput(0)->GetPoints();
   InputPointsContainerConstIterator points =  pointsContainer->Begin();
 
-  unsigned long idx;
+  size_t idx;
 
-  typedef itk::MapContainer< unsigned long, unsigned long > MapType;
+  typedef itk::MapContainer< size_t, size_t > MapType;
 
   while ( points != pointsContainer->End() )
     {
@@ -293,13 +292,13 @@ TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
     IndexSetType::iterator iterator1 = vertexNeighbors.begin();
 
     MapType::Pointer tmpMap = MapType::New();
-    unsigned long    startIdx = (unsigned long)NumericTraits< unsigned long >::max(),
-                     lastIdx = 0,
-                     wrongIdx = 0;
+    size_t    startIdx = (size_t)NumericTraits< size_t >::max(),
+              lastIdx = 0,
+              wrongIdx = 0;
 
     while ( lastIdx != startIdx )
       {
-      if ( startIdx == (unsigned long)NumericTraits< unsigned long >::max() )
+      if ( startIdx == (size_t)NumericTraits< size_t >::max() )
         {
         EdgeIdentifierType neighboringCells = m_EdgeNeighborList->GetElement(*iterator1);
         startIdx = neighboringCells.first;
@@ -336,21 +335,21 @@ TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
 
     // create a new cell
     m_NewSimplexCellPointer.TakeOwnership(new OutputPolygonType);
-    unsigned long vertexIdx = 0;
-    unsigned long nextIdx = startIdx;
-    unsigned long featureId = 0;
+    size_t vertexIdx = 0;
+    size_t nextIdx = startIdx;
+    size_t featureId = 0;
 
-    unsigned long faceIndex = this->GetOutput()->AddFace(m_NewSimplexCellPointer);
+    size_t faceIndex = this->GetOutput()->AddFace(m_NewSimplexCellPointer);
 
     while ( tmpMap->IndexExists(nextIdx) )
       {
       m_NewSimplexCellPointer->SetPointId(vertexIdx++, nextIdx);
-      unsigned long newIdx = tmpMap->GetElement(nextIdx);
+      size_t newIdx = tmpMap->GetElement(nextIdx);
 
       EdgeIdentifierType line = std::make_pair(nextIdx, newIdx);
       EdgeIdentifierType lineInv = std::make_pair(newIdx, nextIdx);
 
-      unsigned long edgeIdx = 0;
+      size_t edgeIdx = 0;
 
       if ( m_LineCellIndices->IndexExists(line) )
         {
@@ -383,17 +382,16 @@ TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
 template< typename TInputMesh, typename TOutputMesh >
 typename TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >::InputPointType
 TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
-::ComputeFaceCenter(unsigned long faceId)
+::ComputeFaceCenter(size_t faceId)
 {
   const InputMeshType *input = this->GetInput(0);
 
-  const unsigned long *tp;
   InputPointType       v1, v2, v3;
 
   CellAutoPointer cellPointer;
 
   input->GetCell(faceId, cellPointer);
-  tp = cellPointer->GetPointIds();
+  const typename TOutputMesh::PointIdentifier *tp = cellPointer->GetPointIds();
   if ( !input->GetPoint(tp[0], &v1) )
     {
     itkExceptionMacro ("Point with id " << tp[0]

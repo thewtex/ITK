@@ -131,7 +131,7 @@ public:
 
   /** Returns the loop bound used to define the edge of a single
    * dimension in the itk::Image region. */
-  long GetBound(unsigned int n) const
+  IndexValueType GetBound(unsigned int n) const
   {    return m_Bound[n];  }
 
   /** Returns the pointer to the center pixel of the neighborhood. */

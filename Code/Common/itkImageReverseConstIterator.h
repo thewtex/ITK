@@ -167,7 +167,7 @@ public:
    * particular region of that image. */
   ImageReverseConstIterator(ImageType *ptr, const RegionType & region)
   {
-    unsigned long offset;
+    SizeValueType offset;
 
     m_Image = ptr;
     m_Buffer = m_Image->GetBufferPointer();
@@ -379,9 +379,9 @@ protected: //made protected so other iterators can access
 
   RegionType m_Region;                              // region to iterate over
 
-  unsigned long m_Offset;
-  unsigned long m_BeginOffset;  // offset to last pixel in region
-  unsigned long m_EndOffset;    // offset to one pixel before first pixel
+  SizeValueType m_Offset;
+  SizeValueType m_BeginOffset;  // offset to last pixel in region
+  SizeValueType m_EndOffset;    // offset to one pixel before first pixel
 
   const InternalPixelType *m_Buffer;
 

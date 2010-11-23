@@ -109,9 +109,13 @@ ConstantPadImageFilter< TInputImage, TOutputImage > // support progress
 {
   unsigned int dimCtr, regCtr, ctr = 0;
   unsigned int numRegions = 1; // number of regions in our decomposed space.
-  long         sizeTemp;       // We need to calculate negative sizes.  This
 
-  // allows us to do so.
+  typedef typename TInputImage::IndexValueType  InputIndexValueType;
+  typedef typename TOutputImage::IndexValueType OutputIndexValueType;
+
+  OutputIndexValueType sizeTemp;
+    // We need to calculate negative sizes.
+    // Using an IndexValueType allows us to do so.
 
   itkDebugMacro(<< "Actually executing");
 
@@ -161,9 +165,9 @@ ConstantPadImageFilter< TInputImage, TOutputImage > // support progress
     // image, or the start of the output image.
     indices[1][dimCtr] = outputIndex[dimCtr];
 
-    if ( ( inputIndex[dimCtr] + static_cast< long >( inputSize[dimCtr] ) ) > outputIndex[dimCtr] )
+    if ( ( inputIndex[dimCtr] + static_cast< InputIndexValueType >( inputSize[dimCtr] ) ) > outputIndex[dimCtr] )
       {
-      indices[2][dimCtr] = inputIndex[dimCtr] + static_cast< long >( inputSize[dimCtr] );
+      indices[2][dimCtr] = inputIndex[dimCtr] + static_cast< InputIndexValueType >( inputSize[dimCtr] );
       }
     else
       {
@@ -172,30 +176,30 @@ ConstantPadImageFilter< TInputImage, TOutputImage > // support progress
 
     // Size 0 is the area from index 0 to the end of the input or the
     // output, whichever comes first.
-    if ( ( inputIndex[dimCtr] + static_cast< long >( inputSize[dimCtr] ) )
-         < ( outputIndex[dimCtr] + static_cast< long >( outputSize[dimCtr] ) ) )
+    if ( ( inputIndex[dimCtr] + static_cast< InputIndexValueType >( inputSize[dimCtr] ) )
+         < ( outputIndex[dimCtr] + static_cast< OutputIndexValueType >( outputSize[dimCtr] ) ) )
       {
-      sizeTemp = inputIndex[dimCtr] + static_cast< long >( inputSize[dimCtr] )
+      sizeTemp = inputIndex[dimCtr] + static_cast< InputIndexValueType >( inputSize[dimCtr] )
                  - indices[0][dimCtr];
       }
     else
       {
-      sizeTemp = outputIndex[dimCtr] + static_cast< long >( outputSize[dimCtr] )
+      sizeTemp = outputIndex[dimCtr] + static_cast< OutputIndexValueType >( outputSize[dimCtr] )
                  - indices[0][dimCtr];
       }
     sizes[0][dimCtr] = ( ( sizeTemp > 0 ) ? sizeTemp : 0 );
     // Size 1 is all the output that preceeds the input, and Size 2 is
     // all the output that succeeds the input.
-    if ( ( outputIndex[dimCtr] + static_cast< long >( outputSize[dimCtr] ) ) > indices[0][dimCtr] )
+    if ( ( outputIndex[dimCtr] + static_cast< OutputIndexValueType >( outputSize[dimCtr] ) ) > indices[0][dimCtr] )
       {
       sizeTemp = indices[0][dimCtr] - outputIndex[dimCtr];
       }
     else
       {
-      sizeTemp = static_cast< long >( outputSize[dimCtr] );
+      sizeTemp = static_cast< OutputIndexValueType >( outputSize[dimCtr] );
       }
     sizes[1][dimCtr] = ( ( sizeTemp > 0 ) ? sizeTemp : 0 );
-    sizeTemp = outputIndex[dimCtr] + static_cast< long >( outputSize[dimCtr] )
+    sizeTemp = outputIndex[dimCtr] + static_cast< OutputIndexValueType >( outputSize[dimCtr] )
                - indices[2][dimCtr];
     sizes[2][dimCtr] = ( ( sizeTemp > 0 ) ? sizeTemp : 0 );
     }

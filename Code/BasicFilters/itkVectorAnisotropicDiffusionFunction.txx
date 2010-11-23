@@ -39,7 +39,7 @@ VectorAnisotropicDiffusionFunction< TImage >
   //  ZeroFluxNeumannBoundaryCondition<TImage>  bc;
   double        accumulator;
   PixelType     val;
-  unsigned long counter;
+  size_t        counter;
   BFC_type      bfc;
   typename BFC_type::FaceListType faceList;
   typename RNI_type::RadiusType radius;

@@ -306,12 +306,12 @@ bool Histogram< TMeasurement, TFrequencyContainer >
       // its ok if we extend the bins to infinity.. not ok if we don't
       if ( !m_ClipBinsAtEnds )
         {
-        index[dim] = (long)0;
+        index[dim] = (IndexValueType)0;
         continue;
         }
       else
         {   // set an illegal value and return 0
-        index[dim] = (long)m_Size[dim];
+        index[dim] = (IndexValueType)m_Size[dim];
         return false;
         }
       }
@@ -323,12 +323,12 @@ bool Histogram< TMeasurement, TFrequencyContainer >
       // its ok if we extend the bins to infinity.. not ok if we don't
       if ( !m_ClipBinsAtEnds )
         {
-        index[dim] = (long)m_Size[dim] - 1;
+        index[dim] = (IndexValueType)m_Size[dim] - 1;
         continue;
         }
       else
         {   // set an illegal value and return 0
-        index[dim] = (long)m_Size[dim];
+        index[dim] = (IndexValueType)m_Size[dim];
         return false;
         }
       }
