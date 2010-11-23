@@ -15,42 +15,33 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkTransformFileWriter_h
-#define __itkTransformFileWriter_h
+#ifndef __itkTransformFileWriterWithFactory_h
+#define __itkTransformFileWriterWithFactory_h
 
-// First make sure that the configuration is available.
-// This line can be removed once the factory based version
-// gets integrated into the main directories.
-#include "itkConfigure.h"
-
-#ifdef ITK_USE_TRANSFORM_IO_FACTORIES
-# include "itkTransformFileWriterWithFactory.h"
-#else
-#include "itkLightProcessObject.h"
-#include "itkTransformBase.h"
 #include "metaTransform.h"
+#include "itkTransformIOBase.h"
+#include <iostream>
+#include <fstream>
 
 namespace itk
 {
-/** \class TransformFileWriter
- *
- * \brief TODO
- */
 class TransformFileWriter:public LightProcessObject
 {
 public:
 
   /** SmartPointer typedef support */
-  typedef TransformFileWriter    Self;
-  typedef SmartPointer< Self >   Pointer;
-  typedef TransformBase          TransformType;
-  typedef TransformType::Pointer TransformPointer;
+  typedef TransformFileWriter  Self;
+  typedef LightProcessObject   Superclass;
+  typedef SmartPointer< Self > Pointer;
+
+  typedef TransformBase                           TransformType;
+  typedef TransformIOBase::ConstTransformPointer  ConstTransformPointer;
+  typedef TransformIOBase::ConstTransformListType ConstTransformListType;
 
   /** Method for creation through the object factory */
   itkNewMacro(Self);
 
   /** Run-time type information (and related methods). */
-  typedef Object Superclass;
   itkTypeMacro(TransformFileWriter, LightProcessObject);
 
   /** Set the filename  */
@@ -71,7 +62,7 @@ public:
   /** Set/Get the input transform to write */
   void SetInput(const TransformType *transform);
 
-  const TransformType * GetInput() { return *( m_TransformList.begin() ); }
+  ConstTransformPointer GetInput() { return *( m_TransformList.begin() ); }
 
   /** Add a transform to be written */
   void AddTransform(const TransformType *transform);
@@ -87,18 +78,16 @@ protected:
   TransformFileWriter(const Self &); //purposely not implemented
   void operator=(const Self &);      //purposely not implemented
 
-  std::string m_FileName;
-
   TransformFileWriter();
   virtual ~TransformFileWriter();
 private:
+  void OpenStream(std::ofstream & out, bool binary);
 
-  std::list< const TransformType * > m_TransformList;
-  unsigned int                       m_Precision;
-  bool                               m_AppendMode;
+  std::string            m_FileName;
+  ConstTransformListType m_TransformList;
+  unsigned int           m_Precision;
+  bool                   m_AppendMode;
 };
 } // namespace itk
-
-#endif
 
 #endif // __itkTransformFileWriter_h
