@@ -89,7 +89,7 @@
 //     void UnRegister() {};
 
     float operator() ( double d, double ) { return (float) d; };
-    void Visit ( int, Bogus* ) {};
+    void Visit ( itk::IdentifierType, Bogus* ) {};
     int GetCellTopologyId() { return 1; };
     int GetTopologyId() { return 1; };
   };

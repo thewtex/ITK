@@ -30,8 +30,7 @@ int itkShapePositionLabelMapFilterTest1(int argc, char * argv[])
   if( argc != 4 )
     {
     std::cerr << "usage: " << argv[0] << " input output attribute" << std::endl;
-    // std::cerr << "  : " << std::endl;
-    exit(1);
+    return EXIT_FAILURE;
     }
 
   // declare the dimension used, and the type of the input image
@@ -68,5 +67,5 @@ int itkShapePositionLabelMapFilterTest1(int argc, char * argv[])
   writer->SetFileName( argv[2] );
   writer->Update();
 
-  return 0;
+  return EXIT_SUCCESS;
 }

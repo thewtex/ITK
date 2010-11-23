@@ -117,8 +117,8 @@ public:
   typedef typename PointSetType::PointsContainerConstIterator PointsConstIterator;
 
   /** VectorSet typedef. */
-  typedef itk::VectorContainer< unsigned long, InputVectorType > VectorSetType;
-  typedef typename VectorSetType::Pointer                        VectorSetPointer;
+  typedef itk::VectorContainer< size_t, InputVectorType >     VectorSetType;
+  typedef typename VectorSetType::Pointer                     VectorSetPointer;
 
   /** Get the source landmarks list, which we will denote \f$ p \f$. */
   itkGetObjectMacro(SourceLandmarks, PointSetType);

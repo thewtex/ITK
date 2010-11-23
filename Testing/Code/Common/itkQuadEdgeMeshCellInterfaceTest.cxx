@@ -29,6 +29,7 @@
 #include "itkPolygonCell.h"
 
 #include "itkCellInterfaceVisitor.h"
+#include "itkIntTypes.h"
 
 /**
  * Define a mesh type that stores a PixelType of "int".  Use the defaults
@@ -52,7 +53,7 @@ typedef CellType::CellAutoPointer       CellAutoPointer;
 class CustomQELineVisitor
 {
 public:
-  void Visit(unsigned long cellId, QELineCellType * t )
+  void Visit( itk::IdentifierType cellId, QELineCellType * t )
     {
     (void)cellId;
     (void)t;
@@ -62,7 +63,7 @@ public:
 class CustomQEPolyVisitor
 {
 public:
-  void Visit(unsigned long cellId, QEPolygonCellType * t )
+  void Visit( itk::IdentifierType cellId, QEPolygonCellType * t )
     {
     (void)cellId;
     (void)t;
@@ -116,7 +117,7 @@ template<class TCell> int TestCellInterface(std::string name, TCell *aCell)
 
   // Add point ids
   std::cout << "    SetPointIds" << std::endl;
-  unsigned long *pointIds = new unsigned long[cell->GetNumberOfPoints() * 2];
+  typename TCell::PointIdentifier *pointIds = new typename TCell::PointIdentifier[cell->GetNumberOfPoints() * 2];
   for (unsigned int i = 0; i < cell->GetNumberOfPoints() * 2; i++)
     {
     pointIds[i] = i;
@@ -211,7 +212,7 @@ template<class TCell> int TestQECellInterface(std::string name, TCell *aCell)
 
   // Add point ids
   std::cout << "    SetPointIds" << std::endl;
-  unsigned long *pointIds = new unsigned long[cell->GetNumberOfPoints() * 2];
+  typename TCell::PointIdentifier *pointIds = new typename TCell::PointIdentifier[cell->GetNumberOfPoints() * 2];
   for (unsigned int i = 0; i < cell->GetNumberOfPoints() * 2; i++)
     {
     pointIds[i] = i;

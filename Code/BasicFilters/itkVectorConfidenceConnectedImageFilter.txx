@@ -237,7 +237,7 @@ VectorConfidenceConnectedImageFilter< TInputImage, TOutputImage >
     covariance.fill(NumericTraits< ComponentRealType >::Zero);
     mean.fill(NumericTraits< ComponentRealType >::Zero);
 
-    unsigned long num = 0;
+    size_t num = 0;
 
     SecondIteratorType sit =
       SecondIteratorType (inputImage, secondFunction, m_Seeds);

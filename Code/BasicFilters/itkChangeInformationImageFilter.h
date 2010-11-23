@@ -70,14 +70,15 @@ public:
   typedef typename TInputImage::PixelType InputImagePixelType;
 
   /** Typedef to describe the output and input image index and size types. */
-  typedef typename TInputImage::IndexType     OutputImageIndexType;
-  typedef typename TInputImage::IndexType     InputImageIndexType;
-  typedef typename TInputImage::SizeType      OutputImageSizeType;
-  typedef typename TInputImage::SizeType      InputImageSizeType;
-  typedef typename TInputImage::OffsetType    OutputImageOffsetType;
-  typedef typename TInputImage::OffsetType    InputImageOffsetType;
-  typedef typename TInputImage::DirectionType OutputImageDirectionType;
-  typedef typename TInputImage::DirectionType InputImageDirectionType;
+  typedef typename TInputImage::IndexType      OutputImageIndexType;
+  typedef typename TInputImage::IndexValueType OutputImageIndexValueType;
+  typedef typename TInputImage::IndexType      InputImageIndexType;
+  typedef typename TInputImage::SizeType       OutputImageSizeType;
+  typedef typename TInputImage::SizeType       InputImageSizeType;
+  typedef typename TInputImage::OffsetType     OutputImageOffsetType;
+  typedef typename TInputImage::OffsetType     InputImageOffsetType;
+  typedef typename TInputImage::DirectionType  OutputImageDirectionType;
+  typedef typename TInputImage::DirectionType  InputImageDirectionType;
 
   /** Image related typedefs. */
   itkStaticConstMacro(ImageDimension, unsigned int,
@@ -135,8 +136,8 @@ public:
    *  controls the requested region. Therefore, changing the buffered region
    *  may mean the filter cannot produce the requested region.
    */
-  itkSetVectorMacro(OutputOffset, long, ImageDimension);
-  itkGetVectorMacro(OutputOffset, const long, ImageDimension);
+  itkSetVectorMacro(OutputOffset, OutputImageIndexValueType, ImageDimension);
+  itkGetVectorMacro(OutputOffset, const OutputImageIndexValueType, ImageDimension);
 
   /** Change the origin, spacing and region of the output image. */
   void ChangeAll()
@@ -231,8 +232,8 @@ private:
   PointType     m_OutputOrigin;
   DirectionType m_OutputDirection;
 
-  long                  m_OutputOffset[ImageDimension];
-  OutputImageOffsetType m_Shift;
+  OutputImageIndexValueType m_OutputOffset[ImageDimension];
+  OutputImageOffsetType     m_Shift;
 };
 } // end namespace itk
 

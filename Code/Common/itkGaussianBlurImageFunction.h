@@ -60,6 +60,7 @@ public:
   typedef TInputImage                              InputImageType;
   typedef typename InputImageType::PixelType       InputPixelType;
   typedef typename Superclass::IndexType           IndexType;
+  typedef typename Superclass::IndexValueType      IndexValueType;
   typedef typename Superclass::ContinuousIndexType ContinuousIndexType;
 
   /** Dimension of the underlying image. */

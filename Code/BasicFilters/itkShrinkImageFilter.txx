@@ -324,7 +324,7 @@ ShrinkImageFilter< TInputImage, TOutputImage >
     outputSpacing[i] = inputSpacing[i] * (double)m_ShrinkFactors[i];
 
     // Round down so that all output pixels fit input input region
-    outputSize[i] = (unsigned long)
+    outputSize[i] = (typename TOutputImage::SizeValueType)
                     vcl_floor( (double)inputSize[i] / (double)m_ShrinkFactors[i] );
 
     if ( outputSize[i] < 1 )
@@ -334,7 +334,7 @@ ShrinkImageFilter< TInputImage, TOutputImage >
 
     // Because of the later origin shift this starting index is not
     // critical
-    outputStartIndex[i] = (long)
+    outputStartIndex[i] = (typename TOutputImage::IndexValueType)
                           vcl_ceil( (double)inputStartIndex[i] / (double)m_ShrinkFactors[i] );
     }
 

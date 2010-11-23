@@ -165,7 +165,7 @@ private:
 
   Array< RealType >  m_ThreadSum;
   Array< RealType >  m_SumOfSquares;
-  Array< long >      m_Count;
+  Array< size_t >    m_Count;
   Array< PixelType > m_ThreadMin;
   Array< PixelType > m_ThreadMax;
 }; // end of class

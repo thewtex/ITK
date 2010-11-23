@@ -58,6 +58,8 @@ public:
   typedef typename ImageType::PixelType       PixelType;
   typedef typename ImageType::IndexType       IndexType;
   typedef typename ImageType::LabelObjectType LabelObjectType;
+  typedef typename ImageType::SizeValueType   SizeValueType;
+  typedef typename ImageType::IndexValueType  IndexValueType;
 
   typedef TMarkerImage                              MarkerImageType;
   typedef typename MarkerImageType::Pointer         MarkerImagePointer;

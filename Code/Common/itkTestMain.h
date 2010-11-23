@@ -63,8 +63,8 @@ std::map< std::string, MainFuncPointer > StringToTestFunctionMap;
 int RegressionTestImage(const char *testImageFilename,
                         const char *baselineImageFilename,
                         int reportErrors,
-                        double intensityTolerance = 2.0,
-                        unsigned int numberOfPixelsTolerance = 0,
+                        double intensityTolerance,
+                        size_t numberOfPixelsTolerance = 0,
                         unsigned int radiusTolerance = 0);
 
 std::map< std::string, int > RegressionTestBaselines(char *);
@@ -251,7 +251,7 @@ int RegressionTestImage(const char *testImageFilename,
                         const char *baselineImageFilename,
                         int reportErrors,
                         double intensityTolerance,
-                        unsigned int numberOfPixelsTolerance,
+                        size_t numberOfPixelsTolerance,
                         unsigned int radiusTolerance)
 {
   // Use the factory mechanism to read the test and baseline files and convert
@@ -312,7 +312,7 @@ int RegressionTestImage(const char *testImageFilename,
   diff->SetToleranceRadius(radiusTolerance);
   diff->UpdateLargestPossibleRegion();
 
-  unsigned long status = 0;
+  DiffType::OutputImageSizeValueType status = 0;
   status = diff->GetNumberOfPixelsWithDifferences();
 
   // if there are discrepencies, create an diff image

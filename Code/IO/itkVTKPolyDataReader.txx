@@ -130,9 +130,9 @@ VTKPolyDataReader< TOutputMesh >
   std::string pointLine( line, strlen("POINTS "), line.length() );
   itkDebugMacro("pointLine " << pointLine);
 
-  int numberOfPoints = -1;
+  long long numberOfPoints = -1;
 
-  if ( sscanf(pointLine.c_str(), "%d", &numberOfPoints) != 1 )
+  if ( sscanf(pointLine.c_str(), "%lld", &numberOfPoints) != 1 )
     {
     itkExceptionMacro(<< "Error reading file: " << m_FileName
                       << "\nFailed to read numberOfPoints.\n"
@@ -199,10 +199,10 @@ VTKPolyDataReader< TOutputMesh >
   // Read the number of polygons
   //
 
-  CellIdentifier numberOfPolygons = 0;
-  CellIdentifier numberOfIndices = 0;
+  long long numberOfPolygons = 0;
+  long long numberOfIndices = 0;
 
-  if ( sscanf(polygonLine.c_str(), "%ld %ld", &numberOfPolygons,
+  if ( sscanf(polygonLine.c_str(), "%lld %lld", &numberOfPolygons,
               &numberOfIndices) != 2 )
     {
     itkExceptionMacro(<< "Error reading file: " << m_FileName
@@ -232,8 +232,8 @@ VTKPolyDataReader< TOutputMesh >
   // Load the polygons into the itk::Mesh
   //
 
-  PointIdentifier numberOfCellPoints;
-  long            ids[3];
+  long long numberOfCellPoints;
+  long long ids[3];
 
   for ( CellIdentifier i = 0; i < numberOfPolygons; i++ )
     {
@@ -253,7 +253,7 @@ VTKPolyDataReader< TOutputMesh >
       }
 
     int got;
-    if ( ( got = sscanf(line.c_str(), "%ld %ld %ld %ld", &numberOfCellPoints,
+    if ( ( got = sscanf(line.c_str(), "%lld %lld %lld %lld", &numberOfCellPoints,
                         &ids[0], &ids[1], &ids[2]) ) != 4 )
       {
       itkExceptionMacro(<< "Error reading file: " << m_FileName
@@ -270,18 +270,18 @@ VTKPolyDataReader< TOutputMesh >
                         << ". VTKPolyDataReader can only read triangles");
       }
 
-    if ( static_cast< long >( ids[0] ) < 0
-         || static_cast< long >( ids[1] ) < 0
-         || static_cast< long >( ids[2] ) < 0 )
+    if ( static_cast< IndexValueType >( ids[0] ) < 0
+         || static_cast< IndexValueType >( ids[1] ) < 0
+         || static_cast< IndexValueType >( ids[2] ) < 0 )
       {
       itkExceptionMacro(<< "Error reading file: " << m_FileName
                         << "point ids must be >= 0.\n"
                            "ids=" << ids[0] << " " << ids[1] << " " << ids[2]);
       }
 
-    if ( static_cast< long >( ids[0] ) >= numberOfPoints
-         || static_cast< long >( ids[1] ) >= numberOfPoints
-         || static_cast< long >( ids[2] ) >= numberOfPoints )
+    if ( static_cast< IndexValueType >( ids[0] ) >= numberOfPoints
+         || static_cast< IndexValueType >( ids[1] ) >= numberOfPoints
+         || static_cast< IndexValueType >( ids[2] ) >= numberOfPoints )
       {
       itkExceptionMacro(<< "Error reading file: " << m_FileName
                         << "Point ids must be < number of points: "

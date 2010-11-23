@@ -38,6 +38,7 @@
 
 
 #include "itkMesh.h"
+#include "itkIntTypes.h"
 #include "itkLineCell.h"
 #include "itkTetrahedronCell.h"
 
@@ -97,7 +98,7 @@
 class CustomVertexVisitor
 {
 public:
-  void Visit(unsigned long cellId, VertexType * t )
+  void Visit( itk::IdentifierType cellId, VertexType * t )
     {
     std::cout << "cell " << cellId << " is a Vertex " << std::endl;
     std::cout << "    associated with point id = ";
@@ -126,7 +127,7 @@ public:
 
   void SetMesh( MeshType * mesh ) { m_Mesh = mesh; }
 
-  void Visit(unsigned long cellId, LineType * t )
+  void Visit( itk::IdentifierType cellId, LineType * t )
     {
     std::cout << "cell " << cellId << " is a Line " << std::endl;
     LineType::PointIdIterator pit = t->PointIdsBegin();
@@ -165,7 +166,7 @@ private:
 class CustomTriangleVisitor
 {
 public:
-  void Visit(unsigned long cellId, TriangleType * t )
+  void Visit( itk::IdentifierType cellId, TriangleType * t )
     {
     std::cout << "cell " << cellId << " is a Triangle " << std::endl;
     LineType::PointIdIterator pit = t->PointIdsBegin();
@@ -195,7 +196,7 @@ public:
 class CustomTetrahedronVisitor
 {
 public:
-  void Visit(unsigned long cellId, TetrahedronType * t )
+  void Visit( itk::IdentifierType cellId, TetrahedronType * t )
     {
     std::cout << "cell " << cellId << " is a Tetrahedron " << std::endl;
     std::cout << "  number of faces = ";

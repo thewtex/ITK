@@ -97,6 +97,7 @@ public:
   typedef typename PointSetType::PointType          PointType;
   typedef typename PointSetType::PixelType          PointDataType;
   typedef typename PointSetType::PointDataContainer PointDataContainerType;
+  typedef typename PointSetType::PointIdentifier    SizeValueType;
 
   /** Other typedef */
   typedef float                                 RealType;

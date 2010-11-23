@@ -160,10 +160,10 @@ ObjectStore< TObjectType >
 
   os << indent << "m_GrowthStrategy: " << m_GrowthStrategy << std::endl;
   os << indent << "m_Size: " << m_Size << std::endl;
-  os << indent << "m_LinearGrowthSize: " << static_cast< unsigned long >( m_LinearGrowthSize ) << std::endl;
-  os << indent << "Free list size: " << static_cast< unsigned long >( m_FreeList.size() ) << std::endl;
-  os << indent << "Free list capacity: " << static_cast< unsigned long >( m_FreeList.capacity() ) << std::endl;
-  os << indent << "Number of blocks in store: " << static_cast< unsigned long >( m_Store.size() ) << std::endl;
+  os << indent << "m_LinearGrowthSize: " << static_cast< size_t >( m_LinearGrowthSize ) << std::endl;
+  os << indent << "Free list size: " << static_cast< size_t >( m_FreeList.size() ) << std::endl;
+  os << indent << "Free list capacity: " << static_cast< size_t >( m_FreeList.capacity() ) << std::endl;
+  os << indent << "Number of blocks in store: " << static_cast< size_t >( m_Store.size() ) << std::endl;
 }
 } // end namespace itk
 

@@ -314,7 +314,7 @@ void PhilipsRECImageIOSetupSliceIndex(
 
 void
 PhilipsRECImageIO::SwapBytesIfNecessary(void *buffer,
-                                        unsigned long numberOfPixels)
+                                        SizeValueType numberOfPixels)
 {
   if ( m_ByteOrder == LittleEndian )
     {

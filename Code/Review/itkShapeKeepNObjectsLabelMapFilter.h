@@ -57,6 +57,7 @@ public:
   typedef typename ImageType::PixelType       PixelType;
   typedef typename ImageType::IndexType       IndexType;
   typedef typename ImageType::LabelObjectType LabelObjectType;
+  typedef typename ImageType::SizeValueType   SizeValueType;
 
   typedef typename LabelObjectType::AttributeType AttributeType;
 
@@ -94,8 +95,8 @@ public:
   /**
    * Set/Get the number of objects to keep
    */
-  itkSetMacro(NumberOfObjects, unsigned long);
-  itkGetConstReferenceMacro(NumberOfObjects, unsigned long);
+  itkSetMacro(NumberOfObjects, SizeValueType);
+  itkGetConstReferenceMacro(NumberOfObjects, SizeValueType);
 
   /**
    * Set/Get the attribute to use to select the object to keep.
@@ -177,7 +178,7 @@ protected:
 
   bool m_ReverseOrdering;
 
-  unsigned long m_NumberOfObjects;
+  SizeValueType m_NumberOfObjects;
   AttributeType m_Attribute;
 private:
   ShapeKeepNObjectsLabelMapFilter(const Self &); //purposely not implemented

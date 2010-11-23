@@ -133,8 +133,8 @@ QuadEdgeMeshBorderTransform< TInputMesh, TOutputMesh >::ComputeLargestBorder()
 
   InputEdgeListType *list = boundaryRepresentativeEdges->Evaluate(*input);
 
-  unsigned long max_id = 0L;
-  unsigned long k = 0L;
+  SizeValueType max_id = 0L;
+  SizeValueType k = 0L;
 
   InputEdgeListIterator oborder_it = list->begin();
 

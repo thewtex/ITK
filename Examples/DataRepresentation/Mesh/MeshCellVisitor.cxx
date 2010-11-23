@@ -39,6 +39,7 @@
 
 
 #include "itkMesh.h"
+#include "itkIntTypes.h"
 #include "itkLineCell.h"
 #include "itkTetrahedronCell.h"
 
@@ -94,7 +95,7 @@ class CustomTriangleVisitor
 {
 public:
   typedef itk::TriangleCell<CellType>      TriangleType;
-  void Visit(unsigned long cellId, TriangleType * t )
+  void Visit( itk::IdentifierType cellId, TriangleType * t )
     {
     std::cout << "Cell # " << cellId << " is a TriangleType ";
     std::cout << t->GetNumberOfPoints() << std::endl;

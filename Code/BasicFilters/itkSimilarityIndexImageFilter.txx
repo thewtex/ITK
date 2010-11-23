@@ -112,9 +112,9 @@ SimilarityIndexImageFilter< TInputImage1, TInputImage2 >
   m_CountOfIntersection.SetSize(numberOfThreads);
 
   // Initialize the temporaries
-  m_CountOfImage1.Fill(NumericTraits< unsigned long >::Zero);
-  m_CountOfImage2.Fill(NumericTraits< unsigned long >::Zero);
-  m_CountOfIntersection.Fill(NumericTraits< unsigned long >::Zero);
+  m_CountOfImage1.Fill(NumericTraits< typename TInputImage1::SizeValueType >::Zero);
+  m_CountOfImage2.Fill(NumericTraits< typename TInputImage1::SizeValueType >::Zero);
+  m_CountOfIntersection.Fill(NumericTraits< typename TInputImage1::SizeValueType >::Zero);
 }
 
 template< class TInputImage1, class TInputImage2 >
@@ -123,7 +123,7 @@ SimilarityIndexImageFilter< TInputImage1, TInputImage2 >
 ::AfterThreadedGenerateData()
 {
   int           i;
-  unsigned long countImage1, countImage2, countIntersect;
+  typename TInputImage1::SizeValueType countImage1, countImage2, countIntersect;
 
   int numberOfThreads = this->GetNumberOfThreads();
 

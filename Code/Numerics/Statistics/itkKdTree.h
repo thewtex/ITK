@@ -479,7 +479,7 @@ public:
     void resize(unsigned int k)
     {
       m_Identifiers.clear();
-      m_Identifiers.resize( k, NumericTraits< unsigned long >::max() );
+      m_Identifiers.resize( k, NumericTraits< IdentifierType >::max() );
       m_Distances.clear();
       m_Distances.resize( k, NumericTraits< double >::max() );
       m_FarthestNeighborIndex = 0;
@@ -554,7 +554,7 @@ private:
     return m_Sample;
   }
 
-  unsigned long Size() const
+  SizeValueType Size() const
   {
     return m_Sample->Size();
   }

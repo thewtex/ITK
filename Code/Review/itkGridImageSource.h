@@ -82,6 +82,7 @@ public:
   typedef typename TOutputImage::PointType     OriginType;
   typedef typename TOutputImage::DirectionType DirectionType;
   typedef typename TOutputImage::SizeType      SizeType;
+  typedef typename TOutputImage::SizeValueType SizeValueType;
 
   /** Other convenient types. */
   typedef FixedArray< RealType, itkGetStaticConstMacro(ImageDimension) >
@@ -89,7 +90,7 @@ public:
   typedef FixedArray< bool, itkGetStaticConstMacro(ImageDimension) >
   BoolArrayType;
   typedef vnl_vector< RealType >                           PixelArrayType;
-  typedef VectorContainer< unsigned long, PixelArrayType > PixelArrayContainerType;
+  typedef VectorContainer< SizeValueType, PixelArrayType > PixelArrayContainerType;
 
   /** Gets and sets for the output image. */
   itkSetMacro(Spacing, SpacingType);

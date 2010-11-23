@@ -86,6 +86,7 @@ public:
   typedef typename Superclass::FixedImagePointer FixedImagePointer;
   typedef typename FixedImageType::IndexType     IndexType;
   typedef typename FixedImageType::SizeType      SizeType;
+  typedef typename FixedImageType::SizeValueType SizeValueType;
   typedef typename FixedImageType::SpacingType   SpacingType;
   typedef typename FixedImageType::DirectionType DirectionType;
 
@@ -225,7 +226,7 @@ protected:
    * iterators for the fixed image. */
   struct GlobalDataStruct {
     double m_SumOfSquaredDifference;
-    unsigned long m_NumberOfPixelsProcessed;
+    SizeValueType m_NumberOfPixelsProcessed;
     double m_SumOfSquaredChange;
   };
 private:
@@ -269,7 +270,7 @@ private:
    * the overlapping region between the two images. */
   mutable double        m_Metric;
   mutable double        m_SumOfSquaredDifference;
-  mutable unsigned long m_NumberOfPixelsProcessed;
+  mutable SizeValueType m_NumberOfPixelsProcessed;
   mutable double        m_RMSChange;
   mutable double        m_SumOfSquaredChange;
 

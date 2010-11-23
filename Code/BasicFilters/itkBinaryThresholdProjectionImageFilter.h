@@ -52,7 +52,7 @@ template< class TInputPixel, class TOutputPixel >
 class BinaryThresholdAccumulator
 {
 public:
-  BinaryThresholdAccumulator(unsigned long) {}
+  BinaryThresholdAccumulator(size_t) {}
   ~BinaryThresholdAccumulator(){}
 
   inline void Initialize()
@@ -177,7 +177,7 @@ protected:
        << std::endl;
   }
 
-  virtual AccumulatorType NewAccumulator(unsigned long size) const
+  virtual AccumulatorType NewAccumulator(size_t size) const
   {
     AccumulatorType accumulator(size);
 

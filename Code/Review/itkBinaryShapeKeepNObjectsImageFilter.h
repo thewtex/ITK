@@ -60,6 +60,7 @@ public:
   typedef typename InputImageType::ConstPointer  InputImageConstPointer;
   typedef typename InputImageType::RegionType    InputImageRegionType;
   typedef typename InputImageType::PixelType     InputImagePixelType;
+  typedef typename InputImageType::SizeValueType SizeValueType;
   typedef typename OutputImageType::Pointer      OutputImagePointer;
   typedef typename OutputImageType::ConstPointer OutputImageConstPointer;
   typedef typename OutputImageType::RegionType   OutputImageRegionType;
@@ -73,7 +74,9 @@ public:
   itkStaticConstMacro(ImageDimension, unsigned int,
                       TInputImage::ImageDimension);
 
-  typedef ShapeLabelObject< unsigned long, itkGetStaticConstMacro(ImageDimension) > LabelObjectType;
+  typedef typename TInputImage::SizeValueType    LabelType;
+
+  typedef ShapeLabelObject< LabelType, itkGetStaticConstMacro(ImageDimension) > LabelObjectType;
   typedef LabelMap< LabelObjectType >                                               LabelMapType;
   typedef BinaryImageToLabelMapFilter< InputImageType, LabelMapType >               LabelizerType;
   typedef Image< typename OutputImageType::PixelType, itkGetStaticConstMacro(OutputImageDimension) >
@@ -128,8 +131,8 @@ public:
   /**
    * Set/Get the number of objects to keep
    */
-  itkGetConstMacro(NumberOfObjects, unsigned long);
-  itkSetMacro(NumberOfObjects, unsigned long);
+  itkGetConstMacro(NumberOfObjects, SizeValueType);
+  itkSetMacro(NumberOfObjects, SizeValueType);
 
   /**
    * Set/Get the ordering of the objects. By default, the ones with the
@@ -175,7 +178,7 @@ private:
   bool                 m_FullyConnected;
   OutputImagePixelType m_BackgroundValue;
   OutputImagePixelType m_ForegroundValue;
-  unsigned long        m_NumberOfObjects;
+  SizeValueType        m_NumberOfObjects;
   bool                 m_ReverseOrdering;
   AttributeType        m_Attribute;
 }; // end of class

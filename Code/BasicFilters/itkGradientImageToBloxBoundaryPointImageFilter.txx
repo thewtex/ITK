@@ -240,8 +240,8 @@ GradientImageToBloxBoundaryPointImageFilter< TInputImage >
   TInputIterator inputIt = TInputIterator(inputPtr, inputRequestedRegion);
 
   // Keep track of how many boundary points we found (for debugging)
-  unsigned long int numBP = 0;
-  unsigned long int numBPadded = 0;
+  typename TInputImage::SizeValueType numBP = 0;
+  typename TInputImage::SizeValueType numBPadded = 0;
 
   // Get the index of the pixel
   IndexType bloxIndex;

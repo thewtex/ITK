@@ -129,7 +129,7 @@ public:
 
   void AddAttribute(  const AttributeValueType & attr )
     {
-    unsigned long size = m_AttributeSet.size();
+    const size_t size = m_AttributeSet.size();
     m_AttributeSet.insert( attr );
     if( size != m_AttributeSet.size() )
       {

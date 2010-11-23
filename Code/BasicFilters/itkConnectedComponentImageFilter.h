@@ -125,7 +125,7 @@ public:
   itkBooleanMacro(FullyConnected);
 
   /** Type used as identifier of the different component labels. */
-  typedef unsigned long int LabelType;
+  typedef typename TOutputImage::SizeValueType LabelType;
 
   // only set after completion
   itkGetConstReferenceMacro(ObjectCount, LabelType);
@@ -195,8 +195,8 @@ private:
   {
 public:
     // run length information - may be a more type safe way of doing this
-    long int length;
-    typename InputImageType::IndexType where;   // Index of the start of the run
+    typename TInputImage::IndexValueType length;
+    typename TInputImage::IndexType where;   // Index of the start of the run
     LabelType label;                            // the initial label of the run
   };
 
@@ -205,7 +205,7 @@ public:
   // the map storing lines
   typedef std::vector< lineEncoding > LineMapType;
 
-  typedef std::vector< long > OffsetVec;
+  typedef std::vector< typename TInputImage::IndexValueType > OffsetVec;
 
   // the types to support union-find operations
   typedef std::vector< LabelType > UnionFindType;
@@ -213,18 +213,18 @@ public:
   UnionFindType m_Consecutive;
 
   // functions to support union-find operations
-  void InitUnion(const unsigned long int size)
+  void InitUnion(const typename TInputImage::SizeValueType size)
   {
     m_UnionFind = UnionFindType(size + 1);
   }
 
-  void InsertSet(const unsigned long int label);
+  void InsertSet(const typename TInputImage::SizeValueType label);
 
-  unsigned long int LookupSet(const LabelType label);
+  typename TInputImage::SizeValueType LookupSet(const LabelType label);
 
   void LinkLabels(const LabelType lab1, const LabelType lab2);
 
-  unsigned long int CreateConsecutive();
+  typename TInputImage::SizeValueType CreateConsecutive();
 
   //////////////////
   bool CheckNeighbors(const OutputIndexType & A,
@@ -246,8 +246,8 @@ public:
       }
   }
 
-  typename std::vector< long >       m_NumberOfLabels;
-  typename std::vector< long >       m_FirstLineIdToJoin;
+  typename std::vector< typename TInputImage::SizeValueType > m_NumberOfLabels;
+  typename std::vector< typename TInputImage::SizeValueType > m_FirstLineIdToJoin;
 
   typename Barrier::Pointer m_Barrier;
 

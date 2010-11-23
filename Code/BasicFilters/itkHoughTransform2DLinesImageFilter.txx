@@ -72,11 +72,13 @@ HoughTransform2DLinesImageFilter< TInputPixelType, TOutputPixelType >
   // Compute the size of the output image
   typename InputImageType::RegionType region;
   Size< 2 > size;
+  typedef Size< 2 >::SizeValueType SizeValueType;
+
   size[0] =
-    (long unsigned int)( vcl_sqrt(m_AngleResolution * m_AngleResolution
+    (SizeValueType)( vcl_sqrt(m_AngleResolution * m_AngleResolution
                                   + input->GetLargestPossibleRegion().GetSize()[0]
                                   * input->GetLargestPossibleRegion().GetSize()[0]) );
-  size[1] = (long unsigned int)m_AngleResolution;
+  size[1] = (SizeValueType)m_AngleResolution;
   region.SetSize(size);
   region.SetIndex( input->GetLargestPossibleRegion().GetIndex() );
 
@@ -119,6 +121,7 @@ HoughTransform2DLinesImageFilter< TInputPixelType, TOutputPixelType >
   image_it.Begin();
 
   Index< 2 > index;
+  typedef Index< 2 >::IndexValueType IndexValueType;
 
   while ( !image_it.IsAtEnd() )
     {
@@ -128,12 +131,12 @@ HoughTransform2DLinesImageFilter< TInputPixelType, TOutputPixelType >
         {
         index[0] =
           // m_R
-          (long unsigned int)( image_it.GetIndex()[0] * vcl_cos(angle) + image_it.GetIndex()[1] * vcl_sin(angle) );
+          (IndexValueType)( image_it.GetIndex()[0] * vcl_cos(angle) + image_it.GetIndex()[1] * vcl_sin(angle) );
         // m_Theta
-        index[1] = (long unsigned int)( ( m_AngleResolution / 2 ) + m_AngleResolution * angle / ( 2 * nPI ) );
+        index[1] = (IndexValueType)( ( m_AngleResolution / 2 ) + m_AngleResolution * angle / ( 2 * nPI ) );
 
         if ( ( index[0] > 0 )
-             && ( index[0] <= (long)outputImage->GetBufferedRegion().GetSize()[0] ) )
+             && ( index[0] <= (IndexValueType)outputImage->GetBufferedRegion().GetSize()[0] ) )
         // the preceeding "if" should be replacable with "if (
         // outputImage->GetBufferedRegion().IsInside(index) )" but
         // the algorithm fails if it is
@@ -174,6 +177,7 @@ HoughTransform2DLinesImageFilter< TInputPixelType, TOutputPixelType >
 
   Index< 2 > index;
   Index< 2 > maxIndex;
+  typedef Index< 2 >::IndexValueType IndexValueType;
   typename OutputImageType::PixelType value;
   typename OutputImageType::PixelType valuemax;
 
@@ -193,9 +197,9 @@ HoughTransform2DLinesImageFilter< TInputPixelType, TOutputPixelType >
       for ( double angle = -nPI; angle < nPI; angle += nPI / m_AngleResolution )
         {
         // m_R
-        index[0] = (long int)( image_it.GetIndex()[0] * vcl_cos(angle) + image_it.GetIndex()[1] * vcl_sin(angle) );
+        index[0] = (IndexValueType)( image_it.GetIndex()[0] * vcl_cos(angle) + image_it.GetIndex()[1] * vcl_sin(angle) );
         // m_Theta
-        index[1] = (long int)( ( m_AngleResolution / 2 ) + m_AngleResolution * angle / ( 2 * nPI ) );
+        index[1] = (IndexValueType)( ( m_AngleResolution / 2 ) + m_AngleResolution * angle / ( 2 * nPI ) );
 
         if ( outputImage->GetBufferedRegion().IsInside(index) )
           {
@@ -278,6 +282,7 @@ HoughTransform2DLinesImageFilter< TInputPixelType, TOutputPixelType >
   const double nPI = 4.0 * vcl_atan(1.0);
 
   itk::Index< 2 > index;
+  typedef Index< 2 >::IndexValueType IndexValueType;
 
   unsigned int lines = 0;
   bool         found;
@@ -341,8 +346,8 @@ HoughTransform2DLinesImageFilter< TInputPixelType, TOutputPixelType >
           {
           for ( double length = 0; length < m_DiscRadius; length += 1 )
             {
-            index[0] = (long int)( it_input.GetIndex()[0] + length * vcl_cos(angle) );
-            index[1] = (long int)( it_input.GetIndex()[1] + length * vcl_sin(angle) );
+            index[0] = (IndexValueType)( it_input.GetIndex()[0] + length * vcl_cos(angle) );
+            index[1] = (IndexValueType)( it_input.GetIndex()[1] + length * vcl_sin(angle) );
             if ( postProcessImage->GetBufferedRegion().IsInside(index) )
               {
               postProcessImage->SetPixel(index, 0);

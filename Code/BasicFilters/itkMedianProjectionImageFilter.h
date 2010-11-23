@@ -52,7 +52,7 @@ template< class TInputPixel >
 class MedianAccumulator
 {
 public:
-  MedianAccumulator(unsigned long size)
+  MedianAccumulator(size_t size)
   {
     m_Values.reserve(size);
   }

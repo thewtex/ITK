@@ -80,7 +80,8 @@ TileImageFilter< TInputImage, TOutputImage >
         }
       OutputImageRegionType tempRegion(tempIndex, tempSize);
       tempImage->SetRegions(tempRegion);
-      tempImage->SetPixelContainer( const_cast< ImportImageContainer< unsigned long,
+      typedef typename TInputImage::SizeValueType InputSizeValueType;
+      tempImage->SetPixelContainer( const_cast< ImportImageContainer< InputSizeValueType,
                                                                       InputPixelType > * >( this->GetInput(it.Get().
                                                                                                            m_ImageNumber)
                                                                                             ->GetPixelContainer() ) );

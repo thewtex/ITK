@@ -48,7 +48,7 @@ void
 RelabelComponentImageFilter< TInputImage, TOutputImage >
 ::GenerateData()
 {
-  unsigned long i;
+  typename TInputImage::SizeValueType i;
 
   // Use a map to keep track of the size of each object.  Object
   // number -> ObjectType (which has Object number and the two sizes)
@@ -154,13 +154,15 @@ RelabelComponentImageFilter< TInputImage, TOutputImage >
       {
       // map small objects to the background
       NumberOfObjectsRemoved++;
-      relabelMap.insert( RelabelMapType::value_type( ( *vit ).m_ObjectNumber, 0 ) );
+      relabelMap.insert( typename RelabelMapType::value_type(
+        ( *vit ).m_ObjectNumber, 0 ) );
       }
     else
       {
       // map for input labels to output labels (Note we use i+1 in the
       // map since index 0 is the background)
-      relabelMap.insert( RelabelMapType::value_type( ( *vit ).m_ObjectNumber, i + 1 ) );
+      relabelMap.insert( typename RelabelMapType::value_type(
+        ( *vit ).m_ObjectNumber, i + 1 ) );
 
       // cache object sizes for later access by the user
       m_SizeOfObjectsInPixels[i] = ( *vit ).m_SizeInPixels;
@@ -230,9 +232,9 @@ RelabelComponentImageFilter< TInputImage, TOutputImage >
      << m_NumberOfObjectsToPrint << std::endl;
   os << indent << "MinimumObjectSizez: " << m_MinimumObjectSize << std::endl;
 
-  std::vector< ObjectSizeType >::const_iterator it;
-  std::vector< float >::const_iterator          fit;
-  LabelType                                     i;
+  typename std::vector< ObjectSizeType >::const_iterator it;
+  std::vector< float >::const_iterator                   fit;
+  LabelType                                              i;
 
   // limit the number of objects to print
   LabelType numPrint = m_NumberOfObjectsToPrint;
