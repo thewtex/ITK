@@ -51,7 +51,7 @@ public:
 
   /** Compatible Size and value typedef */
   typedef   Size< VDimension > SizeType;
-  typedef   unsigned long      SizeValueType;
+  typedef   size_t             SizeValueType;
 
   /** Get the dimension of the size object. */
   static unsigned int GetSizeDimension(void) { return VDimension; }

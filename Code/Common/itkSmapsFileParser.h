@@ -36,7 +36,7 @@ namespace itk
 class ITKCommon_EXPORT MapRecord
 {
 public:
-  typedef unsigned int MemoryLoadType;
+  typedef size_t MemoryLoadType;
   virtual ~MapRecord();
   /** Reset the record
   */
@@ -115,8 +115,8 @@ class ITKCommon_EXPORT VMMapRecord:public MapRecord
 class ITKCommon_EXPORT MapData
 {
 public:
-  /** need an unsigned long type to be able to accumulate the SmapsRecord */
-  typedef unsigned long MemoryLoadType;
+  /** need a large enough type to be able to accumulate the SmapsRecord */
+  typedef size_t MemoryLoadType;
   //todo delete records
   virtual ~MapData();
 

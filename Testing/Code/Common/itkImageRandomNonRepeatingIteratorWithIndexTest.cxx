@@ -45,7 +45,7 @@ int itkImageRandomNonRepeatingIteratorWithIndexTest(int, char* [] )
 
   typedef itk::Image< PixelType, ImageDimension >  ImageType;
 
-  typedef unsigned long             PriorityPixelType;
+  typedef size_t             PriorityPixelType;
 
   typedef itk::Image< PriorityPixelType, ImageDimension >  PriorityImageType;
 

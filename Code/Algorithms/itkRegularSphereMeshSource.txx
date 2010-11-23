@@ -48,7 +48,7 @@ void
 RegularSphereMeshSource< TOutputMesh >
 ::GenerateData()
 {
-  unsigned long tripoints[3] = { 0, 1, 2 };
+  typename OutputMeshType::PointIdentifier tripoints[3] = { 0, 1, 2 };
 
   typename OutputMeshType::Pointer outputMesh = this->GetOutput();
 
@@ -137,7 +137,7 @@ RegularSphereMeshSource< TOutputMesh >
     v_pt[0] = &v[0];
     v_pt[1] = &v[1];
     v_pt[2] = &v[2];
-    const unsigned long *tp;
+    const OutputMeshType::PointIdentifier *tp;
     unsigned long        cellIdx = 0;
     unsigned long        pointIdxOffset = outputMesh->GetNumberOfPoints();
     unsigned long        pointIdx = pointIdxOffset;
@@ -338,7 +338,7 @@ RegularSphereMeshSource< TOutputMesh >
 template< class TOutputMesh >
 void
 RegularSphereMeshSource< TOutputMesh >
-::AddCell(OutputMeshType *mesh, const unsigned long *pointIds, unsigned long idx)
+::AddCell(OutputMeshType *mesh, const typename OutputMeshType::PointIdentifier *pointIds, unsigned long idx)
 {
   CellAutoPointer testCell(new TriCellType, true);
 

@@ -35,6 +35,7 @@ itkAutomaticTopologyMeshSourceTest(int, char* [] )
   typedef itk::Mesh<double>                         MeshType;
   typedef MeshType::PointType                       PointType;
   typedef MeshType::CellType                        CellType;
+  typedef MeshType::CellIdentifier                  CellIdentifier;
 
   typedef itk::AutomaticTopologyMeshSource< MeshType >   MeshSourceType;
   typedef MeshSourceType::IdentifierType                 IdentifierType;
@@ -291,8 +292,7 @@ itkAutomaticTopologyMeshSourceTest(int, char* [] )
         {
         std::cout << "Cell " << i << ":\n";
 
-        typedef MeshSourceType::IdentifierType IdentifierType;
-        typedef std::set<IdentifierType> NeighborSet;
+        typedef std::set<CellIdentifier> NeighborSet;
         NeighborSet cellSet;
 
         mesh->GetCellBoundaryFeatureNeighbors( 0, i, 0, &cellSet );

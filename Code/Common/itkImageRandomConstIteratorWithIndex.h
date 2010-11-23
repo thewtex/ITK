@@ -123,6 +123,9 @@ public:
    * confused with ImageIterator::Index. */
   typedef typename TImage::IndexType IndexType;
 
+  /** SizeValueType typedef support. */
+  typedef typename TImage::SizeValueType SizeValueType;
+
   /** Region typedef support. While this was already typdef'ed in the superclass
    * it needs to be redone here for this subclass to compile properly with gcc.
    * Note that we have to rescope Region back to itk::ImageRegion so that is
@@ -199,9 +202,9 @@ public:
   }
 
   /** Set/Get number of random samples to get from the image region */
-  void SetNumberOfSamples(unsigned long number);
+  void SetNumberOfSamples(SizeValueType number);
 
-  unsigned long GetNumberOfSamples(void) const;
+  SizeValueType GetNumberOfSamples(void) const;
 
   /** Reinitialize the seed of the random number generator  */
   void ReinitializeSeed();
@@ -213,9 +216,9 @@ private:
 
   typedef Statistics::MersenneTwisterRandomVariateGenerator::Pointer GeneratorPointer;
   GeneratorPointer m_Generator;
-  unsigned long    m_NumberOfSamplesRequested;
-  unsigned long    m_NumberOfSamplesDone;
-  unsigned long    m_NumberOfPixelsInRegion;
+  SizeValueType    m_NumberOfSamplesRequested;
+  SizeValueType    m_NumberOfSamplesDone;
+  SizeValueType    m_NumberOfPixelsInRegion;
 };
 } // end namespace itk
 

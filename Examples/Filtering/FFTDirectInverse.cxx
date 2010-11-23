@@ -88,8 +88,9 @@ int main( int argc, char * argv[] )
   // Read the image and get its size
   inputreader->Update();
 
-  IOImageType::SizeType     inputsize;
-  IOImageType::SizeType     worksize;
+  IOImageType::SizeType            inputsize;
+  IOImageType::SizeType            worksize;
+  const IOImageType::SizeValueType one = 1;
 
   inputsize = inputreader->GetOutput()->GetLargestPossibleRegion().GetSize();
 
@@ -102,7 +103,7 @@ int main( int argc, char * argv[] )
       {
       n++;
       }
-    worksize[i] = 1 << (n+1);
+    worksize[i] = one << (n+1);
 
     std::cout << "inputsize[" << i << "]=" << inputsize[i] << std::endl;
     std::cout << "worksize[" << i << "]=" << worksize[i] << std::endl;

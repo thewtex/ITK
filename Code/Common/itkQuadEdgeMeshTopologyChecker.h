@@ -58,7 +58,7 @@ public:
   itkSetConstObjectMacro(Mesh, MeshType);
 
   // FIXME this probably should be taken from the traits of the Mesh
-  typedef unsigned long IdentifierType;
+  typedef size_t IdentifierType;
 
   itkSetMacro(ExpectedNumberOfPoints, IdentifierType);
   itkSetMacro(ExpectedNumberOfEdges, IdentifierType);

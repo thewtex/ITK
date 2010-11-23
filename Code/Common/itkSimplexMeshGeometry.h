@@ -45,12 +45,12 @@ class ITKCommon_EXPORT SimplexMeshGeometry
 {
 public:
 
-  typedef itk::Point< double, 3 >             PointType;
-  typedef itk::Vector< double, 3 >            VectorType;
-  typedef itk::CovariantVector< double, 3 >   CovariantVectorType;
-  typedef itk::FixedArray< unsigned long, 3 > IndexArray;
-  typedef itk::FixedArray< PointType, 3 >     PointArray;
-  typedef std::set< unsigned long >           NeighborSetType;
+  typedef itk::Point< double, 3 >           PointType;
+  typedef itk::Vector< double, 3 >          VectorType;
+  typedef itk::CovariantVector< double, 3 > CovariantVectorType;
+  typedef itk::FixedArray< size_t, 3 >      IndexArray;
+  typedef itk::FixedArray< PointType, 3 >   PointArray;
+  typedef std::set< size_t >                NeighborSetType;
 
   SimplexMeshGeometry();
   ~SimplexMeshGeometry();
@@ -105,7 +105,7 @@ public:
   /**
    * stores the index of the closest attractor to this point
    */
-  unsigned long closestAttractorIndex;
+  size_t closestAttractorIndex;
 
   /* stores circum circle radius */
   double circleRadius;
@@ -131,7 +131,7 @@ public:
   /* stores multiplier for interactive deformable model filter */
   double multiplier;
 
-  unsigned long forceIndex;
+  size_t forceIndex;
 
   /**
    * Computes the center and radius of the circum circle of the

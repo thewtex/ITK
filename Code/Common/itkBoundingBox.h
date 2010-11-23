@@ -62,7 +62,7 @@ namespace itk
  */
 
 template<
-  typename TPointIdentifier = unsigned long,
+  typename TPointIdentifier = size_t,
   int VPointDimension = 3,
   typename TCoordRep = float,
   typename TPointsContainer =
