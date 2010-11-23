@@ -281,11 +281,11 @@ void
 SimplexMeshAdaptTopologyFilter< TInputMesh, TOutputMesh >
 ::ModifyNeighborCells(unsigned long id1, unsigned long id2, unsigned long insertPointId)
 {
-  std::set< unsigned long >           cells1 =   this->GetInput(0)->GetCellLinks()->GetElement(id1);
-  std::set< unsigned long >           cells2 =   this->GetInput(0)->GetCellLinks()->GetElement(id2);
-  std::set< unsigned long >::iterator cellIt = cells1.begin();
+  std::set< typename InputMeshType::PointIdentifier >           cells1 =   this->GetInput(0)->GetCellLinks()->GetElement(id1);
+  std::set< typename InputMeshType::PointIdentifier >           cells2 =   this->GetInput(0)->GetCellLinks()->GetElement(id2);
+  typename std::set< typename InputMeshType::PointIdentifier >::iterator cellIt = cells1.begin();
 
-  std::set< unsigned long > result;
+  std::set< typename InputMeshType::PointIdentifier > result;
 
   const InputMeshType *inputMesh = this->GetInput(0);
 
@@ -295,7 +295,7 @@ SimplexMeshAdaptTopologyFilter< TInputMesh, TOutputMesh >
 
   while ( cellIt != cells1.end() )
     {
-    std::set< unsigned long >::iterator found = std::find(cells2.begin(), cells2.end(), *cellIt);
+    typename std::set< typename InputMeshType::PointIdentifier >::iterator found = std::find(cells2.begin(), cells2.end(), *cellIt);
     if ( found != cells2.end() )
       {
       result.insert(*cellIt);
@@ -323,12 +323,12 @@ SimplexMeshAdaptTopologyFilter< TInputMesh, TOutputMesh >
     else if ( nextCell->GetNumberOfPoints() > 3 )
       {
       m_NewSimplexCellPointer.TakeOwnership(new OutputPolygonType);
-      InputPolygonPointIdIterator pointIt =  nextCell->PointIdsBegin();
-      unsigned long               cnt = 0;
-      unsigned long               first = *pointIt++;
-      unsigned long               startId = first;
+      InputPolygonPointIdIterator             pointIt =  nextCell->PointIdsBegin();
+      typename InputMeshType::PointIdentifier cnt = 0;
+      typename InputMeshType::PointIdentifier first = *pointIt++;
+      typename InputMeshType::PointIdentifier startId = first;
 
-      unsigned long second = 0;
+      typename InputMeshType::PointIdentifier second = 0;
 
       while ( pointIt != nextCell->PointIdsEnd() )
         {

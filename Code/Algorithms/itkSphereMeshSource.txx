@@ -68,7 +68,7 @@ SphereMeshSource< TOutputMesh >
   // nodes allocation
 
   // the temporary container of nodes' connectness
-  unsigned long tripoints[3] = { 0, 1, 2 };
+  typename OutputMeshType::PointIdentifier tripoints[3] = { 0, 1, 2 };
 
   // memory allocation for nodes
   typename OutputMeshType::Pointer outputMesh = this->GetOutput();

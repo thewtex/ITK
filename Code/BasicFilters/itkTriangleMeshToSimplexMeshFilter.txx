@@ -55,7 +55,6 @@ template< typename TInputMesh, typename TOutputMesh >
 void TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
 ::Initialize()
 {
-  const unsigned long *tp;
 
   const InputMeshType *input = this->GetInput(0);
 
@@ -81,7 +80,7 @@ void TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
 
     CellAutoPointer triCellPointer;
     input->GetCell(idx1, triCellPointer);
-    tp = triCellPointer->GetPointIds();
+    const typename TInputMesh::PointIdentifier *tp = triCellPointer->GetPointIds();
     if ( !input->GetPoint(tp[0], &v1) )
       {
       itkExceptionMacro ("Point with id " << tp[0]
@@ -387,13 +386,12 @@ TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
 {
   const InputMeshType *input = this->GetInput(0);
 
-  const unsigned long *tp;
   InputPointType       v1, v2, v3;
 
   CellAutoPointer cellPointer;
 
   input->GetCell(faceId, cellPointer);
-  tp = cellPointer->GetPointIds();
+  const typename TOutputMesh::PointIdentifier *tp = cellPointer->GetPointIds();
   if ( !input->GetPoint(tp[0], &v1) )
     {
     itkExceptionMacro ("Point with id " << tp[0]

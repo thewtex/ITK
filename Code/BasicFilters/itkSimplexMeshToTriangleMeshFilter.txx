@@ -95,15 +95,15 @@ template< typename TInputMesh, typename TOutputMesh >
 unsigned long SimplexMeshToTriangleMeshFilter< TInputMesh, TOutputMesh >
 ::FindCellId(unsigned long id1, unsigned long id2, unsigned long id3)
 {
-  std::set< unsigned long >           cells1 =  this->GetInput(0)->GetCellLinks()->GetElement(id1);
-  std::set< unsigned long >           cells2 =  this->GetInput(0)->GetCellLinks()->GetElement(id2);
-  std::set< unsigned long >           cells3 =  this->GetInput(0)->GetCellLinks()->GetElement(id3);
-  std::set< unsigned long >::iterator cellIt = cells1.begin();
+  std::set< typename TInputMesh::PointIdentifier >           cells1 =  this->GetInput(0)->GetCellLinks()->GetElement(id1);
+  std::set< typename TInputMesh::PointIdentifier >           cells2 =  this->GetInput(0)->GetCellLinks()->GetElement(id2);
+  std::set< typename TInputMesh::PointIdentifier >           cells3 =  this->GetInput(0)->GetCellLinks()->GetElement(id3);
+  typename std::set< typename TInputMesh::PointIdentifier >::iterator cellIt = cells1.begin();
 
   while ( cellIt != cells1.end() )
     {
-    std::set< unsigned long >::iterator found2 = std::find(cells2.begin(), cells2.end(), *cellIt);
-    std::set< unsigned long >::iterator found3 = std::find(cells3.begin(), cells3.end(), *cellIt);
+    typename std::set< typename TInputMesh::PointIdentifier >::iterator found2 = std::find(cells2.begin(), cells2.end(), *cellIt);
+    typename std::set< typename TInputMesh::PointIdentifier >::iterator found3 = std::find(cells3.begin(), cells3.end(), *cellIt);
 
     if ( found2 != cells2.end() && found3 != cells3.end() )
       {

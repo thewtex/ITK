@@ -45,7 +45,7 @@ class ITKCommon_EXPORT MemoryUsageObserverBase
 {
 public:
   /** Define the type for the memory usage */
-  typedef unsigned long MemoryLoadType;
+  typedef size_t MemoryLoadType;
 
   /** destructor */
   virtual ~MemoryUsageObserverBase();

@@ -294,8 +294,8 @@ itkAutomaticTopologyQuadEdgeMeshSourceTest(int, char* [] )
         {
         std::cout << "Cell " << i << ":\n";
 
-        typedef MeshSourceType::IdentifierType IdentifierType;
-        typedef std::set<IdentifierType>       NeighborSet;
+        typedef MeshType::CellIdentifier     NeighborIdentifier;
+        typedef std::set<NeighborIdentifier> NeighborSet;
         NeighborSet cellSet;
 
         mesh->GetCellBoundaryFeatureNeighbors( 0, i, 0, &cellSet );

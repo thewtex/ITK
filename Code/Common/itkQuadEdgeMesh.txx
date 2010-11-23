@@ -1450,7 +1450,7 @@ QuadEdgeMesh< TPixel, VDimension, TTraits >
  * understanding is not usefull at first contact with the class.
  */
 template< typename TPixel, unsigned int VDimension, typename TTraits >
-unsigned long
+size_t
 QuadEdgeMesh< TPixel, VDimension, TTraits >
 ::ComputeNumberOfPoints() const
 {
@@ -1462,7 +1462,7 @@ QuadEdgeMesh< TPixel, VDimension, TTraits >
     return ( 0 );
     }
 
-  unsigned long                numberOfPoints = 0;
+  size_t                       numberOfPoints = 0;
   PointsContainerConstIterator pointIterator = points->Begin();
 
   while ( pointIterator != points->End() )
@@ -1484,11 +1484,11 @@ QuadEdgeMesh< TPixel, VDimension, TTraits >
  * understanding is not usefull at first contact with the class.
  */
 template< typename TPixel, unsigned int VDimension, typename TTraits >
-unsigned long
+size_t
 QuadEdgeMesh< TPixel, VDimension, TTraits >
 ::ComputeNumberOfFaces() const
 {
-  unsigned long               numberOfFaces = 0;
+  size_t                      numberOfFaces = 0;
   CellsContainerConstIterator cellIterator = this->GetCells()->Begin();
   CellsContainerConstIterator cellEnd      = this->GetCells()->End();
 
@@ -1514,11 +1514,11 @@ QuadEdgeMesh< TPixel, VDimension, TTraits >
  *       understanding is not usefull at first contact with the class.
  */
 template< typename TPixel, unsigned int VDimension, typename TTraits >
-unsigned long
+size_t
 QuadEdgeMesh< TPixel, VDimension, TTraits >
 ::ComputeNumberOfEdges() const
 {
-  unsigned long numberOfEdges = this->GetEdgeCells()->size();
+  size_t numberOfEdges = this->GetEdgeCells()->size();
 
   return ( numberOfEdges );
 }
