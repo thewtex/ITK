@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--**
+**
+** OrientationAdapterBaseRename.xml
+**
+**-->
+<Change>
+    <!--**
+    ** Title for the online migration page
+    **-->
+    <Title>
+      Orientation Adapter Base Rename
+    </Title>
+
+    <!--**
+    ** Plain text description of the change
+    **-->
+    <Description>
+      ---- 8b619f5cd2ad2d245ced789cda17c036af12d327 ----
+      STYLE:  Made the file and class name match (11523)
+
+      The file was named differently than the class
+      defined inside.  Making these consistent matches
+      the rest of the ITK style.
+
+    </Description>
+
+    <!--**
+    ** Sample code snippets
+    **-->
+    <SampleCode>
+      <Old>
+          "itkOrientationAdapter.h"
+      </Old>
+      <New>
+          "itkOrientationAdapterBase.h"
+      </New>
+    </SampleCode>
+
+    <!--**
+    ** The change-ids for all commits in the topic branch
+    **-->
+    <Gerrit-ChangeId>
+      Ib1bfac893da630656bede6262d5415c253a51ac3
+    </Gerrit-ChangeId>
+
+    <!--**
+    ** List of all changed files from the topic branch
+    **-->
+    <FileList>
+      Code/Common/itkOrientationAdapter.h
+      Code/Common/itkOrientationAdapterBase.h
+      Code/Common/itkQuaternionOrientationAdapter.h
+      Code/Common/itkSpatialOrientationAdapter.h
+    </FileList>
+</Change>
