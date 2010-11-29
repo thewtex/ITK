@@ -271,32 +271,6 @@ set(ReviewTest6_SRCS
   itkScalarChanAndVeseSparseLevelSetImageFilterTest2.cxx
 )
 
-if(ITK_USE_TRANSFORM_IO_FACTORIES)
-  set(ReviewTest_SRCS ${ReviewTest_SRCS} itkTransformFileReaderWriterTest.cxx)
-
-  add_test(itkTransformFileReaderWriterTest0
-    ${REVIEW_TESTS} itkTransformFileReaderWriterTest
-    ${INPUTDATA}/itkAffineTransform00.txt
-    ${TEMP}/itkTransformFileReaderWriterTest0.txt
-    )
-
-  add_test(itkTransformFileReaderWriterTest1
-    ${REVIEW_TESTS} itkTransformFileReaderWriterTest
-    ${INPUTDATA}/itkAffineTransform01.txt
-    ${TEMP}/itkTransformFileReaderWriterTest1.txt
-    )
-  add_test(itkTransformFileReaderWriterTest2
-    ${REVIEW_TESTS} itkTransformFileReaderWriterTest
-    ${INPUTDATA}/itkAffineTransform01.txt
-    ${TEMP}/itkTransformFileReaderWriterTest1.mat
-    )
-  add_test(itkTransformFileReaderWriterTest3
-    ${REVIEW_TESTS} itkTransformFileReaderWriterTest
-    ${INPUTDATA}/itkBSplineTransform00.txt
-    ${TEMP}/itkBSplineTransform00.mat
-    )
-endif(ITK_USE_TRANSFORM_IO_FACTORIES)
-
 add_test(itkOptImageToImageMetricsTest01
   ${REVIEW_TESTS} itkOptImageToImageMetricsTest
   ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceBorder20.png
@@ -2603,13 +2577,6 @@ set(ReviewTest6_LIBS
   ITKStatistics
   )
 target_link_libraries(itkReviewTests6 ${ReviewTest6_LIBS})
-
-if(ITK_USE_TRANSFORM_IO_FACTORIES)
-set(ReviewTest_LIBS ${ReviewTest_LIBS}
-  ITKTransformIOReview
-  )
-endif(ITK_USE_TRANSFORM_IO_FACTORIES)
-
 
 if(ITK_USE_MINC2 AND MINC2_FOUND)
   set(ReviewTest_LIBS ${ReviewTest_LIBS} ITKIOMINC2)

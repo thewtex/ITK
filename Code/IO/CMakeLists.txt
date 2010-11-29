@@ -53,18 +53,19 @@ set(ITKIO_SRCS
   itkXMLFile.cxx
   itkMetaArrayReader.cxx
   itkMetaArrayWriter.cxx
-)
 
-if( NOT ITK_USE_TRANSFORM_IO_FACTORIES )
-set(ITKIO_SRCS
-  ${ITKIO_SRCS}
+  itkTransformIOBase.cxx
+  itkTransformIOFactory.cxx
   itkTransformFileReader.cxx
   itkTransformFileWriter.cxx
-  )
-endif( NOT ITK_USE_TRANSFORM_IO_FACTORIES )
+  itkMatlabTransformIO.cxx
+  itkMatlabTransformIOFactory.cxx
+  itkTxtTransformIO.cxx
+  itkTxtTransformIOFactory.cxx
+)
 
 # Add ITKIO library
-add_library(ITKIO ${ITKIO_SRCS})
+add_library(ITKIO ${ITK_LIBRARY_BUILD_TYPE} ${ITKIO_SRCS})
 
 # Enable warnings for trunctation of 64bits to 32bits in Mac
 if(APPLE)
@@ -86,10 +87,6 @@ ITKMetaIO
 ITKDICOMParser
 ITKEXPAT
 ITKniftiio)
-
-if( ITK_USE_TRANSFORM_IO_FACTORIES )
-    target_link_libraries(ITKIO ITKTransformIOReview)
-endif( ITK_USE_TRANSFORM_IO_FACTORIES )
 
 if(CMAKE_COMPILER_IS_GNUCXX)
   set_source_files_properties(itkTestDriver.cxx PROPERTIES COMPILE_FLAGS -w)

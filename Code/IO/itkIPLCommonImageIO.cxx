@@ -45,10 +45,13 @@ namespace itk
 // Default constructor
 IPLCommonImageIO::IPLCommonImageIO()
 {
-  m_SystemByteOrder = ByteSwapper< int >::SystemIsBigEndian() ? ImageIOBase::BigEndian :
-                      ImageIOBase::LittleEndian;
+  m_SystemByteOrder =
+    ByteSwapper< int >::SystemIsBigEndian() ?
+    ImageIOBase::BigEndian :
+    ImageIOBase::LittleEndian;
   m_ImageHeader = 0;
   m_FilenameList = new IPLFileNameList;
+  this->SetComponentType(ImageIOBase::SHORT);
 }
 
 IPLCommonImageIO::~IPLCommonImageIO()
@@ -68,16 +71,6 @@ void IPLCommonImageIO::PrintSelf(std::ostream & os, Indent indent) const
 bool IPLCommonImageIO::CanWriteFile(const char *)
 {
   return false;
-}
-
-const std::type_info & IPLCommonImageIO::GetPixelTypeInfo() const
-{
-  return typeid( short int );
-}
-
-const std::type_info & IPLCommonImageIO::GetComponentTypeInfo() const
-{
-  return typeid( short int );
 }
 
 unsigned int IPLCommonImageIO::GetComponentSize() const
@@ -281,13 +274,6 @@ void IPLCommonImageIO::ReadImageInformation()
   itk::EncapsulateMetaData< std::string >( thisDic, ITK_OnDiskStorageTypeName, std::string("SHORT") );
   itk::EncapsulateMetaData< short int >(thisDic, ITK_OnDiskBitPerPixel, (short int)16);
 
-#if defined( ITKIO_DEPRECATED_METADATA_ORIENTATION )
-  itk::EncapsulateMetaData< itk::SpatialOrientation::ValidCoordinateOrientationFlags >(
-    thisDic,
-    ITK_CoordinateOrientation,
-    m_ImageHeader->
-    coordinateOrientation);
-#endif
   //
   // has to be set before setting dir cosines,
   // otherwise the vector doesn't get allocated
@@ -620,10 +606,9 @@ void IPLCommonImageIO
 }
 
 int IPLCommonImageIO
-::statTimeToAscii(void *clock, char *timeString)
+::statTimeToAscii(void *clock, char *timeString,int len)
 {
   char *       asciiTime;
-  unsigned int i;
 
 #ifdef SGI
   timespec_t *lclock;
@@ -639,16 +624,14 @@ int IPLCommonImageIO
   asciiTime = ctime (&tclock);
 #endif
 
-  strncpy (timeString, asciiTime, 64);
-
-  for ( i = 0; i < 26; i++ )
+  strncpy (timeString, asciiTime, len);
+  timeString[len-1] = '\0';
+  char *newline;
+  if((newline = strrchr(timeString,'\n')) != 0 ||
+     (newline = strrchr(timeString,'\r')))
     {
-    if ( timeString[i] == '\n' )
-      {
-      timeString[i] = '\0';
-      }
+    *newline = '\0';
     }
-
   return 1;
 }
 } // end namespace itk

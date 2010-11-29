@@ -45,7 +45,7 @@ namespace itk
   *
   * \ingroup IOFilters
   */
-class ITK_EXPORT IPLCommonImageIO:public ImageIOBase
+class ITKIO_EXPORT IPLCommonImageIO:public ImageIOBase
 {
 public:
   /** Standard class typedefs. */
@@ -85,12 +85,6 @@ public:
 
   /** Optionally, modify spacing, origin and direction */
   virtual void ModifyImageInformation() {}
-
-  /** Get the type of the pixel.  */
-  virtual const std::type_info & GetPixelTypeInfo() const;
-
-  /** Get the component type of the pixel.  */
-  virtual const std::type_info & GetComponentTypeInfo() const;
 
   /** Reads the data from disk into the memory buffer provided. */
   virtual void Read(void *buffer);
@@ -140,7 +134,7 @@ protected:
 
   void sortImageListDescend();
 
-  int statTimeToAscii(void *clock, char *timeString);
+  int statTimeToAscii(void *clock, char *timeString, int len);
 
   virtual GEImageHeader * ReadHeader(const char *FileNameToRead);
 

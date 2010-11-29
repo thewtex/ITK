@@ -119,9 +119,11 @@ TxtTransformIO::Read()
   TmpFixedParameterArray.clear();
   bool haveFixedParameters = false;
   bool haveParameters = false;
+
   //
   // check for line end convention
   std::string line_end("\n");
+
   if ( data.find('\n') == std::string::npos )
     {
     if ( data.find('\r') == std::string::npos )
@@ -130,10 +132,16 @@ TxtTransformIO::Read()
       }
     line_end = "\r";
     }
-  while ( position < data.size() )
+  while ( position != std::string::npos && position < data.size() )
     {
     // Find the next string
     std::string::size_type end = data.find (line_end, position);
+
+    if( end == std::string::npos )
+      {
+      itkExceptionMacro("Couldn't find end of line in " << data );
+      }
+
     std::string            line = trim ( data.substr (position, end - position) );
     position = end + 1;
     itkDebugMacro ("Found line: \"" << line << "\"");

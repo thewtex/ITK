@@ -106,7 +106,7 @@ private:
 /** \class IPLFileNameList
  *  \brief -- stores filename+info to be enumerated for IPLCommonImageIO
  */
-class IPLFileNameList
+class ITKIO_EXPORT IPLFileNameList
 {
 public:
   typedef std::vector< IPLFileSortInfo * > ListType;
@@ -188,7 +188,7 @@ public:
       m_Key1 = Key1;
       m_Key2 = Key2;
       }
-    else if ( XDim != m_XDim || YDim != YDim )
+    else if ( XDim != m_XDim || YDim != m_YDim )
       {
       return false;
       }

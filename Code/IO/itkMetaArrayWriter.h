@@ -26,7 +26,7 @@
 
 namespace itk
 {
-class MetaArrayWriter:public LightProcessObject
+class ITKIO_EXPORT MetaArrayWriter:public LightProcessObject
 {
 public:
 
@@ -158,6 +158,8 @@ protected:
 
   MetaArrayWriter();
   virtual ~MetaArrayWriter();
+  void PrintSelf(std::ostream & os, Indent indent) const;
+
 private:
 
   bool m_Binary;

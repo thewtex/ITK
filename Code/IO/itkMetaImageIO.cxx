@@ -20,6 +20,7 @@
 #endif
 
 #include <string>
+#include <sstream>
 #include <stdlib.h>
 #include "itkMetaImageIO.h"
 #include "itkSpatialOrientationAdapter.h"
@@ -103,6 +104,7 @@ void MetaImageIO::ReadImageInformation()
 
   this->SetNumberOfComponents( m_MetaImage.ElementNumberOfChannels() );
 
+  itk::MetaDataDictionary & thisMetaDict = this->GetMetaDataDictionary();
   switch ( m_MetaImage.ElementType() )
     {
     default:
@@ -375,15 +377,6 @@ void MetaImageIO::ReadImageInformation()
     this->SetOrigin( i, m_MetaImage.Position(i) );
     }
 
-#if defined( ITKIO_DEPRECATED_METADATA_ORIENTATION )
-  MetaDataDictionary & thisMetaDict = this->GetMetaDataDictionary();
-#endif
-  /* TO - DO */
-  /*
-  Record type read - as in:
-  EncapsulateMetaData<std::string>(thisMetaDict, ITK_OnDiskStorageTypeName,
-                                        std::string(typeid(float).name()));
-  */
   if ( m_NumberOfDimensions == 3 )
     {
     SpatialOrientation::ValidCoordinateOrientationFlags coordOrient;
@@ -812,13 +805,6 @@ void MetaImageIO::ReadImageInformation()
         break;
         }
       }
-#if defined( ITKIO_DEPRECATED_METADATA_ORIENTATION )
-    if ( !coordUndefined )
-      {
-      EncapsulateMetaData< SpatialOrientation::ValidCoordinateOrientationFlags >(
-        thisMetaDict, ITK_CoordinateOrientation, coordOrient);
-      }
-#endif
     }
 
   //
@@ -833,6 +819,20 @@ void MetaImageIO::ReadImageInformation()
       directionAxis[jj] = transformMatrix[ii * this->GetNumberOfDimensions() + jj];
       }
     this->SetDirection(ii, directionAxis);
+    }
+
+  std::string classname( this->GetNameOfClass() );
+  EncapsulateMetaData< std::string >(thisMetaDict, ITK_InputFilterName,
+                                     classname);
+  //
+  // save the metadatadictionary in the MetaImage header.
+  // NOTE: The MetaIO library only supports typeless strings as metadata
+  int dictFields = m_MetaImage.GetNumberOfAdditionalReadFields();
+  for ( int f = 0; f < dictFields; f++ )
+    {
+    std::string key( m_MetaImage.GetAdditionalReadFieldName(f) );
+    std::string value ( m_MetaImage.GetAdditionalReadFieldValue(f) );
+    EncapsulateMetaData< std::string >( thisMetaDict,key,value );
     }
 
   //
@@ -1116,19 +1116,11 @@ MetaImageIO
   //Write the image Information
   this->WriteImageInformation();
 
+  itk::MetaDataDictionary & thisMetaDict = this->GetMetaDataDictionary();
   if ( nDims == 3 )
     {
-#if defined( ITKIO_DEPRECATED_METADATA_ORIENTATION )
-    MetaDataDictionary & thisMetaDict = this->GetMetaDataDictionary();
-#endif
     SpatialOrientation::ValidCoordinateOrientationFlags coordOrient =
       SpatialOrientation::ITK_COORDINATE_ORIENTATION_INVALID;
-#if defined( ITKIO_DEPRECATED_METADATA_ORIENTATION )
-    if ( !ExposeMetaData
-         < SpatialOrientation::ValidCoordinateOrientationFlags >
-           (thisMetaDict, ITK_CoordinateOrientation, coordOrient) )
-      {
-#endif
     std::vector< double > dirx, diry, dirz;
     SpatialOrientationAdapter::DirectionType dir;
     dirx = this->GetDirection(0);
@@ -1141,9 +1133,6 @@ MetaImageIO
       dir[ii][2] = dirz[ii];
       }
     coordOrient = SpatialOrientationAdapter().FromDirectionCosines(dir);
-#if defined( ITKIO_DEPRECATED_METADATA_ORIENTATION )
-    }
-#endif
 
     switch ( coordOrient )
       {
@@ -1373,6 +1362,89 @@ MetaImageIO
         break;
         }
       }
+    }
+  // Save out the metadatadictionary key/value pairs as part of
+  // the metaio header.
+  std::vector< std::string > keys = thisMetaDict.GetKeys();
+  std::vector< std::string >::const_iterator keyIt;
+  for ( keyIt = keys.begin(); keyIt != keys.end(); ++keyIt )
+    {
+    // try for common scalar types
+    std::ostringstream strs;
+    double dval=0.0;
+    float fval=0.0F;
+    long lval=0L;
+    unsigned long ulval=0L;
+    int ival=0;
+    unsigned uval=0;
+    short shval=0;
+    unsigned short ushval=0;
+    char cval=0;
+    unsigned char ucval=0;
+    bool bval=false;
+    std::string value="";
+    if(!ExposeMetaData< std::string >(thisMetaDict, *keyIt, value))
+      {
+      strs << value;
+      }
+    else if(ExposeMetaData<double>(thisMetaDict,*keyIt,dval))
+      {
+      strs << dval;
+      }
+    else if(ExposeMetaData<float>(thisMetaDict,*keyIt,fval))
+      {
+      strs << fval;
+      }
+    else if(ExposeMetaData<long>(thisMetaDict,*keyIt,lval))
+      {
+      strs << lval;
+      }
+    else if(ExposeMetaData<unsigned long>(thisMetaDict,*keyIt,ulval))
+      {
+      strs << ulval;
+      }
+    else if(ExposeMetaData<int>(thisMetaDict,*keyIt,ival))
+      {
+      strs << ival;
+      }
+    else if(ExposeMetaData<unsigned int>(thisMetaDict,*keyIt,uval))
+      {
+      strs << uval;
+      }
+    else if(ExposeMetaData<short>(thisMetaDict,*keyIt,shval))
+      {
+      strs << shval;
+      }
+    else if(ExposeMetaData<unsigned short>(thisMetaDict,*keyIt,ushval))
+      {
+      strs << ushval;
+      }
+    else if(ExposeMetaData<char>(thisMetaDict,*keyIt,cval))
+      {
+      strs << cval;
+      }
+    else if(ExposeMetaData<unsigned char>(thisMetaDict,*keyIt,ucval))
+      {
+      strs << ucval;
+      }
+    else if(ExposeMetaData<bool>(thisMetaDict,*keyIt,bval))
+      {
+      strs << bval;
+      }
+    else
+      {
+      itkWarningMacro("Unsupported metaData item "
+        << *keyIt << " of type "
+        << thisMetaDict[*keyIt]->GetMetaDataObjectTypeName()
+        << "found, won't be written to image file");
+      }
+    value = strs.str();
+
+#if 0
+    // Rolling this back out so that the tests pass.
+    // The meta image AddUserField requires control of the memory space.
+    m_MetaImage.AddUserField( (*keyIt).c_str(), MET_STRING, value.size(), value.c_str(), true, -1 );
+#endif
     }
 
   // Propagage direction cosine information .

@@ -26,7 +26,7 @@
 
 namespace itk
 {
-class MetaArrayReader:public LightProcessObject
+class ITKIO_EXPORT MetaArrayReader:public LightProcessObject
 {
 public:
 
@@ -243,6 +243,8 @@ protected:
 
   MetaArrayReader();
   virtual ~MetaArrayReader();
+  void PrintSelf(std::ostream & os, Indent indent) const;
+
 private:
 
   MetaArray m_MetaArray;

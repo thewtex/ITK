@@ -83,16 +83,10 @@
 // unreferenced local function has been removed
 #pragma warning ( disable : 4505 )
 
-// typename keyword in default template arguments is not accepted by
-// MSVC.  This macro should only be used in such places.
-#if !defined( CABLE_CONFIGURATION ) && ( _MSC_VER < 1310 )
-#define ITK_TYPENAME
-#else
-#define ITK_TYPENAME typename
 #endif
-#else
+
+// As of MSVS++ 7.1 and greater, typename is supported in templates
 #define ITK_TYPENAME typename
-#endif
 
 // When a class definition has ITK_EXPORT, the class will be
 // checked automatically, by Utilities/Dart/PrintSelfCheck.tcl
@@ -103,10 +97,53 @@
 #define ITKCommon_EXPORT __declspec(dllexport)
 #else
 #define ITKCommon_EXPORT __declspec(dllimport)
-#endif  /* ITKCommon_EXPORT */
+#endif  /* ITKCommon_EXPORTS */
+
+#ifdef ITKBasicFilters_EXPORTS
+#define ITKBasicFilters_EXPORT __declspec(dllexport)
+#else
+#define ITKBasicFilters_EXPORT __declspec(dllimport)
+#endif  /* ITKBasicFilters_EXPORT */
+
+#ifdef ITKNumerics_EXPORTS
+#define ITKNumerics_EXPORT __declspec(dllexport)
+#else
+#define ITKNumerics_EXPORT __declspec(dllimport)
+#endif  /* ITKNumerics_EXPORT */
+
+#ifdef ITKIO_EXPORTS
+#define ITKIO_EXPORT __declspec(dllexport)
+#else
+#define ITKIO_EXPORT __declspec(dllimport)
+#endif  /* ITKIO_EXPORT */
+
+#ifdef ITKStatistics_EXPORTS
+#define ITKStatistics_EXPORT __declspec(dllexport)
+#else
+#define ITKStatistics_EXPORT __declspec(dllimport)
+#endif  /* ITKStatistics_EXPORT */
+
+#ifdef ITKAlgorithms_EXPORTS
+#define ITKAlgorithms_EXPORT __declspec(dllexport)
+#else
+#define ITKAlgorithms_EXPORT __declspec(dllimport)
+#endif  /* ITKAlgorithms_EXPORT */
+
+#ifdef ITKSpatialObject_EXPORTS
+#define ITKSpatialObject_EXPORT __declspec(dllexport)
+#else
+#define ITKSpatialObject_EXPORT __declspec(dllimport)
+#endif  /* ITKSpatialObject_EXPORT */
+
 #else
 /* unix needs nothing */
 #define ITKCommon_EXPORT
+#define ITKBasicFilters_EXPORT
+#define ITKNumerics_EXPORT
+#define ITKStatistics_EXPORT
+#define ITKAlgorithms_EXPORT
+#define ITKIO_EXPORT
+#define ITKSpatialObject_EXPORT
 #endif
 
 #endif

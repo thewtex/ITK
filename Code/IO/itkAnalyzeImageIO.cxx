@@ -1019,57 +1019,6 @@ void AnalyzeImageIO::ReadImageInformation()
     }
   itk::EncapsulateMetaData< int >(thisDic, ITK_NumberOfDimensions, dim);
 
-  switch ( this->m_Hdr.dime.datatype )
-    {
-    case ANALYZE_DT_BINARY:
-      itk::EncapsulateMetaData< std::string >
-        ( thisDic, ITK_OnDiskStorageTypeName, std::string( typeid( char ).name() ) );
-      break;
-    case ANALYZE_DT_UNSIGNED_CHAR:
-      itk::EncapsulateMetaData< std::string >
-        ( thisDic, ITK_OnDiskStorageTypeName,
-        std::string( typeid( unsigned char ).name() ) );
-      break;
-    case ANALYZE_DT_SIGNED_SHORT:
-      itk::EncapsulateMetaData< std::string >
-        ( thisDic, ITK_OnDiskStorageTypeName,
-        std::string( typeid( short ).name() ) );
-      break;
-    case SPMANALYZE_DT_UNSIGNED_SHORT:
-      itk::EncapsulateMetaData< std::string >
-        ( thisDic, ITK_OnDiskStorageTypeName,
-        std::string( typeid( unsigned short ).name() ) );
-      break;
-    case ANALYZE_DT_SIGNED_INT:
-      itk::EncapsulateMetaData< std::string >
-        ( thisDic, ITK_OnDiskStorageTypeName,
-        std::string( typeid( long ).name() ) );
-      break;
-    case SPMANALYZE_DT_UNSIGNED_INT:
-      itk::EncapsulateMetaData< std::string >
-        ( thisDic, ITK_OnDiskStorageTypeName,
-        std::string( typeid( unsigned long ).name() ) );
-      break;
-    case ANALYZE_DT_FLOAT:
-      itk::EncapsulateMetaData< std::string >
-        ( thisDic, ITK_OnDiskStorageTypeName,
-        std::string( typeid( float ).name() ) );
-      break;
-    case ANALYZE_DT_DOUBLE:
-      itk::EncapsulateMetaData< std::string >
-        ( thisDic, ITK_OnDiskStorageTypeName,
-        std::string( typeid( double ).name() ) );
-      break;
-    case ANALYZE_DT_RGB:
-      // DEBUG -- Assuming this is a triple, not quad
-      //image.setDataType( uiig::DATA_RGBQUAD );
-      itk::EncapsulateMetaData< std::string >
-        ( thisDic, ITK_OnDiskStorageTypeName,
-        std::string( typeid( itk::RGBPixel< unsigned char > ).name() ) );
-      break;
-    default:
-      break;
-    }
 
   //Important hist fields
   itk::EncapsulateMetaData< std::string >
@@ -1164,11 +1113,6 @@ void AnalyzeImageIO::ReadImageInformation()
         }
       }
     }
-#if defined( ITKIO_DEPRECATED_METADATA_ORIENTATION )
-  itk::EncapsulateMetaData
-  < itk::SpatialOrientation::ValidCoordinateOrientationFlags >
-    (thisDic, ITK_CoordinateOrientation, coord_orient);
-#endif
 
   itk::EncapsulateMetaData< std::string >
     ( thisDic, ITK_FileOriginator,
@@ -1223,7 +1167,6 @@ AnalyzeImageIO
                          << NumericTraits< short >::max() );
       }
     }
-  unsigned int dim;
   if ( this->GetPixelType() == RGB )
     {
     if ( this->GetComponentType() != UCHAR )
@@ -1301,12 +1244,6 @@ AnalyzeImageIO
 
   itk::SpatialOrientation::ValidCoordinateOrientationFlags coord_orient =
     itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_INVALID;
-#if defined( ITKIO_DEPRECATED_METADATA_ORIENTATION )
-  if ( !itk::ExposeMetaData
-       < itk::SpatialOrientation::ValidCoordinateOrientationFlags >
-         (thisDic, ITK_CoordinateOrientation, coord_orient) )
-    {
-#endif
   typedef itk::SpatialOrientationAdapter::DirectionType DirectionType;
   DirectionType dir;
   unsigned int dims = this->GetNumberOfDimensions();
@@ -1324,25 +1261,25 @@ AnalyzeImageIO
       dirz.push_back(0.0);
       }
     }
-  unsigned int i;
-  for ( i = 0; i < dims; i++ )
     {
-    dir[i][0] = dirx[i];
-    dir[i][1] = diry[i];
-    dir[i][2] = dirz[i];
-    }
-  for (; i < 3; i++ )
-    {
-    dir[i][0] =
-      dir[i][1] =
-        dir[i][2] = 0;
+    unsigned int dirIndex=0;
+    while (  dirIndex < dims  )
+      {
+      dir[dirIndex][0] = dirx[dirIndex];
+      dir[dirIndex][1] = diry[dirIndex];
+      dir[dirIndex][2] = dirz[dirIndex];
+      dirIndex++;
+      }
+    while (dirIndex < 3 )
+      { //Fill out from 1D or 2D to 3D
+      dir[dirIndex][0] = 0;
+      dir[dirIndex][1] = 0;
+      dir[dirIndex][2] = 0;
+      dirIndex++;
+      }
     }
   coord_orient =
     itk::SpatialOrientationAdapter().FromDirectionCosines(dir);
-#if defined( ITKIO_DEPRECATED_METADATA_ORIENTATION )
-}
-
-#endif
   switch ( coord_orient )
     {
     case itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_RPI:
@@ -1404,7 +1341,7 @@ AnalyzeImageIO
   const SizeValueType maximumNumberOfPixelsAllowedInOneDimension =
     itk::NumericTraits< short >::max();
 
-  for ( dim = 0; dim < this->GetNumberOfDimensions(); dim++ )
+  for ( unsigned int dim = 0; dim < this->GetNumberOfDimensions(); dim++ )
     {
     const SizeValueType numberOfPixelsAlongThisDimension = m_Dimensions[dim];
 
@@ -1423,14 +1360,14 @@ AnalyzeImageIO
 
   //DEBUG--HACK It seems that analyze 7.5 requires 4 dimensions.
   this->m_Hdr.dime.dim[0] = 4;
-  for ( dim = this->GetNumberOfDimensions(); (int)dim < this->m_Hdr.dime.dim[0];
+  for ( unsigned int dim = this->GetNumberOfDimensions(); (int)dim < this->m_Hdr.dime.dim[0];
         dim++ )
     {
     //NOTE: Analyze dim[0] are the number of dims,
     //and dim[1..7] are the actual dims.
     this->m_Hdr.dime.dim[dim + 1]  = 1; //Hardcoded to be 1;
     }
-  for ( dim = 0; dim < this->GetNumberOfDimensions(); dim++ )
+  for ( unsigned int dim = 0; dim < this->GetNumberOfDimensions(); dim++ )
     {
     //NOTE: Analyze pixdim[0] is ignored, and the number of dims are
     //taken from dims[0], and pixdim[1..7] are the actual pixdims.

@@ -74,7 +74,6 @@
 #cmakedefine USE_FFTWF
 #cmakedefine USE_FFTWD
 #cmakedefine ITK_USE_MINC2
-#cmakedefine ITK_USE_TRANSFORM_IO_FACTORIES
 #cmakedefine ITK_USE_REVIEW
 #cmakedefine ITK_SUPPORTS_TEMPLATED_FRIEND_FUNCTION_WITH_TEMPLATE_ARGUMENTS
 #cmakedefine ITK_SUPPORTS_TEMPLATED_FRIEND_FUNCTION_WITH_EMPTY_BRACKETS
@@ -82,14 +81,6 @@
 #cmakedefine ITK_SUPPORTS_WCHAR_T_FILENAME_CSTYLEIO
 #cmakedefine ITK_SUPPORTS_WCHAR_T_FILENAME_IOSTREAMS_CONSTRUCTORS
 #cmakedefine ITK_SUPPORTS_FDSTREAM_HPP
-
-/*
- * TODO: this should be changed to a compile time test for the needed
- * feature and then defined as a cmake variable
- */
-#if !(defined( _MSC_VER ) && ( _MSC_VER < 1310 ))
-#define ITK_USE_NUMERIC_TRAITS_PARTIAL_SPECIALIZATION
-#endif
 
 /*
  * The @HAVE_INCLUDE_H@ gets replaced with "1" or "", this define is
