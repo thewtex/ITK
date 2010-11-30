@@ -21,11 +21,54 @@
 
 #include "itkObjectToObjectMetric.h"
 
+namespace itkObjectToObjectMetricTestHelpers
+{
+
+template< class TFixedObject,  class TMovingObject >
+class ITK_EXPORT ObjectToObjectMetricSurrogate:
+  public itk::ObjectToObjectMetric<TFixedObject, TMovingObject>
+{
+public:
+  /** Standard class typedefs. */
+  typedef ObjectToObjectMetricSurrogate                           Self;
+  typedef itk::ObjectToObjectMetric<TFixedObject,TMovingObject>   Superclass;
+  typedef itk::SmartPointer< Self >                               Pointer;
+  typedef itk::SmartPointer< const Self >                         ConstPointer;
+
+  typedef typename Superclass::MeasureType    MeasureType;
+  typedef typename Superclass::DerivativeType DerivativeType;
+  typedef typename Superclass::ParametersType ParametersType;
+
+  itkTypeMacro(ObjectToObjectMetricSurrogate, ObjectToObjectMetric);
+
+  itkNewMacro(Self);
+
+  // Pure virtual functions that all Metrics must provide
+  unsigned int GetNumberOfParameters() const { return 5; }
+  MeasureType GetValue( const ParametersType & ) const { return 1.0; }
+  void GetDerivative(const ParametersType &,
+                             DerivativeType & derivative) const { derivative.Fill(0.0); }
+  void Initialize(void) throw ( itk::ExceptionObject ) {}
+
+};
+
+}
+
 int itkObjectToObjectMetricTest(int argc,char* argv[])
 {
   typedef itk::Image< unsigned char, 3 > ImageType;
-  typedef itk::ObjectToObjectMetric< ImageType, ImageType> objectMetricType;
-  //objectMetricType::Pointer objectMetric = objectMetricType::New();
-  //objectMetric->SetNumberOfThreads(1);
+  typedef itkObjectToObjectMetricTestHelpers::ObjectToObjectMetricSurrogate<
+    ImageType, ImageType> objectMetricType;
+
+  objectMetricType::Pointer objectMetric = objectMetricType::New();
+
+  objectMetric->SetNumberOfThreads(1);
+
+  std::cout << objectMetric->GetNumberOfThreads() << std::endl;
+
+  objectMetric->Print( std::cout );
+
+  std::cout << objectMetric << std::endl;
+
   return EXIT_SUCCESS;
 }

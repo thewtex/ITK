@@ -2611,7 +2611,7 @@ set(ReviewTest6_LIBS
   ITKIO
   ITKStatistics
   )
-target_link_libraries(itkReviewTests6 ${ReviewTest6_LIBS})
+target_link_libraries(itkReviewTests6 ${ReviewTest6_LIBS} ITKNumerics)
 
 if(ITK_USE_TRANSFORM_IO_FACTORIES)
 set(ReviewTest_LIBS ${ReviewTest_LIBS}

@@ -29,11 +29,7 @@ template< class TFixedImage, class TMovingImage >
 ObjectToObjectMetric< TFixedImage, TMovingImage >
 ::ObjectToObjectMetric()
 {
-  m_Threader = MultiThreaderType::New();
-  m_ThreaderParameter.metric = this;
-  m_WithinThreadPreProcess = false;
-  m_WithinThreadPostProcess = false;
-  m_NumberOfThreads = m_Threader->GetNumberOfThreads();
+  this->m_Threader = MultiThreader::New();
 }
 
 template< class TFixedImage, class TMovingImage >
@@ -51,8 +47,20 @@ void
 ObjectToObjectMetric< TFixedImage, TMovingImage >
 ::SetNumberOfThreads(unsigned int numberOfThreads)
 {
-  m_Threader->SetNumberOfThreads(numberOfThreads);
-  m_NumberOfThreads = m_Threader->GetNumberOfThreads();
+  this->m_Threader->SetNumberOfThreads(numberOfThreads);
+}
+
+/**
+ * Get the number of threads. This is the value returned by the internal
+ * multithreader class. Therefore it may differ from the value passed in a
+ * previous call to SetNumberOfThreads().
+ */
+template< class TFixedImage, class TMovingImage >
+unsigned int
+ObjectToObjectMetric< TFixedImage, TMovingImage >
+::GetNumberOfThreads() const
+{
+  return this->m_Threader->GetNumberOfThreads();
 }
 
 
@@ -65,6 +73,7 @@ ObjectToObjectMetric< TFixedImage, TMovingImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+  os << indent << "Parameters: " << m_Parameters << std::endl;
 }
 
 
