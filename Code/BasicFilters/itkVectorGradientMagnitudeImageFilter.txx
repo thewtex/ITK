@@ -216,7 +216,6 @@ VectorGradientMagnitudeImageFilter< TInputImage, TRealType, TOutputImage >
     {
     this->SetNumberOfThreads(m_RequestedNumberOfThreads);
     }
-
   //
   // cast might not be necessary, but CastImagefilter is optimized for
   // the case where the InputImageType == OutputImageType
