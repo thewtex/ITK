@@ -2508,14 +2508,12 @@ add_executable(itkReviewPrintTest itkReviewPrintTest.cxx)
 target_link_libraries(itkReviewPrintTest
   ITKAlgorithms
   ITKFEM
-  ITKCommon
   )
 
 add_executable(itkReviewHeaderTest itkReviewHeaderTest.cxx)
 target_link_libraries(itkReviewHeaderTest
   ITKAlgorithms
   ITKFEM
-  ITKCommon
   )
 
 add_test(itkReviewHeaderTest ${REVIEW_HEADER_TESTS})
@@ -2526,7 +2524,6 @@ set(ReviewTest_LIBS
   ITKAlgorithms
   ITKFEM
   ITKStatistics
-  ITKCommon
   ITKIOReview
   ITKIO
   )
@@ -2537,7 +2534,6 @@ set(ReviewTest2_LIBS
   ITKAlgorithms
   ITKFEM
   ITKStatistics
-  ITKCommon
   ITKIOReview
   ITKIO
   )
