@@ -207,7 +207,9 @@ ExtractImageFilter< TInputImage, TOutputImage >
     // determined
     // how to compute the correct outputDirection from all possible input
     // directions.
-    if ( vnl_determinant( outputDirection.GetVnlMatrix() ) == 0.0 )
+    //    if ( vnl_determinant( outputDirection.GetVnlMatrix() ) == 0.0 )
+    if ( static_cast< unsigned int >( OutputImageDimension ) <
+         static_cast< unsigned int >( InputImageDimension ) )
       {
       outputDirection.SetIdentity();
       }
