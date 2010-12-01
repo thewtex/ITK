@@ -29,6 +29,7 @@
 #include "jinclude.h"
 #include "jpeglib.h"
 #include "jmemsys.h"    /* import the system-dependent declarations */
+#include "stdint.h" //to include uint32_t
 
 #ifndef NO_GETENV
 #ifndef HAVE_STDLIB_H    /* <stdlib.h> should declare getenv() */
@@ -262,7 +263,7 @@ alloc_small (j_common_ptr cinfo, int pool_id, size_t sizeofobject)
   small_pool_ptr hdr_ptr, prev_hdr_ptr;
   char * data_ptr;
   size_t odd_bytes, min_request, slop;
-  long allocated_addition;//because size_t != int32 on 64bit windows
+  uint32_t allocated_addition;//because size_t != int32 on 64bit windows
 
   /* Check for unsatisfiable request (do now to ensure no overflow below) */
   if (sizeofobject > (size_t) (MAX_ALLOC_CHUNK-SIZEOF(small_pool_hdr)))
@@ -308,7 +309,7 @@ alloc_small (j_common_ptr cinfo, int pool_id, size_t sizeofobject)
     //if (min_request + slop > std::numeric_limits<long>::max()){
     //  throw -1; //not supposed to assert, need to throw because an overflow has happened
    // }
-    allocated_addition = (long)(min_request + slop);
+    allocated_addition = (uint32_t)(min_request + slop);
     mem->total_space_allocated += allocated_addition;
     /* Success, initialize the new pool header and add to end of list */
     hdr_ptr->hdr.next = NULL;
@@ -351,7 +352,7 @@ alloc_large (j_common_ptr cinfo, int pool_id, size_t sizeofobject)
   my_mem_ptr mem = (my_mem_ptr) cinfo->mem;
   large_pool_ptr hdr_ptr;
   size_t odd_bytes;
-  long allocated_addition;
+  uint32_t allocated_addition;
 
   /* Check for unsatisfiable request (do now to ensure no overflow below) */
   if (sizeofobject > (size_t) (MAX_ALLOC_CHUNK-SIZEOF(large_pool_hdr)))
@@ -373,7 +374,7 @@ alloc_large (j_common_ptr cinfo, int pool_id, size_t sizeofobject)
 //  if (sizeofobject + SIZEOF(large_pool_hdr) > std::numeric_limits<long>::max()){
 //    throw -1; //not supposed to assert, need to throw because an overflow has happened
 //  }
-  allocated_addition = (long)(sizeofobject + SIZEOF(large_pool_hdr));
+  allocated_addition = (uint32_t)(sizeofobject + SIZEOF(large_pool_hdr));
   mem->total_space_allocated += allocated_addition;
 
   /* Success, initialize the new pool header and add to list */

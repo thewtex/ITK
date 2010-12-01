@@ -14,7 +14,6 @@
 =========================================================================*/
 #include "gdcmSegmentedPaletteColorLookupTable.h"
 #include "gdcmDataSet.h"
-#include "itkMacro.h"//for range checking exceptions
 
 // http://blog.goo.ne.jp/satomi_takeo/e/3643e5249b2a9650f9e10ef1c830e8b8
 //
@@ -204,7 +203,7 @@ void SegmentedPaletteColorLookupTable::SetLUT(LookupTableType type, const unsign
 
     if (palette.size() * 2 > std::numeric_limits<uint32_t>::max())
       {
-      itkGenericExceptionMacro("Palette size exceeds 32 bit integer range, something is very wrong.");
+      gdcmErrorMacro("Palette size exceeds 32 bit integer range, something is very wrong.");
       }
     uint32_t theSize = (uint32_t)palette.size() * 2;
     LookupTable::SetLUT(type, (unsigned char*)&palette[0], theSize);

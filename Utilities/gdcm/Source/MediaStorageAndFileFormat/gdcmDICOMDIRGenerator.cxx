@@ -27,8 +27,6 @@
 #include "gdcmVR.h"
 #include "gdcmCodeString.h"
 #include <limits>
-#include "itkMacro.h"
-
 
 namespace gdcm
 {
@@ -273,7 +271,7 @@ unsigned int DICOMDIRGenerator::FindLowerLevelDirectoryRecord( unsigned int item
 
     if (i >= std::numeric_limits<uint32_t>::max())
       {
-      itkGenericExceptionMacro("Cannot have more than 32 bits worth of items in a sequence.");
+      gdcmErrorMacro("Cannot have more than 32 bits worth of items in a sequence.");
       }
     uint32_t index = (uint32_t)i;
     // found a match ?
@@ -313,7 +311,7 @@ unsigned int DICOMDIRGenerator::FindNextDirectoryRecord( unsigned int item1, con
 
     if (i >= std::numeric_limits<uint32_t>::max())
       {
-      itkGenericExceptionMacro("Cannot have more than 32 bits worth of items in a sequence.");
+      gdcmErrorMacro("Cannot have more than 32 bits worth of items in a sequence.");
       }
     uint32_t index = (uint32_t)i;
 
@@ -349,7 +347,7 @@ bool DICOMDIRGenerator::TraverseDirectoryRecords(VL start )
     //std::cout << "FOUND DIRECTORY TYPE:" << directoryrecordtype.GetValue() << std::endl;
     if (i >= std::numeric_limits<uint32_t>::max())
       {
-      itkGenericExceptionMacro("Cannot have more than 32 bits worth of items in a sequence.");
+      gdcmErrorMacro("Cannot have more than 32 bits worth of items in a sequence.");
       }
     uint32_t index = (uint32_t)i;
     uint32_t next = FindNextDirectoryRecord( index, directoryrecordtype.GetValue() );
