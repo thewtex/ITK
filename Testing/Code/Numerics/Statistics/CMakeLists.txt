@@ -317,10 +317,10 @@ set(Statistics_SRCS
   )
 
 add_executable(itkStatisticsTests itkStatisticsTests.cxx ${Statistics_SRCS})
-target_link_libraries(itkStatisticsTests ITKIO ITKCommon ITKNumerics ITKStatistics)
+target_link_libraries(itkStatisticsTests ITKIO ITKNumerics ITKStatistics)
 
 add_executable(itkStatisticsHeaderTest itkStatisticsHeaderTest.cxx)
-target_link_libraries(itkStatisticsHeaderTest ITKIO ITKCommon ITKNumerics  ITKStatistics)
+target_link_libraries(itkStatisticsHeaderTest ITKIO ITKNumerics  ITKStatistics)
 
 
 
