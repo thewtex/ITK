@@ -20,6 +20,8 @@
 #include "gdcmSequenceOfFragments.h"
 #include "gdcmSmartPointer.h"
 #include "gdcmSwapper.h"
+#include <limits>
+#include "itkMacro.h"
 
 #include <vector>
 
@@ -508,7 +510,12 @@ bool RLECodec::Code(DataElement const &in, DataElement &out)
         length += llength;
         }
       // update header
-      header.Offset[1+seg] = header.Offset[seg] + length;
+      if (header.Offset[seg] + length >= std::numeric_limits<uint32_t>::max())
+        {
+        itkGenericExceptionMacro("Length exceeds 32 bits, DICOM is a pure 32 bit standard.");
+        }
+      uint32_t theOffset = (uint32_t)(header.Offset[seg] + length);
+      header.Offset[1+seg] = theOffset;
 
       assert( data.str().size() == length );
       datastr += data.str();
@@ -622,8 +629,17 @@ bool RLECodec::Decode(DataElement const &in, DataElement &out)
       std::string::size_type check = os.str().size();
       // If the following assert fail expect big troubles:
       assert( check == llen );
-      memcpy(buffer+pos, os.str().c_str(), check);
-      pos += check;
+      if (check != llen)
+        {
+        itkGenericExceptionMacro("The length did not equal the check.");
+        }
+      if (check >= std::numeric_limits<uint32_t>::max())
+        {
+        itkGenericExceptionMacro("Check length exceeds 32 bits, DICOM is a pure 32 bit standard.");
+        }
+      uint32_t theCheck = (uint32_t)check;
+      memcpy(buffer+pos, os.str().c_str(), theCheck);
+      pos += theCheck;
       }
     assert( pos == len );
     out.SetByteValue( buffer, len );
@@ -685,7 +701,14 @@ bool RLECodec::Decode(std::istream &is, std::ostream &os)
       // This should be at most the \0 padding
       //gdcmWarningMacro( "RLE Header says: " << frame.Header.Offset[i] <<
       //   " when it should says: " << pos << std::endl );
-      uint32_t check = frame.Header.Offset[i] - pos;//should it be a streampos or a uint32? mmr
+
+      if (frame.Header.Offset[i] - pos >= std::numeric_limits<uint32_t>::max() ||
+        frame.Header.Offset[i] - pos < 0)
+        {
+        itkGenericExceptionMacro("Offset is either negative or exceeds 32 bits, DICOM is a pure 32 bit standard.");
+        }
+
+      uint32_t check = (uint32_t)frame.Header.Offset[i] - pos;//should it be a streampos or a uint32? mmr
       // check == 2 for gdcmDataExtra/gdcmSampleData/US_DataSet/GE_US/2929J686-breaker
       assert( check == 1 || check == 2);
       (void)check; //warning removal
