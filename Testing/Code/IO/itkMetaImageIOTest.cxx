@@ -35,11 +35,11 @@ int itkMetaImageIOTest(int ac, char* av[])
 
   // ATTENTION THIS IS THE PIXEL TYPE FOR
   // THE RESULTING IMAGE
-  typedef unsigned short PixelType;
+  typedef unsigned short           PixelType;
   typedef itk::Image<PixelType, 3> myImage;
 
   itk::ImageFileReader<myImage>::Pointer reader
-                                  = itk::ImageFileReader<myImage>::New();
+    = itk::ImageFileReader<myImage>::New();
 
   // force use of MetaIO
   typedef itk::MetaImageIO IOType;
@@ -98,4 +98,83 @@ int itkMetaImageIOTest(int ac, char* av[])
   writer->Update();
 
   return EXIT_SUCCESS;
+}
+
+int itkMetaImageIOGzTest(int ac, char* av[])
+{
+  if(ac < 2)
+    {
+    std::cerr << "Usage: itkMetaImageIOGzTest testDataDirectory"
+              <<    std::endl;
+    }
+  int result(0);
+  std::cout << "Test whether MetaIO will search for a compressed data file"
+            << std::endl
+            << "if it can't find the uncompressed data file"
+            << std::endl;
+  std::string headerName(av[1]);
+  headerName += "/GzTest.mhd";
+  std::ofstream hdr(headerName.c_str());
+  hdr << "ObjectType = Image" << std::endl
+      << "NDims = 2" << std::endl
+      << "DimSize = 32 32" << std::endl
+      << "ElementType = MET_USHORT" << std::endl
+      << "ElementDataFile = GzTest.raw" << std::endl;
+  hdr.close();
+  std::string dataName(av[1]);
+  dataName += "/GzTest.raw.gz";
+  gzFile compressed = gzopen(dataName.c_str(),"wb");
+  for(unsigned short i = 0; i < (32 * 32); i++)
+    {
+    unsigned short pixel = i & 0xff;
+    if( gzwrite(compressed,&pixel,sizeof(pixel)) != sizeof(pixel) )
+      {
+      std::cerr << "Write error for " << dataName << std::endl;
+      break;
+      }
+    }
+  gzclose(compressed);
+
+  typedef unsigned short           PixelType;
+  typedef itk::Image<PixelType, 3> myImage;
+
+  itk::ImageFileReader<myImage>::Pointer reader
+    = itk::ImageFileReader<myImage>::New();
+  reader->SetFileName(headerName.c_str());
+  try
+    {
+    reader->Update();
+    }
+  catch (itk::ExceptionObject & e)
+    {
+    std::cerr << "exception in file reader " << std::endl;
+    std::cerr << e << std::endl;
+    result++;
+    }
+  std::cout << "Test whether absolute path in MetaIO header works" << std::endl;
+  // re-write header
+  headerName = av[1];
+  headerName += "/AbsPathTest.mhd";
+  std::ofstream hdr2(headerName.c_str());
+  hdr2 << "ObjectType = Image" << std::endl
+       << "NDims = 2" << std::endl
+       << "DimSize = 32 32" << std::endl
+       << "ElementType = MET_USHORT" << std::endl
+       << "CompressedData = True" << std::endl
+       << "ElementDataFile = " << dataName
+       << std::endl;
+  hdr2.close();
+  reader->SetFileName(headerName.c_str());
+  try
+    {
+    reader->Update();
+    }
+  catch (itk::ExceptionObject & e)
+    {
+    std::cerr << "Test failed " << std::endl;
+    std::cerr << e << std::endl;
+    result++;
+    }
+
+  return result == 0 ? EXIT_SUCCESS : EXIT_FAILURE;
 }

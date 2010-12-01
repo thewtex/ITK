@@ -659,6 +659,10 @@ add_test(itkMetaImageIOTest ${IO_TESTS}
   itkMetaImageIOTest
             ${ITK_DATA_ROOT}/Input/HeadMRVolume.mhd
             ${ITK_TEST_OUTPUT_DIR}/HeadMRVolume.mhd)
+
+add_test(itkMetaImageIOGzTest ${IO_TESTS}
+  itkMetaImageIOGzTest ${ITK_TEST_OUTPUT_DIR})
+
 add_test(itkMetaImageIOShouldFailTest ${IO_TESTS}
          itkMetaImageIOTest
          ${ITK_DATA_ROOT}/Input/MetaImageError.mhd
