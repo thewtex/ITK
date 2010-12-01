@@ -114,11 +114,7 @@ unsigned int LookupTable::GetLUTLength(LookupTableType type) const
 }
 
 void LookupTable::SetLUT(LookupTableType type, const unsigned char *array,
-<<<<<<< HEAD
-  size_t length)
-=======
   uint32_t length)
->>>>>>> attempts to fix warnings in gdcm for win64
 {
   (void)length;
   //if( !Initialized() ) return;

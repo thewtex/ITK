@@ -18,7 +18,6 @@
 #include "gdcmDataElement.h"
 #include "gdcmSequenceOfFragments.h"
 #include <limits>
-#include "itkMacro.h"
 
 #ifdef OPENJPEG_MAJOR_VERSION
 #if OPENJPEG_MAJOR_VERSION == 1
@@ -99,7 +98,7 @@ OPJ_UINT32 opj_read_from_memory(void * p_buffer, OPJ_UINT32 p_nb_bytes, myfile* 
     {
       if (p_file->mem + p_file->len - p_file->cur > std::numeric_limits<uint32_t>::max())
         {
-        itkGenericExceptionMacro("jpeg2000 reading from memory produced an image larger than 32 bits.");
+        gdcmErrorMacro("jpeg2000 reading from memory produced an image larger than 32 bits.");
         }
     l_nb_read = p_file->mem + (uint32_t)p_file->len - p_file->cur;
     assert( l_nb_read < p_nb_bytes );
@@ -307,7 +306,7 @@ bool JPEG2000Codec::Decode(DataElement const &in, DataElement &out)
     std::string str = os.str();
     if (str.size() > std::numeric_limits<uint32_t>::max())
       {
-      itkGenericExceptionMacro("jpeg2000 decoding produced an image larger than 32 bits.");
+      gdcmErrorMacro("jpeg2000 decoding produced an image larger than 32 bits.");
       }
     out.SetByteValue( &str[0], (uint32_t)str.size() );
     //memcpy(buffer, os.str().c_str(), len);
@@ -349,7 +348,7 @@ bool JPEG2000Codec::Decode(DataElement const &in, DataElement &out)
     assert( str.size() );
     if (str.size() > std::numeric_limits<uint32_t>::max())
       {
-      itkGenericExceptionMacro("jpeg2000 decoding produced an image larger than 32 bits.");
+      gdcmErrorMacro("jpeg2000 decoding produced an image larger than 32 bits.");
       }
     out.SetByteValue( &str[0], (uint32_t)str.size() );
 
@@ -990,7 +989,7 @@ bool JPEG2000Codec::Code(DataElement const &in, DataElement &out)
       }
     if (mysrc.len > std::numeric_limits<uint32_t>::max())
       {
-      itkGenericExceptionMacro("jpeg2000 encoding produced an image larger than 32 bits.");
+      gdcmErrorMacro("jpeg2000 encoding produced an image larger than 32 bits.");
       }
     codestream_length = (uint32_t)mysrc.len;
 #endif // OPENJPEG_MAJOR_VERSION == 1
@@ -1048,7 +1047,7 @@ bool JPEG2000Codec::Code(DataElement const &in, DataElement &out)
     Fragment frag;
     if (str.size() > std::numeric_limits<uint32_t>::max())
       {
-      itkGenericExceptionMacro("jpeg2000 encoding produced an image larger than 32 bits.");
+      gdcmErrorMacro("jpeg2000 encoding produced an image larger than 32 bits.");
       }
     frag.SetByteValue( &str[0], (uint32_t)str.size() );
     sq->AddFragment( frag );
