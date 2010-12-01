@@ -29,6 +29,7 @@
 #include "jinclude.h"
 #include "jpeglib.h"
 #include "jmemsys.h"    /* import the system-dependent declarations */
+#include "stdint.h" //to include uint32_t
 
 #ifndef NO_GETENV
 #ifndef HAVE_STDLIB_H    /* <stdlib.h> should declare getenv() */
@@ -262,6 +263,7 @@ alloc_small (j_common_ptr cinfo, int pool_id, size_t sizeofobject)
   small_pool_ptr hdr_ptr, prev_hdr_ptr;
   char * data_ptr;
   size_t odd_bytes, min_request, slop;
+  uint32_t allocated_addition;//because size_t != int32 on 64bit windows
 
   /* Check for unsatisfiable request (do now to ensure no overflow below) */
   if (sizeofobject > (size_t) (MAX_ALLOC_CHUNK-SIZEOF(small_pool_hdr)))
@@ -304,7 +306,11 @@ alloc_small (j_common_ptr cinfo, int pool_id, size_t sizeofobject)
       if (slop < MIN_SLOP)  /* give up when it gets real small */
   out_of_memory(cinfo, 2); /* jpeg_get_small failed */
     }
-    mem->total_space_allocated += min_request + slop;
+    //if (min_request + slop > std::numeric_limits<long>::max()){
+    //  throw -1; //not supposed to assert, need to throw because an overflow has happened
+   // }
+    allocated_addition = (uint32_t)(min_request + slop);
+    mem->total_space_allocated += allocated_addition;
     /* Success, initialize the new pool header and add to end of list */
     hdr_ptr->hdr.next = NULL;
     hdr_ptr->hdr.bytes_used = 0;
@@ -346,6 +352,7 @@ alloc_large (j_common_ptr cinfo, int pool_id, size_t sizeofobject)
   my_mem_ptr mem = (my_mem_ptr) cinfo->mem;
   large_pool_ptr hdr_ptr;
   size_t odd_bytes;
+  uint32_t allocated_addition;
 
   /* Check for unsatisfiable request (do now to ensure no overflow below) */
   if (sizeofobject > (size_t) (MAX_ALLOC_CHUNK-SIZEOF(large_pool_hdr)))
@@ -364,7 +371,11 @@ alloc_large (j_common_ptr cinfo, int pool_id, size_t sizeofobject)
               SIZEOF(large_pool_hdr));
   if (hdr_ptr == NULL)
     out_of_memory(cinfo, 4);  /* jpeg_get_large failed */
-  mem->total_space_allocated += sizeofobject + SIZEOF(large_pool_hdr);
+//  if (sizeofobject + SIZEOF(large_pool_hdr) > std::numeric_limits<long>::max()){
+//    throw -1; //not supposed to assert, need to throw because an overflow has happened
+//  }
+  allocated_addition = (uint32_t)(sizeofobject + SIZEOF(large_pool_hdr));
+  mem->total_space_allocated += allocated_addition;
 
   /* Success, initialize the new pool header and add to list */
   hdr_ptr->hdr.next = mem->large_list[pool_id];
@@ -986,6 +997,7 @@ free_pool (j_common_ptr cinfo, int pool_id)
   small_pool_ptr shdr_ptr;
   large_pool_ptr lhdr_ptr;
   size_t space_freed;
+  long allocated_subtraction;
 
   if (pool_id < 0 || pool_id >= JPOOL_NUMPOOLS)
     ERREXIT1(cinfo, JERR_BAD_POOL_ID, pool_id);  /* safety check */
@@ -1026,7 +1038,11 @@ free_pool (j_common_ptr cinfo, int pool_id)
       lhdr_ptr->hdr.bytes_left +
       SIZEOF(large_pool_hdr);
     jpeg_free_large(cinfo, (void FAR *) lhdr_ptr, space_freed);
-    mem->total_space_allocated -= space_freed;
+    //if (space_freed > std::numeric_limits<long>::max()){
+    //  throw -1; //not supposed to assert, need to throw because an overflow has happened
+    //}
+    allocated_subtraction = (long)(space_freed);
+    mem->total_space_allocated -= allocated_subtraction;
     lhdr_ptr = next_lhdr_ptr;
   }
 
@@ -1040,7 +1056,11 @@ free_pool (j_common_ptr cinfo, int pool_id)
       shdr_ptr->hdr.bytes_left +
       SIZEOF(small_pool_hdr);
     jpeg_free_small(cinfo, (void *) shdr_ptr, space_freed);
-    mem->total_space_allocated -= space_freed;
+    //if (space_freed > std::numeric_limits<long>::max()){
+    //  throw -1; //not supposed to assert, need to throw because an overflow has happened
+    //}
+    allocated_subtraction = (long)(space_freed);
+    mem->total_space_allocated -= allocated_subtraction;
     shdr_ptr = next_shdr_ptr;
   }
 }
