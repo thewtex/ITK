@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+#
 # InitializeXMLGuide.py
 #
 # This script will parse the Git commits on the current branch and initializes
@@ -6,6 +8,7 @@
 import os.path
 import sys
 import subprocess
+import datetime
 
 ####################
 # Helper Functions #
@@ -64,15 +67,21 @@ def prepXMLString(string):
   return out.replace("'", "&apos;")
 
 #
+# add a comment to the XML file string
+def addXMLComment(xmlString, comment, indent=False):
+  # comment
+  xmlString = xmlString + getIndent(indent) + "<!--**\n"
+  for line in comment.splitlines():
+    xmlString = xmlString + getIndent(indent) + "** " + line + "\n"
+  xmlString = xmlString + getIndent(indent) + "**-->\n"
+  return xmlString
+
+#
 # add an element to the XML file string
 def addXMLElement(xmlString, elementName, elementText, indent=False, comment = ""):
   # comment
   if comment != "":
-    xmlString = xmlString + getIndent(indent) + "<!--**\n"
-  for line in comment.splitlines():
-    xmlString = xmlString + getIndent(indent) + "** " + line + "\n"
-  if comment != "":
-    xmlString = xmlString + getIndent(indent) + "**-->\n"
+    xmlString = addXMLComment(xmlString, comment, indent)
   # opening tag
   xmlString = xmlString + getIndent(indent) + "<" + elementName + ">\n"
   # body
@@ -156,13 +165,18 @@ if __name__ == '__main__':
     sys.exit()
 
   # grab the commit lines, but ignore ammended ones
-  commitList = []
-  for line in branchLogFile.readlines():
-    if line.find("commit (amend):") == -1:
-      commitList.append(line.split()[1])
-    else:
-      commitList.pop()
-      commitList.append(line.split()[1])
+  logCommand = "git log --format=format:%H origin/master.."
+  print logCommand
+  log = runCommand(logCommand)
+  print log
+  commitList = [l.strip() for l in log.splitlines()]
+
+  # grab the base commit, the one used to create the branch
+  logCommand = "git log -n1 --format=format:%P " + commitList[-1]
+  print logCommand
+  log = runCommand(logCommand)
+  print log
+  baseCommit = log.strip()
 
   #
   # Parse each commit's log
@@ -174,36 +188,34 @@ if __name__ == '__main__':
   changedFileList = []
   exampleAndTestChangedFileList = []
 
-  firstCommit = commitList[0];
-  commitList.remove(firstCommit)
-
   for commit in commitList:
 
     # get the log for the commit
-    logCommand = "git log " + commit + " -n1 --stat"
+    logCommand = "git log -n1 --format=format:%s%n%b " + commit
+    print logCommand
     log = runCommand(logCommand)
 
     descriptionText = descriptionText + "---- " + commit + " ----\n"
 
     for line in log.splitlines():
-
       # commit message lines and change id lines
-      if startsWith(line, "  "):
-        if startsWith(line.strip(), "Change-Id: "):
-          changeId = stripPrefix(line.strip(), "Change-Id: ")
-          changeIdText = changeIdText + changeId + "\n"
-        else:
-          descriptionText = descriptionText + line.strip() + '\n'
+      if startsWith(line.strip(), "Change-Id: "):
+        changeId = stripPrefix(line.strip(), "Change-Id: ")
+        changeIdText = changeIdText + changeId + "\n"
+      else:
+        descriptionText = descriptionText + line.strip() + '\n'
 
+    # get the modified file list for the commit
+    logCommand = "git log -n1 --name-only --format=format: " + commit
+    log = runCommand(logCommand)
+    for line in log.splitlines():
       # changed file lines
-      elif startsWith(line, " "):
-        splits = line.split("|")
-        if len(splits) == 2:
-          filename = splits[0].strip()
-          if not filename in changedFileList:
-            changedFileList.append(filename)
-          if startsWith(filename, "Examples") or startsWith(filename, "Testing"):
-            exampleAndTestChangedFileList.append(filename)
+      filename = line.strip()
+      if filename:
+        if not filename in changedFileList:
+          changedFileList.append(filename)
+        if startsWith(filename, "Examples") or startsWith(filename, "Testing"):
+          exampleAndTestChangedFileList.append(filename)
 
 
   #
@@ -217,8 +229,7 @@ if __name__ == '__main__':
 
     # get the log for the commit
     fullPath = baseDir + "/" + filename
-    diffCommand = "git diff " + firstCommit + " " + commitList[len(commitList)-1] \
-      + " -- " + fullPath
+    diffCommand = "git diff " + baseCommit + " -- " + fullPath
     diff = runCommand(diffCommand)
 
     # parse lines into old and new
@@ -244,8 +255,18 @@ if __name__ == '__main__':
   titleComment = "Title for the online migration page"
   changeElementBody = addXMLElement(changeElementBody, "Title", titleText, True, titleComment)
 
+  # <Author> element
+  authorName = runCommand("git log -n1 --format=format:%an")
+  authorComment = "The author of the change"
+  changeElementBody = addXMLElement(changeElementBody, "Author", authorName, True, authorComment)
+
+  # <Date> element
+  date = datetime.datetime.now().strftime("%Y-%m-%d")
+  dateComment = "Date of creation for the XML document"
+  changeElementBody = addXMLElement(changeElementBody, "Date", date, True, dateComment)
+
   # <Description> element
-  descriptionComment = "Plain text description of the change\n-->Extracted from git commit messages"
+  descriptionComment = "Plain text description of the change\nExtracted from git commit messages"
   changeElementBody = \
     addXMLElement(changeElementBody, "Description",\
     prepXMLString(descriptionText), True, descriptionComment)
@@ -274,6 +295,14 @@ if __name__ == '__main__':
   changeElementBody = \
     addXMLElement(changeElementBody, "FileList",\
     fileListText, True, fileListComment)
+
+  # <MigrationFix-Automatic> comment
+  autoFixComment = "If the migration can be accomplished by a simple string\nsubstitution, then use the following construct to define\nthe substitution rule.\n\n<MigrationFix-Automatic>\n  <Old>\n    MipsleledName\n  </Old>\n  <New>\n    MisspelledName\n  </New>\n</MigrationFix-Automatic>"
+  changeElementBody = addXMLComment(changeElementBody, autoFixComment, True) +"\n"
+
+  # <MigrationFix-Manual> comment
+  manFixComment = "If the migration can NOT be accomplished by a simple string\nsubstitution, but potential problem spots can be identified,\nuse the following construct to define a migration flag rule.\n\n<MigrationFix-Manual>\n  OldFunctionName\n</MigrationFix-Manual>"
+  changeElementBody = addXMLComment(changeElementBody, manFixComment, True) + "\n"
 
   # <Change> element
   changeComment = "\n" + XMLFileName + "\n\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>\nTHIS FILE HAS BEEN AUTOMATICALLY GENERATED. EDIT IT BEFORE COMMITING\n<<<<<<<<<<<<<<<<<<<<<<<<<<<\n\n"
