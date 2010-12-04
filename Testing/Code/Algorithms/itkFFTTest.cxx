@@ -471,8 +471,19 @@ int itkVnlFFTTest(int, char *[])
 // test function based on the second template argument   and  the size of these
 // dimensions are taken from the array.The data types used are float and
 // double.
-int itkFFTWF_FFTTest(int, char *[])
+int itkFFTWF_FFTTest(int argc, char *argv[])
 {
+  itk::FFTWGlobalConfiguration::GetInstance()->SetWisdomStrategy(FFTW_EXHAUSTIVE);
+  itk::FFTWGlobalConfiguration::GetInstance()->SetUseWisdomCache(true);
+  if(argc>1)
+    {
+    itk::FFTWGlobalConfiguration::GetInstance()->SetWisdomCacheBase(argv[1]);
+    }
+  std::cout << "UseWisdomCache  " << itk::FFTWGlobalConfiguration::GetInstance()->GetUseWisdomCache() << std::endl;
+  std::cout << "WisdomStrategy  " << itk::FFTWGlobalConfiguration::GetInstance()->GetWisdomStrategy() << std::endl;
+  std::cout << "WisdomCacheBase " << itk::FFTWGlobalConfiguration::GetInstance()->GetWisdomCacheBase()  << std::endl;
+  std::cout << "WisdomeFile     " << itk::FFTWGlobalConfiguration::GetInstance()->GetWisdomFileDefaultBaseName() << std::endl;
+
   unsigned int SizeOfDimensions1[] = { 4,4,4 };
   unsigned int SizeOfDimensions2[] = { 3,5,4 };
   int rval = 0;
@@ -516,8 +527,18 @@ int itkFFTWF_FFTTest(int, char *[])
 // in the test function based on the second template argument   and  the size
 // of these dimensions are taken from the array.The data types used are float
 // and double.
-int itkVnlFFTWF_FFTTest(int, char *[])
+int itkVnlFFTWF_FFTTest(int argc, char *argv[])
 {
+  itk::FFTWGlobalConfiguration::GetInstance()->SetWisdomStrategy(FFTW_EXHAUSTIVE);
+  itk::FFTWGlobalConfiguration::GetInstance()->SetUseWisdomCache(true);
+  if(argc>1)
+    {
+    itk::FFTWGlobalConfiguration::GetInstance()->SetWisdomCacheBase(argv[1]);
+    }
+  std::cout << "UseWisdomCache  " << itk::FFTWGlobalConfiguration::GetInstance()->GetUseWisdomCache() << std::endl;
+  std::cout << "WisdomStrategy  " << itk::FFTWGlobalConfiguration::GetInstance()->GetWisdomStrategy() << std::endl;
+  std::cout << "WisdomCacheBase " << itk::FFTWGlobalConfiguration::GetInstance()->GetWisdomCacheBase()  << std::endl;
+  std::cout << "WisdomeFile     " << itk::FFTWGlobalConfiguration::GetInstance()->GetWisdomFileDefaultBaseName() << std::endl;
   unsigned int SizeOfDimensions1[] = { 4,4,4 };
   unsigned int SizeOfDimensions2[] = { 3,5,4 };
   int rval = 0;
@@ -558,6 +579,11 @@ int itkVnlFFTWF_FFTTest(int, char *[])
 #if defined(USE_FFTWD)
 int itkFFTWD_FFTTest(int, char *[])
 {
+  std::cout << "UseWisdomCache  " << itk::FFTWGlobalConfiguration::GetInstance()->GetUseWisdomCache() << std::endl;
+  std::cout << "WisdomStrategy  " << itk::FFTWGlobalConfiguration::GetInstance()->GetWisdomStrategy() << std::endl;
+  std::cout << "WisdomCacheBase " << itk::FFTWGlobalConfiguration::GetInstance()->GetWisdomCacheBase()  << std::endl;
+  std::cout << "WisdomeFile     " << itk::FFTWGlobalConfiguration::GetInstance()->GetWisdomFileDefaultBaseName() << std::endl;
+
   unsigned int SizeOfDimensions1[] = { 4,4,4 };
   unsigned int SizeOfDimensions2[] = { 3,5,4 };
   int rval = 0;
@@ -603,6 +629,11 @@ int itkFFTWD_FFTTest(int, char *[])
 // and double.
 int itkVnlFFTWD_FFTTest(int, char *[])
 {
+  std::cout << "UseWisdomCache  " << itk::FFTWGlobalConfiguration::GetInstance()->GetUseWisdomCache() << std::endl;
+  std::cout << "WisdomStrategy  " << itk::FFTWGlobalConfiguration::GetInstance()->GetWisdomStrategy() << std::endl;
+  std::cout << "WisdomCacheBase " << itk::FFTWGlobalConfiguration::GetInstance()->GetWisdomCacheBase()  << std::endl;
+  std::cout << "WisdomeFile     " << itk::FFTWGlobalConfiguration::GetInstance()->GetWisdomFileDefaultBaseName() << std::endl;
+
   unsigned int SizeOfDimensions1[] = { 4,4,4 };
   unsigned int SizeOfDimensions2[] = { 3,5,4 };
   int rval = 0;
