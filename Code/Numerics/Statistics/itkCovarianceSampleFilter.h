@@ -65,6 +65,13 @@ public:
   /** Measurement vector type */
   typedef typename TSample::MeasurementVectorType MeasurementVectorType;
 
+  /** Type of vector elements */
+  typedef typename TSample::MeasurementType                           MeasurementType;
+  typedef typename NumericTraits< MeasurementType >::RealType         MeasurementRealType;
+
+  /** Type of the measurement vector type */
+  typedef typename NumericTraits< MeasurementVectorType >::RealType   MeasurementVectorRealType;
+
   /** Typedef for Covariance output */
   typedef VariableSizeMatrix< double > MatrixType;
 
@@ -79,7 +86,7 @@ public:
 
   /** MeasurementVector is not a DataObject, we need to decorate it to push it down
    * a ProcessObject's pipeline */
-  typedef  SimpleDataObjectDecorator< MeasurementVectorType > MeasurementVectorDecoratedType;
+  typedef  SimpleDataObjectDecorator< MeasurementVectorRealType > MeasurementVectorDecoratedType;
 
   typedef MeasurementVectorDecoratedType OutputType;
 
@@ -89,7 +96,7 @@ public:
   const MatrixDecoratedType * GetCovarianceMatrixOutput() const;
 
   /** Return the mean vector */
-  const MeasurementVectorType GetMean() const;
+  const MeasurementVectorRealType GetMean() const;
 
   const MeasurementVectorDecoratedType * GetMeanOutput() const;
 

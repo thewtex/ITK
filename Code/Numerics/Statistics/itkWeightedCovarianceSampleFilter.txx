@@ -18,6 +18,8 @@
 #ifndef __itkWeightedCovarianceSampleFilter_txx
 #define __itkWeightedCovarianceSampleFilter_txx
 
+#include "itkWeightedCovarianceSampleFilter.h"
+
 namespace itk
 {
 namespace Statistics
@@ -100,15 +102,15 @@ WeightedCovarianceSampleFilter< TSample >
   output.SetSize(measurementVectorSize, measurementVectorSize);
   output.Fill(0.0);
 
-  MeasurementVectorType mean;
-  NumericTraits<MeasurementVectorType>::SetLength(mean, measurementVectorSize);
+  MeasurementVectorRealType mean;
+  NumericTraits<MeasurementVectorRealType>::SetLength(mean, measurementVectorSize);
   mean.Fill(0.0);
 
   typename TSample::ConstIterator iter = input->Begin();
   typename TSample::ConstIterator end = input->End();
 
-  MeasurementVectorType diff;
-  NumericTraits<MeasurementVectorType>::SetLength(diff, measurementVectorSize);
+  MeasurementVectorRealType diff;
+  NumericTraits<MeasurementVectorRealType>::SetLength(diff, measurementVectorSize);
   MeasurementVectorType measurements;
   NumericTraits<MeasurementVectorType>::SetLength(measurements, measurementVectorSize);
 
@@ -204,8 +206,8 @@ WeightedCovarianceSampleFilter< TSample >
   output.SetSize(measurementVectorSize, measurementVectorSize);
   output.Fill(0.0);
 
-  MeasurementVectorType mean;
-  NumericTraits<MeasurementVectorType>::SetLength(mean, measurementVectorSize);
+  MeasurementVectorRealType mean;
+  NumericTraits<MeasurementVectorRealType>::SetLength(mean, measurementVectorSize);
   mean.Fill(0.0);
 
   typename TSample::ConstIterator iter = input->Begin();
@@ -223,6 +225,12 @@ WeightedCovarianceSampleFilter< TSample >
   const InputWeightArrayObjectType *weightArrayObject = this->GetWeightsInput();
   const WeightArrayType             weightArray = weightArrayObject->Get();
 
+  typedef typename NumericTraits<
+    MeasurementRealType >::AccumulateType MeasurementRealAccumulateType;
+
+  Array< MeasurementRealAccumulateType > sum( measurementVectorSize );
+  sum.Fill( NumericTraits< MeasurementRealAccumulateType >::Zero );
+
   //Compute the mean first
   unsigned int measurementVectorIndex = 0;
   while ( iter != end )
@@ -234,7 +242,7 @@ WeightedCovarianceSampleFilter< TSample >
 
     for ( unsigned int i = 0; i < measurementVectorSize; ++i )
       {
-      mean[i] += weight * measurements[i];
+      sum[i] += weight * static_cast< MeasurementRealAccumulateType >( measurements[i] );
       }
     ++iter;
     ++measurementVectorIndex;
@@ -242,7 +250,7 @@ WeightedCovarianceSampleFilter< TSample >
 
   for ( unsigned int i = 0; i < measurementVectorSize; ++i )
     {
-    mean[i] = mean[i] / totalWeight;
+    mean[i] = static_cast< MeasurementRealType >( sum[i] / totalWeight );
     }
 
   decoratedMeanOutput->Set(mean);

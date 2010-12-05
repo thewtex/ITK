@@ -19,6 +19,7 @@
 #define __itkCovarianceSampleFilter_txx
 
 #include "itkMeasurementVectorTraits.h"
+#include "itkCovarianceSampleFilter.h"
 
 namespace itk
 {
@@ -88,13 +89,12 @@ CovarianceSampleFilter< TSample >
 
   if ( index == 1 )
     {
-    typedef typename MeasurementVectorTraitsTypes< MeasurementVectorType >::ValueType ValueType;
-    MeasurementVectorType mean;
+    MeasurementVectorRealType mean;
     (void)mean; // for complainty pants : valgrind
-    NumericTraits<MeasurementVectorType>::SetLength(mean, this->GetMeasurementVectorSize());
-    mean.Fill(NumericTraits< ValueType >::Zero);
+    NumericTraits<MeasurementVectorRealType>::SetLength(mean, this->GetMeasurementVectorSize());
+    mean.Fill( NumericTraits< MeasurementRealType >::Zero );
     typename MeasurementVectorDecoratedType::Pointer decoratedMean = MeasurementVectorDecoratedType::New();
-    decoratedMean->Set(mean);
+    decoratedMean->Set( mean );
     return static_cast< DataObject * >( decoratedMean.GetPointer() );
     }
   itkExceptionMacro("Trying to create output of index " << index << " larger than the number of output");
@@ -148,41 +148,43 @@ CovarianceSampleFilter< TSample >
   output.SetSize(measurementVectorSize, measurementVectorSize);
   output.Fill(0.0);
 
-  MeasurementVectorType mean;
 
-  NumericTraits<MeasurementVectorType>::SetLength(mean, measurementVectorSize);
+  typedef typename NumericTraits< MeasurementRealType >::AccumulateType MeasurementRealAccumulateType;
 
-  mean.Fill(0.0);
+  Array< MeasurementRealAccumulateType > sum( measurementVectorSize );
+  sum.Fill( NumericTraits< MeasurementRealAccumulateType >::Zero );
 
-  double frequency;
+  MeasurementVectorRealType mean;
+  NumericTraits<MeasurementVectorRealType>::SetLength(mean, measurementVectorSize);
+
   double totalFrequency = 0.0;
 
   typename TSample::ConstIterator iter = input->Begin();
   typename TSample::ConstIterator end = input->End();
 
-  MeasurementVectorType diff;
+  MeasurementVectorRealType diff;
   MeasurementVectorType measurements;
 
-  NumericTraits<MeasurementVectorType>::SetLength(diff, measurementVectorSize);
+  NumericTraits<MeasurementVectorRealType>::SetLength(diff, measurementVectorSize);
   NumericTraits<MeasurementVectorType>::SetLength(measurements, measurementVectorSize);
 
   //Compute the mean first
   while ( iter != end )
     {
-    frequency = iter.GetFrequency();
+    const double frequency = iter.GetFrequency();
     totalFrequency += frequency;
     measurements = iter.GetMeasurementVector();
 
     for ( unsigned int i = 0; i < measurementVectorSize; ++i )
       {
-      mean[i] += frequency * measurements[i];
+      sum[i] += static_cast< MeasurementRealType >( measurements[i] ) * frequency;
       }
     ++iter;
     }
 
   for ( unsigned int i = 0; i < measurementVectorSize; ++i )
     {
-    mean[i] = mean[i] / totalFrequency;
+    mean[i] = static_cast< MeasurementRealType >( sum[i] / totalFrequency );
     }
 
   decoratedMeanOutput->Set(mean);
@@ -192,11 +194,11 @@ CovarianceSampleFilter< TSample >
   // fills the lower triangle and the diagonal cells in the covariance matrix
   while ( iter != end )
     {
-    frequency = iter.GetFrequency();
+    const double frequency = iter.GetFrequency();
     measurements = iter.GetMeasurementVector();
     for ( unsigned int i = 0; i < measurementVectorSize; ++i )
       {
-      diff[i] = measurements[i] - mean[i];
+      diff[i] = static_cast< MeasurementRealType >( measurements[i] ) - mean[i];
       }
 
     // updates the covariance matrix
@@ -249,7 +251,7 @@ CovarianceSampleFilter< TSample >
 }
 
 template< class TSample >
-const typename CovarianceSampleFilter< TSample >::MeasurementVectorType
+const typename CovarianceSampleFilter< TSample >::MeasurementVectorRealType
 CovarianceSampleFilter< TSample >
 ::GetMean() const
 {

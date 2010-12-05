@@ -19,6 +19,7 @@
 #define __itkMeanSampleFilter_txx
 
 #include "itkMeasurementVectorTraits.h"
+#include "itkMeanSampleFilter.h"
 
 namespace itk
 {
@@ -86,7 +87,7 @@ MeanSampleFilter< TSample >
 }
 
 template< class TSample >
-const typename MeanSampleFilter< TSample >::MeasurementVectorType
+const typename MeanSampleFilter< TSample >::MeasurementVectorRealType
 MeanSampleFilter< TSample >
 ::GetMean() const
 {
@@ -107,16 +108,17 @@ MeanSampleFilter< TSample >
     static_cast< MeasurementVectorDecoratedType * >(
       this->ProcessObject::GetOutput(0) );
 
-  MeasurementVectorType output = decoratedOutput->Get();
+  MeasurementVectorRealType output = decoratedOutput->Get();
 
   typename TSample::ConstIterator iter = input->Begin();
   typename TSample::ConstIterator end =  input->End();
   double totalFrequency = 0.0;
 
-  for ( unsigned int dim = 0; dim < measurementVectorSize; dim++ )
-    {
-    output[dim] = itk::NumericTraits< MeasurementType >::Zero;
-    }
+  typedef typename NumericTraits<
+    MeasurementRealType >::AccumulateType MeasurementRealAccumulateType;
+
+  Array< MeasurementRealAccumulateType > sum( measurementVectorSize );
+  sum.Fill( NumericTraits< MeasurementRealAccumulateType >::Zero );
 
   while ( iter != end )
     {
@@ -125,7 +127,8 @@ MeanSampleFilter< TSample >
 
     for ( unsigned int dim = 0; dim < measurementVectorSize; dim++ )
       {
-      output[dim] += iter.GetMeasurementVector()[dim] * frequency;
+      sum[dim] +=
+        static_cast< MeasurementRealType >( iter.GetMeasurementVector()[dim] ) * frequency;
       }
     ++iter;
     }
@@ -135,11 +138,11 @@ MeanSampleFilter< TSample >
     {
     for ( unsigned int dim = 0; dim < measurementVectorSize; dim++ )
       {
-      output[dim] /= totalFrequency;
+      output[dim] = static_cast< MeasurementRealType >( sum[dim] / totalFrequency );
       }
     }
 
-  decoratedOutput->Set(output);
+  decoratedOutput->Set( output );
 }
 } // end of namespace Statistics
 } // end of namespace itk
