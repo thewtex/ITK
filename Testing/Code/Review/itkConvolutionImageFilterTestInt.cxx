@@ -30,25 +30,28 @@ int itkConvolutionImageFilterTestInt(int argc, char * argv[])
   if ( argc < 4 )
     {
     std::cout << "Usage: " << argv[0]
-      << " inputImage kernelImage outputImage [normalizeImage]" << std::endl;
+              << " inputImage kernelImage outputImage [normalizeImage]" << std::endl;
     return EXIT_FAILURE;
     }
 
   const int ImageDimension = 2;
 
-  typedef unsigned char                          PixelType;
-  typedef itk::Image<PixelType, ImageDimension>  ImageType;
-  typedef itk::ImageFileReader<ImageType>        ReaderType;
+  typedef unsigned char                               PixelType;
+  typedef double                                      KernelPixelType;
+  typedef itk::Image<PixelType, ImageDimension>       ImageType;
+  typedef itk::Image<KernelPixelType, ImageDimension> KernelImageType;
+  typedef itk::ImageFileReader<ImageType>             ReaderType;
+  typedef itk::ImageFileReader<KernelImageType>       KernelReaderType;
 
   ReaderType::Pointer reader1 = ReaderType::New();
   reader1->SetFileName( argv[1] );
   reader1->Update();
 
-  ReaderType::Pointer reader2 = ReaderType::New();
+  KernelReaderType::Pointer reader2 = KernelReaderType::New();
   reader2->SetFileName( argv[2] );
   reader2->Update();
 
-  typedef itk::ConvolutionImageFilter<ImageType> ConvolutionFilterType;
+  typedef itk::ConvolutionImageFilter<ImageType,ImageType,KernelImageType> ConvolutionFilterType;
   ConvolutionFilterType::Pointer convoluter
     = ConvolutionFilterType::New();
   convoluter->SetInput( reader1->GetOutput() );
