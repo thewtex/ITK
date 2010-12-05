@@ -19,12 +19,13 @@
 #pragma warning ( disable : 4786 )
 #endif
 
+#include "itkCovariantVector.h"
 #include "itkConvolutionImageFilter.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 #include "itkSimpleFilterWatcher.h"
 
-int itkConvolutionImageFilterTestInt(int argc, char * argv[])
+int itkConvolutionImageFilterTestCovariantVector(int argc, char * argv[])
 {
 
   if ( argc < 4 )
@@ -34,12 +35,21 @@ int itkConvolutionImageFilterTestInt(int argc, char * argv[])
     return EXIT_FAILURE;
     }
 
-  const int ImageDimension = 2;
+  const int ImageDimension = 3;
 
-  typedef unsigned char                               PixelType;
-  typedef double                                      KernelPixelType;
-  typedef itk::Image<PixelType, ImageDimension>       ImageType;
+  typedef long InputValueType;
+  typedef long KernelPixelType;
+  typedef itk::Image<itk::CovariantVector<InputValueType, ImageDimension>,
+                     ImageDimension>                             ImageType;
+  typedef itk::CovariantVector<KernelPixelType,
+                               ImageDimension>                             ComputationPixelType;
+
+  typedef itk::ConvolutionImageFilter<ImageType,
+                                      itk::Image<KernelPixelType,
+                                                 ImageDimension>,
+                                      itk::CovariantVector<KernelPixelType, ImageDimension> > FilterType;
   typedef itk::Image<KernelPixelType, ImageDimension> KernelImageType;
+
   typedef itk::ImageFileReader<ImageType>             ReaderType;
   typedef itk::ImageFileReader<KernelImageType>       KernelReaderType;
 
@@ -51,7 +61,7 @@ int itkConvolutionImageFilterTestInt(int argc, char * argv[])
   reader2->SetFileName( argv[2] );
   reader2->Update();
 
-  typedef itk::ConvolutionImageFilter<ImageType,KernelImageType,KernelPixelType,ImageType> ConvolutionFilterType;
+  typedef itk::ConvolutionImageFilter<ImageType,KernelImageType,ComputationPixelType,ImageType> ConvolutionFilterType;
   ConvolutionFilterType::Pointer convoluter
     = ConvolutionFilterType::New();
   convoluter->SetInput( reader1->GetOutput() );

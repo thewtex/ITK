@@ -27,11 +27,22 @@ namespace itk
  *
  * http://hdl.handle.net/1926/1323
  *
+ * This class is templated over the input image type, the type of the kernel
+ * image, the type of the pixel used during computation, and the type of the
+ * output image.  There should be a multiplication operator defined between the kernel
+ * pixel type and the input pixel type.  The computation pixel type defaults to
+ * the kernel pixel type.  It should not be vulnerable to overflows (like an
+ * unsigned char) but should also be convertable to the output pixel type.
+ *
  * \author Nicholas J. Tustison
  * \author James C. Gee
  */
-template< class TInputImage, class TOutputImage = TInputImage >
-class ITK_EXPORT ConvolutionImageFilter:
+template< class TInputImage,
+          class TKernelImage = Image< typename NumericTraits< typename TInputImage::PixelType >::FloatType,
+                                      ::itk::GetImageDimension< TInputImage >::ImageDimension >,
+          class TComputationPixel = typename TKernelImage::PixelType,
+          class TOutputImage = TInputImage >
+class ITK_EXPORT ConvolutionImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -51,13 +62,16 @@ public:
                       TInputImage::ImageDimension);
 
   typedef TInputImage                          InputImageType;
+  typedef TKernelImage                         KernelImageType;
   typedef TOutputImage                         OutputImageType;
   typedef typename InputImageType::PixelType   InputPixelType;
+  typedef typename KernelImageType::PixelType  KernelPixelType;
+  typedef TComputationPixel                    ComputationPixelType;
   typedef typename OutputImageType::PixelType  OutputPixelType;
   typedef typename OutputImageType::RegionType OutputRegionType;
 
-  itkSetInputMacro(ImageKernel, InputImageType, 1);
-  itkGetInputMacro(ImageKernel, InputImageType, 1);
+  itkSetInputMacro(ImageKernel, KernelImageType, 1);
+  itkGetInputMacro(ImageKernel, KernelImageType, 1);
 
   /**
    * Normalize the output image by the sum of the kernel components
@@ -72,6 +86,19 @@ public:
    * order to inform the pipeline execution model.
    * \sa ProcessObject::GenerateInputRequestedRegion()  */
   virtual void GenerateInputRequestedRegion();
+
+#ifdef ITK_USE_CONCEPT_CHECKING
+  /** Begin concept checking */
+  itkConceptMacro( InputKernelMultiplyOperatorCheck,
+    ( Concept::MultiplyOperator< KernelPixelType, InputPixelType, ComputationPixelType > ) );
+  itkConceptMacro( ComputationConvertibleToOutputCheck,
+    ( Concept::Convertible< ComputationPixelType, OutputPixelType > ) );
+  itkConceptMacro( KernelHasNumericTraitsCheck,
+    ( Concept::HasNumericTraits< KernelPixelType > ) );
+  itkConceptMacro( KernelHasZeroCheck,
+    ( Concept::HasZero< KernelPixelType > ) );
+  /** End concept checking */
+#endif
 
 protected:
   /** de/constructor */

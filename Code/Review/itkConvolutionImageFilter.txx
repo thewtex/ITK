@@ -33,26 +33,33 @@
 
 namespace itk
 {
-template< class TInputImage, class TOutputImage >
-ConvolutionImageFilter< TInputImage, TOutputImage >
+template< class TInputImage, class TKernelImage, class TComputationPixel, class TOutputImage >
+ConvolutionImageFilter< TInputImage, TKernelImage, TComputationPixel, TOutputImage >
 ::ConvolutionImageFilter()
 {
   this->SetNumberOfRequiredInputs(2);
   m_Normalize = false;
 }
 
-template< class TInputImage, class TOutputImage >
-ConvolutionImageFilter< TInputImage, TOutputImage >
+template< class TInputImage, class TKernelImage, class TComputationPixel, class TOutputImage >
+ConvolutionImageFilter< TInputImage, TKernelImage, TComputationPixel, TOutputImage >
 ::~ConvolutionImageFilter()
 {}
 
-template< class TInputImage, class TOutputImage >
+template< class TInputImage, class TKernelImage, class TComputationPixel, class TOutputImage >
 void
-ConvolutionImageFilter< TInputImage, TOutputImage >
+ConvolutionImageFilter< TInputImage, TKernelImage, TComputationPixel, TOutputImage >
 ::ThreadedGenerateData(const OutputRegionType & outputRegionForThread, int threadId)
 {
   // setup the progress reporter
   ProgressReporter progress( this, threadId, outputRegionForThread.GetNumberOfPixels() );
+
+  typename KernelImageType::Pointer kernel = const_cast< KernelImageType * >(
+      static_cast< const KernelImageType * >( this->ProcessObject::GetInput(1) ) );
+  if( kernel.GetPointer() == NULL )
+    {
+    return;
+    }
 
   typedef ConstNeighborhoodIterator< InputImageType >   NeighborhoodIteratorType;
   typedef typename NeighborhoodIteratorType::RadiusType RadiusType;
@@ -60,23 +67,23 @@ ConvolutionImageFilter< TInputImage, TOutputImage >
   RadiusType radius;
   for ( unsigned int i = 0; i < ImageDimension; i++ )
     {
-    radius[i] = Math::Floor< SizeValueType >(0.5
-                                             * this->GetImageKernelInput()->GetLargestPossibleRegion().GetSize()[i]);
+    radius[i] = (kernel->GetLargestPossibleRegion().GetSize()[i] - 1) / 2;
     }
 
-  double scalingFactor = 1.0;
+  KernelPixelType scalingFactor = NumericTraits< KernelPixelType >::One;
   if ( this->GetNormalize() )
     {
-    double                                     sum = 0.0;
-    ImageRegionConstIterator< InputImageType > It( this->GetImageKernelInput(),
-                                                   this->GetImageKernelInput()->GetLargestPossibleRegion() );
+    KernelPixelType                             sum = NumericTraits< KernelPixelType >::Zero;
+    ImageRegionConstIterator< KernelImageType > It( kernel,
+                                                    kernel->GetLargestPossibleRegion() );
     for ( It.GoToBegin(); !It.IsAtEnd(); ++It )
       {
-      sum += static_cast< double >( It.Get() );
+      sum += It.Get();
       }
-    if ( sum != 0.0 )
+    if ( sum != NumericTraits< KernelPixelType >::One
+         || sum != NumericTraits< KernelPixelType >::Zero )
       {
-      scalingFactor = 1.0 / sum;
+      scalingFactor = NumericTraits< KernelPixelType >::One * 1./ sum;
       }
     }
 
@@ -84,12 +91,10 @@ ConvolutionImageFilter< TInputImage, TOutputImage >
   ::ImageBoundaryFacesCalculator< InputImageType > FaceCalculatorType;
   FaceCalculatorType faceCalculator;
 
-  NeighborhoodInnerProduct< InputImageType, InputPixelType, double > innerProduct;
+  NeighborhoodInnerProduct< InputImageType, KernelPixelType, ComputationPixelType > innerProduct;
 
-  ImageKernelOperator< InputPixelType, ImageDimension > imageKernelOperator;
-  imageKernelOperator.SetImageKernel( const_cast< InputImageType * >(
-                                        static_cast< const InputImageType * >(
-                                          this->ProcessObject::GetInput(1) ) ) );
+  ImageKernelOperator< KernelPixelType, ImageDimension > imageKernelOperator;
+  imageKernelOperator.SetImageKernel(kernel);
   imageKernelOperator.CreateToRadius(radius);
 
   typename FaceCalculatorType::FaceListType faceList = faceCalculator(
@@ -119,9 +124,9 @@ ConvolutionImageFilter< TInputImage, TOutputImage >
  *
  * \sa ProcessObject::GenerateInputRequestedRegion()
  */
-template< class TInputImage, class TOutputImage >
+template< class TInputImage, class TKernelImage, class TComputationPixel, class TOutputImage >
 void
-ConvolutionImageFilter< TInputImage, TOutputImage >
+ConvolutionImageFilter< TInputImage, TKernelImage, TComputationPixel, TOutputImage >
 ::GenerateInputRequestedRegion()
 {
   // Simply copy the GenerateInputRequestedRegion() function and
@@ -146,36 +151,36 @@ ConvolutionImageFilter< TInputImage, TOutputImage >
                                          << " not correctly specified.");
         }
 
-      // Input is an image, cast away the constness so we can set
-      // the requested region.
-      typename InputImageType::Pointer input =
-        const_cast< TInputImage * >( this->GetInput(idx) );
-
       typename InputImageType::RegionType inputRegion;
       if ( idx == 0 )
         {
+        // Input is an image, cast away the constness so we can set
+        // the requested region.
+        typename InputImageType::Pointer input =
+          const_cast< TInputImage * >( this->GetInput(idx) );
         Superclass::CallCopyOutputRegionToInputRegion( inputRegion,
                                                        this->GetOutput()->GetRequestedRegion() );
+        input->SetRequestedRegion(inputRegion);
         }
       else  // the input is the image kernel
         {
-        typename InputImageType::RegionType::SizeType inputSize;
-        typename InputImageType::RegionType::IndexType inputIndex;
-        inputSize = this->GetInput(
-          idx)->GetLargestPossibleRegion().GetSize();
-        inputIndex = this->GetInput(
-          idx)->GetLargestPossibleRegion().GetIndex();
+        typename KernelImageType::Pointer input =
+          const_cast< TKernelImage * >( static_cast< const TKernelImage *>( this->ProcessObject::GetInput(idx) ) );
+        typename KernelImageType::RegionType::SizeType  inputSize;
+        typename KernelImageType::RegionType::IndexType inputIndex;
+        inputSize = this->GetInput(idx)->GetLargestPossibleRegion().GetSize();
+        inputIndex = this->GetInput(idx)->GetLargestPossibleRegion().GetIndex();
         inputRegion.SetSize(inputSize);
         inputRegion.SetIndex(inputIndex);
+        input->SetRequestedRegion(inputRegion);
         }
-      input->SetRequestedRegion(inputRegion);
       }
     }
 }
 
-template< class TInputImage, class TOutputImage >
+template< class TInputImage, class TKernelImage, class TComputationPixel, class TOutputImage >
 void
-ConvolutionImageFilter< TInputImage, TOutputImage >
+ConvolutionImageFilter< TInputImage, TKernelImage, TComputationPixel, TOutputImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
@@ -184,5 +189,6 @@ ConvolutionImageFilter< TInputImage, TOutputImage >
   //  NOT REALLY MEMBER DATA. Need to fool PrintSelf check
   //  os << indent << "ImageKernel: "  << m_ImageKernel << std::e0ndl;
 }
-}
+
+} // end namespace itk
 #endif

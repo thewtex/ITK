@@ -129,6 +129,7 @@ set(ReviewTest_SRCS
 
   itkConvolutionImageFilterTest.cxx
   itkConvolutionImageFilterTestInt.cxx
+  itkConvolutionImageFilterTestCovariantVector.cxx
 
   itkShapedFloodFilledImageFunctionConditionalConstIteratorTest1.cxx
   itkShapedFloodFilledImageFunctionConditionalConstIteratorTest2.cxx
@@ -1527,6 +1528,15 @@ add_test(itkConvolutionImageFilterTestSobelY ${REVIEW_TESTS}
    ${INPUTDATA}/cthead1.png
    ${INPUTDATA}/sobel_y.nii.gz
    ${TEMP}/itkConvolutionImageFilterTestSobelY.nii.gz
+)
+
+add_test(itkConvolutionImageFilterTestCovariantVectorSobelY ${REVIEW_TESTS}
+  #--compare ${BASELINE}/itkConvolutionImageFilterTestSobelY.nii.gz
+            #${TEMP}/itkConvolutionImageFilterTestSobelY.nii.gz
+   itkConvolutionImageFilterTestCovariantVector
+   ${INPUTDATA}/mini-covector-fast.nrrd
+   ${INPUTDATA}/sobel_y.nii.gz
+   ${TEMP}/itkConvolutionImageFilterTestCovariantVectorSobelY.mha
 )
 
 add_test(itkRobustAutomaticThresholdImageFilterTest ${REVIEW_TESTS}
