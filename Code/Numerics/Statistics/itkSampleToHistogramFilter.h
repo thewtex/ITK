@@ -145,21 +145,29 @@ protected:
 private:
   SampleToHistogramFilter(const Self &); //purposely not implemented
   void operator=(const Self &);          //purposely not implemented
+
+  template <typename T> bool IsIntegerType(const T *) const { return true; }
+  bool IsIntegerType(const double *) const { return false; }
+  bool IsIntegerType(const float *) const { return false; }
+
   /** SafeAssign -- avoid numeric overflow/underflow */
   HistogramMeasurementType SafeAssign(MeasurementType from) const
   {
-    MeasurementType fromMax = static_cast<MeasurementType>
-      (NumericTraits<HistogramMeasurementType>::max());
-    MeasurementType fromMin = static_cast<MeasurementType>
-      (NumericTraits<HistogramMeasurementType>::min());
+    if(IsIntegerType(static_cast<const HistogramMeasurementType *>(0)))
+      {
+      MeasurementType fromMax = static_cast<MeasurementType>
+        (NumericTraits<HistogramMeasurementType>::max());
+      MeasurementType fromMin = static_cast<MeasurementType>
+        (NumericTraits<HistogramMeasurementType>::min());
 
-    if (from >= fromMax)
-      {
-      return NumericTraits<HistogramMeasurementType>::max();
-      }
-    else if (from <= fromMin)
-      {
-      return NumericTraits<HistogramMeasurementType>::min();
+      if (from >= fromMax)
+        {
+        return NumericTraits<HistogramMeasurementType>::max();
+        }
+      else if (from <= fromMin)
+        {
+        return NumericTraits<HistogramMeasurementType>::min();
+        }
       }
     return static_cast<HistogramMeasurementType>(from);
   }
