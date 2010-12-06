@@ -52,10 +52,16 @@ NumericSeriesFileNames
   // clear the file names vector
   m_FileNames.clear();
 
-  char temp[4096];
+  #define BUFFER_LENGTH 4096
+  char temp[BUFFER_LENGTH];
   for ( unsigned long i = m_StartIndex; i <= m_EndIndex; i += m_IncrementIndex )
     {
-    sprintf (temp, m_SeriesFormat.c_str(), i);
+    int result = snprintf (temp, BUFFER_LENGTH, m_SeriesFormat.c_str(), i);
+    if( result >= BUFFER_LENGTH )
+      {
+      itkExceptionMacro(<< "The filename is longer than temporary buffer."
+                        << " Truncated form: " << temp << ".");
+      }
     std::string fileName(temp);
     m_FileNames.push_back(fileName);
     }

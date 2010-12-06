@@ -41,6 +41,29 @@ int itkNumericSeriesFileNamesTest(int, char* [])
 
   std::cout << fit;
 
+  /* Test filename length limit. Limit is hard-coded as 4096 in GetFileNames() */
+  char longName[5000];
+  memset(longName, 'A', 5000);
+  longName[0]='%';
+  longName[1]='d';
+  fit->SetSeriesFormat( longName );
+  bool caught = false;
+  try
+    {
+    names = fit->GetFileNames();
+    }
+  catch( itk::ExceptionObject & excp )
+    {
+    caught = true;
+    std::cout << "Exception caught as expected: " << std:: endl; // << excp;
+    }
+
+  if( !caught )
+    {
+    std::cout << "Failed. Expected long filename to throw exception." << std::endl;
+    return EXIT_FAILURE;
+    }
+
   return EXIT_SUCCESS;
 
 }
