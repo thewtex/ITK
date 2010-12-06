@@ -30,7 +30,7 @@ namespace itk
  * \author Nicholas J. Tustison
  * \author James C. Gee
  */
-template< class TInputImage, class TOutputImage = TInputImage >
+template< class TInputImage, class TOutputImage = TInputImage, class TKernel = TInputImage >
 class ITK_EXPORT ConvolutionImageFilter:
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
@@ -55,9 +55,10 @@ public:
   typedef typename InputImageType::PixelType   InputPixelType;
   typedef typename OutputImageType::PixelType  OutputPixelType;
   typedef typename OutputImageType::RegionType OutputRegionType;
+  typedef TKernel                              KernelType;
 
-  itkSetInputMacro(ImageKernel, InputImageType, 1);
-  itkGetInputMacro(ImageKernel, InputImageType, 1);
+  itkSetInputMacro(ImageKernel, KernelType, 1);
+  itkGetInputMacro(ImageKernel, KernelType, 1);
 
   /**
    * Normalize the output image by the sum of the kernel components

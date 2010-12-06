@@ -33,22 +33,22 @@
 
 namespace itk
 {
-template< class TInputImage, class TOutputImage >
-ConvolutionImageFilter< TInputImage, TOutputImage >
+template< class TInputImage, class TOutputImage, typename TKernel >
+ConvolutionImageFilter< TInputImage, TOutputImage, TKernel >
 ::ConvolutionImageFilter()
 {
   this->SetNumberOfRequiredInputs(2);
   m_Normalize = false;
 }
 
-template< class TInputImage, class TOutputImage >
-ConvolutionImageFilter< TInputImage, TOutputImage >
+template< class TInputImage, class TOutputImage, typename TKernel >
+ConvolutionImageFilter< TInputImage, TOutputImage, TKernel >
 ::~ConvolutionImageFilter()
 {}
 
-template< class TInputImage, class TOutputImage >
+template< class TInputImage, class TOutputImage, typename TKernel >
 void
-ConvolutionImageFilter< TInputImage, TOutputImage >
+ConvolutionImageFilter< TInputImage, TOutputImage, TKernel >
 ::ThreadedGenerateData(const OutputRegionType & outputRegionForThread, int threadId)
 {
   // setup the progress reporter
@@ -68,7 +68,7 @@ ConvolutionImageFilter< TInputImage, TOutputImage >
   if ( this->GetNormalize() )
     {
     double                                     sum = 0.0;
-    ImageRegionConstIterator< InputImageType > It( this->GetImageKernelInput(),
+    ImageRegionConstIterator< KernelType > It( this->GetImageKernelInput(),
                                                    this->GetImageKernelInput()->GetLargestPossibleRegion() );
     for ( It.GoToBegin(); !It.IsAtEnd(); ++It )
       {
@@ -119,9 +119,9 @@ ConvolutionImageFilter< TInputImage, TOutputImage >
  *
  * \sa ProcessObject::GenerateInputRequestedRegion()
  */
-template< class TInputImage, class TOutputImage >
+template< class TInputImage, class TOutputImage, typename TKernel >
 void
-ConvolutionImageFilter< TInputImage, TOutputImage >
+ConvolutionImageFilter< TInputImage, TOutputImage, TKernel >
 ::GenerateInputRequestedRegion()
 {
   // Simply copy the GenerateInputRequestedRegion() function and
@@ -173,9 +173,9 @@ ConvolutionImageFilter< TInputImage, TOutputImage >
     }
 }
 
-template< class TInputImage, class TOutputImage >
+template< class TInputImage, class TOutputImage, typename TKernel >
 void
-ConvolutionImageFilter< TInputImage, TOutputImage >
+ConvolutionImageFilter< TInputImage, TOutputImage, TKernel >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
