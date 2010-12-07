@@ -261,6 +261,7 @@ set(ReviewTest5_SRCS
 )
 
 set(ReviewTest6_SRCS
+  itkObjectToObjectMetricTest.cxx
   itkDeformationFieldTransformTest.cxx
   itkScalarChanAndVeseLevelSetFunctionTest1.cxx
   itkScalarChanAndVeseLevelSetFunctionTest2.cxx
@@ -271,6 +272,7 @@ set(ReviewTest6_SRCS
   itkScalarChanAndVeseSparseLevelSetImageFilterTest1.cxx
   itkScalarChanAndVeseSparseLevelSetImageFilterTest2.cxx
 )
+
 
 add_test(itkOptImageToImageMetricsTest01
   ${REVIEW_TESTS} itkOptImageToImageMetricsTest
@@ -2399,6 +2401,9 @@ add_test(itkLabelGeometryImageFilterTest2
   ${INPUTDATA}/GrayscaleImageWithVariousShapes01.png
   )
 
+add_test(itkObjectToObjectMetricTest ${REVIEW_TESTS6}
+         itkObjectToObjectMetricTest
+        )
 add_test(itkDeformationFieldTransformTest ${REVIEW_TESTS6}
   itkDeformationFieldTransformTest)
 add_test(itkScalarChanAndVeseLevelSetFunctionTest1 ${REVIEW_TESTS6}
