@@ -2402,8 +2402,7 @@ add_test(itkLabelGeometryImageFilterTest2
   )
 
 add_test(itkObjectToObjectMetricTest ${REVIEW_TESTS6}
-         itkObjectToObjectMetricTest
-        )
+         itkObjectToObjectMetricTest)
 add_test(itkDeformationFieldTransformTest ${REVIEW_TESTS6}
   itkDeformationFieldTransformTest)
 add_test(itkScalarChanAndVeseLevelSetFunctionTest1 ${REVIEW_TESTS6}
@@ -2584,7 +2583,7 @@ set(ReviewTest6_LIBS
   ITKIO
   ITKStatistics
   )
-target_link_libraries(itkReviewTests6 ${ReviewTest6_LIBS})
+target_link_libraries(itkReviewTests6 ${ReviewTest6_LIBS} ITKNumerics)
 
 if(ITK_USE_MINC2 AND MINC2_FOUND)
   set(ReviewTest_LIBS ${ReviewTest_LIBS} ITKIOMINC2)

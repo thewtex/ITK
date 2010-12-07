@@ -49,7 +49,14 @@ public:
   void GetDerivative(const ParametersType &,
                              DerivativeType & derivative) const { derivative.Fill(0.0); }
   void Initialize(void) throw ( itk::ExceptionObject ) {}
+  void PrintSelf(std::ostream& os, itk::Indent indent) const
+  {
+    Superclass::PrintSelf( os, indent );
+  }
 
+private:
+  ObjectToObjectMetricSurrogate() {}
+  ~ObjectToObjectMetricSurrogate() {}
 };
 
 }
@@ -61,14 +68,9 @@ int itkObjectToObjectMetricTest(int argc,char* argv[])
     ImageType, ImageType> objectMetricType;
 
   objectMetricType::Pointer objectMetric = objectMetricType::New();
-
   objectMetric->SetNumberOfThreads(1);
-
   std::cout << objectMetric->GetNumberOfThreads() << std::endl;
-
   objectMetric->Print( std::cout );
-
   std::cout << objectMetric << std::endl;
-
   return EXIT_SUCCESS;
 }
