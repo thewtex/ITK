@@ -271,6 +271,7 @@ set(ReviewTest5_SRCS
 
 set(ReviewTest6_SRCS
   itkDeformationFieldTransformTest.cxx
+  itkN4MRIBiasFieldCorrectionImageFilterTest.cxx
   itkScalarChanAndVeseLevelSetFunctionTest1.cxx
   itkScalarChanAndVeseLevelSetFunctionTest2.cxx
   itkScalarChanAndVeseDenseLevelSetImageFilterTest1.cxx
@@ -2410,6 +2411,37 @@ add_test(itkLabelGeometryImageFilterTest2
 
 add_test(itkDeformationFieldTransformTest ${REVIEW_TESTS6}
   itkDeformationFieldTransformTest)
+
+add_test(itkN4MRIBiasFieldCorrectionImageFilterTest1
+  ${REVIEW_TESTS6}
+  --compare
+  ${BASELINE}/N4ControlPoints_2D.nii.gz
+  ${TEMP}/N4ControlPoints_2D.nii.gz
+  itkN4MRIBiasFieldCorrectionImageFilterTest
+  2
+  ${ITK_SOURCE_DIR}/Examples/Data/BrainT1SliceBorder20.png    # input
+  ${TEMP}/N4ControlPoints_2D.nii.gz                           # control point lattice
+  4                                                           # shrink factor
+  20x20                                                       # number of iterations
+  none                                                        # mask
+  200                                                         # spline distance
+  )
+
+add_test(itkN4MRIBiasFieldCorrectionImageFilterTest2
+  ${REVIEW_TESTS6}
+  --compare
+  ${BASELINE}/N4ControlPoints_3D.nii.gz
+  ${TEMP}/N4ControlPoints_3D.nii.gz
+  itkN4MRIBiasFieldCorrectionImageFilterTest
+  3
+  ${ITK_SOURCE_DIR}/Testing/Data/Input/HeadMRVolumeCompressed.mha    # input
+  ${TEMP}/N4ControlPoints_3D.nii.gz                                  # control point lattice
+  3                                                                  # shrink factor
+  10x10x10                                                           # number of iterations
+  none                                                               # mask
+  150                                                                # spline distance
+  )
+
 add_test(itkScalarChanAndVeseLevelSetFunctionTest1 ${REVIEW_TESTS6}
   itkScalarChanAndVeseLevelSetFunctionTest1)
 add_test(itkScalarChanAndVeseLevelSetFunctionTest2 ${REVIEW_TESTS6}
