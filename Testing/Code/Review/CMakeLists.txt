@@ -272,6 +272,7 @@ set(ReviewTest5_SRCS
 
 set(ReviewTest6_SRCS
   itkDeformationFieldTransformTest.cxx
+  itkN4MRIBiasFieldCorrectionImageFilterTest.cxx
   itkScalarChanAndVeseLevelSetFunctionTest1.cxx
   itkScalarChanAndVeseLevelSetFunctionTest2.cxx
   itkScalarChanAndVeseDenseLevelSetImageFilterTest1.cxx
@@ -2411,6 +2412,20 @@ add_test(itkLabelGeometryImageFilterTest2
 
 add_test(itkDeformationFieldTransformTest ${REVIEW_TESTS6}
   itkDeformationFieldTransformTest)
+
+add_test(itkN4MRIBiasFieldCorrectionImageFilterTest
+  ${REVIEW_TESTS6}
+  itkN4MRIBiasFieldCorrectionImageFilterTest
+  3
+  ${ITK_SOURCE_DIR}/Testing/Data/Input/HeadMRVolume.mha    # input
+  ${TEMP}/N4corrected.nii.gz                          # corrected output
+  1                                                   # shrink factor
+  50x50x50x50                                         # number of iterations
+  none                                                # mask
+  200                                                 # spline distance
+  ${TEMP}/N4biasfield.nii.gz                          # bias field
+  )
+
 add_test(itkScalarChanAndVeseLevelSetFunctionTest1 ${REVIEW_TESTS6}
   itkScalarChanAndVeseLevelSetFunctionTest1)
 add_test(itkScalarChanAndVeseLevelSetFunctionTest2 ${REVIEW_TESTS6}
