@@ -128,12 +128,7 @@ typename BresenhamLine< VDimension >::IndexArray BresenhamLine< VDimension >
   IndexArray indices(offsets.size());
   for(unsigned int i = 0; i < offsets.size(); i++)
     {
-    IndexType index;
-    for(unsigned int component = 0; component < VDimension; component++)
-      {
-      index[component] = offsets[i][component];
-      }
-    indices[i] = index;
+    indices[i] = p0 + offsets[i];
     }
   return indices;
 }
