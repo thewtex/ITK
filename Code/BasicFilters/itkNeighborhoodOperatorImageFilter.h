@@ -67,6 +67,13 @@ public:
   typedef typename  TInputImage::InternalPixelType InputInternalPixelType;
   typedef TOperatorValueType                       OperatorValueType;
 
+  //GS: a type for checking with when pixel type is vector type
+  typedef typename NumericTraits<InputPixelType>::ValueType InputPixelValueType;
+  // need to make sure vector types cast correctly between different vector types (float -> double)
+  typedef typename NumericTraits<OutputPixelType>::RealType ComputingPixelType;
+
+
+
   /** Extract some information from the image types.  Dimensionality
    * of the two images is assumed to be the same. */
   itkStaticConstMacro(ImageDimension, unsigned int,
@@ -130,12 +137,20 @@ public:
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   /** Begin concept checking */
+
+
   itkConceptMacro( SameDimensionCheck,
                    ( Concept::SameDimension< InputImageDimension, ImageDimension > ) );
   itkConceptMacro( OperatorConvertibleToOutputCheck,
                    ( Concept::Convertible< OperatorValueType, OutputPixelType > ) );
+
+  //GS: for apply scalar operator to vector image, only need to check scalar convertible to vector element type
+//  itkConceptMacro( InputConvertibleToOperatorCheck,
+//                   ( Concept::Convertible< InputPixelType, OperatorValueType > ) );
   itkConceptMacro( InputConvertibleToOperatorCheck,
-                   ( Concept::Convertible< InputPixelType, OperatorValueType > ) );
+                   ( Concept::Convertible< InputPixelValueType, OperatorValueType > ) );
+
+
   itkConceptMacro( OperatorMultiplyOperatorCheck,
                    ( Concept::MultiplyOperator< OperatorValueType > ) );
   itkConceptMacro( OperatorAdditiveOperatorsCheck,

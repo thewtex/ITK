@@ -87,15 +87,24 @@ NeighborhoodOperatorImageFilter< TInputImage, TOutputImage, TOperatorValueType >
 
   typedef typename BFC::FaceListType FaceListType;
 
-  NeighborhoodInnerProduct< InputImageType, OperatorValueType > smartInnerProduct;
+  //GS: for vector image, need to explicitly declare the vector type as ComputingPixelType
+  // NeighborhoodInnerProduct< InputImageType, OperatorValueType > smartInnerProduct;
+  NeighborhoodInnerProduct< InputImageType, OperatorValueType, ComputingPixelType > smartInnerProduct;
   BFC                                                           faceCalculator;
   FaceListType                                                  faceList;
 
   // This filter can only operate on data types that are signed.
-  if ( !NumericTraits< OutputPixelType >::is_signed )
+//  if ( !NumericTraits< OutputPixelType >::is_signed )
+
+  // to accomodate vector pixel type
+   if ( !NumericTraits< typename NumericTraits< OutputPixelType  >::ValueType >::is_signed )
     {
     itkExceptionMacro(<< "This filter can only create images of signed data type.");
     }
+
+
+
+
   // Allocate output
   OutputImageType *output = this->GetOutput();
 

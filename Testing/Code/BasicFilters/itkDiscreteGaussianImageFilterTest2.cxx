@@ -29,7 +29,8 @@
 #include "itkImageFileWriter.h"
 
 template<class TIMAGE>
-int itkDiscreteGaussianImageFilterTestA(int argc, char* argv[]) {
+int itkDiscreteGaussianImageFilterTestA(int argc, char* argv[])
+{
 
     typedef TIMAGE ImageType;
 
@@ -58,9 +59,10 @@ int itkDiscreteGaussianImageFilterTestA(int argc, char* argv[]) {
     return EXIT_SUCCESS;
 }
 
-int itkDiscreteGaussianImageFilterTest2(int argc, char *argv[]) {
+int itkDiscreteGaussianImageFilterTest2(int argc, char *argv[])
+{
 
-if (argc < 3) {
+    if (argc < 3) {
         std::cout
                 << "Test DiscreteGaussianImageFilter working on both vector type and scalar type images on one 2D RGB image and 2D scalar image."
                 << std::endl
