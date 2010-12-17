@@ -49,6 +49,7 @@ public:
   /** Capture some typedefs from the template parameters. */
   typedef typename TImage::PixelType ImagePixelType;
   typedef TOperator                  OperatorPixelType;
+
   typedef TComputation               OutputPixelType;
 
   /** Capture some typedefs from the template parameters. */
