@@ -158,6 +158,7 @@ add_test(itkDeformationFieldJacobianDeterminantFilterTest ${BASIC_FILTERS_TESTS2
 add_test(itkDisplacementFieldJacobianDeterminantFilterTest ${BASIC_FILTERS_TESTS2} itkDisplacementFieldJacobianDeterminantFilterTest)
 add_test(itkDifferenceOfGaussiansGradientTest ${BASIC_FILTERS_TESTS} itkDifferenceOfGaussiansGradientTest)
 add_test(itkDiscreteGaussianImageFilterTest ${BASIC_FILTERS_TESTS} itkDiscreteGaussianImageFilterTest)
+add_test(itkDiscreteGaussianImageFilterTest2 ${BASIC_FILTERS_TESTS5} --compare ${TEMP}/ShapesRGB_smoothed1.mha ${BASELINE}/ShapesRGB_smoothed.mha itkDiscreteGaussianImageFilterTest2 2 3 ${INPUTDATA}/ShapesRGB.mha 1 ${TEMP}/ShapesRGB_smoothed1.mha)
 add_test(itkDivideImageFilterTest ${BASIC_FILTERS_TESTS} itkDivideImageFilterTest)
 add_test(itkEdgePotentialImageFilterTest ${BASIC_FILTERS_TESTS} itkEdgePotentialImageFilterTest)
 add_test(itkEigenAnalysis2DImageFilterTest ${BASIC_FILTERS_TESTS} itkEigenAnalysis2DImageFilterTest)
@@ -1344,6 +1345,7 @@ set(BasicFilters5_SRCS
   itkWarpImageFilterTest2.cxx
   itkBSplineDownsampleImageFilterTest.cxx
   itkBSplineUpsampleImageFilterTest.cxx
+  itkDiscreteGaussianImageFilterTest2.cxx
 )
 
 if(ITK_OBJCXX_COMPILER_WORKS)
@@ -1656,4 +1658,3 @@ if(ITK_CSWIG_JAVA AND ITK_BINARY_DIR)
 
 endif(ITK_CSWIG_JAVA AND ITK_BINARY_DIR)
 endif( NOT ITK_DISABLE_JAVA_TESTING )
-

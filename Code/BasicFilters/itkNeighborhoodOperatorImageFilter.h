@@ -67,6 +67,11 @@ public:
   typedef typename  TInputImage::InternalPixelType InputInternalPixelType;
   typedef TOperatorValueType                       OperatorValueType;
 
+  typedef typename NumericTraits<InputPixelType>::ValueType InputPixelValueType;
+  typedef typename NumericTraits<OutputPixelType>::RealType ComputingPixelType;
+
+
+
   /** Extract some information from the image types.  Dimensionality
    * of the two images is assumed to be the same. */
   itkStaticConstMacro(ImageDimension, unsigned int,
@@ -130,12 +135,17 @@ public:
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   /** Begin concept checking */
+
+
   itkConceptMacro( SameDimensionCheck,
                    ( Concept::SameDimension< InputImageDimension, ImageDimension > ) );
   itkConceptMacro( OperatorConvertibleToOutputCheck,
                    ( Concept::Convertible< OperatorValueType, OutputPixelType > ) );
+
   itkConceptMacro( InputConvertibleToOperatorCheck,
-                   ( Concept::Convertible< InputPixelType, OperatorValueType > ) );
+                   ( Concept::Convertible< InputPixelValueType, OperatorValueType > ) );
+
+
   itkConceptMacro( OperatorMultiplyOperatorCheck,
                    ( Concept::MultiplyOperator< OperatorValueType > ) );
   itkConceptMacro( OperatorAdditiveOperatorsCheck,

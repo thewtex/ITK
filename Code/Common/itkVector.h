@@ -21,7 +21,6 @@
 #include "itkFixedArray.h"
 
 #include "vnl/vnl_vector_ref.h" // Get_vnl_vector method return
-
 namespace itk
 {
 /** \class Vector
@@ -53,16 +52,16 @@ namespace itk
  * \sa Matrix
  */
 template< class T, unsigned int NVectorDimension = 3 >
-class Vector:public FixedArray< T, NVectorDimension >
+class Vector:public FixedArray<T, NVectorDimension >
 {
 public:
   /** Standard class typedefs. */
-  typedef Vector                            Self;
+  typedef Vector Self;
   typedef FixedArray< T, NVectorDimension > Superclass;
 
   /** ValueType can be used to declare a variable that is the same type
    * as a data element held in an Vector.   */
-  typedef T                                             ValueType;
+  typedef T ValueType;
   typedef typename NumericTraits< ValueType >::RealType RealValueType;
 
   /** Dimension of the vector space. */
@@ -78,7 +77,10 @@ public:
   typedef FixedArray< T, NVectorDimension > BaseArray;
 
   /** Get the dimension (size) of the vector. */
-  static unsigned int GetVectorDimension() { return NVectorDimension; }
+  static unsigned int GetVectorDimension()
+  {
+    return NVectorDimension;
+  }
 
   /** Set a vnl_vector_ref referencing the same memory block. */
   void SetVnlVector(const vnl_vector< T > &);
@@ -102,13 +104,20 @@ public:
   vnl_vector< T > Get_vnl_vector(void) const;
 
   /** Default constructor and copy constructors. */
-  Vector():BaseArray() {}
+  Vector() : BaseArray()
+  {
+  }
   Vector(const ValueType & r);
 
   /** Pass-through constructor for the Array base class. */
   template< class TVectorValueType >
-  Vector(const Vector< TVectorValueType, NVectorDimension > & r):BaseArray(r) {}
-  Vector(const ValueType r[Dimension]):BaseArray(r) {}
+  Vector(const Vector< TVectorValueType, NVectorDimension > & r):BaseArray(r)
+  {
+  }
+
+  Vector(const ValueType r[Dimension]):BaseArray(r)
+  {
+  }
 
   /** Pass-through assignment operator for the Array base class. */
   template< class TVectorValueType >
@@ -125,9 +134,9 @@ public:
   inline const Self & operator*=(const Tt & value)
   {
     for ( unsigned int i = 0; i < NVectorDimension; i++ )
-      {
+    {
       ( *this )[i] = static_cast< ValueType >( ( *this )[i] * value );
-      }
+    }
     return *this;
   }
 
@@ -136,9 +145,9 @@ public:
   inline const Self & operator/=(const Tt & value)
   {
     for ( unsigned int i = 0; i < NVectorDimension; i++ )
-      {
+    {
       ( *this )[i] = static_cast< ValueType >( ( *this )[i] / value );
-      }
+    }
     return *this;
   }
 
@@ -169,9 +178,9 @@ public:
     Self result;
 
     for ( unsigned int i = 0; i < NVectorDimension; i++ )
-      {
+    {
       result[i] = static_cast< ValueType >( ( *this )[i] * value );
-      }
+    }
     return result;
   }
 
@@ -183,9 +192,9 @@ public:
     Self result;
 
     for ( unsigned int i = 0; i < NVectorDimension; i++ )
-      {
+    {
       result[i] = static_cast< ValueType >( ( *this )[i] / value );
-      }
+    }
     return result;
   }
 
@@ -194,9 +203,13 @@ public:
    * compile-time constraints on the template parameters length and type
    * prevent comparisons between vectors of different type and length.) */
   bool operator==(const Self & v) const
-  { return Superclass::operator==(v); }
+  {
+    return Superclass::operator==(v);
+  }
   bool operator!=(const Self & v) const
-  { return !operator==(v); }
+  {
+    return !operator==(v);
+  }
 
   /** Returns the Euclidean Norm of the vector  */
   RealValueType GetNorm(void) const;
@@ -205,13 +218,18 @@ public:
   RealValueType GetSquaredNorm(void) const;
 
   /** Returns the number of components in this vector type */
-  static unsigned int GetNumberOfComponents(){ return NVectorDimension; }
+  static unsigned int GetNumberOfComponents()
+  {
+    return NVectorDimension;
+  }
 
   /** Divides the vector componets by the vector norm */
   void Normalize(void);
 
   void SetNthComponent(int c, const ComponentType & v)
-  {  this->operator[](c) = v; }
+  {
+    this->operator[](c) = v;
+  }
 
   /** Copy from another Vector with a different representation type.
    *  Casting is done with C-Like rules  */
@@ -219,10 +237,22 @@ public:
   void CastFrom(const Vector< TCoordRepB, NVectorDimension > & pa)
   {
     for ( unsigned int i = 0; i < NVectorDimension; i++ )
-      {
+    {
       ( *this )[i] = static_cast< T >( pa[i] );
-      }
+    }
   }
+
+  template<typename TCoordRepB>
+  operator Vector< TCoordRepB, NVectorDimension >()
+  {
+    Vector<TCoordRepB, NVectorDimension> r;
+    for (unsigned int i = 0; i < NVectorDimension; i++)
+    {
+      r[i] = static_cast<TCoordRepB> ((*this)[i]);
+    }
+    return r;
+  }
+
 };
 
 /** Premultiply Operator for product of a vector and a scalar.

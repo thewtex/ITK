@@ -25,7 +25,7 @@ namespace itk
 {
 template< class TImage, class TOperator, class TComputation >
 typename NeighborhoodInnerProduct< TImage, TOperator, TComputation >::OutputPixelType
-NeighborhoodInnerProduct< TImage, TOperator, TComputation >
+NeighborhoodInnerProduct< TImage, TOperator, TComputation>
 ::operator()(const std::slice & s,
              const ConstNeighborhoodIterator< TImage > & it,
              const OperatorType & op) const
@@ -33,16 +33,20 @@ NeighborhoodInnerProduct< TImage, TOperator, TComputation >
   typename OperatorType::ConstIterator o_it;
   OutputPixelType sum = NumericTraits< OutputPixelType >::Zero;
 
+  typedef typename NumericTraits<OutputPixelType>::ValueType
+      OutputPixelValueType;
+
   o_it = op.Begin();
   const typename OperatorType::ConstIterator op_end = op.End();
 
-  const unsigned int start  = static_cast< unsigned int >( s.start() );
+  const unsigned int start = static_cast< unsigned int >( s.start() );
   const unsigned int stride = static_cast< unsigned int >( s.stride() );
   for ( unsigned int i = start; o_it < op_end; i += stride, ++o_it )
-    {
-    sum += static_cast< OutputPixelType >( *o_it )
+  {
+    sum += static_cast< OutputPixelValueType > ( *o_it )
            * static_cast< OutputPixelType >( it.GetPixel(i) );
-    }
+
+  }
 
   return sum;
 }
@@ -51,23 +55,27 @@ template< class TImage, class TOperator, class TComputation >
 typename NeighborhoodInnerProduct< TImage, TOperator, TComputation >::OutputPixelType
 NeighborhoodInnerProduct< TImage, TOperator, TComputation >
 ::operator()(const std::slice & s,
-             /*           const ImageBoundaryCondition<TImage> *,*/
+/*           const ImageBoundaryCondition<TImage> *,*/
              const NeighborhoodType & N,
              const OperatorType & op) const
 {
   typename OperatorType::ConstIterator o_it;
   OutputPixelType sum = NumericTraits< OutputPixelType >::Zero;
 
+  typedef typename NumericTraits<OutputPixelType>::ValueType
+      OutputPixelValueType;
+
   o_it = op.Begin();
   const typename OperatorType::ConstIterator op_end = op.End();
 
-  const unsigned int start  = static_cast< unsigned int >( s.start() );
+  const unsigned int start  = static_cast< unsigned int>( s.start() );
   const unsigned int stride = static_cast< unsigned int >( s.stride() );
-  for ( unsigned int i = start; o_it < op_end; i += stride, ++o_it )
-    {
-    sum += static_cast< OutputPixelType >( *o_it )
-           * static_cast< OutputPixelType >( N[i] );
-    }
+  for (unsigned int i = start; o_it < op_end; i += stride, ++o_it )
+  {
+    sum += static_cast< OutputPixelValueType >( *o_it )
+           * static_cast< OutputPixelType>( N[i] );
+
+  }
 
   return sum;
 }
