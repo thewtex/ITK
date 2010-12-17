@@ -212,8 +212,13 @@ public:
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   /** Begin concept checking */
+
+  typedef typename NumericTraits<InputPixelType>::ValueType InputPixelValueType;
+  typedef typename NumericTraits<OutputPixelType>::ValueType OutputPixelValueType;
+
   itkConceptMacro( OutputHasNumericTraitsCheck,
-                   ( Concept::HasNumericTraits< OutputPixelType > ) );
+                   ( Concept::HasNumericTraits< OutputPixelValueType > ) );
+
   /** End concept checking */
 #endif
 protected:
