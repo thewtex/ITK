@@ -39,12 +39,13 @@ if(USE_FFTWD OR USE_FFTWF)
 
   if(USE_FFTWD)
     mark_as_advanced(FFTWD_LIB)
-#   option(FFTWD_LIB "The full path to the fftw3 library (including the library)" )
     find_library(FFTWD_LIB fftw3 ${FFTW_LIB_SEARCHPATH}) #Double Precision Lib
     find_library(FFTWD_THREADS_LIB fftw3_threads ${FFTW_LIB_SEARCHPATH}) #Double Precision Lib only if compiled with threads support
 
     if(FFTWD_LIB)
       set(FFTWD_FOUND 1)
+      get_filename_component(FFTW_LIBDIR ${FFTWD_LIB} PATH)
+      link_directories(${FFTW_LIBDIR})
       if(FFTWD_THREADS_LIB)
         set(FFTWD_LIB ${FFTWD_LIB} ${FFTWD_THREADS_LIB} )
       endif(FFTWD_THREADS_LIB)
@@ -53,12 +54,13 @@ if(USE_FFTWD OR USE_FFTWF)
 
   if(USE_FFTWF)
     mark_as_advanced(FFTWF_LIB)
-#   option(FFTWF_LIB "The full path to the fftw3f library (including the library)" )
     find_library(FFTWF_LIB fftw3f ${FFTW_LIB_SEARCHPATH}) #Single Precision Lib
     find_library(FFTWF_THREADS_LIB fftw3f_threads ${FFTW_LIB_SEARCHPATH}) #Single Precision Lib only if compiled with threads support
 
     if(FFTWF_LIB)
       set(FFTWF_FOUND 1)
+      get_filename_component(FFTW_LIBDIR ${FFTWF_LIB} PATH)
+      link_directories(${FFTW_LIBDIR})
       if(FFTWF_THREADS_LIB)
         set(FFTWF_LIB ${FFTWF_LIB} ${FFTWF_THREADS_LIB} )
       endif(FFTWF_THREADS_LIB)
