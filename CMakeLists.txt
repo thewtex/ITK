@@ -110,10 +110,19 @@ set(CMAKE_MODULE_PATH ${ITK_SOURCE_DIR}/CMake)
 include(itkCheckSourceTree)
 
 # Deal with FFT v3 Options
+#
+# USE_SYSTEM_FFTW -- locate a readybuilt FFTW installation
+mark_as_advanced(USE_SYSTEM_FFTW)
+option(USE_SYSTEM__FFTW "Use an installed version of FFTW" OFF)
+#
+# USE_FFTWD -- use double precision FFTW
 mark_as_advanced(USE_FFTWD)
 option(USE_FFTWD "Use double precision FFTW if found" OFF)
+#
+# USE_FFTWF -- use single precision FFTW
 mark_as_advanced(USE_FFTWF)
 option(USE_FFTWF "Use single precision FFTW if found" OFF)
+
 if( USE_FFTWD OR USE_FFTWF )
   set(msg "ATTENTION: You have enabled the use of FFTW,")
   set(msg "${msg} this library is distributed under a GPL license.")
@@ -121,7 +130,52 @@ if( USE_FFTWD OR USE_FFTWF )
   set(msg "${msg} that you are going to build will be covered by a GPL license,")
   set(msg "${msg} and so it will be any executable that you link against these libraries.")
   message("${msg}")
-  find_package( FFTW )
+
+  if(USE_SYSTEM_FFTW)
+    find_package( FFTW )
+  else(USE_SYSTEM_FFTW)
+    if(WIN32 AND NOT MINGW)
+      message("Can't build FFTW as external project on Windows")
+      message(ERROR "install FFTW and use USE_SYSTEM_FFTW")
+    else(WIN32 AND NOT MINGW)
+      #
+      # build FFTW as an external project
+      if(USE_FFTWF)
+        set(FFTW_FLOAT_FLAG --enable-float)
+      endif(USE_FFTWF)
+      if(BUILD_SHARED_LIBS)
+        set(FFTW_SHARED_FLAG --enable-shared)
+      endif(BUILD_SHARED_LIBS)
+      #
+      # use ExternalProject
+      include(ExternalProject)
+      ExternalProject_add(FFTW
+        PREFIX FFTW
+        URL "http://www.fftw.org/fftw-3.2.2.tar.gz"
+        CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/FFTW/src/FFTW/configure
+        ${FFTW_FLOAT_FLAG}
+        ${FFTW_SHARED_FLAG}
+        --prefix=${CMAKE_BINARY_DIR}/FFTW
+        --enable-threads
+        )
+      link_directories(${CMAKE_BINARY_DIR}/FFTW/lib)
+      # backwards compatibility
+      set(FFTW_INCLUDE_PATH ${CMAKE_BINARY_DIR}/FFTW/include)
+      #
+      # copy libraries into install tree
+      install(CODE
+        "file(GLOB FFTW_LIBS ${CMAKE_BINARY_DIR}/FFTW/lib/*fftw3*)
+file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/lib/InsightToolkit-${ITK_VERSION_MAJOR}.${ITK_VERSION_MINOR}\"
+TYPE FILE FILES \${FFTW_LIBS})")
+      #
+      # copy headers into install tree
+      install(CODE
+        "file(GLOB FFTW_INC ${CMAKE_BINARY_DIR}/FFTW/include/*fftw3*)
+file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/include/InsightToolkit-${ITK_VERSION_MAJOR}.${ITK_VERSION_MINOR}/Algorithms\"
+TYPE FILE FILES \${FFTW_INC})")
+
+    endif(WIN32 AND NOT MINGW)
+  endif(USE_SYSTEM_FFTW)
 endif( USE_FFTWD OR USE_FFTWF )
 
 # Deal with MINC2 options
@@ -789,4 +843,3 @@ endif(BUILD_TESTING)
 if(BUILD_EXAMPLES)
   add_subdirectory(Examples)
 endif(BUILD_EXAMPLES)
-
