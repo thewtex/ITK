@@ -72,8 +72,8 @@ N4MRIBiasFieldCorrectionImageFilter<TInputImage, TMaskImage, TOutputImage>
   logInputImage->Graft( this->GetInput() );
   logInputImage->Allocate();
 
-  ImageRegionIteratorWithIndex<RealImageType> It( logInputImage,
-                                                  logInputImage->GetRequestedRegion() );
+  ImageRegionIteratorWithIndex<RealImageType> It(
+    logInputImage, logInputImage->GetRequestedRegion() );
 
   for( It.GoToBegin(); !It.IsAtEnd(); ++It )
     {
@@ -170,8 +170,9 @@ N4MRIBiasFieldCorrectionImageFilter<TInputImage, TMaskImage, TOutputImage>
       reporter.CompletedStep();
       }
 
-    typedef BSplineControlPointImageFilter<BiasFieldControlPointLatticeType,
-                                           ScalarImageType> BSplineReconstructerType;
+    typedef BSplineControlPointImageFilter
+    <BiasFieldControlPointLatticeType, ScalarImageType>
+    BSplineReconstructerType;
     typename BSplineReconstructerType::Pointer reconstructer =
       BSplineReconstructerType::New();
     reconstructer->SetInput( this->m_LogBiasFieldControlPointLattice );
@@ -229,8 +230,8 @@ N4MRIBiasFieldCorrectionImageFilter<TInputImage, TMaskImage, TOutputImage>
   RealType binMaximum = NumericTraits<RealType>::NonpositiveMin();
   RealType binMinimum = NumericTraits<RealType>::max();
 
-  ImageRegionIterator<RealImageType> ItU( unsharpenedImage,
-                                          unsharpenedImage->GetLargestPossibleRegion() );
+  ImageRegionIterator<RealImageType> ItU(
+    unsharpenedImage, unsharpenedImage->GetLargestPossibleRegion() );
 
   for( ItU.GoToBegin(); !ItU.IsAtEnd(); ++ItU )
     {
@@ -290,12 +291,13 @@ N4MRIBiasFieldCorrectionImageFilter<TInputImage, TMaskImage, TOutputImage>
    * histogram to a power of 2.
    */
 
-  RealType exponent = vcl_ceil( vcl_log( static_cast<RealType>(
-                                           this->m_NumberOfHistogramBins ) ) / vcl_log( 2.0 ) ) + 1;
+  RealType exponent =
+    vcl_ceil( vcl_log( static_cast<RealType>( this->m_NumberOfHistogramBins ) ) /
+              vcl_log( 2.0 ) ) + 1;
   unsigned int paddedHistogramSize = static_cast<unsigned int>(
-      vcl_pow( static_cast<RealType>( 2.0 ), exponent ) + 0.5 );
+    vcl_pow( static_cast<RealType>( 2.0 ), exponent ) + 0.5 );
   unsigned int histogramOffset = static_cast<unsigned int>( 0.5 *
-                                                            ( paddedHistogramSize - this->m_NumberOfHistogramBins ) );
+    ( paddedHistogramSize - this->m_NumberOfHistogramBins ) );
 
   vnl_vector< vcl_complex<RealType> > V( paddedHistogramSize,
                                          vcl_complex<RealType>( 0.0, 0.0 ) );
@@ -336,10 +338,9 @@ N4MRIBiasFieldCorrectionImageFilter<TInputImage, TMaskImage, TOutputImage>
     }
   if( paddedHistogramSize % 2 == 0 )
     {
-    F[halfSize] = vcl_complex<RealType>( scaleFactor * vcl_exp( 0.25 *
-                                                                -vnl_math_sqr( static_cast<RealType>(
-                                                                                 paddedHistogramSize ) )
-                                                                * expFactor ), 0.0 );
+    F[halfSize] =
+      vcl_complex<RealType>( scaleFactor * vcl_exp( 0.25 * -vnl_math_sqr(
+      static_cast<RealType>( paddedHistogramSize ) ) * expFactor ), 0.0 );
     }
 
   vnl_vector< vcl_complex<RealType> > Ff( F );
@@ -370,8 +371,8 @@ N4MRIBiasFieldCorrectionImageFilter<TInputImage, TMaskImage, TOutputImage>
   fft.bwd_transform( U );
   for( unsigned int n = 0; n < paddedHistogramSize; n++ )
     {
-    U[n] = vcl_complex<RealType>( vnl_math_max(
-                                    U[n].real(), static_cast<RealType>( 0.0 ) ), 0.0 );
+    U[n] = vcl_complex<RealType>( vnl_math_max( U[n].real(),
+      static_cast<RealType>( 0.0 ) ), 0.0 );
     }
 
   /*
@@ -428,8 +429,8 @@ N4MRIBiasFieldCorrectionImageFilter<TInputImage, TMaskImage, TOutputImage>
   sharpenedImage->Allocate();
   sharpenedImage->FillBuffer( 0.0 );
 
-  ImageRegionIterator<RealImageType> ItC( sharpenedImage,
-                                          sharpenedImage->GetLargestPossibleRegion() );
+  ImageRegionIterator<RealImageType> ItC(
+    sharpenedImage, sharpenedImage->GetLargestPossibleRegion() );
 
   for( ItU.GoToBegin(), ItC.GoToBegin(); !ItU.IsAtEnd(); ++ItU, ++ItC )
     {
@@ -535,8 +536,9 @@ N4MRIBiasFieldCorrectionImageFilter<TInputImage, TMaskImage, TOutputImage>
     fieldEstimate->GetOrigin();
   for( unsigned int d = 0; d < ImageDimension; d++ )
     {
-    parametricOrigin[d] += ( fieldEstimate->GetSpacing()[d] *
-                             fieldEstimate->GetLargestPossibleRegion().GetIndex()[d] );
+    parametricOrigin[d] += (
+        fieldEstimate->GetSpacing()[d] *
+        fieldEstimate->GetLargestPossibleRegion().GetIndex()[d] );
     }
   bspliner->SetOrigin( parametricOrigin );
   bspliner->SetSpacing( fieldEstimate->GetSpacing() );
@@ -560,7 +562,8 @@ N4MRIBiasFieldCorrectionImageFilter<TInputImage, TMaskImage, TOutputImage>
   else
     {
     typedef AddImageFilter<BiasFieldControlPointLatticeType,
-                           BiasFieldControlPointLatticeType, BiasFieldControlPointLatticeType>
+                           BiasFieldControlPointLatticeType,
+                           BiasFieldControlPointLatticeType>
     AdderType;
     typename AdderType::Pointer adder = AdderType::New();
     adder->SetInput1( this->m_LogBiasFieldControlPointLattice );
@@ -570,8 +573,8 @@ N4MRIBiasFieldCorrectionImageFilter<TInputImage, TMaskImage, TOutputImage>
     this->m_LogBiasFieldControlPointLattice = adder->GetOutput();
     }
 
-  typedef BSplineControlPointImageFilter<BiasFieldControlPointLatticeType,
-                                         ScalarImageType> BSplineReconstructerType;
+  typedef BSplineControlPointImageFilter
+  <BiasFieldControlPointLatticeType, ScalarImageType> BSplineReconstructerType;
   typename BSplineReconstructerType::Pointer reconstructer =
     BSplineReconstructerType::New();
   reconstructer->SetInput( this->m_LogBiasFieldControlPointLattice );
@@ -618,8 +621,9 @@ N4MRIBiasFieldCorrectionImageFilter<TInputImage, TMaskImage, TOutputImage>
   RealType sigma = 0.0;
   RealType N = 0.0;
 
-  ImageRegionConstIteratorWithIndex<RealImageType> It( subtracter->GetOutput(),
-                                                       subtracter->GetOutput()->GetLargestPossibleRegion() );
+  ImageRegionConstIteratorWithIndex<RealImageType> It(
+    subtracter->GetOutput(),
+    subtracter->GetOutput()->GetLargestPossibleRegion() );
 
   for( It.GoToBegin(); !It.IsAtEnd(); ++It )
     {
@@ -651,19 +655,30 @@ N4MRIBiasFieldCorrectionImageFilter<TInputImage, TMaskImage, TOutputImage>
   Superclass::PrintSelf( os, indent );
 
   os << indent << "Mask label: " << this->m_MaskLabel << std::endl;
-  os << indent << "Number of histogram bins: " << this->m_NumberOfHistogramBins << std::endl;
-  os << indent << "Weiner filter noise: " << this->m_WeinerFilterNoise << std::endl;
-  os << indent << "Bias field FWHM: " << this->m_BiasFieldFullWidthAtHalfMaximum << std::endl;
-  os << indent << "Maximum number of iterations: " << this->m_MaximumNumberOfIterations << std::endl;
-  os << indent << "Convergence threshold: " << this->m_ConvergenceThreshold << std::endl;
+  os << indent << "Number of histogram bins: "
+     << this->m_NumberOfHistogramBins << std::endl;
+  os << indent << "Weiner filter noise: "
+     << this->m_WeinerFilterNoise << std::endl;
+  os << indent << "Bias field FWHM: "
+     << this->m_BiasFieldFullWidthAtHalfMaximum << std::endl;
+  os << indent << "Maximum number of iterations: "
+     << this->m_MaximumNumberOfIterations << std::endl;
+  os << indent << "Convergence threshold: "
+     << this->m_ConvergenceThreshold << std::endl;
   os << indent << "Spline order: " << this->m_SplineOrder << std::endl;
-  os << indent << "Number of fitting levels: " << this->m_NumberOfFittingLevels << std::endl;
-  os << indent << "Number of control points: " << this->m_NumberOfControlPoints << std::endl;
-  os << indent << "CurrentConvergenceMeasurement: " << this->m_CurrentConvergenceMeasurement << std::endl;
+  os << indent << "Number of fitting levels: "
+     << this->m_NumberOfFittingLevels << std::endl;
+  os << indent << "Number of control points: "
+     << this->m_NumberOfControlPoints << std::endl;
+  os << indent << "CurrentConvergenceMeasurement: "
+     << this->m_CurrentConvergenceMeasurement << std::endl;
   os << indent << "CurrentLevel: " << this->m_CurrentLevel << std::endl;
-  os << indent << "ElapsedIterations: " << this->m_ElapsedIterations << std::endl;
-  os << indent << "LogBiasFieldControlPointLattice: " << this->m_LogBiasFieldControlPointLattice << std::endl;
+  os << indent << "ElapsedIterations: "
+     << this->m_ElapsedIterations << std::endl;
+  os << indent << "LogBiasFieldControlPointLattice: "
+     << this->m_LogBiasFieldControlPointLattice << std::endl;
 }
 
 } // end namespace itk
+
 #endif

@@ -29,7 +29,8 @@
 
 namespace itk {
 
-/** \class N4MRIBiasFieldCorrectionImageFilter.h
+/**
+ * \class N4MRIBiasFieldCorrectionImageFilter.h
  * \brief Implementation of the N4 MRI bias field correction algorithm.
  *
  * The nonparametric nonuniform intensity normalization (N4) algorithm
@@ -85,9 +86,9 @@ namespace itk {
  * IEEE Transactions on Medical Imaging, 29(6):1310-1320, June 2010.
  */
 
-template<class TInputImage, class TMaskImage = Image<unsigned char,
-                                                     ::itk::GetImageDimension<TInputImage>::ImageDimension>,
-         class TOutputImage = TInputImage>
+template<class TInputImage, class TMaskImage =
+  Image<unsigned char, ::itk::GetImageDimension<TInputImage>::ImageDimension>,
+  class TOutputImage = TInputImage>
 class ITK_EXPORT N4MRIBiasFieldCorrectionImageFilter :
   public ImageToImageFilter<TInputImage, TOutputImage>
 {
@@ -136,9 +137,9 @@ public:
    * to m_MaskLabel are used in estimating the bias field.
    */
   void SetMaskImage( const MaskImageType *mask )
-  {
+    {
     this->SetNthInput( 1, const_cast<MaskImageType *>( mask ) );
-  }
+    }
 
   /**
    * Get mask image function.  If a binary mask image is specified, only
@@ -146,10 +147,10 @@ public:
    * to m_MaskLabel are used in estimating the bias field.
    */
   const MaskImageType* GetMaskImage() const
-  {
+    {
     return static_cast<MaskImageType*>( const_cast<DataObject *>
                                         ( this->ProcessObject::GetInput( 1 ) ) );
-  }
+    }
 
   /**
    * Set confidence image function.  If a confidence image is specified,
@@ -162,9 +163,9 @@ public:
    * bias field.
    */
   void SetConfidenceImage( const RealImageType *image )
-  {
+    {
     this->SetNthInput( 2, const_cast<RealImageType *>( image ) );
-  }
+    }
 
   /**
    * Get confidence image function.  If a confidence image is specified,
@@ -177,10 +178,10 @@ public:
    * bias field.
    */
   const RealImageType* GetConfidenceImage() const
-  {
+    {
     return static_cast<RealImageType*>( const_cast<DataObject *>
                                         ( this->ProcessObject::GetInput( 2 ) ) );
-  }
+    }
 
   /**
    * Set mask label function.  If a binary mask image is specified, only those
@@ -237,7 +238,7 @@ public:
    */
   itkGetConstMacro( BiasFieldFullWidthAtHalfMaximum, RealType );
 
-  /*
+  /**
    * B-spline parameters governing the fitting routine
    */
 
@@ -284,12 +285,12 @@ public:
    * the mesh resolution for each subsequent fitting level.  Default = 1 level.
    */
   void SetNumberOfFittingLevels( unsigned int n )
-  {
+    {
     ArrayType nlevels;
 
     nlevels.Fill( n );
     this->SetNumberOfFittingLevels( nlevels );
-  }
+    }
 
   /**
    * Get the number of fitting levels.  One of the contributions of N4 is the
@@ -333,7 +334,8 @@ public:
    * version of the input, the user will probably want to apply the bias
    * field correction to the full resolution image.  This can be done by
    * using the LogBiasFieldControlPointLattice to reconstruct the bias field
-   * at the full image resolution (using the class BSplineControlPointImageFilter)
+   * at the full image resolution (using the class
+   * BSplineControlPointImageFilter).
    */
   itkGetConstMacro( LogBiasFieldControlPointLattice,
                     typename BiasFieldControlPointLatticeType::Pointer );
@@ -355,18 +357,18 @@ public:
    * reporting observations.
    */
   itkGetConstMacro( CurrentLevel, unsigned int );
-
 protected:
   N4MRIBiasFieldCorrectionImageFilter();
-  ~N4MRIBiasFieldCorrectionImageFilter() {
-  };
+  ~N4MRIBiasFieldCorrectionImageFilter() {}
   void PrintSelf( std::ostream& os, Indent indent ) const;
 
   void GenerateData();
 
 private:
-  N4MRIBiasFieldCorrectionImageFilter( const Self& ); //purposely not implemented
-  void operator=( const Self& );                      //purposely not implemented
+  N4MRIBiasFieldCorrectionImageFilter( const Self& ); //purposely not
+                                                      // implemented
+  void operator=( const Self& );                      //purposely not
+                                                      // implemented
 
   /*
    * N4 algorithm functions:  The basic algorithm iterates between sharpening
@@ -398,7 +400,7 @@ private:
    */
   RealType CalculateConvergenceMeasurement( RealImageType *, RealImageType * );
 
-  /**
+  /*
    * ivars
    */
 
@@ -423,13 +425,13 @@ private:
   /**
    * B-spline fitting parameters
    */
-  typename
-  BiasFieldControlPointLatticeType::Pointer m_LogBiasFieldControlPointLattice;
-  unsigned int m_SplineOrder;
-  ArrayType    m_NumberOfControlPoints;
-  ArrayType    m_NumberOfFittingLevels;
+  typename BiasFieldControlPointLatticeType::Pointer
+                                            m_LogBiasFieldControlPointLattice;
+  unsigned int                              m_SplineOrder;
+  ArrayType                                 m_NumberOfControlPoints;
+  ArrayType                                 m_NumberOfFittingLevels;
 
-};  // end of class
+  };
 
 } // end namespace itk
 
