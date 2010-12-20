@@ -34,22 +34,21 @@ public:
   typedef itk::SmartPointer<Self> Pointer;
   itkNewMacro( Self );
 protected:
-  CommandIterationUpdate() {
-  };
+  CommandIterationUpdate() {}
 public:
 
   void Execute(itk::Object *caller, const itk::EventObject & event)
-  {
+    {
     Execute( (const itk::Object *) caller, event);
-  }
+    }
 
   void Execute(const itk::Object * object, const itk::EventObject & event)
-  {
+    {
     const TFilter * filter =
       dynamic_cast< const TFilter * >( object );
 
     if( typeid( event ) != typeid( itk::IterationEvent ) )
-                                    { return; }
+                                        { return; }
     if( filter->GetElapsedIterations() == 1 )
       {
       std::cout << "Current level = " << filter->GetCurrentLevel() + 1
@@ -57,13 +56,14 @@ public:
       }
     std::cout << "  Iteration " << filter->GetElapsedIterations()
               << " (of "
-              << filter->GetMaximumNumberOfIterations()[filter->GetCurrentLevel()]
+              << filter->GetMaximumNumberOfIterations()[
+      filter->GetCurrentLevel()]
               << ").  ";
     std::cout << " Current convergence value = "
               << filter->GetCurrentConvergenceMeasurement()
               << " (threshold = " << filter->GetConvergenceThreshold()
               << ")" << std::endl;
-  }
+    }
 
 };
 
@@ -92,7 +92,7 @@ std::vector<TValue> ConvertVector( std::string optionString )
     }
   else
     {
-    std::string        element = optionString.substr( 0, crosspos ) ;
+    std::string        element = optionString.substr( 0, crosspos );
     TValue             value;
     std::istringstream iss( element );
     iss >> value;
@@ -107,17 +107,17 @@ std::vector<TValue> ConvertVector( std::string optionString )
         }
       else
         {
-        element = optionString.substr( crossposfrom + 1, crosspos ) ;
+        element = optionString.substr( crossposfrom + 1, crosspos );
         }
-      std::istringstream iss( element );
-      iss >> value;
+      std::istringstream iss2( element );
+      iss2 >> value;
       values.push_back( value );
       }
     }
   return values;
 }
 
-template <unsigned int ImageDimension>
+template<unsigned int ImageDimension>
 int N4( int argc, char *argv[] )
 {
   typedef float RealType;
@@ -237,12 +237,13 @@ int N4( int argc, char *argv[] )
   for( unsigned int d = 0; d < ImageDimension; d++ )
     {
     float domain = static_cast<RealType>( inputImage->
-                                          GetLargestPossibleRegion().GetSize()[d] - 1 ) * inputImage->GetSpacing()[d];
+      GetLargestPossibleRegion().GetSize()[d] - 1 ) *
+      inputImage->GetSpacing()[d];
     unsigned int numberOfSpans = static_cast<unsigned int>(
         vcl_ceil( domain / splineDistance ) );
-    unsigned long extraPadding = static_cast<unsigned long>( ( numberOfSpans *
-                                                               splineDistance -
-                                                               domain ) / inputImage->GetSpacing()[d] + 0.5 );
+    unsigned long extraPadding = static_cast<unsigned long>(
+      ( numberOfSpans * splineDistance - domain ) /
+      inputImage->GetSpacing()[d] + 0.5 );
     lowerBound[d] = static_cast<unsigned long>( 0.5 * extraPadding );
     upperBound[d] = extraPadding - lowerBound[d];
     newOrigin[d] -= ( static_cast<RealType>( lowerBound[d] ) *
@@ -261,7 +262,8 @@ int N4( int argc, char *argv[] )
   inputImage = padder->GetOutput();
   inputImage->DisconnectPipeline();
 
-  typedef itk::ConstantPadImageFilter<MaskImageType, MaskImageType> MaskPadderType;
+  typedef itk::ConstantPadImageFilter<MaskImageType, MaskImageType>
+  MaskPadderType;
   typename MaskPadderType::Pointer maskPadder = MaskPadderType::New();
   maskPadder->SetInput( maskImage );
   maskPadder->SetPadLowerBound( lowerBound );
@@ -327,9 +329,9 @@ int N4( int argc, char *argv[] )
   /**
    * Test the reconstruction of the log bias field;
    */
-  typedef itk::BSplineControlPointImageFilter<typename
-                                              CorrecterType::BiasFieldControlPointLatticeType, typename
-                                              CorrecterType::ScalarImageType> BSplinerType;
+  typedef itk::BSplineControlPointImageFilter
+  <typename CorrecterType::BiasFieldControlPointLatticeType, typename
+   CorrecterType::ScalarImageType> BSplinerType;
   typename BSplinerType::Pointer bspliner = BSplinerType::New();
   bspliner->SetInput( correcter->GetLogBiasFieldControlPointLattice() );
   bspliner->SetSplineOrder( correcter->GetSplineOrder() );
@@ -358,7 +360,8 @@ int itkN4MRIBiasFieldCorrectionImageFilterTest( int argc, char *argv[] )
   if ( argc < 4 )
     {
     std::cerr << "Usage: " << argv[0] << " imageDimension inputImage "
-              << "outputLogControlPointLattice [shrinkFactor,default=1] [numberOfIterations,default=100x50x50] "
+              << "outputLogControlPointLattice [shrinkFactor,default=1] "
+              << "[numberOfIterations,default=100x50x50] "
               << " [maskImageWithLabelEqualTo1] [splineDistance,default=200]"
               << std::endl;
     exit( EXIT_FAILURE );

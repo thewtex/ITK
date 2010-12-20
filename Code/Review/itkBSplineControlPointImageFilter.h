@@ -87,7 +87,7 @@ public:
   typedef FixedArray<unsigned,
                      itkGetStaticConstMacro( ParametricDimension )>    ArrayType;
 
-  /*
+  /**
    * Define the parameters of the B-spline object.
    */
 
@@ -165,6 +165,7 @@ protected:
   ParameterCostFunction();
   virtual ~ParameterCostFunction();
   void PrintSelf(std::ostream & os, Indent indent) const;
+
 private:
   ParameterCostFunction(const Self&); //purposely not implemented
   void operator=(const Self&);        //purposely not implemented
@@ -174,6 +175,7 @@ private:
   typename TControlPointLattice::SpacingType     m_Spacing;
   typename TControlPointLattice::SizeType        m_Size;
   typename TControlPointLattice::DirectionType   m_Direction;
+
   ArrayType m_SplineOrder;
   ArrayType m_CloseDimension;
 
@@ -422,24 +424,24 @@ public:
    * point in the parametric domain.
    */
   void EvaluateJacobianAtPoint( PointType pt, GradientType &jac )
-  {
+    {
     this->EvaluateGradientAtPoint( pt, jac );
     GradientType I( jac.Rows(), jac.Cols() );
     I.SetIdentity();
     jac += I;
-  }
+    }
 
   /**
    * Evaluate the Jacobian of the resulting B-spline object at a specified
    * index in the parametric domain.
    */
   void EvaluateJacobianAtIndex( IndexType idx, GradientType &jac )
-  {
+    {
     this->EvaluateGradientAtIndex( idx, jac );
     GradientType I( jac.Rows(), jac.Cols() );
     I.SetIdentity();
     jac += I;
-  }
+    }
 
   /**
    * Evaluate the Jacobian of the resulting B-spline object at a specified
@@ -447,12 +449,12 @@ public:
    */
   void EvaluateJacobianAtContinuousIndex( ContinuousIndexType cidx,
                                           GradientType &jac )
-  {
+    {
     this->EvaluateGradientAtContinuousIndex( cidx, jac );
     GradientType I( jac.Rows(), jac.Cols() );
     I.SetIdentity();
     jac += I;
-  }
+    }
 
   /**
    * Evaluate the jacobian of the resulting B-spline object at a specified
@@ -460,12 +462,12 @@ public:
    * each dimension of the B-spline object is [0, 1).
    */
   void EvaluateJacobian( PointType pt, GradientType &jac )
-  {
+    {
     this->EvaluateGradient( pt, jac );
     GradientType I( jac.Rows(), jac.Cols() );
     I.SetIdentity();
     jac += I;
-  }
+    }
 
   /**
    * Evaluate the Hessian of the resulting B-spline object at a specified
@@ -510,7 +512,8 @@ public:
    * of refinement levels to all 1's, the control point lattice is not increased
    * in resolution.  Doubling the resolution starts at 2 refinement levels.
    */
-  typename ControlPointLatticeType::Pointer RefineControlPointLattice( ArrayType );
+  typename ControlPointLatticeType::Pointer
+  RefineControlPointLattice( ArrayType );
 protected:
   BSplineControlPointImageFilter();
   virtual ~BSplineControlPointImageFilter();
@@ -553,7 +556,7 @@ private:
 
   inline typename RealImageType::IndexType
   NumberToIndex( unsigned int number, typename RealImageType::SizeType size )
-  {
+    {
     typename RealImageType::IndexType k;
     k[0] = 1;
 
@@ -569,7 +572,7 @@ private:
       number %= k[ImageDimension-i-1];
       }
     return index;
-  }
+    }
 
 };
 
