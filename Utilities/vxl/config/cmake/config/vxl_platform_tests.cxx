@@ -267,6 +267,10 @@ class A {
   static const double y = 27.0;
 };
 
+#if __clang__
+#error  clang works, but complains bitterly
+#endif
+
 int main() { return A::x == 27.0f && A::y == 27.0 ? 0 : 1; }
 #endif // VCL_STATIC_CONST_INIT_FLOAT
 
