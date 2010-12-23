@@ -92,7 +92,7 @@ print ("moving files from "+HeadOfTempTree+" into modules in {0}".format(HeadOfM
 numOfMissingFiles = 0;
 missingf =  open(LogDir+'/missingFiles.log','w')
 moduleList=[];
-for line in open("./Manifest.txt",'r'):
+for line in open(HeadOfITKTree+"/Modularization/Manifest.txt",'r'):
    # parse the string
  if line[0] != '#':
     words = line.split()
@@ -157,14 +157,14 @@ print ('creating cmake files for each module (from the template module)')
 for  moduleName in moduleList:
   if os.path.isdir(HeadOfModularITKTree+'/'+moduleName):
      # cooy the LICENSE and NOTICE
-     shutil.copy('./templateModule/itk-template-module/LICENSE', HeadOfModularITKTree+'/'+moduleName)
-     shutil.copy('./templateModule/itk-template-module/NOTICE',  HeadOfModularITKTree+'/'+moduleName)
+     shutil.copy(HeadOfITKTree+'Modularization/templateModule/itk-template-module/LICENSE', HeadOfModularITKTree+'/'+moduleName)
+     shutil.copy(HeadOfITKTree+'Modularization/templateModule/itk-template-module/NOTICE',  HeadOfModularITKTree+'/'+moduleName)
 
      # write CMakeLists.txt
      filepath = HeadOfModularITKTree+'/'+moduleName+'/CMakeLists.txt'
      if not os.path.isfile(filepath):
        o = open(filepath,'w')
-       for line in open('./templateModule/itk-template-module/CMakeLists.txt','r'):
+       for line in open(HeadOfITKTree+'Modularization/templateModule/itk-template-module/CMakeLists.txt','r'):
            line = line.replace('itk-template-module',moduleName)
            o.write(line);
        o.close()
@@ -179,7 +179,7 @@ for  moduleName in moduleList:
        filepath = HeadOfModularITKTree+'/'+moduleName+'/src/CMakeLists.txt'
        if not os.path.isfile(filepath):
          o = open(filepath,'w')
-         for line in open('./templateModule/itk-template-module/src/CMakeLists.txt','r'):
+         for line in open(HeadOfITKTree+'Modularization/templateModule/itk-template-module/src/CMakeLists.txt','r'):
             line = line.replace('itk-template-module',moduleName)
             line = line.replace('LIST_OF_CXX_FILES',cxxFileList[0:-1]) #get rid of the last \n
             o.write(line);
@@ -194,7 +194,7 @@ for  moduleName in moduleList:
        filepath = HeadOfModularITKTree+'/'+moduleName+'/test/CMakeLists.txt'
        if not os.path.isfile(filepath):
            o = open(filepath,'w')
-           for line in open('./templateModule/itk-template-module/test/CMakeLists.txt','r'):
+           for line in open(HeadOfITKTree+'Modularization/templateModule/itk-template-module/test/CMakeLists.txt','r'):
               words= moduleName.split('-')
               moduleNameMod='';
               for word in words:
@@ -210,7 +210,7 @@ for  moduleName in moduleList:
      filepath = HeadOfModularITKTree+'/'+moduleName+'/CTestConfig.cmake'
      if not os.path.isfile(filepath):
         o = open(filepath,'w')
-        for line in open('./templateModule/itk-template-module/CTestConfig.cmake','r'):
+        for line in open(HeadOfITKTree+'Modularization/templateModule/itk-template-module/CTestConfig.cmake','r'):
             line = line.replace('itk-template-module',moduleName)
             o.write(line);
         o.close()
@@ -219,7 +219,7 @@ for  moduleName in moduleList:
      filepath = HeadOfModularITKTree+'/'+moduleName+'/itk-module.cmake'
      if not os.path.isfile(filepath):
         o = open(filepath,'w')
-        for line in open('./templateModule/itk-template-module/itk-module.cmake','r'):
+        for line in open(HeadOfITKTree+'Modularization/templateModule/itk-template-module/itk-module.cmake','r'):
             line = line.replace('itk-template-module',moduleName)
             o.write(line);
         o.close()
