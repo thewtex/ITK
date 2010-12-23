@@ -51,7 +51,6 @@ itkBioRadImageIOTest.cxx
 itkLSMImageIOTest.cxx
 itkConvertBufferTest.cxx
 itkConvertBufferTest2.cxx
-itkDICOMImageIO2Test.cxx
 itkDICOMImageSeriesTest.cxx
 itkDICOMImageSeriesTest2.cxx
 itkDICOMSeriesFileNamesTest.cxx
@@ -145,6 +144,10 @@ testMetaArray.cxx
 testMetaCommand.cxx
 itkImageFileWriterUpdateLargestPossibleRegionTest.cxx
 )
+
+if( NOT ITK_USE_MODULAR_BUILD )
+  set(IOTest_SRCS ${IOTest_SRCS} itkDICOMImageIO2Test.cxx)
+endif()
 
 set(TEMP ${ITKTesting_BINARY_DIR}/Temporary)
 
@@ -782,12 +785,16 @@ add_test(itkDicomImageIOTest ${IO_TESTS}
   itkDicomImageIOTest
             ${ITK_DATA_ROOT}/Input/dicom-sc_cs-1.dcm
             ${ITK_TEST_OUTPUT_DIR}/itkDicomImageIOTest.png)
+
+if(NOT ITK_USE_MODULAR_BUILD)
 add_test(itkDICOMImageIO2Test ${IO_TESTS}
   --compare ${ITK_DATA_ROOT}/Baseline/IO/itkDICOMImageIO2Test.png
             ${ITK_TEST_OUTPUT_DIR}/itkDICOMImageIO2Test.png
   itkDICOMImageIO2Test
             ${ITK_DATA_ROOT}/Input/dicom-sc_cs-1.dcm
             ${ITK_TEST_OUTPUT_DIR}/itkDICOMImageIO2Test.png)
+endif()
+
 add_test(itkDicomImageIODirection2DTest ${IO_TESTS}
   itkDicomImageIODirection2DTest
   ${ITK_TEST_OUTPUT_DIR}/itkDicomImage3DIODirection2DTest.dcm

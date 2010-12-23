@@ -22,7 +22,9 @@
 #include "itkImage.h"
 #include "itkAnalyzeImageIO.h"
 #include "itkBioRadImageIO.h"
+#if !defined(ITK_USE_MODULAR_BUILD)
 #include "itkDICOMImageIO2.h"
+#endif
 #include "itkDicomImageIO.h"
 #include "itkGE4ImageIO.h"
 #include "itkGE5ImageIO.h"
@@ -64,10 +66,12 @@ int itkIOPrintTest(int , char* [])
   reader->SetImageIO(Dicomio);
   std::cout << "---------------Dicom" << reader;
 
+#if !defined(ITK_USE_MODULAR_BUILD)
   itk::DICOMImageIO2::Pointer DICOMio;
   DICOMio = itk::DICOMImageIO2::New();
   reader->SetImageIO(DICOMio);
   std::cout << "---------------DICOM" << reader;
+#endif
 
   itk::GE4ImageIO::Pointer GE4io;
   GE4io = itk::GE4ImageIO::New();

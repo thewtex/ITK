@@ -8,8 +8,6 @@ set(ITKIO_SRCS
   itkBioRadImageIOFactory.cxx
   itkBMPImageIO.cxx
   itkBMPImageIOFactory.cxx
-  itkDICOMImageIO2.cxx
-  itkDICOMImageIO2Factory.cxx
   itkDICOMSeriesFileNames.cxx
   itkDicomImageIOFactory.cxx
   itkGDCMImageIO.cxx
@@ -63,6 +61,13 @@ set(ITKIO_SRCS
   itkTxtTransformIO.cxx
   itkTxtTransformIOFactory.cxx
 )
+
+if(NOT ITK_USE_MODULAR_BUILD)
+  set(ITKIO_SRCS ${ITKIO_SRCS}
+    itkDICOMImageIO2.cxx
+    itkDICOMImageIO2Factory.cxx
+    )
+endif()
 
 # Add ITKIO library
 add_library(ITKIO ${ITK_LIBRARY_BUILD_TYPE} ${ITKIO_SRCS})
