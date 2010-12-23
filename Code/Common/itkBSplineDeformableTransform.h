@@ -265,7 +265,7 @@ public:
    */
   virtual void SetCoefficientImage(ImagePointer images[]);
 
-  /** Typedefs for specifying the extend to the grid. */
+  /** Typedefs for specifying the extent of the grid. */
   typedef ImageRegion< itkGetStaticConstMacro(SpaceDimension) > RegionType;
 
   typedef typename RegionType::IndexType    IndexType;
@@ -412,11 +412,6 @@ private:
   /** The bulk transform. */
   BulkTransformPointer m_BulkTransform;
 
-  /** Variables defining the coefficient grid extend. */
-  RegionType    m_GridRegion;
-  SpacingType   m_GridSpacing;
-  DirectionType m_GridDirection;
-  OriginType    m_GridOrigin;
 
   DirectionType m_PointToIndex;
   DirectionType m_IndexToPoint;
@@ -430,12 +425,22 @@ private:
   IndexType     m_ValidRegionLast;
   IndexType     m_ValidRegionFirst;
 
-  /** Array holding images wrapped from the flat parameters. */
-  ImagePointer m_WrappedImage[NDimensions];
-
   /** Array of images representing the B-spline coefficients
-   *  in each dimension. */
+   *  in each dimension wrapped from the flat parameters in
+   *  m_InternalParametersBuffer
+   *  */
   ImagePointer m_CoefficientImage[NDimensions];
+
+  /** Variables defining the coefficient grid domain for the InternalParametersBuffer. */
+  RegionType    m_GridRegion;
+  SpacingType   m_GridSpacing;
+  DirectionType m_GridDirection;
+  OriginType    m_GridOrigin;
+  /** Keep a pointer to the input parameters. */
+  const ParametersType *m_InputParametersPointer;
+
+  /** Internal parameters buffer. */
+  ParametersType m_InternalParametersBuffer;
 
   /** Jacobian as SpaceDimension number of images. */
   typedef typename JacobianType::ValueType JacobianPixelType;
@@ -449,11 +454,6 @@ private:
    */
   mutable IndexType m_LastJacobianIndex;
 
-  /** Keep a pointer to the input parameters. */
-  const ParametersType *m_InputParametersPointer;
-
-  /** Internal parameters buffer. */
-  ParametersType m_InternalParametersBuffer;
 
   /** Pointer to function used to compute Bspline interpolation weights. */
   typename WeightsFunctionType::Pointer m_WeightsFunction;
