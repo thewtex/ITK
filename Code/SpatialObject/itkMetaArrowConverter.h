@@ -24,12 +24,20 @@
 namespace itk
 {
 template< unsigned int NDimensions = 3 >
-class ITK_EXPORT MetaArrowConverter
+class ITK_EXPORT MetaArrowConverter : public Object
 {
 public:
+ /** Standard class typedefs */
+  typedef MetaArrowConverter           Self;
+  typedef Object                       Superclass;
+  typedef SmartPointer< Self >         Pointer;
+  typedef SmartPointer< const Self >   ConstPointer;
 
-  MetaArrowConverter();
-  ~MetaArrowConverter() {}
+  /** Method for creation through the object factory. */
+  itkNewMacro(Self);
+
+  /** Run-time type information (and related methods). */
+  itkTypeMacro(MetaArrowConverter, Object);
 
   typedef itk::ArrowSpatialObject< NDimensions >    SpatialObjectType;
   typedef typename SpatialObjectType::TransformType TransformType;
@@ -40,9 +48,14 @@ public:
 
   bool WriteMeta(SpatialObjectType *spatialObject, const char *name);
 
-  SpatialObjectPointer MetaArrowToArrowSpatialObject(MetaArrow *arrow);
+  SpatialObjectPointer MetaArrowToArrowSpatialObject( const MetaArrow *arrow ) const;
 
   MetaArrow * ArrowSpatialObjectToMetaArrow(SpatialObjectType *spatialObject);
+
+protected:
+  MetaArrowConverter();
+  ~MetaArrowConverter() {}
+
 };
 } // end namespace itk
 

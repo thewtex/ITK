@@ -32,7 +32,7 @@ MetaArrowConverter< NDimensions >
 template< unsigned int NDimensions >
 typename MetaArrowConverter< NDimensions >::SpatialObjectPointer
 MetaArrowConverter< NDimensions >
-::MetaArrowToArrowSpatialObject(MetaArrow *arrow)
+::MetaArrowToArrowSpatialObject( const MetaArrow *arrow ) const
 {
   SpatialObjectPointer spatialObject = SpatialObjectType::New();
 
@@ -129,6 +129,8 @@ MetaArrowConverter< NDimensions >
   arrow->Read(name);
   spatialObject = MetaArrowToArrowSpatialObject(arrow);
 
+  delete arrow;
+
   return spatialObject;
 }
 
@@ -141,6 +143,9 @@ MetaArrowConverter< NDimensions >
   MetaArrow *arrow = ArrowSpatialObjectToMetaArrow(spatialObject);
 
   arrow->Write(name);
+
+  delete arrow;
+
   return true;
 }
 } // end namespace itk
