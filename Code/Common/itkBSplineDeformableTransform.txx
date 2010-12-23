@@ -59,12 +59,11 @@ BSplineDeformableTransform< TScalarType, NDimensions, VSplineOrder >
   // Initialize coeffient images
   for ( unsigned int j = 0; j < SpaceDimension; j++ )
     {
-    m_WrappedImage[j] = ImageType::New();
-    m_WrappedImage[j]->SetRegions(m_GridRegion);
-    m_WrappedImage[j]->SetOrigin( m_GridOrigin.GetDataPointer() );
-    m_WrappedImage[j]->SetSpacing( m_GridSpacing.GetDataPointer() );
-    m_WrappedImage[j]->SetDirection(m_GridDirection);
-    m_CoefficientImage[j] = NULL;
+    m_CoefficientImage[j] = ImageType::New();
+    m_CoefficientImage[j]->SetRegions(m_GridRegion);
+    m_CoefficientImage[j]->SetOrigin( m_GridOrigin.GetDataPointer() );
+    m_CoefficientImage[j]->SetSpacing( m_GridSpacing.GetDataPointer() );
+    m_CoefficientImage[j]->SetDirection(m_GridDirection);
     }
 
   // Setup variables for computing interpolation
@@ -198,7 +197,7 @@ BSplineDeformableTransform< TScalarType, NDimensions, VSplineOrder >
     // set regions for each coefficient and jacobian image
     for ( unsigned int j = 0; j < SpaceDimension; j++ )
       {
-      m_WrappedImage[j]->SetRegions(m_GridRegion);
+      m_CoefficientImage[j]->SetRegions(m_GridRegion);
       m_JacobianImage[j]->SetRegions(m_GridRegion);
       }
 
@@ -257,7 +256,7 @@ BSplineDeformableTransform< TScalarType, NDimensions, VSplineOrder >
     // set spacing for each coefficient and jacobian image
     for ( unsigned int j = 0; j < SpaceDimension; j++ )
       {
-      m_WrappedImage[j]->SetSpacing( m_GridSpacing.GetDataPointer() );
+      m_CoefficientImage[j]->SetSpacing( m_GridSpacing.GetDataPointer() );
       m_JacobianImage[j]->SetSpacing( m_GridSpacing.GetDataPointer() );
       }
 
@@ -287,7 +286,7 @@ BSplineDeformableTransform< TScalarType, NDimensions, VSplineOrder >
     // set direction for each coefficient and jacobian image
     for ( unsigned int j = 0; j < SpaceDimension; j++ )
       {
-      m_WrappedImage[j]->SetDirection(m_GridDirection);
+      m_CoefficientImage[j]->SetDirection(m_GridDirection);
       m_JacobianImage[j]->SetDirection(m_GridDirection);
       }
 
@@ -317,7 +316,7 @@ BSplineDeformableTransform< TScalarType, NDimensions, VSplineOrder >
     // set spacing for each coefficient and jacobianimage
     for ( unsigned int j = 0; j < SpaceDimension; j++ )
       {
-      m_WrappedImage[j]->SetOrigin( m_GridOrigin.GetDataPointer() );
+      m_CoefficientImage[j]->SetOrigin( m_GridOrigin.GetDataPointer() );
       m_JacobianImage[j]->SetOrigin( m_GridOrigin.GetDataPointer() );
       }
 
@@ -482,10 +481,9 @@ BSplineDeformableTransform< TScalarType, NDimensions, VSplineOrder >
 
   for ( unsigned int j = 0; j < SpaceDimension; j++ )
     {
-    m_WrappedImage[j]->GetPixelContainer()->
+    m_CoefficientImage[j]->GetPixelContainer()->
     SetImportPointer(dataPointer, numberOfPixels);
     dataPointer += numberOfPixels;
-    m_CoefficientImage[j] = m_WrappedImage[j];
     }
 
   /**
@@ -591,7 +589,7 @@ BSplineDeformableTransform< TScalarType, NDimensions, VSplineOrder >
 template< class TScalarType, unsigned int NDimensions, unsigned int VSplineOrder >
 void
 BSplineDeformableTransform< TScalarType, NDimensions, VSplineOrder >
-::SetCoefficientImage(ImagePointer images[])
+::SetCoefficientImage(const CoefficientImageArray & images)
 {
   if ( images[0] )
     {
@@ -604,7 +602,6 @@ BSplineDeformableTransform< TScalarType, NDimensions, VSplineOrder >
       {
       m_CoefficientImage[j] = images[j];
       }
-
     // Clean up buffered parameters
     m_InternalParametersBuffer = ParametersType(0);
     m_InputParametersPointer  = NULL;
@@ -634,13 +631,6 @@ BSplineDeformableTransform< TScalarType, NDimensions, VSplineOrder >
     os << m_CoefficientImage[j].GetPointer() << ", ";
     }
   os << m_CoefficientImage[j].GetPointer() << " ]" << std::endl;
-
-  os << indent << "WrappedImage: [ ";
-  for ( j = 0; j < SpaceDimension - 1; j++ )
-    {
-    os << m_WrappedImage[j].GetPointer() << ", ";
-    }
-  os << m_WrappedImage[j].GetPointer() << " ]" << std::endl;
 
   os << indent << "InputParametersPointer: "
      << m_InputParametersPointer << std::endl;
