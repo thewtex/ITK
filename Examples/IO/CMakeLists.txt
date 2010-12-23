@@ -42,35 +42,37 @@ target_link_libraries(ImageSeriesReadWrite2  ITKIO)
 add_executable(ImageReadImageSeriesWrite ImageReadImageSeriesWrite.cxx )
 target_link_libraries(ImageReadImageSeriesWrite  ITKIO)
 
-add_executable(DicomSeriesReadImageWrite DicomSeriesReadImageWrite.cxx )
-target_link_libraries(DicomSeriesReadImageWrite  ITKIO)
+if(NOT ITK_USE_MODULAR_BUILD)
+  add_executable(DicomSeriesReadImageWrite DicomSeriesReadImageWrite.cxx )
+  target_link_libraries(DicomSeriesReadImageWrite  ITKIO)
 
-add_executable(DicomSeriesReadImageWrite2 DicomSeriesReadImageWrite2.cxx )
-target_link_libraries(DicomSeriesReadImageWrite2  ITKIO)
+  add_executable(DicomSeriesReadImageWrite2 DicomSeriesReadImageWrite2.cxx )
+  target_link_libraries(DicomSeriesReadImageWrite2  ITKIO)
 
-add_executable(DicomSeriesReadGaussianImageWrite DicomSeriesReadGaussianImageWrite.cxx )
-target_link_libraries(DicomSeriesReadGaussianImageWrite  ITKIO)
+  add_executable(DicomSeriesReadGaussianImageWrite DicomSeriesReadGaussianImageWrite.cxx )
+  target_link_libraries(DicomSeriesReadGaussianImageWrite  ITKIO)
 
-add_executable(DicomSeriesReadPrintTags DicomSeriesReadPrintTags.cxx )
-target_link_libraries(DicomSeriesReadPrintTags  ITKIO)
+  add_executable(DicomSeriesReadPrintTags DicomSeriesReadPrintTags.cxx )
+  target_link_libraries(DicomSeriesReadPrintTags  ITKIO)
 
-add_executable(DicomImageReadPrintTags DicomImageReadPrintTags.cxx )
-target_link_libraries(DicomImageReadPrintTags  ITKIO)
+  add_executable(DicomImageReadPrintTags DicomImageReadPrintTags.cxx )
+  target_link_libraries(DicomImageReadPrintTags  ITKIO)
 
-add_executable(DicomImageReadWrite DicomImageReadWrite.cxx )
-target_link_libraries(DicomImageReadWrite  ITKIO)
+  add_executable(DicomImageReadWrite DicomImageReadWrite.cxx )
+  target_link_libraries(DicomImageReadWrite  ITKIO)
 
-add_executable(ImageReadDicomSeriesWrite ImageReadDicomSeriesWrite.cxx )
-target_link_libraries(ImageReadDicomSeriesWrite  ITKIO)
+  add_executable(ImageReadDicomSeriesWrite ImageReadDicomSeriesWrite.cxx )
+  target_link_libraries(ImageReadDicomSeriesWrite  ITKIO)
 
-add_executable(DicomImageReadChangeHeaderWrite DicomImageReadChangeHeaderWrite.cxx )
-target_link_libraries(DicomImageReadChangeHeaderWrite  ITKIO)
+  add_executable(DicomImageReadChangeHeaderWrite DicomImageReadChangeHeaderWrite.cxx )
+  target_link_libraries(DicomImageReadChangeHeaderWrite  ITKIO)
 
-add_executable(DicomSeriesReadSeriesWrite DicomSeriesReadSeriesWrite.cxx )
-target_link_libraries(DicomSeriesReadSeriesWrite  ITKIO)
+  add_executable(DicomSeriesReadSeriesWrite DicomSeriesReadSeriesWrite.cxx )
+  target_link_libraries(DicomSeriesReadSeriesWrite  ITKIO)
 
-add_executable(DicomPrintPatientInformation DicomPrintPatientInformation.cxx )
-target_link_libraries(DicomPrintPatientInformation  ITKIO)
+  add_executable(DicomPrintPatientInformation DicomPrintPatientInformation.cxx )
+  target_link_libraries(DicomPrintPatientInformation  ITKIO)
+endif()
 
 add_executable(TransformReadWrite TransformReadWrite.cxx )
 target_link_libraries(TransformReadWrite  ITKIO)
