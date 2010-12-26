@@ -73,6 +73,7 @@ REGISTER_TEST(itkPixelAccessTest );
 REGISTER_TEST(itkPointGeometryTest );
 REGISTER_TEST(itkPointSetTest );
 REGISTER_TEST(itkPolyLineParametricPathTest );
+REGISTER_TEST(itkPolyLineParametricPathTest2 );
 REGISTER_TEST(itkPolygonCellTest );
 REGISTER_TEST(itkQuaternionRigidTransformTest );
 REGISTER_TEST(itkRealTimeClockTest );
