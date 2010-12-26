@@ -358,6 +358,7 @@ add_test(itkPixelAccessTest ${COMMON_TESTS2} itkPixelAccessTest)
 add_test(itkPointGeometryTest ${COMMON_TESTS2} itkPointGeometryTest)
 add_test(itkPointSetTest ${COMMON_TESTS2} itkPointSetTest)
 add_test(itkPolyLineParametricPathTest ${COMMON_TESTS2} itkPolyLineParametricPathTest)
+add_test(itkPolyLineParametricPathTest2 ${COMMON_TESTS2} itkPolyLineParametricPathTest2)
 add_test(itkPolygonCellTest ${COMMON_TESTS2} itkPolygonCellTest)
 add_test(itkQuaternionRigidTransformTest ${COMMON_TESTS2} itkQuaternionRigidTransformTest)
 add_test(itkRealTimeClockTest ${COMMON_TESTS2} itkRealTimeClockTest)
@@ -661,6 +662,7 @@ itkPixelAccessTest.cxx
 itkPointGeometryTest.cxx
 itkPointSetTest.cxx
 itkPolyLineParametricPathTest.cxx
+itkPolyLineParametricPathTest2.cxx
 itkPolygonCellTest.cxx
 itkQuaternionRigidTransformTest.cxx
 itkRealTimeClockTest.cxx
