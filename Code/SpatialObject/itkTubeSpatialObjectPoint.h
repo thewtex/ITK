@@ -96,6 +96,11 @@ public:
 
 protected:
 
+  /** Print the object */
+  void PrintSelf(std::ostream & os, Indent indent) const;
+
+private:
+
   VectorType          m_T;
   CovariantVectorType m_Normal1;
   CovariantVectorType m_Normal2;
@@ -106,8 +111,6 @@ protected:
   /** number of dimensions */
   unsigned short int m_NumDimensions;
 
-  /** Print the object */
-  void PrintSelf(std::ostream & os, Indent indent) const;
 };
 } // end of namespace itk
 

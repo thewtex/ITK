@@ -189,7 +189,6 @@ TubeSpatialObjectPoint< TPointDimension >
   Superclass::PrintSelf(os, indent);
   os << indent << "#Dims: " << m_NumDimensions << std::endl;
   os << indent << "R: " << m_R << std::endl;
-  os << indent << "X: " << this->m_X << std::endl;
   os << indent << "T: " << m_T << std::endl;
   os << indent << "Normal1: " << m_Normal1 << std::endl;
   os << indent << "Normal2: " << m_Normal2 << std::endl;
@@ -200,14 +199,12 @@ typename TubeSpatialObjectPoint< TPointDimension >::Self &
 TubeSpatialObjectPoint< TPointDimension >
 ::operator=(const TubeSpatialObjectPoint & rhs)
 {
-  this->m_ID = rhs.m_ID;
-  m_R = rhs.m_R;
-  m_NumDimensions = rhs.m_NumDimensions;
-  this->m_X = rhs.m_X;
-  m_T = rhs.m_T;
-  m_Normal1 = rhs.m_Normal1;
-  m_Normal2 = rhs.m_Normal2;
-  this->m_Color = rhs.m_Color;
+  this->Superclass::operator=(rhs);
+  this->m_R = rhs.m_R;
+  this->m_NumDimensions = rhs.m_NumDimensions;
+  this->m_T = rhs.m_T;
+  this->m_Normal1 = rhs.m_Normal1;
+  this->m_Normal2 = rhs.m_Normal2;
   return *this;
 }
 } // end namespace itk

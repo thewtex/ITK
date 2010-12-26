@@ -27,7 +27,6 @@ template< unsigned int TPointDimension >
 ContourSpatialObjectPoint< TPointDimension >
 ::ContourSpatialObjectPoint(void)
 {
-  this->m_ID = 0;
   m_Normal.Fill(0);
   m_PickedPoint.Fill(0);
 }
@@ -136,8 +135,7 @@ typename ContourSpatialObjectPoint< TPointDimension >::Self &
 ContourSpatialObjectPoint< TPointDimension >
 ::operator=(const ContourSpatialObjectPoint & rhs)
 {
-  this->m_ID = rhs.GetID();
-  this->m_X = rhs.GetPosition();
+  this->Superclass::operator=( rhs );
   this->m_Normal = rhs.GetNormal();
   this->m_PickedPoint = rhs.GetPickedPoint();
   return *this;

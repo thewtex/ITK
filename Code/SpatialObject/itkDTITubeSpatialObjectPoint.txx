@@ -192,6 +192,8 @@ typename DTITubeSpatialObjectPoint< TPointDimension >::Self &
 DTITubeSpatialObjectPoint< TPointDimension >
 ::operator=(const DTITubeSpatialObjectPoint & rhs)
 {
+  this->Superclass::operator=( rhs );
+
   // Copy the extra fields
   m_Fields.clear();
   const FieldListType &         fields = rhs.GetFields();
@@ -202,20 +204,11 @@ DTITubeSpatialObjectPoint< TPointDimension >
     it++;
     }
 
-  this->m_ID = rhs.m_ID;
-
   for ( unsigned int i = 0; i < 6; i++ )
     {
     m_TensorMatrix[i] = rhs.m_TensorMatrix[i];
     }
 
-  this->m_NumDimensions = rhs.m_NumDimensions;
-  this->m_X = rhs.m_X;
-  this->m_T = rhs.m_T;
-  this->m_R = rhs.m_R;
-  this->m_Normal1 = rhs.m_Normal1;
-  this->m_Normal2 = rhs.m_Normal2;
-  this->m_Color = rhs.m_Color;
   return *this;
 }
 } // end namespace itk

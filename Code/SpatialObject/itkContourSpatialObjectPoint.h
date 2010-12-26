@@ -77,11 +77,14 @@ public:
 
 protected:
 
+  /** Method to print the object. */
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
+
+private:
+
   VectorType m_Normal;
   PointType  m_PickedPoint;
 
-  /** Method to print the object. */
-  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 };
 } // end of namespace itk
 

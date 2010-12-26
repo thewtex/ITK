@@ -62,10 +62,13 @@ public:
 
 protected:
 
-  NormalArrayType m_NormalArray;
-
   /** Method to print the object. */
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
+
+private:
+
+  NormalArrayType m_NormalArray;
+
 };
 } // end of namespace itk
 

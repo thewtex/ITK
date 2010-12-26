@@ -27,7 +27,6 @@ template< unsigned int TPointDimension >
 LineSpatialObjectPoint< TPointDimension >
 ::LineSpatialObjectPoint(void)
 {
-  this->m_ID = 0;
   for ( unsigned int i = 0; i < TPointDimension - 1; i++ )
     {
     VectorType normal;
@@ -80,8 +79,13 @@ typename LineSpatialObjectPoint< TPointDimension >::Self &
 LineSpatialObjectPoint< TPointDimension >
 ::operator=(const LineSpatialObjectPoint & rhs)
 {
-  this->m_ID = rhs.m_ID;
-  this->m_X = rhs.m_X;
+  this->Superclass::operator=( rhs );
+
+  for ( unsigned int i = 0; i < TPointDimension - 1; i++ )
+    {
+    this->m_NormalArray[i] = rhs.m_NormalArray[i];
+    }
+
   return *this;
 }
 } // end namespace itk

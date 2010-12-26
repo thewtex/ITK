@@ -104,6 +104,8 @@ protected:
   /** PrintSelf method */
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
+private:
+
   /** A unique ID assigned to this SpatialObjectPoint */
   int m_ID;
 
@@ -112,6 +114,7 @@ protected:
 
   /** Color of the point */
   PixelType m_Color;
+
 };
 } // end of namespace itk
 

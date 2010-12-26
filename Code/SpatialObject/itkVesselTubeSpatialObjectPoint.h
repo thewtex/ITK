@@ -98,6 +98,11 @@ public:
 
 protected:
 
+  /** Print the object */
+  void PrintSelf(std::ostream & os, Indent indent) const;
+
+private:
+
   /** First of 3 alpha values */
   float m_Alpha1;
 
@@ -119,8 +124,6 @@ protected:
   /** Is the tube point marked (selected) ? */
   bool m_Mark;
 
-  /** Print the object */
-  void PrintSelf(std::ostream & os, Indent indent) const;
 };
 } // end of namespace itk
 

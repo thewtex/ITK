@@ -75,6 +75,7 @@ int itkReadWriteSpatialObjectTest(int argc, char* argv[])
   for( unsigned int i=0; i<10; i++)
     {
     TubePointType p;
+    p.SetID(i);
     p.SetPosition(i,i,i);
     p.SetRadius(i);
     p.SetRed(i);
@@ -89,10 +90,6 @@ int itkReadWriteSpatialObjectTest(int argc, char* argv[])
     VesselTubePointType p;
     p.SetPosition(i*2,i*2,i*2);
     p.SetRadius(i);
-    p.SetRed(i);
-    p.SetGreen(i+1);
-    p.SetBlue(i+2);
-    p.SetAlpha(i+3);
     p.SetRed(i);
     p.SetGreen(i+1);
     p.SetBlue(i+2);

@@ -66,10 +66,13 @@ public:
 
 protected:
 
-  VectorType m_Normal;
-
   /** Method to print the object. */
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
+
+private:
+
+  VectorType m_Normal;
+
 };
 } // end of namespace itk
 

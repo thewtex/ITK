@@ -74,7 +74,7 @@ public:
   virtual const PointListType & GetPoints(void) const;
 
   /** Set the list of tube points. */
-  virtual void SetPoints(PointListType & newPoints);
+  virtual void SetPoints(const PointListType & newPoints);
 
   /** Return a point in the list given the index. */
   virtual const SpatialObjectPointType * GetPoint(unsigned long ind) const

@@ -27,7 +27,6 @@ template< unsigned int TPointDimension >
 SurfaceSpatialObjectPoint< TPointDimension >
 ::SurfaceSpatialObjectPoint(void)
 {
-  this->m_ID = 0;
   m_Normal.Fill(0);
 }
 
@@ -94,8 +93,8 @@ typename SurfaceSpatialObjectPoint< TPointDimension >::Self &
 SurfaceSpatialObjectPoint< TPointDimension >
 ::operator=(const SurfaceSpatialObjectPoint & rhs)
 {
-  this->m_ID = rhs.m_ID;
-  this->m_X = rhs.m_X;
+  this->Superclass::operator=( rhs );
+  this->m_Normal = rhs.m_Normal;
   return *this;
 }
 } // end namespace itk

@@ -76,15 +76,16 @@ TubeSpatialObject< TDimension, TTubePointType >
 template< unsigned int TDimension, typename TTubePointType >
 void
 TubeSpatialObject< TDimension, TTubePointType >
-::SetPoints(PointListType & points)
+::SetPoints(const PointListType & points)
 {
   // in this function, passing a null pointer as argument will
   // just clear the list...
   m_Points.clear();
 
-  typename PointListType::iterator it, end;
-  it = points.begin();
-  end = points.end();
+  typedef typename PointListType::const_iterator  PointListIterator;
+  PointListIterator it = points.begin();
+  PointListIterator end = points.end();
+
   while ( it != end )
     {
     m_Points.push_back(*it);

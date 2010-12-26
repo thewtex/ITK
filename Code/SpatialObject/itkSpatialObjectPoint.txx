@@ -209,9 +209,9 @@ typename SpatialObjectPoint< TPointDimension >::Self &
 SpatialObjectPoint< TPointDimension >
 ::operator=(const SpatialObjectPoint & rhs)
 {
-  m_ID = rhs.m_ID;
-  m_X = rhs.m_X;
-  m_Color = rhs.m_Color;
+  this->m_ID = rhs.m_ID;
+  this->m_X = rhs.m_X;
+  this->m_Color = rhs.m_Color;
   return *this;
 }
 
@@ -230,6 +230,7 @@ void
 SpatialObjectPoint< TPointDimension >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
+  os << "Id: " << m_ID << std::endl;
   os << indent << "RGBA: " << m_Color.GetRed() << " ";
   os << m_Color.GetGreen() << " ";
   os << m_Color.GetBlue() << " ";
