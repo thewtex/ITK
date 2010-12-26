@@ -57,6 +57,81 @@ PolyLineParametricPath< VDimension >
   return output;
 }
 
+template<unsigned int VDimension>
+typename PolyLineParametricPath<VDimension>::OffsetType
+PolyLineParametricPath<VDimension>
+::IncrementInput(InputType & input) const
+{
+  unsigned iterationCount;
+  bool tooSmall;
+  bool tooBig;
+  InputType inputStepSize;
+  InputType tooSmallInputStepSize;
+  InputType tooBigInputStepSize;
+  InputType finalInputValue;
+  OffsetType offset;
+  IndexType currentImageIndex;
+  IndexType nextImageIndex;
+  IndexType finalImageIndex;
+
+  iterationCount = 0;
+  inputStepSize = this->GetDefaultInputStepSize();
+  tooSmallInputStepSize = 0;
+  tooBigInputStepSize = 0;
+
+  finalInputValue = this->EndOfInput();
+  currentImageIndex = this->EvaluateToIndex( input );
+  finalImageIndex = this->EvaluateToIndex( finalInputValue );
+  offset = finalImageIndex - currentImageIndex;
+
+  if( offset == this->GetZeroOffset() || ( input >= finalInputValue ) )
+     return this->GetZeroOffset();
+
+  do
+  {
+    if( iterationCount++ > 10000 ) { itkExceptionMacro(<<"Too many iterations"); }
+
+    nextImageIndex = this->EvaluateToIndex( input + inputStepSize );
+    offset = nextImageIndex - currentImageIndex;
+    tooSmall = ( offset == this->GetZeroOffset() );
+    tooBig = false;
+
+    if( tooSmall )
+    {
+      // Increase the input step size, but don't go past the end of the input
+      if( (input + inputStepSize) >= finalInputValue )
+      {
+        inputStepSize = finalInputValue - input;
+      }
+      else
+      {
+        tooSmallInputStepSize = inputStepSize;
+        if( tooBigInputStepSize == 0 )
+          inputStepSize *= 2;
+        else
+          inputStepSize += ( tooBigInputStepSize - tooSmallInputStepSize ) / 2;
+      }
+    }
+    else
+    {
+      // Search for an offset dimension that is too big
+      for( unsigned i = 0; i < VDimension && ! tooBig; ++i )
+      {
+        tooBig = ( offset[i] >= 2 || offset[i] <= -2 );
+      }
+      if( tooBig )
+      {
+        tooBigInputStepSize = inputStepSize;
+        inputStepSize -= (tooBigInputStepSize - tooSmallInputStepSize) / 2;
+      }
+    }
+  }
+  while( tooSmall || tooBig );
+
+  input += inputStepSize;
+  return offset;
+}
+
 //template<unsigned int VDimension>
 //typename PolyLineParametricPath<VDimension>::VectorType
 //PolyLineParametricPath<VDimension>
