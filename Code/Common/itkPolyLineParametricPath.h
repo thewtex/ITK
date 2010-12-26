@@ -77,6 +77,13 @@ public:
   typedef VectorContainer< unsigned, VertexType > VertexListType;
   typedef typename VertexListType::Pointer        VertexListPointer;
 
+  /** Increment the input variable passed by reference such that the ND index of
+   * the path  moves to its next vertex-connected (8-connected in 2D) neighbor.
+   * Return the index-space offset of the path from its prior input to its new
+   * input.  If the path is unable to increment, input is not changed and an
+   * offset of Zero is returned. */
+  virtual OffsetType IncrementInput(InputType & input) const;
+
   /** Return the location of the parametric path at the specified location. */
   virtual OutputType Evaluate(const InputType & input) const;
 
