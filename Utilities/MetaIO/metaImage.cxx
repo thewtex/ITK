@@ -2651,7 +2651,7 @@ M_WriteElementData(METAIO_STREAM::ofstream * _fstream,
         METAIO_STL::streamoff chunkToWrite = bytesRemaining > MaxIOChunk ? MaxIOChunk : bytesRemaining;
         _fstream->write( (const char *)_data, (size_t)chunkToWrite );
         _data = (const char *)(_data) + chunkToWrite; // <- Note: _data is changed
-        bytesRemaining -= chunkToWrite;        
+        bytesRemaining -= chunkToWrite;
         }
       }
     }
@@ -2849,15 +2849,15 @@ bool MetaImage::ReadROIStream(int * _indexMin, int * _indexMax,
             }
           indexMin[m_NDims-1]=0;
           indexMax[m_NDims-1]=0;
-          
+
           M_ReadElementsROI(readStreamTemp,
                              &(((char *)m_ElementData)[cnt*quantity*
                                                      elementSize]),
                              quantity, indexMin, indexMax,
                              subSamplingFactor,
-                             m_SubQuantity[m_NDims-1]*m_ElementNumberOfChannels*elementSize);               
-                    
-          cnt++;            
+                             m_SubQuantity[m_NDims-1]);
+
+          cnt++;
           readStreamTemp->close();
           }
         }
@@ -2936,7 +2936,7 @@ bool MetaImage::ReadROIStream(int * _indexMin, int * _indexMax,
                                                  elementSize]),
                        quantity, indexMin, indexMax,
                        subSamplingFactor,
-                       m_SubQuantity[m_NDims-1]*m_ElementNumberOfChannels*elementSize);               
+                       m_SubQuantity[m_NDims-1]);
         cnt++;
         
         delete [] indexMin;
@@ -3388,7 +3388,8 @@ M_ReadElementData(METAIO_STREAM::ifstream * _fstream,
         _fstream->read( (char *)_data, (size_t)chunkToRead );
         _data = (char *)(_data) + chunkToRead;
         bytesRemaining -= chunkToRead;
-        gc += _fstream->gcount();
+        METAIO_STL::streamsize numberOfBytesRead = _fstream->gcount();
+        gc += numberOfBytesRead;
         }
 
       }
@@ -3406,7 +3407,8 @@ M_ReadElementData(METAIO_STREAM::ifstream * _fstream,
         _fstream->read( (char *)_data, (size_t)chunkToRead );
         _data = (char *)(_data) + chunkToRead;
         bytesRemaining -= chunkToRead;
-        gc += _fstream->gcount();
+        METAIO_STL::streamsize numberOfBytesRead = _fstream->gcount();
+        gc += numberOfBytesRead;
         }
       // convert to number of bytes so that it'll match gc's units
       _dataQuantity *= elementNumberOfBytes;
