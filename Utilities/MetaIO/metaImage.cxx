@@ -2651,7 +2651,7 @@ M_WriteElementData(METAIO_STREAM::ofstream * _fstream,
         METAIO_STL::streamoff chunkToWrite = bytesRemaining > MaxIOChunk ? MaxIOChunk : bytesRemaining;
         _fstream->write( (const char *)_data, (size_t)chunkToWrite );
         _data = (const char *)(_data) + chunkToWrite; // <- Note: _data is changed
-        bytesRemaining -= chunkToWrite;        
+        bytesRemaining -= chunkToWrite;
         }
       }
     }
@@ -3060,7 +3060,7 @@ M_ReadElementsROI(METAIO_STREAM::ifstream * _fstream, void * _data,
       METAIO_STREAM::cout << "MetaImage: M_ReadElementsROI: Skipping header"
                           << METAIO_STREAM::endl;
       }
-    METAIO_STL::streamoff headSize = _totalDataQuantity*m_ElementNumberOfChannels*elementSize;
+    METAIO_STL::streamoff headSize = _totalDataQuantity*m_ElementNumberOfChannels;
     _fstream->seekg(-headSize, METAIO_STREAM::ios::end);
     }
 
@@ -3388,7 +3388,8 @@ M_ReadElementData(METAIO_STREAM::ifstream * _fstream,
         _fstream->read( (char *)_data, (size_t)chunkToRead );
         _data = (char *)(_data) + chunkToRead;
         bytesRemaining -= chunkToRead;
-        gc += _fstream->gcount();
+        METAIO_STL::streamsize numberOfBytesRead = _fstream->gcount();
+        gc += numberOfBytesRead;
         }
 
       }
@@ -3406,7 +3407,8 @@ M_ReadElementData(METAIO_STREAM::ifstream * _fstream,
         _fstream->read( (char *)_data, (size_t)chunkToRead );
         _data = (char *)(_data) + chunkToRead;
         bytesRemaining -= chunkToRead;
-        gc += _fstream->gcount();
+        METAIO_STL::streamsize numberOfBytesRead = _fstream->gcount();
+        gc += numberOfBytesRead;
         }
       // convert to number of bytes so that it'll match gc's units
       _dataQuantity *= elementNumberOfBytes;
