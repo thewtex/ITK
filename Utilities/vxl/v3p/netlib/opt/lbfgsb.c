@@ -4590,6 +4590,7 @@ L999:
 /*<       if (iprint .ge. 0) then >*/
     if (*iprint >= 0) {
 /*<          write (6,3009) task >*/
+        task[59] = '\0';
         printf("%60s\n", task);
 /*<          if (info .ne. 0) then >*/
         if (*info != 0) {
