@@ -111,6 +111,8 @@ add_test(itkQuadEdgeMeshPointTest1 ${COMMON_TESTS2}
   itkQuadEdgeMeshPointTest1)
 add_test(itkPriorityQueueTest ${COMMON_TESTS2}
   itkPriorityQueueTest)
+add_test(itkPriorityQueueTest2 ${COMMON_TESTS2}
+  itkPriorityQueueTest2)
 
 FOREACH( index 0 1 2 3 4 5 )
   add_test(itkQuadEdgeMeshAddFaceTest1_${index} ${COMMON_TESTS2}
@@ -609,6 +611,7 @@ itkQuadEdgeMeshDeletePointAndReorderIDsTest.cxx
 itkTriangleHelperTest.cxx
 itkCrossHelperTest.cxx
 itkPriorityQueueTest.cxx
+itkPriorityQueueTest2.cxx
 itkBSplineDeformableTransformTest2.cxx
 itkBSplineDeformableTransformTest3.cxx
 itkCellInterfaceTest.cxx

@@ -178,6 +178,6 @@ REGISTER_TEST(itkQuadEdgeMeshEulerOperatorSplitVertexTest);
 REGISTER_TEST(itkTriangleHelperTest);
 REGISTER_TEST(itkCrossHelperTest);
 REGISTER_TEST(itkPriorityQueueTest);
-REGISTER_TEST(itkPriorityQueueTest);
+REGISTER_TEST(itkPriorityQueueTest2);
 REGISTER_TEST(itkFloatingPointExceptionsTest);
 }

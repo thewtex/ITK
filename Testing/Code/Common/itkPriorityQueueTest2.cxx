@@ -15,22 +15,32 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#include "vnl/vnl_random.h"
+#include <algorithm>
 #include "itkPriorityQueueContainer.h"
 
-int itkPriorityQueueTest( int, char * [] )
+int itkPriorityQueueTest2( int, char * [] )
 {
-  typedef itk::MinPriorityQueueElementWrapper< int, double, int > MinPQElementType;
-  typedef itk::MaxPriorityQueueElementWrapper< int, double, int > MaxPQElementType;
+  typedef int ItemType;
+  typedef double PriorityType;
+  typedef int IdType;
+
+  typedef itk::MinPriorityQueueElementWrapper< ItemType, PriorityType, IdType > MinPQElementType;
+  typedef itk::MaxPriorityQueueElementWrapper< ItemType, PriorityType, IdType > MaxPQElementType;
 
   typedef itk::PriorityQueueContainer<
-    MinPQElementType, MinPQElementType, double, int > MinPQType;
+    MinPQElementType*,
+    itk::ElementWrapperPointerInterface< MinPQElementType* >,
+    PriorityType,
+    IdType > MinPQType;
   MinPQType::Pointer min_priority_queue = MinPQType::New( );
 
   std::cout << min_priority_queue->GetNameOfClass() << std::endl;
 
   typedef itk::PriorityQueueContainer<
-    MaxPQElementType, MaxPQElementType, double, int > MaxPQType;
+    MaxPQElementType*,
+    itk::ElementWrapperPointerInterface< MaxPQElementType* >,
+    PriorityType,
+    IdType > MaxPQType;
   MaxPQType::Pointer max_priority_queue = MaxPQType::New( );
 
   std::list< double > sequence;
@@ -48,48 +58,62 @@ int itkPriorityQueueTest( int, char * [] )
   sequence.push_back( 1. );
   sequence.push_back( -1. );
 
+  std::map< ItemType, MinPQElementType* > list_min_elements;
+  std::map< ItemType, MaxPQElementType* > list_max_elements;
+
   std::list< double >::const_iterator it = sequence.begin();
-  int i = 0;
+  ItemType i = 0; // int
   while( it != sequence.end() )
     {
-    min_priority_queue->Push( MinPQElementType( i, *it ) );
-    max_priority_queue->Push( MaxPQElementType( i, *it ) );
+    MinPQElementType* v_min = new MinPQElementType( i, *it );
+    list_min_elements[ i ] = v_min;
+    min_priority_queue->Push( v_min );
 
-    std::cout << i << " " <<*it <<" Pushed" <<std::endl;
+    MaxPQElementType* v_max = new MaxPQElementType( i, *it );
+    list_max_elements[ i ] = v_max;
+    max_priority_queue->Push( v_max );
 
     ++it;
     ++i;
     }
 
+  std::replace( sequence.begin(), sequence.end(), 0.4, 2. );
+
+  ( list_min_elements[2] )->m_Priority = 2.;
+  min_priority_queue->Update( list_min_elements[2] );
+
+  ( list_max_elements[2] )->m_Priority = 2.;
+  max_priority_queue->Update( list_max_elements[2] );
+
   sequence.sort();
   it = sequence.begin();
-  i = sequence.size();
+  size_t s = sequence.size();
 
   std::cout <<"Min Priority Queue   ";
   while( !min_priority_queue->Empty() )
     {
-    if( min_priority_queue->Peek().m_Priority != *it )
+    if( min_priority_queue->Peek()->m_Priority != *it )
       {
-      std::cout <<min_priority_queue->Peek().m_Priority <<" " <<*it <<std::endl;
+      std::cout <<min_priority_queue->Peek()->m_Priority <<" " <<*it <<std::endl;
       return EXIT_FAILURE;
       }
-    if( min_priority_queue->Size() != i )
+    if( min_priority_queue->Size() != s )
       {
       std::cout <<"Size " <<min_priority_queue->Size() <<" " <<i <<std::endl;
       return EXIT_FAILURE;
       }
     min_priority_queue->Pop();
     it++;
-    i--;
+    s--;
     }
   std::cout <<"OK" <<std::endl;
 
   std::cout <<"Max Priority Queue   ";
   while( !max_priority_queue->Empty() )
     {
-    if( max_priority_queue->Peek().m_Priority != sequence.back() )
+    if( max_priority_queue->Peek()->m_Priority != sequence.back() )
       {
-      std::cout <<max_priority_queue->Peek().m_Priority <<" " <<sequence.back() <<std::endl;
+      std::cout <<max_priority_queue->Peek()->m_Priority <<" " <<sequence.back() <<std::endl;
       return EXIT_FAILURE;
       }
     if( max_priority_queue->Size() != sequence.size() )
@@ -105,6 +129,17 @@ int itkPriorityQueueTest( int, char * [] )
     sequence.pop_back();
     }
   std::cout <<"OK" <<std::endl;
+
+  std::map< ItemType, MinPQElementType* >::iterator min_it = list_min_elements.begin();
+  std::map< ItemType, MaxPQElementType* >::iterator max_it = list_max_elements.begin();
+
+  while( min_it != list_min_elements.end() )
+    {
+    delete min_it->second;
+    delete max_it->second;
+    ++min_it;
+    ++max_it;
+    }
 
   return EXIT_SUCCESS;
 }

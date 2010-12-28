@@ -300,15 +300,25 @@ public:
       }
   }
 
-  void Update(Element element)
+  bool Update(Element element)
   {
     ElementIdentifier location = m_Interface.GetLocation(element);
 
-    itkAssertOrThrowMacro( ( location != -1 ), "element is unknown" );
-    itkAssertOrThrowMacro( ( location < static_cast< ElementIdentifier >( this->Size() ) ),
-                           "Element location is out of range" );
+    if( location == -1 )
+      {
+      itkExceptionMacro( << "element is unknown" );
+      return false;
+      }
+    if( location >= static_cast< ElementIdentifier >( this->Size() ) )
+      {
+      itkExceptionMacro( << "Element location is out of range" );
+      return false;
+      }
+
     UpdateDownTree(location);
     UpdateUpTree(location);
+
+    return true;
   }
 
   void DeleteElement(Element element)
