@@ -233,11 +233,11 @@ FastMarchingExtensionImageFilter< TLevelSet, TAuxValue, VAuxDimension, TSpeedIma
   // "Level Set Methods and Fast Marching Methods", J.A. Sethian,
   // Cambridge Press, Second edition, 1999.
 
-  double solution = this->Superclass::UpdateValue(index, speed, output);
+  double solution = Superclass::UpdateValue(index, speed, output);
 
   typename Superclass::NodeType node;
 
-  if ( solution < this->GetLargeValue() )
+  if ( solution < this->m_LargeValue )
     {
     // update auxiliary values
     for ( unsigned int k = 0; k < VAuxDimension; k++ )

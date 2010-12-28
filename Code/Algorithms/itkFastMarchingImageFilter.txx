@@ -51,6 +51,8 @@ FastMarchingImageFilter< TLevelSet, TSpeedImage >
   m_TrialPoints = NULL;
   m_ProcessedPoints = NULL;
 
+  m_TrialHeap = HeapType::New();
+
   m_SpeedConstant = 1.0;
   m_InverseSpeed = -1.0;
   m_LabelImage = LabelImageType::New();
@@ -238,10 +240,24 @@ FastMarchingImageFilter< TLevelSet, TSpeedImage >
     }
 
   // make sure the heap is empty
-  while ( !m_TrialHeap.empty() )
+  while ( !m_TrialHeap->Empty() )
     {
-    m_TrialHeap.pop();
+    m_TrialHeap->Pop();
     }
+
+  typename std::map< NodeIndexType,
+            MinPQElementType*,
+            CompareIndex< NodeIndexType >  >::iterator n_it = m_NodeSet.begin();
+
+  while( n_it != m_NodeSet.end() )
+    {
+    if( n_it ->second )
+      {
+      delete n_it->second;
+      }
+    ++n_it;
+    }
+  m_NodeSet.clear();
 
   // process the input trial points
   if ( m_TrialPoints )
@@ -264,7 +280,10 @@ FastMarchingImageFilter< TLevelSet, TSpeedImage >
         outputPixel = node.GetValue();
         output->SetPixel(idx, outputPixel);
 
-        m_TrialHeap.push(node);
+        MinPQElementType* v = new MinPQElementType( node, outputPixel );
+        m_NodeSet[ idx ] = v;
+
+        m_TrialHeap->Push( v );
         }
       ++pointsIter;
       }
@@ -296,57 +315,64 @@ FastMarchingImageFilter< TLevelSet, TSpeedImage >
 
   // process points on the heap
   AxisNodeType node;
-  double       currentValue;
+  NodeIndexType idx;
+  double       node_value;
   double       oldProgress = 0;
 
   this->UpdateProgress(0.0);   // Send first progress event
 
-  while ( !m_TrialHeap.empty() )
+  while ( !m_TrialHeap->Empty() )
     {
     // get the node with the smallest value
-    node = m_TrialHeap.top();
-    m_TrialHeap.pop();
+    node = m_TrialHeap->Peek()->m_Element;
+    idx = node.GetIndex();
+    node_value = m_TrialHeap->Peek()->m_Priority;
+    m_TrialHeap->Pop();
 
-    // does this node contain the current value ?
-    currentValue = static_cast< double >( output->GetPixel( node.GetIndex() ) );
+    typename std::map< NodeIndexType,
+        MinPQElementType*,
+        CompareIndex< NodeIndexType > >::iterator n_it = m_NodeSet.find( idx );
 
-    if ( node.GetValue() == currentValue )
+    if( n_it != m_NodeSet.end() )
       {
-      // is this node already alive ?
-      if ( m_LabelImage->GetPixel( node.GetIndex() ) != AlivePoint )
+      delete n_it->second;
+      m_NodeSet.erase( idx );
+      }
+
+    // is this node already alive ?
+    if ( m_LabelImage->GetPixel( idx ) != AlivePoint )
+      {
+      if ( node_value > m_StoppingValue )
         {
-        if ( currentValue > m_StoppingValue )
+        this->UpdateProgress(1.0);
+        break;
+        }
+
+      if ( m_CollectPoints )
+        {
+        m_ProcessedPoints->InsertElement(m_ProcessedPoints->Size(), node);
+        }
+
+      // set this node as alive
+      m_LabelImage->SetPixel( idx, AlivePoint );
+
+      // update its neighbors
+      this->UpdateNeighbors( idx, speedImage, output );
+
+      // Send events every certain number of points.
+      const double newProgress = node_value / m_StoppingValue;
+      if ( newProgress - oldProgress > 0.01 )  // update every 1%
+        {
+        this->UpdateProgress(newProgress);
+        oldProgress = newProgress;
+        if ( this->GetAbortGenerateData() )
           {
-          this->UpdateProgress(1.0);
-          break;
-          }
-
-        if ( m_CollectPoints )
-          {
-          m_ProcessedPoints->InsertElement(m_ProcessedPoints->Size(), node);
-          }
-
-        // set this node as alive
-        m_LabelImage->SetPixel(node.GetIndex(), AlivePoint);
-
-        // update its neighbors
-        this->UpdateNeighbors(node.GetIndex(), speedImage, output);
-
-        // Send events every certain number of points.
-        const double newProgress = currentValue / m_StoppingValue;
-        if ( newProgress - oldProgress > 0.01 )  // update every 1%
-          {
-          this->UpdateProgress(newProgress);
-          oldProgress = newProgress;
-          if ( this->GetAbortGenerateData() )
-            {
-            this->InvokeEvent( AbortEvent() );
-            this->ResetPipeline();
-            ProcessAborted e(__FILE__, __LINE__);
-            e.SetDescription("Process aborted.");
-            e.SetLocation(ITK_LOCATION);
-            throw e;
-            }
+          this->InvokeEvent( AbortEvent() );
+          this->ResetPipeline();
+          ProcessAborted e(__FILE__, __LINE__);
+          e.SetDescription("Process aborted.");
+          e.SetLocation(ITK_LOCATION);
+          throw e;
           }
         }
       }
@@ -514,9 +540,28 @@ FastMarchingImageFilter< TLevelSet, TSpeedImage >
 
     // insert point into trial heap
     m_LabelImage->SetPixel(index, TrialPoint);
-    node.SetValue( outputPixel );
-    node.SetIndex( index );
-    m_TrialHeap.push(node);
+
+    typename std::map< NodeIndexType, MinPQElementType* >::iterator
+        n_it = m_NodeSet.find( index );
+
+    if( n_it == m_NodeSet.end() )
+      {
+      node.SetValue( outputPixel );
+      node.SetIndex( index );
+
+      MinPQElementType* v = new MinPQElementType( node, outputPixel );
+      m_NodeSet[ index ] = v;
+      m_TrialHeap->Push( v );
+      }
+    else
+      {
+      if( solution < n_it->second->m_Priority )
+        {
+        n_it->second->m_Element.SetValue( outputPixel );
+        n_it->second->m_Priority = solution;
+        m_TrialHeap->Update( n_it->second );
+        }
+      }
     }
 
   return solution;

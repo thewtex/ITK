@@ -24,7 +24,9 @@
 #include "vnl/vnl_math.h"
 
 #include <functional>
+#include <map>
 #include <queue>
+#include "itkPriorityQueueContainer.h"
 
 namespace itk
 {
@@ -362,9 +364,7 @@ protected:
 
   itkGetConstReferenceMacro(StartIndex, LevelSetIndexType);
   itkGetConstReferenceMacro(LastIndex, LevelSetIndexType);
-private:
-  FastMarchingImageFilter(const Self &); //purposely not implemented
-  void operator=(const Self &);          //purposely not implemented
+protected:
 
   NodeContainerPointer m_AlivePoints;
   NodeContainerPointer m_TrialPoints;
@@ -391,14 +391,62 @@ private:
   /** Trial points are stored in a min-heap. This allow efficient access
    * to the trial point with minimum value which is the next grid point
    * the algorithm processes. */
-  typedef std::vector< AxisNodeType >  HeapContainer;
-  typedef std::greater< AxisNodeType > NodeComparer;
-  typedef std::priority_queue< AxisNodeType, HeapContainer, NodeComparer >
-  HeapType;
+  typedef MinPriorityQueueElementWrapper< AxisNodeType, double > MinPQElementType;
+  typedef PriorityQueueContainer< MinPQElementType*,
+                                  ElementWrapperPointerInterface< MinPQElementType* >,
+                                  double,
+                                  long > HeapType;
+  typedef typename HeapType::Pointer HeapPointer;
 
-  HeapType m_TrialHeap;
+  template< class TIndex >
+  class CompareIndex
+    {
+  public:
+    bool operator () ( const TIndex& iLeft,
+                      const TIndex& iRight ) const
+     {
+      unsigned int dim = 0;
+     for( ; dim < SetDimension; ++dim )
+       {
+       if( iLeft[dim] < iRight[dim] )
+         {
+         return true;
+         }
+       else
+         {
+         if( iLeft[dim] == iRight[dim] )
+           {
+           continue;
+           }
+         else
+           {
+           return false;
+           }
+         }
+       }
+
+     return false;
+     }
+    };
+
+  typename std::map< NodeIndexType,
+                     MinPQElementType*,
+                     CompareIndex< NodeIndexType >  > m_NodeSet;
+
+
+  //typedef std::vector< AxisNodeType >  HeapContainer;
+  //typedef std::greater< AxisNodeType > NodeComparer;
+  //typedef std::priority_queue< AxisNodeType, HeapContainer, NodeComparer >
+  //HeapType;
+
+  HeapPointer m_TrialHeap;
 
   double m_NormalizationFactor;
+
+private:
+  FastMarchingImageFilter(const Self &); //purposely not implemented
+  void operator=(const Self &);          //purposely not implemented
+
 };
 } // namespace itk
 
