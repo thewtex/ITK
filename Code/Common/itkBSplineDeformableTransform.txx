@@ -98,12 +98,10 @@ BSplineDeformableTransform< TScalarType, NDimensions, VSplineOrder >
   for ( unsigned int j = 0; j < SpaceDimension; j++ )
     {
     this->m_JacobianImage[j]=JacobianImageType::New();
-    this->m_JacobianImage[j]->SetRegions(this->m_GridRegion);
-    this->m_JacobianImage[j]->SetOrigin( this->m_GridOrigin );
-    this->m_JacobianImage[j]->SetSpacing( this->m_GridSpacing );
-    this->m_JacobianImage[j]->SetDirection(this->m_GridDirection);
+    this->m_JacobianImage[j]->Graft(this->m_CoefficientImage[0]);
     }
-  this->m_LastJacobianIndex = this->m_ValidRegion.GetIndex();
+  this->m_LastJacobianIndex = this->m_GridRegion.GetIndex();
+  this->UpdateValidGridRegion();
 }
 
 // Destructor
@@ -173,6 +171,34 @@ BSplineDeformableTransform< TScalarType, NDimensions, VSplineOrder >
 template< class TScalarType, unsigned int NDimensions, unsigned int VSplineOrder >
 void
 BSplineDeformableTransform< TScalarType, NDimensions, VSplineOrder >
+::UpdateValidGridRegion()
+{
+    // Set the valid region
+    // If the grid spans the interval [start, last].
+    // The valid interval for evaluation is [start+offset, last-offset]
+    // when spline order is even.
+    // The valid interval for evaluation is [start+offset, last-offset)
+    // when spline order is odd.
+    // Where offset = floor(spline / 2 ).
+    // Note that the last pixel is not included in the valid region
+    // with odd spline orders.
+    typename RegionType::SizeType size = this->m_GridRegion.GetSize();
+    typename RegionType::IndexType index = this->m_GridRegion.GetIndex();
+    for ( unsigned int j = 0; j < SpaceDimension; j++ )
+      {
+      index[j] += static_cast< typename RegionType::IndexValueType >( this->m_Offset );
+      size[j] -= static_cast< typename RegionType::SizeValueType >( 2 * this->m_Offset );
+      this->m_ValidRegionFirst[j] = index[j];
+      this->m_ValidRegionLast[j] = index[j] + static_cast< typename RegionType::IndexValueType >( size[j] ) - 1;
+      }
+    this->m_ValidRegion.SetSize(size);
+    this->m_ValidRegion.SetIndex(index);
+}
+
+// Set the grid region
+template< class TScalarType, unsigned int NDimensions, unsigned int VSplineOrder >
+void
+BSplineDeformableTransform< TScalarType, NDimensions, VSplineOrder >
 ::SetGridRegion(const RegionType & region)
 {
   if ( this->m_GridRegion != region )
@@ -189,32 +215,11 @@ BSplineDeformableTransform< TScalarType, NDimensions, VSplineOrder >
       this->m_JacobianImage[j]->SetRegions(region);
       }
 
-    // Set the valid region
-    // If the grid spans the interval [start, last].
-    // The valid interval for evaluation is [start+offset, last-offset]
-    // when spline order is even.
-    // The valid interval for evaluation is [start+offset, last-offset)
-    // when spline order is odd.
-    // Where offset = floor(spline / 2 ).
-    // Note that the last pixel is not included in the valid region
-    // with odd spline orders.
-    typename RegionType::SizeType size = region.GetSize();
-    typename RegionType::IndexType index = region.GetIndex();
-    for ( unsigned int j = 0; j < SpaceDimension; j++ )
-      {
-      index[j] += static_cast< typename RegionType::IndexValueType >( this->m_Offset );
-      size[j] -= static_cast< typename RegionType::SizeValueType >( 2 * this->m_Offset );
-      this->m_ValidRegionFirst[j] = index[j];
-      this->m_ValidRegionLast[j] = index[j] + static_cast< typename RegionType::IndexValueType >( size[j] ) - 1;
-      }
-    this->m_ValidRegion.SetSize(size);
-    this->m_ValidRegion.SetIndex(index);
-
+    this->UpdateValidGridRegion();
     //
     // If we are using the default parameters, update their size and set to
     // identity.
     //
-
     // Input parameters point to internal buffer => using default parameters.
     if ( this->m_InputParametersPointer == &(this->m_InternalParametersBuffer) )
       {
