@@ -71,5 +71,5 @@ int itkLabelMapContourOverlayImageFilterTest1(int argc, char * argv[])
   writer->SetInput( colorizer->GetOutput() );
   writer->SetFileName( argv[3] );
   writer->Update();
-  return 0;
+  return EXIT_SUCCESS;
 }

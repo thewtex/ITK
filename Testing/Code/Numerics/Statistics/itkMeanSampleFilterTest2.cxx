@@ -82,7 +82,7 @@ int itkMeanSampleFilterTest2(int, char* [] )
   std::cout << meanOutput[0] << " " << expectedMean[0] << " "
             << meanOutput[1] << " " << expectedMean[1] << " " << std::endl;
 
-  FilterType::MeasurementVectorType::ValueType    epsilon = 1e-6;
+  FilterType::MeasurementRealType epsilon = 1e-6;
 
   if ( ( vcl_fabs( meanOutput[0] - expectedMean[0]) > epsilon )  ||
        ( vcl_fabs( meanOutput[1] - expectedMean[1]) > epsilon ))
