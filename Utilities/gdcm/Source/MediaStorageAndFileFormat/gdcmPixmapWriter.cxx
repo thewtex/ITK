@@ -49,8 +49,7 @@ void PixmapWriter::DoIconImage(DataSet & rootds, Pixmap const & image)
     //DataElement iconimagesq = rootds.GetDataElement( ticonimage );
     //iconimagesq.SetTag( ticonimage );
     DataElement iconimagesq;
-    Attribute<0x0088,0x0200> iiat;
-    iconimagesq.SetTag( iiat.GetTag() );
+    iconimagesq.SetTag( Tag(0x0088,0x0200) );
     iconimagesq.SetVR( VR::SQ );
     SmartPointer<SequenceOfItems> sq = new SequenceOfItems;
     sq->SetLengthToUndefined();
@@ -388,7 +387,7 @@ bool PixmapWriter::PrepareWrite()
   DataElement de( Tag(0x7fe0,0x0010) );
   const Value &v = PixelData->GetDataElement().GetValue();
   de.SetValue( v );
-  const ByteValue *bv = de.GetByteValue();
+  const ByteValue *bv1 = de.GetByteValue();
   const TransferSyntax &ts = PixelData->GetTransferSyntax();
   assert( ts.IsExplicit() || ts.IsImplicit() );
 
@@ -446,10 +445,10 @@ bool PixmapWriter::PrepareWrite()
     }
 
   VL vl;
-  if( bv )
+  if( bv1 )
     {
     // if ts is explicit -> set VR
-    vl = bv->GetLength();
+    vl = bv1->GetLength();
     }
   else
     {
@@ -529,15 +528,15 @@ bool PixmapWriter::PrepareWrite()
     SmartPointer<SequenceOfItems> sq;
     if( ds.FindDataElement( tsourceImageSequence ) )
       {
-      DataElement &de = (DataElement&)ds.GetDataElement( tsourceImageSequence );
-      //assert( de.IsUndefinedLength() );
-      de.SetVLToUndefined(); // For now
-      if( de.IsEmpty() )
+      DataElement &de1 = const_cast<DataElement&>(ds.GetDataElement( tsourceImageSequence) );
+      //assert( de1.IsUndefinedLength() );
+      de1.SetVLToUndefined(); // For now
+      if( de1.IsEmpty() )
         {
         sq = new SequenceOfItems;
-        de.SetValue( *sq );
+        de1.SetValue( *sq );
         }
-      sq = de.GetValueAsSQ();
+      sq = de1.GetValueAsSQ();
       }
     else
       {

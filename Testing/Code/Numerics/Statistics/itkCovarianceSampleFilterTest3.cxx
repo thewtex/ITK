@@ -51,6 +51,10 @@ public:
     {
     return this->Superclass::GetMeasurementVectorSize();
     }
+
+private:
+  MyCovarianceSampleFilter() {}
+  ~MyCovarianceSampleFilter() {}
 };
 }
 }
@@ -172,7 +176,7 @@ int itkCovarianceSampleFilterTest3(int, char* [] )
   const FilterType::MatrixDecoratedType * decorator = filter->GetCovarianceMatrixOutput();
   FilterType::MatrixType    covarianceOutput  = decorator->Get();
 
-  FilterType::MeasurementVectorType    meanOutput = filter->GetMean();
+  FilterType::MeasurementVectorRealType meanOutput = filter->GetMean();
 
   std::cout << "Mean: "              << meanOutput << std::endl;
   std::cout << "Covariance Matrix: " << covarianceOutput << std::endl;
@@ -186,6 +190,8 @@ int itkCovarianceSampleFilterTest3(int, char* [] )
     if ( vcl_fabs( meanOutput[i] - mean[i] ) > epsilon )
       {
       std::cerr << "The computed mean value is incorrect" << std::endl;
+      std::cerr << "computed mean = " << meanOutput << std::endl;
+      std::cerr << "expected mean = " << mean << std::endl;
       return EXIT_FAILURE;
       }
     }

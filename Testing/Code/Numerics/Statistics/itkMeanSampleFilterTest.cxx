@@ -56,8 +56,7 @@ int itkMeanSampleFilterTest(int, char* [] )
     counter++;
     }
 
-  typedef itk::Statistics::MeanSampleFilter< SampleType >
-    FilterType;
+  typedef itk::Statistics::MeanSampleFilter< SampleType > FilterType;
 
   FilterType::Pointer filter = FilterType::New();
 

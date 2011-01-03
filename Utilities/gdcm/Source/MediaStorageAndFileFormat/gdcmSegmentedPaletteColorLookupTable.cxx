@@ -198,9 +198,15 @@ void SegmentedPaletteColorLookupTable::SetLUT(LookupTableType type, const unsign
     palette.reserve(num_entries);
     assert( length % 2 == 0 );
     // FIXME: inplace byteswapping (BAD!)
-    SwapperNoOp::SwapArray((uint16_t*)segment_values,length/2);
+    SwapperNoOp::SwapArray(const_cast<uint16_t*>(segment_values),length/2);
     ExpandPalette(segment_values, length, palette);
-    LookupTable::SetLUT(type, (unsigned char*)&palette[0], palette.size() * 2);
+
+    if (palette.size() * 2 > std::numeric_limits<uint32_t>::max())
+      {
+      gdcmErrorMacro("Palette size exceeds 32 bit integer range, something is very wrong.");
+      }
+    uint32_t theSize = (uint32_t)palette.size() * 2;
+    LookupTable::SetLUT(type, (unsigned char*)&palette[0], theSize);
     }
 }
 

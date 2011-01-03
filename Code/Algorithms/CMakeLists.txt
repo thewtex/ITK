@@ -1,4 +1,5 @@
 add_library(ITKAlgorithms ${ITK_LIBRARY_BUILD_TYPE}
+  itkFFTWGlobalConfiguration.cxx
   itkWatershedMiniPipelineProgressCommand.cxx
   itkBioCellBase.cxx
   itkBioCellularAggregateBase.cxx

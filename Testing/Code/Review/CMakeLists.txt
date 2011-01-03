@@ -85,8 +85,8 @@ set(ReviewTest_SRCS
   itkImageReadMagnitudeAndPhaseWriteComplexTest.cxx
   itkImageReadRealAndImaginaryWriteComplexTest.cxx
 
-  itkFFTComplexToComplexImageFilterTest01.cxx
-  itkFFTComplexToComplexImageFilterTest02.cxx
+#  itkFFTComplexToComplexImageFilterTest01.cxx
+#  itkFFTComplexToComplexImageFilterTest02.cxx
 
   itkVectorLinearInterpolateNearestNeighborExtrapolateImageFunctionTest.cxx
   itkVectorCentralDifferenceImageFunctionTest.cxx
@@ -142,6 +142,14 @@ set(ReviewTest_SRCS
   itkHessianToObjectnessMeasureImageFilterTest.cxx
   itkMultiScaleHessianBasedMeasureImageFilterTest.cxx
 )
+
+IF( USE_FFTWD OR USE_FFTWF )
+  SET( ReviewTest_SRCS
+    ${ReviewTest_SRCS}
+    itkFFTComplexToComplexImageFilterTest01.cxx
+    itkFFTComplexToComplexImageFilterTest02.cxx
+    )
+ENDIF( USE_FFTWD OR USE_FFTWF )
 
 SET(ReviewTest2_SRCS
   itkAtanRegularizedHeavisideStepFunctionTest1.cxx
@@ -249,6 +257,7 @@ set(ReviewTest5_SRCS
   itkLabelGeometryImageFilterTest.cxx
   itkMRCImageIOTest.cxx
   itkVTKImageIO2Test.cxx
+  itkVTKImageIO2Test2.cxx
   itkJPEG2000ImageIOFactoryTest01.cxx
   itkJPEG2000ImageIOTest00.cxx
   itkJPEG2000ImageIOTest01.cxx
@@ -261,7 +270,10 @@ set(ReviewTest5_SRCS
 )
 
 set(ReviewTest6_SRCS
+  itkObjectToObjectMetricTest.cxx
   itkDeformationFieldTransformTest.cxx
+  itkBSplineControlPointImageFilterTest.cxx
+  itkN4MRIBiasFieldCorrectionImageFilterTest.cxx
   itkScalarChanAndVeseLevelSetFunctionTest1.cxx
   itkScalarChanAndVeseLevelSetFunctionTest2.cxx
   itkScalarChanAndVeseDenseLevelSetImageFilterTest1.cxx
@@ -271,6 +283,7 @@ set(ReviewTest6_SRCS
   itkScalarChanAndVeseSparseLevelSetImageFilterTest1.cxx
   itkScalarChanAndVeseSparseLevelSetImageFilterTest2.cxx
 )
+
 
 add_test(itkOptImageToImageMetricsTest01
   ${REVIEW_TESTS} itkOptImageToImageMetricsTest
@@ -2399,8 +2412,65 @@ add_test(itkLabelGeometryImageFilterTest2
   ${INPUTDATA}/GrayscaleImageWithVariousShapes01.png
   )
 
+add_test(itkObjectToObjectMetricTest ${REVIEW_TESTS6}
+         itkObjectToObjectMetricTest)
 add_test(itkDeformationFieldTransformTest ${REVIEW_TESTS6}
   itkDeformationFieldTransformTest)
+
+add_test(itkBSplineControlPointImageFilterTest1
+  ${REVIEW_TESTS6}
+  --compare
+  ${TEMP}/N4ControlPoints_2D_output.nii.gz
+  ${TEMP}/N4ControlPoints_2D_outputRefined.nii.gz
+  itkBSplineControlPointImageFilterTest
+  2
+  ${BASELINE}/N4ControlPoints_2D.nii.gz                       # control point lattice
+  ${TEMP}/N4ControlPoints_2D_output.nii.gz
+  ${TEMP}/N4ControlPoints_2D_outputRefined.nii.gz
+  )
+
+add_test(itkBSplineControlPointImageFilterTest2
+  ${REVIEW_TESTS6}
+  --compare
+  ${TEMP}/N4ControlPoints_3D_output.nii.gz
+  ${TEMP}/N4ControlPoints_3D_outputRefined.nii.gz
+  itkBSplineControlPointImageFilterTest
+  3
+  ${BASELINE}/N4ControlPoints_3D.nii.gz                       # control point lattice
+  ${TEMP}/N4ControlPoints_3D_output.nii.gz
+  ${TEMP}/N4ControlPoints_3D_outputRefined.nii.gz
+  )
+
+add_test(itkN4MRIBiasFieldCorrectionImageFilterTest1
+  ${REVIEW_TESTS6}
+  --compare
+  ${BASELINE}/N4ControlPoints_2D.nii.gz
+  ${TEMP}/N4ControlPoints_2D.nii.gz
+  itkN4MRIBiasFieldCorrectionImageFilterTest
+  2
+  ${ITK_SOURCE_DIR}/Examples/Data/BrainT1SliceBorder20.png    # input
+  ${TEMP}/N4ControlPoints_2D.nii.gz                           # control point lattice
+  4                                                           # shrink factor
+  20x20                                                       # number of iterations
+  none                                                        # mask
+  200                                                         # spline distance
+  )
+
+add_test(itkN4MRIBiasFieldCorrectionImageFilterTest2
+  ${REVIEW_TESTS6}
+  --compare
+  ${BASELINE}/N4ControlPoints_3D.nii.gz
+  ${TEMP}/N4ControlPoints_3D.nii.gz
+  itkN4MRIBiasFieldCorrectionImageFilterTest
+  3
+  ${ITK_SOURCE_DIR}/Testing/Data/Input/HeadMRVolumeCompressed.mha    # input
+  ${TEMP}/N4ControlPoints_3D.nii.gz                                  # control point lattice
+  3                                                                  # shrink factor
+  10x10x10                                                           # number of iterations
+  none                                                               # mask
+  150                                                                # spline distance
+  )
+
 add_test(itkScalarChanAndVeseLevelSetFunctionTest1 ${REVIEW_TESTS6}
   itkScalarChanAndVeseLevelSetFunctionTest1)
 add_test(itkScalarChanAndVeseLevelSetFunctionTest2 ${REVIEW_TESTS6}
@@ -2467,6 +2537,7 @@ add_test(itkScalarChanAndVeseDenseLevelSetImageFilterTest4 ${REVIEW_TESTS6}
 
 add_test(itkMRCImageIOTest ${REVIEW_TESTS5} itkMRCImageIOTest ${TEMP})
 add_test(itkVTKImageIO2Test ${REVIEW_TESTS5} itkVTKImageIO2Test ${TEMP})
+add_test(itkVTKImageIO2Test2 ${REVIEW_TESTS5} itkVTKImageIO2Test2 ${TEMP}/itkVTKImageIO2Test2.vtk)
 
 add_test(itkJPEG2000Test00
   ${REVIEW_TESTS5} itkJPEG2000ImageIORegionOfInterest
@@ -2577,9 +2648,10 @@ add_executable(itkReviewTests6 itkReviewTests6.cxx ${ReviewTest6_SRCS})
 
 set(ReviewTest6_LIBS
   ITKIO
+  ITKNumerics
   ITKStatistics
   )
-target_link_libraries(itkReviewTests6 ${ReviewTest6_LIBS})
+target_link_libraries(itkReviewTests6 ${ReviewTest6_LIBS} ITKNumerics)
 
 if(ITK_USE_MINC2 AND MINC2_FOUND)
   set(ReviewTest_LIBS ${ReviewTest_LIBS} ITKIOMINC2)

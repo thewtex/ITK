@@ -90,7 +90,7 @@ BSplineScatteredDataPointSetToImageFilter< TInputPointSet, TOutputImage >
 template< class TInputPointSet, class TOutputImage >
 void
 BSplineScatteredDataPointSetToImageFilter< TInputPointSet, TOutputImage >
-::SetSplineOrder(ArrayType order)
+::SetSplineOrder(const ArrayType & order)
 {
   itkDebugMacro("Setting m_SplineOrder to " << order);
 
@@ -155,7 +155,7 @@ BSplineScatteredDataPointSetToImageFilter< TInputPointSet, TOutputImage >
 template< class TInputPointSet, class TOutputImage >
 void
 BSplineScatteredDataPointSetToImageFilter< TInputPointSet, TOutputImage >
-::SetNumberOfLevels(ArrayType levels)
+::SetNumberOfLevels(const ArrayType & levels)
 {
   this->m_NumberOfLevels = levels;
   this->m_MaximumNumberOfLevels = 1;
@@ -258,11 +258,11 @@ BSplineScatteredDataPointSetToImageFilter< TInputPointSet, TOutputImage >
       maximumNumberOfSpans = numberOfSpans;
       }
     }
-  this->m_BSplineEpsilon = 10.0 * vcl_numeric_limits< RealType >::epsilon();
+  this->m_BSplineEpsilon = 100 * vcl_numeric_limits< RealType >::epsilon();
   while ( static_cast< RealType >( maximumNumberOfSpans ) ==
           static_cast< RealType >( maximumNumberOfSpans ) - this->m_BSplineEpsilon )
     {
-    this->m_BSplineEpsilon *= 10.0;
+    this->m_BSplineEpsilon *= 10;
     }
 
   this->m_InputPointData->Initialize();

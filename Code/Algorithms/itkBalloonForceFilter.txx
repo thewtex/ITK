@@ -609,7 +609,10 @@ BalloonForceFilter< TInputMesh, TOutputMesh >
 
   IPixelType vd[3];
   IPixelType vf[3];
-
+  for (unsigned int ip = 0; ip < 3; ip++)
+    {
+    vf[ip].Fill(NumericTraits<typename IPixelType::ValueType>::Zero);
+    }
   typename IPixelType::VectorType u[3];
 
   unsigned long i = 0; // arnaud: I guess i an InputCellIdentifier?

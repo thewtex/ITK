@@ -3,6 +3,7 @@
 #include <testlib/testlib_test.h>
 #include <vcl_complex.h>
 #include <vcl_iostream.h>
+#include <vcl_cstring.h>
 #include <vxl_config.h> // for VXL_BIG_ENDIAN
 
 static
@@ -200,7 +201,19 @@ void test_numeric_traits()
   // there should only be 2 zeros in the representation: the sign bits of mantissa and of exponent:
   TEST("vnl_numeric_traits<double>::maxval must be the largest possible", nr_of_ones, 8*sizeof(double)-2);
 
-  x = (unsigned char*)(&ldm);
+  typedef union {
+    long double ld;
+    char lc[sizeof(long double)];
+    } longdoublewithbackup;
+
+  longdoublewithbackup ldwb;
+
+  // initialize the full set of bytes under the long double type
+  vcl_memset( ldwb.lc, 0, sizeof(long double) );
+
+  ldwb.ld = ldm;
+
+  x = (unsigned char*)(&(ldwb.ld));
 #if 0
       // See TODO below.  Do not set if not used.
   nr_of_ones = 0;
@@ -220,7 +233,7 @@ void test_numeric_traits()
       vcl_cout << n;
     }
   vcl_cout << '\n';
-#if 0 // TODO - long double has non-standard length on differnet platforms
+#if 0 // TODO - long double has non-standard length on different platforms
   // there should only be 2 zeros in the representation: the sign bits of mantissa and of exponent:
   TEST("vnl_numeric_traits<long double>::maxval must be the largest possible", nr_of_ones, 8*sizeof(long double)-2);
 #endif
