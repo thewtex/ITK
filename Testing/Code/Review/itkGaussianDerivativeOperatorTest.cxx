@@ -10,8 +10,7 @@ namespace
 bool TestGaussianOperator( double variance,
                            double error,
                            unsigned int width,
-                           unsigned int order,
-                           bool useDerivativeOperator )
+                           unsigned int order )
 {
 
   typedef itk::GaussianDerivativeOperator< double, 1 > GaussianOp;
@@ -20,7 +19,6 @@ bool TestGaussianOperator( double variance,
             << " error: " << error
             << " width: " << width
             << " order: " << order
-            << " derivativeOperator: " << useDerivativeOperator
             << std::endl;
 
   GaussianOp op;
@@ -31,7 +29,6 @@ bool TestGaussianOperator( double variance,
 
   op.SetOrder( order );
   op.SetNormalizeAcrossScale( false );
-  op.SetUseDerivativeOperator( useDerivativeOperator );
 
   op.CreateDirectional();
 
@@ -79,9 +76,7 @@ int itkGaussianDerivativeOperatorTest( int argc, char *argv[] )
     unsigned int width = atoi(argv[3]);
     unsigned int order = atoi(argv[4]);
 
-    TestGaussianOperator( variance, error, width, order, true );
-    TestGaussianOperator( variance, error, width, order, false );
-
+    TestGaussianOperator( variance, error, width, order );
     }
   else if ( argc != 1 )
     {
@@ -108,47 +103,24 @@ int itkGaussianDerivativeOperatorTest( int argc, char *argv[] )
 
   std::cout << "====== DerivativeOperator ======" << std::endl;
 
-  pass &=   TestGaussianOperator( .2, .001, 30, 0, true );
-  pass &=   TestGaussianOperator( .2, .001, 30, 1, true );
-  pass &=   TestGaussianOperator( .2, .001, 30, 2, true );
-  pass &=   TestGaussianOperator( .2, .001, 30, 3, true );
-  pass &=   TestGaussianOperator( .2, .001, 30, 4, true );
+  pass &=   TestGaussianOperator( .2, .001, 30, 0 );
+  pass &=   TestGaussianOperator( .2, .001, 30, 1 );
+  pass &=   TestGaussianOperator( .2, .001, 30, 2 );
+  pass &=   TestGaussianOperator( .2, .001, 30, 3 );
+  pass &=   TestGaussianOperator( .2, .001, 30, 4 );
 
-  pass &=   TestGaussianOperator( 1, .001, 30, 0, true );
-  pass &=   TestGaussianOperator( 1, .001, 30, 1, true );
-  pass &=   TestGaussianOperator( 1, .001, 30, 2, true );
-  pass &=   TestGaussianOperator( 1, .001, 30, 3, true );
-  pass &=   TestGaussianOperator( 1, .001, 30, 4, true );
+  pass &=   TestGaussianOperator( 1, .001, 30, 0 );
+  pass &=   TestGaussianOperator( 1, .001, 30, 1 );
+  pass &=   TestGaussianOperator( 1, .001, 30, 2 );
+  pass &=   TestGaussianOperator( 1, .001, 30, 3 );
+  pass &=   TestGaussianOperator( 1, .001, 30, 4 );
 
-  pass &=   TestGaussianOperator( 10, .001, 30, 0, true );
-  pass &=   TestGaussianOperator( 10, .001, 30, 1, true );
+  pass &=   TestGaussianOperator( 10, .001, 30, 0 );
+  pass &=   TestGaussianOperator( 10, .001, 30, 1 );
 
-  pass &=   TestGaussianOperator( 10, .0001, 100, 1, true );
+  pass &=   TestGaussianOperator( 10, .0001, 100, 1 );
 
-  pass &=   TestGaussianOperator( 50, .001, 300, 0, true );
-
-  std::cout << "====== Analytic Derivative ======" << std::endl;
-
-  pass &=   TestGaussianOperator( .2, .001, 30, 0, false );
-  pass &=   TestGaussianOperator( .2, .001, 30, 1, false );
-  pass &=   TestGaussianOperator( .2, .001, 30, 2, false );
-  pass &=   TestGaussianOperator( .2, .001, 30, 3, false );
-  pass &=   TestGaussianOperator( .2, .001, 30, 4, false );
-
-  pass &=   TestGaussianOperator( 1, .001, 30, 0, false );
-  pass &=   TestGaussianOperator( 1, .001, 30, 1, false );
-  pass &=   TestGaussianOperator( 1, .001, 30, 2, false );
-  pass &=   TestGaussianOperator( 1, .001, 30, 3, false );
-  pass &=   TestGaussianOperator( 1, .001, 30, 4, false );
-
-
-  pass &=   TestGaussianOperator( 10, .001, 30, 0, false );
-  pass &=   TestGaussianOperator( 10, .001, 30, 1, false );
-
-  pass &=   TestGaussianOperator( 10, .0001, 100, 1, false );
-
-  pass &=   TestGaussianOperator( 50, .001, 300, 0, true );
-
+  pass &=   TestGaussianOperator( 50, .001, 300, 0 );
 
   if ( pass )
     return EXIT_SUCCESS;
