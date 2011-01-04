@@ -89,7 +89,6 @@ GaussianDerivativeOperator< TPixel, VDimension, TAllocator >
   // additional normalization for spacing
   norm /= vcl_pow( m_Spacing, static_cast< int >( m_Order ) );
 
-
   DerivativeOperatorType derivOp;
   derivOp.SetDirection( this->GetDirection() );
   derivOp.SetOrder( m_Order );
@@ -165,7 +164,7 @@ GaussianDerivativeOperator< TPixel, VDimension, TAllocator >
       // if the coeff is less then this value then the value of cap
       // will not change, and it's will not contribute to the operator
       itkWarningMacro( "Kernel failed to accumulate to approximately one with current remainder "
-                       << cap << " and current coefficient " << coeff[i] << "." );
+                       << cap-sum << " and current coefficient " << coeff[i] << "." );
 
       break;
       }
@@ -268,7 +267,7 @@ double
 GaussianDerivativeOperator< TPixel, VDimension, TAllocator >
 ::ModifiedBesselI(int n, double y)
 {
-  const double DIGITS = 8.0;
+  const double DIGITS = 10.0;
   int          j;
   double       qim, qi, qip, toy;
   double       accumulator;
