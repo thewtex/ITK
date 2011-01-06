@@ -89,7 +89,7 @@ RealTimeClock::~RealTimeClock() {}
 
 /** Returns a timestamp in seconds */
 RealTimeClock::TimeStampType
-RealTimeClock::GetTimeStamp() const
+RealTimeClock::GetTimeInSeconds() const
 {
 #if defined( WIN32 ) || defined( _WIN32 )
   LARGE_INTEGER tick;
