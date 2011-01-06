@@ -28,6 +28,7 @@
 #include "itkFixedCenterOfRotationAffineTransform.h"
 #include "itkIdentityTransform.h"
 #include "itkQuaternionRigidTransform.h"
+#include "itkRigid3DTransform.h"
 #include "itkRigid3DPerspectiveTransform.h"
 #include "itkScaleLogarithmicTransform.h"
 #include "itkScaleVersor3DTransform.h"
@@ -83,6 +84,7 @@ void TransformFactoryBase::RegisterDefaultTransforms()
     TransformFactory< FixedCenterOfRotationAffineTransform< double > >::RegisterTransform ();
     TransformFactory< QuaternionRigidTransform< double > >::RegisterTransform ();
     TransformFactory< Rigid2DTransform< double > >::RegisterTransform ();
+    TransformFactory< Rigid3DTransform< double > >::RegisterTransform ();
     TransformFactory< Rigid3DPerspectiveTransform< double > >::RegisterTransform ();
     TransformFactory< ScalableAffineTransform< double > >::RegisterTransform ();
     TransformFactory< ScaleLogarithmicTransform< double > >::RegisterTransform ();
@@ -128,6 +130,7 @@ void TransformFactoryBase::RegisterDefaultTransforms()
     TransformFactory< FixedCenterOfRotationAffineTransform< float > >::RegisterTransform ();
     TransformFactory< QuaternionRigidTransform< float > >::RegisterTransform ();
     TransformFactory< Rigid2DTransform< float > >::RegisterTransform ();
+    TransformFactory< Rigid3DTransform< float > >::RegisterTransform ();
     TransformFactory< Rigid3DPerspectiveTransform< float > >::RegisterTransform ();
     TransformFactory< ScalableAffineTransform< float > >::RegisterTransform ();
     TransformFactory< ScaleLogarithmicTransform< float > >::RegisterTransform ();

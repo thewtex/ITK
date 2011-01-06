@@ -19,7 +19,7 @@
 #define __itkQuaternionRigidTransform_h
 
 #include <iostream>
-#include "itkRigid3DTransform.h"
+#include "itkRigid3DTransformBase.h"
 #include "vnl/vnl_quaternion.h"
 
 namespace itk
@@ -47,20 +47,20 @@ namespace itk
 template< class TScalarType = double >
 // Data type for scalars (float or double)
 class ITK_EXPORT QuaternionRigidTransform:
-  public Rigid3DTransform< TScalarType >
+  public Rigid3DTransformBase< TScalarType >
 {
 public:
   /** Standard class typedefs.   */
-  typedef QuaternionRigidTransform        Self;
-  typedef Rigid3DTransform< TScalarType > Superclass;
-  typedef SmartPointer< Self >            Pointer;
-  typedef SmartPointer< const Self >      ConstPointer;
+  typedef QuaternionRigidTransform            Self;
+  typedef Rigid3DTransformBase< TScalarType > Superclass;
+  typedef SmartPointer< Self >                Pointer;
+  typedef SmartPointer< const Self >          ConstPointer;
 
   /** New macro for creation of through a Smart Pointer   */
   itkNewMacro(Self);
 
   /** Run-time type information (and related methods).   */
-  itkTypeMacro(QuaternionRigidTransform, Rigid3DTransform);
+  itkTypeMacro(QuaternionRigidTransform, Rigid3DTransformBase);
 
   /** Dimension of parameters   */
   itkStaticConstMacro(InputSpaceDimension, unsigned int, 3);

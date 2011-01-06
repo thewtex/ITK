@@ -19,7 +19,7 @@
 #define __itkVersorTransform_h
 
 #include <iostream>
-#include "itkRigid3DTransform.h"
+#include "itkRigid3DTransformBase.h"
 #include "vnl/vnl_quaternion.h"
 
 namespace itk
@@ -45,18 +45,18 @@ namespace itk
  */
 template< class TScalarType = double >
 //Data type for scalars (float or double)
-class ITK_EXPORT VersorTransform:public Rigid3DTransform< TScalarType >
+class ITK_EXPORT VersorTransform:public Rigid3DTransformBase< TScalarType >
 {
 public:
 
   /** Standard Self Typedef */
-  typedef VersorTransform                 Self;
-  typedef Rigid3DTransform< TScalarType > Superclass;
-  typedef SmartPointer< Self >            Pointer;
-  typedef SmartPointer< const Self >      ConstPointer;
+  typedef VersorTransform                     Self;
+  typedef Rigid3DTransformBase< TScalarType > Superclass;
+  typedef SmartPointer< Self >                Pointer;
+  typedef SmartPointer< const Self >          ConstPointer;
 
   /** Run-time type information (and related methods).  */
-  itkTypeMacro(VersorTransform, Rigid3DTransform);
+  itkTypeMacro(VersorTransform, Rigid3DTransformBase);
 
   /** New macro for creation of through a Smart Pointer */
   itkNewMacro(Self);

@@ -277,7 +277,7 @@
 #include "itkRedPixelAccessor.h"
 #include "itkRigid2DTransform.txx"
 #include "itkRigid3DPerspectiveTransform.txx"
-#include "itkRigid3DTransform.txx"
+#include "itkRigid3DTransform.h"
 #include "itkRootTreeIterator.h"
 #include "itkSTLConstContainerAdaptor.h"
 #include "itkSTLContainerAdaptor.h"
@@ -371,4 +371,3 @@ int main ( int , char ** )
 
   return EXIT_SUCCESS;
 }
-

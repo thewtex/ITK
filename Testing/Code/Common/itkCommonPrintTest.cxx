@@ -85,6 +85,7 @@
 #include "itkQuaternionRigidTransform.h"
 #include "itkRGBToVectorImageAdaptor.h"
 #include "itkRigid3DPerspectiveTransform.h"
+#include "itkRigid3DTransform.h"
 #include "itkScaleSkewVersor3DTransform.h"
 #include "itkScaleTransform.h"
 #include "itkSegmentationBorder.h"
@@ -120,18 +121,18 @@ struct TestObject
 
 int itkCommonPrintTest(int , char* [])
 {
-  typedef itk::Image<float,2> InputType;
+  typedef itk::Image<float,2>         InputType;
   typedef itk::Image<unsigned char,2> CharType;
-  typedef itk::Image<float,2> OutputType;
+  typedef itk::Image<float,2>         OutputType;
 
-  typedef itk::Point<float,2> PointType;
+  typedef itk::Point<float,2>   PointType;
   typedef itk::Mesh<PointType>  MeshType;
 
-  typedef itk::Vector<float,2> VectorType;
+  typedef itk::Vector<float,2>      VectorType;
   typedef itk::Image<VectorType, 2> VectorImageType;
 
   typedef itk::RGBPixel<unsigned short> RGBPixelType;
-  typedef itk::Image<RGBPixelType,2> RGBImageType;
+  typedef itk::Image<RGBPixelType,2>    RGBImageType;
 
   // Used for CenteredTransformInitializer
   typedef itk::CenteredRigid2DTransform<float> TransformType;
@@ -456,6 +457,10 @@ int itkCommonPrintTest(int , char* [])
   itk::Rigid2DTransform<double>::Pointer Rigid2DTransformObj =
     itk::Rigid2DTransform<double>::New();
   std::cout << "------------Rigid2DTransform" << Rigid2DTransformObj;
+
+  itk::Rigid3DTransform<double>::Pointer Rigid3DTransformObj =
+    itk::Rigid3DTransform<double>::New();
+  std::cout << "------------Rigid3DTransform" << Rigid3DTransformObj;
 
   itk::Rigid3DPerspectiveTransform<double>::Pointer Rigid3DPerspectiveTransformObj =
     itk::Rigid3DPerspectiveTransform<double>::New();

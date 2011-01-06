@@ -19,7 +19,7 @@
 #define __itkEuler3DTransform_h
 
 #include <iostream>
-#include "itkRigid3DTransform.h"
+#include "itkRigid3DTransformBase.h"
 
 namespace itk
 {
@@ -46,20 +46,20 @@ namespace itk
 template< class TScalarType = double >
 // Data type for scalars (float or double)
 class ITK_EXPORT Euler3DTransform:
-  public Rigid3DTransform< TScalarType >
+  public Rigid3DTransformBase< TScalarType >
 {
 public:
   /** Standard class typedefs. */
-  typedef Euler3DTransform                Self;
-  typedef Rigid3DTransform< TScalarType > Superclass;
-  typedef SmartPointer< Self >            Pointer;
-  typedef SmartPointer< const Self >      ConstPointer;
+  typedef Euler3DTransform                    Self;
+  typedef Rigid3DTransformBase< TScalarType > Superclass;
+  typedef SmartPointer< Self >                Pointer;
+  typedef SmartPointer< const Self >          ConstPointer;
 
   /** New macro for creation of through a Smart Pointer. */
   itkNewMacro(Self);
 
   /** Run-time type information (and related methods). */
-  itkTypeMacro(Euler3DTransform, Rigid3DTransform);
+  itkTypeMacro(Euler3DTransform, Rigid3DTransformBase);
 
   /** Dimension of the space. */
   itkStaticConstMacro(SpaceDimension, unsigned int, 3);
