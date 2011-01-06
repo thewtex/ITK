@@ -286,6 +286,16 @@ Object
 }
 
 /**
+ * Return the modification for this object.
+ */
+const TimeStamp &
+Object
+::GetTimeStamp() const
+{
+  return m_MTime;
+}
+
+/**
  * Make sure this object's modified time is greater than all others.
  */
 void

@@ -86,6 +86,9 @@ public:
   /** Return this objects modified time.  */
   virtual unsigned long GetMTime() const;
 
+  /** Return this object's time stamp.  */
+  virtual const TimeStamp & GetTimeStamp() const;
+
   /** Update the modification time for this object. Many filters rely on the
    * modification time to determine if they need to recompute their data.  */
   virtual void Modified() const;
@@ -172,6 +175,8 @@ protected:
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   bool PrintObservers(std::ostream & os, Indent indent) const;
+
+  virtual void SetTimeStamp( const TimeStamp & time );
 
 private:
   Object(const Self &);         //purposely not implemented
