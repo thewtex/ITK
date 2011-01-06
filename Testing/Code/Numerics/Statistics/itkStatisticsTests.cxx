@@ -44,6 +44,7 @@ void RegisterTests()
   REGISTER_TEST(itkImageToHistogramFilterTest);
   REGISTER_TEST(itkImageToHistogramFilterTest2);
   REGISTER_TEST(itkImageToHistogramFilterTest3);
+  REGISTER_TEST(itkImageToHistogramFilterTest4);
   REGISTER_TEST(itkImageToListSampleFilterTest);
   REGISTER_TEST(itkImageToListSampleFilterTest2);
   REGISTER_TEST(itkImageToListSampleFilterTest3);
