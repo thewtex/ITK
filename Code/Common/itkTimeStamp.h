@@ -98,6 +98,7 @@ public:
   /** Allow for typcasting to unsigned long.  */
   operator unsigned long() const
         { return m_ModifiedTime; }
+
 private:
   unsigned long m_ModifiedTime;
 };
