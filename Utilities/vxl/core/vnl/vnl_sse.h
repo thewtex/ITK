@@ -59,25 +59,25 @@
 // Check what memory alignment function is supported
 #if VNL_CONFIG_ENABLE_SSE2 && VXL_HAS_MM_MALLOC
 # define VNL_SSE_ALLOC(n,s,a) _mm_malloc(n*s,a)
-# define VNL_SSE_FREE(v,n,s) _mm_free(v)
+# define VNL_SSE_FREE(v,n,s) do { _mm_free(v); (void)n; (void)s; } while(0)
 #elif VNL_CONFIG_ENABLE_SSE2 && VXL_HAS_ALIGNED_MALLOC
 # include <malloc.h>
 # define VNL_SSE_ALLOC(n,s,a) _aligned_malloc(n*s,a)
-# define VNL_SSE_FREE(v,n,s) _aligned_free(v)
+# define VNL_SSE_FREE(v,n,s) do { _aligned_free(v); (void)n; (void)s; } while(0)
 #elif VNL_CONFIG_ENABLE_SSE2 && VXL_HAS_MINGW_ALIGNED_MALLOC
 # include <malloc.h>
 # define VNL_SSE_ALLOC(n,s,a) __mingw_aligned_malloc(n*s,a)
-# define VNL_SSE_FREE(v,n,s) __mingw_aligned_free(v)
+# define VNL_SSE_FREE(v,n,s) do { __mingw_aligned_free(v); (void)n; (void)s; } while(0)
 #elif VNL_CONFIG_ENABLE_SSE2 && VXL_HAS_POSIX_MEMALIGN
 # include <vcl_cstdlib.h>
 # define VNL_SSE_ALLOC(n,s,a) memalign(a,n*s)
-# define VNL_SSE_FREE(v,n,s) vcl_free(v)
+# define VNL_SSE_FREE(v,n,s) do { vcl_free(v); (void)n; (void)s; } while(0)
 #else // sse2 disabled or could not get memory alignment support, use slower unaligned based intrinsics
 # define VNL_SSE_HEAP_STORE(pf) _mm_storeu_##pf
 # define VNL_SSE_HEAP_LOAD(pf) _mm_loadu_##pf
 # if VNL_CONFIG_THREAD_SAFE
 #   define VNL_SSE_ALLOC(n,s,a) new char[n*s]
-#   define VNL_SSE_FREE(v,n,s) delete [] static_cast<char*>(v)
+#   define VNL_SSE_FREE(v,n,s) do { delete [] static_cast<char*>(v); (void)n; (void)s; } while(0)
 # else
 #   define VNL_SSE_ALLOC(n,s,a) vnl_alloc::allocate((n == 0) ? 8 : (n * s));
 #   define VNL_SSE_FREE(v,n,s) if (v) vnl_alloc::deallocate(v, (n == 0) ? 8 : (n * s));
