@@ -36,12 +36,13 @@ int itkImageRandomNonRepeatingIteratorWithIndexTest(int, char* [] )
   const unsigned int ImageDimension = 3;
   typedef itk::Index< ImageDimension >                                    PixelType;
   typedef itk::Image< PixelType, ImageDimension >                         ImageType;
-  typedef unsigned long                                                   PriorityPixelType;
-  typedef itk::Image< PriorityPixelType, ImageDimension >                 PriorityImageType;
   typedef itk::ImageRegionIteratorWithIndex< ImageType >                  IteratorType;
-  typedef itk::ImageRegionIteratorWithIndex< PriorityImageType >          PriorityIteratorType;
   typedef itk::ImageRandomNonRepeatingIteratorWithIndex< ImageType >      RandomIteratorType;
   typedef itk::ImageRandomNonRepeatingConstIteratorWithIndex< ImageType > RandomConstIteratorType;
+  typedef RandomConstIteratorType::PriorityImageType                      PriorityImageType;
+  typedef PriorityImageType::PixelType                                    PriorityPixelType;
+  typedef itk::ImageRegionIteratorWithIndex< PriorityImageType >          PriorityIteratorType;
+
   std::cout << "Creating images" << std::endl;
 
   ImageType::Pointer myImage = ImageType::New();
