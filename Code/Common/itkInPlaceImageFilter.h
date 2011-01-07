@@ -65,18 +65,19 @@ namespace itk
  *
  * \ingroup ImageFilters
  */
-template< class TInputImage, class TOutputImage = TInputImage >
-class ITK_EXPORT InPlaceImageFilter:public ImageToImageFilter< TInputImage, TOutputImage >
+template< class TInputImage, class TOutputImage = TInputImage, class TParentImageFilter = ImageToImageFilter< TInputImage, TOutputImage > >
+class ITK_EXPORT InPlaceImageFilter:
+    public TParentImageFilter
 {
 public:
   /** Standard class typedefs. */
   typedef InPlaceImageFilter                              Self;
-  typedef ImageToImageFilter< TInputImage, TOutputImage > Superclass;
+  typedef TParentImageFilter                              Superclass;
   typedef SmartPointer< Self >                            Pointer;
   typedef SmartPointer< const Self >                      ConstPointer;
 
   /** Run-time type information (and related methods). */
-  itkTypeMacro(InPlaceImageFilter, ImageToImageFilter);
+  itkTypeMacro(InPlaceImageFilter, TParentImageFilter);
 
   /** Superclass typedefs. */
   typedef typename Superclass::OutputImageType       OutputImageType;

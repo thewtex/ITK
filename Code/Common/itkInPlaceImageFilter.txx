@@ -35,8 +35,8 @@ namespace itk
 /**
  *
  */
-template< class TInputImage, class TOutputImage >
-InPlaceImageFilter< TInputImage, TOutputImage >
+template< class TInputImage, class TOutputImage, class TParentImageFilter >
+InPlaceImageFilter< TInputImage, TOutputImage, TParentImageFilter >
 ::InPlaceImageFilter():
   m_InPlace(true)
 {}
@@ -44,14 +44,14 @@ InPlaceImageFilter< TInputImage, TOutputImage >
 /**
  *
  */
-template< class TInputImage, class TOutputImage >
-InPlaceImageFilter< TInputImage, TOutputImage >
+template< class TInputImage, class TOutputImage, class TParentImageFilter >
+InPlaceImageFilter< TInputImage, TOutputImage, TParentImageFilter >
 ::~InPlaceImageFilter()
 {}
 
-template< class TInputImage, class TOutputImage >
+template< class TInputImage, class TOutputImage, class TParentImageFilter >
 void
-InPlaceImageFilter< TInputImage, TOutputImage >
+InPlaceImageFilter< TInputImage, TOutputImage, TParentImageFilter >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
@@ -68,9 +68,9 @@ InPlaceImageFilter< TInputImage, TOutputImage >
     }
 }
 
-template< class TInputImage, class TOutputImage >
+template< class TInputImage, class TOutputImage, class TParentImageFilter >
 void
-InPlaceImageFilter< TInputImage, TOutputImage >
+InPlaceImageFilter< TInputImage, TOutputImage, TParentImageFilter >
 ::AllocateOutputs()
 {
   // if told to run in place and the types support it,
@@ -112,17 +112,17 @@ InPlaceImageFilter< TInputImage, TOutputImage >
     }
 }
 
-template< class TInputImage, class TOutputImage >
+template< class TInputImage, class TOutputImage, class TParentImageFilter >
 bool
-InPlaceImageFilter< TInputImage, TOutputImage >
+InPlaceImageFilter< TInputImage, TOutputImage, TParentImageFilter >
 ::CanRunInPlace() const
 {
   return Self::CanRunInPlace(is_same<TInputImage,TOutputImage>());
 }
 
-template< class TInputImage, class TOutputImage >
+template< class TInputImage, class TOutputImage, class TParentImageFilter >
 void
-InPlaceImageFilter< TInputImage, TOutputImage >
+InPlaceImageFilter< TInputImage, TOutputImage, TParentImageFilter >
 ::ReleaseInputs()
 {
   // if told to run in place and the types support it,
