@@ -36,7 +36,11 @@ int itkImageRandomNonRepeatingIteratorWithIndexTest(int, char* [] )
   const unsigned int ImageDimension = 3;
   typedef itk::Index< ImageDimension >                                    PixelType;
   typedef itk::Image< PixelType, ImageDimension >                         ImageType;
+#if defined(ITK_USE_64BITS_IDS)
+  typedef itk::SizeValueType                                              PriorityPixelType;
+#else
   typedef unsigned long                                                   PriorityPixelType;
+#endif
   typedef itk::Image< PriorityPixelType, ImageDimension >                 PriorityImageType;
   typedef itk::ImageRegionIteratorWithIndex< ImageType >                  IteratorType;
   typedef itk::ImageRegionIteratorWithIndex< PriorityImageType >          PriorityIteratorType;

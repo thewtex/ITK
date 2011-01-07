@@ -131,7 +131,11 @@ int main( int argc, char * argv[] )
 
 
   // Software Guide : BeginCodeSnippet
+#if defined(ITK_USE_64BITS_IDS)
+  typedef std::vector< itk::SizeValueType > SizesInPixelsType;
+#else
   typedef std::vector< unsigned long > SizesInPixelsType;
+#endif
 
   const SizesInPixelsType &  sizesInPixels = relabeler->GetSizeOfObjectsInPixels();
 

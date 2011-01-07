@@ -34,8 +34,14 @@ int itkImageToListSampleAdaptorTest(int, char* [] )
   // Now generate a random image
   typedef itk::RandomImageSource<FloatImage> SourceType;
   SourceType::Pointer source = SourceType::New();
+
+#if defined(ITK_USE_64BITS_IDS)
+  itk::SizeValueType size[3] = {17, 8, 20};
+  itk::SizeValueType totalSize = size[0] * size[1] * size[2];
+#else
   unsigned long size[3] = {17, 8, 20};
   unsigned long totalSize = size[0] * size[1] * size[2];
+#endif
 
   source->SetSize(size);
   float minValue = -100.0;

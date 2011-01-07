@@ -116,7 +116,14 @@ template<class TCell> int TestCellInterface(std::string name, TCell *aCell)
 
   // Add point ids
   std::cout << "    SetPointIds" << std::endl;
-  unsigned long *pointIds = new unsigned long[cell->GetNumberOfPoints() * 2];
+
+#if defined(ITK_USE_64BITS_IDS)
+  typedef MeshType::PointIdentifier  PointIdentifier;
+#else
+  typedef unsigned long              PointIdentifier;
+#endif
+
+  PointIdentifier *pointIds = new PointIdentifier[cell->GetNumberOfPoints() * 2];
   for (unsigned int i = 0; i < cell->GetNumberOfPoints() * 2; i++)
     {
     pointIds[i] = i;
@@ -211,7 +218,14 @@ template<class TCell> int TestQECellInterface(std::string name, TCell *aCell)
 
   // Add point ids
   std::cout << "    SetPointIds" << std::endl;
-  unsigned long *pointIds = new unsigned long[cell->GetNumberOfPoints() * 2];
+
+#if defined(ITK_USE_64BITS_IDS)
+  typedef typename TCell::PointIdentifier  PointIdentifier;
+#else
+  typedef unsigned long                    PointIdentifier;
+#endif
+
+  PointIdentifier *pointIds = new PointIdentifier[cell->GetNumberOfPoints() * 2];
   for (unsigned int i = 0; i < cell->GetNumberOfPoints() * 2; i++)
     {
     pointIds[i] = i;

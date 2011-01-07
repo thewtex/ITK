@@ -47,7 +47,12 @@ int itkTobogganImageFilterTest(int ac, char* av[] )
   typedef itk::Image<unsigned char, 2> InputImageType;
   typedef itk::Image<float, 2> FloatImageType;
   typedef itk::Image<unsigned char, 2> OutputImageType;
-  typedef itk::Image<unsigned long, 2> LongImageType;
+
+#if defined(ITK_USE_64BITS_IDS)
+  typedef itk::Image< itk::IdentifierType, 2> LongImageType;
+#else
+  typedef itk::Image< unsigned long, 2> LongImageType;
+#endif
 
 
   // Create a pipeline

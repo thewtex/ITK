@@ -85,7 +85,11 @@ public:
 
   /** Specify the size of the output image. */
   itkSetMacro(Size, SizeType);
+#if defined(ITK_USE_64BITS_IDS)
+  itkSetVectorMacro(Size, SizeValueType, NDimensions);
+#else
   itkSetVectorMacro(Size, unsigned long, NDimensions);
+#endif
 
   /** Get the size of the output image. */
   itkGetConstReferenceMacro(Size, SizeType);

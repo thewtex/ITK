@@ -80,7 +80,12 @@ int itkVTKPolyDataWriterTest01(int argc, char* argv[])
     mesh->SetPoint( i, point );
     }
 
+
+#if defined(ITK_USE_64BITS_IDS)
+  MeshType::PointIdentifier pointIds[3];
+#else
   unsigned long pointIds[3];
+#endif
 
   MeshType::CellAutoPointer cell;
   TriangleCellType * triangle;

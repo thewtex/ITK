@@ -154,7 +154,12 @@ int itkChangeInformationImageFilterTest(int, char* [] )
 
   double newOrigin[ImageDimension] = {1000, 2000, 3000};
   double newSpacing[ImageDimension] = {10, 20, 30};
+
+#if defined(ITK_USE_64BITS_IDS)
+  ImageType::OffsetValueType newOffset[ImageDimension] = {10, 20, 30};
+#else
   long newOffset[ImageDimension] = {10, 20, 30};
+#endif
 
   ImageType::DirectionType newDirection;
   newDirection[0][0] = 0.0;
@@ -209,7 +214,13 @@ int itkChangeInformationImageFilterTest(int, char* [] )
   std::cout << "filter->GetCenterImage(): " << centerImage << std::endl;
 
   // Test GetVectorMacro
+
+#if defined(ITK_USE_64BITS_IDS)
+  const itk::OffsetValueType * outputOffset = filter->GetOutputOffset().m_Offset;
+#else
   const long * outputOffset = filter->GetOutputOffset().m_Offset;
+#endif
+
   std::cout << "filter->GetOutputOffset(): " << outputOffset << std::endl;
 
 

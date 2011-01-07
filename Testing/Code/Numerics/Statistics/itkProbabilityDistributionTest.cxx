@@ -36,7 +36,11 @@ public:
 
   itkNewMacro(Self);
 
+#if defined(ITK_USE_64BITS_IDS)
+  virtual SizeValueType GetNumberOfParameters() const { return 42; }
+#else
   virtual unsigned long GetNumberOfParameters() const { return 42; }
+#endif
   virtual double EvaluatePDF(double ) const { return 42.0; }
   virtual double EvaluatePDF(double , const ParametersType&) const { return 42.0; }
   virtual double EvaluateCDF(double ) const { return 42.0; }

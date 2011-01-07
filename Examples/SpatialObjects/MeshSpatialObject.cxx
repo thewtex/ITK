@@ -69,7 +69,12 @@ int main(int, char * [] )
   MeshType::CoordRepType testPointCoords[4][3]
     = { {0,0,0}, {9,0,0}, {9,9,0}, {0,0,9} };
 
+#if defined(ITK_USE_64BITS_IDS)
+  MeshType::PointIdentifier tetraPoints[4] = {0,1,2,4};
+#else
   unsigned long tetraPoints[4] = {0,1,2,4};
+#endif
+
   int i;
   for(i=0; i < 4 ; ++i)
     {

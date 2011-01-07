@@ -31,7 +31,11 @@ inline void println(const char *s) { std::cout << s << std::endl; }
 int itkWatershedImageFilterTest(int, char* [] )
 {
   typedef itk::Image<float, 2> ImageType2D;
+#if defined(ITK_USE_64BITS_IDS)
+  typedef itk::Image<itk::IdentifierType, 2> LongImageType2D;
+#else
   typedef itk::Image<unsigned long, 2> LongImageType2D;
+#endif
 
   println("Creating some images");
   itk::ImageRegion<2> Region2D;
