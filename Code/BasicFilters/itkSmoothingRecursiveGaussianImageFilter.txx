@@ -44,7 +44,7 @@ SmoothingRecursiveGaussianImageFilter< TInputImage, TOutputImage >
   m_FirstSmoothingFilter->SetDirection(ImageDimension - 1);
   m_FirstSmoothingFilter->SetNormalizeAcrossScale(m_NormalizeAcrossScale);
   m_FirstSmoothingFilter->ReleaseDataFlagOn();
-  m_FirstSmoothingFilter->InPlaceOff();
+  m_FirstSmoothingFilter->InPlaceOff(); // this value will change
 
   for ( unsigned int i = 0; i < ImageDimension - 1; i++ )
     {
@@ -66,6 +66,8 @@ SmoothingRecursiveGaussianImageFilter< TInputImage, TOutputImage >
   m_CastingFilter = CastingFilterType::New();
   m_CastingFilter->SetInput( m_SmoothingFilters[ImageDimension - 2]->GetOutput() );
   m_CastingFilter->InPlaceOn();
+
+  this->InPlaceOff();
 
   //
   // NB: We must call SetSigma in order to initialize the smoothing
@@ -222,6 +224,17 @@ SmoothingRecursiveGaussianImageFilter< TInputImage, TOutputImage >
                                                 <<
         " is less than 4. This filter requires a minimum of four pixels along the dimension to be processed.");
       }
+    }
+
+  // If this filter is running in-place then set the first smoothing
+  // filter to steal the bulk data, by running in-place.
+  if ( this->CanRunInPlace() && this->GetInPlace() )
+    {
+    m_FirstSmoothingFilter->InPlaceOn();
+    }
+  else
+    {
+    m_FirstSmoothingFilter->InPlaceOff();
     }
 
   // If the last filter is running in-place then this bulk data is not

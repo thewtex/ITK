@@ -34,6 +34,8 @@ namespace itk
  * filters. For multi-component images, the filter works on each
  * component independently.
  *
+ * For this filter to be able to run in-place the Input must the
+ * RealImageType.
  *
  * \ingroup IntensityImageFilters
  * \ingroup Singlethreaded
@@ -41,12 +43,12 @@ namespace itk
 template< typename TInputImage,
           typename TOutputImage = TInputImage >
 class ITK_EXPORT SmoothingRecursiveGaussianImageFilter:
-  public ImageToImageFilter< TInputImage, TOutputImage >
+  public InPlaceImageFilter< TInputImage, TOutputImage >
 {
 public:
   /** Standard class typedefs. */
   typedef SmoothingRecursiveGaussianImageFilter           Self;
-  typedef ImageToImageFilter< TInputImage, TOutputImage > Superclass;
+  typedef InPlaceImageFilter< TInputImage, TOutputImage > Superclass;
   typedef SmartPointer< Self >                            Pointer;
   typedef SmartPointer< const Self >                      ConstPointer;
 
@@ -76,6 +78,9 @@ public:
   typedef typename NumericTraits< PixelType >::FloatType InternalRealType;
   typedef Image< InternalRealType,
                  itkGetStaticConstMacro(ImageDimension) >   RealImageType;
+
+  /* NB: overloaded to query first filter in pipeline */
+  virtual bool CanRunInPlace( void ) const { return m_FirstSmoothingFilter->CanRunInPlace(); }
 
   /**  The first in the pipeline  */
   typedef RecursiveGaussianImageFilter<
