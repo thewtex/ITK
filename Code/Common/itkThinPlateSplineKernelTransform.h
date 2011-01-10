@@ -28,6 +28,16 @@ namespace itk
  * the IEEE TMI paper by Davis, Khotanzad, Flamig, and Harms,
  * Vol. 16 No. 3 June 1997
  *
+ * References for kernel function:
+ * [1]"Landmark-based Elastic Registration Using Approximation Thin-Plate Splines"
+ * K. Rohr, H. S. Stiehl, R. Sprengel, T. M. Buzug, J. Weese, and M. H. Kuhn
+ * IEEE Transactions in Medical Imaging. Vol.20, No.6,
+ * June 2001. pp.526-534.
+ * [2] "Spline Models for Observational Data"
+ * G. Wahba.
+ * Philadelphia, PA:
+ * Soc. Ind. Appl. Math., 1990.
+ *
  * \ingroup Transforms
  */
 template< class TScalarType,         // Data type for scalars (float or double)
@@ -80,11 +90,13 @@ protected:
 
   /** Compute G(x)
    * For the thin plate spline, this is:
-   * G(x) = r(x)*I
-   * \f$ G(x) = r(x)*I \f$
+   * G(x) = theta*r(x)*I
+   * \f$ G(x) = \theta*r(x)*I \f$
    * where
    * r(x) = Euclidean norm = sqrt[x1^2 + x2^2 + x3^2]
    * \f[ r(x) = \sqrt{ x_1^2 + x_2^2 + x_3^2 }  \f]
+   * and
+   * \f[ \theta = \frac{-1}{8 \pi} \f]
    * I = identity matrix. */
   virtual void ComputeG(const InputVectorType & landmarkVector, GMatrixType & gmatrix) const;
 

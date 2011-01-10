@@ -18,6 +18,7 @@
 #ifndef __itkThinPlateSplineKernelTransform_txx
 #define __itkThinPlateSplineKernelTransform_txx
 #include "itkThinPlateSplineKernelTransform.h"
+#include "vnl/vnl_math.h"
 
 namespace itk
 {
@@ -31,7 +32,7 @@ ThinPlateSplineKernelTransform< TScalarType, NDimensions >::ComputeG(const Input
   gmatrix.fill(NumericTraits< TScalarType >::Zero);
   for ( unsigned int i = 0; i < NDimensions; i++ )
     {
-    gmatrix[i][i] = r;
+    gmatrix[i][i] = -1.0*r/(8*vnl_math::pi);
     }
 }
 
