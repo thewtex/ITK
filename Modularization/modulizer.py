@@ -36,7 +36,6 @@ print "Current ITK users should not run this script."
 print "*************************************************************************"
 
 
-import shutil
 import os.path
 import re
 import sys
@@ -46,7 +45,7 @@ import glob
 
 
 if len(sys.argv) < 3:
-    print("USAGE:  {0} [monolithic ITK PATH] [modular ITK PATH]".format(sys.argv[0]))
+    print("USAGE:  "+sys.argv[0]+" [monolithic ITK PATH] [modular ITK PATH]")
     sys.exit(-1)
 
 HeadOfITKTree = sys.argv[1];
@@ -63,28 +62,27 @@ if os.path.isdir(HeadOfModularITKTree):
       if (sys.argv[3] == 'y'):
          answer = 'y'
    else:
-      print("Warning: The directory {0} exists! It needs to be wiped out first.".format(HeadOfModularITKTree))
+      print('Warning: The directory '+HeadOfModularITKTree+' exists! It needs to be wiped out first.')
       answer = raw_input("Do you want to clean up this directory? [y/n]: " )
 
    if (answer == 'y'):
-       shutil.rmtree(HeadOfModularITKTree)
-       print('removed {0}'.format(HeadOfModularITKTree))
+       os.system("rm -Rf "+ HeadOfModularITKTree)
+       print('removed '+HeadOfModularITKTree)
 
    else:
        print('please choose another directory for modularized ITK')
        exit(-1)
 
-
 # get the supporting modules and cmake packaing files
 cmd ='git clone git://www.kitware.com/itk/modularITKSupport.git  '+HeadOfModularITKTree
 os.system(cmd)
-
+print("modularITKSupport repository cloned into " + HeadOfModularITKTree)
 
 # copy the whole ITK tree over to a tempery dir
 HeadOfTempTree = HeadOfModularITKTree+'/ITK_remaining'
 
 print("Start to copy" + HeadOfITKTree + " to " + HeadOfTempTree + "   ...")
-shutil.copytree(HeadOfITKTree,HeadOfTempTree, ignore = shutil.ignore_patterns('.git','.git*'))
+os.system('cp -Rf '+ HeadOfITKTree + '  '+ HeadOfTempTree)
 print("Done copying!")
 
 LogDir=HeadOfModularITKTree+'/logs'
@@ -92,7 +90,7 @@ if not os.path.isdir(LogDir):
   os.makedirs(LogDir)
 
 # read the manifest file
-print ("moving files from "+HeadOfTempTree+" into modules in {0}".format(HeadOfModularITKTree))
+print ("moving files from "+HeadOfTempTree+" into modules in "+HeadOfModularITKTree)
 numOfMissingFiles = 0;
 missingf =  open(LogDir+'/missingFiles.log','w')
 moduleList=[];
@@ -124,14 +122,14 @@ for line in open("./Manifest.txt",'r'):
 
     # copying files to the destination
     if  os.path.isfile(inputfile):
-       shutil.move(inputfile, outputPath)
+       os.system('mv ' +inputfile+'  '+ outputPath)
     else:
        missingFileName = inputfile.split(HeadOfTempTree+'/')[1]
        missingf.write(missingFileName + '\n')
        numOfMissingFiles = numOfMissingFiles + 1
 
 missingf.close()
-print ("listed {0} missing files to "+LogDir+"/missingFiles.log").format(numOfMissingFiles)
+print ("listed '+numOfMissingFiles+' missing files to "+LogDir+"/missingFiles.log")
 
 # find the unique module names
 def unique(seq):
@@ -161,8 +159,8 @@ print ('creating cmake files for each module (from the template module)')
 for  moduleName in moduleList:
   if os.path.isdir(HeadOfModularITKTree+'/'+moduleName):
      # cooy the LICENSE and NOTICE
-     shutil.copy('./templateModule/itk-template-module/LICENSE', HeadOfModularITKTree+'/'+moduleName)
-     shutil.copy('./templateModule/itk-template-module/NOTICE',  HeadOfModularITKTree+'/'+moduleName)
+     os.system('cp ./templateModule/itk-template-module/LICENSE'+'  '+ HeadOfModularITKTree+'/'+moduleName)
+     os.system('cp./templateModule/itk-template-module/NOTICE'+'  '+ HeadOfModularITKTree+'/'+moduleName)
 
      # write CMakeLists.txt
      filepath = HeadOfModularITKTree+'/'+moduleName+'/CMakeLists.txt'
@@ -199,16 +197,16 @@ for  moduleName in moduleList:
 
        if not os.path.isfile(filepath):
            o = open(filepath,'w')
-           line = 'create_test_sourcelist(Tests {0}-tests.cxx\n{1})\n\n'.format(moduleName, cxxFileList)
+           line = 'create_test_sourcelist(Tests '+moduleName+'-tests.cxx\n'+cxxFileList+'})\n\n'
            o.write(line)
 
-           line = 'set (TestsTorun ${{Tests}})\nremove(TestsToRun {0}Tests.cxx)\n\n'.format(moduleName)
+           line = 'set (TestsTorun ${{Tests}})\nremove(TestsToRun '+moduleName+'Tests.cxx)\n\n'
            o.write(line)
 
-           line = 'add_executable({0}-tests  ${{Tests}} )\n'.format(moduleName)
+           line = 'add_executable('+moduleName+'-tests  ${{Tests}} )\n'
            o.write(line)
 
-           line = 'target_link_libraries({0}-tests  {1} )\n'.format(moduleName, moduleName)
+           line = 'target_link_libraries('+moduleName+'-tests  '+moduleName+' )\n'
            o.write(line)
 
            for cxxf in cxxFiles:
