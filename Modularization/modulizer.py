@@ -35,11 +35,10 @@ print "WARNINGs! This modularization script is still in its experimental stage."
 print "Current ITK users should not run this script."
 print "*************************************************************************"
 
-
-import os.path
 import re
 import sys
 import os
+import shutil
 import stat
 import glob
 
@@ -81,8 +80,24 @@ print("modularITKSupport repository cloned into " + HeadOfModularITKTree)
 # copy the whole ITK tree over to a tempery dir
 HeadOfTempTree = HeadOfModularITKTree+'/ITK_remaining'
 
+def copy_directory(source, target):
+    if not os.path.exists(target):
+        os.mkdir(target)
+    for root, dirs, files in os.walk(source):
+        if '.git' in dirs:
+            dirs.remove('.git')
+        for file in files:
+            if os.path.splitext(file)[-1] in ('.git*'):
+               continue
+            from_ = os.path.join(root, file)
+            to_ = from_.replace(source, target, 1)
+            to_directory = os.path.split(to_)[0]
+            if not os.path.exists(to_directory):
+                os.makedirs(to_directory)
+            shutil.copyfile(from_, to_)
+
 print("Start to copy" + HeadOfITKTree + " to " + HeadOfTempTree + "   ...")
-os.system('cp -Rf '+ HeadOfITKTree + '  '+ HeadOfTempTree)
+copy_directory(HeadOfITKTree, HeadOfTempTree)
 print("Done copying!")
 
 LogDir=HeadOfModularITKTree+'/logs'
@@ -129,7 +144,6 @@ for line in open("./Manifest.txt",'r'):
        numOfMissingFiles = numOfMissingFiles + 1
 
 missingf.close()
-print ("listed '+numOfMissingFiles+' missing files to "+LogDir+"/missingFiles.log")
 
 # find the unique module names
 def unique(seq):
@@ -160,7 +174,7 @@ for  moduleName in moduleList:
   if os.path.isdir(HeadOfModularITKTree+'/'+moduleName):
      # cooy the LICENSE and NOTICE
      os.system('cp ./templateModule/itk-template-module/LICENSE'+'  '+ HeadOfModularITKTree+'/'+moduleName)
-     os.system('cp./templateModule/itk-template-module/NOTICE'+'  '+ HeadOfModularITKTree+'/'+moduleName)
+     os.system('cp ./templateModule/itk-template-module/NOTICE'+'  '+ HeadOfModularITKTree+'/'+moduleName)
 
      # write CMakeLists.txt
      filepath = HeadOfModularITKTree+'/'+moduleName+'/CMakeLists.txt'
