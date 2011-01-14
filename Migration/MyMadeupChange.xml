@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--**
+**
+** OrientationAdapterBaseRename.xml
+**
+**-->
+<Change>
+    <!--**
+    ** Title for the online migration page
+    **-->
+    <Title>
+      Orientation Adapter Base Rename that I made up.
+    </Title>
+
+    <!--**
+    ** Plain text description of the change
+    **-->
+    <Description>
+      This is not a real XML - PLEASE DISREGARD and REMOVE...
+    </Description>
+
+    <!--**
+    ** Sample code snippets
+    **-->
+    <SampleCode>
+      <Old>
+        #include "itkOrientationAdapter.h"
+      </Old>
+      <New>
+        #include "itkOrientationAdapterBase.h"
+      </New>
+    </SampleCode>
+
+    <!--**
+    ** The change-ids for all commits in the topic branch
+    **-->
+    <Gerrit-ChangeId>
+      Ib1bfac893da630656bede6262d5415c253a51ac3
+    </Gerrit-ChangeId>
+
+    <!--**
+    ** List of all changed files from the topic branch
+    **-->
+    <FileList>
+      Code/Common/itkOrientationAdapter.h
+      Code/Common/itkOrientationAdapterBase.h
+      Code/Common/itkQuaternionOrientationAdapter.h
+      Code/Common/itkSpatialOrientationAdapter.h
+    </FileList>
+</Change>
+
+<MigrationFix-Automatic>
+  <Old>
+  "itkOrientationAdapter.h"
+  </Old>
+  <New>
+  "itkOrientationAdapterBase.h"
+  </New>
+</MigrationFix-Automatic>
