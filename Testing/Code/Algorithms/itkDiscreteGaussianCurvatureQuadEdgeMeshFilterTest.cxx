@@ -19,10 +19,10 @@
 #include "itkVTKPolyDataReader.h"
 
 #include "itkQuadEdgeMeshExtendedTraits.h"
-#include "itkDiscreteMaximumCurvatureQuadEdgeMeshFilter.h"
+#include "itkDiscreteGaussianCurvatureQuadEdgeMeshFilter.h"
 #include "itkQuadEdgeMeshScalarDataVTKPolyDataWriter.h"
 
-int itkQuadEdgeMeshMaxCurvatureTest( int argc, char* argv[] )
+int itkQuadEdgeMeshGaussianCurvatureTest( int argc, char* argv[] )
 {
   if( argc < 2 )
     {
@@ -46,7 +46,7 @@ int itkQuadEdgeMeshMaxCurvatureTest( int argc, char* argv[] )
     bool > Traits;
 
   typedef itk::QuadEdgeMesh< CoordType, Dimension, Traits > MeshType;
-  typedef itk::DiscreteMaximumCurvatureQuadEdgeMeshFilter<
+  typedef itk::DiscreteGaussianCurvatureQuadEdgeMeshFilter<
     MeshType, MeshType > CurvatureFilterType;
 
   typedef itk::VTKPolyDataReader< MeshType > ReaderType;
@@ -66,17 +66,19 @@ int itkQuadEdgeMeshMaxCurvatureTest( int argc, char* argv[] )
 
   MeshType::Pointer mesh = reader->GetOutput();
 
-  CurvatureFilterType::Pointer max_curvature = CurvatureFilterType::New();
-  max_curvature->SetInput( mesh );
-  max_curvature->Update();
+  CurvatureFilterType::Pointer gaussian_curvature = CurvatureFilterType::New();
+  gaussian_curvature->SetInput( mesh );
+  gaussian_curvature->Update();
 
-  MeshType::Pointer output = max_curvature->GetOutput();
+  MeshType::Pointer output = gaussian_curvature->GetOutput();
 
   typedef itk::QuadEdgeMeshScalarDataVTKPolyDataWriter< MeshType > WriterType;
   WriterType::Pointer writer = WriterType::New();
   writer->SetInput( output );
-  writer->SetFileName( "max_curvature.vtk" );
+  writer->SetFileName( "gaussian_curvature.vtk" );
   writer->Update();
 
+  // ** PRINT **
+  std::cout << gaussian_curvature;
   return EXIT_SUCCESS;
 }

@@ -26,7 +26,7 @@
     #include "VNLIterativeSparseSolverTraits.h"
 #endif
 
-#include "itkQuadEdgeMeshParam.h"
+#include "itkParameterizationQuadEdgeMeshFilter.h"
 
 int itkQuadEdgeMeshLinearParameterizationTest( int argc, char* argv[] )
 {
@@ -56,13 +56,13 @@ int itkQuadEdgeMeshLinearParameterizationTest( int argc, char* argv[] )
   typedef itk::QuadEdgeMesh< Coord, 3 >                                MeshType;
   typedef itk::VTKPolyDataReader< MeshType >                           ReaderType;
   typedef itk::VTKPolyDataWriter< MeshType >                           WriterType;
-  typedef itk::QuadEdgeMeshBorderTransform< MeshType, MeshType >       BorderTransformType;
+  typedef itk::BorderQuadEdgeMeshFilter< MeshType, MeshType >       BorderTransformType;
 #ifdef QuadEdgePARAM_TAUCS
   typedef TAUCSSolverTraits< Coord >                              SolverTraits;
 #else
   typedef VNLIterativeSparseSolverTraits< Coord >                 SolverTraits;
 #endif
-  typedef itk::QuadEdgeMeshParam< MeshType, MeshType, SolverTraits >   ParametrizationType;
+  typedef itk::ParameterizationQuadEdgeMeshFilter< MeshType, MeshType, SolverTraits >   ParametrizationType;
 
 
   // ** READ THE FILE IN **

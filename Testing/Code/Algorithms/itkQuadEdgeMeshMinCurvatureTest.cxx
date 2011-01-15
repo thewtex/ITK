@@ -19,7 +19,7 @@
 #include "itkVTKPolyDataReader.h"
 
 #include "itkQuadEdgeMeshExtendedTraits.h"
-#include "itkQuadEdgeMeshDiscreteMinCurvatureEstimator.h"
+#include "itkDiscreteMinimumCurvatureQuadEdgeMeshFilter.h"
 #include "itkQuadEdgeMeshScalarDataVTKPolyDataWriter.h"
 
 int itkQuadEdgeMeshMinCurvatureTest( int argc, char* argv[] )
@@ -46,7 +46,7 @@ int itkQuadEdgeMeshMinCurvatureTest( int argc, char* argv[] )
     bool > Traits;
 
   typedef itk::QuadEdgeMesh< CoordType, Dimension, Traits > MeshType;
-  typedef itk::QuadEdgeMeshDiscreteMinCurvatureEstimator<MeshType,MeshType>
+  typedef itk::DiscreteMinimumCurvatureQuadEdgeMeshFilter<MeshType,MeshType>
     CurvatureFilterType;
 
   typedef itk::VTKPolyDataReader< MeshType > ReaderType;
