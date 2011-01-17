@@ -41,6 +41,7 @@
 // Figure out when the fast implementations can be used
 //
 // Turn on 32-bit sse2 impl if asked for
+#if defined( __APPLE__ )
 #if VNL_CONFIG_ENABLE_SSE2_ROUNDING && defined( __SSE2__ ) && ( !defined( __GCCXML__ ) )
 #define USE_SSE2_32IMPL 1
 #else
@@ -57,6 +58,13 @@
 #undef USE_SSE2_64IMPL
 #define USE_SSE2_64IMPL 1
 #endif
+#endif
+#else
+  #define USE_SSE2_64IMPL 0
+  #if ITK_SUPPORTS_SSE_ROUNDING_FUNCTIONS
+    #undef USE_SSE2_64IMPL
+    #define USE_SSE2_64IMPL 1
+  #endif
 #endif
 
 // Turn on 32-bit and 64-bit asm impl when using GCC on x86 platform with the
