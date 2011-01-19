@@ -66,6 +66,7 @@
 #cmakedefine CMAKE_NO_STD_NAMESPACE
 #cmakedefine CMAKE_NO_ANSI_FOR_SCOPE
 #cmakedefine ITK_CPP_FUNCTION
+#cmakedefine ITKV3_COMPATIBILITY
 #cmakedefine ITK_LEGACY_REMOVE
 #cmakedefine ITK_LEGACY_SILENT
 #cmakedefine ITK_USE_CONCEPT_CHECKING
@@ -82,6 +83,7 @@
 #cmakedefine ITK_SUPPORTS_WCHAR_T_FILENAME_IOSTREAMS_CONSTRUCTORS
 #cmakedefine ITK_SUPPORTS_FDSTREAM_HPP
 #cmakedefine ITK_USE_MODULAR_BUILD
+#cmakedefine ITK_USE_64BITS_IDS
 
 /*
  * The @HAVE_INCLUDE_H@ gets replaced with "1" or "", this define is
