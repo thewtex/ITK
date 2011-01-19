@@ -458,6 +458,7 @@ int itkCompositeTransformTest(int ,char *[] )
   affineParamsN = affine->GetFixedParameters().Size();
   scaleParamsN = scaleTransform->GetFixedParameters().Size();
   parametersTruth.SetSize( scaleParamsN + affineParamsN );
+  parametersTruth.Fill(0); //Try this to quiet valgrind
   for( unsigned int n=0; n < scaleParamsN; n++)
     parametersTruth.SetElement(
       n, scaleTransform->GetFixedParameters().GetElement( n ) );

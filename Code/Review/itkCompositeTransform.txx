@@ -72,8 +72,7 @@ template
 typename CompositeTransform<TScalar, NDimensions>
 ::OutputPointType
 CompositeTransform<TScalar, NDimensions>
-::TransformPoint( const InputPointType& inputPoint,
-  bool &isInsideTransformRegion ) const
+::TransformPoint( const InputPointType& inputPoint ) const
 {
   OutputPointType outputPoint( inputPoint );
   typename TransformQueueType::const_iterator it;
@@ -122,10 +121,10 @@ CompositeTransform<TScalar, NDimensions>
   /* Copy the optimization flags */
   inverse->m_TransformsToOptimizeFlags.clear();
   for( TransformsToOptimizeFlagsType::iterator
-       it = this->m_TransformsToOptimizeFlags.begin();
-       it != this->m_TransformsToOptimizeFlags.end(); it++ )
+       ofit = this->m_TransformsToOptimizeFlags.begin();
+       ofit != this->m_TransformsToOptimizeFlags.end(); ofit++ )
     {
-    inverse->m_TransformsToOptimizeFlags.push_front( *it );
+    inverse->m_TransformsToOptimizeFlags.push_front( *ofit );
     }
 
   return true;
@@ -168,8 +167,8 @@ CompositeTransform<TScalar, NDimensions>
   unsigned int offset = 0;
   OutputPointType transformedPoint( p );
 
-  for( size_t tind = this->GetNumberOfTransforms()-1;
-      tind >= 0 && tind < this->GetNumberOfParameters(); tind-- )
+  for( signed long tind = (signed long) this->GetNumberOfTransforms()-1;
+        tind >= 0; tind-- )
     {
     TransformTypePointer transform = this->GetNthTransform( tind );
     if( this->GetNthTransformToOptimize( tind ) )
