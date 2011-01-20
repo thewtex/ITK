@@ -82,7 +82,7 @@ set(WRAP_ITK_DIMS "2;3" CACHE STRING "dimensions available separated by semicolo
 
 option(INSTALL_WRAP_ITK_COMPATIBILITY "Install FindWrapITK.cmake and WrapITK.pth (so cmake and python can find WrapITK) as part of the standard installation process. This requires admin privileges. These files can be separately installed by making the install_wrapitk_compatibility target. " ON)
 
-set(WRAP_ITK_INSTALL_PREFIX "/lib/InsightToolkit/WrapITK/" CACHE PATH "subpath where where most of WrapITK files will be installed")
+set(WRAP_ITK_INSTALL_PREFIX "${ITK_INSTALL_LIB_DIR}/WrapITK/" CACHE PATH "subpath where where most of WrapITK files will be installed")
 
 
 # Output directories.
