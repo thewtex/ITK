@@ -269,13 +269,11 @@ public:
     return this->m_TransformQueue.empty();
   }
 
-  const
   size_t GetNumberOfTransforms() const
   {
     return this->m_TransformQueue.size();
   }
 
-  const
   void ClearTransformQueue()
   {
     this->m_TransformQueue.clear();
