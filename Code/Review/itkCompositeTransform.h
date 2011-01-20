@@ -200,7 +200,7 @@ public:
   TransformTypePointer GetNthTransform( size_t n ) const
   {
     return this->m_TransformQueue[n];
-  };
+  }
 
   /** Active Transform state manipulation */
 
