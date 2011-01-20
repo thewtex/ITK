@@ -185,7 +185,8 @@ QuadEdgeMeshEdgeMergeDecimationFilter< TInput, TOutput, TCriterion >::DeleteElem
       {
       if ( !map_it->second->m_Priority.first )
         {
-        m_PriorityQueue->DeleteElement(map_it->second);
+        PriorityQueueItemType* e( map_it->second );
+        m_PriorityQueue->DeleteElement(e);
         delete map_it->second;
         m_QueueMapper.erase(map_it);
         }
