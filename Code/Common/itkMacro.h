@@ -158,7 +158,21 @@ namespace itk
     typename DecoratorType::Pointer newInput = DecoratorType::New(); \
     newInput->Set(_arg);                                             \
     this->Set##name##Input(newInput);                            \
+    }                                                                \
+  virtual const type & Get##name() const                             \
+    {                                                                \
+    itkDebugMacro("Getting input " #name);                           \
+    typedef SimpleDataObjectDecorator< type > DecoratorType;         \
+    const DecoratorType *input =                                     \
+      static_cast< const DecoratorType * >(                          \
+        this->ProcessObject::GetInput(number) );                     \
+    if( input == NULL )                                              \
+      {                                                              \
+      itkExceptionMacro(<<"input" #name " is not set");              \
+      }                                                              \
+    return input->Get();                                             \
     }
+
 
 /** Set a decorated input that derives from itk::Object, but not from
  * itk::DataObject. This defines the Set"name"() method.  It invokes
