@@ -86,6 +86,25 @@
 #cmakedefine ITK_USE_64BITS_IDS
 
 /*
+ *  Enable the pre-registration of factories for specific image file formats
+ */
+#cmakedefine ITK_SUPPORTS_ANALYZE_IMAGEIO
+#cmakedefine ITK_SUPPORTS_BIORAD_IMAGEIO
+#cmakedefine ITK_SUPPORTS_BMP_IMAGEIO
+#cmakedefine ITK_SUPPORTS_GDCM_IMAGEIO
+#cmakedefine ITK_SUPPORTS_GIPL_IMAGEIO
+#cmakedefine ITK_SUPPORTS_JPEG_IMAGEIO
+#cmakedefine ITK_SUPPORTS_LSM_IMAGEIO
+#cmakedefine ITK_SUPPORTS_META_IMAGEIO
+#cmakedefine ITK_SUPPORTS_NIFTI_IMAGEIO
+#cmakedefine ITK_SUPPORTS_NRRD_IMAGEIO
+#cmakedefine ITK_SUPPORTS_PNG_IMAGEIO
+#cmakedefine ITK_SUPPORTS_STIMULATE_IMAGEIO
+#cmakedefine ITK_SUPPORTS_TIFF_IMAGEIO
+#cmakedefine ITK_SUPPORTS_VTK_IMAGEIO
+
+
+/*
  * The @HAVE_INCLUDE_H@ gets replaced with "1" or "", this define is
  * to remap these values to 0 and 1
  */
