@@ -18,9 +18,7 @@
 #define __itkCompositeTransform_txx
 
 #include "itkCompositeTransform.h"
-#ifndef memcpy
-  #include <string.h>
-#endif
+#include <string.h> // for memcpy on some platforms
 
 namespace itk
 {
