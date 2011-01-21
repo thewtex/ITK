@@ -46,6 +46,11 @@ if(ITK_USE_MINC2 AND MINC2_FOUND)
 endif(ITK_USE_MINC2 AND MINC2_FOUND)
 
 set(KitTests
+  itkCompositeTransformTest
+  itkCompositeTransformWriterTest.cxx
+  itkCompositeTransformReaderTest.cxx
+  itkCompositeTransformWriterAndReaderTest.cxx
+
   itkFlatStructuringElementTest
 
   itkLabelToRGBImageFilterTest
@@ -264,7 +269,6 @@ set(KitTests
   itkBSplineControlPointImageFilterTest
   itkBSplineControlPointImageFunctionTest
   itkN4MRIBiasFieldCorrectionImageFilterTest
-  itkCompositeTransformTest
 
   itkScalarChanAndVeseLevelSetFunctionTest1
   itkScalarChanAndVeseLevelSetFunctionTest2
@@ -2488,7 +2492,14 @@ add_test(itkObjectToObjectMetricTest ${TestDriver}
          itkObjectToObjectMetricTest)
 add_test(itkDeformationFieldTransformTest ${TestDriver}
   itkDeformationFieldTransformTest)
+
 add_test(itkCompositeTransformTest ${TestDriver} itkCompositeTransformTest)
+add_test(itkCompositeTransformWriterTest ${TestDriver}
+         itkCompositeTransformWriterTest ${TEMP})
+add_test(itkCompositeTransformWriterAndReaderTest ${TestDriver}
+         itkCompositeTransformWriterAndReaderTest ${TEMP})
+add_test(itkCompositeTransformReaderTest ${TestDriver}
+         itkCompositeTransformReaderTest )
 
 add_test(itkBSplineControlPointImageFilterTest1
   ${TestDriver}

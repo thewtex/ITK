@@ -53,7 +53,7 @@ public:
   itkGetStringMacro(FileName);
 
   /** Read the transform */
-  void Update();
+  virtual void Update();
 
   /** Get the list of transform */
   TransformListType * GetTransformList() { return &m_TransformList; }
