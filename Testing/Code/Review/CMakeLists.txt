@@ -283,6 +283,8 @@ set(KitTests
   itkMapOptGrayscaleMorphologicalOpeningImageFilterTest
   itkMapOptGrayscaleDilateImageFilterTest
   itkMapOptGrayscaleErodeImageFilterTest
+
+  itkCSVFileParserTest
 )
 
 
@@ -2566,6 +2568,10 @@ add_test(itkScalarChanAndVeseDenseLevelSetImageFilterTest4 ${TestDriver}
   ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySlice.png
   ${TEMP}/itkScalarChanAndVeseDenseLevelSetImageFilterTest4.mha
   1 1 0 0 0
+)
+
+add_test(itkCSVFileParserTest ${TestDriver} itkCSVFileParserTest
+  ${INPUTDATA}/test.csv
 )
 
 add_test(itkMRCImageIOTest ${TestDriver} itkMRCImageIOTest ${TEMP})
