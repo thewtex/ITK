@@ -212,6 +212,7 @@ set(ReviewTest3_SRCS
   itkGaborImageSourceTest.cxx
 
   itkDiscreteGaussianDerivativeImageFilterTest.cxx
+  itkDiscreteGaussianDerivativeImageFilterScaleSpaceTest.cxx
 
   itkAttributeLabelObjectAccessorsTest1.cxx
   itkAttributeOpeningLabelMapFilterTest1.cxx
@@ -1437,16 +1438,34 @@ add_test(itkDiscreteGaussianDerivativeImageFilterTest30 ${REVIEW_TESTS3}
   3.0  # sigma
 )
 
+
 add_test(itkDiscreteGaussianDerivativeImageFilterTest03 ${REVIEW_TESTS3}
-  --compare ${BASELINE}/itkDiscreteGaussianDerivativeImageFilterTest03.png
-            ${TEMP}/itkDiscreteGaussianDerivativeImageFilterTest03.png
+  --compare ${BASELINE}/itkDiscreteGaussianDerivativeImageFilterTest30.png
+            ${TEMP}/itkDiscreteGaussianDerivativeImageFilterTest30.png
   itkDiscreteGaussianDerivativeImageFilterTest
   ${INPUTDATA}/whiteSpot.png
-  ${TEMP}/itkDiscreteGaussianDerivativeImageFilterTest03.png
+  ${TEMP}/itkDiscreteGaussianDerivativeImageFilterTest30.png
   0    # orderX
   3    # orderY
   3.0  # sigma
 )
+
+add_test(itkDiscreteGaussianDerivativeImageFilterTest01 ${REVIEW_TESTS3}
+  --compare ${BASELINE}/itkDiscreteGaussianDerivativeImageFilterTest01.png
+            ${TEMP}/itkDiscreteGaussianDerivativeImageFilterTest01.png
+  itkDiscreteGaussianDerivativeImageFilterTest
+  ${INPUTDATA}/whiteSpot.png
+  ${TEMP}/itkDiscreteGaussianDerivativeImageFilterTest01.png
+  0    # orderX
+  1    # orderY
+  3.0  # sigma
+)
+
+
+add_test(itkDiscreteGaussianDerivativeImageFilterScaleSpaceTest ${REVIEW_TESTS3}
+  itkDiscreteGaussianDerivativeImageFilterScaleSpaceTest
+)
+
 
 add_test(itkBinaryContourImageFilterTest0 ${REVIEW_TESTS}
   --compare ${BASELINE}/itkBinaryContourImageFilterTest0.png
