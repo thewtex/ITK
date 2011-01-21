@@ -287,6 +287,9 @@ set(ReviewTest6_SRCS
   itkScalarChanAndVeseDenseLevelSetImageFilterTest4.cxx
   itkScalarChanAndVeseSparseLevelSetImageFilterTest1.cxx
   itkScalarChanAndVeseSparseLevelSetImageFilterTest2.cxx
+  itkCompositeTransformWriterTest.cxx
+  itkCompositeTransformReaderTest.cxx
+  itkCompositeTransformWriterAndReaderTest.cxx
 )
 
 
@@ -2603,6 +2606,13 @@ add_test(itkJPEG2000Test06 ${REVIEW_TESTS5}
             ${ITK_DATA_ROOT}/Input/cthead1.j2k
             ${ITK_TEST_OUTPUT_DIR}/cthead1.tif)
 
+add_test(itkCompositeTransformWriterTest ${REVIEW_TESTS6}
+          itkCompositeTransformWriterTest ${TEMP})
+add_test(itkCompositeTransformWriterAndReaderTest ${REVIEW_TESTS6}
+          itkCompositeTransformWriterAndReaderTest ${TEMP})
+add_test(itkCompositeTransformReaderTest ${REVIEW_TESTS6}
+          itkCompositeTransformReaderTest )
+
 
 #
 # Functor colormaps
@@ -2688,6 +2698,7 @@ set(ReviewTest6_LIBS
   ITKIO
   ITKNumerics
   ITKStatistics
+  ITKReview
   )
 target_link_libraries(itkReviewTests6 ${ReviewTest6_LIBS} ITKNumerics)
 
