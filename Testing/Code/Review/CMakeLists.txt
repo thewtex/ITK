@@ -269,6 +269,7 @@ set(ReviewTest6_SRCS
   itkScalarChanAndVeseDenseLevelSetImageFilterTest4.cxx
   itkScalarChanAndVeseSparseLevelSetImageFilterTest1.cxx
   itkScalarChanAndVeseSparseLevelSetImageFilterTest2.cxx
+  itkCSVFileParserTest.cxx
 )
 
 if(ITK_USE_TRANSFORM_IO_FACTORIES)
@@ -2486,6 +2487,10 @@ add_test(itkScalarChanAndVeseDenseLevelSetImageFilterTest4 ${REVIEW_TESTS6}
   ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySlice.png
   ${TEMP}/itkScalarChanAndVeseDenseLevelSetImageFilterTest4.mha
   1 1 0 0 0
+)
+
+add_test(itkCSVFileParserTest ${REVIEW_TESTS6} itkCSVFileParserTest
+${INPUTDATA}/test.csv
 )
 
 add_test(itkMRCImageIOTest ${REVIEW_TESTS5} itkMRCImageIOTest ${TEMP})
