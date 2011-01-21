@@ -263,7 +263,11 @@ set(KitTests
   itkBSplineControlPointImageFilterTest
   itkBSplineControlPointImageFilterTest1.cxx
   itkN4MRIBiasFieldCorrectionImageFilterTest
+
   itkCompositeTransformTest
+  itkCompositeTransformWriterTest.cxx
+  itkCompositeTransformReaderTest.cxx
+  itkCompositeTransformWriterAndReaderTest.cxx
 
   itkScalarChanAndVeseLevelSetFunctionTest1
   itkScalarChanAndVeseLevelSetFunctionTest2
@@ -2448,7 +2452,14 @@ add_test(itkObjectToObjectMetricTest ${TestDriver}
          itkObjectToObjectMetricTest)
 add_test(itkDeformationFieldTransformTest ${TestDriver}
   itkDeformationFieldTransformTest)
+
 add_test(itkCompositeTransformTest ${TestDriver} itkCompositeTransformTest)
+add_test(itkCompositeTransformWriterTest ${TestDriver}
+         itkCompositeTransformWriterTest ${TEMP})
+add_test(itkCompositeTransformWriterAndReaderTest ${TestDriver}
+         itkCompositeTransformWriterAndReaderTest ${TEMP})
+add_test(itkCompositeTransformReaderTest ${TestDriver}
+         itkCompositeTransformReaderTest )
 
 add_test(itkBSplineControlPointImageFilterTest1
   ${TestDriver}
