@@ -24,6 +24,8 @@
 #include <sys/time.h>
 #endif  // defined(WIN32) || defined(_WIN32)
 
+#include "vnl/vnl_math.h"
+
 namespace itk
 {
 /** Constructor */
@@ -102,6 +104,34 @@ RealTimeClock::GetTimeStamp() const
 
   TimeStampType value = static_cast< TimeStampType >( tval.tv_sec ) + static_cast< TimeStampType >( tval.tv_usec )
                         / this->m_Frequency;
+  return value;
+#endif  // defined(WIN32) || defined(_WIN32)
+}
+
+/** Returns a timestamp in a RealTimeStamp data structure */
+RealTimeStamp
+RealTimeClock::GetRealTimeStamp() const
+{
+#if defined( WIN32 ) || defined( _WIN32 )
+  LARGE_INTEGER tick;
+  ::QueryPerformanceCounter(&tick);
+
+  TimeStampType seconds = static_cast< TimeStampType >( (__int64)tick.QuadPart ) / this->m_Frequency;
+  seconds += this->m_Origin;
+
+  typedef RealTimeStamp::SecondsCounterType       SecondsCounterType;
+  typedef RealTimeStamp::MicroSecondsCounterType  MicroSecondsCounterType;
+
+  SecondsCounterType iseconds = vcl_floor( seconds );
+  MicroSecondsCounterType useconds = vcl_floor( ( seconds - iseconds ) * 1e6 );
+
+  RealTimeStamp value( iseconds, useconds );
+  return value;
+#else
+  struct timeval tval;
+  ::gettimeofday(&tval, 0);
+
+  RealTimeStamp value( tval.tv_sec, tval.tv_usec );
   return value;
 #endif  // defined(WIN32) || defined(_WIN32)
 }
