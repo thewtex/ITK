@@ -33,6 +33,7 @@ void RegisterTests()
   REGISTER_TEST(itkDirectFourierReconstructionImageToImageFilterTest);
   REGISTER_TEST(itkBSplineDeformableTransformInitializerTest1);
   REGISTER_TEST(itkBSplineDeformableTransformInitializerTest2);
+  REGISTER_TEST(itkBSplineDeformableTransformInitializerTestv4);
   REGISTER_TEST(itkHeavisideStepFunctionTest1);
   REGISTER_TEST(itkLabelImageToLabelMapFilterTest);
   REGISTER_TEST(itkLabelMapFilterTest);
