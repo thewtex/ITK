@@ -169,7 +169,7 @@ int itkImageMaskSpatialObjectTest2(int, char* [])
   const int numberOfSteps =
     vcl_sqrt(double(insideSize[0]*insideSize[0]+
                     insideSize[1]*insideSize[1]+
-                    insideSize[2]*insideSize[2]))*100;
+                    insideSize[2]*insideSize[2]))*100.0;
   const ImageType::SpacingType incrementVector =
     (endPoint-startPoint)/static_cast<double>(numberOfSteps);
   ImageType::PointType point=startPoint;
