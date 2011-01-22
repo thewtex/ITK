@@ -318,6 +318,7 @@ DataObject
 
   os << indent << "PipelineMTime: " << m_PipelineMTime << std::endl;
   os << indent << "UpdateMTime: " << m_UpdateMTime << std::endl;
+  os << indent << "RealTimeStamp: " << m_RealTimeStamp << std::endl;
 }
 
 // The following methods are used for updating the data processing pipeline.
@@ -427,4 +428,5 @@ DataObject
 {
   return m_UpdateMTime.GetMTime();
 }
+
 } // end namespace itk

@@ -21,6 +21,7 @@
 #include "itkMacro.h"
 #include "itkObject.h"
 #include "itkObjectFactory.h"
+#include "itkRealTimeStamp.h"
 
 namespace itk
 {
@@ -67,6 +68,10 @@ public:
 
   /** Returns the frequency of a clock */
   itkGetConstMacro(Frequency, FrequencyType);
+
+  /** Get the time as a RealTimeStamp type. */
+  RealTimeStamp GetRealTimeStamp() const;
+
 protected:
 
   /** constructor */
