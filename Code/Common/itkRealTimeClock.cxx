@@ -106,6 +106,34 @@ RealTimeClock::GetTimeStamp() const
 #endif  // defined(WIN32) || defined(_WIN32)
 }
 
+/** Returns a timestamp in a RealTimeStamp data structure */
+RealTimeStamp
+RealTimeClock::GetRealTimeStamp() const
+{
+#if defined( WIN32 ) || defined( _WIN32 )
+  LARGE_INTEGER tick;
+  ::QueryPerformanceCounter(&tick);
+
+  TimeStampType seconds = static_cast< TimeStampType >( (__int64)tick.QuadPart ) / this->m_Frequency;
+  seconds += this->m_Origin;
+
+  typedef RealTimeStamp::SecondsCounterType       SecondsCounterType;
+  typedef RealTimeStamp::MicroSecondsCounterType  MicroSecondsCounterType;
+
+  SecondsCounterType iseconds = vcl_floor( seconds );
+  MicroSecondsCounterType useconds = vcl_floor( ( seconds - iseconds ) * 1e6 );
+
+  RealTimeStamp value( iseconds, useconds );
+  return value;
+#else
+  struct timeval tval;
+  ::gettimeofday(&tval, 0);
+
+  RealTimeStamp value( tval.tv_sec, tval.tv_usec );
+  return value;
+#endif  // defined(WIN32) || defined(_WIN32)
+}
+
 /** Print the object */
 void RealTimeClock::PrintSelf(std::ostream & os, itk::Indent indent) const
 {
