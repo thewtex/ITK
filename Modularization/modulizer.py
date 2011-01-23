@@ -221,7 +221,8 @@ for  moduleName in moduleList:
 
        if not os.path.isfile(filepath):
            o = open(filepath,'w')
-           line = 'create_test_sourcelist(Tests '+moduleName+'-tests.cxx\n'+cxxFileList+')\n\n'
+           regression_support=' EXTRA_INCLUDE itkModularTestMain.h FUNCTION ProcessArguments'
+           line = 'create_test_sourcelist(Tests '+moduleName+'-tests.cxx\n'+cxxFileList+regression_support+')\n\n'
            o.write(line)
 
            line = 'set (TestsTorun ${Tests})\nremove(TestsToRun '+moduleName+'Tests.cxx)\n\n'

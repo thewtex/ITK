@@ -444,6 +444,7 @@
 ./Code/Common/itkSymmetricSecondRankTensor.txx core itk-common include
 ./Code/Common/itkTestingMacros.h core itk-common include
 ./Code/Common/itkTestMain.h core itk-test-kernel include
+./Code/Common/itkModularTestMain.h core itk-test-kernel include
 ./Testing/Code/BasicFilters/itkNullImageToImageFilterDriver.txx  core itk-image-filter-base include
 ./Testing/Code/BasicFilters/itkFilterWatcher.h  core itk-image-filter-base include
 ./Code/Common/itkTetrahedronCell.h core itk-common include
