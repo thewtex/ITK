@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkBSplineDeformableTransformInitializer_h
-#define __itkBSplineDeformableTransformInitializer_h
+#ifndef __itkBSplineDeformableTransformInitializerv4_h
+#define __itkBSplineDeformableTransformInitializerv4_h
 
 #include "itkObject.h"
 #include "itkObjectFactory.h"
@@ -27,22 +27,22 @@
 
 namespace itk
 {
-/** \class BSplineDeformableTransformInitializer
- * \brief BSplineDeformableTransformInitializer is a helper class intended to
+/** \class BSplineDeformableTransformInitializerv4
+ * \brief BSplineDeformableTransformInitializerv4 is a helper class intended to
  * initialize the grid parameters of a BSplineDeformableTransform based on the
  * parameters of an image.
  *
  * \ingroup Transforms
  */
 template<class TTransform, class TImage>
-class ITK_EXPORT BSplineDeformableTransformInitializer
+class ITK_EXPORT BSplineDeformableTransformInitializerv4
   :public Object
 {
 
 public:
 
   /** Standard class typedefs. */
-  typedef BSplineDeformableTransformInitializer   Self;
+  typedef BSplineDeformableTransformInitializerv4 Self;
   typedef Object                                  Superclass;
   typedef SmartPointer<Self>                      Pointer;
   typedef SmartPointer<const Self>                ConstPointer;
@@ -51,14 +51,14 @@ public:
   itkNewMacro( Self );
 
   /** Run-time type information (and related methods). */
-  itkTypeMacro( BSplineDeformableTransformInitializer, Object );
+  itkTypeMacro( BSplineDeformableTransformInitializerv4, Object );
 
   /** Type of the transform to initialize */
   typedef TTransform TransformType;
 
   /** Types defined from the input image traits */
   typedef TImage                                   ImageType;
-  typedef typename ImageType::Pointer              ImagePointer;
+  typedef typename ImageType::ConstPointer         ImagePointer;
   typedef typename ImageType::IndexType            IndexType;
   typedef typename ImageType::PointType            ImagePointType;
   typedef typename ImagePointType::CoordRepType    ImagePointCoordRepType;
@@ -81,32 +81,31 @@ public:
   itkSetObjectMacro( Transform, TransformType );
 
   /** Set the image to initialize the domain */
-  itkSetObjectMacro( Image, ImageType );
+  itkSetConstObjectMacro( Image, ImageType );
 
   /** Initialize the transform using the specified transformation domain */
   virtual void InitializeTransform() const;
 
 protected:
-  BSplineDeformableTransformInitializer();
-  ~BSplineDeformableTransformInitializer() {}
+  BSplineDeformableTransformInitializerv4();
+  ~BSplineDeformableTransformInitializerv4() {}
 
   void PrintSelf( std::ostream & os, Indent indent ) const;
 
 private:
-  BSplineDeformableTransformInitializer( const Self & ); //purposely not
+  BSplineDeformableTransformInitializerv4( const Self & ); //purposely not
                                                          // implemented
   void operator=( const Self & );                        //purposely not
                                                          // implemented
 
-  typename ImageType::Pointer     m_Image;
-
+  ImagePointer                    m_Image;
   TransformPointer                m_Transform;
 
-}; //class BSplineDeformableTransformInitializer
+}; //class BSplineDeformableTransformInitializerv4
 }  // namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkBSplineDeformableTransformInitializer.txx"
+#include "itkBSplineDeformableTransformInitializerv4.txx"
 #endif
 
-#endif /* __itkBSplineDeformableTransformInitializer_h */
+#endif /* __itkBSplineDeformableTransformInitializerv4_h */

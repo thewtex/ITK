@@ -157,6 +157,7 @@ SET(ReviewTest2_SRCS
   itkBSplineDeformableTransformInitializerTest1.cxx
   itkBSplineDeformableTransformInitializerTest2.cxx
   itkBSplineDeformableTransformInitializerTestv4.cxx
+  itkBSplineDeformableTransformInitializerTest2v4.cxx
   itkContourExtractor2DImageFilterTest.cxx
   itkHeavisideStepFunctionTest1.cxx
   itkLabelImageToLabelMapFilterTest.cxx
@@ -380,11 +381,17 @@ add_test(itkBSplineDeformableTransformInitializerTest2
 add_test(itkBSplineDeformableTransformInitializerTestv4
   ${REVIEW_TESTS2}
   itkBSplineDeformableTransformInitializerTestv4
-  ${ITK_SOURCE_DIR}/Examples/Data/BSplineDisplacements2.txt
+  ${ITK_SOURCE_DIR}/Examples/Data/BSplineDisplacements1.txt
   ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceBorder20.png
   ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceBorder20.png
   ${TEMP}/itkBSplineDeformableTransformInitializerTest2.png
-  ${TEMP}/itkBSplineDeformableTransformInitializerTest2DeformationField.mhd
+  ${TEMP}/itkBSplineDeformableTransformInitializerTestv4DeformationField.mhd
+)
+
+add_test(itkBSplineDeformableTransformInitializerTest2v4
+  ${REVIEW_TESTS2}
+  itkBSplineDeformableTransformInitializerTest2v4
+  ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceBorder20.png
 )
 
 add_test(itkRegionBasedLevelSetFunctionTest ${REVIEW_TESTS2}

@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkBSplineDeformableTransform_h
-#define __itkBSplineDeformableTransform_h
+#ifndef __itkBSplineDeformableTransformv4_h
+#define __itkBSplineDeformableTransformv4_h
 
 #include <iostream>
 #include "itkTransform.h"
@@ -25,7 +25,7 @@
 
 namespace itk
 {
-/** \class BSplineDeformableTransform
+/** \class BSplineDeformableTransformv4
  * \brief Deformable transform using a BSpline representation
  *
  * This class encapsulates a deformable transform of points from one
@@ -59,7 +59,7 @@ namespace itk
  *
  * The following illustrates the typical usage of this class:
  * \verbatim
- * typedef BSplineDeformableTransform<double,2,3> TransformType;
+ * typedef BSplineDeformableTransformv4<double,2,3> TransformType;
  * TransformType::Pointer transform = TransformType::New();
  *
  * transform->SetGridRegion( region );
@@ -107,12 +107,12 @@ template<
   unsigned int NDimensions = 3,          // Number of dimensions
   unsigned int VSplineOrder = 3 >
 // Spline order
-class ITK_EXPORT BSplineDeformableTransform:
+class ITK_EXPORT BSplineDeformableTransformv4:
   public Transform< TScalarType, NDimensions, NDimensions >
 {
 public:
   /** Standard class typedefs. */
-  typedef BSplineDeformableTransform                         Self;
+  typedef BSplineDeformableTransformv4                         Self;
   typedef Transform< TScalarType, NDimensions, NDimensions > Superclass;
   typedef SmartPointer< Self >                               Pointer;
   typedef SmartPointer< const Self >                         ConstPointer;
@@ -121,7 +121,7 @@ public:
   itkNewMacro( Self );
 
   /** Run-time type information (and related methods). */
-  itkTypeMacro(BSplineDeformableTransform, Transform);
+  itkTypeMacro(BSplineDeformableTransformv4, Transform);
 
   /** Dimension of the domain space. */
   itkStaticConstMacro(SpaceDimension, unsigned int, NDimensions);
@@ -221,7 +221,7 @@ public:
   void SetParametersByValue(const ParametersType & parameters);
 
   /** This method can ONLY be invoked AFTER calling SetParameters().
-   *  This restriction is due to the fact that the BSplineDeformableTransform
+   *  This restriction is due to the fact that the BSplineDeformableTransformv4
    *  does not copy the array of paramters internally, instead it keeps a
    *  pointer to the user-provided array of parameters. This method is also
    *  in violation of the const-correctness of the parameters since the
@@ -274,6 +274,9 @@ public:
   typedef typename ImageType::PointType     OriginType;
   typedef typename ImageType::PixelType     PixelType;
 
+  typedef SizeType MeshSizeType;
+
+
   /** Function to specify the transform domain origin. */
   virtual void SetTransformDomainOrigin( const OriginType & );
 
@@ -294,10 +297,10 @@ public:
   itkGetConstMacro( TransformDomainDirection, DirectionType );
 
   /** Function to specify the transform domain mesh size. */
-  virtual void SetTransformDomainMeshSize( const SizeType & );
+  virtual void SetTransformDomainMeshSize( const MeshSizeType & );
 
   /** Function to retrieve the transform domain mesh size. */
-  itkGetConstMacro( TransformDomainMeshSize, SizeType );
+  itkGetConstMacro( TransformDomainMeshSize, MeshSizeType );
 
   /** Transform points by a BSpline deformable transformation. */
   OutputPointType  TransformPoint( const InputPointType & point ) const;
@@ -379,11 +382,11 @@ public:
   unsigned int GetNumberOfAffectedWeights() const;
 
 protected:
-  /** Print contents of an BSplineDeformableTransform. */
+  /** Print contents of an BSplineDeformableTransformv4. */
   void PrintSelf(std::ostream & os, Indent indent) const;
 
-  BSplineDeformableTransform();
-  virtual ~BSplineDeformableTransform();
+  BSplineDeformableTransformv4();
+  virtual ~BSplineDeformableTransformv4();
 
   /** Allow subclasses to access and manipulate the weights function. */
   itkSetObjectMacro(WeightsFunction, WeightsFunctionType);
@@ -400,10 +403,8 @@ private:
   void SetFixedParametersFromTransformDomainInformation() const;
   void SetCoefficientImageInformationFromFixedParameters();
 
-  BSplineDeformableTransform(const Self &); //purposely not implemented
+  BSplineDeformableTransformv4(const Self &); //purposely not implemented
   void operator=(const Self &);             //purposely not implemented
-
-  CoefficientImageArray ArrayOfImagePointerGeneratorHelper(void) const;
 
   //NOTE:  There is a natural duality between the
   //       two representations of of the coefficients
@@ -426,7 +427,7 @@ private:
   DirectionType                m_TransformDomainDirection;
   DirectionType                m_TransformDomainDirectionInverse;
 
-  SizeType                     m_TransformDomainMeshSize;
+  MeshSizeType                     m_TransformDomainMeshSize;
 
   /** Keep a pointer to the input parameters. */
   const ParametersType *m_InputParametersPointer;
@@ -440,7 +441,7 @@ private:
                  itkGetStaticConstMacro(SpaceDimension) > JacobianImageType;
   typedef typename itk::FixedArray<typename JacobianImageType::Pointer,NDimensions> JacobianImageArrayType;
 
-  JacobianImageArrayType m_JacobianImage;
+  JacobianImageArrayType m_JacobianImages;
 
   /** Keep track of last support region used in computing the Jacobian
    * for fast resetting of Jacobian to zero.
@@ -452,35 +453,35 @@ private:
 
   /** Check if a continuous index is inside the valid region. */
   bool InsideValidRegion(const ContinuousIndexType & index) const;
-}; //class BSplineDeformableTransform
+}; //class BSplineDeformableTransformv4
 }  // namespace itk
 
 // Define instantiation macro for this template.
-#define ITK_TEMPLATE_BSplineDeformableTransform(_, EXPORT, TypeX, TypeY)     \
+#define ITK_TEMPLATE_BSplineDeformableTransformv4(_, EXPORT, TypeX, TypeY)     \
   namespace itk                                                              \
   {                                                                          \
-  _( 3 ( class EXPORT BSplineDeformableTransform< ITK_TEMPLATE_3 TypeX > ) ) \
+  _( 3 ( class EXPORT BSplineDeformableTransformv4< ITK_TEMPLATE_3 TypeX > ) ) \
   namespace Templates                                                        \
   {                                                                          \
-  typedef BSplineDeformableTransform< ITK_TEMPLATE_3 TypeX >                 \
-  BSplineDeformableTransform##TypeY;                                       \
+  typedef BSplineDeformableTransformv4< ITK_TEMPLATE_3 TypeX >                 \
+  BSplineDeformableTransformv4##TypeY;                                       \
   }                                                                          \
   }
 
 #if ITK_TEMPLATE_EXPLICIT
 //template < class TScalarType, unsigned int NDimensions, unsigned int
 // VSplineOrder >
-//   const unsigned int itk::BSplineDeformableTransform<TScalarType,
+//   const unsigned int itk::BSplineDeformableTransformv4<TScalarType,
 // NDimensions, VSplineOrder >::SpaceDimension;
 //template < class TScalarType, unsigned int NDimensions, unsigned int
 // VSplineOrder >
-//   const unsigned int itk::BSplineDeformableTransform<TScalarType,
+//   const unsigned int itk::BSplineDeformableTransformv4<TScalarType,
 // NDimensions, VSplineOrder >::SplineOrder;
-#include "Templates/itkBSplineDeformableTransform+-.h"
+#include "Templates/itkBSplineDeformableTransformv4+-.h"
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkBSplineDeformableTransform.txx"
+#include "itkBSplineDeformableTransformv4.txx"
 #endif
 
-#endif /* __itkBSplineDeformableTransform_h */
+#endif /* __itkBSplineDeformableTransformv4_h */

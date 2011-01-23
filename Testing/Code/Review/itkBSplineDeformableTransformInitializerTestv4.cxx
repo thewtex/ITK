@@ -33,8 +33,9 @@
 
 #include <fstream>
 
+#define BSplinev4
 
-int itkBSplineDeformableTransformInitializerTest1( int argc, char * argv[] )
+int itkBSplineDeformableTransformInitializerTestv4( int argc, char * argv[] )
 {
 
   if( argc < 5 )
@@ -115,29 +116,41 @@ int itkBSplineDeformableTransformInitializerTest1( int argc, char * argv[] )
 
   movingWriter->SetInput( resampler->GetOutput() );
 
-
   const unsigned int SpaceDimension = ImageDimension;
   const unsigned int SplineOrder = 3;
   typedef double CoordinateRepType;
 
+#ifdef BSplinev4
+  typedef itk::BSplineDeformableTransformv4<
+                            CoordinateRepType,
+                            SpaceDimension,
+                            SplineOrder >     TransformType;
+#else
   typedef itk::BSplineDeformableTransform<
                             CoordinateRepType,
                             SpaceDimension,
                             SplineOrder >     TransformType;
+#endif
 
   TransformType::Pointer bsplineTransform = TransformType::New();
 
-
+#ifdef BSplinev4
+  typedef itk::BSplineDeformableTransformInitializerv4<
+                  TransformType,
+                  FixedImageType >      InitializerType;
+#else
   typedef itk::BSplineDeformableTransformInitializer<
                   TransformType,
                   FixedImageType >      InitializerType;
+#endif
 
-  InitializerType::Pointer transformInitilizer = InitializerType::New();
+  InitializerType::Pointer transformInitializer = InitializerType::New();
 
 
-  transformInitilizer->SetTransform( bsplineTransform );
-  transformInitilizer->SetImage( fixedImage );
+  transformInitializer->SetTransform( bsplineTransform );
+  transformInitializer->SetImage( fixedImage );
 
+#ifndef BSplinev4
   typedef TransformType::RegionType RegionType;
   RegionType::SizeType   size;
 
@@ -145,9 +158,17 @@ int itkBSplineDeformableTransformInitializerTest1( int argc, char * argv[] )
 
   size.Fill( numberOfGridNodesInsideTheImageSupport );
 
-  transformInitilizer->SetGridSizeInsideTheImage( size );
+  transformInitializer->SetGridSizeInsideTheImage( size );
+#endif
 
-  transformInitilizer->InitializeTransform();
+  transformInitializer->InitializeTransform();
+
+#ifdef BSplinev4
+  TransformType::MeshSizeType meshSize;
+  meshSize.Fill( 5 );
+
+  bsplineTransform->SetTransformDomainMeshSize( meshSize );
+#endif
 
   typedef TransformType::ParametersType     ParametersType;
 
@@ -167,7 +188,6 @@ int itkBSplineDeformableTransformInitializerTest1( int argc, char * argv[] )
     infile >>  parameters[n];
     infile >>  parameters[n+numberOfNodes];
     }
-
   infile.close();
 
   bsplineTransform->SetParameters( parameters );
@@ -184,7 +204,6 @@ int itkBSplineDeformableTransformInitializerTest1( int argc, char * argv[] )
     std::cerr << excp << std::endl;
     return EXIT_FAILURE;
     }
-
 
   typedef itk::Point<  float, ImageDimension >        PointType;
   typedef itk::Vector< float, ImageDimension >        VectorType;
@@ -204,6 +223,7 @@ int itkBSplineDeformableTransformInitializerTest1( int argc, char * argv[] )
 
   TransformType::InputPointType  fixedPoint;
   TransformType::OutputPointType movingPoint;
+  TransformType::JacobianType jacobian;
   DeformationFieldType::IndexType index;
 
   VectorType displacement;
@@ -213,11 +233,11 @@ int itkBSplineDeformableTransformInitializerTest1( int argc, char * argv[] )
     index = fi.GetIndex();
     field->TransformIndexToPhysicalPoint( index, fixedPoint );
     movingPoint = bsplineTransform->TransformPoint( fixedPoint );
+    jacobian = bsplineTransform->GetJacobian( fixedPoint );
     displacement = movingPoint - fixedPoint;
     fi.Set( displacement );
     ++fi;
     }
-
 
   typedef itk::ImageFileWriter< DeformationFieldType >  FieldWriterType;
   FieldWriterType::Pointer fieldWriter = FieldWriterType::New();

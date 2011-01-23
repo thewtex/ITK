@@ -15,25 +15,25 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkBSplineDeformableTransformInitializer_txx
-#define __itkBSplineDeformableTransformInitializer_txx
+#ifndef __itkBSplineDeformableTransformInitializerv4_txx
+#define __itkBSplineDeformableTransformInitializerv4_txx
 
-#include "itkBSplineDeformableTransformInitializer.h"
+#include "itkBSplineDeformableTransformInitializerv4.h"
 
 #include "itkPointSet.h"
 
 namespace itk
 {
 template<class TTransform, class TImage>
-BSplineDeformableTransformInitializer<TTransform, TImage>
-::BSplineDeformableTransformInitializer() :
+BSplineDeformableTransformInitializerv4<TTransform, TImage>
+::BSplineDeformableTransformInitializerv4() :
   m_Transform( NULL )
 {
 }
 
 template<class TTransform, class TImage>
 void
-BSplineDeformableTransformInitializer<TTransform, TImage>
+BSplineDeformableTransformInitializerv4<TTransform, TImage>
 ::InitializeTransform() const
 {
   if( !this->m_Transform )
@@ -225,7 +225,7 @@ BSplineDeformableTransformInitializer<TTransform, TImage>
 
 template<class TTransform, class TImage>
 void
-BSplineDeformableTransformInitializer<TTransform, TImage>
+BSplineDeformableTransformInitializerv4<TTransform, TImage>
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf( os, indent );
