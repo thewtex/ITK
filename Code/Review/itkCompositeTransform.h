@@ -37,8 +37,8 @@ namespace itk
  * One use of the class is to optimize only a subset of included transforms.
  *
  * Example
- * A user wants to optimize two Affine transforms together, then add a Deformation
- * Field (DF) transform and optimize it separately from the Affine transforms.
+ * A user wants to optimize two Affine transforms together, then add a
+ * Deformation Field (DF) transform, and optimize it separately.
  * He first adds the two Affines, then runs the optimization and both Affines
  * transforms are optimized. Next, he adds the DF transform and calls
  * SetOnlyMostRecentTransformToOptimizeOn, which clears the optimization flags
@@ -56,10 +56,7 @@ namespace itk
  * flags and include only those transforms whose corresponsing flag is set.
  * Their input or output is a concatenated array of all transforms set for use
  * in optimization. The goal is to be able to optimize multiple transforms at
- * once, while leaving other transforms fixed. For example, a user adds two
- * Affine transforms and optimizes them together, then adds a Deformation Field
- * transform and optimizes that separately, while still applying the affine
- * transforms during the optimization process.
+ * once, while leaving other transforms fixed. See the above example.
  *
  * Setting Optimization Flags
  * A transform's optimization flag is set when it is added to the queue, and
@@ -78,7 +75,7 @@ namespace itk
  * Inverse
  * The inverse transform is created by retrieving the inverse from each
  * sub transform and adding them to a composite transform in reverse order.
- * The m_TransformsToOptimize is copied in reverse for the inverse.
+ * The m_TransformsToOptimizeFlags is copied in reverse for the inverse.
  *
  * TODO
  *
@@ -87,19 +84,6 @@ namespace itk
  *   force the user to use the AddTransform method, forcing the order of
  *   transforms. Are there use cases where the user would *need* to insert
  *   transforms at the back of the queue? Or at arbitrary positions?
- * x SetNth* routines. These require the user to understand the actual
- *   ordering of the transforms in the queue. Since this is the reverse of
- *   what they intuitively expect, should we reverse the queue to allow
- *   the indexing in these methods to match the user's expectation that
- *   adding a transform puts it in the back/end of a list, at position
- *   N-1?
- *   One motivation for ordering the queue as it is, was to allow the user
- *   to say SetNthTransformToOptimize(0) to designate the most-recently
- *   added transform. But SetOnlyMostRecentTransformToOptimizeOn can take
- *   care of that transparently.
- * x GetNthTransformToOptimize - this returns the optimize flag for the Nth
- *   transforms, but is ambiguous. It could mean get the Nth transform itself,
- *   from all those that are flagged for optimization.
  *
  * GetParameters efficiency optimization
  *  Can we optimize this to only query the sub-transforms when the params
@@ -176,7 +160,8 @@ public:
 
   /** Functionality for sub transforms */
 
-  /** Add transforms to the queue, as stack. Only allow one method for simplicity.
+  /** Add transforms to the queue, as stack.
+   *  Only allow one method for simplicity and consistency of use.
    *  Most-recently added transform is always at back of queue, index N-1.
    */
   void AddTransform( TransformType *t  )
@@ -188,25 +173,25 @@ public:
   const
   TransformTypePointer GetFrontTransform()
     {
-    return this->m_TransformQueue.front();
+    return this->m_TransformQueue->front();
     }
   const
   TransformTypePointer GetBackTransform()
     {
-    return this->m_TransformQueue.back();
+    return this->m_TransformQueue->back();
     }
 
   const
   TransformTypePointer GetNthTransform( size_t n ) const
   {
-    return this->m_TransformQueue[n];
+    return this->m_TransformQueue->at(n);
   }
 
   /** Active Transform state manipulation */
 
   void SetNthTransformToOptimize( size_t i, bool state )
   {
-    this->m_TransformsToOptimizeFlags.at(i)=state;
+    this->m_TransformsToOptimizeFlags->at(i)=state;
     this->Modified();
   }
 
@@ -222,8 +207,8 @@ public:
 
   void SetAllTransformsToOptimize( bool state )
   {
-    this->m_TransformsToOptimizeFlags.assign(
-      this->m_TransformsToOptimizeFlags.size(), state );
+    this->m_TransformsToOptimizeFlags->assign(
+      this->m_TransformsToOptimizeFlags->size(), state );
     this->Modified();
   }
 
@@ -252,32 +237,36 @@ public:
       optimized? */
   bool GetNthTransformToOptimize( size_t i ) const
   {
-    return this->m_TransformsToOptimizeFlags.at(i);
+    return this->m_TransformsToOptimizeFlags->at(i);
   }
 
   /** Access transform queue */
-  //TODO not compiling. Maybe cuz m_TransformQueue is mutable?
-  // itkGetConstObjectMacro( TransformQueue, TransformQueueType )
+  const TransformQueueType* GetTransformQueue()
+    {
+    return m_TransformQueue;
+    }
 
   /** Access optimize flags */
-  //TODO not compiling. Maybe cuz member is mutable?
-  //itkGetConstObjectMacro( TransformsToOptimizeFlags, TransformsToOptimizeFlagsType );
+  const TransformsToOptimizeFlagsType* GetTransformsToOptimizeFlags()
+    {
+    return m_TransformsToOptimizeFlags;
+    }
 
   /** Misc. functionality */
   bool IsTransformQueueEmpty()
   {
-    return this->m_TransformQueue.empty();
+    return this->m_TransformQueue->empty();
   }
 
   size_t GetNumberOfTransforms() const
   {
-    return this->m_TransformQueue.size();
+    return this->m_TransformQueue->size();
   }
 
   void ClearTransformQueue()
   {
-    this->m_TransformQueue.clear();
-    this->m_TransformsToOptimizeFlags.clear();
+    this->m_TransformQueue->clear();
+    this->m_TransformsToOptimizeFlags->clear();
   }
 
   /** Return an inverse of this transform. */
@@ -364,28 +353,28 @@ protected:
 
   void PushFrontTransform( TransformTypePointer t  )
   {
-    this->m_TransformQueue.push_front( t );
+    this->m_TransformQueue->push_front( t );
     /* Add element to list of flags, and set true by default */
-    this->m_TransformsToOptimizeFlags.push_front( true );
+    this->m_TransformsToOptimizeFlags->push_front( true );
     this->Modified();
   }
 
   void PushBackTransform( TransformTypePointer t  )
   {
-    this->m_TransformQueue.push_back( t );
+    this->m_TransformQueue->push_back( t );
     /* Add element to list of flags, and set true by default */
-    this->m_TransformsToOptimizeFlags.push_back( true );
+    this->m_TransformsToOptimizeFlags->push_back( true );
     this->Modified();
   }
 
   /** Transform container object. */
-  mutable TransformQueueType m_TransformQueue;
+  mutable TransformQueueType*             m_TransformQueue;
 
   /** Get a list of transforms to optimize. Helper function. */
-  TransformQueueType& GetTransformsToOptimizeQueue() const;
+  TransformQueueType* GetTransformsToOptimizeQueue() const;
 
-  mutable TransformQueueType            m_TransformsToOptimizeQueue;
-  mutable TransformsToOptimizeFlagsType m_TransformsToOptimizeFlags;
+  mutable TransformQueueType*             m_TransformsToOptimizeQueue;
+  mutable TransformsToOptimizeFlagsType*  m_TransformsToOptimizeFlags;
 private:
   CompositeTransform( const Self & ); //purposely not implemented
   void operator=( const Self& );      //purposely not implemented
