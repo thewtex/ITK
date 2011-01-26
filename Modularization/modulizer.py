@@ -235,10 +235,10 @@ for  moduleName in moduleList:
 
            line = 'set('+ moduleName+'_TESTS'+ '  ${ITK_EXECUTABLE_PATH}/'+moduleName+'-tests)\n'
            o.write(line)
-           for cxxf in cxxFiles:
-              cxxFileName = cxxf.split('/')[-1]
-              line = 'add_test('+cxxFileName[0:-4]+ ' ${'+moduleName+'_TESTS}\n  ' + cxxFileName[0:-4] +')\n'
-           o.write(line)
+           #for cxxf in cxxFiles:
+           #   cxxFileName = cxxf.split('/')[-1]
+           #   line = 'add_test('+cxxFileName[0:-4]+ ' ${'+moduleName+'_TESTS}\n  ' + cxxFileName[0:-4] +')\n'
+           #   o.write(line)
            o.close()
 
 

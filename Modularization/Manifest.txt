@@ -357,8 +357,8 @@ Code/Common/itkOctree.txx core itk-common include
 Code/Common/itkOffset.h core itk-common include
 Code/Common/itkOutputWindow.cxx core itk-common src
 Code/Common/itkOutputWindow.h core itk-common include
-Code/Common/itkPCAShapeSignedDistanceFunction.h algorithm itk-signed-distance-function include
-Code/Common/itkPCAShapeSignedDistanceFunction.txx algorithm itk-signed-distance-function include
+Code/Common/itkPCAShapeSignedDistanceFunction.h segmentation itk-signed-distance-function include
+Code/Common/itkPCAShapeSignedDistanceFunction.txx segmentation itk-signed-distance-function include
 Code/Common/itkPhasedArray3DSpecialCoordinatesImage.h core itk-common include
 Code/Common/itkPhasedArray3DSpecialCoordinatesImage.txx core itk-common include
 Code/Common/itkPixelAccessor.h core itk-common include
@@ -401,7 +401,7 @@ Code/Common/itkSemaphore.cxx core itk-common src
 Code/Common/itkSemaphore.h core itk-common include
 Code/Common/itkShapedNeighborhoodIterator.h core itk-common include
 Code/Common/itkShapedNeighborhoodIterator.txx core itk-common include
-Code/Common/itkShapeSignedDistanceFunction.h algorithm itk-signed-distance-function include
+Code/Common/itkShapeSignedDistanceFunction.h segmentation itk-signed-distance-function include
 Code/Common/itkSimpleDataObjectDecorator.h core itk-common include
 Code/Common/itkSimpleDataObjectDecorator.txx core itk-common include
 Code/Common/itkSimpleFastMutexLock.cxx core itk-common src
@@ -429,8 +429,8 @@ Code/Common/itkSpatialFunction.h core itk-common include
 Code/Common/itkSpatialFunction.txx core itk-common include
 Code/Common/itkSpecialCoordinatesImage.h core itk-common include
 Code/Common/itkSpecialCoordinatesImage.txx core itk-common include
-Code/Common/itkSphereSignedDistanceFunction.h algorithm itk-signed-distance-function include
-Code/Common/itkSphereSignedDistanceFunction.txx algorithm itk-signed-distance-function  include
+Code/Common/itkSphereSignedDistanceFunction.h segmentation itk-signed-distance-function include
+Code/Common/itkSphereSignedDistanceFunction.txx segmentation itk-signed-distance-function  include
 Code/Common/itkSphereSpatialFunction.h core itk-common include
 Code/Common/itkSphereSpatialFunction.txx core itk-common include
 Code/Common/itkStdStreamLogOutput.cxx core itk-common src
@@ -2165,8 +2165,8 @@ Code/BasicFilters/itkSimpleContourExtractorImageFilter.txx  filtering  itk-edge-
 Code/BasicFilters/itkSimpleContourExtractorImageFilter.h filtering  itk-edge-detection include
 Code/BasicFilters/itkBSplineDecompositionImageFilter.h filtering itk-image-grid include
 Code/BasicFilters/itkBSplineDecompositionImageFilter.txx filtering itk-image-grid include
-Code/BasicFilters/itkTriangleMeshToSimplexMeshFilter.h filtering itk-mesh include
-Code/BasicFilters/itkTriangleMeshToSimplexMeshFilter.txx filtering itk-mesh include
+Code/BasicFilters/itkTriangleMeshToSimplexMeshFilter.h core itk-mesh include
+Code/BasicFilters/itkTriangleMeshToSimplexMeshFilter.txx core itk-mesh include
 Code/BasicFilters/itkNaryMaximumImageFilter.h  filtering itk-intensity-math include
 Code/BasicFilters/itkImageToVectorImageFilter.h  filtering itk-intensity-math include
 Code/BasicFilters/itkImageToVectorImageFilter.txx  filtering itk-intensity-math include
@@ -2206,8 +2206,8 @@ Code/BasicFilters/itkTriangleMeshToBinaryImageFilter.txx core itk-mesh include
 Code/BasicFilters/itkSpatialObjectToImageStatisticsCalculator.h  core itk-spatial-objects include
 Code/BasicFilters/itkSpatialObjectToImageStatisticsCalculator.txx  core itk-spatial-objects include
 Code/BasicFilters/itkSpatialObjectToPointSetFilter.h  core itk-spatial-objects include
-Code/BasicFilters/itkDiffusionTensor3DReconstructionImageFilter.h  core itk-diffusion-tensor-image include
-Code/BasicFilters/itkDiffusionTensor3DReconstructionImageFilter.txx core itk-diffusion-tensor-image include
+Code/BasicFilters/itkDiffusionTensor3DReconstructionImageFilter.h  filtering itk-diffusion-tensor-image include
+Code/BasicFilters/itkDiffusionTensor3DReconstructionImageFilter.txx filtering itk-diffusion-tensor-image include
 Code/BasicFilters/itkPolylineMaskImageFilter.txx filtering itk-intensity-math include
 Code/BasicFilters/itkPolylineMaskImageFilter.h filtering itk-intensity-math include
 Code/BasicFilters/itkPolylineMask2DImageFilter.h filtering itk-intensity-math include
@@ -2389,7 +2389,7 @@ Testing/Code/Common/itkCovarianceImageFunctionTest.cxx core itk-image-function t
 Testing/Code/Common/itkCrossHelperTest.cxx core itk-common test
 Testing/Code/Common/itkDerivativeOperatorTest.cxx core itk-common test
 Testing/Code/Common/itkDifferenceImageFilterTest.cxx core itk-image-compare test
-Testing/Code/Common/itkDiffusionTensor3DTest.cxx core itk-diffusion-tensor-image test
+Testing/Code/Common/itkDiffusionTensor3DTest.cxx filtering itk-diffusion-tensor-image test
 Testing/Code/Common/itkDirectoryTest.cxx core itk-common test
 Testing/Code/Common/itkEllipsoidInteriorExteriorSpatialFunctionTest.cxx core itk-common test
 Testing/Code/Common/itkEventObjectTest.cxx core itk-common test
@@ -2444,7 +2444,7 @@ Testing/Code/Common/itkFactoryTestLib.cxx core itk-common test
 Testing/Code/Common/itkFactoryTestLib.h core itk-common test
 Testing/Code/Common/itkObjectStoreTest.cxx core itk-common test
 Testing/Code/Common/itkOctreeTest.cxx core itk-common test
-Testing/Code/Common/itkPCAShapeSignedDistanceFunctionTest.cxx algorithm itk-signed-distance-function test
+Testing/Code/Common/itkPCAShapeSignedDistanceFunctionTest.cxx segmentation itk-signed-distance-function test
 Testing/Code/Common/itkPhasedArray3DSpecialCoordinatesImageTest.cxx core itk-common test
 Testing/Code/Common/itkPointSetTest.cxx core itk-common test
 Testing/Code/Common/itkPolygonCellTest.cxx core itk-common test
@@ -2461,7 +2461,7 @@ Testing/Code/Common/itkSizeTest.cxx core itk-common test
 Testing/Code/Common/itkSmartPointerTest.cxx core itk-common test
 Testing/Code/Common/itkSparseImageTest.cxx NonUnit itk-integrated-test code
 Testing/Code/Common/itkSpatialFunctionTest.cxx core itk-common test
-Testing/Code/Common/itkSphereSignedDistanceFunctionTest.cxx algorithm itk-signed-distance-function test
+Testing/Code/Common/itkSphereSignedDistanceFunctionTest.cxx segmentation itk-signed-distance-function test
 Testing/Code/Common/itkStdStreamLogOutputTest.cxx core itk-common test
 Testing/Code/Common/itkSTLContainerAdaptorTest.cxx core itk-common test
 Testing/Code/Common/itkSymmetricEllipsoidInteriorExteriorSpatialFunctionTest.cxx core itk-common test
@@ -2739,10 +2739,10 @@ Testing/Code/BasicFilters/itkBloxBoundaryProfileImageToBloxCoreAtomImageFilterTe
 Testing/Code/BasicFilters/itkBloxBoundaryPointImageToBloxBoundaryProfileImageFilterTest.cxx segmentation itk-blox test
 Testing/Code/Algorithms/itkBinaryMedialNodeMetricTest.cxx segmentation itk-blox test
 Testing/Code/IO/itkIOCommonTest.cxx core itk-io-base test
-Testing/Code/IO/itkImageIOBaseTest.cxx core itk-io-base test
+Testing/Code/IO/itkImageIOBaseTest.cxx core itk-integrated-test code
 Testing/Code/IO/itkImageFileWriterTest2.cxx core itk-io-base test
 Testing/Code/IO/itkImageFileWriterTest.cxx core itk-io-base test
-Testing/Code/IO/itkImageSeriesWriterTest.cxx core itk-io-base test
+Testing/Code/IO/itkImageSeriesWriterTest.cxx core itk-integrated-test code
 Testing/Code/IO/itkImageFileReaderTest1.cxx core itk-io-base test
 Testing/Code/IO/itkRegularExpressionSeriesFileNamesTest.cxx core itk-io-base test
 Testing/Code/IO/itkNumericSeriesFileNamesTest.cxx core itk-io-base test
@@ -2864,9 +2864,9 @@ Testing/Code/Algorithms/itkRecursiveMultiResolutionPyramidImageFilterTest.cxx re
 Testing/Code/Algorithms/itkBayesianClassifierImageFilterTest.cxx segmentation itk-integrated-test code
 Testing/Code/Algorithms/itkMRFImageFilterTest.cxx segmentation itk-markov-random-fields-classifiers test
 Testing/Code/BasicFilters/itkMinimumProjectionImageFilterTest.cxx filtering itk-image-statistics test
-Testing/Code/BasicFilters/itkProjectionImageFilterTest.cxx filtering itk-image-statistics test
+Testing/Code/BasicFilters/itkProjectionImageFilterTest.cxx filtering itk-integrated-test code
 Testing/Code/BasicFilters/itkSumProjectionImageFilterTest.cxx filtering itk-image-statistics test
-Testing/Code/BasicFilters/itkBinaryProjectionImageFilterTest.cxx filtering itk-image-statistics test
+Testing/Code/BasicFilters/itkBinaryProjectionImageFilterTest.cxx filtering itk-integrated-test code
 Testing/Code/BasicFilters/itkStandardDeviationProjectionImageFilterTest.cxx filtering itk-image-statistics test
 Testing/Code/BasicFilters/itkMeanProjectionImageFilterTest.cxx filtering itk-image-statistics test
 Testing/Code/BasicFilters/itkMedianProjectionImageFilterTest.cxx filtering itk-image-statistics test
