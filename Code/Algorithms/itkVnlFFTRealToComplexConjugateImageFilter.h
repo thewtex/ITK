@@ -23,7 +23,11 @@ namespace itk
 {
 /** \class VnlFFTRealToComplexConjugateImageFilter
  *
- * \brief VNL based Fast Fourier Transform
+ * \brief VNL based forward Fast Fourier Transform.
+ *
+ * \sa FFTRealToComplexConjugateImageFilter
+ *
+ * \ingroup FourierTransform
  */
 template< class TPixel, unsigned int VDimension = 3 >
 class VnlFFTRealToComplexConjugateImageFilter:
