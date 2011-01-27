@@ -50,9 +50,11 @@ template< class TInputImage, class TOutputImage >
 void
 GPUMeanImageFilter< TInputImage, TOutputImage >::GPUGenerateData()
 {
-  TInputImage::Pointer  inPtr =  dynamic_cast< TInputImage * >( this->ProcessObject::GetInput(0) );
-  TOutputImage::Pointer otPtr =  dynamic_cast< TOutputImage * >( this->ProcessObject::GetOutput(0) );
-  TOutputImage::SizeType outSize = otPtr->GetLargestPossibleRegion().GetSize();
+  typedef itk::GPUTraits< TInputImage >::Type  GPUInputImage;
+  typedef itk::GPUTraits< TOutputImage >::Type  GPUOutputImage;
+  GPUInputImage::Pointer  inPtr =  dynamic_cast< GPUInputImage * >( this->ProcessObject::GetInput(0) );
+  GPUOutputImage::Pointer otPtr =  dynamic_cast< GPUOutputImage * >( this->ProcessObject::GetOutput(0) );
+  GPUOutputImage::SizeType outSize = otPtr->GetLargestPossibleRegion().GetSize();
 
   int radius[3], imgSize[3];
   radius[0] = radius[1] = radius[2] = 0;

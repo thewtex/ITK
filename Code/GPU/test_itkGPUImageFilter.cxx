@@ -38,6 +38,71 @@ using namespace itk;
 //
 char* gpuSrcPath = "../../../ITK/Code/GPU/ImageOps.cl";
 
+
+int main()
+{
+
+  ObjectFactoryBase::RegisterFactory( GPUImageFactory::New() );
+  ObjectFactoryBase::RegisterFactory( GPUMeanImageFilterFactory::New() );
+
+  typedef   unsigned char  InputPixelType;
+  typedef   unsigned char  OutputPixelType;
+
+  typedef itk::Image< InputPixelType,  2 >   InputImageType;
+  typedef itk::Image< OutputPixelType, 2 >   OutputImageType;
+
+  typedef itk::ImageFileReader< InputImageType  >  ReaderType;
+  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+
+  ReaderType::Pointer reader = ReaderType::New();
+  WriterType::Pointer writer = WriterType::New();
+
+  //reader->SetFileName( argv[1] );
+  //writer->SetFileName( argv[2] );
+  reader->SetFileName( "C:/Users/wkjeong/Proj/ITK/Examples/Data/BrainProtonDensitySlice.png" );
+  writer->SetFileName( "testout.png" );
+
+  //typedef itk::GPUMeanImageFilter< InputImageType, OutputImageType > MeanFilterType;
+  typedef itk::MeanImageFilter< InputImageType, OutputImageType > MeanFilterType;
+  typedef itk::BinaryThresholdImageFilter< InputImageType, OutputImageType > ThresholdFilterType;
+
+  MeanFilterType::Pointer filter1 = MeanFilterType::New();
+  MeanFilterType::Pointer filter2 = MeanFilterType::New();
+  ThresholdFilterType::Pointer filter3 = ThresholdFilterType::New();
+
+  // Mean filter kernel radius
+  InputImageType::SizeType indexRadius;
+  indexRadius[0] = 2; // radius along x
+  indexRadius[1] = 2; // radius along y
+
+  // threshold parameters
+  const InputPixelType upperThreshold = 255;
+  const InputPixelType lowerThreshold = 175;
+  const OutputPixelType outsideValue = 0;
+  const OutputPixelType insideValue  = 255;
+
+  filter1->SetRadius( indexRadius );
+  filter2->SetRadius( indexRadius );
+  filter3->SetOutsideValue( outsideValue );
+  filter3->SetInsideValue(  insideValue  );
+  filter3->SetUpperThreshold( upperThreshold );
+  filter3->SetLowerThreshold( lowerThreshold );
+
+  // build pipeline
+  filter1->SetInput( reader->GetOutput() );
+  filter2->SetInput( filter1->GetOutput() );
+  filter3->SetInput( filter2->GetOutput() );
+  writer->SetInput( filter3->GetOutput() );
+
+  // execute pipeline filter and write output
+  writer->Update();
+
+
+  return EXIT_SUCCESS;
+}
+
+
+/*
 int main()
 {
   typedef   unsigned char  InputPixelType;
@@ -57,18 +122,6 @@ int main()
   reader->SetFileName( "C:/Users/wkjeong/Proj/ITK/Examples/Data/BrainProtonDensitySlice.png" );
   writer->SetFileName( "testout.png" );
 
-  //  Software Guide : BeginLatex
-  //
-  //  Using the image types it is now possible to instantiate the filter type
-  //  and create the filter object.
-  //
-  //  \index{itk::MeanImageFilter!instantiation}
-  //  \index{itk::MeanImageFilter!New()}
-  //  \index{itk::MeanImageFilter!Pointer}
-  //
-  //  Software Guide : EndLatex
-
-  // Software Guide : BeginCodeSnippet
   typedef itk::GPUMeanImageFilter< InputImageType, OutputImageType > MeanFilterType;
   typedef itk::BinaryThresholdImageFilter< InputImageType, OutputImageType > ThresholdFilterType;
 
@@ -106,3 +159,4 @@ int main()
 
   return EXIT_SUCCESS;
 }
+*/

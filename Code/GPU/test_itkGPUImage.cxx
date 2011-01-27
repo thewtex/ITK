@@ -110,7 +110,7 @@ int main()
   kernelManager->SetKernelArgWithImage(kernel_add, 1, srcB->GetGPUDataManager());
   kernelManager->SetKernelArgWithImage(kernel_add, 2, dest->GetGPUDataManager());
   kernelManager->SetKernelArg(kernel_add, 3, sizeof(unsigned int), &nElem);
-  kernelManager->LaunchKernel2D(kernel_add, 16, 16, 16, 16);
+  kernelManager->LaunchKernel2D(kernel_add, width, height, 16, 16);
 
   std::cout << "------------------" << std::endl;
   std::cout << "After GPU kernel execution" << std::endl;
@@ -136,7 +136,7 @@ int main()
   kernelManager->SetKernelArgWithImage(kernel_mult, 1, srcB->GetGPUDataManager());
   kernelManager->SetKernelArgWithImage(kernel_mult, 2, dest->GetGPUDataManager());
   kernelManager->SetKernelArg(kernel_mult, 3, sizeof(unsigned int), &nElem);
-  kernelManager->LaunchKernel2D(kernel_mult, 16, 16, 16, 16);
+  kernelManager->LaunchKernel2D(kernel_mult, width, height, 16, 16);
 
   std::cout << "------------------" << std::endl;
   std::cout << "After GPU kernel execution" << std::endl;
@@ -180,7 +180,7 @@ int main()
   kernelManager->SetKernelArgWithImage(kernel_sub, 1, srcB->GetGPUDataManager());
   kernelManager->SetKernelArgWithImage(kernel_sub, 2, dest->GetGPUDataManager());
   kernelManager->SetKernelArg(kernel_sub, 3, sizeof(unsigned int), &nElem);
-  kernelManager->LaunchKernel2D(kernel_sub, 16, 16, 16, 16);
+  kernelManager->LaunchKernel2D(kernel_sub, width, height, 16, 16);
 
   std::cout << "------------------" << std::endl;
   std::cout << "After GPU kernel execution" << std::endl;

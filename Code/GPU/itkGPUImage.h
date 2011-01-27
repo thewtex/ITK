@@ -21,6 +21,8 @@
 
 #include "itkImage.h"
 #include "itkGPUDataManager.h"
+#include "itkVersion.h"
+#include "itkObjectFactoryBase.h"
 
 namespace itk
 {
@@ -136,6 +138,74 @@ namespace itk
 
     GPUDataManager::Pointer m_GPUManager;
   };
+
+
+class GPUImageFactory : public itk::ObjectFactoryBase
+{
+public:
+  typedef GPUImageFactory   Self;
+  typedef itk::ObjectFactoryBase        Superclass;
+  typedef itk::SmartPointer<Self>       Pointer;
+  typedef itk::SmartPointer<const Self> ConstPointer;
+
+  /** Class methods used to interface with the registered factories. */
+  virtual const char* GetITKSourceVersion() const { return ITK_SOURCE_VERSION; }
+  const char* GetDescription() const { return "A Factory for GPUImage"; }
+
+  /** Method for class instantiation. */
+  itkFactorylessNewMacro(Self);
+
+  /** Run-time type information (and related methods). */
+  itkTypeMacro(GPUImageFactory, itk::ObjectFactoryBase);
+
+  /** Register one factory of this type  */
+  static void RegisterOneFactory(void)
+  {
+    GPUImageFactory::Pointer factory = GPUImageFactory::New();
+    itk::ObjectFactoryBase::RegisterFactory(factory);
+  }
+
+private:
+  GPUImageFactory(const Self&);    //purposely not implemented
+  void operator=(const Self&); //purposely not implemented
+
+#define OverrideTypeMacro(pt,dm)    this->RegisterOverride(\
+        typeid(itk::Image<pt,dm>).name(),\
+        typeid(itk::GPUImage<pt,dm>).name(),\
+        "GPU Image Override",\
+        true,\
+        itk::CreateObjectFunction<GPUImage<pt,dm> >::New())
+
+
+  GPUImageFactory()
+    {
+      //this->IfGPUISAvailable()
+      //{
+      OverrideTypeMacro(unsigned char, 2);
+      OverrideTypeMacro(signed char, 2);
+      OverrideTypeMacro(float,2);
+      OverrideTypeMacro(int,2);
+      OverrideTypeMacro(double,2);
+      //}
+    }
+};
+
+template <class T>
+class GPUTraits
+{
+public:
+  typedef T   Type;
+};
+
+
+template <class T, unsigned int D>
+class GPUTraits< Image< T, D > >
+{
+public:
+  typedef GPUImage<T,D>   Type;
+};
+
+
 
 } // end namespace itk
 

@@ -1,7 +1,7 @@
-option(USE_GPU "GPU acceleration" OFF)
-mark_as_advanced(USE_GPU)
+option(ITK_USE_GPU "GPU acceleration" OFF)
+mark_as_advanced(ITK_USE_GPU)
 
-if(USE_GPU)
+if(ITK_USE_GPU)
 
 message("Acceleration using OpenCL is ON.")
 
@@ -34,4 +34,4 @@ TARGET_LINK_LIBRARIES( test_itkGPUImage ITKCommon ITKGPU ${OPENCL_LIBRARIES} )
 ADD_EXECUTABLE( test_itkGPUImageFilter test_itkGPUImageFilter.cxx )
 TARGET_LINK_LIBRARIES( test_itkGPUImageFilter ITKIO ITKCommon ITKGPU ${OPENCL_LIBRARIES} )
 
-endif(USE_GPU)
+endif(ITK_USE_GPU)

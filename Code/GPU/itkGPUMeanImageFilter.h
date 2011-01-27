@@ -3,6 +3,9 @@
 
 #include "itkMeanImageFilter.h"
 #include "itkGPUImageToImageFilter.h"
+#include "itkVersion.h"
+#include "itkObjectFactoryBase.h"
+
 
 namespace itk
 {
@@ -53,6 +56,65 @@ private:
 
   int m_KernelHandle;
 };
+
+
+class GPUMeanImageFilterFactory : public itk::ObjectFactoryBase
+{
+public:
+  typedef GPUMeanImageFilterFactory   Self;
+  typedef itk::ObjectFactoryBase        Superclass;
+  typedef itk::SmartPointer<Self>       Pointer;
+  typedef itk::SmartPointer<const Self> ConstPointer;
+
+  /** Class methods used to interface with the registered factories. */
+  virtual const char* GetITKSourceVersion() const { return ITK_SOURCE_VERSION; }
+  const char* GetDescription() const { return "A Factory for GPUMeanImageFilter"; }
+
+  /** Method for class instantiation. */
+  itkFactorylessNewMacro(Self);
+
+  /** Run-time type information (and related methods). */
+  itkTypeMacro(GPUMeanImageFilterFactory, itk::ObjectFactoryBase);
+
+  /** Register one factory of this type  */
+  static void RegisterOneFactory(void)
+  {
+    GPUMeanImageFilterFactory::Pointer factory = GPUMeanImageFilterFactory::New();
+    itk::ObjectFactoryBase::RegisterFactory(factory);
+  }
+
+private:
+  GPUMeanImageFilterFactory(const Self&);    //purposely not implemented
+  void operator=(const Self&); //purposely not implemented
+
+#define OverrideTypeMacro1(ipt,opt,dm)\
+  {\
+  typedef itk::Image<ipt,dm> InputImageType;\
+  typedef itk::Image<opt,dm> OutputImageType;\
+  this->RegisterOverride(\
+  typeid(itk::MeanImageFilter<InputImageType,OutputImageType>).name(),\
+        typeid(itk::GPUMeanImageFilter<InputImageType,OutputImageType>).name(),\
+        "GPU Mean Image Filter Override",\
+        true,\
+        itk::CreateObjectFunction<GPUMeanImageFilter<InputImageType,OutputImageType> >::New());\
+  }
+
+
+  GPUMeanImageFilterFactory()
+    {
+      //this->IfGPUISAvailable()
+      //{
+      OverrideTypeMacro1(unsigned char, unsigned char, 2);
+      OverrideTypeMacro1(signed char, signed char, 2);
+      OverrideTypeMacro1(float,float,2);
+      OverrideTypeMacro1(int,int,2);
+      OverrideTypeMacro1(double,double,2);
+      //}
+    }
+};
+
+
+
 
 } // end namespace itk
 
