@@ -1,5 +1,5 @@
-#ifndef __ITKGPUCONTEXTMANAGER_H__
-#define __ITKGPUCONTEXTMANAGER_H__
+#ifndef __itkGPUContextManager_h
+#define __itkGPUContextManager_h
 
 #include "itkOclUtil.h"
 #include <itkLightObject.h>
@@ -11,40 +11,35 @@
 
 namespace itk
 {
-class ITK_EXPORT GPUContextManager: public LightObject
-{
-public:
+  class ITK_EXPORT GPUContextManager: public LightObject
+  {
+  public:
 
-static GPUContextManager* getInstance();
-void destroyInstance();
+    static GPUContextManager* GetInstance();
+    void DestroyInstance();
 
-cl_command_queue getCommandQueue(int i);
+    cl_command_queue GetCommandQueue(int i);
 
-unsigned int getNumCommandQueue() { return m_num_devices; }
+    unsigned int GetNumCommandQueue() { return m_NumDevices; }
 
-cl_context getCurrentContext() { return m_context; }
+    cl_context GetCurrentContext() { return m_Context; }
 
-/*
-// This has to go to individual GPU object
-cl_command_queue getCurrentCommandQueue() { getCommandQueue(m_current_command_queue_id); }
-void SetCurrentCommandQueue(unsigned int i) { m_current_command_queue_id = (i >= m_num_devices) ? 0 : i; }
-*/
+    cl_device_id GetDeviceId(int i);
 
-private:
+  private:
 
-GPUContextManager();
-~GPUContextManager();
+    GPUContextManager();
+    ~GPUContextManager();
 
-cl_platform_id     m_platform;
-cl_context         m_context;
-cl_device_id*      m_devices;
-cl_command_queue*  m_command_queue; // one queue per device
+    cl_platform_id     m_Platform;
+    cl_context         m_Context;
+    cl_device_id*      m_Devices;
+    cl_command_queue*  m_CommandQueue; // one queue per device
 
-cl_uint m_num_devices, m_num_platforms;
+    cl_uint m_NumDevices, m_NumPlatforms;
 
-static GPUContextManager* m_pInstance;
-};
-}
-
+    static GPUContextManager* m_Instance;
+  };
+} // namespace itk
 
 #endif

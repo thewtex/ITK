@@ -9,21 +9,21 @@
 //
 // Get the device that has the maximum FLOPS in the current context
 //
-cl_device_id oclGetMaxFlopsDev(cl_context cxGPUContext);
+cl_device_id OclGetMaxFlopsDev(cl_context cxGPUContext);
 
 //
 // Print device name
 //
-void oclPrintDeviceName(cl_device_id device);
+void OclPrintDeviceName(cl_device_id device);
 
 //
 // Find the OpenCL platform that matches the "name"
 //
-cl_platform_id oclSelectPlatform(char* name);
+cl_platform_id OclSelectPlatform(char* name);
 
 //
 // Check OpenCL error
 //
-void oclCheckError(cl_int error);
+void OclCheckError(cl_int error);
 
 #endif

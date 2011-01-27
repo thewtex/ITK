@@ -1,20 +1,20 @@
 /*=========================================================================
- *
- *  Copyright Insight Software Consortium
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *         http://www.apache.org/licenses/LICENSE-2.0.txt
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *
- *=========================================================================*/
+*
+*  Copyright Insight Software Consortium
+*
+*  Licensed under the Apache License, Version 2.0 (the "License");
+*  you may not use this file except in compliance with the License.
+*  You may obtain a copy of the License at
+*
+*         http://www.apache.org/licenses/LICENSE-2.0.txt
+*
+*  Unless required by applicable law or agreed to in writing, software
+*  distributed under the License is distributed on an "AS IS" BASIS,
+*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+*  See the License for the specific language governing permissions and
+*  limitations under the License.
+*
+*=========================================================================*/
 
 //
 // Base class for GPU Data Management
@@ -31,88 +31,95 @@
 #include <CL/opencl.h>
 #include "itkOclUtil.h"
 #include "itkGPUContextManager.h"
+#include "itkSimpleFastMutexLock.h"
 
 namespace itk
 {
-class ITK_EXPORT GPUDataManager : public LightObject
-{
-// allow GPUKernelManager to access GPU buffer pointer
-friend class GPUKernelManager;
 
-public:
+  class ITK_EXPORT GPUDataManager : public LightObject
+  {
+    // allow GPUKernelManager to access GPU buffer pointer
+    friend class GPUKernelManager;
 
-typedef GPUDataManager            Self;
-typedef LightObject               Superclass;
-typedef SmartPointer<Self>        Pointer;
-typedef SmartPointer<const Self>  ConstPointer;
+  public:
 
-itkNewMacro(Self);
-itkTypeMacro(GPUDataManager, LightObject);
+    typedef GPUDataManager            Self;
+    typedef LightObject               Superclass;
+    typedef SmartPointer<Self>        Pointer;
+    typedef SmartPointer<const Self>  ConstPointer;
 
-// total buffer size in bytes
-void SetBufferSize( unsigned int num );
+    itkNewMacro(Self);
+    itkTypeMacro(GPUDataManager, LightObject);
 
-void SetBufferFlag( cl_mem_flags flags );
+    // total buffer size in bytes
+    void SetBufferSize( unsigned int num );
 
-void SetCPUBufferPointer( void* ptr );
+    void SetBufferFlag( cl_mem_flags flags );
 
-void SetCPUDirtyFlag( bool isDirty );
+    void SetCPUBufferPointer( void* ptr );
 
-void SetGPUDirtyFlag( bool isDirty );
+    void SetCPUDirtyFlag( bool isDirty );
 
-void SetCPUBufferDirty();
+    void SetGPUDirtyFlag( bool isDirty );
 
-void SetGPUBufferDirty();
+    void SetCPUBufferDirty();
 
-void MakeCPUBufferUpToDate();
+    void SetGPUBufferDirty();
 
-void MakeGPUBufferUpToDate();
+    void MakeCPUBufferUpToDate();
 
-void Allocate();
+    void MakeGPUBufferUpToDate();
 
-void SetCurrentCommandQueue( int queueid );
+    void Allocate();
 
-int  GetCurrentCommandQueueID();
+    void SetCurrentCommandQueue( int queueid );
 
-//
-// Synchronize CPU and GPU buffers (using dirty flags)
-//
-bool MakeUpToDate();
+    int  GetCurrentCommandQueueID();
 
-protected:
+    //
+    // Synchronize CPU and GPU buffers (using dirty flags)
+    //
+    bool MakeUpToDate();
 
-GPUDataManager();
-virtual ~GPUDataManager();
+  protected:
 
-//
-// Get GPU buffer pointer
-//
-cl_mem* GetGPUBufferPointer();
+    GPUDataManager();
+    virtual ~GPUDataManager();
 
-private:
+    //
+    // Get GPU buffer pointer
+    //
+    cl_mem* GetGPUBufferPointer();
 
-GPUDataManager(const Self&); //purposely not implemented
-void operator=(const Self&);
+  private:
 
-unsigned int m_bufferSize; // # of bytes
+    GPUDataManager(const Self&); //purposely not implemented
+    void operator=(const Self&);
 
-GPUContextManager *m_manager;
+    unsigned int m_BufferSize; // # of bytes
 
-int m_command_queue_id;
+    GPUContextManager *m_Manager;
 
-// buffer type
-cl_mem_flags m_mem_flags;
+    int m_CommandQueueId;
 
-// buffer pointers
-cl_mem m_gpu_buffer;
-void*  m_cpu_buffer;
+    // buffer type
+    cl_mem_flags m_MemFlags;
 
-// tells if buffer needs to be updated
-bool m_isGPUBufferDirty, m_isCPUBufferDirty;
+    // buffer pointers
+    cl_mem m_GPUBuffer;
+    void*  m_CPUBuffer;
 
-cl_platform_id* m_platform;
-cl_context*     m_context;
-};
-}
+    // tells if buffer needs to be updated
+    bool m_IsGPUBufferDirty;
+    bool m_IsCPUBufferDirty;
+
+    cl_platform_id* m_Platform;
+    cl_context*     m_Context;
+
+    // mutex to prevent multiple threads access GPU memory at the same time
+    SimpleFastMutexLock m_Mutex;
+  };
+
+} // namespace itk
 
 #endif
