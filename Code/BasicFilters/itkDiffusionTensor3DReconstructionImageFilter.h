@@ -120,7 +120,8 @@ namespace itk
 
 template< class TReferenceImagePixelType,
           class TGradientImagePixelType = TReferenceImagePixelType,
-          class TTensorPixelType = double >
+          class TTensorPixelType = double,
+          class TMaskImageType = Image<unsigned char, 3> >
 class ITK_EXPORT DiffusionTensor3DReconstructionImageFilter:
   public ImageToImageFilter< Image< TReferenceImagePixelType, 3 >,
                              Image< DiffusionTensor3D< TTensorPixelType >, 3 > >
@@ -166,6 +167,9 @@ public:
    * Reference image and a vector length parameter of \c n (number of
    * gradient directions) */
   typedef VectorImage< GradientPixelType, 3 > GradientImagesType;
+
+  /** The type for the optional mask image */
+  typedef TMaskImageType MaskImageType;
 
   /** Holds the tensor basis coefficients G_k */
   typedef vnl_matrix_fixed< double, 6, 6 > TensorBasisMatrixType;
@@ -217,6 +221,11 @@ public:
       itkExceptionMacro(<< "Gradient direction " << idx << "does not exist");
       }
     return m_GradientDirectionContainer->ElementAt(idx + 1);
+  }
+
+  void SetMaskImage(const MaskImageType *mask)
+  {
+    this->m_MaskImage = mask;
   }
 
   /** Threshold on the reference image data. The output tensor will be a null
@@ -299,6 +308,9 @@ private:
 
   /** Gradient image was specified in a single image or in multiple images */
   GradientImageTypeEnumeration m_GradientImageTypeEnumeration;
+
+  /** Mask Image */
+  typename MaskImageType::ConstPointer m_MaskImage;
 };
 }
 

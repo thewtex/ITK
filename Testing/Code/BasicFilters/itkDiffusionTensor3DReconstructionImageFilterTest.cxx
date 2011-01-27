@@ -48,6 +48,15 @@ int itkDiffusionTensor3DReconstructionImageFilterTest(int, char*[])
   referenceImage->Allocate();
   referenceImage->FillBuffer( 100 );
 
+  // Create a mask image
+  // With all pixels set to 255, it won't actually suppress any voxels
+  // from processing, but it will at least exercise the mask code.
+  typedef TensorReconstructionImageFilterType::MaskImageType
+    MaskImageType;
+  MaskImageType::Pointer maskImage = MaskImageType::New();
+  maskImage->SetRegions(regionReferenceImage);
+  maskImage->Allocate();
+  maskImage->FillBuffer(255);
 
   const unsigned int numberOfGradientImages = 6;
 
@@ -103,6 +112,7 @@ int itkDiffusionTensor3DReconstructionImageFilterTest(int, char*[])
     std::cout << "Gradient directions: " << gradientDirection << std::endl;
     }
 
+  tensorReconstructionFilter->SetMaskImage( maskImage );
   tensorReconstructionFilter->SetReferenceImage( referenceImage );
   // TODO: remove this when netlib is made thread safe
   tensorReconstructionFilter->SetNumberOfThreads( 1 );
@@ -177,4 +187,3 @@ int itkDiffusionTensor3DReconstructionImageFilterTest(int, char*[])
 
   return EXIT_SUCCESS;
 }
-
