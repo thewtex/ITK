@@ -177,6 +177,31 @@ newf.close()
 print ("listed new files to"+LogDir+"/newFiles.log")
 
 ###########################################################################
+def ModularITKAddTest(executableSearch, moduleName):
+    addTestLines="";
+    for line in  open("./ITKAddTestsWithArgn.txt",'r'):
+        argns=""
+        words = line[0:-1].split(";")
+        if (len(words)< 3):
+            #print( "No test driver warining!"+ line +"\n")
+            testName = words[0]
+            executableName = words[1]
+        else:
+            testName = words[0]
+            testDriver = words[1]
+            if (words[2] == "--compare"):
+               #ignore now, TO DO
+               executableName = words[3]
+            else:
+               executableName = words[2]
+        if (executableName == executableSearch):
+            addTestLines = addTestLines + "add_test(NAME "+ testName+ "\n      COMMAND "+moduleName+'-tests  ' + executableName
+            if (len(words)>3):
+                argns =' '.join(words[3:])
+                addTestLines = addTestLines + "\n              "+argns
+            addTestLines = addTestLines +")\n"
+    return  addTestLines
+
 
 print ('creating cmake files for each module (from the template module)')
 #moduleList = os.listdir(HeadOfModularITKTree)
@@ -220,26 +245,28 @@ for  moduleName in moduleList:
        filepath = HeadOfModularITKTree+'/modules/'+moduleName+'/test/CMakeLists.txt'
 
        if not os.path.isfile(filepath):
-           o = open(filepath,'w')
-           line = 'create_test_sourcelist(Tests '+moduleName+'-tests.cxx\n'+cxxFileList+')\n\n'
-           o.write(line)
+         o = open(filepath,'w')
+         line = 'create_test_sourcelist(Tests '+moduleName+'-tests.cxx\n'+cxxFileList+')\n\n'
+         o.write(line)
 
-           #line = 'set (TestsTorun ${Tests})\nremove(TestsToRun '+moduleName+'-tests.cxx)\n\n'
-           #o.write(line)
+         #line = 'set (TestsTorun ${Tests})\nremove(TestsToRun '+moduleName+'-tests.cxx)\n\n'
+         #o.write(line)
 
-           line = 'add_executable('+moduleName+'-tests  ${Tests} )\n'
-           o.write(line)
+         line = 'add_executable('+moduleName+'-tests  ${Tests} )\n'
+         o.write(line)
 
-           line = 'target_link_libraries('+moduleName+'-tests  ${'+moduleName+'_LIBRARIES} )\n\n'
-           o.write(line)
+         line = 'target_link_libraries('+moduleName+'-tests  ${'+moduleName+'_LIBRARIES} )\n\n'
+         o.write(line)
 
-           #line = 'set('+ moduleName+'_TESTS'+ '  ${ITK_EXECUTABLE_PATH}/'+moduleName+'-tests)\n'
-           #o.write(line)
-           #for cxxf in cxxFiles:
-           #   cxxFileName = cxxf.split('/')[-1]
-           #   line = 'add_test('+cxxFileName[0:-4]+ ' ${'+moduleName+'_TESTS}\n  ' + cxxFileName[0:-4] +')\n'
-           #   o.write(line)
-           o.close()
+         #line = 'set('+ moduleName+'_TESTS'+ '  ${ITK_EXECUTABLE_PATH}/'+moduleName+'-tests)\n'
+         #o.write(line)
+         for cxxf in cxxFiles:
+            cxxFileName = cxxf.split('/')[-1]
+            executableName = cxxFileName[0:-4];
+            line = ModularITKAddTest(executableName, moduleName)
+            #line = 'add_test(NAME '+ + '\n      COMMAND '+moduleName+'-tests  ' + executbaleName +')\n\n'
+            o.write(line)
+         o.close()
 
 
     # write CTestConfig.cmake
