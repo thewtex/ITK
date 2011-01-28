@@ -220,6 +220,7 @@ Code/Common/itkIndent.h core itk-common include
 Code/Common/itkIndexedContainerInterface.h core itk-common include
 Code/Common/itkIndex.h core itk-common include
 Code/Common/itkInOrderTreeIterator.h core itk-common include
+Code/Common/itkPipelineMonitorImageFilter.h core itk-image-filter-base include
 Code/Common/itkInPlaceImageFilter.h core itk-image-filter-base include
 Code/Common/itkInPlaceImageFilter.txx core itk-image-filter-base include
 Code/Common/itkInteriorExteriorSpatialFunction.h core itk-common include
@@ -1417,8 +1418,8 @@ Code/BasicFilters/itkWarpVectorImageFilter.txx filtering itk-image-grid include
 Code/BasicFilters/itkWarpVectorImageFilter.h filtering itk-image-grid include
 Code/BasicFilters/itkWarpImageFilter.h filtering itk-image-grid include
 Code/BasicFilters/itkExpandImageFilter.txx filtering itk-image-grid include
-Code/BasicFilters/itkVectorExpandImageFilter.txx filtering itk-image-grid include
-Code/BasicFilters/itkVectorExpandImageFilter.h filtering itk-image-grid include
+Code/BasicFilters/itkVectorExpandImageFilter.txx filtering itk-intensity-math include
+Code/BasicFilters/itkVectorExpandImageFilter.h filtering itk-intensity-math include
 Code/BasicFilters/itkExpandImageFilter.h filtering itk-image-grid include
 Code/BasicFilters/itkBinaryThresholdImageFilter.h filtering itk-thresholding include
 Code/BasicFilters/itkBinaryThresholdImageFilter.txx filtering itk-thresholding include
@@ -2560,7 +2561,7 @@ Testing/Code/Common/itkMaximumRatioDecisionRuleTest.cxx numerics itk-statistics 
 Testing/Code/Common/itkMinimumDecisionRuleTest.cxx numerics itk-statistics test
 Testing/Code/Algorithms/itkBinaryMinMaxCurvatureFlowImageFilterTest.cxx filtering itk-anisotropic-smoothing test
 Testing/Code/BasicFilters/itkCurvatureAnisotropicDiffusionImageFilterTest.cxx filtering itk-anisotropic-smoothing test
-Testing/Code/BasicFilters/itkGradientAnisotropicDiffusionImageFilterTest2.cxx filtering itk-anisotropic-smoothing test
+Testing/Code/BasicFilters/itkGradientAnisotropicDiffusionImageFilterTest2.cxx filtering itk-integrated-test code
 Testing/Code/BasicFilters/itkGradientAnisotropicDiffusionImageFilterTest.cxx filtering itk-anisotropic-smoothing test
 Testing/Code/Algorithms/itkMinMaxCurvatureFlowImageFilterTest.cxx filtering itk-anisotropic-smoothing test
 Testing/Code/Algorithms/itkAntiAliasBinaryImageFilterTest.cxx filtering itk-anti-alias test
@@ -2660,7 +2661,7 @@ Testing/Code/BasicFilters/itkPasteImageFilterTest.cxx filtering itk-image-grid t
 Testing/Code/BasicFilters/itkWarpVectorImageFilterTest.cxx NonUnit itk-integrated-test code
 Testing/Code/BasicFilters/itkWarpImageFilterTest.cxx core itk-integrated-test code
 Testing/Code/BasicFilters/itkWarpImageFilterTest2.cxx filtering itk-image-grid test
-Testing/Code/BasicFilters/itkVectorExpandImageFilterTest.cxx filtering itk-image-grid test
+Testing/Code/BasicFilters/itkVectorExpandImageFilterTest.cxx filtering itk-intensity-math test
 Testing/Code/BasicFilters/itkExpandImageFilterTest.cxx filtering itk-image-grid test
 Testing/Code/BasicFilters/itkBinaryThresholdImageFilterTest2.cxx filtering itk-integrated-test code
 Testing/Code/BasicFilters/itkBinaryThresholdImageFilterTest.cxx filtering itk-thresholding test
