@@ -87,7 +87,7 @@ private:
   GPUMeanImageFilterFactory(const Self&);    //purposely not implemented
   void operator=(const Self&); //purposely not implemented
 
-#define OverrideTypeMacro1(ipt,opt,dm)\
+#define OverrideMedianFilterTypeMacro(ipt,opt,dm)\
   {\
   typedef itk::Image<ipt,dm> InputImageType;\
   typedef itk::Image<opt,dm> OutputImageType;\
@@ -104,11 +104,26 @@ private:
     {
       //this->IfGPUISAvailable()
       //{
-      OverrideTypeMacro1(unsigned char, unsigned char, 2);
-      OverrideTypeMacro1(signed char, signed char, 2);
-      OverrideTypeMacro1(float,float,2);
-      OverrideTypeMacro1(int,int,2);
-      OverrideTypeMacro1(double,double,2);
+      OverrideMedianFilterTypeMacro(unsigned char, unsigned char, 1);
+      OverrideMedianFilterTypeMacro(signed char, signed char, 1);
+      OverrideMedianFilterTypeMacro(float,float,1);
+      OverrideMedianFilterTypeMacro(int,int,1);
+      OverrideMedianFilterTypeMacro(unsigned int,unsigned int,1);
+      OverrideMedianFilterTypeMacro(double,double,1);
+
+      OverrideMedianFilterTypeMacro(unsigned char, unsigned char, 2);
+      OverrideMedianFilterTypeMacro(signed char, signed char, 2);
+      OverrideMedianFilterTypeMacro(float,float,2);
+      OverrideMedianFilterTypeMacro(int,int,2);
+      OverrideMedianFilterTypeMacro(unsigned int,unsigned int,2);
+      OverrideMedianFilterTypeMacro(double,double,2);
+
+      OverrideMedianFilterTypeMacro(unsigned char, unsigned char, 3);
+      OverrideMedianFilterTypeMacro(signed char, signed char, 3);
+      OverrideMedianFilterTypeMacro(float,float,3);
+      OverrideMedianFilterTypeMacro(int,int,3);
+      OverrideMedianFilterTypeMacro(unsigned int,unsigned int,3);
+      OverrideMedianFilterTypeMacro(double,double,3);
       //}
     }
 };

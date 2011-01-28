@@ -67,17 +67,16 @@ namespace itk
   template <class TPixel, unsigned int VImageDimension>
   TPixel & GPUImage< TPixel, VImageDimension >::operator[](const IndexType & index)
   {
-    m_GPUManager->MakeCPUBufferUpToDate();
-    m_GPUManager->SetGPUDirtyFlage( true );
-    return Superclass::[]( index );
+    m_GPUManager->SetGPUBufferDirty();
+    return Superclass::operator[]( index );
   }
 
   template <class TPixel, unsigned int VImageDimension>
   void GPUImage< TPixel, VImageDimension >::SetPixelContainer(PixelContainer *container)
   {
     Superclass::SetPixelContainer( container );
-    m_GPUManager->SetCPUDirtyFlage( false );
-    m_GPUManager->SetGPUDirtyFlage( true );
+    m_GPUManager->SetCPUDirtyFlag( false );
+    m_GPUManager->SetGPUDirtyFlag( true );
   }
 
   template <class TPixel, unsigned int VImageDimension>
