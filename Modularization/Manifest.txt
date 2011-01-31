@@ -449,7 +449,8 @@ Code/Common/itkSymmetricEllipsoidInteriorExteriorSpatialFunction.txx core itk-co
 Code/Common/itkSymmetricSecondRankTensor.h core itk-common include
 Code/Common/itkSymmetricSecondRankTensor.txx core itk-common include
 Code/Common/itkTestingMacros.h core itk-common include
-Code/Common/itkTestMain.h core itk-test-kernel include
+#TO DO: will create itkModularTestMain.h for modulaized ITK
+#Code/Common/itkTestMain.h core itk-test-kernel include
 Testing/Code/BasicFilters/itkNullImageToImageFilterDriver.txx  core itk-image-filter-base include
 Testing/Code/BasicFilters/itkFilterWatcher.h  core itk-image-filter-base include
 Code/Common/itkTetrahedronCell.h core itk-common include
@@ -701,8 +702,8 @@ Code/SpatialObject/itkLineSpatialObject.h core itk-spatial-objects include
 Code/SpatialObject/itkLineSpatialObjectPoint.h core itk-spatial-objects include
 Code/SpatialObject/itkLineSpatialObjectPoint.txx core itk-spatial-objects include
 Code/SpatialObject/itkLineSpatialObject.txx core itk-spatial-objects include
-Code/SpatialObject/itkMeshSpatialObject.h core itk-meta-spatial-objects include
-Code/SpatialObject/itkMeshSpatialObject.txx core itk-meta-spatial-objects include
+Code/SpatialObject/itkMeshSpatialObject.h core itk-spatial-objects include
+Code/SpatialObject/itkMeshSpatialObject.txx core itk-spatial-objects include
 Code/SpatialObject/itkMetaArrowConverter.h core itk-meta-spatial-objects include
 Code/SpatialObject/itkMetaArrowConverter.txx core itk-meta-spatial-objects include
 Code/SpatialObject/itkMetaBlobConverter.h core itk-meta-spatial-objects include
@@ -2528,17 +2529,12 @@ Testing/Code/SpatialObject/itkImageSpatialObjectTest.cxx core itk-spatial-object
 Testing/Code/SpatialObject/itkLandmarkSpatialObjectTest.cxx core itk-spatial-objects test
 Testing/Code/SpatialObject/itkLineSpatialObjectTest.cxx core itk-spatial-objects test
 Testing/Code/SpatialObject/itkMeshSpatialObjectTest.cxx core itk-spatial-objects test
-Testing/Code/SpatialObject/itkMetaArrowConverterTest.cxx core itk-spatial-objects test
+Testing/Code/SpatialObject/itkMetaArrowConverterTest.cxx core itk-meta-spatial-objects test
 Testing/Code/SpatialObject/itkPlaneSpatialObjectTest.cxx core itk-spatial-objects test
 Testing/Code/SpatialObject/itkPolygonGroupSpatialObjectTest.cxx core itk-spatial-objects test
 Testing/Code/SpatialObject/itkPolygonSpatialObjectTest.cxx core itk-spatial-objects test
 Testing/Code/SpatialObject/itkSceneSpatialObjectTest.cxx core itk-spatial-objects test
 Testing/Code/SpatialObject/itkSpatialObjectDuplicatorTest.cxx core itk-spatial-objects test
-Testing/Code/SpatialObject/itkSpatialObjectTests4.cxx core itk-spatial-objects test
-Testing/Code/SpatialObject/itkSpatialObjectTests3.cxx core itk-spatial-objects test
-Testing/Code/SpatialObject/itkSpatialObjectTests2.cxx core itk-spatial-objects test
-Testing/Code/SpatialObject/itkSpatialObjectTests5.cxx core itk-spatial-objects test
-Testing/Code/SpatialObject/itkSpatialObjectTests.cxx core itk-spatial-objects test
 Testing/Code/SpatialObject/itkSpatialObjectTreeContainerTest.cxx core itk-spatial-objects test
 Testing/Code/SpatialObject/itkSurfaceSpatialObjectTest.cxx core itk-spatial-objects test
 Testing/Code/SpatialObject/itkTubeSpatialObjectTest.cxx core itk-spatial-objects test
