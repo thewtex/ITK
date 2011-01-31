@@ -662,8 +662,8 @@ Code/Common/itkComplexToPhaseImageAdaptor.h filtering itk-intensity-math include
 Code/Common/itkComplexToRealImageAdaptor.h filtering itk-intensity-math include
 Code/Common/itkExpImageAdaptor.h filtering itk-intensity-math include
 Code/Common/itkExpNegativeImageAdaptor.h filtering itk-intensity-math include
-Code/Common/itkImageAdaptor.h filtering itk-intensity-math include
-Code/Common/itkImageAdaptor.txx filtering itk-intensity-math include
+Code/Common/itkImageAdaptor.h core itk-common include
+Code/Common/itkImageAdaptor.txx core itk-common include
 Code/Common/itkLogImageAdaptor.h filtering itk-intensity-math include
 Code/Common/itkRGBToLuminanceImageAdaptor.h filtering itk-intensity-math include
 Code/Common/itkRGBToVectorImageAdaptor.h filtering itk-intensity-math include
@@ -1187,7 +1187,7 @@ Code/BasicFilters/itkMaskNegatedImageFilter.h filtering itk-intensity-math inclu
 Code/BasicFilters/itkMatrixIndexSelectionImageFilter.h filtering itk-intensity-math include
 Code/BasicFilters/itkMaximumImageFilter.h filtering itk-intensity-math include
 Code/BasicFilters/itkMinimumImageFilter.h filtering itk-intensity-math include
-Code/BasicFilters/itkModulusImageFilter.h filtering itk-integrated-test code
+Code/BasicFilters/itkModulusImageFilter.h filtering itk-intensity-math include
 Code/BasicFilters/itkMultiplyImageFilter.h filtering itk-intensity-math include
 Code/BasicFilters/itkNaryFunctorImageFilter.h filtering itk-intensity-math include
 Code/BasicFilters/itkNaryFunctorImageFilter.txx filtering itk-intensity-math include
@@ -2497,7 +2497,7 @@ Testing/Code/Common/itkOrthogonallyCorrected2DParametricPathTest.cxx filtering i
 Testing/Code/Common/itkPathFunctionsTest.cxx filtering itk-path test
 Testing/Code/Common/itkPathIteratorTest.cxx filtering itk-path test
 Testing/Code/Common/itkPolyLineParametricPathTest.cxx filtering itk-path test
-Testing/Code/Algorithms/itkOrthogonalSwath2DPathFilterTest.cxx filtering itk-path test
+Testing/Code/Algorithms/itkOrthogonalSwath2DPathFilterTest.cxx filtering itk-integrated-test code
 Testing/Code/BasicFilters/itkPathToChainCodePathFilterTest.cxx filtering itk-path test
 Testing/Code/BasicFilters/itkChainCodeToFourierSeriesPathFilterTest.cxx filtering itk-path test
 Testing/Code/BasicFilters/itkPathToImageFilterTest.cxx filtering itk-path test
@@ -2512,7 +2512,7 @@ Testing/Code/Common/itkQuadEdgeMeshPolygonCellTest.cxx core itk-quad-edge-mesh t
 Testing/Code/Common/itkTriangleHelperTest.cxx core itk-common test
 Testing/Code/Common/itkVectorToRGBImageAdaptorTest.cxx filtering itk-intensity-math test
 Testing/Code/Common/itkAddImageAdaptorTest.cxx filtering itk-intensity-math test
-Testing/Code/Common/itkImageAdaptorTest.cxx filtering itk-intensity-math test
+Testing/Code/Common/itkImageAdaptorTest.cxx core itk-common test
 Testing/Code/Common/itkRGBToVectorImageAdaptorTest.cxx filtering itk-intensity-math test
 Testing/Code/SpatialObject/itkAffineGeometryFrameTest.cxx core itk-spatial-objects test
 Testing/Code/SpatialObject/itkArrowSpatialObjectTest.cxx core itk-spatial-objects test
@@ -2597,7 +2597,7 @@ Testing/Code/BasicFilters/itkMatrixIndexSelectionImageFilterTest.cxx filtering i
 Testing/Code/BasicFilters/itkMaximumImageFilterTest.cxx filtering itk-intensity-math test
 Testing/Code/BasicFilters/itkMinimumImageFilterTest.cxx filtering itk-intensity-math test
 # requires itk-distance-map, causing cyclic dependency between itk-intensity-math and itk-distancemap
-Testing/Code/BasicFilters/itkModulusImageFilterTest.cxx filtering itk-intensity-math test
+Testing/Code/BasicFilters/itkModulusImageFilterTest.cxx filtering itk-integrated-test code
 Testing/Code/BasicFilters/itkMultiplyImageFilterTest.cxx filtering itk-intensity-math test
 Testing/Code/BasicFilters/itkNotImageFilterTest.cxx filtering itk-intensity-math test
 Testing/Code/BasicFilters/itkOrImageFilterTest.cxx filtering itk-intensity-math test
@@ -2761,7 +2761,7 @@ Testing/Code/IO/itkPNGImageIOTest.cxx io itk-io-png test
 Testing/Code/IO/itkMetaImageIOTest.cxx io itk-io-meta test
 Testing/Code/IO/itkMetaImageIOMetaDataTest.cxx io itk-io-meta test
 Testing/Code/IO/itkMetaImageIOGzTest.cxx io itk-io-meta test
-Testing/Code/IO/itkAnalyzeImageIOTest.cxx io itk-io-analyze test
+Testing/Code/IO/itkAnalyzeImageIOTest.cxx io itk-integrated-test code
 Testing/Code/IO/itkGiplImageIOTest.cxx io itk-io-gipl test
 Testing/Code/IO/itkVTKImageIOTest2.cxx io itk-io-vtk test
 Testing/Code/IO/itkVTKImageIOTest.cxx io itk-io-vtk test
