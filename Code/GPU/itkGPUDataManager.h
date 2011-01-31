@@ -22,8 +22,8 @@
 // This class will take care of synchronization between CPU and GPU memory
 //
 
-#ifndef ___ITKGPUDATAMANAGER_H__
-#define ___ITKGPUDATAMANAGER_H__
+#ifndef __itkGPUDataManager_h
+#define __itkGPUDataManager_h
 
 #include <itkObject.h>
 #include <itkLightObject.h>
@@ -33,6 +33,11 @@
 #include "itkGPUContextManager.h"
 #include "itkSimpleFastMutexLock.h"
 
+/*
+ * GPU memory manager implemented using OpenCL
+ * Reguired for GPUImage class
+ *
+ */
 namespace itk
 {
 
@@ -66,9 +71,15 @@ namespace itk
 
     void SetGPUBufferDirty();
 
-    void MakeCPUBufferUpToDate();
+    bool IsCPUBufferDirty() { return m_IsCPUBufferDirty; }
 
-    void MakeGPUBufferUpToDate();
+    bool IsGPUBufferDirty() { return m_IsGPUBufferDirty; }
+
+    // actual GPU->CPU memory copy takes place here
+    virtual void MakeCPUBufferUpToDate();
+
+    // actual CPU->GPU memory copy takes place here
+    virtual void MakeGPUBufferUpToDate();
 
     void Allocate();
 
@@ -96,6 +107,8 @@ namespace itk
     GPUDataManager(const Self&); //purposely not implemented
     void operator=(const Self&);
 
+  protected:
+
     unsigned int m_BufferSize; // # of bytes
 
     GPUContextManager *m_Manager;
@@ -116,7 +129,6 @@ namespace itk
     cl_platform_id* m_Platform;
     cl_context*     m_Context;
 
-    // mutex to prevent multiple threads access GPU memory at the same time
     SimpleFastMutexLock m_Mutex;
   };
 

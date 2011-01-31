@@ -1,11 +1,11 @@
 #ifndef __itkGPUMeanImageFilter_h
 #define __itkGPUMeanImageFilter_h
 
+#include "sourcepath.h"
 #include "itkMeanImageFilter.h"
 #include "itkGPUImageToImageFilter.h"
 #include "itkVersion.h"
 #include "itkObjectFactoryBase.h"
-
 
 namespace itk
 {

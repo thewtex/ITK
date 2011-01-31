@@ -3,11 +3,6 @@
 
 #include "itkGPUMeanImageFilter.h"
 
-//
-// OpenCL source file path
-//
-char* GPUMeanImageFilterSourcePath = "../../../ITK/Code/GPU/GPUMeanImageFilter.cl";
-
 namespace itk
 {
 
@@ -26,8 +21,12 @@ GPUMeanImageFilter< TInputImage, TOutputImage >::GPUMeanImageFilter()
   else
     itkExceptionMacro("GPUMeanImageFilter supports 1/2/3D image.");
 
+  // OpenCL source path
+  char oclSrcPath[100];
+  sprintf(oclSrcPath, "%s/Code/GPU/GPUMeanImageFilter.cl", itk_root_path);
+
   // load and build program
-  m_KernelManager->LoadProgramFromFile(GPUMeanImageFilterSourcePath, buf);
+  m_KernelManager->LoadProgramFromFile( oclSrcPath, buf );
 
   // create kernel
   m_KernelHandle = m_KernelManager->CreateKernel("MeanFilter");

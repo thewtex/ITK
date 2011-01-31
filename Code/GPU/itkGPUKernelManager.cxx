@@ -86,9 +86,7 @@ namespace itk
     }
 
     // build program
-    std::cout << "Build start..." << std::endl;
     errid = clBuildProgram(m_Program, 0, NULL, NULL, NULL, NULL);
-    std::cout << "Build end!" << std::endl;
     if(errid != CL_SUCCESS)
     {
       //itkWarningMacro("OpenCL program build error");

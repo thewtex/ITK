@@ -3,7 +3,7 @@ mark_as_advanced(ITK_USE_GPU)
 
 if(ITK_USE_GPU)
 
-message("Acceleration using OpenCL is ON.")
+message("GPU acceleration using OpenCL is ON.")
 
 set( itkCxxSRC itkGPUDataManager.cxx itkGPUContextManager.cxx itkGPUKernelManager.cxx itkOclUtil.cxx )
 

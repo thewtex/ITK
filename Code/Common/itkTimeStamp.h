@@ -98,6 +98,11 @@ public:
   /** Allow for typcasting to unsigned long.  */
   operator unsigned long() const
         { return m_ModifiedTime; }
+
+  /** Manually set the modified time */
+  void SetMTime( unsigned long ts )
+  { m_ModifiedTime = ts; }
+
 private:
   unsigned long m_ModifiedTime;
 };

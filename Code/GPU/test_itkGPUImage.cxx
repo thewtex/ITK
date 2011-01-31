@@ -19,7 +19,7 @@
 //
 // Test program for itkGPUImage class
 //
-
+#include "sourcepath.h"
 #include "itkGPUImage.h"
 #include "itkGPUKernelManager.h"
 #include "itkGPUContextManager.h"
@@ -27,11 +27,6 @@
 typedef itk::GPUImage<float, 2> ItkImage1f;
 
 using namespace itk;
-
-//
-// OpenCL source file path
-//
-char* gpuSrcPath = "../../../ITK/Code/GPU/ImageOps.cl";
 
 int main()
 {
@@ -84,7 +79,9 @@ int main()
   GPUKernelManager::Pointer kernelManager = GPUKernelManager::New();
 
   // load program and compile
-  kernelManager->LoadProgramFromFile(gpuSrcPath, "#define PIXELTYPE float\n");
+  char oclSrcPath[100];
+  sprintf(oclSrcPath, "%s/Code/GPU/ImageOps.cl", itk_root_path);
+  kernelManager->LoadProgramFromFile( oclSrcPath, "#define PIXELTYPE float\n" );
 
   //
   // create addition kernel

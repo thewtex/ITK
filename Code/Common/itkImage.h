@@ -189,14 +189,14 @@ public:
 
   /** Fill the image buffer with a value.  Be sure to call Allocate()
    * first. */
-  virtual void FillBuffer(const TPixel & value);
+  void FillBuffer(const TPixel & value);
 
   /** \brief Set a pixel value.
    *
    * Allocate() needs to have been called first -- for efficiency,
    * this function does not check that the image has actually been
    * allocated yet. */
-  virtual void SetPixel(const IndexType & index, const TPixel & value)
+  void SetPixel(const IndexType & index, const TPixel & value)
   {
     OffsetValueType offset = this->ComputeOffset(index);
     ( *m_Buffer )[offset] = value;
@@ -206,7 +206,7 @@ public:
    *
    * For efficiency, this function does not check that the
    * image has actually been allocated yet. */
-  virtual const TPixel & GetPixel(const IndexType & index) const
+  const TPixel & GetPixel(const IndexType & index) const
   {
     OffsetValueType offset = this->ComputeOffset(index);
     return ( ( *m_Buffer )[offset] );
@@ -216,7 +216,7 @@ public:
    *
    * For efficiency, this function does not check that the
    * image has actually been allocated yet. */
-  virtual TPixel & GetPixel(const IndexType & index)
+  TPixel & GetPixel(const IndexType & index)
   {
     OffsetValueType offset = this->ComputeOffset(index);
     return ( ( *m_Buffer )[offset] );
@@ -226,14 +226,14 @@ public:
    *
    * For efficiency, this function does not check that the
    * image has actually been allocated yet. */
-  virtual TPixel & operator[](const IndexType & index)
+  TPixel & operator[](const IndexType & index)
   { return this->GetPixel(index); }
 
   /** \brief Access a pixel. This version can only be an rvalue.
    *
    * For efficiency, this function does not check that the
    * image has actually been allocated yet. */
-  virtual const TPixel & operator[](const IndexType & index) const
+  const TPixel & operator[](const IndexType & index) const
   { return this->GetPixel(index); }
 
   /** Return a pointer to the beginning of the buffer.  This is used by
@@ -244,15 +244,15 @@ public:
   { return m_Buffer ? m_Buffer->GetBufferPointer() : 0; }
 
   /** Return a pointer to the container. */
-  virtual PixelContainer * GetPixelContainer()
+  PixelContainer * GetPixelContainer()
   { return m_Buffer.GetPointer(); }
 
-  virtual const PixelContainer * GetPixelContainer() const
+  const PixelContainer * GetPixelContainer() const
   { return m_Buffer.GetPointer(); }
 
   /** Set the container to use. Note that this does not cause the
    * DataObject to be modified. */
-  virtual void SetPixelContainer(PixelContainer *container);
+  void SetPixelContainer(PixelContainer *container);
 
   /** Graft the data and information from one image to another. This
    * is a convenience method to setup a second image with all the meta
@@ -267,19 +267,19 @@ public:
   virtual void Graft(const DataObject *data);
 
   /** Return the Pixel Accessor object */
-  virtual AccessorType GetPixelAccessor(void)
+  AccessorType GetPixelAccessor(void)
   { return AccessorType(); }
 
   /** Return the Pixel Accesor object */
-  virtual const AccessorType GetPixelAccessor(void) const
+  const AccessorType GetPixelAccessor(void) const
   { return AccessorType(); }
 
   /** Return the NeighborhoodAccessor functor */
-  virtual NeighborhoodAccessorFunctorType GetNeighborhoodAccessor()
+  NeighborhoodAccessorFunctorType GetNeighborhoodAccessor()
   { return NeighborhoodAccessorFunctorType(); }
 
   /** Return the NeighborhoodAccessor functor */
-  virtual const NeighborhoodAccessorFunctorType GetNeighborhoodAccessor() const
+  const NeighborhoodAccessorFunctorType GetNeighborhoodAccessor() const
   { return NeighborhoodAccessorFunctorType(); }
 protected:
   Image();

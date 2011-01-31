@@ -26,7 +26,7 @@ namespace itk
   {
     m_Manager = GPUContextManager::GetInstance();
 
-    if(m_Manager->GetNumCommandQueue() > 0)m_CommandQueueId = 0; // default command queue
+    if(m_Manager->GetNumCommandQueue() > 0) m_CommandQueueId = 0; // default command queue
 
     m_BufferSize = 0;
     m_GPUBuffer = NULL;

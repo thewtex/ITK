@@ -19,6 +19,7 @@
 //
 // Test program for itkGPUImageToImageFilter class
 //
+#include "sourcepath.h"
 
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
@@ -33,13 +34,7 @@
 
 using namespace itk;
 
-//
-// OpenCL source file path
-//
-char* gpuSrcPath = "../../../ITK/Code/GPU/ImageOps.cl";
-
-
-int main()
+int main(int argc, char *argv[])
 {
   // register object factory for GPU image and filter
   ObjectFactoryBase::RegisterFactory( GPUImageFactory::New() );
@@ -57,10 +52,18 @@ int main()
   ReaderType::Pointer reader = ReaderType::New();
   WriterType::Pointer writer = WriterType::New();
 
-  //reader->SetFileName( argv[1] );
-  //writer->SetFileName( argv[2] );
-  reader->SetFileName( "C:/Users/wkjeong/Proj/ITK/Examples/Data/BrainProtonDensitySlice.png" );
-  writer->SetFileName( "testout.png" );
+  if( argc >= 3 )
+  {
+    reader->SetFileName( argv[1] );
+    writer->SetFileName( argv[2] );
+  }
+  else
+  {
+    char dataPath[100];
+    sprintf(dataPath, "%s/Examples/Data/BrainProtonDensitySlice.png", itk_root_path);
+    reader->SetFileName( dataPath );
+    writer->SetFileName( "testout.png" );
+  }
 
   //
   // Note: We use regular itk filter type here but factory will automatically create

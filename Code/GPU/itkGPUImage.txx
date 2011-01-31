@@ -1,5 +1,5 @@
-#ifndef __ITKGPUIMAGE_TXX__
-#define __ITKGPUIMAGE_TXX__
+#ifndef __itkGPUImage_txx
+#define __itkGPUImage_txx
 
 #include "itkGPUImage.h"
 
@@ -11,7 +11,12 @@ namespace itk
   template <class TPixel, unsigned int VImageDimension>
   GPUImage< TPixel, VImageDimension >::GPUImage()
   {
-    m_GPUManager = GPUDataManager::New();
+    m_GPUManager = GPUImageDataManager< GPUImage< TPixel, VImageDimension > >::New();
+    m_GPUManager->SetMTime( this->GetMTime() );
+
+    //DataObject *                   input = this;
+    //std::cout << "Image created: " << input->GetMTime()<< std::endl;
+    //std::cout << "Image created: " << this->GetMTime() << std::endl;
   }
 
   template <class TPixel, unsigned int VImageDimension>
@@ -23,15 +28,29 @@ namespace itk
   template <class TPixel, unsigned int VImageDimension>
   void GPUImage< TPixel, VImageDimension >::Allocate()
   {
+    /*
+    std::cout << "Before CPU allocate(): " << this->GetMTime() << std::endl;
+    std::cout << "Before GPU allocate(): " << m_GPUManager->GetMTime() << std::endl;
+    */
+
     // allocate CPU memory - calling Allocate() in superclass
     Superclass::Allocate();
-    m_GPUManager->SetCPUBufferPointer( Superclass::GetBufferPointer() );
 
     // allocate GPU memory
     this->ComputeOffsetTable();
     unsigned long numPixel = this->GetOffsetTable()[VImageDimension];
     m_GPUManager->SetBufferSize( sizeof(TPixel)*numPixel );
+    m_GPUManager->SetImagePointer( this );
+    m_GPUManager->SetCPUBufferPointer( Superclass::GetBufferPointer() );
     m_GPUManager->Allocate();
+
+    /* prevent unnecessary copy from CPU to GPU at the beginning */
+    m_GPUManager->SetMTime( this->GetMTime() );
+
+    /*
+    std::cout << "After CPU allocate(): " << this->GetMTime() << std::endl;
+    std::cout << "After GPU allocate(): " << m_GPUManager->GetMTime() << std::endl << std::endl;
+    */
   }
 
 
@@ -95,9 +114,10 @@ namespace itk
   }
 
   template <class TPixel, unsigned int VImageDimension>
-  GPUDataManager::Pointer GPUImage< TPixel, VImageDimension >::GetGPUDataManager()
+  GPUDataManager::Pointer
+  GPUImage< TPixel, VImageDimension >::GetGPUDataManager()
   {
-    return m_GPUManager;
+    return (GPUImageDataManager< GPUImage >::Superclass::Pointer) m_GPUManager;
   }
 
 } // namespace itk

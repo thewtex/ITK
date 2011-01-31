@@ -20,7 +20,7 @@
 #define __itkGPUImage_h__
 
 #include "itkImage.h"
-#include "itkGPUDataManager.h"
+#include "itkGPUImageDataManager.h"
 #include "itkVersion.h"
 #include "itkObjectFactoryBase.h"
 
@@ -116,7 +116,6 @@ namespace itk
     const NeighborhoodAccessorFunctorType GetNeighborhoodAccessor() const
     {
       m_GPUManager->MakeCPUBufferUpToDate();
-      //return NeighborhoodAccessorFunctorType();
       return Superclass::GetNeighborhoodAccessor();
     }
 
@@ -138,6 +137,24 @@ namespace itk
 
     GPUDataManager::Pointer GetGPUDataManager();
 
+    /* Override DataHasBeenGenerated() in DataObject class.
+     * We need this because CPU time stamp is always bigger
+     * than GPU's. That is because Modified() is called at
+     * the end of each filter in the pipeline so although we
+     * increment GPU's time stamp in GPUGenerateData() the
+     * CPU's time stamp will be increased after that.
+     */
+    void DataHasBeenGenerated()
+    {
+      Superclass::DataHasBeenGenerated();
+      if( m_GPUManager->IsCPUBufferDirty() )
+      {
+        //std::cout << "GPU data generated" << std::endl;
+        m_GPUManager->Modified();
+      }
+    }
+
+
   protected:
     GPUImage();
     virtual ~GPUImage();
@@ -148,7 +165,8 @@ namespace itk
     GPUImage(const Self&);
     void operator=(const Self&);
 
-    GPUDataManager::Pointer m_GPUManager;
+    //GPUImageDataManager< GPUImage<TPixel,VImageDimension> >:: m_GPUManager;
+    typename GPUImageDataManager< GPUImage >::Pointer m_GPUManager;
   };
 
 
