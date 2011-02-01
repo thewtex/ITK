@@ -169,9 +169,7 @@ public:
   virtual bool IsInsideBuffer(const PointType & point) const
   {
     ContinuousIndexType index;
-
-    m_Image->TransformPhysicalPointToContinuousIndex(point, index);
-    return this->IsInsideBuffer(index);
+    return m_Image->TransformPhysicalPointToContinuousIndex(point, index);
   }
 
   /** Convert point to nearest index. */
