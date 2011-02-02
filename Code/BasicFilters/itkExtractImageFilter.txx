@@ -30,7 +30,7 @@ namespace itk
  */
 template< class TInputImage, class TOutputImage >
 ExtractImageFilter< TInputImage, TOutputImage >
-::ExtractImageFilter()
+::ExtractImageFilter(): m_DirectionCollaspeStrategy(DIRECTIONCOLLAPSEUNKOWNSTRATEGY)
 {}
 
 /**
@@ -45,6 +45,7 @@ ExtractImageFilter< TInputImage, TOutputImage >
 
   os << indent << "ExtractionRegion: " << m_ExtractionRegion << std::endl;
   os << indent << "OutputImageRegion: " << m_OutputImageRegion << std::endl;
+  os << indent << "DirectionCollaspeStrategy: " << m_DirectionCollaspeStrategy << std::endl;
 }
 
 template< class TInputImage, class TOutputImage >
@@ -137,7 +138,6 @@ ExtractImageFilter< TInputImage, TOutputImage >
     // This logic needs to be augmented with logic that select which
     // dimensions to copy
 
-    unsigned int i;
     const typename InputImageType::SpacingType &
     inputSpacing = inputPtr->GetSpacing();
     const typename InputImageType::DirectionType &
@@ -155,7 +155,7 @@ ExtractImageFilter< TInputImage, TOutputImage >
       {
       // copy the input to the output and fill the rest of the
       // output with zeros.
-      for ( i = 0; i < InputImageDimension; ++i )
+      for ( unsigned int i = 0; i < InputImageDimension; ++i )
         {
         outputSpacing[i] = inputSpacing[i];
         outputOrigin[i] = inputOrigin[i];
@@ -164,7 +164,7 @@ ExtractImageFilter< TInputImage, TOutputImage >
           outputDirection[i][dim] = inputDirection[i][dim];
           }
         }
-      for (; i < OutputImageDimension; ++i )
+      for (unsigned int i=InputImageDimension; i < OutputImageDimension; ++i )
         {
         outputSpacing[i] = 1.0;
         outputOrigin[i] = 0.0;
@@ -181,7 +181,7 @@ ExtractImageFilter< TInputImage, TOutputImage >
       // output
       outputDirection.SetIdentity();
       int nonZeroCount = 0;
-      for ( i = 0; i < InputImageDimension; ++i )
+      for ( unsigned int i = 0; i < InputImageDimension; ++i )
         {
         if ( m_ExtractionRegion.GetSize()[i] )
           {
@@ -204,11 +204,36 @@ ExtractImageFilter< TInputImage, TOutputImage >
     // if the filter changes from a higher to a lower dimension, or
     // if, after rebuilding the direction cosines, there's a zero
     // length cosine vector, reset the directions to identity.
-    if ( (static_cast< unsigned int >( OutputImageDimension ) <
-          static_cast< unsigned int >( InputImageDimension )) ||
-         vnl_determinant( outputDirection.GetVnlMatrix() ) == 0.0 )
+    switch(m_DirectionCollaspeStrategy)
       {
-      outputDirection.SetIdentity();
+    case DIRECTIONCOLLASPETOIDENTITY:
+        {
+        outputDirection.SetIdentity();
+        }
+      break;
+    case DIRECTIONCOLLASPETOSUBMATRIX:
+        {
+        if ( vnl_determinant( outputDirection.GetVnlMatrix() ) == 0.0 )
+          {
+          itkExceptionMacro( << "Invalid submatrix extracted for collapsed direction." );
+          }
+        }
+      break;
+    case DIRECTIONCOLLASPEGUESS:
+        {
+        if ( vnl_determinant( outputDirection.GetVnlMatrix() ) == 0.0 )
+          {
+          outputDirection.SetIdentity();
+          }
+        }
+      break;
+    case DIRECTIONCOLLAPSEUNKOWNSTRATEGY:
+    default:
+        {
+        itkExceptionMacro( << "It is required that the strategy for collapsing the direction matrix be explicitly specified. "
+          << "Set either myfilter->DirectionCollapseToIdentity() or myfilter->DirectionCollapseToSubmatrix() "
+          << typeid( ImageBase< InputImageDimension > * ).name() );
+        }
       }
 
     // set the spacing and origin
@@ -245,6 +270,7 @@ ExtractImageFilter< TInputImage, TOutputImage >
 ::ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
                        int threadId)
 {
+
   itkDebugMacro(<< "Actually executing");
 
   // Get the input and output pointers

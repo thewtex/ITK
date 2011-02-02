@@ -95,6 +95,7 @@ public:
 protected:
   CropImageFilter()
   {
+    this->DirectionCollapseToSubmatrix();
     m_UpperBoundaryCropSize.Fill(0);
     m_LowerBoundaryCropSize.Fill(0);
   }

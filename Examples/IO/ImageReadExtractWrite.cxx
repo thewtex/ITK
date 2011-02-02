@@ -153,6 +153,7 @@ int main( int argc, char ** argv )
   // Software Guide : BeginCodeSnippet
   typedef itk::ExtractImageFilter< InputImageType, OutputImageType > FilterType;
   FilterType::Pointer filter = FilterType::New();
+  filter->DirectionCollapseToSubmatrix();
   // Software Guide : EndCodeSnippet
 
 
