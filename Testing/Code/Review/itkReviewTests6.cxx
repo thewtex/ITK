@@ -39,4 +39,5 @@ void RegisterTests()
   REGISTER_TEST(itkScalarChanAndVeseDenseLevelSetImageFilterTest4);
   REGISTER_TEST(itkScalarChanAndVeseSparseLevelSetImageFilterTest1);
   REGISTER_TEST(itkScalarChanAndVeseSparseLevelSetImageFilterTest2);
+  REGISTER_TEST(itkTransformVirtualDomainCalculatorTest);
 }
