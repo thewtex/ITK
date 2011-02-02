@@ -285,6 +285,7 @@ set(ReviewTest6_SRCS
   itkScalarChanAndVeseDenseLevelSetImageFilterTest4.cxx
   itkScalarChanAndVeseSparseLevelSetImageFilterTest1.cxx
   itkScalarChanAndVeseSparseLevelSetImageFilterTest2.cxx
+  itkTransformVirtualDomainCalculatorTest.cxx
 )
 
 
@@ -2559,6 +2560,12 @@ add_test(itkScalarChanAndVeseDenseLevelSetImageFilterTest4 ${REVIEW_TESTS6}
   ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySlice.png
   ${TEMP}/itkScalarChanAndVeseDenseLevelSetImageFilterTest4.mha
   1 1 0 0 0
+)
+
+add_test( itkTransformVirtualDomainCalculatorTest.cxx ${REVIEW_TESTS6}
+  itkTransformVirtualDomainCalculatorTest 3
+  ${ITK_SOURCE_DIR}/Testing/Data/Input/HeadMRVolume.mhd
+  ${ITK_SOURCE_DIR}/Testing/Data/Input/HeadMRVolumeWithDirection.mhd
 )
 
 add_test(itkMRCImageIOTest ${REVIEW_TESTS5} itkMRCImageIOTest ${TEMP})
