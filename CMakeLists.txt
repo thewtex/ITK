@@ -116,19 +116,32 @@ set(CMAKE_MODULE_PATH ${ITK_SOURCE_DIR}/CMake)
 include(itkCheckSourceTree)
 
 # Deal with FFT v3 Options
+#
+#
+# USE_FFTWD -- use double precision fftw
+option(USE_FFTWD "Use double precision fftw if found" OFF)
 mark_as_advanced(USE_FFTWD)
-option(USE_FFTWD "Use double precision FFTW if found" OFF)
+#
+# USE_FFTWF -- use single precision fftw
+option(USE_FFTWF "Use single precision fftw if found" OFF)
 mark_as_advanced(USE_FFTWF)
-option(USE_FFTWF "Use single precision FFTW if found" OFF)
+
+# USE_SYSTEM_FFTW -- locate a readybuilt fftw installation
+option(USE_SYSTEM_FFTW "Use an installed version of fftw" OFF)
+mark_as_advanced(USE_SYSTEM_FFTW)
+
 if( USE_FFTWD OR USE_FFTWF )
-  set(msg "ATTENTION: You have enabled the use of FFTW,")
-  set(msg "${msg} this library is distributed under a GPL license.")
-  set(msg "${msg} By enabling this option, the binary of the ITK libraries")
-  set(msg "${msg} that you are going to build will be covered by a GPL license,")
-  set(msg "${msg} and so it will be any executable that you link against these libraries.")
-  message("${msg}")
-  find_package( FFTW )
+  #
+  # use ExternalProject
+  include(ExternalProject)
+
+  include(itkExternal_FFTW)
 endif( USE_FFTWD OR USE_FFTWF )
+
+
+#-----------------------------------------------------------------------------
+# Options for enabling specific file formats
+include(${ITK_SOURCE_DIR}/CMake/EnablePreregisteredImageIOFactories.cmake)
 
 # Deal with MINC2 options
 mark_as_advanced(ITK_USE_MINC2)
@@ -161,9 +174,10 @@ endif(NOT ITK_NO_LIBRARY_VERSION)
 
 #-----------------------------------------------------------------------------
 # Provide compatibility options.
+option(ITKV3_COMPATIBILITY "Enable compatibility with ITK3.x when possible." OFF)
 option(ITK_LEGACY_REMOVE "Remove all legacy code completely." OFF)
 option(ITK_LEGACY_SILENT "Silence all legacy code messages." OFF)
-mark_as_advanced(ITK_LEGACY_REMOVE ITK_LEGACY_SILENT)
+mark_as_advanced(ITK_LEGACY_REMOVE ITK_LEGACY_SILENT ITK_V3_COMPATIBILITY)
 
 #-----------------------------------------------------------------------------
 # ITK build classes that are in the review process
@@ -194,6 +208,11 @@ mark_as_advanced(ITK_USE_STRICT_CONCEPT_CHECKING)
 
 option(ITK_USE_FLAT_DIRECTORY_INSTALL  "When ON, ITK will install all the header files in a single directory. This reduces the number of directories that must be searched for headers in projects based on ITK" OFF)
 mark_as_advanced(ITK_USE_FLAT_DIRECTORY_INSTALL)
+
+if(NOT ITKV3_COMPATIBILITY)
+  option(ITK_USE_64BITS_IDS "When ON, ITK will use 64 bits integers to index pixels. This is needed for managing images larger than 4Gb in some platforms." OFF)
+  mark_as_advanced(ITK_USE_64BITS_IDS)
+endif()
 
 set(ITK_VERSIONED_INSTALL_DIRECTORY "InsightToolkit-${ITK_VERSION_MAJOR}.${ITK_VERSION_MINOR}")
 
@@ -390,6 +409,9 @@ if(BUILD_DOXYGEN)
   find_package(Doxygen)
 endif(BUILD_DOXYGEN)
 
+#-----------------------------------------------------------------------------
+# Check if this platform support the sse2 rounding functions for 32 and 64 bits
+include(${CMAKE_CURRENT_SOURCE_DIR}/CMake/CheckSupportForSSERounding.cmake)
 
 #-----------------------------------------------------------------------------
 # ITK requires special compiler flags on some platforms.
@@ -422,10 +444,6 @@ if(CMAKE_COMPILER_IS_GNUCXX)
 
   endif(APPLE)
 
-  # gcc must have -msse2 option to enable sse2 support
-  if(VNL_CONFIG_ENABLE_SSE2 OR VNL_CONFIG_ENABLE_SSE2_ROUNDING)
-    set(ITK_REQUIRED_CXX_FLAGS "${ITK_REQUIRED_CXX_FLAGS} -msse2")
-  endif(VNL_CONFIG_ENABLE_SSE2 OR VNL_CONFIG_ENABLE_SSE2_ROUNDING)
 endif(CMAKE_COMPILER_IS_GNUCXX)
 
 if(UNIX)
@@ -619,13 +637,20 @@ endif(HAVE_UNISTD_H)
 
 #-----------------------------------------------------------------------------
 # Configure the default ITK_DATA_ROOT for the location of ITK Data.
-find_path(ITK_DATA_ROOT ITKData.readme ${ITK_SOURCE_DIR}/Testing/Data $ENV{ITK_DATA_ROOT})
-if(NOT ITK_DATA_ROOT)
-  if(BUILD_TESTING)
-    message(WARNING "ITK_DATA_ROOT was not found.  ctest will not run properly.")
-  endif()
+unset(ITK_DATA_ROOT CACHE) # No longer a cache entry.
+if(EXISTS ${ITK_SOURCE_DIR}/Testing/Data/ITKData.readme)
+  set(ITK_DATA_ROOT ${ITK_SOURCE_DIR}/Testing/Data)
+else()
+  set(ITK_DATA_ROOT "ITK_DATA_ROOT-NOTFOUND")
+  foreach(opt BUILD_TESTING BUILD_EXAMPLES)
+    if(${opt})
+      message(FATAL_ERROR
+        "${opt} is ON but the Testing/Data submodule is not available.  "
+        "Run\n  git submodule update --init\n"
+        "from the top of the source tree to get it!")
+    endif()
+  endforeach()
 endif()
-mark_as_advanced(ITK_DATA_ROOT)
 
 #-----------------------------------------------------------------------------
 # Enable the download and use of BrainWeb datasets.
@@ -798,4 +823,3 @@ endif(BUILD_TESTING)
 if(BUILD_EXAMPLES)
   add_subdirectory(Examples)
 endif(BUILD_EXAMPLES)
-

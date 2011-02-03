@@ -80,6 +80,7 @@ add_test(itkConstShapedNeighborhoodIteratorTest2 ${COMMON_TESTS} itkConstShapedN
 add_test(itkCovariantVectorGeometryTest ${COMMON_TESTS} itkCovariantVectorGeometryTest)
 add_test(itkCovarianceImageFunctionTest ${COMMON_TESTS} itkCovarianceImageFunctionTest)
 add_test(itkDataTypeTest ${COMMON_TESTS} itkDataTypeTest)
+add_test(itkDataObjectTest ${COMMON_TESTS} itkDataObjectTest)
 add_test(itkDynamicMeshTest ${COMMON_TESTS} itkDynamicMeshTest)
 add_test(itkDiffusionTensor3DTest ${COMMON_TESTS} itkDiffusionTensor3DTest)
 add_test(itkEuler2DTransformTest ${COMMON_TESTS} itkEuler2DTransformTest ${TEMP}/testEulerTransform.txt)
@@ -250,12 +251,7 @@ add_test(itkIteratorTests ${COMMON_TESTS} itkIteratorTests)
 add_test(itkLandmarkBasedTransformInitializerTest ${COMMON_TESTS} itkLandmarkBasedTransformInitializerTest)
 add_test(itkLightObjectTest ${COMMON_TESTS} itkLightObjectTest)
 add_test(itkLinearInterpolateImageFunctionTest ${COMMON_TESTS2} itkLinearInterpolateImageFunctionTest)
-add_test(itkLineIteratorTest ${COMMON_TESTS}
-  --compare ${BASELINE}/itkLineIteratorTest.png
-            ${TEMP}/itkLineIteratorTest.png
-  itkLineIteratorTest
-            ${TEMP}/itkLineIteratorTest.png
-)
+add_test(itkLineIteratorTest ${COMMON_TESTS} itkLineIteratorTest ${BASELINE}/itkLineIteratorTest.txt)
 add_test(itkLevelSetFunctionTest ${COMMON_TESTS} itkLevelSetFunctionTest)
 add_test(itkLoggerTest ${COMMON_TESTS} itkLoggerTest ${TEMP}/test_logger.txt)
 #Needs to be added to SRCS when this works across platforms.  itkLoggerThreadWrapperTest.cxx
@@ -361,11 +357,14 @@ add_test(itkPolyLineParametricPathTest ${COMMON_TESTS2} itkPolyLineParametricPat
 add_test(itkPolygonCellTest ${COMMON_TESTS2} itkPolygonCellTest)
 add_test(itkQuaternionRigidTransformTest ${COMMON_TESTS2} itkQuaternionRigidTransformTest)
 add_test(itkRealTimeClockTest ${COMMON_TESTS2} itkRealTimeClockTest)
+add_test(itkRealTimeStampTest ${COMMON_TESTS2} itkRealTimeStampTest)
+add_test(itkRealTimeIntervalTest ${COMMON_TESTS2} itkRealTimeIntervalTest)
 add_test(itkRGBPixelTest ${COMMON_TESTS2} itkRGBPixelTest)
 add_test(itkRGBInterpolateImageFunctionTest ${COMMON_TESTS2} itkRGBInterpolateImageFunctionTest)
 add_test(itkRGBToVectorImageAdaptorTest ${COMMON_TESTS2} itkRGBToVectorImageAdaptorTest)
 add_test(itkRigid2DTransformTest ${COMMON_TESTS2} itkRigid2DTransformTest)
 add_test(itkRigid3DTransformTest ${COMMON_TESTS2} itkRigid3DTransformTest)
+add_test(itkv3Rigid3DTransformTest ${COMMON_TESTS2} itkv3Rigid3DTransformTest)
 add_test(itkRigid3DPerspectiveTransformTest ${COMMON_TESTS2} itkRigid3DPerspectiveTransformTest)
 add_test(itkScalarToRGBPixelFunctorTest ${COMMON_TESTS2} itkScalarToRGBPixelFunctorTest)
 add_test(itkScatterMatrixImageFunctionTest ${COMMON_TESTS2} itkScatterMatrixImageFunctionTest)
@@ -525,6 +524,7 @@ itkConstShapedNeighborhoodIteratorTest.cxx
 itkCovariantVectorGeometryTest.cxx
 itkCovarianceImageFunctionTest.cxx
 itkDataTypeTest.cxx
+itkDataObjectTest.cxx
 itkDecoratorTest.cxx
 itkDerivativeOperatorTest.cxx
 itkDirectoryTest.cxx
@@ -664,11 +664,14 @@ itkPolyLineParametricPathTest.cxx
 itkPolygonCellTest.cxx
 itkQuaternionRigidTransformTest.cxx
 itkRealTimeClockTest.cxx
+itkRealTimeStampTest.cxx
+itkRealTimeIntervalTest.cxx
 itkRGBPixelTest.cxx
 itkRGBInterpolateImageFunctionTest.cxx
 itkRGBToVectorImageAdaptorTest.cxx
 itkRigid2DTransformTest.cxx
 itkRigid3DTransformTest.cxx
+itkv3Rigid3DTransformTest.cxx
 itkRigid3DPerspectiveTransformTest.cxx
 itkScalarToRGBPixelFunctorTest.cxx
 itkScatterMatrixImageFunctionTest.cxx

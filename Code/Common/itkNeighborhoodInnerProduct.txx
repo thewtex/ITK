@@ -31,7 +31,15 @@ NeighborhoodInnerProduct< TImage, TOperator, TComputation >
              const OperatorType & op) const
 {
   typename OperatorType::ConstIterator o_it;
-  OutputPixelType sum = NumericTraits< OutputPixelType >::Zero;
+
+  typedef typename TImage::PixelType                                    InputPixelType;
+  typedef typename NumericTraits< InputPixelType >::RealType            InputPixelRealType;
+  typedef typename NumericTraits< InputPixelRealType >::AccumulateType  AccumulateRealType;
+
+  AccumulateRealType sum = NumericTraits< AccumulateRealType >::Zero;
+
+  typedef typename NumericTraits<OutputPixelType>::ValueType
+      OutputPixelValueType;
 
   o_it = op.Begin();
   const typename OperatorType::ConstIterator op_end = op.End();
@@ -40,11 +48,12 @@ NeighborhoodInnerProduct< TImage, TOperator, TComputation >
   const unsigned int stride = static_cast< unsigned int >( s.stride() );
   for ( unsigned int i = start; o_it < op_end; i += stride, ++o_it )
     {
-    sum += static_cast< OutputPixelType >( *o_it )
-           * static_cast< OutputPixelType >( it.GetPixel(i) );
+    sum += static_cast< AccumulateRealType >(
+      static_cast< OutputPixelValueType >( *o_it ) *
+      static_cast< InputPixelRealType >( it.GetPixel(i) ) );
     }
 
-  return sum;
+  return static_cast< OutputPixelType >( sum );
 }
 
 template< class TImage, class TOperator, class TComputation >
@@ -56,7 +65,15 @@ NeighborhoodInnerProduct< TImage, TOperator, TComputation >
              const OperatorType & op) const
 {
   typename OperatorType::ConstIterator o_it;
-  OutputPixelType sum = NumericTraits< OutputPixelType >::Zero;
+
+  typedef typename TImage::PixelType                                    InputPixelType;
+  typedef typename NumericTraits< InputPixelType >::RealType            InputPixelRealType;
+  typedef typename NumericTraits< InputPixelRealType >::AccumulateType  AccumulateRealType;
+
+  AccumulateRealType sum = NumericTraits< AccumulateRealType >::Zero;
+
+  typedef typename NumericTraits<OutputPixelType>::ValueType
+      OutputPixelValueType;
 
   o_it = op.Begin();
   const typename OperatorType::ConstIterator op_end = op.End();
@@ -65,11 +82,12 @@ NeighborhoodInnerProduct< TImage, TOperator, TComputation >
   const unsigned int stride = static_cast< unsigned int >( s.stride() );
   for ( unsigned int i = start; o_it < op_end; i += stride, ++o_it )
     {
-    sum += static_cast< OutputPixelType >( *o_it )
-           * static_cast< OutputPixelType >( N[i] );
+    sum += static_cast< AccumulateRealType >(
+      static_cast< OutputPixelValueType >( *o_it ) *
+      static_cast< InputPixelRealType >( N[i] ) );
     }
 
-  return sum;
+  return static_cast< OutputPixelType >( sum );
 }
 } // end namespace itk
 #endif

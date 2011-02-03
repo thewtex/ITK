@@ -118,6 +118,7 @@ set(ReviewTest_SRCS
   itkMapMaskedRankImageFilterTest.cxx
   itkFastApproximateRankImageFilterTest.cxx
 
+  itkGaussianDerivativeOperatorTest.cxx
   itkDiscreteGaussianDerivativeImageFunctionTest.cxx
   itkDiscreteGradientMagnitudeGaussianImageFunctionTest.cxx
   itkDiscreteHessianGaussianImageFunctionTest.cxx
@@ -211,6 +212,7 @@ set(ReviewTest3_SRCS
   itkGaborImageSourceTest.cxx
 
   itkDiscreteGaussianDerivativeImageFilterTest.cxx
+  itkDiscreteGaussianDerivativeImageFilterScaleSpaceTest.cxx
 
   itkAttributeLabelObjectAccessorsTest1.cxx
   itkAttributeOpeningLabelMapFilterTest1.cxx
@@ -273,7 +275,9 @@ set(ReviewTest6_SRCS
   itkObjectToObjectMetricTest.cxx
   itkDeformationFieldTransformTest.cxx
   itkBSplineControlPointImageFilterTest.cxx
+  itkBSplineControlPointImageFilterTest1.cxx
   itkN4MRIBiasFieldCorrectionImageFilterTest.cxx
+  itkCompositeTransformTest.cxx
   itkScalarChanAndVeseLevelSetFunctionTest1.cxx
   itkScalarChanAndVeseLevelSetFunctionTest2.cxx
   itkScalarChanAndVeseDenseLevelSetImageFilterTest1.cxx
@@ -1305,6 +1309,10 @@ add_test(itkMapOptGrayscaleErodeImageFilterTest ${REVIEW_TESTS}
   ${TEMP}/itkMapOptGrayscaleErodeImageFilterTestAnchor.png
 )
 
+add_test(itkGaussianDerivativeOperatorTest ${REVIEW_TESTS}
+  itkGaussianDerivativeOperatorTest
+)
+
 add_test(itkDiscreteGaussianDerivativeImageFunctionTest01 ${REVIEW_TESTS}
   --compare ${BASELINE}/itkDiscreteGaussianDerivativeImageFunctionTest01.png
             ${TEMP}/itkDiscreteGaussianDerivativeImageFunctionTest01.png
@@ -1431,6 +1439,7 @@ add_test(itkDiscreteGaussianDerivativeImageFilterTest30 ${REVIEW_TESTS3}
   3.0  # sigma
 )
 
+
 add_test(itkDiscreteGaussianDerivativeImageFilterTest03 ${REVIEW_TESTS3}
   --compare ${BASELINE}/itkDiscreteGaussianDerivativeImageFilterTest03.png
             ${TEMP}/itkDiscreteGaussianDerivativeImageFilterTest03.png
@@ -1441,6 +1450,23 @@ add_test(itkDiscreteGaussianDerivativeImageFilterTest03 ${REVIEW_TESTS3}
   3    # orderY
   3.0  # sigma
 )
+
+add_test(itkDiscreteGaussianDerivativeImageFilterTest01 ${REVIEW_TESTS3}
+  --compare ${BASELINE}/itkDiscreteGaussianDerivativeImageFilterTest01.png
+            ${TEMP}/itkDiscreteGaussianDerivativeImageFilterTest01.png
+  itkDiscreteGaussianDerivativeImageFilterTest
+  ${INPUTDATA}/whiteSpot.png
+  ${TEMP}/itkDiscreteGaussianDerivativeImageFilterTest01.png
+  0    # orderX
+  1    # orderY
+  3.0  # sigma
+)
+
+
+add_test(itkDiscreteGaussianDerivativeImageFilterScaleSpaceTest ${REVIEW_TESTS3}
+  itkDiscreteGaussianDerivativeImageFilterScaleSpaceTest
+)
+
 
 add_test(itkBinaryContourImageFilterTest0 ${REVIEW_TESTS}
   --compare ${BASELINE}/itkBinaryContourImageFilterTest0.png
@@ -2416,6 +2442,7 @@ add_test(itkObjectToObjectMetricTest ${REVIEW_TESTS6}
          itkObjectToObjectMetricTest)
 add_test(itkDeformationFieldTransformTest ${REVIEW_TESTS6}
   itkDeformationFieldTransformTest)
+add_test(itkCompositeTransformTest ${REVIEW_TESTS6} itkCompositeTransformTest)
 
 add_test(itkBSplineControlPointImageFilterTest1
   ${REVIEW_TESTS6}
@@ -2439,6 +2466,11 @@ add_test(itkBSplineControlPointImageFilterTest2
   ${BASELINE}/N4ControlPoints_3D.nii.gz                       # control point lattice
   ${TEMP}/N4ControlPoints_3D_output.nii.gz
   ${TEMP}/N4ControlPoints_3D_outputRefined.nii.gz
+  )
+
+add_test(itkBSplineControlPointImageFilterTest3
+  ${REVIEW_TESTS6}
+  itkBSplineControlPointImageFilterTest1
   )
 
 add_test(itkN4MRIBiasFieldCorrectionImageFilterTest1
