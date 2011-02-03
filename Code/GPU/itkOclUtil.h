@@ -23,6 +23,11 @@
 #endif
 
 //
+// Get the devices that are available
+//
+cl_device_id* OclGetAvailableDevices(cl_platform_id platform, cl_device_type devType, cl_uint* numAvailableDevices);
+
+//
 // Get the device that has the maximum FLOPS in the current context
 //
 cl_device_id OclGetMaxFlopsDev(cl_context cxGPUContext);

@@ -1,5 +1,55 @@
 #include "itkOclUtil.h"
 #include <assert.h>
+#include <iostream>
+
+//
+// Get the devices that are available.
+//
+cl_device_id* OclGetAvailableDevices(cl_platform_id platform, cl_device_type devType, cl_uint* numAvailableDevices)
+{
+  cl_device_id* availableDevices = NULL;
+  cl_uint totalNumDevices;
+
+  // get total # of devices
+  cl_int errid;
+
+  errid = clGetDeviceIDs(platform, devType, 0, NULL, &totalNumDevices);
+  OclCheckError( errid );
+
+  cl_device_id* totalDevices = (cl_device_id *)malloc(totalNumDevices * sizeof(cl_device_id) );
+  errid = clGetDeviceIDs(platform, devType, totalNumDevices, totalDevices, NULL);
+  OclCheckError( errid );
+
+  (*numAvailableDevices) = 0;
+
+  // check available devices
+  for(int i=0; i<totalNumDevices; i++)
+    {
+      cl_bool isAvailable;
+      clGetDeviceInfo(totalDevices[i], CL_DEVICE_AVAILABLE, sizeof(cl_bool), &isAvailable, NULL);
+
+      if(isAvailable)
+        {
+          (*numAvailableDevices)++;
+        }
+    }
+
+  availableDevices = (cl_device_id *)malloc((*numAvailableDevices) * sizeof(cl_device_id) );
+
+  int idx = 0;
+  for(int i=0; i<totalNumDevices; i++)
+    {
+      cl_bool isAvailable;
+      clGetDeviceInfo(totalDevices[i], CL_DEVICE_AVAILABLE, sizeof(cl_bool), &isAvailable, NULL);
+
+      if(isAvailable)
+        {
+          availableDevices[idx++] = totalDevices[i];
+        }
+    }
+
+  return availableDevices;
+}
 
 //
 // Get the device that has the maximum FLOPS in the current context
@@ -33,23 +83,23 @@ cl_device_id OclGetMaxFlopsDev(cl_context cxGPUContext)
   ++current_device;
 
   while( current_device < device_count )
-  {
-    // CL_DEVICE_MAX_COMPUTE_UNITS
-    cl_uint compute_units;
-    clGetDeviceInfo(cdDevices[current_device], CL_DEVICE_MAX_COMPUTE_UNITS, sizeof(compute_units), &compute_units, NULL);
-
-    // CL_DEVICE_MAX_CLOCK_FREQUENCY
-    cl_uint clock_frequency;
-    clGetDeviceInfo(cdDevices[current_device], CL_DEVICE_MAX_CLOCK_FREQUENCY, sizeof(clock_frequency), &clock_frequency, NULL);
-
-    int flops = compute_units * clock_frequency;
-    if( flops > max_flops )
     {
-      max_flops        = flops;
-      max_flops_device = cdDevices[current_device];
+      // CL_DEVICE_MAX_COMPUTE_UNITS
+      cl_uint compute_units;
+      clGetDeviceInfo(cdDevices[current_device], CL_DEVICE_MAX_COMPUTE_UNITS, sizeof(compute_units), &compute_units, NULL);
+
+      // CL_DEVICE_MAX_CLOCK_FREQUENCY
+      cl_uint clock_frequency;
+      clGetDeviceInfo(cdDevices[current_device], CL_DEVICE_MAX_CLOCK_FREQUENCY, sizeof(clock_frequency), &clock_frequency, NULL);
+
+      int flops = compute_units * clock_frequency;
+      if( flops > max_flops )
+        {
+          max_flops        = flops;
+          max_flops_device = cdDevices[current_device];
+        }
+      ++current_device;
     }
-    ++current_device;
-  }
 
   free(cdDevices);
 
@@ -80,47 +130,56 @@ cl_platform_id OclSelectPlatform(char* name)
   // Get OpenCL platform count
   ciErrNum = clGetPlatformIDs (0, NULL, &num_platforms);
   if (ciErrNum != CL_SUCCESS)
-  {
-    printf(" Error %i in clGetPlatformIDs Call !!!\n\n", ciErrNum);
-    clSelectedPlatformID = NULL;
-  }
-  else
-  {
-    if(num_platforms == 0)
     {
-      printf("No OpenCL platform found!\n\n");
+      printf(" Error %i in clGetPlatformIDs Call !!!\n\n", ciErrNum);
       clSelectedPlatformID = NULL;
     }
-    else
+  else
     {
-      // if there's a platform or more, make space for ID's
-      if ((clPlatformIDs = (cl_platform_id*)malloc(num_platforms * sizeof(cl_platform_id))) == NULL)
-      {
-        printf("Failed to allocate memory for cl_platform ID's!\n\n");
-        clSelectedPlatformID =  NULL;
-      }
-      else
-      {
-        clSelectedPlatformID = clPlatformIDs[0]; // default
-
-        // get platform info for each platform and trap the NVIDIA platform if found
-        ciErrNum = clGetPlatformIDs (num_platforms, clPlatformIDs, NULL);
-        for(cl_uint i = 0; i < num_platforms; ++i)
+      if(num_platforms == 0)
         {
-          ciErrNum = clGetPlatformInfo (clPlatformIDs[i], CL_PLATFORM_NAME, 1024, &chBuffer, NULL);
-          if(ciErrNum == CL_SUCCESS)
-          {
-            if(strstr(chBuffer, name) != NULL)
-            {
-              clSelectedPlatformID = clPlatformIDs[i];
-            }
-          }
+          printf("No OpenCL platform found!\n\n");
+          clSelectedPlatformID = NULL;
         }
+      else
+        {
+          // if there's a platform or more, make space for ID's
+          if ((clPlatformIDs = (cl_platform_id*)malloc(num_platforms * sizeof(cl_platform_id))) == NULL)
+            {
+              printf("Failed to allocate memory for cl_platform ID's!\n\n");
+              clSelectedPlatformID =  NULL;
+            }
+          else
+            {
+              ciErrNum = clGetPlatformIDs (num_platforms, clPlatformIDs, NULL);
+              if(ciErrNum == CL_SUCCESS)
+                {
+                  clSelectedPlatformID = clPlatformIDs[0]; // default
+                }
 
-        free(clPlatformIDs);
-      }
+              if(num_platforms > 1)
+                {
+                  std::cout << "Total # of platform : " << num_platforms << std::endl;
+
+                  for(cl_uint i = 0; i < num_platforms; ++i)
+                    {
+                      ciErrNum = clGetPlatformInfo (clPlatformIDs[i], CL_PLATFORM_NAME, 1024, &chBuffer, NULL);
+
+                      //std::cout << "Platform " << i << " : " << chBuffer << std::endl;
+
+                      if(ciErrNum == CL_SUCCESS)
+                        {
+                          if(strstr(chBuffer, name) != NULL)
+                            {
+                              clSelectedPlatformID = clPlatformIDs[i];
+                            }
+                        }
+                    }
+                }
+              free(clPlatformIDs);
+            }
+        }
     }
-  }
 
   return clSelectedPlatformID;
 }
@@ -196,14 +255,14 @@ void OclCheckError(cl_int error)
   };
 
   if(error != CL_SUCCESS)
-  {
-    // print error message
-    const int errorCount = sizeof(errorString) / sizeof(errorString[0]);
-    const int index = -error;
+    {
+      // print error message
+      const int errorCount = sizeof(errorString) / sizeof(errorString[0]);
+      const int index = -error;
 
-    if(index >= 0 && index < errorCount) printf("OpenCL Error : %s\n", errorString[index]);
-    else printf("OpenCL Error : Unspecified Error\n");
+      if(index >= 0 && index < errorCount) printf("OpenCL Error : %s\n", errorString[index]);
+      else printf("OpenCL Error : Unspecified Error\n");
 
-    assert( false );
-  }
+      assert( false );
+    }
 }

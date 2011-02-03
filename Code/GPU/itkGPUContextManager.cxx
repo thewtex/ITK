@@ -34,14 +34,24 @@ namespace itk
     m_Platform = OclSelectPlatform("NVIDIA");
     assert(m_Platform != NULL);
 
+    cl_device_type devType = CL_DEVICE_TYPE_GPU; // CL_DEVICE_TYPE_CPU
+
     // TODO: add support for CPU device type
     // Get the devices
-    errid = clGetDeviceIDs(m_Platform, CL_DEVICE_TYPE_GPU, 0, NULL, &m_NumDevices);
+    m_Devices = OclGetAvailableDevices(m_Platform, devType, &m_NumDevices);
+
+    /*
+    errid = clGetDeviceIDs(m_Platform,devType, 0, NULL, &m_NumDevices);
     OclCheckError( errid );
 
+    std::cout << "# of device : " << m_NumDevices << std::endl;
+
     m_Devices = (cl_device_id *)malloc(m_NumDevices * sizeof(cl_device_id) );
-    errid = clGetDeviceIDs(m_Platform, CL_DEVICE_TYPE_GPU, m_NumDevices, m_Devices, NULL);
+    errid = clGetDeviceIDs(m_Platform, devType, m_NumDevices, m_Devices, NULL);
     OclCheckError( errid );
+
+    std::cout << "We got devices" << std::endl;
+    */
 
     // create context
     m_Context = clCreateContext(0, m_NumDevices, m_Devices, NULL, NULL, &errid);
@@ -52,7 +62,9 @@ namespace itk
     for(unsigned int i=0; i<m_NumDevices; i++)
     {
       m_CommandQueue[i] = clCreateCommandQueue(m_Context, m_Devices[i], 0, &errid);
-      //OclPrintDeviceName(m_Devices[i]);
+
+      OclPrintDeviceName(m_Devices[i]);
+
       OclCheckError( errid );
     }
 
