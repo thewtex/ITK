@@ -1,8 +1,3 @@
-option(ITK_USE_GPU "GPU acceleration" OFF)
-mark_as_advanced(ITK_USE_GPU)
-
-if(ITK_USE_GPU)
-find_package ( OpenCL REQUIRED )
 message("GPU acceleration using OpenCL is ON.")
 
 set( itkCxxSRC itkGPUDataManager.cxx itkGPUContextManager.cxx itkGPUKernelManager.cxx itkOclUtil.cxx )
@@ -15,6 +10,13 @@ SOURCE_GROUP("OpenCL Source Files" FILES ${itkGPUSRC})
 
 # Include path
 INCLUDE_DIRECTORIES( ${OPENCL_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR})
+INCLUDE_DIRECTORIES( ${ITK_BINARY_DIR}/Code/GPU )
+FILE(COPY ${itkGPUSRC} DESTINATION ${ITK_BINARY_DIR}/Code/GPU)
+MESSAGE( "OpenCL files to copy " ${itkGPUSRC} )
+
+configure_file(
+  ${ITK_SOURCE_DIR}/Code/GPU/pathToOpenCLSourceCode.h.in
+  ${ITK_BINARY_DIR}/Code/GPU/pathToOpenCLSourceCode.h)
 
 # Create library
 ADD_LIBRARY( ITKGPU ${itkCxxSRC} ${itkTxxSRC} ${itkGPUHDR} )
@@ -23,10 +25,12 @@ TARGET_LINK_LIBRARIES( ITKGPU ITKCommon ${OPENCL_LIBRARIES} )
 # Test Executable
 ADD_EXECUTABLE( test_itkGPUImage test_itkGPUImage.cxx )
 TARGET_LINK_LIBRARIES( test_itkGPUImage ITKCommon ITKGPU ${OPENCL_LIBRARIES} )
-add_test ( GPUImage test_itkGPUImage )
 
 ADD_EXECUTABLE( test_itkGPUImageFilter test_itkGPUImageFilter.cxx )
 TARGET_LINK_LIBRARIES( test_itkGPUImageFilter ITKIO ITKCommon ITKGPU ${OPENCL_LIBRARIES} )
-add_test ( GPUImageFilter test_itkGPUImageFilter )
 
-endif(ITK_USE_GPU)
+# ADD Test Executable to Testing
+SET(TEMP ${ITK_BINARY_DIR}/Testing/Temporary)
+ADD_TEST(gpuImageFilterTest ${EXECUTABLE_OUTPUT_PATH}/test_itkGPUImageFilter
+   ${ITK_DATA_ROOT}/../../Examples/Data/BrainProtonDensitySlice.png
+   ${TEMP}/gpuImageFilterTest.png)

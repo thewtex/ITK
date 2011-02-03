@@ -99,9 +99,9 @@ public:
   operator unsigned long() const
         { return m_ModifiedTime; }
 
-  /** Manually set the modified time */
-  void SetMTime( unsigned long ts )
-  { m_ModifiedTime = ts; }
+  /** Assignment operator, allows to initialize one time stamp by copying from
+   * another. */
+  const Self & operator=( const Self & other );
 
 private:
   unsigned long m_ModifiedTime;

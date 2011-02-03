@@ -1,7 +1,7 @@
 #ifndef __itkGPUMeanImageFilter_h
 #define __itkGPUMeanImageFilter_h
 
-#include "sourcepath.h"
+#include "pathToOpenCLSourceCode.h"
 #include "itkMeanImageFilter.h"
 #include "itkGPUImageToImageFilter.h"
 #include "itkVersion.h"

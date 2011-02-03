@@ -25,9 +25,8 @@
 #ifndef __itkGPUDataManager_h
 #define __itkGPUDataManager_h
 
-#include <itkObject.h>
-#include <itkLightObject.h>
-#include <itkObjectFactory.h>
+#include "itkObject.h"
+#include "itkObjectFactory.h"
 #include "itkOclUtil.h"
 #include "itkGPUContextManager.h"
 #include "itkSimpleFastMutexLock.h"
@@ -40,7 +39,7 @@
 namespace itk
 {
 
-  class ITK_EXPORT GPUDataManager : public LightObject
+  class ITK_EXPORT GPUDataManager : public Object
   {
     // allow GPUKernelManager to access GPU buffer pointer
     friend class GPUKernelManager;
@@ -48,12 +47,12 @@ namespace itk
   public:
 
     typedef GPUDataManager            Self;
-    typedef LightObject               Superclass;
+    typedef Object                    Superclass;
     typedef SmartPointer<Self>        Pointer;
     typedef SmartPointer<const Self>  ConstPointer;
 
     itkNewMacro(Self);
-    itkTypeMacro(GPUDataManager, LightObject);
+    itkTypeMacro(GPUDataManager, Object);
 
     // total buffer size in bytes
     void SetBufferSize( unsigned int num );

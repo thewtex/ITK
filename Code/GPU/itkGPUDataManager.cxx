@@ -26,7 +26,10 @@ namespace itk
   {
     m_Manager = GPUContextManager::GetInstance();
 
-    if(m_Manager->GetNumCommandQueue() > 0) m_CommandQueueId = 0; // default command queue
+    if( m_Manager->GetNumCommandQueue() > 0 )
+      {
+      m_CommandQueueId = 0; // default command queue
+      }
 
     m_BufferSize = 0;
     m_GPUBuffer = NULL;
@@ -38,7 +41,10 @@ namespace itk
 
   GPUDataManager::~GPUDataManager()
   {
-    if(m_GPUBuffer) clReleaseMemObject(m_GPUBuffer);
+    if( m_GPUBuffer )
+      {
+      clReleaseMemObject(m_GPUBuffer);
+      }
   }
 
   void GPUDataManager::SetBufferSize( unsigned int num )
@@ -55,11 +61,11 @@ namespace itk
   {
     cl_int errid;
 
-    if(m_BufferSize > 0)
-    {
+    if( m_BufferSize > 0 )
+      {
       m_GPUBuffer = clCreateBuffer(m_Manager->GetCurrentContext(), m_MemFlags, m_BufferSize, NULL, &errid);
       OclCheckError(errid);
-    }
+      }
 
     //m_IsGPUBufferDirty = true;
 
@@ -97,8 +103,8 @@ namespace itk
   {
     m_Mutex.Lock();
 
-    if(m_IsCPUBufferDirty && m_GPUBuffer != NULL)
-    {
+    if( m_IsCPUBufferDirty && m_GPUBuffer != NULL )
+      {
       cl_int errid;
 
       std::cout << "GPU->CPU data copy" << std::endl;
@@ -106,7 +112,7 @@ namespace itk
       OclCheckError(errid);
 
       m_IsCPUBufferDirty = false;
-    }
+      }
 
     m_Mutex.Unlock();
   }
@@ -116,8 +122,8 @@ namespace itk
   {
      m_Mutex.Lock();
 
-    if(m_IsGPUBufferDirty && m_CPUBuffer != NULL)
-    {
+    if( m_IsGPUBufferDirty && m_CPUBuffer != NULL )
+      {
       cl_int errid;
 
       std::cout << "CPU->GPU data copy" << std::endl;
@@ -125,7 +131,7 @@ namespace itk
       OclCheckError(errid);
 
       m_IsGPUBufferDirty = false;
-    }
+      }
 
      m_Mutex.Unlock();
   }
@@ -140,11 +146,11 @@ namespace itk
 
   bool GPUDataManager::MakeUpToDate()
   {
-    if(m_IsGPUBufferDirty && m_IsCPUBufferDirty)
-    {
-      itkExceptionMacro("Cannot make up-to-date buffer because both CPU and GPU buffers are dirty")
-        return false;
-    }
+    if( m_IsGPUBufferDirty && m_IsCPUBufferDirty )
+      {
+      itkExceptionMacro("Cannot make up-to-date buffer because both CPU and GPU buffers are dirty");
+      return false;
+      }
 
     MakeGPUBufferUpToDate();
     MakeCPUBufferUpToDate();
@@ -161,18 +167,18 @@ namespace itk
   void GPUDataManager::SetCurrentCommandQueue( int queueid )
   {
     if( queueid >= 0 && queueid < (int)m_Manager->GetNumCommandQueue() )
-    {
+      {
       MakeCPUBufferUpToDate();
 
       // Assumption: different command queue is assigned to different device
       m_CommandQueueId = queueid;
 
       m_IsGPUBufferDirty = true;
-    }
+      }
     else
-    {
+      {
       itkWarningMacro("Not a valid command queue id");
-    }
+      }
   }
 
   int GPUDataManager::GetCurrentCommandQueueID()

@@ -12,4 +12,6 @@ endif( ITK_USE_REVIEW )
 ## libraries, so build it last
 add_subdirectory(IO)
 
-add_subdirectory(GPU)
+if(ITK_USE_GPU)
+  add_subdirectory(GPU)
+endif(ITK_USE_GPU)

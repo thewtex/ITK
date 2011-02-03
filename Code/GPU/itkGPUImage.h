@@ -42,24 +42,26 @@ namespace itk
 
     itkStaticConstMacro(ImageDimension, unsigned int, VImageDimension);
 
-    typedef typename Superclass::DirectionType       DirectionType;
-    typedef typename Superclass::IOPixelType         IOPixelType;
-    typedef typename Superclass::IndexType           IndexType;
-    typedef typename Superclass::InternalPixelType   InternalPixelType;
-    typedef typename Superclass::OffsetType          OffsetType;
-    typedef typename Superclass::PixelContainer      PixelContainer;
     typedef typename Superclass::PixelType           PixelType;
-    typedef typename Superclass::RegionType          RegionType;
-    typedef typename Superclass::SizeType            SizeType;
-    typedef typename Superclass::SpacingType         SpacingType;
     typedef typename Superclass::ValueType           ValueType;
+    typedef typename Superclass::InternalPixelType   InternalPixelType;
+    typedef typename Superclass::DirectionType       DirectionType;
+    typedef typename Superclass::SpacingType         SpacingType;
+    typedef typename Superclass::IOPixelType         IOPixelType;
+    typedef typename Superclass::PixelContainer      PixelContainer;
+    typedef typename Superclass::SizeType            SizeType;
+    typedef typename Superclass::IndexType           IndexType;
+    typedef typename Superclass::OffsetType          OffsetType;
+    typedef typename Superclass::RegionType          RegionType;
     typedef typename PixelContainer::Pointer         PixelContainerPointer;
     typedef typename PixelContainer::ConstPointer    PixelContainerConstPointer;
 
+    //typedef DefaultPixelAccessor< PixelType >   AccessorType;
     typedef typename Superclass::AccessorType            AccessorType;
 
     typedef DefaultPixelAccessorFunctor< Self > AccessorFunctorType;
 
+    //typedef NeighborhoodAccessorFunctor< Self > NeighborhoodAccessorFunctorType;
     typedef typename Superclass::NeighborhoodAccessorFunctorType NeighborhoodAccessorFunctorType;
 
     //
@@ -105,7 +107,6 @@ namespace itk
     NeighborhoodAccessorFunctorType GetNeighborhoodAccessor()
     {
       m_GPUManager->SetGPUBufferDirty();
-      //return NeighborhoodAccessorFunctorType();
       return Superclass::GetNeighborhoodAccessor();
     }
 
@@ -145,10 +146,9 @@ namespace itk
     {
       Superclass::DataHasBeenGenerated();
       if( m_GPUManager->IsCPUBufferDirty() )
-      {
-        //std::cout << "GPU data generated" << std::endl;
+        {
         m_GPUManager->Modified();
-      }
+        }
     }
 
 
@@ -161,8 +161,6 @@ namespace itk
     // functions that are purposely not implemented
     GPUImage(const Self&);
     void operator=(const Self&);
-
-    //GPUImageDataManager< GPUImage<TPixel,VImageDimension> >:: m_GPUManager;
     typename GPUImageDataManager< GPUImage >::Pointer m_GPUManager;
   };
 

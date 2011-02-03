@@ -34,8 +34,9 @@ namespace itk
     {
       m_Mutex.Lock();
 
-      unsigned long gpu_time = m_UpdateGPUMTime.GetMTime();
-      unsigned long cpu_time = m_Image->GetMTime();
+      unsigned long gpu_time = this->GetMTime();
+      TimeStamp cpu_time_stamp = m_Image->GetTimeStamp();
+      unsigned long cpu_time = cpu_time_stamp.GetMTime();
 
       /* Why we check dirty flag and time stamp together?
        * Because existing CPU image filters do not use pixel/buffer
@@ -52,7 +53,7 @@ namespace itk
         OclCheckError(errid);
 
         m_Image->Modified();
-        m_UpdateGPUMTime.SetMTime( m_Image->GetMTime() );
+        this->SetTimeStamp( m_Image->GetTimeStamp() );
 
         m_IsCPUBufferDirty = false;
         m_IsGPUBufferDirty = false;
@@ -69,7 +70,8 @@ namespace itk
     {
       m_Mutex.Lock();
 
-      unsigned long gpu_time = m_UpdateGPUMTime.GetMTime();
+      unsigned long gpu_time = this->GetMTime();
+      TimeStamp cpu_time_stamp = m_Image->GetTimeStamp();
       unsigned long cpu_time = m_Image->GetMTime();
 
       /* Why we check dirty flag and time stamp together?
@@ -86,7 +88,7 @@ namespace itk
         errid = clEnqueueWriteBuffer(m_Manager->GetCommandQueue(m_CommandQueueId), m_GPUBuffer, CL_TRUE, 0, m_BufferSize, m_CPUBuffer, 0, NULL, NULL);
         OclCheckError(errid);
 
-        m_UpdateGPUMTime.SetMTime( cpu_time );
+        this->SetTimeStamp( cpu_time_stamp );
 
         m_IsCPUBufferDirty = false;
         m_IsGPUBufferDirty = false;

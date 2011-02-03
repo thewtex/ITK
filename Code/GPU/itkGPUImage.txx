@@ -12,11 +12,7 @@ namespace itk
   GPUImage< TPixel, VImageDimension >::GPUImage()
   {
     m_GPUManager = GPUImageDataManager< GPUImage< TPixel, VImageDimension > >::New();
-    m_GPUManager->SetMTime( this->GetMTime() );
-
-    //DataObject *                   input = this;
-    //std::cout << "Image created: " << input->GetMTime()<< std::endl;
-    //std::cout << "Image created: " << this->GetMTime() << std::endl;
+    m_GPUManager->SetTimeStamp( this->GetTimeStamp() );
   }
 
   template <class TPixel, unsigned int VImageDimension>
@@ -28,11 +24,6 @@ namespace itk
   template <class TPixel, unsigned int VImageDimension>
   void GPUImage< TPixel, VImageDimension >::Allocate()
   {
-    /*
-    std::cout << "Before CPU allocate(): " << this->GetMTime() << std::endl;
-    std::cout << "Before GPU allocate(): " << m_GPUManager->GetMTime() << std::endl;
-    */
-
     // allocate CPU memory - calling Allocate() in superclass
     Superclass::Allocate();
 
@@ -45,12 +36,7 @@ namespace itk
     m_GPUManager->Allocate();
 
     /* prevent unnecessary copy from CPU to GPU at the beginning */
-    m_GPUManager->SetMTime( this->GetMTime() );
-
-    /*
-    std::cout << "After CPU allocate(): " << this->GetMTime() << std::endl;
-    std::cout << "After GPU allocate(): " << m_GPUManager->GetMTime() << std::endl << std::endl;
-    */
+    m_GPUManager->SetTimeStamp( this->GetTimeStamp() );
   }
 
 
@@ -117,7 +103,10 @@ namespace itk
   GPUDataManager::Pointer
   GPUImage< TPixel, VImageDimension >::GetGPUDataManager()
   {
-    return (typename GPUImageDataManager< GPUImage >::Superclass::Pointer) m_GPUManager;
+    typedef typename GPUImageDataManager< GPUImage >::Superclass GPUImageSuperclass;
+    typedef typename GPUImageSuperclass::Pointer                 GPUImageSuperclassPointer;
+
+    return static_cast< GPUImageSuperclassPointer >( m_GPUManager.GetPointer() );
   }
 
 } // namespace itk

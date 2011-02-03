@@ -19,7 +19,7 @@
 //
 // Test program for itkGPUImage class
 //
-#include "sourcepath.h"
+#include "pathToOpenCLSourceCode.h"
 #include "itkGPUImage.h"
 #include "itkGPUKernelManager.h"
 #include "itkGPUContextManager.h"

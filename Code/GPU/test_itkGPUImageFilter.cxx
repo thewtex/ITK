@@ -19,7 +19,7 @@
 //
 // Test program for itkGPUImageToImageFilter class
 //
-#include "sourcepath.h"
+#include "pathToOpenCLSourceCode.h"
 
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
@@ -52,18 +52,15 @@ int main(int argc, char *argv[])
   ReaderType::Pointer reader = ReaderType::New();
   WriterType::Pointer writer = WriterType::New();
 
-  if( argc >= 3 )
-  {
-    reader->SetFileName( argv[1] );
-    writer->SetFileName( argv[2] );
-  }
-  else
-  {
-    char dataPath[100];
-    sprintf(dataPath, "%s/Examples/Data/BrainProtonDensitySlice.png", itk_root_path);
-    reader->SetFileName( dataPath );
-    writer->SetFileName( "testout.png" );
-  }
+  if( argc <  3 )
+    {
+    std::cerr << "Error: missing arguments" << std::endl;
+    std::cerr << "inputfile outputfile " << std::endl;
+    return EXIT_FAILURE;
+    }
+
+  reader->SetFileName( argv[1] );
+  writer->SetFileName( argv[2] );
 
   //
   // Note: We use regular itk filter type here but factory will automatically create

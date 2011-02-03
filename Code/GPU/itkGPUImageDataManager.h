@@ -30,17 +30,21 @@
 #include <itkLightObject.h>
 #include <itkObjectFactory.h>
 #include "itkOclUtil.h"
+#include "itkGPUImage.h"
 #include "itkGPUDataManager.h"
 #include "itkGPUContextManager.h"
 #include "itkSimpleFastMutexLock.h"
 
 namespace itk
 {
+  template < class TPixel, unsigned int NDimension > class GPUImage;
+
   template < class ImageType >
   class ITK_EXPORT GPUImageDataManager : public GPUDataManager
   {
     // allow GPUKernelManager to access GPU buffer pointer
     friend class GPUKernelManager;
+    friend class GPUImage< typename ImageType::PixelType, ImageType::ImageDimension >;
 
   public:
 
@@ -60,11 +64,6 @@ namespace itk
     // actual CPU->GPU memory copy takes place here
     virtual void MakeGPUBufferUpToDate();
 
-    // Time Stamp for GPU image data
-    unsigned long GetMTime() { return m_UpdateGPUMTime.GetMTime(); }
-    void Modified() { m_UpdateGPUMTime.Modified(); }
-    void SetMTime( unsigned long ts ) { m_UpdateGPUMTime.SetMTime( ts ); }
-
   protected:
 
     GPUImageDataManager() { m_Image = NULL; };
@@ -75,9 +74,6 @@ namespace itk
     void operator=(const Self&);
 
     typename ImageType::Pointer m_Image;
-
-    // record time when GPU data was modified
-    TimeStamp m_UpdateGPUMTime;
 
   };
 
