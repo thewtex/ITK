@@ -138,6 +138,11 @@ if( USE_FFTWD OR USE_FFTWF )
   include(itkExternal_FFTW)
 endif( USE_FFTWD OR USE_FFTWF )
 
+
+#-----------------------------------------------------------------------------
+# Options for enabling specific file formats
+include(${ITK_SOURCE_DIR}/CMake/EnablePreregisteredImageIOFactories.cmake)
+
 # Deal with MINC2 options
 mark_as_advanced(ITK_USE_MINC2)
 option(ITK_USE_MINC2 "Use MINC2 File Format" OFF)
@@ -404,6 +409,9 @@ if(BUILD_DOXYGEN)
   find_package(Doxygen)
 endif(BUILD_DOXYGEN)
 
+#-----------------------------------------------------------------------------
+# Check if this platform support the sse2 rounding functions for 32 and 64 bits
+include(${CMAKE_CURRENT_SOURCE_DIR}/CMake/CheckSupportForSSERounding.cmake)
 
 #-----------------------------------------------------------------------------
 # ITK requires special compiler flags on some platforms.
@@ -436,10 +444,6 @@ if(CMAKE_COMPILER_IS_GNUCXX)
 
   endif(APPLE)
 
-  # gcc must have -msse2 option to enable sse2 support
-  if(VNL_CONFIG_ENABLE_SSE2 OR VNL_CONFIG_ENABLE_SSE2_ROUNDING)
-    set(ITK_REQUIRED_CXX_FLAGS "${ITK_REQUIRED_CXX_FLAGS} -msse2")
-  endif(VNL_CONFIG_ENABLE_SSE2 OR VNL_CONFIG_ENABLE_SSE2_ROUNDING)
 endif(CMAKE_COMPILER_IS_GNUCXX)
 
 if(UNIX)
@@ -633,13 +637,20 @@ endif(HAVE_UNISTD_H)
 
 #-----------------------------------------------------------------------------
 # Configure the default ITK_DATA_ROOT for the location of ITK Data.
-find_path(ITK_DATA_ROOT ITKData.readme ${ITK_SOURCE_DIR}/Testing/Data $ENV{ITK_DATA_ROOT})
-if(NOT ITK_DATA_ROOT)
-  if(BUILD_TESTING)
-    message(WARNING "ITK_DATA_ROOT was not found.  ctest will not run properly.")
-  endif()
+unset(ITK_DATA_ROOT CACHE) # No longer a cache entry.
+if(EXISTS ${ITK_SOURCE_DIR}/Testing/Data/ITKData.readme)
+  set(ITK_DATA_ROOT ${ITK_SOURCE_DIR}/Testing/Data)
+else()
+  set(ITK_DATA_ROOT "ITK_DATA_ROOT-NOTFOUND")
+  foreach(opt BUILD_TESTING BUILD_EXAMPLES)
+    if(${opt})
+      message(FATAL_ERROR
+        "${opt} is ON but the Testing/Data submodule is not available.  "
+        "Run\n  git submodule update --init\n"
+        "from the top of the source tree to get it!")
+    endif()
+  endforeach()
 endif()
-mark_as_advanced(ITK_DATA_ROOT)
 
 #-----------------------------------------------------------------------------
 # Enable the download and use of BrainWeb datasets.
