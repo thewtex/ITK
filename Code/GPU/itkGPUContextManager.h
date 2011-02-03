@@ -3,7 +3,6 @@
 
 #include "itkOclUtil.h"
 #include <itkLightObject.h>
-#include <CL/opencl.h>
 
 //
 // Singleton class for GPUContextManager

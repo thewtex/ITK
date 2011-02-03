@@ -117,7 +117,7 @@ namespace itk
   GPUDataManager::Pointer
   GPUImage< TPixel, VImageDimension >::GetGPUDataManager()
   {
-    return (GPUImageDataManager< GPUImage >::Superclass::Pointer) m_GPUManager;
+    return (typename GPUImageDataManager< GPUImage >::Superclass::Pointer) m_GPUManager;
   }
 
 } // namespace itk

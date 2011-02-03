@@ -30,7 +30,7 @@ namespace itk
   template < class ImageType >
   void GPUImageDataManager< ImageType >::MakeCPUBufferUpToDate()
   {
-    if( m_Image != (ImageType::Pointer)NULL )
+    if( m_Image.IsNotNull() )
     {
       m_Mutex.Lock();
 
@@ -65,7 +65,7 @@ namespace itk
   template < class ImageType >
   void GPUImageDataManager< ImageType >::MakeGPUBufferUpToDate()
   {
-    if( m_Image != (ImageType::Pointer)NULL )
+    if( m_Image.IsNotNull() )
     {
       m_Mutex.Lock();
 

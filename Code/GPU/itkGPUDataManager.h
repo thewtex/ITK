@@ -28,7 +28,6 @@
 #include <itkObject.h>
 #include <itkLightObject.h>
 #include <itkObjectFactory.h>
-#include <CL/opencl.h>
 #include "itkOclUtil.h"
 #include "itkGPUContextManager.h"
 #include "itkSimpleFastMutexLock.h"

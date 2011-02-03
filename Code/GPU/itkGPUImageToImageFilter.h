@@ -53,7 +53,7 @@ namespace itk
     virtual void GPUGenerateData() {};
 
     // GPU kernel manager
-    GPUKernelManager::Pointer m_KernelManager;
+    typename GPUKernelManager::Pointer m_KernelManager;
 
   private:
     GPUImageToImageFilter(const Self &); //purposely not implemented

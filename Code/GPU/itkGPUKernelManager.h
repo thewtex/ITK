@@ -24,7 +24,6 @@
 #define ___ITKGPUKERNELMANAGER_H__
 
 #include <vector>
-#include <CL/opencl.h>
 #include <itkLightObject.h>
 #include <itkObjectFactory.h>
 #include "itkOclUtil.h"

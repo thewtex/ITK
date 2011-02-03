@@ -29,7 +29,6 @@
 #include <itkTimeStamp.h>
 #include <itkLightObject.h>
 #include <itkObjectFactory.h>
-#include <CL/opencl.h>
 #include "itkOclUtil.h"
 #include "itkGPUDataManager.h"
 #include "itkGPUContextManager.h"
@@ -68,7 +67,7 @@ namespace itk
 
   protected:
 
-    GPUImageDataManager() { m_Image = (ImageType::Pointer)NULL; };
+    GPUImageDataManager() { m_Image = NULL; };
     virtual ~GPUImageDataManager() {};
 
   private:

@@ -42,28 +42,25 @@ namespace itk
 
     itkStaticConstMacro(ImageDimension, unsigned int, VImageDimension);
 
-    typedef typename Superclass::PixelType           PixelType;
-    typedef typename Superclass::ValueType           ValueType;
-    typedef typename Superclass::InternalPixelType   InternalPixelType;
-    typedef typename Superclass::IOPixelType         IOPixelType;
     typedef typename Superclass::DirectionType       DirectionType;
-    typedef typename Superclass::SpacingType         SpacingType;
     typedef typename Superclass::IOPixelType         IOPixelType;
-    typedef typename Superclass::PixelContainer      PixelContainer;
-    typedef typename Superclass::SizeType            SizeType;
     typedef typename Superclass::IndexType           IndexType;
+    typedef typename Superclass::InternalPixelType   InternalPixelType;
     typedef typename Superclass::OffsetType          OffsetType;
+    typedef typename Superclass::PixelContainer      PixelContainer;
+    typedef typename Superclass::PixelType           PixelType;
     typedef typename Superclass::RegionType          RegionType;
+    typedef typename Superclass::SizeType            SizeType;
+    typedef typename Superclass::SpacingType         SpacingType;
+    typedef typename Superclass::ValueType           ValueType;
     typedef typename PixelContainer::Pointer         PixelContainerPointer;
     typedef typename PixelContainer::ConstPointer    PixelContainerConstPointer;
 
-    //typedef DefaultPixelAccessor< PixelType >   AccessorType;
-    typedef Superclass::AccessorType            AccessorType;
+    typedef typename Superclass::AccessorType            AccessorType;
 
     typedef DefaultPixelAccessorFunctor< Self > AccessorFunctorType;
 
-    //typedef NeighborhoodAccessorFunctor< Self > NeighborhoodAccessorFunctorType;
-    typedef Superclass::NeighborhoodAccessorFunctorType NeighborhoodAccessorFunctorType;
+    typedef typename Superclass::NeighborhoodAccessorFunctorType NeighborhoodAccessorFunctorType;
 
     //
     // Allocate CPU and GPU memory space
@@ -133,7 +130,7 @@ namespace itk
 
     void SetCurrentCommandQueue( int queueid ) { m_GPUManager->SetCurrentCommandQueue( queueid ); } ;
 
-    int  GetCurrentCommandQueueID() { m_GPUManager->GetCurrentCommandQueueID(); };
+    int  GetCurrentCommandQueueID() { return m_GPUManager->GetCurrentCommandQueueID(); };
 
     GPUDataManager::Pointer GetGPUDataManager();
 
