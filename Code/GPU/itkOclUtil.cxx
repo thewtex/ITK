@@ -23,7 +23,7 @@ cl_device_id* OclGetAvailableDevices(cl_platform_id platform, cl_device_type dev
   (*numAvailableDevices) = 0;
 
   // check available devices
-  for(int i=0; i<totalNumDevices; i++)
+  for(cl_uint i=0; i<totalNumDevices; i++)
     {
       cl_bool isAvailable;
       clGetDeviceInfo(totalDevices[i], CL_DEVICE_AVAILABLE, sizeof(cl_bool), &isAvailable, NULL);
@@ -37,7 +37,7 @@ cl_device_id* OclGetAvailableDevices(cl_platform_id platform, cl_device_type dev
   availableDevices = (cl_device_id *)malloc((*numAvailableDevices) * sizeof(cl_device_id) );
 
   int idx = 0;
-  for(int i=0; i<totalNumDevices; i++)
+  for(cl_uint i=0; i<totalNumDevices; i++)
     {
       cl_bool isAvailable;
       clGetDeviceInfo(totalDevices[i], CL_DEVICE_AVAILABLE, sizeof(cl_bool), &isAvailable, NULL);
