@@ -40,19 +40,6 @@ namespace itk
     // Get the devices
     m_Devices = OclGetAvailableDevices(m_Platform, devType, &m_NumDevices);
 
-    /*
-    errid = clGetDeviceIDs(m_Platform,devType, 0, NULL, &m_NumDevices);
-    OclCheckError( errid );
-
-    std::cout << "# of device : " << m_NumDevices << std::endl;
-
-    m_Devices = (cl_device_id *)malloc(m_NumDevices * sizeof(cl_device_id) );
-    errid = clGetDeviceIDs(m_Platform, devType, m_NumDevices, m_Devices, NULL);
-    OclCheckError( errid );
-
-    std::cout << "We got devices" << std::endl;
-    */
-
     // create context
     m_Context = clCreateContext(0, m_NumDevices, m_Devices, NULL, NULL, &errid);
     OclCheckError( errid );
