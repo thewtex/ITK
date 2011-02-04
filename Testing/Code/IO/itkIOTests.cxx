@@ -145,5 +145,9 @@ void RegisterTests()
   REGISTER_TEST(itkNiftiImageIOTest9);
   REGISTER_TEST(itkNiftiImageIOTest10);
   REGISTER_TEST(itkNiftiImageIOTest11);
+  REGISTER_TEST(itkGDCMImageIOTest);
+  REGISTER_TEST(itkGDCMImageIOTest2);
+  REGISTER_TEST(itkGDCMSeriesReadImageWrite);
+  REGISTER_TEST(itkGDCMSeriesStreamReadImageWrite);
   REGISTER_TEST(itkImageFileWriterUpdateLargestPossibleRegionTest);
 }
