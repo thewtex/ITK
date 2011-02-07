@@ -23,6 +23,8 @@
 #include "itkDefaultPixelAccessor.h"
 #include "itkDefaultPixelAccessorFunctor.h"
 #include "itkContinuousIndex.h"
+#include "itkIdentityTransform.h"
+#include "itkNumericTraits.h"
 
 namespace itk
 {
@@ -45,11 +47,11 @@ namespace itk
  * images on special-coordinates images.
  *
  * The only correct generic method for operating on a SpecialCoordinatesImage in
- * physical space is to use the virtual functions TransformPhysicalPointToIndex,
+ * physical space is to use the functions TransformPhysicalPointToIndex,
  * TransformPhysicalPointToContinuousIndex, TransformIndexToPhysicalPoint, and
  * TransformContinuousIndexToPhysicalPoint.  All of these methods transform
- * points in Cartesian physical space to and from indices in the special
- * (typically non-Cartesian) index space.  It is also possible to check the
+ * indices in the image index space to and from points in physical
+ * space via an invertible Transform.  It is also possible to check the
  * type of coordinate representation being used by a SpecialCoordinatesImage,
  * and then use representation-specific code to speed up the filter for certain
  * coordinate representations, falling back to the generic method for
@@ -89,7 +91,9 @@ namespace itk
  * \sa Image
  *
  * \ingroup ImageObjects */
-template< class TPixel, unsigned int VImageDimension = 2 >
+template< class TPixel, unsigned int VImageDimension = 2,
+          class TTransform = IdentityTransform< typename NumericTraits< TPixel >::RealType,
+                                                VImageDimension > >
 class ITK_EXPORT SpecialCoordinatesImage:public ImageBase< VImageDimension >
 {
 public:
@@ -137,13 +141,15 @@ public:
   itkStaticConstMacro(ImageDimension, unsigned int, VImageDimension);
 
   /** Index typedef support. An index is used to access pixel values. */
-  typedef typename Superclass::IndexType IndexType;
+  typedef typename Superclass::IndexType      IndexType;
+  typedef typename Superclass::IndexValueType IndexValueType;
 
   /** Offset typedef support. An offset is used to access pixel values. */
   typedef typename Superclass::OffsetType OffsetType;
 
   /** Size typedef support. A size is used to define region bounds. */
   typedef typename Superclass::SizeType      SizeType;
+  typedef typename Superclass::SizeValueType SizeValueType;
 
   /** Container used to store pixels in the image. */
   typedef ImportImageContainer< SizeValueType, PixelType > PixelContainer;
@@ -165,6 +171,13 @@ public:
   /** A pointer to the pixel container. */
   typedef typename PixelContainer::Pointer      PixelContainerPointer;
   typedef typename PixelContainer::ConstPointer PixelContainerConstPointer;
+
+  /** The transform that maps indices to physical points. */
+  typedef TTransform                      TransformType;
+  typedef typename TransformType::Pointer TransformPointer;
+
+  typedef typename TransformType::InverseTransformBaseType    InverseTransformType;
+  typedef typename TransformType::InverseTransformBasePointer InverseTransformPointer;
 
   /** Allocate the image memory. The size of the image must
    * already be set, e.g. by calling SetRegions(). */
@@ -280,29 +293,110 @@ public:
   virtual void SetOrigin(const double[VImageDimension]) {}
   virtual void SetOrigin(const float[VImageDimension]) {}
 
-  /* It is ILLEGAL in C++ to make a templated member function virtual! */
-  /* Therefore, we must just let templates take care of everything.    */
-  /*
-  template<class TCoordRep>
-  virtual bool TransformPhysicalPointToContinuousIndex(
-              const Point<TCoordRep, VImageDimension>& point,
-              ContinuousIndex<TCoordRep, VImageDimension>& index   ) const = 0;
+  /** Set/get the index-to-physical point transform. This transform maps
+   * logical image indices to physical positions. The transform must be
+   * an invertible Transform.
+   */
+  void SetIndexToPhysicalPointTransform(TransformType* transform)
+  {
+    if ( this->m_IndexToPhysicalPointTransform != transform )
+      {
+      this->m_IndexToPhysicalPointTransform = transform;
+      this->m_PhysicalPointToIndexTransform = transform->GetInverseTransform();
+
+      this->Modified();
+      }
+  }
+  itkGetConstObjectMacro( IndexToPhysicalPointTransform,
+                          TransformType );
+
+  /** Get the physical point-to-index transform. This transform maps
+   * phyical point positions to continuous indices, and is the inverse
+   * of the Transform. It is set by SetIndexToPhysicalPointTransform.
+   */
+  itkGetConstObjectMacro( PhysicalPointToIndexTransform, InverseTransformType );
+
+  /** Copy the index-to-physical point transform information.
+   */
+  virtual void CopyInformation(const DataObject *data);
 
   template<class TCoordRep>
-  virtual bool TransformPhysicalPointToIndex(
-            const Point<TCoordRep, VImageDimension>&,
-            IndexType & index                                ) const = 0;
+  void TransformIndexToPhysicalPoint(
+    const IndexType & index,
+    Point<TCoordRep, VImageDimension>& point ) const
+  {
+    typename TransformType::InputPointType cIndex;
+    for ( unsigned int i = 0; i < VImageDimension; i++ )
+      {
+      cIndex[i] = static_cast< typename TransformType::InputPointType::ValueType >( index[i] );
+      }
+    typename TransformType::OutputPointType physicalPoint =
+      this->m_IndexToPhysicalPointTransform->TransformPoint(cIndex);
+
+    for ( unsigned int i = 0; i < VImageDimension; i++ )
+      {
+      point[i] = physicalPoint[i];
+      }
+  }
+
 
   template<class TCoordRep>
-  virtual void TransformContinuousIndexToPhysicalPoint(
-            const ContinuousIndex<TCoordRep, VImageDimension>& index,
-            Point<TCoordRep, VImageDimension>& point        ) const = 0;
+  void TransformContinuousIndexToPhysicalPoint(
+    const ContinuousIndex<TCoordRep, VImageDimension>& index,
+    Point<TCoordRep, VImageDimension>& point ) const
+  {
+    typename TransformType::InputPointType cIndex;
+    for ( unsigned int i = 0; i < VImageDimension; i++ )
+      {
+      cIndex[i] = static_cast< typename TransformType::InputPointType::ValueType >( index[i] );
+      }
+    typename TransformType::OutputPointType physicalPoint =
+      this->m_IndexToPhysicalPointTransform->TransformPoint(cIndex);
+
+    for ( unsigned int i = 0; i < VImageDimension; i++ )
+      {
+      point[i] = physicalPoint[i];
+      }
+  }
+
 
   template<class TCoordRep>
-  virtual void TransformIndexToPhysicalPoint(
-                      const IndexType & index,
-                      Point<TCoordRep, VImageDimension>& point ) const = 0;
-  */
+  bool TransformPhysicalPointToIndex(
+    const Point<TCoordRep, VImageDimension>& point,
+    IndexType & index ) const
+  {
+    typename InverseTransformType::OutputPointType cIndex =
+      this->m_PhysicalPointToIndexTransform->TransformPoint(point);
+
+    for ( unsigned int i = 0; i < VImageDimension; i++ )
+      {
+      index[i] = Math::RoundHalfIntegerUp< IndexValueType >( cIndex[i] );
+      }
+
+    const bool isInside = this->GetLargestPossibleRegion().IsInside(index);
+    return isInside;
+  }
+
+
+  template<class TCoordRep>
+  bool TransformPhysicalPointToContinuousIndex(
+    const Point<TCoordRep, VImageDimension>& point,
+    ContinuousIndex<TCoordRep, VImageDimension>& index) const
+  {
+    typename InverseTransformType::OutputPointType cIndex =
+      this->m_PhysicalPointToIndexTransform->TransformPoint(point);
+
+    for ( unsigned int i = 0; i < VImageDimension; i++ )
+      {
+      index[i] = static_cast< TCoordRep >( cIndex[i] );
+      }
+
+    // Now, check to see if the index is within allowed bounds
+    const bool isInside = this->GetLargestPossibleRegion().IsInside(index);
+    return isInside;
+  }
+
+
 protected:
   SpecialCoordinatesImage();
   void PrintSelf(std::ostream & os, Indent indent) const;
@@ -314,6 +408,10 @@ private:
 
   /** Memory for the current buffer. */
   PixelContainerPointer m_Buffer;
+
+  /** The index-to-physical point transform. */
+  TransformPointer        m_IndexToPhysicalPointTransform;
+  InverseTransformPointer m_PhysicalPointToIndexTransform;
 };
 } // end namespace itk
 

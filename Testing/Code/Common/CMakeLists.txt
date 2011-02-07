@@ -231,6 +231,8 @@ set(KitTests
   itkSmartPointerTest
   itkSparseImageTest
   itkSpatialFunctionTest
+  itkSpecialCoordinatesImageSourceTest
+  itkSpecialCoordinatesImageTest
   itkSphereSignedDistanceFunctionTest
   itkSplineKernelTransformTest
   itkStdStreamLogOutputTest
@@ -609,6 +611,8 @@ add_test(itkSliceIteratorTest ${TestDriver} itkSliceIteratorTest)
 add_test(itkSmartPointerTest ${TestDriver} itkSmartPointerTest)
 add_test(itkSparseImageTest ${TestDriver} itkSparseImageTest)
 add_test(itkSpatialFunctionTest ${TestDriver} itkSpatialFunctionTest)
+add_test(itkSpecialCoordinatesImageSourceTest ${TestDriver} itkSpecialCoordinatesImageSourceTest)
+add_test(itkSpecialCoordinatesImageTest ${TestDriver} itkSpecialCoordinatesImageTest)
 add_test(itkSphereSignedDistanceFunctionTest ${TestDriver} itkSphereSignedDistanceFunctionTest)
 add_test(itkSplineKernelTransformTest ${TestDriver} itkSplineKernelTransformTest)
 add_test(itkSTLContainerAdaptorTest ${TestDriver} itkSTLContainerAdaptorTest)

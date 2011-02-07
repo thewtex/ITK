@@ -35,17 +35,19 @@ namespace itk
 /**
  *
  */
-template< class TPixel, unsigned int VImageDimension >
-SpecialCoordinatesImage< TPixel, VImageDimension >
+template< class TPixel, unsigned int VImageDimension, class TTransform >
+SpecialCoordinatesImage< TPixel, VImageDimension, TTransform >
 ::SpecialCoordinatesImage()
 {
   m_Buffer = PixelContainer::New();
+
+  this->SetIndexToPhysicalPointTransform( TransformType::New() );
 }
 
 //----------------------------------------------------------------------------
-template< class TPixel, unsigned int VImageDimension >
+template< class TPixel, unsigned int VImageDimension, class TTransform >
 void
-SpecialCoordinatesImage< TPixel, VImageDimension >
+SpecialCoordinatesImage< TPixel, VImageDimension, TTransform >
 ::Allocate()
 {
   SizeValueType num;
@@ -56,9 +58,9 @@ SpecialCoordinatesImage< TPixel, VImageDimension >
   m_Buffer->Reserve(num);
 }
 
-template< class TPixel, unsigned int VImageDimension >
+template< class TPixel, unsigned int VImageDimension, class TTransform >
 void
-SpecialCoordinatesImage< TPixel, VImageDimension >
+SpecialCoordinatesImage< TPixel, VImageDimension, TTransform >
 ::Initialize()
 {
   //
@@ -75,9 +77,9 @@ SpecialCoordinatesImage< TPixel, VImageDimension >
   m_Buffer = PixelContainer::New();
 }
 
-template< class TPixel, unsigned int VImageDimension >
+template< class TPixel, unsigned int VImageDimension, class TTransform >
 void
-SpecialCoordinatesImage< TPixel, VImageDimension >
+SpecialCoordinatesImage< TPixel, VImageDimension, TTransform >
 ::FillBuffer(const TPixel & value)
 {
   const SizeValueType numberOfPixels =
@@ -89,9 +91,9 @@ SpecialCoordinatesImage< TPixel, VImageDimension >
     }
 }
 
-template< class TPixel, unsigned int VImageDimension >
+template< class TPixel, unsigned int VImageDimension, class TTransform >
 void
-SpecialCoordinatesImage< TPixel, VImageDimension >
+SpecialCoordinatesImage< TPixel, VImageDimension, TTransform >
 ::SetPixelContainer(PixelContainer *container)
 {
   if ( m_Buffer != container )
@@ -101,18 +103,70 @@ SpecialCoordinatesImage< TPixel, VImageDimension >
     }
 }
 
+
+template< class TPixel, unsigned int VImageDimension, class TTransform >
+void
+SpecialCoordinatesImage< TPixel, VImageDimension, TTransform >
+::CopyInformation(const DataObject *data)
+{
+  // call the superclass' method first
+  Superclass::CopyInformation(data);
+
+  if ( data )
+    {
+    // Attempt to cast data to a SpecialCoordinatesImage
+    const SpecialCoordinatesImage< TPixel, VImageDimension, TTransform > *imgData;
+
+    try
+      {
+      imgData = dynamic_cast< const SpecialCoordinatesImage< TPixel, VImageDimension, TTransform > * >( data );
+      }
+    catch ( ... )
+      {
+      return;
+      }
+
+    // Copy the transform to the DataObject if the DataObject is a
+    // SpecialCoordinatesImage
+    if ( imgData )
+      {
+      // Copy the meta data for this data type
+      const TransformType *sourceTransform = imgData->GetIndexToPhysicalPointTransform();
+      LightObject::Pointer anotherTransform = sourceTransform->CreateAnother();
+      // This static_cast should always work since the pointer was created by
+      // CreateAnother() called from the transform itself.
+      TransformType *transformCopy = static_cast< TransformType * >( anotherTransform.GetPointer() );
+      /** Set the fixed parameters first. Some transforms have parameters which depend on
+        the values of the fixed parameters. For instance, the BSplineDeformableTransform
+        checks the grid size (part of the fixed parameters) before setting the parameters. */
+      transformCopy->SetFixedParameters( sourceTransform->GetFixedParameters() );
+      transformCopy->SetParameters( sourceTransform->GetParameters() );
+
+      this->SetIndexToPhysicalPointTransform( transformCopy );
+      }
+    }
+}
+
+
 /**
  *
  */
-template< class TPixel, unsigned int VImageDimension >
+template< class TPixel, unsigned int VImageDimension, class TTransform >
 void
-SpecialCoordinatesImage< TPixel, VImageDimension >
+SpecialCoordinatesImage< TPixel, VImageDimension, TTransform >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
 
   os << indent << "PixelContainer: " << std::endl;
-  m_Buffer->Print( os, indent.GetNextIndent() );
+  Indent nextIndent = indent.GetNextIndent();
+  m_Buffer->Print( os, nextIndent );
+
+  os << indent << "IndexToPhysicalPointTransform:" << std::endl;
+  m_IndexToPhysicalPointTransform->Print( os, nextIndent );
+
+  os << indent << "PhysicalPointToIndexTransform:" << std::endl;
+  m_PhysicalPointToIndexTransform->Print( os, nextIndent );
 
   // m_Origin and m_Spacing are printed in the Superclass
 }
