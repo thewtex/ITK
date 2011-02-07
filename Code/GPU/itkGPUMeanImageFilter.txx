@@ -1,0 +1,89 @@
+#ifndef __itkGPUMeanImageFilter_txx
+#define __itkGPUMeanImageFilter_txx
+
+#include "itkGPUMeanImageFilter.h"
+
+namespace itk
+{
+
+template< class TInputImage, class TOutputImage >
+GPUMeanImageFilter< TInputImage, TOutputImage >::GPUMeanImageFilter()
+{
+  char buf[100];
+
+  // preamble strings
+  if(TInputImage::ImageDimension == 1)
+    sprintf(buf, "#define PIXELTYPE %s\n#define DIM_ONE\n", typeid( typename TInputImage::PixelType ).name());
+  else if(TInputImage::ImageDimension == 2)
+    sprintf(buf, "#define PIXELTYPE %s\n#define DIM_TWO\n", typeid( typename TInputImage::PixelType ).name());
+  else if(TInputImage::ImageDimension == 3)
+    sprintf(buf, "#define PIXELTYPE %s\n#define DIM_THREE\n", typeid( typename TInputImage::PixelType ).name());
+  else
+    itkExceptionMacro("GPUMeanImageFilter supports 1/2/3D image.");
+
+  // OpenCL source path
+  char oclSrcPath[100];
+  sprintf(oclSrcPath, "%s/Code/GPU/GPUMeanImageFilter.cl", itk_root_path);
+
+  // load and build program
+  this->m_KernelManager->LoadProgramFromFile( oclSrcPath, buf );
+
+  // create kernel
+  this->m_KernelHandle = this->m_KernelManager->CreateKernel("MeanFilter");
+}
+
+template< class TInputImage, class TOutputImage >
+GPUMeanImageFilter< TInputImage, TOutputImage >::~GPUMeanImageFilter()
+{}
+
+template< class TInputImage, class TOutputImage >
+void
+GPUMeanImageFilter< TInputImage, TOutputImage >::PrintSelf(std::ostream & os, Indent indent) const
+{
+  Superclass::PrintSelf(os, indent);
+  //os << indent << "GPU: " << ( m_GPUEnabled ? "Enabled" : "Disabled" ) << std::endl;
+}
+
+
+template< class TInputImage, class TOutputImage >
+void
+GPUMeanImageFilter< TInputImage, TOutputImage >::GPUGenerateData()
+{
+  typedef typename itk::GPUTraits< TInputImage >::Type  GPUInputImage;
+  typedef typename itk::GPUTraits< TOutputImage >::Type  GPUOutputImage;
+  typename GPUInputImage::Pointer  inPtr =  dynamic_cast< GPUInputImage * >( this->ProcessObject::GetInput(0) );
+  typename GPUOutputImage::Pointer otPtr =  dynamic_cast< GPUOutputImage * >( this->ProcessObject::GetOutput(0) );
+  typename GPUOutputImage::SizeType outSize = otPtr->GetLargestPossibleRegion().GetSize();
+
+  int radius[3], imgSize[3];
+  radius[0] = radius[1] = radius[2] = 0;
+  imgSize[0] = imgSize[1] = imgSize[2] = 1;
+  for(int i=0; i<(int)TInputImage::ImageDimension; i++)
+  {
+    radius[i]  = (this->GetRadius())[i];
+    imgSize[i] = outSize[i];
+  }
+
+  size_t localSize[2], globalSize[2];
+  localSize[0] = localSize[1] = 16;
+  globalSize[0] = localSize[0]*(unsigned int)ceil((float)outSize[0]/(float)localSize[0]); // total # of threads
+  globalSize[1] = localSize[1]*(unsigned int)ceil((float)outSize[1]/(float)localSize[1]);
+
+  // arguments set up
+  int argidx = 0;
+  this->m_KernelManager->SetKernelArgWithImage(this->m_KernelHandle, argidx++, inPtr->GetGPUDataManager());
+  this->m_KernelManager->SetKernelArgWithImage(this->m_KernelHandle, argidx++, otPtr->GetGPUDataManager());
+  for(int i=0; i<(int)TInputImage::ImageDimension; i++)
+    this->m_KernelManager->SetKernelArg(this->m_KernelHandle, argidx++, sizeof(int), &(radius[i]));
+  for(int i=0; i<(int)TInputImage::ImageDimension; i++)
+    this->m_KernelManager->SetKernelArg(this->m_KernelHandle, argidx++, sizeof(int), &(imgSize[i]));
+
+  // launch kernel
+  this->m_KernelManager->LaunchKernel(this->m_KernelHandle, (int)TInputImage::ImageDimension, globalSize, localSize);
+}
+
+
+
+} // end namespace itk
+
+#endif
