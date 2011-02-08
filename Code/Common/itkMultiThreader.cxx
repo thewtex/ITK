@@ -30,21 +30,13 @@
 #include "itksys/SystemTools.hxx"
 #include <stdlib.h>
 
-#ifndef _WIN32
-#include <unistd.h>
-#endif
-#ifdef _MSC_VER
-#pragma warning ( disable : 4786 )
-#endif
-#ifdef _WIN32
-#include "itkWindows.h"
-#include <process.h>
-#endif
-
 #ifdef __APPLE__
 #include <sys/types.h>
 #include <sys/sysctl.h>
 #endif
+
+
+#include <dispatch/dispatch.h>
 
 namespace itk
 {
@@ -159,21 +151,6 @@ int MultiThreader::GetGlobalDefaultNumberOfThreads()
 #endif
 #endif
 
-#if defined( _WIN32 )
-      {
-      SYSTEM_INFO sysInfo;
-      GetSystemInfo(&sysInfo);
-      num = sysInfo.dwNumberOfProcessors;
-      }
-#endif
-
-#ifndef ITK_USE_WIN32_THREADS
-#ifndef ITK_USE_PTHREADS
-    // If we are not multithreading, the number of threads should
-    // always be 1
-    num = 1;
-#endif
-#endif
 
 #ifdef __APPLE__
     // Determine the number of CPU cores. Prefer sysctlbyname()
@@ -229,10 +206,16 @@ MultiThreader::MultiThreader()
   m_SingleMethod = 0;
   m_SingleData = 0;
   m_NumberOfThreads = this->GetGlobalDefaultNumberOfThreads();
+
+
+  m_GCDQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+  m_GCDGroup = dispatch_group_create();
 }
 
 MultiThreader::~MultiThreader()
-{}
+{
+dispatch_release(m_GCDQueue);
+}
 
 // Set the user defined method that will be run on NumberOfThreads threads
 // when SingleMethodExecute is called.
@@ -263,9 +246,6 @@ void MultiThreader::SetMultipleMethod(int index, ThreadFunctionType f, void *dat
 // Execute the method set as the SingleMethod on NumberOfThreads threads.
 void MultiThreader::SingleMethodExecute()
 {
-  int                 thread_loop = 0;
-  ThreadProcessIDType process_id[ITK_MAX_THREADS];
-
   if ( !m_SingleMethod )
     {
     itkExceptionMacro(<< "No single method set!");
@@ -289,14 +269,13 @@ void MultiThreader::SingleMethodExecute()
   std::string exceptionDetails;
   try
     {
-    for ( thread_loop = 1; thread_loop < m_NumberOfThreads; thread_loop++ )
+    for ( int i = 0; i < m_NumberOfThreads; ++i )
       {
-      m_ThreadInfoArray[thread_loop].UserData    = m_SingleData;
-      m_ThreadInfoArray[thread_loop].NumberOfThreads = m_NumberOfThreads;
-      m_ThreadInfoArray[thread_loop].ThreadFunction = m_SingleMethod;
+      m_ThreadInfoArray[i].UserData    = m_SingleData;
+      m_ThreadInfoArray[i].NumberOfThreads = m_NumberOfThreads;
+      m_ThreadInfoArray[i].ThreadFunction = m_SingleMethod;
 
-      process_id[thread_loop] =
-        this->DispatchSingleMethodThread(&m_ThreadInfoArray[thread_loop]);
+        this->DispatchSingleMethodThread(&m_ThreadInfoArray[i]);
       }
     }
   catch ( std::exception & e )
@@ -314,70 +293,7 @@ void MultiThreader::SingleMethodExecute()
     exceptionOccurred = true;
     }
 
-  // Now, the parent thread calls this->SingleMethod() itself
-  //
-  //
-  try
-    {
-    m_ThreadInfoArray[0].UserData = m_SingleData;
-    m_ThreadInfoArray[0].NumberOfThreads = m_NumberOfThreads;
-    m_SingleMethod( (void *)( &m_ThreadInfoArray[0] ) );
-    }
-  catch ( ProcessAborted & excp )
-    {
-    // Need cleanup and rethrow ProcessAborted
-    // close down other threads
-    for ( thread_loop = 1; thread_loop < m_NumberOfThreads; thread_loop++ )
-      {
-      try
-        {
-        this->WaitForSingleMethodThread(process_id[thread_loop]);
-        }
-      catch ( ... )
-              {}
-      }
-    // rethrow
-    throw excp;
-    }
-  catch ( std::exception & e )
-    {
-    // get the details of the exception to rethrow them
-    exceptionDetails = e.what();
-    // if this method fails, we must make sure all threads are
-    // correctly cleaned
-    exceptionOccurred = true;
-    }
-  catch ( ... )
-    {
-    // if this method fails, we must make sure all threads are
-    // correctly cleaned
-    exceptionOccurred = true;
-    }
-
-  // The parent thread has finished this->SingleMethod() - so now it
-  // waits for each of the other processes to exit
-  for ( thread_loop = 1; thread_loop < m_NumberOfThreads; thread_loop++ )
-    {
-    try
-      {
-      this->WaitForSingleMethodThread(process_id[thread_loop]);
-      if ( m_ThreadInfoArray[thread_loop].ThreadExitCode
-           != ThreadInfoStruct::SUCCESS )
-        {
-        exceptionOccurred = true;
-        }
-      }
-    catch ( std::exception & e )
-      {
-      // get the details of the exception to rethrow them
-      exceptionDetails = e.what();
-      exceptionOccurred = true;
-      }
-    catch ( ... )
-      {
-      exceptionOccurred = true;
-      }
-    }
+  dispatch_group_wait( m_GCDGroup, DISPATCH_TIME_FOREVER );
 
   if ( exceptionOccurred )
     {
@@ -714,82 +630,15 @@ void
 MultiThreader
 ::WaitForSingleMethodThread(ThreadProcessIDType threadHandle)
 {
-#ifdef ITK_USE_WIN32_THREADS
-  // Using _beginthreadex on a PC
-  WaitForSingleObject(threadHandle, INFINITE);
-  CloseHandle(threadHandle);
-#endif
-
-#ifdef ITK_USE_PTHREADS
-  // Using POSIX threads
-  if ( pthread_join(threadHandle, 0) )
-    {
-    itkExceptionMacro(<< "Unable to join thread.");
-    }
-#endif
-
-#ifndef ITK_USE_WIN32_THREADS
-#ifndef ITK_USE_PTHREADS
-  // No threading library specified.  Do nothing.  No joining or waiting
-  // necessary.
-#endif
-#endif
 }
 
 ThreadProcessIDType
 MultiThreader
 ::DispatchSingleMethodThread(MultiThreader::ThreadInfoStruct *threadInfo)
 {
-#ifdef ITK_USE_WIN32_THREADS
-  // Using _beginthreadex on a PC
-  DWORD  threadId;
-  HANDLE threadHandle =  (HANDLE)_beginthreadex(0, 0,
-                                                ( unsigned int (__stdcall *)(void *) ) this->SingleMethodProxy,
-                                                ( (void *)threadInfo ), 0, (unsigned int *)&threadId);
-  if ( threadHandle == NULL )
-    {
-    itkExceptionMacro("Error in thread creation !!!");
-    }
-  return threadHandle;
-#endif
 
-#ifdef ITK_USE_PTHREADS
-  // Using POSIX threads
-  pthread_attr_t attr;
-  pthread_t      threadHandle;
+dispatch_group_async_f(m_GCDGroup, m_GCDQueue, static_cast< void * >( threadInfo ),  this->SingleMethodProxy);
 
-#ifdef ITK_HP_PTHREADS
-  pthread_attr_create(&attr);
-#else
-  pthread_attr_init(&attr);
-#if !defined( __CYGWIN__ )
-  pthread_attr_setscope(&attr, PTHREAD_SCOPE_SYSTEM);
-#endif
-#endif
-
-#ifdef ITK_HP_PTHREADS
-  pthread_create( &threadHandle,
-                  attr, reinterpret_cast< c_void_cast >( this->SingleMethodProxy ),
-                  reinterpret_cast< void * >( threadInfo ) );
-#else
-  int threadError;
-  threadError =
-    pthread_create( &threadHandle, &attr, reinterpret_cast< c_void_cast >( this->SingleMethodProxy ),
-                    reinterpret_cast< void * >( threadInfo ) );
-  if ( threadError != 0 )
-    {
-    itkExceptionMacro(<< "Unable to create a thread.  pthread_create() returned "
-                      << threadError);
-    }
-#endif
-  return threadHandle;
-#endif
-
-#ifndef ITK_USE_WIN32_THREADS
-#ifndef ITK_USE_PTHREADS
-  // No threading library specified.  Do nothing.  The computation
-  // will be run by the main execution thread.
-#endif
-#endif
+return 0;
 }
 } // end namespace itk
