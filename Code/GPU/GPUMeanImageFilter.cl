@@ -19,7 +19,7 @@
 //
 // Brute-force mean filter
 //
-#ifdef DIM_ONE
+#ifdef DIM_1
 __kernel void MeanFilter(__global const PIXELTYPE* in,__global PIXELTYPE* out, int radiusx, int width)
 {
   int gix = get_global_id(0);
@@ -37,7 +37,7 @@ __kernel void MeanFilter(__global const PIXELTYPE* in,__global PIXELTYPE* out, i
 }
 #endif
 
-#ifdef DIM_TWO
+#ifdef DIM_2
 __kernel void MeanFilter(__global const PIXELTYPE* in,
                          __global PIXELTYPE* out,
                          int radiusx, int radiusy, int width, int height)
@@ -64,7 +64,7 @@ __kernel void MeanFilter(__global const PIXELTYPE* in,
 }
 #endif
 
-#ifdef DIM_THREE
+#ifdef DIM_3
 __kernel void MeanFilter(__global const PIXELTYPE* in,
                          __global PIXELTYPE* out,
                          int radiusx, int radiusy, int radiusz,

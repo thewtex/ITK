@@ -1,6 +1,9 @@
 message("GPU acceleration using OpenCL is ON.")
 
-find_package ( OpenCL REQUIRED )
+FIND_PACKAGE ( OpenCL REQUIRED )
+IF ( NOT ${OPENCL_FOUND} )
+MESSAGE ( FATAL "Could not find OpenCL" )
+ENDIF ()
 
 set( itkCxxSRC itkGPUDataManager.cxx itkGPUContextManager.cxx itkGPUKernelManager.cxx itkOclUtil.cxx )
 
@@ -18,7 +21,7 @@ configure_file(
   ${ITK_BINARY_DIR}/Code/GPU/pathToOpenCLSourceCode.h)
 
 # Include path
-INCLUDE_DIRECTORIES( ${OPENCL_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR})
+INCLUDE_DIRECTORIES( ${OPENCL_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR} ${ITK_BINARY_DIR}/Code/GPU )
 
 # Create library
 ADD_LIBRARY( ITKGPU ${itkCxxSRC} ${itkTxxSRC} ${itkGPUHDR} )
