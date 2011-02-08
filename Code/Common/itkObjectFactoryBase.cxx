@@ -105,6 +105,19 @@ std::list< ObjectFactoryBase * > *
 ObjectFactoryBase:: m_RegisteredFactories = 0;
 
 /**
+ * Make possible for application developers to deman an exact match
+ * between the application's ITK version and the dynamic libraries'
+ * ITK version.
+ */
+bool ObjectFactoryBase::m_StrictVersionChecking = false;
+
+void
+ObjectFactoryBase::SetStrictVersionChecking( bool value )
+{
+  ObjectFactoryBase::m_StrictVersionChecking = value;
+}
+
+/**
  * Create an instance of a named itk object using the loaded
  * factories
  */
@@ -355,6 +368,7 @@ ObjectFactoryBase
           newfactory->m_LibraryHandle = (void *)lib;
           newfactory->m_LibraryPath = fullpath;
           newfactory->m_LibraryDate = 0; // unused for now...
+
           ObjectFactoryBase::RegisterFactory(newfactory);
           }
         else
@@ -412,13 +426,24 @@ ObjectFactoryBase
     const char nonDynamicName[] = "Non-Dynamicaly loaded factory";
     factory->m_LibraryPath = nonDynamicName;
     }
+
   if ( strcmp( factory->GetITKSourceVersion(),
                Version::GetITKSourceVersion() ) != 0 )
     {
-    itkGenericOutputMacro(<< "Possible incompatible factory load:"
-                          << "\nRunning itk version :\n" << Version::GetITKSourceVersion()
-                          << "\nLoaded factory version:\n" << factory->GetITKSourceVersion()
-                          << "\nLoading factory:\n" << factory->m_LibraryPath << "\n");
+    if ( ObjectFactoryBase::m_StrictVersionChecking )
+      {
+      itkGenericExceptionMacro(<< "Incompatible factory version load attempt:"
+                            << "\nRunning itk version :\n" << Version::GetITKSourceVersion()
+                            << "\nAttempted loading factory version:\n" << factory->GetITKSourceVersion()
+                            << "\nAttempted factory:\n" << factory->m_LibraryPath << "\n");
+      }
+    else
+      {
+      itkGenericOutputMacro(<< "Possible incompatible factory load:"
+                            << "\nRunning itk version :\n" << Version::GetITKSourceVersion()
+                            << "\nLoaded factory version:\n" << factory->GetITKSourceVersion()
+                            << "\nLoading factory:\n" << factory->m_LibraryPath << "\n");
+      }
     }
 
   ObjectFactoryBase::Initialize();
