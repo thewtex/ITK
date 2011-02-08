@@ -73,12 +73,15 @@ MedianImageFilter< TInputImage, TOutputImage >
     bit.GoToBegin();
     const unsigned int neighborhoodSize = bit.Size();
     const unsigned int medianPosition = neighborhoodSize / 2;
+
+    unsigned int i;
+    pixels.resize(neighborhoodSize);
+
     while ( !bit.IsAtEnd() )
       {
       // collect all the pixels in the neighborhood, note that we use
       // GetPixel on the NeighborhoodIterator to honor the boundary conditions
-      pixels.resize(neighborhoodSize);
-      for ( unsigned int i = 0; i < neighborhoodSize; ++i )
+      for ( i = 0; i < neighborhoodSize; ++i )
         {
         pixels[i] = ( bit.GetPixel(i) );
         }
