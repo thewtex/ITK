@@ -59,12 +59,6 @@ namespace itk
 #define ITK_MAX_THREADS              128
 #endif
 
-// cygwin threads are unreliable
-#ifdef __CYGWIN__
-#undef ITK_MAX_THREADS
-#define ITK_MAX_THREADS 128
-#endif
-
 // at one point, mingw threads caused crashes so limit was set to 1
 // as of July 2009, all tests are passing with threads enabled
 #if defined( __MINGW32__ )
