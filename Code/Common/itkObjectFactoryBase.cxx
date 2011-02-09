@@ -502,7 +502,6 @@ ObjectFactoryBase
       ( *f )->UnRegister();
       }
     // And delete the library handles all at once
-#ifndef __CYGWIN__
     for ( std::list< void * >::iterator lib = libs.begin();
           lib != libs.end();
           ++lib )
@@ -512,7 +511,6 @@ ObjectFactoryBase
         DynamicLoader::CloseLibrary( static_cast< LibHandle >( *lib ) );
         }
       }
-#endif
     delete ObjectFactoryBase::m_RegisteredFactories;
     ObjectFactoryBase::m_RegisteredFactories = 0;
     }

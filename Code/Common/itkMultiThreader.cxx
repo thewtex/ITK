@@ -491,9 +491,7 @@ void MultiThreader::MultipleMethodExecute()
   pthread_attr_create(&attr);
 #else
   pthread_attr_init(&attr);
-#ifndef __CYGWIN__
   pthread_attr_setscope(&attr, PTHREAD_SCOPE_PROCESS);
-#endif
 #endif
 
   for ( thread_loop = 1; thread_loop < m_NumberOfThreads; thread_loop++ )
@@ -598,9 +596,7 @@ int MultiThreader::SpawnThread(ThreadFunctionType f, void *UserData)
   pthread_attr_create(&attr);
 #else
   pthread_attr_init(&attr);
-#ifndef __CYGWIN__
   pthread_attr_setscope(&attr, PTHREAD_SCOPE_PROCESS);
-#endif
 #endif
 
 #ifdef ITK_HP_PTHREADS
@@ -762,9 +758,7 @@ MultiThreader
   pthread_attr_create(&attr);
 #else
   pthread_attr_init(&attr);
-#if !defined( __CYGWIN__ )
   pthread_attr_setscope(&attr, PTHREAD_SCOPE_SYSTEM);
-#endif
 #endif
 
 #ifdef ITK_HP_PTHREADS
