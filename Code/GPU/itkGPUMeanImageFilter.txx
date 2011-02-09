@@ -6,33 +6,74 @@
 namespace itk
 {
 
-template< class TInputImage, class TOutputImage >
-GPUMeanImageFilter< TInputImage, TOutputImage >::GPUMeanImageFilter()
-{
-  char buf[100];
+  template< class TInputImage, class TOutputImage >
+  GPUMeanImageFilter< TInputImage, TOutputImage >::GPUMeanImageFilter()
+  {
+    std::ostringstream defines;
 
-  // preamble strings
-  if(TInputImage::ImageDimension == 1)
+    /*
+    // preamble strings
+    if(TInputImage::ImageDimension == 1)
     sprintf(buf, "#define PIXELTYPE %s\n#define DIM_ONE\n", typeid( typename TInputImage::PixelType ).name());
-  else if(TInputImage::ImageDimension == 2)
+    else if(TInputImage::ImageDimension == 2)
     sprintf(buf, "#define PIXELTYPE %s\n#define DIM_TWO\n", typeid( typename TInputImage::PixelType ).name());
-  else if(TInputImage::ImageDimension == 3)
+    else if(TInputImage::ImageDimension == 3)
     sprintf(buf, "#define PIXELTYPE %s\n#define DIM_THREE\n", typeid( typename TInputImage::PixelType ).name());
-  else
+    else
     itkExceptionMacro("GPUMeanImageFilter supports 1/2/3D image.");
 
-  // OpenCL source path
-  char oclSrcPath[100];
-  sprintf(oclSrcPath, "%s/Code/GPU/GPUMeanImageFilter.cl", itk_root_path);
 
-  // load and build program
-  this->m_KernelManager->LoadProgramFromFile( oclSrcPath, buf );
+    // OpenCL source path
+    char oclSrcPath[100];
+    sprintf(oclSrcPath, "%s/Code/GPU/GPUMeanImageFilter.cl", itk_root_path);
 
-  // create kernel
-  this->m_KernelHandle = this->m_KernelManager->CreateKernel("MeanFilter");
-}
+    // load and build program
+    this->m_KernelManager->LoadProgramFromFile( oclSrcPath, buf );
 
-template< class TInputImage, class TOutputImage >
+    // create kernel
+    this->m_KernelHandle = this->m_KernelManager->CreateKernel("MeanFilter");
+    */
+
+    if(TInputImage::ImageDimension > 3)
+    {
+      itkExceptionMacro("GPUMeanImageFilter supports 1/2/3D image.");
+    }
+
+    defines << "#define DIM_" << TInputImage::ImageDimension << "\n";
+
+    if ( typeid ( typename TInputImage::PixelType ) == typeid ( unsigned char ) )
+    {
+      defines << "#define PIXELTYPE unsigned char\n";
+    }
+    else if ( typeid ( typename TInputImage::PixelType ) == typeid ( short ) )
+    {
+      defines << "#define PIXELTYPE short\n";
+    }
+    else if ( typeid ( typename TInputImage::PixelType ) == typeid ( int ) )
+    {
+      defines << "#define PIXELTYPE int\n";
+    }
+    else if ( typeid ( typename TInputImage::PixelType ) == typeid ( float ) )
+    {
+      defines << "#define PIXELTYPE float\n";
+    }
+    else
+    {
+      itkExceptionMacro("GPUMeanImageFilter supports unsigned char, short, int and float images.");
+    }
+
+    std::string oclSrcPath = std::string ( itk_root_path ) + "/Code/GPU/GPUMeanImageFilter.cl";
+
+    std::cout << "Defines: " << defines.str() << "\nSource code path: " << oclSrcPath << std::endl;
+
+    // load and build program
+    this->m_KernelManager->LoadProgramFromFile( oclSrcPath.c_str(), defines.str().c_str() );
+
+    // create kernel
+    this->m_KernelHandle = this->m_KernelManager->CreateKernel("MeanFilter");
+  }
+
+  template< class TInputImage, class TOutputImage >
 GPUMeanImageFilter< TInputImage, TOutputImage >::~GPUMeanImageFilter()
 {}
 
