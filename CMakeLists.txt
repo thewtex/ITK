@@ -159,6 +159,17 @@ if( ITK_USE_MINC2 )
 endif( ITK_USE_MINC2 )
 
 
+# BioFormats options
+mark_as_advanced(ITK_USE_BIOFORMATS)
+option(ITK_USE_BIOFORMATS "Use BioFormats library" OFF)
+if( ITK_USE_BIOFORMATS )
+  find_package( BioFormats )
+  if( NOT BIOFORMATS_FOUND )
+    message("You requested to use BioFormats but some components are missing")
+  endif( NOT BIOFORMATS_FOUND )
+endif( ITK_USE_BIOFORMATS )
+
+
 #-----------------------------------------------------------------------------
 option(ITK_USE_MODULAR_BUILD "Whether ITK is built from the modularized tree. This should be ON when building the modularized ITK." OFF)
 mark_as_advanced(ITK_USE_MODULAR_BUILD)
