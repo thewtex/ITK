@@ -162,7 +162,6 @@ set(KitTests
   itkLabelObjectLineTest
   itkLabelObjectTest
   itkMultiScaleHessianBasedMeasureImageFilterTest
-  itkMultiScaleHessianBasedMeasureImageFilterTest
   itkMultiphaseDenseFiniteDifferenceImageFilterTest
   itkMultiphaseFiniteDifferenceImageFilterTest
   itkMultiphaseSparseFiniteDifferenceImageFilterTest

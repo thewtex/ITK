@@ -39,6 +39,14 @@ namespace itk
  * The filter computes a second output image (accessed by the GetScalesOutput method)
  * containing the scales at which each pixel gave the best reponse.
  *
+ * This filter is partially streamable. It still requires all of it's
+ * input, but can produce a fraction of it's output. If the hessian
+ * image filter is streamable then the size of the hessian image may
+ * be greatly reduced. However, if the hessian filter is not
+ * streamable and a partial region is requested, then the whole
+ * hessian image needs to be computed and only part of the measurement
+ * will be produced.
+ *
  * \author Luca Antiga Ph.D.  Medical Imaging Unit,
  *                            Bioengineering Deparment, Mario Negri Institute, Italy.
  *
@@ -54,7 +62,8 @@ namespace itk
  */
 template< typename TInputImage,
           typename THessianImage,
-          typename TOutputImage = TInputImage >
+          typename TOutputImage = TInputImage,
+          typename THessianFilterType = HessianRecursiveGaussianImageFilter< TInputImage, THessianImage> >
 class ITK_EXPORT MultiScaleHessianBasedMeasureImageFilter:
   public
   ImageToImageFilter< TInputImage, TOutputImage >
@@ -71,6 +80,8 @@ public:
   typedef TOutputImage  OutputImageType;
   typedef THessianImage HessianImageType;
 
+  typedef typename TOutputImage::RegionType OutputImageRegionType;
+
   typedef ImageToImageFilter< HessianImageType, OutputImageType  > HessianToMeasureFilterType;
 
   typedef typename TInputImage::PixelType   InputPixelType;
@@ -85,7 +96,7 @@ public:
   typedef Image< ScalesPixelType, itkGetStaticConstMacro(ImageDimension) > ScalesImageType;
 
   /** Hessian computation filter. */
-  typedef HessianRecursiveGaussianImageFilter< InputImageType, HessianImageType > HessianFilterType;
+  typedef THessianFilterType HessianFilterType;
 
   /** Update image buffer that holds the best objectness response. This is not redundant from
    the output image because the latter may not be of float type, which is required for the comparisons
@@ -152,7 +163,14 @@ public:
    * best response */
   const ScalesImageType * GetScalesOutput() const;
 
+  // See superclass for doxygen documentation
   void EnlargeOutputRequestedRegion(DataObject *);
+
+  // See superclass for doxygen documentation
+  void GenerateInputRequestedRegion() throw( InvalidRequestedRegionError );
+
+  // See superclass for doxygen documentation
+  void AllocateOutputs( void );
 
   /** Methods to turn on/off flag to generate an image with scale values at
    *  each pixel for the best vesselness response */
@@ -166,7 +184,7 @@ public:
   itkGetConstMacro(GenerateHessianOutput, bool);
   itkBooleanMacro(GenerateHessianOutput);
 
-  /** This is overloaded to create the Scales and Hessian output images */
+  // See superclass for doxygen documentation
   virtual DataObjectPointer MakeOutput(unsigned int idx);
 
 protected:
@@ -178,10 +196,14 @@ protected:
   void GenerateData(void);
 
 private:
-  void UpdateMaximumResponse(double sigma);
+
+  // This method is not used in the standard way, it's call for each
+  // scale by GenerateData
+  void ThreadedGenerateData(const OutputImageRegionType &outputRegionForThread, int threadId );
 
   double ComputeSigmaValue(int scaleLevel);
 
+  // internal methods to allocate intermediate output image
   void AllocateUpdateBuffer();
 
   //purposely not implemented
@@ -190,6 +212,8 @@ private:
 
   bool m_NonNegativeHessianBasedMeasure;
 
+
+  double m_CurrentSigma;
   double m_SigmaMinimum;
   double m_SigmaMaximum;
 
