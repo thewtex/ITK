@@ -174,6 +174,7 @@ set(KitTests
   itkTriangleMeshToBinaryImageFilterTest3
 
   itkAutoCropLabelMapFilterTest1
+  itkAutoCropLabelMapFilterTest2
   itkBinaryImageToLabelMapFilterTest
   itkChangeLabelLabelMapFilterTest
   itkChangeRegionLabelMapFilterTest1
@@ -1786,6 +1787,20 @@ add_test(itkAutoCropLabelMapFilterTest1
   176  # Value to use as background of input image
   4    # border size
   4    # border size
+  )
+
+add_test(itkAutoCropLabelMapFilterTest2
+  ${TestDriver}
+  --compare ${BASELINE}/itkAutoCropLabelMapFilterTest2-92.png
+            ${TEMP}/itkAutoCropLabelMapFilterTest2-92.png
+  --compare ${BASELINE}/itkAutoCropLabelMapFilterTest2-163.png
+            ${TEMP}/itkAutoCropLabelMapFilterTest2-163.png
+  itkAutoCropLabelMapFilterTest2
+  ${INPUTDATA}/cthead1Label.png
+  ${TEMP}/itkAutoCropLabelMapFilterTest2-92.png
+  ${TEMP}/itkAutoCropLabelMapFilterTest2-163.png
+  92
+  163
   )
 
 add_test(itkChangeRegionLabelMapFilterTest1
