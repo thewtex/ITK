@@ -49,6 +49,7 @@ set(KitTests
   itkBMPImageIOTest
   itkBMPImageIOTest2
   itkBioRadImageIOTest
+  itkBioFormatsImageIOTest
   itkConvertBufferTest
   itkConvertBufferTest2
   itkDicomImageIODirection2DTest
@@ -742,6 +743,12 @@ add_test(itkBioRadImageIOTest ${TestDriver}
   itkBioRadImageIOTest
             ${ITK_DATA_ROOT}/Input/biorad.pic
             ${ITK_TEST_OUTPUT_DIR}/biorad.pic)
+add_test(itkBioFormatsImageIOTest1 ${TestDriver}
+  --compare ${ITK_DATA_ROOT}/Baseline/IO/cthead1.tif
+            ${ITK_TEST_OUTPUT_DIR}/cthead1.lsm
+  itkBioFormatsImageIOTest
+            ${ITK_DATA_ROOT}/Input/cthead1.lsm
+            ${ITK_TEST_OUTPUT_DIR}/cthead1.lsm)
 add_test(itkBMPImageIOTest ${TestDriver}
   --compare ${ITK_DATA_ROOT}/Baseline/IO/cthead1.bmp
             ${ITK_TEST_OUTPUT_DIR}/cthead1.bmp
