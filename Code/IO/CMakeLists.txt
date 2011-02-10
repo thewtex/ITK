@@ -68,6 +68,13 @@ if(NOT ITK_USE_MODULAR_BUILD)
     )
 endif()
 
+if(ITK_USE_BIOFORMATS)
+  set(ITKIO_SRCS ${ITKIO_SRCS}
+    itkBioFormatsImageIO.cxx
+    itkBioFormatsImageIOFactory.cxx
+    )
+endif()
+
 # Add ITKIO library
 add_library(ITKIO ${ITK_LIBRARY_BUILD_TYPE} ${ITKIO_SRCS})
 
