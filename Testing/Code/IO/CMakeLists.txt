@@ -146,6 +146,12 @@ set(KitTests
 )
 
 
+if(ITKIO_SUPPORTS_BIOFORMATS_IMAGEIO)
+  set(KitTests ${KitTests}
+    itkBioFormatsImageIOTest
+    )
+endif()
+
 set(TEMP ${ITKTesting_BINARY_DIR}/Temporary)
 
 if( NOT ITK_USE_MODULAR_BUILD )
@@ -742,6 +748,16 @@ add_test(itkBioRadImageIOTest ${TestDriver}
   itkBioRadImageIOTest
             ${ITK_DATA_ROOT}/Input/biorad.pic
             ${ITK_TEST_OUTPUT_DIR}/biorad.pic)
+
+if(ITKIO_SUPPORTS_BIOFORMATS_IMAGEIO)
+  add_test(itkBioFormatsImageIOTest1 ${TestDriver}
+    --compare ${ITK_DATA_ROOT}/Baseline/IO/cthead1.tif
+              ${ITK_TEST_OUTPUT_DIR}/cthead1.mha
+    itkBioFormatsImageIOTest
+              ${ITK_DATA_ROOT}/Input/cthead1.lsm
+              ${ITK_TEST_OUTPUT_DIR}/cthead1.mha)
+endif(ITKIO_SUPPORTS_BIOFORMATS_IMAGEIO)
+
 add_test(itkBMPImageIOTest ${TestDriver}
   --compare ${ITK_DATA_ROOT}/Baseline/IO/cthead1.bmp
             ${ITK_TEST_OUTPUT_DIR}/cthead1.bmp

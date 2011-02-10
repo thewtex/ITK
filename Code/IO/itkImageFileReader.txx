@@ -537,8 +537,8 @@ ImageFileReader< TOutputImage, ConvertPixelTraits >
   ITK_CONVERT_BUFFER_IF_BLOCK(ImageIOBase::DOUBLE,double)
   else
     {
-#define TYPENAME(x)                                     \
-    m_ImageIO->GetComponentTypeAsString                 \
+#define PIXEL_TYPENAME_AS_STRING(x)  \
+    m_ImageIO->GetComponentTypeAsString  \
       (ImageIOBase::MapPixelType<x>::CType)
 
     ImageFileReaderException e(__FILE__, __LINE__);
@@ -547,16 +547,16 @@ ImageFileReader< TOutputImage, ConvertPixelTraits >
         << std::endl << "    "
         << m_ImageIO->GetComponentTypeAsString( m_ImageIO->GetComponentType() )
         << std::endl << "to one of: "
-        << std::endl << "    " << TYPENAME( unsigned char )
-        << std::endl << "    " << TYPENAME( char )
-        << std::endl << "    " << TYPENAME( unsigned short )
-        << std::endl << "    " << TYPENAME( short )
-        << std::endl << "    " << TYPENAME( unsigned int )
-        << std::endl << "    " << TYPENAME( int )
-        << std::endl << "    " << TYPENAME( unsigned long )
-        << std::endl << "    " << TYPENAME( long )
-        << std::endl << "    " << TYPENAME( float )
-        << std::endl << "    " << TYPENAME( double )
+        << std::endl << "    " << PIXEL_TYPENAME_AS_STRING( unsigned char )
+        << std::endl << "    " << PIXEL_TYPENAME_AS_STRING( char )
+        << std::endl << "    " << PIXEL_TYPENAME_AS_STRING( unsigned short )
+        << std::endl << "    " << PIXEL_TYPENAME_AS_STRING( short )
+        << std::endl << "    " << PIXEL_TYPENAME_AS_STRING( unsigned int )
+        << std::endl << "    " << PIXEL_TYPENAME_AS_STRING( int )
+        << std::endl << "    " << PIXEL_TYPENAME_AS_STRING( unsigned long )
+        << std::endl << "    " << PIXEL_TYPENAME_AS_STRING( long )
+        << std::endl << "    " << PIXEL_TYPENAME_AS_STRING( float )
+        << std::endl << "    " << PIXEL_TYPENAME_AS_STRING( double )
         << std::endl;
     e.SetDescription( msg.str().c_str() );
     e.SetLocation(ITK_LOCATION);

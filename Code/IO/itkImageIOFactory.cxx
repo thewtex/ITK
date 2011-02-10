@@ -23,6 +23,9 @@
 #include "itkMutexLock.h"
 #include "itkMutexLockHolder.h"
 
+#if defined(ITKIO_SUPPORTS_BIOFORMATS_IMAGEIO)
+#include "itkBioFormatsImageIOFactory.h"
+#endif
 
 #if defined(ITKIO_SUPPORTS_BIORAD_IMAGEIO)
 #include "itkBioRadImageIOFactory.h"
@@ -210,6 +213,10 @@ ImageIOFactory::RegisterBuiltInFactories()
 
 #if defined(ITKIO_SUPPORTS_BMP_IMAGEIO)
       ObjectFactoryBase::RegisterFactory( BMPImageIOFactory::New() );
+#endif
+
+#if defined(ITKIO_SUPPORTS_BIOFORMATS_IMAGEIO)
+      ObjectFactoryBase::RegisterFactory( BioFormatsImageIOFactory::New() );
 #endif
 
 #if !defined(ITK_USE_MODULAR_BUILD)

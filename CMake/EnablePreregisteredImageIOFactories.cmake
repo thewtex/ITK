@@ -27,3 +27,24 @@ mark_as_advanced(ITKIO_SUPPORTS_PNG_IMAGEIO)
 mark_as_advanced(ITKIO_SUPPORTS_STIMULATE_IMAGEIO)
 mark_as_advanced(ITKIO_SUPPORTS_TIFF_IMAGEIO)
 mark_as_advanced(ITKIO_SUPPORTS_VTK_IMAGEIO)
+
+# BioFormats options
+mark_as_advanced(ITKIO_SUPPORTS_BIOFORMATS_IMAGEIO)
+option(ITKIO_SUPPORTS_BIOFORMATS_IMAGEIO "Use BioFormats library" OFF)
+if( ITKIO_SUPPORTS_BIOFORMATS_IMAGEIO )
+message(
+"IMPORTANT NOTE: You have enabled the use of BioFormats bindings. Although
+these specific files are distributed according to a BSD-style license and the
+Apache 2 license, they must be linked to the OME Bio-Formats Java library at
+run-time to do anything useful. The OME Bio-Formats Java library is licensed
+under the GPL v2 or later.  Therefore, if you wish to distribute this software
+in binary form with Bio-Formats itself, your combined binary work must be
+distributed under the terms of the GPL v2 license.
+For more details, please see http://www.loci.wisc.edu/software/bio-formats"
+)
+
+  find_package( BioFormats )
+  if( NOT BIOFORMATS_FOUND )
+    message("You requested to use BioFormats but some components are missing")
+  endif()
+endif()
