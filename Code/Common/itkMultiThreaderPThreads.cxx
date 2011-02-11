@@ -95,9 +95,6 @@ void MultiThreader::MultipleMethodExecute()
       }
     }
 
-  // We are using sproc (on SGIs), pthreads(on Suns), _beginthreadex
-  // on a PC or a single thread (the default)
-
   // Using POSIX threads
   //
   // We want to use pthread_create to start m_NumberOfThreads - 1
@@ -174,11 +171,6 @@ int MultiThreader::SpawnThread(ThreadFunctionType f, void *UserData)
   m_SpawnedThreadInfoArray[id].ActiveFlag = &m_SpawnedThreadActiveFlag[id];
   m_SpawnedThreadInfoArray[id].ActiveFlagLock = m_SpawnedThreadActiveFlagLock[id];
 
-  // We are using sproc (on SGIs), pthreads(on Suns or HPs),
-  // _beginthreadex (on win32), or generating an error
-
-  // Using POSIX threads
-  //
   pthread_attr_t attr;
 
   pthread_attr_init(&attr);
