@@ -20,6 +20,10 @@ fi
 HeadOfMonolithicITKTree='..' # This is the origin ITK dir
 logs=$HeadOfModularITKTree/logs
 
+
+# create an index table for searching modules
+cat Manifest.txt |grep -v '^#' |sed 's/[^ ]* * *//' |sort|uniq|sort -k 2 >ModulePathTable.txt
+
 # excute the modulizer.py with the default "clean up  the modular ITK tree" option: 'y'
 ./modulizer.py  $HeadOfMonolithicITKTree $HeadOfModularITKTree
 
