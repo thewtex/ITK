@@ -1,6 +1,6 @@
 
 find_package(VTK REQUIRED)
-link_directories(${VTK_LIBRARY_DIRS})
+include(${VTK_USE_FILE})
 
 set(WRAPPER_LIBRARY_GROUPS
   itkImageToVTKImageFilter
