@@ -283,6 +283,10 @@ set(KitTests
   itkMapOptGrayscaleMorphologicalOpeningImageFilterTest
   itkMapOptGrayscaleDilateImageFilterTest
   itkMapOptGrayscaleErodeImageFilterTest
+
+  itkPixelValueSpatialTransformationTransduceFunctionBaseTest
+  itkPixelValueSpatialTransformationTransduceFunctionJacobianDeterminantTest
+  itkResampleImageFilterTransduceFunctionTest
 )
 
 
@@ -2598,6 +2602,18 @@ add_test(itkJPEG2000Test06 ${TestDriver}
             ${ITK_DATA_ROOT}/Input/cthead1.j2k
             ${ITK_TEST_OUTPUT_DIR}/cthead1.tif)
 
+add_test(
+  itkPixelValueSpatialTransformationTransduceFunctionJacobianDeterminantTest
+  ${TestDriver}
+  itkPixelValueSpatialTransformationTransduceFunctionJacobianDeterminantTest)
+add_test(
+  itkPixelValueSpatialTransformationTransduceFunctionBaseTest ${TestDriver}
+  itkPixelValueSpatialTransformationTransduceFunctionBaseTest)
+add_test( itkResampleImageFilterTransduceFunctionTest ${TestDriver}
+  itkResampleImageFilterTransduceFunctionTest 100)
+add_test(itkResampleImageFilterTransduceFunctionTest ${TestDriver}
+  itkResampleImageFilterTransduceFunctionTest 10)
+
 
 #
 # Functor colormaps
@@ -2626,5 +2642,13 @@ target_link_libraries(itkReviewHeaderTest
   )
 
 add_test(itkReviewHeaderTest ${REVIEW_HEADER_TESTS})
+
+#############################################################
+# 2nd driver for works-in-progress.
+set(KIT_WIP ReviewWIP)
+set(KIT_WIP_tests
+    )
+CreateTestDriver(${KIT_WIP} "${KIT_LIBS}" "${KIT_WIP_tests}" TestDriver2)
+
 
 endif(NOT ITK_DISABLE_CXX_TESTING)
