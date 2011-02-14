@@ -6,10 +6,10 @@ option(BUILD_WRAPPERS "Wrap library" OFF)
 option(INSTALL_DEVEL_FILES "Install C++ headers" ON)
 
 find_package(ITK REQUIRED)
-find_package(VTK REQUIRED)
+include(${ITK_USE_FILE}
 
-include_directories(${VTK_INCLUDE_DIRS} ${ITK_INCLUDE_DIRS} ${ItkVtkGlue_SOURCE_DIR}/src)
-link_directories(${VTK_LIBRARY_DIRS} ${ITK_LIBRARY_DIRS})
+find_package(VTK REQUIRED)
+include(${VTK_USE_FILE}
 
 if(BUILD_WRAPPERS)
    subdirs(Wrapping)
