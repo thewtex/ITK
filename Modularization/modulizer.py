@@ -130,7 +130,7 @@ for line in open("./Manifest.txt",'r'):
     itkFileName = words[0]
     groupName = words[1]
     moduleName = words[2]
-    subdirName = words[3]
+    subdirName = groupName + '/'+words[3]
 
 
     inputfile = HeadOfTempTree+'/'+words[0]
