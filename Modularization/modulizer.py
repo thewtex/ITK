@@ -41,7 +41,7 @@ import os
 import shutil
 import stat
 import glob
-
+import modulizerHelper
 
 if len(sys.argv) < 3:
     print("USAGE:  "+sys.argv[0]+" [monolithic ITK PATH] [modular ITK PATH]")
@@ -85,29 +85,13 @@ else:
 
 
 
+
+#----------------------------------------------------------------------------------------------------
 # copy the whole ITK tree over to a tempery dir, except the data
 HeadOfTempTree = HeadOfModularITKTree+'/ITK_remaining'
 
-def copy_directory(source, target):
-    if not os.path.exists(target):
-        os.mkdir(target)
-    for root, dirs, files in os.walk(source):
-        if '.git' in dirs:
-            dirs.remove('.git')
-        if 'Data' in dirs:
-            dirs.remove('Data')
-        for file in files:
-            if os.path.splitext(file)[-1] in ('.git*'):
-               continue
-            from_ = os.path.join(root, file)
-            to_ = from_.replace(source, target, 1)
-            to_directory = os.path.split(to_)[0]
-            if not os.path.exists(to_directory):
-                os.makedirs(to_directory)
-            shutil.copyfile(from_, to_)
-
 print("Start to copy" + HeadOfITKTree + " to " + HeadOfTempTree + "   ...")
-copy_directory(HeadOfITKTree, HeadOfTempTree)
+modulizerHelper.copy_directory(HeadOfITKTree, HeadOfTempTree)
 print("Done copying!")
 
 LogDir=HeadOfModularITKTree+'/logs'
@@ -115,7 +99,7 @@ if not os.path.isdir(LogDir):
   os.makedirs(LogDir)
 
 # read the manifest file
-print ("moving files from "+HeadOfTempTree+" into modules in "+HeadOfModularITKTree)
+print ("moving files from "+HeadOfTempTree+" into "+HeadOfModularITKTree)
 numOfMissingFiles = 0;
 missingf =  open(LogDir+'/missingFiles.log','w')
 moduleList=[];
@@ -130,11 +114,20 @@ for line in open("./Manifest.txt",'r'):
     itkFileName = words[0]
     groupName = words[1]
     moduleName = words[2]
-    subdirName = words[3]
+    fileExt = itkFileName.split('.')[-1]
+    if fileExt == 'h' or fileExt == 'txx':
+       subdir = 'include'
+    elif fileExt == 'cxx' or 'c':
+        if 'Test' in itkFileName or 'test' in itkFileName:
+            subdir = 'test'
+        else:
+            subdir = 'src'
+
+    desPath = groupName + '/'+words[3] + '/'+subdir
 
 
     inputfile = HeadOfTempTree+'/'+words[0]
-    outputPath = HeadOfModularITKTree+'/modules/'+ moduleName+'/'+subdirName
+    outputPath = HeadOfModularITKTree+'/'+desPath
     if len(moduleList) == 0:
        moduleList.append(moduleName)
     elif moduleName != moduleList[-1]:
@@ -153,15 +146,9 @@ for line in open("./Manifest.txt",'r'):
 
 missingf.close()
 
-# find the unique module names
-def unique(seq):
-    # not order preserving
-    set = {}
-    map(set.__setitem__, seq, [])
-    return set.keys()
 
-
-moduleList = unique(moduleList)
+# generate the modules list
+moduleList = modulizerHelper.unique(moduleList)
 
 
 # list the new files
@@ -174,50 +161,21 @@ for (root, subDirs, files) in os.walk(HeadOfTempTree):
 newf.close()
 print ("listed new files to"+LogDir+"/newFiles.log")
 
-###########################################################################
-def ModularITKAddTest(executableSearch, moduleName):
-    addTestLines="";
-    for line in  open("./AddTestsWithArguments.txt",'r'):
-      if(line[0] != '#'):
-        argns=""
-        words = line[0:-1].split(";")
-        if (len(words) < 3):
-            # No test driver , no arguments
-            testName = words[0]
-            # parse the executableName from the path
-            executableName = words[1].split("/")[-1]
-        else:
-            testName = words[0]
-            testDriver = words[1]
-            if (words[2] == "--compare"):
-               #ignore now, TO DO
-               executableName = "--";
-            else:
-               executableName = words[2]
-               argns =' '.join(words[3:])
-            if (executableName != executableSearch):
-                # try again , assuming no test driver
-               executableName = words[1].split("/")[-1]
-               argns =' '.join(words[2:])
-
-        if (executableName == executableSearch):
-            addTestLines = addTestLines + "add_test(NAME "+ testName+ "\n      COMMAND "+moduleName+'-tests  ' + executableName
-            if (argns !=""):
-               addTestLines = addTestLines + "\n              "+argns
-            addTestLines = addTestLines +")\n"
-    return  addTestLines
 
 
+
+#----------------------------------------------------------------------------------------------------
+# create CMake codes for each module
 print ('creating cmake files for each module (from the template module)')
-#moduleList = os.listdir(HeadOfModularITKTree)
 for  moduleName in moduleList:
-  if os.path.isdir(HeadOfModularITKTree+'/modules/'+moduleName):
+  modulePath = modulizerHelper.searchModulePathTable(moduleName)
+  if os.path.isdir(HeadOfModularITKTree +'/'+ modulePath ):
      # cooy the LICENSE and NOTICE
-     os.system('cp ./templateModule/itk-template-module/LICENSE'+'  '+ HeadOfModularITKTree+'/modules/'+moduleName)
-     os.system('cp ./templateModule/itk-template-module/NOTICE'+'  '+ HeadOfModularITKTree+'/modules/'+moduleName)
+     os.system('cp ./templateModule/itk-template-module/LICENSE'+'  '+ HeadOfModularITKTree + '/'+ modulePath )
+     os.system('cp ./templateModule/itk-template-module/NOTICE'+'  '+ HeadOfModularITKTree + '/'+ modulePath )
 
      # write CMakeLists.txt
-     filepath = HeadOfModularITKTree+'/modules/'+moduleName+'/CMakeLists.txt'
+     filepath = HeadOfModularITKTree + '/'+ modulePath +'/CMakeLists.txt'
      if not os.path.isfile(filepath):
        o = open(filepath,'w')
        for line in open('./templateModule/itk-template-module/CMakeLists.txt','r'):
@@ -226,7 +184,7 @@ for  moduleName in moduleList:
        o.close()
 
      # write itk-module.cmake, which contains dependency info
-     filepath = HeadOfModularITKTree+'/modules/'+moduleName+'/itk-module.cmake'
+     filepath = HeadOfModularITKTree + '/'+ modulePath +'/itk-module.cmake'
      if not os.path.isfile(filepath):
         o = open(filepath,'w')
         for line in open('./templateModule/itk-template-module/itk-module.cmake','r'):
@@ -248,12 +206,12 @@ for  moduleName in moduleList:
 
      # write src/CMakeLists.txt
      # list of CXX files
-     if os.path.isdir(HeadOfModularITKTree+'/modules/'+moduleName+'/src'):
-       cxxFiles = glob.glob(HeadOfModularITKTree+'/modules/'+moduleName+'/src/*.cxx')
+     if os.path.isdir(HeadOfModularITKTree + '/'+ modulePath +'/src'):
+       cxxFiles = glob.glob(HeadOfModularITKTree + '/'+ modulePath +'/src/*.cxx')
        cxxFileList='';
        for cxxf in cxxFiles:
             cxxFileList = cxxFileList+cxxf.split('/')[-1]+'\n'
-       filepath = HeadOfModularITKTree+'/modules/'+moduleName+'/src/CMakeLists.txt'
+       filepath = HeadOfModularITKTree + '/'+ modulePath +'/src/CMakeLists.txt'
        if not os.path.isfile(filepath):
          o = open(filepath,'w')
          for line in open('./templateModule/itk-template-module/src/CMakeLists.txt','r'):
@@ -264,12 +222,12 @@ for  moduleName in moduleList:
          o.close()
 
      # write  test/CMakeLists.txt
-     if os.path.isdir(HeadOfModularITKTree+'/modules/'+moduleName+'/test'):
-       cxxFiles = glob.glob(HeadOfModularITKTree+'/modules/'+moduleName+'/test/*.cxx')
+     if os.path.isdir(HeadOfModularITKTree + '/'+ modulePath +'/test'):
+       cxxFiles = glob.glob(HeadOfModularITKTree + '/'+ modulePath +'/test/*.cxx')
        cxxFileList='';
        for cxxf in cxxFiles:
             cxxFileList = cxxFileList+cxxf.split('/')[-1]+'\n'
-       filepath = HeadOfModularITKTree+'/modules/'+moduleName+'/test/CMakeLists.txt'
+       filepath = HeadOfModularITKTree + '/'+ modulePath +'/test/CMakeLists.txt'
 
        if not os.path.isfile(filepath):
          o = open(filepath,'w')
@@ -290,14 +248,14 @@ for  moduleName in moduleList:
          for cxxf in cxxFiles:
             cxxFileName = cxxf.split('/')[-1]
             executableName = cxxFileName[0:-4];
-            line = ModularITKAddTest(executableName, moduleName)
-            #line = 'add_test(NAME '+ + '\n      COMMAND '+moduleName+'-tests  ' + executbaleName +')\n\n'
+            line = modulizerHelper.ModularITKAddTest(executableName, moduleName)
+            #line = 'add_test(NAME ' +  '\n      COMMAND '+moduleName+'-tests  ' + executbaleName +')\n\n'
             o.write(line)
          o.close()
 
 
     # write CTestConfig.cmake
-     filepath = HeadOfModularITKTree+'/modules/'+moduleName+'/CTestConfig.cmake'
+     filepath = HeadOfModularITKTree + '/'+ modulePath +'/CTestConfig.cmake'
      if not os.path.isfile(filepath):
         o = open(filepath,'w')
         for line in open('./templateModule/itk-template-module/CTestConfig.cmake','r'):
@@ -307,6 +265,8 @@ for  moduleName in moduleList:
 
 
 
+
+#----------------------------------------------------------------------------------------------------
 #clean up the temporary  directory
 if os.path.isdir(HeadOfTempTree):
    os.system("rm -Rf "+ HeadOfTempTree)
