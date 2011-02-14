@@ -1339,7 +1339,6 @@ add_test(itkBSplineUpsampleImageFilterTest
   3  # Spline order
   )
 
-
 if(ITK_OBJCXX_COMPILER_WORKS)
   set(BASICFILTERS_OBJCXX_TEST ${CXX_TEST_PATH}/itkBasicFiltersHeaderObjCxxTest)
   add_test(itkBasicFiltersHeaderObjCxxTest ${BASICFILTERS_OBJCXX_TEST})
