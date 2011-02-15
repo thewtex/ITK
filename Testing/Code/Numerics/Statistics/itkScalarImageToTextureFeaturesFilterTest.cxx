@@ -316,27 +316,26 @@ int itkScalarImageToTextureFeaturesFilterTest(int, char* [] )
     //Test Set/Get Requested features
     typedef TextureFilterType::TextureFeaturesFilterType   TextureFeaturesFilterType;
 
-    TextureFilterType::FeatureNameVectorPointer requestedFeatures =
-                                                TextureFilterType::FeatureNameVector::New();
+    TextureFilterType::FeatureNameVector requestedFeatures;
 
-    requestedFeatures->push_back(TextureFeaturesFilterType::Inertia);
-    requestedFeatures->push_back(TextureFeaturesFilterType::ClusterShade);
+    requestedFeatures.push_back(TextureFeaturesFilterType::Inertia);
+    requestedFeatures.push_back(TextureFeaturesFilterType::ClusterShade);
     texFilter->SetRequestedFeatures(requestedFeatures);
 
-    const TextureFilterType::FeatureNameVector* requestedFeatures2 =
+    const TextureFilterType::FeatureNameVector & requestedFeatures2 =
                                                 texFilter->GetRequestedFeatures();
 
-    TextureFilterType::FeatureNameVector::ConstIterator fIt;
+    TextureFilterType::FeatureNameVector::const_iterator fIt;
 
-    fIt = requestedFeatures2->Begin();
-    if ( fIt.Value() != TextureFeaturesFilterType::Inertia )
+    fIt = requestedFeatures2.begin();
+    if ( *fIt != TextureFeaturesFilterType::Inertia )
       {
       std::cerr << "Requested feature name not correctly set" << std::endl;
       passed = false;
       }
     fIt++;
 
-    if ( fIt.Value() != TextureFeaturesFilterType::ClusterShade )
+    if ( *fIt != TextureFeaturesFilterType::ClusterShade )
       {
       std::cerr << "Requested feature name not correctly set" << std::endl;
       passed = false;
