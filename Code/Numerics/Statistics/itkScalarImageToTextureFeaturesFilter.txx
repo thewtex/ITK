@@ -44,15 +44,12 @@ ScalarImageToTextureFeaturesFilter< TImage, THistogramFrequencyContainer >::Scal
   // Set the requested features to the default value:
   // {Energy, Entropy, InverseDifferenceMoment, Inertia, ClusterShade,
   // ClusterProminence}
-  FeatureNameVectorPointer requestedFeatures = FeatureNameVector::New();
-  // can't directly set m_RequestedFeatures since it is const!
-  requestedFeatures->push_back(TextureFeaturesFilterType::Energy);
-  requestedFeatures->push_back(TextureFeaturesFilterType::Entropy);
-  requestedFeatures->push_back(TextureFeaturesFilterType::InverseDifferenceMoment);
-  requestedFeatures->push_back(TextureFeaturesFilterType::Inertia);
-  requestedFeatures->push_back(TextureFeaturesFilterType::ClusterShade);
-  requestedFeatures->push_back(TextureFeaturesFilterType::ClusterProminence);
-  this->SetRequestedFeatures(requestedFeatures);
+  m_RequestedFeatures.push_back(TextureFeaturesFilterType::Energy);
+  m_RequestedFeatures.push_back(TextureFeaturesFilterType::Entropy);
+  m_RequestedFeatures.push_back(TextureFeaturesFilterType::InverseDifferenceMoment);
+  m_RequestedFeatures.push_back(TextureFeaturesFilterType::Inertia);
+  m_RequestedFeatures.push_back(TextureFeaturesFilterType::ClusterShade);
+  m_RequestedFeatures.push_back(TextureFeaturesFilterType::ClusterProminence);
 
   // Set the offset directions to their defaults: half of all the possible
   // directions 1 pixel away. (The other half is included by symmetry.)
@@ -105,7 +102,7 @@ void
 ScalarImageToTextureFeaturesFilter< TImage, THistogramFrequencyContainer >::FullCompute(void)
 {
   int      numOffsets = m_Offsets->size();
-  int      numFeatures = m_RequestedFeatures->size();
+  int      numFeatures = m_RequestedFeatures.size();
   double **features;
 
   features = new double *[numOffsets];
@@ -127,11 +124,11 @@ ScalarImageToTextureFeaturesFilter< TImage, THistogramFrequencyContainer >::Full
     glcmCalc->SetInput( m_GLCMGenerator->GetOutput() );
     glcmCalc->Update();
 
-    typename FeatureNameVector::ConstIterator fnameIt;
-    for ( fnameIt = m_RequestedFeatures->Begin(), featureNum = 0;
-          fnameIt != m_RequestedFeatures->End(); fnameIt++, featureNum++ )
+    typename FeatureNameVector::const_iterator fnameIt;
+    for ( fnameIt = m_RequestedFeatures.begin(), featureNum = 0;
+          fnameIt != m_RequestedFeatures.end(); fnameIt++, featureNum++ )
       {
-      features[offsetNum][featureNum] = glcmCalc->GetFeature( fnameIt.Value() );
+      features[offsetNum][featureNum] = glcmCalc->GetFeature( (typename TextureFeaturesFilterType::TextureFeatureName)*fnameIt );
       }
     }
 
@@ -214,11 +211,11 @@ ScalarImageToTextureFeaturesFilter< TImage, THistogramFrequencyContainer >::Fast
 
   m_FeatureMeans->clear();
   m_FeatureStandardDeviations->clear();
-  typename FeatureNameVector::ConstIterator fnameIt;
-  for ( fnameIt = m_RequestedFeatures->Begin();
-        fnameIt != m_RequestedFeatures->End(); fnameIt++ )
+  typename FeatureNameVector::const_iterator fnameIt;
+  for ( fnameIt = m_RequestedFeatures.begin();
+        fnameIt != m_RequestedFeatures.end(); fnameIt++ )
     {
-    m_FeatureMeans->push_back( glcmCalc->GetFeature( fnameIt.Value() ) );
+    m_FeatureMeans->push_back( glcmCalc->GetFeature( (typename TextureFeaturesFilterType::TextureFeatureName) *fnameIt ) );
     m_FeatureStandardDeviations->push_back(0.0);
     }
 
@@ -334,7 +331,13 @@ ScalarImageToTextureFeaturesFilter< TImage, THistogramFrequencyContainer >::Prin
                                                                                       Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
-  os << indent << "RequestedFeatures: " << this->GetRequestedFeatures() << std::endl;
+  os << indent << "RequestedFeatures: [";
+  typename FeatureNameVector::const_iterator fnameIt;
+  for ( fnameIt = m_RequestedFeatures.begin(); fnameIt != m_RequestedFeatures.end(); fnameIt++ )
+    {
+    os << *fnameIt << ", ";
+    }
+  os << "]" << std::endl;
   os << indent << "FeatureStandardDeviations: " << this->GetFeatureStandardDeviations() << std::endl;
   os << indent << "FastCalculations: " << this->GetFastCalculations() << std::endl;
   os << indent << "Offsets: " << this->GetOffsets() << std::endl;

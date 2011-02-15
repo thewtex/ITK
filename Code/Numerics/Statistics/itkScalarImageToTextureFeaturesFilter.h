@@ -22,6 +22,7 @@
 
 #include "itkHistogramToTextureFeaturesFilter.h"
 #include "itkScalarImageToCooccurrenceMatrixFilter.h"
+#include <vector>
 
 namespace itk
 {
@@ -137,11 +138,9 @@ public:
   typedef HistogramToTextureFeaturesFilter< HistogramType >
   TextureFeaturesFilterType;
 
-  typedef typename TextureFeaturesFilterType::TextureFeatureName TextureFeatureName;
-  typedef VectorContainer< unsigned char, TextureFeatureName >   FeatureNameVector;
+  typedef int                                 TextureFeatureName;
+  typedef std::vector< TextureFeatureName >   FeatureNameVector;
 
-  typedef typename FeatureNameVector::Pointer      FeatureNameVectorPointer;
-  typedef typename FeatureNameVector::ConstPointer FeatureNameVectorConstPointer;
   typedef VectorContainer< unsigned char, double > FeatureValueVector;
   typedef typename FeatureValueVector::Pointer     FeatureValueVectorPointer;
 
@@ -167,8 +166,15 @@ public:
   itkGetConstReferenceObjectMacro(FeatureStandardDeviations, FeatureValueVector);
 
   /** Set the desired feature set. Optional, for default value see above. */
-  itkSetConstObjectMacro(RequestedFeatures, FeatureNameVector);
-  itkGetConstObjectMacro(RequestedFeatures, FeatureNameVector);
+  void SetRequestedFeatures( const FeatureNameVector & val )
+  {
+    m_RequestedFeatures = val;
+    this->Modified();
+  }
+  const FeatureNameVector & GetRequestedFeatures() const
+  {
+    return m_RequestedFeatures;
+  }
 
   /** Set the  offsets over which the co-occurrence pairs will be computed.
       Optional; for default value see above. */
@@ -216,7 +222,7 @@ private:
 
   FeatureValueVectorPointer     m_FeatureMeans;
   FeatureValueVectorPointer     m_FeatureStandardDeviations;
-  FeatureNameVectorConstPointer m_RequestedFeatures;
+  FeatureNameVector                m_RequestedFeatures;
   OffsetVectorConstPointer      m_Offsets;
   bool                          m_FastCalculations;
 };
