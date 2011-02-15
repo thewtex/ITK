@@ -131,7 +131,7 @@ ScalarImageToTextureFeaturesFilter< TImage, THistogramFrequencyContainer >::Full
     for ( fnameIt = m_RequestedFeatures->Begin(), featureNum = 0;
           fnameIt != m_RequestedFeatures->End(); fnameIt++, featureNum++ )
       {
-      features[offsetNum][featureNum] = glcmCalc->GetFeature( fnameIt.Value() );
+      features[offsetNum][featureNum] = glcmCalc->GetFeature( (typename TextureFeaturesFilterType::TextureFeatureName)fnameIt.Value() );
       }
     }
 
@@ -218,7 +218,7 @@ ScalarImageToTextureFeaturesFilter< TImage, THistogramFrequencyContainer >::Fast
   for ( fnameIt = m_RequestedFeatures->Begin();
         fnameIt != m_RequestedFeatures->End(); fnameIt++ )
     {
-    m_FeatureMeans->push_back( glcmCalc->GetFeature( fnameIt.Value() ) );
+    m_FeatureMeans->push_back( glcmCalc->GetFeature( (typename TextureFeaturesFilterType::TextureFeatureName)fnameIt.Value() ) );
     m_FeatureStandardDeviations->push_back(0.0);
     }
 
