@@ -21,8 +21,21 @@ HeadOfMonolithicITKTree='..' # This is the origin ITK dir
 logs=$HeadOfModularITKTree/logs
 
 
-# create an index table for searching modules
-cat Manifest.txt |grep -v '^#' |sed 's/[^ ]* * *//' |sort|uniq|sort -k 2 >ModulePathTable.txt
+# create an index table for searching modules, used by search function in modulizerHelpers.py
+cat Manifest.txt |grep -v '^#' |sed 's/[^ ]* * *//' |sort|uniq|sort -k 1 >ModulePathTable.txt
+
+# copy the utility modules to desitnation
+if [ ! -d $HeadOfModularITKTree/Utilities ];then
+  git clone http://itk.org/tmp/modularITKSupport.git $HeadOfModularITKTree/Utilities
+fi
+# copy the cmake codes to destnation
+if [ ! -d $HeadOfModularITKTree ];then
+  mkdir $HeadOfModularITKTree
+fi
+cp -r ./modularITKCMake/* $HeadOfModularITKTree/
+
+
+
 
 # excute the modulizer.py with the default "clean up  the modular ITK tree" option: 'y'
 ./modulizer.py  $HeadOfMonolithicITKTree $HeadOfModularITKTree
@@ -32,9 +45,9 @@ cat Manifest.txt |grep -v '^#' |sed 's/[^ ]* * *//' |sort|uniq|sort -k 2 >Module
 ./specialModuleFix.py  $HeadOfMonolithicITKTree $HeadOfModularITKTree
 
 
-# handling data ( Testing/data and Examples/data)
-if [ ! -d $HeadOfModularITKTree/data ];then
-  cp -r ../Testing/Data $HeadOfModularITKTree/data
+# handling data ( Testing/data and Examples/Data)
+if [ ! -d $HeadOfModularITKTree/Data ];then
+  cp -r ../Testing/Data $HeadOfModularITKTree/Data
 fi
 
 if [ ! -d $HeadOfModularITKTree/Examples ];then
