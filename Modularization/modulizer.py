@@ -56,36 +56,6 @@ if (HeadOfModularITKTree[-1] ==  '/'):
     HeadOfModularITKTree = HeadOfModularITKTree[0:-1]
 
 
-# clean up the dirs first
-if os.path.isdir(HeadOfModularITKTree):
-   if  len(sys.argv) > 3:
-      if (sys.argv[3] == 'y'):
-         answer = 'y'
-   else:
-      print('Warning: The directory '+HeadOfModularITKTree+' exists! It needs to be wiped out first.')
-      answer = raw_input("Do you really want to clean up this directory? [y/n]: " )
-
-   if (answer == 'y'):
-       os.system("rm -Rf "+ HeadOfModularITKTree)
-       print('removed '+HeadOfModularITKTree)
-       # get the supporting modules and cmake packaing files
-       cmd ='git clone http://itk.org/tmp/modularITKSupport.git '+HeadOfModularITKTree
-       os.system(cmd)
-       print("modularITKSupport repository cloned into " + HeadOfModularITKTree)
-   if (answer =='n'):
-       print("Please rerun the program with a different directory.")
-       exit(-1)
-   if (answer =='a'): #advanced
-       print('Advanced Option Warning: This is only for developer\'s convinience.\nThe git clone step will be skipped; Old files in the directory will be overwritten.')
-else:
-   # get the supporting modules and cmake packaing files
-   cmd ='git clone http://itk.org/tmp/modularITKSupport.git '+HeadOfModularITKTree
-   os.system(cmd)
-   print("modularITKSupport repository cloned into " + HeadOfModularITKTree)
-
-
-
-
 #----------------------------------------------------------------------------------------------------
 # copy the whole ITK tree over to a tempery dir, except the data
 HeadOfTempTree = HeadOfModularITKTree+'/ITK_remaining'
@@ -112,14 +82,17 @@ for line in open("./Manifest.txt",'r'):
         exit(-1)
 
     itkFileName = words[0]
-    groupName = words[1]
-    moduleName = words[2]
+    groupName   = words[1]
+    moduleName  = words[2]
     fileExt = itkFileName.split('.')[-1]
-    if fileExt == 'h' or fileExt == 'txx':
+    if fileExt == 'h' or fileExt == 'txx' or fileExt == 'inc':
        subdir = 'include'
-    elif fileExt == 'cxx' or 'c':
+    elif fileExt == 'cxx' or fileExt =='c' or fileExt == 'in' :
         if 'Test' in itkFileName or 'test' in itkFileName:
-            subdir = 'test'
+            if moduleName != 'ITK-TestKernel':
+                subdir = 'test'
+            else:
+                subdir =  'include'
         else:
             subdir = 'src'
 
@@ -168,8 +141,8 @@ print ("listed new files to"+LogDir+"/newFiles.log")
 # create CMake codes for each module
 print ('creating cmake files for each module (from the template module)')
 for  moduleName in moduleList:
-  modulePath = modulizerHelper.searchModulePathTable(moduleName)
-  if os.path.isdir(HeadOfModularITKTree +'/'+ modulePath ):
+   modulePath = modulizerHelper.searchModulePathTable(moduleName)
+   if os.path.isdir(HeadOfModularITKTree +'/'+ modulePath):
      # cooy the LICENSE and NOTICE
      os.system('cp ./templateModule/itk-template-module/LICENSE'+'  '+ HeadOfModularITKTree + '/'+ modulePath )
      os.system('cp ./templateModule/itk-template-module/NOTICE'+'  '+ HeadOfModularITKTree + '/'+ modulePath )
@@ -178,20 +151,23 @@ for  moduleName in moduleList:
      filepath = HeadOfModularITKTree + '/'+ modulePath +'/CMakeLists.txt'
      if not os.path.isfile(filepath):
        o = open(filepath,'w')
-       for line in open('./templateModule/itk-template-module/CMakeLists.txt','r'):
-           line = line.replace('itk-template-module',moduleName)
-           o.write(line);
+       o.write('cmake_minimum_required(VERSION 2.8 FATAL_ERROR)\n')
+       o.write('project('+moduleName+')\n')
+       o.write('find_package(itk-base 4.0 EXACT REQUIRED)\n')
+       if os.path.isdir(HeadOfModularITKTree + '/'+ modulePath +'/src'):
+          o.write('set('+moduleName+'_LIBRARIES ' +moduleName +')\n')
+       o.write('itk_module_impl()')
        o.close()
 
-     # write itk-module.cmake, which contains dependency info
+
      filepath = HeadOfModularITKTree + '/'+ modulePath +'/itk-module.cmake'
      if not os.path.isfile(filepath):
+     # write itk-module.cmake, which contains dependency info
         o = open(filepath,'w')
-        for line in open('./templateModule/itk-template-module/itk-module.cmake','r'):
-            line = line.replace('itk-template-module',moduleName)
-            o.write(line);
+        line = 'itk_module('+moduleName +' DEPENDS ITK-Common)'
+        o.write(line);
         o.close()
-        dependsModuleLibrariesList = "${itk-common_LIBRARIES}"
+        dependsModuleLibrariesList = "${ITK-Common_LIBRARIES}"
      else:
         # read dependency list from  itk-module.cmake
         o = open(filepath,'r')

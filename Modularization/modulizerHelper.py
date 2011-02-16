@@ -78,10 +78,9 @@ def ModularITKAddTest(executableSearch, moduleName):
 def searchModulePathTable(ModuleName):
    for line in open('./ModulePathTable.txt','r'):
         w = line.split()
-        if w[1] == ModuleName:
-             return  w[0]+'/'+w[2]
-        else:
-              return ""
+        if (w[1] == ModuleName):
+             return  (w[0]+'/'+w[2])
+   return ('Not Found'+ModuleName+'and'+ w[1])
 
 # find the unique module names
 def unique(seq):

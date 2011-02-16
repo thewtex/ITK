@@ -58,8 +58,6 @@ for line in  open('./Manifest_old.txt','r'):
             if word != 'registration':
                 newPath = newPath + string.capitalize(word)
     newline = string.ljust(itkFileName,90)+' '+string.ljust(newGroupName,20)+' '+ string.ljust(newModuleName,30)+' '+newPath+'\n'
-    if 'VnlInstantiation' in newline:
-       newline.replace('VnlInstantiation', 'vnl_instantiation')
     o.write(newline)
  else:
     o.write(line)
