@@ -28,8 +28,8 @@
 #ifndef __itkMultiThreader_h
 #define __itkMultiThreader_h
 
-#include "itkMutexLock.h"
 #include "itkThreadSupport.h"
+#include "itkFastMutexLock.h"
 
 namespace itk
 {
@@ -48,7 +48,8 @@ namespace itk
  * a sun, for example).
  */
 
-class ITKCommon_EXPORT MultiThreader:public Object
+class ITKCommon_EXPORT MultiThreader
+  : public Object
 {
 public:
   /** Standard class typedefs. */
@@ -137,7 +138,7 @@ public:
     int ThreadID;
     int NumberOfThreads;
     int *ActiveFlag;
-    MutexLock::Pointer ActiveFlagLock;
+    FastMutexLock::Pointer ActiveFlagLock;
     void *UserData;
     ThreadFunctionType ThreadFunction;
     enum { SUCCESS, ITK_EXCEPTION, ITK_PROCESS_ABORTED_EXCEPTION, STD_EXCEPTION, UNKNOWN } ThreadExitCode;
@@ -162,10 +163,10 @@ private:
 
   /** Storage of MutexFunctions and ints used to control spawned
    *  threads and the spawned thread ids. */
-  int                 m_SpawnedThreadActiveFlag[ITK_MAX_THREADS];
-  MutexLock::Pointer  m_SpawnedThreadActiveFlagLock[ITK_MAX_THREADS];
-  ThreadProcessIDType m_SpawnedThreadProcessID[ITK_MAX_THREADS];
-  ThreadInfoStruct    m_SpawnedThreadInfoArray[ITK_MAX_THREADS];
+  int                    m_SpawnedThreadActiveFlag[ITK_MAX_THREADS];
+  FastMutexLock::Pointer m_SpawnedThreadActiveFlagLock[ITK_MAX_THREADS];
+  ThreadProcessIDType    m_SpawnedThreadProcessID[ITK_MAX_THREADS];
+  ThreadInfoStruct       m_SpawnedThreadInfoArray[ITK_MAX_THREADS];
 
   /** Internal storage of the data. */
   void *m_SingleData;

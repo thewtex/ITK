@@ -92,7 +92,7 @@ private:
 #else
   ConditionVariable::Pointer m_ConditionVariable;
   unsigned int               m_NumberArrived;
-  SimpleMutexLock            m_Mutex;
+  SimpleFastMutexLock        m_Mutex;
 
 #endif
 

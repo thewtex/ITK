@@ -144,9 +144,10 @@ int MultiThreader::SpawnThread(ThreadFunctionType f, void *UserData)
 
   while ( id < ITK_MAX_THREADS )
     {
+
     if ( !m_SpawnedThreadActiveFlagLock[id]  )
       {
-      m_SpawnedThreadActiveFlagLock[id] = MutexLock::New();
+      m_SpawnedThreadActiveFlagLock[id] = FastMutexLock::New();
       }
     m_SpawnedThreadActiveFlagLock[id]->Lock();
     if ( m_SpawnedThreadActiveFlag[id] == 0 )

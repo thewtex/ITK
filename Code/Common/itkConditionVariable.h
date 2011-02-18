@@ -19,8 +19,9 @@
 #define  __itkConditionVariable_h
 
 #include "itkConfigure.h"
-#include "itkMutexLock.h"
+#include "itkSimpleFastMutexLock.h"
 #include "itkLightObject.h"
+#include "itkObjectFactory.h"
 
 namespace itk
 {
@@ -38,7 +39,7 @@ namespace itk
  * definition and use of condition variables in pthreads and other common
  * thread libraries.
  *
- * IMPORTANT: A condition variable always requires an associated SimpleMutexLock
+ * IMPORTANT: A condition variable always requires an associated SimpleFastMutexLock
  * object.  The mutex object is used to avoid a dangerous race condition when
  * Wait() and Signal() are called simultaneously from two different
  * threads.
@@ -70,9 +71,9 @@ public:
   itkTypeMacro(ConditionVariable, LightObject);
 
   /** Suspend execution of this thread until the condition is signaled. The
-   *  argument is a SimpleMutex object that must be locked prior to calling
+   *  argument is a SimpleFastMutex object that must be locked prior to calling
    *  this method.  */
-  void Wait(SimpleMutexLock *mutex);
+  void Wait(SimpleFastMutexLock *mutex);
 
   /** Signal that the condition is true and release one waiting thread */
   void Signal();

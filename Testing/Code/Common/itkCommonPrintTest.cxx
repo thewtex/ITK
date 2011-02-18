@@ -417,10 +417,6 @@ int itkCommonPrintTest(int , char* [])
     itk::MultiThreader::New();
   std::cout << "------------MultiThreader" << MultiThreaderObj;
 
-  itk::MutexLock::Pointer MutexLockObj =
-    itk::MutexLock::New();
-  std::cout << "------------MutexLock" << MutexLockObj;
-
   itk::NearestNeighborInterpolateImageFunction<InputType,float>::Pointer NearestNeighborInterpolateImageFunctionObj =
     itk::NearestNeighborInterpolateImageFunction<InputType,float>::New();
   std::cout << "------------NearestNeighborInterpolateImageFunction" << NearestNeighborInterpolateImageFunctionObj;

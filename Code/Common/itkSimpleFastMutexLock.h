@@ -62,6 +62,11 @@ public:
   /** Unlock access. */
   void Unlock() const;
 
+  FastMutexType &GetMutexLock()
+  {
+    return m_FastMutexLock;
+  }
+
 protected:
   mutable FastMutexType m_FastMutexLock;
 };

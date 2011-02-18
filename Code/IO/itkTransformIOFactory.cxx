@@ -23,7 +23,7 @@
 #include "itkTxtTransformIOFactory.h"
 #include "itkMatlabTransformIOFactory.h"
 
-#include "itkMutexLock.h"
+#include "itkSimpleFastMutexLock.h"
 #include "itkMutexLockHolder.h"
 
 namespace itk
@@ -77,12 +77,12 @@ TransformIOFactory::RegisterBuiltInFactories()
 {
   static bool firstTime = true;
 
-  static SimpleMutexLock mutex;
+  static SimpleFastMutexLock mutex;
 
     {
     // This helper class makes sure the Mutex is unlocked
     // in the event an exception is thrown.
-    MutexLockHolder< SimpleMutexLock > mutexHolder(mutex);
+    MutexLockHolder< SimpleFastMutexLock > mutexHolder(mutex);
     if ( firstTime )
       {
       //      ObjectFactoryBase::RegisterFactory( GDCMTransformIOFactory::New()

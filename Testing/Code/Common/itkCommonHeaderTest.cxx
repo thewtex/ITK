@@ -218,7 +218,6 @@
 #include "itkMetaDataObjectBase.h"
 #include "itkMinimumDecisionRule.h"
 #include "itkMultipleLogOutput.h"
-#include "itkMutexLockHolder.h"
 #include "itkNearestNeighborExtrapolateImageFunction.h"
 #include "itkNearestNeighborInterpolateImageFunction.h"
 #include "itkNeighborhood.txx"

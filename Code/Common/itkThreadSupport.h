@@ -18,6 +18,7 @@
 #ifndef __itkThreadSupport_h
 #define __itkThreadSupport_h
 
+#include "itkConfigure.h"
 
 // This implementation uses a routine called SignalObjectAndWait()
 // which is only defined on WinNT 4.0 or greater systems.  We need to

@@ -20,7 +20,7 @@
 #endif
 
 #include "itkImageIOFactory.h"
-#include "itkMutexLock.h"
+#include "itkSimpleFastMutexLock.h"
 #include "itkMutexLockHolder.h"
 
 
@@ -138,12 +138,12 @@ ImageIOFactory::RegisterBuiltInFactories()
 {
   static bool firstTime = true;
 
-  static SimpleMutexLock mutex;
+  static SimpleFastMutexLock mutex;
 
     {
     // This helper class makes sure the Mutex is unlocked
     // in the event an exception is thrown.
-    MutexLockHolder< SimpleMutexLock > mutexHolder(mutex);
+    MutexLockHolder< SimpleFastMutexLock > mutexHolder(mutex);
     if ( firstTime )
       {
 #if defined(ITKIO_SUPPORTS_BIORAD_IMAGEIO)

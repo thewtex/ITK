@@ -18,9 +18,9 @@
 #ifndef __itkThreadLogger_h
 #define __itkThreadLogger_h
 
-#include "itkMultiThreader.h"
 #include "itkLogger.h"
 #include "itkSimpleFastMutexLock.h"
+#include "itkMultiThreader.h"
 
 #include <string>
 #include <queue>

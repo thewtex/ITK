@@ -41,7 +41,7 @@ void ConditionVariable::Broadcast()
   pthread_cond_broadcast(&m_ConditionVariable.m_ConditionVariable);
 }
 
-void ConditionVariable::Wait(SimpleMutexLock *mutex)
+void ConditionVariable::Wait(SimpleFastMutexLock *mutex)
 {
   pthread_cond_wait( &m_ConditionVariable.m_ConditionVariable, &mutex->GetMutexLock() );
 }

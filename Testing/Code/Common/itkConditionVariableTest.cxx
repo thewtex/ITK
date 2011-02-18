@@ -26,7 +26,7 @@
 class ConditionVariableTestUserData
 {
 public:
-  itk::SimpleMutexLock m_Mutex;
+  itk::SimpleFastMutexLock m_Mutex;
   itk::ConditionVariable::Pointer m_ConditionVariable;
   unsigned int m_Counter;
   unsigned int m_CountLimit;
@@ -130,4 +130,3 @@ int itkConditionVariableTest(int , char*[])
   std::cout << "[TEST PASSED]" << std::endl;
   return EXIT_SUCCESS;
 }
-

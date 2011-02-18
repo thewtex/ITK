@@ -35,7 +35,6 @@ set(ITKCommon_SRCS
   itkMeshRegion.cxx
   itkMinimumDecisionRule.cxx
   itkMultiThreader.cxx
-  itkMutexLock.cxx
   itkMultipleLogOutput.cxx
   itkNumericTraits.cxx
   itkNumericTraitsArrayPixel.cxx
