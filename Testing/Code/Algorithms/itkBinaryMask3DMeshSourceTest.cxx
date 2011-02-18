@@ -24,6 +24,7 @@
 #include "itkImage.h"
 #include "itkBinaryMask3DMeshSource.h"
 #include "itkImageRegionIteratorWithIndex.h"
+#include "itkImageFileWriter.h"
 
 // Define the dimension of the images
 const unsigned int Dimension = 3;
@@ -37,6 +38,8 @@ typedef ImageType::SizeType                      SizeType;
 typedef ImageType::RegionType                    RegionType;
 typedef ImageType::PixelType                     PixelType;
 typedef ImageType::Pointer                       ImagePointerType;
+
+typedef itk::ImageFileWriter< ImageType > WriterType;
 
 void CreateCubeConfig(
                   ImagePointerType image,
@@ -62,9 +65,8 @@ void Create16CubeConfig(
                   const unsigned char& value3,
                   const unsigned char& value4 );
 
-int itkBinaryMask3DMeshSourceTest(int, char *[])
+int itkBinaryMask3DMeshSourceTest(int argc, char *argv[] )
 {
-
   // Declare the type of the Mesh
   typedef itk::Mesh<double>                         MeshType;
   typedef MeshType::PointType                       PointType;
@@ -104,6 +106,18 @@ int itkBinaryMask3DMeshSourceTest(int, char *[])
   MeshSourceType::Pointer meshSource = MeshSourceType::New();
   meshSource->SetInput( image );
   meshSource->SetObjectValue( internalValue );
+
+  if ( argc == 2 )
+    {
+    if ( atoi( argv[1] ) == 1 )
+      {
+      size[0] = 9;
+      size[1] = 9;
+      size[2] = 9;
+      region.SetSize(size);
+      meshSource->SetRegionOfInterest( region );
+      }
+    }
 
   try
     {
