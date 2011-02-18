@@ -34,6 +34,10 @@ BinaryMask3DMeshSource< TInputImage, TOutputMesh >
   // Modify superclass default values, can be overridden by subclasses
   this->SetNumberOfRequiredInputs(1);
 
+  SizeType size;
+  size.Fill( 0 );
+  m_RegionOfInterest.SetSize(size);
+
   m_NumberOfCells = 0;
   m_NumberOfNodes = 0;
 
@@ -113,6 +117,11 @@ void
 BinaryMask3DMeshSource< TInputImage, TOutputMesh >
 ::GenerateData()
 {
+  if ( m_RegionOfInterest.GetNumberOfPixels() == 0 )
+  {
+    m_RegionOfInterest = this->GetInput()->GetBufferedRegion();
+  }
+
   this->InitializeLUT();
   this->CreateMesh();
 }
@@ -1054,17 +1063,17 @@ BinaryMask3DMeshSource< TInputImage, TOutputMesh >
   InputImageConstPointer m_InputImage =
     static_cast< const InputImageType * >( this->ProcessObject::GetInput(0) );
 
-  InputImageIterator it1( m_InputImage, m_InputImage->GetBufferedRegion() );
-  InputImageIterator it2( m_InputImage, m_InputImage->GetBufferedRegion() );
-  InputImageIterator it3( m_InputImage, m_InputImage->GetBufferedRegion() );
-  InputImageIterator it4( m_InputImage, m_InputImage->GetBufferedRegion() );
+  InputImageIterator it1( m_InputImage, m_RegionOfInterest );
+  InputImageIterator it2( m_InputImage, m_RegionOfInterest );
+  InputImageIterator it3( m_InputImage, m_RegionOfInterest );
+  InputImageIterator it4( m_InputImage, m_RegionOfInterest );
 
   it1.GoToBegin();
   it2.GoToBegin();
   it3.GoToBegin();
   it4.GoToBegin();
 
-  InputImageSizeType inputImageSize = m_InputImage->GetBufferedRegion().GetSize();
+  InputImageSizeType inputImageSize = m_RegionOfInterest.GetSize();
   m_ImageWidth  = inputImageSize[0];
   m_ImageHeight = inputImageSize[1];
   m_ImageDepth  = inputImageSize[2];
@@ -2398,9 +2407,9 @@ BinaryMask3DMeshSource< TInputImage, TOutputMesh >
       SpacingType spacing = this->GetInput(0)->GetSpacing();
       OriginType  origin  = this->GetInput(0)->GetOrigin();
 
-      new_p[0] = indTemp[0] * spacing[0] + origin[0];
-      new_p[1] = indTemp[1] * spacing[1] + origin[1];
-      new_p[2] = indTemp[2] * spacing[2] + origin[2];
+      new_p[0] = indTemp[0] * spacing[0] + origin[0] + m_RegionOfInterest.GetIndex()[0] * spacing[0];
+      new_p[1] = indTemp[1] * spacing[1] + origin[1] + m_RegionOfInterest.GetIndex()[1] * spacing[1];
+      new_p[2] = indTemp[2] * spacing[2] + origin[2] + m_RegionOfInterest.GetIndex()[2] * spacing[2];
 
       this->GetOutput()->SetPoint(m_NumberOfNodes, new_p);
 
