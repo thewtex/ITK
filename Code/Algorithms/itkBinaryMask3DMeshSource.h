@@ -130,10 +130,8 @@ public:
   /** accept the input image */
   virtual void SetInput(const InputImageType *inputImage);
 
-  void SetRegionOfInterest( RegionType& region )
-  {
-    m_RegionOfInterest = region;
-  }
+  itkSetMacro(RegionOfInterest, RegionType);
+  itkGetConstReferenceMacro(RegionOfInterest, RegionType);
 
 protected:
   BinaryMask3DMeshSource();
