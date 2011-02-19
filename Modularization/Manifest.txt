@@ -3139,13 +3139,13 @@ Testing/Code/IO/itkAnalyzeImageIOTest.cxx                                       
 Testing/Code/IO/itkGiplImageIOTest.cxx                                           IO              ITK-IO-GIPL                    GIPL
 Testing/Code/IO/itkVTKImageIO2Test.cxx                                           IO              ITK-IO-VTK                     VTK
 Testing/Code/IO/itkVTKImageIO2Test2.cxx                                          Nonunit         ITK-IntegratedTest             IntegratedTest
-Testing/Code/IO/itkVTKImageIOTest2.cxx                                           IO              ITK-IO-VTK                     VTK
+Testing/Code/IO/itkVTKImageIOTest2.cxx                                           Nonunit         ITK-IntegratedTest             IntegratedTest
 Testing/Code/IO/itkVTKImageIOTest.cxx                                            IO              ITK-IO-VTK                     VTK
 Testing/Code/IO/itkNrrdImageIOTest.cxx                                           IO              ITK-IO-NRRD                    NRRD
 Testing/Code/IO/itkNrrdImageIOTest.h                                             IO              ITK-IO-NRRD                    NRRD
 Testing/Code/IO/itkTIFFImageIOTest.cxx                                           IO              ITK-IO-TIFF                    TIFF
 Testing/Code/IO/itkGDCMImageIOTest.cxx                                           Nonunit         ITK-IntegratedTest             IntegratedTest
-Testing/Code/IO/itkGDCMImageIOTest2.cxx                                          IO              ITK-IO-GDCM                    GDCM
+Testing/Code/IO/itkGDCMImageIOTest2.cxx                                          Nonunit         ITK-IntegratedTest             IntegratedTest
 Testing/Code/IO/itkNiftiImageIOTest.cxx                                          IO              ITK-IO-NIFTI                   NIFTI
 Testing/Code/IO/itkNiftiImageIOTest.h                                            IO              ITK-IO-NIFTI                   NIFTI
 Testing/Code/IO/itkNiftiImageIOTest2.cxx                                         IO              ITK-IO-NIFTI                   NIFTI

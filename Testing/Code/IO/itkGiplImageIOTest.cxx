@@ -19,6 +19,7 @@
 #pragma warning ( disable : 4786 )
 #endif
 #include <fstream>
+#include "itkGiplImageIO.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 #include "itkImage.h"
@@ -45,8 +46,10 @@ int itkGiplImageIOTest( int ac, char* av[] )
 
   itk::ImageFileReader<myImage>::Pointer reader
                                   = itk::ImageFileReader<myImage>::New();
-
   reader->SetFileName(av[1]);
+
+  itk::GiplImageIO::Pointer io = itk::GiplImageIO::New();
+  reader->SetImageIO(io);
 
   try
     {
@@ -69,6 +72,7 @@ int itkGiplImageIOTest( int ac, char* av[] )
   // Generate test image
   itk::ImageFileWriter<myImage>::Pointer writer;
     writer = itk::ImageFileWriter<myImage>::New();
+    writer->SetImageIO(io);
     writer->SetInput( reader->GetOutput() );
     writer->SetFileName( av[2] );
     writer->Update();
