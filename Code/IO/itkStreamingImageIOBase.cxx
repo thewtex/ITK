@@ -39,9 +39,6 @@ bool StreamingImageIOBase
   // Offset into file
   std::streampos dataPos = this->GetDataPosition();
 
-  std::streamsize sizeOfRegion = static_cast< std::streamsize >( m_IORegion.GetNumberOfPixels() )
-                                 * this->GetPixelSize();
-
   // compute the number of continuous bytes to be read
   std::streamsize sizeOfChunk = 1;
   unsigned int    movingDirection = 0;
