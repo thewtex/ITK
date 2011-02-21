@@ -47,19 +47,32 @@ if (HeadOfModularITKTree[-1] ==  '/'):
     HeadOfModularITKTree = HeadOfModularITKTree[0:-1]
 
 
-moduleName = 'itk-common'
-if os.path.isdir(HeadOfModularITKTree+'/modules/'+moduleName):
+excludeList = ['vnl', 'itkWin32OutputWindow.cxx', 'itkMultiThreaderPThreads.cxx','itkMultiThreaderWinThreads.cxx','itkMultiThreaderNoThreads.cxx',
+'itkConditionVariableNoThreads.cxx',
+'itkConditionVariablePThreads.cxx',
+'itkConditionVariableWinThreads.cxx',
+'itkMutexLockNoThreads.cxx',
+'itkMutexLockPThreads.cxx',
+'itkMutexLockWinThreads.cxx',
+'itkSemaphoreNoThreads.cxx',
+'itkSemaphorePThreads.cxx',
+'itkSemaphoreWinThreads.cxx',
+'itkSimpleFastMutexLockNoThreads.cxx',
+'itkSimpleFastMutexLockPThreads.cxx',
+'itkSimpleFastMutexLockWinThreads.cxx',
+'itkThreadSupport.h']
 
-     #/src /CMakeLists.txt
-     cxxFiles = glob.glob(HeadOfModularITKTree+'/modules/'+moduleName+'/src/*.cxx')
-     cxxFileList='';
-     for cxxf in cxxFiles:
-          filename=cxxf.split('/')[-1]
-          if filename[:3] !='vnl' and filename != 'itkWin32OutputWindow.cxx':
-             cxxFileList = cxxFileList+filename+'\n'
 
-     o = open( HeadOfModularITKTree+'/modules/'+moduleName+'/src/CMakeLists.txt','w')
-     for line in open('./templateModule/'+moduleName+'/src/CMakeLists.txt','r'):
-            line = line.replace('LIST_OF_CXX_FILES',cxxFileList[0:-1]) #get rid of the last \n
-            o.write(line);
-     o.close()
+# ITK-Common: create src/CMakeLists.txt
+cxxFiles = glob.glob(HeadOfModularITKTree+'/Core/Common/src/*.cxx')
+cxxFileList='';
+for cxxf in cxxFiles:
+  filename=cxxf.split('/')[-1]
+  if filename not in excludeList:
+     cxxFileList = cxxFileList+filename+'\n'
+
+o = open( HeadOfModularITKTree+'/Core/Common/src/CMakeLists.txt','w')
+for line in open('./templateModule/Core/Common/src/CMakeLists.txt','r'):
+    line = line.replace('LIST_OF_CXX_FILES',cxxFileList[0:-1]) #get rid of the last \n
+    o.write(line);
+o.close()

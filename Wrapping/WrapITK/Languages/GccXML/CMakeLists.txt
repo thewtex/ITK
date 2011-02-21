@@ -1,9 +1,48 @@
 ###############################################################################
-# Load the CableSwig settings used by ITK, or find CableSwig otherwise.
-#set(CableSwig_DIR ${ITK_CableSwig_DIR})
-find_package(CableSwig REQUIRED)
+option(WRAP_ITK_USE_SYSTEM_GCCXML "Use system gccxml. If OFF, gccxml is built as an external project." OFF)
 
-set(GCCXML ${CableSwig_gccxml_EXE} CACHE INTERNAL "gccxml path" FORCE)
+set(gccxml_ep ${CMAKE_CURRENT_BINARY_DIR}/gccxml/bin/gccxml)
+if(WIN32)
+  set(gccxml_ep "${gccxml_ep}.exe")
+endif()
+
+if(WRAP_ITK_USE_SYSTEM_GCCXML)
+  # the path set for the EP build prevents find_package to do its job
+  if("${GCCXML}" STREQUAL "${gccxml_ep}")
+    unset(GCCXML CACHE)
+  endif()
+  find_package(GCCXML REQUIRED)
+  set(GCCXML ${GCCXML} CACHE FILEPATH "gccxml executable." FORCE)
+else()
+  include(ExternalProject)
+  # build gccxml as an external project
+  if(WIN32)
+    # windows build requires an extra step after the install. We use the test to run that step
+    set(test TEST_COMMAND ${CMAKE_CURRENT_BINARY_DIR}/gccxml/bin/gccxml_vcconfig.bat)
+  else()
+    set(test )
+  endif()
+  ExternalProject_add(GCC_XML
+  CVS_REPOSITORY ":pserver:anoncvs@www.gccxml.org:/cvsroot/GCC_XML"
+  CVS_MODULE "gccxml"
+#  CVS_TAG -r ITK-3-20
+  UPDATE_COMMAND ""
+  PREFIX gccxml
+  CMAKE_ARGS
+    -DCMAKE_CXX_COMPILER:STRING=${CMAKE_CXX_COMPILER}
+    -DCMAKE_CXX_COMPILER_ARG1:STRING=${CMAKE_CXX_COMPILER_ARG1}
+    -DCMAKE_C_COMPILER:STRING=${CMAKE_C_COMPILER}
+    -DCMAKE_C_COMPILER_ARG1:STRING=${CMAKE_C_COMPILER_ARG1}
+    -DCMAKE_CXX_FLAGS:STRING=${CMAKE_CXX_FLAGS}
+    -DCMAKE_C_FLAGS:STRING=${CMAKE_C_FLAGS}
+    -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
+    -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_CURRENT_BINARY_DIR}/gccxml/
+    -DBUILD_EXAMPLES:BOOL=OFF
+    -DBUILD_TESTING:BOOL=OFF
+  ${test}
+  )
+  set(GCCXML ${gccxml_ep} CACHE FILEPATH "gccxml executable." FORCE)
+endif()
 
 ###############################################################################
 # install the files requires for gccxml
@@ -18,7 +57,7 @@ endif(NOT EXTERNAL_WRAP_ITK_PROJECT)
 # hide cable swig dir in external projects - it is safer to use the same as the
 # one used to build wrapitk
 if(EXTERNAL_WRAP_ITK_PROJECT)
-  mark_as_advanced(CableSwig_DIR)
+  mark_as_advanced(GCCXML)
 endif(EXTERNAL_WRAP_ITK_PROJECT)
 
 
@@ -143,6 +182,9 @@ macro(WRAP_LIBRARY_GCCXML library_name)
 endmacro(WRAP_LIBRARY_GCCXML)
 
 macro(END_WRAP_LIBRARY_GCCXML)
-#   add_custom_target(${WRAPPER_LIBRARY_NAME}Xml DEPENDS ${GCC_XML_OUTPUT_FILES})
+  add_custom_target(${WRAPPER_LIBRARY_NAME}GccXML DEPENDS ${GCC_XML_OUTPUT_FILES})
+  if(NOT WRAP_ITK_USE_SYSTEM_GCCXML)
+    add_dependencies(${WRAPPER_LIBRARY_NAME}GccXML GCC_XML)
+  endif()
   set(${WRAPPER_LIBRARY_NAME}XmlFiles ${GCC_XML_OUTPUT_FILES} CACHE INTERNAL "Internal ${WRAPPER_LIBRARY_NAME}Xml file list.")
 endmacro(END_WRAP_LIBRARY_GCCXML)

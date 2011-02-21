@@ -76,6 +76,9 @@ namespace itk
 #if defined( __SUNPRO_CC ) && ( __SUNPRO_CC < 0x590 )
 #error "__SUNPRO_CC < 0x590 not supported under ITKv4"
 #endif
+#if defined( __CYGWIN__ )
+#error "The Cygwin compiler is not supported in ITKv4 and above"
+#endif
 #if defined( __BORLANDC__ )
 #error "The Borland C compiler is not supported in ITKv4 and above"
 #endif
@@ -139,8 +142,9 @@ namespace itk
     return static_cast< const type * >( this->ProcessObject::GetInput(number) );                                 \
     }
 
-/** Set a decorated input. This defines the Set"name"() method.
- * It invokes SetInputMacro() and GetInputMacro() for the decorated object */
+/** Set a decorated input. This defines the Set"name"() and Get"name"() methods,
+ * in addition to the Set"name"Input() and Get"name"Input() defined by invoking
+ * SetInputMacro() and GetInputMacro() for the decorated object */
 #define itkSetDecoratedInputMacro(name, type, number)                \
   itkSetInputMacro(name, SimpleDataObjectDecorator< type >, number); \
   itkGetInputMacro(name, SimpleDataObjectDecorator< type >, number); \
@@ -158,7 +162,21 @@ namespace itk
     typename DecoratorType::Pointer newInput = DecoratorType::New(); \
     newInput->Set(_arg);                                             \
     this->Set##name##Input(newInput);                            \
+    }                                                                \
+  virtual const type & Get##name() const                             \
+    {                                                                \
+    itkDebugMacro("Getting input " #name);                           \
+    typedef SimpleDataObjectDecorator< type > DecoratorType;         \
+    const DecoratorType *input =                                     \
+      static_cast< const DecoratorType * >(                          \
+        this->ProcessObject::GetInput(number) );                     \
+    if( input == NULL )                                              \
+      {                                                              \
+      itkExceptionMacro(<<"input" #name " is not set");              \
+      }                                                              \
+    return input->Get();                                             \
     }
+
 
 /** Set a decorated input that derives from itk::Object, but not from
  * itk::DataObject. This defines the Set"name"() method.  It invokes
@@ -538,7 +556,7 @@ extern ITKCommon_EXPORT void OutputWindowDisplayDebugText(const char *);
 #endif
 
 #if defined( ITK_CPP_FUNCTION )
-  #if defined( _WIN32 ) && !defined( __MINGW32__ ) && !defined( __CYGWIN__ ) && !defined( CABLE_CONFIGURATION ) \
+  #if defined( _WIN32 ) && !defined( __MINGW32__ ) && !defined( CABLE_CONFIGURATION ) \
   && !defined( CSWIG )
     #define ITK_LOCATION __FUNCSIG__
   #elif defined( __GNUC__ )

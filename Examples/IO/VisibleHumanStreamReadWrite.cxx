@@ -61,11 +61,10 @@ int main(int argc, char *argv[])
   std::string outputImageFile = argv[2];
 
   typedef itk::RGBPixel<unsigned char> RGBPixelType;
-  typedef unsigned char PixelType;
-  typedef itk::Image<PixelType, 3> ImageType;
-  typedef itk::Image<RGBPixelType, 3> RGB3DImageType;
-  typedef itk::Image<RGBPixelType, 2> RGB2DImageType;
-
+  typedef unsigned char                PixelType;
+  typedef itk::Image<PixelType, 3>     ImageType;
+  typedef itk::Image<RGBPixelType, 3>  RGB3DImageType;
+  typedef itk::Image<RGBPixelType, 2>  RGB2DImageType;
 
   // genderate the names of the decompressed Visible Male images
   typedef itk::NumericSeriesFileNames    NameGeneratorType;
@@ -145,6 +144,9 @@ int main(int argc, char *argv[])
 // create a 2D coronal slice from the volume
   typedef itk::ExtractImageFilter< RGB3DImageType, RGB2DImageType > ExtractFilterType;
   ExtractFilterType::Pointer extract = ExtractFilterType::New();
+  // Note on direction cosines: Because our plane is in the xz-plane,
+  // the default submatrix would be invalid, so we must use the identity
+  extract->SetDirectionCollapseToIdentity();
   extract->SetInput( composeRGB->GetOutput() );
   extract->SetExtractionRegion(coronalSlice);
 
@@ -199,5 +201,3 @@ int main(int argc, char *argv[])
 
   return EXIT_SUCCESS;
 }
-
-

@@ -32,6 +32,7 @@
 #include "itkInterpolateImagePointsFilter.h"
 #include "itkIsolatedConnectedImageFilter.h"
 #include "itkJoinImageFilter.h"
+#include "itkJoinSeriesImageFilter.h"
 #include "itkLaplacianImageFilter.h"
 #include "itkLaplacianRecursiveGaussianImageFilter.h"
 #include "itkLog10ImageFilter.h"
@@ -112,18 +113,18 @@ struct node_type
 
 int itkBasicFiltersPrintTest2(int , char* [])
 {
-  typedef itk::Image<float,2> InputType;
-  typedef itk::Image<float,2> OutputType;
+  typedef itk::Image<float,2>         InputType;
+  typedef itk::Image<float,2>         OutputType;
   typedef itk::Image<unsigned char,2> CharType;
   typedef itk::Image<unsigned char,3> CharType3D;
 
-  typedef itk::Point<float,2> MeshPixelType;
+  typedef itk::Point<float,2>       MeshPixelType;
   typedef itk::Mesh<MeshPixelType>  MeshType;
 
-  typedef itk::Vector<float,2> VectorType;
+  typedef itk::Vector<float,2>     VectorType;
   typedef itk::Image<VectorType,2> VectorImageType;
 
-  typedef itk::CovariantVector<float,2> CovariantVectorType;
+  typedef itk::CovariantVector<float,2>     CovariantVectorType;
   typedef itk::Image<CovariantVectorType,2> CovariantVectorImageType;
 
   // Used for TransformMeshFilter
@@ -140,9 +141,6 @@ int itkBasicFiltersPrintTest2(int , char* [])
   // Used for MaskImageFilter
   typedef itk::Image<unsigned char,2> MaskImageType;
 
-
-  // cygwin linker just can't handle this much code
-#ifndef __CYGWIN__
   itk::ImageToParametricSpaceFilter<InputType,MeshType>::Pointer ImageToParametricSpaceFilterObj =
     itk::ImageToParametricSpaceFilter<InputType,MeshType>::New();
   std::cout << "-------------ImageToParametricSpaceFilter" << ImageToParametricSpaceFilterObj;
@@ -174,6 +172,12 @@ int itkBasicFiltersPrintTest2(int , char* [])
   itk::JoinImageFilter<InputType,OutputType>::Pointer JoinImageFilterObj =
     itk::JoinImageFilter<InputType,OutputType>::New();
   std::cout << "-------------JoinImageFilter" << JoinImageFilterObj;
+
+  // NOTE: A compile error should be here (by extending itk::Concept?),
+  // because InputImageDimension must be less than OutputImageDimension.
+  itk::JoinSeriesImageFilter<InputType,OutputType>::Pointer JoinSeriesImageFilterObj =
+    itk::JoinSeriesImageFilter<InputType,OutputType>::New();
+  std::cout << "-------------JoinSeriesImageFilter" << JoinSeriesImageFilterObj;
 
   itk::LaplacianImageFilter<InputType,OutputType>::Pointer LaplacianImageFilterObj =
     itk::LaplacianImageFilter<InputType,OutputType>::New();
@@ -446,7 +450,6 @@ int itkBasicFiltersPrintTest2(int , char* [])
   itk::ZeroCrossingImageFilter<InputType,OutputType>::Pointer ZeroCrossingImageFilterObj =
     itk::ZeroCrossingImageFilter<InputType,OutputType>::New();
   std::cout << "-------------ZeroCrossingImageFilter" << ZeroCrossingImageFilterObj;
-#endif
 
   return EXIT_SUCCESS;
 }

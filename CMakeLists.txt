@@ -10,6 +10,7 @@ endif(COMMAND CMAKE_POLICY)
 include(${CMAKE_CURRENT_SOURCE_DIR}/CMake/PreventInSourceBuilds.cmake)
 
 project(ITK)
+set(CMAKE_MODULE_PATH ${ITK_SOURCE_DIR}/CMake)
 include_regular_expression("^([Nn]rrd|itk|vtk|vnl|vcl|vxl|v3p|f2c|netlib|ce|itpack|DICOM|meta|png|dbh|tif|jpeg|zlib|gdcm).*$")
 source_group("XML Files" REGULAR_EXPRESSION "[.]xml$")
 
@@ -66,10 +67,16 @@ include(${CMAKE_ROOT}/Modules/CMakeBackwardCompatibilityC.cmake)
 include(${CMAKE_ROOT}/Modules/CMakeBackwardCompatibilityCXX.cmake)
 
 #-----------------------------------------------------------------------------
-# Load macro to manage data download from MIDAS
-include(${ITK_SOURCE_DIR}/CMake/MIDAS.cmake)
-set(MIDAS_REST_URL "http://midas.kitware.com/api/rest")
-set(MIDAS_KEY_DIR "${PROJECT_SOURCE_DIR}/Testing/MIDAS_Keys")
+# Load macros to manage data download
+include(ExternalData)
+list(APPEND ExternalData_URL_TEMPLATES
+  "http://midas.kitware.com/api/rest/midas.bitstream.by.hash?hash=%(hash)&algorithm=%(algo)"
+  )
+
+# Helper macro to add ITK tests with data in the ITKData group.
+macro(itk_add_test)
+  ExternalData_add_test(ITKData ${ARGN})
+endmacro()
 
 #-----------------------------------------------------------------------------
 # Configure Dart testing support.  This should be done before any
@@ -110,8 +117,6 @@ mark_as_advanced(LIBRARY_OUTPUT_PATH EXECUTABLE_OUTPUT_PATH)
 set(ITK_LIBRARY_PATH "${LIBRARY_OUTPUT_PATH}")
 set(ITK_EXECUTABLE_PATH "${EXECUTABLE_OUTPUT_PATH}")
 set(CXX_TEST_PATH ${EXECUTABLE_OUTPUT_PATH})
-
-set(CMAKE_MODULE_PATH ${ITK_SOURCE_DIR}/CMake)
 
 include(itkCheckSourceTree)
 
@@ -157,6 +162,10 @@ endif( ITK_USE_MINC2 )
 #-----------------------------------------------------------------------------
 option(ITK_USE_MODULAR_BUILD "Whether ITK is built from the modularized tree. This should be ON when building the modularized ITK." OFF)
 mark_as_advanced(ITK_USE_MODULAR_BUILD)
+
+#-----------------------------------------------------------------------------
+option(ITK_USE_GPU "GPU acceleration via OpenCL" OFF)
+mark_as_advanced(ITK_USE_GPU)
 
 #-----------------------------------------------------------------------------
 # ITK build configuration options.
@@ -338,10 +347,7 @@ include(CPack)
 
 #-----------------------------------------------------------------------------
 # Perform a setup of ITK Wrapping. This will provide CMake options for
-# individual wrapping as well as determine if CableSwig is required. If it is,
-# ITK_NEED_CableSwig will be set. This file also tries to locate CableSwig by
-# searching first in the source tree of ITK, and if that fails, it searches
-# for a binary built of CableSwig.
+# individual wrapping.
 #
 include(${ITK_SOURCE_DIR}/Wrapping/itkWrapSetup.cmake)
 
@@ -495,6 +501,7 @@ if(CMAKE_USE_PTHREADS)
   if(CMAKE_SYSTEM MATCHES "SunOS.*")
     if(CMAKE_COMPILER_IS_GNUCXX)
       set(ITK_REQUIRED_CXX_FLAGS "${ITK_REQUIRED_CXX_FLAGS} -D_PTHREADS")
+      set(ITK_REQUIRED_LINK_FLAGS "${ITK_REQUIRED_LINK_FLAGS} -lrt")
     else(CMAKE_COMPILER_IS_GNUCXX)
       set(ITK_REQUIRED_CXX_FLAGS "${ITK_REQUIRED_CXX_FLAGS} -mt")
       set(ITK_REQUIRED_C_FLAGS "${ITK_REQUIRED_C_FLAGS} -mt")
@@ -823,3 +830,7 @@ endif(BUILD_TESTING)
 if(BUILD_EXAMPLES)
   add_subdirectory(Examples)
 endif(BUILD_EXAMPLES)
+
+# Create target to download data from the ITKData group.  This must come after
+# all tests have been added that reference the group, so we put it last.
+ExternalData_Add_Target(ITKData)

@@ -8,6 +8,8 @@ if(ITK_CSWIG_JAVA)
   find_package(Java)
 endif(ITK_CSWIG_JAVA)
 
+include(${ITKTesting_SOURCE_DIR}/Utilities/CreateTestDriver.cmake)
+
 make_directory(${ITKTesting_BINARY_DIR}/Temporary)
 if(ITK_BINARY_DIR)
   # We are building inside the tree.
