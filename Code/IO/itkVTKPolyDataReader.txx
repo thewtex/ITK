@@ -19,6 +19,7 @@
 #define __itkVTKPolyDataReader_txx
 
 #include "itkVTKPolyDataReader.h"
+#include "itkMath.h"
 #include <fstream>
 #include <stdio.h>
 #include <string.h>
@@ -130,7 +131,8 @@ VTKPolyDataReader< TOutputMesh >
   std::string pointLine( line, strlen("POINTS "), line.length() );
   itkDebugMacro("pointLine " << pointLine);
 
-  PointIdentifier numberOfPoints = NumericTraits<PointIdentifier>::Zero;
+  // we must use long here because this is the exact type specified by scanf
+  long int numberOfPoints = NumericTraits<PointIdentifier>::Zero;
 
   if ( sscanf(pointLine.c_str(), "%ld", &numberOfPoints) != 1 )
     {
@@ -156,7 +158,7 @@ VTKPolyDataReader< TOutputMesh >
 
   PointType point;
 
-  for ( PointIdentifier i = 0; i < numberOfPoints; i++ )
+  for ( PointIdentifier i = 0; i < itk::Math::CastWithRangeCheck< PointIdentifier>(numberOfPoints); i++ )
     {
     inputFile >> point;
     if ( inputFile.eof() )
@@ -199,8 +201,9 @@ VTKPolyDataReader< TOutputMesh >
   // Read the number of polygons
   //
 
-  CellIdentifier numberOfPolygons = NumericTraits< CellIdentifier >::Zero;
-  CellIdentifier numberOfIndices = NumericTraits< CellIdentifier >::Zero;
+  // we must use long here because this is the exact type specified by scanf
+  long int numberOfPolygons = NumericTraits< CellIdentifier >::Zero;
+  long int numberOfIndices = NumericTraits< CellIdentifier >::Zero;
 
   if ( sscanf(polygonLine.c_str(), "%ld %ld", &numberOfPolygons,
               &numberOfIndices) != 2 )
@@ -232,8 +235,8 @@ VTKPolyDataReader< TOutputMesh >
   // Load the polygons into the itk::Mesh
   //
 
-  PointIdentifier numberOfCellPoints;
-  OffsetValueType ids[3]; // need a signed type on input.
+  long int numberOfCellPoints;
+  long int ids[3]; // need a signed type on input.
 
   for ( CellIdentifier i = 0; i < static_cast<CellIdentifier>( numberOfPolygons ); i++ )
     {
@@ -343,7 +346,7 @@ VTKPolyDataReader< TOutputMesh >
 
     double pointData;
 
-    for ( PointIdentifier pid = 0; pid < numberOfPoints; pid++ )
+    for ( PointIdentifier pid = 0; pid < itk::Math::CastWithRangeCheck<PointIdentifier>(numberOfPoints); pid++ )
       {
       if ( inputFile.eof() )
         {
