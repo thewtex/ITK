@@ -196,7 +196,8 @@ for  moduleName in moduleList:
 
        if not os.path.isfile(filepath):
          o = open(filepath,'w')
-
+         line = 'itk_module_test()\n'
+         o.write(line)
          line ='set('+moduleName+'Tests\n'+cxxFileList+')\n\n'
          o.write(line)
          if (moduleName == 'ITK-IntegratedTest'):

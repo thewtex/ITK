@@ -1,3 +1,4 @@
+itk_module_test()
 create_test_sourcelist(Tests ITK-IO-Base-tests.cxx
 itkArchetypeSeriesFileNamesTest.cxx
 itkImageFileReaderTest1.cxx
