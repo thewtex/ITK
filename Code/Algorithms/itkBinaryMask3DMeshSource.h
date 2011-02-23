@@ -149,7 +149,7 @@ protected:
 
   void GenerateData();
 
-  bool m_RegionOfInterestProvidedByUser;
+  bool       m_RegionOfInterestProvidedByUser;
   RegionType m_RegionOfInterest;
 
   virtual void GenerateOutputInformation(){}  // do nothing
