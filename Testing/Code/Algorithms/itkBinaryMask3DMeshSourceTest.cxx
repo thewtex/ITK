@@ -107,14 +107,17 @@ int itkBinaryMask3DMeshSourceTest(int argc, char *argv[] )
   meshSource->SetInput( image );
   meshSource->SetObjectValue( internalValue );
 
-  if ( atoi( argv[1] ) == 1 )
-  {
-    size[0] = 9;
-    size[1] = 9;
-    size[2] = 9;
-    region.SetSize(size);
-    meshSource->SetRegionOfInterest( region );
-  }
+  if ( argc == 2 )
+    {
+    if ( atoi( argv[1] ) == 1 )
+      {
+      size[0] = 9;
+      size[1] = 9;
+      size[2] = 9;
+      region.SetSize(size);
+      meshSource->SetRegionOfInterest( region );
+      }
+    }
 
   try
     {

@@ -34,6 +34,8 @@ BinaryMask3DMeshSource< TInputImage, TOutputMesh >
   // Modify superclass default values, can be overridden by subclasses
   this->SetNumberOfRequiredInputs(1);
 
+  m_RegionOfInterestProvidedByUser = false;
+
   SizeType size;
   size.Fill( 0 );
   m_RegionOfInterest.SetSize(size);
@@ -107,6 +109,7 @@ void
 BinaryMask3DMeshSource< TInputImage, TOutputMesh >
 ::SetInput(const InputImageType *image)
 {
+  m_RegionOfInterestProvidedByUser = false;
   this->ProcessObject::SetNthInput( 0,
                                     const_cast< InputImageType * >( image ) );
 }
@@ -117,10 +120,14 @@ void
 BinaryMask3DMeshSource< TInputImage, TOutputMesh >
 ::GenerateData()
 {
-  if ( m_RegionOfInterest.GetNumberOfPixels() == 0 )
-  {
+  if ( !m_RegionOfInterestProvidedByUser )
+    {
     m_RegionOfInterest = this->GetInput()->GetBufferedRegion();
-  }
+    }
+  else
+    {
+    m_RegionOfInterest.Crop( this->GetInput()->GetBufferedRegion() );
+    }
 
   this->InitializeLUT();
   this->CreateMesh();
@@ -2393,23 +2400,27 @@ BinaryMask3DMeshSource< TInputImage, TOutputMesh >
 
       OPointType indTemp;
       indTemp[0] = m_LocationOffset[nodesid[i]][0]
-                   + ( index % m_ImageWidth );
+                   + ( index % m_ImageWidth )
+                   + m_RegionOfInterest.GetIndex()[0];;
       indTemp[1] = m_LocationOffset[nodesid[i]][1]
-                   + ( ( index % ( m_ImageWidth * m_ImageHeight ) ) / m_ImageWidth );
+                   + ( ( index % ( m_ImageWidth * m_ImageHeight ) ) / m_ImageWidth )
+                   + m_RegionOfInterest.GetIndex()[1];
       indTemp[2] = m_LocationOffset[nodesid[i]][2]
-                   + ( index / ( m_ImageWidth * m_ImageHeight ) );
+                   + ( index / ( m_ImageWidth * m_ImageHeight ) )
+                   + m_RegionOfInterest.GetIndex()[2];
+
+      InputImageIndexType temp_index;
+      typedef typename InputImageIndexType::IndexValueType IndexValueType;
+
+      for( int dim = 0; dim < 3; dim++ )
+        {
+        temp_index[dim] = static_cast< IndexValueType >( indTemp[dim] );
+        }
 
       // We transform the point to the physical space since the mesh does not
       // have the notion
       // of spacing and origin
-      //this->GetInput(0)->TransformIndexToPhysicalPoint(indTemp,new_p);
-
-      SpacingType spacing = this->GetInput(0)->GetSpacing();
-      OriginType  origin  = this->GetInput(0)->GetOrigin();
-
-      new_p[0] = indTemp[0] * spacing[0] + origin[0] + m_RegionOfInterest.GetIndex()[0] * spacing[0];
-      new_p[1] = indTemp[1] * spacing[1] + origin[1] + m_RegionOfInterest.GetIndex()[1] * spacing[1];
-      new_p[2] = indTemp[2] * spacing[2] + origin[2] + m_RegionOfInterest.GetIndex()[2] * spacing[2];
+      this->GetInput(0)->TransformIndexToPhysicalPoint(temp_index,new_p);
 
       this->GetOutput()->SetPoint(m_NumberOfNodes, new_p);
 

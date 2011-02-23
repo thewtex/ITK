@@ -130,7 +130,16 @@ public:
   /** accept the input image */
   virtual void SetInput(const InputImageType *inputImage);
 
-  itkSetMacro(RegionOfInterest, RegionType);
+  void SetRegionOfInterest( const RegionType& iRegion )
+    {
+    if( iRegion.GetNumberOfPixels() != 0 )
+      {
+      m_RegionOfInterest = iRegion;
+      m_RegionOfInterestProvidedByUser = true;
+      this->Modified();
+      }
+    }
+
   itkGetConstReferenceMacro(RegionOfInterest, RegionType);
 
 protected:
@@ -140,6 +149,7 @@ protected:
 
   void GenerateData();
 
+  bool m_RegionOfInterestProvidedByUser;
   RegionType m_RegionOfInterest;
 
   virtual void GenerateOutputInformation(){}  // do nothing
