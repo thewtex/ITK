@@ -15,6 +15,14 @@
 # limitations under the License.
 #=============================================================================
 
+# use gnu $grep on SunOS
+if [ "`uname -s`" == "SunOS" ]; then
+  grep=/usr/sfw/bin/ggrep
+  $grep --version
+else
+  grep=grep
+fi
+
 # Prepare a copy of the message:
 #  - strip comment lines
 #  - stop at "diff --git" (git commit -v)
@@ -40,11 +48,11 @@ die() {
 
 msg_is_merge() {
 	test -f "$GIT_DIR/MERGE_HEAD" &&
-	echo "$line" | grep "^Merge " >/dev/null 2>&1
+	echo "$line" | $grep "^Merge " >/dev/null 2>&1
 }
 
 msg_is_revert() {
-	echo "$line" | grep "^Revert " >/dev/null 2>&1
+	echo "$line" | $grep "^Revert " >/dev/null 2>&1
 }
 
 msg_first() {
@@ -62,7 +70,7 @@ msg_first() {
 ------------------------------------------------------------------------------
 '"$line"'
 ------------------------------------------------------------------------------'
-	elif echo "$line" | grep "^[	 ]\|[	 ]$" >/dev/null 2>&1; then
+	elif echo "$line" | $grep "^[	 ]\|[	 ]$" >/dev/null 2>&1; then
 		die 'The first line may not have leading or trailing space:
 ['"$line"']'
 	else
@@ -81,14 +89,14 @@ msg_second() {
 }
 
 msg_rest() {
-	if echo "$line" | grep -q "^Change-Id:"; then
+	if echo "$line" | $grep -q "^Change-Id:"; then
 		state=gerrit
 	fi
 }
 
 msg_gerrit() {
 	test "x$line" = "x" && return
-	echo "$line" | grep -q '^[A-Za-z0-9-][A-Za-z0-9-]*:' && return
+	echo "$line" | $grep -q '^[A-Za-z0-9-][A-Za-z0-9-]*:' && return
 	die 'The Change-Id line must appear in a footer at the bottom.'
 }
 
@@ -105,7 +113,7 @@ die_advice='' # No more temporary message file.
 # Optionally run Gerrit's commit-msg hook to add a Change-Id line.
 
 gerrit_advice() {
-	gerrits=$(git config -l |grep '^remote\.[^=]\+url=.*review.*$')
+	gerrits=$(git config -l |$grep '^remote\.[^=]\+url=.*review.*$')
 	test "x$gerrits" != "x" || return 0
 
 	echo 'Some config values look like Gerrit Code Review URLs:'

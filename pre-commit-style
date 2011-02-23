@@ -14,6 +14,14 @@
 # limitations under the License.
 #=============================================================================
 
+# use gnu $grep on SunOS
+if [ "`uname -s`" == "SunOS" ]; then
+  grep=/usr/sfw/bin/ggrep
+  $grep --version
+else
+  grep=grep
+fi
+
 # Run uncrustify and KWStyle pre-commit hooks.
 #
 # 'git config' is used to enable the hooks and set their configuration files.
@@ -34,7 +42,7 @@ do_uncrustify=$(git config --bool hooks.uncrustify) || do_uncrustify=false
 # Returns 0 for execute, 1 for don't execute.
 run_style_on_file() {
 	# Do not run on submodule changes.
-	if git diff-index --cached $against -- "$1" | grep -q '^:...... 160000'; then
+	if git diff-index --cached $against -- "$1" | $grep -q '^:...... 160000'; then
 		return 1
 	fi
 	if ! git diff-files --quiet -- "$1"; then
@@ -68,7 +76,7 @@ Allow skipping the style check for this commit with
 		'unset')        return 1 ;;
 		'set')          return 0 ;;
 		'unspecified')  return 1 ;;
-		*)              echo ",$style," | grep -iq ",$2," && return 0 ;;
+		*)              echo ",$style," | $grep -iq ",$2," && return 0 ;;
 	esac
 	return 1
 }
