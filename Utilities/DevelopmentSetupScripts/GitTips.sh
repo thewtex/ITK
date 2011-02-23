@@ -20,6 +20,12 @@
 
 # This script makes optional suggestions for working with git.
 
+# use gnu $grep on SunOS
+if [ "`uname -s`" == "SunOS" ]; then
+  grep=/usr/sfw/bin/ggrep
+else
+  grep=grep
+fi
 
 if test "$(git config color.ui)" != "auto"; then
   cat << EOF
@@ -31,7 +37,7 @@ You may want to enable color output from Git commands with
 EOF
 fi
 
-if ! bash -i -c 'echo $PS1' | grep -q '__git_ps1'; then
+if ! bash -i -c 'echo $PS1' | $grep -q '__git_ps1'; then
   cat << EOF
 
 A dynamic, informative Git shell prompt can be obtained by sourcing the git

@@ -20,6 +20,13 @@
 
 # Run this script to set up the topic stage for pushing changes.
 
+# use gnu $grep on SunOS
+if [ "`uname -s`" == "SunOS" ]; then
+  grep=/usr/sfw/bin/ggrep
+else
+  grep=grep
+fi
+
 die() {
   echo 'Failure during topic stage setup.' 1>&2
   echo '---------------------------------' 1>&2
@@ -58,7 +65,7 @@ if [ "$access" == "y" ] || [ "$access" == "Y" ]; then
   # We will have the private key corresponding the public key at itk.org at
   # ~/.ssh/id_git_itk.  This allows the developer to keep a single public key
   # on file with the server across multiple machines.
-  if ! grep -q 'Host itk.org' ~/.ssh/config 2>/dev/null; then
+  if ! $grep -q 'Host itk.org' ~/.ssh/config 2>/dev/null; then
     echo "Configuring the IdentityFile for itk.org to be ~/.ssh/id_git_itk..."
     mkdir -p ~/.ssh
     chmod og-rwx ~/.ssh
