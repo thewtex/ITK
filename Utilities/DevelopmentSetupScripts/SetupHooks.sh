@@ -23,6 +23,13 @@
 #   http://www.itk.org/Wiki/ITK/Git#Hooks
 #   http://www.itk.org/Wiki/Git/Hooks
 
+# use gnu $grep on SunOS
+if [ "`uname -s`" == "SunOS" ]; then
+  grep=/usr/sfw/bin/ggrep
+  $grep --version
+else
+  grep=grep
+fi
 
 die() {
 	echo 'failure during hook setup' 1>&2
@@ -44,7 +51,7 @@ fi
 # Use the local hooks if possible.
 echo "Pulling the hooks..."
 if GIT_DIR=.. git for-each-ref refs/remotes/origin/hooks 2>/dev/null | \
-  grep -q '\<refs/remotes/origin/hooks$'; then
+  $grep -q '\<refs/remotes/origin/hooks$'; then
   git pull .. remotes/origin/hooks
 else
   git pull http://public.kitware.com/ITK.git hooks || die "Downloading the hooks failed."

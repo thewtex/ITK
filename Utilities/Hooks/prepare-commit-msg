@@ -17,11 +17,19 @@
 #
 #==========================================================================*/
 
+# use gnu $grep on SunOS
+if [ "`uname -s`" == "SunOS" ]; then
+  grep=/usr/sfw/bin/ggrep
+  $grep --version
+else
+  grep=grep
+fi
+
 # First argument is file containing commit message.
 commit_msg="$1"
 
 # Check for our extra instructions.
-grep -q "^# Start ITK commit messages" -- "$commit_msg" && return 0
+$grep -q "^# Start ITK commit messages" -- "$commit_msg" && return 0
 
 # Insert our extra instructions.
 commit_msg_tmp="$commit_msg.$$"
