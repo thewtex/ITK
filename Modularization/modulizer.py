@@ -85,6 +85,7 @@ for line in open("./Manifest.txt",'r'):
     groupName   = words[1]
     moduleName  = words[2]
     fileExt = itkFileName.split('.')[-1]
+
     if moduleName ==  "ITK-IntegratedTest":
        subdir = 'test'
     elif fileExt == 'h' or fileExt == 'txx' or fileExt == 'inc':
@@ -98,11 +99,15 @@ for line in open("./Manifest.txt",'r'):
         else:
             subdir = 'src'
 
-    desPath = groupName + '/'+words[3] + '/'+subdir
+
+    if groupName == '-':
+            outputPath = HeadOfModularITKTree+ '/'+words[3]
+    else:
+            desPath = groupName + '/'+words[3] + '/'+subdir
+            outputPath = HeadOfModularITKTree+'/ITK/'+desPath
 
 
     inputfile = HeadOfTempTree+'/'+words[0]
-    outputPath = HeadOfModularITKTree+'/ITK/'+desPath
     if len(moduleList) == 0:
        moduleList.append(moduleName)
     elif moduleName != moduleList[-1]:
@@ -113,7 +118,7 @@ for line in open("./Manifest.txt",'r'):
        # creat the path
        if not os.path.isdir(outputPath):
           os.makedirs(outputPath)
-       os.system('mv ' +inputfile+'  '+ outputPath)
+       os.system('mv  ' +inputfile+'  '+ outputPath)
     else:
        missingFileName = inputfile.split(HeadOfTempTree+'/')[1]
        missingf.write(missingFileName + '\n')
@@ -124,16 +129,6 @@ missingf.close()
 
 # generate the modules list
 moduleList = modulizerHelper.unique(moduleList)
-
-# list the new files
-newf =  open(LogDir+'/newFiles.log','w')
-for (root, subDirs, files) in os.walk(HeadOfTempTree):
-   for afile in files:
-     newFilePath = os.path.join(root, afile)
-     newFileName = newFilePath.split(HeadOfTempTree+'/')[1]
-     newf.write(newFileName+'\n')
-newf.close()
-print ("listed new files to"+LogDir+"/newFiles.log")
 
 
 
@@ -233,8 +228,25 @@ for  moduleName in moduleList:
      os.system('cp ./templateModule/itk-template-module/NOTICE'+'  '+ HeadOfModularITKTree + '/'+ modulePath )
 
 #----------------------------------------------------------------------------------------------------
-#clean up the temporary  directory
-if os.path.isdir(HeadOfTempTree):
-   os.system("rm -Rf "+ HeadOfTempTree)
-
+#clean up the temporary file
 os.system("rm -f ./ModulePathTable.txt")
+
+
+# clean up the directories
+copyDirList=['Testing/Data', 'Examples', 'Validation', 'Documentation', 'Wrapping', 'Testing/HTML']
+if not os.path.isdir(HeadOfModularITKTree+'/Testing'):
+     os.system('mkdir  '+ HeadOfModularITKTree+'/Testing')
+
+for copyDir in  copyDirList:
+         os.system('mv -f '+HeadOfTempTree+'/'+copyDir+ '  '+ HeadOfModularITKTree +'/'+copyDir)
+
+
+# list the new files
+newf =  open(LogDir+'/newFiles.log','w')
+for (root, subDirs, files) in os.walk(HeadOfTempTree):
+   for afile in files:
+     newFilePath = os.path.join(root, afile)
+     newFileName = newFilePath.split(HeadOfTempTree+'/')[1]
+     newf.write(newFileName+'\n')
+newf.close()
+print ("listed new files to"+LogDir+"/newFiles.log")
