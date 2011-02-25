@@ -124,6 +124,19 @@ public:
       }
   }
 
+
+  template< class T, unsigned int N >
+  explicit VariableLengthVector(const FixedArray< T, N > & a )
+  {
+    m_NumElements = N;
+    m_Data = this->AllocateElements(m_NumElements);
+    m_LetArrayManageMemory = true;
+    for ( ElementIdentifier i = 0; i < N; i++ )
+      {
+      this->m_Data[i] = static_cast< ValueType >( a[i] );
+      }
+  }
+
   /** Copy constructer.. Override the default non-templated copy constructor
    * that the compiler provides */
   VariableLengthVector(const VariableLengthVector< TValueType > & v);
