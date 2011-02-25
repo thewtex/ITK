@@ -596,7 +596,7 @@ TestDegenerateHeaderFiles()
     error++;
     }
   RemoveByteSwapTestFiles(AugmentName);
-  return error ? 1 : 0;
+  return error ? 0 : 1;
 }
 int itkAnalyzeImageIOBadHeader(int ac, char* av[])
 {
@@ -621,6 +621,7 @@ int itkAnalyzeImageIOBadHeader(int ac, char* av[])
   itk::NiftiImageIOFactory::RegisterOneFactory();
   result2 = TestDegenerateHeaderFiles();
 #endif
+  std::cout << "r1: " << result1 << std::endl;
   return !(result1 == 0 && result2 == 0);
 }
 
