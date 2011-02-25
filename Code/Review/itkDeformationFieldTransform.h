@@ -48,7 +48,16 @@ public:
   itkTypeMacro( DeformationFieldTransform, Transform );
 
   /** New macro for creation of through a Smart Pointer */
-  itkNewMacro( Self );
+  itkSimpleNewMacro( Self );
+
+  /** Leave CreateAnother undefined. To fully implement here, it must be
+   * sure to copy all members. It may be called from transform-cloning
+   * that only copies parameters, so override here to prevent
+   * its use without copying full members. */
+  virtual::itk::LightObject::Pointer CreateAnother(void) const
+    {
+    itkExceptionMacro("CreateAnother unimplemented. See source comments.");
+    }
 
   /** InverseTransform type. */
   typedef typename Superclass::InverseTransformBasePointer  InverseTransformBasePointer;
@@ -91,7 +100,20 @@ public:
 
   /** Get/Set the deformation field. */
   itkGetObjectMacro( DeformationField, DeformationFieldType );
-  itkSetObjectMacro( DeformationField, DeformationFieldType );
+  /* Create out own set accessor to update interpolator */
+  virtual void SetDeformationField( DeformationFieldType* field )
+    {
+    itkDebugMacro("setting DeformationField to " << field);
+    if ( this->m_DeformationField != field )
+      {
+      this->m_DeformationField = field;
+      this->Modified();
+      if( ! this->m_Interpolator.IsNull() )
+        {
+        this->m_Interpolator->SetInputImage( this->m_DeformationField );
+        }
+      }
+    }
 
   /** Get/Set the inverse deformation field. */
   itkGetObjectMacro( InverseDeformationField, DeformationFieldType );
@@ -99,7 +121,20 @@ public:
 
   /** Get/Set the interpolator. */
   itkGetObjectMacro( Interpolator, InterpolatorType );
-  itkSetObjectMacro( Interpolator, InterpolatorType );
+  /* Create out own set accessor that assigns the deformation field */
+  virtual void SetInterpolator( InterpolatorType* interpolator )
+    {
+    itkDebugMacro("setting Interpolator to " << interpolator);
+    if ( this->m_Interpolator != interpolator )
+      {
+      this->m_Interpolator = interpolator;
+      this->Modified();
+      if( ! this->m_Interpolator.IsNull() )
+        {
+        this->m_Interpolator->SetInputImage( this->m_DeformationField );
+        }
+      }
+    }
 
   /**  Method to transform a point. */
   virtual OutputPointType TransformPoint( const InputPointType& thisPoint ) const;
@@ -163,10 +198,6 @@ protected:
 
   /** The interpolator. */
   typename InterpolatorType::Pointer          m_Interpolator;
-
-  /** State var for tracking object update time */
-  mutable unsigned long                               m_PreviousDeformationFieldMTime;
-  mutable unsigned long                               m_PreviousInterpolatorMTime;
 
 private:
   DeformationFieldTransform( const Self& ); //purposely not implemented

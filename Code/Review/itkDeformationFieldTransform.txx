@@ -34,8 +34,6 @@ DeformationFieldTransform() : Superclass( NDimensions, 0 )
 {
   this->m_DeformationField = NULL;
   this->m_InverseDeformationField = NULL;
-  this->m_PreviousDeformationFieldMTime = 0;
-  this->m_PreviousInterpolatorMTime = 0;
 
   typedef VectorLinearInterpolateImageFunction<DeformationFieldType, ScalarType>
     DefaultInterpolatorType;
@@ -69,16 +67,6 @@ DeformationFieldTransform<TScalar, NDimensions>
     {
     itkExceptionMacro( "No interpolator is specified." );
     }
-  /* Check if either the deformation field or iterpolatr have changed since
-   * we were last in here. */
-  if( this->m_DeformationField->GetMTime() >
-        this->m_PreviousDeformationFieldMTime ||
-      this->m_Interpolator->GetMTime() > this->m_PreviousInterpolatorMTime )
-    {
-    this->m_Interpolator->SetInputImage( this->m_DeformationField );
-    }
-  this->m_PreviousDeformationFieldMTime = this->GetMTime();
-  this->m_PreviousInterpolatorMTime = this->GetMTime();
 
   typename InterpolatorType::ContinuousIndexType cidx;
   typename InterpolatorType::PointType point;
