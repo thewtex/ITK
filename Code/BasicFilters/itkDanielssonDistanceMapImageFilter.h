@@ -166,7 +166,7 @@ public:
   itkConceptMacro( SameDimensionCheck,
                    ( Concept::SameDimension< InputImageDimension, OutputImageDimension > ) );
   itkConceptMacro( UnsignedIntConvertibleToOutputCheck,
-                   ( Concept::Convertible< unsigned int, typename TOutputImage::PixelType > ) );
+                   ( Concept::Convertible< IndentifierType, typename TOutputImage::PixelType > ) );
   itkConceptMacro( IntConvertibleToOutputCheck,
                    ( Concept::Convertible< int, typename TOutputImage::PixelType > ) );
   itkConceptMacro( DoubleConvertibleToOutputCheck,

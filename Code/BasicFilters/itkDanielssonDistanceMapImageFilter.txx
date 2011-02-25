@@ -130,8 +130,10 @@ DanielssonDistanceMapImageFilter< TInputImage, TOutputImage >
 
   // find the largest of the image dimensions
   typename TInputImage::SizeType size = region.GetSize();
-  unsigned int maxLength = 0;
-  for ( unsigned int dim = 0; dim < TInputImage::ImageDimension; dim++ )
+
+  typename TInputImage::SizeValueType maxLength = 0;
+
+  for ( unsigned int dim = 0; dim < InputImageDimension; ++dim )
     {
     if ( maxLength < size[dim] )
       {
@@ -148,12 +150,12 @@ DanielssonDistanceMapImageFilter< TInputImage, TOutputImage >
   itkDebugMacro(<< "PrepareData: Copy input to output");
   if ( m_InputIsBinary )
     {
-    unsigned int npt = 1;
+    IdentifierType npt = 1;
     while ( !ot.IsAtEnd() )
       {
       if ( it.Get() )
         {
-        ot.Set(npt++);
+        ot.Set( ++npt );
         }
       else
         {
@@ -254,15 +256,16 @@ DanielssonDistanceMapImageFilter< TInputImage, TOutputImage >
     double     distance = 0.0;
     if ( m_UseImageSpacing )
       {
-      for ( unsigned int i = 0; i < InputImageDimension; i++ )
+      for ( unsigned int i = 0; i < InputImageDimension; ++i )
         {
-        double spacingComponent = static_cast< double >( spacing[i] );
-        distance += distanceVector[i] * distanceVector[i] * spacingComponent * spacingComponent;
+        const double temp_dist =
+          static_cast< double >( spacing[i] ) * distanceVector[i];
+        distance += temp_dist * temp_dist;
         }
       }
     else
       {
-      for ( unsigned int i = 0; i < InputImageDimension; i++ )
+      for ( unsigned int i = 0; i < InputImageDimension; ++i )
         {
         distance += distanceVector[i] * distanceVector[i];
         }
@@ -301,7 +304,7 @@ DanielssonDistanceMapImageFilter< TInputImage, TOutputImage >
 
   double norm1 = 0.0;
   double norm2 = 0.0;
-  for ( unsigned int i = 0; i < InputImageDimension; i++ )
+  for ( unsigned int i = 0; i < InputImageDimension; ++i )
     {
     double v1 = static_cast< double >(  offsetValueHere[i]  );
     double v2 = static_cast< double >(  offsetValueThere[i] );
@@ -347,7 +350,7 @@ DanielssonDistanceMapImageFilter< TInputImage, TOutputImage >
   ReflectiveImageRegionConstIterator< VectorImageType >
   it(distanceComponents, region);
   typename VectorImageType::OffsetType voffset;
-  for ( unsigned int dim = 0; dim < VectorImageType::ImageDimension; dim++ )
+  for ( unsigned int dim = 0; dim < InputImageDimension; ++dim )
     {
     if ( region.GetSize()[dim] > 1 )
       {
@@ -386,27 +389,26 @@ DanielssonDistanceMapImageFilter< TInputImage, TOutputImage >
     {
     if ( !( i % updateVisits ) )
       {
-      this->UpdateProgress( (float)i / updatePeriod );
+      this->UpdateProgress( static_cast< float >( i ) / updatePeriod );
       }
 
     IndexType here = it.GetIndex();
-    for ( unsigned int dim = 0; dim < VectorImageType::ImageDimension; dim++ )
+    for ( unsigned int dim = 0; dim < InputImageDimension; ++dim )
       {
-      if ( region.GetSize()[dim] <= 1 )
+      if ( region.GetSize()[dim] > 1 )
         {
-        continue;
-        }
-      if ( it.IsReflected(dim) )
-        {
-        offset[dim]++;
-        UpdateLocalDistance(distanceComponents, here, offset);
-        offset[dim] = 0;
-        }
-      else
-        {
-        offset[dim]--;
-        UpdateLocalDistance(distanceComponents, here, offset);
-        offset[dim] = 0;
+        if ( it.IsReflected(dim) )
+          {
+          ++offset[dim];
+          UpdateLocalDistance(distanceComponents, here, offset);
+          offset[dim] = 0;
+          }
+        else
+          {
+          --offset[dim];
+          UpdateLocalDistance(distanceComponents, here, offset);
+          offset[dim] = 0;
+          }
         }
       }
     ++it;
