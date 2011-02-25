@@ -40,6 +40,12 @@ template< class TInputPixel, class TLabel, class TRGBPixel >
 class LabelOverlayFunctor
 {
 public:
+
+  typedef itk::RGBPixel< typename itk::NumericTraits<TRGBPixel>::ValueType > InternalRGBPixelType;
+
+  /** type of the color component */
+  typedef typename itk::NumericTraits<TRGBPixel>::ValueType ComponentType;
+
   LabelOverlayFunctor()
   {
     // provide some default value for external use (outside
@@ -50,7 +56,7 @@ public:
 
   inline TRGBPixel operator()(const TInputPixel & p1, const TLabel & p2) const
   {
-    TRGBPixel rgbPixel;
+    InternalRGBPixelType rgbPixel;
 
     if ( p2 == m_BackgroundValue )
       {
@@ -61,7 +67,7 @@ public:
       rgbPixel[0] = p;
       rgbPixel[1] = p;
       rgbPixel[2] = p;
-      return rgbPixel;
+      return TRGBPixel( rgbPixel );
       }
 
     // taint the input pixel with the colored one returned by
@@ -72,7 +78,7 @@ public:
       rgbPixel[i] = static_cast< typename TRGBPixel::ValueType >(
         opaque[i] * m_Opacity + p1 * ( 1.0 - m_Opacity ) );
       }
-    return rgbPixel;
+    return TRGBPixel( rgbPixel );
   }
 
   bool operator!=(const LabelOverlayFunctor & l) const
@@ -105,9 +111,6 @@ public:
   {
     return m_RGBFunctor.GetNumberOfColors();
   }
-
-  /** type of the color component */
-  typedef typename TRGBPixel::ComponentType ComponentType;
 
   void AddColor(ComponentType r, ComponentType g, ComponentType b)
   {

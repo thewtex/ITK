@@ -18,6 +18,9 @@
 #ifndef __itkLabelToRGBFunctor_h
 #define __itkLabelToRGBFunctor_h
 
+#include "itkRGBPixel.h"
+#include "itkNumericTraitsRGBPixel.h"
+
 namespace itk
 {
 namespace Functor
@@ -43,10 +46,10 @@ public:
 
   typedef LabelToRGBFunctor Self;
 
+  typedef itk::RGBPixel< typename itk::NumericTraits<TRGBPixel>::ValueType > InternalRGBPixelType;
+
   LabelToRGBFunctor()
   {
-    TRGBPixel rgbPixel;
-
     typedef typename TRGBPixel::ValueType ValueType;
 
     // the following colors are from "R", and named:
@@ -105,24 +108,24 @@ public:
     // return a gray pixel with the same intensity than the label pixel
     if ( p == m_BackgroundValue )
       {
-      return m_BackgroundColor;
+      return TRGBPixel( m_BackgroundColor );
       }
 
     // else, return a colored pixel from the color table
-    return m_Colors[p % m_Colors.size()];
+    return TRGBPixel( m_Colors[p % m_Colors.size()] );
   }
 
   void AddColor(unsigned char r, unsigned char g, unsigned char b)
   {
-    TRGBPixel rgbPixel;
+    InternalRGBPixelType rgbPixel;
 
     typedef typename TRGBPixel::ValueType ValueType;
 
     ValueType m = NumericTraits< ValueType >::max();
 
-    rgbPixel.Set( static_cast< ValueType >( static_cast< double >( r ) / 255 * m ),
-                  static_cast< ValueType >( static_cast< double >( g ) / 255 * m ),
-                  static_cast< ValueType >( static_cast< double >( b ) / 255 * m ) );
+    rgbPixel[0] = static_cast< ValueType >( static_cast< double >( r ) / 255 * m );
+    rgbPixel[1] = static_cast< ValueType >( static_cast< double >( g ) / 255 * m );
+    rgbPixel[2] = static_cast< ValueType >( static_cast< double >( b ) / 255 * m );
     m_Colors.push_back(rgbPixel);
   }
 
@@ -156,16 +159,16 @@ public:
     m_BackgroundValue = v;
   }
 
-  void SetBackgroundColor(TRGBPixel rgb)
+  void SetBackgroundColor(InternalRGBPixelType rgb)
   {
     m_BackgroundColor = rgb;
   }
 
   ~LabelToRGBFunctor() {}
 
-  std::vector< TRGBPixel > m_Colors;
+  std::vector< InternalRGBPixelType > m_Colors;
 
-  TRGBPixel m_BackgroundColor;
+  InternalRGBPixelType m_BackgroundColor;
 
   TLabel m_BackgroundValue;
 };
