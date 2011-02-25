@@ -159,21 +159,21 @@ bool NormalizeSineWave( double frequencyPerImage, unsigned int order, double pix
 
 int itkDiscreteGaussianDerivativeImageFilterScaleSpaceTest(int, char* [] )
 {
-  int pass = true;
+  bool pass = true;
 
   std::cout << " Testing First Order Gaussian" << std::endl;
-  pass  &= NormalizeSineWave( 16, 1 );
-  pass  &= NormalizeSineWave( 32, 1 );
-  pass  &= NormalizeSineWave( 64, 1 );
+  pass &= NormalizeSineWave( 16, 1 );
+  pass &= NormalizeSineWave( 32, 1 );
+  pass &= NormalizeSineWave( 64, 1 );
 
   std::cout << " Testing Second Order Gaussian" << std::endl;
-  pass  &= NormalizeSineWave( 16, 2 );
-  pass  &= NormalizeSineWave( 32, 2 );
-  pass  &= NormalizeSineWave( 64, 2 );
+  pass &= NormalizeSineWave( 16, 2 );
+  pass &= NormalizeSineWave( 32, 2 );
+  pass &= NormalizeSineWave( 64, 2 );
 
   std::cout << " Testing Spacing Invariance" << std::endl;
-  pass  &= NormalizeSineWave( 16, 2, 0.01 );
-  pass  &= NormalizeSineWave( 16, 2, 100 );
+  pass &= NormalizeSineWave( 16, 2, 0.01 );
+  pass &= NormalizeSineWave( 16, 2, 100 );
 
   if ( !pass )
     {
