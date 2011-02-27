@@ -134,6 +134,7 @@ set(KitTests
   itkOtsuThresholdImageCalculatorTest
   itkOtsuThresholdImageFilterTest
   itkParameterizationQuadEdgeMeshFilterTest
+  itkBorderQuadEdgeMeshFilterTest
   itkPointSetToImageRegistrationTest_1
   itkPointSetToPointSetRegistrationTest
   itkPointSetToSpatialObjectDemonsRegistrationTest
@@ -484,6 +485,24 @@ foreach( loop_var ${CURV_TESTS} )
     ${INPUTDATA}/mushroom.vtk
     )
 endforeach( loop_var )
+
+add_test( itkBorderQuadEdgeMeshFilterTest0
+  ${TestDriver}
+  itkParameterizationQuadEdgeMeshFilterTest
+  ${INPUTDATA}/mushroom.vtk
+  0
+  0
+  ${TEMP}/border0.vtk
+  )
+
+add_test( itkBorderQuadEdgeMeshFilterTest1
+  ${TestDriver}
+  itkParameterizationQuadEdgeMeshFilterTest
+  ${INPUTDATA}/mushroom.vtk
+  0
+  1
+  ${TEMP}/border1.vtk
+  )
 
 foreach( border 0 1 )
   foreach( coeff 0 1 2 3 4 )

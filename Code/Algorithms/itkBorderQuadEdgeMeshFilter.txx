@@ -28,6 +28,7 @@ BorderQuadEdgeMeshFilter< TInputMesh, TOutputMesh >
 ::BorderQuadEdgeMeshFilter()
 {
   this->m_TransformType = SQUARE_BORDER_TRANSFORM;
+  this->m_BorderPick = LONGEST;
   this->m_Radius = 0.0;
 }
 
@@ -55,25 +56,37 @@ void
 BorderQuadEdgeMeshFilter< TInputMesh, TOutputMesh >
 ::ComputeBoundary()
 {
-  BoundaryRepresentativeEdgesPointer
-    boundaryRepresentativeEdges = BoundaryRepresentativeEdgesType::New();
+  //BoundaryRepresentativeEdgesPointer
+  //  boundaryRepresentativeEdges = BoundaryRepresentativeEdgesType::New();
 
   InputMeshConstPointer input = this->GetInput();
-  InputEdgeListType *   list = boundaryRepresentativeEdges->Evaluate(*input);
+  InputEdgeListIterator edge_it;
 
-  InputQEType *bdryEdge = ( *list->begin() );
+  switch( m_BorderPick )
+    {
+    default:
+    case LONGEST:
+      edge_it = ComputeLongestBorder();
+      break;
+    case LARGEST:
+      edge_it = ComputeLargestBorder();
+      break;
+    }
+  // boundaryRepresentativeEdges->Evaluate(*input);
+
+  InputQEType *bdryEdge = ( *edge_it );
 
   InputPointIdentifier i = 0;
 
   for ( InputIteratorGeom it = bdryEdge->BeginGeomLnext();
         it != bdryEdge->EndGeomLnext();
-        ++it, i++ )
+        ++it, ++i )
     {
     this->m_BoundaryPtMap[it.Value()->GetOrigin()] = i;
     }
 
   this->m_Border.resize(i);
-  delete list;
+  //delete list;
 }
 
 // ----------------------------------------------------------------------------
@@ -110,8 +123,15 @@ BorderQuadEdgeMeshFilter< TInputMesh, TOutputMesh >::ComputeLongestBorder()
           e_it != (*b_it)->EndGeomLnext();
           ++e_it )
       {
-//      length += e_it->GetOrigin().EuclideanDistanceTo(
-//        e_it->GetDestinationination() );
+      InputQEType* t_edge = e_it.Value();
+
+      InputPointIdentifier id_org = t_edge->GetOrigin();
+      InputPointIdentifier id_dest = t_edge->GetDestination();
+
+      InputPointType org = input->GetPoint( id_org );
+      InputPointType dest = input->GetPoint( id_dest );
+
+      length += org.EuclideanDistanceTo( dest );
       }
     if ( length > max_length )
       {
@@ -438,6 +458,7 @@ BorderQuadEdgeMeshFilter< TInputMesh, TOutputMesh >
   Superclass::PrintSelf(os, indent);
 
   os << indent << "TransformType: " << m_TransformType << std::endl;
+  os << indent << "BorderPick: " << m_BorderPick <<std::endl;
   os << indent << "Radius: " << m_Radius << std::endl;
 }
 }

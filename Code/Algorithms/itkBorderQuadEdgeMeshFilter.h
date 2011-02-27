@@ -26,8 +26,8 @@ namespace itk
 {
 /**
  * \class BorderQuadEdgeMeshFilter
- * \brief Transform the mandatoryly unique border of an \ref itkQE::Mesh
- * into either a circle (conformal) or a square (arclenght-wise).
+ * \brief Transform the mandatoryly unique border of an QuadEdgeMesh
+ * into either a circle (conformal) or a square (arclength-wise).
  *
  * To Write.
  */
@@ -37,11 +37,12 @@ class ITK_EXPORT BorderQuadEdgeMeshFilter:
 {
 public:
   /** Basic types. */
-  typedef BorderQuadEdgeMeshFilter Self;
+  typedef BorderQuadEdgeMeshFilter    Self;
   typedef QuadEdgeMeshToQuadEdgeMeshFilter< TInputMesh,
-                                            TOutputMesh >                                       Superclass;
-  typedef SmartPointer< Self >       Pointer;
-  typedef SmartPointer< const Self > ConstPointer;
+                                            TOutputMesh >
+                                      Superclass;
+  typedef SmartPointer< Self >        Pointer;
+  typedef SmartPointer< const Self >  ConstPointer;
 
   typedef TInputMesh                                  InputMeshType;
   typedef typename InputMeshType::ConstPointer        InputMeshConstPointer;
@@ -93,6 +94,7 @@ public:
 
   typedef QuadEdgeMeshBoundaryEdgesMeshFunction< InputMeshType > BoundaryRepresentativeEdgesType;
   typedef typename BoundaryRepresentativeEdgesType::Pointer      BoundaryRepresentativeEdgesPointer;
+
 public:
 
   enum BorderTransformType {
@@ -100,8 +102,16 @@ public:
     DISK_BORDER_TRANSFORM
     };
 
+  enum BorderPickType {
+    LONGEST = 0,
+    LARGEST
+    };
+
   itkSetMacro(TransformType, BorderTransformType);
   itkGetConstMacro(TransformType, BorderTransformType);
+
+  itkSetMacro( BorderPick, BorderPickType );
+  itkGetConstMacro( BorderPick, BorderPickType );
 
   itkSetMacro(Radius, InputCoordRepType);
   itkGetConstMacro(Radius, InputCoordRepType);
@@ -118,6 +128,7 @@ protected:
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   BorderTransformType m_TransformType;
+  BorderPickType m_BorderPick;
 
   InputCoordRepType m_Radius;
 
