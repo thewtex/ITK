@@ -26,7 +26,7 @@ namespace itk
 {
 /**
  * \class BorderQuadEdgeMeshFilter
- * \brief Transform the mandatoryly unique border of an \ref itkQE::Mesh
+ * \brief Transform the unique border of an QuadEdgeMesh
  * into either a circle (conformal) or a square (arclenght-wise).
  *
  * To Write.
