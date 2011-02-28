@@ -183,7 +183,7 @@ throw ( ExceptionObject )
 
   // Setup the metric
   this->GetMultiThreader()->SetNumberOfThreads( this->GetNumberOfThreads() );
-  this->m_Metric->SetNumberOfThreads( this->GetNumberOfThreads() );
+
   m_Metric->SetMovingImage(m_MovingImage);
   m_Metric->SetFixedImage(m_FixedImage);
   m_Metric->SetTransform(m_Transform);
