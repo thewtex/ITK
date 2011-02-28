@@ -1,4 +1,6 @@
 #include "itkMetaImageIOFactory.h"
+#include "itkBioRadImageIOFactory.h"
+#include "itkJPEGImageIOFactory.h"
 #include "itkPNGImageIOFactory.h"
 #include "itkTIFFImageIOFactory.h"
 #include "itkBMPImageIOFactory.h"
@@ -9,6 +11,8 @@
 void ProcessArgumentsAndRegisterRequiredFactories(int *ac, ArgumentStringType *av)
 {
   itk::ObjectFactoryBase::RegisterFactory( itk::MetaImageIOFactory::New() );
+  itk::ObjectFactoryBase::RegisterFactory( itk::BioRadImageIOFactory::New() );
+  itk::ObjectFactoryBase::RegisterFactory( itk::JPEGImageIOFactory::New() );
   itk::ObjectFactoryBase::RegisterFactory( itk::VTKImageIOFactory::New() );
   itk::ObjectFactoryBase::RegisterFactory( itk::PNGImageIOFactory::New() );
   itk::ObjectFactoryBase::RegisterFactory( itk::TIFFImageIOFactory::New() );
