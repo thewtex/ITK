@@ -21,10 +21,13 @@ itkVTKPolyDataReaderTest.cxx
 itkVTKPolyDataWriterTest01.cxx
 itkVTKPolyDataWriterTest02.cxx
 itkWarpMeshFilterTest.cxx
+itkMeshHeaderTest.cxx
 )
 
 CreateTestDriver(ITK-Mesh  "${ITK-Mesh-Test_LIBRARIES}" "${ITK-MeshTests}")
 
+add_test(NAME itkMeshHeaderTest
+      COMMAND ITK-MeshTestDriver itkMeshHeaderTest)
 add_test(NAME itkAutomaticTopologyMeshSourceTest
       COMMAND ITK-MeshTestDriver itkAutomaticTopologyMeshSourceTest)
 add_test(NAME itkBinaryMask3DMeshSourceTest

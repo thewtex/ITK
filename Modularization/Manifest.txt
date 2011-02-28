@@ -1590,10 +1590,10 @@ Code/Common/itkSimpleFastMutexLockPThreads.cxx                                  
 Code/Common/itkSimpleFastMutexLockWinThreads.cxx                                 Core            ITK-Common                     Common
 Code/Common/itkSimpleFilterWatcher.cxx                                           Core            ITK-Common                     Common
 Code/Common/itkSimpleFilterWatcher.h                                             Core            ITK-Common                     Common
-Code/Common/itkSimplexMesh.h                                                     Core            ITK-Common                     Common
-Code/Common/itkSimplexMesh.txx                                                   Core            ITK-Common                     Common
-Code/Common/itkSimplexMeshGeometry.cxx                                           Core            ITK-Common                     Common
-Code/Common/itkSimplexMeshGeometry.h                                             Core            ITK-Common                     Common
+Code/Common/itkSimplexMesh.h                                                     Core            ITK-Mesh                       Mesh
+Code/Common/itkSimplexMesh.txx                                                   Core            ITK-Mesh                       Mesh
+Code/Common/itkSimplexMeshGeometry.cxx                                           Core            ITK-Mesh                       Mesh
+Code/Common/itkSimplexMeshGeometry.h                                             Core            ITK-Mesh                       Mesh
 Code/Common/itkSinImageAdaptor.h                                                 Core            ITK-ImageAdaptors              ImageAdaptors
 Code/Common/itkSize.h                                                            Core            ITK-Common                     Common
 Code/Common/itkSliceIterator.h                                                   Core            ITK-Common                     Common
@@ -3463,7 +3463,7 @@ Testing/Code/Common/itkShapedNeighborhoodIteratorTest.cxx                       
 Testing/Code/Common/itkSimilarity2DTransformTest.cxx                             Core            ITK-Transform                  Transform
 Testing/Code/Common/itkSimilarity3DTransformTest.cxx                             Core            ITK-Transform                  Transform
 Testing/Code/Common/itkSimpleFilterWatcherTest.cxx                               Nonunit         ITK-IntegratedTest             IntegratedTest
-Testing/Code/Common/itkSimplexMeshTest.cxx                                       Core            ITK-Common                     Common
+Testing/Code/Common/itkSimplexMeshTest.cxx                                       Core            ITK-Mesh                       Mesh
 Testing/Code/Common/itkSizeTest.cxx                                              Core            ITK-Common                     Common
 Testing/Code/Common/itkSliceIteratorTest.cxx                                     Core            ITK-Common                     Common
 Testing/Code/Common/itkSmartPointerTest.cxx                                      Core            ITK-Common                     Common
