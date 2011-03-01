@@ -331,7 +331,7 @@ bool JPEGCodec::Decode(std::istream &is, std::ostream &os)
         Internal->SetPhotometricInterpretation( this->GetPhotometricInterpretation() );
         if( Internal->Decode(is,tmpos) )
           {
-          return ImageCodec::Decode(tmpos,os);
+          return ImageCodec::DecodeByStreams(tmpos,os);
           }
         else
           {
@@ -359,7 +359,7 @@ bool JPEGCodec::Decode(std::istream &is, std::ostream &os)
     this->PF.SetBitsAllocated( 16 );
     }
 
-  return ImageCodec::Decode(tmpos,os);
+  return ImageCodec::DecodeByStreams(tmpos,os);
 }
 
 bool JPEGCodec::IsValid(PhotometricInterpretation const &pi)
