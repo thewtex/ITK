@@ -300,7 +300,7 @@ bool JPEG2000Codec::Decode(DataElement const &in, DataElement &out)
     is.write(buffer, totalLen);
     delete[] buffer;
     std::stringstream os;
-    bool r = Decode(is, os);
+    bool r = DecodeByStreams(is, os);
     if(!r) return false;
     out = in;
     std::string str = os.str();
@@ -340,7 +340,7 @@ bool JPEG2000Codec::Decode(DataElement const &in, DataElement &out)
       bv->GetBuffer(mybuffer, bv->GetLength());
       is.write(mybuffer, bv->GetLength());
       delete[] mybuffer;
-      bool r = Decode(is, os);
+      bool r = DecodeByStreams(is, os);
       if(!r) return false;
       assert( r == true );
       }
@@ -358,7 +358,7 @@ bool JPEG2000Codec::Decode(DataElement const &in, DataElement &out)
   return false;
 }
 
-bool JPEG2000Codec::Decode(std::istream &is, std::ostream &os)
+bool JPEG2000Codec::DecodeByStreams(std::istream &is, std::ostream &os)
 {
   opj_dparameters_t parameters;  /* decompression parameters */
 #if OPENJPEG_MAJOR_VERSION == 1
