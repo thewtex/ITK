@@ -573,7 +573,7 @@ bool RLECodec::Decode(DataElement const &in, DataElement &out)
     sf->WriteBuffer( is );
     SetLength( len );
       std::stringstream os;
-      bool r = Decode(is, os);
+      bool r = DecodeByStreams(is, os);
       assert( r == true );
       (void)r; //warning removal
     std::string str = os.str();
@@ -610,7 +610,7 @@ bool RLECodec::Decode(DataElement const &in, DataElement &out)
       delete[] mybuffer;
       std::stringstream os;
       SetLength( llen );
-      bool r = Decode(is, os);
+      bool r = DecodeByStreams(is, os);
       assert( r == true );
       (void)r; //warning removal
       std::streampos p = is.tellg();
@@ -652,7 +652,7 @@ bool RLECodec::Decode(DataElement const &in, DataElement &out)
   return false;
 }
 
-bool RLECodec::Decode(std::istream &is, std::ostream &os)
+bool RLECodec::DecodeByStreams(std::istream &is, std::ostream &os)
 {
   // FIXME: Do some stupid work:
   char dummy_buffer[256];
@@ -763,7 +763,7 @@ bool RLECodec::Decode(std::istream &is, std::ostream &os)
     assert( numOutBytes == length );
     }
 
-  return ImageCodec::Decode(tmpos,os);
+  return ImageCodec::DecodeByStreams(tmpos,os);
 }
 
 bool RLECodec::GetHeaderInfo(std::istream &is, TransferSyntax &ts)
