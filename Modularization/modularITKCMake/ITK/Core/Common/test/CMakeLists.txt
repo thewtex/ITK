@@ -47,6 +47,9 @@ itkConditionVariableTest.cxx
 itkCommonHeaderTest.cxx
 itkPointSetTest.cxx
 itkBresenhamLineTest.cxx
+itkSparseFieldLayerTest.cxx
+itkCellInterfaceTest.cxx
+itkDataObjectTest
 )
 
 
@@ -74,6 +77,7 @@ itkLoggerManagerTest.cxx
 itkBSplineInterpolationWeightFunctionTest.cxx
 itkSymmetricSecondRankTensorTest.cxx
 itkConstShapedNeighborhoodIteratorTest.cxx
+itkConstShapedNeighborhoodIteratorTest2.cxx
 itkSTLContainerAdaptorTest.cxx
 itkFiniteCylinderSpatialFunctionTest.cxx
 itkLoggerOutputTest.cxx
@@ -166,6 +170,7 @@ add_test(itkDirectoryTest ${COMMON_TESTS1} itkDirectoryTest ${TEMP})
 add_test(itkDerivativeOperatorTest ${COMMON_TESTS1} itkDerivativeOperatorTest)
 add_test(itkMultipleLogOutputTest ${COMMON_TESTS1} itkMultipleLogOutputTest ${TEMP}/test_multi.txt)
 add_test(itkFixedArrayTest ${COMMON_TESTS2} itkFixedArrayTest)
+add_test(itkMinimumMaximumImageCalculatorTest ${COMMON_TESTS2} itkMinimumMaximumImageCalculatorTest)
 add_test(itkFixedArrayTest2 ${COMMON_TESTS1} itkFixedArrayTest2)
 add_test(itkArrayTest ${COMMON_TESTS1} itkArrayTest)
 add_test(itkArray2DTest ${COMMON_TESTS1} itkArray2DTest)
@@ -180,6 +185,7 @@ add_test(itkBSplineInterpolationWeightFunctionTest ${COMMON_TESTS2} itkBSplineIn
 add_test(itkBSplineKernelFunctionTest ${COMMON_TESTS1} itkBSplineKernelFunctionTest)
 add_test(itkConstNeighborhoodIteratorTest ${COMMON_TESTS2} itkConstNeighborhoodIteratorTest)
 add_test(itkConstShapedNeighborhoodIteratorTest ${COMMON_TESTS2} itkConstShapedNeighborhoodIteratorTest)
+add_test(itkConstShapedNeighborhoodIteratorTest2 ${COMMON_TESTS2} itkConstShapedNeighborhoodIteratorTest2)
 add_test(itkEventObjectTest ${COMMON_TESTS1} itkEventObjectTest)
 add_test(itkExceptionObjectTest ${COMMON_TESTS1} itkExceptionObjectTest)
 add_test(itkFileOutputWindowTest ${COMMON_TESTS1} itkFileOutputWindowTest)
@@ -204,6 +210,9 @@ add_test(itkObjectFactoryTest ${COMMON_TESTS1} itkObjectFactoryTest)
 add_test(itkVectorTest ${COMMON_TESTS1} itkVectorTest)
 add_test(itkPointSetTest ${COMMON_TESTS1} itkPointSetTest)
 add_test(itkBresenhamLineTest ${COMMON_TESTS1} itkBresenhamLineTest)
+add_test(itkSparseFieldLayerTest ${COMMON_TESTS1} itkSparseFieldLayerTest)
+add_test(itkCellInterfaceTest ${COMMON_TESTS1} itkCellInterfaceTest)
+add_test(itkDataObjectTest ${COMMON_TESTS1} itkDataObjectTest)
 #
 # This test should be enabled if you suspect that the memory leak detector
 # is not working
