@@ -3412,7 +3412,7 @@ Testing/Code/Common/itkPixelAccessTest.cxx                                      
 Testing/Code/Common/itkPointGeometryTest.cxx                                     Nonunit         ITK-IntegratedTest             IntegratedTest
 Testing/Code/Common/itkPointSetTest.cxx                                          Core            ITK-Common                     Common
 Testing/Code/Common/itkPolyLineParametricPathTest.cxx                            Filtering       ITK-Path                       Path
-Testing/Code/Common/itkPolygonCellTest.cxx                                       Core            ITK-Common                     Common
+Testing/Code/Common/itkPolygonCellTest.cxx                                       Nonunit         ITK-IntegratedTest             IntegratedTest
 Testing/Code/Common/itkPriorityQueueTest.cxx                                     Nonunit         ITK-IntegratedTest             IntegratedTest
 Testing/Code/Common/itkQuadEdgeMeshAddFaceTest1.cxx                              Nonunit         ITK-IntegratedTest             IntegratedTest
 Testing/Code/Common/itkQuadEdgeMeshAddFaceTest2.cxx                              Nonunit         ITK-IntegratedTest             IntegratedTest
