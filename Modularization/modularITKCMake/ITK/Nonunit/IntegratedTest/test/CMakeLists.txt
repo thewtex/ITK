@@ -391,36 +391,49 @@ XORTest2.cxx
 CreateTestDriver_SupportBuildInIOFactories(ITK-IntegratedTest  "${ITK-IntegratedTest-Test_LIBRARIES}" "${ITK-IntegratedTestTests}")
 
 # temporary solution for all print tests. Each module should have its own print test later.
-CreateTestDriver_SupportBuildInIOFactories(itkAlgorithmsPrint "${ITK-IntegratedTest-Test_LIBRARIES}" "itkAlgorithmsPrintTest.cxx")
-CreateTestDriver_SupportBuildInIOFactories(itkAlgorithmsPrint2 "${ITK-IntegratedTest-Test_LIBRARIES}" "itkAlgorithmsPrintTest2.cxx")
-CreateTestDriver_SupportBuildInIOFactories(itkAlgorithmsPrint3 "${ITK-IntegratedTest-Test_LIBRARIES}" "itkAlgorithmsPrintTest3.cxx")
-CreateTestDriver_SupportBuildInIOFactories(itkAlgorithmsPrint4 "${ITK-IntegratedTest-Test_LIBRARIES}" "itkAlgorithmsPrintTest4.cxx")
-CreateTestDriver_SupportBuildInIOFactories(itkCommonPrint "${ITK-IntegratedTest-Test_LIBRARIES}" "itkCommonPrintTest.cxx")
-CreateTestDriver_SupportBuildInIOFactories(itkIOPrint "${ITK-IntegratedTest-Test_LIBRARIES}" "itkIOPrintTest.cxx")
-CreateTestDriver_SupportBuildInIOFactories(itkNeuralNetworksPrint "${ITK-IntegratedTest-Test_LIBRARIES}" "itkNeuralNetworksPrintTest.cxx")
-CreateTestDriver_SupportBuildInIOFactories(itkBasicFiltersPrint "${ITK-IntegratedTest-Test_LIBRARIES}" "itkBasicFiltersPrintTest.cxx;itkBasicFiltersPrintTest2.cxx")
-CreateTestDriver_SupportBuildInIOFactories(itkStatisticsPrint "${ITK-IntegratedTest-Test_LIBRARIES}"  "itkStatisticsPrintTest.cxx")
-CreateTestDriver_SupportBuildInIOFactories(itkSpatialObjectPrint "${ITK-IntegratedTest-Test_LIBRARIES}"   "itkSpatialObjectPrintTest.cxx")
+add_executable(itkAlgorithmsPrintTest  itkAlgorithmsPrintTest.cxx)
+target_link_libraries(itkAlgorithmsPrintTest ${ITK-IntegratedTest-Test_LIBRARIES})
+add_test(NAME itkAlgorithmsPrintTest COMMAND ${ITK_EXECUTABLE_PATH}/itkAlgorithmsPrintTest)
 
-add_test(NAME itkAlgorithmsPrintTest
-      COMMAND itkAlgorithmsPrintTestDriver itkAlgorithmsPrintTest)
-add_test(NAME itkAlgorithmsPrintTest2
-      COMMAND itkAlgorithmsPrintTest2Driver itkAlgorithmsPrintTest2)
-add_test(NAME itkAlgorithmsPrintTest3
-      COMMAND itkAlgorithmsPrintTest3Driver itkAlgorithmsPrintTest3)
-add_test(NAME itkAlgorithmsPrintTest4
-      COMMAND itkAlgorithmsPrintTest4Driver itkAlgorithmsPrintTest4)
-add_test(NAME itkSpatialObjectPrintTest
-     COMMAND  itkSpatialObjectPrintTestDriver itkSpatialObjectPrintTest)
-add_test(NAME itkStatisticsPrintTest
-      COMMAND itkStatisticsPrintTestDriver itkStatisticsPrintTest)
-add_test(NAME itkBasicFiltersPrintTest
-      COMMAND itkBasicFiltersPrintTestDriver itkBasicFiltersPrintTest)
-add_test(NAME itkBasicFiltersPrintTest2
-      COMMAND itkBasicFiltersPrintTestDriver itkBasicFiltersPrintTest2)
-add_test(NAME itkCommonPrintTest
-      COMMAND itkCommonPrintTestDriver itkCommonPrintTest)
+add_executable(itkAlgorithmsPrintTest2  itkAlgorithmsPrintTest2.cxx)
+target_link_libraries(itkAlgorithmsPrintTest2 ${ITK-IntegratedTest-Test_LIBRARIES})
+add_test(NAME itkAlgorithmsPrintTest2 COMMAND ${ITK_EXECUTABLE_PATH}/itkAlgorithmsPrintTest)
 
+add_executable(itkAlgorithmsPrintTest3  itkAlgorithmsPrintTest3.cxx)
+target_link_libraries(itkAlgorithmsPrintTest3 ${ITK-IntegratedTest-Test_LIBRARIES})
+add_test(NAME itkAlgorithmsPrintTest3 COMMAND ${ITK_EXECUTABLE_PATH}/itkAlgorithmsPrintTest)
+
+add_executable(itkAlgorithmsPrintTest4  itkAlgorithmsPrintTest4.cxx)
+target_link_libraries(itkAlgorithmsPrintTest4 ${ITK-IntegratedTest-Test_LIBRARIES})
+add_test(NAME itkAlgorithmsPrintTest4 COMMAND ${ITK_EXECUTABLE_PATH}/itkAlgorithmsPrintTest)
+
+
+add_executable(itkCommonPrintTest  itkCommonPrintTest.cxx)
+target_link_libraries(itkCommonPrintTest ${ITK-IntegratedTest-Test_LIBRARIES})
+add_test(NAME itkCommonPrintTest COMMAND ${ITK_EXECUTABLE_PATH}/itkCommonPrintTest)
+
+add_executable(itkIOPrintTest  itkIOPrintTest.cxx)
+target_link_libraries(itkIOPrintTest ${ITK-IntegratedTest-Test_LIBRARIES})
+add_test(NAME itkIOPrintTest COMMAND ${ITK_EXECUTABLE_PATH}/itkIOPrintTest)
+
+
+add_executable(itkNeuralNetworksPrintTest  itkNeuralNetworksPrintTest.cxx)
+target_link_libraries(itkNeuralNetworksPrintTest ${ITK-IntegratedTest-Test_LIBRARIES})
+add_test(NAME itkNeuralNetworksPrintTest COMMAND ${ITK_EXECUTABLE_PATH}/itkNeuralNetworksPrintTest)
+
+
+add_executable(itkBasicFiltersPrintTest  itkBasicFiltersPrintTest.cxx)
+target_link_libraries(itkBasicFiltersPrintTest ${ITK-IntegratedTest-Test_LIBRARIES})
+add_test(NAME itkBasicFiltersPrintTest COMMAND ${ITK_EXECUTABLE_PATH}/itkBasicFiltersPrintTest)
+
+
+add_executable(itkStatisticsPrintTest  itkStatisticsPrintTest.cxx)
+target_link_libraries(itkStatisticsPrintTest ${ITK-IntegratedTest-Test_LIBRARIES})
+add_test(NAME itkStatisticsPrintTest COMMAND ${ITK_EXECUTABLE_PATH}/itkStatisticsPrintTest)
+
+add_executable(itkSpatialObjectPrintTest  itkSpatialObjectPrintTest.cxx)
+target_link_libraries(itkSpatialObjectPrintTest ${ITK-IntegratedTest-Test_LIBRARIES})
+add_test(NAME itkSpatialObjectPrintTest COMMAND ${ITK_EXECUTABLE_PATH}/itkSpatialObjectPrintTest)
 
 #-------------------------------------------------------------------------
 add_test(NAME itkAccumulateImageFilterTest
