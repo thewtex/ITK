@@ -208,6 +208,8 @@ endif( USE_FFTWD OR USE_FFTWF )
 
 CreateTestDriver_SupportBuildInIOFactories(ITK-Review  "${ITK-Review-Test_LIBRARIES}" "${ITK-ReviewTests}")
 
+add_test(NAME itkShiftLabelObjectTest
+      COMMAND ITK-ReviewTestDriver itkShiftLabelObjectTest)
 add_test(NAME itkReviewHeaderTest
       COMMAND ITK-ReviewTestDriver itkReviewHeaderTest)
 add_test(NAME itkAddConstantToImageFilterTest

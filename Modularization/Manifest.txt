@@ -1784,7 +1784,7 @@ Code/IO/itkAnalyzeImageIO.cxx                                                   
 Code/IO/itkAnalyzeImageIO.h                                                      Nonunit         ITK-Deprecated                 Deprecated
 Code/IO/itkAnalyzeImageIOFactory.cxx                                             Nonunit         ITK-Deprecated                 Deprecated
 Code/IO/itkAnalyzeImageIOFactory.h                                               Nonunit         ITK-Deprecated                 Deprecated
-Code/IO/itkArchetypeSeriesFileNames.cxx                                          Nonunit         ITK-IO-Base                    Base
+Code/IO/itkArchetypeSeriesFileNames.cxx                                          IO              ITK-IO-Base                    Base
 Code/IO/itkArchetypeSeriesFileNames.h                                            IO              ITK-IO-Base                    Base
 Code/IO/itkBMPImageIO.cxx                                                        IO              ITK-IO-BMP                     BMP
 Code/IO/itkBMPImageIO.h                                                          IO              ITK-IO-BMP                     BMP
@@ -3412,7 +3412,7 @@ Testing/Code/Common/itkPixelAccessTest.cxx                                      
 Testing/Code/Common/itkPointGeometryTest.cxx                                     Nonunit         ITK-IntegratedTest             IntegratedTest
 Testing/Code/Common/itkPointSetTest.cxx                                          Core            ITK-Common                     Common
 Testing/Code/Common/itkPolyLineParametricPathTest.cxx                            Filtering       ITK-Path                       Path
-Testing/Code/Common/itkPolygonCellTest.cxx                                       Core            ITK-Common                     Common
+Testing/Code/Common/itkPolygonCellTest.cxx                                       Nonunit         ITK-IntegratedTest             IntegratedTest
 Testing/Code/Common/itkPriorityQueueTest.cxx                                     Nonunit         ITK-IntegratedTest             IntegratedTest
 Testing/Code/Common/itkQuadEdgeMeshAddFaceTest1.cxx                              Nonunit         ITK-IntegratedTest             IntegratedTest
 Testing/Code/Common/itkQuadEdgeMeshAddFaceTest2.cxx                              Nonunit         ITK-IntegratedTest             IntegratedTest
@@ -3515,7 +3515,7 @@ Testing/Code/IO/LittleEndian_hdr.h                                              
 Testing/Code/IO/LittleEndian_img.h                                               IO              ITK-IO-Base                    Base
 Testing/Code/IO/itkAnalyzeImageIODirectionsTest.cxx                              Nonunit         ITK-Deprecated                 Deprecated
 Testing/Code/IO/itkAnalyzeImageIOTest.cxx                                        Nonunit         ITK-Deprecated                 Deprecated
-Testing/Code/IO/itkArchetypeSeriesFileNamesTest.cxx                              Nonunit         ITK-IO-Base                    Base
+Testing/Code/IO/itkArchetypeSeriesFileNamesTest.cxx                              IO              ITK-IO-Base                    Base
 Testing/Code/IO/itkBMPImageIOTest.cxx                                            IO              ITK-IO-BMP                     BMP
 Testing/Code/IO/itkBMPImageIOTest2.cxx                                           IO              ITK-IO-BMP                     BMP
 Testing/Code/IO/itkBioRadImageIOTest.cxx                                         Nonunit         ITK-IntegratedTest             IntegratedTest

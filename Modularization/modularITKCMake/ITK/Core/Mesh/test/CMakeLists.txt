@@ -5,6 +5,7 @@ itkImageToParametricSpaceFilterTest.cxx
 itkInteriorExteriorMeshFilterTest.cxx
 itkParametricSpaceToImageSpaceMeshFilterTest.cxx
 itkRegularSphereMeshSourceTest.cxx
+itkSimplexMeshTest.cxx
 itkSimplexMeshAdaptTopologyFilterTest.cxx
 itkSimplexMeshToTriangleMeshFilterTest.cxx
 itkSimplexMeshVolumeCalculatorTest.cxx
@@ -25,6 +26,8 @@ CreateTestDriver(ITK-Mesh  "${ITK-Mesh-Test_LIBRARIES}" "${ITK-MeshTests}")
 
 add_test(NAME itkMeshHeaderTest
       COMMAND ITK-MeshTestDriver itkMeshHeaderTest)
+add_test(NAME itkSimplexMeshTest
+      COMMAND ITK-MeshTestDriver itkSimplexMeshTest)
 add_test(NAME itkAutomaticTopologyMeshSourceTest
       COMMAND ITK-MeshTestDriver itkAutomaticTopologyMeshSourceTest)
 add_test(NAME itkBinaryMask3DMeshSourceTest

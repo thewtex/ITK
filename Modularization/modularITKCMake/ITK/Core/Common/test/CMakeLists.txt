@@ -27,6 +27,8 @@ itkAnnulusOperatorTest.cxx
 itkLineIteratorTest.cxx
 itkGaussianSpatialFunctionTest.cxx
 itkRealTimeClockTest.cxx
+itkRealTimeIntervalTest
+itkRealTimeStampTest
 itkIntTypesTest.cxx
 itkBSplineKernelFunctionTest.cxx
 itkArrayTest.cxx
@@ -43,6 +45,9 @@ itkVectorTest.cxx
 itkImageTest.cxx
 itkConditionVariableTest.cxx
 itkCommonHeaderTest.cxx
+itkPointSetTest.cxx
+itkTriangleCellTest.cxx
+itkTriangleHelperTest.cxx
 )
 
 
@@ -198,6 +203,9 @@ add_test(itkMatrixTest ${COMMON_TESTS2} itkMatrixTest)
 add_test(itkMapContainerTest ${COMMON_TESTS1} itkMapContainerTest)
 add_test(itkObjectFactoryTest ${COMMON_TESTS1} itkObjectFactoryTest)
 add_test(itkVectorTest ${COMMON_TESTS1} itkVectorTest)
+add_test(itkPointSetTest ${COMMON_TESTS1} itkPointSetTest)
+add_test(itkTriangleCellTest ${COMMON_TESTS1} itkTriangleCellTest)
+add_test(itkTriangleHelperTest ${COMMON_TESTS1} itkTriangleHelperTest)
 #
 # This test should be enabled if you suspect that the memory leak detector
 # is not working
@@ -224,6 +232,8 @@ endif(ITK_BUILD_SHARED_LIBS)
 add_test(itkPeriodicBoundaryConditionTest ${COMMON_TESTS2} itkPeriodicBoundaryConditionTest)
 add_test(itkPhasedArray3DSpecialCoordinatesImageTest ${COMMON_TESTS1} itkPhasedArray3DSpecialCoordinatesImageTest)
 add_test(itkRealTimeClockTest ${COMMON_TESTS1} itkRealTimeClockTest)
+add_test(itkRealTimeStampTest ${COMMON_TESTS1} itkRealTimeStampTest)
+add_test(itkRealTimeIntervalTest ${COMMON_TESTS1} itkRealTimeIntervalTest)
 add_test(itkRGBPixelTest ${COMMON_TESTS1} itkRGBPixelTest)
 add_test(itkScalarToRGBPixelFunctorTest ${COMMON_TESTS1} itkScalarToRGBPixelFunctorTest)
 add_test(itkShapedNeighborhoodIteratorTest ${COMMON_TESTS1} itkShapedNeighborhoodIteratorTest)

@@ -1945,3 +1945,6 @@ add_test(NAME XORTest1
 add_test(NAME XORTest2
       COMMAND ITK-IntegratedTestTestDriver XORTest2
               ${ITK_DATA_ROOT}/Input/NeuralNetworks/xortest.txt)
+add_test(NAME itkRecursiveGaussianScaleSpaceTest1
+      COMMAND ITK-IntegratedTestTestDriver
+              itkRecursiveGaussianScaleSpaceTest1)
