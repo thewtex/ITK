@@ -3519,6 +3519,11 @@ Testing/Code/IO/LittleEndian_hdr.h                                              
 Testing/Code/IO/LittleEndian_img.h                                               IO              ITK-IO-Base                    Base
 Testing/Code/IO/itkAnalyzeImageIODirectionsTest.cxx                              Nonunit         ITK-Deprecated                 Deprecated
 Testing/Code/IO/itkAnalyzeImageIOTest.cxx                                        Nonunit         ITK-Deprecated                 Deprecated
+Testing/Code/IO/itkAnalyzeImageIOTest.h                                        Nonunit         ITK-Deprecated                 Deprecated
+Testing/Code/IO/itkAnalyzeImageIOTest2.cxx                                        Nonunit         ITK-Deprecated                 Deprecated
+Testing/Code/IO/itkAnalyzeImageIORGBImageTest.cxx                                        Nonunit         ITK-Deprecated                 Deprecated
+Testing/Code/IO/itkAnalyzeImageIOTestHelper.cxx                                        Nonunit         ITK-Deprecated                 Deprecated
+Testing/Code/IO/itkAnalyzeImageIOBadHeader.cxx                                        Nonunit         ITK-Deprecated                 Deprecated
 Testing/Code/IO/itkArchetypeSeriesFileNamesTest.cxx                              IO              ITK-IO-Base                    Base
 Testing/Code/IO/itkBMPImageIOTest.cxx                                            IO              ITK-IO-BMP                     BMP
 Testing/Code/IO/itkBMPImageIOTest2.cxx                                           IO              ITK-IO-BMP                     BMP
