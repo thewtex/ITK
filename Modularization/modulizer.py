@@ -250,11 +250,15 @@ for  moduleName in moduleList:
 #----------------------------------------------------------------------------------------------------
 
 # clean up remaining  directories
-copyDirList = ['Testing/Data', 'Examples', 'Validation', 'Documentation', 'Wrapping', 'Testing/HTML']
+copyDirList = ['Testing/Data', 'Validation', 'Documentation', 'Wrapping', 'Testing/HTML']
 if not os.path.isdir(HeadOfModularITKTree+'/Testing'):
      os.system('mkdir  '+ HeadOfModularITKTree+'/Testing')
 for copyDir in copyDirList:
      os.system('mv -f '+HeadOfTempTree+'/'+copyDir+ '  '+ HeadOfModularITKTree +'/'+copyDir)
+
+# copy the Examples
+os.system('mkdir -p '+HeadOfModularITKTree +'/Examples/src')
+os.system('mv -f '+HeadOfTempTree+'/Examples '+ HeadOfModularITKTree +'/Examples/src/Examples')
 
 # clean up utilities
 copyDirList= ['Dart',  'DevelopmentSetupScripts','KWStyle','SetupForDevelopment.sh','Doxygen','Maintenance']

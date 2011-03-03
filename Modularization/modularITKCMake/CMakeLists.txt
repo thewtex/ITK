@@ -71,6 +71,7 @@ set(ITK_BUILD_SHARED_LIBS ${BUILD_SHARED_LIBS})
 
 set(ITK_USE_MODULAR_BUILD ON)
 
+option(ITK_USE_EXAMPLES "Build ITK Examples" OFF)
 
 option(ITK_USE_GPU "GPU acceleration via OpenCL" OFF)
 mark_as_advanced(ITK_USE_GPU)
@@ -318,5 +319,9 @@ foreach(itk-module ${ITK_MODULES_ENABLED})
     add_module_target()
   endif()
 endforeach()
+
+if(ITK_USE_EXAMPLES)
+  add_subdirectory(Examples)
+endif()
 
 install(EXPORT itk-targets DESTINATION lib/cmake/itk-4.0)
