@@ -4055,4 +4055,5 @@ Utilities/DICOMParser/DICOMTypes.h                                              
 Utilities/itkExtHdrs/Ge4xHdr.h                                                   IO              ITK-IO-GE                      GE
 Utilities/itkExtHdrs/Ge5xHdr.h                                                   IO              ITK-IO-GE                      GE
 Utilities/itkExtHdrs/itkAnalyzeDbh.h                                             Nonunit         ITK-Deprecated                 Deprecated
+Utilities/expat                                                                  Utilities       ITK-Expat                      Expat/src
 itkConfigure.h.in                                                                Core            ITK-Common                     Common
