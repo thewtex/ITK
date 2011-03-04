@@ -86,17 +86,13 @@
 #include "itkVanHerkGilWermanDilateImageFilter.h"
 #include "itkVanHerkGilWermanErodeDilateImageFilter.txx"
 #include "itkVanHerkGilWermanErodeImageFilter.h"
-#include "itkVanHerkGilWermanUtilities.h"
 #include "itkVanHerkGilWermanUtilities.txx"
 
 #include "itkBoxUtilities.h"
-#include "itkBoxMeanImageFilter.h"
 #include "itkBoxMeanImageFilter.txx"
-#include "itkBoxSigmaImageFilter.h"
 #include "itkBoxSigmaImageFilter.txx"
 
 #include "itkRankImageFilter.txx"
-#include "itkMaskedRankImageFilter.h"
 #include "itkMaskedRankImageFilter.txx"
 #include "itkMiniPipelineSeparableImageFilter.txx"
 #include "itkFastApproximateRankImageFilter.h"
