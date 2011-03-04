@@ -86,27 +86,31 @@ for line in open("./Manifest.txt",'r'):
     moduleName  = words[2]
     fileExt = itkFileName.split('.')[-1]
 
-    subdir = ""
-    if moduleName ==  "ITK-IntegratedTest":
-       subdir = 'test'
-    elif fileExt == 'h' or fileExt == 'txx' or fileExt == 'inc':
-       subdir = 'include'
+    #decide  subdir
+    subdir = "/"  # default on the top
+    #in general
+    if fileExt == 'h' or fileExt == 'txx' or fileExt == 'inc':
+       subdir = '/include'
     elif fileExt == 'cxx' or fileExt =='c' or fileExt == 'in' or fileExt == 'cl' :
-        if 'Test' in itkFileName or 'test' in itkFileName:
-            if moduleName != 'ITK-TestKernel':
-                subdir = 'test'
-            else:
-                subdir =  'include'
-        else:
-            subdir = 'src'
+       subdir = '/src'
+    if 'Test' in itkFileName or 'test' in itkFileName:
+       subdir =  '/test'
+
+    # special modules
+    if moduleName ==  "ITK-IntegratedTest":
+       subdir = '/test'
+    if moduleName == 'ITK-TestKernel':
+       subdir = '/include'
+     # Utilities
+    if moduleName  == 'ITK-Expat':
+       subdir = '/'
 
 
     if groupName == '-':
             outputPath = HeadOfModularITKTree+ '/'+words[3]
     else:
-            desPath = groupName + '/'+words[3] + '/'+subdir
+            desPath = groupName + '/'+words[3] +  subdir
             outputPath = HeadOfModularITKTree+'/ITK/'+desPath
-
 
     inputfile = HeadOfTempTree+'/'+words[0]
     if len(moduleList) == 0:
