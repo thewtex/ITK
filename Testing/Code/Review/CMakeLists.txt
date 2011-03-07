@@ -2233,10 +2233,10 @@ add_test(itkLabelMapToRGBImageFilterTest1
 add_test(itkLabelMapToRGBImageFilterTest2
   ${TestDriver}
   --compare ${BASELINE}/itkLabelMapToRGBImageFilterTest1.png
-            ${TEMP}/itkLabelMapToRGBImageFilterTest1.png
+            ${TEMP}/itkLabelMapToRGBImageFilterTest2.png
   itkLabelMapToRGBImageFilterTest2
   ${INPUTDATA}/SpotsLabeled.png
-  ${TEMP}/itkLabelMapToRGBImageFilterTest1.png
+  ${TEMP}/itkLabelMapToRGBImageFilterTest2.png
   )
 
 
@@ -2254,11 +2254,11 @@ add_test(itkLabelMapOverlayImageFilterTest1
 add_test(itkLabelMapOverlayImageFilterTest2
   ${TestDriver}
   --compare ${BASELINE}/itkLabelMapOverlayImageFilterTest1.png
-            ${TEMP}/itkLabelMapOverlayImageFilterTest1.png
+            ${TEMP}/itkLabelMapOverlayImageFilterTest2.png
   itkLabelMapOverlayImageFilterTest2
   ${INPUTDATA}/cthead1Label.png
   ${INPUTDATA}/cthead1.png
-  ${TEMP}/itkLabelMapOverlayImageFilterTest1.png
+  ${TEMP}/itkLabelMapOverlayImageFilterTest2.png
   0.3
   )
 
