@@ -1,5 +1,5 @@
 # Set a list of group names
-set(group_list Core IO Filtering Registration Segmentation Numerics Utilities Bridge)
+set(group_list Core IO Filtering Registration Segmentation Numerics Utilities Bridge Nonunit)
 
 #------------------------------------------------
 # Set a module name list for each group
@@ -122,11 +122,16 @@ ITK-ZLIB
 ITK-VNLInstantiation
 ITK-TIFF
 )
+
+set(Nonunit_module_list
+ITK-IntegratedTest
+ITK-Review
+)
 #------------------------------------------------
 # Turn on the ITK_BUILD option for each group
-option(ITKGroup_Core "Request building core modules" ON)
+
 foreach( group ${group_list})
-    option(ITKGroup_${group} "Request building ${group} modules" OFF)
+    option(ITKGroup_${group} "Request building ${group} modules" ON)
     if (ITKGroup_${group})
       foreach (itk-module ${${group}_module_list} )
          list(APPEND ITK_MODULE_${itk-module}_REQUEST_BY ITKGroup_${group})
