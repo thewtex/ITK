@@ -507,7 +507,7 @@ IF(BUILD_TESTING)
   MARK_AS_ADVANCED(DART_TESTING_TIMEOUT)
   ENABLE_TESTING()
   INCLUDE(CTest)
-  SUBDIRS(Testing)
+#  SUBDIRS(Testing) #apparently, doesn't exist in ITK-- using the gdcm testing dir for now
   IF(NOT GDCM_DATA_ROOT)
     MESSAGE("If you want to build the test suite, you must set GDCM_DATA_ROOT (advanced option) "
     "to the full path name of the gdcmData directory; if you don't want, disable GDCM_BUILD_TESTING.\n"
