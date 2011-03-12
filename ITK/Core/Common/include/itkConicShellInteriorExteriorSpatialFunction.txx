@@ -100,7 +100,8 @@ ConicShellInteriorExteriorSpatialFunction< VDimension, TInput >
     }
   // Normalize it
   // vecOriginToTest.GetVnlVector().normalize();
-  vecOriginToTest.Normalize();
+  // vecOriginToTest.Normalize();
+  vecOriginToTest /= vecDistance;
 
   // Create a temp vector to get around const problems
   GradientType originGradient = m_OriginGradient;
