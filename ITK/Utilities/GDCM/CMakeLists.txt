@@ -10,7 +10,7 @@ if(ITK_USE_SYSTEM_GDCM)
   set(ITK-GDCM_INCLUDE_DIRS
     ${GDCM_INCLUDE_DIR}
     )
-  set(ITK-GDCM_LIBRARIES  gdcmDICT gdcmMSFF )
+  set(ITK-GDCM_LIBRARIES  gdcmDICT gdcmMSFF gdcmDSED gdcmIOD gdcmCommon)
   set(itk-module-config-install "
 list(APPEND ITK-GDCM_LIBRARY_DIRS \"${GDCM_LIBRARY_DIR}\")
 list(APPEND ITK-GDCM_INCLUDE_DIRS \"${GDCM_INCLUDE_DIRS}\")
@@ -41,7 +41,7 @@ else()
         ${ITK-GDCM_SOURCE_DIR}/src/gdcm/Utilities/C99)
     endif()
   endif()
-  set(ITK-GDCM_LIBRARIES  gdcmDICT gdcmMSFF )
+  set(ITK-GDCM_LIBRARIES  gdcmDICT gdcmMSFF gdcmDSED gdcmIOD gdcmCommon)
 endif()
 
 itk_module_impl()

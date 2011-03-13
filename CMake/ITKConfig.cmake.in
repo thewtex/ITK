@@ -28,7 +28,7 @@ set(ITK_MODULES_ENABLED "@ITK_CONFIG_MODULES_ENABLED@")
 # Load all modules.
 set(ITK_LIBRARIES "")
 set(ITK_INCLUDE_DIRS "")
-set(ITK_LIBRARY_DIRS "")
+set(ITK_LIBRARY_DIRS "@CMAKE_LIBRARY_OUTPUT_DIRECTORY@")
 foreach(itk-module ${ITK_MODULES_ENABLED})
   include("${${itk-module}_DIR}/${itk-module}Config.cmake")
   list(APPEND ITK_LIBRARIES ${${itk-module}_LIBRARIES})
