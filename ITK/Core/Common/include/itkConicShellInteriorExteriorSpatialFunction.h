@@ -79,8 +79,17 @@ public:
   /** Output type for the function. */
   typedef typename Superclass::OutputType OutputType;
 
+  /** type of input values */
+  typedef typename InputType::ValueType InputValueType;
+
+  /** type associated to real input values */
+  typedef typename InputType::RealType InputRealType;
+
+  /** The Type of vector used in evaluation of the position of a point */
+  typedef typename InputType::VectorType VectorType;
+
   /** The type of vector used to store the gradient info. */
-  typedef CovariantVector< double, VDimension > GradientType;
+  typedef CovariantVector< InputValueType, VDimension > GradientType;
 
   /** Evaluates the function at a given position */
   OutputType Evaluate(const InputType & position) const;
@@ -94,16 +103,16 @@ public:
   void SetOriginGradient(GradientType grad);
 
   /** Set/Get the minimum search distance. */
-  itkGetConstMacro(DistanceMin, double);
-  itkSetMacro(DistanceMin, double);
+  itkGetConstMacro(DistanceMin, InputRealType);
+  itkSetMacro(DistanceMin, InputRealType);
 
   /** Set/Get the maximum search distance. */
-  itkGetConstMacro(DistanceMax, double);
-  itkSetMacro(DistanceMax, double);
+  itkGetConstMacro(DistanceMax, InputRealType);
+  itkSetMacro(DistanceMax, InputRealType);
 
   /** Set/Get the tolerance of the in/out comparison. */
-  itkGetConstMacro(Epsilon, double);
-  itkSetMacro(Epsilon, double);
+  itkGetConstMacro(Epsilon, InputValueType);
+  itkSetMacro(Epsilon, InputValueType);
 
   /** Set/Get direction along the gradient to search. */
   itkGetConstMacro(Polarity, bool);
@@ -125,9 +134,9 @@ private:
   /** The gradient at the origin */
   GradientType m_OriginGradient;
 
-  double m_DistanceMin;
-  double m_DistanceMax;
-  double m_Epsilon;
+  InputRealType m_DistanceMin;
+  InputRealType m_DistanceMax;
+  InputValueType m_Epsilon;
   bool   m_Polarity;
 };
 } // end namespace itk

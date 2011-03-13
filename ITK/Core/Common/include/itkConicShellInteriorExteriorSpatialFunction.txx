@@ -31,7 +31,7 @@ ConicShellInteriorExteriorSpatialFunction< VDimension, TInput >
 
   m_DistanceMin = 0;
   m_DistanceMax = 0;
-  m_Polarity = 0;
+  m_Polarity = false;
   m_Epsilon = 0;
 }
 
@@ -84,44 +84,43 @@ ConicShellInteriorExteriorSpatialFunction< VDimension, TInput >
   // O means the direction that the gradient is pointing,
   // 1 means the opposite direction
 
-  typedef Vector< double, VDimension > VectorType;
-
   // Compute the vector from the origin to the point we're testing
   VectorType vecOriginToTest = position - m_Origin;
 
   // Compute the length of this vector
   // double vecDistance = vecOriginToTest.GetVnlVector().magnitude();
-  double vecDistance = vecOriginToTest.GetNorm();
+  InputRealType vecDistance = vecOriginToTest.GetNorm();
+
+  // initially, we consider that the input is outside the shell
+  OutputType result = 0;
 
   // Check to see if this an allowed distance
-  if ( !( ( vecDistance > m_DistanceMin ) && ( vecDistance < m_DistanceMax ) ) )
+  if ( !(   ( vecDistance > m_DistanceMin )
+         && ( vecDistance < m_DistanceMax ) ) )
     {
-    return 0; // not inside the conic shell
+    return result; // not inside the conic shell
     }
   // Normalize it
   // vecOriginToTest.GetVnlVector().normalize();
-  vecOriginToTest.Normalize();
+  // vecOriginToTest.Normalize();
+  vecOriginToTest /= vecDistance;
 
   // Create a temp vector to get around const problems
   GradientType originGradient = m_OriginGradient;
 
   // Now compute the dot product
-  double dotprod = originGradient * vecOriginToTest;
+  typename VectorType::ValueType
+      dotprod = originGradient * vecOriginToTest;
 
-  if ( m_Polarity == 1 )
+  if ( m_Polarity == true )
     {
     dotprod = dotprod * -1;
     }
 
   // Check to see if it meet's the angle criterior
-  OutputType result;
   if ( dotprod > ( 1 - m_Epsilon ) )
     {
     result = 1; // it's inside the shell
-    }
-  else
-    {
-    result = 0; // it's not inside the shell
     }
 
   return result;
