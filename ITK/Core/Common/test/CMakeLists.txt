@@ -88,6 +88,7 @@ itkSliceIteratorTest.cxx
 itkMultiThreaderTest.cxx
 itkImageRegionExclusionIteratorWithIndexTest.cxx
 itkFixedArrayTest.cxx
+itkConicShellInteriorExteriorSpatialFunctionTest.cxx
 )
 
 
@@ -250,6 +251,8 @@ add_test(itkSymmetricEigenAnalysisTest ${COMMON_TESTS1} itkSymmetricEigenAnalysi
 add_test(itkVariableLengthVectorTest ${COMMON_TESTS2} itkVariableLengthVectorTest)
 add_test(itkVariableSizeMatrixTest ${COMMON_TESTS2} itkVariableSizeMatrixTest)
 #add_test(itkQuaternionOrientationAdapterTest ${COMMON_TESTS2} itkQuaternionOrientationAdapterTest)
+add_test(itkConicShellInteriorExteriorSpatialFunctionTest ${COMMON_TESTS2} itkConicShellInteriorExteriorSpatialFunctionTest)
+
 
 if( ${ITK_COMPUTER_MEMORY_SIZE} GREATER 4 )
   add_test(itkImageFillBufferTest4.1 ${COMMON_TESTS2} itkImageFillBufferTest 4.1)
