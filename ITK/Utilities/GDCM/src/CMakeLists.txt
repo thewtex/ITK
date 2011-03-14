@@ -23,7 +23,18 @@ endif()
 
 add_subdirectory(gdcm)
 
-foreach(lib gdcmDICT gdcmMSFF )
-  itk_module_target_name(${lib})
+foreach(lib
+    gdcmjpeg8
+    gdcmjpeg12
+    gdcmjpeg16
+    gdcmcharls
+    gdcmuuid
+    gdcmCommon
+    gdcmDICT
+    gdcmDSED
+    gdcmIOD
+    gdcmMSFF
+    )
+  #itk_module_target_name(${lib}) # TODO: Mangle lib names with itk prefix too
   itk_module_target_export(${lib})
 endforeach()
