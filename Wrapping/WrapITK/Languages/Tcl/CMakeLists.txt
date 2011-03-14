@@ -16,6 +16,15 @@ include_directories(${TCL_INCLUDE_PATH} ${TK_INCLUDE_PATH})
 
 
 ###############################################################################
+# install the files requires for tcl
+if(NOT EXTERNAL_WRAP_ITK_PROJECT)
+  WRAP_ITK_INSTALL(/Configuration/Languages/Tcl CMakeLists.txt)
+  WRAP_ITK_INSTALL(/Configuration/Languages/Tcl main_module_ext.i.in)
+  WRAP_ITK_INSTALL(/Configuration/Languages/Tcl module_ext.i.in)
+endif(NOT EXTERNAL_WRAP_ITK_PROJECT)
+
+
+###############################################################################
 # store the current dir, so it can be reused later
 set(WRAP_ITK_TCL_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}" CACHE INTERNAL "tcl source dir")
 set(WRAP_ITK_TCL_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}" CACHE INTERNAL "tcl binary dir")
@@ -24,52 +33,6 @@ set(WRAP_ITK_TCL_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}" CACHE INTERNAL "tcl bi
 ###############################################################################
 # create the tcl directory in the classindex dir
 file(MAKE_DIRECTORY ${WRAPPER_MASTER_INDEX_OUTPUT_DIR}/tcl)
-
-
-###############################################################################
-# Configure itkwish
-set(WRAP_ITK_TCL_EXE_DIR_BUILD "${ITK_EXECUTABLE_PATH}")
-set(WRAP_ITK_TCL_EXE_NAME_ROOT "itkwish")
-
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/itkTclConfigure.h.in
-               ${CMAKE_CURRENT_BINARY_DIR}/itkTclConfigure.h
-               @ONLY IMMEDIATE)
-
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
-
-# configure and install the driver itkwish script
-set(WRAP_ITK_TCL_DIR "${CMAKE_INSTALL_PREFIX}/${WRAP_ITK_INSTALL_PREFIX}/Tcl")
-set(WRAP_ITK_TCL_SWIG_DIR "${CMAKE_INSTALL_PREFIX}/${WRAP_ITK_INSTALL_PREFIX}/lib")
-set(WRAP_ITK_TCL_ITKWISH_DIR "${CMAKE_INSTALL_PREFIX}/${WRAP_ITK_INSTALL_PREFIX}/bin")
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/itkwish.in
-               ${CMAKE_CURRENT_BINARY_DIR}/InstallOnly/itkwish
-               @ONLY IMMEDIATE )
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/InstallOnly/itkwish
-  DESTINATION bin
-  PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
-)
-
-# configure a itkwish usable in build tree
-# use WrapITK_BINARY_DIR instead of the current bianry dir because tcl search pkgIndex.tcl in
-# the subdirs before searching in the current dir, and so find the pikIndex.tcl file in InstallOnly
-# first
-set(WRAP_ITK_TCL_DIR "${WrapITK_BINARY_DIR}/Languages")
-set(WRAP_ITK_TCL_SWIG_DIR "${LIBRARY_OUTPUT_PATH}")
-set(WRAP_ITK_TCL_ITKWISH_DIR "${EXECUTABLE_OUTPUT_PATH}")
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/itkwish.in
-               ${CMAKE_CURRENT_BINARY_DIR}/itkwish
-               @ONLY IMMEDIATE )
-
-
-#install the actual executable
-install(FILES itkinteraction.tcl itktesting.tcl itkdata.tcl itkutils.tcl
-  DESTINATION "${WRAP_ITK_INSTALL_PREFIX}/Tcl"
-)
-
-
-
-
-
 
 
 
@@ -134,6 +97,7 @@ macro(END_WRAP_LIBRARY_TCL)
     ### TODO: remove that once the bug for std::vector is fixed ###
     -w401 # Maybe you forgot to instantiate 'XXX' using %template.
     ###
+    -w350 -w394 -w395  # operator new/new[]/delete[] ignored
     -o ${cpp_file}
     -I${LANGUAGES_SRC_DIR}
     -I${WRAP_ITK_TYPEDEFS_DIRECTORY}/tcl
@@ -212,6 +176,7 @@ macro(END_WRAP_MODULE_TCL group_name)
     ### TODO: remove that once the bug for std::vector is fixed ###
     -w401 # Maybe you forgot to instantiate 'XXX' using %template.
     ###
+    -w350 -w394 -w395  # operator new/new[]/delete[] ignored
     -o ${cpp_file}
     -I${LANGUAGES_SRC_DIR}
     -I${WRAP_ITK_TYPEDEFS_DIRECTORY}/tcl
@@ -354,51 +319,6 @@ if(NOT EXTERNAL_WRAP_ITK_PROJECT)
   subdirs(Tests)
 
   macro(END_WRAP_LIBRARIES_TCL)
-    # Configure itkTclModules.h with the names of the initializer functions for the
-    # selected modules. For some pathological reason, the names are in the format:
-    # Modulename_Init
-    # where the first character is uppercase and the rest of the module name is
-    # lower case. Which will entail some amount of pain to create in CMake.
-    set(module_init_names )
-    foreach(module ${WRAP_ITK_LIBRARIES})
-      string(REGEX REPLACE "^(.)(.+)$" "\\1" first "${module}")
-      string(REGEX REPLACE "^(.)(.+)$" "\\2" rest "${module}")
-      string(TOUPPER "${first}" first)
-      string(TOLOWER "${rest}" rest)
-      set(module_init_names ${module_init_names} "${first}${rest}tcl_Init")
-    endforeach(module)
-
-    # Now take those init functions and make a list of symbol declarations like:
-    # int Modulename_Init(Tcl_Interp*);
-    set(WRAP_ITK_TCL_LIBRARIES_INIT_DECLARATIONS )
-    foreach(module ${module_init_names})
-      set(WRAP_ITK_TCL_LIBRARIES_INIT_DECLARATIONS "${WRAP_ITK_TCL_LIBRARIES_INIT_DECLARATIONS}  int ${module}(Tcl_Interp*);\n")
-    endforeach(module)
-
-    # Now we pack the addresses of the init function names into a comma-separated
-    # string, to be used in an array initializer
-    set(initializer )
-    foreach(module ${module_init_names})
-      set(initializer "${initializer}  &${module},\n")
-    endforeach(module)
-    # Let's trim off that last ',\n':
-    string(REGEX REPLACE ",\n$" "" WRAP_ITK_TCL_LIBRARIES_ARRAY_INITIALIZER "${initializer}")
-
-    # Let's get the number of modules configured.
-    list(LENGTH WRAP_ITK_LIBRARIES WRAP_ITK_TCL_LIBRARIES_COUNT)
-
-    # And finally configure the file
-    configure_file(${WRAP_ITK_TCL_SOURCE_DIR}/itkTclModules.h.in
-                  ${WRAP_ITK_TCL_BINARY_DIR}/itkTclModules.h
-                  @ONLY IMMEDIATE)
-
-    add_executable(itkwish ${WRAP_ITK_TCL_SOURCE_DIR}/itkTclAppInit.cxx)
-    foreach(module ${WRAP_ITK_LIBRARIES})
-      target_link_libraries(itkwish ${module}Tcl)
-    endforeach(module)
-    target_link_libraries(itkwish ${TCL_LIBRARY} ${TK_LIBRARY})
-    install(TARGETS itkwish DESTINATION "${WRAP_ITK_INSTALL_PREFIX}/bin")
-
     ###############################################################################
     # Configure pkgIndex.tcl for the build tree.
     if(CMAKE_CONFIGURATION_TYPES)
@@ -421,6 +341,14 @@ if(NOT EXTERNAL_WRAP_ITK_PROJECT)
                    "${WRAP_ITK_TCL_BINARY_DIR}/InstallOnly/itkwish_wont_find_me_here/pkgIndex.tcl"
                   @ONLY IMMEDIATE)
     WRAP_ITK_INSTALL(/Tcl "${WRAP_ITK_TCL_BINARY_DIR}/InstallOnly/itkwish_wont_find_me_here/pkgIndex.tcl")
+
+    #install the actual executable
+    install(FILES ${WRAP_ITK_TCL_SOURCE_DIR}/itkinteraction.tcl
+                  ${WRAP_ITK_TCL_SOURCE_DIR}/itktesting.tcl
+                  ${WRAP_ITK_TCL_SOURCE_DIR}/itkdata.tcl
+                  ${WRAP_ITK_TCL_SOURCE_DIR}/itkutils.tcl
+            DESTINATION "${WRAP_ITK_INSTALL_PREFIX}/Tcl"
+           )
 
   endmacro(END_WRAP_LIBRARIES_TCL)
 

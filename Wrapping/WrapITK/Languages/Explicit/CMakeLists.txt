@@ -2,7 +2,8 @@
 # install the files requires for explicit
 if(NOT EXTERNAL_WRAP_ITK_PROJECT)
   WRAP_ITK_INSTALL(/Configuration/Languages/Explicit CMakeLists.txt)
-  WRAP_ITK_INSTALL(/Configuration/Languages/Explicit explicit.in)
+  WRAP_ITK_INSTALL(/Configuration/Languages/Explicit Explicit.h.in)
+  WRAP_ITK_INSTALL(/Configuration/Languages/Explicit Explicit.cxx.in)
 endif(NOT EXTERNAL_WRAP_ITK_PROJECT)
 
 
@@ -17,18 +18,14 @@ set(WRAPPER_MASTER_INDEX_OUTPUT_DIR "${PROJECT_BINARY_DIR}/Typedefs")
 
 
 macro(WRAP_INCLUDE_EXPLICIT include_file)
-  if("${include_file}" MATCHES "<.*>")
-    set(EXPLICIT_EXPLICITS "${EXPLICIT_EXPLICITS}#include ${include_file}\n")
-  else("${include_file}" MATCHES "<.*>")
-    set(EXPLICIT_EXPLICITS "${EXPLICIT_EXPLICITS}#include \"${include_file}\"\n")
-  endif("${include_file}" MATCHES "<.*>")
+  list(APPEND EXPLICIT_INCLUDES ${include_file})
 endmacro(WRAP_INCLUDE_EXPLICIT)
 
 
 macro(ADD_SIMPLE_TYPEDEF_EXPLICIT wrap_class swig_name)
   if("${wrap_class}" MATCHES "<.*>")
     set(EXPLICIT_EXPLICITS "${EXPLICIT_EXPLICITS}extern template class ${wrap_class};\n")
-    set(EXPLICIT_INSTANTIATES "${EXPLICIT_INSTANTIATES}template class ${wrap_class};\n")
+    set(EXPLICIT_INSTANTIATES "${EXPLICIT_INSTANTIATES}template class WRAP_ITK_${WRAPPER_LIBRARY_NAME}_EXPORT ${wrap_class};\n")
   endif("${wrap_class}" MATCHES "<.*>")
 endmacro(ADD_SIMPLE_TYPEDEF_EXPLICIT)
 
@@ -36,24 +33,21 @@ endmacro(ADD_SIMPLE_TYPEDEF_EXPLICIT)
 macro(WRAP_MODULE_EXPLICIT module)
   # clear the typedefs and the includes
   set(EXPLICIT_INSTANTIATES )
+  set(EXPLICIT_EXPLICITS "${EXPLICIT_EXPLICITS}#ifndef __${WRAPPER_LIBRARY_NAME}Explicit_${module}\n")
 endmacro(WRAP_MODULE_EXPLICIT)
 
 macro(END_WRAP_MODULE_EXPLICIT module)
+  set(EXPLICIT_EXPLICITS "${EXPLICIT_EXPLICITS}#endif\n\n")
   # Create the cxx file.
-  set(file_name "${module}.explicit.cxx")
+  set(file_name "${module}Explicit.cxx")
   set(cxx_file "${WRAPPER_LIBRARY_OUTPUT_DIR}/${file_name}")
-  set(CONFIG_EXPLICIT_CONTENT "#include \"${WRAPPER_LIBRARY_NAME}.explicit.h\"\n")
-  set(CONFIG_EXPLICIT_CONTENT "${CONFIG_EXPLICIT_CONTENT}${EXPLICIT_INSTANTIATES}")
-  configure_file("${WRAP_ITK_EXPLICIT_SOURCE_DIR}/explicit.in"
+  configure_file("${WRAP_ITK_EXPLICIT_SOURCE_DIR}/Explicit.cxx.in"
     "${cxx_file}" @ONLY IMMEDIATE)
   set(EXPLICIT_EXPLICITS_FILES ${EXPLICIT_EXPLICITS_FILES} ${cxx_file})
 endmacro(END_WRAP_MODULE_EXPLICIT)
 
 
 macro(ADD_ONE_TYPEDEF_EXPLICIT  wrap_method wrap_class swig_name template_params)
-  # insert a blank line to separate the classes
-  set(EXPLICIT_EXPLICITS "${EXPLICIT_EXPLICITS}\n")
-  set(EXPLICIT_INSTANTIATES "${EXPLICIT_INSTANTIATES}\n")
   # Add one  typedef to WRAPPER_TYPEDEFS
   # 'wrap_method' is the one of the valid WRAPPER_WRAP_METHODS from WRAP_CLASS,
   # 'wrap_class' is the fully-qualified C++ name of the class
@@ -94,8 +88,9 @@ macro(ADD_ONE_TYPEDEF_EXPLICIT  wrap_method wrap_class swig_name template_params
 #     ADD_SIMPLE_TYPEDEF_EXPLICIT("${full_class_name}::Superclass::Pointer::SmartPointer" "${swig_name}_Superclass_Pointer")
 #   endif("${wrap_method}" MATCHES "SUPERCLASS")
 
-  # the same output with or without FORCE_INSTANTIATE
-  ADD_SIMPLE_TYPEDEF_EXPLICIT("${full_class_name}" "${swig_name}")
+  if(NOT WIN32 OR NOT "${wrap_method}" MATCHES "EXPLICIT_SPECIALIZATION")
+    ADD_SIMPLE_TYPEDEF_EXPLICIT("${full_class_name}" "${swig_name}")
+  endif()
 
 # don't do pointers for now
 
@@ -113,26 +108,38 @@ endmacro(ADD_ONE_TYPEDEF_EXPLICIT)
 macro(WRAP_LIBRARY_EXPLICIT library_name)
   set(EXPLICIT_EXPLICITS )
   set(EXPLICIT_EXPLICITS_FILES )
+  set(EXPLICIT_INCLUDES )
 endmacro(WRAP_LIBRARY_EXPLICIT)
 
 macro(END_WRAP_LIBRARY_EXPLICIT)
-  set(file_name "${WRAPPER_LIBRARY_NAME}.explicit.h")
-  set(cxx_file "${WRAPPER_MASTER_INDEX_OUTPUT_DIR}/${file_name}")
-  set(CONFIG_EXPLICIT_CONTENT )
+  set(CONFIG_EXPLICIT_INCLUDES )
   foreach(dep ${WRAPPER_LIBRARY_DEPENDS})
-    set(CONFIG_EXPLICIT_CONTENT "${CONFIG_EXPLICIT_CONTENT}#include \"${dep}.explicit.h\"\n")
+    set(CONFIG_EXPLICIT_INCLUDES "${CONFIG_EXPLICIT_INCLUDES}#include \"${dep}Explicit.h\"\n")
   endforeach(dep)
-  set(CONFIG_EXPLICIT_CONTENT "${CONFIG_EXPLICIT_CONTENT}${EXPLICIT_EXPLICITS}")
-  configure_file("${WRAP_ITK_EXPLICIT_SOURCE_DIR}/explicit.in"
+  if(EXPLICIT_INCLUDES)
+    list(REMOVE_DUPLICATES EXPLICIT_INCLUDES)
+    foreach(include_file ${EXPLICIT_INCLUDES})
+      if("${include_file}" MATCHES "<.*>")
+        set(CONFIG_EXPLICIT_INCLUDES "${CONFIG_EXPLICIT_INCLUDES}#include ${include_file}\n")
+      else()
+        set(CONFIG_EXPLICIT_INCLUDES "${CONFIG_EXPLICIT_INCLUDES}#include \"${include_file}\"\n")
+      endif()
+    endforeach()
+  endif()
+
+  set(file_name "${WRAPPER_LIBRARY_NAME}Explicit.h")
+  set(cxx_file "${WRAPPER_MASTER_INDEX_OUTPUT_DIR}/${file_name}")
+  configure_file("${WRAP_ITK_EXPLICIT_SOURCE_DIR}/Explicit.h.in"
     "${cxx_file}" @ONLY IMMEDIATE)
-   WRAP_ITK_INSTALL(/Configuration/Typedefs "${cxx_file}")
+
+  WRAP_ITK_INSTALL(/Configuration/Typedefs "${cxx_file}")
   if(EXPLICIT_EXPLICITS_FILES)
     add_library(${WRAPPER_LIBRARY_NAME}Explicit SHARED ${EXPLICIT_EXPLICITS_FILES})
     foreach(dep ${WRAPPER_LIBRARY_DEPENDS})
       target_link_libraries(${WRAPPER_LIBRARY_NAME}Explicit ${dep}Explicit)
     endforeach(dep)
     target_link_libraries(${WRAPPER_LIBRARY_NAME}Explicit ${WRAPPER_LIBRARY_LINK_LIBRARIES} )
-
+    set_target_properties(${WRAPPER_LIBRARY_NAME}Explicit PROPERTIES COMPILE_FLAGS -DWRAP_ITK_${WRAPPER_LIBRARY_NAME}_EXPORTS )
     install(TARGETS ${WRAPPER_LIBRARY_NAME}Explicit DESTINATION "${WRAP_ITK_INSTALL_PREFIX}/lib")
   endif(EXPLICIT_EXPLICITS_FILES)
 endmacro(END_WRAP_LIBRARY_EXPLICIT)
