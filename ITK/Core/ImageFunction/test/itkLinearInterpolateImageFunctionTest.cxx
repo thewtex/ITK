@@ -22,6 +22,7 @@
 #include <iostream>
 
 #include "itkImage.h"
+#include "itkVectorImage.h"
 #include "itkTranslationTransform.h"
 #include "itkLinearInterpolateImageFunction.h"
 
@@ -35,6 +36,8 @@ int itkLinearInterpolateImageFunctionTest( int , char*[] )
  typedef itk::Vector< PixelType, VectorDimension >     VectorPixelType;
  typedef itk::Image< PixelType, Dimension >            ImageType;
  typedef itk::Image< VectorPixelType, Dimension >      VectorImageType;
+ typedef itk::VectorImage< PixelType, Dimension >      VariableVectorImageType;
+ typedef VariableVectorImageType::PixelType            VariablePixelType;
  typedef ImageType::RegionType                         RegionType;
  typedef RegionType::SizeType                          SizeType;
  typedef ImageType::IndexType                          IndexType;
@@ -47,11 +50,16 @@ int itkLinearInterpolateImageFunctionTest( int , char*[] )
     ImageType, CoordRepType >                          InterpolatorType;
  typedef itk::LinearInterpolateImageFunction<
     VectorImageType, CoordRepType >                    VectorInterpolatorType;
+ typedef itk::LinearInterpolateImageFunction<
+    VariableVectorImageType, CoordRepType >            VariableVectorInterpolatorType;
 
  typedef VectorInterpolatorType::OutputType            InterpolatedVectorType;
+ typedef VariableVectorInterpolatorType::OutputType    InterpolatedVariableVectorType;
 
  ImageType::Pointer image = ImageType::New();
  VectorImageType::Pointer vectorimage = VectorImageType::New();
+ VariableVectorImageType::Pointer variablevectorimage = VariableVectorImageType::New();
+ variablevectorimage->SetVectorLength(VectorDimension);
 
  IndexType start;
  start.Fill( 0 );
@@ -69,6 +77,9 @@ int itkLinearInterpolateImageFunctionTest( int , char*[] )
  vectorimage->SetRegions( region );
  vectorimage->Allocate();
 
+ variablevectorimage->SetRegions( region );
+ variablevectorimage->Allocate();
+
  ImageType::PointType     origin;
  ImageType::SpacingType   spacing;
 
@@ -80,6 +91,9 @@ int itkLinearInterpolateImageFunctionTest( int , char*[] )
 
  vectorimage->SetOrigin( origin );
  vectorimage->SetSpacing( spacing );
+
+ variablevectorimage->SetOrigin( origin );
+ variablevectorimage->SetSpacing( spacing );
 
  image->Print( std::cout );
 
@@ -106,6 +120,9 @@ int itkLinearInterpolateImageFunctionTest( int , char*[] )
      VectorPixelType & vectorpixel = vectorimage->GetPixel( index );
      vectorpixel.Fill( value );
 
+     VariablePixelType variablevectorpixel = variablevectorimage->GetPixel( index );
+     variablevectorpixel.Fill( value );
+
      std::cout << value << " ";
      }
    std::cout << std::endl;
@@ -116,6 +133,9 @@ int itkLinearInterpolateImageFunctionTest( int , char*[] )
 
  VectorInterpolatorType::Pointer vectorinterpolator = VectorInterpolatorType::New();
  vectorinterpolator->SetInputImage( vectorimage );
+
+ VariableVectorInterpolatorType::Pointer variablevectorinterpolator = VariableVectorInterpolatorType::New();
+ variablevectorinterpolator->SetInputImage( variablevectorimage );
 
  const double incr = 0.1;
 
@@ -167,6 +187,25 @@ int itkLinearInterpolateImageFunctionTest( int , char*[] )
              std::cerr << "Difference     = " << (expectedvector - vectorpixel) << std::endl;
              return EXIT_FAILURE;
              }
+
+           const InterpolatedVariableVectorType variablevectorpixel = variablevectorinterpolator->Evaluate( point );
+
+           InterpolatedVariableVectorType expectedvariablevector;
+	   expectedvariablevector.SetSize(VectorDimension);
+	   expectedvariablevector.Fill(expectedValue);
+
+           const double varerrornorm = (expectedvariablevector - variablevectorpixel).GetNorm();
+
+           if( varerrornorm > tolerance )
+             {
+             std::cerr << "Error found while computing variable vector interpolation " << std::endl;
+             std::cerr << "Point = " << point << std::endl;
+             std::cerr << "Expected variablevector = " << expectedvariablevector << std::endl;
+             std::cerr << "Computed variablevector = " << variablevectorpixel << std::endl;
+             std::cerr << "Difference     = " << (expectedvariablevector - variablevectorpixel) << std::endl;
+             return EXIT_FAILURE;
+             }
+
            }
          }
        }
