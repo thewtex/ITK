@@ -85,7 +85,7 @@ LinearInterpolateImageFunction< TInputImage, TCoordRep >
    * neighbors. The weight for each neighbor is the fraction overlap
    * of the neighbor pixel with respect to a pixel centered on point.
    */
-  RealType value = NumericTraits< RealType >::Zero;
+  RealType value= NumericTraits< RealType >::ZeroValue();
 
   typedef typename NumericTraits< InputPixelType >::ScalarRealType ScalarRealType;
   ScalarRealType totalOverlap = NumericTraits< ScalarRealType >::Zero;

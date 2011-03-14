@@ -123,6 +123,16 @@ public:
     return b;
   }
 
+  static const Self ZeroValue()
+  {
+    return Self( NumericTraits< T >::ZeroValue() );
+  }
+
+  static const Self OneValue()
+  {
+    return Self( NumericTraits< T >::OneValue() );
+  }
+
   /** Resize the input vector to the specified size. */
   static void SetLength(VariableLengthVector< T > & m, const unsigned int s)
   {
