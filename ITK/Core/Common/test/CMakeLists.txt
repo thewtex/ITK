@@ -121,11 +121,6 @@ set(EXAMPLES_DATA_ROOT "${ITK_SOURCE_DIR}/Examples/Data")
 
 
 #-----------------------------------------------------------------------------
-if(ITK_USE_FLOATINGPOINTEXCEPTIONS)
-  set_source_files_properties(itkFloatingPointExceptionsTest.cxx
-    COMPILE_FLAGS -DITK_USE_FPE)
-endif(ITK_USE_FLOATINGPOINTEXCEPTIONS)
-
 add_executable( itkMathTest itkMathTest.cxx )
 add_test( itkMathTest  "${ITK_EXECUTABLE_PATH}/itkMathTest" )
 target_link_libraries(itkMathTest ${ITK-Common_LIBRARIES})
@@ -259,7 +254,7 @@ endif( ${ITK_COMPUTER_MEMORY_SIZE} GREATER 4 )
 # this test depends on being able to raise C++ exceptions from
 # the signal handler. This is apparently not something that
 # works properly
-if(ITK_USE_FLOATINGPOINTEXCEPTIONS)
+if("${CMAKE_SYSTEM_NAME}" MATCHES "Linux")
   add_test(itkFloatingPointExceptionsTest1 ${COMMON_TESTS2}
     itkFloatingPointExceptionsTest DivByZero)
   add_test(itkFloatingPointExceptionsTest2 ${COMMON_TESTS2}
@@ -279,8 +274,7 @@ if(ITK_USE_FLOATINGPOINTEXCEPTIONS)
     itkFloatingPointExceptionsTest5
     PROPERTIES WILL_FAIL TRUE
     )
-
-endif(ITK_USE_FLOATINGPOINTEXCEPTIONS)
+endif()
 
 set(ITK_SYSTEM_INFORMATION_DIR ${ITK_BINARY_DIR})
 
