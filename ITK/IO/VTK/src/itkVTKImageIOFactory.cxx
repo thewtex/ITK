@@ -55,4 +55,12 @@ VTKImageIOFactory::GetDescription(void) const
 {
   return "VTK ImageIO Factory, allows the loading of VTK images into ITK";
 }
+
+// Undocumented API used to register during static initialization.
+// DO NOT CALL DIRECTLY.
+void VTKImageIOFactoryRegister(void)
+{
+  VTKImageIOFactory::RegisterOneFactory();
+}
+
 } // end namespace itk

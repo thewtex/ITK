@@ -48,4 +48,12 @@ GE4ImageIOFactory::GetDescription() const
 {
   return "GE4 ImageIO Factory, allows the loading of GE4 images into insight";
 }
+
+// Undocumented API used to register during static initialization.
+// DO NOT CALL DIRECTLY.
+void GE4ImageIOFactoryRegister(void)
+{
+  GE4ImageIOFactory::RegisterOneFactory();
+}
+
 } // end namespace itk

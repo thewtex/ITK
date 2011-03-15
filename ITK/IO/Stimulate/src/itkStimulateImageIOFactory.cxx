@@ -55,4 +55,12 @@ StimulateImageIOFactory::GetDescription(void) const
 {
   return "Stimulate ImageIO Factory, allows the loading of Stimulate images into ITK";
 }
+
+// Undocumented API used to register during static initialization.
+// DO NOT CALL DIRECTLY.
+void StimulateImageIOFactoryRegister(void)
+{
+  StimulateImageIOFactory::RegisterOneFactory();
+}
+
 } // end namespace itk

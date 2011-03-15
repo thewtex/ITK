@@ -48,4 +48,12 @@ SiemensVisionImageIOFactory::GetDescription() const
 {
   return "SiemensVision ImageIO Factory, allows the loading of SiemensVision images into insight";
 }
+
+// Undocumented API used to register during static initialization.
+// DO NOT CALL DIRECTLY.
+void SiemensVisionImageIOFactoryRegister(void)
+{
+  SiemensVisionImageIOFactory::RegisterOneFactory();
+}
+
 } // end namespace itk

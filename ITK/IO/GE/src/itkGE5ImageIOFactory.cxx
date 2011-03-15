@@ -48,4 +48,12 @@ GE5ImageIOFactory::GetDescription() const
 {
   return "GE5 ImageIO Factory, allows the loading of GE5 images into ITK";
 }
+
+// Undocumented API used to register during static initialization.
+// DO NOT CALL DIRECTLY.
+void GE5ImageIOFactoryRegister(void)
+{
+  GE5ImageIOFactory::RegisterOneFactory();
+}
+
 } // end namespace itk

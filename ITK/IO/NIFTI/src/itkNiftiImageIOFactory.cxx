@@ -48,4 +48,12 @@ NiftiImageIOFactory::GetDescription() const
 {
   return "Nifti ImageIO Factory, allows the loading of Nifti images into insight";
 }
+
+// Undocumented API used to register during static initialization.
+// DO NOT CALL DIRECTLY.
+void NiftiImageIOFactoryRegister(void)
+{
+  NiftiImageIOFactory::RegisterOneFactory();
+}
+
 } // end namespace itk

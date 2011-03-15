@@ -45,4 +45,12 @@ PNGImageIOFactory::GetDescription(void) const
 {
   return "PNG ImageIO Factory, allows the loading of PNG images into insight";
 }
+
+// Undocumented API used to register during static initialization.
+// DO NOT CALL DIRECTLY.
+void PNGImageIOFactoryRegister(void)
+{
+  PNGImageIOFactory::RegisterOneFactory();
+}
+
 } // end namespace itk
