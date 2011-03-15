@@ -91,8 +91,8 @@ itkFixedArrayTest.cxx
 )
 
 
-set (TestsTorun ${TESTS1})
-remove(TestsToRun ITK-Common-tests1.cxx)
+set(TestsToRun ${TESTS1})
+list(REMOVE_ITEM TestsToRun ITK-Common-tests1.cxx)
 add_executable(ITK-Common-tests1  ${TESTS1} )
 target_link_libraries(ITK-Common-tests1 ${ITK-Common_LIBRARIES})
 
