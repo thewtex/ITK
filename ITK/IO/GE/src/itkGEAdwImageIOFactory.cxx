@@ -48,4 +48,10 @@ GEAdwImageIOFactory::GetDescription() const
 {
   return "GEAdw ImageIO Factory, allows the loading of GEAdw images into insight";
 }
+
+void GEAdwImageIOFactoryRegister(void)
+{
+  GEAdwImageIOFactory::RegisterOneFactory();
+}
+
 } // end namespace itk

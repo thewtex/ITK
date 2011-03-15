@@ -45,4 +45,10 @@ PNGImageIOFactory::GetDescription(void) const
 {
   return "PNG ImageIO Factory, allows the loading of PNG images into insight";
 }
+
+void PNGImageIOFactoryRegister(void)
+{
+  PNGImageIOFactory::RegisterOneFactory();
+}
+
 } // end namespace itk

@@ -48,4 +48,10 @@ SiemensVisionImageIOFactory::GetDescription() const
 {
   return "SiemensVision ImageIO Factory, allows the loading of SiemensVision images into insight";
 }
+
+void SiemensVisionImageIOFactoryRegister(void)
+{
+  SiemensVisionImageIOFactory::RegisterOneFactory();
+}
+
 } // end namespace itk

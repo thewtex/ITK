@@ -45,4 +45,10 @@ GiplImageIOFactory::GetDescription() const
 {
   return "Gipl ImageIO Factory, allows the loading of Gipl images into Insight";
 }
+
+void GiplImageIOFactoryRegister(void)
+{
+  GiplImageIOFactory::RegisterOneFactory();
+}
+
 } // end namespace itk

@@ -45,4 +45,10 @@ MetaImageIOFactory::GetDescription() const
 {
   return "Meta ImageIO Factory, allows the loading of Meta images into insight";
 }
+
+void MetaImageIOFactoryRegister(void)
+{
+  MetaImageIOFactory::RegisterOneFactory();
+}
+
 } // end namespace itk

@@ -55,4 +55,10 @@ StimulateImageIOFactory::GetDescription(void) const
 {
   return "Stimulate ImageIO Factory, allows the loading of Stimulate images into ITK";
 }
+
+void StimulateImageIOFactoryRegister(void)
+{
+  StimulateImageIOFactory::RegisterOneFactory();
+}
+
 } // end namespace itk

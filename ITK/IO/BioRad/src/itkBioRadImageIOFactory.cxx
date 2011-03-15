@@ -55,4 +55,10 @@ BioRadImageIOFactory::GetDescription() const
 {
   return "BioRad ImageIO Factory, allows the loading of BioRad images into ITK";
 }
+
+void BioRadImageIOFactoryRegister(void)
+{
+  BioRadImageIOFactory::RegisterOneFactory();
+}
+
 } // end namespace itk

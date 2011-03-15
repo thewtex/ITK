@@ -45,4 +45,10 @@ JPEGImageIOFactory::GetDescription(void) const
 {
   return "JPEG ImageIO Factory, allows the loading of JPEG images into insight";
 }
+
+void JPEGImageIOFactoryRegister(void)
+{
+  JPEGImageIOFactory::RegisterOneFactory();
+}
+
 } // end namespace itk

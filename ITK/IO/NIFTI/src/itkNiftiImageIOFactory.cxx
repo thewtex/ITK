@@ -48,4 +48,10 @@ NiftiImageIOFactory::GetDescription() const
 {
   return "Nifti ImageIO Factory, allows the loading of Nifti images into insight";
 }
+
+void NiftiImageIOFactoryRegister(void)
+{
+  NiftiImageIOFactory::RegisterOneFactory();
+}
+
 } // end namespace itk

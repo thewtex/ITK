@@ -45,4 +45,10 @@ TIFFImageIOFactory::GetDescription(void) const
 {
   return "TIFF ImageIO Factory, allows the loading of TIFF images into insight";
 }
+
+void TIFFImageIOFactoryRegister(void)
+{
+  TIFFImageIOFactory::RegisterOneFactory();
+}
+
 } // end namespace itk

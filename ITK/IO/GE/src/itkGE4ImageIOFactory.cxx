@@ -48,4 +48,10 @@ GE4ImageIOFactory::GetDescription() const
 {
   return "GE4 ImageIO Factory, allows the loading of GE4 images into insight";
 }
+
+void GE4ImageIOFactoryRegister(void)
+{
+  GE4ImageIOFactory::RegisterOneFactory();
+}
+
 } // end namespace itk

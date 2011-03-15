@@ -45,4 +45,10 @@ BMPImageIOFactory::GetDescription() const
 {
   return "BMP ImageIO Factory, allows the loading of BMP images into Insight";
 }
+
+void BMPImageIOFactoryRegister(void)
+{
+  BMPImageIOFactory::RegisterOneFactory();
+}
+
 } // end namespace itk

@@ -177,10 +177,15 @@ private:
   // produce the requested region.
   ImageIORegion m_ActualIORegion;
 };
+
 } //namespace ITK
 
 #ifndef ITK_MANUAL_INSTANTIATION
 #include "itkImageFileReader.txx"
+#endif
+
+#ifdef ITK_IO_FACTORY_REGISTER_MANAGER
+#include "itkImageIOFactoryRegisterManager.h"
 #endif
 
 #endif // __itkImageFileReader_h

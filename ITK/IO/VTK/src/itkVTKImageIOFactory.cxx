@@ -55,4 +55,10 @@ VTKImageIOFactory::GetDescription(void) const
 {
   return "VTK ImageIO Factory, allows the loading of VTK images into ITK";
 }
+
+void VTKImageIOFactoryRegister(void)
+{
+  VTKImageIOFactory::RegisterOneFactory();
+}
+
 } // end namespace itk

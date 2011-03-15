@@ -45,4 +45,10 @@ NrrdImageIOFactory::GetDescription() const
 {
   return "Nrrd ImageIO Factory, allows the loading of Nrrd images into insight";
 }
+
+void NrrdImageIOFactoryRegister(void)
+{
+  NrrdImageIOFactory::RegisterOneFactory();
+}
+
 } // end namespace itk

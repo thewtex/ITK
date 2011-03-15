@@ -55,4 +55,10 @@ LSMImageIOFactory::GetDescription() const
 {
   return "LSM ImageIO Factory, allows the loading of LSM images into ITK";
 }
+
+void LSMImageIOFactoryRegister(void)
+{
+  LSMImageIOFactory::RegisterOneFactory();
+}
+
 } // end namespace itk
