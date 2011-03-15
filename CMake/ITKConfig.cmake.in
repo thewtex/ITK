@@ -25,6 +25,8 @@ set(ITK_BUILD_SHARED "@BUILD_SHARED_LIBS@")
 # List of available ITK modules.
 set(ITK_MODULES_ENABLED "@ITK_CONFIG_MODULES_ENABLED@")
 
+set(ITK_USE_REVIEW "@ITK_USE_REVIEW@")
+
 # Load all modules.
 set(ITK_LIBRARIES "")
 set(ITK_INCLUDE_DIRS "")

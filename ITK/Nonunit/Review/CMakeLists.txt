@@ -3,7 +3,7 @@ project(ITK-Review)
 find_package(itk-base 4.0 EXACT REQUIRED)
 set(ITK-Review_LIBRARIES ITK-Review)
 
-
+set(ITK_USE_REVIEW ON)
 
 if(ITK_USE_MINC2 AND MINC2_FOUND)
   set(ITKMINC2_SRCS
