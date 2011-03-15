@@ -184,7 +184,9 @@ int itkImageRegionTest(int, char* [] )
    * only run them when FPE are not enabled. */
   if( ! itk::FloatingPointExceptions::GetEnabled() )
     {
-    std::cout << "FPE's are disabled." << std::endl;
+    std::cout
+      << "FPE's are disabled. Proceeding with tests that can generate FPE's."
+      << std::endl;
     /* Generates overflow exception */
     std::cout << "Testing ContinuousIndexNumericTraits::max()." << std::endl;
     indexC[0] = ContinuousIndexNumericTraits::max();
