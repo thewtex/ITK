@@ -78,8 +78,8 @@ if(WIN32)
 endif(WIN32)
 
 
-### genearting libraries
-add_library(ITK-Common ${ITK-Common_SRCS})
+### generating libraries
+add_library(ITK-Common ${ITK_LIBRARY_BUILD_TYPE} ${ITK-Common_SRCS})
 
 target_link_libraries(ITK-Common itksys ITK-VNLInstantiation)
 
