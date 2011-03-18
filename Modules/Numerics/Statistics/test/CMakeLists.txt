@@ -5,6 +5,7 @@ itkStatisticsHeaderTest.cxx
 itkMaximumDecisionRuleTest.cxx
 itkMinimumDecisionRuleTest.cxx
 itkMaximumRatioDecisionRuleTest.cxx
+itkSampleClassifierWithLabelsFilterTest.cxx
 )
 
 CreateTestDriver(ITK-Statistics  "${ITK-Statistics-Test_LIBRARIES}" "${ITK-StatisticsTests}")
@@ -19,3 +20,5 @@ add_test(NAME itkMinimumDecisionRuleTest
       COMMAND ITK-StatisticsTestDriver itkMinimumDecisionRuleTest)
 add_test(NAME itkMaximumRatioDecisionRuleTest
       COMMAND ITK-StatisticsTestDriver itkMaximumRatioDecisionRuleTest)
+add_test(NAME itkSampleClassifierWithLabelsFilterTest
+      COMMAND ITK-StatisticsTestDriver itkSampleClassifierWithLabelsFilterTest)

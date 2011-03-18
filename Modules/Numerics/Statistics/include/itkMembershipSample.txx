@@ -46,6 +46,14 @@ MembershipSample< TSample >
 }
 
 template< class TSample >
+void
+MembershipSample< TSample >
+::GetMeasurementVectorSize() const
+{
+  this->m_Sample->GetMeasurementVectorSize();
+}
+
+template< class TSample >
 inline void
 MembershipSample< TSample >
 ::AddInstance(const ClassLabelType & classLabel, const InstanceIdentifier & id)

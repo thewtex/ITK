@@ -133,6 +133,9 @@ public:
   /** Method to graft another sample */
   virtual void Graft(const DataObject *thatObject);
 
+  /** Return the number of components of the sample. */
+  IdentifierType GetMeasurementVectorSize() const;
+
 //  void PrintSelf(std::ostream& os, Indent indent) const;
 
   class ConstIterator

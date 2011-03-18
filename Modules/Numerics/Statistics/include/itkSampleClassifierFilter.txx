@@ -28,8 +28,6 @@ template< class TSample >
 SampleClassifierFilter< TSample >
 ::SampleClassifierFilter()
 {
-  this->m_NumberOfClasses = 0;
-
   this->SetNumberOfRequiredInputs(3);
   this->SetNumberOfRequiredOutputs(1);
 
@@ -49,30 +47,6 @@ SampleClassifierFilter< TSample >
      << this->GetNumberOfClasses() << std::endl;
   os << indent << "DecisionRule: "
      << this->GetDecisionRule() << std::endl;
-}
-
-template< class TSample >
-void
-SampleClassifierFilter< TSample >
-::SetInput(const TSample *sample)
-{
-  // Process object is not const-correct so the const_cast is required here
-  this->ProcessObject::SetNthInput( 0,
-                                    const_cast< SampleType * >( sample ) );
-}
-
-template< class TSample >
-const TSample *
-SampleClassifierFilter< TSample >
-::GetInput() const
-{
-  if ( this->GetNumberOfInputs() < 1 )
-    {
-    return 0;
-    }
-
-  return static_cast< const SampleType * >
-         ( this->ProcessObject::GetInput(0) );
 }
 
 template< class TSample >
@@ -108,14 +82,6 @@ SampleClassifierFilter< TSample >
 }
 
 template< class TSample >
-typename SampleClassifierFilter< TSample >::DataObjectPointer
-SampleClassifierFilter< TSample >
-::MakeOutput(unsigned int)
-{
-  return static_cast< DataObject * >( MembershipSampleType::New().GetPointer() );
-}
-
-template< class TSample >
 void
 SampleClassifierFilter< TSample >
 ::GenerateData()
@@ -136,12 +102,12 @@ SampleClassifierFilter< TSample >
 
   // Check number of Labels and MembershipSamples against the number of classes
   // */
-  if ( membershipFunctions.size() != this->m_NumberOfClasses )
+  if ( membershipFunctions.size() != this->GetNumberOfClasses() )
     {
     itkExceptionMacro("Number of Membership functions does not match the number of classes");
     }
 
-  if ( classLabels.size() != this->m_NumberOfClasses )
+  if ( classLabels.size() != this->GetNumberOfClasses() )
     {
     itkExceptionMacro("Number of class labels does not match the number of classes");
     }
@@ -157,7 +123,7 @@ SampleClassifierFilter< TSample >
     // no weights array is set and hence all membership functions will have
     // equal
     // weight
-    membershipFunctionsWeightsArray.SetSize(this->m_NumberOfClasses);
+    membershipFunctionsWeightsArray.SetSize(this->GetNumberOfClasses());
     membershipFunctionsWeightsArray.Fill(1.0);
     }
   else
@@ -165,7 +131,7 @@ SampleClassifierFilter< TSample >
     membershipFunctionsWeightsArray = membershipFunctionsWeightsArrayDecorated->Get();
     }
 
-  if ( membershipFunctionsWeightsArray.Size() != this->m_NumberOfClasses
+  if ( membershipFunctionsWeightsArray.Size() != this->GetNumberOfClasses()
        )
     {
     itkExceptionMacro(
@@ -177,13 +143,13 @@ SampleClassifierFilter< TSample >
     static_cast< const SampleType * >( this->ProcessObject::GetInput(0) );
 
   std::vector< double > discriminantScores;
-  discriminantScores.resize(this->m_NumberOfClasses);
+  discriminantScores.resize(this->GetNumberOfClasses());
 
   MembershipSampleType *output = dynamic_cast< MembershipSampleType * >(
     this->ProcessObject::GetOutput(0) );
 
   output->SetSample( this->GetInput() );
-  output->SetNumberOfClasses(this->m_NumberOfClasses);
+  output->SetNumberOfClasses(this->GetNumberOfClasses());
 
   typename TSample::ConstIterator iter = sample->Begin();
   typename TSample::ConstIterator end  = sample->End();
@@ -192,7 +158,7 @@ SampleClassifierFilter< TSample >
     {
     typename TSample::MeasurementVectorType measurements;
     measurements = iter.GetMeasurementVector();
-    for ( unsigned int i = 0; i < this->m_NumberOfClasses; i++ )
+    for ( unsigned int i = 0; i < this->GetNumberOfClasses(); i++ )
       {
       discriminantScores[i] = membershipFunctionsWeightsArray[i]
                               * membershipFunctions[i]->Evaluate(measurements);
@@ -206,13 +172,6 @@ SampleClassifierFilter< TSample >
     }
 }
 
-template< class TSample >
-const typename SampleClassifierFilter< TSample >::MembershipSampleType *
-SampleClassifierFilter< TSample >
-::GetOutput() const
-{
-  return static_cast< const MembershipSampleType * >( this->ProcessObject::GetOutput(0) );
-}
 } // end of namespace Statistics
 } // end of namespace itk
 

@@ -136,7 +136,7 @@ public:
   }
 
   /** Gets the number of membership functions */
-  unsigned int GetNumberOfMembershipFunctions()
+  unsigned int GetNumberOfMembershipFunctions() const
   {
     return static_cast< unsigned int >( m_MembershipFunctions.size() );
   }

@@ -25,6 +25,7 @@
 #include "itkDecisionRule.h"
 #include "itkProcessObject.h"
 #include "itkSimpleDataObjectDecorator.h"
+#include "itkSampleClassifierFilterBase.h"
 
 namespace itk
 {
@@ -41,17 +42,17 @@ namespace Statistics
 
 template< class TSample >
 class ITK_EXPORT SampleClassifierFilter:
-  public ProcessObject
+  public SampleClassifierFilterBase< TSample >
 {
 public:
   /** Standard class typedef */
-  typedef SampleClassifierFilter     Self;
-  typedef ProcessObject              Superclass;
-  typedef SmartPointer< Self >       Pointer;
-  typedef SmartPointer< const Self > ConstPointer;
+  typedef SampleClassifierFilter                  Self;
+  typedef SampleClassifierFilterBase< TSample >   Superclass;
+  typedef SmartPointer< Self >                    Pointer;
+  typedef SmartPointer< const Self >              ConstPointer;
 
   /** Standard macros */
-  itkTypeMacro(SampleClassifierFilter, ProcessObject);
+  itkTypeMacro(SampleClassifierFilter, SampleClassifierFilterBase);
   itkNewMacro(Self);
 
   /** Type of the input Sample */
@@ -85,26 +86,12 @@ public:
   typedef IdentifierType                ClassLabelType;
   typedef std::vector< ClassLabelType > ClassLabelVectorType;
   typedef SimpleDataObjectDecorator<
-    ClassLabelVectorType >                            ClassLabelVectorObjectType;
+    ClassLabelVectorType >              ClassLabelVectorObjectType;
   typedef ClassLabelVectorObjectType::Pointer ClassLabelVectorObjectPointer;
 
   /** type of the decision rule */
   typedef DecisionRule                   DecisionRuleType;
   typedef DecisionRuleType::ConstPointer DecisionRulePointer;
-
-  /** Sets the input sample that will be classified by this filter. */
-  void SetInput(const SampleType *sample);
-
-  const SampleType *  GetInput() const;
-
-  /** Returns the classification result */
-  const MembershipSampleType * GetOutput() const;
-
-  /** Number of classes. This must match the number of labels and membership
-   * functions provided by the user, otherwise an exception will be thrown at
-   */
-  itkSetMacro(NumberOfClasses, unsigned int);
-  itkGetConstMacro(NumberOfClasses, unsigned int);
 
   /** Set/Get the decision rule. */
   itkSetConstObjectMacro(DecisionRule, DecisionRuleType);
@@ -113,7 +100,7 @@ public:
   /** Sets input vector of class labels. The length of this vector must match
    * the number of classes, otherwise an exception will be thrown at run time.
    * */
-  void SetClassLabels(const ClassLabelVectorObjectType *classLabels);
+  void SetClassLabels(const ClassLabelVectorObjectType * classLabels);
 
   /** Sets input vector of membership functions. The length of this vector must match
    * the number of classes, otherwise an exception will be thrown at run time.
@@ -134,20 +121,11 @@ protected:
   /** Starts the classification process */
   void GenerateData();
 
-  /** Make a DataObject of the correct type to used as the specified
-   * output. This method
-   * is automatically called when DataObject::DisconnectPipeline() is
-   * called.
-   * \sa ProcessObject
-   */
-  virtual DataObjectPointer MakeOutput(unsigned int idx);
-
 private:
-
-  unsigned int m_NumberOfClasses;
 
   /** Decision Rule */
   DecisionRulePointer m_DecisionRule;
+
 };  // end of class
 } // end of namespace Statistics
 } // end of namespace itk
