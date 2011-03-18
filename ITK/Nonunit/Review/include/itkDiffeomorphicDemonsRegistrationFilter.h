@@ -21,7 +21,7 @@
 #include "itkPDEDeformableRegistrationFilter.h"
 #include "itkESMDemonsRegistrationFunction.h"
 
-#include "itkMultiplyByConstantImageFilter.h"
+#include "itkMultiplyImageFilter.h"
 #include "itkExponentialDeformationFieldImageFilter.h"
 
 namespace itk
@@ -114,6 +114,9 @@ public:
                                          DeformationFieldType > DemonsRegistrationFunctionType;
   typedef typename DemonsRegistrationFunctionType::GradientType GradientType;
 
+  itkStaticConstMacro(
+    ImageDimension, unsigned int, FixedImageType::ImageDimension);
+
   /** Get the metric value. The metric value is the mean square difference
    * in intensity between the fixed image and transforming moving image
    * computed over the the overlapping region between the two images.
@@ -176,9 +179,9 @@ private:
   const DemonsRegistrationFunctionType *  DownCastDifferenceFunctionType() const;
 
   /** Exp and composition typedefs */
-  typedef MultiplyByConstantImageFilter<
-    DeformationFieldType,
-    TimeStepType, DeformationFieldType >                MultiplyByConstantType;
+  typedef MultiplyImageFilter< DeformationFieldType,
+    itk::Image<TimeStepType, ImageDimension>,
+    DeformationFieldType >                              MultiplyByConstantType;
 
   typedef ExponentialDeformationFieldImageFilter<
     DeformationFieldType, DeformationFieldType >        FieldExponentiatorType;
