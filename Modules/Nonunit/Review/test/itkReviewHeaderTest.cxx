@@ -21,7 +21,6 @@
 
 #include <iostream>
 
-#include "itkAddConstantToImageFilter.h"
 #include "itkAggregateLabelMapFilter.txx"
 #include "itkAreaClosingImageFilter.h"
 #include "itkAreaOpeningImageFilter.h"
@@ -86,7 +85,6 @@
 #include "itkDiscreteGaussianDerivativeImageFunction.txx"
 #include "itkDiscreteGradientMagnitudeGaussianImageFunction.txx"
 #include "itkDiscreteHessianGaussianImageFunction.txx"
-#include "itkDivideByConstantImageFilter.h"
 #include "itkESMDemonsRegistrationFunction.txx"
 #include "itkExponentialDeformationFieldImageFilter.txx"
 #include "itkFastApproximateRankImageFilter.h"
@@ -155,7 +153,6 @@
 #include "itkMultiphaseDenseFiniteDifferenceImageFilter.txx"
 #include "itkMultiphaseFiniteDifferenceImageFilter.txx"
 #include "itkMultiphaseSparseFiniteDifferenceImageFilter.txx"
-#include "itkMultiplyByConstantImageFilter.h"
 #include "itkMultiScaleHessianBasedMeasureImageFilter.txx"
 #include "itkN4MRIBiasFieldCorrectionImageFilter.txx"
 #include "itkNeuralNetworkFileReader.txx"
@@ -213,7 +210,6 @@
 #include "itkStatisticsRelabelLabelMapFilter.txx"
 #include "itkStatisticsUniqueLabelMapFilter.txx"
 #include "itkStochasticFractalDimensionImageFilter.txx"
-#include "itkSubtractConstantFromImageFilter.h"
 #include "itkSummerColormapFunction.txx"
 #include "itkTransformToDeformationFieldSource.txx"
 #include "itkUnconstrainedRegionBasedLevelSetFunctionSharedData.h"
