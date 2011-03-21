@@ -89,6 +89,7 @@ itkSliceIteratorTest.cxx
 itkMultiThreaderTest.cxx
 itkImageRegionExclusionIteratorWithIndexTest.cxx
 itkFixedArrayTest.cxx
+itkImageFillBufferTest.cxx
 )
 
 

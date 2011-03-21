@@ -109,7 +109,6 @@ itkImageFileWriterStreamingTest1.cxx
 itkImageFileWriterStreamingTest2.cxx
 itkImageFileWriterTest2.cxx
 itkImageFileWriterUpdateLargestPossibleRegionTest.cxx
-itkImageFillBufferTest.cxx
 itkImageIOBaseTest.cxx
 itkImageIODirection2DTest.cxx
 itkImageIODirection3DTest.cxx
@@ -324,19 +323,6 @@ NNetClassifierTest3.cxx
 NNetClassifierTest4.cxx
 QPropXORTest1.cxx
 RBFTest1.cxx
-testMetaArray.cxx
-testMetaBlob.cxx
-testMetaCommand.cxx
-testMetaGroup.cxx
-testMetaImage.cxx
-testMetaLandmark.cxx
-testMetaLine.cxx
-testMetaMesh.cxx
-testMetaObject.cxx
-testMetaScene.cxx
-testMetaSurface.cxx
-testMetaTube.cxx
-testMetaUtils.cxx
 XORTest1.cxx
 XORTest2.cxx
 itkCommonPrintTest.cxx
@@ -1560,35 +1546,6 @@ add_test(NAME MetaCommandOptionalWithRequiredMissing
 add_test(NAME MetaCommandRequiredAndOptionalOptoinsWithArgumentsMissing
       COMMAND ITK-IntegratedTestTestDriver testMetaCommand
               -ExpectedFailStatus 1 -sum 207 -r1c_rs StringValue1 StringValue2 StringValue3 -r2_ri 7 -o3_ri_oi)
-add_test(NAME testMetaGroup
-      COMMAND ITK-IntegratedTestTestDriver testMetaGroup
-              ${ITK_TEST_OUTPUT_DIR})
-add_test(NAME testMetaImage
-      COMMAND ITK-IntegratedTestTestDriver testMetaImage)
-add_test(NAME testMetaLandmark
-      COMMAND ITK-IntegratedTestTestDriver testMetaLandmark
-              ${ITK_TEST_OUTPUT_DIR})
-add_test(NAME testMetaLine
-      COMMAND ITK-IntegratedTestTestDriver testMetaLine
-              ${ITK_TEST_OUTPUT_DIR})
-add_test(NAME testMetaMesh
-      COMMAND ITK-IntegratedTestTestDriver testMetaMesh
-              ${ITK_TEST_OUTPUT_DIR})
-add_test(NAME testMetaObject
-      COMMAND ITK-IntegratedTestTestDriver testMetaObject
-              ${ITK_TEST_OUTPUT_DIR})
-add_test(NAME testMetaScene
-      COMMAND ITK-IntegratedTestTestDriver testMetaScene
-              ${ITK_TEST_OUTPUT_DIR})
-add_test(NAME testMetaSurface
-      COMMAND ITK-IntegratedTestTestDriver testMetaSurface
-              ${ITK_TEST_OUTPUT_DIR})
-add_test(NAME testMetaTube
-      COMMAND ITK-IntegratedTestTestDriver testMetaTube
-              ${ITK_TEST_OUTPUT_DIR})
-add_test(NAME testMetaUtils
-      COMMAND ITK-IntegratedTestTestDriver testMetaUtils
-              ${ITK_TEST_OUTPUT_DIR})
 add_test(NAME XORTest1
       COMMAND ITK-IntegratedTestTestDriver XORTest1
               ${ITK_DATA_ROOT}/Input/NeuralNetworks/xortest.txt)
