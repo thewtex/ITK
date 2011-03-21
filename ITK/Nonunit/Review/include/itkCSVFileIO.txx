@@ -20,7 +20,7 @@
 
 #include "itkCSVFileIO.h"
 #include "itkArray2D.h"
-#include "itkVector.h"
+#include "itkMatrix.h"
 #include <vcl_limits.h>
 
 #include <fstream>
@@ -544,10 +544,9 @@ CSVDataFrameObject <TData>
 
 /* As of now, the csv file writer can write 2D itk objects such as
 itkMatrix, itkArray2D and vnl_matrix to a csv file */
-
-template <class TObjectType>
+template <class TObjectType, unsigned int NRows, unsigned int NColumns>
 void
-CSVFileWriter <TObjectType>
+CSVFileWriter<TObjectType,NRows,NColumns>
 ::Write ()
 {
   if (m_InputObject == 0 )
@@ -560,7 +559,6 @@ CSVFileWriter <TObjectType>
     itkExceptionMacro(<< "No filename was specified!");
     }
 
-
   std::ofstream outputStream(m_FileName.c_str(), std::ios::app);
   if ( outputStream.fail() )
     {
@@ -570,24 +568,18 @@ CSVFileWriter <TObjectType>
     itkExceptionMacro(<< message );
     }
 
-  // cast to vnl_matrix type
-  typedef vnl_matrix<double> MatrixType;
-  MatrixType* matrixptr = new MatrixType;
-  matrixptr = dynamic_cast<MatrixType*> (m_InputObject);
-
-  for (unsigned int i = 0; i < matrixptr->rows(); i++)
+  for (unsigned int i = 0; i < m_rows; i++)
    {
-   for (unsigned int j = 0; j < matrixptr->cols(); j++)
+   for (unsigned int j = 0; j < m_cols; j++)
      {
-     outputStream << (*matrixptr)[i][j];
-     if (j < matrixptr->cols() - 1)
+     outputStream << *(m_InputObject++);
+     if (j < m_cols - 1)
        {
        outputStream << ",";
        }
      }
    outputStream << std::endl;
    }
-
   outputStream.close();
  }
 

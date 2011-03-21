@@ -23,6 +23,9 @@
 #include "itkMacro.h"
 #include "itkArray2D.h"
 #include "itkVector.h"
+#include "vnl/vnl_matrix.h"
+#include "vnl/vnl_matrix_fixed.h"
+#include "itkMatrix.h"
 #include <vector>
 
 namespace itk
@@ -203,13 +206,12 @@ private:
 /* \class CSVFileWriter writes the data from an object into
  * a csv file.
  */
-
-template <class TObjectType>
+template <class TValueType, unsigned int NRows = 0, unsigned int NColumns = 0>
 class CSVFileWriter:public LightProcessObject
 {
 public:
  /** Standard class typedefs */
- typedef CSVFileWriter         Self;
+ typedef CSVFileWriter             Self;
  typedef LightProcessObject        Superclass;
  typedef SmartPointer <Self>       Pointer;
  typedef SmartPointer <const Self> ConstPointer;
@@ -223,13 +225,35 @@ public:
  /* Specify the name of the output file */
  itkSetStringMacro(FileName);
 
- /** Typedef for the type of object being written from */
- typedef TObjectType InputObjectType;
+ // Matrix types
+ typedef vnl_matrix<TValueType>                        vnlMatrixType;
+ typedef vnl_matrix_fixed<TValueType, NRows, NColumns> vnlFixedMatrixType;
+ typedef itk::Matrix<TValueType,NRows,NColumns>        itkMatrixType;
 
- /** Set the input object */
- void SetInput (InputObjectType* obj)
+ typedef TValueType InputObjectType;
+
+ /** Set the input object if the matrix is of vnl_matrix type or Array2D */
+ void SetInput (vnlMatrixType* obj)
  {
-  this->m_InputObject = obj;
+   m_InputObject = obj->data_block();
+   m_rows = obj->rows();
+   m_cols = obj->cols();
+ }
+
+ /** Set the input object if the matrix is of vnl_matrix_fixed type */
+ void SetInput (vnlFixedMatrixType* obj)
+ {
+   m_InputObject = obj->data_block();
+   m_rows = obj->rows();
+   m_cols = obj->cols();
+ }
+
+ /** Set the input object if the matrix is of itkMatrixType*/
+ void SetInput (itkMatrixType* obj)
+ {
+   m_InputObject = obj->GetVnlMatrix().data_block() ;
+   m_rows = obj->RowDimensions;
+   m_cols = obj->ColumnDimensions;
  }
 
  virtual void Write ();
@@ -239,7 +263,9 @@ public:
 
 private:
  std::string               m_FileName;
- InputObjectType          *m_InputObject;
+ TValueType               *m_InputObject;
+ unsigned int              m_rows;
+ unsigned int              m_cols;
 
  CSVFileWriter(const Self &);  //purposely not implemented
  void operator=(const Self &); //purposely not implemented
