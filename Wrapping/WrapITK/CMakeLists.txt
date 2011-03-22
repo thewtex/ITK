@@ -175,6 +175,13 @@ set(WRAP_ITK_LIB_DIRECTORY  "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}")
 
 include(ConfigureWrapping.cmake)
 
+###############################################################################
+# Build test driver
+###############################################################################
+
+add_executable(itkTestDriver itkTestDriver.cxx)
+target_link_libraries(itkTestDriver ${ITK_LIBRARIES})
+install(TARGETS itkTestDriver DESTINATION bin)
 
 ###############################################################################
 # let the different languages running some code before begining to parse the
