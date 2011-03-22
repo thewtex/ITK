@@ -16,19 +16,11 @@ itkBSplineResampleImageFilterTest.cxx
 itkBSplineResampleImageFunctionTest.cxx
 itkByteSwapTest.cxx
 itkChiSquareDistributionTest.cxx
-itkConfidenceConnectedImageFilterTest.cxx
-itkConnectedComponentImageFilterTooManyObjectsTest.cxx
-itkConnectedThresholdImageFilterTest.cxx
 itkConstantPadImageTest.cxx
 itkConvertBufferTest.cxx
 itkConvertBufferTest2.cxx
-itkCovarianceSampleFilterTest.cxx
-itkCovarianceSampleFilterTest2.cxx
-itkCovarianceSampleFilterTest3.cxx
 itkCovariantVectorGeometryTest.cxx
 itkCurvatureFlowTest.cxx
-itkCurvesLevelSetImageFilterTest.cxx
-itkCurvesLevelSetImageFilterZeroSigmaTest.cxx
 itkCyclicReferences.cxx
 itkDataTypeTest.cxx
 itkDecisionRuleTest.cxx
@@ -50,9 +42,6 @@ itkExtractImage3Dto2DTest.cxx
 itkExtractImageTest.cxx
 itkExtractMeshConnectedRegionsTest.cxx
 itkExtractOrthogonalSwath2DImageFilterTest.cxx
-itkFastMarchingTest.cxx
-itkFastMarchingTest2.cxx
-itkFastMarchingUpwindGradientTest.cxx
 #itkFileFreeImageIO.cxx
 #itkFileFreeImageIOFactory.cxx
 itkFilterDispatchTest.cxx
@@ -62,8 +51,6 @@ itkFloodFillIteratorTest.cxx
 itkGaussianDistributionTest.cxx
 itkGaussianMembershipFunctionTest.cxx
 itkGaussianMixtureModelComponentTest.cxx
-itkGEImageIOTest.cxx
-itkGeodesicActiveContourLevelSetImageFilterZeroSigmaTest.cxx
 itkGetAverageSliceImageFilterTest.cxx
 itkGibbsTest.cxx
 itkGiplImageIOTest.cxx
@@ -76,7 +63,6 @@ itkHashTableTest.cxx
 itkHConvexConcaveImageFilterTest.cxx
 itkHessianRecursiveGaussianFilterScaleSpaceTest.cxx
 itkHessianRecursiveGaussianFilterTest.cxx
-
 itkHMaximaMinimaImageFilterTest.cxx
 itkHoughTransform2DCirclesImageTest.cxx
 itkHoughTransform2DLinesImageTest.cxx
@@ -123,7 +109,6 @@ itkLargeImageWriteReadTest.cxx
 itkListSampleTest.cxx
 itkMahalanobisDistanceMetricTest.cxx
 itkManhattanDistanceMetricTest.cxx
-itkMaskConnectedComponentImageFilterTest.cxx
 itkMaskNeighborhoodOperatorImageFilterTest.cxx
 itkMathCastWithRangeCheckTest.cxx
 itkMathematicalMorphologyImageFilterTest.cxx
@@ -196,7 +181,6 @@ itkRecursiveGaussianImageFiltersOnTensorsTest.cxx
 itkRecursiveGaussianImageFiltersOnVectorImageTest.cxx
 itkRecursiveGaussianImageFiltersTest.cxx
 itkRecursiveGaussianScaleSpaceTest1.cxx
-itkRegionGrow2DTest.cxx
 itkReleaseDataFilterTest.cxx
 itkRemoveBoundaryObjectsTest.cxx
 itkRemoveBoundaryObjectsTest2.cxx
@@ -257,8 +241,6 @@ itkTimeProbesTest.cxx
 itkTopHatImageFilterTest.cxx
 itkTriangleCellTest.cxx
 itkTriangleMeshToSimplexMeshFilter2Test.cxx
-itkUnsharpMaskLevelSetImageFilterTest.cxx
-itkVectorConfidenceConnectedImageFilterTest.cxx
 itkVectorGeometryTest.cxx
 itkVectorGradientMagnitudeImageFilterTest3.cxx
 itkVectorImageReadWriteTest.cxx
@@ -272,12 +254,6 @@ itkVTKPolyDataReaderQuadEdgeMeshTest.cxx
 itkWarpImageFilterTest.cxx
 itkWarpVectorImageFilterTest.cxx
 itkWatershedImageFilterTest.cxx
-itkWeightedCentroidKdTreeGeneratorTest1.cxx
-itkWeightedCentroidKdTreeGeneratorTest8.cxx
-itkWeightedCentroidKdTreeGeneratorTest9.cxx
-itkWeightedCovarianceSampleFilterTest.cxx
-itkWeightedCovarianceSampleFilterTest2.cxx
-itkWeightedMeanSampleFilterTest.cxx
 itkWrapPadImageTest.cxx
 itkZeroFluxBoundaryConditionTest.cxx
 NNetClassifierTest1.cxx
@@ -401,46 +377,17 @@ add_test(NAME itkByteSwapTest
       COMMAND ITK-IntegratedTestTestDriver itkByteSwapTest)
 add_test(NAME itkChiSquareDistributionTest
       COMMAND ITK-IntegratedTestTestDriver itkChiSquareDistributionTest)
-add_test(NAME itkConfidenceConnectedImageFilterTest
-      COMMAND ITK-IntegratedTestTestDriver
-    --compare ${ITK_DATA_ROOT}/Baseline/BasicFilters/ConfidenceConnectedImageFilterTest.png
-              ${ITK_TEST_OUTPUT_DIR}/ConfidenceConnectedImageFilterTest.png
-    itkConfidenceConnectedImageFilterTest ${ITK_DATA_ROOT}/Input/cthead1.png ${ITK_TEST_OUTPUT_DIR}/ConfidenceConnectedImageFilterTest.png 165 165)
-add_test(NAME itkConnectedComponentImageFilterTooManyObjectsTest
-      COMMAND ITK-IntegratedTestTestDriver itkConnectedComponentImageFilterTooManyObjectsTest)
-add_test(NAME itkConnectedThresholdImageFilterTest
-      COMMAND ITK-IntegratedTestTestDriver
-    --compare ${ITK_DATA_ROOT}/Baseline/BasicFilters/ConnectedThresholdImageFilterTest.png
-              ${ITK_TEST_OUTPUT_DIR}/ConnectedThresholdImageFilterTest.png
-    itkConnectedThresholdImageFilterTest ${ITK_DATA_ROOT}/Input/cthead1.png ${ITK_TEST_OUTPUT_DIR}/ConnectedThresholdImageFilterTest.png 165 165 0 150)
-add_test(NAME itkConnectedThresholdImageFilterTest2
-      COMMAND ITK-IntegratedTestTestDriver
-  --compare ${ITK_DATA_ROOT}/Baseline/BasicFilters/ConnectedThresholdImageFilterTest2.png
-            ${ITK_TEST_OUTPUT_DIR}/ConnectedThresholdImageFilterTest2.png
-   itkConnectedThresholdImageFilterTest ${ITK_DATA_ROOT}/Input/8ConnectedImage.bmp
-            ${ITK_TEST_OUTPUT_DIR}/ConnectedThresholdImageFilterTest2.png
-            29 47 200 255 1)
 add_test(NAME itkConstantPadImageTest
       COMMAND ITK-IntegratedTestTestDriver itkConstantPadImageTest)
 add_test(NAME itkConvertBufferTest
       COMMAND ITK-IntegratedTestTestDriver itkConvertBufferTest)
 add_test(NAME itkConvertBufferTest2
       COMMAND ITK-IntegratedTestTestDriver itkConvertBufferTest2)
-add_test(NAME itkCovarianceSampleFilterTest
-      COMMAND ITK-IntegratedTestTestDriver itkCovarianceSampleFilterTest)
-add_test(NAME itkCovarianceSampleFilterTest2
-      COMMAND ITK-IntegratedTestTestDriver itkCovarianceSampleFilterTest2)
-add_test(NAME itkCovarianceSampleFilterTest3
-      COMMAND ITK-IntegratedTestTestDriver itkCovarianceSampleFilterTest3)
 add_test(NAME itkCovariantVectorGeometryTest
       COMMAND ITK-IntegratedTestTestDriver itkCovariantVectorGeometryTest)
 add_test(NAME itkCurvatureFlowTest
       COMMAND ITK-IntegratedTestTestDriver itkCurvatureFlowTest
               ${ITK_TEST_OUTPUT_DIR}/itkCurvatureFlowTest.vtk)
-add_test(NAME itkCurvesLevelSetImageFilterTest
-      COMMAND ITK-IntegratedTestTestDriver itkCurvesLevelSetImageFilterTest)
-add_test(NAME itkCurvesLevelSetImageFilterZeroSigmaTest
-      COMMAND ITK-IntegratedTestTestDriver itkCurvesLevelSetImageFilterZeroSigmaTest)
 add_test(NAME itkCyclicReferences
       COMMAND ITK-IntegratedTestTestDriver itkCyclicReferences)
 add_test(NAME itkDataTypeTest
@@ -486,13 +433,6 @@ add_test(NAME itkExtractOrthogonalSwath2DImageFilterTest
     --compare ${ITK_DATA_ROOT}/Baseline/BasicFilters/ExtractOrthogonalSwath2DImageFilterTest.png
               ${ITK_TEST_OUTPUT_DIR}/ExtractOrthogonalSwath2DImageFilterTest.png
     itkExtractOrthogonalSwath2DImageFilterTest ${ITK_TEST_OUTPUT_DIR}/ExtractOrthogonalSwath2DImageFilterTest.png)
-add_test(NAME itkFastMarchingTest
-      COMMAND ITK-IntegratedTestTestDriver itkFastMarchingTest)
-add_test(NAME itkFastMarchingTest2
-      COMMAND ITK-IntegratedTestTestDriver itkFastMarchingTest2)
-add_test(NAME itkFastMarchingUpwindGradientTest
-      COMMAND ITK-IntegratedTestTestDriver itkFastMarchingUpwindGradientTest)
-
 add_test(NAME itkFilterDispatchTest
       COMMAND ITK-IntegratedTestTestDriver itkFilterDispatchTest)
 add_test(NAME itkFloodFilledSpatialFunctionTest
@@ -506,40 +446,6 @@ add_test(NAME itkGaussianMembershipFunctionTest
 add_test(NAME itkGaussianMixtureModelComponentTest
       COMMAND ITK-IntegratedTestTestDriver itkGaussianMixtureModelComponentTest
               ${ITK_DATA_ROOT}/Input/Statistics/TwoDimensionTwoGaussian.dat)
-add_test(NAME itkGE4
-      COMMAND ITK-IntegratedTestTestDriver
-    --compare ${ITK_DATA_ROOT}/Baseline/IO/19771.002.001.mha
-              ${ITK_TEST_OUTPUT_DIR}/19771.002.001.mha
-    itkGEImageIOTest ${ITK_TEST_OUTPUT_DIR} true GE4 ${ITK_DATA_ROOT}/Input/test_ge4/19771.002.001 ${ITK_TEST_OUTPUT_DIR}/19771.002.001.mha)
-add_test(NAME itkGE5
-      COMMAND ITK-IntegratedTestTestDriver
-    --compare ${ITK_DATA_ROOT}/Baseline/IO/113766.003.001.mha
-              ${ITK_TEST_OUTPUT_DIR}/113766.003.001.mha
-    itkGEImageIOTest ${ITK_TEST_OUTPUT_DIR} true GE5 ${ITK_DATA_ROOT}/Input/test_ge5/113766.003.001 ${ITK_TEST_OUTPUT_DIR}/113766.003.001.mha)
-add_test(NAME itkGEAdw
-      COMMAND ITK-IntegratedTestTestDriver
-    --compare ${ITK_DATA_ROOT}/Baseline/IO/I.001.mha
-              ${ITK_TEST_OUTPUT_DIR}/I.001.mha
-    itkGEImageIOTest ${ITK_TEST_OUTPUT_DIR} true GEAdw ${ITK_DATA_ROOT}/Input/test_geadw/I.001 ${ITK_TEST_OUTPUT_DIR}/I.001.mha)
-add_test(NAME itkSiemens
-      COMMAND ITK-IntegratedTestTestDriver
-    --compare ${ITK_DATA_ROOT}/Baseline/IO/3868-2-100.mha
-              ${ITK_TEST_OUTPUT_DIR}/3868-2-100.mha
-    itkGEImageIOTest ${ITK_TEST_OUTPUT_DIR} true Siemens ${ITK_DATA_ROOT}/Input/test_siemens/3868-2-100.ima ${ITK_TEST_OUTPUT_DIR}/3868-2-100.mha)
-add_test(NAME itkGE4Fail
-      COMMAND ITK-IntegratedTestTestDriver itkGEImageIOTest
-              ${ITK_TEST_OUTPUT_DIR} false GE4 ${ITK_DATA_ROOT}/Input/test_ge5/113766.003.001)
-add_test(NAME itkGE5Fail
-      COMMAND ITK-IntegratedTestTestDriver itkGEImageIOTest
-              ${ITK_TEST_OUTPUT_DIR} false GE5 ${ITK_DATA_ROOT}/Input/test_ge4/19771.002.001)
-add_test(NAME itkGEAdwFail
-      COMMAND ITK-IntegratedTestTestDriver itkGEImageIOTest
-              ${ITK_TEST_OUTPUT_DIR} false GEAdw ${ITK_DATA_ROOT}/Input/test_siemens/3868-2-100.ima)
-add_test(NAME itkSiemensFail
-      COMMAND ITK-IntegratedTestTestDriver itkGEImageIOTest
-              ${ITK_TEST_OUTPUT_DIR} false Siemens ${ITK_DATA_ROOT}/Input/test_geadw/I.001)
-add_test(NAME itkGeodesicActiveContourLevelSetImageFilterZeroSigmaTest
-      COMMAND ITK-IntegratedTestTestDriver itkGeodesicActiveContourLevelSetImageFilterZeroSigmaTest)
 add_test(NAME itkGetAverageSliceImageFilterTest
       COMMAND ITK-IntegratedTestTestDriver
     --compare ${ITK_DATA_ROOT}/Baseline/BasicFilters/AccumulateImageFilterTest.png
@@ -754,11 +660,6 @@ add_test(NAME itkMahalanobisDistanceMetricTest
       COMMAND ITK-IntegratedTestTestDriver itkMahalanobisDistanceMetricTest)
 add_test(NAME itkManhattanDistanceMetricTest
       COMMAND ITK-IntegratedTestTestDriver itkManhattanDistanceMetricTest)
-add_test(NAME itkMaskConnectedComponentImageFilterTest
-      COMMAND ITK-IntegratedTestTestDriver
-    --compare ${ITK_DATA_ROOT}/Baseline/BasicFilters/MaskConnectedComponentImageFilterTest.png
-              ${ITK_TEST_OUTPUT_DIR}/MaskConnectedComponentImageFilterTest.png
-    itkMaskConnectedComponentImageFilterTest ${ITK_DATA_ROOT}/Input/cthead1.png ${ITK_TEST_OUTPUT_DIR}/MaskConnectedComponentImageFilterTest.png 130 145)
 add_test(NAME itkMaskNeighborhoodOperatorImageFilterTest
       COMMAND ITK-IntegratedTestTestDriver
     --compare ${ITK_DATA_ROOT}/Baseline/BasicFilters/MaskNeighborhoodOperatorImageFilterTest.png
@@ -961,8 +862,6 @@ add_test(NAME itkRecursiveGaussianImageFiltersOnVectorImageTest
       COMMAND ITK-IntegratedTestTestDriver itkRecursiveGaussianImageFiltersOnVectorImageTest)
 add_test(NAME itkRecursiveGaussianImageFiltersTest
       COMMAND ITK-IntegratedTestTestDriver itkRecursiveGaussianImageFiltersTest)
-add_test(NAME itkRegionGrow2DTest
-      COMMAND ITK-IntegratedTestTestDriver itkRegionGrow2DTest)
 add_test(NAME itkRemoveBoundaryObjectsTest
       COMMAND ITK-IntegratedTestTestDriver
     --compare ${ITK_DATA_ROOT}/Baseline/BasicFilters/RemoveBoundaryObjectsTest.png
@@ -1114,14 +1013,6 @@ add_test(NAME itkTriangleMeshToSimplexMeshFilter2Test
 
 add_executable(itkUnicodeIOTest itkUnicodeIOTest.cxx)
 add_test(NAME itkUnicodeIOTest COMMAND itkUnicodeIOTest)
-
-add_test(NAME itkUnsharpMaskLevelSetImageFilterTest
-      COMMAND ITK-IntegratedTestTestDriver itkUnsharpMaskLevelSetImageFilterTest)
-add_test(NAME itkVectorConfidenceConnectedImageFilterTest
-      COMMAND ITK-IntegratedTestTestDriver
-    --compare ${ITK_DATA_ROOT}/Baseline/BasicFilters/VectorConfidenceConnectedImageFilterTest.png
-              ${ITK_TEST_OUTPUT_DIR}/VectorConfidenceConnectedImageFilterTest.png
-    itkVectorConfidenceConnectedImageFilterTest ${ITK_DATA_ROOT}/Input/VisibleWomanEyeSlice.png ${ITK_TEST_OUTPUT_DIR}/VectorConfidenceConnectedImageFilterTest.png 72 44 23 67 5.0 6)
 add_test(NAME itkVectorGeometryTest
       COMMAND ITK-IntegratedTestTestDriver itkVectorGeometryTest)
 add_test(NAME itkVectorGradientMagnitudeImageFilterTest3
@@ -1166,39 +1057,6 @@ add_test(NAME itkWarpVectorImageFilterTest
       COMMAND ITK-IntegratedTestTestDriver itkWarpVectorImageFilterTest)
 add_test(NAME itkWatershedImageFilterTest
       COMMAND ITK-IntegratedTestTestDriver itkWatershedImageFilterTest)
-add_test(NAME itkWeightedCentroidKdTreeGeneratorTest1
-      COMMAND ITK-IntegratedTestTestDriver itkWeightedCentroidKdTreeGeneratorTest1
-              1000 1000 1)
-add_test(NAME itkWeightedCentroidKdTreeGeneratorTest2
-      COMMAND ITK-IntegratedTestTestDriver itkWeightedCentroidKdTreeGeneratorTest1
-              1000 1000 2)
-add_test(NAME itkWeightedCentroidKdTreeGeneratorTest3
-      COMMAND ITK-IntegratedTestTestDriver itkWeightedCentroidKdTreeGeneratorTest1
-              1000 1000 3)
-add_test(NAME itkWeightedCentroidKdTreeGeneratorTest4
-      COMMAND ITK-IntegratedTestTestDriver itkWeightedCentroidKdTreeGeneratorTest1
-              1000 1000 5)
-add_test(NAME itkWeightedCentroidKdTreeGeneratorTest5
-      COMMAND ITK-IntegratedTestTestDriver itkWeightedCentroidKdTreeGeneratorTest1
-              1000 1000 10)
-add_test(NAME itkWeightedCentroidKdTreeGeneratorTest6
-      COMMAND ITK-IntegratedTestTestDriver itkWeightedCentroidKdTreeGeneratorTest1
-              1000 1000 20)
-add_test(NAME itkWeightedCentroidKdTreeGeneratorTest7
-      COMMAND ITK-IntegratedTestTestDriver itkWeightedCentroidKdTreeGeneratorTest1
-              1000 1000 100)
-add_test(NAME itkWeightedCentroidKdTreeGeneratorTest8
-      COMMAND ITK-IntegratedTestTestDriver itkWeightedCentroidKdTreeGeneratorTest8
-              1000 1000 1)
-add_test(NAME itkWeightedCentroidKdTreeGeneratorTest9
-      COMMAND ITK-IntegratedTestTestDriver itkWeightedCentroidKdTreeGeneratorTest9
-              1000 1000 1)
-add_test(NAME itkWeightedCovarianceSampleFilterTest
-      COMMAND ITK-IntegratedTestTestDriver itkWeightedCovarianceSampleFilterTest)
-add_test(NAME itkWeightedCovarianceSampleFilterTest2
-      COMMAND ITK-IntegratedTestTestDriver itkWeightedCovarianceSampleFilterTest2)
-add_test(NAME itkWeightedMeanSampleFilterTest
-      COMMAND ITK-IntegratedTestTestDriver itkWeightedMeanSampleFilterTest)
 add_test(NAME itkWrapPadImageTest
       COMMAND ITK-IntegratedTestTestDriver itkWrapPadImageTest)
 add_test(NAME itkZeroFluxBoundaryConditionTest
