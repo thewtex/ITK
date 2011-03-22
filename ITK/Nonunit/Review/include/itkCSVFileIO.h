@@ -204,7 +204,9 @@ private:
 
 
 /* \class CSVFileWriter writes the data from an object into
- * a csv file.
+ * a csv file. The writer uses the datablock member vnl_matrix and vnl_matrix_fixed.
+ * As of now the objects itkMatrix, itkArray2D, and any vnl_matrix based objects are
+ * supported.
  */
 template <class TValueType, unsigned int NRows = 0, unsigned int NColumns = 0>
 class CSVFileWriter:public LightProcessObject

@@ -208,7 +208,7 @@ int itkCSVFileReaderTest (int argc, char *argv[])
  std::cout << "Col names: ";
  PrintVector( test_col_names );
 
- // Test a row (using index)
+ // Test a row (using index access)
  std::vector <double> test_row_1;
  test_row_1 = dfo->GetRow(1);
 

@@ -532,7 +532,8 @@ add_test (NAME itkCSVFileReaderWriterTest
               ${TEMP}/itkCSVFileReaderWriterTestInput.csv)
 add_test (NAME itkCSVFileWriterTest
       COMMAND ITK-ReviewTestDriver itkCSVFileWriterTest
-              ${TEMP}/itkCSVFileWriterTestInput.csv)
+              ${TEMP}/itkCSVFileWriterTestInput.csv
+              )
 add_test(NAME itkDeformationFieldTransformTest
       COMMAND ITK-ReviewTestDriver itkDeformationFieldTransformTest)
 add_test(NAME itkDiffeomorphicDemonsRegistrationFilterTest01

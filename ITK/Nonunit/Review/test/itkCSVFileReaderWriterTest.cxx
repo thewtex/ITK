@@ -51,9 +51,9 @@ int itkCSVFileReaderWriterTest (int argc, char *argv[])
  double nan = vcl_numeric_limits<double>::quiet_NaN();
 
  typedef itk::Array2D<double> MatrixType;
- const unsigned int Rows = 3;
- const unsigned int Cols = 6;
- MatrixType matrix(Rows,Cols);
+ const unsigned int ARows = 3;
+ const unsigned int ACols = 6;
+ MatrixType matrix(ARows,ACols);
  matrix[0][0] = nan; matrix[0][1] = 1e+09;   matrix[0][2] = 5;    matrix[0][3] = 9;
  matrix[0][4] = 6.1; matrix[0][5] = nan;
  matrix[1][0] = 99;  matrix[1][1] = 0;       matrix[1][2] = 3.75; matrix[1][3] = 0.008;
@@ -61,7 +61,8 @@ int itkCSVFileReaderWriterTest (int argc, char *argv[])
  matrix[2][0] = 1;   matrix[2][1] = 2.2;     matrix[2][2] = 9;    matrix[2][3] = 5.6;
  matrix[2][4] = nan; matrix[2][5] = 3e+10;
 
- typedef itk::CSVFileWriter<double, Rows, Cols> WriterType;
+ // write out the array2D object
+ typedef itk::CSVFileWriter<double, ARows, ACols> WriterType;
  WriterType::Pointer writer = WriterType::New();
  std::string filename = argv[1];
  writer->SetFileName( filename );
@@ -77,6 +78,7 @@ int itkCSVFileReaderWriterTest (int argc, char *argv[])
    return EXIT_FAILURE;
    }
 
+
  typedef itk::CSVFileReader<double > ReaderType;
  ReaderType::Pointer reader = ReaderType::New();
  reader->SetFileName( filename );
@@ -86,6 +88,7 @@ int itkCSVFileReaderWriterTest (int argc, char *argv[])
  reader->HaveRowHeadersOff();
  reader->UseStringDelimiterCharacterOff();
 
+ // read the file
  try
    {
    reader->Parse();

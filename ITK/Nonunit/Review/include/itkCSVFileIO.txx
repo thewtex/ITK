@@ -85,7 +85,7 @@ CSVFileReader <TData>
     itkExceptionMacro(<< "A filename was not specified!" );
     }
 
-  //OPEN THE FILE FOR READING (FIRST TIME)
+  //Open the file for reading (first time)
   std::ifstream inputStream;
   inputStream.open(m_FileName.c_str(), std::ios::binary | std::ios::in);
   if ( inputStream.fail() )
@@ -107,10 +107,10 @@ CSVFileReader <TData>
   bool isSame = true;
   int second_line_position = 0;
 
-  // IF COLUMN HEADERS EXIST
+  // check if column headers exist
   if (this->m_HaveColumnHeaders)
     {
-    // FIRST LINE OF THE FILE SHOULD BE PARSED INTO m_ColumnHeaders.
+    // first line of the file should be parsed into m_ColumnHeaders.
     std::getline(inputStream,line);
     second_line_position = inputStream.tellg();
     std::stringstream linestream(line);
@@ -147,13 +147,13 @@ CSVFileReader <TData>
     max_cols = prev_cols;
     }
 
-  // COUNT THE NUMBER OF ENTRIES IN EACH LINE.
+  // Count the number of entries in each line.
   while(std::getline(inputStream,line))
     {
     cols = 0;
     std::stringstream linestream(line);
 
-    // IF ROW HEADERS EXIST, MOVE PAST (BUT DO NOT COUNT) THE ROW HEADER IN EACH LINE
+    // If row headers exist, move past (but do not count) the row header in each line.
     if (this->m_HaveRowHeaders)
       {
       if(this->m_UseStringDelimiterCharacter)
@@ -170,14 +170,14 @@ CSVFileReader <TData>
         }
       }
 
-    // COUNT THE NUMERIC ENTRIES
+    // Count the numeric entries
     while(std::getline(linestream,cell, this->m_FieldDelimiterCharacter))
       {
       cols++;
       }
     rows++;
 
-    // DETERMINE THE MAX #COLUMNS AND #ROWS
+    // Determine the max #columns and #rows
     current_cols = cols;
     if (!m_HaveColumnHeaders && rows == 1)
       {
@@ -229,13 +229,13 @@ CSVFileReader <TData>
   std::cout << "#Rows = " << rows << std::endl;
   std::cout << "#Cols = " << max_cols << std::endl;
 
-  // SET THE SIZE OF THE ARRAY2D ACCORDINGLY
+  // Set the size of the Array2D accordingly
   this->m_Matrix.SetSize(rows,max_cols);
 
-  // CLOSE FILE
+  // Close file
   inputStream.close();
 
-  // OPEN THE FILE AGAIN FOR READING
+  // Open the file again for reading
   inputStream.open(m_FileName.c_str(), std::ios::binary | std::ios::in);
   if ( inputStream.fail() )
     {
@@ -246,7 +246,7 @@ CSVFileReader <TData>
     }
 
 
-  // IF COLUMN HEADERS EXIST, THE FILE SHOULD BE READ FROM THE SECOND LINE
+  // If column headers exist, the file should be read from the second line
   if (this->m_HaveColumnHeaders)
     {
     inputStream.seekg(second_line_position);
@@ -259,7 +259,7 @@ CSVFileReader <TData>
     std::stringstream linestream(line);
     j = 0;
 
-    // IF ROW HEADERS EXIST, THEN THEY SHOULD BE PARSED INTO m_RowHeaders
+    // If row headers exist, then they should be parsed into m_RowHeaders
     if (this->m_HaveRowHeaders)
       {
       // if the string delimiter character is used, it should be accounted for
@@ -280,7 +280,7 @@ CSVFileReader <TData>
        std::getline(linestream,cell,this->m_FieldDelimiterCharacter);
       }
 
-    // PARSE THE NUMERIC DATA
+    // Parse the numeric data
     while(std::getline(linestream,cell,this->m_FieldDelimiterCharacter))
       {
       this->m_Matrix[i][j] = this->StringToNumeric(cell);

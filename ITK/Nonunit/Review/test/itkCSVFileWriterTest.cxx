@@ -71,6 +71,7 @@ int itkCSVFileWriterTest (int argc, char *argv[])
    std::cerr << exp << std::endl;
    }
 
+ // write out the array object
  array_writer->SetInput( &array );
  try
    {
@@ -94,6 +95,8 @@ int itkCSVFileWriterTest (int argc, char *argv[])
  vnlMatrixWriterType::Pointer vnl_matrix_writer = vnlMatrixWriterType::New();
  vnl_matrix_writer->SetFileName( filename );
  vnl_matrix_writer->SetInput( &vnlmatrix );
+
+ //write out the vnl_matrix object
  try
    {
    vnl_matrix_writer->Write();
@@ -112,10 +115,11 @@ int itkCSVFileWriterTest (int argc, char *argv[])
  fixedmatrix[1][0] = 99;  fixedmatrix[1][1] = 0;       fixedmatrix[1][2] = 3.75;
  fixedmatrix[2][0] = 1;   fixedmatrix[2][1] = 2.2;     fixedmatrix[2][2] = 9;
 
- // vnl_matrix_fixed
  typedef itk::CSVFileWriter<double, vMFRows,vMFCols> fixedMatrixWriterType;
  fixedMatrixWriterType::Pointer fixed_matrix_writer = fixedMatrixWriterType::New();
  fixed_matrix_writer->SetFileName( filename );
+
+ //write out the itkMatrix object
  fixed_matrix_writer->SetInput( &fixedmatrix );
  try
    {
