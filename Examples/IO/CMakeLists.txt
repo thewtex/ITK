@@ -84,7 +84,7 @@ add_executable(VisibleHumanPasteWrite  VisibleHumanPasteWrite.cxx )
 target_link_libraries(VisibleHumanPasteWrite  ${ITK_LIBRARIES})
 
 
-set(IO_EXAMPLES ${CXX_TEST_PATH}/IOExamples)
+set(IO_EXAMPLES IOExamples)
 
 set(BASELINE ${ITK_DATA_ROOT}/Baseline/Registration)
 set(TEMP ${ITK_BINARY_DIR}/Testing/Temporary)
@@ -93,13 +93,13 @@ add_executable(IOExamples IOExamples.cxx )
 target_link_libraries(IOExamples ${ITK_LIBRARIES})
 
 if(ITK_VISIBLEHUMAN_DATA_ROOT)
-  add_test(VisibleHumanStreamReadWriteTest
-    ${IO_EXAMPLES}
+  add_test(NAME VisibleHumanStreamReadWriteTest
+    COMMAND ${IO_EXAMPLES}
     VisibleHumanStreamReadWriteTest
     ${ITK_VISIBLEHUMAN_DATA_ROOT}/Male/Fullcolor/fullbody/
     ${TEMP}/VisibleHumanStreamReadWrite.mha )
-  add_test(VisibleHumanPasteWriteTest
-    ${IO_EXAMPLES}
+  add_test(NAME VisibleHumanPasteWriteTest
+    COMMAND ${IO_EXAMPLES}
     VisibleHumanPasteWriteTest
     ${TEMP}/VisibleHumanStreamReadWrite.mha
     ${TEMP}/VisibleHumanPasteWrite.mha)

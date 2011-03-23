@@ -49,61 +49,61 @@ add_executable(ImageExamples4 ImageExamples4.cxx )
 target_link_libraries(ImageExamples4 ${ITK_LIBRARIES})
 
 
-set(IMAGE_EXAMPLES ${CXX_TEST_PATH}/ImageExamples)
-set(IMAGE_EXAMPLES2 ${CXX_TEST_PATH}/ImageExamples2)
-set(IMAGE_EXAMPLES3 ${CXX_TEST_PATH}/ImageExamples3)
-set(IMAGE_EXAMPLES4 ${CXX_TEST_PATH}/ImageExamples4)
+set(IMAGE_EXAMPLES ImageExamples)
+set(IMAGE_EXAMPLES2 ImageExamples2)
+set(IMAGE_EXAMPLES3 ImageExamples3)
+set(IMAGE_EXAMPLES4 ImageExamples4)
 
 if( NOT ITK_DISABLE_CXX_TESTING )
 
 if(BUILD_TESTING)
-add_test(ImageAdaptor2Test ${IMAGE_EXAMPLES3}
+add_test(NAME ImageAdaptor2Test COMMAND ${IMAGE_EXAMPLES3}
   ImageAdaptor2Test
     ${ITK_SOURCE_DIR}/Examples/Data/VisibleWomanEyeSlice.png
     ${TEMP}/ImageAdaptor2Test.png
 )
 
-add_test(ImageAdaptor3Test ${IMAGE_EXAMPLES3}
+add_test(NAME ImageAdaptor3Test COMMAND ${IMAGE_EXAMPLES3}
   ImageAdaptor3Test
     ${ITK_SOURCE_DIR}/Examples/Data/VisibleWomanEyeSlice.png
     ${TEMP}/ImageAdaptor3Test.mhd 1
 )
 
-add_test(ImageAdaptor4Test ${IMAGE_EXAMPLES3}
+add_test(NAME ImageAdaptor4Test COMMAND ${IMAGE_EXAMPLES3}
   ImageAdaptor4Test
     ${ITK_SOURCE_DIR}/Examples/Data/VisibleWomanEyeSlice.png
     ${TEMP}/ImageAdaptor4Test.png 127
 )
 
-add_test(ImageAdaptor1Test ${IMAGE_EXAMPLES2}
+add_test(NAME ImageAdaptor1Test COMMAND ${IMAGE_EXAMPLES2}
   ImageAdaptor1Test ${ITK_SOURCE_DIR}/Examples/Data/BrainMidSagittalSlice.png
   )
 
-add_test(Image1Test ${IMAGE_EXAMPLES}
+add_test(NAME Image1Test COMMAND ${IMAGE_EXAMPLES}
   Image1Test
 )
 
-add_test(Image2Test ${IMAGE_EXAMPLES}
+add_test(NAME Image2Test COMMAND ${IMAGE_EXAMPLES}
   Image2Test ${ITK_SOURCE_DIR}/Examples/Data/BrainMidSagittalSlice.png
 )
 
-add_test(Image3Test ${IMAGE_EXAMPLES}
+add_test(NAME Image3Test COMMAND ${IMAGE_EXAMPLES}
   Image3Test
 )
 
-add_test(Image4Test ${IMAGE_EXAMPLES}
+add_test(NAME Image4Test COMMAND ${IMAGE_EXAMPLES}
   Image4Test
 )
 
-add_test(Image5Test ${IMAGE_EXAMPLES}
+add_test(NAME Image5Test COMMAND ${IMAGE_EXAMPLES}
    Image5Test ${TEMP}/Image5Test.mhd
 )
 
-add_test(RGBImageTest ${IMAGE_EXAMPLES4}
+add_test(NAME RGBImageTest COMMAND ${IMAGE_EXAMPLES4}
   RGBImageTest ${ITK_SOURCE_DIR}/Examples/Data/VisibleWomanEyeSlice.png
 )
 
-add_test(VectorImageTest ${IMAGE_EXAMPLES4}
+add_test(NAME VectorImageTest COMMAND ${IMAGE_EXAMPLES4}
   VectorImageTest
 )
 

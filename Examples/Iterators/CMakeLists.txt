@@ -49,22 +49,22 @@ target_link_libraries(ShapedNeighborhoodIterators2 ${ITK_LIBRARIES})
 add_executable(IteratorsExamples IteratorsExamples.cxx )
 target_link_libraries(IteratorsExamples ${ITK_LIBRARIES})
 
-set(ITERATORS_EXAMPLES ${CXX_TEST_PATH}/IteratorsExamples)
+set(ITERATORS_EXAMPLES IteratorsExamples)
 
 set(BASELINE ${ITK_DATA_ROOT}/Baseline/Iterators)
 set(TEMP ${ITK_BINARY_DIR}/Testing/Temporary)
 
 if(BUILD_TESTING)
 
-add_test(ImageLinearIteratorWithIndexTest ${ITERATORS_EXAMPLES}
+add_test(NAME ImageLinearIteratorWithIndexTest COMMAND itkTestDriver
   --compare ${BASELINE}/ImageLinearIteratorWithIndexTest.png
             ${TEMP}/ImageLinearIteratorWithIndexTest.png
-  ImageLinearIteratorWithIndexTest
+  ${EXECUTABLE_OUTPUT_PATH}/ImageLinearIteratorWithIndex
         ${ITK_SOURCE_DIR}/Examples/Data/VisibleWomanEyeSlice.png
         ${TEMP}/ImageLinearIteratorWithIndexTest.png
 )
 
-add_test(ImageRegionIteratorWithIndexTest ${ITERATORS_EXAMPLES}
+add_test(NAME ImageRegionIteratorWithIndexTest COMMAND ${ITERATORS_EXAMPLES}
   --compare ${BASELINE}/ImageRegionIteratorWithIndexTest.png
             ${TEMP}/ImageRegionIteratorWithIndexTest.png
   ImageRegionIteratorWithIndexTest
@@ -72,7 +72,7 @@ add_test(ImageRegionIteratorWithIndexTest ${ITERATORS_EXAMPLES}
         ${TEMP}/ImageRegionIteratorWithIndexTest.png
 )
 
-add_test(ImageRegionIteratorTest ${ITERATORS_EXAMPLES}
+add_test(NAME ImageRegionIteratorTest COMMAND ${ITERATORS_EXAMPLES}
   --compare ${BASELINE}/ImageRegionIteratorTest.png
             ${TEMP}/ImageRegionIteratorTest.png
   ImageRegionIteratorTest
@@ -81,7 +81,7 @@ add_test(ImageRegionIteratorTest ${ITERATORS_EXAMPLES}
         20 70 210 140
 )
 
-add_test(ImageSliceIteratorWithIndexTest ${ITERATORS_EXAMPLES}
+add_test(NAME ImageSliceIteratorWithIndexTest COMMAND ${ITERATORS_EXAMPLES}
   --compare ${BASELINE}/ImageSliceIteratorWithIndexTest.mha
             ${TEMP}/ImageSliceIteratorWithIndexTest.mha
   ImageSliceIteratorWithIndexTest

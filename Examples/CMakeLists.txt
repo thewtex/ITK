@@ -1,3 +1,6 @@
+find_package(ITK REQUIRED)
+include(${ITK_USE_FILE})
+
 add_subdirectory(Iterators)
 add_subdirectory(DataRepresentation)
 add_subdirectory(Filtering)
@@ -16,3 +19,5 @@ if( ITK_USE_REVIEW )
   add_subdirectory( Review )
 endif( ITK_USE_REVIEW )
 
+macro(itk_add_test)
+endmacro()

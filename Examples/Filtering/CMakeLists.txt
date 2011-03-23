@@ -136,20 +136,20 @@ add_executable(VectorIndexSelection VectorIndexSelection.cxx )
 target_link_libraries(VectorIndexSelection  ${ITK_LIBRARIES})
 add_executable(VesselnessMeasureImageFilter VesselnessMeasureImageFilter.cxx )
 target_link_libraries(VesselnessMeasureImageFilter  ${ITK_LIBRARIES})
-set(FILTERING_EXAMPLES ${CXX_TEST_PATH}/FilteringExamples)
-set(FILTERING_EXAMPLES2 ${CXX_TEST_PATH}/FilteringExamples2)
-set(FILTERING_EXAMPLES3 ${CXX_TEST_PATH}/FilteringExamples3)
-set(FILTERING_EXAMPLES4 ${CXX_TEST_PATH}/FilteringExamples4)
-set(FILTERING_EXAMPLES5 ${CXX_TEST_PATH}/FilteringExamples5)
-set(FILTERING_EXAMPLES6 ${CXX_TEST_PATH}/FilteringExamples6)
-set(FILTERING_EXAMPLES7 ${CXX_TEST_PATH}/FilteringExamples7)
-set(FILTERING_EXAMPLES8 ${CXX_TEST_PATH}/FilteringExamples8)
-set(FILTERING_EXAMPLES9 ${CXX_TEST_PATH}/FilteringExamples9)
+set(FILTERING_EXAMPLES FilteringExamples)
+set(FILTERING_EXAMPLES2 FilteringExamples2)
+set(FILTERING_EXAMPLES3 FilteringExamples3)
+set(FILTERING_EXAMPLES4 FilteringExamples4)
+set(FILTERING_EXAMPLES5 FilteringExamples5)
+set(FILTERING_EXAMPLES6 FilteringExamples6)
+set(FILTERING_EXAMPLES7 FilteringExamples7)
+set(FILTERING_EXAMPLES8 FilteringExamples8)
+set(FILTERING_EXAMPLES9 FilteringExamples9)
 set(BASELINE ${ITK_DATA_ROOT}/Baseline/Filtering)
 set(TEMP ${ITK_BINARY_DIR}/Testing/Temporary)
 if( NOT ITK_DISABLE_CXX_TESTING )
 if(BUILD_TESTING)
-add_test(BilateralImageFilterTest ${FILTERING_EXAMPLES}
+add_test(NAME BilateralImageFilterTest COMMAND ${FILTERING_EXAMPLES}
   --compare ${BASELINE}/BilateralImageFilter.png
             ${TEMP}/BilateralImageFilter.png
   BilateralImageFilterTest
@@ -157,7 +157,7 @@ add_test(BilateralImageFilterTest ${FILTERING_EXAMPLES}
         ${TEMP}/BilateralImageFilter.png
         6.0 5.0
 )
-add_test( BinaryMinMaxCurvatureFlowImageFilterTest ${FILTERING_EXAMPLES}
+add_test(NAME  BinaryMinMaxCurvatureFlowImageFilterTest COMMAND ${FILTERING_EXAMPLES}
   --compare ${BASELINE}/BinaryMinMaxCurvatureFlowImageFilter.png
             ${TEMP}/BinaryMinMaxCurvatureFlowImageFilter.png
   BinaryMinMaxCurvatureFlowImageFilterTest
@@ -165,7 +165,7 @@ add_test( BinaryMinMaxCurvatureFlowImageFilterTest ${FILTERING_EXAMPLES}
         ${TEMP}/BinaryMinMaxCurvatureFlowImageFilter.png
         10 .125 1 128
 )
-add_test( BinaryThresholdImageFilterTest ${FILTERING_EXAMPLES}
+add_test(NAME  BinaryThresholdImageFilterTest COMMAND ${FILTERING_EXAMPLES}
   --compare ${BASELINE}/BinaryThresholdImageFilter.png
             ${TEMP}/BinaryThresholdImageFilter.png
   BinaryThresholdImageFilterTest
@@ -173,7 +173,7 @@ add_test( BinaryThresholdImageFilterTest ${FILTERING_EXAMPLES}
         ${TEMP}/BinaryThresholdImageFilter.png
         150 180 0 255
 )
-add_test( BinaryMedianImageFilterTest1 ${FILTERING_EXAMPLES2}
+add_test(NAME  BinaryMedianImageFilterTest1 COMMAND ${FILTERING_EXAMPLES2}
   --compare ${BASELINE}/BinaryMedianImageFilter1.png
             ${TEMP}/BinaryMedianImageFilter1.png
   BinaryMedianImageFilterTest
@@ -181,7 +181,7 @@ add_test( BinaryMedianImageFilterTest1 ${FILTERING_EXAMPLES2}
         ${TEMP}/BinaryMedianImageFilter1.png
         1 1
 )
-add_test( BinaryMedianImageFilterTest2 ${FILTERING_EXAMPLES2}
+add_test(NAME  BinaryMedianImageFilterTest2 COMMAND ${FILTERING_EXAMPLES2}
   --compare ${BASELINE}/BinaryMedianImageFilter2.png
             ${TEMP}/BinaryMedianImageFilter2.png
   BinaryMedianImageFilterTest
@@ -189,7 +189,7 @@ add_test( BinaryMedianImageFilterTest2 ${FILTERING_EXAMPLES2}
         ${TEMP}/BinaryMedianImageFilter2.png
         2 2
 )
-add_test( BinaryMedianImageFilterTest3 ${FILTERING_EXAMPLES2}
+add_test(NAME  BinaryMedianImageFilterTest3 COMMAND ${FILTERING_EXAMPLES2}
   --compare ${BASELINE}/BinaryMedianImageFilter3.png
             ${TEMP}/BinaryMedianImageFilter3.png
   BinaryMedianImageFilterTest
@@ -197,7 +197,7 @@ add_test( BinaryMedianImageFilterTest3 ${FILTERING_EXAMPLES2}
         ${TEMP}/BinaryMedianImageFilter3.png
         3 3
 )
-add_test( VotingBinaryHoleFillingImageFilterTest1 ${FILTERING_EXAMPLES2}
+add_test(NAME  VotingBinaryHoleFillingImageFilterTest1 COMMAND ${FILTERING_EXAMPLES2}
   --compare ${BASELINE}/VotingBinaryHoleFillingImageFilter1.png
             ${TEMP}/VotingBinaryHoleFillingImageFilter1.png
   VotingBinaryHoleFillingImageFilterTest
@@ -205,7 +205,7 @@ add_test( VotingBinaryHoleFillingImageFilterTest1 ${FILTERING_EXAMPLES2}
         ${TEMP}/VotingBinaryHoleFillingImageFilter1.png
         1 1
 )
-add_test( VotingBinaryHoleFillingImageFilterTest2 ${FILTERING_EXAMPLES2}
+add_test(NAME  VotingBinaryHoleFillingImageFilterTest2 COMMAND ${FILTERING_EXAMPLES2}
   --compare ${BASELINE}/VotingBinaryHoleFillingImageFilter2.png
             ${TEMP}/VotingBinaryHoleFillingImageFilter2.png
   VotingBinaryHoleFillingImageFilterTest
@@ -213,7 +213,7 @@ add_test( VotingBinaryHoleFillingImageFilterTest2 ${FILTERING_EXAMPLES2}
         ${TEMP}/VotingBinaryHoleFillingImageFilter2.png
         2 2
 )
-add_test( VotingBinaryHoleFillingImageFilterTest3 ${FILTERING_EXAMPLES2}
+add_test(NAME  VotingBinaryHoleFillingImageFilterTest3 COMMAND ${FILTERING_EXAMPLES2}
   --compare ${BASELINE}/VotingBinaryHoleFillingImageFilter3.png
             ${TEMP}/VotingBinaryHoleFillingImageFilter3.png
   VotingBinaryHoleFillingImageFilterTest
@@ -221,7 +221,7 @@ add_test( VotingBinaryHoleFillingImageFilterTest3 ${FILTERING_EXAMPLES2}
         ${TEMP}/VotingBinaryHoleFillingImageFilter3.png
         3 3
 )
-add_test( VotingBinaryIterativeHoleFillingImageFilterTest1 ${FILTERING_EXAMPLES2}
+add_test(NAME  VotingBinaryIterativeHoleFillingImageFilterTest1 COMMAND ${FILTERING_EXAMPLES2}
   --compare ${BASELINE}/VotingBinaryIterativeHoleFillingImageFilter1.png
             ${TEMP}/VotingBinaryIterativeHoleFillingImageFilter1.png
   VotingBinaryIterativeHoleFillingImageFilterTest
@@ -229,7 +229,7 @@ add_test( VotingBinaryIterativeHoleFillingImageFilterTest1 ${FILTERING_EXAMPLES2
         ${TEMP}/VotingBinaryIterativeHoleFillingImageFilter1.png
         1 1 10
 )
-add_test( VotingBinaryIterativeHoleFillingImageFilterTest2 ${FILTERING_EXAMPLES2}
+add_test(NAME  VotingBinaryIterativeHoleFillingImageFilterTest2 COMMAND ${FILTERING_EXAMPLES2}
   --compare ${BASELINE}/VotingBinaryIterativeHoleFillingImageFilter2.png
             ${TEMP}/VotingBinaryIterativeHoleFillingImageFilter2.png
   VotingBinaryIterativeHoleFillingImageFilterTest
@@ -237,7 +237,7 @@ add_test( VotingBinaryIterativeHoleFillingImageFilterTest2 ${FILTERING_EXAMPLES2
         ${TEMP}/VotingBinaryIterativeHoleFillingImageFilter2.png
         2 2 10
 )
-add_test( VotingBinaryIterativeHoleFillingImageFilterTest3 ${FILTERING_EXAMPLES2}
+add_test(NAME  VotingBinaryIterativeHoleFillingImageFilterTest3 COMMAND ${FILTERING_EXAMPLES2}
   --compare ${BASELINE}/VotingBinaryIterativeHoleFillingImageFilter3.png
             ${TEMP}/VotingBinaryIterativeHoleFillingImageFilter3.png
   VotingBinaryIterativeHoleFillingImageFilterTest
@@ -245,7 +245,7 @@ add_test( VotingBinaryIterativeHoleFillingImageFilterTest3 ${FILTERING_EXAMPLES2
         ${TEMP}/VotingBinaryIterativeHoleFillingImageFilter3.png
         3 3 10
 )
-add_test( BinomialBlurImageFilterTest ${FILTERING_EXAMPLES}
+add_test(NAME  BinomialBlurImageFilterTest COMMAND ${FILTERING_EXAMPLES}
   --compare ${BASELINE}/BinomialBlurImageFilter.png
             ${TEMP}/BinomialBlurImageFilter.png
   BinomialBlurImageFilterTest
@@ -253,7 +253,7 @@ add_test( BinomialBlurImageFilterTest ${FILTERING_EXAMPLES}
         ${TEMP}/BinomialBlurImageFilter.png
         5
 )
-add_test( CurvatureAnisotropicDiffusionImageFilterTest ${FILTERING_EXAMPLES}
+add_test(NAME  CurvatureAnisotropicDiffusionImageFilterTest COMMAND ${FILTERING_EXAMPLES}
   --compare ${BASELINE}/CurvatureAnisotropicDiffusionImageFilter.png
             ${TEMP}/CurvatureAnisotropicDiffusionImageFilter.png
   CurvatureAnisotropicDiffusionImageFilterTest
@@ -261,7 +261,7 @@ add_test( CurvatureAnisotropicDiffusionImageFilterTest ${FILTERING_EXAMPLES}
         ${TEMP}/CurvatureAnisotropicDiffusionImageFilter.png
         5 0.125 3
 )
-add_test( CurvatureFlowImageFilterTest ${FILTERING_EXAMPLES}
+add_test(NAME  CurvatureFlowImageFilterTest COMMAND ${FILTERING_EXAMPLES}
   --compare ${BASELINE}/CurvatureFlowImageFilter.png
             ${TEMP}/CurvatureFlowImageFilter.png
   CurvatureFlowImageFilterTest
@@ -269,7 +269,7 @@ add_test( CurvatureFlowImageFilterTest ${FILTERING_EXAMPLES}
         ${TEMP}/CurvatureFlowImageFilter.png
         5 0.125 1.0
 )
-add_test( DanielssonDistanceMapImageFilterTest ${FILTERING_EXAMPLES}
+add_test(NAME  DanielssonDistanceMapImageFilterTest COMMAND ${FILTERING_EXAMPLES}
   --compare ${BASELINE}/DanielssonDistanceMapImageFilter.png
             ${TEMP}/DanielssonDistanceMapImageFilter.png
   DanielssonDistanceMapImageFilterTest
@@ -278,7 +278,7 @@ add_test( DanielssonDistanceMapImageFilterTest ${FILTERING_EXAMPLES}
         ${TEMP}/DanielssonDistanceMapImageFilter2.png
         ${TEMP}/DanielssonDistanceMapImageFilter.mha
 )
-add_test( DiscreteGaussianImageFilterTest ${FILTERING_EXAMPLES}
+add_test(NAME  DiscreteGaussianImageFilterTest COMMAND ${FILTERING_EXAMPLES}
   --compare ${BASELINE}/DiscreteGaussianImageFilter.png
             ${TEMP}/DiscreteGaussianImageFilter.png
   DiscreteGaussianImageFilterTest
@@ -286,7 +286,7 @@ add_test( DiscreteGaussianImageFilterTest ${FILTERING_EXAMPLES}
         ${TEMP}/DiscreteGaussianImageFilter.png
         1.73 10
 )
-add_test( GradientAnisotropicDiffusionImageFilterTest ${FILTERING_EXAMPLES8}
+add_test(NAME  GradientAnisotropicDiffusionImageFilterTest COMMAND ${FILTERING_EXAMPLES8}
   --compare ${BASELINE}/GradientAnisotropicDiffusionImageFilter.png
             ${TEMP}/GradientAnisotropicDiffusionImageFilter.png
   GradientAnisotropicDiffusionImageFilterTest
@@ -294,14 +294,14 @@ add_test( GradientAnisotropicDiffusionImageFilterTest ${FILTERING_EXAMPLES8}
         ${TEMP}/GradientAnisotropicDiffusionImageFilter.png
         5 0.125 1.0
 )
-add_test( GradientMagnitudeImageFilterTest ${FILTERING_EXAMPLES8}
+add_test(NAME  GradientMagnitudeImageFilterTest COMMAND ${FILTERING_EXAMPLES8}
   --compare ${BASELINE}/GradientMagnitudeImageFilter.png
             ${TEMP}/GradientMagnitudeImageFilter.png
   GradientMagnitudeImageFilterTest
         ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySlice.png
         ${TEMP}/GradientMagnitudeImageFilter.png
 )
-add_test( GradientMagnitudeRecursiveGaussianImageFilterTest ${FILTERING_EXAMPLES8}
+add_test(NAME  GradientMagnitudeRecursiveGaussianImageFilterTest COMMAND ${FILTERING_EXAMPLES8}
   --compare ${BASELINE}/GradientMagnitudeRecursiveGaussianImageFilter.png
             ${TEMP}/GradientMagnitudeRecursiveGaussianImageFilter.png
   GradientMagnitudeRecursiveGaussianImageFilterTest
@@ -309,13 +309,13 @@ add_test( GradientMagnitudeRecursiveGaussianImageFilterTest ${FILTERING_EXAMPLES
         ${TEMP}/GradientMagnitudeRecursiveGaussianImageFilter.png
         5
 )
-add_test( GradientRecursiveGaussianImageFilterTest ${FILTERING_EXAMPLES8}
+add_test(NAME  GradientRecursiveGaussianImageFilterTest COMMAND ${FILTERING_EXAMPLES8}
   GradientRecursiveGaussianImageFilterTest
         ${ITK_SOURCE_DIR}/Testing/Data/Input/HeadMRVolume.mhd
         ${TEMP}/GradientRecursiveGaussianImageFilterTest.mha
         1.5  # Sigma
 )
-add_test( GradientVectorFlowImageFilterTest ${FILTERING_EXAMPLES8}
+add_test(NAME  GradientVectorFlowImageFilterTest COMMAND ${FILTERING_EXAMPLES8}
   GradientVectorFlowImageFilterTest
         ${ITK_SOURCE_DIR}/Testing/Data/Input/GradientRecursiveGaussianImageFilterTest.mha
         ${TEMP}/GradientVectorFlowImageFilterTest.mha
@@ -324,7 +324,7 @@ add_test( GradientVectorFlowImageFilterTest ${FILTERING_EXAMPLES8}
 )
 set_tests_properties( GradientVectorFlowImageFilterTest
   PROPERTIES DEPENDS GradientRecursiveGaussianImageFilterTest)
-add_test( DerivativeImageFilterTest ${FILTERING_EXAMPLES}
+add_test(NAME  DerivativeImageFilterTest COMMAND ${FILTERING_EXAMPLES}
   --compare ${BASELINE}/DerivativeImageFilter.mha
             ${TEMP}/DerivativeImageFilter.mha
   DerivativeImageFilterTest
@@ -333,21 +333,21 @@ add_test( DerivativeImageFilterTest ${FILTERING_EXAMPLES}
         ${TEMP}/DerivativeImageFilter.png
         1 1
 )
-add_test( LaplacianImageFilterTest ${FILTERING_EXAMPLES8}
+add_test(NAME  LaplacianImageFilterTest COMMAND ${FILTERING_EXAMPLES8}
   --compare ${BASELINE}/LaplacianImageFilter.png
             ${TEMP}/LaplacianImageFilter.png
   LaplacianImageFilterTest
         ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySlice.png
         ${TEMP}/LaplacianImageFilter.png
 )
-add_test( LaplacianSharpeningImageFilterTest ${FILTERING_EXAMPLES2}
+add_test(NAME  LaplacianSharpeningImageFilterTest COMMAND ${FILTERING_EXAMPLES2}
   --compare ${BASELINE}/LaplacianSharpeningImageFilter.png
             ${TEMP}/LaplacianSharpeningImageFilter.png
   LaplacianSharpeningImageFilterTest
         ${ITK_SOURCE_DIR}/Testing/Data/Input/cthead1.png
         ${TEMP}/LaplacianSharpeningImageFilter.png
 )
-add_test( MathematicalMorphologyBinaryFiltersTest ${FILTERING_EXAMPLES8}
+add_test(NAME  MathematicalMorphologyBinaryFiltersTest COMMAND ${FILTERING_EXAMPLES8}
   --compare ${BASELINE}/MathematicalMorphologyBinaryFiltersErode.png
             ${TEMP}/MathematicalMorphologyBinaryFiltersErode.png
   MathematicalMorphologyBinaryFiltersTest
@@ -356,7 +356,7 @@ add_test( MathematicalMorphologyBinaryFiltersTest ${FILTERING_EXAMPLES8}
         ${TEMP}/MathematicalMorphologyBinaryFiltersDilate.png
         150 180
 )
-add_test( MathematicalMorphologyGrayscaleFiltersTest ${FILTERING_EXAMPLES8}
+add_test(NAME  MathematicalMorphologyGrayscaleFiltersTest COMMAND ${FILTERING_EXAMPLES8}
   --compare ${BASELINE}/MathematicalMorphologyGrayscaleFiltersErode.png
             ${TEMP}/MathematicalMorphologyGrayscaleFiltersErode.png
   MathematicalMorphologyGrayscaleFiltersTest
@@ -364,14 +364,14 @@ add_test( MathematicalMorphologyGrayscaleFiltersTest ${FILTERING_EXAMPLES8}
         ${TEMP}/MathematicalMorphologyGrayscaleFiltersErode.png
         ${TEMP}/MathematicalMorphologyGrayscaleFiltersDilate.png
 )
-add_test( MeanImageFilterTest ${FILTERING_EXAMPLES8}
+add_test(NAME  MeanImageFilterTest COMMAND ${FILTERING_EXAMPLES8}
   --compare ${BASELINE}/MeanImageFilter.png
             ${TEMP}/MeanImageFilter.png
   MeanImageFilterTest
         ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySlice.png
         ${TEMP}/MeanImageFilter.png
 )
-add_test( MedianImageFilterTest ${FILTERING_EXAMPLES8}
+add_test(NAME  MedianImageFilterTest COMMAND ${FILTERING_EXAMPLES8}
   --compare ${BASELINE}/MedianImageFilter.png
             ${TEMP}/MedianImageFilter.png
   MedianImageFilterTest
@@ -379,7 +379,7 @@ add_test( MedianImageFilterTest ${FILTERING_EXAMPLES8}
         ${TEMP}/MedianImageFilter.png
         1
 )
-add_test( ResampleImageFilterTest1 ${FILTERING_EXAMPLES2}
+add_test(NAME  ResampleImageFilterTest1 COMMAND ${FILTERING_EXAMPLES2}
   --compare ${BASELINE}/ResampleImageFilterTest1.png
             ${TEMP}/ResampleImageFilterTest1.png
   ResampleImageFilterTest
@@ -387,7 +387,7 @@ add_test( ResampleImageFilterTest1 ${FILTERING_EXAMPLES2}
         ${TEMP}/ResampleImageFilterTest1.png
         0
 )
-add_test( ResampleOrientedImageFilterTest ${FILTERING_EXAMPLES2}
+add_test(NAME  ResampleOrientedImageFilterTest COMMAND ${FILTERING_EXAMPLES2}
   --compare ${BASELINE}/ResampleOrientedImageFilterTest.png
             ${TEMP}/ResampleOrientedImageFilterTest.png
   ResampleOrientedImageFilterTest
@@ -395,7 +395,7 @@ add_test( ResampleOrientedImageFilterTest ${FILTERING_EXAMPLES2}
         ${TEMP}/ResampleOrientedImageFilterTest.png
         0 1 1 0
 )
-add_test( ResampleImageFilterTest2 ${FILTERING_EXAMPLES2}
+add_test(NAME  ResampleImageFilterTest2 COMMAND ${FILTERING_EXAMPLES2}
   --compare ${BASELINE}/ResampleImageFilterTest2.png
             ${TEMP}/ResampleImageFilterTest2.png
   ResampleImageFilterTest
@@ -403,7 +403,7 @@ add_test( ResampleImageFilterTest2 ${FILTERING_EXAMPLES2}
         ${TEMP}/ResampleImageFilterTest2.png
         1
 )
-add_test( ResampleImageFilterTest3 ${FILTERING_EXAMPLES2}
+add_test(NAME  ResampleImageFilterTest3 COMMAND ${FILTERING_EXAMPLES2}
   --compare ${BASELINE}/ResampleImageFilterTest3.png
             ${TEMP}/ResampleImageFilterTest3.png
   ResampleImageFilterTest
@@ -411,7 +411,7 @@ add_test( ResampleImageFilterTest3 ${FILTERING_EXAMPLES2}
         ${TEMP}/ResampleImageFilterTest3.png
         2
 )
-add_test( ResampleImageFilterTest4 ${FILTERING_EXAMPLES2}
+add_test(NAME  ResampleImageFilterTest4 COMMAND ${FILTERING_EXAMPLES2}
   --compare ${BASELINE}/ResampleImageFilterTest4.png
             ${TEMP}/ResampleImageFilterTest4.png
   ResampleImageFilterTest
@@ -419,7 +419,7 @@ add_test( ResampleImageFilterTest4 ${FILTERING_EXAMPLES2}
         ${TEMP}/ResampleImageFilterTest4.png
         3
 )
-add_test( ResampleImageFilter2Test1 ${FILTERING_EXAMPLES2}
+add_test(NAME  ResampleImageFilter2Test1 COMMAND ${FILTERING_EXAMPLES2}
   --compare ${BASELINE}/ResampleImageFilter2Test1.png
             ${TEMP}/ResampleImageFilter2Test1.png
   ResampleImageFilter2Test
@@ -427,7 +427,7 @@ add_test( ResampleImageFilter2Test1 ${FILTERING_EXAMPLES2}
         ${TEMP}/ResampleImageFilter2Test1.png
         0
 )
-add_test( ResampleImageFilter2Test2 ${FILTERING_EXAMPLES2}
+add_test(NAME  ResampleImageFilter2Test2 COMMAND ${FILTERING_EXAMPLES2}
   --compare ${BASELINE}/ResampleImageFilter2Test2.png
             ${TEMP}/ResampleImageFilter2Test2.png
   ResampleImageFilter2Test
@@ -435,7 +435,7 @@ add_test( ResampleImageFilter2Test2 ${FILTERING_EXAMPLES2}
         ${TEMP}/ResampleImageFilter2Test2.png
         1
 )
-add_test( ResampleImageFilter2Test3 ${FILTERING_EXAMPLES2}
+add_test(NAME  ResampleImageFilter2Test3 COMMAND ${FILTERING_EXAMPLES2}
   --compare ${BASELINE}/ResampleImageFilter2Test3.png
             ${TEMP}/ResampleImageFilter2Test3.png
   ResampleImageFilter2Test
@@ -443,7 +443,7 @@ add_test( ResampleImageFilter2Test3 ${FILTERING_EXAMPLES2}
         ${TEMP}/ResampleImageFilter2Test3.png
         2
 )
-add_test( ResampleImageFilter2Test4 ${FILTERING_EXAMPLES2}
+add_test(NAME  ResampleImageFilter2Test4 COMMAND ${FILTERING_EXAMPLES2}
   --compare ${BASELINE}/ResampleImageFilter2Test4.png
             ${TEMP}/ResampleImageFilter2Test4.png
   ResampleImageFilter2Test
@@ -451,7 +451,7 @@ add_test( ResampleImageFilter2Test4 ${FILTERING_EXAMPLES2}
         ${TEMP}/ResampleImageFilter2Test4.png
         3
 )
-add_test( ResampleImageFilter2Test5 ${FILTERING_EXAMPLES2}
+add_test(NAME  ResampleImageFilter2Test5 COMMAND ${FILTERING_EXAMPLES2}
   --compare ${BASELINE}/ResampleImageFilter2Test5.png
             ${TEMP}/ResampleImageFilter2Test5.png
   ResampleImageFilter2Test
@@ -459,7 +459,7 @@ add_test( ResampleImageFilter2Test5 ${FILTERING_EXAMPLES2}
         ${TEMP}/ResampleImageFilter2Test5.png
         3
 )
-add_test( ResampleImageFilter3Test1 ${FILTERING_EXAMPLES2}
+add_test(NAME  ResampleImageFilter3Test1 COMMAND ${FILTERING_EXAMPLES2}
   --compare ${BASELINE}/ResampleImageFilter3Test1PixelCentered.png
             ${TEMP}/ResampleImageFilter3Test1PixelCentered.png
   ResampleImageFilter3Test
@@ -468,7 +468,7 @@ add_test( ResampleImageFilter3Test1 ${FILTERING_EXAMPLES2}
         0
 )
 
-add_test( ResampleImageFilter4Test ${FILTERING_EXAMPLES2}
+add_test(NAME  ResampleImageFilter4Test COMMAND ${FILTERING_EXAMPLES2}
   --compare ${BASELINE}/ResampleImageFilter4TestPixelCentered.png
             ${TEMP}/ResampleImageFilter4TestPixelCentered.png
   ResampleImageFilter4Test
@@ -476,7 +476,7 @@ add_test( ResampleImageFilter4Test ${FILTERING_EXAMPLES2}
         ${TEMP}/ResampleImageFilter4TestPixelCentered.png
         20
 )
-add_test( ResampleImageFilter5Test ${FILTERING_EXAMPLES2}
+add_test(NAME  ResampleImageFilter5Test COMMAND ${FILTERING_EXAMPLES2}
   --compare ${BASELINE}/ResampleImageFilter5TestPixelCentered.png
             ${TEMP}/ResampleImageFilter5TestPixelCentered.png
   ResampleImageFilter5Test
@@ -484,7 +484,7 @@ add_test( ResampleImageFilter5Test ${FILTERING_EXAMPLES2}
         ${TEMP}/ResampleImageFilter5TestPixelCentered.png
         10 1.2
 )
-add_test( ResampleImageFilter8Test ${FILTERING_EXAMPLES2}
+add_test(NAME  ResampleImageFilter8Test COMMAND ${FILTERING_EXAMPLES2}
   --compare ${BASELINE}/ResampleImageFilter8TestPixelCentered.png
             ${TEMP}/ResampleImageFilter8TestPixelCentered.png
   ResampleImageFilter8Test
@@ -492,7 +492,7 @@ add_test( ResampleImageFilter8Test ${FILTERING_EXAMPLES2}
         ${TEMP}/ResampleImageFilter8TestPixelCentered.png
         45
 )
-add_test( ResampleImageFilter9Test ${FILTERING_EXAMPLES2}
+add_test(NAME  ResampleImageFilter9Test COMMAND ${FILTERING_EXAMPLES2}
   --compare ${BASELINE}/ResampleImageFilter9TestPixelCentered.png
             ${TEMP}/ResampleImageFilter9TestNearestPixelCentered.png
   ResampleImageFilter9Test
@@ -500,7 +500,7 @@ add_test( ResampleImageFilter9Test ${FILTERING_EXAMPLES2}
         ${TEMP}/ResampleImageFilter9TestNearestPixelCentered.png
         ${TEMP}/ResampleImageFilter9TestLinearPixelCentered.png
 )
-add_test( SigmoidImageFilterTest ${FILTERING_EXAMPLES2}
+add_test(NAME  SigmoidImageFilterTest COMMAND ${FILTERING_EXAMPLES2}
   --compare ${BASELINE}/SigmoidImageFilter.png
             ${TEMP}/SigmoidImageFilter.png
   SigmoidImageFilterTest
@@ -508,7 +508,7 @@ add_test( SigmoidImageFilterTest ${FILTERING_EXAMPLES2}
         ${TEMP}/SigmoidImageFilter.png
         10 240 10 170
 )
-add_test( SmoothingRecursiveGaussianImageFilterTest ${FILTERING_EXAMPLES2}
+add_test(NAME  SmoothingRecursiveGaussianImageFilterTest COMMAND ${FILTERING_EXAMPLES2}
   --compare ${BASELINE}/SmoothingRecursiveGaussianImageFilter.png
             ${TEMP}/SmoothingRecursiveGaussianImageFilter.png
   SmoothingRecursiveGaussianImageFilterTest
@@ -516,7 +516,7 @@ add_test( SmoothingRecursiveGaussianImageFilterTest ${FILTERING_EXAMPLES2}
         ${TEMP}/SmoothingRecursiveGaussianImageFilter.png
         3
 )
-add_test( SmoothingRecursiveGaussianImageFilter2Test ${FILTERING_EXAMPLES2}
+add_test(NAME  SmoothingRecursiveGaussianImageFilter2Test COMMAND ${FILTERING_EXAMPLES2}
   --compare ${BASELINE}/SmoothingRecursiveGaussianImageFilter2.png
             ${TEMP}/SmoothingRecursiveGaussianImageFilter2.png
   SmoothingRecursiveGaussianImageFilter2Test
@@ -524,7 +524,7 @@ add_test( SmoothingRecursiveGaussianImageFilter2Test ${FILTERING_EXAMPLES2}
         ${TEMP}/SmoothingRecursiveGaussianImageFilter2.png
         3
 )
-add_test( ThresholdAboveBelowOutsideImageFilterTest ${FILTERING_EXAMPLES2}
+add_test(NAME  ThresholdAboveBelowOutsideImageFilterTest COMMAND ${FILTERING_EXAMPLES2}
   --compare ${BASELINE}/ThresholdAboveImageFilter.png
             ${TEMP}/ThresholdAboveImageFilter.png
   --compare ${BASELINE}/ThresholdBelowImageFilter.png
@@ -537,7 +537,7 @@ add_test( ThresholdAboveBelowOutsideImageFilterTest ${FILTERING_EXAMPLES2}
         ${TEMP}/ThresholdAboveImageFilter.png
         ${TEMP}/ThresholdOutsideImageFilter.png
 )
-add_test( VectorGradientAnisotropicDiffusionImageFilterTest ${FILTERING_EXAMPLES2}
+add_test(NAME  VectorGradientAnisotropicDiffusionImageFilterTest COMMAND ${FILTERING_EXAMPLES2}
   --compare ${BASELINE}/VectorGradientAnisotropicDiffusionImageFilter.png
             ${TEMP}/VectorGradientAnisotropicDiffusionImageFilter.png
   VectorGradientAnisotropicDiffusionImageFilterTest
@@ -546,7 +546,7 @@ add_test( VectorGradientAnisotropicDiffusionImageFilterTest ${FILTERING_EXAMPLES
         ${TEMP}/VectorGradientAnisotropicDiffusionImageFilter.png
         .25 5
 )
-add_test( VectorCurvatureAnisotropicDiffusionImageFilterTest ${FILTERING_EXAMPLES2}
+add_test(NAME  VectorCurvatureAnisotropicDiffusionImageFilterTest COMMAND ${FILTERING_EXAMPLES2}
   --compare ${BASELINE}/VectorCurvatureAnisotropicDiffusionImageFilter.png
             ${TEMP}/VectorCurvatureAnisotropicDiffusionImageFilter.png
   VectorCurvatureAnisotropicDiffusionImageFilterTest
@@ -555,7 +555,7 @@ add_test( VectorCurvatureAnisotropicDiffusionImageFilterTest ${FILTERING_EXAMPLE
         ${TEMP}/VectorCurvatureAnisotropicDiffusionImageFilter.png
         0.125 5
 )
-add_test( VectorIndexSelectionTest ${FILTERING_EXAMPLES2}
+add_test(NAME  VectorIndexSelectionTest COMMAND ${FILTERING_EXAMPLES2}
   --compare ${BASELINE}/VectorIndexSelection.png
             ${TEMP}/VectorIndexSelection.png
   VectorIndexSelectionTest
@@ -563,7 +563,7 @@ add_test( VectorIndexSelectionTest ${FILTERING_EXAMPLES2}
         ${TEMP}/VectorIndexSelection.png
         1
 )
-add_test( ZeroCrossingBasedEdgeDetectionImageFilterTest ${FILTERING_EXAMPLES8}
+add_test(NAME  ZeroCrossingBasedEdgeDetectionImageFilterTest COMMAND ${FILTERING_EXAMPLES8}
   --compare ${BASELINE}/ZeroCrossingBasedEdgeDetectionImageFilter1.png
             ${TEMP}/ZeroCrossingBasedEdgeDetectionImageFilter1.png
   ZeroCrossingBasedEdgeDetectionImageFilterTest
@@ -572,7 +572,7 @@ add_test( ZeroCrossingBasedEdgeDetectionImageFilterTest ${FILTERING_EXAMPLES8}
         5.0
         0.03
 )
-add_test( RGBGradientAnisotropicDiffusionImageFilterTest ${FILTERING_EXAMPLES8}
+add_test(NAME  RGBGradientAnisotropicDiffusionImageFilterTest COMMAND ${FILTERING_EXAMPLES8}
   --compare ${BASELINE}/RGBGradientAnisotropicDiffusionImageFilter.png
             ${TEMP}/RGBGradientAnisotropicDiffusionImageFilter.png
   RGBGradientAnisotropicDiffusionImageFilterTest
@@ -580,7 +580,7 @@ add_test( RGBGradientAnisotropicDiffusionImageFilterTest ${FILTERING_EXAMPLES8}
         ${TEMP}/RGBGradientAnisotropicDiffusionImageFilter.png
         0.125 20
 )
-add_test( RGBCurvatureAnisotropicDiffusionImageFilterTest ${FILTERING_EXAMPLES8}
+add_test(NAME  RGBCurvatureAnisotropicDiffusionImageFilterTest COMMAND ${FILTERING_EXAMPLES8}
   --compare ${BASELINE}/RGBCurvatureAnisotropicDiffusionImageFilter.png
             ${TEMP}/RGBCurvatureAnisotropicDiffusionImageFilter.png
   RGBCurvatureAnisotropicDiffusionImageFilterTest
@@ -588,7 +588,7 @@ add_test( RGBCurvatureAnisotropicDiffusionImageFilterTest ${FILTERING_EXAMPLES8}
         ${TEMP}/RGBCurvatureAnisotropicDiffusionImageFilter.png
         0.125 20
 )
-add_test( MorphologicalImageEnhancementTest ${FILTERING_EXAMPLES3}
+add_test(NAME  MorphologicalImageEnhancementTest COMMAND ${FILTERING_EXAMPLES3}
   --compare ${BASELINE}/MorphologicalImageEnhancement.png
             ${TEMP}/MorphologicalImageEnhancement.png
   MorphologicalImageEnhancementTest
@@ -596,7 +596,7 @@ add_test( MorphologicalImageEnhancementTest ${FILTERING_EXAMPLES3}
         ${TEMP}/MorphologicalImageEnhancement.png
         3
 )
-add_test( OtsuThresholdImageFilterTest ${FILTERING_EXAMPLES5}
+add_test(NAME  OtsuThresholdImageFilterTest COMMAND ${FILTERING_EXAMPLES5}
   --compare ${BASELINE}/OtsuThresholdImageFilter.png
             ${TEMP}/OtsuThresholdImageFilter.png
   OtsuThresholdImageFilterTest
@@ -604,7 +604,7 @@ add_test( OtsuThresholdImageFilterTest ${FILTERING_EXAMPLES5}
         ${TEMP}/OtsuThresholdImageFilter.png
         255 0
 )
-add_test( OtsuMultipleThresholdImageFilterTest ${FILTERING_EXAMPLES5}
+add_test(NAME  OtsuMultipleThresholdImageFilterTest COMMAND ${FILTERING_EXAMPLES5}
   --compare ${BASELINE}/OtsuMultipleThresholdOutput002.png
             ${TEMP}/OtsuMultipleThresholdOutput002.png
   OtsuMultipleThresholdImageFilterTest
@@ -612,13 +612,13 @@ add_test( OtsuMultipleThresholdImageFilterTest ${FILTERING_EXAMPLES5}
         ${TEMP}/OtsuMultipleThresholdOutput
         png 3
 )
-add_test( DigitallyReconstructedRadiograph1Test ${FILTERING_EXAMPLES7}
+add_test(NAME  DigitallyReconstructedRadiograph1Test COMMAND ${FILTERING_EXAMPLES7}
   --compare ${BASELINE}/DigitallyReconstructedRadiograph1.png
             ${TEMP}/DigitallyReconstructedRadiograph1.png
   DigitallyReconstructedRadiograph1Test
         -o ${TEMP}/DigitallyReconstructedRadiograph1.png
 )
-add_test( AntiAliasBinaryImageFilterTest ${FILTERING_EXAMPLES3}
+add_test(NAME  AntiAliasBinaryImageFilterTest COMMAND ${FILTERING_EXAMPLES3}
   --compare ${BASELINE}/AntiAliasBinaryImageFilter.png
             ${TEMP}/AntiAliasBinaryImageFilter.png
   AntiAliasBinaryImageFilterTest
@@ -627,7 +627,7 @@ add_test( AntiAliasBinaryImageFilterTest ${FILTERING_EXAMPLES3}
         ${TEMP}/AntiAliasBinaryImageFilter.png
         .001 50
 )
-add_test( CannyEdgeDetectionImageFilterTest ${FILTERING_EXAMPLES3}
+add_test(NAME  CannyEdgeDetectionImageFilterTest COMMAND ${FILTERING_EXAMPLES3}
   --compare ${BASELINE}/CannyEdgeDetectionImageFilter.png
             ${TEMP}/CannyEdgeDetectionImageFilter.png
   CannyEdgeDetectionImageFilterTest
@@ -637,7 +637,7 @@ add_test( CannyEdgeDetectionImageFilterTest ${FILTERING_EXAMPLES3}
         0     # Upper Threshold
         0     # Lower Threshold
 )
-add_test( CannyEdgeDetectionImageFilterTest2 ${FILTERING_EXAMPLES3}
+add_test(NAME  CannyEdgeDetectionImageFilterTest2 COMMAND ${FILTERING_EXAMPLES3}
   --compare ${BASELINE}/CannyEdgeDetectionImageFilter2.png
             ${TEMP}/CannyEdgeDetectionImageFilter2.png
   CannyEdgeDetectionImageFilterTest
@@ -647,7 +647,7 @@ add_test( CannyEdgeDetectionImageFilterTest2 ${FILTERING_EXAMPLES3}
         5     # Upper Threshold
         1     # Lower Threshold
 )
-add_test( FlipImageFilterTest1 ${FILTERING_EXAMPLES3}
+add_test(NAME  FlipImageFilterTest1 COMMAND ${FILTERING_EXAMPLES3}
   --compare ${BASELINE}/FlipImageFilterX.png
             ${TEMP}/FlipImageFilterX.png
   FlipImageFilterTest
@@ -655,7 +655,7 @@ add_test( FlipImageFilterTest1 ${FILTERING_EXAMPLES3}
         ${TEMP}/FlipImageFilterX.png
         1 0
 )
-add_test( FlipImageFilterTest2 ${FILTERING_EXAMPLES3}
+add_test(NAME  FlipImageFilterTest2 COMMAND ${FILTERING_EXAMPLES3}
   --compare ${BASELINE}/FlipImageFilterY.png
             ${TEMP}/FlipImageFilterY.png
   FlipImageFilterTest
@@ -663,7 +663,7 @@ add_test( FlipImageFilterTest2 ${FILTERING_EXAMPLES3}
         ${TEMP}/FlipImageFilterY.png
         0 1
 )
-add_test( FlipImageFilterTest3 ${FILTERING_EXAMPLES3}
+add_test(NAME  FlipImageFilterTest3 COMMAND ${FILTERING_EXAMPLES3}
   --compare ${BASELINE}/FlipImageFilterXY.png
             ${TEMP}/FlipImageFilterXY.png
   FlipImageFilterTest
@@ -671,7 +671,7 @@ add_test( FlipImageFilterTest3 ${FILTERING_EXAMPLES3}
         ${TEMP}/FlipImageFilterXY.png
         1 1
 )
-add_test( GaussianBlurImageFunctionTest ${FILTERING_EXAMPLES3}
+add_test(NAME  GaussianBlurImageFunctionTest COMMAND ${FILTERING_EXAMPLES3}
   --compare ${BASELINE}/GaussianBlurImageFunction.mha
             ${TEMP}/GaussianBlurImageFunction.mha
   GaussianBlurImageFunctionTest
@@ -679,7 +679,7 @@ add_test( GaussianBlurImageFunctionTest ${FILTERING_EXAMPLES3}
         ${TEMP}/GaussianBlurImageFunction.mha
         2 3
 )
-add_test( FFTImageFilterTest ${FILTERING_EXAMPLES7}
+add_test(NAME  FFTImageFilterTest COMMAND ${FILTERING_EXAMPLES7}
   --compare ${BASELINE}/FFTImageFilterReal.png
             ${TEMP}/FFTImageFilterReal.png
   FFTImageFilterTest
@@ -688,7 +688,7 @@ add_test( FFTImageFilterTest ${FILTERING_EXAMPLES7}
         ${TEMP}/FFTImageFilterImaginary.png
         ${TEMP}/FFTImageFilterComplex.mhd
 )
-add_test( FFTDirectInverseTest ${FILTERING_EXAMPLES6}
+add_test(NAME  FFTDirectInverseTest COMMAND ${FILTERING_EXAMPLES6}
   --compare ${ITK_SOURCE_DIR}/Examples/Data/Point.png
             ${TEMP}/FFTDirectInversePoint.png
   FFTDirectInverseTest
@@ -697,7 +697,7 @@ add_test( FFTDirectInverseTest ${FILTERING_EXAMPLES6}
 )
 if( USE_FFTWF )
 #${BASELINE}/FFTDirectInverse2Point.png
-  add_test( FFTDirectInverse2Test ${FILTERING_EXAMPLES6}
+  add_test(NAME  FFTDirectInverse2Test COMMAND ${FILTERING_EXAMPLES6}
     --compare ${ITK_SOURCE_DIR}/Examples/Data/Point.png
               ${TEMP}/FFTDirectInverse2Point.png
     FFTDirectInverse2Test
@@ -705,28 +705,28 @@ if( USE_FFTWF )
           ${TEMP}/FFTDirectInverse2Point.png
   )
 endif( USE_FFTWF )
-add_test( FFTImageFilterTest2 ${FILTERING_EXAMPLES7}
+add_test(NAME  FFTImageFilterTest2 COMMAND ${FILTERING_EXAMPLES7}
   FFTImageFilterTest
         ${ITK_SOURCE_DIR}/Examples/Data/FFTcenteredDC.png
         ${TEMP}/FFTImageFilterCenteredDCReal.png
         ${TEMP}/FFTImageFilterCenteredDCImaginary.png
         ${TEMP}/FFTImageFilterComplex2.mhd
 )
-add_test( FFTImageFilterTest3 ${FILTERING_EXAMPLES7}
+add_test(NAME  FFTImageFilterTest3 COMMAND ${FILTERING_EXAMPLES7}
   FFTImageFilterTest
         ${ITK_SOURCE_DIR}/Examples/Data/FFTcorneredDC.png
         ${TEMP}/FFTImageFilterCorneredDCReal.png
         ${TEMP}/FFTImageFilterCorneredDCImaginary.png
         ${TEMP}/FFTImageFilterComplex3.mhd
 )
-add_test( RGBToGrayscaleTest ${FILTERING_EXAMPLES7}
+add_test(NAME  RGBToGrayscaleTest COMMAND ${FILTERING_EXAMPLES7}
   --compare ${BASELINE}/RGBToGrayscale.png
             ${TEMP}/RGBToGrayscale.png
   RGBToGrayscaleTest
         ${ITK_SOURCE_DIR}/Examples/Data/VisibleWomanHeadSlice.png
         ${TEMP}/RGBToGrayscale.png
 )
-add_test( LaplacianRecursiveGaussianImageFilter1Test ${FILTERING_EXAMPLES7}
+add_test(NAME  LaplacianRecursiveGaussianImageFilter1Test COMMAND ${FILTERING_EXAMPLES7}
   --compare ${BASELINE}/LaplacianRecursiveGaussianImageFilter1.mha
             ${TEMP}/LaplacianRecursiveGaussianImageFilter1.mha
   LaplacianRecursiveGaussianImageFilter1Test
@@ -734,7 +734,7 @@ add_test( LaplacianRecursiveGaussianImageFilter1Test ${FILTERING_EXAMPLES7}
         ${TEMP}/LaplacianRecursiveGaussianImageFilter1.mha
         3
 )
-add_test( LaplacianRecursiveGaussianImageFilter2Test ${FILTERING_EXAMPLES7}
+add_test(NAME  LaplacianRecursiveGaussianImageFilter2Test COMMAND ${FILTERING_EXAMPLES7}
   --compare ${BASELINE}/LaplacianRecursiveGaussianImageFilter2.mha
             ${TEMP}/LaplacianRecursiveGaussianImageFilter2.mha
   LaplacianRecursiveGaussianImageFilter2Test
@@ -742,7 +742,7 @@ add_test( LaplacianRecursiveGaussianImageFilter2Test ${FILTERING_EXAMPLES7}
         ${TEMP}/LaplacianRecursiveGaussianImageFilter2.mha
         3
 )
-add_test( ResampleImageFilter6Test ${FILTERING_EXAMPLES4}
+add_test(NAME  ResampleImageFilter6Test COMMAND ${FILTERING_EXAMPLES4}
   --compare ${BASELINE}/ResampleImageFilter6PixelCentered.png
             ${TEMP}/ResampleImageFilter6PixelCentered.png
   ResampleImageFilter6Test
@@ -750,7 +750,7 @@ add_test( ResampleImageFilter6Test ${FILTERING_EXAMPLES4}
         ${TEMP}/ResampleImageFilter6PixelCentered.png
         3
 )
-add_test( ResampleImageFilter7Test ${FILTERING_EXAMPLES4}
+add_test(NAME  ResampleImageFilter7Test COMMAND ${FILTERING_EXAMPLES4}
   --compare ${BASELINE}/ResampleImageFilter7PixelCentered.png
             ${TEMP}/ResampleImageFilter7PixelCentered.png
   --compareNumberOfPixelsTolerance 1
@@ -759,7 +759,7 @@ add_test( ResampleImageFilter7Test ${FILTERING_EXAMPLES4}
         ${TEMP}/ResampleImageFilter7PixelCentered.png
         33
 )
-add_test( ResampleVolumesToBeIsotropicTest ${FILTERING_EXAMPLES4}
+add_test(NAME  ResampleVolumesToBeIsotropicTest COMMAND ${FILTERING_EXAMPLES4}
   --compare ${BASELINE}/ResampleVolumesToBeIsotropic.mha
             ${TEMP}/ResampleVolumesToBeIsotropic.mha
   ResampleVolumesToBeIsotropicTest
@@ -767,7 +767,7 @@ add_test( ResampleVolumesToBeIsotropicTest ${FILTERING_EXAMPLES4}
         ${TEMP}/ResampleVolumesToBeIsotropic.mha
         0 255
 )
-add_test( ScaleSpaceGenerator2DTest ${FILTERING_EXAMPLES4}
+add_test(NAME  ScaleSpaceGenerator2DTest COMMAND ${FILTERING_EXAMPLES4}
   --compare ${BASELINE}/ScaleSpaceGenerator2D005.mhd
             ${TEMP}/ScaleSpaceGenerator2D005.mhd
   ScaleSpaceGenerator2DTest
@@ -775,7 +775,7 @@ add_test( ScaleSpaceGenerator2DTest ${FILTERING_EXAMPLES4}
         ${TEMP}/ScaleSpaceGenerator2D
         10
 )
-add_test( SubsampleVolumeTest ${FILTERING_EXAMPLES4}
+add_test(NAME  SubsampleVolumeTest COMMAND ${FILTERING_EXAMPLES4}
   --compare ${BASELINE}/SubsampleVolume.mha
             ${TEMP}/SubsampleVolume.mha
   SubsampleVolumeTest
@@ -783,15 +783,15 @@ add_test( SubsampleVolumeTest ${FILTERING_EXAMPLES4}
         ${TEMP}/SubsampleVolume.mha
         2 2 2
 )
-add_test( SpatialObjectToImage1 ${FILTERING_EXAMPLES9}
+add_test(NAME  SpatialObjectToImage1 COMMAND ${FILTERING_EXAMPLES9}
   SpatialObjectToImage1
         ${TEMP}/SpatialObjectToImage1.mha
 )
-add_test( SpatialObjectToImage2 ${FILTERING_EXAMPLES9}
+add_test(NAME  SpatialObjectToImage2 COMMAND ${FILTERING_EXAMPLES9}
   SpatialObjectToImage2
         ${TEMP}/SpatialObjectToImage2.mha
 )
-add_test( SpatialObjectToImage3 ${FILTERING_EXAMPLES9}
+add_test(NAME  SpatialObjectToImage3 COMMAND ${FILTERING_EXAMPLES9}
   SpatialObjectToImage3
         ${TEMP}/SpatialObjectToImage3.mha
 )
@@ -800,7 +800,7 @@ add_test( SpatialObjectToImage3 ${FILTERING_EXAMPLES9}
 #   TensorFractionalAnisotropyImageFilter
 #   TensorRelativeAnisotropyImageFilter
 #
-add_test( DiffusionTensor3DReconstructionImageFilterTest1 ${FILTERING_EXAMPLES5}
+add_test(NAME  DiffusionTensor3DReconstructionImageFilterTest1 COMMAND ${FILTERING_EXAMPLES5}
   --compare ${BASELINE}/FACorpusCallosum.mhd
             ${TEMP}/FACorpusCallosum.mhd
   DiffusionTensor3DReconstructionImageFilterTest
@@ -808,7 +808,7 @@ add_test( DiffusionTensor3DReconstructionImageFilterTest1 ${FILTERING_EXAMPLES5}
         80 ${TEMP}/Tensors.mhd ${TEMP}/FACorpusCallosum.mhd
         ${TEMP}/RACorpusCallosum.mhd 0
 )
-add_test( DiffusionTensor3DReconstructionImageFilterTest2 ${FILTERING_EXAMPLES5}
+add_test(NAME  DiffusionTensor3DReconstructionImageFilterTest2 COMMAND ${FILTERING_EXAMPLES5}
   --compare ${BASELINE}/RACorpusCallosum.mhd
             ${TEMP}/RACorpusCallosum.mhd
   DiffusionTensor3DReconstructionImageFilterTest

@@ -87,15 +87,15 @@ if( NOT ITK_DISABLE_CXX_TESTING )
 
 if(BUILD_TESTING)
 
-set(SEGMENTATION_EXAMPLES ${CXX_TEST_PATH}/SegmentationExamples)
-set(SEGMENTATION_EXAMPLES2 ${CXX_TEST_PATH}/SegmentationExamples2)
-set(SEGMENTATION_EXAMPLES3 ${CXX_TEST_PATH}/SegmentationExamples3)
-set(SEGMENTATION_EXAMPLES4 ${CXX_TEST_PATH}/SegmentationExamples4)
-set(SEGMENTATION_EXAMPLES5 ${CXX_TEST_PATH}/SegmentationExamples5)
-set(SEGMENTATION_EXAMPLES6 ${CXX_TEST_PATH}/SegmentationExamples6)
-set(SEGMENTATION_EXAMPLES7 ${CXX_TEST_PATH}/SegmentationExamples7)
-set(SEGMENTATION_EXAMPLES8 ${CXX_TEST_PATH}/SegmentationExamples8)
-set(SEGMENTATION_EXAMPLES9 ${CXX_TEST_PATH}/SegmentationExamples9)
+set(SEGMENTATION_EXAMPLES SegmentationExamples)
+set(SEGMENTATION_EXAMPLES2 SegmentationExamples2)
+set(SEGMENTATION_EXAMPLES3 SegmentationExamples3)
+set(SEGMENTATION_EXAMPLES4 SegmentationExamples4)
+set(SEGMENTATION_EXAMPLES5 SegmentationExamples5)
+set(SEGMENTATION_EXAMPLES6 SegmentationExamples6)
+set(SEGMENTATION_EXAMPLES7 SegmentationExamples7)
+set(SEGMENTATION_EXAMPLES8 SegmentationExamples8)
+set(SEGMENTATION_EXAMPLES9 SegmentationExamples9)
 
 add_executable(SegmentationExamples SegmentationExamples.cxx )
 target_link_libraries(SegmentationExamples ${ITK_LIBRARIES})
@@ -124,7 +124,7 @@ target_link_libraries(SegmentationExamples8 ${ITK_LIBRARIES})
 add_executable(SegmentationExamples9 SegmentationExamples9.cxx )
 target_link_libraries(SegmentationExamples9 ${ITK_LIBRARIES})
 
-add_test(ConfidenceConnectedWhiteTest ${SEGMENTATION_EXAMPLES}
+add_test(NAME ConfidenceConnectedWhiteTest COMMAND ${SEGMENTATION_EXAMPLES}
   --compare ${BASELINE}/ConfidenceConnectedWhiteTest.png
             ${TEMP}/ConfidenceConnectedWhiteTest.png
   ConfidenceConnectedTest
@@ -133,7 +133,7 @@ add_test(ConfidenceConnectedWhiteTest ${SEGMENTATION_EXAMPLES}
         60 116
 )
 
-add_test(ConfidenceConnectedVentricleTest ${SEGMENTATION_EXAMPLES}
+add_test(NAME ConfidenceConnectedVentricleTest COMMAND ${SEGMENTATION_EXAMPLES}
   --compare ${BASELINE}/ConfidenceConnectedVentricleTest.png
             ${TEMP}/ConfidenceConnectedVentricleTest.png
   ConfidenceConnectedTest
@@ -142,7 +142,7 @@ add_test(ConfidenceConnectedVentricleTest ${SEGMENTATION_EXAMPLES}
         81 112
 )
 
-add_test(ConfidenceConnectedGrayTest ${SEGMENTATION_EXAMPLES}
+add_test(NAME ConfidenceConnectedGrayTest COMMAND ${SEGMENTATION_EXAMPLES}
   --compare ${BASELINE}/ConfidenceConnectedGrayTest.png
             ${TEMP}/ConfidenceConnectedGrayTest.png
   ConfidenceConnectedTest
@@ -151,7 +151,7 @@ add_test(ConfidenceConnectedGrayTest ${SEGMENTATION_EXAMPLES}
         107 69
 )
 
-add_test(ConnectedThresholdWhiteTest ${SEGMENTATION_EXAMPLES}
+add_test(NAME ConnectedThresholdWhiteTest COMMAND ${SEGMENTATION_EXAMPLES}
   --compare ${BASELINE}/ConnectedThresholdWhiteTest.png
             ${TEMP}/ConnectedThresholdWhiteTest.png
   ConnectedThresholdImageFilterTest
@@ -160,7 +160,7 @@ add_test(ConnectedThresholdWhiteTest ${SEGMENTATION_EXAMPLES}
         60 116 150 180
 )
 
-add_test(ConnectedThresholdVentricleTest ${SEGMENTATION_EXAMPLES}
+add_test(NAME ConnectedThresholdVentricleTest COMMAND ${SEGMENTATION_EXAMPLES}
   --compare ${BASELINE}/ConnectedThresholdVentricleTest.png
             ${TEMP}/ConnectedThresholdVentricleTest.png
   ConnectedThresholdImageFilterTest
@@ -169,7 +169,7 @@ add_test(ConnectedThresholdVentricleTest ${SEGMENTATION_EXAMPLES}
         81 112 210 250
 )
 
-add_test(ConnectedThresholdGrayTest ${SEGMENTATION_EXAMPLES}
+add_test(NAME ConnectedThresholdGrayTest COMMAND ${SEGMENTATION_EXAMPLES}
   --compare ${BASELINE}/ConnectedThresholdGrayTest.png
             ${TEMP}/ConnectedThresholdGrayTest.png
   ConnectedThresholdImageFilterTest
@@ -178,7 +178,7 @@ add_test(ConnectedThresholdGrayTest ${SEGMENTATION_EXAMPLES}
         107 69 180 210
 )
 
-add_test(FastMarchingLeftVentricleTest ${SEGMENTATION_EXAMPLES}
+add_test(NAME FastMarchingLeftVentricleTest COMMAND ${SEGMENTATION_EXAMPLES}
   --compare ${BASELINE}/FastMarchingLeftVentricleTest.png
             ${TEMP}/FastMarchingLeftVentricleTest.png
   FastMarchingImageFilterTest
@@ -187,7 +187,7 @@ add_test(FastMarchingLeftVentricleTest ${SEGMENTATION_EXAMPLES}
         81 114 1.0 -0.5 3.0 100 100
 )
 
-add_test(FastMarchingRightVentricleTest ${SEGMENTATION_EXAMPLES}
+add_test(NAME FastMarchingRightVentricleTest COMMAND ${SEGMENTATION_EXAMPLES}
   --compare ${BASELINE}/FastMarchingRightVentricleTest.png
             ${TEMP}/FastMarchingRightVentricleTest.png
   FastMarchingImageFilterTest
@@ -196,7 +196,7 @@ add_test(FastMarchingRightVentricleTest ${SEGMENTATION_EXAMPLES}
         99 114 1.0 -0.5 3.0 100 100
 )
 
-add_test(FastMarchingWhiteMatterTest ${SEGMENTATION_EXAMPLES}
+add_test(NAME FastMarchingWhiteMatterTest COMMAND ${SEGMENTATION_EXAMPLES}
   --compare ${BASELINE}/FastMarchingWhiteMatterTest.png
             ${TEMP}/FastMarchingWhiteMatterTest.png
   FastMarchingImageFilterTest
@@ -205,7 +205,7 @@ add_test(FastMarchingWhiteMatterTest ${SEGMENTATION_EXAMPLES}
         56 92 1.0 -0.3 2.0 200 100
 )
 
-add_test(FastMarchingGrayMatterTest ${SEGMENTATION_EXAMPLES}
+add_test(NAME FastMarchingGrayMatterTest COMMAND ${SEGMENTATION_EXAMPLES}
   --compare ${BASELINE}/FastMarchingGrayMatterTest.png
             ${TEMP}/FastMarchingGrayMatterTest.png
   FastMarchingImageFilterTest
@@ -214,7 +214,7 @@ add_test(FastMarchingGrayMatterTest ${SEGMENTATION_EXAMPLES}
         40 90 .5 -0.3 2.0 200 100
 )
 
-add_test(GeodesicActiveContourLeftVentricleTest ${SEGMENTATION_EXAMPLES}
+add_test(NAME GeodesicActiveContourLeftVentricleTest COMMAND ${SEGMENTATION_EXAMPLES}
   --compare ${BASELINE}/GeodesicActiveContourLeftVentricleTest.png
             ${TEMP}/GeodesicActiveContourLeftVentricleTest.png
   GeodesicActiveContourImageFilterTest
@@ -223,7 +223,7 @@ add_test(GeodesicActiveContourLeftVentricleTest ${SEGMENTATION_EXAMPLES}
         81 114 5.0 1.0 -0.5 3.0 2.0
 )
 
-add_test(GeodesicActiveContourRightVentricleTest ${SEGMENTATION_EXAMPLES}
+add_test(NAME GeodesicActiveContourRightVentricleTest COMMAND ${SEGMENTATION_EXAMPLES}
   --compare ${BASELINE}/GeodesicActiveContourRightVentricleTest.png
             ${TEMP}/GeodesicActiveContourRightVentricleTest.png
   GeodesicActiveContourImageFilterTest
@@ -232,7 +232,7 @@ add_test(GeodesicActiveContourRightVentricleTest ${SEGMENTATION_EXAMPLES}
         99 114 5.0 1.0 -0.5 3.0 2.0
 )
 
-add_test(GeodesicActiveContourWhiteMatterTest ${SEGMENTATION_EXAMPLES}
+add_test(NAME GeodesicActiveContourWhiteMatterTest COMMAND ${SEGMENTATION_EXAMPLES}
   --compare ${BASELINE}/GeodesicActiveContourWhiteMatterTest.png
             ${TEMP}/GeodesicActiveContourWhiteMatterTest.png
   GeodesicActiveContourImageFilterTest
@@ -241,7 +241,7 @@ add_test(GeodesicActiveContourWhiteMatterTest ${SEGMENTATION_EXAMPLES}
         56 92 5.0 1.0 -0.3 2.0 10.0
 )
 
-add_test(GeodesicActiveContourGrayMatterTest ${SEGMENTATION_EXAMPLES}
+add_test(NAME GeodesicActiveContourGrayMatterTest COMMAND ${SEGMENTATION_EXAMPLES}
   --compare ${BASELINE}/GeodesicActiveContourGrayMatterTest.png
             ${TEMP}/GeodesicActiveContourGrayMatterTest.png
   GeodesicActiveContourImageFilterTest
@@ -250,7 +250,7 @@ add_test(GeodesicActiveContourGrayMatterTest ${SEGMENTATION_EXAMPLES}
         40 90 5.0 .5 -0.3 2.0 10.0
 )
 
-add_test(ShapeDetectionLevelSetLeftVentricleTest ${SEGMENTATION_EXAMPLES2}
+add_test(NAME ShapeDetectionLevelSetLeftVentricleTest COMMAND ${SEGMENTATION_EXAMPLES2}
   --compare ${BASELINE}/ShapeDetectionLevelSetLeftVentricleTest.png
             ${TEMP}/ShapeDetectionLevelSetLeftVentricleTest.png
   ShapeDetectionLevelSetFilterTest
@@ -259,7 +259,7 @@ add_test(ShapeDetectionLevelSetLeftVentricleTest ${SEGMENTATION_EXAMPLES2}
         81 114 5.0 1.0 -0.5 3.0 0.05 1.0
 )
 
-add_test(ShapeDetectionLevelSetRightVentricleTest ${SEGMENTATION_EXAMPLES2}
+add_test(NAME ShapeDetectionLevelSetRightVentricleTest COMMAND ${SEGMENTATION_EXAMPLES2}
   --compare ${BASELINE}/ShapeDetectionLevelSetRightVentricleTest.png
             ${TEMP}/ShapeDetectionLevelSetRightVentricleTest.png
   ShapeDetectionLevelSetFilterTest
@@ -268,7 +268,7 @@ add_test(ShapeDetectionLevelSetRightVentricleTest ${SEGMENTATION_EXAMPLES2}
         99 114 5.0 1.0 -0.5 3.0 0.05 1.0
 )
 
-add_test(ShapeDetectionLevelSetWhiteMatterTest ${SEGMENTATION_EXAMPLES2}
+add_test(NAME ShapeDetectionLevelSetWhiteMatterTest COMMAND ${SEGMENTATION_EXAMPLES2}
   --compare ${BASELINE}/ShapeDetectionLevelSetWhiteMatterTest.png
             ${TEMP}/ShapeDetectionLevelSetWhiteMatterTest.png
   ShapeDetectionLevelSetFilterTest
@@ -277,7 +277,7 @@ add_test(ShapeDetectionLevelSetWhiteMatterTest ${SEGMENTATION_EXAMPLES2}
         56 92 5.0 1.0 -0.3 2.0 0.05 1.0
 )
 
-add_test(ShapeDetectionLevelSetGrayMatterTest ${SEGMENTATION_EXAMPLES2}
+add_test(NAME ShapeDetectionLevelSetGrayMatterTest COMMAND ${SEGMENTATION_EXAMPLES2}
   --compare ${BASELINE}/ShapeDetectionLevelSetGrayMatterTest.png
             ${TEMP}/ShapeDetectionLevelSetGrayMatterTest.png
   ShapeDetectionLevelSetFilterTest
@@ -286,7 +286,7 @@ add_test(ShapeDetectionLevelSetGrayMatterTest ${SEGMENTATION_EXAMPLES2}
         40 90 5.0 1.0 -0.3 2.0 0.05 1.0
 )
 
-add_test(ThresholdSegmentationLevelSetVentricleTest ${SEGMENTATION_EXAMPLES2}
+add_test(NAME ThresholdSegmentationLevelSetVentricleTest COMMAND ${SEGMENTATION_EXAMPLES2}
   --compare ${BASELINE}/ThresholdSegmentationLevelSetVentricleTest.png
             ${TEMP}/ThresholdSegmentationLevelSetVentricleTest.png
   ThresholdSegmentationLevelSetImageFilterTest
@@ -295,7 +295,7 @@ add_test(ThresholdSegmentationLevelSetVentricleTest ${SEGMENTATION_EXAMPLES2}
         81 112 5 210 250
 )
 
-add_test(ThresholdSegmentationLevelSetWhiteMatterTest ${SEGMENTATION_EXAMPLES2}
+add_test(NAME ThresholdSegmentationLevelSetWhiteMatterTest COMMAND ${SEGMENTATION_EXAMPLES2}
   --compare ${BASELINE}/ThresholdSegmentationLevelSetWhiteMatterTest.png
             ${TEMP}/ThresholdSegmentationLevelSetWhiteMatterTest.png
   ThresholdSegmentationLevelSetImageFilterTest
@@ -304,7 +304,7 @@ add_test(ThresholdSegmentationLevelSetWhiteMatterTest ${SEGMENTATION_EXAMPLES2}
         60 116 5 150 180
 )
 
-add_test(ThresholdSegmentationLevelSetGrayMatterTest ${SEGMENTATION_EXAMPLES2}
+add_test(NAME ThresholdSegmentationLevelSetGrayMatterTest COMMAND ${SEGMENTATION_EXAMPLES2}
   --compare ${BASELINE}/ThresholdSegmentationLevelSetGrayMatterTest.png
             ${TEMP}/ThresholdSegmentationLevelSetGrayMatterTest.png
   ThresholdSegmentationLevelSetImageFilterTest
@@ -313,7 +313,7 @@ add_test(ThresholdSegmentationLevelSetGrayMatterTest ${SEGMENTATION_EXAMPLES2}
         107 69 5 180 210
 )
 
-add_test(CellularSegmentation1Test ${SEGMENTATION_EXAMPLES9}
+add_test(NAME CellularSegmentation1Test COMMAND ${SEGMENTATION_EXAMPLES9}
   CellularSegmentation1Test
         ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySlice.png
         100 115 200 255 3000
@@ -322,7 +322,7 @@ add_test(CellularSegmentation1Test ${SEGMENTATION_EXAMPLES9}
 
 if( ITK_USE_BRAINWEB_DATA )
 
-itk_add_test(CellularSegmentation2Test ${SEGMENTATION_EXAMPLES9}
+itk_add_test(NAME CellularSegmentation2Test COMMAND ${SEGMENTATION_EXAMPLES9}
   CellularSegmentation2Test
         DATA{../Data/BrainWeb/brainweb1e1a10f20.mha}
         81 113 96 220 255 2000
@@ -331,7 +331,7 @@ itk_add_test(CellularSegmentation2Test ${SEGMENTATION_EXAMPLES9}
 
 endif( ITK_USE_BRAINWEB_DATA )
 
-add_test(VectorConfidenceConnectedTest1 ${SEGMENTATION_EXAMPLES8}
+add_test(NAME VectorConfidenceConnectedTest1 COMMAND ${SEGMENTATION_EXAMPLES8}
   --compare ${BASELINE}/VectorConfidenceConnected1.png
             ${TEMP}/VectorConfidenceConnected1.png
   VectorConfidenceConnectedTest
@@ -340,7 +340,7 @@ add_test(VectorConfidenceConnectedTest1 ${SEGMENTATION_EXAMPLES8}
         70 120 7 1
 )
 
-add_test(VectorConfidenceConnectedTest2 ${SEGMENTATION_EXAMPLES8}
+add_test(NAME VectorConfidenceConnectedTest2 COMMAND ${SEGMENTATION_EXAMPLES8}
   --compare ${BASELINE}/VectorConfidenceConnected2.png
             ${TEMP}/VectorConfidenceConnected2.png
   VectorConfidenceConnectedTest
@@ -349,7 +349,7 @@ add_test(VectorConfidenceConnectedTest2 ${SEGMENTATION_EXAMPLES8}
         23 93 7 1
 )
 
-add_test(VectorConfidenceConnectedTest3 ${SEGMENTATION_EXAMPLES8}
+add_test(NAME VectorConfidenceConnectedTest3 COMMAND ${SEGMENTATION_EXAMPLES8}
   --compare ${BASELINE}/VectorConfidenceConnected3.png
             ${TEMP}/VectorConfidenceConnected3.png
   VectorConfidenceConnectedTest
@@ -359,7 +359,7 @@ add_test(VectorConfidenceConnectedTest3 ${SEGMENTATION_EXAMPLES8}
 )
 
 
-add_test(CannySegmentationLevelSetImageFilterTest ${SEGMENTATION_EXAMPLES}
+add_test(NAME CannySegmentationLevelSetImageFilterTest COMMAND ${SEGMENTATION_EXAMPLES}
   --compare ${BASELINE}/CannySegmentationLevelSetImageFilterTest.png
             ${TEMP}/CannySegmentationLevelSetImageFilterTest.png
   CannySegmentationLevelSetImageFilterTest
@@ -369,7 +369,7 @@ add_test(CannySegmentationLevelSetImageFilterTest ${SEGMENTATION_EXAMPLES}
         7 0.1 -10.0 127.5 10000
 )
 
-add_test(GeodesicActiveContourShapePriorCallosumTest ${SEGMENTATION_EXAMPLES3}
+add_test(NAME GeodesicActiveContourShapePriorCallosumTest COMMAND ${SEGMENTATION_EXAMPLES3}
   --compare ${BASELINE}/GeodesicActiveContourShapePriorCallosumTest.png
             ${TEMP}/GeodesicActiveContourShapePriorCallosumTest.png
   GeodesicActiveContourShapePriorLevelSetImageFilterTest
@@ -380,7 +380,7 @@ add_test(GeodesicActiveContourShapePriorCallosumTest ${SEGMENTATION_EXAMPLES3}
         ${ITK_SOURCE_DIR}/Examples/Data/CorpusCallosumMode%d.mha 10 0
 )
 
-add_test(NeighborhoodConnectedWhiteTest ${SEGMENTATION_EXAMPLES2}
+add_test(NAME NeighborhoodConnectedWhiteTest COMMAND ${SEGMENTATION_EXAMPLES2}
   --compare ${BASELINE}/NeighborhoodConnectedWhiteTest.png
             ${TEMP}/NeighborhoodConnectedWhiteTest.png
   NeighborhoodConnectedImageFilterTest
@@ -389,7 +389,7 @@ add_test(NeighborhoodConnectedWhiteTest ${SEGMENTATION_EXAMPLES2}
         60 116 150 180
 )
 
-add_test(NeighborhoodConnectedVentricleTest ${SEGMENTATION_EXAMPLES2}
+add_test(NAME NeighborhoodConnectedVentricleTest COMMAND ${SEGMENTATION_EXAMPLES2}
   --compare ${BASELINE}/NeighborhoodConnectedVentricleTest.png
             ${TEMP}/NeighborhoodConnectedVentricleTest.png
   NeighborhoodConnectedImageFilterTest
@@ -398,7 +398,7 @@ add_test(NeighborhoodConnectedVentricleTest ${SEGMENTATION_EXAMPLES2}
         81 112 210 250
 )
 
-add_test(NeighborhoodConnectedGrayTest ${SEGMENTATION_EXAMPLES2}
+add_test(NAME NeighborhoodConnectedGrayTest COMMAND ${SEGMENTATION_EXAMPLES2}
   --compare ${BASELINE}/NeighborhoodConnectedGrayTest.png
             ${TEMP}/NeighborhoodConnectedGrayTest.png
   NeighborhoodConnectedImageFilterTest
@@ -407,7 +407,7 @@ add_test(NeighborhoodConnectedGrayTest ${SEGMENTATION_EXAMPLES2}
         107 69 180 210
 )
 
-add_test(IsolatedConnectedTest ${SEGMENTATION_EXAMPLES2}
+add_test(NAME IsolatedConnectedTest COMMAND ${SEGMENTATION_EXAMPLES2}
   --compare ${BASELINE}/IsolatedConnectedTest.png
             ${TEMP}/IsolatedConnectedTest.png
   IsolatedConnectedImageFilterTest
@@ -416,7 +416,7 @@ add_test(IsolatedConnectedTest ${SEGMENTATION_EXAMPLES2}
         61 140 150 63 43
 )
 
-add_test(RelabelComponentImageFilterTest ${SEGMENTATION_EXAMPLES5}
+add_test(NAME RelabelComponentImageFilterTest COMMAND ${SEGMENTATION_EXAMPLES5}
   --compare ${BASELINE}/RelabelComponentImageFilter.png
             ${TEMP}/RelabelComponentImageFilter.png
   RelabelComponentImageFilterTest
@@ -424,7 +424,7 @@ add_test(RelabelComponentImageFilterTest ${SEGMENTATION_EXAMPLES5}
         ${TEMP}/RelabelComponentImageFilter.png
 )
 
-add_test(WatershedSegmentation1Test1 ${SEGMENTATION_EXAMPLES5}
+add_test(NAME WatershedSegmentation1Test1 COMMAND ${SEGMENTATION_EXAMPLES5}
   --compare ${BASELINE}/WatershedSegmentation1Test1.png
             ${TEMP}/WatershedSegmentation1Test1.png
   WatershedSegmentation1Test
@@ -433,7 +433,7 @@ add_test(WatershedSegmentation1Test1 ${SEGMENTATION_EXAMPLES5}
         2.0 10 0.0 0.05 1
 )
 
-add_test(WatershedSegmentation1Test2 ${SEGMENTATION_EXAMPLES5}
+add_test(NAME WatershedSegmentation1Test2 COMMAND ${SEGMENTATION_EXAMPLES5}
   --compare ${BASELINE}/WatershedSegmentation1Test2.png
             ${TEMP}/WatershedSegmentation1Test2.png
   WatershedSegmentation1Test
@@ -442,7 +442,7 @@ add_test(WatershedSegmentation1Test2 ${SEGMENTATION_EXAMPLES5}
         2.0 10 0.001 0.15 0
 )
 
-add_test(CurvesLevelSetImageFilterTest ${SEGMENTATION_EXAMPLES4}
+add_test(NAME CurvesLevelSetImageFilterTest COMMAND ${SEGMENTATION_EXAMPLES4}
   --compare ${BASELINE}/CurvesLevelSetImageFilterTest.png
             ${TEMP}/CurvesLevelSetImageFilterTest.png
   CurvesLevelSetImageFilterTest
@@ -451,7 +451,7 @@ add_test(CurvesLevelSetImageFilterTest ${SEGMENTATION_EXAMPLES4}
         81 114 5.0 1.0 -0.5 3.0 2.0
 )
 
-add_test(HoughTransformTwo2DLinesTest ${SEGMENTATION_EXAMPLES6}
+add_test(NAME HoughTransformTwo2DLinesTest COMMAND ${SEGMENTATION_EXAMPLES6}
   --compare ${BASELINE}/HoughTransformTwoLinesTest.png
             ${TEMP}/HoughTransformTwoLinesTest.png
   HoughTransform2DLinesImageFilterTest
@@ -460,7 +460,7 @@ add_test(HoughTransformTwo2DLinesTest ${SEGMENTATION_EXAMPLES6}
         2 5 10
 )
 
-add_test(HoughTransformTwo2DCirclesTest ${SEGMENTATION_EXAMPLES6}
+add_test(NAME HoughTransformTwo2DCirclesTest COMMAND ${SEGMENTATION_EXAMPLES6}
   --compare ${BASELINE}/HoughTransformTwoCirclesTest.png
             ${TEMP}/HoughTransformTwoCirclesTest.png
   HoughTransform2DCirclesImageFilterTest
@@ -469,7 +469,7 @@ add_test(HoughTransformTwo2DCirclesTest ${SEGMENTATION_EXAMPLES6}
         2 6 20 3.14 10 5 1.5
 )
 
-add_test(LaplacianSegmentationLevelSetImageFilterTest ${SEGMENTATION_EXAMPLES7}
+add_test(NAME LaplacianSegmentationLevelSetImageFilterTest COMMAND ${SEGMENTATION_EXAMPLES7}
   --compare ${BASELINE}/LaplacianSegmentationLevelSetImageFilter.png
             ${TEMP}/LaplacianSegmentationLevelSetImageFilter.png
   LaplacianSegmentationLevelSetImageFilterTest

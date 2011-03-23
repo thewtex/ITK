@@ -104,14 +104,14 @@ if( NOT ITK_DISABLE_CXX_TESTING )
 
 if(BUILD_TESTING)
 
-set(STATISTICS_EXAMPLES_WITH_TESTS ${CXX_TEST_PATH}/StatisticsExamplesTests)
-set(STATISTICS_EXAMPLES_WITH_TESTS2 ${CXX_TEST_PATH}/StatisticsExamplesTests2)
-set(STATISTICS_EXAMPLES_WITH_TESTS3 ${CXX_TEST_PATH}/StatisticsExamplesTests3)
-set(STATISTICS_EXAMPLES_WITH_TESTS4 ${CXX_TEST_PATH}/StatisticsExamplesTests4)
+set(STATISTICS_EXAMPLES_WITH_TESTS StatisticsExamplesTests)
+set(STATISTICS_EXAMPLES_WITH_TESTS2 StatisticsExamplesTests2)
+set(STATISTICS_EXAMPLES_WITH_TESTS3 StatisticsExamplesTests3)
+set(STATISTICS_EXAMPLES_WITH_TESTS4 StatisticsExamplesTests4)
 set(BASELINE ${ITK_DATA_ROOT}/Baseline/Statistics)
 set(TEMP ${ITK_BINARY_DIR}/Testing/Temporary)
 
-add_test( ScalarImageKmeansClassifierTest ${STATISTICS_EXAMPLES_WITH_TESTS3}
+add_test(NAME  ScalarImageKmeansClassifierTest COMMAND ${STATISTICS_EXAMPLES_WITH_TESTS3}
   --compare ${BASELINE}/ScalarImageKmeansClassifierOutput.png
             ${TEMP}/ScalarImageKmeansClassifierOutput.png
   ScalarImageKmeansClassifierTest
@@ -120,7 +120,7 @@ add_test( ScalarImageKmeansClassifierTest ${STATISTICS_EXAMPLES_WITH_TESTS3}
         1 3 14.8 91.6 134.9
 )
 
-add_test( ScalarImageMarkovRandomField1Test ${STATISTICS_EXAMPLES_WITH_TESTS3}
+add_test(NAME  ScalarImageMarkovRandomField1Test COMMAND ${STATISTICS_EXAMPLES_WITH_TESTS3}
   --compare ${BASELINE}/ScalarImageMarkovRandomField1Output.png
             ${TEMP}/ScalarImageMarkovRandomField1Output.png
   ScalarImageMarkovRandomField1Test
@@ -130,10 +130,10 @@ add_test( ScalarImageMarkovRandomField1Test ${STATISTICS_EXAMPLES_WITH_TESTS3}
             50 3 3 14.8 91.6 134.9
 )
 
-add_test( BayesianPluginClassifierTest ${STATISTICS_EXAMPLES_WITH_TESTS}
+add_test(NAME  BayesianPluginClassifierTest COMMAND ${STATISTICS_EXAMPLES_WITH_TESTS}
           BayesianPluginClassifierTest)
 
-add_test( BayesianClassifierInitializerTest ${STATISTICS_EXAMPLES_WITH_TESTS4}
+add_test(NAME  BayesianClassifierInitializerTest COMMAND ${STATISTICS_EXAMPLES_WITH_TESTS4}
   --compare ${BASELINE}/BayesianClassifierInitializerClass2Output.png
             ${TEMP}/BayesianClassifierInitializerClass2Output.png
   BayesianClassifierInitializerTest
@@ -144,7 +144,7 @@ add_test( BayesianClassifierInitializerTest ${STATISTICS_EXAMPLES_WITH_TESTS4}
 
 # This test uses inputs from BayesianClassifierInitializer.
 # If that output changes, a new file should be placed in Examples/Data.
-add_test( BayesianClassifierTest ${STATISTICS_EXAMPLES_WITH_TESTS4}
+add_test(NAME  BayesianClassifierTest COMMAND ${STATISTICS_EXAMPLES_WITH_TESTS4}
   --compare ${BASELINE}/BayesianClassifierLabelMap.png
             ${TEMP}/BayesianClassifierLabelMap.png
   BayesianClassifierTest
@@ -152,19 +152,19 @@ add_test( BayesianClassifierTest ${STATISTICS_EXAMPLES_WITH_TESTS4}
             ${TEMP}/BayesianClassifierLabelMap.png 2
 )
 
-add_test( EuclideanDistanceTest ${STATISTICS_EXAMPLES_WITH_TESTS}
+add_test(NAME  EuclideanDistanceTest COMMAND ${STATISTICS_EXAMPLES_WITH_TESTS}
           EuclideanDistanceTest)
 
-add_test( GaussianDensityFunctionTest ${STATISTICS_EXAMPLES_WITH_TESTS}
+add_test(NAME  GaussianDensityFunctionTest COMMAND ${STATISTICS_EXAMPLES_WITH_TESTS}
           GaussianDensityFunctionTest)
 
-add_test( MinimumDecisionRuleTest ${STATISTICS_EXAMPLES_WITH_TESTS2}
+add_test(NAME  MinimumDecisionRuleTest COMMAND ${STATISTICS_EXAMPLES_WITH_TESTS2}
           MinimumDecisionRuleTest)
 
-add_test( MaximumDecisionRuleTest ${STATISTICS_EXAMPLES_WITH_TESTS2}
+add_test(NAME  MaximumDecisionRuleTest COMMAND ${STATISTICS_EXAMPLES_WITH_TESTS2}
           MaximumDecisionRuleTest)
 
-add_test( MaximumRatioDecisionRuleTest ${STATISTICS_EXAMPLES_WITH_TESTS2}
+add_test(NAME  MaximumRatioDecisionRuleTest COMMAND ${STATISTICS_EXAMPLES_WITH_TESTS2}
           MaximumRatioDecisionRuleTest)
 
 add_executable( StatisticsExamplesTests StatisticsExamplesTests.cxx)
