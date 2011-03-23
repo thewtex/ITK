@@ -32,11 +32,9 @@
 static int oneTest(const char *goodname,const char *badname)
 {
   unsigned int i;
-  // Create an odd type of transform, and register it
-  typedef itk::AffineTransform<double,4> AffineTransformType;
+  typedef itk::AffineTransform<double,4>  AffineTransformType;
   typedef itk::AffineTransform<double,10> AffineTransformTypeNotRegistered;
-  itk::TransformFactory<AffineTransformType>::RegisterTransform();
-  AffineTransformType::Pointer affine = AffineTransformType::New();
+  AffineTransformType::Pointer        affine = AffineTransformType::New();
   AffineTransformType::InputPointType cor;
 
   // Set it's parameters
@@ -116,8 +114,6 @@ static int oneTest(const char *goodname,const char *badname)
     p[i] = i;
     }
   Bogus->SetFixedParameters ( p );
-
-
 
   itk::TransformFileWriter::Pointer badwriter;
   itk::TransformFileReader::Pointer badreader;
@@ -227,7 +223,8 @@ int itkTransformIOTest(int argc, char* argv[])
     }
   int result1 =  oneTest("Transforms.txt", "TransformsBad.txt" );
   int result2 =  oneTest("Transforms.mat", "TransformsBad.mat" );
-  int result3 =  secondTest();
+  int result3 = oneTest( "Transforms.hd5","TransformsBad.mat" );
+  int result4 =  secondTest();
   return !(result1 == EXIT_SUCCESS && result2 == EXIT_SUCCESS
-    && result3 == EXIT_SUCCESS);
+    && result3 == EXIT_SUCCESS && result4 == EXIT_SUCCESS);
 }

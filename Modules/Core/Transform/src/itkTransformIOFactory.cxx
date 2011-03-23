@@ -23,6 +23,10 @@
 #include "itkTxtTransformIOFactory.h"
 #include "itkMatlabTransformIOFactory.h"
 
+#if defined(ITK_HD5_TRANSFORM_IO)
+#include "itkHD5TransformIOFactory.h"
+#endif // ITK_HD5_TRANSFORM_IO
+
 #include "itkMutexLock.h"
 #include "itkMutexLockHolder.h"
 
@@ -89,6 +93,9 @@ TransformIOFactory::RegisterBuiltInFactories()
       // );
       ObjectFactoryBase::RegisterFactory( MatlabTransformIOFactory::New() );
       ObjectFactoryBase::RegisterFactory( TxtTransformIOFactory::New() );
+#if defined(ITK_HD5_TRANSFORM_IO)
+      ObjectFactoryBase::RegisterFactory( HD5TransformIOFactory::New() );
+#endif // ITK_HD5_TRANSFORM_IO
       firstTime = false;
       }
     }
