@@ -96,6 +96,8 @@ if (ITK_USE_REVIEW)
   set(Module_ITK-Review ON)
 endif(ITK_USE_REVIEW)
 
+option(BUILD_EXAMPLES "Build the Examples directory." ON)
+
 option(ITK_USE_GPU "GPU acceleration via OpenCL" OFF)
 mark_as_advanced(ITK_USE_GPU)
 
@@ -416,6 +418,11 @@ install(FILES ${ITK_BINARY_DIR}/CMakeFiles/ITKConfig.cmake
               CMake/UseITK.cmake
   DESTINATION ${ITK_INSTALL_PACKAGE_DIR})
 install(EXPORT ITKTargets DESTINATION ${ITK_INSTALL_PACKAGE_DIR})
+
+#-----------------------------------------------------------------------------
+if(BUILD_EXAMPLES)
+  add_subdirectory(Examples)
+endif(BUILD_EXAMPLES)
 
 #-----------------------------------------------------------------------------
 # The subdirectories added below this line should use only the public

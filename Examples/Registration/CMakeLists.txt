@@ -4,8 +4,6 @@ include_regular_expression("^.*$")
 set(BASELINE ${ITK_DATA_ROOT}/Baseline/Registration)
 set(TEMP ${ITK_BINARY_DIR}/Testing/Temporary)
 
-message("ITK_LIBRARIES ${ITK_LIBRARIES}")
-
 set(REGISTRATION_EXAMPLES ${CXX_TEST_PATH}/RegistrationExamples)
 set(REGISTRATION_EXAMPLES2 ${CXX_TEST_PATH}/RegistrationExamples2)
 set(REGISTRATION_EXAMPLES3 ${CXX_TEST_PATH}/RegistrationExamples3)
