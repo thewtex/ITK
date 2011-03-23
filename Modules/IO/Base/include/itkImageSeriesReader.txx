@@ -302,7 +302,7 @@ void ImageSeriesReader< TOutputImage >
     this->m_OutputInformationMTime > this->m_MetaDataDictionaryArrayMTime
     && m_MetaDataDictionaryArrayUpdate;
 
-  ImageRegionIterator< TOutputImage > ot (output, requestedRegion);
+  OutputImagePixelType * outputBuffer = output->GetBufferPointer();
   IndexType                           sliceStartIndex = requestedRegion.GetIndex();
   const int                           numberOfFiles = static_cast< int >( m_FileNames.size() );
   for ( int i = 0; i != numberOfFiles; ++i )
@@ -338,6 +338,15 @@ void ImageSeriesReader< TOutputImage >
       }
     else
       {
+      const IdentifierType numberOfPixelsInSlice = sliceRegionToRequest.GetNumberOfPixels();
+      bool filterWillDeleteTheInputBuffer = false;
+      const IdentifierType numberOfPixelsUpToSlice = numberOfPixelsInSlice * i;
+
+      OutputImagePixelType * outputSliceBuffer = outputBuffer + numberOfPixelsUpToSlice;
+
+      reader->GetOutput()->GetPixelContainer()->SetImportPointer(
+        outputSliceBuffer, numberOfPixelsInSlice, filterWillDeleteTheInputBuffer );
+
       reader->Update();
       }
 
@@ -367,18 +376,6 @@ void ImageSeriesReader< TOutputImage >
                          << m_FileNames[m_ReverseOrder ? m_FileNames.size() - 1 : 0].c_str() );
       }
 
-    // set the iterator for this slice
-    ot.SetIndex(sliceStartIndex);
-
-    ImageRegionConstIterator< TOutputImage > it (reader->GetOutput(),
-                                                 sliceRegionToRequest);
-    while ( !it.IsAtEnd() )
-      {
-      ot.Set( it.Get() );
-      ++it;
-      ++ot;
-      progress.CompletedPixel();
-      }
     }
 
   // update the time if we modified the meta array
