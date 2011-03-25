@@ -1,12 +1,32 @@
 cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 project(ITK)
+set(CMAKE_MODULE_PATH ${ITK_SOURCE_DIR}/CMake ${CMAKE_MODULE_PATH})
+include(PreventInSourceBuilds)
+include(PreventInBuildInstalls)
+include(ITKModuleMacros)
+include(itkCheckSourceTree)
 
-# TODO: Integrate with itk-base and ITK-Common
+#-----------------------------------------------------------------------------
+# ITK version number.  An even minor number corresponds to releases.
 set(ITK_VERSION_MAJOR "4")
 set(ITK_VERSION_MINOR "0")
 set(ITK_VERSION_PATCH "0")
 
-set(ITK_INSTALL_PACKAGE_DIR "lib/cmake/ITK-${ITK_VERSION_MAJOR}.${ITK_VERSION_MINOR}")
+if(NOT ITK_INSTALL_RUNTIME_DIR)
+  set(ITK_INSTALL_RUNTIME_DIR bin)
+endif()
+if(NOT ITK_INSTALL_LIBRARY_DIR)
+  set(ITK_INSTALL_LIBRARY_DIR lib)
+endif()
+if(NOT ITK_INSTALL_ARCHIVE_DIR)
+  set(ITK_INSTALL_ARCHIVE_DIR lib)
+endif()
+if(NOT ITK_INSTALL_INCLUDE_DIR)
+  set(ITK_INSTALL_INCLUDE_DIR include/ITK-${ITK_VERSION_MAJOR}.${ITK_VERSION_MINOR})
+endif()
+if(NOT ITK_INSTALL_PACKAGE_DIR)
+  set(ITK_INSTALL_PACKAGE_DIR "lib/cmake/ITK-${ITK_VERSION_MAJOR}.${ITK_VERSION_MINOR}")
+endif()
 
 # Override CMake's built-in add_* commands: assign LABELS to tests and targets
 # automatically. Depends on the CMake variable itk-module being set to the
@@ -43,10 +63,17 @@ macro(add_test)
   set_property(GLOBAL APPEND PROPERTY ${itk-module}_TESTS ${_imm_test})
 endmacro()
 
-include(${ITK_SOURCE_DIR}/CMake/itkCheckCXXAcceptsFlags.cmake)
-include(${ITK_SOURCE_DIR}/CMake/ITKPlatformSpecificChecks.cmake)
+#-----------------------------------------------------------------------------
+# ITK build configuration options.
+option(BUILD_SHARED_LIBS "Build ITK with shared libraries." OFF)
+set(ITK_BUILD_SHARED_LIBS ${BUILD_SHARED_LIBS})
 
-set(CMAKE_MODULE_PATH ${ITK_SOURCE_DIR}/CMake)
+include(ITKPlatformSpecificChecks)
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${ITK_REQUIRED_C_FLAGS}")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${ITK_REQUIRED_CXX_FLAGS}")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${ITK_REQUIRED_LINK_FLAGS}")
+set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${ITK_REQUIRED_LINK_FLAGS}")
+set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} ${ITK_REQUIRED_LINK_FLAGS}")
 
 include(CTest)
 
@@ -60,24 +87,18 @@ endif()
 if(NOT CMAKE_ARCHIVE_OUTPUT_DIRECTORY)
   set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${ITK_BINARY_DIR}/lib)
 endif()
-
-if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-  set(CMAKE_INSTALL_PREFIX ${ITK_BINARY_DIR}/root CACHE PATH "" FORCE)
-  set(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT 0)
-endif()
-
-set(itk-base_DIR ${ITK_SOURCE_DIR}/CMake/itk-base)
-add_subdirectory(${itk-base_DIR})
-find_package(itk-base 4.0 EXACT REQUIRED)
-
-
-#-----------------------------------------------------------------------------
-# ITK build configuration options.
-option(BUILD_SHARED_LIBS "Build ITK with shared libraries." OFF)
-set(ITK_BUILD_SHARED_LIBS ${BUILD_SHARED_LIBS})
+set(ITK_MODULES_DIR "${ITK_BINARY_DIR}/${ITK_INSTALL_PACKAGE_DIR}/Modules")
 
 set(ITK_USE_MODULAR_BUILD ON)
 
+#-----------------------------------------------------------------------------
+# Provide compatibility options.
+option(ITKV3_COMPATIBILITY "Enable compatibility with ITK3.x when possible." OFF)
+option(ITK_LEGACY_REMOVE "Remove all legacy code completely." OFF)
+option(ITK_LEGACY_SILENT "Silence all legacy code messages." OFF)
+mark_as_advanced(ITK_LEGACY_REMOVE ITK_LEGACY_SILENT ITK_V3_COMPATIBILITY)
+
+#-----------------------------------------------------------------------------
 # ITK build classes that are in the review process
 option(ITK_USE_REVIEW "Build algorithms that are candidates to be included in the Toolkit. This classes are not covered by the Backward Compatibility Policy, no
 r the Copyright Policy of ITK." OFF)
@@ -90,32 +111,60 @@ endif(ITK_USE_REVIEW)
 option(ITK_USE_GPU "GPU acceleration via OpenCL" OFF)
 mark_as_advanced(ITK_USE_GPU)
 
+# Manage FFT v3 Options
+#
+# USE_FFTWD -- use double precision fftw
+option(USE_FFTWD "Use double precision fftw if found" OFF)
+mark_as_advanced(USE_FFTWD)
+#
+# USE_FFTWF -- use single precision fftw
+option(USE_FFTWF "Use single precision fftw if found" OFF)
+mark_as_advanced(USE_FFTWF)
 
-set(EXECUTABLE_OUTPUT_PATH ${ITK_BINARY_DIR}/bin CACHE INTERNAL "Single output directory for building all executables.")
-set(ITK_EXECUTABLE_PATH "${EXECUTABLE_OUTPUT_PATH}")
+# USE_SYSTEM_FFTW -- locate a readybuilt fftw installation
+option(USE_SYSTEM_FFTW "Use an installed version of fftw" OFF)
+mark_as_advanced(USE_SYSTEM_FFTW)
+
+if( USE_FFTWD OR USE_FFTWF )
+  #
+  # use ExternalProject
+  include(ExternalProject)
+
+  include(itkExternal_FFTW)
+endif( USE_FFTWD OR USE_FFTWF )
+
+if(NOT ITKV3_COMPATIBILITY)
+  option(ITK_USE_64BITS_IDS "When ON, ITK will use 64 bits integers to index pixels. This is needed for managing images larger than 4Gb in some platforms." OFF)
+  mark_as_advanced(ITK_USE_64BITS_IDS)
+endif()
+
+# ITK turn on concept checking
+option(ITK_USE_CONCEPT_CHECKING "Turn on concept checking to give helpful errors at compile time if a type cannot be used as a template parameter." ON)
+mark_as_advanced(ITK_USE_CONCEPT_CHECKING)
+option(ITK_USE_STRICT_CONCEPT_CHECKING "Turn on Strict concept checking to give more stringent errors at compile time if a type cannot be used as a template parameter." OFF)
+mark_as_advanced(ITK_USE_STRICT_CONCEPT_CHECKING)
 
 #----------------------------------------------------------------------------
 configure_file(CMake/CTestCustom.cmake.in CTestCustom.cmake)
 
 set(ITK_TEST_OUTPUT_DIR "${ITK_BINARY_DIR}/Testing/Temporary")
 
-# Find the data directory.
-find_path(ITK_DATA_ROOT ITKData.readme ${ITK_SOURCE_DIR}/Testing/Data $ENV{ITK_DATA_ROOT})
-if(NOT ITK_DATA_ROOT)
-  if(BUILD_TESTING)
-    message(WARNING "ITK_DATA_ROOT was not found.  ctest will not run properly.")
-  endif()
+#-----------------------------------------------------------------------------
+# Configure the default ITK_DATA_ROOT for the location of ITK Data.
+unset(ITK_DATA_ROOT CACHE) # No longer a cache entry.
+if(EXISTS ${ITK_SOURCE_DIR}/Testing/Data/ITKData.readme)
+  set(ITK_DATA_ROOT ${ITK_SOURCE_DIR}/Testing/Data)
+else()
+  set(ITK_DATA_ROOT "ITK_DATA_ROOT-NOTFOUND")
+  foreach(opt BUILD_TESTING BUILD_EXAMPLES)
+    if(${opt})
+      message(FATAL_ERROR
+        "${opt} is ON but the Testing/Data submodule is not available.  "
+        "Run\n  git submodule update --init\n"
+        "from the top of the source tree to get it!")
+    endif()
+  endforeach()
 endif()
-mark_as_advanced(ITK_DATA_ROOT)
-
-#CSWIG related
-set(ITKWISH_EXECUTABLE "${CXX_TEST_PATH}/itkwish")
-
-if(ITK_CSWIG_TCL)
-  find_program(ITKWISH_EXECUTABLE itkwish ${ITK_DIR}/bin ${ITK_DIR})
-endif()
-
-mark_as_advanced(TCL_TCLSH)
 
 set(ITKTesting_BINARY_DIR "${ITK_BINARY_DIR}/Testing")
 
@@ -309,7 +358,6 @@ macro(init_module_vars)
   set(${itk-module}-targets ITKTargets)
   set(${itk-module}-targets-install "${ITK_INSTALL_PACKAGE_DIR}/ITKTargets.cmake")
   set(${itk-module}-targets-build "${ITK_BINARY_DIR}/ITKTargets.cmake")
-  set(${itk-module}_DIR "${${itk-module}_BINARY_DIR}") # find_package
 
   # Start each module with these properties empty. Calls to add_executable,
   # add_library and add_test accumulate names into these properties:
@@ -352,13 +400,12 @@ foreach(itk-module ${ITK_MODULES_ENABLED})
   endif()
 endforeach()
 
-# Generate ITKConfig.cmake for the build tree.f
-set(ITK_CONFIG_CODE "# Module directories")
-foreach(itk-module ${ITK_CONFIG_MODULES_ENABLED})
-  set(ITK_CONFIG_CODE "${ITK_CONFIG_CODE}
-set(${itk-module}_DIR \"${${itk-module}_DIR}\")")
-endforeach()
+# Generate ITKConfig.cmake for the build tree.
+set(ITK_CONFIG_CODE "
+set(ITK_MODULES_DIR \"${ITK_MODULES_DIR}\")")
 set(ITK_USE_FILE "${ITK_SOURCE_DIR}/CMake/UseITK.cmake")
+set(ITK_CONFIG_TARGETS_CONDITION " AND NOT ITK_BINARY_DIR")
+set(ITK_CONFIG_TARGETS_FILE "${ITK_BINARY_DIR}/ITKTargets.cmake")
 configure_file(CMake/ITKConfig.cmake.in ITKConfig.cmake @ONLY)
 
 # Generate ITKConfig.cmake for the install tree.
@@ -372,11 +419,11 @@ foreach(p ${_count})
   set(ITK_CONFIG_CODE "${ITK_CONFIG_CODE}
 get_filename_component(ITK_INSTALL_PREFIX \"\${ITK_INSTALL_PREFIX}\" PATH)")
 endforeach(p)
-foreach(itk-module ${ITK_CONFIG_MODULES_ENABLED})
-  set(ITK_CONFIG_CODE "${ITK_CONFIG_CODE}
-set(${itk-module}_DIR \"\${ITK_INSTALL_PREFIX}/lib/cmake/${itk-module}-${ITK_VERSION_MAJOR}.${ITK_VERSION_MINOR}\")")
-endforeach()
+set(ITK_CONFIG_CODE "${ITK_CONFIG_CODE}
+set(ITK_MODULES_DIR \"\${ITK_INSTALL_PREFIX}/${ITK_INSTALL_PACKAGE_DIR}/Modules\")")
 set(ITK_USE_FILE "\${ITK_INSTALL_PREFIX}/${ITK_INSTALL_PACKAGE_DIR}/UseITK.cmake")
+set(ITK_CONFIG_TARGETS_CONDITION "")
+set(ITK_CONFIG_TARGETS_FILE "\${ITK_INSTALL_PREFIX}/${ITK_INSTALL_PACKAGE_DIR}/ITKTargets.cmake")
 configure_file(CMake/ITKConfig.cmake.in CMakeFiles/ITKConfig.cmake @ONLY)
 
 #-----------------------------------------------------------------------------
@@ -387,3 +434,11 @@ install(FILES ${ITK_BINARY_DIR}/CMakeFiles/ITKConfig.cmake
               CMake/UseITK.cmake
   DESTINATION ${ITK_INSTALL_PACKAGE_DIR})
 install(EXPORT ITKTargets DESTINATION ${ITK_INSTALL_PACKAGE_DIR})
+
+#-----------------------------------------------------------------------------
+# The subdirectories added below this line should use only the public
+# interface with find_package(ITK).  Set ITK_DIR to use this ITK build.
+set(ITK_DIR "${ITK_BINARY_DIR}")
+
+include(Wrapping/itkWrapSetup.cmake)
+add_subdirectory(Wrapping)

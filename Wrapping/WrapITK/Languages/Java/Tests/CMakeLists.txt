@@ -14,7 +14,7 @@ set(JAVA_DRIVER "${ITK_TEST_DRIVER}"
   --add-before-libpath "${ITK_DIR}/bin"
   --add-before-libpath "${ITK_DIR}"
   "${Java_JAVA_EXECUTABLE}"
-  -Djava.library.path=${LIBRARY_OUTPUT_PATH}/\\\${CTEST_CONFIGURATION_TYPE}${sep}${LIBRARY_OUTPUT_PATH}
+  -Djava.library.path=${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/\\\${CTEST_CONFIGURATION_TYPE}${sep}${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
 )
 
 # put all generated files in this list
@@ -27,7 +27,7 @@ macro(BUILD_CLASSPATH var)
   set(LAST_TEST_DEPS_OK ON)
   foreach(lib ${ARGN})
     string(TOLOWER ${lib} lower_lib)
-    set(${var} "${${var}}${sep}${ITK_DIR}/bin/org.itk.${lower_lib}.jar")
+    set(${var} "${${var}}${sep}${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/org.itk.${lower_lib}.jar")
     set(depends ${depends} ${lib}JavaJar)
     if(NOT "${WRAP_ITK_LIBRARIES}" MATCHES "(^|;)${lib}(;|$)")
       set(LAST_TEST_DEPS_OK OFF)

@@ -25,12 +25,37 @@ set(ITK_BUILD_SHARED "@BUILD_SHARED_LIBS@")
 # List of available ITK modules.
 set(ITK_MODULES_ENABLED "@ITK_CONFIG_MODULES_ENABLED@")
 
+# Import ITK targets.
+if(NOT ITK_TARGETS_IMPORTED@ITK_CONFIG_TARGETS_CONDITION@)
+  set(ITK_TARGETS_IMPORTED 1)
+  include("@ITK_CONFIG_TARGETS_FILE@")
+endif()
+
+# Builtin  Image IO formats
+set(Module_ITK-IO-JPEG   "@Module_ITK-IO-JPEG@")
+set(Module_ITK-IO-BioRad "@Module_ITK-IO-BioRad@")
+set(Module_ITK-IO-BMP    "@Module_ITK-IO-BMP@")
+set(Module_ITK-IO-GDCM   "@Module_ITK-IO-GDCM@")
+set(Module_ITK-IO-GIPL   "@Module_ITK-IO-GIPL@")
+set(Module_ITK-IO-LSM    "@Module_ITK-IO-LSM@")
+set(Module_ITK-IO-Meta   "@Module_ITK-IO-Meta@")
+set(Module_ITK-IO-NIFTI  "@Module_ITK-IO-NIFTI@")
+set(Module_ITK-IO-NRRD   "@Module_ITK-IO-NRRD@")
+set(Module_ITK-IO-PNG    "@Module_ITK-IO-PNG@")
+set(Module_ITK-IO-TIFF   "@Module_ITK-IO-TIFF@")
+set(Module_ITK-IO-VTK    "@Module_ITK-IO-VTK@")
+set(Module_ITK-IO-Simulate "@Module_ITK-IO-Simulate@")
+
+set(ITK_USE_REVIEW "@ITK_USE_REVIEW@")
+
 # Load all modules.
 set(ITK_LIBRARIES "")
 set(ITK_INCLUDE_DIRS "")
 set(ITK_LIBRARY_DIRS "")
 foreach(itk-module ${ITK_MODULES_ENABLED})
-  include("${${itk-module}_DIR}/${itk-module}Config.cmake")
+  if(NOT ${itk-module}_LOADED)
+    include("${ITK_MODULES_DIR}/${itk-module}.cmake")
+  endif()
   list(APPEND ITK_LIBRARIES ${${itk-module}_LIBRARIES})
   list(APPEND ITK_INCLUDE_DIRS ${${itk-module}_INCLUDE_DIRS})
   list(APPEND ITK_LIBRARY_DIRS ${${itk-module}_LIBRARY_DIRS})
