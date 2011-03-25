@@ -128,7 +128,7 @@ fill_input_buffer (j_decompress_ptr cinfo)
     src->infile->read( (char*)src->buffer, INPUT_BUF_SIZE);
     }
 
-  nbytes = src->infile->gcount();
+  nbytes = static_cast<size_t>(src->infile->gcount());
 
   if (nbytes <= 0) {
     if (src->start_of_file)  /* Treat empty input file as fatal error */

@@ -210,7 +210,7 @@ public:
 
 void JPEG2000Codec::SetRate(unsigned int idx, double rate)
 {
-  Internals->coder_param.tcp_rates[idx] = rate;
+  Internals->coder_param.tcp_rates[idx] = static_cast<float>(rate);
   if( Internals->coder_param.tcp_numlayers <= (int)idx )
     {
     Internals->coder_param.tcp_numlayers = idx + 1;
@@ -225,7 +225,7 @@ double JPEG2000Codec::GetRate(unsigned int idx ) const
 
 void JPEG2000Codec::SetQuality(unsigned int idx, double q)
 {
-  Internals->coder_param.tcp_distoratio[idx] = q;
+  Internals->coder_param.tcp_distoratio[idx] = static_cast<float>(q);
   if( Internals->coder_param.tcp_numlayers <= (int)idx )
     {
     Internals->coder_param.tcp_numlayers = idx + 1;
@@ -373,7 +373,7 @@ bool JPEG2000Codec::Decode(std::istream &is, std::ostream &os)
   // FIXME: Do some stupid work:
   is.seekg( 0, std::ios::end);
   std::streampos buf_size = is.tellg();
-  char *dummy_buffer = new char[buf_size];
+  char *dummy_buffer = new char[static_cast<size_t>(buf_size)];
   is.seekg(0, std::ios::beg);
   is.read( dummy_buffer, buf_size);
   unsigned char *src = (unsigned char*)dummy_buffer;
@@ -466,7 +466,7 @@ bool JPEG2000Codec::Decode(std::istream &is, std::ostream &os)
   myfile mysrc;
   myfile *fsrc = &mysrc;
   fsrc->mem = fsrc->cur = (char*)src;
-  fsrc->len = file_length;
+  fsrc->len = static_cast<size_t>(file_length);
 
   cio = opj_stream_create_memory_stream(fsrc,J2K_STREAM_CHUNK_SIZE, true);
 
@@ -1070,10 +1070,10 @@ bool JPEG2000Codec::GetHeaderInfo(std::istream &is, TransferSyntax &ts)
   // FIXME: Do some stupid work:
   is.seekg( 0, std::ios::end);
   std::streampos buf_size = is.tellg();
-  char *dummy_buffer = new char[buf_size];
+  char *dummy_buffer = new char[static_cast<size_t>(buf_size)];
   is.seekg(0, std::ios::beg);
   is.read( dummy_buffer, buf_size);
-  bool b = GetHeaderInfo( dummy_buffer, buf_size, ts );
+  bool b = GetHeaderInfo( dummy_buffer, static_cast<size_t>(buf_size), ts );
   delete[] dummy_buffer;
   return b;
 }
