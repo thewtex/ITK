@@ -138,7 +138,7 @@ bool PNMCodec::Read(const char *filename, DataElement &out) const
     is.get();
     }
   std::streampos pos = is.tellg();
-  size_t m = (len - pos ) / ( dims[0]*dims[1] );
+  size_t m = static_cast<size_t>((len - pos ) / ( dims[0]*dims[1] ));
   if( m * dims[0] * dims[1] != len - pos )
     {
     std::cerr << "Problem computing length" << std::endl;
@@ -192,7 +192,7 @@ bool PNMCodec::Read(const char *filename, DataElement &out) const
 bool PNMCodec::GetHeaderInfo(std::istream &is, TransferSyntax &ts)
 {
   is.seekg( 0, std::ios::end );
-  size_t len = is.tellg();
+  size_t len = static_cast<size_t>(is.tellg());
   is.seekg( 0, std::ios::beg );
 
   std::string type, str;
@@ -224,7 +224,7 @@ bool PNMCodec::GetHeaderInfo(std::istream &is, TransferSyntax &ts)
     is.get();
     }
   std::streampos pos = is.tellg();
-  size_t m = (len - pos ) / ( dims[0]*dims[1] );
+  size_t m = static_cast<size_t>((len - pos ) / ( dims[0]*dims[1] ));
   if( m * dims[0] * dims[1] != len - pos )
     {
     std::cerr << "Problem computing length" << std::endl;

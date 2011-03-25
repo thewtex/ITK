@@ -100,7 +100,6 @@ ENDIF(NOT GDCM_USE_SYSTEM_ZLIB)
 SET(Common_SRCS
   gdcmVersion.cxx
   gdcmEvent.cxx
-  gdcmProgressEvent.cxx
   gdcmCommand.cxx
   gdcmMD5.cxx
   gdcmBase64.cxx
@@ -108,19 +107,14 @@ SET(Common_SRCS
   gdcmDummyValueGenerator.cxx
   gdcmCryptographicMessageSyntax.cxx
   gdcmASN1.cxx
-  gdcmObject.cxx
   gdcmSubject.cxx
   gdcmDirectory.cxx
   gdcmTerminal.cxx
-  gdcmString.cxx
   gdcmFilename.cxx
   gdcmFilenameGenerator.cxx
   gdcmSwapCode.cxx
   gdcmSystem.cxx
   gdcmTrace.cxx
-  gdcmException.cxx
-  gdcmDeflateStream.cxx
-  gdcmByteSwap.cxx
   gdcmUnpacker12Bits.cxx
   )
 
