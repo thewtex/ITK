@@ -11,9 +11,7 @@ SET(DSED_SRCS
   gdcmUNExplicitImplicitDataElement.cxx
   gdcmExplicitDataElement.cxx
   gdcmFileMetaInformation.cxx
-  gdcmFragment.cxx
   gdcmImplicitDataElement.cxx
-  gdcmItem.cxx
   gdcmReader.cxx
   gdcmWriter.cxx
   #gdcmParser.cxx
@@ -27,7 +25,6 @@ SET(DSED_SRCS
   gdcmVR.cxx
   gdcmFile.cxx
   gdcmPreamble.cxx
-  gdcmParseException.cxx
   gdcmDataElement.cxx
   gdcmUNExplicitDataElement.cxx
   gdcmCP246ExplicitDataElement.cxx

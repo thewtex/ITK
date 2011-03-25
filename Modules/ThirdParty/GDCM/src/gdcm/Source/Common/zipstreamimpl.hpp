@@ -43,6 +43,11 @@ Altered by: Mathieu Malaterre 2008, for GDCM project
 // PUBLIC
 //-----------------------------------------------------------------------------
 
+#if defined(_MSC_VER)
+// 'this' : used in base member initializer list
+#pragma warning ( disable : 4355 )
+#endif
+
 /** Construct a zip stream
  * More info on the following parameters can be found in the zlib documentation.
  */

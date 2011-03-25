@@ -149,6 +149,12 @@ void Swap8(T &a, SwapCode const &swapcode)
     }
 }
 
+template<>
+inline void Swap8(uint16_t &a, SwapCode const &swapcode)
+{
+  gdcmErrorMacro("Swap8: Cannot swap unit16_t");
+}
+
 
 } // end namespace gdcm
 
