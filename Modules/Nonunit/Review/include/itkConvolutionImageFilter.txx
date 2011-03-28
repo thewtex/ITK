@@ -28,6 +28,7 @@
 #include "itkNeighborhoodInnerProduct.h"
 #include "itkConstNeighborhoodIterator.h"
 #include "itkProgressReporter.h"
+#include "itkStatisticsImageFilter.h"
 
 #include "vnl/vnl_math.h"
 
@@ -39,12 +40,33 @@ ConvolutionImageFilter< TInputImage, TOutputImage >
 {
   this->SetNumberOfRequiredInputs(2);
   m_Normalize = false;
+  m_ScaleFactor = 1.0;
 }
 
 template< class TInputImage, class TOutputImage >
 ConvolutionImageFilter< TInputImage, TOutputImage >
 ::~ConvolutionImageFilter()
 {}
+
+template< class TInputImage, class TOutputImage >
+void
+ConvolutionImageFilter< TInputImage, TOutputImage >
+::BeforeThreadedGenerateData()
+{
+  if ( this->GetNormalize() )
+    {
+    typedef typename itk::StatisticsImageFilter< InputImageType > StatType;
+    typename StatType::Pointer stat = StatType::New();
+    stat->SetInput( this->GetImageKernelInput() );
+    stat->Update();
+
+    m_ScaleFactor = 1.0 / stat->GetSum();
+    }
+  else
+    {
+    m_ScaleFactor = 1.0;
+    }
+}
 
 template< class TInputImage, class TOutputImage >
 void
@@ -62,22 +84,6 @@ ConvolutionImageFilter< TInputImage, TOutputImage >
     {
     radius[i] = Math::Floor< SizeValueType >(0.5
                                              * this->GetImageKernelInput()->GetLargestPossibleRegion().GetSize()[i]);
-    }
-
-  double scalingFactor = 1.0;
-  if ( this->GetNormalize() )
-    {
-    double                                     sum = 0.0;
-    ImageRegionConstIterator< InputImageType > It( this->GetImageKernelInput(),
-                                                   this->GetImageKernelInput()->GetLargestPossibleRegion() );
-    for ( It.GoToBegin(); !It.IsAtEnd(); ++It )
-      {
-      sum += static_cast< double >( It.Get() );
-      }
-    if ( sum != 0.0 )
-      {
-      scalingFactor = 1.0 / sum;
-      }
     }
 
   typedef typename NeighborhoodAlgorithm
@@ -105,7 +111,7 @@ ConvolutionImageFilter< TInputImage, TOutputImage >
           ++inIt, ++outIt )
       {
       outIt.Set( static_cast< OutputPixelType >(
-                   scalingFactor * innerProduct(inIt, imageKernelOperator) ) );
+                   m_ScaleFactor * innerProduct(inIt, imageKernelOperator) ) );
       progress.CompletedPixel();
       }
     }

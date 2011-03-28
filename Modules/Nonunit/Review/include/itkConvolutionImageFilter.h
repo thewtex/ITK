@@ -80,6 +80,7 @@ protected:
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
+  void BeforeThreadedGenerateData();
   void ThreadedGenerateData(const OutputRegionType & outputRegionForThread, int threadId);
 
 private:
@@ -88,6 +89,8 @@ private:
 
 private:
   bool m_Normalize;
+
+  double m_ScaleFactor;
 };
 }
 
