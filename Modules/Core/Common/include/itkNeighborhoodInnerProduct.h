@@ -31,7 +31,7 @@ namespace itk
  * operator() method is overloaded to support various types of
  * neighborhoods as well as inner products with slices of
  * neighborhoods. The second template parameter allows you to set the
- * value type of the operator. The third templage parameter allows you
+ * value type of the operator. The third template parameter allows you
  * to set the value type used as the return type of the inner product
  * calculation. The operator value type defaults to the image pixel
  * type and the output value type defaults to the operator type.
