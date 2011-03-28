@@ -637,7 +637,13 @@ RECURSIVE              = YES
 # excluded from the INPUT source files. This way you can easily exclude a
 # subdirectory from a directory tree whose root is specified with the INPUT tag.
 
-EXCLUDE                = "@ITK_SOURCE_DIR@/Modules/Core/Common/itkPixelTraits.h" \
+EXCLUDE                = "@ITK_SOURCE_DIR@/Modules/GDCM/src/gdcm/Source/DataDictionary/gdcmTagToType.h" \
+                         "@ITK_SOURCE_DIR@/Modules/ThirdParty/OpenJPEG/src" \
+                         "@ITK_SOURCE_DIR@/Modules/ThirdParty/VNL" \
+                         "@ITK_SOURCE_DIR@/Modules/ThirdParty/VNLInstantiation" \
+                         "@ITK_SOURCE_DIR@/Modules/ThirdParty/TIFF" \
+                         "@ITK_SOURCE_DIR@/Modules/ThirdParty/JPEG" \
+                         "@ITK_SOURCE_DIR@/Modules/Core/Common/itkPixelTraits.h" \
                          "@ITK_SOURCE_DIR@/Modules/Core/Common/itkNumericTraits.h" \
                          "@ITK_SOURCE_DIR@/Modules/Core/Common/itkMathDetail.h" \
                          "@ITK_SOURCE_DIR@/Modules/Core/IO/itkPixelData.h" \
