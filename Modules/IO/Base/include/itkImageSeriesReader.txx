@@ -107,6 +107,7 @@ void ImageSeriesReader< TOutputImage >
   typename TOutputImage::SpacingType spacing;
   typename TOutputImage::PointType origin;
   typename TOutputImage::DirectionType direction;
+  unsigned int numberOfComponents = 1;
 
   origin.Fill(0.0);
 
@@ -151,6 +152,8 @@ void ImageSeriesReader< TOutputImage >
       origin = reader->GetOutput()->GetOrigin();
       direction = reader->GetOutput()->GetDirection();
       largestRegion = reader->GetOutput()->GetLargestPossibleRegion();
+      numberOfComponents = reader->GetOutput()->GetNumberOfComponentsPerPixel();
+
       // the slice moving direction for a single image can be the
       // output image dimensions, since this will indicate that we can
       // not move in the slice moving direction
@@ -239,6 +242,14 @@ void ImageSeriesReader< TOutputImage >
   output->SetSpacing(spacing);     // Set the image spacing
   output->SetDirection(direction); // Set the image direction
   output->SetLargestPossibleRegion(largestRegion);
+
+  // If a VectorImage, this requires us to set the
+  // VectorLength before allocate
+  if ( strcmp(output->GetNameOfClass(), "VectorImage") == 0 )
+    {
+    typedef typename TOutputImage::AccessorFunctorType AccessorFunctorType;
+    AccessorFunctorType::SetVectorLength( output, numberOfComponents );
+    }
 }
 
 template< class TOutputImage >
@@ -289,8 +300,9 @@ void ImageSeriesReader< TOutputImage >
   output->SetBufferedRegion(requestedRegion);
   output->Allocate();
 
+  // progress reported on a per slice basis
   ProgressReporter progress(this, 0,
-                            requestedRegion.GetNumberOfPixels(),
+                            requestedRegion.GetSize(TOutputImage::ImageDimension-1),
                             100);
 
   // We utilize the modified time of the output information to
@@ -302,7 +314,7 @@ void ImageSeriesReader< TOutputImage >
     this->m_OutputInformationMTime > this->m_MetaDataDictionaryArrayMTime
     && m_MetaDataDictionaryArrayUpdate;
 
-  ImageRegionIterator< TOutputImage > ot (output, requestedRegion);
+  typename  TOutputImage::InternalPixelType *outputBuffer = output->GetBufferPointer();
   IndexType                           sliceStartIndex = requestedRegion.GetIndex();
   const int                           numberOfFiles = static_cast< int >( m_FileNames.size() );
   for ( int i = 0; i != numberOfFiles; ++i )
@@ -338,8 +350,74 @@ void ImageSeriesReader< TOutputImage >
       }
     else
       {
-      reader->Update();
-      }
+      // read the meta data information
+      reader->GetOutput()->UpdateOutputInformation();
+
+      // propagate the requested region to determin what the region
+      // will actually be read
+      reader->GetOutput()->PropagateRequestedRegion();
+
+      // check that the size of each slice is the same
+      if ( reader->GetOutput()->GetLargestPossibleRegion().GetSize() != validSize )
+        {
+        itkExceptionMacro( << "Size mismatch! The size of  "
+                           << m_FileNames[iFileName].c_str()
+                           << " is "
+                           << reader->GetOutput()->GetLargestPossibleRegion().GetSize()
+                           << " and does not match the required size "
+                           << validSize
+                           << " from file "
+                           << m_FileNames[m_ReverseOrder ? m_FileNames.size() - 1 : 0].c_str() );
+        }
+
+      // get the size of the region to be read
+      SizeType readSize = reader->GetOutput()->GetRequestedRegion().GetSize();
+
+      if( readSize == sliceRegionToRequest.GetSize() )
+        {
+        // if the buffer of the ImageReader is going to match that of
+        // ourselves, then set the ImageReader's buffer to a section
+        // of ours
+
+        const IdentifierType numberOfPixelsInSlice = sliceRegionToRequest.GetNumberOfPixels();
+        // TODO: this statement does not work for both VectorImage's
+        // and Images of vectors/rgb
+        const size_t         numberOfComponents = 1; // output->GetNumberOfComponentsPerPixel();
+        const IdentifierType numberOfPixelComponentsUpToSlice = numberOfPixelsInSlice * i * numberOfComponents;
+        const bool           filterWillDelete = false;
+
+        typename  TOutputImage::InternalPixelType * outputSliceBuffer = outputBuffer + numberOfPixelComponentsUpToSlice;
+
+        reader->GetOutput()->GetPixelContainer()->SetImportPointer( outputSliceBuffer, numberOfPixelsInSlice, filterWillDelete );
+        reader->GetOutput()->UpdateOutputData();
+        }
+      else
+        {
+        // the read region isn't going to match exactly what we need
+        // to update to buffer created by the reader, then copy
+
+        reader->Update();
+
+        ImageRegionIterator< TOutputImage > ot( output, requestedRegion );
+        // set the output iterator for this slice
+        ot.SetIndex(sliceStartIndex);
+
+        ImageRegionConstIterator< TOutputImage > it (reader->GetOutput(),
+                                                     sliceRegionToRequest);
+
+        // for loop copy
+        while ( !it.IsAtEnd() )
+          {
+          ot.Set( it.Get() );
+          ++it;
+          ++ot;
+          }
+        }
+
+      // report progress for read slices
+      progress.CompletedPixel();
+
+     } // end !insidedRequestedRegion
 
     // Deep copy the MetaDataDictionary into the array
     if ( reader->GetImageIO() &&  needToUpdateMetaDataDictionaryArray )
@@ -349,37 +427,7 @@ void ImageSeriesReader< TOutputImage >
       m_MetaDataDictionaryArray.push_back(newDictionary);
       }
 
-    // if we only needed the info continue to next slice
-    if ( !insideRequestedRegion )
-      {
-      continue;
-      }
-
-    if ( reader->GetOutput()->GetLargestPossibleRegion().GetSize() != validSize )
-      {
-      itkExceptionMacro( << "Size mismatch! The size of  "
-                         << m_FileNames[iFileName].c_str()
-                         << " is "
-                         << reader->GetOutput()->GetLargestPossibleRegion().GetSize()
-                         << " and does not match the required size "
-                         << validSize
-                         << " from file "
-                         << m_FileNames[m_ReverseOrder ? m_FileNames.size() - 1 : 0].c_str() );
-      }
-
-    // set the iterator for this slice
-    ot.SetIndex(sliceStartIndex);
-
-    ImageRegionConstIterator< TOutputImage > it (reader->GetOutput(),
-                                                 sliceRegionToRequest);
-    while ( !it.IsAtEnd() )
-      {
-      ot.Set( it.Get() );
-      ++it;
-      ++ot;
-      progress.CompletedPixel();
-      }
-    }
+    } // end per slice loop
 
   // update the time if we modified the meta array
   if ( needToUpdateMetaDataDictionaryArray )
