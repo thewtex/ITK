@@ -34,6 +34,8 @@ itkBSplineDeformableTransformTest3.cxx
 itkVersorRigid3DTransformTest.cxx
 itkVersorTransformTest.cxx
 itkSplineKernelTransformTest.cxx
+itkCompositeTransformTest.cxx
+itkDeformationFieldTransformTest.cxx
 )
 
 CreateTestDriver(ITKTransform  "${ITKTransform-Test_LIBRARIES}" "${ITKTransformTests}")
@@ -145,3 +147,7 @@ itk_add_test(NAME itkVersorTransformTest
       COMMAND ITKTransformTestDriver itkVersorTransformTest)
 itk_add_test(NAME itkSplineKernelTransformTest
       COMMAND ITKTransformTestDriver itkSplineKernelTransformTest)
+itk_add_test(NAME itkCompositeTransformTest
+      COMMAND ITKTransformTestDriver itkCompositeTransformTest)
+itk_add_test(NAME itkDeformationFieldTransformTest
+      COMMAND ITKTransformTestDriver itkDeformationFieldTransformTest)
