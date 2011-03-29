@@ -115,6 +115,7 @@
 #include "itkImageRegion.txx"
 #include "itkImageRegionConstIterator.txx"
 #include "itkImageRegionConstIteratorWithIndex.txx"
+#include "itkImageRegionDuplicator.txx"
 #include "itkImageRegionExclusionConstIteratorWithIndex.txx"
 #include "itkImageRegionExclusionIteratorWithIndex.txx"
 #include "itkImageRegionIterator.txx"
