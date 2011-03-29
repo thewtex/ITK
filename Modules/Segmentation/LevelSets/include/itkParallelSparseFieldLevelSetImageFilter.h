@@ -498,8 +498,8 @@ protected:
   /** Structure for managing thread-specific data */
   struct ParallelSparseFieldLevelSetThreadStruct {
     ParallelSparseFieldLevelSetImageFilter *Filter;
-    TimeStepType *TimeStepList;
-    bool *ValidTimeStepList;
+    std::vector< TimeStepType > TimeStepList;
+    std::vector< bool > ValidTimeStepList;
     TimeStepType TimeStep;
   };
 
@@ -533,11 +533,11 @@ protected:
                                                         const unsigned int itkNotUsed(ThreadId) );
 
   /** This method is not implemented or necessary for this solver */
-  void ApplyUpdate(TimeStepType) {}
+  void ApplyUpdate(const TimeStepType&) {}
 
   /** Does the actual work of updating the output from the UpdateContainer over
    *  an output region supplied by the multithreading mechanism.  */
-  virtual void ThreadedApplyUpdate(TimeStepType dt, unsigned int ThreadId);
+  virtual void ThreadedApplyUpdate(const TimeStepType& dt, unsigned int ThreadId);
 
   /** This method is not implemented or necessary for this solver */
   TimeStepType CalculateChange()
