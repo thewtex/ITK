@@ -1,0 +1,15 @@
+itk_module(ITKRegistrationRefactoring
+  DEPENDS
+    ITKRegistrationCommon
+    ITKOptimizers
+    ITKImageIntensity
+    ITKImageFunction
+    ITKImageGrid
+    ITKSpatialObjects
+    ITKSmoothing
+    ITKImageGradient
+    ITKImageFeature
+    ITKFiniteDifference
+  TEST_DEPENDS
+    ITKTestKernel
+)
