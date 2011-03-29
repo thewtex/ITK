@@ -439,11 +439,11 @@ protected:
   /** Initializes a layer of the sparse field using a previously initialized
    * layer. Builds the list of nodes in m_Layer[to] using m_Layer[from].
    * Marks values in the m_StatusImage. */
-  void ConstructLayer(StatusType from, StatusType to);
+  void ConstructLayer(const StatusType& from, const StatusType& to);
 
   /** */
-  void ProcessStatusList(LayerType *InputList, StatusType ChangeToStatus,
-                         StatusType SearchForStatus, unsigned int ThreadId);
+  void ProcessStatusList(LayerType *InputList, const StatusType& ChangeToStatus,
+                         const StatusType& SearchForStatus, const unsigned int& ThreadId);
 
   /** Adjusts the values associated with all the index layers of the sparse
    * field by propagating out one layer at a time from the active set. This
@@ -458,8 +458,8 @@ protected:
    *  greater than the number of layers). "InOrOut" == 1 indicates this
    *  propagation is inwards (more negative).  "InOrOut" == 0 indicates this
    *  propagation is outwards (more positive). */
-  void PropagateLayerValues(StatusType from, StatusType to, StatusType promote,
-                            unsigned int InOrOut);
+  void PropagateLayerValues(const StatusType& from, const StatusType& to,
+                            const StatusType& promote, const unsigned int& InOrOut);
 
   /**This method pre-processes pixels inside and outside the sparse field
    * layers.  The default is to set them to positive and negative values,
@@ -470,9 +470,9 @@ protected:
   /** Each thread allocates and initializes the data it will use by itself.
    *  This maintains the memory locality of data w.r.t. the thread in a shared
    *  memory environment. */
-  void ThreadedAllocateData(unsigned int ThreadId);
+  void ThreadedAllocateData(const unsigned int& ThreadId);
 
-  void ThreadedInitializeData(unsigned int ThreadId, const ThreadRegionType & ThreadRegion);
+  void ThreadedInitializeData(const unsigned int& ThreadId, const ThreadRegionType & ThreadRegion);
 
   /** This performs the initial load distribution among the threads.  Every
    *  thread gets a slab of the data to work on. The slabs created along a specific
@@ -486,10 +486,10 @@ protected:
   void ComputeInitialThreadBoundaries();
 
   /** Find the thread to which a pixel belongs  */
-  unsigned int GetThreadNumber(unsigned int splitAxisValue);
+  unsigned int GetThreadNumber(const unsigned int& splitAxisValue);
 
   /** Obtain a thread's region split as per the load balancing is done. */
-  void GetThreadRegionSplitByBoundary(unsigned int ThreadId, ThreadRegionType & ThreadRegion);
+  void GetThreadRegionSplitByBoundary(const unsigned int& ThreadId, ThreadRegionType & ThreadRegion);
 
   /** Delete the data and synchronization primitives used by the threads during
    *  iterations. */
@@ -498,8 +498,8 @@ protected:
   /** Structure for managing thread-specific data */
   struct ParallelSparseFieldLevelSetThreadStruct {
     ParallelSparseFieldLevelSetImageFilter *Filter;
-    TimeStepType *TimeStepList;
-    bool *ValidTimeStepList;
+    std::vector< TimeStepType > TimeStepList;
+    std::vector< bool > ValidTimeStepList;
     TimeStepType TimeStep;
   };
 
@@ -521,23 +521,23 @@ protected:
                                                         const ValueType & value,
                                                         const ValueType & change)
   {
-    return ( value + dt * change );
+    return ( value + static_cast< ValueType >( dt ) * change );
   }
 
   // This method can be overridden in derived classes.
   // The pixel at 'index' is entering the active layer for thread 'ThreadId'.
   // The outputimage at 'index' will have the value as given by the
   // 'value' parameter.
-  virtual void ThreadedProcessPixelEnteringActiveLayer( const IndexType itkNotUsed(index),
-                                                        const ValueType itkNotUsed(value),
-                                                        const unsigned int itkNotUsed(ThreadId) );
+  virtual void ThreadedProcessPixelEnteringActiveLayer( const IndexType& itkNotUsed(index),
+                                                        const ValueType& itkNotUsed(value),
+                                                        const unsigned int& itkNotUsed(ThreadId) );
 
   /** This method is not implemented or necessary for this solver */
-  void ApplyUpdate(TimeStepType) {}
+  void ApplyUpdate(const TimeStepType&) {}
 
   /** Does the actual work of updating the output from the UpdateContainer over
    *  an output region supplied by the multithreading mechanism.  */
-  virtual void ThreadedApplyUpdate(TimeStepType dt, unsigned int ThreadId);
+  virtual void ThreadedApplyUpdate(const TimeStepType& dt, const unsigned int& ThreadId);
 
   /** This method is not implemented or necessary for this solver */
   TimeStepType CalculateChange()
@@ -547,7 +547,7 @@ protected:
 
   /** This method does the actual work of calculating change over a region
    *  supplied by the multithreading mechanism.  */
-  virtual TimeStepType ThreadedCalculateChange(unsigned int ThreadId);
+  virtual TimeStepType ThreadedCalculateChange(const unsigned int& ThreadId);
 
   /** 1. Updates the values (in the output-image) of the nodes in the active layer
    *  that are moving OUT of the active layer. These values are used in the
@@ -555,28 +555,33 @@ protected:
    *  that are moving IN the active layer.
    *  2. This function also constructs the up/down lists for nodes that are moving
    *  out of the active layer. */
-  void ThreadedUpdateActiveLayerValues(TimeStepType dt, LayerType *StatusUpList,
-                                       LayerType *StatusDownList, unsigned int ThreadId);
+  void ThreadedUpdateActiveLayerValues( const TimeStepType& dt,
+    LayerType *StatusUpList,
+    LayerType *StatusDownList,
+    const unsigned int& ThreadId);
 
   /** Make a copy of the nodes in the FromList and insert them into the ToList.
     */
-  void CopyInsertList(unsigned int ThreadId, LayerPointerType FromListPtr,
-                      LayerPointerType ToListPtr);
+  void CopyInsertList( const unsigned int& ThreadId,
+    LayerPointerType FromListPtr,
+    LayerPointerType ToListPtr);
 
   /** Delete all nodes in the List */
-  void ClearList(unsigned int ThreadId, LayerPointerType ListPtr);
+  void ClearList(const unsigned int& ThreadId, LayerPointerType ListPtr);
 
   /** Make a copy of the nodes given to one thread by its neighbors to process
    *  and insert them into the thread's own list. */
-  void CopyInsertInterNeighborNodeTransferBufferLayers(unsigned int ThreadId,
-                                                       LayerPointerType InputList,
-                                                       unsigned int InOrOut,
-                                                       unsigned int BufferLayerNumber);
+  void CopyInsertInterNeighborNodeTransferBufferLayers(
+    const unsigned int& ThreadId,
+    LayerPointerType InputList,
+    const unsigned int& InOrOut,
+    const unsigned int& BufferLayerNumber);
 
   /** Delete all nodes in a thread's own lists which its used to transfer nodes
    *  to neighboring threads. */
-  void ClearInterNeighborNodeTransferBufferLayers(unsigned int ThreadId, unsigned int InOrOut,
-                                                  unsigned int BufferLayerNumber);
+  void ClearInterNeighborNodeTransferBufferLayers(
+    const unsigned int& ThreadId, const unsigned int& InOrOut,
+    const unsigned int& BufferLayerNumber);
 
   /** Performs two tasks. The situation here is that ThreadedProcessStatusList
    *  has been called just once after the active layer values have been updated and the
@@ -585,35 +590,50 @@ protected:
    *  1. modify the status-image like it is performed by the ThreadedProcessStatusList.
    *  2. Update the values in the output-image for those nodes that are moving IN the
    *  active layer. */
-  void ThreadedProcessFirstLayerStatusLists(unsigned int InputLayerNumber,
-                                            unsigned int OutputLayerNumber,
-                                            StatusType SearchForStatus,
-                                            unsigned int InOrOut,
-                                            unsigned int BufferLayerNumber, unsigned int ThreadId);
+  void ThreadedProcessFirstLayerStatusLists(
+    const unsigned int& InputLayerNumber,
+    const unsigned int& OutputLayerNumber,
+    const StatusType& SearchForStatus,
+    const unsigned int& InOrOut,
+    const unsigned int& BufferLayerNumber,
+    const unsigned int& ThreadId);
 
   /** Push each index in the input list into its appropriate status layer
    *  (ChangeToStatus) and update the status image value at that index.
    *  Also examine the neighbors of the index, (with status SearchForStatus) to determine
    *  which need to go onto the output list.
    */
-  void ThreadedProcessStatusList(unsigned int InputLayerNumber, unsigned int OutputLayerNumber,
-                                 StatusType ChangeToStatus, StatusType SearchForStatus,
-                                 unsigned int InOrOut,
-                                 unsigned int BufferLayerNumber, unsigned int ThreadId);
+  void ThreadedProcessStatusList(
+    const unsigned int& InputLayerNumber,
+    const unsigned int& OutputLayerNumber,
+    const StatusType& ChangeToStatus,
+    const StatusType& SearchForStatus,
+    const unsigned int& InOrOut,
+    const unsigned int& BufferLayerNumber,
+    const unsigned int& ThreadId);
 
   /** Push each index in the input list into its appropriate status layer
    *  (ChangeToStatus) and ... ... update the status image value at that index
    */
-  void ThreadedProcessOutsideList(unsigned int InputLayerNumber, StatusType ChangeToStatus,
-                                  unsigned int InOrOut, unsigned int BufferLayerNumber, unsigned int ThreadId);
+  void ThreadedProcessOutsideList(
+    const unsigned int& InputLayerNumber,
+    const StatusType& ChangeToStatus,
+    const unsigned int& InOrOut,
+    const unsigned int& BufferLayerNumber,
+    const unsigned int& ThreadId);
 
   /** */
-  void ThreadedPropagateLayerValues(StatusType from, StatusType to, StatusType promote,
-                                    unsigned int InorOut, unsigned int ThreadId);
+  void ThreadedPropagateLayerValues(
+    const StatusType& from,
+    const StatusType& to,
+    const StatusType& promote,
+    const unsigned int& InorOut,
+    const unsigned int& ThreadId);
 
   /** Split the volume uniformly along the chosen dimension for post processing
    *  the output. */
-  void GetThreadRegionSplitUniformly(unsigned int ThreadId, ThreadRegionType & ThreadRegion);
+  void GetThreadRegionSplitUniformly(
+    const unsigned int& ThreadId, ThreadRegionType & ThreadRegion);
 
   /** Assign background pixels INSIDE the sparse field layers to a new level set
    *  with value less than the innermost layer.  Assign background pixels
@@ -636,20 +656,20 @@ protected:
 
   /** Redistribute an load among the threads to obtain a more balanced load distribution.
    *  This is performed in parallel by all the threads. */
-  virtual void ThreadedLoadBalance(unsigned int ThreadId);
+  virtual void ThreadedLoadBalance(const unsigned int& ThreadId);
 
   /** Thread synchronization methods. */
   void WaitForAll();
 
-  void SignalNeighborsAndWait(unsigned int ThreadId);
+  void SignalNeighborsAndWait(const unsigned int& ThreadId);
 
-  void SignalNeighbor(unsigned int SemaphoreArrayNumber, unsigned int ThreadId);
+  void SignalNeighbor(const unsigned int& SemaphoreArrayNumber, const unsigned int& ThreadId);
 
-  void WaitForNeighbor(unsigned int SemaphoreArrayNumber, unsigned int ThreadId);
+  void WaitForNeighbor(const unsigned int& SemaphoreArrayNumber, const unsigned int& ThreadId);
 
   /** If child classes need an entry point to the start of every iteration step
    * they can override this method. This method is defined but empty in this class. */
-  virtual void ThreadedInitializeIteration(unsigned int ThreadId);
+  virtual void ThreadedInitializeIteration(const unsigned int& ThreadId);
 
   /**  For debugging.  Writes the active layer set (grid-points closest to evolving
    *  interface) to a file. */
