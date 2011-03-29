@@ -388,12 +388,18 @@ ENDIF(GDCM_USE_SYSTEM_EXPAT)
 IF (GDCM_STANDALONE)
   OPTION(GDCM_BUILD_EXAMPLES "Build GDCM examples." OFF)
   SET(BUILD_EXAMPLES ${GDCM_BUILD_EXAMPLES})
+ELSE (GDCM_STANDALONE)
+  SET(GDCM_BUILD_EXAMPLES OFF)
+  SET(BUILD_EXAMPLES OFF)
 ENDIF (GDCM_STANDALONE)
 #-----------------------------------------------------------------------------
 # Add the testing directories
 IF (GDCM_STANDALONE)
   OPTION(GDCM_BUILD_TESTING "Build testing." ${GDCM_BUILD_TESTING_DEFAULT})
   SET(BUILD_TESTING ${GDCM_BUILD_TESTING}) # CACHE BOOL "" FORCE)
+ELSE (GDCM_STANDALONE)
+  SET(GDCM_BUILD_TESTING OFF)
+  SET(BUILD_TESTING OFF)
 ENDIF (GDCM_STANDALONE)
 # Hide BUILD_TESTING as user tend to always turn all options on and then complains when something
 # does not work 'by default'
@@ -582,6 +588,9 @@ IF (GDCM_STANDALONE)
   IF(BUILD_APPLICATIONS)
     SUBDIRS(Applications)
   ENDIF(BUILD_APPLICATIONS)
+ELSE (GDCM_STANDALONE)
+  SET(BUILD_APPLICATIONS OFF)
+  SET(GDCM_BUILD_APPLICATIONS OFF)
 ENDIF (GDCM_STANDALONE)
 
 #-----------------------------------------------------------------------------
