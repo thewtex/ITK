@@ -37,7 +37,6 @@ itkBSplineScatteredDataPointSetToImageFilterTest2.cxx
 itkBSplineScatteredDataPointSetToImageFilterTest3.cxx
 itkChangeLabelLabelMapFilterTest.cxx
 itkChangeRegionLabelMapFilterTest1.cxx
-itkCompositeTransformTest.cxx
 itkConformalFlatteningMeshFilterTest.cxx
 itkConformalFlatteningQuadEdgeMeshFilterTest.cxx
 itkContourExtractor2DImageFilterTest.cxx
@@ -47,7 +46,6 @@ itkConvolutionImageFilterTestInt.cxx
 itkCoxDeBoorBSplineKernelFunctionTest.cxx
 itkCoxDeBoorBSplineKernelFunctionTest2.cxx
 itkCropLabelMapFilterTest1.cxx
-itkDeformationFieldTransformTest.cxx
 itkDiffeomorphicDemonsRegistrationFilterTest.cxx
 itkDiffeomorphicDemonsRegistrationFilterTest2.cxx
 itkDirectFourierReconstructionImageToImageFilterTest.cxx
@@ -436,8 +434,6 @@ itk_add_test(NAME itkChangeRegionLabelMapFilterTest1
     --compare ${ITK_DATA_ROOT}/Baseline/Review/cthead1-label-changeregion.mha
               ${ITK_TEST_OUTPUT_DIR}/cthead1-label-changeregion.mha
     itkChangeRegionLabelMapFilterTest1 ${ITK_DATA_ROOT}/Input/cthead1Label.png ${ITK_TEST_OUTPUT_DIR}/cthead1-label-changeregion.mha 50 100 120 150)
-itk_add_test(NAME itkCompositeTransformTest
-      COMMAND ITK-ReviewTestDriver itkCompositeTransformTest)
 itk_add_test(NAME itkConformalFlatteningMeshFilterTest1
       COMMAND ITK-ReviewTestDriver itkConformalFlatteningMeshFilterTest
               ${ITK_DATA_ROOT}/Input/genusZeroSurface01.vtk ${ITK_TEST_OUTPUT_DIR}/genusZeroMesh01ConformalFlattenedToSphere.vtk 1)
@@ -493,8 +489,6 @@ itk_add_test(NAME itkCropLabelMapFilterTest1
     --compare ${ITK_DATA_ROOT}/Baseline/Review/cthead1-label-crop.mha
               ${ITK_TEST_OUTPUT_DIR}/cthead1-label-crop.mha
     itkCropLabelMapFilterTest1 ${ITK_DATA_ROOT}/Input/cthead1Label.png ${ITK_TEST_OUTPUT_DIR}/cthead1-label-crop.mha 40 50)
-itk_add_test(NAME itkDeformationFieldTransformTest
-      COMMAND ITK-ReviewTestDriver itkDeformationFieldTransformTest)
 itk_add_test(NAME itkDiffeomorphicDemonsRegistrationFilterTest01
       COMMAND ITK-ReviewTestDriver itkDiffeomorphicDemonsRegistrationFilterTest
               0 0 0.001 20.0 200 0.01 0.08 5 10)

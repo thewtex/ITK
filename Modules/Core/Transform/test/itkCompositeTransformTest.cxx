@@ -23,6 +23,7 @@
 #include "itkAffineTransform.h"
 #include "itkCompositeTransform.h"
 #include "itkArray2D.h"
+//#include "itkDeformationFieldTransform.h"
 
 namespace {
 
@@ -643,7 +644,127 @@ int itkCompositeTransformTest(int ,char *[] )
     return EXIT_FAILURE;
     }
 
+  /* Test UpdateTransformParameters.
+   * NOTE Once there are transforms that do something other than simple
+   * addition in TransformUpdateParameters, this should be updated here.
+   */
+  {
+  /* Single transform full update, of last transform only */
+  compositeTransform->SetOnlyMostRecentTransformToOptimizeOn();
+  CompositeType::ParametersType truth = compositeTransform->GetParameters();
+  CompositeType::DerivativeType
+    update( compositeTransform->GetNumberOfParameters() );
+  update.Fill(10);
+  truth += update;
+  compositeTransform->UpdateTransformParameters( update );
+  CompositeType::ParametersType
+    updateResult = compositeTransform->GetParameters();
+  std::cout << "Testing UpdateTransformParameters 1. "
+            << std::endl;
+  if( !testVectorArray( truth, updateResult ) )
+    {
+    std::cout << "UpdateTransformParameters 1 failed. " << std::endl
+              << " truth:  " << truth << std::endl
+              << " result: " << updateResult << std::endl;
+    return EXIT_FAILURE;
+    }
+
+  /* Update partially two transforms, with a scaling factor */
+  compositeTransform->SetNthTransformToOptimizeOn(0);
+  truth = compositeTransform->GetParameters();
+  update.SetSize( compositeTransform->GetNumberOfParameters() );
+  AffineType::ScalarType factor = 0.5;
+  for( unsigned int i = 0;
+        i < compositeTransform->GetNumberOfParameters(); i++ )
+    {
+    update[i] = i;
+    truth[i] += update[i] * factor;
+    }
+  compositeTransform->UpdateTransformParameters( update, factor );
+  updateResult = compositeTransform->GetParameters();
+  std::cout << "Testing UpdateTransformParameters 3. "
+            << std::endl;
+  if( !testVectorArray( truth, updateResult ) )
+    {
+    std::cout << "UpdateTransformParameters 3 failed. " << std::endl
+              << " truth:  " << truth << std::endl
+              << " result: " << updateResult << std::endl;
+    return EXIT_FAILURE;
+    }
+  }
+
+  /* Add a deformation field transform */
+  /* NOTE this should maybe go in a separate test so we don't have
+   * this test rely on DeformationFieldTransform class which is also a
+   * new class. */
+//Remove until new DeformationFieldTransform class is added to itk main.
+#if 0
+  {
+  /* Create a deformation field transform */
+  typedef itk::DeformationFieldTransform<double, 2>
+                                              DeformationTransformType;
+  DeformationTransformType::Pointer deformationTransform =
+      DeformationTransformType::New();
+  typedef DeformationTransformType::DeformationFieldType FieldType;
+  FieldType::Pointer field = FieldType::New(); //This is based on itk::Image
+
+  FieldType::SizeType size;
+  FieldType::IndexType start;
+  FieldType::RegionType region;
+  int dimLength = 10;
+  size.Fill( dimLength );
+  start.Fill( 0 );
+  region.SetSize( size );
+  region.SetIndex( start );
+  field->SetRegions( region );
+  field->Allocate();
+
+  DeformationTransformType::OutputVectorType defVector;
+  defVector.Fill( 1 );
+  field->FillBuffer( defVector );
+
+  deformationTransform->SetDeformationField( field );
+  compositeTransform->AddTransform( deformationTransform );
+
+  /* TODO Test transformation with deformation field */
+
+  /* Test TransformUpdateParameters with deformation
+   * field and one affine transforms */
+  compositeTransform->SetOnlyMostRecentTransformToOptimizeOn();
+  compositeTransform->SetNthTransformToOptimizeOn(2);
+  CompositeType::ParametersType truth = compositeTransform->GetParameters();
+  CompositeType::DerivativeType
+    update( compositeTransform->GetNumberOfParameters() );
+  for( unsigned int i =0; i < compositeTransform->GetNumberOfParameters(); i++ )
+    {
+    update[i] = i;
+    }
+  truth += update;
+  /* Just exercise it. The update in DeformationFieldTransform includes
+   * a smoothing operation, so to verify numerically we'll have to account
+   * for that. This could be done by calling DeformationFieldTransform::
+   * SmoothDeformationFieldGauss directly and putting the result into
+   * 'truth'. */
+  compositeTransform->UpdateTransformParameters( update );
+  /*
+  CompositeType::ParametersType
+    updateResult = compositeTransform->GetParameters();
+  std::cout << "UpdateTransformParameters with Deformation Field 1. "
+            << std::endl;
+  if( ! testVectorArray( truth, updateResult ) )
+    {
+    std::cout << "UpdateTransformParameters with Deformation Field 1 failed. "
+              << std::endl
+              << " truth:  " << truth << std::endl
+              << " result: " << updateResult << std::endl;
+    return EXIT_FAILURE;
+    }
+  */
+  }// end test with deformation field
+#endif
+
   /* Test SetParameters with wrong size array */
+  std::cout << "Test SetParameters with wrong size array." << std::endl;
   parametersTruth.SetSize(1);
   bool caught = false;
   try
@@ -666,6 +787,7 @@ int itkCompositeTransformTest(int ,char *[] )
 
   /* Test that the CreateAnother routine throws an exception.
    * See comments in .h */
+  std::cout << "Test CreateAnother." << std::endl;
   bool caughtException = false;
   try
     {
