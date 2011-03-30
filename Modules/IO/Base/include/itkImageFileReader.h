@@ -23,6 +23,7 @@
 #include "itkMacro.h"
 #include "itkImageRegion.h"
 #include "itkDefaultConvertPixelTraits.h"
+#include <vector>
 
 namespace itk
 {
@@ -141,6 +142,22 @@ public:
   itkSetMacro(UseStreaming, bool);
   itkGetConstReferenceMacro(UseStreaming, bool);
   itkBooleanMacro(UseStreaming);
+
+  typedef std::vector< bool >            CollapseDimensionsType;
+  typedef std::vector< OffsetValueType > CollapseIndexesType;
+
+  /** Set/Get the dimensions to collapse */
+//   itkSetMacro(CollapseDimensions, CollapseDimensionsType);
+//   itkGetConstReferenceMacro(CollapseDimensions, CollapseDimensionsType);
+  virtual bool GetCollapseDimension( unsigned int );
+  virtual void SetCollapseDimension( unsigned int, bool );
+
+  /** Set/Get the index of the dimension to collapse */
+//   itkSetMacro(CollapseIndexes, CollapseIndexesType);
+//   itkGetConstReferenceMacro(CollapseIndexes, CollapseIndexesType);
+  virtual OffsetValueType GetCollapseIndex( unsigned int );
+  virtual void SetCollapseIndex( unsigned int, OffsetValueType );
+
 protected:
   ImageFileReader();
   ~ImageFileReader();
@@ -176,15 +193,14 @@ private:
   // The region that the ImageIO class will return when we ask to
   // produce the requested region.
   ImageIORegion m_ActualIORegion;
+
+  CollapseDimensionsType m_CollapseDimensions;
+  CollapseIndexesType    m_CollapseIndexes;
 };
 } //namespace ITK
 
 #ifndef ITK_MANUAL_INSTANTIATION
 #include "itkImageFileReader.txx"
-#endif
-
-#ifdef ITK_IO_FACTORY_REGISTER_MANAGER
-#include "itkImageIOFactoryRegisterManager.h"
 #endif
 
 #endif // __itkImageFileReader_h
