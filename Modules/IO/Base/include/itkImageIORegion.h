@@ -174,6 +174,8 @@ public:
   typedef typename ImageRegionType::SizeType  ImageSizeType;
   typedef typename ImageRegionType::IndexType ImageIndexType;
 
+  typedef std::vector< OffsetValueType > CollapseIndexesType;
+
   static void Convert(const ImageRegionType & inImageRegion,
                       ImageIORegionType & outIORegion,
                       const ImageIndexType & largestRegionIndex)
@@ -213,6 +215,63 @@ public:
       }
   }
 
+  static void Convert(const ImageRegionType & inImageRegion,
+                      ImageIORegionType & outIORegion,
+                      const ImageIndexType & largestRegionIndex,
+                      const CollapseIndexesType & collapseIndexes)
+  {
+    //
+    // The ImageRegion and ImageIORegion objects may have different dimensions.
+    // Here we only copy the common dimensions between the two. If the
+    // ImageRegion
+    // has more dimensions than the ImageIORegion, then the defaults of the
+    // ImageRegion
+    // will take care of the remaining codimension. If the ImageRegion has less
+    // dimensions
+    // than the ImageIORegion, then the remaining IO dimensions are simply
+    // ignored.
+    //
+    const unsigned int ioDimension = outIORegion.GetImageDimension();
+    const unsigned int imageDimension = VDimension;
+
+    unsigned int minDimension = ( ioDimension > imageDimension ) ? imageDimension : ioDimension;
+
+    // make sure that collapseIndexes is of the io dimension
+    CollapseIndexesType ci = collapseIndexes;
+    ci.resize( ioDimension, -1 );
+
+    ImageSizeType  size  = inImageRegion.GetSize();
+    ImageIndexType index = inImageRegion.GetIndex();
+    unsigned int ioi = 0;
+
+    for ( unsigned int i = 0; i < minDimension; i++, ioi++ )
+      {
+      while( ioi < ioDimension && ci[ioi] != -1 )
+        {
+        outIORegion.SetSize(ioi, 1);
+        outIORegion.SetIndex(ioi, ci[ioi]);
+        ioi++;
+        }
+      if( ioi >= ioDimension )
+        {
+        break;
+        }
+      outIORegion.SetSize(ioi, size[i]);
+      outIORegion.SetIndex(ioi, index[i] - largestRegionIndex[i]);
+      }
+
+    //
+    // Fill in the remaining codimension (if any) with default values
+    //
+    for ( unsigned int k = ioi; k < ioDimension; k++ )
+      {
+      // we do have to collapse. The default value, 0, reproduce the default behavior
+      // without the collapse feature
+      outIORegion.SetIndex(k, std::max(ci[k], (OffsetValueType)0));
+      outIORegion.SetSize(k, 1);    // Note that default size in IO is 1 not 0
+      }
+  }
+
   static void Convert(const ImageIORegionType & inIORegion,
                       ImageRegionType & outImageRegion,
                       const ImageIndexType & largestRegionIndex)
@@ -243,6 +302,61 @@ public:
       {
       size[i]  = inIORegion.GetSize(i);
       index[i] = inIORegion.GetIndex(i) + largestRegionIndex[i];
+      }
+
+    outImageRegion.SetSize(size);
+    outImageRegion.SetIndex(index);
+  }
+
+  static void Convert(const ImageIORegionType & inIORegion,
+                      ImageRegionType & outImageRegion,
+                      const ImageIndexType & largestRegionIndex,
+                      const CollapseIndexesType & collapseIndexes)
+  {
+    ImageSizeType  size;
+    ImageIndexType index;
+
+    size.Fill(1);  // initialize with default values
+    index.Fill(0);
+
+    //
+    // The ImageRegion and ImageIORegion objects may have different dimensions.
+    // Here we only copy the common dimensions between the two. If the
+    // ImageRegion
+    // has more dimensions than the ImageIORegion, then the defaults of the
+    // ImageRegion
+    // will take care of the remaining codimension. If the ImageRegion has less
+    // dimensions
+    // than the ImageIORegion, then the remaining IO dimensions are simply
+    // ignored.
+    //
+    const unsigned int ioDimension = inIORegion.GetImageDimension();
+    const unsigned int imageDimension = VDimension;
+
+    unsigned int minDimension = ( ioDimension > imageDimension ) ? imageDimension : ioDimension;
+
+    // make sure that collapseDimensions is of the io dimension
+    CollapseIndexesType ci = collapseIndexes;
+    ci.resize( ioDimension, -1 );
+
+    unsigned int ioi = 0;
+
+    for ( unsigned int i = 0; i < minDimension; i++, ioi++ )
+      {
+      while( ioi < ioDimension && ci[ioi] != -1 )
+        {
+        ioi++;
+        }
+      if( ioi < ioDimension )
+        {
+        size[i]  = inIORegion.GetSize(ioi);
+        index[i] = inIORegion.GetIndex(ioi) + largestRegionIndex[i];
+        }
+      else
+        {
+        size[i]  = 1;
+        index[i] = 0 + largestRegionIndex[i];
+        }
       }
 
     outImageRegion.SetSize(size);

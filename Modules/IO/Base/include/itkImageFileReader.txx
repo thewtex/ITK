@@ -38,6 +38,7 @@ ImageFileReader< TOutputImage, ConvertPixelTraits >
   m_FileName = "";
   m_UserSpecifiedImageIO = false;
   m_UseStreaming = true;
+  m_CollapseDimensions.resize( TOutputImage::ImageDimension, NotCollapsed );
 }
 
 template< class TOutputImage, class ConvertPixelTraits >
@@ -64,6 +65,23 @@ void ImageFileReader< TOutputImage, ConvertPixelTraits >
   os << indent << "UserSpecifiedImageIO flag: " << m_UserSpecifiedImageIO << "\n";
   os << indent << "m_FileName: " << m_FileName << "\n";
   os << indent << "m_UseStreaming: " << m_UseStreaming << "\n";
+  os << indent << "CollapseDimensions: [";
+  for( unsigned int i=0; i<m_CollapseDimensions.size(); i++ )
+    {
+    if( m_CollapseDimensions[i] == NotCollapsed )
+      {
+      os << "NC";
+      }
+    else
+      {
+      os << m_CollapseDimensions[i];
+      }
+    if( i != m_CollapseDimensions.size()-1 )
+      {
+      os << ", ";
+      }
+    }
+  os << "]" << std::endl;
 }
 
 template< class TOutputImage, class ConvertPixelTraits >
@@ -160,7 +178,10 @@ ImageFileReader< TOutputImage, ConvertPixelTraits >
   std::vector< std::vector< double > > directionIO;
 
   const unsigned int numberOfDimensionsIO = m_ImageIO->GetNumberOfDimensions();
+  // make sure that CollapseDimensions is of the io dimension
+  m_CollapseDimensions.resize( numberOfDimensionsIO, NotCollapsed );
 
+  // TODO collapse direction - how to do that?
   if ( numberOfDimensionsIO > TOutputImage::ImageDimension )
     {
     for ( unsigned int k = 0; k < numberOfDimensionsIO; k++ )
@@ -177,14 +198,19 @@ ImageFileReader< TOutputImage, ConvertPixelTraits >
     }
 
   std::vector< double > axis;
+  unsigned int ioi = 0;
 
-  for ( unsigned int i = 0; i < TOutputImage::ImageDimension; i++ )
+  for ( unsigned int i = 0; i < TOutputImage::ImageDimension; i++, ioi++ )
     {
-    if ( i < numberOfDimensionsIO )
+    while( ioi < numberOfDimensionsIO && m_CollapseDimensions[ioi] != NotCollapsed )
       {
-      dimSize[i] = m_ImageIO->GetDimensions(i);
-      spacing[i] = m_ImageIO->GetSpacing(i);
-      origin[i]  = m_ImageIO->GetOrigin(i);
+      ioi++;
+      }
+    if ( ioi < numberOfDimensionsIO )
+      {
+      dimSize[i] = m_ImageIO->GetDimensions(ioi);
+      spacing[i] = m_ImageIO->GetSpacing(ioi);
+      origin[i]  = m_ImageIO->GetOrigin(ioi);
 
       // Please note: direction cosines are stored as columns of the
       // direction matrix
@@ -219,6 +245,52 @@ ImageFileReader< TOutputImage, ConvertPixelTraits >
           {
           direction[j][i] = 0.0;
           }
+        }
+      }
+    }
+
+  // check that the image io can generate the collapsed region
+  // Not sure how, but the dimensions larger than the image dimension
+  // are automatically collapsed to the index 0 even if the reader
+  // does not support streaming
+  bool isCollapsed = false;
+  unsigned int ncCount = 0;
+  ImageIORegion collapsedRegion( numberOfDimensionsIO );
+  for ( unsigned int i = 0; i < numberOfDimensionsIO; i++ )
+    {
+    if( m_CollapseDimensions[i] != NotCollapsed || ( ncCount>=TOutputImage::ImageDimension && m_CollapseDimensions[i] > 0 ) )
+      {
+      isCollapsed = true;
+      collapsedRegion.SetSize( i, 1 );
+      collapsedRegion.SetIndex( i, std::max(m_CollapseDimensions[i], (OffsetValueType)0) );
+      }
+    else
+      {
+      collapsedRegion.SetSize( i, m_ImageIO->GetDimensions(i) );
+      collapsedRegion.SetIndex( i, 0 );
+      ncCount++;
+      }
+    }
+  if( isCollapsed )
+    {
+    m_ImageIO->UseStreamedReadingOn();
+    ImageIORegion possibleIORegion
+      = m_ImageIO->GenerateStreamableReadRegionFromRequestedRegion(collapsedRegion);
+    itkDebugMacro("ImageFileReader::GenerateOutputInformation collapsedRegion: " << collapsedRegion);
+    itkDebugMacro("ImageFileReader::GenerateOutputInformation possibleIORegion: " << possibleIORegion);
+    ncCount = 0;
+    for ( unsigned int i = 0; i < numberOfDimensionsIO; i++ )
+      {
+      if( m_CollapseDimensions[i] != NotCollapsed || ( ncCount>=TOutputImage::ImageDimension && m_CollapseDimensions[i] > 0 ) )
+        {
+        if( possibleIORegion.GetSize( i ) != 1 || possibleIORegion.GetIndex( i ) != collapsedRegion.GetIndex( i ) )
+          {
+          itkExceptionMacro("ImageIO is not able to generate the requested collapsed image.");
+          }
+        }
+      else
+        {
+        ncCount++;
         }
       }
     }
@@ -297,19 +369,35 @@ ImageFileReader< TOutputImage, ConvertPixelTraits >
   // The following code converts the ImageRegion (templated over dimension)
   // into an ImageIORegion (not templated over dimension).
   ImageRegionType imageRequestedRegion = out->GetRequestedRegion();
-  ImageIORegion   ioRequestedRegion(TOutputImage::ImageDimension);
+  ImageIORegion   ioRequestedRegion( m_ImageIO->GetNumberOfDimensions() );
 
   typedef ImageIORegionAdaptor< TOutputImage::ImageDimension > ImageIOAdaptor;
 
-  ImageIOAdaptor::Convert( imageRequestedRegion, ioRequestedRegion, largestRegion.GetIndex() );
+  ImageIOAdaptor::Convert( imageRequestedRegion, ioRequestedRegion, largestRegion.GetIndex(), m_CollapseDimensions );
+  itkDebugMacro("ImageFileReader::EnlargeOutputRequestedRegion ioRequestedRegion: " << ioRequestedRegion);
 
   // Tell the IO if we should use streaming while reading
   m_ImageIO->SetUseStreamedReading(m_UseStreaming);
+  if( !m_UseStreaming )
+    {
+    // streaming capability may be required anyway if the image must be collapsed
+    bool isCollapsed = false;
+    ImageIORegion collapsedRegion( m_ImageIO->GetNumberOfDimensions() );
+    for ( unsigned int i = 0; i < m_ImageIO->GetNumberOfDimensions(); i++ )
+      {
+      if( m_CollapseDimensions[i] != NotCollapsed || ( i>=TOutputImage::ImageDimension && m_CollapseDimensions[i] > 0 ) )
+        {
+        isCollapsed = true;
+        }
+      }
+    m_ImageIO->SetUseStreamedReading( isCollapsed );
+    }
 
   // Delegate to the ImageIO the computation of how the
   // requested region must be enlarged.
   m_ActualIORegion  =
     m_ImageIO->GenerateStreamableReadRegionFromRequestedRegion(ioRequestedRegion);
+  itkDebugMacro("ImageFileReader::EnlargeOutputRequestedRegion m_ActualRegion: " << m_ActualIORegion);
 
   // the m_ActualIORegion may be more dimensions then the output
   // Image, in which case we still need to read this larger region to
@@ -319,7 +407,8 @@ ImageFileReader< TOutputImage, ConvertPixelTraits >
   // convert the IORegion to a ImageRegion (which is dimension templated)
   // if the ImageIO must read a higher dimension region, this will
   // truncate the last dimensions
-  ImageIOAdaptor::Convert( m_ActualIORegion, streamableRegion, largestRegion.GetIndex() );
+  ImageIOAdaptor::Convert( m_ActualIORegion, streamableRegion, largestRegion.GetIndex(), m_CollapseDimensions );
+  itkDebugMacro("ImageFileReader::EnlargeOutputRequestedRegion streamableRegion: " << streamableRegion);
 
   // Check whether the imageRequestedRegion is fully contained inside the
   // streamable region. Since, ImageRegion::IsInside regards zero
@@ -565,6 +654,56 @@ ImageFileReader< TOutputImage, ConvertPixelTraits >
     }
 #undef ITK_CONVERT_BUFFER_IF_BLOCK
 }
+
+template< class TOutputImage, class ConvertPixelTraits >
+OffsetValueType
+ImageFileReader< TOutputImage, ConvertPixelTraits >
+::GetCollapseDimension( unsigned int i )
+{
+  if( i < m_CollapseDimensions.size() )
+    {
+    return m_CollapseDimensions[i];
+    }
+  return 0;
+}
+
+
+template< class TOutputImage, class ConvertPixelTraits >
+void
+ImageFileReader< TOutputImage, ConvertPixelTraits >
+::SetCollapseDimension( unsigned int i, OffsetValueType v )
+{
+  if( i >= m_CollapseDimensions.size() )
+    {
+    m_CollapseDimensions.resize( i+1, NotCollapsed );
+    }
+  if( m_CollapseDimensions[i] != v )
+    {
+    m_CollapseDimensions[i] = v;
+    this->Modified();
+    }
+}
+
+
+template< class TOutputImage, class ConvertPixelTraits >
+void
+ImageFileReader< TOutputImage, ConvertPixelTraits >
+::SetCollapseDimensions( const CollapseDimensionsType & cd  )
+{
+  m_CollapseDimensions = cd;
+  this->Modified();
+}
+
+
+template< class TOutputImage, class ConvertPixelTraits >
+const typename ImageFileReader< TOutputImage, ConvertPixelTraits >::CollapseDimensionsType &
+ImageFileReader< TOutputImage, ConvertPixelTraits >
+::GetCollapseDimensions()
+{
+  return m_CollapseDimensions;
+}
+
+
 } //namespace ITK
 
 #endif

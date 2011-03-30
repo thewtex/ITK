@@ -23,6 +23,7 @@
 #include "itkMacro.h"
 #include "itkImageRegion.h"
 #include "itkDefaultConvertPixelTraits.h"
+#include <vector>
 
 namespace itk
 {
@@ -74,6 +75,12 @@ public:
  * correct ImageIO and read the file properly. However, some files (like
  * raw binary format) have no accepted suffix, so you will have to
  * manually create the ImageIO instance of the write type.
+ *
+ * When the image provided by the ImageIO is of greater dimension
+ * than the image produced by the reader, the last dimensions are
+ * collapsed and only the first slice of those dimensions are used.
+ * It is also possible to choose which dimensions to collapse and
+ * which slice to use in the collapsed dimensions.
  *
  * \sa ImageSeriesReader
  * \sa ImageIOBase
@@ -141,6 +148,19 @@ public:
   itkSetMacro(UseStreaming, bool);
   itkGetConstReferenceMacro(UseStreaming, bool);
   itkBooleanMacro(UseStreaming);
+
+  typedef std::vector< OffsetValueType > CollapseDimensionsType;
+  itkStaticConstMacro(NotCollapsed, OffsetValueType, -1);
+
+  /** Set/Get the slice of the dimension to collapse. If the slice number
+   * is NotCollapsed (-1), the dimension is not collapsed. By default no
+   * dimension is collapsed.
+   */
+  virtual void SetCollapseDimensions( const CollapseDimensionsType & );
+  virtual const CollapseDimensionsType & GetCollapseDimensions();
+  virtual OffsetValueType GetCollapseDimension( unsigned int );
+  virtual void SetCollapseDimension( unsigned int, OffsetValueType );
+
 protected:
   ImageFileReader();
   ~ImageFileReader();
@@ -176,15 +196,13 @@ private:
   // The region that the ImageIO class will return when we ask to
   // produce the requested region.
   ImageIORegion m_ActualIORegion;
+
+  CollapseDimensionsType    m_CollapseDimensions;
 };
 } //namespace ITK
 
 #ifndef ITK_MANUAL_INSTANTIATION
 #include "itkImageFileReader.txx"
-#endif
-
-#ifdef ITK_IO_FACTORY_REGISTER_MANAGER
-#include "itkImageIOFactoryRegisterManager.h"
 #endif
 
 #endif // __itkImageFileReader_h
