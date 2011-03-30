@@ -85,10 +85,19 @@ LinearInterpolateImageFunction< TInputImage, TCoordRep >
    * neighbors. The weight for each neighbor is the fraction overlap
    * of the neighbor pixel with respect to a pixel centered on point.
    */
-  RealType value = NumericTraits< RealType >::Zero;
+  // This gets initialized below. Avoid initializing it here for
+  // the case of VariableLengthVector, which doesn't have a
+  // numeric trait for zero that doesn't require dimensionality to
+  // be known. Note that RealType is really PixelType.
+  typedef typename NumericTraits< RealType >::ScalarRealType
+                                                      RealTypeScalarRealType;
+  RealType value = NumericTraits< RealTypeScalarRealType >::Zero;
 
-  typedef typename NumericTraits< InputPixelType >::ScalarRealType ScalarRealType;
-  ScalarRealType totalOverlap = NumericTraits< ScalarRealType >::Zero;
+  typedef typename NumericTraits< InputPixelType >::ScalarRealType
+                                                    InputPixelScalarRealType;
+  InputPixelScalarRealType totalOverlap =
+    NumericTraits< InputPixelScalarRealType >::Zero;
+  bool firstOverlap = true;
 
   for ( unsigned int counter = 0; counter < m_Neighbors; counter++ )
     {
@@ -125,10 +134,25 @@ LinearInterpolateImageFunction< TInputImage, TCoordRep >
       upper >>= 1;
       }
 
-    // get neighbor value only if overlap is not zero
+    // Update output value only if overlap is not zero.
+    // Overlap can be 0 when one or more index dims is an integer.
+    // There will always be at least one iteration of 'counter' loop
+    // that has overlap > 0, even if index is out of bounds.
     if ( overlap )
       {
-      value += static_cast< RealType >( this->GetInputImage()->GetPixel(neighIndex) ) * overlap;
+      if( firstOverlap )
+        {
+        // Performing the first assignment of value like this allows
+        // VariableLengthVector type to be resized properly.
+        value = static_cast< RealType >
+          ( this->GetInputImage()->GetPixel(neighIndex) ) * overlap;
+        firstOverlap = false;
+        }
+      else
+        {
+        value += static_cast< RealType >
+          ( this->GetInputImage()->GetPixel(neighIndex) ) * overlap;
+        }
       totalOverlap += overlap;
       }
 
