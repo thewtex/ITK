@@ -125,6 +125,7 @@ public:
   static T min(const T & val) { return TraitsType::min(); }
 };
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 /** \class NumericTraits<bool>
  * \brief Define traits for type bool.
@@ -678,6 +679,9 @@ public:
   static ValueType ZeroValue() { return Zero; }
   static ValueType OneValue() { return One; }
 };
+
+#endif // DOXYGEN_SHOULD_SKIP_THIS
+
 } // end namespace itk
 
 #include "itkFixedArray.h"

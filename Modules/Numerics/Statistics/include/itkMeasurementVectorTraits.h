@@ -443,6 +443,8 @@ public:
   typedef TPixelType MeasurementVectorType;
 };
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
 template< >
 class MeasurementVectorPixelTraits< char >
 {
@@ -519,6 +521,9 @@ class MeasurementVectorPixelTraits< double >
 public:
   typedef FixedArray< double, 1 > MeasurementVectorType;
 };
+
+#endif // DOXYGEN_SHOULD_SKIP_THIS
+
 } // namespace Statistics
 } // namespace itk
 

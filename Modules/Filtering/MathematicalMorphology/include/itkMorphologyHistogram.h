@@ -190,6 +190,7 @@ public:
 };
 
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 // now create MorphologyHistogram partial specilizations using the VectorMorphologyHistogram
 // as base class
 
@@ -210,6 +211,8 @@ class MorphologyHistogram<bool, TCompare>:
   public VectorMorphologyHistogram<bool, TCompare>
 {
 };
+
+#endif // DOXYGEN_SHOULD_SKIP_THIS
 
 } // end namespace Function
 } // end namespace itk

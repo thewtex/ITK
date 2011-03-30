@@ -179,6 +179,8 @@ public:
   SizeValueType                m_Count;
 };
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
 // now create MorphologicalGradientHistogram specilizations using the VectorMorphologicalGradientHistogram
 // as base class
 
@@ -199,6 +201,8 @@ class MorphologicalGradientHistogram<bool>:
   public VectorMorphologicalGradientHistogram<bool>
 {
 };
+
+#endif // DOXYGEN_SHOULD_SKIP_THIS
 
 } // end namespace Function
 
