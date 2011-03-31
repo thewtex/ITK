@@ -80,6 +80,8 @@ typedef struct
 
 RegressionTestParameters regressionTestParameters;
 
+int TestDriverInvokeProcess( const std::vector< char * > & args );
+
 typedef char ** ArgumentStringType;
 
 void usage()
@@ -224,6 +226,18 @@ int ProcessArguments(int *ac, ArgumentStringType *av)
       (*av) += 2;
       *ac -= 2;
       }
+    else if ( !skip && strcmp((*av)[i], "--process") == 0 )
+      {
+      // The test driver needs to invoke another executable
+      // For example, the python interpreter to run Wrapping tests.
+      *ac -= 1;
+      while ( i < *ac )
+        {
+        i += 1;
+        args.push_back((*av)[i]);
+        }
+      return TestDriverInvokeProcess( args );
+      }
     else
       {
       args.push_back((*av)[i]);
@@ -238,9 +252,15 @@ int ProcessArguments(int *ac, ArgumentStringType *av)
     return 1;
     }
 
+  return 0;
+}
+
+
+int TestDriverInvokeProcess( const std::vector< char * > & args )
+{
   // a NULL is required at the end of the table
   char ** argv = new char *[args.size() + 1];
-  for ( i = 0; i < static_cast< int >( args.size() ); i++ )
+  for ( unsigned int i = 0; i < args.size(); i++ )
     {
     argv[i] = args[i];
     }
