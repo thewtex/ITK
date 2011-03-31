@@ -80,6 +80,8 @@ typedef struct
 
 RegressionTestParameters regressionTestParameters;
 
+int TestDriverInvokeProcess( const std::vector< char * > & args );
+
 typedef char ** ArgumentStringType;
 
 void usage()
@@ -140,6 +142,8 @@ int ProcessArguments(int *ac, ArgumentStringType *av)
   regressionTestParameters.intensityTolerance  = 2.0;
   regressionTestParameters.numberOfPixelsTolerance = 0;
   regressionTestParameters.radiusTolerance = 0;
+
+  bool externalProcessMustBeCalled = false;
 
   std::vector< char * > args;
   // parse the command line
@@ -224,6 +228,15 @@ int ProcessArguments(int *ac, ArgumentStringType *av)
       (*av) += 2;
       *ac -= 2;
       }
+    else if ( !skip && strcmp((*av)[i], "--process") == 0 )
+      {
+      // The test driver needs to invoke another executable
+      // For example, the python interpreter to run Wrapping tests.
+      externalProcessMustBeCalled = true;
+      args.push_back((*av)[i+1]);
+      (*av) += 2;
+      *ac -= 2;
+      }
     else
       {
       args.push_back((*av)[i]);
@@ -238,11 +251,23 @@ int ProcessArguments(int *ac, ArgumentStringType *av)
     return 1;
     }
 
+  if ( externalProcessMustBeCalled )
+    {
+    return TestDriverInvokeProcess( args );
+    }
+
+  return 0;
+}
+
+
+int TestDriverInvokeProcess( const std::vector< char * > & args )
+{
   // a NULL is required at the end of the table
   char ** argv = new char *[args.size() + 1];
-  for ( i = 0; i < static_cast< int >( args.size() ); i++ )
+  for ( unsigned int i = 0; i < args.size(); i++ )
     {
     argv[i] = args[i];
+std::cout << "TestDriverInvokeProcess  " << i << " = " << argv[i] << std::endl;
     }
   argv[args.size()] = NULL;
 
