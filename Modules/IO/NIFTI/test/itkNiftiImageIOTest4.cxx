@@ -108,7 +108,7 @@ int itkNiftiImageIOTest4(int ac, char* av[])
   std::string fname("directionsTest.nii.gz");
   try
     {
-    WriteImage<Test4ImageType>(test4Image,fname);
+    WriteImage<Test4ImageType,itk::NiftiImageIO>(test4Image,fname);
     }
   catch(itk::ExceptionObject &ex)
     {
