@@ -26,6 +26,11 @@
 
 namespace itk
 {
+
+// This function is retained for backward compatibility
+// but it is now obsolete and have no effect.
+void ImageIOFactory::RegisterBuiltInFactories() {}
+
 ImageIOBase::Pointer
 ImageIOFactory::CreateImageIO(const char *path, FileModeType mode)
 {

@@ -50,7 +50,11 @@ public:
     */
   static ImageIOBasePointer CreateImageIO(const char *path, FileModeType mode);
 
-  /** Register Built-in factories */
+  /** Register Built-in factories
+   *  \deprecated This function has been replaced with a mechanism
+   *  triggered by the Find_Package(ITK) configuration of applications
+   *  based on ITK.
+   */
   static void RegisterBuiltInFactories();
 
 protected:
