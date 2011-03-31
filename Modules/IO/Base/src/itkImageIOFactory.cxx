@@ -26,6 +26,7 @@
 
 namespace itk
 {
+
 ImageIOBase::Pointer
 ImageIOFactory::CreateImageIO(const char *path, FileModeType mode)
 {
