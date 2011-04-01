@@ -36,7 +36,72 @@
 // command line options prior to invoking the test.
 //
 
+#ifdef ITK_TEST_DRIVER
 #include "itksys/Process.h"
+#include "itksys/SystemTools.hxx"
+
+/* Select the environment variable holding the shared library runtime
+   search path for this platform.  */
+
+/* Linux */
+#if defined(__linux) || defined(__FreeBSD__) || defined(__OpenBSD__)
+# define ITK_TEST_DRIVER_LDPATH "LD_LIBRARY_PATH"
+# define ITK_TEST_DRIVER_LDPATH64 ITK_TEST_DRIVER_LDPATH
+
+/* OSX */
+#elif defined(__APPLE__)
+# define ITK_TEST_DRIVER_LDPATH "DYLD_LIBRARY_PATH"
+# define ITK_TEST_DRIVER_LDPATH64 ITK_TEST_DRIVER_LDPATH
+
+/* AIX */
+#elif defined(_AIX)
+# define ITK_TEST_DRIVER_LDPATH "LIBPATH"
+# define ITK_TEST_DRIVER_LDPATH64 ITK_TEST_DRIVER_LDPATH
+
+/* SUN */
+#elif defined(__sun)
+#  define ITK_TEST_DRIVER_LDPATH "LD_LIBRARY_PATH"
+#  define ITK_TEST_DRIVER_LDPATH64 "LD_LIBRARY_PATH_64"
+
+/* HP-UX */
+#elif defined(__hpux)
+#  define ITK_TEST_DRIVER_LDPATH "SHLIB_PATH"
+#  define ITK_TEST_DRIVER_LDPATH64 "LD_LIBRARY_PATH"
+
+/* SGI MIPS */
+#elif defined(__sgi) && defined(_MIPS_SIM)
+# if _MIPS_SIM == _ABIO32
+#  define ITK_TEST_DRIVER_LDPATH "LD_LIBRARY_PATH"
+# elif _MIPS_SIM == _ABIN32
+#  define ITK_TEST_DRIVER_LDPATH "LD_LIBRARYN32_PATH"
+# endif
+#  define ITK_TEST_DRIVER_LDPATH64 "LD_LIBRARY64_PATH"
+
+/* Cygwin */
+#elif defined(__CYGWIN__)
+# define ITK_TEST_DRIVER_LDPATH "PATH"
+# define ITK_TEST_DRIVER_LDPATH64 ITK_TEST_DRIVER_LDPATH
+
+/* Windows */
+#elif defined(_WIN32)
+# define ITK_TEST_DRIVER_LDPATH "PATH"
+# define ITK_TEST_DRIVER_LDPATH64 ITK_TEST_DRIVER_LDPATH
+
+/* Guess on this unknown system.  */
+#else
+# define ITK_TEST_DRIVER_LDPATH "LD_LIBRARY_PATH"
+# define ITK_TEST_DRIVER_LDPATH64 ITK_TEST_DRIVER_LDPATH
+#endif
+
+#if defined(_WIN32) && !defined(__CYGWIN__)
+# define ITK_TEST_DRIVER_PATH_SEP ';'
+# define ITK_TEST_DRIVER_PATH_SLASH '\\'
+#else
+# define ITK_TEST_DRIVER_PATH_SEP ':'
+# define ITK_TEST_DRIVER_PATH_SLASH '/'
+#endif
+
+#endif
 
 #include "itkWin32Header.h"
 #include <map>
@@ -51,7 +116,6 @@
 #include "itkTestingStretchIntensityImageFilter.h"
 #include "itkTestingExtractSliceImageFilter.h"
 #include "itkTestingComparisonImageFilter.h"
-#include "itksys/SystemTools.hxx"
 #include "itkIntTypes.h"
 #include "itkFloatingPointExceptions.h"
 #include "vnl/vnl_sample.h"
@@ -82,14 +146,19 @@ RegressionTestParameters regressionTestParameters;
 
 typedef char ** ArgumentStringType;
 
-void usage()
+void usage(char * name )
 {
+#ifdef ITK_TEST_DRIVER
   std::cerr << "usage: itkTestDriver [options] prg [args]" << std::endl;
   std::cerr << std::endl;
   std::cerr << "itkTestDriver alter the environment, run a test program and compare the images" << std::endl;
   std::cerr << "produced." << std::endl;
+#else
+  std::cerr << "usage: " << name << " [options] test [args]" << std::endl;
+#endif
   std::cerr << std::endl;
   std::cerr << "Options:" << std::endl;
+#ifdef ITK_TEST_DRIVER
   std::cerr << "  --add-before-libpath PATH" << std::endl;
   std::cerr << "      Add a path to the library path environment. This option take care of" << std::endl;
   std::cerr << "      choosing the right environment variable for your system." << std::endl;
@@ -104,6 +173,7 @@ void usage()
   std::cerr << "      Add a VALUE to the variable name in the environment using the provided separator." << std::endl;
   std::cerr << "      This option can be used several times." << std::endl;
   std::cerr << std::endl;
+#endif
   std::cerr << "  --compare TEST BASELINE" << std::endl;
   std::cerr << "      Compare the TEST image to the BASELINE one." << std::endl;
   std::cerr << "      This option can be used several times." << std::endl;
@@ -141,22 +211,24 @@ int ProcessArguments(int *ac, ArgumentStringType *av)
   regressionTestParameters.numberOfPixelsTolerance = 0;
   regressionTestParameters.radiusTolerance = 0;
 
+#ifdef ITK_TEST_DRIVER
   std::vector< char * > args;
+#endif
+
   // parse the command line
   int  i = 1;
   bool skip = false;
   while ( i < *ac )
-  {
-     if ( !skip && strcmp((*av)[i], "--compare") == 0 )
+    {
+    if ( !skip && strcmp((*av)[i], "--compare") == 0 )
       {
       if ( i + 2 >= *ac )
         {
-        usage();
+        usage((*av)[0]);
         return 1;
         }
       regressionTestParameters.compareList.push_back( ComparePairType((*av)[i + 1], (*av)[i + 2]) );
-      (*av) += 3;
-      *ac -= 3;
+      i += 3;
       }
     else if ( !skip && strcmp((*av)[i], "--") == 0 )
       {
@@ -165,76 +237,158 @@ int ProcessArguments(int *ac, ArgumentStringType *av)
       }
     else if ( !skip && strcmp((*av)[i], "--help") == 0 )
       {
-      usage();
-      return 1;
+      usage((*av)[0]);
+      return 0;
       }
     else if ( !skip && strcmp((*av)[i], "--with-threads") == 0 )
       {
       if ( i + 1 >= *ac )
         {
-        usage();
+        usage((*av)[0]);
         return 1;
         }
+#ifdef ITK_TEST_DRIVER
       // set the environment which will be read by the subprocess
       std::string threadEnv = "ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS=";
       threadEnv += (*av)[i + 1];
       itksys::SystemTools::PutEnv( threadEnv.c_str() );
+#endif
       // and set the number of threads locally for the comparison
       itk::MultiThreader::SetGlobalDefaultNumberOfThreads(atoi((*av)[i + 1]));
-      *av += 2;
-      *ac -= 2;
+      i += 2;
       }
     else if ( !skip && strcmp((*av)[i], "--without-threads") == 0 )
       {
+#ifdef ITK_TEST_DRIVER
       itksys::SystemTools::PutEnv( "ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS=1" );
+#endif
       itk::MultiThreader::SetGlobalDefaultNumberOfThreads(1);
-      *av += 1;
-      *ac -= 1;
+      i += 1;
       }
     else if ( !skip && strcmp((*av)[i], "--compareNumberOfPixelsTolerance") == 0 )
       {
       if ( i + 1 >= *ac )
         {
-        usage();
+        usage((*av)[0]);
         return 1;
         }
       regressionTestParameters.numberOfPixelsTolerance = atoi((*av)[i + 1]);
-      *av += 2;
-      *ac -= 2;
+      i += 2;
       }
     else if ( !skip && strcmp((*av)[i], "--compareRadiusTolerance") == 0 )
       {
       if ( i + 1 >= *ac )
         {
-        usage();
+        usage((*av)[0]);
         return 1;
         }
-     regressionTestParameters.radiusTolerance = atoi((*av)[i + 1]);
-      (*av) += 2;
-      *ac -= 2;
+      regressionTestParameters.radiusTolerance = atoi((*av)[i + 1]);
+      i += 2;
       }
     else if ( !skip && strcmp((*av)[i], "--compareIntensityTolerance") == 0 )
       {
       if ( i + 1 >= *ac )
         {
-        usage();
+        usage((*av)[0]);
         return 1;
         }
-     regressionTestParameters.intensityTolerance = atof((*av)[i + 1]);
-      (*av) += 2;
-      *ac -= 2;
+      regressionTestParameters.intensityTolerance = atof((*av)[i + 1]);
+      i += 2;
+      }
+#ifdef ITK_TEST_DRIVER
+    else if ( !skip && strcmp((*av)[i], "--add-before-libpath") == 0 )
+      {
+      if ( i + 1 >= *ac )
+        {
+        usage((*av)[0]);
+        return 1;
+        }
+      std::string libpath = ITK_TEST_DRIVER_LDPATH;
+      libpath += "=";
+      libpath += (*av)[i + 1];
+      char *oldenv = getenv(ITK_TEST_DRIVER_LDPATH);
+      if ( oldenv )
+        {
+        libpath += ITK_TEST_DRIVER_PATH_SEP;
+        libpath += oldenv;
+        }
+      itksys::SystemTools::PutEnv( libpath.c_str() );
+      // on some 64 bit systems, LD_LIBRARY_PATH_64 is used before
+      // LD_LIBRARY_PATH if it is set. It can lead the test to load
+      // the system library instead of the expected one, so this
+      // var must also be set
+      if ( std::string(ITK_TEST_DRIVER_LDPATH) != ITK_TEST_DRIVER_LDPATH64 )
+        {
+        std::string libpath = ITK_TEST_DRIVER_LDPATH64;
+        libpath += "=";
+        libpath += (*av)[i + 1];
+        char *oldenv = getenv(ITK_TEST_DRIVER_LDPATH64);
+        if ( oldenv )
+          {
+          libpath += ITK_TEST_DRIVER_PATH_SEP;
+          libpath += oldenv;
+          }
+        itksys::SystemTools::PutEnv( libpath.c_str() );
+        }
+      i += 2;
+      }
+    else if ( !skip && strcmp((*av)[i], "--add-before-env") == 0 )
+      {
+      if ( i + 2 >= *ac )
+        {
+        usage((*av)[0]);
+        return 1;
+        }
+      std::string env = (*av)[i + 1];
+      env += "=";
+      env += (*av)[i + 2];
+      char *oldenv = getenv((*av)[i + 1]);
+      if ( oldenv )
+        {
+        env += ITK_TEST_DRIVER_PATH_SEP;
+        env += oldenv;
+        }
+      itksys::SystemTools::PutEnv( env.c_str() );
+      i += 3;
+      }
+    else if ( !skip && strcmp((*av)[i], "--add-before-env-with-sep") == 0 )
+      {
+      if ( i + 3 >= *ac )
+        {
+        usage((*av)[0]);
+        return 1;
+        }
+      std::string env = (*av)[i + 1];
+      env += "=";
+      env += (*av)[i + 2];
+      char *oldenv = getenv((*av)[i + 1]);
+      if ( oldenv )
+        {
+        env += (*av)[i + 3];
+        env += oldenv;
+        }
+      itksys::SystemTools::PutEnv( env.c_str() );
+      i += 4;
       }
     else
       {
       args.push_back((*av)[i]);
       i += 1;
       }
-  }
+#else
+    else
+      {
+      *av += i-1;
+      *ac -= i-1;
+      return 0;
+      }
+#endif
+    }
 
-
+#ifdef ITK_TEST_DRIVER
   if ( args.empty() )
     {
-    usage();
+    usage((*av)[0]);
     return 1;
     }
 
@@ -324,7 +478,11 @@ int ProcessArguments(int *ac, ArgumentStringType *av)
     // no need to compare the images: the test has failed
     }
 
-return retCode;
+ return retCode;
+
+#else
+  return 0;
+#endif
 
 }
 
