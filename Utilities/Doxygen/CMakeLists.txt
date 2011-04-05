@@ -31,6 +31,13 @@ if (BUILD_DOCUMENTATION)
     WORKING_DIRECTORY ${ITK_BINARY_DIR}/Utilities/Doxygen
     )
 
+  # Somehow the logo image is not copied into the html folder.
+  add_custom_command(TARGET Documentation
+    COMMAND ${CMAKE_COMMAND} -E copy
+      ${ITK_SOURCE_DIR}/Documentation/Art/itkLogoSmall.jpg # logo
+      ${ITK_BINARY_DIR}/Utilities/Doxygen/html # output doxygen directory
+    )
+
   message( STATUS
            "To generate Doxygen's documentation, you need to build the Documentation target"
          )
