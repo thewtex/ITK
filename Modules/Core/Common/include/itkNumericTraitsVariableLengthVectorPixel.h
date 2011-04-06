@@ -136,6 +136,11 @@ public:
     return m.GetSize();
   }
 
+  static const Self ZeroValue()
+  {
+    return Self(NumericTraits< T >::Zero);
+  }
+
 };
 } // end namespace itk
 
