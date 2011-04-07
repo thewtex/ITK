@@ -6,6 +6,9 @@ target_link_libraries(ScalarSinglePhaseDense2D ${ITK_LIBRARIES})
 add_executable(ScalarSinglePhaseSparse2D itkScalarSinglePhaseSparse2DTest.cxx )
 target_link_libraries(ScalarSinglePhaseSparse2D ${ITK_LIBRARIES})
 
+add_executable(CompositeTransform itkCompositeTransformExample.cxx )
+target_link_libraries(CompositeTransform ${ITK_LIBRARIES})
+
 #set(REVIEW_EXAMPLES ReviewExamples)
 #set(BASELINE ${ITK_DATA_ROOT}/myDataDirectory)
 #set(TEMP ${ITK_BINARY_DIR}/Testing/Temporary)
