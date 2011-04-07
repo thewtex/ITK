@@ -125,8 +125,7 @@ int main( int argc, char * argv [] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::VnlFFTRealToComplexConjugateImageFilter<
-                                  InputPixelType, Dimension >  FFTFilterType;
+  typedef itk::VnlFFTRealToComplexConjugateImageFilter< InputImageType >  FFTFilterType;
 
   FFTFilterType::Pointer fftFilter = FFTFilterType::New();
 
@@ -194,7 +193,7 @@ int main( int argc, char * argv [] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::VnlFFTComplexConjugateToRealImageFilter<
-    InputPixelType, Dimension >  IFFTFilterType;
+    SpectralImageType >  IFFTFilterType;
 
   IFFTFilterType::Pointer fftInverseFilter = IFFTFilterType::New();
 
