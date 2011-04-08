@@ -6,51 +6,34 @@
 namespace itk
 {
 
-  template< class TInputImage, class TOutputImage >
-  GPUMeanImageFilter< TInputImage, TOutputImage >::GPUMeanImageFilter()
+template< class TInputImage, class TOutputImage >
+GPUMeanImageFilter< TInputImage, TOutputImage >::GPUMeanImageFilter()
+{
+  std::ostringstream defines;
+
+  if(TInputImage::ImageDimension > 3)
   {
-    std::ostringstream defines;
-
-    if(TInputImage::ImageDimension > 3)
-      {
-      itkExceptionMacro("GPUMeanImageFilter supports 1/2/3D image.");
-      }
-
-    defines << "#define DIM_" << TInputImage::ImageDimension << "\n";
-
-    if ( typeid ( typename TInputImage::PixelType ) == typeid ( unsigned char ) )
-      {
-      defines << "#define PIXELTYPE unsigned char\n";
-      }
-    else if ( typeid ( typename TInputImage::PixelType ) == typeid ( short ) )
-      {
-      defines << "#define PIXELTYPE short\n";
-      }
-    else if ( typeid ( typename TInputImage::PixelType ) == typeid ( int ) )
-      {
-      defines << "#define PIXELTYPE int\n";
-      }
-    else if ( typeid ( typename TInputImage::PixelType ) == typeid ( float ) )
-      {
-      defines << "#define PIXELTYPE float\n";
-      }
-    else
-      {
-      itkExceptionMacro("GPUMeanImageFilter supports unsigned char, short, int and float images.");
-      }
-
-    std::string oclSrcPath = std::string ( itk_root_path ) + "/Code/GPU/GPUMeanImageFilter.cl";
-
-    std::cout << "Defines: " << defines.str() << "\nSource code path: " << oclSrcPath << std::endl;
-
-    // load and build program
-    this->m_KernelManager->LoadProgramFromFile( oclSrcPath.c_str(), defines.str().c_str() );
-
-    // create kernel
-    this->m_KernelHandle = this->m_KernelManager->CreateKernel("MeanFilter");
+    itkExceptionMacro("GPUMeanImageFilter supports 1/2/3D image.");
   }
 
-  template< class TInputImage, class TOutputImage >
+  defines << "#define DIM_" << TInputImage::ImageDimension << "\n";
+  defines << "#define PIXELTYPE ";
+  GetTypenameInString( typeid ( typename TInputImage::PixelType ), defines );
+
+  //std::string oclSrcPath = std::string ( itk_root_path ) + "/Code/GPU/GPUMeanImageFilter.cl";
+
+  std::string oclSrcPath = "./../OpenCL/GPUMeanImageFilter.cl";
+
+  std::cout << "Defines: " << defines.str() << "Source code path: " << oclSrcPath << std::endl;
+
+  // load and build program
+  this->m_GPUKernelManager->LoadProgramFromFile( oclSrcPath.c_str(), defines.str().c_str() );
+
+  // create kernel
+  m_MeanFilterGPUKernelHandle = this->m_GPUKernelManager->CreateKernel("MeanFilter");
+}
+
+template< class TInputImage, class TOutputImage >
 GPUMeanImageFilter< TInputImage, TOutputImage >::~GPUMeanImageFilter()
 {
 
@@ -96,21 +79,21 @@ GPUMeanImageFilter< TInputImage, TOutputImage >::GPUGenerateData()
 
   // arguments set up
   int argidx = 0;
-  this->m_KernelManager->SetKernelArgWithImage(this->m_KernelHandle, argidx++, inPtr->GetGPUDataManager());
-  this->m_KernelManager->SetKernelArgWithImage(this->m_KernelHandle, argidx++, otPtr->GetGPUDataManager());
+  this->m_GPUKernelManager->SetKernelArgWithImage(m_MeanFilterGPUKernelHandle, argidx++, inPtr->GetGPUDataManager());
+  this->m_GPUKernelManager->SetKernelArgWithImage(m_MeanFilterGPUKernelHandle, argidx++, otPtr->GetGPUDataManager());
 
   for(int i=0; i<(int)TInputImage::ImageDimension; i++)
     {
-    this->m_KernelManager->SetKernelArg(this->m_KernelHandle, argidx++, sizeof(int), &(radius[i]));
+    this->m_GPUKernelManager->SetKernelArg(m_MeanFilterGPUKernelHandle, argidx++, sizeof(int), &(radius[i]));
     }
 
   for(int i=0; i<(int)TInputImage::ImageDimension; i++)
     {
-    this->m_KernelManager->SetKernelArg(this->m_KernelHandle, argidx++, sizeof(int), &(imgSize[i]));
+    this->m_GPUKernelManager->SetKernelArg(m_MeanFilterGPUKernelHandle, argidx++, sizeof(int), &(imgSize[i]));
     }
 
   // launch kernel
-  this->m_KernelManager->LaunchKernel( this->m_KernelHandle, (int)TInputImage::ImageDimension, globalSize, localSize );
+  this->m_GPUKernelManager->LaunchKernel( m_MeanFilterGPUKernelHandle, (int)TInputImage::ImageDimension, globalSize, localSize );
 }
 
 } // end namespace itk

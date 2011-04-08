@@ -17,17 +17,14 @@
 *=========================================================================*/
 
 /**
- * Test program for itkGPUImageToImageFilter class
+ * Test program for itkGPUMeanImageFilter class
  *
- * This program creates a GPU Mean filter and a CPU threshold filter using
- * object factory framework and test pipelining of GPU and CPU filters.
+ * This program creates a GPU Mean filter test pipelining.
  */
-//#include "pathToOpenCLSourceCode.h"
 
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 #include "itkMeanImageFilter.h"
-#include "itkBinaryThresholdImageFilter.h"
 
 #include "itkGPUImage.h"
 #include "itkGPUKernelManager.h"
@@ -35,8 +32,13 @@
 #include "itkGPUImageToImageFilter.h"
 #include "itkGPUMeanImageFilter.h"
 
+#include "itkRescaleIntensityImageFilter.h"
+#include "itkTimeProbe.h"
 
-int itkGPUImageFilterTest(int argc, char *argv[])
+/**
+ * Testing GPU Mean Image Filter
+ */
+int itkGPUMeanImageFilterTest(int argc, char *argv[])
 {
   // register object factory for GPU image and filter
   itk::ObjectFactoryBase::RegisterFactory( itk::GPUImageFactory::New() );
@@ -69,35 +71,18 @@ int itkGPUImageFilterTest(int argc, char *argv[])
   //       GPU filter for Median filter and CPU filter for threshold filter.
   //
   typedef itk::MeanImageFilter< InputImageType, OutputImageType > MeanFilterType;
-  typedef itk::BinaryThresholdImageFilter< InputImageType, OutputImageType > ThresholdFilterType;
 
-  MeanFilterType::Pointer filter1 = MeanFilterType::New();
-  MeanFilterType::Pointer filter2 = MeanFilterType::New();
-  ThresholdFilterType::Pointer filter3 = ThresholdFilterType::New();
+  MeanFilterType::Pointer filter = MeanFilterType::New();
 
   // Mean filter kernel radius
   InputImageType::SizeType indexRadius;
   indexRadius[0] = 2; // radius along x
   indexRadius[1] = 2; // radius along y
 
-  // threshold parameters
-  const InputPixelType upperThreshold = 255;
-  const InputPixelType lowerThreshold = 175;
-  const OutputPixelType outsideValue = 0;
-  const OutputPixelType insideValue  = 255;
-
-  filter1->SetRadius( indexRadius );
-  filter2->SetRadius( indexRadius );
-  filter3->SetOutsideValue( outsideValue );
-  filter3->SetInsideValue(  insideValue  );
-  filter3->SetUpperThreshold( upperThreshold );
-  filter3->SetLowerThreshold( lowerThreshold );
-
-  // build pipeline
-  filter1->SetInput( reader->GetOutput() ); // copy CPU->GPU implicilty
-  filter2->SetInput( filter1->GetOutput() );
-  filter3->SetInput( filter2->GetOutput() );
-  writer->SetInput( filter3->GetOutput() ); // copy GPU->CPU implicilty
+  // Build pipeline
+  filter->SetRadius( indexRadius );
+  filter->SetInput( reader->GetOutput() );
+  writer->SetInput( filter->GetOutput() ); // copy GPU->CPU implicilty
 
   // execute pipeline filter and write output
   writer->Update();
