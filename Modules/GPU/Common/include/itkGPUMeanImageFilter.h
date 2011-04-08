@@ -1,7 +1,7 @@
 #ifndef __itkGPUMeanImageFilter_h
 #define __itkGPUMeanImageFilter_h
 
-#include "pathToOpenCLSourceCode.h"
+//#include "pathToOpenCLSourceCode.h"
 #include "itkMeanImageFilter.h"
 #include "itkGPUImageToImageFilter.h"
 #include "itkVersion.h"
@@ -64,7 +64,7 @@ private:
   int m_KernelHandle;
 };
 
-
+/** Object Factory implemenatation for GPUMedianImageFilter */
 class GPUMeanImageFilterFactory : public itk::ObjectFactoryBase
 {
 public:

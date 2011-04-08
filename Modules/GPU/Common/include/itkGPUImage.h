@@ -26,6 +26,15 @@
 
 namespace itk
 {
+/** \class GPUImage
+ *  \brief Templated n-dimensional image class for the GPU.
+ *
+ * Derived from itk Image class to use with GPU image filters.
+ * This class manages both CPU and GPU memory implicitly, and
+ * can be used with non-GPU itk filters as well. Memory transfer
+ * between CPU and GPU is done automatically and implicitly.
+ *
+ * \ingroup GPUCommon */
   template <class TPixel, unsigned int VImageDimension = 2>
   class ITK_EXPORT GPUImage : public Image<TPixel,VImageDimension>
   {

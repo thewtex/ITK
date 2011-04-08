@@ -39,7 +39,9 @@ namespace itk
       itkExceptionMacro("GPUMeanImageFilter supports unsigned char, short, int and float images.");
       }
 
-    std::string oclSrcPath = std::string ( itk_root_path ) + "/Code/GPU/GPUMeanImageFilter.cl";
+    //std::string oclSrcPath = std::string ( itk_root_path ) + "/Code/GPU/GPUMeanImageFilter.cl";
+
+    std::string oclSrcPath = "./../OpenCL/GPUMeanImageFilter.cl";
 
     std::cout << "Defines: " << defines.str() << "\nSource code path: " << oclSrcPath << std::endl;
 
