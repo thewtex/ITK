@@ -32,6 +32,7 @@
 #include "itkMultiThreader.h"
 #include "itkObjectFactory.h"
 #include <vector>
+#include <map>
 
 namespace itk
 {
@@ -108,11 +109,18 @@ public:
   /** STL Array of SmartPointers to DataObjects */
   typedef std::vector< DataObjectPointer > DataObjectPointerArray;
 
+  /** STL map to store the named inputs and outputs */
+  typedef std::map< std::string, DataObjectPointer > DataObjectPointerMap;
+
   /** Return an array with all the inputs of this process object.
    * This is useful for tracing back in the pipeline to construct
    * graphs etc.  */
   DataObjectPointerArray & GetInputs()
   { return m_Inputs; }
+
+  /** Return a map with all the named inputs in the process object. */
+  DataObjectPointerMap & GetNamedInputs()
+  { return m_NamedInputs; }
 
   /** Size type of an std::vector */
   typedef DataObjectPointerArray::size_type DataObjectPointerArraySizeType;
@@ -140,6 +148,10 @@ public:
   { return m_Outputs; }
   DataObjectPointerArraySizeType GetNumberOfOutputs() const
   { return m_Outputs.size(); }
+
+  /** Return a map with all the named outputs in the process object. */
+  DataObjectPointerMap & GetNamedOutputs()
+  { return m_NamedOutputs; }
 
   /** Set the AbortGenerateData flag for the process object. Process objects
    *  may handle premature termination of execution in different ways.  */
@@ -330,6 +342,13 @@ protected:
 
   const DataObject * GetInput(unsigned int idx) const;
 
+  /** Return a named input */
+  DataObject * GetInput(const std::string & key);
+  const DataObject * GetInput(const std::string & key) const;
+
+  /** Set a named input */
+  virtual void SetInput(const std::string & key, DataObject *input);
+
   /** Protected methods for setting outputs.
    * Subclasses make use of them for getting output. */
   virtual void SetNthOutput(unsigned int num, DataObject *output);
@@ -348,6 +367,13 @@ protected:
   DataObject * GetOutput(unsigned int idx);
 
   const DataObject * GetOutput(unsigned int idx) const;
+
+  /** Return a named output */
+  DataObject * GetOutput(const std::string & key);
+  const DataObject * GetOutput(const std::string & key) const;
+
+  /** Set a named output */
+  virtual void SetOutput(const std::string & key, DataObject *output);
 
   /** What is the input requested region that is required to produce the
    * output requested region? By default, the largest possible region is
@@ -443,11 +469,16 @@ private:
   unsigned int           m_NumberOfRequiredInputs;
 
   /** An array that caches the ReleaseDataFlags of the inputs */
-  std::vector< bool > m_CachedInputReleaseDataFlags;
+  std::vector< bool >           m_CachedInputReleaseDataFlags;
+  std::map< std::string, bool > m_CachedNamedInputReleaseDataFlags;
 
   /** An array of the outputs to the filter. */
   DataObjectPointerArray m_Outputs;
   unsigned int           m_NumberOfRequiredOutputs;
+
+  /** Named input and outputs containers */
+  DataObjectPointerMap   m_NamedInputs;
+  DataObjectPointerMap   m_NamedOutputs;
 
   /** These support the progress method and aborting filter execution. */
   bool  m_AbortGenerateData;

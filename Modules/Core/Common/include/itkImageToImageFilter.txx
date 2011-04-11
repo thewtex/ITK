@@ -149,6 +149,17 @@ ImageToImageFilter< TInputImage, TOutputImage >
       input->SetRequestedRegion(inputRegion);
       }
     }
+  typename Superclass::DataObjectPointerMap & namedInputs = this->GetNamedInputs();
+  for ( typename Superclass::DataObjectPointerMap::iterator it=namedInputs.begin(); it!=namedInputs.end(); it++ )
+    {
+    TInputImage * input = dynamic_cast< TInputImage * >( it->second.GetPointer() );
+    if ( input )
+      {
+      InputImageRegionType inputRegion;
+      this->CallCopyOutputRegionToInputRegion( inputRegion, this->GetOutput()->GetRequestedRegion() );
+      input->SetRequestedRegion(inputRegion);
+      }
+    }
 }
 
 template< class TInputImage, class TOutputImage >

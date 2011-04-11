@@ -223,6 +223,16 @@ ImageSource< TOutputImage >
       outputPtr->Allocate();
       }
     }
+  DataObjectPointerMap & namedOutputs = this->GetNamedOutputs();
+  for ( typename DataObjectPointerMap::iterator it=namedOutputs.begin(); it!=namedOutputs.end(); it++ )
+    {
+    outputPtr = dynamic_cast< ImageBaseType * >( it->second.GetPointer() );
+    if ( outputPtr )
+      {
+      outputPtr->SetBufferedRegion( outputPtr->GetRequestedRegion() );
+      outputPtr->Allocate();
+      }
+    }
 }
 
 //----------------------------------------------------------------------------

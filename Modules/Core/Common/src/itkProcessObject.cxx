@@ -37,7 +37,10 @@ namespace itk
  * Instantiate object with no start, end, or progress methods.
  */
 ProcessObject
-::ProcessObject()
+::ProcessObject() :
+  m_CachedInputReleaseDataFlags(),
+  m_NamedInputs(),
+  m_NamedOutputs()
 {
   m_NumberOfRequiredInputs = 0;
 
@@ -88,6 +91,16 @@ ProcessObject
       m_Outputs[idx]->DisconnectSource(this, idx);
       // let go of our reference to the data object
       m_Outputs[idx] = 0;
+      }
+    }
+  for ( DataObjectPointerMap::iterator it=m_NamedOutputs.begin(); it!=m_NamedOutputs.end(); it++ )
+    {
+    if ( it->second )
+      {
+      // let the output know we no longer want to associate with the object
+      it->second->DisconnectSource(this, idx);
+      // let go of our reference to the data object
+      it->second = 0;
       }
     }
 }
@@ -469,6 +482,49 @@ ProcessObject
  */
 DataObject *
 ProcessObject
+::GetOutput(const std::string & key)
+{
+  DataObjectPointerMap::iterator it = m_NamedOutputs.find(key);
+  if ( it == m_NamedOutputs.end() )
+    {
+    return NULL;
+    }
+
+  return it->second.GetPointer();
+}
+
+const DataObject *
+ProcessObject
+::GetOutput(const std::string & key) const
+{
+  DataObjectPointerMap::const_iterator it = m_NamedOutputs.find(key);
+  if ( it == m_NamedOutputs.end() )
+    {
+    return NULL;
+    }
+
+  return it->second.GetPointer();
+}
+
+/**
+ *
+ */
+void
+ProcessObject
+::SetOutput(const std::string & key, DataObject * output)
+{
+  if ( m_NamedOutputs[key] != output )
+    {
+    m_NamedOutputs[key] = output;
+    this->Modified();
+    }
+}
+
+/**
+ *
+ */
+DataObject *
+ProcessObject
 ::GetInput(unsigned int i)
 {
   if ( m_Inputs.size() < i + 1 )
@@ -489,6 +545,49 @@ ProcessObject
     }
 
   return m_Inputs[i].GetPointer();
+}
+
+/**
+ *
+ */
+DataObject *
+ProcessObject
+::GetInput(const std::string & key)
+{
+  DataObjectPointerMap::iterator it = m_NamedInputs.find(key);
+  if ( it == m_NamedInputs.end() )
+    {
+    return NULL;
+    }
+
+  return it->second.GetPointer();
+}
+
+const DataObject *
+ProcessObject
+::GetInput(const std::string & key) const
+{
+  DataObjectPointerMap::const_iterator it = m_NamedInputs.find(key);
+  if ( it == m_NamedInputs.end() )
+    {
+    return NULL;
+    }
+
+  return it->second.GetPointer();
+}
+
+/**
+ *
+ */
+void
+ProcessObject
+::SetInput(const std::string & key, DataObject * input)
+{
+  if ( m_NamedInputs[key] != input )
+    {
+    m_NamedInputs[key] = input;
+    this->Modified();
+    }
 }
 
 /**
@@ -535,6 +634,13 @@ ProcessObject
       m_Outputs[idx]->SetReleaseDataFlag(val);
       }
     }
+  for ( DataObjectPointerMap::iterator it=m_NamedOutputs.begin(); it!=m_NamedOutputs.end(); it++ )
+    {
+    if ( it->second )
+      {
+      it->second->SetReleaseDataFlag(val);
+      }
+    }
 }
 
 /**
@@ -574,6 +680,21 @@ ProcessObject
     {
     os << indent << "No Inputs\n";
     }
+  if ( !m_NamedInputs.empty() )
+    {
+    for ( DataObjectPointerMap::const_iterator it=m_NamedInputs.begin(); it!=m_NamedInputs.end(); it++ )
+      {
+      if ( it->second )
+        {
+        os << indent << "Input " << it->first;
+        os << ": (" << it->second.GetPointer() << ")\n";
+        }
+      }
+    }
+  else
+    {
+    os << indent << "No Named Inputs\n";
+    }
   if ( m_Outputs.size() )
     {
     DataObjectPointerArraySizeType idx;
@@ -586,6 +707,21 @@ ProcessObject
   else
     {
     os << indent << "No Output\n";
+    }
+  if ( !m_NamedOutputs.empty() )
+    {
+    for ( DataObjectPointerMap::const_iterator it=m_NamedOutputs.begin(); it!=m_NamedOutputs.end(); it++ )
+      {
+      if ( it->second )
+        {
+        os << indent << "Output " << it->first;
+        os << ": (" << it->second.GetPointer() << ")\n";
+        }
+      }
+    }
+  else
+    {
+    os << indent << "No Named Outputs\n";
     }
 
   os << indent << "AbortGenerateData: " << ( m_AbortGenerateData ? "On\n" : "Off\n" );
@@ -648,6 +784,13 @@ ProcessObject
        * Propagate the ResetPipeline call
        */
       input->PropagateResetPipeline();
+      }
+    }
+  for ( DataObjectPointerMap::iterator it=m_NamedInputs.begin(); it!=m_NamedInputs.end(); it++ )
+    {
+    if ( it->second )
+      {
+      it->second->PropagateResetPipeline();
       }
     }
 }
@@ -725,6 +868,41 @@ ProcessObject
         }
       }
     }
+  for ( DataObjectPointerMap::iterator it=m_NamedInputs.begin(); it!=m_NamedInputs.end(); it++ )
+    {
+    if ( it->second )
+      {
+      input = it->second;
+
+      /**
+       * Propagate the UpdateOutputInformation call
+       */
+      m_Updating = true;
+      input->UpdateOutputInformation();
+      m_Updating = false;
+
+      /**
+       * What is the PipelineMTime of this input? Compare this against
+       * our current computation to find the largest one.
+       */
+      t2 = input->GetPipelineMTime();
+
+      if ( t2 > t1 )
+        {
+        t1 = t2;
+        }
+
+      /**
+       * Pipeline MTime of the input does not include the MTime of the
+       * data object itself. Factor these mtimes into the next PipelineMTime
+       */
+      t2 = input->GetMTime();
+      if ( t2 > t1 )
+        {
+        t1 = t2;
+        }
+      }
+    }
 
   /**
    * Call GenerateOutputInformation for subclass specific information.
@@ -741,6 +919,13 @@ ProcessObject
       if ( output )
         {
         output->SetPipelineMTime(t1);
+        }
+      }
+    for ( DataObjectPointerMap::iterator it=m_NamedOutputs.begin(); it!=m_NamedOutputs.end(); it++ )
+      {
+      if ( it->second )
+        {
+        it->second->SetPipelineMTime(t1);
         }
       }
 
@@ -809,6 +994,13 @@ ProcessObject
       m_Inputs[idx]->PropagateRequestedRegion();
       }
     }
+  for ( DataObjectPointerMap::iterator it=m_NamedInputs.begin(); it!=m_NamedInputs.end(); it++ )
+    {
+    if ( it->second )
+      {
+      it->second->PropagateRequestedRegion();
+      }
+    }
   m_Updating = false;
 }
 
@@ -830,6 +1022,13 @@ ProcessObject
       m_Inputs[idx]->SetRequestedRegionToLargestPossibleRegion();
       }
     }
+  for ( DataObjectPointerMap::iterator it=m_NamedInputs.begin(); it!=m_NamedInputs.end(); it++ )
+    {
+    if ( it->second )
+      {
+      it->second->SetRequestedRegionToLargestPossibleRegion();
+      }
+    }
 }
 
 /**
@@ -846,6 +1045,13 @@ ProcessObject
     if ( m_Outputs[idx] && m_Outputs[idx] != output )
       {
       m_Outputs[idx]->SetRequestedRegion(output);
+      }
+    }
+  for ( DataObjectPointerMap::iterator it=m_NamedOutputs.begin(); it!=m_NamedOutputs.end(); it++ )
+    {
+    if ( it->second && it->second != output )
+      {
+      it->second->SetRequestedRegion(output);
       }
     }
 }
@@ -868,6 +1074,13 @@ ProcessObject
         m_Outputs[idx]->PrepareForNewData();
         }
       }
+    for ( DataObjectPointerMap::iterator it=m_NamedOutputs.begin(); it!=m_NamedOutputs.end(); it++ )
+      {
+      if ( it->second )
+        {
+        it->second->PrepareForNewData();
+        }
+      }
     }
 }
 
@@ -888,6 +1101,13 @@ ProcessObject
         {
         m_Inputs[idx]->ReleaseData();
         }
+      }
+    }
+  for ( DataObjectPointerMap::iterator it=m_NamedInputs.begin(); it!=m_NamedInputs.end(); it++ )
+    {
+    if ( it->second && it->second->ShouldIReleaseData() )
+      {
+      it->second->ReleaseData();
       }
     }
 }
@@ -921,7 +1141,7 @@ ProcessObject
    * inputs since they may lead back to the same data object.
    */
   m_Updating = true;
-  if ( m_Inputs.size() == 1 )
+  if ( m_Inputs.size() == 1 && m_NamedInputs.empty() )
     {
     if ( m_Inputs[0] )
       {
@@ -936,6 +1156,14 @@ ProcessObject
         {
         m_Inputs[idx]->PropagateRequestedRegion();
         m_Inputs[idx]->UpdateOutputData();
+        }
+      }
+    for ( DataObjectPointerMap::iterator it=m_NamedInputs.begin(); it!=m_NamedInputs.end(); it++ )
+      {
+      if ( it->second )
+        {
+        it->second->PropagateRequestedRegion();
+        it->second->UpdateOutputData();
         }
       }
     }
@@ -1016,6 +1244,13 @@ ProcessObject
       m_Outputs[idx]->DataHasBeenGenerated();
       }
     }
+  for ( DataObjectPointerMap::iterator it=m_NamedOutputs.begin(); it!=m_NamedOutputs.end(); it++ )
+    {
+    if ( it->second )
+      {
+      it->second->DataHasBeenGenerated();
+      }
+    }
 
   /**
    * Restore the state of any input ReleaseDataFlags
@@ -1053,6 +1288,19 @@ ProcessObject
       m_CachedInputReleaseDataFlags[idx] = false;
       }
     }
+  m_CachedInputReleaseDataFlags.clear();
+  for ( DataObjectPointerMap::iterator it=m_NamedInputs.begin(); it!=m_NamedInputs.end(); it++ )
+    {
+    if ( it->second )
+      {
+      m_CachedNamedInputReleaseDataFlags[it->first] = it->second->GetReleaseDataFlag();
+      it->second->ReleaseDataFlagOff();
+      }
+    else
+      {
+      m_CachedNamedInputReleaseDataFlags[it->first] = false;
+      }
+    }
 }
 
 /**
@@ -1073,6 +1321,14 @@ ProcessObject
       m_Inputs[idx]->SetReleaseDataFlag(m_CachedInputReleaseDataFlags[idx]);
       }
     }
+  for ( DataObjectPointerMap::iterator it=m_NamedInputs.begin(); it!=m_NamedInputs.end(); it++ )
+    {
+    if ( it->second )
+      {
+      it->second->SetReleaseDataFlag(m_CachedNamedInputReleaseDataFlags[it->first]);
+      }
+    }
+  m_CachedInputReleaseDataFlags.clear();
 }
 
 /**
@@ -1094,6 +1350,13 @@ ProcessObject
       if ( output )
         {
         output->CopyInformation(input);
+        }
+      }
+    for ( DataObjectPointerMap::iterator it=m_NamedOutputs.begin(); it!=m_NamedOutputs.end(); it++ )
+      {
+      if ( it->second )
+        {
+        it->second->CopyInformation(input);
         }
       }
     }
