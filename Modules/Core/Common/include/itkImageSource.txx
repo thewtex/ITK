@@ -208,14 +208,15 @@ ImageSource< TOutputImage >
   typename ImageBaseType::Pointer outputPtr;
 
   // Allocate the output memory
-  for ( unsigned int i = 0; i < this->GetNumberOfOutputs(); i++ )
+  DataObjectArray outputs = this->GetAllOutputs();
+  for ( typename DataObjectArray::iterator it=outputs.begin(); it!=outputs.end(); it++ )
     {
     // Check whether the output is an image of the appropriate
     // dimension (use ProcessObject's version of the GetInput()
     // method since it returns the input as a pointer to a
     // DataObject as opposed to the subclass version which
     // static_casts the input to an TInputImage).
-    outputPtr = dynamic_cast< ImageBaseType * >( this->ProcessObject::GetOutput(i) );
+    outputPtr = dynamic_cast< ImageBaseType * >( *it );
 
     if ( outputPtr )
       {

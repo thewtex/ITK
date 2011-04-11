@@ -114,31 +114,13 @@ ImageToImageFilter< TInputImage, TOutputImage >
 {
   Superclass::GenerateInputRequestedRegion();
 
-  for ( unsigned int idx = 0; idx < this->GetNumberOfInputs(); ++idx )
+  typename Superclass::DataObjectArray inputs = this->GetAllInputs();
+  for ( typename Superclass::DataObjectArray::iterator it=inputs.begin(); it!=inputs.end(); it++ )
     {
-    if ( this->GetInput(idx) )
+    // Check whether the input is an image of the appropriate dimension
+    TInputImage * input = dynamic_cast< TInputImage * >( *it );
+    if ( input )
       {
-      // Check whether the input is an image of the appropriate
-      // dimension (use ProcessObject's version of the GetInput()
-      // method since it returns the input as a pointer to a
-      // DataObject as opposed to the subclass version which
-      // static_casts the input to an TInputImage).
-      typedef ImageBase< InputImageDimension > ImageBaseType;
-      typename ImageBaseType::ConstPointer constInput =
-        dynamic_cast< ImageBaseType const * >( this->ProcessObject::GetInput(idx) );
-
-      // If not an image, skip it, and let a subclass of
-      // ImageToImageFilter handle this input.
-      if ( constInput.IsNull() )
-        {
-        continue;
-        }
-
-      // Input is an image, cast away the constness so we can set
-      // the requested region.
-      InputImagePointer input =
-        const_cast< TInputImage * >( this->GetInput(idx) );
-
       // Use the function object RegionCopier to copy the output region
       // to the input.  The default region copier has default implementations
       // to handle the cases where the input and output are the same
