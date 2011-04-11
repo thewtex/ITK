@@ -37,7 +37,10 @@ namespace itk
  * Instantiate object with no start, end, or progress methods.
  */
 ProcessObject
-::ProcessObject()
+::ProcessObject() :
+  m_CachedNamedInputReleaseDataFlags(),
+  m_NamedInputs(),
+  m_NamedOutputs()
 {
   m_NumberOfRequiredInputs = 0;
 
@@ -90,6 +93,136 @@ ProcessObject
       m_Outputs[idx] = 0;
       }
     }
+  for ( DataObjectPointerMap::iterator it = m_NamedOutputs.begin(); it != m_NamedOutputs.end(); it++ )
+    {
+    if ( it->second )
+      {
+      // let the output know we no longer want to associate with the object
+      it->second->DisconnectSource(this, idx);
+      // let go of our reference to the data object
+      it->second = 0;
+      }
+    }
+}
+
+ProcessObject::ConstDataObjectArray
+ProcessObject
+::GetAllInputs() const
+{
+  ConstDataObjectArray res;
+  for ( unsigned int idx = 0; idx < m_Inputs.size(); ++idx )
+    {
+    res.push_back( m_Inputs[idx].GetPointer() );
+    }
+  for ( DataObjectPointerMap::const_iterator it = m_NamedInputs.begin(); it != m_NamedInputs.end(); it++ )
+    {
+    res.push_back( it->second.GetPointer() );
+    }
+
+  return res;
+}
+
+ProcessObject::ConstDataObjectArray
+ProcessObject
+::GetNamedInputs() const
+{
+  ConstDataObjectArray res;
+  for ( DataObjectPointerMap::const_iterator it = m_NamedInputs.begin(); it != m_NamedInputs.end(); it++ )
+    {
+    res.push_back( it->second.GetPointer() );
+    }
+
+  return res;
+}
+
+ProcessObject::DataObjectArray
+ProcessObject
+::GetAllInputs()
+{
+  DataObjectArray res;
+  for ( unsigned int idx = 0; idx < m_Inputs.size(); ++idx )
+    {
+    res.push_back( m_Inputs[idx].GetPointer() );
+    }
+  for ( DataObjectPointerMap::iterator it = m_NamedInputs.begin(); it != m_NamedInputs.end(); it++ )
+    {
+    res.push_back( it->second.GetPointer() );
+    }
+
+  return res;
+}
+
+ProcessObject::DataObjectArray
+ProcessObject
+::GetNamedInputs()
+{
+  DataObjectArray res;
+  for ( DataObjectPointerMap::iterator it = m_NamedInputs.begin(); it != m_NamedInputs.end(); it++ )
+    {
+    res.push_back( it->second.GetPointer() );
+    }
+
+  return res;
+}
+
+ProcessObject::ConstDataObjectArray
+ProcessObject
+::GetAllOutputs() const
+{
+  ConstDataObjectArray res;
+  for ( unsigned int idx = 0; idx < m_Outputs.size(); ++idx )
+    {
+    res.push_back( m_Outputs[idx].GetPointer() );
+    }
+  for ( DataObjectPointerMap::const_iterator it = m_NamedOutputs.begin(); it != m_NamedOutputs.end(); it++ )
+    {
+    res.push_back( it->second.GetPointer() );
+    }
+
+  return res;
+}
+
+ProcessObject::ConstDataObjectArray
+ProcessObject
+::GetNamedOutputs() const
+{
+  ConstDataObjectArray res;
+  for ( DataObjectPointerMap::const_iterator it = m_NamedOutputs.begin(); it != m_NamedOutputs.end(); it++ )
+    {
+    res.push_back( it->second.GetPointer() );
+    }
+
+  return res;
+}
+
+ProcessObject::DataObjectArray
+ProcessObject
+::GetAllOutputs()
+{
+  DataObjectArray res;
+  for ( unsigned int idx = 0; idx < m_Outputs.size(); ++idx )
+    {
+    res.push_back( m_Outputs[idx].GetPointer() );
+    }
+  for ( DataObjectPointerMap::iterator it = m_NamedOutputs.begin(); it != m_NamedOutputs.end(); it++ )
+    {
+    res.push_back( it->second.GetPointer() );
+    }
+
+  return res;
+}
+
+ProcessObject::DataObjectArray
+ProcessObject
+::GetNamedOutputs()
+{
+  DataObjectArray res;
+  for ( DataObjectPointerMap::iterator it = m_NamedOutputs.begin(); it != m_NamedOutputs.end(); it++ )
+    {
+    res.push_back( it->second.GetPointer() );
+    }
+
+  return res;
 }
 
 //typedef DataObject *DataObjectPointer;
@@ -469,6 +602,49 @@ ProcessObject
  */
 DataObject *
 ProcessObject
+::GetOutput(const std::string & key)
+{
+  DataObjectPointerMap::iterator it = m_NamedOutputs.find(key);
+  if ( it == m_NamedOutputs.end() )
+    {
+    return NULL;
+    }
+
+  return it->second.GetPointer();
+}
+
+const DataObject *
+ProcessObject
+::GetOutput(const std::string & key) const
+{
+  DataObjectPointerMap::const_iterator it = m_NamedOutputs.find(key);
+  if ( it == m_NamedOutputs.end() )
+    {
+    return NULL;
+    }
+
+  return it->second.GetPointer();
+}
+
+/**
+ *
+ */
+void
+ProcessObject
+::SetOutput(const std::string & key, DataObject * output)
+{
+  if ( m_NamedOutputs[key] != output )
+    {
+    m_NamedOutputs[key] = output;
+    this->Modified();
+    }
+}
+
+/**
+ *
+ */
+DataObject *
+ProcessObject
 ::GetInput(unsigned int i)
 {
   if ( m_Inputs.size() < i + 1 )
@@ -489,6 +665,49 @@ ProcessObject
     }
 
   return m_Inputs[i].GetPointer();
+}
+
+/**
+ *
+ */
+DataObject *
+ProcessObject
+::GetInput(const std::string & key)
+{
+  DataObjectPointerMap::iterator it = m_NamedInputs.find(key);
+  if ( it == m_NamedInputs.end() )
+    {
+    return NULL;
+    }
+
+  return it->second.GetPointer();
+}
+
+const DataObject *
+ProcessObject
+::GetInput(const std::string & key) const
+{
+  DataObjectPointerMap::const_iterator it = m_NamedInputs.find(key);
+  if ( it == m_NamedInputs.end() )
+    {
+    return NULL;
+    }
+
+  return it->second.GetPointer();
+}
+
+/**
+ *
+ */
+void
+ProcessObject
+::SetInput(const std::string & key, DataObject * input)
+{
+  if ( m_NamedInputs[key] != input )
+    {
+    m_NamedInputs[key] = input;
+    this->Modified();
+    }
 }
 
 /**
@@ -526,13 +745,12 @@ void
 ProcessObject
 ::SetReleaseDataFlag(bool val)
 {
-  unsigned int idx;
-
-  for ( idx = 0; idx < m_Outputs.size(); idx++ )
+  DataObjectArray outputs = this->GetAllOutputs();
+  for ( DataObjectArray::iterator it=outputs.begin(); it != outputs.end(); it++ )
     {
-    if ( m_Outputs[idx] )
+    if ( *it )
       {
-      m_Outputs[idx]->SetReleaseDataFlag(val);
+      (*it)->SetReleaseDataFlag(val);
       }
     }
 }
@@ -574,6 +792,21 @@ ProcessObject
     {
     os << indent << "No Inputs\n";
     }
+  if ( !m_NamedInputs.empty() )
+    {
+    for ( DataObjectPointerMap::const_iterator it = m_NamedInputs.begin(); it != m_NamedInputs.end(); it++ )
+      {
+      if ( it->second )
+        {
+        os << indent << "Input " << it->first;
+        os << ": (" << it->second.GetPointer() << ")\n";
+        }
+      }
+    }
+  else
+    {
+    os << indent << "No Named Inputs\n";
+    }
   if ( m_Outputs.size() )
     {
     DataObjectPointerArraySizeType idx;
@@ -586,6 +819,21 @@ ProcessObject
   else
     {
     os << indent << "No Output\n";
+    }
+  if ( !m_NamedOutputs.empty() )
+    {
+    for ( DataObjectPointerMap::const_iterator it = m_NamedOutputs.begin(); it != m_NamedOutputs.end(); it++ )
+      {
+      if ( it->second )
+        {
+        os << indent << "Output " << it->first;
+        os << ": (" << it->second.GetPointer() << ")\n";
+        }
+      }
+    }
+  else
+    {
+    os << indent << "No Named Outputs\n";
     }
 
   os << indent << "AbortGenerateData: " << ( m_AbortGenerateData ? "On\n" : "Off\n" );
@@ -636,18 +884,12 @@ ProcessObject
   //
   // Loop through the inputs
   //
-  unsigned int        idx;
-  DataObject::Pointer input;
-  for ( idx = 0; idx < m_Inputs.size(); ++idx )
+  DataObjectArray inputs = this->GetAllInputs();
+  for ( DataObjectArray::iterator it=inputs.begin(); it != inputs.end(); it++ )
     {
-    if ( m_Inputs[idx] )
+    if ( *it )
       {
-      input = m_Inputs[idx];
-
-      /**
-       * Propagate the ResetPipeline call
-       */
-      input->PropagateResetPipeline();
+      (*it)->PropagateResetPipeline();
       }
     }
 }
@@ -660,7 +902,6 @@ ProcessObject
 ::UpdateOutputInformation()
 {
   unsigned long                  t1, t2;
-  DataObjectPointerArraySizeType idx;
   DataObject *                   input;
   DataObject *                   output;
 
@@ -690,11 +931,12 @@ ProcessObject
   /**
    * Loop through the inputs
    */
-  for ( idx = 0; idx < m_Inputs.size(); ++idx )
+  DataObjectArray inputs = this->GetAllInputs();
+  for ( DataObjectArray::iterator it=inputs.begin(); it != inputs.end(); it++ )
     {
-    if ( m_Inputs[idx] )
+    if ( *it )
       {
-      input = m_Inputs[idx];
+      input = *it;
 
       /**
        * Propagate the UpdateOutputInformation call
@@ -735,9 +977,10 @@ ProcessObject
    */
   if ( t1 > m_OutputInformationMTime.GetMTime() )
     {
-    for ( idx = 0; idx < m_Outputs.size(); ++idx )
+    DataObjectArray outputs = this->GetAllOutputs();
+    for ( DataObjectArray::iterator it=outputs.begin(); it != outputs.end(); it++ )
       {
-      output = this->GetOutput( static_cast< int >( idx ) );
+      output = *it;
       if ( output )
         {
         output->SetPipelineMTime(t1);
@@ -801,12 +1044,12 @@ ProcessObject
    * through all the inputs.
    */
   m_Updating = true;
-  DataObjectPointerArraySizeType idx;
-  for ( idx = 0; idx < m_Inputs.size(); ++idx )
+  DataObjectArray inputs = this->GetAllInputs();
+  for ( DataObjectArray::iterator it=inputs.begin(); it != inputs.end(); it++ )
     {
-    if ( m_Inputs[idx] )
+    if ( *it )
       {
-      m_Inputs[idx]->PropagateRequestedRegion();
+      (*it)->PropagateRequestedRegion();
       }
     }
   m_Updating = false;
@@ -821,13 +1064,12 @@ void
 ProcessObject
 ::GenerateInputRequestedRegion()
 {
-  DataObjectPointerArraySizeType idx;
-
-  for ( idx = 0; idx < m_Inputs.size(); ++idx )
+  DataObjectArray inputs = this->GetAllInputs();
+  for ( DataObjectArray::iterator it=inputs.begin(); it != inputs.end(); it++ )
     {
-    if ( m_Inputs[idx] )
+    if ( *it )
       {
-      m_Inputs[idx]->SetRequestedRegionToLargestPossibleRegion();
+      (*it)->SetRequestedRegionToLargestPossibleRegion();
       }
     }
 }
@@ -839,13 +1081,12 @@ void
 ProcessObject
 ::GenerateOutputRequestedRegion(DataObject *output)
 {
-  DataObjectPointerArraySizeType idx;
-
-  for ( idx = 0; idx < m_Outputs.size(); ++idx )
+  DataObjectArray outputs = this->GetAllOutputs();
+  for ( DataObjectArray::iterator it=outputs.begin(); it != outputs.end(); it++ )
     {
-    if ( m_Outputs[idx] && m_Outputs[idx] != output )
+    if ( *it && *it != output )
       {
-      m_Outputs[idx]->SetRequestedRegion(output);
+      (*it)->SetRequestedRegion(output);
       }
     }
 }
@@ -857,15 +1098,14 @@ void
 ProcessObject
 ::PrepareOutputs()
 {
-  unsigned int idx;
-
   if ( this->GetReleaseDataBeforeUpdateFlag() )
     {
-    for ( idx = 0; idx < m_Outputs.size(); idx++ )
+    DataObjectArray outputs = this->GetAllOutputs();
+    for ( DataObjectArray::iterator it=outputs.begin(); it != outputs.end(); it++ )
       {
-      if ( m_Outputs[idx] )
+      if ( *it )
         {
-        m_Outputs[idx]->PrepareForNewData();
+        (*it)->PrepareForNewData();
         }
       }
     }
@@ -878,15 +1118,14 @@ void
 ProcessObject
 ::ReleaseInputs()
 {
-  unsigned int idx;
-
-  for ( idx = 0; idx < m_Inputs.size(); ++idx )
+  DataObjectArray inputs = this->GetAllInputs();
+  for ( DataObjectArray::iterator it=inputs.begin(); it != inputs.end(); it++ )
     {
-    if ( m_Inputs[idx] )
+    if ( *it )
       {
-      if ( m_Inputs[idx]->ShouldIReleaseData() )
+      if ( (*it)->ShouldIReleaseData() )
         {
-        m_Inputs[idx]->ReleaseData();
+        (*it)->ReleaseData();
         }
       }
     }
@@ -899,8 +1138,6 @@ void
 ProcessObject
 ::UpdateOutputData( DataObject *itkNotUsed(output) )
 {
-  DataObjectPointerArraySizeType idx;
-
   /**
    * prevent chasing our tail
    */
@@ -921,21 +1158,22 @@ ProcessObject
    * inputs since they may lead back to the same data object.
    */
   m_Updating = true;
-  if ( m_Inputs.size() == 1 )
+  DataObjectArray inputs = this->GetAllInputs();
+  if ( inputs.size() == 1 )
     {
-    if ( m_Inputs[0] )
+    if ( inputs[0] )
       {
-      m_Inputs[0]->UpdateOutputData();
+      inputs[0]->UpdateOutputData();
       }
     }
   else
     {
-    for ( idx = 0; idx < m_Inputs.size(); ++idx )
+    for ( DataObjectArray::iterator it=inputs.begin(); it != inputs.end(); it++ )
       {
-      if ( m_Inputs[idx] )
+      if ( *it )
         {
-        m_Inputs[idx]->PropagateRequestedRegion();
-        m_Inputs[idx]->UpdateOutputData();
+        (*it)->PropagateRequestedRegion();
+        (*it)->UpdateOutputData();
         }
       }
     }
@@ -1009,11 +1247,12 @@ ProcessObject
   /**
    * Now we have to mark the data as up to date.
    */
-  for ( idx = 0; idx < m_Outputs.size(); ++idx )
+  DataObjectArray outputs = this->GetAllOutputs();
+  for ( DataObjectArray::iterator it=outputs.begin(); it != outputs.end(); it++ )
     {
-    if ( m_Outputs[idx] )
+    if ( *it )
       {
-      m_Outputs[idx]->DataHasBeenGenerated();
+      (*it)->DataHasBeenGenerated();
       }
     }
 
@@ -1053,6 +1292,18 @@ ProcessObject
       m_CachedInputReleaseDataFlags[idx] = false;
       }
     }
+  for ( DataObjectPointerMap::iterator it = m_NamedInputs.begin(); it != m_NamedInputs.end(); it++ )
+    {
+    if ( it->second )
+      {
+      m_CachedNamedInputReleaseDataFlags[it->first] = it->second->GetReleaseDataFlag();
+      it->second->ReleaseDataFlagOff();
+      }
+    else
+      {
+      m_CachedNamedInputReleaseDataFlags[it->first] = false;
+      }
+    }
 }
 
 /**
@@ -1073,6 +1324,14 @@ ProcessObject
       m_Inputs[idx]->SetReleaseDataFlag(m_CachedInputReleaseDataFlags[idx]);
       }
     }
+  for ( DataObjectPointerMap::iterator it = m_NamedInputs.begin(); it != m_NamedInputs.end(); it++ )
+    {
+    if ( it->second )
+      {
+      it->second->SetReleaseDataFlag(m_CachedNamedInputReleaseDataFlags[it->first]);
+      }
+    }
+  m_CachedNamedInputReleaseDataFlags.clear();
 }
 
 /**
@@ -1084,13 +1343,15 @@ ProcessObject
 {
   DataObjectPointer input, output;
 
-  if ( m_Inputs.size() && m_Inputs[0] )
+  DataObjectArray inputs = this->GetAllInputs();
+  if ( inputs.size() && inputs[0] )
     {
     input = m_Inputs[0];
 
-    for ( unsigned int idx = 0; idx < m_Outputs.size(); ++idx )
+    DataObjectArray outputs = this->GetAllOutputs();
+    for ( DataObjectArray::iterator it=outputs.begin(); it != outputs.end(); it++ )
       {
-      output = this->GetOutput(idx);
+      output = *it;
       if ( output )
         {
         output->CopyInformation(input);
