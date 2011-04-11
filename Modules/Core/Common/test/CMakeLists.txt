@@ -111,11 +111,6 @@ set(BASELINE "${ITK_DATA_ROOT}/Baseline/Common")
 set(TEMP ${ITK_TEST_OUTPUT_DIR})
 
 #-----------------------------------------------------------------------------
-if(ITK_USE_FLOATINGPOINTEXCEPTIONS)
-  set_source_files_properties(itkFloatingPointExceptionsTest.cxx
-    COMPILE_FLAGS -DITK_USE_FPE)
-endif(ITK_USE_FLOATINGPOINTEXCEPTIONS)
-
 add_executable( itkMathTest itkMathTest.cxx )
 add_test(NAME itkMathTest COMMAND itkMathTest)
 target_link_libraries(itkMathTest ${ITK-Common_LIBRARIES})
@@ -248,7 +243,9 @@ endif()
 # this test depends on being able to raise C++ exceptions from
 # the signal handler. This is apparently not something that
 # works properly
-if(ITK_USE_FLOATINGPOINTEXCEPTIONS)
+if("${CMAKE_SYSTEM_NAME}" MATCHES "Linux" OR
+    "${CMAKE_SYSTEM_NAME}" MATCHES "Darwin"
+    )
   add_test(NAME itkFloatingPointExceptionsTest1 COMMAND ITK-CommonTestDriver2
     itkFloatingPointExceptionsTest DivByZero)
   add_test(NAME itkFloatingPointExceptionsTest2 COMMAND ITK-CommonTestDriver2
@@ -269,7 +266,8 @@ if(ITK_USE_FLOATINGPOINTEXCEPTIONS)
     PROPERTIES WILL_FAIL TRUE
     )
 
-endif(ITK_USE_FLOATINGPOINTEXCEPTIONS)
+endif("${CMAKE_SYSTEM_NAME}" MATCHES "Linux" OR
+    "${CMAKE_SYSTEM_NAME}" MATCHES "Darwin")
 
 add_executable(itkSystemInformationTest itkSystemInformationTest.cxx)
 target_link_libraries(itkSystemInformationTest  ${ITK-Common_LIBRARIES})
