@@ -97,11 +97,19 @@ void VariableLengthVector< TValueType >
 {
   if ( m_Data )
     {
-    if ( size > m_NumElements )
+    if ( size != m_NumElements )
       {
       TValueType *temp = this->AllocateElements(size);
-      // only copy the portion of the data used in the old buffer
-      memcpy( temp, m_Data, m_NumElements * sizeof( TValueType ) );
+      if ( size > m_NumElements )
+        {
+        // only copy the portion of the data used in the old buffer
+        memcpy( temp, m_Data, m_NumElements * sizeof( TValueType ) );
+        }
+      else
+        {
+        // only copy elements 0...size-1
+        memcpy( temp, m_Data, size * sizeof( TValueType ) );
+        }
       if ( m_Data && m_LetArrayManageMemory )
         {
         delete[] m_Data;
