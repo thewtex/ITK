@@ -20,6 +20,7 @@
 
 #include "itkBinaryFunctorImageFilter.h"
 #include "itkNumericTraits.h"
+#include "itkVariableLengthVector.h"
 
 namespace itk
 {
@@ -57,7 +58,7 @@ class MaskInput
 public:
   typedef typename NumericTraits< TInput >::AccumulateType AccumulatorType;
 
-  MaskInput():m_OutsideValue(NumericTraits< TOutput >::Zero) {}
+  MaskInput() {}
   ~MaskInput() {}
   bool operator!=(const MaskInput &) const
   {
@@ -159,6 +160,17 @@ public:
     return this->GetFunctor().GetOutsideValue();
   }
 
+  void BeforeThreadedGenerateData()
+  {
+    typename TOutputImage::IndexType index =
+      this->GetOutput()->GetBufferedRegion().GetIndex();
+
+    typename TOutputImage::PixelType referencePixel =
+      this->GetOutput()->GetPixel( index );
+
+    this->CheckOutsideValue( referencePixel );
+  }
+
 #ifdef ITK_USE_CONCEPT_CHECKING
   /** Begin concept checking */
   itkConceptMacro( MaskEqualityComparableCheck,
@@ -169,7 +181,11 @@ public:
   /** End concept checking */
 #endif
 protected:
-  MaskImageFilter() {}
+  MaskImageFilter()
+    {
+    typename TOutputImage::PixelType referencePixel;
+    this->InitializeOutsideValue( referencePixel );
+    }
   virtual ~MaskImageFilter() {}
 
   void PrintSelf(std::ostream & os, Indent indent) const
@@ -181,6 +197,34 @@ protected:
 private:
   MaskImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);  //purposely not implemented
+
+  template < class TPixelType >
+  void InitializeOutsideValue( const TPixelType & referencePixel )
+  {
+    this->GetFunctor().SetOutsideValue( NumericTraits< TPixelType >::Zero );
+  }
+
+  template < class TValue >
+  void InitializeOutsideValue( const VariableLengthVector< TValue > & referencePixel )
+  {
+    this->GetFunctor().SetOutsideValue( VariableLengthVector< TValue >(0) );
+  }
+
+  template < class TPixelType >
+  void CheckOutsideValue( const TPixelType & referencePixel ) {}
+
+  template < class TValue >
+  void CheckOutsideValue( const VariableLengthVector< TValue > & referencePixel )
+  {
+    if ( this->GetFunctor().GetOutsideValue().GetSize() !=
+         referencePixel.GetSize() )
+      {
+      itkExceptionMacro(
+        << "number of components in OutsideValue is not the same as the "
+        << "number of components in the image" );
+      }
+  }
+
 };
 } // end namespace itk
 
