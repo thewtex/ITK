@@ -80,6 +80,19 @@ macro(add_test)
 endmacro()
 
 #-----------------------------------------------------------------------------
+# Load macros to manage data download
+include(ExternalData)
+list(APPEND ExternalData_URL_TEMPLATES
+  "http://midas.kitware.com/api/rest/midas.bitstream.by.hash?hash=%(hash)&algorithm=%(algo)"
+  )
+
+#-----------------------------------------------------------------------------
+# Helper macro to add ITK tests with data in the ITKData group.
+macro(itk_add_test)
+  ExternalData_add_test(ITKData ${ARGN})
+endmacro()
+
+#-----------------------------------------------------------------------------
 # ITK build configuration options.
 option(BUILD_SHARED_LIBS "Build ITK with shared libraries." OFF)
 set(ITK_BUILD_SHARED_LIBS ${BUILD_SHARED_LIBS})
@@ -193,6 +206,12 @@ endif()
 
 # Location of ITK Example Data.
 set(ITK_EXAMPLE_DATA_ROOT "${ITK_SOURCE_DIR}/Examples/Data")
+
+#-----------------------------------------------------------------------------
+# Enable the download and use of BrainWeb datasets.
+# When this data is available, additional 3D tests are enabled.
+option(ITK_USE_BRAINWEB_DATA "Download and use BrainWeb data for advanced testing" OFF)
+mark_as_advanced(ITK_USE_BRAINWEB_DATA)
 
 option(ITK_USE_FLOATINGPOINTEXCEPTIONS
       "Enable Floating Point Exceptions for Testing" OFF)
@@ -540,3 +559,8 @@ endif()
 #----------------------------------------------------------------------
 # Provide an option for generating documentation.
 add_subdirectory(Utilities/Doxygen)
+
+#----------------------------------------------------------------------
+# Create target to download data from the ITKData group.  This must come after
+# all tests have been added that reference the group, so we put it last.
+ExternalData_Add_Target(ITKData)
