@@ -20,6 +20,7 @@
 
 #include "itkBinaryFunctorImageFilter.h"
 #include "itkNumericTraits.h"
+#include "itkVariableLengthVector.h"
 
 namespace itk
 {
@@ -57,7 +58,7 @@ class MaskInput
 public:
   typedef typename NumericTraits< TInput >::AccumulateType AccumulatorType;
 
-  MaskInput():m_OutsideValue(NumericTraits< TOutput >::Zero) {}
+  MaskInput() {}
   ~MaskInput() {}
   bool operator!=(const MaskInput &) const
   {
@@ -151,12 +152,22 @@ public:
       {
       this->Modified();
       this->GetFunctor().SetOutsideValue(outsideValue);
+      m_OutsideValueInitialized = true;
       }
   }
 
   const typename TOutputImage::PixelType & GetOutsideValue() const
   {
     return this->GetFunctor().GetOutsideValue();
+  }
+
+  void BeforeThreadedGenerateData()
+  {
+    typename TOutputImage::IndexType index;
+    index.Fill( NumericTraits< typename TOutputImage::IndexValueType >::Zero );
+    typename TOutputImage::PixelType referencePixel =
+      this->GetOutput()->GetPixel( index );
+    PrepareOutsideValue( referencePixel );
   }
 
 #ifdef ITK_USE_CONCEPT_CHECKING
@@ -169,7 +180,7 @@ public:
   /** End concept checking */
 #endif
 protected:
-  MaskImageFilter() {}
+  MaskImageFilter() : m_OutsideValueInitialized(false) {}
   virtual ~MaskImageFilter() {}
 
   void PrintSelf(std::ostream & os, Indent indent) const
@@ -181,6 +192,38 @@ protected:
 private:
   MaskImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);  //purposely not implemented
+
+  bool m_OutsideValueInitialized;
+
+  template < class TPixelType >
+  void PrepareOutsideValue( const TPixelType & referencePixel )
+  {
+    if ( !m_OutsideValueInitialized )
+      {
+      this->SetOutsideValue( NumericTraits< TPixelType >::Zero );
+      }
+  }
+
+  template < class TValue >
+  void PrepareOutsideValue( const VariableLengthVector< TValue > & referencePixel )
+  {
+    // Resize the outside value nondestructively to the same size as
+    // the reference pixel.
+    VariableLengthVector< TValue > outsideValue = this->GetOutsideValue();
+    unsigned int previousSize = outsideValue.GetSize();
+    bool destroyExistingData = false;
+    outsideValue.SetSize( referencePixel.GetSize(), destroyExistingData );
+
+    // If the reference vector pixel is longer than the previous
+    // outside value, initialize the new elements to zero.
+    for ( unsigned int i = previousSize; i < outsideValue.GetSize(); i++ )
+      {
+      outsideValue[i] = NumericTraits< TValue >::Zero;
+      }
+
+    this->SetOutsideValue( outsideValue );
+  }
+
 };
 } // end namespace itk
 

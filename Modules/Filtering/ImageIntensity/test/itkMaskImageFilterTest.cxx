@@ -19,6 +19,7 @@
 #pragma warning ( disable : 4786 )
 #endif
 #include "itkImage.h"
+#include "itkVectorImage.h"
 
 #include "itkImageRegionIteratorWithIndex.h"
 #include "itkMaskImageFilter.h"
@@ -30,9 +31,9 @@ int itkMaskImageFilterTest(int, char* [] )
   const unsigned int myDimension = 3;
 
   // Declare the types of the images
-  typedef itk::Image<float, myDimension>  myImageType1;
+  typedef itk::Image<float, myDimension>           myImageType1;
   typedef itk::Image<unsigned short, myDimension>  myImageType2;
-  typedef itk::Image<float, myDimension>  myImageType3;
+  typedef itk::Image<float, myDimension>           myImageType3;
 
   // Declare the type of the index to access images
   typedef itk::Index<myDimension>         myIndexType;
@@ -153,11 +154,126 @@ int itkMaskImageFilterTest(int, char* [] )
 
   filter->Print( std::cout );
 
+  // Vector image tests
+  typedef itk::VectorImage<float, myDimension>
+    myVectorImageType;
+  typedef itk::ImageRegionIteratorWithIndex<myVectorImageType>
+    myVectorIteratorType;
+
+  myVectorImageType::Pointer inputVectorImage  = myVectorImageType::New();
+  inputVectorImage->SetLargestPossibleRegion( region );
+  inputVectorImage->SetBufferedRegion( region );
+  inputVectorImage->SetRequestedRegion( region );
+  inputVectorImage->SetNumberOfComponentsPerPixel(3);
+  inputVectorImage->Allocate();
+
+  typedef itk::MaskImageFilter< myVectorImageType,
+                                myImageType2,
+                                myVectorImageType> myVectorFilterType;
+
+  myVectorFilterType::Pointer vectorFilter = myVectorFilterType::New();
+  vectorFilter->SetInput1( inputVectorImage );
+  vectorFilter->SetMaskImage( inputImageB );
+  vectorFilter->Update();
+
+  myVectorImageType::PixelType expectedOutsideValue;
+  expectedOutsideValue.SetSize(3);
+  expectedOutsideValue.Fill( 0.0 );
+  if ( expectedOutsideValue.GetSize() != vectorFilter->GetOutsideValue().GetSize()
+       || expectedOutsideValue != vectorFilter->GetOutsideValue() )
+    {
+    std::cerr << "Unexpected default outside value" << std::endl;
+    std::cerr << "Expected: " << expectedOutsideValue << std::endl;
+    std::cerr << "Got: " << vectorFilter->GetOutsideValue() << std::endl;
+    return EXIT_FAILURE;
+    }
+
+  myVectorImageType::PixelType outsideValue = myVectorImageType::PixelType( 3 );
+  outsideValue[0] = 1.0;
+  outsideValue[1] = 2.0;
+  outsideValue[2] = 3.0;
+  expectedOutsideValue = outsideValue;
+  vectorFilter->SetOutsideValue( outsideValue );
+
+  if ( vectorFilter->GetOutsideValue() != expectedOutsideValue )
+    {
+    std::cerr << "Unexpected outside value" << std::endl;
+    std::cerr << "Expected: " << expectedOutsideValue << std::endl;
+    std::cerr << "Got: " << vectorFilter->GetOutsideValue() << std::endl;
+    return EXIT_FAILURE;
+    }
+
+  // Add components to image
+  inputVectorImage->Initialize();
+  inputVectorImage->SetLargestPossibleRegion( region );
+  inputVectorImage->SetBufferedRegion( region );
+  inputVectorImage->SetRequestedRegion( region );
+  inputVectorImage->SetNumberOfComponentsPerPixel( 5 );
+  inputVectorImage->Allocate();
+  vectorFilter->Update();
+
+  if ( vectorFilter->GetOutsideValue().GetSize() != 5 )
+    {
+    std::cerr << "Unexpected number of components" << std::endl;
+    std::cerr << "Expected: 5" << std::endl;
+    std::cerr << "Got: " << vectorFilter->GetOutsideValue().GetSize() << std::endl;
+    return EXIT_FAILURE;
+    }
+  vectorFilter->Update();
+
+  expectedOutsideValue.SetSize( 5 );
+  expectedOutsideValue[0] = 1.0;
+  expectedOutsideValue[1] = 2.0;
+  expectedOutsideValue[2] = 3.0;
+  expectedOutsideValue[3] = 0.0;
+  expectedOutsideValue[4] = 0.0;
+
+  if ( vectorFilter->GetOutsideValue() != expectedOutsideValue )
+    {
+    std::cerr << "Unexpected outside value after components added" << std::endl;
+    std::cerr << "Expected: " << expectedOutsideValue << std::endl;
+    std::cerr << "Got: " << vectorFilter->GetOutsideValue() << std::endl;
+    return EXIT_FAILURE;
+    }
+
+  // Remove components from image
+  inputVectorImage->Initialize();
+  inputVectorImage->SetLargestPossibleRegion( region );
+  inputVectorImage->SetBufferedRegion( region );
+  inputVectorImage->SetRequestedRegion( region );
+  inputVectorImage->SetNumberOfComponentsPerPixel( 2 );
+  inputVectorImage->Allocate();
+  vectorFilter->Update();
+
+  expectedOutsideValue.SetSize( 2, false );
+  expectedOutsideValue[0] = 1.0;
+  expectedOutsideValue[1] = 2.0;
+
+  if ( vectorFilter->GetOutsideValue() != expectedOutsideValue )
+    {
+    std::cerr << "Unexpected outside value after components removed" << std::endl;
+    std::cerr << "Expected: " << expectedOutsideValue << std::endl;
+    std::cerr << "Got: " << vectorFilter->GetOutsideValue() << std::endl;
+    return EXIT_FAILURE;
+    }
+
+  // Test resetting to default value
+  vectorFilter->SetOutsideValue( myVectorImageType::PixelType() );
+  vectorFilter->Update();
+  expectedOutsideValue.SetSize( 2 );
+  expectedOutsideValue.Fill( 0.0 );
+  if ( vectorFilter->GetOutsideValue() != expectedOutsideValue )
+    {
+    std::cerr << "Unexpected outside value" << std::endl;
+    std::cerr << "Expected: " << expectedOutsideValue << std::endl;
+    std::cerr << "Got: " << vectorFilter->GetOutsideValue() << std::endl;
+    return EXIT_FAILURE;
+    }
+
+
+  std::cout << "[PASSED]" << std::endl;
+
   // All objects should be automatically destroyed at this point
   return EXIT_SUCCESS;
 
 }
-
-
-
-
