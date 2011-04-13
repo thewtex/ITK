@@ -136,6 +136,9 @@ BorderQuadEdgeMeshFilter< TInputMesh, TOutputMesh >::ComputeLongestBorder()
       oborder_it = b_it;
       }
     }
+
+  delete list;
+
   return ( *oborder_it );
 }
 #endif
