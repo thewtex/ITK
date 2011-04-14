@@ -244,7 +244,8 @@ endif()
 # the signal handler. This is apparently not something that
 # works properly
 if("${CMAKE_SYSTEM_NAME}" MATCHES "Linux" OR
-    "${CMAKE_SYSTEM_NAME}" MATCHES "Darwin"
+    "${CMAKE_SYSTEM_NAME}" MATCHES "Darwin" OR
+    "${CMAKE_SYSTEM_NAME}" MATCHES "SunOS"
     )
   add_test(NAME itkFloatingPointExceptionsTest1 COMMAND ITK-CommonTestDriver1
     itkFloatingPointExceptionsTest DivByZero)
@@ -265,9 +266,7 @@ if("${CMAKE_SYSTEM_NAME}" MATCHES "Linux" OR
     itkFloatingPointExceptionsTest5
     PROPERTIES WILL_FAIL TRUE
     )
-
-endif("${CMAKE_SYSTEM_NAME}" MATCHES "Linux" OR
-    "${CMAKE_SYSTEM_NAME}" MATCHES "Darwin")
+endif()
 
 add_executable(itkSystemInformationTest itkSystemInformationTest.cxx)
 target_link_libraries(itkSystemInformationTest  ${ITK-Common_LIBRARIES})
