@@ -355,6 +355,22 @@ void FloatingPointExceptions
 
 #else // defined( _WIN32 )
 
+#if defined(__sun)
+//
+// DUMMY functions for the moment on SUNOS
+static int
+feenableexcept (unsigned int excepts)
+{
+  return 0;
+}
+
+static int
+fedisableexcept (unsigned int excepts)
+{
+  return 0;
+}
+#endif
+
 void
 FloatingPointExceptions
 ::Enable()
