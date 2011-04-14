@@ -68,6 +68,21 @@ SET(CTEST_CUSTOM_WARNING_EXCEPTION
   "Warning \\(Anachronism\\)"
   "attempted multiple inclusion of file"
   "warning LNK4221: This object file does not define any previously undefined public symbols"
+  "ITK/Modules/ThirdParty/DICOMParser/.*warning.*"
+  "ITK/Modules/ThirdParty/Expat/.*warning.*"
+  "ITK/Modules/ThirdParty/GDCM/.*warning.*"
+  "ITK/Modules/ThirdParty/JPEG/.*warning.*"
+  "ITK/Modules/ThirdParty/KWSys/.*warning.*"
+  "ITK/Modules/ThirdParty/MetaIO/.*warning.*"
+  "ITK/Modules/ThirdParty/Netlib/.*warning.*"
+  "ITK/Modules/ThirdParty/NIFTI/.*warning.*"
+  "ITK/Modules/ThirdParty/NrrdIO/.*warning.*"
+  "ITK/Modules/ThirdParty/OpenJPEG/.*warning.*"
+  "ITK/Modules/ThirdParty/PNG/.*warning.*"
+  "ITK/Modules/ThirdParty/TIFF/.*warning.*"
+  "ITK/Modules/ThirdParty/VNL/.*warning.*"
+  "ITK/Modules/ThirdParty/VNLInstantiation/.*warning.*"
+  "ITK/Modules/ThirdParty/ZLIB/.*warning.*"
   )
 
 IF(APPLE)
