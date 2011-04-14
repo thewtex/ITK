@@ -68,6 +68,7 @@ SET(CTEST_CUSTOM_WARNING_EXCEPTION
   "Warning \\(Anachronism\\)"
   "attempted multiple inclusion of file"
   "warning LNK4221: This object file does not define any previously undefined public symbols"
+  "ITK/Modules/ThirdParty/.*warning.*"
   )
 
 IF(APPLE)
