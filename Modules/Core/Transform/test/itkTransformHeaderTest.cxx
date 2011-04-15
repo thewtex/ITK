@@ -53,8 +53,9 @@
 #include "itkScaleVersor3DTransform.txx"
 #include "itkSimilarity2DTransform.txx"
 #include "itkSimilarity3DTransform.txx"
-#include "itkThinPlateR2LogRSplineKernelTransform.txx"
-#include "itkThinPlateSplineKernelTransform.txx"
+#include "itkThinPlateSplineKernelTransform.h"
+#include "itkThinPlateR2LogRSplineKernelTransform.h"
+#include "itkThinPlateSplineKernelTransformBase.txx"
 #include "itkTransform.txx"
 #include "itkTransformBase.h"
 #include "itkTransformFactory.h"
@@ -70,6 +71,7 @@
 #include "itkVersorRigid3DTransform.txx"
 #include "itkVersorTransform.txx"
 #include "itkVolumeSplineKernelTransform.txx"
+
 
 
 
