@@ -64,6 +64,9 @@ namespace itk
     // actual CPU->GPU memory copy takes place here
     virtual void MakeGPUBufferUpToDate();
 
+    // Grafting GPU Image Data
+    virtual void Graft(const typename GPUImageDataManager* data);
+
   protected:
 
     GPUImageDataManager() { m_Image = NULL; };

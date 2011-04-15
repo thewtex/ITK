@@ -11,8 +11,13 @@ namespace itk
  *
  * \brief class to abstract the behaviour of the GPU filters.
  *
- * FIXME   Won-Ki to write more documentation here...
+ * GPUImageToImageFilter is the GPU version of ImageToImageFilter.
+ * This class can accept both CPU and GPU image as input and output,
+ * and apply filter accordingly. If GPU is available for use, then
+ * GPUGenerateData() is called. Otherwise, GenerateData() in the
+ * parent class (i.e., ImageToImageFilter) will be called.
  *
+ * \ingroup GPUCommon
  */
 template< class TInputImage, class TOutputImage, class TParentImageFilter = ImageToImageFilter< TInputImage, TOutputImage > >
 class ITK_EXPORT GPUImageToImageFilter: public TParentImageFilter
@@ -62,6 +67,9 @@ protected:
   // GPU kernel manager
   typename GPUKernelManager::Pointer m_KernelManager;
 
+  // GPU kernel handle
+  int m_KernelHandle;
+
 private:
   GPUImageToImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);        //purposely not implemented
@@ -70,21 +78,6 @@ private:
 };
 
 } // end namespace itk
-
-// Define instantiation macro for this template.
-#define ITK_TEMPLATE_GPUImageToImageFilter(_, EXPORT, TypeX, TypeY)                  \
-  namespace itk                                                                   \
-{                                                                               \
-  _( 2 ( class EXPORT GPUImageToImageFilter< ITK_TEMPLATE_2 TypeX > ) )              \
-  namespace Templates                                                             \
-{                                                                               \
-  typedef GPUImageToImageFilter< ITK_TEMPLATE_2 TypeX > GPUImageToImageFilter##TypeY; \
-}                                                                               \
-}
-
-#if ITK_TEMPLATE_EXPLICIT
-#include "Templates/itkGPUImageToImageFilter+-.h"
-#endif
 
 #if ITK_TEMPLATE_TXX
 #include "itkGPUImageToImageFilter.txx"
