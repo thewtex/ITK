@@ -51,6 +51,7 @@ ITK-DeformationField
 ITK-DiffusionTensorImage
 ITK-DistanceMap
 ITK-FFT
+ITK-FastMarching
 ITK-ImageCompare
 ITK-ImageCompose
 ITK-ImageFeature
@@ -134,5 +135,11 @@ foreach( group ${group_list})
       foreach (itk-module ${${group}_module_list} )
          list(APPEND ITK_MODULE_${itk-module}_REQUEST_BY ITKGroup_${group})
       endforeach()
+    endif()
+    # Hide group options if building all modules anyway.
+    if(ITK_BUILD_ALL_MODULES)
+      set_property(CACHE ITKGroup_${group} PROPERTY TYPE INTERNAL)
+    else()
+      set_property(CACHE ITKGroup_${group} PROPERTY TYPE BOOL)
     endif()
 endforeach()
