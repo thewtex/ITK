@@ -196,6 +196,8 @@ bool GDCMImageIO::CanReadFile(const char *filename)
   // We are parsing the header one time here:
   gdcm::ImageReader reader;
   reader.SetFileName(filename);
+
+
   if ( reader.Read() )
     {
     return true;
@@ -587,6 +589,7 @@ void GDCMImageIO::Write(const void *buffer)
     // into the DICOM header:
     if ( b /*tag != gdcm::Tag(0xffff,0xffff)*/ /*dictEntry*/ )
       {
+
       const gdcm::DictEntry & dictEntry = pubdict.GetDictEntry(tag);
       gdcm::VR::VRType        vrtype = dictEntry.GetVR();
       if ( dictEntry.GetVR() == gdcm::VR::SQ )
@@ -682,7 +685,6 @@ void GDCMImageIO::Write(const void *buffer)
 
     ++itr;
     }
-  //std::cout << header << std::endl;
 
   //this->SetNumberOfDimensions(3);
   //gdcm::Image &image = writer.GetImage();
@@ -706,8 +708,17 @@ void GDCMImageIO::Write(const void *buffer)
     }
   else
     {
-    image.SetOrigin(2, 0);
+    if( header.FindDataElement( gdcm::Tag(0x0020, 0x0032 ) )){
+  	  const gdcm::DataElement &de = header.GetDataElement( gdcm::Tag(0x0020, 0x0032) );
+  	  std::pair<std::string, std::string> s = sf.ToStringPair( de.GetTag() );
+  	  std::string value= s.second;
+  	  sscanf(  value.c_str(), "%lf\\%lf\\%lf", &(m_Origin[0]), &(m_Origin[1]), &(m_Origin[2]) );
+  	  image.SetOrigin(0, m_Origin[0]);
+  	  image.SetOrigin(1, m_Origin[1]);
+  	  image.SetOrigin(2, m_Origin[2]);
     }
+    }
+
   if ( m_NumberOfDimensions > 2 && m_Dimensions[2] != 1 )
     {
     // resize num of dim to 3:
@@ -736,6 +747,7 @@ void GDCMImageIO::Write(const void *buffer)
     {
     image.SetDirectionCosines(5, 0);
     }
+
 
   // reset any previous value:
   m_RescaleSlope = 1.0;
@@ -1127,6 +1139,7 @@ bool GDCMImageIO::GetLabelFromTag(const std::string & tag,
 void GDCMImageIO::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Internal Component Type: " << this->GetComponentTypeAsString(m_InternalComponentType)
      << std::endl;
   os << indent << "RescaleSlope: " << m_RescaleSlope << std::endl;
