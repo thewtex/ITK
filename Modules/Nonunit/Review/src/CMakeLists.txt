@@ -13,6 +13,7 @@ itkPhilipsRECImageIO.cxx
 itkPhilipsRECImageIOFactory.cxx
 itkVoxBoCUBImageIO.cxx
 itkVoxBoCUBImageIOFactory.cxx
+itkCSVFileReaderBase.cxx
 )
 
 add_library(ITK-Review ${ITK-Review_SRC})
