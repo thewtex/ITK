@@ -77,6 +77,18 @@ MetaDataDictionary
 
   return constentry;
 }
+MetaDataObjectBase::Pointer &
+MetaDataDictionary
+::Get(const std::string &key) const
+{
+  return ( *m_Dictionary )[key];
+}
+void
+MetaDataDictionary
+::Set(const std::string & key, MetaDataObjectBase * object)
+{
+  (*m_Dictionary)[key] = object;
+}
 
 bool
 MetaDataDictionary

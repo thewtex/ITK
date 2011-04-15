@@ -74,6 +74,8 @@ public:
 
   const MetaDataObjectBase   * operator[](const std::string &) const;
 
+  MetaDataObjectBase::Pointer & Get(const std::string &) const;
+  void Set(const std::string &, MetaDataObjectBase * );
   bool HasKey(const std::string &) const;
 
   /** \warning the following functions SHOULD NOT be used with
