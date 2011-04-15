@@ -20,4 +20,5 @@ itk_module(ITK-Transform
 )
 
 # Extra test dependencies on ImageFunction and ImageGrid are introduced by itkBSplineDeformableTransformTest.
+# Extra test dependency on ImageFunction and ImageGrid is introduced by itkBSplineDeformableTransformTest.
 # Extra test dependency on  SpatialObjects is introduced by itkCenteredVersorTransformInitializerTest.

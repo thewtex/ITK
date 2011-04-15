@@ -30,6 +30,10 @@
 #include "itkThinPlateSplineKernelTransform.h"
 #include "itkThinPlateR2LogRSplineKernelTransform.h"
 #include "itkVolumeSplineKernelTransform.h"
+#include "itkThinPlateSplineKernelTransformBase.h"
+#include "itkThinPlateSplineRadialBasisFunctionNegativeR.h"
+#include "itkThinPlateSplineRadialBasisFunctionR2LogR.h"
+
 
 
 int itkSplineKernelTransformTest(int , char* [] )
@@ -39,12 +43,16 @@ int itkSplineKernelTransformTest(int , char* [] )
 
   // 2-D case
   int i, j;
-
-  typedef itk::ElasticBodySplineKernelTransform<double, 2>           EBSTransform2DType;
-  typedef itk::ElasticBodyReciprocalSplineKernelTransform<double, 2> EBRSTransform2DType;
-  typedef itk::ThinPlateSplineKernelTransform<double, 2>             TPSTransform2DType;
-  typedef itk::ThinPlateR2LogRSplineKernelTransform<double, 2>       TPR2LRSTransform2DType;
-  typedef itk::VolumeSplineKernelTransform<double, 2>                VSTransform2DType;
+  typedef double                                                         ScalarType;
+  typedef itk::ElasticBodySplineKernelTransform<ScalarType, 2>           EBSTransform2DType;
+  typedef itk::ElasticBodyReciprocalSplineKernelTransform<ScalarType, 2> EBRSTransform2DType;
+  typedef itk::ThinPlateSplineKernelTransform<ScalarType, 2>             ThinPlateSplineTransform2DType;
+  typedef itk::ThinPlateR2LogRSplineKernelTransform<ScalarType, 2>       TPR2LRSTransform2DType;
+  typedef itk::VolumeSplineKernelTransform<ScalarType, 2>                VSTransform2DType;
+  typedef itk::ThinPlateSplineKernelTransformBase<ScalarType, 2>         tpsBase2DType;
+  typedef itk::ThinPlateSplineRadialBasisFunctionR<ScalarType>           RFunctionType;
+  typedef itk::ThinPlateSplineRadialBasisFunctionNegativeR<ScalarType>   NegativeRFunctionType;
+  typedef itk::ThinPlateSplineRadialBasisFunctionR2LogR<ScalarType>      R2LogRFunctionType;
 
   typedef EBSTransform2DType::InputPointType PointType2D;
   typedef EBSTransform2DType::PointsIterator Points2DIteratorType;
@@ -54,11 +62,15 @@ int itkSplineKernelTransformTest(int , char* [] )
   PointType2D targetPoint2D;
   PointType2D mappedPoint2D;
 
-  EBSTransform2DType::Pointer     ebs2D       = EBSTransform2DType::New();
-  EBRSTransform2DType::Pointer    ebrs2D      = EBRSTransform2DType::New();
-  TPSTransform2DType::Pointer     tps2D       = TPSTransform2DType::New();
-  TPR2LRSTransform2DType::Pointer tpr2lrs2D   = TPR2LRSTransform2DType::New();
-  VSTransform2DType::Pointer      vs2D        = VSTransform2DType::New();
+  EBSTransform2DType::Pointer          ebs2D          = EBSTransform2DType::New();
+  EBRSTransform2DType::Pointer         ebrs2D         = EBRSTransform2DType::New();
+  ThinPlateSplineTransform2DType::Pointer tps2D       = ThinPlateSplineTransform2DType::New();
+  TPR2LRSTransform2DType::Pointer      tpr2lrs2D      = TPR2LRSTransform2DType::New();
+  VSTransform2DType::Pointer           vs2D           = VSTransform2DType::New();
+  tpsBase2DType::Pointer               tps2DBase      = tpsBase2DType::New();
+  NegativeRFunctionType::Pointer       NegativeRKernel= NegativeRFunctionType::New();
+  RFunctionType::Pointer               rKernel        = RFunctionType::New();
+  R2LogRFunctionType::Pointer          r2logrKernel   = R2LogRFunctionType::New();
 
   // Reserve memory for the number of points
   PointSetType2D::Pointer sourceLandmarks2D = PointSetType2D::New();
@@ -158,7 +170,7 @@ int itkSplineKernelTransformTest(int , char* [] )
 
 
 
-  std::cout << "TPS 2D Test:" << std::endl;
+  std::cout << "ThinPlateSpline 2D:" << std::endl;
   tps2D->SetSourceLandmarks( sourceLandmarks2D );
   tps2D->SetTargetLandmarks( targetLandmarks2D );
 
@@ -184,7 +196,7 @@ int itkSplineKernelTransformTest(int , char* [] )
     }
   std::cout << std::endl;
 
-  std::cout << "TPR2LR 2D Test:" << std::endl;
+  std::cout << "ThinPlateSplineR2LogR 2D:" << std::endl;
   tpr2lrs2D->SetSourceLandmarks( sourceLandmarks2D );
   tpr2lrs2D->SetTargetLandmarks( targetLandmarks2D );
 
@@ -199,6 +211,59 @@ int itkSplineKernelTransformTest(int , char* [] )
     sourcePoint2D = source2Dit.Value();
     targetPoint2D = target2Dit.Value();
     mappedPoint2D = tpr2lrs2D->TransformPoint(sourcePoint2D);
+    std::cout << sourcePoint2D << " : " << targetPoint2D;
+    std::cout << " warps to: " << mappedPoint2D << std::endl;
+    if( mappedPoint2D.EuclideanDistanceTo( targetPoint2D ) > epsilon )
+      {
+      return EXIT_FAILURE;
+      }
+    source2Dit++;
+    target2Dit++;
+    }
+  std::cout << std::endl;
+
+  std::cout << "ThinPlateSpline 2D Base Test :" << std::endl;
+  tps2DBase->SetSourceLandmarks( sourceLandmarks2D );
+  tps2DBase->SetTargetLandmarks( targetLandmarks2D );
+
+  tps2DBase->ComputeWMatrix();
+
+  source2Dit = sourceLandmarks2D->GetPoints()->Begin();
+  target2Dit = targetLandmarks2D->GetPoints()->Begin();
+
+  source2Dend = sourceLandmarks2D->GetPoints()->End();
+  while( source2Dit != source2Dend )
+    {
+    sourcePoint2D = source2Dit.Value();
+    targetPoint2D = target2Dit.Value();
+    mappedPoint2D = tps2DBase->TransformPoint(sourcePoint2D);
+    std::cout << sourcePoint2D << " : " << targetPoint2D;
+    std::cout << " warps to: " << mappedPoint2D << std::endl;
+    if( mappedPoint2D.EuclideanDistanceTo( targetPoint2D ) > epsilon )
+      {
+      return EXIT_FAILURE;
+      }
+    source2Dit++;
+    target2Dit++;
+    }
+  std::cout << std::endl;
+
+  std::cout << "ThinPlateSpline 2D Base Test after setting r kernel function:" << std::endl;
+  tps2DBase->SetFunction( rKernel );
+  tps2DBase->SetSourceLandmarks( sourceLandmarks2D );
+  tps2DBase->SetTargetLandmarks( targetLandmarks2D );
+
+  tps2DBase->ComputeWMatrix();
+
+  source2Dit = sourceLandmarks2D->GetPoints()->Begin();
+  target2Dit = targetLandmarks2D->GetPoints()->Begin();
+
+  source2Dend = sourceLandmarks2D->GetPoints()->End();
+  while( source2Dit != source2Dend )
+    {
+    sourcePoint2D = source2Dit.Value();
+    targetPoint2D = target2Dit.Value();
+    mappedPoint2D = tps2DBase->TransformPoint(sourcePoint2D);
     std::cout << sourcePoint2D << " : " << targetPoint2D;
     std::cout << " warps to: " << mappedPoint2D << std::endl;
     if( mappedPoint2D.EuclideanDistanceTo( targetPoint2D ) > epsilon )
@@ -241,7 +306,8 @@ int itkSplineKernelTransformTest(int , char* [] )
    // 3-D case
   int k;
   typedef itk::ElasticBodySplineKernelTransform<double, 3> EBSTransform3DType;
-  typedef itk::ThinPlateSplineKernelTransform<double, 3>   TPSTransform3DType;
+  typedef itk::ThinPlateSplineKernelTransform<double, 3>   ThinPlateSplineTransform3DType;
+  typedef itk::ThinPlateSplineKernelTransformBase<double, 3>           ThinPlateSplineBaseTransform3DType;
 
   typedef EBSTransform3DType::InputPointType PointType3D;
   typedef EBSTransform3DType::PointsIterator Points3DIteratorType;
@@ -251,24 +317,29 @@ int itkSplineKernelTransformTest(int , char* [] )
   PointType3D mappedPoint3D;
 
   EBSTransform3DType::Pointer ebs3D = EBSTransform3DType::New();
-  TPSTransform3DType::Pointer tps3D = TPSTransform3DType::New();
+  ThinPlateSplineTransform3DType::Pointer tps3D = ThinPlateSplineTransform3DType::New();
+  ThinPlateSplineBaseTransform3DType::Pointer tps3DBase = ThinPlateSplineBaseTransform3DType::New();
 
 
   // Reserve memory for the number of points
   ebs3D->GetTargetLandmarks()->GetPoints()->Reserve( 8 );
   tps3D->GetTargetLandmarks()->GetPoints()->Reserve( 8 );
+  tps3DBase->GetTargetLandmarks()->GetPoints()->Reserve( 8 );
   ebs3D->GetSourceLandmarks()->GetPoints()->Reserve( 8 );
   tps3D->GetSourceLandmarks()->GetPoints()->Reserve( 8 );
-
+  tps3DBase->GetSourceLandmarks()->GetPoints()->Reserve( 8 );
 
   // Create landmark sets
   Points3DIteratorType ebs3Ds = ebs3D->GetSourceLandmarks()->GetPoints()->Begin();
   Points3DIteratorType ebs3Dt = ebs3D->GetTargetLandmarks()->GetPoints()->Begin();
   Points3DIteratorType tps3Ds = tps3D->GetSourceLandmarks()->GetPoints()->Begin();
   Points3DIteratorType tps3Dt = tps3D->GetTargetLandmarks()->GetPoints()->Begin();
+  Points3DIteratorType tps3DBases = tps3DBase->GetSourceLandmarks()->GetPoints()->Begin();
+  Points3DIteratorType tps3DBaset = tps3DBase->GetTargetLandmarks()->GetPoints()->Begin();
 
   Points3DIteratorType ebs3DsEnd  = ebs3D->GetSourceLandmarks()->GetPoints()->End();
   Points3DIteratorType tps3DsEnd  = tps3D->GetSourceLandmarks()->GetPoints()->End();
+  Points3DIteratorType tps3DBasesEnd  = tps3DBase->GetSourceLandmarks()->GetPoints()->End();
 
   for (i = 0; i < 2; i++)
     {
@@ -281,15 +352,19 @@ int itkSplineKernelTransformTest(int , char* [] )
         sourcePoint3D[2] = i;
         ebs3Ds.Value() = sourcePoint3D;
         tps3Ds.Value() = sourcePoint3D;
+        tps3DBases.Value() = sourcePoint3D;
         targetPoint3D[0] = 3*k;
         targetPoint3D[1] = 3*j;
         targetPoint3D[2] = 3*i;
         ebs3Dt.Value() = targetPoint3D;
         tps3Dt.Value() = targetPoint3D;
+        tps3DBaset.Value() = targetPoint3D;
         ebs3Ds++;
         ebs3Dt++;
         tps3Ds++;
         tps3Dt++;
+        tps3DBases++;
+        tps3DBaset++;
         }
       }
     }
@@ -323,7 +398,7 @@ int itkSplineKernelTransformTest(int , char* [] )
 
 
 
-  std::cout << "TPS 3D Test:" << std::endl;
+  std::cout << "ThinPlateSpline 3D Test:" << std::endl;
 
   tps3D->ComputeWMatrix();
 
@@ -347,10 +422,58 @@ int itkSplineKernelTransformTest(int , char* [] )
   }
   std::cout << std::endl;
 
+  std::cout << "ThinPlateSpline 3D Test after setting kernel to -r:" << std::endl;
+  tps3D->SetFunction(NegativeRKernel);
+  tps3D->ComputeWMatrix();
+
+  tps3Ds = tps3D->GetSourceLandmarks()->GetPoints()->Begin();
+  tps3Dt = tps3D->GetTargetLandmarks()->GetPoints()->Begin();
+  tps3DsEnd  = tps3D->GetSourceLandmarks()->GetPoints()->End();
+
+  while( tps3Ds != tps3DsEnd )
+  {
+    sourcePoint3D = tps3Ds.Value();
+    targetPoint3D = tps3Dt.Value();
+    mappedPoint3D = tps3D->TransformPoint(sourcePoint3D);
+    std::cout << sourcePoint3D << " : " << targetPoint3D;
+    std::cout << " warps to: " << mappedPoint3D << std::endl;
+    if( mappedPoint3D.EuclideanDistanceTo( targetPoint3D ) > epsilon )
+    {
+      return EXIT_FAILURE;
+    }
+    tps3Ds++;
+    tps3Dt++;
+  }
+  std::cout << std::endl;
+
+  std::cout << "ThinPlateSpline 3D Base Test:" << std::endl;
+
+  tps3DBase->ComputeWMatrix();
+
+  tps3DBases = tps3DBase->GetSourceLandmarks()->GetPoints()->Begin();
+  tps3DBaset = tps3DBase->GetTargetLandmarks()->GetPoints()->Begin();
+  tps3DBasesEnd  = tps3DBase->GetSourceLandmarks()->GetPoints()->End();
+
+  while( tps3DBases != tps3DBasesEnd )
+  {
+    sourcePoint3D = tps3DBases.Value();
+    targetPoint3D = tps3DBaset.Value();
+    mappedPoint3D = tps3DBase->TransformPoint(sourcePoint3D);
+    std::cout << sourcePoint3D << " : " << targetPoint3D;
+    std::cout << " warps to: " << mappedPoint3D << std::endl;
+    if( mappedPoint3D.EuclideanDistanceTo( targetPoint3D ) > epsilon )
+    {
+      return EXIT_FAILURE;
+    }
+    tps3DBases++;
+    tps3DBaset++;
+  }
+  std::cout << std::endl;
+
   std::cout << "Get/Set Parameters test " << std::endl;
-  TPSTransform3DType::ParametersType parameters1 = tps3D->GetParameters();
+  ThinPlateSplineTransform3DType::ParametersType parameters1 = tps3D->GetParameters();
   tps3D->SetParameters( parameters1 );
-  TPSTransform3DType::ParametersType parameters2 = tps3D->GetParameters();
+  ThinPlateSplineTransform3DType::ParametersType parameters2 = tps3D->GetParameters();
   const unsigned int numberOfParameters = parameters1.Size();
   const double tolerance = 1e-7;
   for(unsigned int pr = 0; pr < numberOfParameters; pr++)
@@ -367,7 +490,8 @@ int itkSplineKernelTransformTest(int , char* [] )
   // 4-D case
   int l;
   typedef itk::ElasticBodySplineKernelTransform<double, 4> EBSTransform4DType;
-  typedef itk::ThinPlateSplineKernelTransform<double, 4>   TPSTransform4DType;
+  typedef itk::ThinPlateSplineKernelTransform<double, 4>   ThinPlateSplineTransform4DType;
+  typedef itk::ThinPlateSplineKernelTransformBase<double, 4>  ThinPlateSplineBaseTransform4DType;
 
   typedef EBSTransform4DType::InputPointType PointType4D;
   typedef EBSTransform4DType::PointsIterator Points4DIteratorType;
@@ -377,23 +501,29 @@ int itkSplineKernelTransformTest(int , char* [] )
   PointType4D mappedPoint4D;
 
   EBSTransform4DType::Pointer ebs4D = EBSTransform4DType::New();
-  TPSTransform4DType::Pointer tps4D = TPSTransform4DType::New();
+  ThinPlateSplineTransform4DType::Pointer tps4D = ThinPlateSplineTransform4DType::New();
+  ThinPlateSplineBaseTransform4DType::Pointer tps4DBase = ThinPlateSplineBaseTransform4DType::New();
 
   // Reserve memory for the number of points
   ebs4D->GetTargetLandmarks()->GetPoints()->Reserve( 16 );
   tps4D->GetTargetLandmarks()->GetPoints()->Reserve( 16 );
+  tps4DBase->GetTargetLandmarks()->GetPoints()->Reserve( 16 );
 
   ebs4D->GetSourceLandmarks()->GetPoints()->Reserve( 16 );
   tps4D->GetSourceLandmarks()->GetPoints()->Reserve( 16 );
+  tps4DBase->GetSourceLandmarks()->GetPoints()->Reserve( 16 );
 
   // Create landmark sets
   Points4DIteratorType ebs4Ds = ebs4D->GetSourceLandmarks()->GetPoints()->Begin();
   Points4DIteratorType ebs4Dt = ebs4D->GetTargetLandmarks()->GetPoints()->Begin();
   Points4DIteratorType tps4Ds = tps4D->GetSourceLandmarks()->GetPoints()->Begin();
   Points4DIteratorType tps4Dt = tps4D->GetTargetLandmarks()->GetPoints()->Begin();
+  Points4DIteratorType tps4DBases = tps4DBase->GetSourceLandmarks()->GetPoints()->Begin();
+  Points4DIteratorType tps4DBaset = tps4DBase->GetTargetLandmarks()->GetPoints()->Begin();
 
   Points4DIteratorType ebs4DsEnd  = ebs4D->GetSourceLandmarks()->GetPoints()->End();
   Points4DIteratorType tps4DsEnd  = tps4D->GetSourceLandmarks()->GetPoints()->End();
+  Points4DIteratorType tps4DBasesEnd  = tps4DBase->GetSourceLandmarks()->GetPoints()->End();
 
   for (i = 0; i < 2; i++)
     {
@@ -409,16 +539,20 @@ int itkSplineKernelTransformTest(int , char* [] )
           sourcePoint4D[3] = i;
           ebs4Ds.Value() = sourcePoint4D;
           tps4Ds.Value() = sourcePoint4D;
+          tps4DBases.Value() = sourcePoint4D;
           targetPoint4D[0] = 3*l;
           targetPoint4D[1] = 3*k;
           targetPoint4D[2] = 3*j;
           targetPoint4D[3] = 3*i;
           ebs4Dt.Value() = targetPoint4D;
           tps4Dt.Value() = targetPoint4D;
+          tps4DBaset.Value() = targetPoint4D;
           ebs4Ds++;
           ebs4Dt++;
           tps4Ds++;
           tps4Dt++;
+          tps4DBases++;
+          tps4DBaset++;
           }
         }
       }
@@ -448,7 +582,7 @@ int itkSplineKernelTransformTest(int , char* [] )
   }
   std::cout << std::endl;
 
-  std::cout << "TPS 4D Test:" << std::endl;
+  std::cout << "ThinPlateSpline 4D Test:" << std::endl;
   tps4D->ComputeWMatrix();
 
   tps4Ds = tps4D->GetSourceLandmarks()->GetPoints()->Begin();
@@ -469,6 +603,52 @@ int itkSplineKernelTransformTest(int , char* [] )
     tps4Dt++;
   }
   std::cout << std::endl;
+
+  std::cout << "ThinPlateSpline 4D Test after setting kernel to -r:" << std::endl;
+  tps4D->SetFunction(NegativeRKernel);
+  tps4D->ComputeWMatrix();
+
+  tps4Ds = tps4D->GetSourceLandmarks()->GetPoints()->Begin();
+  tps4Dt = tps4D->GetTargetLandmarks()->GetPoints()->Begin();
+  tps4DsEnd  = tps4D->GetSourceLandmarks()->GetPoints()->End();
+  while( tps4Ds != tps4DsEnd )
+  {
+    sourcePoint4D = tps4Ds.Value();
+    targetPoint4D = tps4Dt.Value();
+    mappedPoint4D = tps4D->TransformPoint(sourcePoint4D);
+    std::cout << sourcePoint4D << " : " << targetPoint4D;
+    std::cout << " warps to: " << mappedPoint4D << std::endl;
+    if( mappedPoint4D.EuclideanDistanceTo( targetPoint4D ) > epsilon )
+    {
+      return EXIT_FAILURE;
+    }
+    tps4Ds++;
+    tps4Dt++;
+  }
+  std::cout << std::endl;
+
+  std::cout << "ThinPlateSpline 4D Base Test:" << std::endl;
+  tps4DBase->ComputeWMatrix();
+
+  tps4DBases = tps4DBase->GetSourceLandmarks()->GetPoints()->Begin();
+  tps4DBaset = tps4DBase->GetTargetLandmarks()->GetPoints()->Begin();
+  tps4DBasesEnd  = tps4DBase->GetSourceLandmarks()->GetPoints()->End();
+  while( tps4DBases != tps4DBasesEnd )
+  {
+    sourcePoint4D = tps4DBases.Value();
+    targetPoint4D = tps4DBaset.Value();
+    mappedPoint4D = tps4DBase->TransformPoint(sourcePoint4D);
+    std::cout << sourcePoint4D << " : " << targetPoint4D;
+    std::cout << " warps to: " << mappedPoint4D << std::endl;
+    if( mappedPoint4D.EuclideanDistanceTo( targetPoint4D ) > epsilon )
+    {
+      return EXIT_FAILURE;
+    }
+    tps4DBases++;
+    tps4DBaset++;
+  }
+  std::cout << std::endl;
+
 
   std::cout << ebs2D << std::endl;
 

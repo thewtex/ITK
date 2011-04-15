@@ -18,106 +18,50 @@
 #ifndef __itkThinPlateSplineKernelTransform_h
 #define __itkThinPlateSplineKernelTransform_h
 
-#include "itkKernelTransform.h"
+#include "itkThinPlateSplineKernelTransformBase.h"
+#include "itkThinPlateSplineRadialBasisFunctionR.h"
 
 namespace itk
 {
 /** \class ThinPlateSplineKernelTransform
- * This class defines the thin plate spline (TPS) transformation.
- * It is implemented in as straightforward a manner as possible from
- * the IEEE TMI paper by Davis, Khotanzad, Flamig, and Harms,
- * Vol. 16 No. 3 June 1997
  *
- * \ingroup Transforms
+ * This class is a specific derivation of the ThinPlateSplineKernelTransformBase
+ * that implements a backwards compatible class for using the \$ || r || \$ as the
+ * kernel function.
+ *
  * \ingroup ITK-Transform
+ * \ingroup Transforms
  */
-template< class TScalarType,         // Data type for scalars (float or double)
-          unsigned int NDimensions = 3 >
-// Number of dimensions
-class ITK_EXPORT ThinPlateSplineKernelTransform:
-  public KernelTransform<   TScalarType, NDimensions >
+template <class TScalarType, unsigned int NDimensions = 3>
+  class ITK_EXPORT ThinPlateSplineKernelTransform:
+    public ThinPlateSplineKernelTransformBase< TScalarType, NDimensions >
 {
 public:
   /** Standard class typedefs. */
-  typedef ThinPlateSplineKernelTransform                 Self;
-  typedef KernelTransform<    TScalarType, NDimensions > Superclass;
-  typedef SmartPointer< Self >                           Pointer;
-  typedef SmartPointer< const Self >                     ConstPointer;
+  typedef ThinPlateSplineKernelTransform                                  Self;
+  typedef ThinPlateSplineKernelTransformBase< TScalarType, NDimensions >  Superclass;
+  typedef SmartPointer< Self >                                            Pointer;
+  typedef SmartPointer< const Self>                                       ConstPointer;
 
   /** New macro for creation of through a Smart Pointer */
   itkNewMacro(Self);
 
   /** Run-time type information (and related methods). */
-  itkTypeMacro(ThinPlateSplineKernelTransform, KernelTransform);
+  itkTypeMacro(ThinPlateSplineKernelTransform,
+               ThinPlateSplineKernelTransformBase);
 
-  /** Scalar type. */
-  typedef typename Superclass::ScalarType ScalarType;
-
-  /** Parameters type. */
-  typedef typename Superclass::ParametersType ParametersType;
-
-  /** Jacobian Type */
-  typedef typename Superclass::JacobianType JacobianType;
-
-  /** Dimension of the domain space. */
-  itkStaticConstMacro(SpaceDimension, unsigned int, Superclass::SpaceDimension);
-
-  /** These (rather redundant) typedefs are needed because on SGI, typedefs
-   * are not inherited */
-  typedef typename Superclass::InputPointType            InputPointType;
-  typedef typename Superclass::OutputPointType           OutputPointType;
-  typedef typename Superclass::InputVectorType           InputVectorType;
-  typedef typename Superclass::OutputVectorType          OutputVectorType;
-  typedef typename Superclass::InputCovariantVectorType  InputCovariantVectorType;
-  typedef typename Superclass::OutputCovariantVectorType OutputCovariantVectorType;
-  typedef typename Superclass::PointsIterator            PointsIterator;
 protected:
-  ThinPlateSplineKernelTransform() {}
+  /** Create new instance.  Computes r for use as the kernel in the G matrix. */
+  ThinPlateSplineKernelTransform()
+    {
+    this->SetFunction( ThinPlateSplineRadialBasisFunctionR< TScalarType >::New() );
+    }
   virtual ~ThinPlateSplineKernelTransform() {}
-
-  /** These (rather redundant) typedefs are needed because on SGI, typedefs
-   * are not inherited. */
-  typedef typename Superclass::GMatrixType GMatrixType;
-
-  /** Compute G(x)
-   * For the thin plate spline, this is:
-   * G(x) = r(x)*I
-   * \f$ G(x) = r(x)*I \f$
-   * where
-   * r(x) = Euclidean norm = sqrt[x1^2 + x2^2 + x3^2]
-   * \f[ r(x) = \sqrt{ x_1^2 + x_2^2 + x_3^2 }  \f]
-   * I = identity matrix. */
-  virtual void ComputeG(const InputVectorType & landmarkVector, GMatrixType & gmatrix) const;
-
-  /** Compute the contribution of the landmarks weighted by the kernel funcion
-      to the global deformation of the space  */
-  virtual void ComputeDeformationContribution(const InputPointType & inputPoint,
-                                              OutputPointType & result) const;
 
 private:
   ThinPlateSplineKernelTransform(const Self &); //purposely not implemented
-  void operator=(const Self &);                 //purposely not implemented
+  void operator=(const Self &);  //purposely not implemented
 };
-} // namespace itk
+} // end namespace itk
 
-// Define instantiation macro for this template.
-#define ITK_TEMPLATE_ThinPlateSplineKernelTransform(_, EXPORT, TypeX, TypeY)     \
-  namespace itk                                                                  \
-  {                                                                              \
-  _( 2 ( class EXPORT ThinPlateSplineKernelTransform< ITK_TEMPLATE_2 TypeX > ) ) \
-  namespace Templates                                                            \
-  {                                                                              \
-  typedef ThinPlateSplineKernelTransform< ITK_TEMPLATE_2 TypeX >                 \
-  ThinPlateSplineKernelTransform##TypeY;                                       \
-  }                                                                              \
-  }
-
-#if ITK_TEMPLATE_EXPLICIT
-#include "Templates/itkThinPlateSplineKernelTransform+-.h"
 #endif
-
-#if ITK_TEMPLATE_TXX
-#include "itkThinPlateSplineKernelTransform.txx"
-#endif
-
-#endif // __itkThinPlateSplineKernelTransform_h
