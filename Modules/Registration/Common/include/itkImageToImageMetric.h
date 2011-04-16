@@ -142,19 +142,19 @@ public:
   typedef typename Superclass::ParametersType ParametersType;
 
   /** Connect the Fixed Image.  */
-  itkSetConstObjectMacro(FixedImage, FixedImageType);
+  itkSetConstObjectMacro( FixedImage, FixedImageType );
 
   /** Get the Fixed Image. */
-  itkGetConstObjectMacro(FixedImage, FixedImageType);
+  itkGetConstObjectMacro( FixedImage, FixedImageType );
 
   /** Connect the Moving Image.  */
-  itkSetConstObjectMacro(MovingImage, MovingImageType);
+  itkSetConstObjectMacro( MovingImage, MovingImageType );
 
   /** Get the Moving Image. */
-  itkGetConstObjectMacro(MovingImage, MovingImageType);
+  itkGetConstObjectMacro( MovingImage, MovingImageType );
 
   /** Connect the Transform. */
-  itkSetObjectMacro(Transform, TransformType);
+  itkSetObjectMacro( Transform, TransformType );
 
   /** Get a pointer to the Transform.  */
   itkGetConstObjectMacro(Transform, TransformType);
@@ -199,7 +199,6 @@ public:
 
   /** Set/Get number of threads to use for computations. */
   void SetNumberOfThreads(unsigned int numberOfThreads);
-
   itkGetConstReferenceMacro(NumberOfThreads, unsigned int);
 
   /** Set/Get gradient computation. */
@@ -228,13 +227,11 @@ public:
   throw ( ExceptionObject );
 
   /** Initialize the components related to supporting multiple threads */
-  virtual void MultiThreadingInitialize(void)
-  throw ( ExceptionObject );
+  virtual void MultiThreadingInitialize(void) throw ( ExceptionObject );
 
   /** Number of spatial samples to used to compute metric
    *   This sets the number of samples.  */
   virtual void SetNumberOfFixedImageSamples(SizeValueType numSamples);
-
   itkGetConstReferenceMacro(NumberOfFixedImageSamples, SizeValueType);
 
   /** Number of spatial samples to used to compute metric
@@ -294,7 +291,6 @@ public:
    * the seed. This will indeed increase the non-deterministic behavior of the
    * metric. */
   void ReinitializeSeed();
-
   void ReinitializeSeed(int seed);
 
   /** This boolean flag is only relevant when this metric is used along
@@ -363,8 +359,7 @@ public:
   /** Uniformly select a sample set from the fixed image domain. */
   virtual void SampleFixedImageRegion(FixedImageSampleContainer & samples) const;
 
-  virtual void SampleFixedImageIndexes(FixedImageSampleContainer &
-                                       samples) const;
+  virtual void SampleFixedImageIndexes(FixedImageSampleContainer & samples) const;
 
   /** Gather all the pixels from the fixed image domain. */
   virtual void SampleFullFixedImageRegion(FixedImageSampleContainer &
@@ -431,16 +426,13 @@ public:
   typedef typename BSplineTransformWeightsType::ValueType WeightsValueType;
   typedef          Array2D< WeightsValueType >            BSplineTransformWeightsArrayType;
 
-  typedef typename BSplineTransformType::ParameterIndexArrayType
-  BSplineTransformIndexArrayType;
-  typedef typename BSplineTransformIndexArrayType::ValueType IndexValueType;
-  typedef          Array2D< IndexValueType >                 BSplineTransformIndicesArrayType;
+  typedef typename BSplineTransformType::ParameterIndexArrayType BSplineTransformIndexArrayType;
+  typedef typename BSplineTransformIndexArrayType::ValueType     IndexValueType;
+  typedef          Array2D< IndexValueType >                     BSplineTransformIndicesArrayType;
 
-  typedef          std::vector< MovingImagePointType > MovingImagePointArrayType;
-  typedef          std::vector< bool >                 BooleanArrayType;
-  typedef          FixedArray< SizeValueType,
-                               ::itk::GetImageDimension< FixedImageType >
-                               ::ImageDimension >            BSplineParametersOffsetType;
+  typedef std::vector< MovingImagePointType > MovingImagePointArrayType;
+  typedef std::vector< bool >                 BooleanArrayType;
+  typedef FixedArray< SizeValueType, ::itk::GetImageDimension< FixedImageType >::ImageDimension > BSplineParametersOffsetType;
   /**
    * If a BSplineInterpolationFunction is used, this class obtain
    * image derivatives from the BSpline interpolator. Otherwise,
@@ -453,8 +445,7 @@ public:
   typedef CentralDifferenceImageFunction< MovingImageType,
                                           CoordinateRepresentationType >
   DerivativeFunctionType;
-  typedef          CovariantVector< double,
-                                    itkGetStaticConstMacro(MovingImageDimension) >
+  typedef CovariantVector< double, itkGetStaticConstMacro(MovingImageDimension) >
   ImageDerivativesType;
 
   typename BSplineTransformType::Pointer m_BSplineTransform;
@@ -472,7 +463,7 @@ public:
   mutable BSplineTransformWeightsType    m_BSplineTransformWeights;
   mutable BSplineTransformIndexArrayType m_BSplineTransformIndices;
 
-  mutable BSplineTransformWeightsType *   m_ThreaderBSplineTransformWeights;
+  mutable BSplineTransformWeightsType    *m_ThreaderBSplineTransformWeights;
   mutable BSplineTransformIndexArrayType *m_ThreaderBSplineTransformIndices;
 
   virtual void PreComputeTransformValues(void);

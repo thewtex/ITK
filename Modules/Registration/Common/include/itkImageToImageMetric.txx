@@ -28,53 +28,69 @@ namespace itk
  */
 template< class TFixedImage, class TMovingImage >
 ImageToImageMetric< TFixedImage, TMovingImage >
-::ImageToImageMetric()
+::ImageToImageMetric():
+  m_UseFixedImageIndexes(false),
+  m_FixedImageIndexes(0),
+
+  m_UseFixedImageSamplesIntensityThreshold(false),
+  m_FixedImageSamplesIntensityThreshold(0),
+
+  m_FixedImageSamples(0),
+  m_NumberOfParameters(0),
+  m_Parameters(0),
+
+  m_NumberOfFixedImageSamples(50000),
+
+  m_NumberOfPixelsCounted(0),
+
+  m_FixedImage(0), // has to be provided by the user.
+  m_MovingImage(0), // has to be provided by the user.
+
+  m_Transform(NULL), // has to be provided by the user.
+  m_ThreaderTransform(NULL), // constructed at initialization.
+
+  m_Interpolator(0), // has to be provided by the user.
+
+  m_ComputeGradient(true), // metric computes gradient by default
+  m_GradientImage(NULL),   // computed at initialization
+
+  m_FixedImageMask(0),
+  m_MovingImageMask(0),
+
+  m_NumberOfThreads(1),
+
+  m_UseAllPixels(false),
+  m_UseSequentialSampling(false),
+  m_ReseedIterator(false),
+  m_RandomSeed(-1),
+
+  m_TransformIsBSpline(false),
+  m_NumBSplineWeights(0),
+
+  m_BSplineTransform(NULL),
+  m_BSplineTransformWeightsArray(),
+  m_BSplineTransformIndicesArray(),
+  m_BSplinePreTransformPointsArray(0),
+  m_WithinBSplineSupportRegionArray(0),
+  m_BSplineParametersOffset(),
+
+  m_UseCachingOfBSplineWeights(true),
+  m_BSplineTransformWeights(),
+  m_BSplineTransformIndices(),
+  m_ThreaderBSplineTransformWeights(NULL),
+  m_ThreaderBSplineTransformIndices(NULL),
+
+  m_InterpolatorIsBSpline(false),
+  m_BSplineInterpolator(NULL),
+  m_DerivativeCalculator(NULL),
+
+  m_Threader(MultiThreaderType::New()),
+  m_ThreaderNumberOfMovingImageSamples(NULL),
+  m_WithinThreadPreProcess(false),
+  m_WithinThreadPostProcess(false)
 {
-  m_NumberOfFixedImageSamples = 50000;
-  m_UseAllPixels = false;
-  m_UseSequentialSampling = false;
-  m_UseFixedImageIndexes = false;
-  m_UseFixedImageSamplesIntensityThreshold = false;
-  m_FixedImageSamplesIntensityThreshold = 0;
-  m_ReseedIterator = false;
-  m_RandomSeed = -1;
-
-  m_TransformIsBSpline    = false;
-  m_NumBSplineWeights     = 0;
-  m_BSplineTransform      = NULL;
-
-  m_Threader = MultiThreaderType::New();
-  m_ThreaderParameter.metric = this;
-  m_ThreaderNumberOfMovingImageSamples = NULL;
-  m_WithinThreadPreProcess = false;
-  m_WithinThreadPostProcess = false;
-
-  m_FixedImage    = 0; // has to be provided by the user.
-  m_FixedImageMask = 0;
-
-  m_MovingImage   = 0; // has to be provided by the user.
-  m_MovingImageMask = 0;
-  m_NumberOfPixelsCounted = 0;
-
-  m_Transform         = NULL; // has to be provided by the user.
-  m_ThreaderTransform = NULL; // constructed at initialization.
-
-  m_Interpolator  = 0; // has to be provided by the user.
-
-  m_GradientImage = 0;      // will receive the output of the filter;
-  m_ComputeGradient = true; // metric computes gradient by default
-  m_GradientImage = NULL;   // computed at initialization
-
-  m_InterpolatorIsBSpline = false;
-  m_BSplineInterpolator = NULL;
-  m_DerivativeCalculator = NULL;
-
-  m_NumberOfThreads = m_Threader->GetNumberOfThreads();
-
-  this->m_ThreaderBSplineTransformWeights = NULL;
-  this->m_ThreaderBSplineTransformIndices = NULL;
-
-  this->m_UseCachingOfBSplineWeights = true;
+  this->m_ThreaderParameter.metric = this;
+  this->m_NumberOfThreads = this->m_Threader->GetNumberOfThreads();
 
   /* if 100% backward compatible, we should include this...but...
   typename BSplineTransformType::Pointer transformer =
@@ -477,8 +493,7 @@ throw ( ExceptionObject )
 
   if ( this->m_TransformIsBSpline )
     {
-    // First, deallocate memory that may have been used from previous run of the
-    // Metric
+    // First, deallocate memory that may have been used from previous run of the Metric
     this->m_BSplineTransformWeightsArray.SetSize(1, 1);
     this->m_BSplineTransformIndicesArray.SetSize(1, 1);
     this->m_BSplinePreTransformPointsArray.resize(1);
