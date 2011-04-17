@@ -45,6 +45,7 @@ namespace itk
  *
  * \ingroup DataSources Multithreaded
  * \ingroup ITK-TestKernel
+ * \wiki
  * \wikiexample{SimpleOperations/RandomImageSource,Produce an image of noise}
  */
 template< typename TOutputImage >

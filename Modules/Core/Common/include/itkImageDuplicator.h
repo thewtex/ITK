@@ -45,6 +45,8 @@ namespace itk
  * because the ImageDuplicator is not a pipeline filter.
  *
  * \ingroup ITK-Common
+ *
+ * \wiki
  * \wikiexample{SimpleOperations/ImageDuplicator,Duplicate an image}
  */
 template< class TInputImage >

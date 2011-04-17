@@ -71,6 +71,7 @@ public:
  *
  * \ingroup IOFilters
  * \ingroup ITK-IO-Base
+ * \wiki
  * \wikiexample{IO/ImageFileWriter,Write an image}
  */
 template< class TInputImage >

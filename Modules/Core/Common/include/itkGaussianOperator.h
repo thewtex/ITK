@@ -57,6 +57,8 @@ namespace itk
  *
  * \ingroup Operators
  * \ingroup ITK-Common
+ *
+ * \wiki
  * \wikiexample{Operators/GaussianOperator,Create a Gaussian kernel}
  */
 template< class TPixel, unsigned int VDimension = 2,

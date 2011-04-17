@@ -54,6 +54,7 @@ namespace itk
  *
  * \ingroup ClassificationFilters
  * \ingroup ITK-Classifiers
+ * \wiki
  * \wikiexample{Statistics/ScalarImageKmeansImageFilter,Cluster the pixels in a greyscale image}
  */
 template< class TInputImage,

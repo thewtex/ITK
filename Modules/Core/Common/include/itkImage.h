@@ -77,6 +77,8 @@ namespace itk
  *
  * \ingroup ImageObjects
  * \ingroup ITK-Common
+ *
+ * \wiki
  * \wikiexample{SimpleOperations/SetPixels,Set specified pixels to specified values}
  */
 template< class TPixel, unsigned int VImageDimension = 2 >

@@ -40,6 +40,8 @@ namespace itk
  *
  * \ingroup Operators
  * \ingroup ITK-Common
+ *
+ * \wiki
  * \wikiexample{Operators/DerivativeOperator,Create a derivative kernel}
  */
 template< class TPixel, unsigned int VDimension = 2,

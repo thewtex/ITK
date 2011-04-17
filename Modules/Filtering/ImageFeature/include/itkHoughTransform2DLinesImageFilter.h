@@ -56,6 +56,7 @@ namespace itk
  *
  *
  * \ingroup ITK-ImageFeature
+ * \wiki
  * \wikiexample{Conversions/HoughTransform2DLinesImageFilter,HoughTransform2DLinesImageFilter}
  */
 

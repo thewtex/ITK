@@ -48,6 +48,7 @@ namespace itk
  *
  *
  * \ingroup ITK-ImageFeature
+ * \wiki
  * \wikiexample{Conversions/HoughTransform2DCirclesImageFilter,HoughTransform2DCirclesImageFilter}
  */
 

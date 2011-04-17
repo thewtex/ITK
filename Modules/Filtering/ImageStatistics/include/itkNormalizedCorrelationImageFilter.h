@@ -41,6 +41,7 @@ namespace itk
  * \sa NeighborhoodOperator
  * \sa NeighborhoodIterator
  * \ingroup ITK-ImageStatistics
+ * \wiki
  * \wikiexample{Images/NormalizedCorrelationImageFilter,Normalized correlation}
  */
 template< class TInputImage, class TMaskImage, class TOutputImage, class TOperatorValueType =

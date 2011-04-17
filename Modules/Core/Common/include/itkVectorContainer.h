@@ -41,6 +41,7 @@ namespace itk
  *
  * \ingroup DataRepresentation
  * \ingroup ITK-Common
+ * \wiki
  * \wikiexample{Utilities/VectorContainer,Vector container}
  */
 template<

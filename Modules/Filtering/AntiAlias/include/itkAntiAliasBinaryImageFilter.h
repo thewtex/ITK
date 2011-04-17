@@ -97,6 +97,7 @@ namespace itk
  *  MaximumRMSChange parameter, which determines when the solver halts.
  *
  * \ingroup ITK-AntiAlias
+ * \wiki
  * \wikiexample{Smoothing/AntiAliasBinaryImageFilter,Anti alias a binary image}
  */
 template< class TInputImage, class TOutputImage >

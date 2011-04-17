@@ -42,6 +42,7 @@ namespace itk
  * \ingroup Multithreaded
  * \ingroup Streamed
  * \ingroup ITK-ImageGrid
+ * \wiki
  * \wikiexample{ImageProcessing/PermuteAxesImageFilter,Switch the axes of an image}
  */
 template< class TImage >

@@ -71,6 +71,7 @@ namespace itk
  *
  * \ingroup ImageObjects
  * \ingroup ITK-Common
+ * \wiki
  * \wikiexample{IO/ReadVectorImage,Read an image file with an unknown number of components}
  * \wikiexample{VectorImages/VectorImage,Create a vector image}
  */

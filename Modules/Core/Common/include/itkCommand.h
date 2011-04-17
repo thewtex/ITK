@@ -34,6 +34,8 @@ namespace itk
  *
  * \ingroup ITKSystemObjects
  * \ingroup ITK-Common
+ *
+ * \wiki
  * \wikiexample{Utilities/ObserveEvent,Observe an event}
  */
 

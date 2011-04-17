@@ -39,6 +39,7 @@ namespace itk
  * \ingroup GradientFilters
  * \ingroup Singlethreaded
  * \ingroup ITK-ImageGradient
+ * \wiki
  * \wikiexample{EdgesAndGradients/GradientRecursiveGaussianImageFilter,Compute the gradient of an imabe by convolution with the first derivative of a Gaussian}
  */
 // NOTE that the ITK_TYPENAME macro has to be used here in lieu

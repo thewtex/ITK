@@ -44,6 +44,7 @@ namespace Statistics
  *
  * \sa Sample, ListSample
  * \ingroup ITK-Statistics
+ * \wiki
  * \wikiexample{Statistics/ImageToListSampleAdaptor,Create a list of samples from an image without duplicating the data}
  */
 

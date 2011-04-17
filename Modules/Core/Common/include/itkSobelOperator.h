@@ -86,6 +86,7 @@ namespace itk
  *
  * \ingroup Operators
  * \ingroup ITK-Common
+ * \wiki
  * \wikiexample{Operators/SobelOperator,Create the Sobel kernel}
  */
 template< class TPixel, unsigned int VDimension = 2,

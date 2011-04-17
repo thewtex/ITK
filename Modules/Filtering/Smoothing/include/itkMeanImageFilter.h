@@ -39,6 +39,7 @@ namespace itk
  *
  * \ingroup IntensityImageFilters
  * \ingroup ITK-Smoothing
+ * \wiki
  * \wikiexample{Smoothing/MeanImageFilter,Mean filter an image}
  */
 template< class TInputImage, class TOutputImage >
