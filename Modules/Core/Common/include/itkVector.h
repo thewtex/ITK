@@ -52,6 +52,7 @@ namespace itk
  * \sa CovariantVector
  * \sa Matrix
  * \ingroup ITK-Common
+ * \wiki
  * \wikiexample{SimpleOperations/CreateVector,Create a vector}
  */
 template< class T, unsigned int NVectorDimension = 3 >

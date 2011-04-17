@@ -84,6 +84,7 @@ namespace itk
  *
  * \ingroup RegistrationMetrics
  * \ingroup ITK-RegistrationCommon
+ * \wiki
  * \wikiexample{Registration/MutualInformation,Mutual Information}
  * \wikiexample{Registration/MutualInformationAffine,Mutual Information Affine}
  */

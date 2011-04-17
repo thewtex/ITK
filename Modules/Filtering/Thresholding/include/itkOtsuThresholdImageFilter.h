@@ -38,6 +38,7 @@ namespace itk
  * \sa BinaryThresholdImageFilter
  * \ingroup IntensityImageFilters  Multithreaded
  * \ingroup ITK-Thresholding
+ * \wiki
  * \wikiexample{Segmentation/OtsuThresholdImageFilter,Separate foreground and background using Otsu's method}
  */
 

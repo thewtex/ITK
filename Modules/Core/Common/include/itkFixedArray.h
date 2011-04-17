@@ -61,6 +61,8 @@ struct GetVectorDimension {
  *
  * \ingroup DataRepresentation
  * \ingroup ITK-Common
+ *
+ * \wiki
  * \wikiexample{Utilities/FixedArray,C-style array}
  */
 template< typename TValueType, unsigned int VLength = 3 >

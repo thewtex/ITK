@@ -33,6 +33,7 @@ namespace itk
  *
  * \sa FFTRealToComplexConjugateImageFilter
  * \ingroup ITK-FFT
+ * \wiki
  * \wikiexample{SpectralAnalysis/VnlFFTRealToComplexConjugateImageFilter,Compute the FFT of an image}
  * \wikiexample{SpectralAnalysis/CrossCorrelationInFourierDomain,Compute the cross-correlation of two images in the Fourier domain}
  */

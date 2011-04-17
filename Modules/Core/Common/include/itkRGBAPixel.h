@@ -47,6 +47,7 @@ namespace itk
  * \ingroup ImageObjects
  *
  * \ingroup ITK-Common
+ * \wiki
  * \wikiexample{SimpleOperations/Transparency,Make part of an image transparent}
  */
 

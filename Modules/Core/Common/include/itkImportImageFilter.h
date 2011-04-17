@@ -34,6 +34,7 @@ namespace itk
  *
  * \ingroup IOFilters
  * \ingroup ITK-Common
+ * \wiki
  * \wikiexample{IO/ImportImageFilter,Convert a C-style array to an itkImage}
  */
 template< typename TPixel, unsigned int VImageDimension = 2 >

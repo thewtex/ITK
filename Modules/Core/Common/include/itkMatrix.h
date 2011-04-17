@@ -35,6 +35,7 @@ namespace itk
  *
  * \ingroup DataRepresentation
  * \ingroup ITK-Common
+ * \wiki
  * \wikiexample{Math/Matrix,Matrix}
  */
 

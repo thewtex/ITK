@@ -46,6 +46,7 @@ namespace itk
  *
  * \ingroup Singlethreaded
  * \ingroup ITK-ConnectedComponents
+ * \wiki
  * \wikiexample{ImageProcessing/ConnectedComponentImageFilter,Label connected components in a binary image}
  */
 

@@ -39,6 +39,7 @@ namespace itk
  *
  * \ingroup GeometricTransforms
  * \ingroup ITK-ImageGrid
+ * \wiki
  * \wikiexample{ImageProcessing/PasteImageFilter,Paste a part of one image into another image}
  */
 template< class TInputImage, class TSourceImage = TInputImage, class TOutputImage = TInputImage >

@@ -33,6 +33,7 @@ namespace itk
  *
  * \ingroup Transforms
  * \ingroup ITK-Transform
+ * \wiki
  * \wikiexample{SimpleOperations/TranslationTransform,Translate an image}
  * \wikiexample{VectorImages/VectorResampleImageFilter,Translate a vector image}
  * \wikiexample{Registration/ImageRegistrationMethod,A basic global registration of two images}

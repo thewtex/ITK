@@ -34,6 +34,7 @@ namespace itk
  *
  * \ingroup GeometricTransforms
  * \ingroup ITK-ImageGrid
+ * \wiki
  * \wikiexample{ImageProcessing/CropImageFilter,Crop an image}
  */
 template< class TInputImage, class TOutputImage >

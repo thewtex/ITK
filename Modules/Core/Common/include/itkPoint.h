@@ -41,6 +41,7 @@ namespace itk
  *
  * \sa Image \sa Mesh \sa Vector \sa CovariantVector \sa Matrix
  * \ingroup ITK-Common
+ * \wiki
  * \wikiexample{SimpleOperations/DistanceBetweenPoints,Distance between two points}
  * \wikiexample{SimpleOperations/DistanceBetweenIndices,Distance between two indices}
  */

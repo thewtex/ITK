@@ -122,6 +122,8 @@ namespace itk
  * \sa ShapedNeighborhoodIterator  \sa SliceIterator
  * \sa ImageConstIteratorWithIndex
  * \ingroup ITK-Common
+ *
+ * \wiki
  * \wikiexample{Iterators/ImageRegionExclusionConstIteratorWithIndex,Iterator over an image skipping a specified region}
  */
 template< typename TImage >
