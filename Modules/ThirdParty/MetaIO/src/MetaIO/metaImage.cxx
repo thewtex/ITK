@@ -310,7 +310,7 @@ PrintInfo() const
 
   MetaObject::PrintInfo();
 
-  char s[255];
+  char s[2048];
   MET_ImageModalityToString(m_Modality, s);
   METAIO_STREAM::cout << "Modality = " << s << METAIO_STREAM::endl;
 
@@ -348,7 +348,7 @@ PrintInfo() const
     }
   METAIO_STREAM::cout << METAIO_STREAM::endl;
 
-  char str[255];
+  char str[2048];
   MET_TypeToString(m_ElementType, str);
   METAIO_STREAM::cout << "ElementType = " << str << METAIO_STREAM::endl;
 
@@ -1202,7 +1202,7 @@ CanRead(const char *_headerName) const
     }
 
   bool usePath;
-  char pathName[255];
+  char pathName[2048];
   usePath = MET_GetFilePath(_headerName, pathName);
 
   char* buf = new char[8001];
@@ -1313,8 +1313,8 @@ ReadStream(int _nDims,
     int i;
     size_t j;
     bool usePath;
-    char pathName[255];
-    char fName[255];
+    char pathName[2048];
+    char fName[2048];
     usePath = MET_GetFilePath(m_FileName, pathName);
 
     if(!strcmp("Local", m_ElementDataFileName) ||
@@ -1400,7 +1400,7 @@ ReadStream(int _nDims,
       int minV = 1;
       int maxV = m_DimSize[m_NDims-1];
       int stepV = 1;
-      char s[255];
+      char s[2048];
       METAIO_STREAM::ifstream* readStreamTemp = new METAIO_STREAM::ifstream;
       MET_StringToWordArray(m_ElementDataFileName, &nWrds, &wrds);
       if(nWrds >= 2)
@@ -1564,11 +1564,11 @@ Write(const char *_headName,
       }
     }
 
-  char pathName[255];
+  char pathName[2048];
   bool usePath = MET_GetFilePath(m_FileName, pathName);
   if(usePath)
     {
-    char elementPathName[255];
+    char elementPathName[2048];
     MET_GetFilePath(m_ElementDataFileName, elementPathName);
     if(!strcmp(pathName, elementPathName))
       {
@@ -1777,7 +1777,7 @@ bool MetaImage::WriteROI( int * _indexMin, int * _indexMax,
     // Write the region
     if( !M_FileExists(filename.c_str()) )
       {
-      char pathName[255];
+      char pathName[2048];
       MET_GetFilePath(_headName, pathName);
       filename = pathName+filename;
       }
@@ -1892,11 +1892,11 @@ bool MetaImage::WriteROI( int * _indexMin, int * _indexMax,
         }
       }
 
-    char pathName[255];
+    char pathName[2048];
     bool usePath = MET_GetFilePath(m_FileName, pathName);
     if(usePath)
       {
-      char elementPathName[255];
+      char elementPathName[2048];
       MET_GetFilePath(m_ElementDataFileName, elementPathName);
       if(!strcmp(pathName, elementPathName))
         {
@@ -1943,7 +1943,17 @@ bool MetaImage::WriteROI( int * _indexMin, int * _indexMax,
 
       dataPos = 0;
 
-      openWriteStream(*tmpWriteStream, m_ElementDataFileName, _append);
+      char dataFileName[2048];
+      if(usePath&& !FileIsFullPath(m_ElementDataFileName))
+        {
+        sprintf(dataFileName, "%s%s", pathName, m_ElementDataFileName);
+        }
+      else
+        {
+        strcpy(dataFileName, m_ElementDataFileName);
+        }
+
+      openWriteStream(*tmpWriteStream, dataFileName, _append);
       m_WriteStream = tmpWriteStream;
       }
 
@@ -2179,7 +2189,7 @@ M_SetupWriteFields(void)
   MET_InitWriteField(mF, "DimSize", MET_INT_ARRAY, m_NDims, m_DimSize);
   m_Fields.push_back(mF);
 
-  char s[255];
+  char s[2048];
   if(m_HeaderSize > 0 || m_HeaderSize == -1)
     {
     mF = new MET_FieldRecordType;
@@ -2525,8 +2535,8 @@ M_WriteElements(METAIO_STREAM::ofstream * _fstream,
     }
   else // write the data in a separate file
     {
-    char dataFileName[255];
-    char pathName[255];
+    char dataFileName[2048];
+    char pathName[2048];
     bool usePath = MET_GetFilePath(m_FileName, pathName);
     if(usePath&& !FileIsFullPath(m_ElementDataFileName))
       {
@@ -2540,7 +2550,7 @@ M_WriteElements(METAIO_STREAM::ofstream * _fstream,
     if(strstr(dataFileName, "%")) // write slice by slice
       {
       int i;
-      char fName[255];
+      char fName[2048];
       int elementSize;
       MET_SizeOfType(m_ElementType, &elementSize);
       METAIO_STL::streamoff elementNumberOfBytes = elementSize*m_ElementNumberOfChannels;
@@ -2759,8 +2769,8 @@ bool MetaImage::ReadROIStream(int * _indexMin, int * _indexMax,
       }
 
     bool usePath;
-    char pathName[255];
-    char fName[255];
+    char pathName[2048];
+    char fName[2048];
     usePath = MET_GetFilePath(m_FileName, pathName);
 
     if(!strcmp("Local", m_ElementDataFileName) ||
@@ -2873,7 +2883,7 @@ bool MetaImage::ReadROIStream(int * _indexMin, int * _indexMax,
       int minV = 1;
       int maxV = m_DimSize[m_NDims-1];
       int stepV = 1;
-      char s[255];
+      char s[2048];
       METAIO_STREAM::ifstream* readStreamTemp = new METAIO_STREAM::ifstream;
       MET_StringToWordArray(m_ElementDataFileName, &nWrds, &wrds);
       if(nWrds >= 2)
