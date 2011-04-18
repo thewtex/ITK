@@ -35,7 +35,7 @@ GPUMeanImageFilter< TInputImage, TOutputImage >::GPUMeanImageFilter()
     defines << "#define PIXELTYPE float\n";
     }
 
-  if ( typeid ( typename TInputImage::PixelType ) == typeid ( unsigned char ) )
+  else if ( typeid ( typename TInputImage::PixelType ) == typeid ( unsigned char ) )
   {
     defines << "unsigned char\n";
   }
