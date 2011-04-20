@@ -158,6 +158,11 @@ if( USE_FFTWD OR USE_FFTWF )
   include(itkExternal_FFTW)
 endif( USE_FFTWD OR USE_FFTWF )
 
+#
+# ITK_USE_SYSTEM_HDF5
+option(ITK_USE_SYSTEM_HDF5 "Use an installed version of HDF5" OFF)
+include(itkExternal_HDF5)
+
 if(NOT ITKV3_COMPATIBILITY)
   option(ITK_USE_64BITS_IDS "When ON, ITK will use 64 bits integers to index pixels. This is needed for managing images larger than 4Gb in some platforms." OFF)
   mark_as_advanced(ITK_USE_64BITS_IDS)
