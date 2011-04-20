@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkIterativeSupervisedTrainingFunction_txx
-#define __itkIterativeSupervisedTrainingFunction_txx
+#ifndef __itkIterativeSupervisedTrainingFunction_hpp
+#define __itkIterativeSupervisedTrainingFunction_hpp
 
 #include "itkIterativeSupervisedTrainingFunction.h"
 #include <fstream>

@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkDifferenceImageFilter_txx
-#define __itkDifferenceImageFilter_txx
+#ifndef __itkDifferenceImageFilter_hpp
+#define __itkDifferenceImageFilter_hpp
 
 #include "itkDifferenceImageFilter.h"
 

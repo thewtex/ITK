@@ -132,7 +132,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkOneHiddenLayerBackPropagationNeuralNetwork.txx"
+#include "itkOneHiddenLayerBackPropagationNeuralNetwork.hpp"
 #endif
 
 #endif

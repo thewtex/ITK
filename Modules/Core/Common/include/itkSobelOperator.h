@@ -175,7 +175,7 @@ protected:
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkSobelOperator.txx"
+#include "itkSobelOperator.hpp"
 #endif
 
 #endif

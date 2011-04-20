@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkFastMarchingUpwindGradientImageFilter_txx
-#define __itkFastMarchingUpwindGradientImageFilter_txx
+#ifndef __itkFastMarchingUpwindGradientImageFilter_hpp
+#define __itkFastMarchingUpwindGradientImageFilter_hpp
 
 #include "itkFastMarchingUpwindGradientImageFilter.h"
 #include "itkImageRegionIterator.h"

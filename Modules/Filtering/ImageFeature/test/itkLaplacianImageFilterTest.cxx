@@ -21,7 +21,7 @@
 #include "itkImage.h"
 #include <iostream>
 #include "itkLaplacianImageFilter.h"
-#include "itkNullImageToImageFilterDriver.txx"
+#include "itkNullImageToImageFilterDriver.hpp"
 #include "itkVector.h"
 #include "itkFilterWatcher.h"
 

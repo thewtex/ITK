@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkImageDuplicator_txx
-#define __itkImageDuplicator_txx
+#ifndef __itkImageDuplicator_hpp
+#define __itkImageDuplicator_hpp
 
 #include "itkImageDuplicator.h"
 

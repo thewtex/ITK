@@ -207,7 +207,7 @@ private:
 } //end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkDanielssonDistanceMapImageFilter.txx"
+#include "itkDanielssonDistanceMapImageFilter.hpp"
 #endif
 
 #endif

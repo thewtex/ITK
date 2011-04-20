@@ -273,7 +273,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkVoronoiDiagram2D.txx"
+#include "itkVoronoiDiagram2D.hpp"
 #endif
 
 #endif

@@ -101,7 +101,7 @@ private:
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkBloxBoundaryProfileImage.txx"
+#include "itkBloxBoundaryProfileImage.hpp"
 #endif
 
 #endif

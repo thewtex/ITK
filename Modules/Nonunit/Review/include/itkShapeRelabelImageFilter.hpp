@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkShapeRelabelImageFilter_txx
-#define __itkShapeRelabelImageFilter_txx
+#ifndef __itkShapeRelabelImageFilter_hpp
+#define __itkShapeRelabelImageFilter_hpp
 
 #include "itkShapeRelabelImageFilter.h"
 #include "itkProgressAccumulator.h"

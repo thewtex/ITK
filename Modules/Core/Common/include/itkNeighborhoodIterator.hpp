@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkNeighborhoodIterator_txx
-#define __itkNeighborhoodIterator_txx
+#ifndef __itkNeighborhoodIterator_hpp
+#define __itkNeighborhoodIterator_hpp
 namespace itk
 {
 template< class TImage, class TBoundaryCondition >

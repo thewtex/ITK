@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkBinaryReconstructionByErosionImageFilter_txx
-#define __itkBinaryReconstructionByErosionImageFilter_txx
+#ifndef __itkBinaryReconstructionByErosionImageFilter_hpp
+#define __itkBinaryReconstructionByErosionImageFilter_hpp
 
 #include "itkBinaryReconstructionByErosionImageFilter.h"
 #include "itkProgressAccumulator.h"

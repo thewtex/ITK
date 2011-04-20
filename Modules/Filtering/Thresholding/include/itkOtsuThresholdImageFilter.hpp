@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkOtsuThresholdImageFilter_txx
-#define __itkOtsuThresholdImageFilter_txx
+#ifndef __itkOtsuThresholdImageFilter_hpp
+#define __itkOtsuThresholdImageFilter_hpp
 #include "itkOtsuThresholdImageFilter.h"
 
 #include "itkBinaryThresholdImageFilter.h"

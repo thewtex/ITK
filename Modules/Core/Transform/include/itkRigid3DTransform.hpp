@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkRigid3DTransform_txx
-#define __itkRigid3DTransform_txx
+#ifndef __itkRigid3DTransform_hpp
+#define __itkRigid3DTransform_hpp
 
 #include "itkRigid3DTransform.h"
 

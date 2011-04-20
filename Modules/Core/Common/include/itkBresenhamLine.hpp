@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkBresenhamLine_txx
-#define __itkBresenhamLine_txx
+#ifndef __itkBresenhamLine_hpp
+#define __itkBresenhamLine_hpp
 
 #include "itkBresenhamLine.h"
 #include "itkPoint.h"

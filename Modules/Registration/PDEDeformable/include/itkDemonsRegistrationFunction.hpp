@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkDemonsRegistrationFunction_txx
-#define __itkDemonsRegistrationFunction_txx
+#ifndef __itkDemonsRegistrationFunction_hpp
+#define __itkDemonsRegistrationFunction_hpp
 
 #include "itkDemonsRegistrationFunction.h"
 #include "itkMacro.h"

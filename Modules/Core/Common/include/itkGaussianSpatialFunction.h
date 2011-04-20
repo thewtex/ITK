@@ -117,7 +117,7 @@ private:
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkGaussianSpatialFunction.txx"
+#include "itkGaussianSpatialFunction.hpp"
 #endif
 
 #endif

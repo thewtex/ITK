@@ -25,7 +25,7 @@
 #include "itkCompose3DVectorImageFilter.h"
 #include "itkComposeRGBImageFilter.h"
 #include "itkCompose2DVectorImageFilter.h"
-#include "itkImageToVectorImageFilter.txx"
+#include "itkImageToVectorImageFilter.hpp"
 #include "itkCompose3DCovariantVectorImageFilter.h"
 
 

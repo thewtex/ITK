@@ -140,7 +140,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkRBFLayer.txx"
+#include "itkRBFLayer.hpp"
 #endif
 
 #endif

@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkConvertPixelBuffer_txx
-#define __itkConvertPixelBuffer_txx
+#ifndef __itkConvertPixelBuffer_hpp
+#define __itkConvertPixelBuffer_hpp
 #include "itkConvertPixelBuffer.h"
 
 #include "itkRGBPixel.h"

@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkBloxBoundaryProfileImageToBloxCoreAtomImageFilter_txx
-#define __itkBloxBoundaryProfileImageToBloxCoreAtomImageFilter_txx
+#ifndef __itkBloxBoundaryProfileImageToBloxCoreAtomImageFilter_hpp
+#define __itkBloxBoundaryProfileImageToBloxCoreAtomImageFilter_hpp
 
 #include "itkBloxBoundaryProfileImageToBloxCoreAtomImageFilter.h"
 #include "itkImageRegionConstIterator.h"

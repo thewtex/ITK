@@ -383,7 +383,7 @@ private:
 #endif
 
 #if ITK_TEMPLATE_TXX
-# include "itkCompositeTransform.txx"
+# include "itkCompositeTransform.hpp"
 #endif
 
 #endif // __itkCompositeTransform_h

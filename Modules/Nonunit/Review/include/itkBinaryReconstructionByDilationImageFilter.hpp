@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkBinaryReconstructionByDilationImageFilter_txx
-#define __itkBinaryReconstructionByDilationImageFilter_txx
+#ifndef __itkBinaryReconstructionByDilationImageFilter_hpp
+#define __itkBinaryReconstructionByDilationImageFilter_hpp
 
 #include "itkBinaryReconstructionByDilationImageFilter.h"
 #include "itkProgressAccumulator.h"

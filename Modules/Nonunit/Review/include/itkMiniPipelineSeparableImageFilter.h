@@ -103,7 +103,7 @@ private:
 }
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkMiniPipelineSeparableImageFilter.txx"
+#include "itkMiniPipelineSeparableImageFilter.hpp"
 #endif
 
 #endif

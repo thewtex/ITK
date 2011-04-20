@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkVariableSizeMatrix_txx
-#define __itkVariableSizeMatrix_txx
+#ifndef __itkVariableSizeMatrix_hpp
+#define __itkVariableSizeMatrix_hpp
 
 #include "itkVariableSizeMatrix.h"
 #include "itkNumericTraits.h"

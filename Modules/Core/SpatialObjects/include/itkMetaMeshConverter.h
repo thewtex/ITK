@@ -53,7 +53,7 @@ public:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-  #include "itkMetaMeshConverter.txx"
+  #include "itkMetaMeshConverter.hpp"
 #endif
 
 #endif

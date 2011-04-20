@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkMembershipSample_txx
-#define __itkMembershipSample_txx
+#ifndef __itkMembershipSample_hpp
+#define __itkMembershipSample_hpp
 
 #include "itkMembershipSample.h"
 

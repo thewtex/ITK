@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkShapePriorMAPCostFunction_txx
-#define __itkShapePriorMAPCostFunction_txx
+#ifndef __itkShapePriorMAPCostFunction_hpp
+#define __itkShapePriorMAPCostFunction_hpp
 
 #include "itkShapePriorMAPCostFunction.h"
 

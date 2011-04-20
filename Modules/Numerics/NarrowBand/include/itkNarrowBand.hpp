@@ -25,8 +25,8 @@
  *  please refer to the NOTICE file at the top of the ITK source tree.
  *
  *=========================================================================*/
-#ifndef __itkNarrowBand_txx
-#define __itkNarrowBand_txx
+#ifndef __itkNarrowBand_hpp
+#define __itkNarrowBand_hpp
 #include "itkNarrowBand.h"
 #include "vcl_cmath.h"
 #include <math.h>

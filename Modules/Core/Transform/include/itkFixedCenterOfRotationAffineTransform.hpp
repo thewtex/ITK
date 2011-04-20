@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkFixedCenterOfRotationAffineTransform_txx
-#define __itkFixedCenterOfRotationAffineTransform_txx
+#ifndef __itkFixedCenterOfRotationAffineTransform_hpp
+#define __itkFixedCenterOfRotationAffineTransform_hpp
 
 #include "itkNumericTraits.h"
 #include "itkFixedCenterOfRotationAffineTransform.h"

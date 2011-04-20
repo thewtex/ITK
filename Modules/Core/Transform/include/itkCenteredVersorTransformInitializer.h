@@ -124,7 +124,7 @@ private:
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkCenteredVersorTransformInitializer.txx"
+#include "itkCenteredVersorTransformInitializer.hpp"
 #endif
 
 #endif /* __itkCenteredVersorTransformInitializer_h */

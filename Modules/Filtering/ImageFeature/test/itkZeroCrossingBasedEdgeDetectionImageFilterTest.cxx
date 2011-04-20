@@ -21,7 +21,7 @@
 
 #include <iostream>
 #include "itkZeroCrossingBasedEdgeDetectionImageFilter.h"
-#include "itkNullImageToImageFilterDriver.txx"
+#include "itkNullImageToImageFilterDriver.hpp"
 #include "itkVector.h"
 #include "itkFilterWatcher.h"
 

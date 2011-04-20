@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkPermuteAxesImageFilter_txx
-#define __itkPermuteAxesImageFilter_txx
+#ifndef __itkPermuteAxesImageFilter_hpp
+#define __itkPermuteAxesImageFilter_hpp
 
 #include "itkPermuteAxesImageFilter.h"
 #include "itkImageRegionIteratorWithIndex.h"

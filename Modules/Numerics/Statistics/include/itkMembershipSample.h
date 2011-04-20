@@ -302,7 +302,7 @@ private:
 } // end of namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkMembershipSample.txx"
+#include "itkMembershipSample.hpp"
 #endif
 
 #endif

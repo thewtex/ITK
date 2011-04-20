@@ -21,9 +21,9 @@
 
 #include <iostream>
 
-#include "itkFastMarchingExtensionImageFilter.txx"
-#include "itkFastMarchingUpwindGradientImageFilter.txx"
-#include "itkFastMarchingImageFilter.txx"
+#include "itkFastMarchingExtensionImageFilter.hpp"
+#include "itkFastMarchingUpwindGradientImageFilter.hpp"
+#include "itkFastMarchingImageFilter.hpp"
 
 int itkFastMarchingHeaderTest ( int , char * [] )
 {

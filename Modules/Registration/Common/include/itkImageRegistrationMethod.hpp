@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkImageRegistrationMethod_txx
-#define __itkImageRegistrationMethod_txx
+#ifndef __itkImageRegistrationMethod_hpp
+#define __itkImageRegistrationMethod_hpp
 
 #include "itkImageRegistrationMethod.h"
 

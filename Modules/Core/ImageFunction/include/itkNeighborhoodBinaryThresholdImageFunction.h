@@ -140,12 +140,12 @@ private:
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkNeighborhoodBinaryThresholdImageFunction.txx"
+#include "itkNeighborhoodBinaryThresholdImageFunction.hpp"
 #endif
 
 /*
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkNeighborhoodBinaryThresholdImageFunction.txx"
+#include "itkNeighborhoodBinaryThresholdImageFunction.hpp"
 #endif
 */
 

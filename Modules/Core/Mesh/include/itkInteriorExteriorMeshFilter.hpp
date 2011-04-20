@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkInteriorExteriorMeshFilter_txx
-#define __itkInteriorExteriorMeshFilter_txx
+#ifndef __itkInteriorExteriorMeshFilter_hpp
+#define __itkInteriorExteriorMeshFilter_hpp
 
 #include "itkInteriorExteriorMeshFilter.h"
 #include "itkNumericTraits.h"

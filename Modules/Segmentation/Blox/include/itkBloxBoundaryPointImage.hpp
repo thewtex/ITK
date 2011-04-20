@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkBloxBoundaryPointImage_txx
-#define __itkBloxBoundaryPointImage_txx
+#ifndef __itkBloxBoundaryPointImage_hpp
+#define __itkBloxBoundaryPointImage_hpp
 
 #include "itkImageRegionIterator.h"
 #include "itkBloxBoundaryPointImage.h"

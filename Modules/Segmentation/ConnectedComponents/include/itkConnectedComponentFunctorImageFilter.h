@@ -165,7 +165,7 @@ protected:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkConnectedComponentFunctorImageFilter.txx"
+#include "itkConnectedComponentFunctorImageFilter.hpp"
 #endif
 
 #endif

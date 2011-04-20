@@ -282,7 +282,7 @@ protected:
 } // namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkShapedNeighborhoodIterator.txx"
+#include "itkShapedNeighborhoodIterator.hpp"
 #endif
 
 #endif

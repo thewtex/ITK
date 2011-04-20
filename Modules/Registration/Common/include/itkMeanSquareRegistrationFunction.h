@@ -182,7 +182,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkMeanSquareRegistrationFunction.txx"
+#include "itkMeanSquareRegistrationFunction.hpp"
 #endif
 
 #endif

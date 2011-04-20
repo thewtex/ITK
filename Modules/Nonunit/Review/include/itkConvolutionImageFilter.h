@@ -94,7 +94,7 @@ private:
 }
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkConvolutionImageFilter.txx"
+#include "itkConvolutionImageFilter.hpp"
 #endif
 
 #endif

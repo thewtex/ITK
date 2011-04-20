@@ -61,7 +61,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkCorrespondingList.txx"
+#include "itkCorrespondingList.hpp"
 #endif
 
 #endif

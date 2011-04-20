@@ -150,7 +150,7 @@ private:
 } // end namspace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkMinMaxCurvatureFlowImageFilter.txx"
+#include "itkMinMaxCurvatureFlowImageFilter.hpp"
 #endif
 
 #endif

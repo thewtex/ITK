@@ -64,7 +64,7 @@ public:
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkBloxBoundaryProfilePixel.txx"
+#include "itkBloxBoundaryProfilePixel.hpp"
 #endif
 
 #endif

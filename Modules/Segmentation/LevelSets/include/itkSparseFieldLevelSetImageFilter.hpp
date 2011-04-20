@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkSparseFieldLevelSetImageFilter_txx
-#define __itkSparseFieldLevelSetImageFilter_txx
+#ifndef __itkSparseFieldLevelSetImageFilter_hpp
+#define __itkSparseFieldLevelSetImageFilter_hpp
 
 #include "itkSparseFieldLevelSetImageFilter.h"
 #include "itkZeroCrossingImageFilter.h"

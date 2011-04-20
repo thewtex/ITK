@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkBoxImageFilter_txx
-#define __itkBoxImageFilter_txx
+#ifndef __itkBoxImageFilter_hpp
+#define __itkBoxImageFilter_hpp
 
 #include "itkBoxImageFilter.h"
 #include "itkProgressAccumulator.h"

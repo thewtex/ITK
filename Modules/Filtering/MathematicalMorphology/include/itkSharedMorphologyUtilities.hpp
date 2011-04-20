@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkSharedMorphologyUtilities_txx
-#define __itkSharedMorphologyUtilities_txx
+#ifndef __itkSharedMorphologyUtilities_hpp
+#define __itkSharedMorphologyUtilities_hpp
 
 #include "itkSharedMorphologyUtilities.h"
 #include "itkImageRegionConstIteratorWithIndex.h"

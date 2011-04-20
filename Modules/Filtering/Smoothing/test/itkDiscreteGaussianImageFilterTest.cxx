@@ -21,7 +21,7 @@
 
 #include <iostream>
 #include "itkDiscreteGaussianImageFilter.h"
-#include "itkNullImageToImageFilterDriver.txx"
+#include "itkNullImageToImageFilterDriver.hpp"
 #include "itkVector.h"
 #include "itkFilterWatcher.h"
 

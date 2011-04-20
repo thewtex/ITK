@@ -163,7 +163,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkRobustAutomaticThresholdImageFilter.txx"
+#include "itkRobustAutomaticThresholdImageFilter.hpp"
 #endif
 
 #endif

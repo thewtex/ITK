@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkMeanSquaresPointSetToImageMetric_txx
-#define __itkMeanSquaresPointSetToImageMetric_txx
+#ifndef __itkMeanSquaresPointSetToImageMetric_hpp
+#define __itkMeanSquaresPointSetToImageMetric_hpp
 
 #include "itkMeanSquaresPointSetToImageMetric.h"
 #include "itkImageRegionConstIteratorWithIndex.h"

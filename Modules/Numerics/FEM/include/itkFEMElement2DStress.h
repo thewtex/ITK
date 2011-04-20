@@ -114,7 +114,7 @@ static void Dummy( void );
 }} // end namespace itk::fem
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkFEMElement2DStress.txx"
+#include "itkFEMElement2DStress.hpp"
 #endif
 
 #endif  // #ifndef __itkFEMElement2DStress_h

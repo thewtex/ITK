@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkMetaLandmarkConverter_txx
-#define __itkMetaLandmarkConverter_txx
+#ifndef __itkMetaLandmarkConverter_hpp
+#define __itkMetaLandmarkConverter_hpp
 
 #include "itkMetaLandmarkConverter.h"
 

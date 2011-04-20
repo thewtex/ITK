@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkHessianToObjectnessMeasureImageFilter_txx
-#define __itkHessianToObjectnessMeasureImageFilter_txx
+#ifndef __itkHessianToObjectnessMeasureImageFilter_hpp
+#define __itkHessianToObjectnessMeasureImageFilter_hpp
 
 #include "itkHessianToObjectnessMeasureImageFilter.h"
 #include "itkImageRegionIterator.h"

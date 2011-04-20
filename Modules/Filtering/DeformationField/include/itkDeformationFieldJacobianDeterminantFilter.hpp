@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkDeformationFieldJacobianDeterminantFilter_txx
-#define __itkDeformationFieldJacobianDeterminantFilter_txx
+#ifndef __itkDeformationFieldJacobianDeterminantFilter_hpp
+#define __itkDeformationFieldJacobianDeterminantFilter_hpp
 
 #include "itkDeformationFieldJacobianDeterminantFilter.h"
 

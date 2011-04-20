@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkConditionalConstIterator_txx
-#define __itkConditionalConstIterator_txx
+#ifndef __itkConditionalConstIterator_hpp
+#define __itkConditionalConstIterator_hpp
 
 #include "itkConditionalConstIterator.h"
 

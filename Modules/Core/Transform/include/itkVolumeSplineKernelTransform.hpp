@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkVolumeSplineKernelTransform_txx
-#define __itkVolumeSplineKernelTransform_txx
+#ifndef __itkVolumeSplineKernelTransform_hpp
+#define __itkVolumeSplineKernelTransform_hpp
 #include "itkVolumeSplineKernelTransform.h"
 
 namespace itk

@@ -146,7 +146,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkRandomImageSource.txx"
+#include "itkRandomImageSource.hpp"
 #endif
 
 #endif

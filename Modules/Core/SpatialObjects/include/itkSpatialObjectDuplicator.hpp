@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkSpatialObjectDuplicator_txx
-#define __itkSpatialObjectDuplicator_txx
+#ifndef __itkSpatialObjectDuplicator_hpp
+#define __itkSpatialObjectDuplicator_hpp
 
 #include "itkSpatialObjectDuplicator.h"
 #include "itkSpatialObjectFactoryBase.h"

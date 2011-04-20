@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkCoreAtomImageToUnaryCorrespondenceMatrixProcess_txx
-#define __itkCoreAtomImageToUnaryCorrespondenceMatrixProcess_txx
+#ifndef __itkCoreAtomImageToUnaryCorrespondenceMatrixProcess_hpp
+#define __itkCoreAtomImageToUnaryCorrespondenceMatrixProcess_hpp
 
 #include "itkCoreAtomImageToUnaryCorrespondenceMatrixProcess.h"
 

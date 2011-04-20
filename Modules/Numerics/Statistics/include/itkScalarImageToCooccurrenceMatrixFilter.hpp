@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkScalarImageToCooccurrenceMatrixFilter_txx
-#define __itkScalarImageToCooccurrenceMatrixFilter_txx
+#ifndef __itkScalarImageToCooccurrenceMatrixFilter_hpp
+#define __itkScalarImageToCooccurrenceMatrixFilter_hpp
 
 #include "itkScalarImageToCooccurrenceMatrixFilter.h"
 

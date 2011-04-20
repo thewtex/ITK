@@ -21,14 +21,14 @@
 
 #include <iostream>
 
-#include "itkBinaryThresholdImageFilter.txx"
+#include "itkBinaryThresholdImageFilter.hpp"
 #include "itkBinaryThresholdProjectionImageFilter.h"
-#include "itkOtsuMultipleThresholdsCalculator.txx"
-#include "itkOtsuMultipleThresholdsImageFilter.txx"
-#include "itkOtsuThresholdImageCalculator.txx"
-#include "itkOtsuThresholdImageFilter.txx"
-#include "itkThresholdImageFilter.txx"
-#include "itkThresholdLabelerImageFilter.txx"
+#include "itkOtsuMultipleThresholdsCalculator.hpp"
+#include "itkOtsuMultipleThresholdsImageFilter.hpp"
+#include "itkOtsuThresholdImageCalculator.hpp"
+#include "itkOtsuThresholdImageFilter.hpp"
+#include "itkThresholdImageFilter.hpp"
+#include "itkThresholdLabelerImageFilter.hpp"
 
 
 

@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkBasicErodeImageFilter_txx
-#define __itkBasicErodeImageFilter_txx
+#ifndef __itkBasicErodeImageFilter_hpp
+#define __itkBasicErodeImageFilter_hpp
 
 #include "itkBasicErodeImageFilter.h"
 

@@ -170,7 +170,7 @@ private:
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkChainCodePath.txx"
+#include "itkChainCodePath.hpp"
 #endif
 
 #endif

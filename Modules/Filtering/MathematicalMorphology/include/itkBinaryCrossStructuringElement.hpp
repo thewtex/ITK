@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkBinaryCrossStructuringElement_txx
-#define __itkBinaryCrossStructuringElement_txx
+#ifndef __itkBinaryCrossStructuringElement_hpp
+#define __itkBinaryCrossStructuringElement_hpp
 #include "itkBinaryCrossStructuringElement.h"
 
 #include "itkNumericTraits.h"

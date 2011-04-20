@@ -21,7 +21,7 @@
 
 #include <iostream>
 #include "itkBilateralImageFilter.h"
-#include "itkNullImageToImageFilterDriver.txx"
+#include "itkNullImageToImageFilterDriver.hpp"
 
 /**
  * This program tests the FilterImageAnisotropicDiffusion object by driving it

@@ -308,7 +308,7 @@ ITK_EXPORT std::istream & operator>>(std::istream & is,
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkVersor.txx"
+#include "itkVersor.hpp"
 #endif
 
 #endif

@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkImageMaskSpatialObject_txx
-#define __itkImageMaskSpatialObject_txx
+#ifndef __itkImageMaskSpatialObject_hpp
+#define __itkImageMaskSpatialObject_hpp
 
 #include "itkImageMaskSpatialObject.h"
 #include "itkImageRegionConstIteratorWithIndex.h"
@@ -254,4 +254,4 @@ ImageMaskSpatialObject< TDimension >
 }
 } // end namespace itk
 
-#endif //__ImageMaskSpatialObject_txx
+#endif //__ImageMaskSpatialObject_hpp

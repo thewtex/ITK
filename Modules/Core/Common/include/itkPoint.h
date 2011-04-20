@@ -326,7 +326,7 @@ public:
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkPoint.txx"
+#include "itkPoint.hpp"
 #endif
 
 #endif

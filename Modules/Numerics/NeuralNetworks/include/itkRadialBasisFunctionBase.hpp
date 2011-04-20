@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkRadialBasisFunctionBase_txx
-#define __itkRadialBasisFunctionBase_txx
+#ifndef __itkRadialBasisFunctionBase_hpp
+#define __itkRadialBasisFunctionBase_hpp
 
 #include "itkRadialBasisFunctionBase.h"
 

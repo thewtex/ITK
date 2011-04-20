@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkVoronoiDiagram2DGenerator_txx
-#define __itkVoronoiDiagram2DGenerator_txx
+#ifndef __itkVoronoiDiagram2DGenerator_hpp
+#define __itkVoronoiDiagram2DGenerator_hpp
 #include "itkVoronoiDiagram2DGenerator.h"
 
 #include "itkIntTypes.h"

@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkNeuralNetworkFileReader_txx
-#define __itkNeuralNetworkFileReader_txx
+#ifndef __itkNeuralNetworkFileReader_hpp
+#define __itkNeuralNetworkFileReader_hpp
 
 #include "itksys/ios/sstream"
 #include "itkNeuralNetworkFileReader.h"

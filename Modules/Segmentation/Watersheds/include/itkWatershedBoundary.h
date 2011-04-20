@@ -219,7 +219,7 @@ protected:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkWatershedBoundary.txx"
+#include "itkWatershedBoundary.hpp"
 #endif
 
 #endif

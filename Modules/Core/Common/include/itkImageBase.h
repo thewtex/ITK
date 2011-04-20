@@ -668,7 +668,7 @@ private:
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkImageBase.txx"
+#include "itkImageBase.hpp"
 #endif
 
 #endif

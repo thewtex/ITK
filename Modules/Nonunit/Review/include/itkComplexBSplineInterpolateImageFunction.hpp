@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkComplexBSplineInterpolateImageFunction_txx
-#define __itkComplexBSplineInterpolateImageFunction_txx
+#ifndef __itkComplexBSplineInterpolateImageFunction_hpp
+#define __itkComplexBSplineInterpolateImageFunction_hpp
 
 #include "itkComplexBSplineInterpolateImageFunction.h"
 

@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkHexahedronCell_txx
-#define __itkHexahedronCell_txx
+#ifndef __itkHexahedronCell_hpp
+#define __itkHexahedronCell_hpp
 #include "itkHexahedronCell.h"
 #include "vnl/vnl_matrix_fixed.h"
 #include "vnl/algo/vnl_determinant.h"

@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkNoiseImageFilter_txx
-#define __itkNoiseImageFilter_txx
+#ifndef __itkNoiseImageFilter_hpp
+#define __itkNoiseImageFilter_hpp
 #include "itkNoiseImageFilter.h"
 
 #include "itkConstNeighborhoodIterator.h"

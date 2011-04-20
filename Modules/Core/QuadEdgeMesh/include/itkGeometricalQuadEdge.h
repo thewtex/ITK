@@ -247,7 +247,7 @@ protected:
 }
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkGeometricalQuadEdge.txx"
+#include "itkGeometricalQuadEdge.hpp"
 #endif
 
 #endif

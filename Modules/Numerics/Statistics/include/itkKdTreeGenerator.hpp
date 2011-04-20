@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkKdTreeGenerator_txx
-#define __itkKdTreeGenerator_txx
+#ifndef __itkKdTreeGenerator_hpp
+#define __itkKdTreeGenerator_hpp
 
 #include  "itkKdTreeGenerator.h"
 

@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkOpeningByReconstructionImageFilter_txx
-#define __itkOpeningByReconstructionImageFilter_txx
+#ifndef __itkOpeningByReconstructionImageFilter_hpp
+#define __itkOpeningByReconstructionImageFilter_hpp
 
 #include "itkImageRegionIterator.h"
 #include "itkOpeningByReconstructionImageFilter.h"

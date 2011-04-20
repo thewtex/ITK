@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkSampleToSubsampleFilter_txx
-#define __itkSampleToSubsampleFilter_txx
+#ifndef __itkSampleToSubsampleFilter_hpp
+#define __itkSampleToSubsampleFilter_hpp
 
 #include "itkSampleToSubsampleFilter.h"
 

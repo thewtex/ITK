@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkGeodesicActiveContourLevelSetFunction_txx
-#define __itkGeodesicActiveContourLevelSetFunction_txx
+#ifndef __itkGeodesicActiveContourLevelSetFunction_hpp
+#define __itkGeodesicActiveContourLevelSetFunction_hpp
 
 #include "itkGeodesicActiveContourLevelSetFunction.h"
 #include "itkImageRegionIterator.h"

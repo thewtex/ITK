@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkCoreAtomImageToDistanceMatrixProcess_txx
-#define __itkCoreAtomImageToDistanceMatrixProcess_txx
+#ifndef __itkCoreAtomImageToDistanceMatrixProcess_hpp
+#define __itkCoreAtomImageToDistanceMatrixProcess_hpp
 
 #include "itkCoreAtomImageToDistanceMatrixProcess.h"
 

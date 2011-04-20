@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkSumOfSquaresImageFunction_txx
-#define __itkSumOfSquaresImageFunction_txx
+#ifndef __itkSumOfSquaresImageFunction_hpp
+#define __itkSumOfSquaresImageFunction_hpp
 
 #include "itkSumOfSquaresImageFunction.h"
 

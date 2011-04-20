@@ -198,7 +198,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkHoughTransform2DLinesImageFilter.txx"
+#include "itkHoughTransform2DLinesImageFilter.hpp"
 #endif
 
 #endif

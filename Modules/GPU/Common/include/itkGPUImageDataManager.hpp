@@ -15,8 +15,8 @@
 *  limitations under the License.
 *
 *=========================================================================*/
-#ifndef __itkGPUImageDataManager_txx
-#define __itkGPUImageDataManager_txx
+#ifndef __itkGPUImageDataManager_hpp
+#define __itkGPUImageDataManager_hpp
 
 #include "itkGPUImageDataManager.h"
 

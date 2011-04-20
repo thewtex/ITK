@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkStatisticsLabelMapFilter_txx
-#define __itkStatisticsLabelMapFilter_txx
+#ifndef __itkStatisticsLabelMapFilter_hpp
+#define __itkStatisticsLabelMapFilter_hpp
 
 #include "itkStatisticsLabelMapFilter.h"
 #include "itkMinimumMaximumImageCalculator.h"

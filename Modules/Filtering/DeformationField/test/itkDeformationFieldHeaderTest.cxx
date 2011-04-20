@@ -21,12 +21,12 @@
 
 #include <iostream>
 
-#include "itkIterativeInverseDeformationFieldImageFilter.txx"
-#include "itkDisplacementFieldJacobianDeterminantFilter.txx"
-#include "itkInverseDeformationFieldImageFilter.txx"
+#include "itkIterativeInverseDeformationFieldImageFilter.hpp"
+#include "itkDisplacementFieldJacobianDeterminantFilter.hpp"
+#include "itkInverseDeformationFieldImageFilter.hpp"
 #include "itkDeformationFieldJacobianDeterminantFilter.h"
-#include "itkDeformationFieldSource.txx"
-#include "itkDeformationFieldJacobianDeterminantFilter.txx"
+#include "itkDeformationFieldSource.hpp"
+#include "itkDeformationFieldJacobianDeterminantFilter.hpp"
 #include "itkDisplacementFieldJacobianDeterminantFilter.h"
 
 

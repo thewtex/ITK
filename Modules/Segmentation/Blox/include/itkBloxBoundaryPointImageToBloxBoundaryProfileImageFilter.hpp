@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkBloxBoundaryPointImageToBloxBoundaryProfileImageFilter_txx
-#define __itkBloxBoundaryPointImageToBloxBoundaryProfileImageFilter_txx
+#ifndef __itkBloxBoundaryPointImageToBloxBoundaryProfileImageFilter_hpp
+#define __itkBloxBoundaryPointImageToBloxBoundaryProfileImageFilter_hpp
 
 #include "itkFloodFilledSpatialFunctionConditionalIterator.h"
 #include "itkBloxBoundaryPointImageToBloxBoundaryProfileImageFilter.h"

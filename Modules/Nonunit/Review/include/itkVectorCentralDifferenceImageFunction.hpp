@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkVectorCentralDifferenceImageFunction_txx
-#define __itkVectorCentralDifferenceImageFunction_txx
+#ifndef __itkVectorCentralDifferenceImageFunction_hpp
+#define __itkVectorCentralDifferenceImageFunction_hpp
 
 #include "itkVectorCentralDifferenceImageFunction.h"
 

@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkFEMRegistrationFilter_txx
-#define __itkFEMRegistrationFilter_txx
+#ifndef __itkFEMRegistrationFilter_hpp
+#define __itkFEMRegistrationFilter_hpp
 
 // disable debug warnings in MS compiler
 #ifdef _MSC_VER

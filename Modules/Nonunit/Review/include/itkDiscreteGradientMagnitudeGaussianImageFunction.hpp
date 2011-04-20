@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkDiscreteGradientMagnitudeGaussianImageFunction_txx
-#define __itkDiscreteGradientMagnitudeGaussianImageFunction_txx
+#ifndef __itkDiscreteGradientMagnitudeGaussianImageFunction_hpp
+#define __itkDiscreteGradientMagnitudeGaussianImageFunction_hpp
 
 #include "itkDiscreteGradientMagnitudeGaussianImageFunction.h"
 #include "itkNeighborhoodOperatorImageFilter.h"

@@ -21,11 +21,11 @@
 
 #include <iostream>
 
-#include "itkFEMFiniteDifferenceFunctionLoad.txx"
+#include "itkFEMFiniteDifferenceFunctionLoad.hpp"
 #include "itkMIRegistrationFunction.h"
-#include "itkNCCRegistrationFunction.txx"
-#include "itkFEMRegistrationFilter.txx"
-#include "itkMIRegistrationFunction.txx"
+#include "itkNCCRegistrationFunction.hpp"
+#include "itkFEMRegistrationFilter.hpp"
+#include "itkMIRegistrationFunction.hpp"
 
 
 

@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkBloxPixel_txx
-#define __itkBloxPixel_txx
+#ifndef __itkBloxPixel_hpp
+#define __itkBloxPixel_hpp
 
 #include "itkBloxPixel.h"
 

@@ -28,8 +28,8 @@
  * http://insight-journal.org/midas/handle.php?handle=1926/326
  *
  */
-#ifndef __itkFFTComplexToComplexImageFilter_txx
-#define __itkFFTComplexToComplexImageFilter_txx
+#ifndef __itkFFTComplexToComplexImageFilter_hpp
+#define __itkFFTComplexToComplexImageFilter_hpp
 
 #if defined( USE_FFTWD ) || defined( USE_FFTWF )
 #include "itkFFTWComplexToComplexImageFilter.h"

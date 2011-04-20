@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkNodeList_txx
-#define __itkNodeList_txx
+#ifndef __itkNodeList_hpp
+#define __itkNodeList_hpp
 
 #include "itkNodeList.h"
 

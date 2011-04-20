@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkScalarToRGBColormapImageFilter_txx
-#define __itkScalarToRGBColormapImageFilter_txx
+#ifndef __itkScalarToRGBColormapImageFilter_hpp
+#define __itkScalarToRGBColormapImageFilter_hpp
 
 #include "itkScalarToRGBColormapImageFilter.h"
 

@@ -76,7 +76,7 @@ public:
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkBloxPixel.txx"
+#include "itkBloxPixel.hpp"
 #endif
 
 #endif

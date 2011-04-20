@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkGaussianMixtureModelComponent_txx
-#define __itkGaussianMixtureModelComponent_txx
+#ifndef __itkGaussianMixtureModelComponent_hpp
+#define __itkGaussianMixtureModelComponent_hpp
 
 #include <iostream>
 

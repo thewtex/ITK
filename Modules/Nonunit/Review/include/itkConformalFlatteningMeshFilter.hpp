@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkConformalFlatteningMeshFilter_txx
-#define __itkConformalFlatteningMeshFilter_txx
+#ifndef __itkConformalFlatteningMeshFilter_hpp
+#define __itkConformalFlatteningMeshFilter_hpp
 
 #include "itkConformalFlatteningMeshFilter.h"
 #include "itkExceptionObject.h"

@@ -275,7 +275,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkDiscreteGaussianImageFilter.txx"
+#include "itkDiscreteGaussianImageFilter.hpp"
 #endif
 
 #endif

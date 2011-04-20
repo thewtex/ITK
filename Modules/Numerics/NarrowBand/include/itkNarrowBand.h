@@ -167,7 +167,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkNarrowBand.txx"
+#include "itkNarrowBand.hpp"
 #endif
 
 #endif

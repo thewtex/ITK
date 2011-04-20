@@ -136,7 +136,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkBloxBoundaryPointToCoreAtomImageFilter.txx"
+#include "itkBloxBoundaryPointToCoreAtomImageFilter.hpp"
 #endif
 
 #endif

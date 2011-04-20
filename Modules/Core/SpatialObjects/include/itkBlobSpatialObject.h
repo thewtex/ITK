@@ -125,7 +125,7 @@ protected:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkBlobSpatialObject.txx"
+#include "itkBlobSpatialObject.hpp"
 #endif
 
 #endif // __itkBlobSpatialObject_h

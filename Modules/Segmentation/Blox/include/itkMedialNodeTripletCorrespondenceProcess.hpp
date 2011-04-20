@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkMedialNodeTripletCorrespondenceProcess_txx
-#define __itkMedialNodeTripletCorrespondenceProcess_txx
+#ifndef __itkMedialNodeTripletCorrespondenceProcess_hpp
+#define __itkMedialNodeTripletCorrespondenceProcess_hpp
 
 #include "itkMedialNodeTripletCorrespondenceProcess.h"
 

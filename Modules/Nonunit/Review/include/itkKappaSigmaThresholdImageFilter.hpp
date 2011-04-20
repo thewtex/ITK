@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkKappaSigmaThresholdImageFilter_txx
-#define __itkKappaSigmaThresholdImageFilter_txx
+#ifndef __itkKappaSigmaThresholdImageFilter_hpp
+#define __itkKappaSigmaThresholdImageFilter_hpp
 
 #include "itkKappaSigmaThresholdImageFilter.h"
 #include "itkBinaryThresholdImageFilter.h"

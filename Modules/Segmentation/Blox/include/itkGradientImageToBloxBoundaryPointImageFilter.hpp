@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkGradientImageToBloxBoundaryPointImageFilter_txx
-#define __itkGradientImageToBloxBoundaryPointImageFilter_txx
+#ifndef __itkGradientImageToBloxBoundaryPointImageFilter_hpp
+#define __itkGradientImageToBloxBoundaryPointImageFilter_hpp
 
 #include "itkProgressReporter.h"
 #include "itkGradientImageToBloxBoundaryPointImageFilter.h"

@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkFourierSeriesPath_txx
-#define __itkFourierSeriesPath_txx
+#ifndef __itkFourierSeriesPath_hpp
+#define __itkFourierSeriesPath_hpp
 
 #include "itkFourierSeriesPath.h"
 #include <math.h>

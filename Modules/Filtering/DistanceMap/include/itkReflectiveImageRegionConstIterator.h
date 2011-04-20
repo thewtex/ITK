@@ -166,7 +166,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkReflectiveImageRegionConstIterator.txx"
+#include "itkReflectiveImageRegionConstIterator.hpp"
 #endif
 
 #endif

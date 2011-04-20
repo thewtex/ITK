@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkSimilarity2DTransform_txx
-#define __itkSimilarity2DTransform_txx
+#ifndef __itkSimilarity2DTransform_hpp
+#define __itkSimilarity2DTransform_hpp
 
 #include "itkSimilarity2DTransform.h"
 #include "vnl/vnl_math.h"

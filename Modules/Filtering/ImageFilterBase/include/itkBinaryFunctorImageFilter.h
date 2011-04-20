@@ -151,7 +151,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkBinaryFunctorImageFilter.txx"
+#include "itkBinaryFunctorImageFilter.hpp"
 #endif
 
 #endif

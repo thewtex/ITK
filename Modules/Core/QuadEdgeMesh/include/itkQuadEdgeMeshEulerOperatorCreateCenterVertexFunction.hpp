@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkQuadEdgeMeshEulerOperatorCreateCenterVertexFunction_txx
-#define __itkQuadEdgeMeshEulerOperatorCreateCenterVertexFunction_txx
+#ifndef __itkQuadEdgeMeshEulerOperatorCreateCenterVertexFunction_hpp
+#define __itkQuadEdgeMeshEulerOperatorCreateCenterVertexFunction_hpp
 
 #include "itkQuadEdgeMeshEulerOperatorCreateCenterVertexFunction.h"
 

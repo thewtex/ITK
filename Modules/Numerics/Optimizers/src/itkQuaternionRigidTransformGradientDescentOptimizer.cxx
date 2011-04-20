@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef _itkQuaternionRigidTransformGradientDescentOptimizer_txx
-#define _itkQuaternionRigidTransformGradientDescentOptimizer_txx
+#ifndef _itkQuaternionRigidTransformGradientDescentOptimizer_hpp
+#define _itkQuaternionRigidTransformGradientDescentOptimizer_hpp
 
 #include "itkQuaternionRigidTransformGradientDescentOptimizer.h"
 #include "vnl/vnl_quaternion.h"

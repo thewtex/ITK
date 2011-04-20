@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef _itkMultipleValuedNonLinearOptimizer_txx
-#define _itkMultipleValuedNonLinearOptimizer_txx
+#ifndef _itkMultipleValuedNonLinearOptimizer_hpp
+#define _itkMultipleValuedNonLinearOptimizer_hpp
 
 #include "itkMultipleValuedNonLinearOptimizer.h"
 

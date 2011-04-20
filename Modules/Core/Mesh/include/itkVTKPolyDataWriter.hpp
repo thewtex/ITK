@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkVTKPolyDataWriter_txx
-#define __itkVTKPolyDataWriter_txx
+#ifndef __itkVTKPolyDataWriter_hpp
+#define __itkVTKPolyDataWriter_hpp
 
 #include "itkVTKPolyDataWriter.h"
 #include "itkCellInterface.h"

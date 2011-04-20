@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkBoxSpatialObject_txx
-#define __itkBoxSpatialObject_txx
+#ifndef __itkBoxSpatialObject_hpp
+#define __itkBoxSpatialObject_hpp
 
 #include "itkBoxSpatialObject.h"
 #include "itkNumericTraits.h"

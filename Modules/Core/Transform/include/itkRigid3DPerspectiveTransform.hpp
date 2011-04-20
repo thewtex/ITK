@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkRigid3DPerspectiveTransform_txx
-#define __itkRigid3DPerspectiveTransform_txx
+#ifndef __itkRigid3DPerspectiveTransform_hpp
+#define __itkRigid3DPerspectiveTransform_hpp
 
 #include "itkRigid3DPerspectiveTransform.h"
 

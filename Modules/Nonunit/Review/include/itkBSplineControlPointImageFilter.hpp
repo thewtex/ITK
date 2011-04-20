@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkBSplineControlPointImageFilter_txx
-#define __itkBSplineControlPointImageFilter_txx
+#ifndef __itkBSplineControlPointImageFilter_hpp
+#define __itkBSplineControlPointImageFilter_hpp
 
 #include "itkBSplineControlPointImageFilter.h"
 

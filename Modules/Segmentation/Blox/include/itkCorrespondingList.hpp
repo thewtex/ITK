@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkCorrespondingList_txx
-#define __itkCorrespondingList_txx
+#ifndef __itkCorrespondingList_hpp
+#define __itkCorrespondingList_hpp
 
 #include "itkCorrespondingList.h"
 

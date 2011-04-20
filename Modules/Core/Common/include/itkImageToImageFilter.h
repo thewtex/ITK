@@ -286,7 +286,7 @@ private:
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkImageToImageFilter.txx"
+#include "itkImageToImageFilter.hpp"
 #endif
 
 #endif

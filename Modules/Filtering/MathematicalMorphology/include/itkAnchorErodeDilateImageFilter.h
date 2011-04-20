@@ -99,7 +99,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkAnchorErodeDilateImageFilter.txx"
+#include "itkAnchorErodeDilateImageFilter.hpp"
 #endif
 
 #endif

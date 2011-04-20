@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkImageToListSampleAdaptor_txx
-#define __itkImageToListSampleAdaptor_txx
+#ifndef __itkImageToListSampleAdaptor_hpp
+#define __itkImageToListSampleAdaptor_hpp
 
 #include "itkImageToListSampleAdaptor.h"
 

@@ -102,7 +102,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkDifferenceOfGaussiansGradientImageFilter.txx"
+#include "itkDifferenceOfGaussiansGradientImageFilter.hpp"
 #endif
 
 #endif

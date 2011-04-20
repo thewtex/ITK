@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkStatisticsKeepNObjectsLabelMapFilter_txx
-#define __itkStatisticsKeepNObjectsLabelMapFilter_txx
+#ifndef __itkStatisticsKeepNObjectsLabelMapFilter_hpp
+#define __itkStatisticsKeepNObjectsLabelMapFilter_hpp
 
 #include "itkStatisticsKeepNObjectsLabelMapFilter.h"
 #include "itkProgressReporter.h"

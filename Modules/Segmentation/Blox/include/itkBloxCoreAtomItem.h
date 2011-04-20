@@ -121,7 +121,7 @@ private:
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkBloxCoreAtomItem.txx"
+#include "itkBloxCoreAtomItem.hpp"
 #endif
 
 #endif

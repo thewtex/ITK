@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkSegmentationLevelSetFunction_txx
-#define __itkSegmentationLevelSetFunction_txx
+#ifndef __itkSegmentationLevelSetFunction_hpp
+#define __itkSegmentationLevelSetFunction_hpp
 
 #include "itkSegmentationLevelSetFunction.h"
 

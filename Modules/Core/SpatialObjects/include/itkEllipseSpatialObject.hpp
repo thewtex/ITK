@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkEllipseSpatialObject_txx
-#define __itkEllipseSpatialObject_txx
+#ifndef __itkEllipseSpatialObject_hpp
+#define __itkEllipseSpatialObject_hpp
 
 #include "itkEllipseSpatialObject.h"
 #include <string.h>

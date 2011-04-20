@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkCurvesLevelSetImageFilter_txx
-#define __itkCurvesLevelSetImageFilter_txx
+#ifndef __itkCurvesLevelSetImageFilter_hpp
+#define __itkCurvesLevelSetImageFilter_hpp
 
 #include "itkCurvesLevelSetImageFilter.h"
 

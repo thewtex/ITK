@@ -143,7 +143,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkLaplacianSegmentationLevelSetImageFilter.txx"
+#include "itkLaplacianSegmentationLevelSetImageFilter.hpp"
 #endif
 
 #endif

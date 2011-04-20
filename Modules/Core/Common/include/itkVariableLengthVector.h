@@ -480,7 +480,7 @@ std::ostream & operator<<(std::ostream & os, const VariableLengthVector< TValueT
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkVariableLengthVector.txx"
+#include "itkVariableLengthVector.hpp"
 #endif
 
 #endif

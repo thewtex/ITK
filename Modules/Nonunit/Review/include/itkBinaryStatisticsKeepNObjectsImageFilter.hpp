@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkBinaryStatisticsKeepNObjectsImageFilter_txx
-#define __itkBinaryStatisticsKeepNObjectsImageFilter_txx
+#ifndef __itkBinaryStatisticsKeepNObjectsImageFilter_hpp
+#define __itkBinaryStatisticsKeepNObjectsImageFilter_hpp
 
 #include "itkBinaryStatisticsKeepNObjectsImageFilter.h"
 #include "itkProgressAccumulator.h"

@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkAnchorOpenCloseImageFilter_txx
-#define __itkAnchorOpenCloseImageFilter_txx
+#ifndef __itkAnchorOpenCloseImageFilter_hpp
+#define __itkAnchorOpenCloseImageFilter_hpp
 
 #include "itkAnchorOpenCloseImageFilter.h"
 #include "itkNeighborhoodAlgorithm.h"

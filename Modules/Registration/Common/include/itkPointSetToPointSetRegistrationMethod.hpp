@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkPointSetToPointSetRegistrationMethod_txx
-#define __itkPointSetToPointSetRegistrationMethod_txx
+#ifndef __itkPointSetToPointSetRegistrationMethod_hpp
+#define __itkPointSetToPointSetRegistrationMethod_hpp
 
 #include "itkPointSetToPointSetRegistrationMethod.h"
 

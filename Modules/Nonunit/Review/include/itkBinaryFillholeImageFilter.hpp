@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkBinaryFillholeImageFilter_txx
-#define __itkBinaryFillholeImageFilter_txx
+#ifndef __itkBinaryFillholeImageFilter_hpp
+#define __itkBinaryFillholeImageFilter_hpp
 
 #include "itkBinaryFillholeImageFilter.h"
 #include "itkBinaryNotImageFilter.h"

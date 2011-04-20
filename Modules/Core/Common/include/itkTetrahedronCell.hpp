@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkTetrahedronCell_txx
-#define __itkTetrahedronCell_txx
+#ifndef __itkTetrahedronCell_hpp
+#define __itkTetrahedronCell_hpp
 #include "itkTetrahedronCell.h"
 #include "vnl/algo/vnl_determinant.h"
 

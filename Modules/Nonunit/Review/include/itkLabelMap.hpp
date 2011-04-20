@@ -25,8 +25,8 @@
  *  please refer to the NOTICE file at the top of the ITK source tree.
  *
  *=========================================================================*/
-#ifndef __itkLabelMap_txx
-#define __itkLabelMap_txx
+#ifndef __itkLabelMap_hpp
+#define __itkLabelMap_hpp
 
 #include "itkLabelMap.h"
 #include "itkProcessObject.h"

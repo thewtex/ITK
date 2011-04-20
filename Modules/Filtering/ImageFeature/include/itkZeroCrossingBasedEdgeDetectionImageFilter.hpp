@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkZeroCrossingBasedEdgeDetectionImageFilter_txx
-#define __itkZeroCrossingBasedEdgeDetectionImageFilter_txx
+#ifndef __itkZeroCrossingBasedEdgeDetectionImageFilter_hpp
+#define __itkZeroCrossingBasedEdgeDetectionImageFilter_hpp
 
 #include "itkZeroCrossingBasedEdgeDetectionImageFilter.h"
 #include "itkDiscreteGaussianImageFilter.h"

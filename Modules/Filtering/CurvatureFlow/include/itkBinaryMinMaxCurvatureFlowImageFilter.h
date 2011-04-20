@@ -133,7 +133,7 @@ private:
 } // end namspace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkBinaryMinMaxCurvatureFlowImageFilter.txx"
+#include "itkBinaryMinMaxCurvatureFlowImageFilter.hpp"
 #endif
 
 #endif

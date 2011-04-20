@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkMeshSource_txx
-#define __itkMeshSource_txx
+#ifndef __itkMeshSource_hpp
+#define __itkMeshSource_hpp
 
 #include "itkMeshSource.h"
 

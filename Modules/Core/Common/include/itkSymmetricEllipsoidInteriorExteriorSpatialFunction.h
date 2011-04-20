@@ -119,7 +119,7 @@ private:
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkSymmetricEllipsoidInteriorExteriorSpatialFunction.txx"
+#include "itkSymmetricEllipsoidInteriorExteriorSpatialFunction.hpp"
 #endif
 
 #endif

@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkMetaArrowConverter_txx
-#define __itkMetaArrowConverter_txx
+#ifndef __itkMetaArrowConverter_hpp
+#define __itkMetaArrowConverter_hpp
 
 #include "itkMetaArrowConverter.h"
 

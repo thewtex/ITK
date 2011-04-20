@@ -344,7 +344,7 @@ private:
 } // namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkWindowedSincInterpolateImageFunction.txx"
+#include "itkWindowedSincInterpolateImageFunction.hpp"
 #endif
 
 #endif // _itkWindowedSincInterpolateImageFunction_h

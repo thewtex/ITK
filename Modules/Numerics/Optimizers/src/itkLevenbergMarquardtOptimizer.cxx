@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef _itkLevenbergMarquardtOptimizer_txx
-#define _itkLevenbergMarquardtOptimizer_txx
+#ifndef _itkLevenbergMarquardtOptimizer_hpp
+#define _itkLevenbergMarquardtOptimizer_hpp
 
 #include "itkLevenbergMarquardtOptimizer.h"
 

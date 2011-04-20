@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkZeroFluxNeumannBoundaryCondition_txx
-#define __itkZeroFluxNeumannBoundaryCondition_txx
+#ifndef __itkZeroFluxNeumannBoundaryCondition_hpp
+#define __itkZeroFluxNeumannBoundaryCondition_hpp
 #include "itkZeroFluxNeumannBoundaryCondition.h"
 namespace itk
 {

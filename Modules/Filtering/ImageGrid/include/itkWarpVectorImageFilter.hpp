@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkWarpVectorImageFilter_txx
-#define __itkWarpVectorImageFilter_txx
+#ifndef __itkWarpVectorImageFilter_hpp
+#define __itkWarpVectorImageFilter_hpp
 #include "itkWarpVectorImageFilter.h"
 
 #include "itkImageRegionIterator.h"

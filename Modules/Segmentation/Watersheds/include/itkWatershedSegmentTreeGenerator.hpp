@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkWatershedSegmentTreeGenerator_txx
-#define __itkWatershedSegmentTreeGenerator_txx
+#ifndef __itkWatershedSegmentTreeGenerator_hpp
+#define __itkWatershedSegmentTreeGenerator_hpp
 
 #include <stack>
 #include "itkOneWayEquivalencyTable.h"

@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkImageClassifierFilter_txx
-#define __itkImageClassifierFilter_txx
+#ifndef __itkImageClassifierFilter_hpp
+#define __itkImageClassifierFilter_hpp
 
 #include "itkImageClassifierFilter.h"
 #include "itkImageRegionIterator.h"

@@ -22,13 +22,13 @@
 #include <iostream>
 
 #include "itkGradientRecursiveGaussianImageFilter.h"
-#include "itkVectorGradientMagnitudeImageFilter.txx"
-#include "itkGradientMagnitudeRecursiveGaussianImageFilter.txx"
-#include "itkGradientImageFilter.txx"
+#include "itkVectorGradientMagnitudeImageFilter.hpp"
+#include "itkGradientMagnitudeRecursiveGaussianImageFilter.hpp"
+#include "itkGradientImageFilter.hpp"
 #include "itkGradientToMagnitudeImageFilter.h"
-#include "itkDifferenceOfGaussiansGradientImageFilter.txx"
-#include "itkGradientRecursiveGaussianImageFilter.txx"
-#include "itkGradientMagnitudeImageFilter.txx"
+#include "itkDifferenceOfGaussiansGradientImageFilter.hpp"
+#include "itkGradientRecursiveGaussianImageFilter.hpp"
+#include "itkGradientMagnitudeImageFilter.hpp"
 
 
 

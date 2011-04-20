@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkAutumnColormapFunction_txx
-#define __itkAutumnColormapFunction_txx
+#ifndef __itkAutumnColormapFunction_hpp
+#define __itkAutumnColormapFunction_hpp
 
 #include "itkAutumnColormapFunction.h"
 

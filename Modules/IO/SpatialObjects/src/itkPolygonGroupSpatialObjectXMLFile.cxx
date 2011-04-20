@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef _itkPolygonGroupSpatialObjectXMLFile_txx
-#define _itkPolygonGroupSpatialObjectXMLFile_txx
+#ifndef _itkPolygonGroupSpatialObjectXMLFile_hpp
+#define _itkPolygonGroupSpatialObjectXMLFile_hpp
 
 #include "itkPolygonGroupSpatialObjectXMLFile.h"
 #include "itksys/SystemTools.hxx"

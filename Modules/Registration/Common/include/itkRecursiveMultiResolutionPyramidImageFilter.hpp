@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkRecursiveMultiResolutionPyramidImageFilter_txx
-#define __itkRecursiveMultiResolutionPyramidImageFilter_txx
+#ifndef __itkRecursiveMultiResolutionPyramidImageFilter_hpp
+#define __itkRecursiveMultiResolutionPyramidImageFilter_hpp
 
 #include "itkRecursiveMultiResolutionPyramidImageFilter.h"
 #include "itkGaussianOperator.h"

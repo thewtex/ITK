@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkHoughTransform2DLinesImageFilter_txx
-#define __itkHoughTransform2DLinesImageFilter_txx
+#ifndef __itkHoughTransform2DLinesImageFilter_hpp
+#define __itkHoughTransform2DLinesImageFilter_hpp
 
 #include "itkHoughTransform2DLinesImageFilter.h"
 #include "itkImageRegionIteratorWithIndex.h"

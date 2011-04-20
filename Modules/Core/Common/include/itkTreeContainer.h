@@ -135,7 +135,7 @@ protected:
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkTreeContainer.txx"
+#include "itkTreeContainer.hpp"
 #endif
 
 #endif

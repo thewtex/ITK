@@ -280,7 +280,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkESMDemonsRegistrationFunction.txx"
+#include "itkESMDemonsRegistrationFunction.hpp"
 #endif
 
 #endif

@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkBloxCoreAtomImage_txx
-#define __itkBloxCoreAtomImage_txx
+#ifndef __itkBloxCoreAtomImage_hpp
+#define __itkBloxCoreAtomImage_hpp
 
 #include "itkBloxCoreAtomImage.h"
 

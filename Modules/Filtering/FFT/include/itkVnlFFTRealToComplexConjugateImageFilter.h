@@ -80,7 +80,7 @@ private:
 }
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkVnlFFTRealToComplexConjugateImageFilter.txx"
+#include "itkVnlFFTRealToComplexConjugateImageFilter.hpp"
 #endif
 
 #endif

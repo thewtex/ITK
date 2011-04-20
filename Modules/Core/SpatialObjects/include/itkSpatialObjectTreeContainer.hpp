@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkSpatialObjectTreeContainer_txx
-#define __itkSpatialObjectTreeContainer_txx
+#ifndef __itkSpatialObjectTreeContainer_hpp
+#define __itkSpatialObjectTreeContainer_hpp
 
 #include "itkSpatialObjectTreeContainer.h"
 

@@ -182,7 +182,7 @@ private:
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkVersorTransform.txx"
+#include "itkVersorTransform.hpp"
 #endif
 
 #endif /* __itkVersorTransform_h */

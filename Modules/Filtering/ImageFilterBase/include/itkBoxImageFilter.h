@@ -96,7 +96,7 @@ private:
 }
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkBoxImageFilter.txx"
+#include "itkBoxImageFilter.hpp"
 #endif
 
 #endif

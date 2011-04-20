@@ -115,7 +115,7 @@ static void Dummy( void );
 }} // end namespace itk::fem
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkFEMElement2DMembrane.txx"
+#include "itkFEMElement2DMembrane.hpp"
 #endif
 
 #endif  // #ifndef __itkFEMElement2DMembrane_h

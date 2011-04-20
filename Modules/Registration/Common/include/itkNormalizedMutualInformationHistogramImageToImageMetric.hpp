@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkNormalizedMutualInformationHistogramImageToImageMetric_txx
-#define __itkNormalizedMutualInformationHistogramImageToImageMetric_txx
+#ifndef __itkNormalizedMutualInformationHistogramImageToImageMetric_hpp
+#define __itkNormalizedMutualInformationHistogramImageToImageMetric_hpp
 
 #include "itkNormalizedMutualInformationHistogramImageToImageMetric.h"
 #include "itkHistogram.h"
@@ -86,4 +86,4 @@ NormalizedMutualInformationHistogramImageToImageMetric< TFixedImage, \
 }
 } // End namespace itk
 
-#endif // itkNormalizedMutualInformationHistogramImageToImageMetric_txx
+#endif // itkNormalizedMutualInformationHistogramImageToImageMetric_hpp

@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkDelaunayConformingQuadEdgeMeshFilter_txx
-#define __itkDelaunayConformingQuadEdgeMeshFilter_txx
+#ifndef __itkDelaunayConformingQuadEdgeMeshFilter_hpp
+#define __itkDelaunayConformingQuadEdgeMeshFilter_hpp
 
 #include "itkDelaunayConformingQuadEdgeMeshFilter.h"
 

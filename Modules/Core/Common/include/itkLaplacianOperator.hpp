@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkLaplacianOperator_txx
-#define __itkLaplacianOperator_txx
+#ifndef __itkLaplacianOperator_hpp
+#define __itkLaplacianOperator_hpp
 #include "itkLaplacianOperator.h"
 
 namespace itk

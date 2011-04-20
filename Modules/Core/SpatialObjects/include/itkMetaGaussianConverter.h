@@ -49,7 +49,7 @@ public:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-  #include "itkMetaGaussianConverter.txx"
+  #include "itkMetaGaussianConverter.hpp"
 #endif
 
 #endif

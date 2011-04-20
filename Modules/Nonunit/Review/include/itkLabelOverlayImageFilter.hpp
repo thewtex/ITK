@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkLabelOverlayImageFilter_txx
-#define __itkLabelOverlayImageFilter_txx
+#ifndef __itkLabelOverlayImageFilter_hpp
+#define __itkLabelOverlayImageFilter_hpp
 
 #include "itkLabelOverlayImageFilter.h"
 

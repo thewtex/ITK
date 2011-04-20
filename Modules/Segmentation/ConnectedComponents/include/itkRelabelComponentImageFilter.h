@@ -302,7 +302,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkRelabelComponentImageFilter.txx"
+#include "itkRelabelComponentImageFilter.hpp"
 #endif
 
 #endif

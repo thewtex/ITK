@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkStochasticFractalDimensionImageFilter_txx
-#define __itkStochasticFractalDimensionImageFilter_txx
+#ifndef __itkStochasticFractalDimensionImageFilter_hpp
+#define __itkStochasticFractalDimensionImageFilter_hpp
 
 #include "itkStochasticFractalDimensionImageFilter.h"
 

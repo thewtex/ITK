@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkQuadEdgeMeshZipMeshFunction_txx
-#define __itkQuadEdgeMeshZipMeshFunction_txx
+#ifndef __itkQuadEdgeMeshZipMeshFunction_hpp
+#define __itkQuadEdgeMeshZipMeshFunction_hpp
 
 namespace itk
 {

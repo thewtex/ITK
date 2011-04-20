@@ -25,8 +25,8 @@
  *  please refer to the NOTICE file at the top of the ITK source tree.
  *
  *=========================================================================*/
-#ifndef __itkThresholdImageFilter_txx
-#define __itkThresholdImageFilter_txx
+#ifndef __itkThresholdImageFilter_hpp
+#define __itkThresholdImageFilter_hpp
 
 #include "itkThresholdImageFilter.h"
 #include "itkImageRegionIterator.h"

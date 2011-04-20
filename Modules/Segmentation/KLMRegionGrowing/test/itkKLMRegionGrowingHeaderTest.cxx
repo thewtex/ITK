@@ -21,10 +21,10 @@
 
 #include <iostream>
 
-#include "itkKLMRegionGrowImageFilter.txx"
+#include "itkKLMRegionGrowImageFilter.hpp"
 #include "itkKLMSegmentationBorder.h"
 #include "itkKLMSegmentationRegion.h"
-#include "itkRegionGrowImageFilter.txx"
+#include "itkRegionGrowImageFilter.hpp"
 #include "itkSegmentationBorder.h"
 #include "itkSegmentationRegion.h"
 

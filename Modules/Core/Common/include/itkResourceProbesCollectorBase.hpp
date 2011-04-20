@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkResourceProbesCollectorBase_txx
-#define __itkResourceProbesCollectorBase_txx
+#ifndef __itkResourceProbesCollectorBase_hpp
+#define __itkResourceProbesCollectorBase_hpp
 
 #include "itkResourceProbesCollectorBase.h"
 #include <iostream>
@@ -103,4 +103,4 @@ ResourceProbesCollectorBase< TProbe >
 
 } // end namespace itk
 
-#endif //__itkResourceProbesCollectorBase_txx
+#endif //__itkResourceProbesCollectorBase_hpp

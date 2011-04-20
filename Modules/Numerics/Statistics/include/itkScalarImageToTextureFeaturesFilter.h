@@ -225,7 +225,7 @@ private:
 } // end of namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkScalarImageToTextureFeaturesFilter.txx"
+#include "itkScalarImageToTextureFeaturesFilter.hpp"
 #endif
 
 #endif

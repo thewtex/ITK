@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkLabelMapContourOverlayImageFilter_txx
-#define __itkLabelMapContourOverlayImageFilter_txx
+#ifndef __itkLabelMapContourOverlayImageFilter_hpp
+#define __itkLabelMapContourOverlayImageFilter_hpp
 
 #include "itkLabelMapContourOverlayImageFilter.h"
 #include "itkNumericTraits.h"

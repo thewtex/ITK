@@ -200,7 +200,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkLabelContourImageFilter.txx"
+#include "itkLabelContourImageFilter.hpp"
 #endif
 
 #endif

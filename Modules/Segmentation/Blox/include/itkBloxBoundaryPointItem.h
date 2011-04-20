@@ -99,7 +99,7 @@ private:
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkBloxBoundaryPointItem.txx"
+#include "itkBloxBoundaryPointItem.hpp"
 #endif
 
 #endif

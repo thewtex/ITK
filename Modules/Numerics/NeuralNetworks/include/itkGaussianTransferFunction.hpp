@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkGaussianTransferFunction_txx
-#define __itkGaussianTransferFunction_txx
+#ifndef __itkGaussianTransferFunction_hpp
+#define __itkGaussianTransferFunction_hpp
 
 #include "itkGaussianTransferFunction.h"
 

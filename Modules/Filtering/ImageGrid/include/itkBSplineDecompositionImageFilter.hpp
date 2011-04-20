@@ -25,8 +25,8 @@
  *  please refer to the NOTICE file at the top of the ITK source tree.
  *
  *=========================================================================*/
-#ifndef __itkBSplineDecompositionImageFilter_txx
-#define __itkBSplineDecompositionImageFilter_txx
+#ifndef __itkBSplineDecompositionImageFilter_hpp
+#define __itkBSplineDecompositionImageFilter_hpp
 #include "itkBSplineDecompositionImageFilter.h"
 #include "itkImageRegionConstIteratorWithIndex.h"
 #include "itkImageRegionIterator.h"

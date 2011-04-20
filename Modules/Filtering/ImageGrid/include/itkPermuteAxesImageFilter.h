@@ -127,7 +127,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkPermuteAxesImageFilter.txx"
+#include "itkPermuteAxesImageFilter.hpp"
 #endif
 
 #endif

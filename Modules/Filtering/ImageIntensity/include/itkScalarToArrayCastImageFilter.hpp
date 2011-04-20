@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkScalarToArrayCastImageFilter_txx
-#define __itkScalarToArrayCastImageFilter_txx
+#ifndef __itkScalarToArrayCastImageFilter_hpp
+#define __itkScalarToArrayCastImageFilter_hpp
 
 #include "itkScalarToArrayCastImageFilter.h"
 #include "itkImageRegionIterator.h"

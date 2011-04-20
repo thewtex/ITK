@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkBinaryDilateImageFilter_txx
-#define __itkBinaryDilateImageFilter_txx
+#ifndef __itkBinaryDilateImageFilter_hpp
+#define __itkBinaryDilateImageFilter_hpp
 
 #include "itkImageRegionIteratorWithIndex.h"
 #include "itkNeighborhoodInnerProduct.h"

@@ -384,7 +384,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkBSplineScatteredDataPointSetToImageFilter.txx"
+#include "itkBSplineScatteredDataPointSetToImageFilter.hpp"
 #endif
 
 #endif

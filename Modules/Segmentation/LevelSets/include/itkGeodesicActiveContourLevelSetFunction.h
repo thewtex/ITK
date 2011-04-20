@@ -164,7 +164,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkGeodesicActiveContourLevelSetFunction.txx"
+#include "itkGeodesicActiveContourLevelSetFunction.hpp"
 #endif
 
 #endif

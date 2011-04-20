@@ -151,7 +151,7 @@ private:
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkBloxCoreAtomImage.txx"
+#include "itkBloxCoreAtomImage.hpp"
 #endif
 
 #endif

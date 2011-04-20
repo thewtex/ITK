@@ -25,8 +25,8 @@
  *  please refer to the NOTICE file at the top of the ITK source tree.
  *
  *=========================================================================*/
-#ifndef __itkChangeLabelImageFilter_txx
-#define __itkChangeLabelImageFilter_txx
+#ifndef __itkChangeLabelImageFilter_hpp
+#define __itkChangeLabelImageFilter_hpp
 
 #include "itkChangeLabelImageFilter.h"
 

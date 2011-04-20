@@ -130,7 +130,7 @@ public:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkPathIterator.txx"
+#include "itkPathIterator.hpp"
 #endif
 
 #endif

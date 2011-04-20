@@ -325,7 +325,7 @@ std::ostream & operator<<(std::ostream & os, const ImageRegion< VImageDimension 
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkImageRegion.txx"
+#include "itkImageRegion.hpp"
 #endif
 
 #endif

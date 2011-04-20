@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkDeformationFieldTransform_txx
-#define __itkDeformationFieldTransform_txx
+#ifndef __itkDeformationFieldTransform_hpp
+#define __itkDeformationFieldTransform_hpp
 
 #include "itkDeformationFieldTransform.h"
 

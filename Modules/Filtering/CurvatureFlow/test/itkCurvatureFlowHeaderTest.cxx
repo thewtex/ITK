@@ -22,12 +22,12 @@
 #include <iostream>
 
 #include "itkBinaryMinMaxCurvatureFlowImageFilter.h"
-#include "itkMinMaxCurvatureFlowImageFilter.txx"
-#include "itkCurvatureFlowFunction.txx"
-#include "itkCurvatureFlowImageFilter.txx"
-#include "itkMinMaxCurvatureFlowFunction.txx"
-#include "itkBinaryMinMaxCurvatureFlowImageFilter.txx"
-#include "itkBinaryMinMaxCurvatureFlowFunction.txx"
+#include "itkMinMaxCurvatureFlowImageFilter.hpp"
+#include "itkCurvatureFlowFunction.hpp"
+#include "itkCurvatureFlowImageFilter.hpp"
+#include "itkMinMaxCurvatureFlowFunction.hpp"
+#include "itkBinaryMinMaxCurvatureFlowImageFilter.hpp"
+#include "itkBinaryMinMaxCurvatureFlowFunction.hpp"
 
 
 

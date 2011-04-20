@@ -157,7 +157,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkMedialNodeTripletCorrespondenceProcess.txx"
+#include "itkMedialNodeTripletCorrespondenceProcess.hpp"
 #endif
 
 #endif

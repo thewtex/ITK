@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkScalarImageToTextureFeaturesFilter_txx
-#define __itkScalarImageToTextureFeaturesFilter_txx
+#ifndef __itkScalarImageToTextureFeaturesFilter_hpp
+#define __itkScalarImageToTextureFeaturesFilter_hpp
 
 #include "itkScalarImageToTextureFeaturesFilter.h"
 #include "itkNeighborhood.h"

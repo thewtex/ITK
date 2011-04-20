@@ -950,7 +950,7 @@ itkTypeMacro(newexcp, parentexcp);                                              
    containing the template definitions.  Define a macro to tell
    it.  Typical usage in itkFoo.h:
      #if ITK_TEMPLATE_TXX
-     #include "itkFoo.txx"
+     #include "itkFoo.hpp"
      #endif
 */
 #if defined( ITK_MANUAL_INSTANTIATION )

@@ -252,7 +252,7 @@ TranslationTransform< TScalarType, NDimensions >::BackTransform(const OutputCova
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkTranslationTransform.txx"
+#include "itkTranslationTransform.hpp"
 #endif
 
 #endif /* __itkTranslationTransform_h */

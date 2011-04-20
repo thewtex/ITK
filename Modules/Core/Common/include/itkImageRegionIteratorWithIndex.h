@@ -132,7 +132,7 @@ protected:
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkImageRegionIteratorWithIndex.txx"
+#include "itkImageRegionIteratorWithIndex.hpp"
 #endif
 
 #endif

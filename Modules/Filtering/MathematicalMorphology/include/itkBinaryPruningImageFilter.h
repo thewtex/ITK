@@ -144,7 +144,7 @@ private:
 } //end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkBinaryPruningImageFilter.txx"
+#include "itkBinaryPruningImageFilter.hpp"
 #endif
 
 #endif

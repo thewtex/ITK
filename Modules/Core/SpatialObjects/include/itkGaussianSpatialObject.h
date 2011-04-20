@@ -128,7 +128,7 @@ protected:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkGaussianSpatialObject.txx"
+#include "itkGaussianSpatialObject.hpp"
 #endif
 
 #endif // __itkGaussianSpatialObject_h

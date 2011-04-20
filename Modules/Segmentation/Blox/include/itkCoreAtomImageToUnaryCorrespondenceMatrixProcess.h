@@ -133,7 +133,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkCoreAtomImageToUnaryCorrespondenceMatrixProcess.txx"
+#include "itkCoreAtomImageToUnaryCorrespondenceMatrixProcess.hpp"
 #endif
 
 #endif

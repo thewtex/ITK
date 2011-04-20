@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkBinaryMorphologicalClosingImageFilter_txx
-#define __itkBinaryMorphologicalClosingImageFilter_txx
+#ifndef __itkBinaryMorphologicalClosingImageFilter_hpp
+#define __itkBinaryMorphologicalClosingImageFilter_hpp
 
 #include "itkBinaryMorphologicalClosingImageFilter.h"
 #include "itkBinaryErodeImageFilter.h"

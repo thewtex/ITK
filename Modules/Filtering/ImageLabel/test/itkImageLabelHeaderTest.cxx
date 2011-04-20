@@ -21,7 +21,7 @@
 
 #include <iostream>
 
-#include "itkChangeLabelImageFilter.txx"
+#include "itkChangeLabelImageFilter.hpp"
 
 
 

@@ -174,6 +174,6 @@ private:
 };
 } // end namespace itk
 
-#include "itkParameterizationQuadEdgeMeshFilter.txx"
+#include "itkParameterizationQuadEdgeMeshFilter.hpp"
 
 #endif

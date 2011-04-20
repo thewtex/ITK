@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkVectorMeanImageFunction_txx
-#define __itkVectorMeanImageFunction_txx
+#ifndef __itkVectorMeanImageFunction_hpp
+#define __itkVectorMeanImageFunction_hpp
 
 #include "itkVectorMeanImageFunction.h"
 #include "itkConstNeighborhoodIterator.h"

@@ -25,8 +25,8 @@
  *  please refer to the NOTICE file at the top of the ITK source tree.
  *
  *=========================================================================*/
-#ifndef __itkBoundingBox_txx
-#define __itkBoundingBox_txx
+#ifndef __itkBoundingBox_hpp
+#define __itkBoundingBox_hpp
 #include "itkBoundingBox.h"
 
 namespace itk

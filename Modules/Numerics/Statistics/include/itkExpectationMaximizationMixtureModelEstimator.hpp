@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkExpectationMaximizationMixtureModelEstimator_txx
-#define __itkExpectationMaximizationMixtureModelEstimator_txx
+#ifndef __itkExpectationMaximizationMixtureModelEstimator_hpp
+#define __itkExpectationMaximizationMixtureModelEstimator_hpp
 
 #include "itkExpectationMaximizationMixtureModelEstimator.h"
 #include "itkNumericTraits.h"

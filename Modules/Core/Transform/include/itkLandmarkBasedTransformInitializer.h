@@ -150,7 +150,7 @@ private:
 }  // namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkLandmarkBasedTransformInitializer.txx"
+#include "itkLandmarkBasedTransformInitializer.hpp"
 #endif
 
 #endif /* __itkLandmarkBasedTransformInitializer_h */

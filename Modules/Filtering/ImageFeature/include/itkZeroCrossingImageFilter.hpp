@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkZeroCrossingImageFilter_txx
-#define __itkZeroCrossingImageFilter_txx
+#ifndef __itkZeroCrossingImageFilter_hpp
+#define __itkZeroCrossingImageFilter_hpp
 
 #include "itkConstNeighborhoodIterator.h"
 #include "itkZeroCrossingImageFilter.h"

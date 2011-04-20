@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkRegionBasedLevelSetFunctionData_txx
-#define __itkRegionBasedLevelSetFunctionData_txx
+#ifndef __itkRegionBasedLevelSetFunctionData_hpp
+#define __itkRegionBasedLevelSetFunctionData_hpp
 
 #include "itkRegionBasedLevelSetFunctionData.h"
 

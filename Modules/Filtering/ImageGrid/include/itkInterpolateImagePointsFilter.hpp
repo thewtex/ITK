@@ -25,8 +25,8 @@
  *  please refer to the NOTICE file at the top of the ITK source tree.
  *
  *=========================================================================*/
-#ifndef __itkInterpolateImagePointsFilter_txx
-#define __itkInterpolateImagePointsFilter_txx
+#ifndef __itkInterpolateImagePointsFilter_hpp
+#define __itkInterpolateImagePointsFilter_hpp
 
 #include "itkInterpolateImagePointsFilter.h"
 #include "itkProgressReporter.h"

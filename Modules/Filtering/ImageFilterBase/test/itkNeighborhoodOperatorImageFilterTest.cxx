@@ -21,7 +21,7 @@
 #include <iostream>
 #include "itkNeighborhoodOperatorImageFilter.h"
 #include "itkDerivativeOperator.h"
-#include "itkNullImageToImageFilterDriver.txx"
+#include "itkNullImageToImageFilterDriver.hpp"
 
 int itkNeighborhoodOperatorImageFilterTest(int , char *[] )
 {

@@ -108,7 +108,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkCustomColormapFunction.txx"
+#include "itkCustomColormapFunction.hpp"
 #endif
 
 #endif

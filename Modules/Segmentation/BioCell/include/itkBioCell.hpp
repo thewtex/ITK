@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkBioCell_txx
-#define __itkBioCell_txx
+#ifndef __itkBioCell_hpp
+#define __itkBioCell_hpp
 
 #include "itkBioCell.h"
 #include "vnl/vnl_math.h"

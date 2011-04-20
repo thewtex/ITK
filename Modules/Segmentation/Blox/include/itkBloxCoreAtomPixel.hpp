@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkBloxCoreAtomPixel_txx
-#define __itkBloxCoreAtomPixel_txx
+#ifndef __itkBloxCoreAtomPixel_hpp
+#define __itkBloxCoreAtomPixel_hpp
 
 #include "itkBloxCoreAtomPixel.h"
 

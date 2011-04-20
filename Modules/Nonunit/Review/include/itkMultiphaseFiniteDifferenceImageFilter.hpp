@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkMultiphaseFiniteDifferenceImageFilter_txx
-#define __itkMultiphaseFiniteDifferenceImageFilter_txx
+#ifndef __itkMultiphaseFiniteDifferenceImageFilter_hpp
+#define __itkMultiphaseFiniteDifferenceImageFilter_hpp
 
 #include "itkMultiphaseFiniteDifferenceImageFilter.h"
 #include "itkImageRegionConstIterator.h"

@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkMetaSurfaceConverter_txx
-#define __itkMetaSurfaceConverter_txx
+#ifndef __itkMetaSurfaceConverter_hpp
+#define __itkMetaSurfaceConverter_hpp
 
 #include "itkMetaSurfaceConverter.h"
 

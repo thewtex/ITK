@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkVectorNeighborhoodOperatorImageFilter_txx
-#define __itkVectorNeighborhoodOperatorImageFilter_txx
+#ifndef __itkVectorNeighborhoodOperatorImageFilter_hpp
+#define __itkVectorNeighborhoodOperatorImageFilter_hpp
 #include "itkVectorNeighborhoodOperatorImageFilter.h"
 
 #include "itkNeighborhoodAlgorithm.h"

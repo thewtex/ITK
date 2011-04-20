@@ -294,7 +294,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkLabelMap.txx"
+#include "itkLabelMap.hpp"
 #endif
 
 #endif

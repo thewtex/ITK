@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkFEMElement2DStrain_txx
-#define __itkFEMElement2DStrain_txx
+#ifndef __itkFEMElement2DStrain_hpp
+#define __itkFEMElement2DStrain_hpp
 
 #include "itkFEMElement2DStrain.h"
 
@@ -172,4 +172,4 @@ static void Dummy( void );
 
 }} // end namespace itk::fem
 
-#endif // #ifndef __itkFEMElement2DStrain_txx
+#endif // #ifndef __itkFEMElement2DStrain_hpp

@@ -112,12 +112,12 @@ public:
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkZeroFluxNeumannBoundaryCondition.txx"
+#include "itkZeroFluxNeumannBoundaryCondition.hpp"
 #endif
 
 /*
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkZeroFluxNeumannBoundaryCondition.txx"
+#include "itkZeroFluxNeumannBoundaryCondition.hpp"
 #endif
 */
 

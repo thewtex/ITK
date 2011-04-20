@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkGradientDifferenceImageToImageMetric_txx
-#define __itkGradientDifferenceImageToImageMetric_txx
+#ifndef __itkGradientDifferenceImageToImageMetric_hpp
+#define __itkGradientDifferenceImageToImageMetric_hpp
 
 #include "itkGradientDifferenceImageToImageMetric.h"
 #include "itkImageRegionConstIteratorWithIndex.h"

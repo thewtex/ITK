@@ -21,20 +21,20 @@
 
 #include <iostream>
 
-#include "itkTernaryFunctorImageFilter.txx"
+#include "itkTernaryFunctorImageFilter.hpp"
 #include "itkFilterWatcher.h"
-#include "itkNoiseImageFilter.txx"
+#include "itkNoiseImageFilter.hpp"
 #include "itkBinaryFunctorImageFilter.h"
-#include "itkMaskNeighborhoodOperatorImageFilter.txx"
-#include "itkNeighborhoodOperatorImageFilter.txx"
-#include "itkRecursiveSeparableImageFilter.txx"
-#include "itkNullImageToImageFilterDriver.txx"
-#include "itkGaussianImageSource.txx"
+#include "itkMaskNeighborhoodOperatorImageFilter.hpp"
+#include "itkNeighborhoodOperatorImageFilter.hpp"
+#include "itkRecursiveSeparableImageFilter.hpp"
+#include "itkNullImageToImageFilterDriver.hpp"
+#include "itkGaussianImageSource.hpp"
 #include "itkVectorCastImageFilter.h"
-#include "itkBoxImageFilter.txx"
+#include "itkBoxImageFilter.hpp"
 #include "itkCastImageFilter.h"
-#include "itkVectorNeighborhoodOperatorImageFilter.txx"
-#include "itkBinaryFunctorImageFilter.txx"
+#include "itkVectorNeighborhoodOperatorImageFilter.hpp"
+#include "itkBinaryFunctorImageFilter.hpp"
 #include "itkPipelineMonitorImageFilter.h"
 
 

@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkVersorTransform_txx
-#define __itkVersorTransform_txx
+#ifndef __itkVersorTransform_hpp
+#define __itkVersorTransform_hpp
 
 #include "itkVersorTransform.h"
 #include "itkMath.h"

@@ -164,7 +164,7 @@ private:
 } // namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkFlatStructuringElement.txx"
+#include "itkFlatStructuringElement.hpp"
 #endif
 
 #endif

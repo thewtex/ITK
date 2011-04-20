@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkCenteredVersorTransformInitializer_txx
-#define __itkCenteredVersorTransformInitializer_txx
+#ifndef __itkCenteredVersorTransformInitializer_hpp
+#define __itkCenteredVersorTransformInitializer_hpp
 
 #include "itkCenteredVersorTransformInitializer.h"
 
@@ -65,4 +65,4 @@ CenteredVersorTransformInitializer< TFixedImage, TMovingImage >
 }
 }  // namespace itk
 
-#endif /* __itkCenteredVersorTransformInitializer_txx */
+#endif /* __itkCenteredVersorTransformInitializer_hpp */

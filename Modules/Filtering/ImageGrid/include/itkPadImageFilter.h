@@ -124,7 +124,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkPadImageFilter.txx"
+#include "itkPadImageFilter.hpp"
 #endif
 
 #endif

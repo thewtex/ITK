@@ -26,7 +26,7 @@
  *
  *=========================================================================*/
 #include "itkProcessObject.h"
-#include "itkSmartPointerForwardReference.txx"
+#include "itkSmartPointerForwardReference.hpp"
 #include "itkRealTimeClock.h"
 
 // Manual instantiation is necessary to prevent link errors

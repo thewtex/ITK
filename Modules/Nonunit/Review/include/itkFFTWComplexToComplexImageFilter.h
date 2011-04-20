@@ -142,7 +142,7 @@ private:
 } // namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkFFTWComplexToComplexImageFilter.txx"
+#include "itkFFTWComplexToComplexImageFilter.hpp"
 #endif
 
 #endif //__itkFFTWComplexToComplexImageFilter_h

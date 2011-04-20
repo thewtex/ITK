@@ -291,7 +291,7 @@ private:
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkImageRegionConstIterator.txx"
+#include "itkImageRegionConstIterator.hpp"
 #endif
 
 #endif

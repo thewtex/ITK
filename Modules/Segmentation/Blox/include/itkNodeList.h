@@ -54,7 +54,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkNodeList.txx"
+#include "itkNodeList.hpp"
 #endif
 
 #endif

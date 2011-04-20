@@ -179,7 +179,7 @@ private:
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkBloxCoreAtomPixel.txx"
+#include "itkBloxCoreAtomPixel.hpp"
 #endif
 
 #endif

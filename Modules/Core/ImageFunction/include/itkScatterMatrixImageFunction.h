@@ -144,7 +144,7 @@ private:
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkScatterMatrixImageFunction.txx"
+#include "itkScatterMatrixImageFunction.hpp"
 #endif
 
 #endif

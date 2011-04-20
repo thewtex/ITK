@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkFastChamferDistanceImageFilter_txx
-#define __itkFastChamferDistanceImageFilter_txx
+#ifndef __itkFastChamferDistanceImageFilter_hpp
+#define __itkFastChamferDistanceImageFilter_hpp
 
 #include <iostream>
 

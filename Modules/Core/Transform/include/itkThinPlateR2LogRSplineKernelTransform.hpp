@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkThinPlateR2LogRSplineKernelTransform_txx
-#define __itkThinPlateR2LogRSplineKernelTransform_txx
+#ifndef __itkThinPlateR2LogRSplineKernelTransform_hpp
+#define __itkThinPlateR2LogRSplineKernelTransform_hpp
 #include "itkThinPlateR2LogRSplineKernelTransform.h"
 
 namespace itk

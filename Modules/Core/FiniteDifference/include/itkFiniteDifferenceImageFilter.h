@@ -374,7 +374,7 @@ private:
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkFiniteDifferenceImageFilter.txx"
+#include "itkFiniteDifferenceImageFilter.hpp"
 #endif
 
 #endif

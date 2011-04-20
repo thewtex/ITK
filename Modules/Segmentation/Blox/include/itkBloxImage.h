@@ -141,7 +141,7 @@ private:
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkBloxImage.txx"
+#include "itkBloxImage.hpp"
 #endif
 
 #endif

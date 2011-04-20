@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkImageFileReader_txx
-#define __itkImageFileReader_txx
+#ifndef __itkImageFileReader_hpp
+#define __itkImageFileReader_hpp
 #include "itkImageFileReader.h"
 
 #include "itkObjectFactory.h"

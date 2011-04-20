@@ -215,7 +215,7 @@ private:
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkGaussianBlurImageFunction.txx"
+#include "itkGaussianBlurImageFunction.hpp"
 #endif
 
 #endif

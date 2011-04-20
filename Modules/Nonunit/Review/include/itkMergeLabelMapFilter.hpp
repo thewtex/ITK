@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkMergeLabelMapFilter_txx
-#define __itkMergeLabelMapFilter_txx
+#ifndef __itkMergeLabelMapFilter_hpp
+#define __itkMergeLabelMapFilter_hpp
 
 #include "itkMergeLabelMapFilter.h"
 #include "itkProgressReporter.h"

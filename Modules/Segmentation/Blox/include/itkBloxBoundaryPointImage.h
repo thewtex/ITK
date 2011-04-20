@@ -112,7 +112,7 @@ private:
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkBloxBoundaryPointImage.txx"
+#include "itkBloxBoundaryPointImage.hpp"
 #endif
 
 #endif

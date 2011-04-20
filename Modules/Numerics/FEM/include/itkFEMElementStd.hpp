@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkFEMElementStd_txx
-#define __itkFEMElementStd_txx
+#ifndef __itkFEMElementStd_hpp
+#define __itkFEMElementStd_hpp
 
 #include "itkFEMElementStd.h"
 
@@ -106,4 +106,4 @@ static void Dummy( void );
 
 }} // end namespace itk::fem
 
-#endif // #ifndef __itkFEMElementStd_txx
+#endif // #ifndef __itkFEMElementStd_hpp

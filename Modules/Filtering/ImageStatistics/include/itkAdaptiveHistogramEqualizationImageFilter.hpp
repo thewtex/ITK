@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkAdaptiveHistogramEqualizationImageFilter_txx
-#define __itkAdaptiveHistogramEqualizationImageFilter_txx
+#ifndef __itkAdaptiveHistogramEqualizationImageFilter_hpp
+#define __itkAdaptiveHistogramEqualizationImageFilter_hpp
 
 #include <map>
 #include <set>

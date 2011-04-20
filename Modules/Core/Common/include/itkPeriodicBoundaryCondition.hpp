@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkPeriodicBoundaryCondition_txx
-#define __itkPeriodicBoundaryCondition_txx
+#ifndef __itkPeriodicBoundaryCondition_hpp
+#define __itkPeriodicBoundaryCondition_hpp
 #include "itkConstNeighborhoodIterator.h"
 #include "itkPeriodicBoundaryCondition.h"
 namespace itk

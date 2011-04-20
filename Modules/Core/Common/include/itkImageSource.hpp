@@ -25,8 +25,8 @@
  *  please refer to the NOTICE file at the top of the ITK source tree.
  *
  *=========================================================================*/
-#ifndef __itkImageSource_txx
-#define __itkImageSource_txx
+#ifndef __itkImageSource_hpp
+#define __itkImageSource_hpp
 #include "itkImageSource.h"
 
 #include "vnl/vnl_math.h"

@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkQuaternionRigidTransform_txx
-#define __itkQuaternionRigidTransform_txx
+#ifndef __itkQuaternionRigidTransform_hpp
+#define __itkQuaternionRigidTransform_hpp
 
 #include "itkQuaternionRigidTransform.h"
 

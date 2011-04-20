@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkXMLFile_txx
-#define __itkXMLFile_txx
+#ifndef __itkXMLFile_hpp
+#define __itkXMLFile_hpp
 
 #include "itkXMLFile.h"
 #include "itkMacro.h"

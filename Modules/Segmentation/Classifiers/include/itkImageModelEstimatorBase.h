@@ -158,7 +158,7 @@ private:
 } // namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkImageModelEstimatorBase.txx"
+#include "itkImageModelEstimatorBase.hpp"
 #endif
 
 #endif

@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef _itkConjugateGradientOptimizer_txx
-#define _itkConjugateGradientOptimizer_txx
+#ifndef _itkConjugateGradientOptimizer_hpp
+#define _itkConjugateGradientOptimizer_hpp
 
 #include "itkConjugateGradientOptimizer.h"
 

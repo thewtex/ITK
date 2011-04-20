@@ -25,8 +25,8 @@
  *  please refer to the NOTICE file at the top of the ITK source tree.
  *
  *=========================================================================*/
-#ifndef __itkInPlaceImageFilter_txx
-#define __itkInPlaceImageFilter_txx
+#ifndef __itkInPlaceImageFilter_hpp
+#define __itkInPlaceImageFilter_hpp
 
 #include "itkInPlaceImageFilter.h"
 

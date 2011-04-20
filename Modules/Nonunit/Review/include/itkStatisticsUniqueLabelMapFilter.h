@@ -91,7 +91,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkStatisticsUniqueLabelMapFilter.txx"
+#include "itkStatisticsUniqueLabelMapFilter.hpp"
 #endif
 
 #endif

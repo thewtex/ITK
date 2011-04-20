@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkNeighborhoodOperator_txx
-#define __itkNeighborhoodOperator_txx
+#ifndef __itkNeighborhoodOperator_hpp
+#define __itkNeighborhoodOperator_hpp
 
 #include "itkNeighborhoodOperator.h"
 #include "itkIntTypes.h"

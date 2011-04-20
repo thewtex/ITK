@@ -117,7 +117,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkVertexCell.txx"
+#include "itkVertexCell.hpp"
 #endif
 
 #endif

@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkCurvatureFlowImageFilter_txx
-#define __itkCurvatureFlowImageFilter_txx
+#ifndef __itkCurvatureFlowImageFilter_hpp
+#define __itkCurvatureFlowImageFilter_hpp
 
 #include "itkCurvatureFlowImageFilter.h"
 #include "itkMacro.h"

@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkImageKmeansModelEstimator_txx
-#define __itkImageKmeansModelEstimator_txx
+#ifndef __itkImageKmeansModelEstimator_hpp
+#define __itkImageKmeansModelEstimator_hpp
 
 #include "itkImageKmeansModelEstimator.h"
 

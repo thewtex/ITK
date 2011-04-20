@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkMetaBlobConverter_txx
-#define __itkMetaBlobConverter_txx
+#ifndef __itkMetaBlobConverter_hpp
+#define __itkMetaBlobConverter_hpp
 
 #include "itkMetaBlobConverter.h"
 

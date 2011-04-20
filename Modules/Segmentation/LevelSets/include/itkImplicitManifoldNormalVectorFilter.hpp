@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkImplicitManifoldNormalVectorFilter_txx
-#define __itkImplicitManifoldNormalVectorFilter_txx
+#ifndef __itkImplicitManifoldNormalVectorFilter_hpp
+#define __itkImplicitManifoldNormalVectorFilter_hpp
 
 #include "itkImplicitManifoldNormalVectorFilter.h"
 #include "itkNumericTraits.h"

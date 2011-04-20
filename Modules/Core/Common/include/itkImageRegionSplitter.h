@@ -134,7 +134,7 @@ private:
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkImageRegionSplitter.txx"
+#include "itkImageRegionSplitter.hpp"
 #endif
 
 #endif

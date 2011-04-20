@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkBoxMeanImageFilter_txx
-#define __itkBoxMeanImageFilter_txx
+#ifndef __itkBoxMeanImageFilter_hpp
+#define __itkBoxMeanImageFilter_hpp
 
 #include "itkBoxMeanImageFilter.h"
 #include "itkProgressAccumulator.h"

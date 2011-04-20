@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkVTKImageImport_txx
-#define __itkVTKImageImport_txx
+#ifndef __itkVTKImageImport_hpp
+#define __itkVTKImageImport_hpp
 
 #include "itkVTKImageImport.h"
 #include "itkPixelTraits.h"

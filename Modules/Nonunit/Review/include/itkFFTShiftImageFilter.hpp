@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkFFTShiftImageFilter_txx
-#define __itkFFTShiftImageFilter_txx
+#ifndef __itkFFTShiftImageFilter_hpp
+#define __itkFFTShiftImageFilter_hpp
 
 #include "itkFFTShiftImageFilter.h"
 #include "itkNumericTraits.h"

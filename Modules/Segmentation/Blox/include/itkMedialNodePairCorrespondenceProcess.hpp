@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkMedialNodePairCorrespondenceProcess_txx
-#define __itkMedialNodePairCorrespondenceProcess_txx
+#ifndef __itkMedialNodePairCorrespondenceProcess_hpp
+#define __itkMedialNodePairCorrespondenceProcess_hpp
 
 #include "itkMedialNodePairCorrespondenceProcess.h"
 

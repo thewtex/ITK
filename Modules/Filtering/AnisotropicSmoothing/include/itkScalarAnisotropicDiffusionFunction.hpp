@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkScalarAnisotropicDiffusionFunction_txx
-#define __itkScalarAnisotropicDiffusionFunction_txx
+#ifndef __itkScalarAnisotropicDiffusionFunction_hpp
+#define __itkScalarAnisotropicDiffusionFunction_hpp
 
 #include "itkConstNeighborhoodIterator.h"
 #include "itkNeighborhoodInnerProduct.h"

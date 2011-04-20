@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkRecursiveGaussianImageFilter_txx
-#define __itkRecursiveGaussianImageFilter_txx
+#ifndef __itkRecursiveGaussianImageFilter_hpp
+#define __itkRecursiveGaussianImageFilter_hpp
 
 #include "itkRecursiveGaussianImageFilter.h"
 #include "itkObjectFactory.h"

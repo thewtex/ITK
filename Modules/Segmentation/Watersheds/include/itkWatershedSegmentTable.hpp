@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkWatershedSegmentTable_txx
-#define __itkWatershedSegmentTable_txx
+#ifndef __itkWatershedSegmentTable_hpp
+#define __itkWatershedSegmentTable_hpp
 
 namespace itk
 {

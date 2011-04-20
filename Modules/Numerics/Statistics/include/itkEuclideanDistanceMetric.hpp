@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkEuclideanDistanceMetric_txx
-#define __itkEuclideanDistanceMetric_txx
+#ifndef __itkEuclideanDistanceMetric_hpp
+#define __itkEuclideanDistanceMetric_hpp
 
 namespace itk
 {

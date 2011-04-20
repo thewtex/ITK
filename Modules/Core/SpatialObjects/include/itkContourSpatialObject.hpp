@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkContourSpatialObject_txx
-#define __itkContourSpatialObject_txx
+#ifndef __itkContourSpatialObject_hpp
+#define __itkContourSpatialObject_hpp
 
 #if defined( _MSC_VER )
 #pragma warning ( disable : 4786 )

@@ -215,7 +215,7 @@ private:
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkPCAShapeSignedDistanceFunction.txx"
+#include "itkPCAShapeSignedDistanceFunction.hpp"
 #endif
 
 #endif

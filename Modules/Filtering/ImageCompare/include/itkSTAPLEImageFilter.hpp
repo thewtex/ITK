@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkSTAPLEImageFilter_txx
-#define __itkSTAPLEImageFilter_txx
+#ifndef __itkSTAPLEImageFilter_hpp
+#define __itkSTAPLEImageFilter_hpp
 #include "itkSTAPLEImageFilter.h"
 
 #include "itkImageRegionIterator.h"

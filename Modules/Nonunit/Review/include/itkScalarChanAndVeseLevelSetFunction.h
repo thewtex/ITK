@@ -152,7 +152,7 @@ private:
 }
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkScalarChanAndVeseLevelSetFunction.txx"
+#include "itkScalarChanAndVeseLevelSetFunction.hpp"
 #endif
 
 #endif

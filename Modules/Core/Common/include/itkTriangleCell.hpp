@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkTriangleCell_txx
-#define __itkTriangleCell_txx
+#ifndef __itkTriangleCell_hpp
+#define __itkTriangleCell_hpp
 #include "itkTriangleCell.h"
 #include "vnl/algo/vnl_determinant.h"
 

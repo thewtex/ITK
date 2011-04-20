@@ -98,7 +98,7 @@ private:
 } // namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkSpatialObjectWriter.txx"
+#include "itkSpatialObjectWriter.hpp"
 #endif
 
 #endif // __itkSpatialObjectWriter_h

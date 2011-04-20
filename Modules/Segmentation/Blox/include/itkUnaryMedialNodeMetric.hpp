@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkUnaryMedialNodeMetric_txx
-#define __itkUnaryMedialNodeMetric_txx
+#ifndef __itkUnaryMedialNodeMetric_hpp
+#define __itkUnaryMedialNodeMetric_hpp
 
 #include "itkUnaryMedialNodeMetric.h"
 

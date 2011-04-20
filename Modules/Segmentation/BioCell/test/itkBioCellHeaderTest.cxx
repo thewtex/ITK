@@ -24,9 +24,9 @@
 #include "itkBioGenome.h"
 #include "itkBioCellularAggregateBase.h"
 #include "itkBioGeneNetwork.h"
-#include "itkBioCell.txx"
+#include "itkBioCell.hpp"
 #include "itkBioGene.h"
-#include "itkBioCellularAggregate.txx"
+#include "itkBioCellularAggregate.hpp"
 #include "itkBioCellBase.h"
 
 

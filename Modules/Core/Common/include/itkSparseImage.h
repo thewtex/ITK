@@ -137,7 +137,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkSparseImage.txx"
+#include "itkSparseImage.hpp"
 #endif
 
 #endif

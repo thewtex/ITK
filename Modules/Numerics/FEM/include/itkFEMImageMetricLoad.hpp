@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkFEMImageMetricLoad_txx
-#define __itkFEMImageMetricLoad_txx
+#ifndef __itkFEMImageMetricLoad_hpp
+#define __itkFEMImageMetricLoad_hpp
 
 #include "itkFEMImageMetricLoad.h"
 

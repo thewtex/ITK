@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkMetaLineConverter_txx
-#define __itkMetaLineConverter_txx
+#ifndef __itkMetaLineConverter_hpp
+#define __itkMetaLineConverter_hpp
 
 #include "itkMetaLineConverter.h"
 

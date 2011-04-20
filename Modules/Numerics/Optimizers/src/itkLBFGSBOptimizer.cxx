@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkLBFGSBOptimizer_txx
-#define __itkLBFGSBOptimizer_txx
+#ifndef __itkLBFGSBOptimizer_hpp
+#define __itkLBFGSBOptimizer_hpp
 
 #include "itkIntTypes.h"
 #include "itkLBFGSBOptimizer.h"

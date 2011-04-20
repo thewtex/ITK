@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkBloxBoundaryProfileItem_txx
-#define __itkBloxBoundaryProfileItem_txx
+#ifndef __itkBloxBoundaryProfileItem_hpp
+#define __itkBloxBoundaryProfileItem_hpp
 
 #include "itkBloxBoundaryProfileItem.h"
 

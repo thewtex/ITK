@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkDeformationFieldSource_txx
-#define __itkDeformationFieldSource_txx
+#ifndef __itkDeformationFieldSource_hpp
+#define __itkDeformationFieldSource_hpp
 
 #include "itkDeformationFieldSource.h"
 #include "itkProgressReporter.h"

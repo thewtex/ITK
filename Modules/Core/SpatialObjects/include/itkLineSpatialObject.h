@@ -119,7 +119,7 @@ protected:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkLineSpatialObject.txx"
+#include "itkLineSpatialObject.hpp"
 #endif
 
 #endif // __itkLineSpatialObject_h

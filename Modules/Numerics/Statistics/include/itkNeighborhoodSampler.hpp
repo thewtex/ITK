@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkNeighborhoodSampler_txx
-#define __itkNeighborhoodSampler_txx
+#ifndef __itkNeighborhoodSampler_hpp
+#define __itkNeighborhoodSampler_hpp
 
 #include "itkNeighborhoodSampler.h"
 

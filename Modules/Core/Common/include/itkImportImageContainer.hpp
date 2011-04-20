@@ -25,8 +25,8 @@
  *  please refer to the NOTICE file at the top of the ITK source tree.
  *
  *=========================================================================*/
-#ifndef __itkImportImageContainer_txx
-#define __itkImportImageContainer_txx
+#ifndef __itkImportImageContainer_hpp
+#define __itkImportImageContainer_hpp
 
 #include "itkImportImageContainer.h"
 #include <cstring>

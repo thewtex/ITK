@@ -81,7 +81,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkDTITubeSpatialObject.txx"
+#include "itkDTITubeSpatialObject.hpp"
 #endif
 
 #endif // __itkDTITubeSpatialObject_h

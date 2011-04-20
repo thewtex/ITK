@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkThresholdSegmentationLevelSetImageFilter_txx
-#define __itkThresholdSegmentationLevelSetImageFilter_txx
+#ifndef __itkThresholdSegmentationLevelSetImageFilter_hpp
+#define __itkThresholdSegmentationLevelSetImageFilter_hpp
 
 #include "itkThresholdSegmentationLevelSetImageFilter.h"
 

@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkCorrespondenceDataStructure_txx
-#define __itkCorrespondenceDataStructure_txx
+#ifndef __itkCorrespondenceDataStructure_hpp
+#define __itkCorrespondenceDataStructure_hpp
 
 #include "itkCorrespondenceDataStructure.h"
 

@@ -137,7 +137,7 @@ private:
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkCenteredAffineTransform.txx"
+#include "itkCenteredAffineTransform.hpp"
 #endif
 
 #endif /* __itkCenteredAffineTransform_h */

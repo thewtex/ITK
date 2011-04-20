@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkMaskedRankImageFilter_txx
-#define __itkMaskedRankImageFilter_txx
+#ifndef __itkMaskedRankImageFilter_hpp
+#define __itkMaskedRankImageFilter_hpp
 
 #include "itkMaskedRankImageFilter.h"
 #include "itkImageRegionIteratorWithIndex.h"

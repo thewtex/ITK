@@ -21,13 +21,13 @@
 
 #include <iostream>
 
-#include "itkConnectedThresholdImageFilter.txx"
+#include "itkConnectedThresholdImageFilter.hpp"
 #include "itkVectorConfidenceConnectedImageFilter.h"
-#include "itkConfidenceConnectedImageFilter.txx"
-#include "itkNeighborhoodConnectedImageFilter.txx"
+#include "itkConfidenceConnectedImageFilter.hpp"
+#include "itkNeighborhoodConnectedImageFilter.hpp"
 #include "itkNeighborhoodConnectedImageFilter.h"
-#include "itkIsolatedConnectedImageFilter.txx"
-#include "itkVectorConfidenceConnectedImageFilter.txx"
+#include "itkIsolatedConnectedImageFilter.hpp"
+#include "itkVectorConfidenceConnectedImageFilter.hpp"
 
 
 

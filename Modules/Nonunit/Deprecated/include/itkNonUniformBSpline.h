@@ -191,7 +191,7 @@ protected:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkNonUniformBSpline.txx"
+#include "itkNonUniformBSpline.hpp"
 #endif
 
 #endif // __itkNonUniformBSpline_h

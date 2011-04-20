@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkMahalanobisDistanceMembershipFunction_txx
-#define __itkMahalanobisDistanceMembershipFunction_txx
+#ifndef __itkMahalanobisDistanceMembershipFunction_hpp
+#define __itkMahalanobisDistanceMembershipFunction_hpp
 
 #include "itkMahalanobisDistanceMembershipFunction.h"
 

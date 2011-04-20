@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkHausdorffDistanceImageFilter_txx
-#define __itkHausdorffDistanceImageFilter_txx
+#ifndef __itkHausdorffDistanceImageFilter_hpp
+#define __itkHausdorffDistanceImageFilter_hpp
 #include "itkHausdorffDistanceImageFilter.h"
 
 #include "itkImageRegionIterator.h"

@@ -517,7 +517,7 @@ private:
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkLinearInterpolateImageFunction.txx"
+#include "itkLinearInterpolateImageFunction.hpp"
 #endif
 
 #endif

@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkSpatialObject_txx
-#define __itkSpatialObject_txx
+#ifndef __itkSpatialObject_hpp
+#define __itkSpatialObject_hpp
 
 #include "itkSpatialObject.h"
 #include "itkNumericTraits.h"
@@ -91,7 +91,7 @@ SpatialObject< TDimension >
 {
   if ( !IsEvaluableAt(point, depth, name) )
     {
-    itk::ExceptionObject e("SpatialObject.txx");
+    itk::ExceptionObject e("SpatialObject.hpp");
     e.SetLocation(
       "SpatialObject< TDimension >::DerivateAt(\
                    const PointType, unsigned short, OutputVectorType & )"                                                 );
@@ -1024,4 +1024,4 @@ void SpatialObject< TDimension >
 }
 } // end of namespace itk
 
-#endif // __SpatialObject_txx
+#endif // __SpatialObject_hpp

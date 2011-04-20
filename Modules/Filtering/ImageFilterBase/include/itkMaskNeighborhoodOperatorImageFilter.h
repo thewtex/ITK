@@ -182,7 +182,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkMaskNeighborhoodOperatorImageFilter.txx"
+#include "itkMaskNeighborhoodOperatorImageFilter.hpp"
 #endif
 
 #endif

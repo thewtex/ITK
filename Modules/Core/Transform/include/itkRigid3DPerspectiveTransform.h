@@ -247,7 +247,7 @@ private:
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkRigid3DPerspectiveTransform.txx"
+#include "itkRigid3DPerspectiveTransform.hpp"
 #endif
 
 #endif /* __itkRigid3DPerspectiveTransform_h */

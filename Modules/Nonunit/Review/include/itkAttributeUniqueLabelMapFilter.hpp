@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkAttributeUniqueLabelMapFilter_txx
-#define __itkAttributeUniqueLabelMapFilter_txx
+#ifndef __itkAttributeUniqueLabelMapFilter_hpp
+#define __itkAttributeUniqueLabelMapFilter_hpp
 
 #include "itkAttributeUniqueLabelMapFilter.h"
 #include "itkProgressReporter.h"

@@ -52,7 +52,7 @@ public:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-  #include "itkMetaSurfaceConverter.txx"
+  #include "itkMetaSurfaceConverter.hpp"
 #endif
 
 #endif

@@ -81,7 +81,7 @@ private:
 };
 } // namespace itk
 
-#include "itkQuadEdgeMeshEulerOperatorCreateCenterVertexFunction.txx"
+#include "itkQuadEdgeMeshEulerOperatorCreateCenterVertexFunction.hpp"
 
 #endif // __ITKQUADEDGEMESH__ITKQEEULEROPERATORCREATECENTERVERTEXFUNCTION__H__
 

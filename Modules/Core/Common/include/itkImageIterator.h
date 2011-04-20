@@ -172,7 +172,7 @@ protected:
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkImageIterator.txx"
+#include "itkImageIterator.hpp"
 #endif
 
 #endif

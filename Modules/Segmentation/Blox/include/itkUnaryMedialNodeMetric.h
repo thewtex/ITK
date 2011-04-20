@@ -100,7 +100,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkUnaryMedialNodeMetric.txx"
+#include "itkUnaryMedialNodeMetric.hpp"
 #endif
 
 #endif

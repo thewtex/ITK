@@ -363,7 +363,7 @@ protected:
 } // namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkConstShapedNeighborhoodIterator.txx"
+#include "itkConstShapedNeighborhoodIterator.hpp"
 #endif
 
 #endif

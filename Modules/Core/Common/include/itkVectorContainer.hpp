@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkVectorContainer_txx
-#define __itkVectorContainer_txx
+#ifndef __itkVectorContainer_hpp
+#define __itkVectorContainer_hpp
 #include "itkVectorContainer.h"
 
 #include "itkNumericTraits.h"

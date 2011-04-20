@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkSignedDanielssonDistanceMapImageFilter_txx
-#define __itkSignedDanielssonDistanceMapImageFilter_txx
+#ifndef __itkSignedDanielssonDistanceMapImageFilter_hpp
+#define __itkSignedDanielssonDistanceMapImageFilter_hpp
 
 #include "itkSignedDanielssonDistanceMapImageFilter.h"
 #include "itkProgressAccumulator.h"

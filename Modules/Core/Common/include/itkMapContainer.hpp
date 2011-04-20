@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkMapContainer_txx
-#define __itkMapContainer_txx
+#ifndef __itkMapContainer_hpp
+#define __itkMapContainer_hpp
 #include "itkMapContainer.h"
 
 namespace itk

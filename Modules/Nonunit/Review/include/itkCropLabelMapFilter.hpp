@@ -25,8 +25,8 @@
  *  please refer to the NOTICE file at the top of the ITK source tree.
  *
  *=========================================================================*/
-#ifndef __itkCropLabelMapFilter_txx
-#define __itkCropLabelMapFilter_txx
+#ifndef __itkCropLabelMapFilter_hpp
+#define __itkCropLabelMapFilter_hpp
 
 #include "itkCropLabelMapFilter.h"
 

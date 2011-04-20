@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkArray_txx
-#define __itkArray_txx
+#ifndef __itkArray_hpp
+#define __itkArray_hpp
 
 #include "itkArray.h"
 #include "itkNumericTraitsArrayPixel.h"

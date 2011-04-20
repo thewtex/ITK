@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkVTKPolyDataReader_txx
-#define __itkVTKPolyDataReader_txx
+#ifndef __itkVTKPolyDataReader_hpp
+#define __itkVTKPolyDataReader_hpp
 
 #include "itkVTKPolyDataReader.h"
 #include "itkMath.h"

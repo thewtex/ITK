@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkAutomaticTopologyMeshSource_txx
-#define __itkAutomaticTopologyMeshSource_txx
+#ifndef __itkAutomaticTopologyMeshSource_hpp
+#define __itkAutomaticTopologyMeshSource_hpp
 
 // For debugging.
 #include <iostream>

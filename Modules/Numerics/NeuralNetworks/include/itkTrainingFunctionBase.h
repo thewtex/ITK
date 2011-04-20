@@ -115,7 +115,7 @@ protected:
 } // end namespace Statistics
 } // end namespace itk
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkTrainingFunctionBase.txx"
+#include "itkTrainingFunctionBase.hpp"
 #endif
 
 #endif

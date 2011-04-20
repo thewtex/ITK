@@ -316,7 +316,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkResampleImageFilter.txx"
+#include "itkResampleImageFilter.hpp"
 #endif
 
 #endif

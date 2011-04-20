@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkImagePCADecompositionCalculator_txx
-#define __itkImagePCADecompositionCalculator_txx
+#ifndef __itkImagePCADecompositionCalculator_hpp
+#define __itkImagePCADecompositionCalculator_hpp
 #ifdef _MSC_VER
 #pragma warning( disable : 4288 )
 #endif

@@ -324,7 +324,7 @@ private:
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkVectorContainer.txx"
+#include "itkVectorContainer.hpp"
 #endif
 
 #endif

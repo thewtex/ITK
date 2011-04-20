@@ -79,7 +79,7 @@ protected:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-  #include "itkQuickPropLearningRule.txx"
+  #include "itkQuickPropLearningRule.hpp"
 #endif
 
 #endif

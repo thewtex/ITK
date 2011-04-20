@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkHistogramToImageFilter_txx
-#define __itkHistogramToImageFilter_txx
+#ifndef __itkHistogramToImageFilter_hpp
+#define __itkHistogramToImageFilter_hpp
 
 #include "itkHistogramToImageFilter.h"
 #include "itkNumericTraits.h"

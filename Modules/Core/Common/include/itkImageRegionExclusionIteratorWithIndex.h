@@ -115,7 +115,7 @@ protected:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkImageRegionExclusionIteratorWithIndex.txx"
+#include "itkImageRegionExclusionIteratorWithIndex.hpp"
 #endif
 
 #endif

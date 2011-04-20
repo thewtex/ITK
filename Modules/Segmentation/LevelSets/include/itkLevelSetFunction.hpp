@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkLevelSetFunction_txx
-#define __itkLevelSetFunction_txx
+#ifndef __itkLevelSetFunction_hpp
+#define __itkLevelSetFunction_hpp
 
 #include "itkLevelSetFunction.h"
 #include "vnl/algo/vnl_symmetric_eigensystem.h"

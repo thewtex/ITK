@@ -127,7 +127,7 @@ private:
 }  // namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkBSplineDeformableTransformInitializer.txx"
+#include "itkBSplineDeformableTransformInitializer.hpp"
 #endif
 
 #endif /* __itkBSplineDeformableTransformInitializer_h */

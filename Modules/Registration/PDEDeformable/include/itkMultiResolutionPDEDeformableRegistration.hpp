@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkMultiResolutionPDEDeformableRegistration_txx
-#define __itkMultiResolutionPDEDeformableRegistration_txx
+#ifndef __itkMultiResolutionPDEDeformableRegistration_hpp
+#define __itkMultiResolutionPDEDeformableRegistration_hpp
 #include "itkMultiResolutionPDEDeformableRegistration.h"
 
 #include "itkRecursiveGaussianImageFilter.h"

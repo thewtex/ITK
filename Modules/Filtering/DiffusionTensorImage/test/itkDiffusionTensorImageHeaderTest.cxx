@@ -21,7 +21,7 @@
 
 #include <iostream>
 
-#include "itkDiffusionTensor3DReconstructionImageFilter.txx"
+#include "itkDiffusionTensor3DReconstructionImageFilter.hpp"
 
 
 

@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkNonUniformBSpline_txx
-#define __itkNonUniformBSpline_txx
+#ifndef __itkNonUniformBSpline_hpp
+#define __itkNonUniformBSpline_hpp
 
 #if defined( _MSC_VER )
 #pragma warning ( disable : 4786 )

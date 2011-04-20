@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkMetaVesselTubeConverter_txx
-#define __itkMetaVesselTubeConverter_txx
+#ifndef __itkMetaVesselTubeConverter_hpp
+#define __itkMetaVesselTubeConverter_hpp
 
 #include "itkMetaVesselTubeConverter.h"
 

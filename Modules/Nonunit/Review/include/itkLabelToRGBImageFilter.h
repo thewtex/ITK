@@ -111,7 +111,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkLabelToRGBImageFilter.txx"
+#include "itkLabelToRGBImageFilter.hpp"
 #endif
 
 #endif

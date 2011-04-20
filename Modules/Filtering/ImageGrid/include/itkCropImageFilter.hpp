@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkCropImageFilter_txx
-#define __itkCropImageFilter_txx
+#ifndef __itkCropImageFilter_hpp
+#define __itkCropImageFilter_hpp
 
 #include "itkCropImageFilter.h"
 

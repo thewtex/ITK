@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkFEMElement3DMembrane_txx
-#define __itkFEMElement3DMembrane_txx
+#ifndef __itkFEMElement3DMembrane_hpp
+#define __itkFEMElement3DMembrane_hpp
 
 #include "itkFEMElement3DMembrane.h"
 
@@ -200,4 +200,4 @@ static void Dummy( void );
 
 }} // end namespace itk::fem
 
-#endif // #ifndef __itkFEMElement3DMembrane_txx
+#endif // #ifndef __itkFEMElement3DMembrane_hpp

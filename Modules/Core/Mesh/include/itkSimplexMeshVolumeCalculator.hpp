@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkSimplexMeshVolumeCalculator_txx
-#define __itkSimplexMeshVolumeCalculator_txx
+#ifndef __itkSimplexMeshVolumeCalculator_hpp
+#define __itkSimplexMeshVolumeCalculator_hpp
 
 #include "itkSimplexMeshVolumeCalculator.h"
 

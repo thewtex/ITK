@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkWhiteTopHatImageFilter_txx
-#define __itkWhiteTopHatImageFilter_txx
+#ifndef __itkWhiteTopHatImageFilter_hpp
+#define __itkWhiteTopHatImageFilter_hpp
 
 #include "itkImageRegionIterator.h"
 #include "itkWhiteTopHatImageFilter.h"

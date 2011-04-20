@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkImageToParametricSpaceFilter_txx
-#define __itkImageToParametricSpaceFilter_txx
+#ifndef __itkImageToParametricSpaceFilter_hpp
+#define __itkImageToParametricSpaceFilter_hpp
 
 #include "itkImageToParametricSpaceFilter.h"
 #include "itkNumericTraits.h"

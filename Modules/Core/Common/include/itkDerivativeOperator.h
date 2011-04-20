@@ -123,7 +123,7 @@ private:
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkDerivativeOperator.txx"
+#include "itkDerivativeOperator.hpp"
 #endif
 
 #endif

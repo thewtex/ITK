@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkShapeLabelMapFilter_txx
-#define __itkShapeLabelMapFilter_txx
+#ifndef __itkShapeLabelMapFilter_hpp
+#define __itkShapeLabelMapFilter_hpp
 
 #include "itkShapeLabelMapFilter.h"
 #include "itkProgressReporter.h"

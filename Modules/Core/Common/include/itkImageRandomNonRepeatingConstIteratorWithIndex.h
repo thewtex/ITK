@@ -336,7 +336,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkImageRandomNonRepeatingConstIteratorWithIndex.txx"
+#include "itkImageRandomNonRepeatingConstIteratorWithIndex.hpp"
 #endif
 
 #endif

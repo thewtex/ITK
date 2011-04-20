@@ -236,7 +236,7 @@ protected:
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkTreeIteratorBase.txx"
+#include "itkTreeIteratorBase.hpp"
 #endif
 
 #endif

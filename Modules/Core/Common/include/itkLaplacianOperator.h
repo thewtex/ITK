@@ -147,7 +147,7 @@ private:
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkLaplacianOperator.txx"
+#include "itkLaplacianOperator.hpp"
 #endif
 
 #endif

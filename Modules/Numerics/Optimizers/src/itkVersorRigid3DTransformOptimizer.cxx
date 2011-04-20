@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef _itkVersorRigid3DTransformOptimizer_txx
-#define _itkVersorRigid3DTransformOptimizer_txx
+#ifndef _itkVersorRigid3DTransformOptimizer_hpp
+#define _itkVersorRigid3DTransformOptimizer_hpp
 
 #include "itkVersorRigid3DTransformOptimizer.h"
 #include "vnl/vnl_quaternion.h"

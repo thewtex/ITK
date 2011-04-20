@@ -84,7 +84,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkAnchorOpenCloseLine.txx"
+#include "itkAnchorOpenCloseLine.hpp"
 #endif
 
 #endif

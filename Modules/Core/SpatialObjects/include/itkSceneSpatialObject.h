@@ -128,7 +128,7 @@ protected:
 } // end of namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkSceneSpatialObject.txx"
+#include "itkSceneSpatialObject.hpp"
 #endif
 
 #endif // __SceneSpatialObject_h

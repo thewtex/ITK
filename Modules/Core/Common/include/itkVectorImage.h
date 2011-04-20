@@ -340,7 +340,7 @@ private:
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkVectorImage.txx"
+#include "itkVectorImage.hpp"
 #endif
 
 #endif

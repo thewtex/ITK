@@ -355,7 +355,7 @@ private:
 } // end of namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkJointDomainImageToListSampleAdaptor.txx"
+#include "itkJointDomainImageToListSampleAdaptor.hpp"
 #endif
 
 #endif

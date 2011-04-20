@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkBloxImage_txx
-#define __itkBloxImage_txx
+#ifndef __itkBloxImage_hpp
+#define __itkBloxImage_hpp
 
 #include "itkBloxImage.h"
 

@@ -186,7 +186,7 @@ private:
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkInPlaceImageFilter.txx"
+#include "itkInPlaceImageFilter.hpp"
 #endif
 
 #endif

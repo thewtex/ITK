@@ -132,7 +132,7 @@ private:
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkFixedCenterOfRotationAffineTransform.txx"
+#include "itkFixedCenterOfRotationAffineTransform.hpp"
 #endif
 
 #endif /* __itkFixedCenterOfRotationAffineTransform_h */

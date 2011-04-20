@@ -203,7 +203,7 @@ public:
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkImageRegionConstIteratorWithIndex.txx"
+#include "itkImageRegionConstIteratorWithIndex.hpp"
 #endif
 
 #endif

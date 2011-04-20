@@ -172,7 +172,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkBioCellularAggregate.txx"
+#include "itkBioCellularAggregate.hpp"
 #endif
 
 #endif

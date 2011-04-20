@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkSecondaryNodeList_txx
-#define __itkSecondaryNodeList_txx
+#ifndef __itkSecondaryNodeList_hpp
+#define __itkSecondaryNodeList_hpp
 
 #include "itkSecondaryNodeList.h"
 

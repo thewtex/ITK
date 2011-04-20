@@ -88,7 +88,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkBoxSigmaImageFilter.txx"
+#include "itkBoxSigmaImageFilter.hpp"
 #endif
 
 #endif

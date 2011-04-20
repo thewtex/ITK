@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkIsotropicFourthOrderLevelSetImageFilter_txx
-#define __itkIsotropicFourthOrderLevelSetImageFilter_txx
+#ifndef __itkIsotropicFourthOrderLevelSetImageFilter_hpp
+#define __itkIsotropicFourthOrderLevelSetImageFilter_hpp
 
 #include "itkIsotropicFourthOrderLevelSetImageFilter.h"
 

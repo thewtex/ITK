@@ -61,7 +61,7 @@ protected:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-  #include "itkTanSigmoidTransferFunction.txx"
+  #include "itkTanSigmoidTransferFunction.hpp"
 #endif
 
 #endif

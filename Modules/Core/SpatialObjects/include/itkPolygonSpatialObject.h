@@ -126,7 +126,7 @@ private:
 };
 }
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkPolygonSpatialObject.txx"
+#include "itkPolygonSpatialObject.hpp"
 #endif
 
 #endif  // __itkPolygonSpatialObject_h

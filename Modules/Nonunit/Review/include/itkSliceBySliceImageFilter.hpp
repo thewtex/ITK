@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkSliceBySliceImageFilter_txx
-#define __itkSliceBySliceImageFilter_txx
+#ifndef __itkSliceBySliceImageFilter_hpp
+#define __itkSliceBySliceImageFilter_hpp
 
 #include "itkSliceBySliceImageFilter.h"
 #include "itkImageRegionIterator.h"

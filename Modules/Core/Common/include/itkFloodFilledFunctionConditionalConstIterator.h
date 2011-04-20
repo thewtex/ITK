@@ -252,7 +252,7 @@ protected: //made protected so other iterators can access
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkFloodFilledFunctionConditionalConstIterator.txx"
+#include "itkFloodFilledFunctionConditionalConstIterator.hpp"
 #endif
 
 #endif

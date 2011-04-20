@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkImageFileWriter_txx
-#define __itkImageFileWriter_txx
+#ifndef __itkImageFileWriter_hpp
+#define __itkImageFileWriter_hpp
 
 #include "itkImageFileWriter.h"
 #include "itkDataObject.h"

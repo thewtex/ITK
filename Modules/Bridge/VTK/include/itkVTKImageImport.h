@@ -189,7 +189,7 @@ private:
 } // namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkVTKImageImport.txx"
+#include "itkVTKImageImport.hpp"
 #endif
 
 #endif // __itkVTKImageImport_h

@@ -153,7 +153,7 @@ private:
 } // End namespace itk.
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkKullbackLeiblerCompareHistogramImageToImageMetric.txx"
+#include "itkKullbackLeiblerCompareHistogramImageToImageMetric.hpp"
 #endif
 
 #endif // __itkKullbackLeiblerCompareHistogramImageToImageMetric_h

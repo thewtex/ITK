@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkCenteredEuler3DTransform_txx
-#define __itkCenteredEuler3DTransform_txx
+#ifndef __itkCenteredEuler3DTransform_hpp
+#define __itkCenteredEuler3DTransform_hpp
 
 #include "itkCenteredEuler3DTransform.h"
 

@@ -23,17 +23,17 @@
 
 #include "itkSymmetricForcesDemonsRegistrationFunction.h"
 #include "itkDemonsRegistrationFilter.h"
-#include "itkSymmetricForcesDemonsRegistrationFilter.txx"
+#include "itkSymmetricForcesDemonsRegistrationFilter.hpp"
 #include "itkCurvatureRegistrationFilter.h"
-#include "itkMultiResolutionPDEDeformableRegistration.txx"
-#include "itkCurvatureRegistrationFilter.txx"
-#include "itkPDEDeformableRegistrationFilter.txx"
-#include "itkLevelSetMotionRegistrationFilter.txx"
-#include "itkDemonsRegistrationFunction.txx"
-#include "itkSymmetricForcesDemonsRegistrationFunction.txx"
-#include "itkLevelSetMotionRegistrationFunction.txx"
-#include "itkDemonsRegistrationFilter.txx"
-#include "itkFastSymmetricForcesDemonsRegistrationFunction.txx"
+#include "itkMultiResolutionPDEDeformableRegistration.hpp"
+#include "itkCurvatureRegistrationFilter.hpp"
+#include "itkPDEDeformableRegistrationFilter.hpp"
+#include "itkLevelSetMotionRegistrationFilter.hpp"
+#include "itkDemonsRegistrationFunction.hpp"
+#include "itkSymmetricForcesDemonsRegistrationFunction.hpp"
+#include "itkLevelSetMotionRegistrationFunction.hpp"
+#include "itkDemonsRegistrationFilter.hpp"
+#include "itkFastSymmetricForcesDemonsRegistrationFunction.hpp"
 
 
 

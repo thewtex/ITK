@@ -237,7 +237,7 @@ private:
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkAzimuthElevationToCartesianTransform.txx"
+#include "itkAzimuthElevationToCartesianTransform.hpp"
 #endif
 
 #endif /* __itkAzimuthElevationToCartesianTransform_h */

@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkNCCRegistrationFunction_txx
-#define __itkNCCRegistrationFunction_txx
+#ifndef __itkNCCRegistrationFunction_hpp
+#define __itkNCCRegistrationFunction_hpp
 
 #include "itkNCCRegistrationFunction.h"
 #include "itkMacro.h"

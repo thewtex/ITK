@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkMatrixResizeableDataObject_txx
-#define __itkMatrixResizeableDataObject_txx
+#ifndef __itkMatrixResizeableDataObject_hpp
+#define __itkMatrixResizeableDataObject_hpp
 
 #include "itkMatrixResizeableDataObject.h"
 

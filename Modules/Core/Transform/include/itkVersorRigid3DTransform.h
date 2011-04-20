@@ -140,7 +140,7 @@ private:
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkVersorRigid3DTransform.txx"
+#include "itkVersorRigid3DTransform.hpp"
 #endif
 
 #endif /* __itkVersorRigid3DTransform_h */

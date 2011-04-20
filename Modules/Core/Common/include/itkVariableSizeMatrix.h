@@ -254,7 +254,7 @@ VariableSizeMatrix< T >
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkVariableSizeMatrix.txx"
+#include "itkVariableSizeMatrix.hpp"
 #endif
 
 #endif

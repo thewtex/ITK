@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkDiscreteGaussianDerivativeImageFilter_txx
-#define __itkDiscreteGaussianDerivativeImageFilter_txx
+#ifndef __itkDiscreteGaussianDerivativeImageFilter_hpp
+#define __itkDiscreteGaussianDerivativeImageFilter_hpp
 
 #include "itkDiscreteGaussianDerivativeImageFilter.h"
 #include "itkNeighborhoodOperatorImageFilter.h"

@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkMinMaxCurvatureFlowFunction_txx
-#define __itkMinMaxCurvatureFlowFunction_txx
+#ifndef __itkMinMaxCurvatureFlowFunction_hpp
+#define __itkMinMaxCurvatureFlowFunction_hpp
 #include "itkMinMaxCurvatureFlowFunction.h"
 
 #include "vnl/vnl_math.h"

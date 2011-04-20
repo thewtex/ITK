@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkSpatialObjectProperty_txx
-#define __itkSpatialObjectProperty_txx
+#ifndef __itkSpatialObjectProperty_hpp
+#define __itkSpatialObjectProperty_hpp
 
 #include "itkSpatialObjectProperty.h"
 
@@ -165,4 +165,4 @@ SpatialObjectProperty< TComponentType >
 }
 } // end of namespace itk
 
-#endif // __SpatialObjectProperty_txx
+#endif // __SpatialObjectProperty_hpp

@@ -1,5 +1,5 @@
-#ifndef __itkGPUImage_txx
-#define __itkGPUImage_txx
+#ifndef __itkGPUImage_hpp
+#define __itkGPUImage_hpp
 
 #include "itkGPUImage.h"
 

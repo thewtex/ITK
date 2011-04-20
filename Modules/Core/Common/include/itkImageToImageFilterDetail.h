@@ -349,7 +349,7 @@ bool operator!=(const ImageRegionCopier< D1, D2 > & c1,
 } // end namespace itk
 
 //#ifndef ITK_MANUAL_INSTANTIATION
-//#include "itkImageToImageFilterDetail.txx"
+//#include "itkImageToImageFilterDetail.hpp"
 //#endif
 
 #endif

@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkLevelOrderTreeIterator_txx
-#define __itkLevelOrderTreeIterator_txx
+#ifndef __itkLevelOrderTreeIterator_hpp
+#define __itkLevelOrderTreeIterator_hpp
 
 #include "itkLevelOrderTreeIterator.h"
 

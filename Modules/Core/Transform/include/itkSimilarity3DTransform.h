@@ -161,7 +161,7 @@ private:
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkSimilarity3DTransform.txx"
+#include "itkSimilarity3DTransform.hpp"
 #endif
 
 #endif /* __itkSimilarity3DTransform_h */

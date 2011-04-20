@@ -92,7 +92,7 @@ public:
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkPeriodicBoundaryCondition.txx"
+#include "itkPeriodicBoundaryCondition.hpp"
 #endif
 
 #endif

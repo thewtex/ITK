@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkGradientVectorFlowImageFilter_txx
-#define __itkGradientVectorFlowImageFilter_txx
+#ifndef __itkGradientVectorFlowImageFilter_hpp
+#define __itkGradientVectorFlowImageFilter_hpp
 #include "itkGradientVectorFlowImageFilter.h"
 
 #ifdef _MSC_VER

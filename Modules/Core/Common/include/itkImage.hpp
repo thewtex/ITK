@@ -25,8 +25,8 @@
  *  please refer to the NOTICE file at the top of the ITK source tree.
  *
  *=========================================================================*/
-#ifndef __itkImage_txx
-#define __itkImage_txx
+#ifndef __itkImage_hpp
+#define __itkImage_hpp
 
 #include "itkImage.h"
 #include "itkProcessObject.h"

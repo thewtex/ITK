@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef _itkVersorTransformOptimizer_txx
-#define _itkVersorTransformOptimizer_txx
+#ifndef _itkVersorTransformOptimizer_hpp
+#define _itkVersorTransformOptimizer_hpp
 
 #include "itkVersorTransformOptimizer.h"
 #include "vnl/vnl_quaternion.h"

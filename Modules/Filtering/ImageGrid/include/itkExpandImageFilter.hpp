@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkExpandImageFilter_txx
-#define __itkExpandImageFilter_txx
+#ifndef __itkExpandImageFilter_hpp
+#define __itkExpandImageFilter_hpp
 
 #include "itkExpandImageFilter.h"
 #include "itkImageRegionIteratorWithIndex.h"

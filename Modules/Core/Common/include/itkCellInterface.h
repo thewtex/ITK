@@ -497,7 +497,7 @@ public:
 
 #if !defined( CABLE_CONFIGURATION )
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkCellInterface.txx"
+#include "itkCellInterface.hpp"
 #endif
 #endif
 

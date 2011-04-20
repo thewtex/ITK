@@ -186,7 +186,7 @@ private:
 } // namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkDirectFourierReconstructionImageToImageFilter.txx"
+#include "itkDirectFourierReconstructionImageToImageFilter.hpp"
 #endif
 
 #endif /* __itkDirectFourierReconstructionImageToImageFilter_h */

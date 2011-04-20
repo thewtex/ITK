@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkObjectByObjectLabelMapFilter_txx
-#define __itkObjectByObjectLabelMapFilter_txx
+#ifndef __itkObjectByObjectLabelMapFilter_hpp
+#define __itkObjectByObjectLabelMapFilter_hpp
 
 #include "itkObjectByObjectLabelMapFilter.h"
 #include "itkBinaryThresholdImageFilter.h"

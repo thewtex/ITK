@@ -323,7 +323,7 @@ private:
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkImage.txx"
+#include "itkImage.hpp"
 #endif
 
 #endif

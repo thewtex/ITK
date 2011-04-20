@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkCorrespondenceDataStructureIterator_txx
-#define __itkCorrespondenceDataStructureIterator_txx
+#ifndef __itkCorrespondenceDataStructureIterator_hpp
+#define __itkCorrespondenceDataStructureIterator_hpp
 
 #include "itkCorrespondenceDataStructureIterator.h"
 

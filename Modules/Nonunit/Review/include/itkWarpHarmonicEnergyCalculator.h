@@ -160,7 +160,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkWarpHarmonicEnergyCalculator.txx"
+#include "itkWarpHarmonicEnergyCalculator.hpp"
 #endif
 
 #endif /* __itkWarpHarmonicEnergyCalculator_h */

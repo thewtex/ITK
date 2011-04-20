@@ -104,12 +104,12 @@ public:
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkNeighborhoodInnerProduct.txx"
+#include "itkNeighborhoodInnerProduct.hpp"
 #endif
 
 /*
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkNeighborhoodInnerProduct.txx"
+#include "itkNeighborhoodInnerProduct.hpp"
 #endif
 */
 

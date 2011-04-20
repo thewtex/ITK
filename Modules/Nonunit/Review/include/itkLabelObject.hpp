@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkLabelObject_txx
-#define __itkLabelObject_txx
+#ifndef __itkLabelObject_hpp
+#define __itkLabelObject_hpp
 
 #include "itkLabelObject.h"
 #include "itkLabelObjectLineComparator.h"

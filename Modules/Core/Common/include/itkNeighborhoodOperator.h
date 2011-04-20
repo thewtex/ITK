@@ -192,12 +192,12 @@ private:
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkNeighborhoodOperator.txx"
+#include "itkNeighborhoodOperator.hpp"
 #endif
 
 /*
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkNeighborhoodOperator.txx"
+#include "itkNeighborhoodOperator.hpp"
 #endif
 */
 #endif

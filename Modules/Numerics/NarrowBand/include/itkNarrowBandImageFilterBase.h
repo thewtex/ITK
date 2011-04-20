@@ -319,7 +319,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkNarrowBandImageFilterBase.txx"
+#include "itkNarrowBandImageFilterBase.hpp"
 #endif
 
 #endif

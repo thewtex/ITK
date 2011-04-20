@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkClassifierBase_txx
-#define __itkClassifierBase_txx
+#ifndef __itkClassifierBase_hpp
+#define __itkClassifierBase_hpp
 
 #include "itkClassifierBase.h"
 #include "itkCommand.h"

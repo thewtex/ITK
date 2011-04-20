@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkConnectedThresholdImageFilter_txx
-#define __itkConnectedThresholdImageFilter_txx
+#ifndef __itkConnectedThresholdImageFilter_hpp
+#define __itkConnectedThresholdImageFilter_hpp
 
 #include "itkConnectedThresholdImageFilter.h"
 #include "itkBinaryThresholdImageFunction.h"

@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkBinaryMedialNodeMetric_txx
-#define __itkBinaryMedialNodeMetric_txx
+#ifndef __itkBinaryMedialNodeMetric_hpp
+#define __itkBinaryMedialNodeMetric_hpp
 
 #include "itkBinaryMedialNodeMetric.h"
 #include "vnl/vnl_vector_fixed.h"

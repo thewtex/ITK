@@ -114,7 +114,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkWhiteTopHatImageFilter.txx"
+#include "itkWhiteTopHatImageFilter.hpp"
 #endif
 
 #endif

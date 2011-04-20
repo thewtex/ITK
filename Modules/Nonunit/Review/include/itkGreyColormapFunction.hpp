@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkGreyColormapFunction_txx
-#define __itkGreyColormapFunction_txx
+#ifndef __itkGreyColormapFunction_hpp
+#define __itkGreyColormapFunction_hpp
 
 #include "itkGreyColormapFunction.h"
 

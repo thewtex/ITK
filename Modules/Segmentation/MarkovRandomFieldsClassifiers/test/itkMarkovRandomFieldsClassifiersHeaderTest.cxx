@@ -21,10 +21,10 @@
 
 #include <iostream>
 
-#include "itkImageClassifierBase.txx"
-#include "itkRGBGibbsPriorFilter.txx"
-#include "itkMRFImageFilter.txx"
-#include "itkClassifierBase.txx"
+#include "itkImageClassifierBase.hpp"
+#include "itkRGBGibbsPriorFilter.hpp"
+#include "itkMRFImageFilter.hpp"
+#include "itkClassifierBase.hpp"
 #include "itkRGBGibbsPriorFilter.h"
 
 

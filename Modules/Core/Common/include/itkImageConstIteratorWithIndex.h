@@ -317,7 +317,7 @@ protected: //made protected so other iterators can access
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkImageConstIteratorWithIndex.txx"
+#include "itkImageConstIteratorWithIndex.hpp"
 #endif
 
 #endif

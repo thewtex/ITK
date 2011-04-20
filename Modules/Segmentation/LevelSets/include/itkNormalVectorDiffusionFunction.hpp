@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkNormalVectorDiffusionFunction_txx
-#define __itkNormalVectorDiffusionFunction_txx
+#ifndef __itkNormalVectorDiffusionFunction_hpp
+#define __itkNormalVectorDiffusionFunction_hpp
 
 #include "itkNormalVectorDiffusionFunction.h"
 #include "itkVector.h"

@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkImageRegionMultidimensionalSplitter_txx
-#define __itkImageRegionMultidimensionalSplitter_txx
+#ifndef __itkImageRegionMultidimensionalSplitter_hpp
+#define __itkImageRegionMultidimensionalSplitter_hpp
 #include "itkImageRegionMultidimensionalSplitter.h"
 #include <math.h>
 

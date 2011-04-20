@@ -152,7 +152,7 @@ private:
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkSumOfSquaresImageFunction.txx"
+#include "itkSumOfSquaresImageFunction.hpp"
 #endif
 
 #endif

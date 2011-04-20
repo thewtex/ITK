@@ -160,7 +160,7 @@ protected:
 } //namespace statistics
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkLayerBase.txx"
+#include "itkLayerBase.hpp"
 #endif
 
 #endif

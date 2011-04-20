@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkCorrespondingMedialNodeClique_txx
-#define __itkCorrespondingMedialNodeClique_txx
+#ifndef __itkCorrespondingMedialNodeClique_hpp
+#define __itkCorrespondingMedialNodeClique_hpp
 
 #include "itkCorrespondingMedialNodeClique.h"
 

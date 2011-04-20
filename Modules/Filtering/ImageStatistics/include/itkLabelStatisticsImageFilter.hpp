@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkLabelStatisticsImageFilter_txx
-#define __itkLabelStatisticsImageFilter_txx
+#ifndef __itkLabelStatisticsImageFilter_hpp
+#define __itkLabelStatisticsImageFilter_hpp
 #include "itkLabelStatisticsImageFilter.h"
 
 #include "itkImageRegionIterator.h"

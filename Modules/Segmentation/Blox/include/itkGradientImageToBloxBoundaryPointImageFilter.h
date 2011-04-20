@@ -121,7 +121,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkGradientImageToBloxBoundaryPointImageFilter.txx"
+#include "itkGradientImageToBloxBoundaryPointImageFilter.hpp"
 #endif
 
 #endif

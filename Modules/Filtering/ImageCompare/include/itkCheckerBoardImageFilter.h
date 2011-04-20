@@ -103,7 +103,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkCheckerBoardImageFilter.txx"
+#include "itkCheckerBoardImageFilter.hpp"
 #endif
 
 #endif

@@ -99,7 +99,7 @@ protected:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkBoxSpatialObject.txx"
+#include "itkBoxSpatialObject.hpp"
 #endif
 
 #endif // __itkBoxSpatialObject_h

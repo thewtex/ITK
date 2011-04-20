@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkQuadEdgeMeshEulerOperatorDeleteCenterVertexFunction_txx
-#define __itkQuadEdgeMeshEulerOperatorDeleteCenterVertexFunction_txx
+#ifndef __itkQuadEdgeMeshEulerOperatorDeleteCenterVertexFunction_hpp
+#define __itkQuadEdgeMeshEulerOperatorDeleteCenterVertexFunction_hpp
 
 #include "itkQuadEdgeMeshEulerOperatorDeleteCenterVertexFunction.h"
 

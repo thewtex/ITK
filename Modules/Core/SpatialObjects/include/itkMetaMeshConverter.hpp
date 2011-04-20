@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkMetaMeshConverter_txx
-#define __itkMetaMeshConverter_txx
+#ifndef __itkMetaMeshConverter_hpp
+#define __itkMetaMeshConverter_hpp
 
 #include "itkMetaMeshConverter.h"
 #include "itkTetrahedronCell.h"

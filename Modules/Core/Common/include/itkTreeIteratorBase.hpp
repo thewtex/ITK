@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkTreeIteratorBase_txx
-#define __itkTreeIteratorBase_txx
+#ifndef __itkTreeIteratorBase_hpp
+#define __itkTreeIteratorBase_hpp
 
 #include "itkTreeChangeEvent.h"
 

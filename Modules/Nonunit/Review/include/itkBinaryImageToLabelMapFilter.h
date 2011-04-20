@@ -249,7 +249,7 @@ private:
 
 #ifndef ITK_MANUAL_INSTANTIATION
 #if !defined( CABLE_CONFIGURATION )
-#include "itkBinaryImageToLabelMapFilter.txx"
+#include "itkBinaryImageToLabelMapFilter.hpp"
 #endif
 #endif
 

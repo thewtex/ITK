@@ -211,7 +211,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkIsolatedConnectedImageFilter.txx"
+#include "itkIsolatedConnectedImageFilter.hpp"
 #endif
 
 #endif

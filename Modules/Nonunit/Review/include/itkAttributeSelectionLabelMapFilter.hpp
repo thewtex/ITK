@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkAttributeSelectionLabelMapFilter_txx
-#define __itkAttributeSelectionLabelMapFilter_txx
+#ifndef __itkAttributeSelectionLabelMapFilter_hpp
+#define __itkAttributeSelectionLabelMapFilter_hpp
 
 #include "itkAttributeSelectionLabelMapFilter.h"
 #include "itkProgressReporter.h"

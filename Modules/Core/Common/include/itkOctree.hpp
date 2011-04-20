@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkOctree_txx
-#define __itkOctree_txx
+#ifndef __itkOctree_hpp
+#define __itkOctree_hpp
 
 #include "itkOctree.h"
 

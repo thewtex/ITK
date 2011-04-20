@@ -22,12 +22,12 @@
 #include <iostream>
 
 #include "itkSmoothingRecursiveGaussianImageFilter.h"
-#include "itkDiscreteGaussianImageFilter.txx"
-#include "itkRecursiveGaussianImageFilter.txx"
-#include "itkBinomialBlurImageFilter.txx"
-#include "itkMeanImageFilter.txx"
-#include "itkSmoothingRecursiveGaussianImageFilter.txx"
-#include "itkMedianImageFilter.txx"
+#include "itkDiscreteGaussianImageFilter.hpp"
+#include "itkRecursiveGaussianImageFilter.hpp"
+#include "itkBinomialBlurImageFilter.hpp"
+#include "itkMeanImageFilter.hpp"
+#include "itkSmoothingRecursiveGaussianImageFilter.hpp"
+#include "itkMedianImageFilter.hpp"
 
 
 

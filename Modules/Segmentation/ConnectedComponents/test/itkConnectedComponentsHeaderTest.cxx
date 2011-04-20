@@ -21,15 +21,15 @@
 
 #include <iostream>
 
-#include "itkConnectedComponentFunctorImageFilter.txx"
+#include "itkConnectedComponentFunctorImageFilter.hpp"
 #include "itkScalarConnectedComponentImageFilter.h"
-#include "itkConnectedComponentImageFilter.txx"
+#include "itkConnectedComponentImageFilter.hpp"
 #include "itkHardConnectedComponentImageFilter.h"
 #include "itkConnectedComponentAlgorithm.h"
 #include "itkVectorConnectedComponentImageFilter.h"
-#include "itkThresholdMaximumConnectedComponentsImageFilter.txx"
-#include "itkHardConnectedComponentImageFilter.txx"
-#include "itkRelabelComponentImageFilter.txx"
+#include "itkThresholdMaximumConnectedComponentsImageFilter.hpp"
+#include "itkHardConnectedComponentImageFilter.hpp"
+#include "itkRelabelComponentImageFilter.hpp"
 
 
 

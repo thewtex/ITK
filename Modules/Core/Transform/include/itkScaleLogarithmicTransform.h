@@ -137,7 +137,7 @@ private:
 #endif
 
 #if ITK_TEMPLATE_TXX
-#include "itkScaleLogarithmicTransform.txx"
+#include "itkScaleLogarithmicTransform.hpp"
 #endif
 
 #endif /* __itkScaleLogarithmicTransform_h */

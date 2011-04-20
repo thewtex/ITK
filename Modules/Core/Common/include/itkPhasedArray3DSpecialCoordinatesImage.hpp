@@ -25,8 +25,8 @@
  *  please refer to the NOTICE file at the top of the ITK source tree.
  *
  *=========================================================================*/
-#ifndef __itkPhasedArray3DSpecialCoordinatesImage_txx
-#define __itkPhasedArray3DSpecialCoordinatesImage_txx
+#ifndef __itkPhasedArray3DSpecialCoordinatesImage_hpp
+#define __itkPhasedArray3DSpecialCoordinatesImage_hpp
 #include "itkPhasedArray3DSpecialCoordinatesImage.h"
 
 namespace itk

@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkEllipsoidInteriorExteriorSpatialFunction_txx
-#define __itkEllipsoidInteriorExteriorSpatialFunction_txx
+#ifndef __itkEllipsoidInteriorExteriorSpatialFunction_hpp
+#define __itkEllipsoidInteriorExteriorSpatialFunction_hpp
 
 #include "itkEllipsoidInteriorExteriorSpatialFunction.h"
 #include <math.h>

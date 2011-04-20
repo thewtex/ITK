@@ -21,11 +21,11 @@
 
 #include <iostream>
 
-#include "itkBinaryMedianImageFilter.txx"
-#include "itkVotingBinaryHoleFillingImageFilter.txx"
-#include "itkLabelVotingImageFilter.txx"
-#include "itkVotingBinaryImageFilter.txx"
-#include "itkVotingBinaryIterativeHoleFillingImageFilter.txx"
+#include "itkBinaryMedianImageFilter.hpp"
+#include "itkVotingBinaryHoleFillingImageFilter.hpp"
+#include "itkLabelVotingImageFilter.hpp"
+#include "itkVotingBinaryImageFilter.hpp"
+#include "itkVotingBinaryIterativeHoleFillingImageFilter.hpp"
 
 
 

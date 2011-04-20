@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkRGBAPixel_txx
-#define __itkRGBAPixel_txx
+#ifndef __itkRGBAPixel_hpp
+#define __itkRGBAPixel_hpp
 #include "itkRGBAPixel.h"
 #include "itkNumericTraits.h"
 

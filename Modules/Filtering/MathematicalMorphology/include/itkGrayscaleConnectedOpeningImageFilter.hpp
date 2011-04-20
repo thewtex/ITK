@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkGrayscaleConnectedOpeningImageFilter_txx
-#define __itkGrayscaleConnectedOpeningImageFilter_txx
+#ifndef __itkGrayscaleConnectedOpeningImageFilter_hpp
+#define __itkGrayscaleConnectedOpeningImageFilter_hpp
 
 #include "itkImageRegionIterator.h"
 #include "itkGrayscaleConnectedOpeningImageFilter.h"

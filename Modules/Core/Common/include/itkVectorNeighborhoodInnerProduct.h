@@ -82,7 +82,7 @@ public:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkVectorNeighborhoodInnerProduct.txx"
+#include "itkVectorNeighborhoodInnerProduct.hpp"
 #endif
 
 #endif

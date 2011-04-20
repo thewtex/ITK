@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkLabelContourImageFilter_txx
-#define __itkLabelContourImageFilter_txx
+#ifndef __itkLabelContourImageFilter_hpp
+#define __itkLabelContourImageFilter_hpp
 
 #include "itkLabelContourImageFilter.h"
 

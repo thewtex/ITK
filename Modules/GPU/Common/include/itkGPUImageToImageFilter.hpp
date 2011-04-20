@@ -1,5 +1,5 @@
-#ifndef __itkGPUImageToImageFilter_txx
-#define __itkGPUImageToImageFilter_txx
+#ifndef __itkGPUImageToImageFilter_hpp
+#define __itkGPUImageToImageFilter_hpp
 
 #include "itkGPUImageToImageFilter.h"
 

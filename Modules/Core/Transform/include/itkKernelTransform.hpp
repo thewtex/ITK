@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkKernelTransform_txx
-#define __itkKernelTransform_txx
+#ifndef __itkKernelTransform_hpp
+#define __itkKernelTransform_hpp
 #include "itkKernelTransform.h"
 
 namespace itk

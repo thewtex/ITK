@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkWatershedBoundaryResolver_txx
-#define __itkWatershedBoundaryResolver_txx
+#ifndef __itkWatershedBoundaryResolver_hpp
+#define __itkWatershedBoundaryResolver_hpp
 #include "itkWatershedBoundaryResolver.h"
 
 #include "itkImageRegionIterator.h"

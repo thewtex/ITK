@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkDTITubeSpatialObject_txx
-#define __itkDTITubeSpatialObject_txx
+#ifndef __itkDTITubeSpatialObject_hpp
+#define __itkDTITubeSpatialObject_hpp
 
 #if defined( _MSC_VER )
 #pragma warning ( disable : 4786 )
@@ -53,4 +53,4 @@ DTITubeSpatialObject< TDimension >
 }
 } // end namespace itk
 
-#endif // end __itkDTITubeSpatialObject_txx
+#endif // end __itkDTITubeSpatialObject_hpp

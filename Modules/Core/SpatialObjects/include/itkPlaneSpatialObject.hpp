@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkPlaneSpatialObject_txx
-#define __itkPlaneSpatialObject_txx
+#ifndef __itkPlaneSpatialObject_hpp
+#define __itkPlaneSpatialObject_hpp
 
 #include "itkPlaneSpatialObject.h"
 

@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef _itkSingleValuedNonLinearOptimizer_txx
-#define _itkSingleValuedNonLinearOptimizer_txx
+#ifndef _itkSingleValuedNonLinearOptimizer_hpp
+#define _itkSingleValuedNonLinearOptimizer_hpp
 
 #include "itkSingleValuedNonLinearOptimizer.h"
 

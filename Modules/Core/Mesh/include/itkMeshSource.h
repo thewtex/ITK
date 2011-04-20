@@ -153,7 +153,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkMeshSource.txx"
+#include "itkMeshSource.hpp"
 #endif
 
 #endif

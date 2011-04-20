@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkCellInterface_txx
-#define __itkCellInterface_txx
+#ifndef __itkCellInterface_hpp
+#define __itkCellInterface_hpp
 
 #include "itkCellInterface.h"
 

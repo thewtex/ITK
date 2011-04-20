@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkCollidingFrontsImageFilter_txx
-#define __itkCollidingFrontsImageFilter_txx
+#ifndef __itkCollidingFrontsImageFilter_hpp
+#define __itkCollidingFrontsImageFilter_hpp
 #include "itkCollidingFrontsImageFilter.h"
 
 #include "itkMultiplyImageFilter.h"

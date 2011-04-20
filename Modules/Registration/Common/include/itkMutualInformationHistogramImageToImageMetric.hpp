@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkMutualInformationHistogramImageToImageMetric_txx
-#define __itkMutualInformationHistogramImageToImageMetric_txx
+#ifndef __itkMutualInformationHistogramImageToImageMetric_hpp
+#define __itkMutualInformationHistogramImageToImageMetric_hpp
 
 #include "itkMutualInformationHistogramImageToImageMetric.h"
 #include "itkHistogram.h"
@@ -81,4 +81,4 @@ MutualInformationHistogramImageToImageMetric< TFixedImage, TMovingImage >
 }
 } // End namespace itk
 
-#endif // itkMutualInformationHistogramImageToImageMetric_txx
+#endif // itkMutualInformationHistogramImageToImageMetric_hpp

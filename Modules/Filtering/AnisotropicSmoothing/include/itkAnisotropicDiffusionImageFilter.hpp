@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkAnisotropicDiffusionImageFilter_txx
-#define __itkAnisotropicDiffusionImageFilter_txx
+#ifndef __itkAnisotropicDiffusionImageFilter_hpp
+#define __itkAnisotropicDiffusionImageFilter_hpp
 
 #include "itkAnisotropicDiffusionImageFilter.h"
 
