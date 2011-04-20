@@ -208,6 +208,7 @@ MakeImage(const std::string & AugmentName)
 //--//  Remove(filename);
   return EXIT_SUCCESS;
 }
+
 template <class ImageType>
 typename ImageType::Pointer NewRGBImage()
 {
@@ -224,8 +225,7 @@ typename ImageType::Pointer NewRGBImage()
     }
   region.SetSize(size);
   region.SetIndex(index);
-  AllocateImageFromRegionAndSpacing(ImageType, rval, region, spacing);
-  return rval;
+  return rval = itk::IOTestHelper::AllocateImageFromRegionAndSpacing<ImageType>(region, spacing);
 }
 
 int WriteAnalyzeTestFiles(const std::string & AugmentName);
