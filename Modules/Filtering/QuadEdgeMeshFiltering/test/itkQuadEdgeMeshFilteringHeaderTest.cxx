@@ -43,10 +43,7 @@
 #include "itkQuadricDecimationQuadEdgeMeshFilter.h"
 #include "itkDiscreteMaximumCurvatureQuadEdgeMeshFilter.h"
 
-
-
 int itkQuadEdgeMeshFilteringHeaderTest ( int , char * [] )
 {
-
   return EXIT_SUCCESS;
 }
