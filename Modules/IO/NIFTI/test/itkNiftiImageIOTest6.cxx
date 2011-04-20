@@ -70,7 +70,7 @@ int itkNiftiImageIOTest6(int ac, char *av[])
   VectorImageType::Pointer readback;
   try
     {
-    WriteImage<VectorImageType>(vecImage,testfname);
+    WriteImage<VectorImageType,itk::NiftiImageIO>(vecImage,testfname);
     readback = ReadImage<VectorImageType>(testfname);
     }
   catch(itk::ExceptionObject &err)
