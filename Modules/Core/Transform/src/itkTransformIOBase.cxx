@@ -39,6 +39,7 @@ TransformIOBase::CreateTransform(TransformPointer & ptr,
   // Instantiate the transform
   itkDebugMacro ("About to call ObjectFactory");
   LightObject::Pointer i;
+//  i = TransformFactoryBase::CreateInstance ( ClassName.c_str() );
   i = ObjectFactoryBase::CreateInstance ( ClassName.c_str() );
   itkDebugMacro ("After call ObjectFactory");
   ptr = dynamic_cast< TransformBase * >( i.GetPointer() );
