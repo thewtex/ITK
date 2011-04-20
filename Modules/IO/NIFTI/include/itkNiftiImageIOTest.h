@@ -50,105 +50,12 @@
 #include <fstream>
 #include <stdio.h>
 
-static inline int Remove(const char *fname)
-{
-  return itksys::SystemTools::RemoveFile(fname);
-}
-
-template <typename TImage>
-typename TImage::Pointer ReadImage( const std::string &fileName,
-                                    const bool zeroOrigin = false )
-{
-  typedef itk::ImageFileReader<TImage> ReaderType;
-
-  typename ReaderType::Pointer reader = ReaderType::New();
-  {
-  reader->SetFileName( fileName.c_str() );
-  reader->SetImageIO(itk::NiftiImageIO::New());
-  try
-    {
-    reader->Update();
-    }
-  catch( itk::ExceptionObject & err )
-    {
-    std::cout << "Caught an exception: " << std::endl;
-    std::cout << err << " " << __FILE__ << " " << __LINE__ << std::endl;
-    throw err;
-    }
-  catch(...)
-    {
-    std::cout << "Error while reading in image for patient " << fileName << std::endl;
-    throw;
-    }
-  }
-  typename TImage::Pointer image = reader->GetOutput();
-  if(zeroOrigin)
-    {
-    double origin[TImage::ImageDimension];
-    for(unsigned int i = 0; i < TImage::ImageDimension; i++)
-      {
-      origin[i]=0;
-      }
-    image->SetOrigin(origin);
-    }
-  return image;
-}
-
-template <class ImageType>
-void
-WriteImage(typename ImageType::Pointer &image ,
-           const std::string &filename)
-{
-
-  typedef itk::ImageFileWriter< ImageType > WriterType;
-  typename  WriterType::Pointer writer = WriterType::New();
-
-  writer->SetImageIO(itk::NiftiImageIO::New());
-
-  writer->SetFileName(filename.c_str());
-
-  writer->SetInput(image);
-
-  try
-    {
-    writer->Update();
-    }
-  catch (itk::ExceptionObject &err) {
-  std::cout << "Exception Object caught: " << std::endl;
-  std::cout << err << std::endl;
-  throw;
-  }
-}
+#include "itkIOTestHelper.h"
 
 const unsigned char RPI=16;        /*Bit pattern 0 0 0  10000*/
 const unsigned char LEFT=128;      /*Bit pattern 1 0 0  00000*/
 const unsigned char ANTERIOR=64;   /*Bit pattern 0 1 0  00000*/
 const unsigned char SUPERIOR=32;   /*Bit pattern 0 0 1  00000*/
-
-template <class ImageType>
-void SetIdentityDirection(typename ImageType::Pointer &im)
-{
-  typename ImageType::DirectionType dir;
-  dir.SetIdentity();
-  im->SetDirection(dir);
-}
-
-#define AllocateImageFromRegionAndSpacing(ImageType,rval,region,spacing) \
-{ \
-  rval = ImageType::New(); \
-  SetIdentityDirection<ImageType>(rval);       \
-  rval->SetSpacing(spacing); \
-  rval->SetRegions(region); \
-  rval->Allocate(); \
-}
-#define AllocateVecImageFromRegionAndSpacing(ImageType,rval,region,spacing,vecLength) \
-{ \
-  rval = ImageType::New(); \
-  rval->SetSpacing(spacing); \
-  rval->SetRegions(region); \
-  rval->SetVectorLength(vecLength); \
-  rval->Allocate(); \
-}
 
 template <typename T> int MakeNiftiImage(void)
 {
@@ -224,7 +131,7 @@ template <typename T> int MakeNiftiImage(void)
   }
   try
     {
-    WriteImage<ImageType>(img,std::string(filename));
+    WriteImage<ImageType,itk::NiftiImageIO>(img,std::string(filename));
     }
   catch ( itk::ExceptionObject & ex )
     {
@@ -412,7 +319,7 @@ TestImageOfSymMats(const std::string &fname)
     }
   try
     {
-    WriteImage<DtiImageType>(vi,fname);
+    WriteImage<DtiImageType,itk::NiftiImageIO>(vi,fname);
     }
   catch(itk::ExceptionObject &ex)
     {
@@ -568,7 +475,7 @@ int RGBTest(int ac, char *av[])
   typename RGBImageType::Pointer im2;
   try
     {
-    WriteImage<RGBImageType>(im,std::string(tmpImage));
+    WriteImage<RGBImageType,itk::NiftiImageIO>(im,std::string(tmpImage));
     im2 = ReadImage<RGBImageType>(std::string(tmpImage));
     }
   catch(itk::ExceptionObject &err)
