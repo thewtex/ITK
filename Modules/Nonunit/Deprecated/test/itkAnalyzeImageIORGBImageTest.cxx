@@ -51,7 +51,7 @@ int itkAnalyzeImageIORGBImageTest(int ac, char* av[])
   const std::string filename("RGBImageTest.hdr");
   try
     {
-    WriteImage<RGBImageType>(im,filename);
+    WriteImage<RGBImageType,itk::AnalyzeImageIO>(im,filename);
     }
   catch ( itk::ExceptionObject & ex )
     {

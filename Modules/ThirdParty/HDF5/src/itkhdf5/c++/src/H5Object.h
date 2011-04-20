@@ -62,6 +62,10 @@ class H5_DLLCPP H5Object : public IdComponent {
 	// Flushes all buffers associated with this object to disk
 	void flush( H5F_scope_t scope ) const;
 
+        // test the existence of an attribute
+        bool doesAttrExist( const char *name ) const;
+        bool doesAttrExist( const H5std_string &name ) const;
+
 	// Gets the name of the file, in which this HDF5 object belongs.
 	H5std_string getFileName() const;
 
