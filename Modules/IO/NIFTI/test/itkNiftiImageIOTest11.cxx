@@ -71,7 +71,7 @@ int itkNiftiImageIOTest11(int ac, char *av[])
   im->SetDirection(dir);
   try
     {
-    WriteImage<ImageType>(im,testfilename);
+    WriteImage<ImageType,itk::NiftiImageIO>(im,testfilename);
     std::cerr << "FAILED to catch expected exception" << std::endl;
     return EXIT_FAILURE;
     }

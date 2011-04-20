@@ -154,6 +154,8 @@ Attribute H5Object::openAttribute( const char* name ) const
    }
 }
 
+
+
 //--------------------------------------------------------------------------
 // Function:	H5Object::openAttribute
 ///\brief	This is an overloaded member function, provided for convenience.
@@ -164,6 +166,31 @@ Attribute H5Object::openAttribute( const char* name ) const
 Attribute H5Object::openAttribute( const H5std_string& name ) const
 {
    return( openAttribute( name.c_str()) );
+}
+
+//--------------------------------------------------------------------------
+// Function:	H5Object::doesAttrExist
+///\brief	test for existence of attribut
+///\param	name - IN: Name of the attribute
+///\return	true if attribute exists, false otherwise
+///\exception	none
+// Programmer	Kent Williams 2011
+//--------------------------------------------------------------------------
+bool H5Object::doesAttrExist( const char* name ) const
+{
+  return( H5Aexists(getId(), name) > 0 ? true : false );
+}
+
+//--------------------------------------------------------------------------
+// Function:	H5Object::doesAttrExist
+///\brief	This is an overloaded member function, provided for convenience.
+///		It differs from the above function in that it takes
+///		a reference to an \c H5std_string for \a name.
+// Programmer	Kent Williams 2011
+//--------------------------------------------------------------------------
+bool H5Object::doesAttrExist( const H5std_string &name ) const
+{
+  return( doesAttrExist( name.c_str()) );
 }
 
 //--------------------------------------------------------------------------
