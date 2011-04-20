@@ -10,11 +10,15 @@ if (BUILD_DOCUMENTATION)
   foreach(itk-module ${ITK_MODULES_ALL})
     if(${itk-module}_IS_TEST)
       list( APPEND DOXYGEN_TEST_DIRS "\"${${itk-module}_SOURCE_DIR}\" \\ \n ")
+    else()
+      list( APPEND DOXYGEN_INCLUDE_DIRS "\"${${itk-module}_SOURCE_DIR}/include\" \\ \n")
     endif()
+
   endforeach()
 
   string( REGEX REPLACE ";" "\$" DOXYGEN_TEST_DIRS ${DOXYGEN_TEST_DIRS} )
 
+  string( REGEX REPLACE ";" "\$" DOXYGEN_INCLUDE_DIRS ${DOXYGEN_INCLUDE_DIRS} )
   #
   # Configure the script and the doxyfile, then add target
   #
