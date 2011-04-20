@@ -1,0 +1,1 @@
+itk_module(ITK-IO-HDF5 DEPENDS ITK-IO-Base ITK-HDF5 TEST_DEPENDS ITK-TestKernel ITK-Transform DEFAULT On)

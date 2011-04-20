@@ -23,16 +23,16 @@
 #include "itkNiftiImageIO.h"
 #include "itkNiftiImageIOTest.h"
 
-template <class ScalarType, unsigned VecLength, unsigned Dimension>
+template <class ScalarType, unsigned TVecLength, unsigned TDimension>
 int
 TestImageOfVectors(const std::string &fname)
 {
   const int dimsize = 2;
   /** Deformation field pixel type. */
-  typedef typename itk::Vector<ScalarType,VecLength> FieldPixelType;
+  typedef typename itk::Vector<ScalarType,TVecLength> FieldPixelType;
 
   /** Deformation field type. */
-  typedef typename itk::Image<FieldPixelType,Dimension> VectorImageType;
+  typedef typename itk::Image<FieldPixelType,TDimension> VectorImageType;
 
   //
   // swizzle up a random vector image.
@@ -54,7 +54,7 @@ TestImageOfVectors(const std::string &fname)
   //NOTE: Nifti only reports upto 3D images correctly for direction cosigns.  It is implicitly assumed
   //      that the direction for dimensions 4 or greater come diagonal elements including a 1 in the
   //      direction matrix.
-  switch(Dimension)
+  switch(TDimension)
     {
     case 1:
       myDirection[0][0] = -1.0;
@@ -76,11 +76,11 @@ TestImageOfVectors(const std::string &fname)
       break;
     }
 
-  std::cout << " === Testing VectorLength: " << VecLength << " Image Dimension " << static_cast<int>(Dimension) << std::endl;
+  std::cout << " === Testing VectorLength: " << TVecLength << " Image Dimension " << static_cast<int>(TDimension) << std::endl;
   std::cout << "======================== Initialized Direction" << std::endl;
   std::cout << myDirection << std::endl;
 
-  for(unsigned i = 0; i < Dimension; i++)
+  for(unsigned i = 0; i < TDimension; i++)
     {
     size[i] = dimsize;
     index[i] = 0;
@@ -94,16 +94,16 @@ TestImageOfVectors(const std::string &fname)
   vi->SetOrigin(origin);
   vi->SetDirection(myDirection);
 
-  typedef itk::ImageRegionIterator<VectorImageType> IteratorType;
+  typedef itk::ImageRegionIterator<VectorImageType>      IteratorType;
   typedef itk::ImageRegionConstIterator<VectorImageType> ConstIteratorType;
 
   int dims[7];
   int _index[7];
-  for(unsigned i = 0; i < Dimension; i++)
+  for(unsigned i = 0; i < TDimension; i++)
     {
     dims[i] = size[i];
     }
-  for(unsigned i = Dimension; i < 7; i++)
+  for(unsigned i = TDimension; i < 7; i++)
     {
     dims[i] = 1;
     }
@@ -133,14 +133,14 @@ TestImageOfVectors(const std::string &fname)
                 _index[0] = k;
                 FieldPixelType pixel;
                 float lowrange(100.00),highrange(200.00);
-                for(unsigned int q = 0; q < VecLength; q++)
+                for(unsigned int q = 0; q < TVecLength; q++)
                   {
                   //pixel[q] = randgen.drand32(lowrange,highrange);
                   pixel[q] = incr_value++;
                   lowrange += 100.0;
                   highrange += 100.0;
                   }
-                for(unsigned int q = 0; q < Dimension; q++)
+                for(unsigned int q = 0; q < TDimension; q++)
                   {
                   index[q] = _index[q];
                   }
@@ -154,7 +154,7 @@ TestImageOfVectors(const std::string &fname)
     }
   try
     {
-    WriteImage<VectorImageType>(vi,fname);
+    WriteImage<VectorImageType,itk::NiftiImageIO>(vi,fname);
     }
   catch(itk::ExceptionObject &ex)
     {
@@ -194,9 +194,9 @@ TestImageOfVectors(const std::string &fname)
     std::cout << "Spacing is different: " << readback->GetSpacing() << " != " << vi->GetSpacing()  << std::endl;
     same = false;
     }
-  for(unsigned int r=0;r<Dimension;r++)
+  for(unsigned int r=0;r<TDimension;r++)
     {
-    for(unsigned int c=0;c<Dimension;c++)
+    for(unsigned int c=0;c<TDimension;c++)
       {
       if(vcl_abs(readback->GetDirection()[r][c] - vi->GetDirection()[r][c]) > 1e-7 )
         {
@@ -229,7 +229,7 @@ TestImageOfVectors(const std::string &fname)
                 {
                 _index[0] = k;
                 FieldPixelType p1,p2;
-                for(unsigned int q = 0; q < Dimension; q++)
+                for(unsigned int q = 0; q < TDimension; q++)
                   {
                   index[q] = _index[q];
                   }
