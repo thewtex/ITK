@@ -63,6 +63,8 @@ namespace itk
  * \sa RGBPixel
  * \sa DiffusionTensor3D
  * \ingroup DataRepresentation
+ * \ingroup ITK-Common
+ * \wikiexample{SimpleOperations/VariableLengthVector,Variable length vector}
  */
 template< typename TValueType >
 class VariableLengthVector
@@ -149,8 +151,10 @@ public:
     return *this;
   }
 
-  /** Assignment operator  */
+  /** Assignment operators  */
   const Self & operator=(const Self & v);
+
+  const Self & operator=(TValueType const & v);
 
   /** Return the number of elements in the Array  */
   inline unsigned int Size(void) const

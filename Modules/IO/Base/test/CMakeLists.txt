@@ -22,6 +22,9 @@ itkImageIOBaseTest.cxx
 itkImageIODirection2DTest.cxx
 itkImageIODirection3DTest.cxx
 itkImageIOFileNameExtensionsTests.cxx
+itkImageSeriesReaderDimensionsTest.cxx
+itkImageSeriesWriterTest.cxx
+itkNoiseImageFilterTest.cxx
 )
 
 CreateTestDriver(ITK-IO-Base  "${ITK-IO-Base-Test_LIBRARIES}" "${ITK-IO-BaseTests}")
@@ -143,49 +146,49 @@ add_test(NAME itkImageIOBaseTest
       COMMAND ITK-IO-BaseTestDriver itkImageIOBaseTest)
 add_test(NAME itkImageIODirection2DTest01
       COMMAND ITK-IO-BaseTestDriver itkImageIODirection2DTest
-              ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceBorder20.png 1.0 0.0 0.0 1.0 ${ITK_TEST_OUTPUT_DIR}/BrainProtonDensitySliceBorder20.mhd)
+              ${ITK_EXAMPLE_DATA_ROOT}/BrainProtonDensitySliceBorder20.png 1.0 0.0 0.0 1.0 ${ITK_TEST_OUTPUT_DIR}/BrainProtonDensitySliceBorder20.mhd)
 add_test(NAME itkImageIODirection2DTest02
       COMMAND ITK-IO-BaseTestDriver itkImageIODirection2DTest
-              ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceShifted13x17y.png 1.0 0.0 0.0 1.0 ${ITK_TEST_OUTPUT_DIR}/BrainProtonDensitySliceShifted13x17y.mhd)
+              ${ITK_EXAMPLE_DATA_ROOT}/BrainProtonDensitySliceShifted13x17y.png 1.0 0.0 0.0 1.0 ${ITK_TEST_OUTPUT_DIR}/BrainProtonDensitySliceShifted13x17y.mhd)
 add_test(NAME itkImageIODirection2DTest03
       COMMAND ITK-IO-BaseTestDriver itkImageIODirection2DTest
-              ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceBorder20DirectionPlus30.mhd 0.8660254 -0.5 0.5 0.8660254 ${ITK_TEST_OUTPUT_DIR}/BrainProtonDensitySliceBorder20DirectionPlus30.mhd)
+              ${ITK_EXAMPLE_DATA_ROOT}/BrainProtonDensitySliceBorder20DirectionPlus30.mhd 0.8660254 -0.5 0.5 0.8660254 ${ITK_TEST_OUTPUT_DIR}/BrainProtonDensitySliceBorder20DirectionPlus30.mhd)
 add_test(NAME itkImageIODirection2DTest04
       COMMAND ITK-IO-BaseTestDriver itkImageIODirection2DTest
-              ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceShifted13x17yDirectionPlus30.mhd 0.8660254 -0.5 0.5 0.8660254 ${ITK_TEST_OUTPUT_DIR}/BrainProtonDensitySliceShifted13x17yDirectionPlus30.mhd)
+              ${ITK_EXAMPLE_DATA_ROOT}/BrainProtonDensitySliceShifted13x17yDirectionPlus30.mhd 0.8660254 -0.5 0.5 0.8660254 ${ITK_TEST_OUTPUT_DIR}/BrainProtonDensitySliceShifted13x17yDirectionPlus30.mhd)
 add_test(NAME itkImageIODirection2DTest05
       COMMAND ITK-IO-BaseTestDriver itkImageIODirection2DTest
-              ${ITK_SOURCE_DIR}/Examples/Data/BrainT1SliceBorder20DirectionPlus30.mhd 0.8660254 -0.5 0.5 0.8660254 ${ITK_TEST_OUTPUT_DIR}/BrainT1SliceBorder20DirectionPlus30.mhd)
+              ${ITK_EXAMPLE_DATA_ROOT}/BrainT1SliceBorder20DirectionPlus30.mhd 0.8660254 -0.5 0.5 0.8660254 ${ITK_TEST_OUTPUT_DIR}/BrainT1SliceBorder20DirectionPlus30.mhd)
 add_test(NAME itkImageIODirection2DTest06
       COMMAND ITK-IO-BaseTestDriver itkImageIODirection2DTest
-              ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceBorder20.mhd 1.0 0.0 0.0 1.0 ${ITK_TEST_OUTPUT_DIR}/BrainProtonDensitySliceBorder20.nhdr)
+              ${ITK_EXAMPLE_DATA_ROOT}/BrainProtonDensitySliceBorder20.mhd 1.0 0.0 0.0 1.0 ${ITK_TEST_OUTPUT_DIR}/BrainProtonDensitySliceBorder20.nhdr)
 add_test(NAME itkImageIODirection2DTest07
       COMMAND ITK-IO-BaseTestDriver itkImageIODirection2DTest
-              ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceShifted13x17y.mhd 1.0 0.0 0.0 1.0 ${ITK_TEST_OUTPUT_DIR}/BrainProtonDensitySliceShifted13x17y.nhdr)
+              ${ITK_EXAMPLE_DATA_ROOT}/BrainProtonDensitySliceShifted13x17y.mhd 1.0 0.0 0.0 1.0 ${ITK_TEST_OUTPUT_DIR}/BrainProtonDensitySliceShifted13x17y.nhdr)
 add_test(NAME itkImageIODirection2DTest08
       COMMAND ITK-IO-BaseTestDriver itkImageIODirection2DTest
-              ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceBorder20DirectionPlus30.mhd 0.8660254 -0.5 0.5 0.8660254 ${ITK_TEST_OUTPUT_DIR}/BrainProtonDensitySliceBorder20DirectionPlus30.nhdr)
+              ${ITK_EXAMPLE_DATA_ROOT}/BrainProtonDensitySliceBorder20DirectionPlus30.mhd 0.8660254 -0.5 0.5 0.8660254 ${ITK_TEST_OUTPUT_DIR}/BrainProtonDensitySliceBorder20DirectionPlus30.nhdr)
 add_test(NAME itkImageIODirection2DTest09
       COMMAND ITK-IO-BaseTestDriver itkImageIODirection2DTest
-              ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceShifted13x17yDirectionPlus30.mhd 0.8660254 -0.5 0.5 0.8660254 ${ITK_TEST_OUTPUT_DIR}/BrainProtonDensitySliceShifted13x17yDirectionPlus30.nhdr)
+              ${ITK_EXAMPLE_DATA_ROOT}/BrainProtonDensitySliceShifted13x17yDirectionPlus30.mhd 0.8660254 -0.5 0.5 0.8660254 ${ITK_TEST_OUTPUT_DIR}/BrainProtonDensitySliceShifted13x17yDirectionPlus30.nhdr)
 add_test(NAME itkImageIODirection2DTest10
       COMMAND ITK-IO-BaseTestDriver itkImageIODirection2DTest
-              ${ITK_SOURCE_DIR}/Examples/Data/BrainT1SliceBorder20DirectionPlus30.mhd 0.8660254 -0.5 0.5 0.8660254 ${ITK_TEST_OUTPUT_DIR}/BrainT1SliceBorder20DirectionPlus30.nhdr)
+              ${ITK_EXAMPLE_DATA_ROOT}/BrainT1SliceBorder20DirectionPlus30.mhd 0.8660254 -0.5 0.5 0.8660254 ${ITK_TEST_OUTPUT_DIR}/BrainT1SliceBorder20DirectionPlus30.nhdr)
 add_test(NAME itkImageIODirection2DTest11
       COMMAND ITK-IO-BaseTestDriver itkImageIODirection2DTest
-              ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceBorder20.nhdr 1.0 0.0 0.0 1.0)
+              ${ITK_EXAMPLE_DATA_ROOT}/BrainProtonDensitySliceBorder20.nhdr 1.0 0.0 0.0 1.0)
 add_test(NAME itkImageIODirection2DTest12
       COMMAND ITK-IO-BaseTestDriver itkImageIODirection2DTest
-              ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceShifted13x17y.nhdr 1.0 0.0 0.0 1.0)
+              ${ITK_EXAMPLE_DATA_ROOT}/BrainProtonDensitySliceShifted13x17y.nhdr 1.0 0.0 0.0 1.0)
 add_test(NAME itkImageIODirection2DTest13
       COMMAND ITK-IO-BaseTestDriver itkImageIODirection2DTest
-              ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceBorder20DirectionPlus30.nhdr 0.8660254 -0.5 0.5 0.8660254)
+              ${ITK_EXAMPLE_DATA_ROOT}/BrainProtonDensitySliceBorder20DirectionPlus30.nhdr 0.8660254 -0.5 0.5 0.8660254)
 add_test(NAME itkImageIODirection2DTest14
       COMMAND ITK-IO-BaseTestDriver itkImageIODirection2DTest
-              ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceShifted13x17yDirectionPlus30.nhdr 0.8660254 -0.5 0.5 0.8660254)
+              ${ITK_EXAMPLE_DATA_ROOT}/BrainProtonDensitySliceShifted13x17yDirectionPlus30.nhdr 0.8660254 -0.5 0.5 0.8660254)
 add_test(NAME itkImageIODirection2DTest15
       COMMAND ITK-IO-BaseTestDriver itkImageIODirection2DTest
-              ${ITK_SOURCE_DIR}/Examples/Data/BrainT1SliceBorder20DirectionPlus30.nhdr 0.8660254 -0.5 0.5 0.8660254)
+              ${ITK_EXAMPLE_DATA_ROOT}/BrainT1SliceBorder20DirectionPlus30.nhdr 0.8660254 -0.5 0.5 0.8660254)
 add_test(NAME itkImageIODirection3DTest01
       COMMAND ITK-IO-BaseTestDriver itkImageIODirection3DTest
               ${ITK_DATA_ROOT}/Input/HeadMRVolumeWithDirectionIdentity.mhd 1.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 1.0 ${ITK_TEST_OUTPUT_DIR}/HeadMRVolumeWithDirectionIdentity.mhd)
@@ -215,3 +218,17 @@ add_test(NAME itkImageIODirection3DTest09
               ${ITK_DATA_ROOT}/Input/HeadMRVolumeWithDirection003.mhd 0.0 -1.0 0.0 0.0 0.0 1.0 1.0 0.0 0.0 ${ITK_TEST_OUTPUT_DIR}/HeadMRVolumeWithDirection003.nhdr)
 add_test(NAME itkImageIOFileNameExtensionsTests
       COMMAND ITK-IO-BaseTestDriver itkImageIOFileNameExtensionsTests)
+add_test(NAME itkImageSeriesReaderDimensionsTest1
+      COMMAND ITK-IO-BaseTestDriver itkImageSeriesReaderDimensionsTest
+              ${ITK_DATA_ROOT}/Input/DicomSeries/Image0075.dcm ${ITK_DATA_ROOT}/Input/DicomSeries/Image0076.dcm ${ITK_DATA_ROOT}/Input/DicomSeries/Image0077.dcm)
+add_test(NAME itkImageSeriesReaderDimensionsTest2
+      COMMAND ITK-IO-BaseTestDriver itkImageSeriesReaderDimensionsTest
+              ${ITK_DATA_ROOT}/Input/cthead1.tif ${ITK_DATA_ROOT}/Input/cthead1.tif ${ITK_DATA_ROOT}/Input/cthead1.tif)
+add_test(NAME itkImageSeriesWriterTest
+      COMMAND ITK-IO-BaseTestDriver itkImageSeriesWriterTest
+              ${ITK_DATA_ROOT}/Input/DicomSeries ${ITK_TEST_OUTPUT_DIR} png)
+add_test(NAME itkNoiseImageFilterTest
+      COMMAND ITK-IO-BaseTestDriver
+    --compare ${ITK_DATA_ROOT}/Baseline/BasicFilters/itkNoiseImageFilterTest.png
+              ${ITK_TEST_OUTPUT_DIR}/itkNoiseImageFilterTest.png
+    itkNoiseImageFilterTest ${ITK_DATA_ROOT}/Input/cthead1.png ${ITK_TEST_OUTPUT_DIR}/itkNoiseImageFilterTest.png)

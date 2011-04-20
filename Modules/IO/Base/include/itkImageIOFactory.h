@@ -25,6 +25,7 @@ namespace itk
 {
 /** \class ImageIOFactory
  * \brief Create instances of ImageIO objects using an object factory.
+ * \ingroup ITK-IO-Base
  */
 class ITK_EXPORT ImageIOFactory:public Object
 {
@@ -49,9 +50,6 @@ public:
   /** Create the appropriate ImageIO depending on the particulars of the file.
     */
   static ImageIOBasePointer CreateImageIO(const char *path, FileModeType mode);
-
-  /** Register Built-in factories */
-  static void RegisterBuiltInFactories();
 
 protected:
   ImageIOFactory();

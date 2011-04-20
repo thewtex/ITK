@@ -6,6 +6,8 @@ include(PreventInBuildInstalls)
 include(ITKModuleMacros)
 include(itkCheckSourceTree)
 
+set(main_project_name "ITKModular")
+
 #-----------------------------------------------------------------------------
 # ITK version number.  An even minor number corresponds to releases.
 set(ITK_VERSION_MAJOR "4")
@@ -24,6 +26,9 @@ endif()
 if(NOT ITK_INSTALL_INCLUDE_DIR)
   set(ITK_INSTALL_INCLUDE_DIR include/ITK-${ITK_VERSION_MAJOR}.${ITK_VERSION_MINOR})
 endif()
+if(NOT ITK_INSTALL_DATA_DIR)
+  set(ITK_INSTALL_DATA_DIR share/ITK-${ITK_VERSION_MAJOR}.${ITK_VERSION_MINOR})
+endif()
 if(NOT ITK_INSTALL_PACKAGE_DIR)
   set(ITK_INSTALL_PACKAGE_DIR "lib/cmake/ITK-${ITK_VERSION_MAJOR}.${ITK_VERSION_MINOR}")
 endif()
@@ -39,28 +44,39 @@ endmacro()
 
 macro(add_executable)
   _add_executable(${ARGN})
-  verify_itk_module_is_set()
+  if(itk-module)
+    set(_label ${itk-module})
+    set_property(GLOBAL APPEND PROPERTY ${itk-module}_EXECUTABLE_TARGETS ${ARGV0})
+  else()
+    set(_label ${main_project_name})
+  endif()
   set_property(TARGET ${ARGV0} PROPERTY LABELS ${itk-module})
-  set_property(GLOBAL APPEND PROPERTY ${itk-module}_EXECUTABLE_TARGETS ${ARGV0})
 endmacro()
 
 macro(add_library)
   _add_library(${ARGN})
-  verify_itk_module_is_set()
-  set_property(TARGET ${ARGV0} PROPERTY LABELS ${itk-module})
-  set_property(GLOBAL APPEND PROPERTY ${itk-module}_LIBRARY_TARGETS ${ARGV0})
+  if(itk-module)
+    set(_label ${itk-module})
+    set_property(GLOBAL APPEND PROPERTY ${itk-module}_LIBRARY_TARGETS ${ARGV0})
+  else()
+    set(_label ${main_project_name})
+  endif()
+  set_property(TARGET ${ARGV0} PROPERTY LABELS ${_label})
 endmacro()
 
 macro(add_test)
   _add_test(${ARGN})
-  verify_itk_module_is_set()
+  if(itk-module)
+    set(_label ${itk-module})
+  else()
+    set(_label ${main_project_name})
+  endif()
   if("NAME" STREQUAL "${ARGV0}")
     set(_imm_test ${ARGV1})
   else()
     set(_imm_test ${ARGV0})
   endif()
-  set_property(TEST ${_imm_test} PROPERTY LABELS ${itk-module})
-  set_property(GLOBAL APPEND PROPERTY ${itk-module}_TESTS ${_imm_test})
+  set_property(TEST ${_imm_test} PROPERTY LABELS ${_label})
 endmacro()
 
 #-----------------------------------------------------------------------------
@@ -89,7 +105,6 @@ if(NOT CMAKE_ARCHIVE_OUTPUT_DIRECTORY)
 endif()
 set(ITK_MODULES_DIR "${ITK_BINARY_DIR}/${ITK_INSTALL_PACKAGE_DIR}/Modules")
 
-set(ITK_USE_MODULAR_BUILD ON)
 
 #-----------------------------------------------------------------------------
 # Provide compatibility options.
@@ -108,6 +123,16 @@ if (ITK_USE_REVIEW)
   set(Module_ITK-Review ON)
 endif(ITK_USE_REVIEW)
 
+#-----------------------------------------------------------------------------
+# ITK uses KWStyle for checking the coding style
+INCLUDE(${ITK_SOURCE_DIR}/Utilities/KWStyle/KWStyle.cmake)
+
+#-----------------------------------------------------------------------------
+# ITK build the Examples that are illustrated in the Software Guide
+option(BUILD_EXAMPLES "Build the Examples directory." OFF)
+
+#-----------------------------------------------------------------------------
+# Enable GPU support. Requires OpenCL to be installed
 option(ITK_USE_GPU "GPU acceleration via OpenCL" OFF)
 mark_as_advanced(ITK_USE_GPU)
 
@@ -166,16 +191,14 @@ else()
   endforeach()
 endif()
 
-set(ITKTesting_BINARY_DIR "${ITK_BINARY_DIR}/Testing")
-
-option(ITK_USE_FLOATINGPOINTEXCEPTIONS
-      "Enable Floating Point Exceptions for Testing" OFF)
-mark_as_advanced(ITK_USE_FLOATINGPOINTEXCEPTIONS)
+# Location of ITK Example Data.
+set(ITK_EXAMPLE_DATA_ROOT "${ITK_SOURCE_DIR}/Examples/Data")
 
 #This flag is used in particular, to enable some tests that require large memory to run.
 # This probably can be discovered at configuration time by CMake. (Check with CMake developers).
 set(ITK_COMPUTER_MEMORY_SIZE 1 CACHE STRING "Provide here the size of your RAM Memory in GigaBytes")
 mark_as_advanced(ITK_COMPUTER_MEMORY_SIZE)
+
 
 
 
@@ -197,15 +220,16 @@ foreach(f ${meta})
     set(${itk-module-test}_BINARY_DIR ${${itk-module}_BINARY_DIR}/test)
     set(${itk-module-test}_IS_TEST 1)
     set(${itk-module}_TESTED_BY ${itk-module-test})
+    set(${itk-module-test}_TESTS_FOR ${itk-module})
   endif()
 endforeach()
+# Clear variables set later in each module.
+unset(itk-module)
+unset(itk-module-test)
 
 #----------------------------------------------------------------------
-# Provide module selections by groups
-include(${ITK_SOURCE_DIR}/CMake/ITKGroups.cmake)
 
-
-# Provide an option for every module.
+# Provide an option for all modules.
 if("$ENV{DASHBOARD_TEST_FROM_CTEST}" STREQUAL "")
   # developer build
   set(ITK_BUILD_ALL_MODULES_DEFAULT OFF)
@@ -215,8 +239,11 @@ else()
 endif()
 option(ITK_BUILD_ALL_MODULES "Request to build all modules"
   ${ITK_BUILD_ALL_MODULES_DEFAULT})
-mark_as_advanced(ITK_BUILD_ALL_MODULES)
 
+# Provide module selections by groups
+include(${ITK_SOURCE_DIR}/CMake/ITKGroups.cmake)
+
+# Provide an option for each module.
 foreach(itk-module ${ITK_MODULES_ALL})
   if(NOT ${itk-module}_IS_TEST)
     option(Module_${itk-module} "Request building ${itk-module}" "${ITK_MODULE_${itk-module}_DEFAULT}")
@@ -226,6 +253,9 @@ endforeach()
 
 # Follow dependencies.
 macro(itk_module_enable itk-module _needed_by)
+  if(NOT ITK_MODULE_${itk-module}_DECLARED)
+    message(FATAL_ERROR "No such module \"${itk-module}\" needed by \"${_needed_by}\"")
+  endif()
   if(NOT Module_${itk-module})
     if(NOT ${itk-module}_TESTED_BY OR
       NOT "x${_needed_by}" STREQUAL "x${${itk-module}_TESTED_BY}")
@@ -290,22 +320,71 @@ foreach(itk-module ${ITK_MODULES_ENABLED})
   endif()
 endforeach()
 
+# Hide options for modules that will build anyway.
+foreach(itk-module ${ITK_MODULES_ALL})
+  if(NOT ${itk-module}_IS_TEST)
+    if(ITK_BUILD_ALL_MODULES OR ITK_MODULE_${itk-module}_NEEDED_BY)
+      set_property(CACHE Module_${itk-module} PROPERTY TYPE INTERNAL)
+    else()
+      set_property(CACHE Module_${itk-module} PROPERTY TYPE BOOL)
+    endif()
+  endif()
+endforeach()
+
+#-----------------------------------------------------------------------------
+# Construct an in-build-order list of "CDash subproject" modules from the
+# list of enabled modules:
+
+set(ITK_CDASH_SUBPROJECT_MODULES)
+
+if(ITK_GENERATE_PROJECT_XML OR ITK_GENERATE_SUBPROJECTS_CMAKE)
+  # Since a "CDash subproject" for ITK logically contains both a non-test
+  # module and its corresponding test module, the subproject order must take
+  # both modules into account. The subprojects in this list are named after
+  # the non-test modules in the enabled modules list. But the ordering of
+  # these subprojects use the dependencies of the modules *and* their test
+  # modules
+  foreach(module ${ITK_MODULES_ENABLED})
+    if(${module}_TESTED_BY)
+      # module that HAS a test module: skip for now... will be added as a
+      # subproject later, in the slot when its corresponding "-test" module
+      # is encountered
+    elseif(${module}_TESTS_FOR)
+      # this is a test module... *now* list the module which it tests as
+      # the subproject name:
+      list(APPEND ITK_CDASH_SUBPROJECT_MODULES ${${module}_TESTS_FOR})
+    else()
+      # a module that is not a test module, and has no tested by...
+      # is just a module-only subproject with no test module:
+      list(APPEND ITK_CDASH_SUBPROJECT_MODULES ${module})
+    endif()
+  endforeach()
+endif()
+
 #-----------------------------------------------------------------------------
 # Write a Project.xml file to send the description of the submodules and
 # their dependencies up to CDash:
-
-set(main_project_name "ITKModular")
 
 if(ITK_GENERATE_PROJECT_XML)
   set(filename "${ITK_BINARY_DIR}/${main_project_name}.Project.xml")
 
   set(xml "<?xml version='1.0' encoding='UTF-8'?>\n")
   set(xml "${xml}<Project name='${main_project_name}'>\n")
-  foreach(module ${ITK_MODULES_ENABLED})
+  foreach(module ${ITK_CDASH_SUBPROJECT_MODULES})
+    if(${module}_IS_TEST)
+      message(FATAL_ERROR "unexpected: subproject names should not be test modules module='${module}' tests_for='${${module}_TESTS_FOR}'")
+    endif()
     set(xml "${xml}  <SubProject name='${module}'>\n")
     set(deps "")
-    foreach(dep ${ITK_MODULE_${module}_DEPENDS})
-      set(xml "${xml}    <Dependency name='${dep}'/>\n")
+    if(${module}_TESTED_BY)
+      set(dep_list ${ITK_MODULE_${${module}_TESTED_BY}_DEPENDS})
+    else()
+      set(dep_list ${ITK_MODULE_${module}_DEPENDS})
+    endif()
+    foreach(dep ${dep_list})
+      if(NOT ${dep}_IS_TEST)
+        set(xml "${xml}    <Dependency name='${dep}'/>\n")
+      endif()
     endforeach()
     set(xml "${xml}  </SubProject>\n")
   endforeach()
@@ -319,7 +398,6 @@ if(ITK_GENERATE_PROJECT_XML)
 endif()
 
 #-----------------------------------------------------------------------------
-
 # Write the list of enabled modules out for ctest scripts to use as an
 # in-order subproject list:
 
@@ -328,10 +406,11 @@ if(ITK_GENERATE_SUBPROJECTS_CMAKE)
 
   set(s "# Generated by CMake, do not edit!\n")
   set(s "${s}set(itk_subprojects\n")
-  foreach(itk-module ${ITK_MODULES_ENABLED})
-    if(NOT ${itk-module}_IS_TEST)
-      set(s "${s}  \"${itk-module}\"\n")
+  foreach(itk-module ${ITK_CDASH_SUBPROJECT_MODULES})
+    if(${itk-module}_IS_TEST)
+      message(FATAL_ERROR "unexpected: subproject names should not be test modules itk-module='${itk-module}' tests_for='${${itk-module}_TESTS_FOR}'")
     endif()
+    set(s "${s}  \"${itk-module}\"\n")
   endforeach()
   set(s "${s})\n")
 
@@ -363,7 +442,6 @@ macro(init_module_vars)
   # add_library and add_test accumulate names into these properties:
   set_property(GLOBAL PROPERTY ${itk-module}_EXECUTABLE_TARGETS "")
   set_property(GLOBAL PROPERTY ${itk-module}_LIBRARY_TARGETS "")
-  set_property(GLOBAL PROPERTY ${itk-module}_TESTS "")
 endmacro()
 
 macro(add_module_target)
@@ -406,6 +484,7 @@ set(ITK_MODULES_DIR \"${ITK_MODULES_DIR}\")")
 set(ITK_USE_FILE "${ITK_SOURCE_DIR}/CMake/UseITK.cmake")
 set(ITK_CONFIG_TARGETS_CONDITION " AND NOT ITK_BINARY_DIR")
 set(ITK_CONFIG_TARGETS_FILE "${ITK_BINARY_DIR}/ITKTargets.cmake")
+set(ITK_CONFIG_MODULE_API_FILE "${ITK_SOURCE_DIR}/CMake/ITKModuleAPI.cmake")
 configure_file(CMake/ITKConfig.cmake.in ITKConfig.cmake @ONLY)
 
 # Generate ITKConfig.cmake for the install tree.
@@ -424,6 +503,7 @@ set(ITK_MODULES_DIR \"\${ITK_INSTALL_PREFIX}/${ITK_INSTALL_PACKAGE_DIR}/Modules\
 set(ITK_USE_FILE "\${ITK_INSTALL_PREFIX}/${ITK_INSTALL_PACKAGE_DIR}/UseITK.cmake")
 set(ITK_CONFIG_TARGETS_CONDITION "")
 set(ITK_CONFIG_TARGETS_FILE "\${ITK_INSTALL_PREFIX}/${ITK_INSTALL_PACKAGE_DIR}/ITKTargets.cmake")
+set(ITK_CONFIG_MODULE_API_FILE "\${ITK_INSTALL_PREFIX}/${ITK_INSTALL_PACKAGE_DIR}/ITKModuleAPI.cmake")
 configure_file(CMake/ITKConfig.cmake.in CMakeFiles/ITKConfig.cmake @ONLY)
 
 #-----------------------------------------------------------------------------
@@ -431,9 +511,15 @@ configure_file(CMake/ITKConfigVersion.cmake.in ITKConfigVersion.cmake @ONLY)
 
 install(FILES ${ITK_BINARY_DIR}/CMakeFiles/ITKConfig.cmake
               ${ITK_BINARY_DIR}/ITKConfigVersion.cmake
+              CMake/ITKModuleAPI.cmake
               CMake/UseITK.cmake
+              CMake/itkImageIOFactoryRegisterManager.h.in
   DESTINATION ${ITK_INSTALL_PACKAGE_DIR})
 install(EXPORT ITKTargets DESTINATION ${ITK_INSTALL_PACKAGE_DIR})
+
+if(BUILD_TESTING)
+  add_subdirectory(Utilities/InstallTest)
+endif()
 
 #-----------------------------------------------------------------------------
 # The subdirectories added below this line should use only the public
@@ -442,3 +528,11 @@ set(ITK_DIR "${ITK_BINARY_DIR}")
 
 include(Wrapping/itkWrapSetup.cmake)
 add_subdirectory(Wrapping)
+
+if(BUILD_EXAMPLES)
+  add_subdirectory(Examples)
+endif()
+
+#----------------------------------------------------------------------
+# Provide an option for generating documentation.
+add_subdirectory(Utilities/Doxygen)

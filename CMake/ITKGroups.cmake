@@ -34,7 +34,7 @@ ITK-IO-NRRD
 ITK-IO-PNG
 ITK-IO-RAW
 ITK-IO-Siemens
-ITK-IO-Spatialobjects
+ITK-IO-SpatialObjects
 ITK-IO-Stimulate
 ITK-IO-TIFF
 ITK-IO-VTK
@@ -51,6 +51,7 @@ ITK-DeformationField
 ITK-DiffusionTensorImage
 ITK-DistanceMap
 ITK-FFT
+ITK-FastMarching
 ITK-ImageCompare
 ITK-ImageCompose
 ITK-ImageFeature
@@ -61,7 +62,6 @@ ITK-ImageIntensity
 ITK-ImageLabel
 ITK-ImageStatistics
 ITK-LabelVoting
-ITK-LevelSets
 ITK-MathematicalMorphology
 ITK-Path
 ITK-QuadEdgeMeshFiltering
@@ -135,5 +135,11 @@ foreach( group ${group_list})
       foreach (itk-module ${${group}_module_list} )
          list(APPEND ITK_MODULE_${itk-module}_REQUEST_BY ITKGroup_${group})
       endforeach()
+    endif()
+    # Hide group options if building all modules anyway.
+    if(ITK_BUILD_ALL_MODULES)
+      set_property(CACHE ITKGroup_${group} PROPERTY TYPE INTERNAL)
+    else()
+      set_property(CACHE ITKGroup_${group} PROPERTY TYPE BOOL)
     endif()
 endforeach()

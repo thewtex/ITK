@@ -29,7 +29,7 @@
    compiled for. This is not necessarily the same as the architecture of
    the machine doing the building. In order to support Universal Binaries on
    Mac OS X, we prefer those defines to decide the endianness.
-   On other platform, we use the result of the TRY_RUN. */
+   Elsewhere use the platform check result.  */
 #if !defined(__APPLE__)
   #cmakedefine CMAKE_WORDS_BIGENDIAN
   #ifdef CMAKE_WORDS_BIGENDIAN
@@ -65,7 +65,6 @@
 #cmakedefine ITK_SUPPORTS_TEMPLATED_FRIEND_FUNCTION_WITH_TEMPLATE_ARGUMENTS
 #cmakedefine ITK_SUPPORTS_TEMPLATED_FRIEND_FUNCTION_WITH_EMPTY_BRACKETS
 #cmakedefine ITK_SUPPORTS_TEMPLATED_FRIEND_FUNCTION_WITH_NULL_STRING
-#cmakedefine ITK_USE_MODULAR_BUILD
 #cmakedefine ITK_USE_64BITS_IDS
 #cmakedefine ITK_COMPILER_SUPPORTS_SSE2_32
 #cmakedefine ITK_COMPILER_SUPPORTS_SSE2_64

@@ -3,7 +3,17 @@
 #
 include (${CMAKE_ROOT}/Modules/Documentation.cmake)
 
-if (BUILD_DOXYGEN)
+mark_as_advanced(CLEAR BUILD_DOCUMENTATION)
+
+if (BUILD_DOCUMENTATION)
+
+  foreach(itk-module ${ITK_MODULES_ALL})
+    if(${itk-module}_IS_TEST)
+      list( APPEND DOXYGEN_TEST_DIRS "\"${${itk-module}_SOURCE_DIR}\" \\ \n ")
+    endif()
+  endforeach()
+
+  string( REGEX REPLACE ";" "\$" DOXYGEN_TEST_DIRS ${DOXYGEN_TEST_DIRS} )
 
   #
   # Configure the script and the doxyfile, then add target
@@ -21,8 +31,22 @@ if (BUILD_DOXYGEN)
     WORKING_DIRECTORY ${ITK_BINARY_DIR}/Utilities/Doxygen
     )
 
+  # Somehow the logo image is not copied into the html folder.
+  # Here we ensure that the logo image ends up in the right directory
+  # where html pages could find it.
+  add_custom_command(TARGET Documentation
+    COMMAND ${CMAKE_COMMAND} -E copy
+      ${ITK_SOURCE_DIR}/Documentation/Art/itkLogoSmall.jpg # logo
+      ${ITK_BINARY_DIR}/Utilities/Doxygen/html # output doxygen directory
+    )
+
   message( STATUS
            "To generate Doxygen's documentation, you need to build the Documentation target"
          )
 
-endif (BUILD_DOXYGEN)
+endif (BUILD_DOCUMENTATION)
+
+find_package(PythonInterp)
+if(PYTHON_EXECUTABLE)
+  add_test(ModuleInDoxygenGroup ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/mcdoc.py massive-check ${ITK_SOURCE_DIR})
+endif()
