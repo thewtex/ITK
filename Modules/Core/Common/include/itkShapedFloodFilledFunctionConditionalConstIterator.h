@@ -55,6 +55,9 @@ public:
   /** Index typedef support. */
   typedef typename TImage::IndexType IndexType;
 
+  /** Index Container Type */
+  typedef typename std::vector< IndexType > IndexContainerType;
+
   /** Offset typedef support. */
   typedef typename TImage::OffsetType OffsetType;
 
@@ -214,6 +217,11 @@ public:
   bool GetFullyConnected() const;
 
   itkBooleanMacro(FullyConnected);
+
+  virtual const IndexContainerType &GetStartIndices() const
+  {
+    return m_StartIndices;
+  }
 protected: //made protected so other iterators can access
   /** Smart pointer to the function we're evaluating */
   SmartPointer< FunctionType > m_Function;
@@ -228,7 +236,7 @@ protected: //made protected so other iterators can access
   typename TTempImage::Pointer m_TempPtr;
 
   /** A list of locations to start the recursive fill */
-  std::vector< IndexType > m_StartIndices;
+  IndexContainerType m_StartIndices;
 
   /** The origin of the source image */
   typename ImageType::PointType m_ImageOrigin;

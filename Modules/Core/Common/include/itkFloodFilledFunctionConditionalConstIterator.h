@@ -52,6 +52,9 @@ public:
   /** Index typedef support. */
   typedef typename TImage::IndexType IndexType;
 
+  /** Index ContainerType */
+  typedef typename std::vector<IndexType> IndexContainerType;
+
   /** Size typedef support. */
   typedef typename TImage::SizeType SizeType;
 
@@ -145,6 +148,12 @@ public:
     m_StartIndices.push_back (seed);
   }
 
+  /** get the seed container */
+  virtual const IndexContainerType &GetStartIndices() const
+  {
+    return m_StartIndices;
+  }
+
   /** Clear all the seeds */
   void ClearSeeds()
   {
@@ -209,7 +218,7 @@ protected: //made protected so other iterators can access
   typename TTempImage::Pointer m_TemporaryPointer;
 
   /** A list of locations to start the recursive fill */
-  std::vector< IndexType > m_StartIndices;
+  IndexContainerType m_StartIndices;
 
   /** The origin of the source image */
   typename ImageType::PointType m_ImageOrigin;

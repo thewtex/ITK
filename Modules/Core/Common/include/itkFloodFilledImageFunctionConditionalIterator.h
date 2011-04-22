@@ -48,6 +48,9 @@ public:
   /** Index typedef support. */
   typedef typename Superclass::IndexType IndexType;
 
+  /** Index ContainerType. */
+  typedef typename Superclass::IndexContainerType IndexContainerType;
+
   /** Size typedef support. */
   typedef typename Superclass::SizeType SizeType;
 

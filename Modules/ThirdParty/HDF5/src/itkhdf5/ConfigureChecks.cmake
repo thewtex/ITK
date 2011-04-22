@@ -483,7 +483,7 @@ ENDMACRO (HDF5_FUNCTION_TEST)
 #-----------------------------------------------------------------------------
 # Check a bunch of other functions
 #-----------------------------------------------------------------------------
-IF (WINDOWS)
+IF (WINDOWS AND NOT MINGW)
   SET (H5_HAVE_TIMEZONE 1)
   SET (H5_HAVE_FUNCTION 1)
 ELSE (WINDOWS)
