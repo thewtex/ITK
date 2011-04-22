@@ -3,6 +3,7 @@ get_filename_component(_ITKModuleMacros_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
 set(_ITKModuleMacros_DEFAULT_LABEL "ITKModular")
 
 include(${_ITKModuleMacros_DIR}/ITKModuleAPI.cmake)
+include(${_ITKModuleMacros_DIR}/ITKModuleDoxygen.cmake)
 
 macro(itk_module _name)
   set(itk-module ${_name})
@@ -12,8 +13,9 @@ macro(itk_module _name)
   set(ITK_MODULE_${itk-module-test}_DECLARED 1)
   set(ITK_MODULE_${itk-module}_DEPENDS "")
   set(ITK_MODULE_${itk-module-test}_DEPENDS "${itk-module}")
+  set(ITK_MODULE_${itk-module}_DESCRIPTION "")
   foreach(arg ${ARGN})
-    if("${arg}" MATCHES "^(DEPENDS|TEST_DEPENDS|DEFAULT)$")
+    if("${arg}" MATCHES "^(DEPENDS|TEST_DEPENDS|DESCRIPTION|DEFAULT)$")
       set(_doing "${arg}")
     elseif("${arg}" MATCHES "^[A-Z][A-Z][A-Z]$")
       set(_doing "")
@@ -22,6 +24,8 @@ macro(itk_module _name)
       list(APPEND ITK_MODULE_${itk-module}_DEPENDS "${arg}")
     elseif("${_doing}" MATCHES "^TEST_DEPENDS$")
       list(APPEND ITK_MODULE_${itk-module-test}_DEPENDS "${arg}")
+    elseif("${_doing}" MATCHES "^DESCRIPTION$")
+      set(ITK_MODULE_${itk-module}_DESCRIPTION ${arg})
     elseif("${_doing}" MATCHES "^DEFAULT")
       message(FATAL_ERROR "Invalid argument [DEFAULT]")
     else()
@@ -31,6 +35,8 @@ macro(itk_module _name)
   endforeach()
   list(SORT ITK_MODULE_${itk-module}_DEPENDS) # Deterministic order.
   list(SORT ITK_MODULE_${itk-module-test}_DEPENDS) # Deterministic order.
+
+
 endmacro()
 
 macro(itk_module_impl)
@@ -90,6 +96,31 @@ macro(itk_module_impl)
     ${${itk-module}_BINARY_DIR}/CMakeFiles/${itk-module}.cmake
     DESTINATION ${ITK_INSTALL_PACKAGE_DIR}/Modules
     )
+
+# Doxygen
+  set( ${itk-module}_DOX_FILE
+    ${ITK_BINARY_DIR}/Utilities/Doxygen/Modules/${itk-module}.dox
+    )
+
+  if( "${ITK_MODULE_${itk-module}_DESCRIPTION}" STREQUAL "" )
+    set( itk-module-description "description" )
+  else()
+    set( itk-module-description ${ITK_MODULE_${itk-module}_DESCRIPTION} )
+  endif()
+
+  itk_module_doxygen( ${itk-module}    # module name
+    ${itk-module-description}          # module description
+    ${${itk-module}_DOX_FILE}
+  )
+
+  foreach( d ${ITK_MODULE_${itk-module}_DEPENDS} )
+    file( APPEND ${${itk-module}_DOX_FILE} "\\sa ${d} \n" )
+  endforeach()
+
+  file( APPEND ${${itk-module}_DOX_FILE} "*/\n" )
+# ------
+
+
 endmacro()
 
 macro(itk_module_test)
