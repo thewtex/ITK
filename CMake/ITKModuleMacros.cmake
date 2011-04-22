@@ -1,6 +1,7 @@
 get_filename_component(_ITKModuleMacros_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
 
 include(${_ITKModuleMacros_DIR}/ITKModuleAPI.cmake)
+include(${_ITKModuleMacros_DIR}/ITKModuleDoxygen.cmake)
 
 macro(itk_module _name)
   set(itk-module ${_name})
@@ -29,6 +30,12 @@ macro(itk_module _name)
   endforeach()
   list(SORT ITK_MODULE_${itk-module}_DEPENDS) # Deterministic order.
   list(SORT ITK_MODULE_${itk-module-test}_DEPENDS) # Deterministic order.
+
+  itk_module_doxygen( ${itk-module}       # module name
+    ${ITK_MODULE_${itk-module}_DEPENDS}   # dependency
+    "module description"                  # module description
+    ${itk-module}.dox                     # in which folder should it be generated ?
+  )
 endmacro()
 
 macro(itk_module_impl)
