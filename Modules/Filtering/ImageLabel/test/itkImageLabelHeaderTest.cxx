@@ -22,8 +22,8 @@
 #include <iostream>
 
 #include "itkChangeLabelImageFilter.txx"
-
-
+#include "itkLabelContourImageFilter.h"
+#include "itkLabelContourImageFilter.txx"
 
 int itkImageLabelHeaderTest ( int , char * [] )
 {

@@ -87,7 +87,6 @@ itkJPEG2000ImageIOTest05.cxx
 itkJPEG2000ImageIOTest06.cxx
 itkKappaSigmaThresholdImageCalculatorTest.cxx
 itkKappaSigmaThresholdImageFilterTest.cxx
-itkLabelContourImageFilterTest.cxx
 itkLabelGeometryImageFilterTest.cxx
 itkLabelImageToLabelMapFilterTest.cxx
 itkLabelImageToShapeLabelMapFilterTest1.cxx

@@ -24,8 +24,8 @@
 // index at the start of each run, but there isn't a choice
 #include "itkImageLinearIteratorWithIndex.h"
 #include "itkImageRegionIterator.h"
-#include "itkMaskImageFilter.h"
 #include "itkConnectedComponentAlgorithm.h"
+#include "itkProgressReporter.h"
 
 namespace itk
 {

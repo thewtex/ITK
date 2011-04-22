@@ -113,7 +113,6 @@
 #include "itkJPEG2000ImageIOFactory.h"
 #include "itkKappaSigmaThresholdImageCalculator.txx"
 #include "itkKappaSigmaThresholdImageFilter.txx"
-#include "itkLabelContourImageFilter.txx"
 #include "itkLabelGeometryImageFilter.txx"
 #include "itkLabelImageToLabelMapFilter.txx"
 #include "itkLabelImageToShapeLabelMapFilter.txx"
@@ -226,8 +225,6 @@
 #include "itkVoxBoCUBImageIOFactory.h"
 #include "itkWarpHarmonicEnergyCalculator.txx"
 #include "itkWinterColormapFunction.txx"
-
-
 
 int itkReviewHeaderTest ( int , char * [] )
 {
