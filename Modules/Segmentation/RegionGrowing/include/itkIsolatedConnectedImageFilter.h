@@ -126,6 +126,18 @@ public:
   /** Add seed point 2. */
   void AddSeed2(const IndexType & seed);
 
+  /** Method to access seed container */
+  virtual const SeedsContainerType &GetSeed1() const
+  {
+    itkDebugMacro("returning Seeds1");
+    return this->m_Seeds1;
+  }
+  virtual const SeedsContainerType &GetSeed2() const
+  {
+    itkDebugMacro("returning Seeds2");
+    return this->m_Seeds2;
+  }
+
   /** Set/Get the limit on the lower threshold value. The default is
    * the NonpositiveMin() for the InputPixelType. */
   itkSetMacro(Lower, InputImagePixelType);

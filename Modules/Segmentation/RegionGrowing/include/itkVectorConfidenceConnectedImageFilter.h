@@ -136,6 +136,13 @@ public:
   /** Get the Covariance matrix computed during the segmentation */
   const CovarianceMatrixType & GetCovariance() const;
 
+  /** Method to access seed container */
+  virtual const SeedsContainerType &GetSeeds() const
+  {
+    itkDebugMacro("returning Seeds");
+    return this->m_Seeds;
+  }
+
 #ifdef ITK_USE_CONCEPT_CHECKING
   /** Begin concept checking */
   itkConceptMacro( OutputEqualityComparableCheck,

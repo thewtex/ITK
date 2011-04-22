@@ -62,7 +62,7 @@ void
 ConnectedThresholdImageFilter< TInputImage, TOutputImage >
 ::AddSeed(const IndexType & seed)
 {
-  this->m_SeedList.push_back (seed);
+  this->m_Seeds.push_back (seed);
   this->Modified();
 }
 
@@ -71,9 +71,9 @@ void
 ConnectedThresholdImageFilter< TInputImage, TOutputImage >
 ::ClearSeeds()
 {
-  if ( m_SeedList.size() > 0 )
+  if ( m_Seeds.size() > 0 )
     {
-    this->m_SeedList.clear();
+    this->m_Seeds.clear();
     this->Modified();
     }
 }
@@ -287,7 +287,7 @@ ConnectedThresholdImageFilter< TInputImage, TOutputImage >
   if ( this->m_Connectivity == FaceConnectivity )
     {
     typedef FloodFilledImageFunctionConditionalIterator< OutputImageType, FunctionType > IteratorType;
-    IteratorType it (outputImage, function, m_SeedList);
+    IteratorType it (outputImage, function, m_Seeds);
     it.GoToBegin();
 
     while ( !it.IsAtEnd() )
@@ -305,7 +305,7 @@ ConnectedThresholdImageFilter< TInputImage, TOutputImage >
     // we don't need full connectivity.
 
     typedef ShapedFloodFilledImageFunctionConditionalIterator< OutputImageType, FunctionType > IteratorType;
-    IteratorType it (outputImage, function, m_SeedList);
+    IteratorType it (outputImage, function, m_Seeds);
     it.FullyConnectedOn();
     it.GoToBegin();
 

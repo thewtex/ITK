@@ -57,6 +57,7 @@ public:
   typedef typename InputImageType::RegionType   InputImageRegionType;
   typedef typename InputImageType::PixelType    InputImagePixelType;
   typedef typename InputImageType::IndexType    IndexType;
+  typedef typename std::vector<IndexType>       IndexContainerType;
   typedef typename InputImageType::SizeType     SizeType;
 
   typedef TOutputImage                         OutputImageType;
@@ -73,6 +74,13 @@ public:
 
   /** Clear the seed list. */
   void ClearSeeds();
+
+  /** Method to access seed container */
+  virtual const IndexContainerType &GetSeeds() const
+  {
+    itkDebugMacro("returning Seeds");
+    return this->m_Seeds;
+  }
 
   /** Set/Get value to replace thresholded pixels. Pixels that lie *
    *  within Lower and Upper (inclusive) will be replaced with this
@@ -138,7 +146,7 @@ public:
 protected:
   ConnectedThresholdImageFilter();
   ~ConnectedThresholdImageFilter(){}
-  std::vector< IndexType > m_SeedList;
+  IndexContainerType m_Seeds;
 
   InputImagePixelType m_Lower;
   InputImagePixelType m_Upper;
