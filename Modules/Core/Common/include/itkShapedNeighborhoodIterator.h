@@ -254,6 +254,8 @@ public:
     m_BeginIterator.GoToBegin();
   }
 
+  using Superclass::SetNeighborhood;
+
 protected:
 
   /** Copy constructor */

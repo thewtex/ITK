@@ -191,6 +191,7 @@ public:
 
     typename IndexListType::value_type GetNeighborhoodIndex() const
     { return *m_ListIterator; }
+
 protected:
 
     Self *m_NeighborhoodIterator;
@@ -333,6 +334,7 @@ protected:
   Self & operator-=(const OffsetType &);
 
 protected:
+  using Superclass::SetNeighborhood;
   using Superclass::SetPixel;
   using Superclass::SetCenterPixel;
   /** Copy constructor */
