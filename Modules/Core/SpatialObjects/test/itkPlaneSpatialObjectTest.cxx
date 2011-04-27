@@ -44,19 +44,19 @@ int itkPlaneSpatialObjectTest(int, char* [])
   Plane->SetId(1);
   Plane->GetId();
 
-  PlaneType::PointType lowerPoint;
-  lowerPoint[0]=-10;
-  lowerPoint[1]=-10;
+  PlaneType::PointType point;
+  point[0]=0;
+  point[1]=0;
 
-  PlaneType::PointType upperPoint;
-  upperPoint[0]=10;
-  upperPoint[1]=10;
+  PlaneType::VectorType normal;
+  normal[0]=1;
+  normal[1]=0;
 
-  Plane->SetLowerPoint(lowerPoint);
-  Plane->SetUpperPoint(upperPoint);
+  Plane->SetPoint(point);
+  Plane->SetNormal(normal);
 
-  Plane->GetLowerPoint();
-  Plane->GetUpperPoint();
+  Plane->GetPoint();
+  Plane->GetNormal();
 
   Plane->ComputeBoundingBox();
 
