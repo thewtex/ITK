@@ -24,7 +24,7 @@
 namespace itk
 {
 /** \class PlaneSpatialObject
- * A plane spatial object is defined by two points
+ * A plane spatial object is defined by a point and a normal vector.
  * \brief
  * \ingroup ITK-SpatialObjects
  */
@@ -43,6 +43,7 @@ public:
   typedef SpatialObject< TDimension >                  Superclass;
   typedef SmartPointer< Superclass >                   SuperclassPointer;
   typedef typename Superclass::PointType               PointType;
+  typedef typename Superclass::VectorType              VectorType;
   typedef typename Superclass::TransformType           TransformType;
   typedef VectorContainer< IdentifierType, PointType > PointContainerType;
   typedef SmartPointer< PointContainerType >           PointContainerPointer;
@@ -78,10 +79,10 @@ public:
   *  every time one of the object component is changed. */
   virtual bool ComputeLocalBoundingBox() const;
 
-  itkSetMacro(LowerPoint, PointType);
-  itkSetMacro(UpperPoint, PointType);
-  itkGetMacro(LowerPoint, PointType);
-  itkGetMacro(UpperPoint, PointType);
+  itkSetMacro(Point, PointType);
+  itkSetMacro(Normal, VectorType);
+  itkGetMacro(Point, PointType);
+  itkGetMacro(Normal, VectorType);
 protected:
   PlaneSpatialObject(const Self &); //purposely not implemented
   void operator=(const Self &);     //purposely not implemented
@@ -89,8 +90,8 @@ protected:
   PlaneSpatialObject(void);
   ~PlaneSpatialObject(void);
 
-  PointType m_LowerPoint;
-  PointType m_UpperPoint;
+  PointType m_Point;
+  VectorType m_Normal;
 
   /** Print the object informations in a stream. */
   virtual void PrintSelf(std::ostream & os, Indent indent) const;

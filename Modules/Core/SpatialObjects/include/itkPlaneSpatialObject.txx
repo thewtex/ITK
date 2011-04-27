@@ -29,8 +29,8 @@ PlaneSpatialObject< TDimension >
 {
   this->SetTypeName("PlaneSpatialObject");
   this->SetDimension(TDimension);
-  m_LowerPoint.Fill(0);
-  m_UpperPoint.Fill(0);
+  m_Point.Fill(0);
+  m_Normal.Fill(0);
 }
 
 /** Destructor */
@@ -79,6 +79,7 @@ bool
 PlaneSpatialObject< TDimension >
 ::IsInside(const PointType & point, unsigned int depth, char *name) const
 {
+  /*
   itkDebugMacro("Checking the point [" << point << "is inside the plane");
 
   if ( name == NULL )
@@ -97,6 +98,7 @@ PlaneSpatialObject< TDimension >
     }
 
   return Superclass::IsInside(point, depth, name);
+  */
 }
 
 /** Compute the bounds of the Plane */
@@ -105,6 +107,7 @@ bool
 PlaneSpatialObject< TDimension >
 ::ComputeLocalBoundingBox(void) const
 {
+  /*
   itkDebugMacro("Computing tube bounding box");
 
   if ( this->GetBoundingBoxChildrenName().empty()
@@ -127,6 +130,7 @@ PlaneSpatialObject< TDimension >
     const_cast< BoundingBoxType * >( this->GetBounds() )->SetMinimum(pnt);
     const_cast< BoundingBoxType * >( this->GetBounds() )->SetMaximum(pnt2);
     }
+    */
   return true;
 }
 
@@ -177,8 +181,8 @@ PlaneSpatialObject< TDimension >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
-  os << indent << "LowerPoint: " << m_LowerPoint << std::endl;
-  os << indent << "UpperPoint: " << m_UpperPoint << std::endl;
+  os << indent << "Point: " << m_Point << std::endl;
+  os << indent << "Normal: " << m_Normal << std::endl;
 }
 } // end namespace itk
 
