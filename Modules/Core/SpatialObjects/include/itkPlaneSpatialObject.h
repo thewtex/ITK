@@ -24,7 +24,8 @@
 namespace itk
 {
 /** \class PlaneSpatialObject
- * A plane spatial object is defined by a point and a normal vector.
+ * A plane spatial object is defined by a point (p) and a normal vector (n).
+ * The plane is defined by all points x that satisfy dot((x-p), n) = 0
  * \brief
  * \ingroup ITK-SpatialObjects
  *

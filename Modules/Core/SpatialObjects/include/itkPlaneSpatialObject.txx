@@ -47,6 +47,7 @@ bool
 PlaneSpatialObject< TDimension >
 ::IsInside(const PointType & point) const
 {
+  /*
   if ( !this->SetInternalInverseTransformToWorldToIndexTransform() )
     {
     return false;
@@ -70,6 +71,7 @@ PlaneSpatialObject< TDimension >
     {
     return true;
     }
+    */
   return false;
 }
 
@@ -79,6 +81,8 @@ bool
 PlaneSpatialObject< TDimension >
 ::IsInside(const PointType & point, unsigned int depth, char *name) const
 {
+  // |dot((q-p), n)|/|n|
+  double distance = ;
   /*
   itkDebugMacro("Checking the point [" << point << "is inside the plane");
 
