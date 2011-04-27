@@ -23,6 +23,7 @@
 #include <limits>
 
 #include <vector>
+#include <stddef.h>
 
 namespace gdcm
 {
