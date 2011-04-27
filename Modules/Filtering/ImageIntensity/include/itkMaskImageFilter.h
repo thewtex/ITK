@@ -20,6 +20,7 @@
 
 #include "itkBinaryFunctorImageFilter.h"
 #include "itkNumericTraits.h"
+#include "itkVariableLengthVector.h"
 
 namespace itk
 {
@@ -57,7 +58,10 @@ class MaskInput
 public:
   typedef typename NumericTraits< TInput >::AccumulateType AccumulatorType;
 
-  MaskInput():m_OutsideValue(NumericTraits< TOutput >::Zero) {}
+  MaskInput()
+  {
+    InitializeOutsideValue( static_cast<TOutput*>( NULL ) );
+  }
   ~MaskInput() {}
   bool operator!=(const MaskInput &) const
   {
@@ -94,6 +98,20 @@ public:
   }
 
 private:
+
+  template < class TPixelType >
+  void InitializeOutsideValue( TPixelType * )
+  {
+    this->m_OutsideValue = NumericTraits< TPixelType >::Zero;
+  }
+
+  template < class TValueType >
+  void InitializeOutsideValue( VariableLengthVector<TValueType> * )
+  {
+    // set the outside value to be of zero length
+    this->m_OutsideValue = VariableLengthVector< TValueType >(0);
+  }
+
   TOutput m_OutsideValue;
 };
 }
@@ -159,6 +177,12 @@ public:
     return this->GetFunctor().GetOutsideValue();
   }
 
+  void BeforeThreadedGenerateData()
+  {
+    typedef typename TOutputImage::PixelType PixelType;
+    this->CheckOutsideValue( static_cast<PixelType*>(NULL) );
+  }
+
 #ifdef ITK_USE_CONCEPT_CHECKING
   /** Begin concept checking */
   itkConceptMacro( MaskEqualityComparableCheck,
@@ -181,6 +205,21 @@ protected:
 private:
   MaskImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);  //purposely not implemented
+
+  template < class TPixelType >
+  void CheckOutsideValue( const TPixelType *referencePixel ) {}
+
+  template < class TValue >
+  void CheckOutsideValue( const VariableLengthVector< TValue > *referencePixel )
+  {
+    if ( this->GetOutput()->GetVectorLength() )
+      {
+      itkExceptionMacro(
+        << "number of components in OutsideValue is not the same as the "
+        << "number of components in the image" );
+      }
+  }
+
 };
 } // end namespace itk
 
