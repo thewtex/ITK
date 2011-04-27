@@ -47,32 +47,7 @@ bool
 PlaneSpatialObject< TDimension >
 ::IsInside(const PointType & point) const
 {
-  /*
-  if ( !this->SetInternalInverseTransformToWorldToIndexTransform() )
-    {
-    return false;
-    }
-
-  PointType transformedPoint =
-    this->GetInternalInverseTransform()->TransformPoint(point);
-
-  bool inside = true;
-  for ( unsigned int i = 0; i < TDimension; i++ )
-    {
-    if ( ( transformedPoint[i] > m_UpperPoint[i] )
-         || ( transformedPoint[i] < m_LowerPoint[i] ) )
-      {
-      inside = false;
-      break;
-      }
-    }
-
-  if ( inside )
-    {
-    return true;
-    }
-    */
-  return false;
+  return IsInside(point, 0, NULL);
 }
 
 /** Test if the given point is inside the blob */
@@ -81,28 +56,27 @@ bool
 PlaneSpatialObject< TDimension >
 ::IsInside(const PointType & point, unsigned int depth, char *name) const
 {
-  // |dot((q-p), n)|/|n|
-  double distance = ;
-  /*
-  itkDebugMacro("Checking the point [" << point << "is inside the plane");
+  itkDebugMacro("Checking if the point " << point << "is on the plane...");
 
-  if ( name == NULL )
-    {
-    if ( IsInside(point) )
-      {
-      return true;
-      }
-    }
-  else if ( strstr(typeid( Self ).name(), name) )
-    {
-    if ( IsInside(point) )
-      {
-      return true;
-      }
-    }
+  // The distance from point q to the plane defined by p and n is |dot((q-p), n)|/|n|
 
-  return Superclass::IsInside(point, depth, name);
-  */
+  // Convert the input point and plane point to a vector
+  VectorType inputPointAsVector;
+  VectorType planePointAsVector;
+  for(unsigned int dimensionIndex = 0; dimensionIndex < point.GetPointDimension(); ++dimensionIndex)
+    {
+    inputPointAsVector[dimensionIndex] = point[dimensionIndex];
+    planePointAsVector[dimensionIndex] = m_Point[dimensionIndex];
+    }
+  double distanceToPlane = vnl_math_abs((inputPointAsVector-planePointAsVector)*m_Normal)/(m_Normal.GetNorm());
+  if(distanceToPlane < itk::NumericTraits< double >::epsilon() )
+    {
+    return true;
+    }
+  else
+    {
+    return false;
+    }
 }
 
 /** Compute the bounds of the Plane */
@@ -111,34 +85,13 @@ bool
 PlaneSpatialObject< TDimension >
 ::ComputeLocalBoundingBox(void) const
 {
-  /*
-  itkDebugMacro("Computing tube bounding box");
-
-  if ( this->GetBoundingBoxChildrenName().empty()
-       || strstr( typeid( Self ).name(),
-                  this->GetBoundingBoxChildrenName().c_str() ) )
-    {
-    PointType pnt;
-    PointType pnt2;
-    pnt.Fill(0);
-    pnt2.Fill(0);
-    for ( unsigned int i = 0; i < TDimension; i++ )
-      {
-      pnt[i] = m_LowerPoint[i];
-      pnt2[i] = m_UpperPoint[i];
-      }
-
-    pnt = this->GetIndexToWorldTransform()->TransformPoint(pnt);
-    pnt2 = this->GetIndexToWorldTransform()->TransformPoint(pnt2);
-
-    const_cast< BoundingBoxType * >( this->GetBounds() )->SetMinimum(pnt);
-    const_cast< BoundingBoxType * >( this->GetBounds() )->SetMaximum(pnt2);
-    }
-    */
-  return true;
+  itkDebugMacro("Computing bounding box...");
+  std::cerr << "This function is not yet implemented!" << std::endl;
+  exit(-1);
+  return false;
 }
 
-/** Returns if the Plane os evaluable at one point */
+/** Returns if the Plane is evaluable at a specified point */
 template< unsigned int TDimension >
 bool
 PlaneSpatialObject< TDimension >
@@ -146,10 +99,12 @@ PlaneSpatialObject< TDimension >
                 unsigned int depth, char *name) const
 {
   itkDebugMacro("Checking if the Plane is evaluable at " << point);
-  return IsInside(point, depth, name);
+  std::cerr << "This function is not yet implemented!" << std::endl;
+  exit(-1);
+  return false;
 }
 
-/** Returns the value at one point */
+/** Returns the value at a specified point */
 template< unsigned int TDimension >
 bool
 PlaneSpatialObject< TDimension >
