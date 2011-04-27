@@ -27,6 +27,10 @@ namespace itk
  * A plane spatial object is defined by a point and a normal vector.
  * \brief
  * \ingroup ITK-SpatialObjects
+ *
+ * \wiki
+ * \wikiexample{SpatialObjects/PlaneSpatialObject,Plane spatial object}
+ * \endwiki
  */
 
 template< unsigned int TDimension = 3  >

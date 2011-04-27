@@ -49,6 +49,9 @@ itkPointSetTest.cxx
 itkBresenhamLineTest.cxx
 itkSparseFieldLayerTest.cxx
 itkDataObjectTest.cxx
+itkAtanRegularizedHeavisideStepFunctionTest1.cxx
+itkHeavisideStepFunctionTest1.cxx
+itkSinRegularizedHeavisideStepFunctionTest1.cxx
 )
 
 
@@ -84,6 +87,7 @@ itkLoggerOutputTest.cxx
 itkNeighborhoodTest.cxx
 itkVersorTest.cxx
 itkObjectFactoryTest2.cxx
+itkObjectFactoryTest3.cxx
 itkMinimumMaximumImageCalculatorTest.cxx
 itkSliceIteratorTest.cxx
 itkMultiThreaderTest.cxx
@@ -97,11 +101,13 @@ itkImageFillBufferTest.cxx
 set(TestsToRun ${TESTS1})
 list(REMOVE_ITEM TestsToRun ITK-CommonTestDriver1.cxx)
 add_executable(ITK-CommonTestDriver1  ${TESTS1} )
+itk_module_target_label(ITK-CommonTestDriver1)
 target_link_libraries(ITK-CommonTestDriver1 ${ITK-Common_LIBRARIES})
 
 set(TestsToRun ${TESTS2})
 list(REMOVE_ITEM TestsToRun ITK-CommonTests2.cxx)
 add_executable(ITK-CommonTestDriver2  ${TESTS2} )
+itk_module_target_label(ITK-CommonTestDriver2)
 target_link_libraries(ITK-CommonTestDriver2 ${ITK-Common_LIBRARIES})
 
 #-----------------------------------------------------------------------------
@@ -112,16 +118,19 @@ set(TEMP ${ITK_TEST_OUTPUT_DIR})
 
 #-----------------------------------------------------------------------------
 add_executable( itkMathTest itkMathTest.cxx )
+itk_module_target_label(itkMathTest)
 add_test(NAME itkMathTest COMMAND itkMathTest)
 target_link_libraries(itkMathTest ${ITK-Common_LIBRARIES})
 
 add_executable(itkSystemInformation itkSystemInformation.cxx)
+itk_module_target_label(itkSystemInformation)
 target_link_libraries(itkSystemInformation ${ITK-Common_LIBRARIES})
 add_test(NAME SystemInformation COMMAND itkSystemInformation)
 
 
 if(ITK_OBJCXX_COMPILER_WORKS)
   add_executable(itkCommonHeaderObjCxxTest itkCommonHeaderObjCxxTest.mm)
+  itk_module_target_label(itkCommonHeaderObjCxxTest)
   target_link_libraries(itkCommonHeaderObjCxxTest ${ITK-Common_LIBRARIES})
   add_test(NAME itkCommonHeaderObjCxxTest COMMAND itkCommonHeaderObjCxxTest)
 endif(ITK_OBJCXX_COMPILER_WORKS)
@@ -131,6 +140,7 @@ if(ITK_BUILD_SHARED_LIBS)
   ## Create a library to test ITK loadable factories
   set(FactoryTest_Source itkFactoryTestLib.cxx)
   add_library(FactoryTestLib MODULE ${FactoryTest_Source})
+  itk_module_target_label(FactoryTestLib)
   target_link_libraries(FactoryTestLib ${ITK-Common_LIBRARIES})
   set_property(TARGET FactoryTestLib PROPERTY LIBRARY_OUTPUT_DIRECTORY ${ITK_TEST_OUTPUT_DIR})
   add_dependencies(ITK-CommonTestDriver2 FactoryTestLib)
@@ -187,6 +197,13 @@ add_test(NAME itkPointSetTest COMMAND ITK-CommonTestDriver1 itkPointSetTest)
 add_test(NAME itkBresenhamLineTest COMMAND ITK-CommonTestDriver1 itkBresenhamLineTest)
 add_test(NAME itkSparseFieldLayerTest COMMAND ITK-CommonTestDriver1 itkSparseFieldLayerTest)
 add_test(NAME itkDataObjectTest COMMAND ITK-CommonTestDriver1 itkDataObjectTest)
+add_test(NAME itkAtanRegularizedHeavisideStepFunctionTest1
+ COMMAND ITK-CommonTestDriver1 itkAtanRegularizedHeavisideStepFunctionTest1)
+add_test(NAME itkHeavisideStepFunctionTest1
+ COMMAND ITK-CommonTestDriver1 itkHeavisideStepFunctionTest1)
+add_test(NAME itkSinRegularizedHeavisideStepFunctionTest1
+ COMMAND ITK-CommonTestDriver1 itkSinRegularizedHeavisideStepFunctionTest1)
+
 #
 # This test should be enabled if you suspect that the memory leak detector
 # is not working
@@ -210,6 +227,7 @@ add_test(NAME itkObjectFactoryTest2 COMMAND ITK-CommonTestDriver2 itkObjectFacto
 set_tests_properties(itkObjectFactoryTest2 PROPERTIES RUN_SERIAL 1)
 endif(ITK_BUILD_SHARED_LIBS)
 
+add_test(NAME itkObjectFactoryTest3 COMMAND ITK-CommonTestDriver2 itkObjectFactoryTest3)
 add_test(NAME itkPeriodicBoundaryConditionTest COMMAND ITK-CommonTestDriver2 itkPeriodicBoundaryConditionTest)
 add_test(NAME itkPhasedArray3DSpecialCoordinatesImageTest COMMAND ITK-CommonTestDriver1 itkPhasedArray3DSpecialCoordinatesImageTest)
 add_test(NAME itkRealTimeClockTest COMMAND ITK-CommonTestDriver1 itkRealTimeClockTest)
@@ -267,6 +285,7 @@ if("${CMAKE_SYSTEM_NAME}" MATCHES "Linux")
 endif("${CMAKE_SYSTEM_NAME}" MATCHES "Linux")
 
 add_executable(itkSystemInformationTest itkSystemInformationTest.cxx)
+itk_module_target_label(itkSystemInformationTest)
 target_link_libraries(itkSystemInformationTest  ${ITK-Common_LIBRARIES})
 add_test(NAME itkSystemInformationTest
          COMMAND itkSystemInformationTest ${CMAKE_BINARY_DIR})
