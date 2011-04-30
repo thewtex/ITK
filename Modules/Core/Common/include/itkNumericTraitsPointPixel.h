@@ -101,6 +101,21 @@ public:
     return Self( NumericTraits< T >::OneValue() );
   }
 
+  static const Self NonpositiveMin(const Self &)
+  {
+    return NonpositiveMin();
+  }
+
+  static const Self ZeroValue(const Self &)
+  {
+    return ZeroValue();
+  }
+
+  static const Self OneValue(const Self &)
+  {
+    return OneValue();
+  }
+
   /** Fixed length vectors cannot be resized, so an exception will
    *  be thrown if the input size is not valid.  If the size is valid
    *  the vector will be filled with zeros. */
@@ -116,6 +131,12 @@ public:
 
   /** Return the dimensionality of the point. */
   static unsigned int GetLength(const Point< T, D > &)
+  {
+    return D;
+  }
+
+  /** Return the dimensionality of the point. */
+  static unsigned int GetLength()
   {
     return D;
   }

@@ -139,6 +139,12 @@ public:
     return 6;
   }
 
+  /** Return the size of the tensor. Always returns 6. */
+  static unsigned int GetLength()
+  {
+    return 6;
+  }
+
   /** \note: the functions are prefered over the member variables as
    * they are defined for all partial specialization
    */

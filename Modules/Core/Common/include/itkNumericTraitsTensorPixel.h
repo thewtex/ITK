@@ -82,6 +82,16 @@ public:
    * \note minimum value for floating pointer types is defined as
    * minimum positive normalize value.
    */
+  static const Self max(const Self &)
+  {
+    return Self( NumericTraits< T >::max() );
+  }
+
+  static const Self min(const Self &)
+  {
+    return Self( NumericTraits< T >::min() );
+  }
+
   static const Self max()
   {
     return Self( NumericTraits< T >::max() );
@@ -107,6 +117,21 @@ public:
     return Self( NumericTraits< T >::OneValue() );
   }
 
+  static const Self NonpositiveMin(const Self &)
+  {
+    return NonpositiveMin();
+  }
+
+  static const Self ZeroValue(const Self &)
+  {
+    return ZeroValue();
+  }
+
+  static const Self OneValue(const Self &)
+  {
+    return OneValue();
+  }
+
   /** Fixed length vectors cannot be resized, so an exception will
    *  be thrown if the input size is not valid.  Here, the size refers
    *  to the dimensionality of the unerlying FixedArray, not the
@@ -124,6 +149,12 @@ public:
 
   /** Return the size of the underlying FixedArray. */
   static unsigned int GetLength(const SymmetricSecondRankTensor< T, D > &)
+  {
+    return GetLength();
+  }
+
+  /** Return the size of the underlying FixedArray. */
+  static unsigned int GetLength()
   {
     return D *( D + 1 ) / 2;
   }
