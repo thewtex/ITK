@@ -82,7 +82,7 @@ public:
     return b;
   }
 
-  static const Self Zero(const Self  & a)
+  static const Self ZeroValue(const Self  & a)
   {
     Self b( a.Size() );
 
@@ -90,11 +90,18 @@ public:
     return b;
   }
 
-  static const Self One(const Self & a)
+  static const Self OneValue(const Self & a)
   {
     Self b( a.Size() );
 
     b.Fill(NumericTraits< T >::One);
+    return b;
+  }
+
+  static const Self NonpositiveMin(const Self & a)
+  {
+    Self b( a.Size() );
+    b.Fill( NumericTraits< T >::NonpositiveMin() );
     return b;
   }
 
@@ -109,6 +116,20 @@ public:
   static unsigned int GetLength(const Array< T > & m)
   {
     return m.GetSize();
+  }
+
+  static void AssignArray( MeasurementVectorType & mv, const Self & v )
+  {
+    mv = v;
+  }
+
+  template<class TArray>
+  static void AssignArray( const Self & v, TArray & mv )
+  {
+    for( unsigned int i=0; i<GetLength(v); i++ )
+      {
+      mv[i] = v[i];
+      }
   }
 
 };

@@ -117,6 +117,21 @@ public:
     return Self( NumericTraits< T >::OneValue() );
   }
 
+  static const Self NonpositiveMin(const Self &)
+  {
+    return NonpositiveMin();
+  }
+
+  static const Self ZeroValue(const Self &)
+  {
+    return ZeroValue();
+  }
+
+  static const Self OneValue(const Self &)
+  {
+    return OneValue();
+  }
+
   /** Fixed length vectors cannot be resized, so an exception will
    *  be thrown if the input size is not valid.  If the size is valid
    *  the vector will be filled with zeros. */
@@ -134,6 +149,26 @@ public:
   static unsigned int GetLength(const FixedArray< T, D > &)
   {
     return D;
+  }
+
+  /** Return the length of the array. */
+  static unsigned int GetLength()
+  {
+    return D;
+  }
+
+  static void AssignArray( MeasurementVectorType & mv, const Self & v )
+  {
+    mv = v;
+  }
+
+  template<class TArray>
+  static void AssignArray( const Self & v, TArray & mv )
+  {
+    for( unsigned int i=0; i<D; i++ )
+      {
+      mv[i] = v[i];
+      }
   }
 
   /** \note: the functions are prefered over the member variables as
