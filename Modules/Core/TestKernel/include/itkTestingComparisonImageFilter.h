@@ -18,8 +18,9 @@
 #ifndef __itkTestingComparisonImageFilter_h
 #define __itkTestingComparisonImageFilter_h
 
-#include "itkNumericTraits.h"
 #include "itkArray.h"
+#include "itkImageSource.h"
+#include "itkNumericTraits.h"
 
 namespace itk
 {
