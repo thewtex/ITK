@@ -20,6 +20,7 @@
 #endif
 #include <iostream>
 #include <vector>
+#include <stddef.h>
 
 #include "itkNumericTraits.h"
 
