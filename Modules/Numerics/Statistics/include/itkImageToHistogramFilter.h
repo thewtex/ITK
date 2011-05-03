@@ -23,6 +23,8 @@
 #include "itkBarrier.h"
 #include "itkSimpleDataObjectDecorator.h"
 #include "itkProgressReporter.h"
+// not sure why this one is needed...
+#include "itkNumericTraitsCovariantVectorPixel.h"
 
 namespace itk
 {
