@@ -22,6 +22,7 @@
 
 #include <iostream>
 #include "itkLoggerThreadWrapper.h"
+#include "itksys/SystemTools.hxx"
 
 namespace itk
 {
@@ -31,12 +32,10 @@ namespace itk
 template< class SimpleLoggerType >
 void LoggerThreadWrapper< SimpleLoggerType >::SetPriorityLevel(PriorityLevelType level)
 {
-  this->m_WaitMutex.Unlock();
   this->m_Mutex.Lock();
   this->m_OperationQ.push(SET_PRIORITY_LEVEL);
   this->m_LevelQ.push(level);
   this->m_Mutex.Unlock();
-  this->m_WaitMutex.Lock();
 }
 
 /** Get the priority level for the current logger. Only messages that have
@@ -54,13 +53,11 @@ typename SimpleLoggerType::PriorityLevelType LoggerThreadWrapper< SimpleLoggerTy
 template< class SimpleLoggerType >
 void LoggerThreadWrapper< SimpleLoggerType >::SetLevelForFlushing(PriorityLevelType level)
 {
-  this->m_WaitMutex.Unlock();
   this->m_Mutex.Lock();
   this->m_LevelForFlushing = level;
   this->m_OperationQ.push(SET_LEVEL_FOR_FLUSHING);
   this->m_LevelQ.push(level);
   this->m_Mutex.Unlock();
-  this->m_WaitMutex.Lock();
 }
 
 template< class SimpleLoggerType >
@@ -76,18 +73,15 @@ typename SimpleLoggerType::PriorityLevelType LoggerThreadWrapper< SimpleLoggerTy
 template< class SimpleLoggerType >
 void LoggerThreadWrapper< SimpleLoggerType >::AddLogOutput(OutputType *output)
 {
-  this->m_WaitMutex.Unlock();
   this->m_Mutex.Lock();
   this->m_OperationQ.push(ADD_LOG_OUTPUT);
   this->m_OutputQ.push(output);
   this->m_Mutex.Unlock();
-  this->m_WaitMutex.Lock();
 }
 
 template< class SimpleLoggerType >
 void LoggerThreadWrapper< SimpleLoggerType >::Write(PriorityLevelType level, std::string const & content)
 {
-  this->m_WaitMutex.Unlock();
   this->m_Mutex.Lock();
   if ( this->m_PriorityLevel >= level )
     {
@@ -100,7 +94,6 @@ void LoggerThreadWrapper< SimpleLoggerType >::Write(PriorityLevelType level, std
     {
     this->Flush();
     }
-  this->m_WaitMutex.Lock();
 }
 
 template< class SimpleLoggerType >
@@ -145,7 +138,6 @@ void LoggerThreadWrapper< SimpleLoggerType >::Flush()
 template< class SimpleLoggerType >
 LoggerThreadWrapper< SimpleLoggerType >::LoggerThreadWrapper()
 {
-  this->m_WaitMutex.Lock();
   this->m_Threader = MultiThreader::New();
   this->m_ThreadID = this->m_Threader->SpawnThread(ThreadFunction, this);
 }
@@ -155,7 +147,6 @@ template< class SimpleLoggerType >
 LoggerThreadWrapper< SimpleLoggerType >::~LoggerThreadWrapper()
 {
   this->Flush();
-  this->m_WaitMutex.Unlock();
   if ( this->m_Threader )
     {
     this->m_Threader->TerminateThread(this->m_ThreadID);
@@ -181,7 +172,6 @@ ITK_THREAD_RETURN_TYPE LoggerThreadWrapper< SimpleLoggerType >::ThreadFunction(v
 
   while ( 1 )
     {
-    pLogger->m_WaitMutex.Lock();
 
     pInfo->ActiveFlagLock->Lock();
     int activeFlag = *pInfo->ActiveFlag;
@@ -223,7 +213,7 @@ ITK_THREAD_RETURN_TYPE LoggerThreadWrapper< SimpleLoggerType >::ThreadFunction(v
       pLogger->m_OperationQ.pop();
       }
     pLogger->m_Mutex.Unlock();
-    pLogger->m_WaitMutex.Unlock();
+    itksys::SystemTools::Delay(300);
     }
   return ITK_THREAD_RETURN_VALUE;
 }

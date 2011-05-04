@@ -126,7 +126,6 @@ private:
 
   SimpleFastMutexLock m_Mutex;
 
-  SimpleFastMutexLock m_WaitMutex;
 };  // class ThreadLogger
 } // namespace itk
 
