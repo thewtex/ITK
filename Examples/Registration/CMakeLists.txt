@@ -68,6 +68,9 @@ target_link_libraries(DeformableRegistration7 ${ITK_LIBRARIES})
 add_executable(DeformableRegistration8 DeformableRegistration8.cxx )
 target_link_libraries(DeformableRegistration8 ${ITK_LIBRARIES})
 
+add_executable(CompositeTransformRegistration CompositeTransformRegistration.cxx )
+target_link_libraries(CompositeTransformRegistration ${ITK_LIBRARIES})
+
 if( USE_FFTWD )
   add_executable(DeformableRegistration9 DeformableRegistration9.cxx )
   target_link_libraries(DeformableRegistration9 ${ITK_LIBRARIES})
@@ -276,6 +279,15 @@ itk_add_test(NAME ImageRegistration7Test COMMAND ${ITK_TEST_DRIVER}
         ${TEMP}/ImageRegistration7BeforeTestPixelCentered.png
         ${TEMP}/ImageRegistration7AfterTestPixelCentered.png
         1.0   1.0  0.0
+)
+
+itk_add_test(NAME CompositeTransformRegistrationTest COMMAND ${ITK_TEST_DRIVER}
+  $<TARGET_FILE:CompositeTransformRegistration>
+        ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySlice.png
+        ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceR10X13Y17S12.png
+        ${TEMP}/CompositeTransformRegistrationTest.png
+        ${TEMP}/CompositeTransformRegistrationBeforeTest.png
+        ${TEMP}/CompositeTransformRegistrationAfterTest.png
 )
 
 if(ITK_USE_BRAINWEB_DATA)
