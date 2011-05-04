@@ -104,6 +104,7 @@ set(ITK-Common2Tests
 itkMetaDataDictionaryTest.cxx
 itkStdStreamLogOutputTest.cxx
 itkOctreeTest.cxx
+itkLoggerThreadWrapperTest.cxx
 itkThreadLoggerTest.cxx
 itkThreadDefsTest.cxx
 itkTimeProbesTest.cxx
@@ -331,7 +332,10 @@ itk_add_test(NAME itkSmartPointerTest COMMAND ITK-Common2TestDriver itkSmartPoin
 itk_add_test(NAME itkSpatialFunctionTest COMMAND ITK-Common2TestDriver itkSpatialFunctionTest)
 itk_add_test(NAME itkSTLContainerAdaptorTest COMMAND ITK-Common2TestDriver itkSTLContainerAdaptorTest)
 itk_add_test(NAME itkStdStreamLogOutputTest COMMAND ITK-Common2TestDriver itkStdStreamLogOutputTest ${TEMP}/testStreamLogOutput.txt)
-itk_add_test(NAME itkThreadLoggerTest COMMAND ITK-Common2TestDriver itkThreadLoggerTest ${TEMP}/test_threadLogger.txt)
+itk_add_test(NAME itkThreadLoggerTest COMMAND ITK-Common2TestDriver itkThreadLoggerTest ${TEMP}/test_threadLogger.txt 20)
+set_tests_properties(itkThreadLoggerTest PROPERTIES TIMEOUT 5)
+itk_add_test(NAME itkLoggerThreadWrapperTest COMMAND ITK-Common2TestDriver itkLoggerThreadWrapperTest ${TEMP}/test_loggerThreadWrapper.txt 20)
+set_tests_properties(itkLoggerThreadWrapperTest PROPERTIES TIMEOUT 5)
 itk_add_test(NAME itkThreadDefsTest COMMAND ITK-Common2TestDriver itkThreadDefsTest)
 itk_add_test(NAME itkTimeProbesTest COMMAND ITK-Common2TestDriver itkTimeProbesTest)
 itk_add_test(NAME itkTreeContainerTest COMMAND ITK-Common2TestDriver itkTreeContainerTest)
