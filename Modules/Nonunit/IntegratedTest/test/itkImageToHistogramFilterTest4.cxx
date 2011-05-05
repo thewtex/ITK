@@ -26,7 +26,7 @@
 #include "itkRGBPixel.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
-#include "itkCompose2DVectorImageFilter.h"
+#include "itkComposeImageFilter.h"
 #include "itkRescaleIntensityImageFilter.h"
 #include "itkSimpleFilterWatcher.h"
 
@@ -55,7 +55,7 @@ int itkImageToHistogramFilterTest4( int argc, char * argv [] )
   ReaderType::Pointer reader2 = ReaderType::New();
   reader2->SetFileName( argv[2] );
 
-  typedef itk::Compose2DVectorImageFilter< ImageType, VectorImageType > ComposeType;
+  typedef itk::ComposeImageFilter< ImageType, VectorImageType > ComposeType;
   ComposeType::Pointer compose = ComposeType::New();
   compose->SetInput1(reader->GetOutput());
   compose->SetInput2(reader2->GetOutput());

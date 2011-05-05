@@ -15,28 +15,59 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkImageToVectorImageFilter_txx
-#define __itkImageToVectorImageFilter_txx
+#ifndef __itkComposeImageFilter_txx
+#define __itkComposeImageFilter_txx
 
-#include "itkImageToVectorImageFilter.h"
-#include "itkImageRegionConstIteratorWithIndex.h"
+#include "itkComposeImageFilter.h"
 #include "itkImageRegionIterator.h"
 
 namespace itk
 {
 //----------------------------------------------------------------------------
-template< class TInputImage >
-ImageToVectorImageFilter< TInputImage >
-::ImageToVectorImageFilter()
+template< class TInputImage, class TOutputImage >
+ComposeImageFilter< TInputImage, TOutputImage >
+::ComposeImageFilter()
 {
-  // At least 1 inputs is necessary for a vector image.
-  this->SetNumberOfRequiredInputs(1);
+  OutputPixelType p;
+  int nbOfComponents = NumericTraits<OutputPixelType>::GetLength(p);
+  nbOfComponents = std::max( 1, nbOfComponents );  // require at least one input
+  this->SetNumberOfRequiredInputs( nbOfComponents );
 }
 
 //----------------------------------------------------------------------------
-template< class TInputImage >
+template< class TInputImage, class TOutputImage >
 void
-ImageToVectorImageFilter< TInputImage >
+ComposeImageFilter< TInputImage, TOutputImage >
+::SetInput1(const InputImageType *image1)
+{
+  // The ProcessObject is not const-correct so the const_cast is required here
+  this->SetNthInput( 0, const_cast< InputImageType * >( image1 ) );
+}
+
+//----------------------------------------------------------------------------
+template< class TInputImage, class TOutputImage >
+void
+ComposeImageFilter< TInputImage, TOutputImage >
+::SetInput2(const InputImageType *image2)
+{
+  // The ProcessObject is not const-correct so the const_cast is required here
+  this->SetNthInput( 1, const_cast< InputImageType * >( image2 ) );
+}
+
+//----------------------------------------------------------------------------
+template< class TInputImage, class TOutputImage >
+void
+ComposeImageFilter< TInputImage, TOutputImage >
+::SetInput3(const InputImageType *image3)
+{
+  // The ProcessObject is not const-correct so the const_cast is required here
+  this->SetNthInput( 2, const_cast< InputImageType * >( image3 ) );
+}
+
+//----------------------------------------------------------------------------
+template< class TInputImage, class TOutputImage >
+void
+ComposeImageFilter< TInputImage, TOutputImage >
 ::GenerateOutputInformation(void)
 {
   // Override the method in itkImageSource, so we can set the vector length of
@@ -45,13 +76,13 @@ ImageToVectorImageFilter< TInputImage >
   this->Superclass::GenerateOutputInformation();
 
   OutputImageType *output = this->GetOutput();
-  output->SetVectorLength( this->GetNumberOfInputs() );
+  output->SetNumberOfComponentsPerPixel( this->GetNumberOfInputs() );
 }
 
 //----------------------------------------------------------------------------
-template< class TInputImage >
+template< class TInputImage, class TOutputImage >
 void
-ImageToVectorImageFilter< TInputImage >
+ComposeImageFilter< TInputImage, TOutputImage >
 ::BeforeThreadedGenerateData()
 {
   // Check to verify all inputs are specified and have the same metadata,
@@ -79,9 +110,9 @@ ImageToVectorImageFilter< TInputImage >
 }
 
 //----------------------------------------------------------------------------
-template< class TInputImage >
+template< class TInputImage, class TOutputImage >
 void
-ImageToVectorImageFilter< TInputImage >
+ComposeImageFilter< TInputImage, TOutputImage >
 ::ThreadedGenerateData(const RegionType & outputRegionForThread,
                        int)
 {
@@ -91,28 +122,23 @@ ImageToVectorImageFilter< TInputImage >
   ImageRegionIterator< OutputImageType > oit(outputImage, outputRegionForThread);
   oit.GoToBegin();
 
-  typedef ImageRegionConstIterator< InputImageType > InputIteratorType;
-  std::vector< InputIteratorType * > inputItContainer;
+  InputIteratorContainerType inputItContainer;
 
   for ( unsigned int i = 0; i < this->GetNumberOfInputs(); i++ )
     {
     typename InputImageType::Pointer inputImagePointer =
       static_cast< InputImageType * >( this->ProcessObject::GetInput(i) );
 
-    InputIteratorType *iit = new InputIteratorType(
-      inputImagePointer, outputRegionForThread);
+    InputIteratorType *iit = new InputIteratorType( inputImagePointer, outputRegionForThread);
     iit->GoToBegin();
     inputItContainer.push_back(iit);
     }
 
-  typename OutputImageType::PixelType pix( this->GetNumberOfInputs() );
+  OutputPixelType pix;
+  NumericTraits<OutputPixelType>::SetLength( pix, this->GetNumberOfInputs() );
   while ( !oit.IsAtEnd() )
     {
-    for ( unsigned int i = 0; i < this->GetNumberOfInputs(); i++ )
-      {
-      pix[i] = inputItContainer[i]->Get();
-      ++( *inputItContainer[i] );
-      }
+    ComputeOutputPixel( pix, inputItContainer );
     oit.Set(pix);
     ++oit;
     }

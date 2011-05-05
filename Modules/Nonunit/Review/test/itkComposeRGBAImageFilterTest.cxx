@@ -29,7 +29,7 @@
 #include "itkImage.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
-#include "itkComposeRGBImageFilter.h"
+#include "itkComposeImageFilter.h"
 #include "itkComposeRGBAImageFilter.h"
 
 int itkComposeRGBAImageFilterTest(int argc, char* argv[])
