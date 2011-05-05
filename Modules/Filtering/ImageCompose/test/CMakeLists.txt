@@ -7,6 +7,7 @@ itkCompose3DCovariantVectorImageFilterTest.cxx
 itkCompose2DVectorImageFilterTest.cxx
 itkComposeRGBImageFilterTest.cxx
 itkImageToVectorImageFilterTest.cxx
+itkImageReadRealAndImaginaryWriteComplexTest.cxx
 )
 
 CreateTestDriver(ITK-ImageCompose  "${ITK-ImageCompose-Test_LIBRARIES}" "${ITK-ImageComposeTests}")
@@ -28,3 +29,6 @@ add_test(NAME itkImageToVectorImageFilterTest
     --compare ${ITK_DATA_ROOT}/Baseline/BasicFilters/ImageToVectorImageFilterTest.png
               ${ITK_TEST_OUTPUT_DIR}/ImageToVectorImageFilterTest.png
     itkImageToVectorImageFilterTest ${ITK_DATA_ROOT}/Input/Spots.png ${ITK_DATA_ROOT}/Input/SpotsInverted.png ${ITK_DATA_ROOT}/Input/SpotsInverted.png ${ITK_TEST_OUTPUT_DIR}/ImageToVectorImageFilterTest.png)
+add_test(NAME itkImageReadRealAndImaginaryWriteComplexTest
+      COMMAND ITK-ImageComposeTestDriver itkImageReadRealAndImaginaryWriteComplexTest
+              ${ITK_EXAMPLE_DATA_ROOT}/BrainProtonDensitySlice.png ${ITK_EXAMPLE_DATA_ROOT}/BrainT1Slice.png ${ITK_TEST_OUTPUT_DIR}/itkBrainSliceComplex.mha)

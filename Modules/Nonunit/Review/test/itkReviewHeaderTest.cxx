@@ -165,7 +165,6 @@
 #include "itkPhilipsRECImageIOFactory.h"
 #include "itkRankHistogram.h"
 #include "itkRankImageFilter.txx"
-#include "itkRealAndImaginaryToComplexImageFilter.h"
 #include "itkRedColormapFunction.txx"
 #include "itkRegionalMaximaImageFilter.txx"
 #include "itkRegionalMinimaImageFilter.txx"
