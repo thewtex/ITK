@@ -72,7 +72,6 @@ itkGridImageSourceTest.cxx
 itkHessianToObjectnessMeasureImageFilterTest.cxx
 itkImageReadComplexWriteMagnitudeAndPhaseTest.cxx
 itkImageReadMagnitudeAndPhaseWriteComplexTest.cxx
-itkImageReadRealAndImaginaryWriteComplexTest.cxx
 itkImageFunctionTest.cxx
 itkJPEG2000ImageIOFactoryTest01.cxx
 itkJPEG2000ImageIORegionOfInterest.cxx
@@ -688,9 +687,6 @@ add_test(NAME itkImageReadComplexWriteMagnitudeAndPhaseTest
 add_test(NAME itkImageReadMagnitudeAndPhaseWriteComplexTest
       COMMAND ITK-ReviewTestDriver itkImageReadMagnitudeAndPhaseWriteComplexTest
               ${ITK_EXAMPLE_DATA_ROOT}/itkBrainSliceComplexMagnitude.mha ${ITK_EXAMPLE_DATA_ROOT}/itkBrainSliceComplexPhase.mha ${ITK_TEST_OUTPUT_DIR}/itkBrainSliceComplex.mha)
-add_test(NAME itkImageReadRealAndImaginaryWriteComplexTest
-      COMMAND ITK-ReviewTestDriver itkImageReadRealAndImaginaryWriteComplexTest
-              ${ITK_EXAMPLE_DATA_ROOT}/BrainProtonDensitySlice.png ${ITK_EXAMPLE_DATA_ROOT}/BrainT1Slice.png ${ITK_TEST_OUTPUT_DIR}/itkBrainSliceComplex.mha)
 add_test(NAME itkImageFunctionTest
       COMMAND ITK-ReviewTestDriver itkImageFunctionTest)
 add_test(NAME itkJPEG2000Test00
