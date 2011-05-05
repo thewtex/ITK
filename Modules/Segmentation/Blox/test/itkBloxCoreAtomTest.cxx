@@ -119,8 +119,8 @@ int itkBloxCoreAtomTest(int, char* [] )
   // get the seeds and display them.
   const ItType::SeedsContainerType &seeds(sfi.GetSeeds());
   std::cout << "Iterator seeds";
-  for(ItType::SeedsContainerType::const_iterator it =
-        seeds.begin(); it != seeds.end(); it++)
+  for(ItType::SeedsContainerType::const_iterator s_it =
+        seeds.begin(); s_it != seeds.end(); ++s_it)
     {
     std::cout << " " << (*it);
     }
