@@ -1627,14 +1627,14 @@ M_Read(void)
   mF = MET_GetFieldRecord("Color", &m_Fields);
   if(mF && mF->defined)
     {
-    for(i=0; i<mF->length; i++)
+    for(i=0; i<mF->length && i < 4; i++)
       {
       m_Color[i] = static_cast<float>( mF->value[i] );
       }
     }
   else
     {
-    for(i=0; i<mF->length; i++)
+    for(i=0; i<mF->length && i < 4; i++)
       {
       m_Color[i] = static_cast<unsigned int>( 1 );
       }
@@ -1735,7 +1735,7 @@ M_Read(void)
   mF = MET_GetFieldRecord("ElementSpacing", &m_Fields);
   if(mF && mF->defined)
     {
-    for(i=0; i<mF->length; i++)
+    for(i=0; i<mF->length && i < 10; i++)
       {
       m_ElementSpacing[i] = static_cast<float>( mF->value[i] );
       if (META_DEBUG) 
@@ -1748,7 +1748,7 @@ M_Read(void)
     }
   else
     {
-    for(i=0; i<mF->length; i++)
+    for(i=0; i<mF->length && i < 10; i++)
       {
       m_ElementSpacing[i] = 1;
       if (META_DEBUG) 
