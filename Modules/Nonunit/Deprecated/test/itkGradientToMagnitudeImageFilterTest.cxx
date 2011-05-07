@@ -28,7 +28,7 @@
 int itkGradientToMagnitudeImageFilterTest(int, char* [] )
 {
   // Declare the type of the pixels
-  typedef itk::CovariantVector<float, 3> VectorPixelType;
+  typedef itk::CovariantVector<float, 2> VectorPixelType;
 
   // Declare the types of the images
   typedef itk::Image<VectorPixelType, 2>           VectorImageType;
@@ -36,7 +36,7 @@ int itkGradientToMagnitudeImageFilterTest(int, char* [] )
 
   // Define the size start index of the image
   VectorImageType::SizeType size;
-  size.Fill(3);
+  size.Fill(2);
 
   VectorImageType::IndexType start;
   start.Fill(0);
