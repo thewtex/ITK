@@ -206,6 +206,9 @@ public:
    * used for writing output files. */
   std::string GetComponentTypeAsString(IOComponentType) const;
 
+  /** Convenience method returns the string corresponding to an IOComponentType. */
+  IOComponentType GetComponentTypeFromString(const std::string &typeString) const;
+
   /** Convenience method returns the IOPixelType as a string. This can be
    * used for writing output files. */
   std::string GetPixelTypeAsString(IOPixelType) const;
