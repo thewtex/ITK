@@ -444,6 +444,54 @@ std::string ImageIOBase::GetComponentTypeAsString(IOComponentType t) const
   return ( s = "unknown" );
 }
 
+ImageIOBase::IOComponentType ImageIOBase::GetComponentTypeFromString(const std::string &typeString) const
+{
+  if(typeString.compare("unsigned_char")==0)
+    {
+    return itk::ImageIOBase::UCHAR;
+    }
+  else if(typeString.compare("char")==0)
+    {
+    return itk::ImageIOBase::CHAR;
+    }
+  else if(typeString.compare("unsigned_short")==0)
+    {
+    return itk::ImageIOBase::USHORT;
+    }
+  else if(typeString.compare("short")==0)
+    {
+    return itk::ImageIOBase::SHORT;
+    }
+  else if(typeString.compare("unsigned_int")==0)
+    {
+    return itk::ImageIOBase::UINT;
+    }
+  else if(typeString.compare("int")==0)
+    {
+    return itk::ImageIOBase::INT;
+    }
+  else if(typeString.compare("unsigned_long")==0)
+    {
+    return itk::ImageIOBase::ULONG;
+    }
+  else if(typeString.compare("long")==0)
+    {
+    return itk::ImageIOBase::LONG;
+    }
+  else if(typeString.compare("float")==0)
+    {
+    return itk::ImageIOBase::FLOAT;
+    }
+  else if(typeString.compare("double")==0)
+    {
+    return itk::ImageIOBase::DOUBLE;
+    }
+  else
+    {
+    return itk::ImageIOBase::UNKNOWNCOMPONENTTYPE;
+    }
+}
+
 std::string ImageIOBase::GetPixelTypeAsString(IOPixelType t) const
 {
   std::string s;
@@ -475,6 +523,54 @@ std::string ImageIOBase::GetPixelTypeAsString(IOPixelType t) const
       itkExceptionMacro ("Unknown pixel type: " << t);
     }
   return ( s = "unknown" );
+}
+
+ImageIOBase::IOPixelType ImageIOBase::GetPixelTypeFromString(const std::string &pixelString) const
+{
+  if(pixelString.compare("scalar")==0)
+    {
+    return itk::ImageIOBase::SCALAR;
+    }
+  else if(pixelString.compare("vector")==0)
+    {
+    return itk::ImageIOBase::VECTOR;
+    }
+  else if(pixelString.compare("covariant_vector")==0)
+    {
+    return itk::ImageIOBase::COVARIANTVECTOR;
+    }
+  else if(pixelString.compare("point")==0)
+    {
+    return itk::ImageIOBase::POINT;
+    }
+  else if(pixelString.compare("offset")==0)
+    {
+    return itk::ImageIOBase::OFFSET;
+    }
+  else if(pixelString.compare("rgb")==0)
+    {
+    return itk::ImageIOBase::RGB;
+    }
+  else if(pixelString.compare("rgba")==0)
+    {
+    return itk::ImageIOBase::RGBA;
+    }
+  else if(pixelString.compare("symmetric_second_rank_tensor")==0)
+    {
+    return itk::ImageIOBase::SYMMETRICSECONDRANKTENSOR;
+    }
+  else if(pixelString.compare("diffusion_tensor_3D")==0)
+    {
+    return itk::ImageIOBase::DIFFUSIONTENSOR3D;
+    }
+  else if(pixelString.compare("complex")==0)
+    {
+    return itk::ImageIOBase::COMPLEX;
+    }
+  else
+    {
+    return itk::ImageIOBase::UNKNOWNPIXELTYPE;
+    }
 }
 
 namespace
