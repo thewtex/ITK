@@ -247,4 +247,3 @@ int itkPointSetToImageRegistrationTest_1(int, char* [] )
   return EXIT_SUCCESS;
 
 }
-

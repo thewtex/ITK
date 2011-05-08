@@ -263,6 +263,3 @@ int itkHoughTransform2DLinesImageTest(int, char* [])
   std::cout << "Hough Transform Successful" << std::endl;
   return EXIT_SUCCESS;
 }
-
-
-

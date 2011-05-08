@@ -258,4 +258,3 @@ int itkPointSetToPointSetRegistrationTest(int, char* [] )
   return EXIT_SUCCESS;
 
 }
-

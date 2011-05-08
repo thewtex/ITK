@@ -311,6 +311,3 @@ int itkPointGeometryTest(int, char* [] )
 
   return EXIT_SUCCESS;
 }
-
-
-

@@ -188,6 +188,3 @@ int itkImageIteratorsForwardBackwardTest(int, char* [] )
   return EXIT_SUCCESS;
 
 }
-
-
-

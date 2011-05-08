@@ -4,6 +4,7 @@ itkClassifiersHeaderTest.cxx
 itkScalarImageKmeansImageFilterTest.cxx
 itkSupervisedImageClassifierTest.cxx
 itkBayesianClassifierImageFilterTest.cxx
+itkKmeansModelEstimatorTest.cxx
 itkImageClassifierFilterTest.cxx
 itkSampleClassifierFilterTest1.cxx
 itkSampleClassifierFilterTest2.cxx
@@ -23,6 +24,8 @@ itk_add_test(NAME itkBayesianClassifierImageFilterTest
     --compare ${ITK_DATA_ROOT}/Baseline/Algorithms/itkBayesianClassifierImageFilterTestLabelMap.png
               ${ITK_TEST_OUTPUT_DIR}/itkBayesianClassifierImageFilterTestLabelMap.png
     itkBayesianClassifierImageFilterTest ${ITK_EXAMPLE_DATA_ROOT}/BrainProtonDensitySlice.png ${ITK_TEST_OUTPUT_DIR}/itkBayesianClassifierImageFilterTestLabelMap.png 4 2)
+itk_add_test(NAME itkKmeansModelEstimatorTest
+      COMMAND ITK-ClassifiersTestDriver itkKmeansModelEstimatorTest)
 itk_add_test(NAME itkImageClassifierFilterTest
       COMMAND ITK-ClassifiersTestDriver
     --compare ${ITK_DATA_ROOT}/Baseline/Statistics/ImageClassifierFilterTestClassifiedImageTest.png

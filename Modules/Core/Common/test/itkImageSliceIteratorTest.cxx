@@ -385,6 +385,3 @@ int itkImageSliceIteratorTest(int, char* [] )
   return EXIT_SUCCESS;
 
 }
-
-
-

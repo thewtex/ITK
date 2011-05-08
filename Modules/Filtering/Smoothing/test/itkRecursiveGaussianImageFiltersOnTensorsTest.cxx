@@ -152,5 +152,3 @@ int itkRecursiveGaussianImageFiltersOnTensorsTest(int, char* [] )
   std::cout << "[PASSED]" << std::endl;
   return EXIT_SUCCESS;
 }
-
-

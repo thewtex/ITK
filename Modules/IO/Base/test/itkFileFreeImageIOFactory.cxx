@@ -81,4 +81,3 @@ FileFreeImageIOFactory::GetDescription() const
 }
 
 } // end namespace itk
-

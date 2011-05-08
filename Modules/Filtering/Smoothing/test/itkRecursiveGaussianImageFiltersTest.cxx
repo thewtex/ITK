@@ -533,7 +533,3 @@ int itkRecursiveGaussianImageFiltersTest(int, char* [] )
   return EXIT_SUCCESS;
 
 }
-
-
-
-

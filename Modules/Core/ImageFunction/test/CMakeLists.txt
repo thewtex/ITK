@@ -16,6 +16,7 @@ itkNearestNeighborExtrapolateImageFunctionTest.cxx
 itkVectorMeanImageFunctionTest.cxx
 itkMahalanobisDistanceThresholdImageFunctionTest.cxx
 itkImageFunctionHeaderTest.cxx
+itkInterpolateTest.cxx
 itkWindowedSincInterpolateImageFunctionTest.cxx
 itkLinearInterpolateImageFunctionTest.cxx
 itkNeighborhoodOperatorImageFunctionTest.cxx
@@ -56,6 +57,8 @@ itk_add_test(NAME itkVectorMeanImageFunctionTest
       COMMAND ITK-ImageFunctionTestDriver itkVectorMeanImageFunctionTest)
 itk_add_test(NAME itkMahalanobisDistanceThresholdImageFunctionTest
       COMMAND ITK-ImageFunctionTestDriver itkMahalanobisDistanceThresholdImageFunctionTest)
+itk_add_test(NAME itkInterpolateTest
+      COMMAND ITK-ImageFunctionTestDriver itkInterpolateTest)
 itk_add_test(NAME itkWindowedSincInterpolateImageFunctionTest
       COMMAND ITK-ImageFunctionTestDriver itkWindowedSincInterpolateImageFunctionTest)
 itk_add_test(NAME itkLinearInterpolateImageFunctionTest

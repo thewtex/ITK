@@ -90,4 +90,3 @@ int itkPixelAccessTest(int, char* [] )
 
   return EXIT_SUCCESS;
 }
-

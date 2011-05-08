@@ -118,4 +118,3 @@ int itkIOPluginTest(int argc, char *argv[])
 
   return status;
 }
-

@@ -33,6 +33,10 @@ itkOrientImageFilterTest2.cxx
 itkWarpImageFilterTest.cxx
 itkWarpVectorImageFilterTest.cxx
 itkWrapPadImageTest.cxx
+itkMirrorPadImageTest.cxx
+itkResampleImageTest.cxx
+itkResampleImageTest2.cxx
+itkResamplePhasedArray3DSpecialCoordinatesImageTest.cxx
 )
 
 CreateTestDriver(ITK-ImageGrid  "${ITK-ImageGrid-Test_LIBRARIES}" "${ITK-ImageGridTests}")
@@ -116,3 +120,16 @@ itk_add_test(NAME itkWarpVectorImageFilterTest
       COMMAND ITK-ImageGridTestDriver itkWarpVectorImageFilterTest)
 itk_add_test(NAME itkWrapPadImageTest
       COMMAND ITK-ImageGridTestDriver itkWrapPadImageTest)
+itk_add_test(NAME itkMirrorPadImageTest
+      COMMAND ITK-ImageGridTestDriver itkMirrorPadImageTest)
+itk_add_test(NAME itkResampleImageTest
+      COMMAND ITK-ImageGridTestDriver itkResampleImageTest)
+itk_add_test(NAME itkResampleImageTest2
+      COMMAND ITK-ImageGridTestDriver
+    --compare ${ITK_DATA_ROOT}/Baseline/BasicFilters/ResampleImageTest2.png
+              ${ITK_TEST_OUTPUT_DIR}/ResampleImageTest2a.png
+    --compare ${ITK_DATA_ROOT}/Baseline/BasicFilters/ResampleImageTest2.png
+              ${ITK_TEST_OUTPUT_DIR}/ResampleImageTest2b.png
+    itkResampleImageTest2 ${ITK_DATA_ROOT}/Input/cthead1.png ${ITK_DATA_ROOT}/Input/circle.png ${ITK_TEST_OUTPUT_DIR}/ResampleImageTest2a.png ${ITK_TEST_OUTPUT_DIR}/ResampleImageTest2b.png)
+itk_add_test(NAME itkResamplePhasedArray3DSpecialCoordinatesImageTest
+      COMMAND ITK-ImageGridTestDriver itkResamplePhasedArray3DSpecialCoordinatesImageTest)

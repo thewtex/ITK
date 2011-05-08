@@ -191,4 +191,3 @@ int itkHessianRecursiveGaussianFilterScaleSpaceTest(int, char* [] )
 
   return EXIT_SUCCESS;
 }
-

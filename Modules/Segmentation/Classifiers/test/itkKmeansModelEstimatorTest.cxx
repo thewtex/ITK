@@ -292,4 +292,3 @@ int itkKmeansModelEstimatorTest(int, char* [] )
 
   return EXIT_SUCCESS;
 }
-

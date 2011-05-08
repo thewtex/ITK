@@ -89,4 +89,3 @@ private:
 
 } // end namespace itk
 #endif // __itkFileFreeImageIO_h
-

@@ -326,6 +326,3 @@ int itkImageRandomIteratorTest(int, char* [] )
     return EXIT_SUCCESS;
 
   }
-
-
-

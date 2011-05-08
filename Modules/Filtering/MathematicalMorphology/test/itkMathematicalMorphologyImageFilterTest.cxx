@@ -197,7 +197,3 @@ int itkMathematicalMorphologyImageFilterTest(int, char* [] )
   return EXIT_SUCCESS;
 
 }
-
-
-
-

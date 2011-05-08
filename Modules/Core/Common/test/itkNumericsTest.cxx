@@ -79,6 +79,3 @@ int itkNumericsTest(int, char* [] )
 
   return 0;
 }
-
-
-

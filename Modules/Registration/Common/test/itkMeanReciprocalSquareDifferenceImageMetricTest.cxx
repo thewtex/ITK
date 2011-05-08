@@ -251,4 +251,3 @@ int itkMeanReciprocalSquareDifferenceImageMetricTest(int, char* [] )
   return EXIT_SUCCESS;
 
 }
-

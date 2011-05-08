@@ -277,4 +277,3 @@ int itkMutualInformationMetricTest(int, char* [] )
   return EXIT_SUCCESS;
 
 }
-

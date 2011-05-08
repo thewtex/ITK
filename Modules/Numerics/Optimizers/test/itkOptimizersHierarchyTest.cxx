@@ -167,6 +167,3 @@ int itkOptimizersHierarchyTest(int, char* [] )
   return EXIT_SUCCESS;
 
 }
-
-
-
