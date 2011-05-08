@@ -411,7 +411,7 @@ std::string ImageIOBase::GetByteOrderAsString(ByteOrder t) const
   return s = "OrderNotApplicable";
 }
 
-std::string ImageIOBase::GetComponentTypeAsString(IOComponentType t) const
+std::string ImageIOBase::GetComponentTypeAsString(IOComponentType t)
 {
   std::string s;
 
@@ -442,6 +442,54 @@ std::string ImageIOBase::GetComponentTypeAsString(IOComponentType t) const
       return ( s = "unknown" );
     }
   return ( s = "unknown" );
+}
+
+ImageIOBase::IOComponentType ImageIOBase::GetComponentTypeFromString(std::string typeString)
+{
+  if(typeString.compare("unsigned_char")==0)
+    {
+    return itk::ImageIOBase::UCHAR;
+    }
+  else if(typeString.compare("char")==0)
+    {
+    return itk::ImageIOBase::CHAR;
+    }
+  else if(typeString.compare("unsigned_short")==0)
+    {
+    return itk::ImageIOBase::USHORT;
+    }
+  else if(typeString.compare("short")==0)
+    {
+    return itk::ImageIOBase::SHORT;
+    }
+  else if(typeString.compare("unsignedint")==0)
+    {
+    return itk::ImageIOBase::UINT;
+    }
+  else if(typeString.compare("int")==0)
+    {
+    return itk::ImageIOBase::INT;
+    }
+  else if(typeString.compare("unsignedlong")==0)
+    {
+    return itk::ImageIOBase::ULONG;
+    }
+  else if(typeString.compare("long")==0)
+    {
+    return itk::ImageIOBase::LONG;
+    }
+  else if(typeString.compare("float")==0)
+    {
+    return itk::ImageIOBase::FLOAT;
+    }
+  else if(typeString.compare("double")==0)
+    {
+    return itk::ImageIOBase::DOUBLE;
+    }
+  else
+    {
+    return itk::ImageIOBase::UNKNOWNCOMPONENTTYPE;
+    }
 }
 
 std::string ImageIOBase::GetPixelTypeAsString(IOPixelType t) const
