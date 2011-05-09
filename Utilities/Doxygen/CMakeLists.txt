@@ -17,6 +17,8 @@ if (BUILD_DOCUMENTATION)
     set( DOX_MODULE_LIST ${ITK_MODULES_ALL} )
   endif()
 
+  set( DOX_MODULE_PNGS )
+
   foreach(itk-module ${DOX_MODULE_LIST})
     if(${itk-module}_IS_TEST)
       list( APPEND DOXYGEN_TEST_DIRS "\"${${itk-module}_SOURCE_DIR}\" \\ \n ")
@@ -24,6 +26,17 @@ if (BUILD_DOCUMENTATION)
       if( EXISTS ${${itk-module}_SOURCE_DIR}/include )
         list( APPEND DOXYGEN_INCLUDE_DIRS "\"${${itk-module}_SOURCE_DIR}/include\" \\ \n")
       endif()
+
+      # generates here one image for each module which corresponds to
+      # its local dependency.
+      add_custom_command( OUTPUT ${itk-module}_PNG
+        COMMAND ${DOXYGEN_DOT_EXECUTABLE} -Tpng
+          -o ${itk-module}_dependencies.png ${itk-module}.dot
+        DEPENDS ${ITK_BINARY_DIR}/Utilities/Doxygen/Modules/${itk-module}.dot
+        WORKING_DIRECTORY ${ITK_BINARY_DIR}/Utilities/Doxygen/Modules/
+        )
+
+      set( DOX_MODULE_PNGS ${DOX_MODULE_PNGS} ${itk-module}_PNG )
     endif()
   endforeach()
 
@@ -46,6 +59,7 @@ if (BUILD_DOCUMENTATION)
     COMMAND ${DOXYGEN_EXECUTABLE} ${ITK_BINARY_DIR}/Utilities/Doxygen/doxygen.config
     MAIN_DEPENDENCY ${ITK_BINARY_DIR}/Utilities/Doxygen/doxygen.config
     DEPENDS         ${ITK_BINARY_DIR}/Utilities/Doxygen/itkdoxygen.pl
+                    ${DOX_MODULE_PNGS}
     WORKING_DIRECTORY ${ITK_BINARY_DIR}/Utilities/Doxygen
     )
 
