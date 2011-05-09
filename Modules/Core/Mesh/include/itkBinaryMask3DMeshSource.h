@@ -25,6 +25,7 @@
 #include "itkCovariantVector.h"
 #include "itkDefaultStaticMeshTraits.h"
 #include "itkImageRegionConstIterator.h"
+#include "itkImageRegionConstIteratorWithIndex.h"
 
 namespace itk
 {
@@ -88,16 +89,12 @@ public:
   typedef typename OutputMeshType::MeshTraits OMeshTraits;
   typedef typename OutputMeshType::PointType  OPointType;
   typedef typename OMeshTraits::PixelType     OPixelType;
+  typedef typename OMeshTraits::CoordRepType  OCoordRepType;
+  typedef ContinuousIndex<OCoordRepType, 3>   OContIndexType;
 
   /** Some convenient typedefs. */
-  typedef typename OutputMeshType::Pointer                OutputMeshPointer;
-  typedef typename OutputMeshType::CellTraits             CellTraits;
-  typedef typename OutputMeshType::PointsContainerPointer PointsContainerPointer;
-  typedef typename OutputMeshType::PointsContainer        PointsContainer;
-  typedef typename OutputMeshType::CellsContainerPointer  CellsContainerPointer;
-  typedef typename OutputMeshType::CellsContainer         CellsContainer;
-  typedef CovariantVector< double, 2 >                    doubleVector;
-  typedef CovariantVector< int, 2 >                       intVector;
+  typedef typename OutputMeshType::Pointer    OutputMeshPointer;
+  typedef typename OutputMeshType::CellTraits CellTraits;
 
   /** Define the triangular cell types which forms the surface of the model
    * and will be used in FEM application. */
@@ -116,12 +113,13 @@ public:
   typedef typename InputImageType::SizeType     SizeType;
 
   /** Type definition for the classified image index type. */
-  typedef typename InputImageType::IndexType           InputImageIndexType;
+  typedef typename InputImageType::IndexType InputImageIndexType;
 
-  typedef ImageRegionConstIterator< InputImageType > InputImageIterator;
+  typedef ImageRegionConstIterator<InputImageType>          InputImageIterator;
+  typedef ImageRegionConstIteratorWithIndex<InputImageType> InputImageIteratorWithIndex;
 
-  typedef itk::IdentifierType                   IdentifierType;
-  typedef itk::SizeValueType                    SizeValueType;
+  typedef itk::IdentifierType IdentifierType;
+  typedef itk::SizeValueType  SizeValueType;
 
   itkSetMacro(ObjectValue, InputPixelType);
 
@@ -145,7 +143,7 @@ public:
 
 protected:
   BinaryMask3DMeshSource();
-  ~BinaryMask3DMeshSource();
+  ~BinaryMask3DMeshSource(){}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   void GenerateData();
@@ -180,56 +178,37 @@ private:
   void InitializeLUT(); // initialize the look up table before the mesh
                         // construction
 
-  void AddCells(unsigned char celltype, unsigned char celltran, int index);
-
-  void AddNodes(int index,
-                unsigned char *nodesid,
-                IdentifierType *globalnodesid,
-                IdentifierType **currentrowtmp,
-                IdentifierType **currentframetmp);
+ void AddNodes(InputImageIndexType index,
+               IdentifierType indexXY,
+               IdentifierType indexXZ,
+               unsigned char *nodesid,
+               IdentifierType *globalnodesid,
+               IdentifierType **forwardxztmp,
+               IdentifierType **forwardxytmp);
 
   void CellTransfer(unsigned char *nodesid, unsigned char celltran);
 
-  IdentifierType SearchThroughLastRow(int index, int start, int end);
+  IdentifierType SearchThroughBackwardFrameXZ(int index, int start, int end);
 
-  IdentifierType SearchThroughLastFrame(int index, int start, int end);
+  IdentifierType SearchThroughBackwardFrameXY(int index, int start, int end);
 
   unsigned char m_LUT[256][2]; // the two lookup tables
-
-  IdentifierType m_LastVoxel[14];
-  IdentifierType m_CurrentVoxel[14];
-
-  IdentifierType **m_LastRow;
-  IdentifierType **m_LastFrame;
-  IdentifierType **m_CurrentRow;
-  IdentifierType **m_CurrentFrame;
-
-  unsigned short m_CurrentRowIndex;
-  unsigned short m_CurrentFrameIndex;
-  unsigned short m_LastRowNum;
-  unsigned short m_LastFrameNum;
-  unsigned short m_CurrentRowNum;
-  unsigned short m_CurrentFrameNum;
-  unsigned char  m_AvailableNodes[14];
-
   double m_LocationOffset[14][3];
 
-  SizeValueType m_NumberOfNodes;
-  SizeValueType m_NumberOfCells;
+  // for private methods
+  IdentifierType      m_LastVoxel[14];
+  IdentifierType      m_CurrentVoxel[14];
+  IdentifierType      **m_BackwardFrameXZ;
+  IdentifierType      **m_BackwardFrameXY;
+  unsigned short      m_BackwardFrameXZNum;
+  unsigned short      m_BackwardFrameXYNum;
+  unsigned char       m_NodeUnavailable[14];
+  unsigned char       m_PointFound;
+  InputImageIndexType m_EndIndex;
 
-  int m_NodeLimit;
-  int m_CellLimit;
-  int m_ImageWidth;
-  int m_ImageHeight;
-  int m_ImageDepth;
-  int m_ColFlag;
-  int m_RowFlag;
-  int m_FrameFlag;
-  int m_LastRowIndex;
-  int m_LastVoxelIndex;
-  int m_LastFrameIndex;
-
-  unsigned char  m_PointFound;
+  // class attributes
+  SizeValueType  m_NumberOfNodes;
+  SizeValueType  m_NumberOfCells;
   InputPixelType m_ObjectValue;
 };
 } // end namespace itk
