@@ -24,7 +24,14 @@ if (BUILD_DOCUMENTATION)
       if( EXISTS ${${itk-module}_SOURCE_DIR}/include )
         list( APPEND DOXYGEN_INCLUDE_DIRS "\"${${itk-module}_SOURCE_DIR}/include\" \\ \n")
       endif()
+
+      # generates here one image for each module which corresponds to
+      # its local dependency.
+      execute_process( WORKING_DIRECTORY ${ITK_BINARY_DIR}/Utilities/Doxygen/Modules/
+        COMMAND ${DOXYGEN_DOT_EXECUTABLE} -Tpng -o ${itk-module}_dependencies.png ${itk-module}.dot
+        )
     endif()
+
   endforeach()
 
   list( APPEND DOXYGEN_TEST_DIRS "\"${ITK_SOURCE_DIR}/Examples\" \n")
