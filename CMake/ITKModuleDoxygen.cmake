@@ -5,15 +5,26 @@ macro( itk_module_doxygen _name )
   set( _content "${_content} ${ITK_MODULE_${_name}_DESCRIPTION} \n" )
 
   set( _content "${_content} \\par Dependencies:\n" )
+  set( _dotcontent "graph ${_name} \{ \n")
+
   foreach( d ${ITK_MODULE_${_name}_DEPENDS} )
     set( _content "${_content} \\li \\ref ${d} \n" )
+    set( _dotcontent "${_dotcontent} ${_name} -- ${d}; \n" )
   endforeach()
 
   set( _content "${_content} */\n" )
+  set( _dotcontent "${_dotcontent} \}")
+
+  configure_file(
+    "${ITK_SOURCE_DIR}/Utilities/Doxygen/Module.dot.in"
+    "${ITK_BINARY_DIR}/Utilities/Doxygen/Modules/${_name}.dot"
+    @ONLY
+    )
 
   configure_file(
     "${ITK_SOURCE_DIR}/Utilities/Doxygen/Module.dox.in"
     "${ITK_BINARY_DIR}/Utilities/Doxygen/Modules/${_name}.dox"
     @ONLY
     )
+
 endmacro()
