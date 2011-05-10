@@ -126,20 +126,7 @@ int itkImageIOBaseTest( int , char * [] )
     }
 
   // Test the string <-> type conversions
-
-  // Currently need an instance since functions are not static.
-  itk::ImageIOBase::Pointer imageIOBase = itk::ImageIOFactory::CreateImageIO(
-            "test", itk::ImageIOFactory::ReadMode);
-
-  itk::ImageIOBase::IOComponentType componentType = imageIOBase->GetComponentTypeFromString("unsigned_char");
-  if(componentType != itk::ImageIOBase::UCHAR)
-    {
-    std::cerr << "GetComponentTypeFromString('unsigned_char') should return UCHAR"
-              << std::endl;
-    return EXIT_FAILURE;
-    }
-
-  std::string componentTypeString = imageIOBase->GetComponentTypeAsString(itk::ImageIOBase::UCHAR);
+  std::string componentTypeString = itk::ImageIOBase::GetComponentTypeAsString(itk::ImageIOBase::UCHAR);
   if(componentTypeString.compare("unsigned_char") != 0)
     {
     std::cerr << "GetComponentTypeAsString(UCHAR) should return 'unsigned_char'"
@@ -147,7 +134,7 @@ int itkImageIOBaseTest( int , char * [] )
     return EXIT_FAILURE;
     }
 
-  std::string pixelTypeString = imageIOBase->GetPixelTypeAsString(itk::ImageIOBase::SCALAR);
+  std::string pixelTypeString = itk::ImageIOBase::GetPixelTypeAsString(itk::ImageIOBase::SCALAR);
   if(pixelTypeString.compare("scalar") != 0)
     {
     std::cerr << "GetPixelTypeAsString(SCALAR) should return 'scalar'"
@@ -155,8 +142,17 @@ int itkImageIOBaseTest( int , char * [] )
     return EXIT_FAILURE;
     }
 
-  itk::ImageIOBase::IOPixelType pixelType = imageIOBase->GetPixelTypeFromString("scalar");
 
+  // These functions are static.
+  itk::ImageIOBase::IOComponentType componentType = itk::ImageIOBase::GetComponentTypeFromString("unsigned_char");
+  if(componentType != itk::ImageIOBase::UCHAR)
+    {
+    std::cerr << "GetComponentTypeFromString('unsigned_char') should return UCHAR"
+              << std::endl;
+    return EXIT_FAILURE;
+    }
+
+  itk::ImageIOBase::IOPixelType pixelType = itk::ImageIOBase::GetPixelTypeFromString("scalar");
   if(pixelType != itk::ImageIOBase::SCALAR)
     {
     std::cerr << "GetPixelTypeFromString('scalar') should return SCALAR"
