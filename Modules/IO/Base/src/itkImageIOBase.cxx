@@ -439,12 +439,12 @@ std::string ImageIOBase::GetComponentTypeAsString(IOComponentType t) const
       return ( s = "double" );
     case UNKNOWNCOMPONENTTYPE:
     default:
-      return ( s = "unknown" );
+      itkExceptionMacro ("Unknown component type: " << t);
     }
   return ( s = "unknown" );
 }
 
-ImageIOBase::IOComponentType ImageIOBase::GetComponentTypeFromString(const std::string &typeString) const
+ImageIOBase::IOComponentType ImageIOBase::GetComponentTypeFromString(const std::string &typeString)
 {
   if(typeString.compare("unsigned_char")==0)
     {
@@ -525,7 +525,7 @@ std::string ImageIOBase::GetPixelTypeAsString(IOPixelType t) const
   return ( s = "unknown" );
 }
 
-ImageIOBase::IOPixelType ImageIOBase::GetPixelTypeFromString(const std::string &pixelString) const
+ImageIOBase::IOPixelType ImageIOBase::GetPixelTypeFromString(const std::string &pixelString)
 {
   if(pixelString.compare("scalar")==0)
     {
