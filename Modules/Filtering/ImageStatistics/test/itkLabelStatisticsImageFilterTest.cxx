@@ -83,6 +83,27 @@ int itkLabelStatisticsImageFilterTest(int argc, char* argv [] )
   std::cout << "There are " << numberOfLabels << " labels" << std::endl;
   std::cout << "There are " << numberOfObjects << " objects" << std::endl;
 
+    {
+    int labelCount=0;
+    //Try to validate that the numberOfLabels in the ValidLabelList is equal to the number of labels reported
+    for(std::vector<LabelPixelType>::const_iterator vIt=filter->GetValidLabelValues().begin();
+      vIt != filter->GetValidLabelValues().end();
+      ++vIt)
+      {
+      if ( filter->HasLabel(*vIt) )
+        {
+        ++labelCount;
+        }
+
+      }
+    if( labelCount != numberOfLabels )
+      {
+      std::cerr << "Valid Labels Mismatch found!" << std::endl;
+      std::cerr << labelCount << " != " << numberOfLabels << std::endl;
+      return EXIT_FAILURE;
+      }
+    }
+
 // Try two labels: one that exists and one that does not
   for (int i = 0; i < 2; i++)
     {
@@ -110,6 +131,8 @@ int itkLabelStatisticsImageFilterTest(int argc, char* argv [] )
                 << static_cast<itk::NumericTraits<LabelPixelType>::PrintType>(labelValue)
                 << " which does not exist" << std::endl;
       }
+
+
     const RealType min      =  filter->GetMinimum( labelValue );
     const RealType max      =  filter->GetMaximum( labelValue );
     const RealType median   =  filter->GetMedian( labelValue );

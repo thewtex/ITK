@@ -232,6 +232,8 @@ public:
   itkGetConstMacro(UseHistograms, bool);
   itkBooleanMacro(UseHistograms);
 
+  itkGetConstMacro(ValidLabelValues,std::vector<LabelPixelType>);
+
   /** Set the label image */
   void SetLabelInput(const TLabelImage *input)
   {
@@ -338,8 +340,9 @@ private:
   LabelStatisticsImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);             //purposely not implemented
 
-  std::vector< MapType > m_LabelStatisticsPerThread;
-  MapType                m_LabelStatistics;
+  std::vector< MapType >      m_LabelStatisticsPerThread;
+  MapType                     m_LabelStatistics;
+  std::vector<LabelPixelType> m_ValidLabelValues;
 
   bool m_UseHistograms;
 
