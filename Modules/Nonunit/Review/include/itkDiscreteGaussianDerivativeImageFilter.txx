@@ -263,6 +263,7 @@ DiscreteGaussianDerivativeImageFilter< TInputImage, TOutputImage >
     lastFilter->ReleaseDataFlagOn();
     if ( ImageDimension > 2 )
       {
+      int temp_dim = static_cast< int >( ImageDimension ) - 3;
       lastFilter->SetInput( intermediateFilters[ImageDimension - 3]->GetOutput() );
       }
     else
