@@ -19,6 +19,7 @@
 #include "itkMacro.h"
 #include <iostream>
 #include <float.h>
+#include <string.h>
 
 int
 itkFloatingPointExceptionsTest(int argc, char *argv[] )
@@ -43,8 +44,7 @@ itkFloatingPointExceptionsTest(int argc, char *argv[] )
     force_int_zero = 1;
     }
 
-  std::string testName(argv[1]);
-  if(testName == "DivByZero")
+  if(strcmp(argv[1],"DivByZero") == 0)
     {
     std::cout << "Testing floating point divide by zero" << std::endl;
     std::cout.flush();
@@ -64,7 +64,7 @@ itkFloatingPointExceptionsTest(int argc, char *argv[] )
       std::cout.flush();
       }
     }
-  if(testName == "ZeroDivByZero")
+  if(strcmp(argv[1], "ZeroDivByZero") == 0)
     {
     std::cout << "Testing floating point zero divided by zero" << std::endl;
     std::cout.flush();
@@ -84,7 +84,7 @@ itkFloatingPointExceptionsTest(int argc, char *argv[] )
       std::cout.flush();
       }
     }
-  if(testName == "FPOverFlow")
+  if(strcmp(argv[1], "FPOverFlow") == 0)
     {
     std::cout << "Testing floating point overflow" << std::endl;
     std::cout.flush();
@@ -105,7 +105,7 @@ itkFloatingPointExceptionsTest(int argc, char *argv[] )
       std::cout.flush();
       }
     }
-  if(testName == "FPUnderFlow")
+  if(strcmp(argv[1], "FPUnderFlow") == 0)
     {
     std::cout << "Testing floating point underflow" << std::endl;
     std::cout.flush();
@@ -127,7 +127,7 @@ itkFloatingPointExceptionsTest(int argc, char *argv[] )
       }
     }
 
-  if(testName == "IntDivByZero")
+  if(strcmp(argv[1], "IntDivByZero") == 0)
     {
     std::cout << "Testing integer divide by zero" << std::endl;
     std::cout.flush();
