@@ -213,7 +213,9 @@ GradientRecursiveGaussianImageFilter< TInputImage, TOutputImage >
 
     if ( ImageDimension > 1 )
       {
-      const int imageDimensionMinus2 = static_cast< int >( ImageDimension ) - 2;
+      const int imageDimensionMinus2 =
+        vcl_max( 0, static_cast< int >( ImageDimension ) - 2 );
+
       lastFilter = m_SmoothingFilters[imageDimensionMinus2];
       lastFilter->UpdateLargestPossibleRegion();
       }
