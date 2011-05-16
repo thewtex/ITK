@@ -109,7 +109,7 @@ template< class TInputImage, class TOutputImage >
 void
 ScalarToRGBColormapImageFilter< TInputImage, TOutputImage >
 ::ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
-                       int threadId)
+                       unsigned int threadId)
 {
   InputImagePointer  inputPtr = this->GetInput();
   OutputImagePointer outputPtr = this->GetOutput();

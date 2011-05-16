@@ -101,7 +101,7 @@ protected:
   /** GenerateData (apply) the filter. */
   void BeforeThreadedGenerateData();
 
-  void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread, int threadId);
+  void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread, unsigned int threadId);
 
   int SplitRequestedRegion(int i, int num, OutputImageRegionType & splitRegion);
 

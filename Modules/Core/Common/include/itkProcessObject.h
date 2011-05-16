@@ -279,8 +279,8 @@ public:
   itkBooleanMacro(ReleaseDataBeforeUpdateFlag);
 
   /** Get/Set the number of threads to create when executing. */
-  itkSetClampMacro(NumberOfThreads, int, 1, ITK_MAX_THREADS);
-  itkGetConstReferenceMacro(NumberOfThreads, int);
+  itkSetClampMacro(NumberOfThreads, unsigned int, 1, ITK_MAX_THREADS);
+  itkGetConstReferenceMacro(NumberOfThreads, unsigned int);
 
   /** Return the multithreader used by this class. */
   MultiThreader * GetMultiThreader()
@@ -457,7 +457,7 @@ private:
   /** Support processing data in multiple threads. Used by subclasses
    * (e.g., ImageSource). */
   MultiThreader::Pointer m_Threader;
-  int                    m_NumberOfThreads;
+  unsigned int           m_NumberOfThreads;
 
   /** Memory management ivars */
   bool m_ReleaseDataBeforeUpdateFlag;

@@ -125,7 +125,7 @@ template< class TImage >
 void
 TwoOutputExampleImageFilter< TImage >
 ::ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
-                       int threadId)
+                       unsigned int threadId)
 {
   itkDebugMacro(<< "Actually executing");
 

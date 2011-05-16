@@ -132,7 +132,7 @@ template< class TImage >
 void
 ThresholdImageFilter< TImage >
 ::ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
-                       int threadId)
+                       unsigned int threadId)
 {
   itkDebugMacro(<< "Actually executing");
 

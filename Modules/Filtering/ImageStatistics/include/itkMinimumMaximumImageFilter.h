@@ -127,7 +127,7 @@ protected:
   /** Multi-thread version GenerateData. */
   void  ThreadedGenerateData(const RegionType &
                              outputRegionForThread,
-                             int threadId);
+                             unsigned int threadId);
 
   // Override since the filter needs all the data for the algorithm
   void GenerateInputRequestedRegion();

@@ -173,7 +173,7 @@ protected:
 
   void AfterThreadedGenerateData();
 
-  void ThreadedGenerateData(const RegionType & outputRegionForThread, int threadId);
+  void ThreadedGenerateData(const RegionType & outputRegionForThread, unsigned int threadId);
 
   /** ConnectedComponentImageFilter needs the entire input. Therefore
    * it must provide an implementation GenerateInputRequestedRegion().

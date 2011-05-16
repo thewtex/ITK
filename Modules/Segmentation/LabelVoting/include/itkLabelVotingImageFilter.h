@@ -169,7 +169,7 @@ protected:
   void BeforeThreadedGenerateData();
 
   void ThreadedGenerateData
-    (const OutputImageRegionType & outputRegionForThread, int threadId);
+    (const OutputImageRegionType & outputRegionForThread, unsigned int threadId);
 
   void PrintSelf(std::ostream &, Indent) const;
 

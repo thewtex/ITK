@@ -115,12 +115,12 @@ template< class TInputImage, class TOutputImage, class TMaskImage >
 void
 ConnectedComponentImageFilter< TInputImage, TOutputImage, TMaskImage >
 ::ThreadedGenerateData(const RegionType & outputRegionForThread,
-                       int threadId)
+                       unsigned int threadId)
 {
   typename TOutputImage::Pointer output = this->GetOutput();
   typename TMaskImage::ConstPointer mask = this->GetMaskImage();
 
-  long nbOfThreads = m_NumberOfLabels.size();
+  unsigned long nbOfThreads = m_NumberOfLabels.size();
 
   // create a line iterator
   typedef itk::ImageLinearConstIteratorWithIndex< InputImageType >
@@ -208,7 +208,7 @@ ConnectedComponentImageFilter< TInputImage, TOutputImage, TMaskImage >
 
   // compute the total number of labels
   nbOfLabels = 0;
-  for ( int i = 0; i < nbOfThreads; i++ )
+  for ( unsigned int i = 0; i < nbOfThreads; i++ )
     {
     nbOfLabels += m_NumberOfLabels[i];
     }

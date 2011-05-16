@@ -135,7 +135,7 @@ void
 VectorResampleImageFilter< TInputImage, TOutputImage, TInterpolatorPrecisionType >
 ::ThreadedGenerateData(
   const OutputImageRegionType & outputRegionForThread,
-  int threadId)
+  unsigned int threadId)
 {
   itkDebugMacro(<< "Actually executing");
 

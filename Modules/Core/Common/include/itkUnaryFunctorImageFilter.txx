@@ -149,7 +149,7 @@ template< class TInputImage, class TOutputImage, class TFunction  >
 void
 UnaryFunctorImageFilter< TInputImage, TOutputImage, TFunction >
 ::ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
-                       int threadId)
+                       unsigned int threadId)
 {
   InputImagePointer  inputPtr = this->GetInput();
   OutputImagePointer outputPtr = this->GetOutput(0);

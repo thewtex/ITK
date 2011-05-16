@@ -84,7 +84,7 @@ template< class TInputImage, class TOutputImage >
 void
 ZeroCrossingImageFilter< TInputImage, TOutputImage >
 ::ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
-                       int threadId)
+                       unsigned int threadId)
 {
   unsigned int i;
 

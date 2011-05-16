@@ -139,7 +139,7 @@ protected:
   /** Multi-thread version GenerateData. */
   void  ThreadedGenerateData(const OutputImageRegionType &
                              outputRegionForThread,
-                             int threadId);
+                             unsigned int threadId);
 
   // declare the type used to store the histogram
   typedef THistogram HistogramType;

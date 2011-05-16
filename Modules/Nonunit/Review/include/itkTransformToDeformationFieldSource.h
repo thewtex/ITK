@@ -181,21 +181,21 @@ protected:
    */
   void ThreadedGenerateData(
     const OutputImageRegionType & outputRegionForThread,
-    int threadId);
+    unsigned int threadId);
 
   /** Default implementation for resampling that works for any
    * transformation type.
    */
   void NonlinearThreadedGenerateData(
     const OutputImageRegionType & outputRegionForThread,
-    int threadId);
+    unsigned int threadId);
 
   /** Faster implementation for resampling that works for with linear
    *  transformation types.
    */
   void LinearThreadedGenerateData(
     const OutputImageRegionType & outputRegionForThread,
-    int threadId);
+    unsigned int threadId);
 
 private:
 

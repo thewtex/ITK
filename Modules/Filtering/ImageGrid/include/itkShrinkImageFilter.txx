@@ -102,7 +102,7 @@ template< class TInputImage, class TOutputImage >
 void
 ShrinkImageFilter< TInputImage, TOutputImage >
 ::ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
-                       int threadId)
+                       unsigned int threadId)
 {
   // Get the input and output pointers
   InputImageConstPointer inputPtr = this->GetInput();

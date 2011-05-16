@@ -130,7 +130,7 @@ protected:
 
   virtual void
   ThreadedGenerateData(const ImageRegionType &
-                       outputRegionForThread, int threadId);
+                       outputRegionForThread, unsigned int threadId);
 
   virtual void BeforeThreadedGenerateData();
 

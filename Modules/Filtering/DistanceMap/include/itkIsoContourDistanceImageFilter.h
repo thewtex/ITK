@@ -146,13 +146,13 @@ protected:
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
-                            int threadId);
+                            unsigned int threadId);
 
   void ThreadedGenerateDataFull(const OutputImageRegionType & outputRegionForThread,
-                                int threadId);
+                                unsigned int threadId);
 
   void ThreadedGenerateDataBand(const OutputImageRegionType & outputRegionForThread,
-                                int threadId);
+                                unsigned int threadId);
 
   void BeforeThreadedGenerateData();
 

@@ -110,7 +110,7 @@ protected:
    * \sa ImageToImageFilter::ThreadedGenerateData(),
    *     ImageToImageFilter::GenerateData() */
   void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
-                            int threadId);
+                            unsigned int threadId);
 
   /**
    * Given an n dimensional list of output region breakpoints in indices

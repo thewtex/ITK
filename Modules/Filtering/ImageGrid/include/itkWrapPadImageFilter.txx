@@ -528,7 +528,7 @@ template< class TInputImage, class TOutputImage >
 void
 WrapPadImageFilter< TInputImage, TOutputImage >
 ::ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
-                       int threadId)
+                       unsigned int threadId)
 {
   unsigned int dimCtr;
   int          regCtr;

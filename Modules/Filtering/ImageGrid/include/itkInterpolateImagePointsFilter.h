@@ -160,7 +160,7 @@ protected:
   /** TODO:  This needs to be modified for a threaded implementation.
     */
   void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
-                            int threadId);
+                            unsigned int threadId);
 
   void BeforeThreadedGenerateData();
 

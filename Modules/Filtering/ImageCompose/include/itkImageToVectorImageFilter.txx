@@ -83,7 +83,7 @@ template< class TInputImage >
 void
 ImageToVectorImageFilter< TInputImage >
 ::ThreadedGenerateData(const RegionType & outputRegionForThread,
-                       int)
+                       unsigned int)
 {
   typename OutputImageType::Pointer outputImage =
     static_cast< OutputImageType * >( this->ProcessObject::GetOutput(0) );

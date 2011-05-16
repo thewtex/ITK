@@ -94,7 +94,7 @@ template< class TInputImage, class TMaskImage, class TOutputImage, class TOperat
 void
 MaskNeighborhoodOperatorImageFilter< TInputImage, TMaskImage, TOutputImage, TOperatorValueType >
 ::ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
-                       int threadId)
+                       unsigned int threadId)
 {
   // get output/inputs
   OutputImageType *     output = this->GetOutput();

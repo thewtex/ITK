@@ -97,7 +97,7 @@ GridImageSource< TOutputImage >
 template< typename TOutputImage >
 void
 GridImageSource< TOutputImage >
-::ThreadedGenerateData(const ImageRegionType & outputRegionForThread, int threadId)
+::ThreadedGenerateData(const ImageRegionType & outputRegionForThread, unsigned int threadId)
 {
   // Support progress methods/callbacks
   ProgressReporter progress( this, threadId, outputRegionForThread.GetNumberOfPixels() );

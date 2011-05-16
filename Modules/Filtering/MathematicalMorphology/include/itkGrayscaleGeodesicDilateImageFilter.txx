@@ -284,7 +284,7 @@ template< class TInputImage, class TOutputImage >
 void
 GrayscaleGeodesicDilateImageFilter< TInputImage, TOutputImage >
 ::ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
-                       int threadId)
+                       unsigned int threadId)
 {
   // Set up the progress reporter
   ProgressReporter progress(this, threadId,

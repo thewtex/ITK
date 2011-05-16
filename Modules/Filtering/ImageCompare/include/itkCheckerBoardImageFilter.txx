@@ -80,7 +80,7 @@ template< class TImage >
 void
 CheckerBoardImageFilter< TImage >
 ::ThreadedGenerateData(
-  const ImageRegionType & outputRegionForThread, int threadId)
+  const ImageRegionType & outputRegionForThread, unsigned int threadId)
 {
   itkDebugMacro(<< "Actually executing");
 

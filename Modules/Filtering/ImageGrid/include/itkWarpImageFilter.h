@@ -236,7 +236,7 @@ protected:
    * As such, it needs to provide and implementation for
    * ThreadedGenerateData(). */
   void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
-                            int threadId);
+                            unsigned int threadId);
 
 private:
   WarpImageFilter(const Self &); //purposely not implemented

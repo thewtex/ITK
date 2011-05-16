@@ -297,7 +297,7 @@ void
 WarpImageFilter< TInputImage, TOutputImage, TDeformationField >
 ::ThreadedGenerateData(
   const OutputImageRegionType & outputRegionForThread,
-  int threadId)
+  unsigned int threadId)
 {
   InputImageConstPointer  inputPtr = this->GetInput();
   OutputImagePointer      outputPtr = this->GetOutput();

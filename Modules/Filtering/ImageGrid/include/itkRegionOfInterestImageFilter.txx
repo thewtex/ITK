@@ -141,7 +141,7 @@ template< class TInputImage, class TOutputImage >
 void
 RegionOfInterestImageFilter< TInputImage, TOutputImage >
 ::ThreadedGenerateData(const RegionType & outputRegionForThread,
-                       int threadId)
+                       unsigned int threadId)
 {
   itkDebugMacro(<< "Actually executing");
 

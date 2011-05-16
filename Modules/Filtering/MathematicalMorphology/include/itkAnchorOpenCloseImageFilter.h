@@ -90,7 +90,7 @@ protected:
 
   /** Multi-thread version GenerateData. */
   void  ThreadedGenerateData(const InputImageRegionType & outputRegionForThread,
-                             int threadId);
+                             unsigned int threadId);
 
   InputImagePixelType m_Boundary1, m_Boundary2;
 private:

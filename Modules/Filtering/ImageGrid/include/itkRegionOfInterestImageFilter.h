@@ -123,7 +123,7 @@ protected:
    * \sa ImageToImageFilter::ThreadedGenerateData(),
    *     ImageToImageFilter::GenerateData()  */
   void ThreadedGenerateData(const RegionType & outputRegionForThread,
-                            int threadId);
+                            unsigned int threadId);
 
 private:
   RegionOfInterestImageFilter(const Self &); //purposely not implemented

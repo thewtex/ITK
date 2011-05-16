@@ -98,7 +98,7 @@ protected:
   /** Multi-thread version GenerateData. */
   void  ThreadedGenerateData(const OutputImageRegionType &
                              outputRegionForThread,
-                             int threadId);
+                             unsigned int threadId);
 
 private:
   FFTShiftImageFilter(const Self &); //purposely not implemented

@@ -233,7 +233,7 @@ template< class TInputImage, class TOutputImage >
 void
 BilateralImageFilter< TInputImage, TOutputImage >
 ::ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
-                       int threadId)
+                       unsigned int threadId)
 {
   typename TInputImage::ConstPointer input = this->GetInput();
   typename TOutputImage::Pointer output = this->GetOutput();

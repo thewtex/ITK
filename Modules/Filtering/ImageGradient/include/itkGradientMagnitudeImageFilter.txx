@@ -98,7 +98,7 @@ template< typename TInputImage, typename TOutputImage >
 void
 GradientMagnitudeImageFilter< TInputImage, TOutputImage >
 ::ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
-                       int threadId)
+                       unsigned int threadId)
 {
   unsigned int i;
 

@@ -273,7 +273,7 @@ template< class TInputImage, class TOutputImage >
 void
 ExtractImageFilter< TInputImage, TOutputImage >
 ::ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
-                       int threadId)
+                       unsigned int threadId)
 {
 
   itkDebugMacro(<< "Actually executing");

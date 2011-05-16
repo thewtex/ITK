@@ -282,7 +282,7 @@ protected:
   void BeforeThreadedGenerateData();
 
   void ThreadedGenerateData(const
-                            OutputImageRegionType & outputRegionForThread, int);
+                            OutputImageRegionType & outputRegionForThread, unsigned int);
 
   /** enum to indicate if the gradient image is specified as a single multi-
    * component image or as several separate images */
