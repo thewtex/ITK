@@ -136,7 +136,7 @@ void Relabeler< TScalarType, TImageDimension >
       {
       if ( this->GetOutputs()[idx] && this->GetOutputs()[idx] != output )
         {
-        op = dynamic_cast< ImageBase< ImageDimension > * >( this->GetOutputs()[idx].GetPointer() );
+        op = dynamic_cast< ImageBase< ImageDimension > * >( this->GetOutputs()[idx] );
         if ( op ) { this->GetOutputs()[idx]->SetRequestedRegion(output); }
         }
       }
@@ -156,7 +156,7 @@ void Relabeler< TScalarType, TImageDimension >
 {
   typedef typename ImageType::Pointer OutputImagePointer;
 
-  if ( idx < this->GetNumberOfOutputs() )
+  if ( idx < this->GetNumberOfIndexedOutputs() )
     {
     OutputImagePointer output = this->GetOutputImage();
 
