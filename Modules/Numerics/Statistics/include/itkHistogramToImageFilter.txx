@@ -73,13 +73,7 @@ const typename HistogramToImageFilter< THistogram, NDimension, TFunction >::Inpu
 HistogramToImageFilter< THistogram, NDimension, TFunction >
 ::GetInput(void)
 {
-  if ( this->GetNumberOfInputs() < 1 )
-    {
-    return 0;
-    }
-
-  return static_cast< const InputHistogramObjectType * >
-         ( this->ProcessObject::GetInput(0) );
+  return static_cast< const InputHistogramObjectType * >( this->GetMainInput() );
 }
 
 template< class THistogram, unsigned int NDimension, class TFunction >

@@ -66,13 +66,7 @@ typename MedialNodeTripletCorrespondenceProcess< TSourceImage >::OutputDataStruc
 MedialNodeTripletCorrespondenceProcess< TSourceImage >
 ::GetOutput()
 {
-  if ( this->GetNumberOfOutputs() < 1 )
-    {
-    return 0;
-    }
-
-  return static_cast< OutputDataStructureType * >
-         ( this->ProcessObject::GetOutput(0) );
+  return static_cast< OutputDataStructureType * >( this->GetMainOutput() );
 }
 
 /**

@@ -58,12 +58,7 @@ typename CoreAtomImageToDistanceMatrixProcess< TSourceImage >::DistanceMatrixTyp
 CoreAtomImageToDistanceMatrixProcess< TSourceImage >
 ::GetOutput()
 {
-  if ( this->GetNumberOfOutputs() < 1 )
-    {
-    return 0;
-    }
-  return static_cast< DistanceMatrixType * >
-         ( this->ProcessObject::GetOutput(0) );
+  return static_cast< DistanceMatrixType * >( this->GetMainOutput() );
 }
 
 /**

@@ -69,13 +69,7 @@ typename CoreAtomImageToUnaryCorrespondenceMatrixProcess< TSourceImage >::Corres
 CoreAtomImageToUnaryCorrespondenceMatrixProcess< TSourceImage >
 ::GetOutput()
 {
-  if ( this->GetNumberOfOutputs() < 1 )
-    {
-    return 0;
-    }
-
-  return static_cast< CorrespondenceMatrixType * >
-         ( this->ProcessObject::GetOutput(0) );
+  return static_cast< CorrespondenceMatrixType * >( this->GetMainOutput() );
 }
 
 /**
