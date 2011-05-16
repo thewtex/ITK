@@ -63,13 +63,7 @@ typename MedialNodePairCorrespondenceProcess< TSourceImage >::DataStructureType 
 MedialNodePairCorrespondenceProcess< TSourceImage >
 ::GetOutput()
 {
-  if ( this->GetNumberOfOutputs() < 1 )
-    {
-    return 0;
-    }
-
-  return static_cast< DataStructureType * >
-         ( this->ProcessObject::GetOutput(0) );
+  return static_cast< DataStructureType * >( this->GetPrimaryOutput() );
 }
 
 /**
