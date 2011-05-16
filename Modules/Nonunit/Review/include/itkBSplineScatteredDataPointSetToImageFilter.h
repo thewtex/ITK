@@ -311,7 +311,7 @@ private:
   /**
    * Function used to generate the sampled B-spline object quickly.
    */
-  void ThreadedGenerateDataForFitting( const RegionType &, int  );
+  void ThreadedGenerateDataForFitting( const RegionType &, unsigned int  );
 
   /**
    * Function used to generate the sampled B-spline object quickly.

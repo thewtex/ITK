@@ -471,7 +471,7 @@ private:
   bool m_UseImageSpacing;
   bool m_UsePrincipleComponents;
 
-  int m_RequestedNumberOfThreads;
+  unsigned int m_RequestedNumberOfThreads;
 
   typename ImageBaseType::ConstPointer m_RealValuedInputImage;
 

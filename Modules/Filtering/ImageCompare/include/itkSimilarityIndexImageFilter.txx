@@ -104,7 +104,7 @@ void
 SimilarityIndexImageFilter< TInputImage1, TInputImage2 >
 ::BeforeThreadedGenerateData()
 {
-  int numberOfThreads = this->GetNumberOfThreads();
+  unsigned int numberOfThreads = this->GetNumberOfThreads();
 
   // Resize the thread temporaries
   m_CountOfImage1.SetSize(numberOfThreads);
@@ -122,10 +122,10 @@ void
 SimilarityIndexImageFilter< TInputImage1, TInputImage2 >
 ::AfterThreadedGenerateData()
 {
-  int           i;
+  unsigned int           i;
   SizeValueType countImage1, countImage2, countIntersect;
 
-  int numberOfThreads = this->GetNumberOfThreads();
+  unsigned int numberOfThreads = this->GetNumberOfThreads();
 
   countImage1 = 0;
   countImage2 = 0;

@@ -74,8 +74,8 @@ void
 LabelContourImageFilter< TInputImage, TOutputImage >
 ::BeforeThreadedGenerateData()
 {
-  int nbOfThreads = this->GetNumberOfThreads();
-  int global_nb_threads = itk::MultiThreader::GetGlobalMaximumNumberOfThreads();
+  unsigned int nbOfThreads = this->GetNumberOfThreads();
+  unsigned int global_nb_threads = itk::MultiThreader::GetGlobalMaximumNumberOfThreads();
 
   if ( global_nb_threads != 0 )
     {

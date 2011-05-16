@@ -91,7 +91,7 @@ void
 DifferenceImageFilter< TInputImage, TOutputImage >
 ::BeforeThreadedGenerateData()
 {
-  int numberOfThreads = this->GetNumberOfThreads();
+  unsigned int numberOfThreads = this->GetNumberOfThreads();
 
   // Initialize statistics about difference image.
   m_MeanDifference = NumericTraits< RealType >::Zero;
@@ -238,9 +238,9 @@ DifferenceImageFilter< TInputImage, TOutputImage >
 ::AfterThreadedGenerateData()
 {
   // Set statistics about difference image.
-  int numberOfThreads = this->GetNumberOfThreads();
+  unsigned int numberOfThreads = this->GetNumberOfThreads();
 
-  for ( int i = 0; i < numberOfThreads; ++i )
+  for ( unsigned int i = 0; i < numberOfThreads; ++i )
     {
     m_TotalDifference += m_ThreadDifferenceSum[i];
     m_NumberOfPixelsWithDifferences += m_ThreadNumberOfPixels[i];

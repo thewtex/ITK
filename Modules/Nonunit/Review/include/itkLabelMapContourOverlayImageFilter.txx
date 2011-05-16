@@ -189,7 +189,7 @@ LabelMapContourOverlayImageFilter<TInputImage, TFeatureImage, TOutputImage>
   m_TempImage->DisconnectPipeline();
 
 
-  int nbOfThreads = this->GetNumberOfThreads();
+  unsigned int nbOfThreads = this->GetNumberOfThreads();
   if( itk::MultiThreader::GetGlobalMaximumNumberOfThreads() != 0 )
     {
     nbOfThreads = std::min( this->GetNumberOfThreads(), MultiThreader::GetGlobalMaximumNumberOfThreads() );

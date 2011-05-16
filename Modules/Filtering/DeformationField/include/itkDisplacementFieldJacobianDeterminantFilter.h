@@ -244,7 +244,7 @@ protected:
 private:
   bool m_UseImageSpacing;
 
-  int m_RequestedNumberOfThreads;
+  unsigned int m_RequestedNumberOfThreads;
 
   typename ImageBaseType::ConstPointer m_RealValuedInputImage;
 

@@ -99,13 +99,13 @@ void
 LabelStatisticsImageFilter< TInputImage, TLabelImage >
 ::BeforeThreadedGenerateData()
 {
-  int numberOfThreads = this->GetNumberOfThreads();
+  unsigned int numberOfThreads = this->GetNumberOfThreads();
 
   // Resize the thread temporaries
   m_LabelStatisticsPerThread.resize(numberOfThreads);
 
   // Initialize the temporaries
-  for ( int i = 0; i < numberOfThreads; ++i )
+  for ( unsigned int i = 0; i < numberOfThreads; ++i )
     {
     m_LabelStatisticsPerThread[i].clear();
     }
@@ -121,8 +121,8 @@ LabelStatisticsImageFilter< TInputImage, TLabelImage >
 {
   MapIterator      mapIt;
   MapConstIterator threadIt;
-  int              i;
-  int              numberOfThreads = this->GetNumberOfThreads();
+  unsigned int     i;
+  unsigned int     numberOfThreads = this->GetNumberOfThreads();
 
   // Run through the map for each thread and accumulate the count,
   // sum, and sumofsquares

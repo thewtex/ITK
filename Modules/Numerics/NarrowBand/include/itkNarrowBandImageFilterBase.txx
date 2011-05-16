@@ -248,7 +248,7 @@ NarrowBandImageFilterBase< TInputImage, TOutputImage >
 ::InitializeIteration()
 {
   //Set m_Touched flag from threads information
-  for ( int i = 0; i < this->GetMultiThreader()->GetNumberOfThreads(); i++ )
+  for ( unsigned int i = 0; i < this->GetMultiThreader()->GetNumberOfThreads(); i++ )
     {
     m_Touched = ( m_Touched || m_TouchedForThread[i] );
     m_TouchedForThread[i] = false;

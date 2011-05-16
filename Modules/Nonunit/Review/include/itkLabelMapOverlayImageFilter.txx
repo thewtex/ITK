@@ -64,7 +64,7 @@ void
 LabelMapOverlayImageFilter<TInputImage, TFeatureImage, TOutputImage>
 ::BeforeThreadedGenerateData()
 {
-  int nbOfThreads = this->GetNumberOfThreads();
+  unsigned int nbOfThreads = this->GetNumberOfThreads();
   if( itk::MultiThreader::GetGlobalMaximumNumberOfThreads() != 0 )
     {
     nbOfThreads = std::min( this->GetNumberOfThreads(), itk::MultiThreader::GetGlobalMaximumNumberOfThreads() );

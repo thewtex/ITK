@@ -529,7 +529,7 @@ template<class TInputPointSet, class TOutputImage>
 void
 BSplineScatteredDataPointSetToImageFilter<TInputPointSet, TOutputImage>
 ::ThreadedGenerateDataForFitting(
-  const RegionType & itkNotUsed( region ), int threadId )
+  const RegionType & itkNotUsed( region ), unsigned int threadId )
 {
   /**
    * Ignore the output region as we're only interested in dividing the
@@ -582,7 +582,7 @@ BSplineScatteredDataPointSetToImageFilter<TInputPointSet, TOutputImage>
   /**
    * Determine which points should be handled by this particular thread.
    */
-  int numberOfThreads = this->GetNumberOfThreads();
+  unsigned int numberOfThreads = this->GetNumberOfThreads();
   SizeValueType numberOfPointsPerThread = static_cast<SizeValueType>(
     this->GetInput()->GetNumberOfPoints() / numberOfThreads );
 
@@ -797,7 +797,7 @@ BSplineScatteredDataPointSetToImageFilter<TInputPointSet, TOutputImage>
       this->m_OmegaLatticePerThread[0],
       this->m_OmegaLatticePerThread[0]->GetLargestPossibleRegion() );
 
-    for( int n = 1; n < this->GetNumberOfThreads(); n++ )
+    for( unsigned int n = 1; n < this->GetNumberOfThreads(); n++ )
       {
       ImageRegionIterator< PointDataImageType > Itd(
         this->m_DeltaLatticePerThread[n],

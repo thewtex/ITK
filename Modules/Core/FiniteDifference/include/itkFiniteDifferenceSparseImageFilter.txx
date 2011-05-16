@@ -181,7 +181,7 @@ FiniteDifferenceSparseImageFilter< TInputImageType, TSparseOutputImageType >
   // various threads.  There is one distinct slot for each possible thread,
   // so this data structure is thread-safe.  All of the time steps calculated
   // in each thread will be combined in the ResolveTimeStepMethod.
-  int threadCount = this->GetMultiThreader()->GetNumberOfThreads();
+  unsigned int threadCount = this->GetMultiThreader()->GetNumberOfThreads();
 
   str.TimeStepList.resize(threadCount, false);
   str.ValidTimeStepList.resize(threadCount);
