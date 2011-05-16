@@ -45,7 +45,7 @@ ImageToVectorImageFilter< TInputImage >
   this->Superclass::GenerateOutputInformation();
 
   OutputImageType *output = this->GetOutput();
-  output->SetVectorLength( this->GetNumberOfInputs() );
+  output->SetVectorLength( this->GetNumberOfIndexedInputs() );
 }
 
 //----------------------------------------------------------------------------
@@ -56,7 +56,7 @@ ImageToVectorImageFilter< TInputImage >
 {
   // Check to verify all inputs are specified and have the same metadata,
   // spacing etc...
-  const unsigned int numberOfInputs = this->GetNumberOfInputs();
+  const unsigned int numberOfInputs = this->GetNumberOfIndexedInputs();
   RegionType         region;
 
   for ( unsigned int i = 0; i < numberOfInputs; i++ )
@@ -94,7 +94,7 @@ ImageToVectorImageFilter< TInputImage >
   typedef ImageRegionConstIterator< InputImageType > InputIteratorType;
   std::vector< InputIteratorType * > inputItContainer;
 
-  for ( unsigned int i = 0; i < this->GetNumberOfInputs(); i++ )
+  for ( unsigned int i = 0; i < this->GetNumberOfIndexedInputs(); i++ )
     {
     typename InputImageType::Pointer inputImagePointer =
       static_cast< InputImageType * >( this->ProcessObject::GetInput(i) );
@@ -105,10 +105,10 @@ ImageToVectorImageFilter< TInputImage >
     inputItContainer.push_back(iit);
     }
 
-  typename OutputImageType::PixelType pix( this->GetNumberOfInputs() );
+  typename OutputImageType::PixelType pix( this->GetNumberOfIndexedInputs() );
   while ( !oit.IsAtEnd() )
     {
-    for ( unsigned int i = 0; i < this->GetNumberOfInputs(); i++ )
+    for ( unsigned int i = 0; i < this->GetNumberOfIndexedInputs(); i++ )
       {
       pix[i] = inputItContainer[i]->Get();
       ++( *inputItContainer[i] );
@@ -117,7 +117,7 @@ ImageToVectorImageFilter< TInputImage >
     ++oit;
     }
 
-  for ( unsigned int i = 0; i < this->GetNumberOfInputs(); i++ )
+  for ( unsigned int i = 0; i < this->GetNumberOfIndexedInputs(); i++ )
     {
     delete inputItContainer[i];
     }

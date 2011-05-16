@@ -32,6 +32,7 @@
 #include "itkMultiThreader.h"
 #include "itkObjectFactory.h"
 #include <vector>
+#include <map>
 
 namespace itk
 {
@@ -106,24 +107,72 @@ public:
   /** Smart Pointer type to a DataObject. */
   typedef DataObject::Pointer DataObjectPointer;
 
-  /** STL Array of SmartPointers to DataObjects */
-  typedef std::vector< DataObjectPointer > DataObjectPointerArray;
+  /** STL array of const pointer to the data objects */
+  typedef std::vector< const DataObject * > ConstDataObjectPointerArray;
 
-  /** Return an array with all the inputs of this process object.
-   * This is useful for tracing back in the pipeline to construct
-   * graphs etc.  */
-  DataObjectPointerArray & GetInputs()
-  { return m_Inputs; }
+  /** STL array of pointer to the data objects */
+  typedef std::vector< DataObject * > DataObjectPointerArray;
 
-  /** Size type of an std::vector */
+  typedef DataObject::IdentifierType DataObjectIdentifierType;
+
+  /** STL array of data object names */
+  typedef std::vector< DataObjectIdentifierType >  NameArray;
+
+  /** Return a array with the names of the inputs of this process object.
+   * The names are ordered lexicographically, and match the order of the
+   * data object produced by GetInputs()
+   */
+  NameArray GetInputNames() const;
+
+  /** Return a array with the named inputs of this process object.
+   * The order of the inputs match the order of the input names produced
+   * by GetInputNames()
+   */
+  DataObjectPointerArray GetInputs();
+  ConstDataObjectPointerArray GetInputs() const;
+
+  /** Return true if the input with this name exists */
+  bool HasInput( const DataObjectIdentifierType & key ) const;
+
   typedef DataObjectPointerArray::size_type DataObjectPointerArraySizeType;
 
-  /** Get the size of the input vector.  This is merely the size of
+  /** Get the size of the input container.  This is merely the size of
    * the input vector, not the number of inputs that have valid
    * DataObject's assigned. Use GetNumberOfValidRequiredInputs() to
    * determine how many inputs are non-null. */
   DataObjectPointerArraySizeType GetNumberOfInputs() const
   { return m_Inputs.size(); }
+
+  DataObjectPointerArraySizeType GetNumberOfOutputs() const
+  { return m_Outputs.size(); }
+
+  /** Return a array with the names of the outputs of this process object.
+   * The names are ordered lexicographically, and match the order of the
+   * data object produced by GetOutputs()
+   */
+  NameArray GetOutputNames() const;
+
+  /** Return a array with the named outputs of this process object.
+   * The order of the outputs match the order of the input names produced
+   * by GetOutputNames()
+   */
+  DataObjectPointerArray GetOutputs();
+  ConstDataObjectPointerArray GetOutputs() const;
+
+  /** Return true if the output with this name exists */
+  bool HasOutput( const DataObjectIdentifierType & key ) const;
+
+  /** Return an array with all the inputs of this process object.
+   * This is useful for tracing back in the pipeline to construct
+   * graphs etc.  */
+  DataObjectPointerArray GetIndexedInputs();
+  ConstDataObjectPointerArray GetIndexedInputs() const;
+
+  /** Get the size of the input vector.  This is merely the size of
+   * the input vector, not the number of inputs that have valid
+   * DataObject's assigned. Use GetNumberOfValidRequiredInputs() to
+   * determine how many inputs are non-null. */
+  DataObjectPointerArraySizeType GetNumberOfIndexedInputs() const;
 
   /** Get the number of valid inputs.  This is the number of non-null
    * entries in the input vector in the first NumberOfRequiredInputs
@@ -137,10 +186,25 @@ public:
   /** Return an array with all the outputs of this process object.
    * This is useful for tracing forward in the pipeline to contruct
    * graphs etc.  */
-  DataObjectPointerArray & GetOutputs()
-  { return m_Outputs; }
-  DataObjectPointerArraySizeType GetNumberOfOutputs() const
-  { return m_Outputs.size(); }
+  DataObjectPointerArray GetIndexedOutputs();
+  ConstDataObjectPointerArray GetIndexedOutputs() const;
+  DataObjectPointerArraySizeType GetNumberOfIndexedOutputs() const;
+
+  /** Make a DataObject of the correct type to used as the specified
+   * output.  Every ProcessObject subclass must be able to create a
+   * DataObject that can be used as a specified output. This method
+   * is automatically called when DataObject::DisconnectPipeline() is
+   * called.  DataObject::DisconnectPipeline, disconnects a data object
+   * from being an output of its current source.  When the data object
+   * is disconnected, the ProcessObject needs to construct a replacement
+   * output data object so that the ProcessObject is in a valid state.
+   * So DataObject::DisconnectPipeline eventually calls
+   * ProcessObject::MakeOutput. Note that MakeOutput always returns a
+   * itkSmartPointer to a DataObject. ImageSource and MeshSource override
+   * this method to create the correct type of image and mesh respectively.
+   * If a filter has multiple outputs of different types, then that
+   * filter must provide an implementation of MakeOutput(). */
+  virtual DataObjectPointer MakeOutput(unsigned int idx);
 
   /** Set the AbortGenerateData flag for the process object. Process objects
    *  may handle premature termination of execution in different ways.  */
@@ -248,7 +312,7 @@ public:
    * this method to create the correct type of image and mesh respectively.
    * If a filter has multiple outputs of different types, then that
    * filter must provide an implementation of MakeOutput(). */
-  virtual DataObjectPointer MakeOutput(unsigned int idx);
+  virtual DataObjectPointer MakeOutput( const DataObjectIdentifierType & );
 
   /** Turn on/off the flags to control whether the bulk data belonging
    * to the outputs of this ProcessObject are released after being
@@ -299,13 +363,58 @@ protected:
   ~ProcessObject();
   void PrintSelf(std::ostream & os, Indent indent) const;
 
+  /** Return an input */
+  DataObject * GetInput(const DataObjectIdentifierType & key);
+  const DataObject * GetInput(const DataObjectIdentifierType & key) const;
+
+  /** Set an input */
+  virtual void SetInput(const DataObjectIdentifierType & key, DataObject *input);
+
+  /** Remove an input */
+  virtual void RemoveInput(const DataObjectIdentifierType & key);
+
+  /** \deprecated use RemoveOutput(unsigned int) instead */
+  virtual void RemoveInput(DataObject *input);
+
+  /** Return the main input */
+  DataObject * GetPrimaryInput();
+  const DataObject * GetPrimaryInput() const;
+
+  /** Set the main input */
+  virtual void SetPrimaryInput(DataObject *input);
+
+  /** Return an output */
+  DataObject * GetOutput(const DataObjectIdentifierType & key);
+  const DataObject * GetOutput(const DataObjectIdentifierType & key) const;
+
+  /** Set an output */
+  virtual void SetOutput(const DataObjectIdentifierType key, DataObject *output);
+  // key is not passed by reference because the key is likely to be destroyed
+  // by this method
+
+  /** Remove an output */
+  virtual void RemoveOutput(const DataObjectIdentifierType & key);
+
+  /** \deprecated use RemoveOutput(unsigned int) instead */
+  virtual void RemoveOutput(DataObject *output);
+
+  /** Return the main output */
+  DataObject * GetPrimaryOutput();
+  const DataObject * GetPrimaryOutput() const;
+
+  /** Set the main output */
+  virtual void SetPrimaryOutput(DataObject *output);
+
+  DataObjectIdentifierType MakeNameFromIndex( unsigned int ) const;
+  unsigned int MakeIndexFromName( const DataObjectIdentifierType & ) const;
+
   /** Protected methods for setting inputs.
    * Subclasses make use of them for setting input. */
   virtual void SetNthInput(unsigned int num, DataObject *input);
 
   virtual void AddInput(DataObject *input);
 
-  virtual void RemoveInput(DataObject *input);
+  virtual void RemoveInput(unsigned int);
 
   itkSetMacro(NumberOfRequiredInputs, unsigned int);
   itkGetConstReferenceMacro(NumberOfRequiredInputs, unsigned int);
@@ -324,10 +433,13 @@ protected:
   virtual void PopFrontInput();
 
   /** Called to allocate the input array. Copies old inputs. */
+  void SetNumberOfIndexedInputs(unsigned int num);
+
+  /** \deprecated use SetNumberOfIndexedInputs() instead */
   void SetNumberOfInputs(unsigned int num);
 
   /** Method used internally for getting an input. */
-  DataObject * GetInput(unsigned int idx);
+  DataObject * GetInput(unsigned int);
 
   const DataObject * GetInput(unsigned int idx) const;
 
@@ -337,12 +449,15 @@ protected:
 
   virtual void AddOutput(DataObject *output);
 
-  virtual void RemoveOutput(DataObject *output);
+  virtual void RemoveOutput(unsigned int idx);
 
   itkSetMacro(NumberOfRequiredOutputs, unsigned int);
   itkGetConstReferenceMacro(NumberOfRequiredOutputs, unsigned int);
 
   /** Called to allocate the output array.  Copies old outputs. */
+  void SetNumberOfIndexedOutputs(unsigned int num);
+
+  /** \deprecated use SetNumberOfIndexedInputs() instead */
   void SetNumberOfOutputs(unsigned int num);
 
   /** Method used internally for getting an output. */
@@ -439,15 +554,20 @@ private:
   ProcessObject(const Self &);  //purposely not implemented
   void operator=(const Self &); //purposely not implemented
 
-  /** An array of the inputs to the filter. */
-  DataObjectPointerArray m_Inputs;
-  unsigned int           m_NumberOfRequiredInputs;
+  /** STL map to store the named inputs and outputs */
+  typedef std::map< DataObjectIdentifierType, DataObjectPointer > DataObjectPointerMap;
+
+  /** Named input and outputs containers */
+  DataObjectPointerMap   m_Inputs;
+  DataObjectPointerMap   m_Outputs;
 
   /** An array that caches the ReleaseDataFlags of the inputs */
-  std::vector< bool > m_CachedInputReleaseDataFlags;
+  std::map< DataObjectIdentifierType, bool > m_CachedInputReleaseDataFlags;
 
-  /** An array of the outputs to the filter. */
-  DataObjectPointerArray m_Outputs;
+  unsigned int           m_NumberOfIndexedInputs;
+  unsigned int           m_NumberOfIndexedOutputs;
+
+  unsigned int           m_NumberOfRequiredInputs;
   unsigned int           m_NumberOfRequiredOutputs;
 
   /** These support the progress method and aborting filter execution. */
