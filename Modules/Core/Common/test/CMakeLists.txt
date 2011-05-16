@@ -145,6 +145,7 @@ itkMemoryLeakTest.cxx
 itkVectorGeometryTest.cxx
 itkVNLRoundProfileTest1.cxx
 itkZeroFluxBoundaryConditionTest.cxx
+itkDataObjectAndProcessObjectTest.cxx
 )
 
 CreateTestDriver(ITK-Common1 "${ITK-Common_LIBRARIES}" "${ITK-Common1Tests}")
