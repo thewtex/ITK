@@ -154,10 +154,12 @@ int itkImagePCAShapeModelEstimatorTest(int, char* [] )
   //----------------------------------------------------------------------
   //Set the parameters of the clusterer
   //----------------------------------------------------------------------
-  applyPCAShapeEstimator->SetNumberOfTrainingImages( NUMTRAINIMAGES );
+/*  applyPCAShapeEstimator->SetNumberOfTrainingImages( NUMTRAINIMAGES );
   applyPCAShapeEstimator->SetNumberOfPrincipalComponentsRequired( NUMLARGESTPC + 1 );
   applyPCAShapeEstimator->SetNumberOfPrincipalComponentsRequired( NUMLARGESTPC );
-  applyPCAShapeEstimator->SetInput(0, image1);
+  applyPCAShapeEstimator->SetDebug(true);*/
+  applyPCAShapeEstimator->Print(std::cout);
+  applyPCAShapeEstimator->SetInput(image1);
   applyPCAShapeEstimator->SetInput(1, image2);
   applyPCAShapeEstimator->SetInput(2, image3);
 

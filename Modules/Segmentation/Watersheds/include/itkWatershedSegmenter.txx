@@ -1345,7 +1345,7 @@ Segmenter< TInputImage >
       if ( this->GetOutputs()[idx] && this->GetOutputs()[idx] != output )
         {
         op = dynamic_cast< ImageBase< ImageDimension >
-                           * >( this->GetOutputs()[idx].GetPointer() );
+                           * >( this->GetOutputs()[idx] );
 
         if ( op ) { this->GetOutputs()[idx]->SetRequestedRegion(output); }
         }

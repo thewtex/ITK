@@ -246,6 +246,7 @@ MultiResolutionPDEDeformableRegistration< TFixedImage, TMovingImage, TDeformatio
 
   // Create the image pyramids.
   m_MovingImagePyramid->SetInput(movingImage);
+  m_MovingImagePyramid->Print(std::cout);
   m_MovingImagePyramid->UpdateLargestPossibleRegion();
 
   m_FixedImagePyramid->SetInput(fixedImage);
@@ -485,7 +486,7 @@ MultiResolutionPDEDeformableRegistration< TFixedImage, TMovingImage, TDeformatio
     // Initial deforamtion field is not set.
     // Copy information from the fixed image.
     for ( unsigned int idx = 0; idx <
-          this->GetNumberOfOutputs(); ++idx )
+          this->GetNumberOfIndexedOutputs(); ++idx )
       {
       output = this->GetOutput(idx);
       if ( output )
