@@ -77,6 +77,22 @@ MetaDataDictionary
 
   return constentry;
 }
+MetaDataObjectBase::Pointer &
+MetaDataDictionary
+::Get(const std::string &key) const
+{
+    if (!this->HasKey(key))
+    {
+        itkGenericExceptionMacro(<< "Key '"<<key<<"' does not exist ");
+    }
+    return ( *m_Dictionary )[key];
+}
+void
+MetaDataDictionary
+::Set(const std::string & key, MetaDataObjectBase * object)
+{
+  (*m_Dictionary)[key] = object;
+}
 
 bool
 MetaDataDictionary
