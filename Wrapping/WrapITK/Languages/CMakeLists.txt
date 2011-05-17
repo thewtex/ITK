@@ -294,7 +294,11 @@ foreach(lang ${languages})
   string(TOUPPER "${lang}" lang_upper)
 
   # add the language to the options
-  option(WRAP_ITK_${lang_upper} "Build swig ${lang} wrapper support." ${default})
+  if("${lang_upper}" MATCHES "^TCL$")
+    option(WRAP_ITK_TCL "Build swig TCL wrapper support. TCL support is currently unstable but if you still want to use it, please go ahead." ${default})
+  else("${lang_upper}" MATCHES "^TCL$")
+    option(WRAP_ITK_${lang_upper} "Build swig ${lang} wrapper support." ${default})
+  endif("${lang_upper}" MATCHES "^TCL$")
 
   # add the language to the list, if the user have turn it on, and include
   # the subdirectory
