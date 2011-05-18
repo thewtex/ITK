@@ -479,11 +479,11 @@ def show(input, **kargs) :
 class show2D :
   """Display a 2D image
   """
-  def __init__(self, imageOrFilter, Label=False) :
+  def __init__(self, imageOrFilter, Label=False, Title=None) :
     import tempfile, itk, os
     # get some data from the environment
-    command = os.environ.get("WRAPITK_SHOW2D_COMMAND", "imview %s -fork")
-    label_command = os.environ.get("WRAPITK_SHOW2D_LABEL_COMMAND", "imview %s -c regions.lut -fork")
+    command = os.environ.get("WRAPITK_SHOW2D_COMMAND", "imagej %(image)s -run 'View 100%%' -eval 'rename(\"%(title)s\")' &")
+    label_command = os.environ.get("WRAPITK_SHOW2D_LABEL_COMMAND", "imagej %(image)s -run 'View 100%%' -eval 'rename(\"%(title)s\")' -run '3-3-2 RGB' &")
     compress = os.environ.get("WRAPITK_SHOW2D_COMPRESS", "true").lower() in ["on", "true", "yes", "1"]
     extension = os.environ.get("WRAPITK_SHOW2D_EXTENSION", ".tif")
     # use the tempfile module to get a non used file name and to put
@@ -504,13 +504,37 @@ class show2D :
       img = convert.GetOutput()
       # this is a label image - force the parameter
       Label = True
+    if Title == None:
+      # try to generate a title
+      s = img.GetSource()
+      if s:
+        s = itk.down_cast(s)
+        Title = "(%s)" % s.__class__.__name__
+      else:
+        Title = "(%s)" % img.__class__.__name__
+      try:
+        import IPython.ipapi
+        ip = IPython.ipapi.get()
+        if ip != None:
+          names = []
+          ref = imageOrFilter
+          if s:
+            ref = s
+          for n, v in ip.user_ns.iteritems():
+            if isinstance(v, itk.LightObject) and v == ref:
+              names.append(n)
+          if names != []:
+            Title = ", ".join(names)+" "+Title
+      except ImportError:
+        # just do nothing
+        pass
     write(img, self.__tmpFile__.name, compress)
     # now run imview
     import os
     if Label:
-      os.system( label_command % self.__tmpFile__.name)
+      os.system( label_command % {"image":self.__tmpFile__.name, "title": Title} )
     else:
-      os.system( command % self.__tmpFile__.name)
+      os.system( command % {"image":self.__tmpFile__.name, "title": Title} )
     #tmpFile.close()
 
 
