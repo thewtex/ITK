@@ -4,6 +4,7 @@ set(CMAKE_MODULE_PATH ${ITK_SOURCE_DIR}/CMake ${CMAKE_MODULE_PATH})
 include(PreventInSourceBuilds)
 include(PreventInBuildInstalls)
 include(ITKModuleMacros)
+include(ITKExternalData)
 include(itkCheckSourceTree)
 
 set(main_project_name ${_ITKModuleMacros_DEFAULT_LABEL})
@@ -43,28 +44,18 @@ macro(verify_itk_module_is_set)
 endmacro()
 
 #-----------------------------------------------------------------------------
-# Takes a list of tests and applies the containing module's label to each.
-#
-macro(itk_add_test_module_label)
-  if("${ARGV0}" STREQUAL "")
-    message(FATAL_ERROR "itk_add_test_module_label requires at least one test name as input")
-  endif()
-
-  if(itk-module)
-    set(_label ${itk-module})
-  else()
-    set(_label ${main_project_name})
-  endif()
-
-  set_property(TEST ${ARGN} PROPERTY LABELS ${_label})
-endmacro()
+# Enable the download and use of BrainWeb datasets.
+# When this data is available, additional 3D tests are enabled.
+option(ITK_USE_BRAINWEB_DATA "Download and use BrainWeb data for advanced testing" OFF)
+mark_as_advanced(ITK_USE_BRAINWEB_DATA)
 
 #-----------------------------------------------------------------------------
 # ITK wrapper for add_test that automatically sets the test's LABELS property
 # to the value of its containing module.
 #
-macro(itk_add_test)
-  add_test(${ARGN})
+function(itk_add_test)
+  # Add tests with data in the ITKData group.
+  ExternalData_add_test(ITKData ${ARGN})
 
   if("NAME" STREQUAL "${ARGV0}")
     set(_iat_testname ${ARGV1})
@@ -72,8 +63,17 @@ macro(itk_add_test)
     set(_iat_testname ${ARGV0})
   endif()
 
-  itk_add_test_module_label(${_iat_testname})
-endmacro()
+  if(itk-module)
+    set(_label ${itk-module})
+    if(TARGET ${itk-module}-all AND "${ARGN}" MATCHES "DATA{")
+      add_dependencies(${itk-module}-all ITKData)
+    endif()
+  else()
+    set(_label ${main_project_name})
+  endif()
+
+  set_property(TEST ${_iat_testname} PROPERTY LABELS ${_label})
+endfunction()
 
 #-----------------------------------------------------------------------------
 # ITK build configuration options.
@@ -534,3 +534,7 @@ endif()
 #----------------------------------------------------------------------
 # Provide an option for generating documentation.
 add_subdirectory(Utilities/Doxygen)
+
+# Create target to download data from the ITKData group.  This must come after
+# all tests have been added that reference the group, so we put it last.
+ExternalData_Add_Target(ITKData)
