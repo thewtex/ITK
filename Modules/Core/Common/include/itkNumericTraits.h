@@ -98,6 +98,9 @@ public:
   /** Multiplicative identity. */
   static const T One;
 
+  /** Is the type a built-in numeric type? */
+  static const bool IsNumericType = false;
+
   /** Smallest (most nonpositive) value */
   static T NonpositiveMin() { return TraitsType::min(); }
 
@@ -217,6 +220,7 @@ public:
 
   static const bool ITKCommon_EXPORT Zero;
   static const bool ITKCommon_EXPORT One;
+  static const bool ITKCommon_EXPORT IsNumericType = true;
 
   static bool min() { return false; }
   static bool max() { return true; }
@@ -270,6 +274,7 @@ public:
 
   static const char ITKCommon_EXPORT Zero;
   static const char ITKCommon_EXPORT One;
+  static const bool ITKCommon_EXPORT IsNumericType = true;
 
 #ifdef _MSC_VER
 #pragma warning (push)
@@ -330,6 +335,7 @@ public:
 
   static const signed char ITKCommon_EXPORT Zero;
   static const signed char ITKCommon_EXPORT One;
+  static const bool ITKCommon_EXPORT IsNumericType = true;
 
   static signed char min() { return -128; }
   static signed char max() { return 127; }
@@ -382,9 +388,9 @@ public:
 
   static const unsigned char ITKCommon_EXPORT Zero;
   static const unsigned char ITKCommon_EXPORT One;
+  static const bool ITKCommon_EXPORT IsNumericType = true;
 
   itkNUMERIC_TRAITS_MIN_MAX_MACRO();
-
   static unsigned char NonpositiveMin() { return vcl_numeric_limits< ValueType >::min(); }
   static bool IsPositive(unsigned char val) { return val != Zero; }
   static bool IsNonpositive(unsigned char val) { return val == Zero; }
@@ -431,6 +437,7 @@ public:
 
   static const short ITKCommon_EXPORT Zero;
   static const short ITKCommon_EXPORT One;
+  static const bool ITKCommon_EXPORT IsNumericType = true;
 
   itkNUMERIC_TRAITS_MIN_MAX_MACRO();
   static short NonpositiveMin() { return vcl_numeric_limits< ValueType >::min(); }
@@ -480,6 +487,7 @@ public:
 
   static const unsigned short ITKCommon_EXPORT Zero;
   static const unsigned short ITKCommon_EXPORT One;
+  static const bool ITKCommon_EXPORT IsNumericType = true;
 
   itkNUMERIC_TRAITS_MIN_MAX_MACRO();
   static unsigned short NonpositiveMin() { return vcl_numeric_limits< ValueType >::min(); }
@@ -528,6 +536,7 @@ public:
 
   static const int ITKCommon_EXPORT Zero;
   static const int ITKCommon_EXPORT One;
+  static const bool ITKCommon_EXPORT IsNumericType = true;
 
   itkNUMERIC_TRAITS_MIN_MAX_MACRO();
   static int NonpositiveMin() { return vcl_numeric_limits< ValueType >::min(); }
@@ -577,6 +586,7 @@ public:
 
   static const unsigned int ITKCommon_EXPORT Zero;
   static const unsigned int ITKCommon_EXPORT One;
+  static const bool ITKCommon_EXPORT IsNumericType = true;
 
   static unsigned int min(void) { return 0; }
   static unsigned int max(void) { return static_cast< unsigned int >( -1 ); }
@@ -629,6 +639,7 @@ public:
 
   static const long ITKCommon_EXPORT Zero;
   static const long ITKCommon_EXPORT One;
+  static const bool ITKCommon_EXPORT IsNumericType = true;
 
   itkNUMERIC_TRAITS_MIN_MAX_MACRO();
   static long NonpositiveMin() { return vcl_numeric_limits< ValueType >::min(); }
@@ -678,6 +689,7 @@ public:
 
   static const unsigned long ITKCommon_EXPORT Zero;
   static const unsigned long ITKCommon_EXPORT One;
+  static const bool ITKCommon_EXPORT IsNumericType = true;
 
   itkNUMERIC_TRAITS_MIN_MAX_MACRO();
   static unsigned long NonpositiveMin() { return vcl_numeric_limits< ValueType >::min(); }
@@ -727,6 +739,7 @@ public:
 
   static const float ITKCommon_EXPORT Zero;
   static const float ITKCommon_EXPORT One;
+  static const bool ITKCommon_EXPORT IsNumericType = true;
 
   itkNUMERIC_TRAITS_MIN_MAX_MACRO();
   static float NonpositiveMin() { return -vcl_numeric_limits< ValueType >::max(); }
@@ -776,6 +789,7 @@ public:
 
   static const double ITKCommon_EXPORT Zero;
   static const double ITKCommon_EXPORT One;
+  static const bool ITKCommon_EXPORT IsNumericType = true;
 
   itkNUMERIC_TRAITS_MIN_MAX_MACRO();
   static double NonpositiveMin() { return -vcl_numeric_limits< ValueType >::max(); }
@@ -833,6 +847,7 @@ public:
 
   static const long double ITKCommon_EXPORT Zero;
   static const long double ITKCommon_EXPORT One;
+  static const bool ITKCommon_EXPORT IsNumericType = true;
 
   itkNUMERIC_TRAITS_MIN_MAX_MACRO();
   static long double NonpositiveMin() { return -vcl_numeric_limits< ValueType >::max(); }
@@ -885,6 +900,7 @@ public:
 
   static const Self ITKCommon_EXPORT Zero;
   static const Self ITKCommon_EXPORT One;
+  static const bool ITKCommon_EXPORT IsNumericType = false;
 
   static Self min() { return vcl_numeric_limits< Self >::min(); }
   static Self max() { return vcl_numeric_limits< Self >::max(); }
@@ -944,6 +960,7 @@ public:
 
   static const Self ITKCommon_EXPORT Zero;
   static const Self ITKCommon_EXPORT One;
+  static const bool ITKCommon_EXPORT IsNumericType = false;
 
   static Self min() { return vcl_numeric_limits< ValueType >::min(); }
   static Self max() { return vcl_numeric_limits< ValueType >::max(); }
@@ -1001,6 +1018,7 @@ public:
 
   static const ValueType ITKCommon_EXPORT Zero;
   static const ValueType ITKCommon_EXPORT One;
+  static const bool ITKCommon_EXPORT IsNumericType = true;
 
   itkNUMERIC_TRAITS_MIN_MAX_MACRO();
   static ValueType NonpositiveMin() { return vcl_numeric_limits< ValueType >::min(); }
@@ -1051,6 +1069,7 @@ public:
 
   static const ValueType ITKCommon_EXPORT Zero;
   static const ValueType ITKCommon_EXPORT One;
+  static const bool ITKCommon_EXPORT IsNumericType = true;
 
   itkNUMERIC_TRAITS_MIN_MAX_MACRO();
   static ValueType NonpositiveMin() { return vcl_numeric_limits< ValueType >::min(); }

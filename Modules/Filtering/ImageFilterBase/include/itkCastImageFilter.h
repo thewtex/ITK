@@ -44,11 +44,12 @@ namespace itk
  */
 namespace Functor
 {
+
 template< class TInput, class TOutput >
 class Cast
 {
 public:
-  Cast() {}
+  Cast() : m_Clamping( false ) {}
   virtual ~Cast() {}
   bool operator!=(const Cast &) const
   {
@@ -60,12 +61,45 @@ public:
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput & A) const
+  template< bool >
+  struct Dispatch {};
+
+  /** Version for non-scalar types. No clamping is performed. */
+  inline TOutput Evaluate(const Dispatch< false > &, const TInput & A) const
   {
     return static_cast< TOutput >( A );
   }
+
+  /** Version for scalar-types. Clamping may be performed. */
+  inline TOutput Evaluate(const Dispatch< true > &, const TInput & A) const
+  {
+    if ( m_Clamping )
+      {
+      double dA = static_cast< double >( A );
+      if ( dA > static_cast< double >( NumericTraits< TOutput >::max() ) )
+        {
+        return NumericTraits< TOutput >::max();
+        }
+      if ( dA < static_cast< double >( NumericTraits< TOutput >::NonpositiveMin() ) )
+        {
+        return NumericTraits<TOutput>::NonpositiveMin();
+        }
+      }
+
+    return static_cast< TOutput >( A );
+  }
+
+  /** Version for nonscalar-types. Clamping will not be performed. */
+  inline TOutput operator()(const TInput & A) const
+  {
+    return this->Evaluate(Dispatch< NumericTraits< TInput >::IsNumericType >(), A );
+  }
+
+  bool m_Clamping;
 };
-}
+
+} // namespace Functor
+
 
 template< class TInputImage, class TOutputImage >
 class ITK_EXPORT CastImageFilter:
@@ -100,6 +134,19 @@ public:
                                            typename TOutputImage::PixelType > ) );
   /** End concept checking */
 #endif
+
+  /** Enable/disable clamping. If enabled, output pixel values will be
+   * clamped to the range supported by the output pixel type. */
+  void SetClamping( bool enable )
+  {
+    this->GetFunctor().m_Clamping = enable;
+  }
+  bool GetClamping()
+  {
+    return this->GetFunctor().m_Clamping;
+  }
+  itkBooleanMacro( Clamping );
+
 protected:
   CastImageFilter() {}
   virtual ~CastImageFilter() {}
