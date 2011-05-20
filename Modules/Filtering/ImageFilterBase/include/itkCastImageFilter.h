@@ -48,7 +48,7 @@ template< class TInput, class TOutput >
 class Cast
 {
 public:
-  Cast() {}
+  Cast() : m_Clamping( false ) {}
   virtual ~Cast() {}
   bool operator!=(const Cast &) const
   {
@@ -62,8 +62,23 @@ public:
 
   inline TOutput operator()(const TInput & A) const
   {
+    if ( m_Clamping )
+      {
+      double dA = static_cast< double >( A );
+      if ( dA > static_cast< double >( NumericTraits< TOutput >::max() ) )
+        {
+        return NumericTraits< TOutput >::max();
+        }
+      if ( dA < static_cast< double >( NumericTraits< TOutput >::NonpositiveMin() ) )
+        {
+        return NumericTraits<TOutput>::NonpositiveMin();
+        }
+      }
+
     return static_cast< TOutput >( A );
   }
+
+  bool m_Clamping;
 };
 }
 
@@ -100,6 +115,19 @@ public:
                                            typename TOutputImage::PixelType > ) );
   /** End concept checking */
 #endif
+
+  /** Enable/disable clamping. If enabled, output pixel values will be
+   * clamped to the range supported by the output pixel type. */
+  void SetClamping( bool enable )
+  {
+    this->GetFunctor().m_Clamping = enable;
+  }
+  bool GetClamping()
+  {
+    return this->GetFunctor().m_Clamping;
+  }
+  itkBooleanMacro( Clamping );
+
 protected:
   CastImageFilter() {}
   virtual ~CastImageFilter() {}

@@ -21,8 +21,10 @@
 
 #include <iostream>
 
-#include "itkImage.h"
 #include "itkCastImageFilter.h"
+
+#include "itkImage.h"
+#include "itkNumericTraits.h"
 #include "itkRandomImageSource.h"
 
 template < class T >
@@ -66,7 +68,7 @@ std::string GetTypeName< double >() { return "double"; }
 
 
 template < class TInputPixelType, class TOutputPixelType >
-bool TestCastFromTo()
+bool TestCastFromTo(bool clampingOn)
 {
   typedef itk::Image< TInputPixelType, 3 >                        InputImageType;
   typedef itk::Image< TOutputPixelType, 3 >                       OutputImageType;
@@ -80,6 +82,7 @@ bool TestCastFromTo()
 
   typename FilterType::Pointer filter = FilterType::New();
   filter->SetInput( source->GetOutput() );
+  filter->SetClamping( clampingOn );
   filter->UpdateLargestPossibleRegion();
 
   typedef itk::ImageRegionConstIterator< InputImageType >  InputIteratorType;
@@ -93,7 +96,15 @@ bool TestCastFromTo()
   bool success = true;
 
   std::cout << "Casting from " << GetTypeName< TInputPixelType >()
-            << " to " << GetTypeName< TOutputPixelType >() << " ... ";
+            << " to " << GetTypeName< TOutputPixelType >() << " with ";
+  if ( clampingOn )
+    {
+    std::cout << "clamping ON ... " << std::endl;
+    }
+  else
+    {
+    std::cout << "clamping OFF ... " << std::endl;
+    }
 
   it.GoToBegin();
   ot.GoToBegin();
@@ -101,8 +112,24 @@ bool TestCastFromTo()
     {
     TInputPixelType  inValue  = it.Value();
     TOutputPixelType outValue = ot.Value();
+    TOutputPixelType expectedValue = static_cast< TOutputPixelType >( inValue );
 
-    if ( outValue != static_cast< TOutputPixelType >( inValue ) )
+    if ( filter->GetClamping() )
+      {
+      double dInValue = static_cast< double >( inValue );
+      if ( dInValue >
+           static_cast< double >( itk::NumericTraits< TOutputPixelType >::max() ) )
+        {
+        expectedValue = itk::NumericTraits< TOutputPixelType >::max();
+        }
+      if ( dInValue <
+           static_cast< double >( itk::NumericTraits< TOutputPixelType >::NonpositiveMin() ) )
+        {
+        expectedValue = itk::NumericTraits< TOutputPixelType >::NonpositiveMin();
+        }
+      }
+
+    if ( outValue != expectedValue )
       {
       success = false;
       break;
@@ -126,21 +153,36 @@ bool TestCastFromTo()
 
 
 template < class TInputPixelType >
-bool TestCastTo()
+bool TestCastFrom()
 {
+  bool clampingOff = false;
+  bool clampingOn  = true;
+
   bool success =
-    TestCastFromTo< TInputPixelType, char >() &&
-    TestCastFromTo< TInputPixelType, unsigned char >() &&
-    TestCastFromTo< TInputPixelType, short >() &&
-    TestCastFromTo< TInputPixelType, unsigned short >() &&
-    TestCastFromTo< TInputPixelType, int >() &&
-    TestCastFromTo< TInputPixelType, unsigned int >() &&
-    TestCastFromTo< TInputPixelType, long >() &&
-    TestCastFromTo< TInputPixelType, unsigned long >() &&
-    TestCastFromTo< TInputPixelType, long long >() &&
-    TestCastFromTo< TInputPixelType, unsigned long long >() &&
-    TestCastFromTo< TInputPixelType, float >() &&
-    TestCastFromTo< TInputPixelType, double >();
+    TestCastFromTo< TInputPixelType, char >( clampingOff ) &&
+    TestCastFromTo< TInputPixelType, char >( clampingOn  ) &&
+    TestCastFromTo< TInputPixelType, unsigned char >( clampingOff ) &&
+    TestCastFromTo< TInputPixelType, unsigned char >( clampingOn  ) &&
+    TestCastFromTo< TInputPixelType, short >( clampingOff ) &&
+    TestCastFromTo< TInputPixelType, short >( clampingOn  ) &&
+    TestCastFromTo< TInputPixelType, unsigned short >( clampingOff ) &&
+    TestCastFromTo< TInputPixelType, unsigned short >( clampingOn  ) &&
+    TestCastFromTo< TInputPixelType, int >( clampingOff ) &&
+    TestCastFromTo< TInputPixelType, int >( clampingOn  ) &&
+    TestCastFromTo< TInputPixelType, unsigned int >( clampingOff) &&
+    TestCastFromTo< TInputPixelType, unsigned int >( clampingOn ) &&
+    TestCastFromTo< TInputPixelType, long >( clampingOff ) &&
+    TestCastFromTo< TInputPixelType, long >( clampingOn  ) &&
+    TestCastFromTo< TInputPixelType, unsigned long >( clampingOff ) &&
+    TestCastFromTo< TInputPixelType, unsigned long >( clampingOn  ) &&
+    TestCastFromTo< TInputPixelType, long long >( clampingOff ) &&
+    TestCastFromTo< TInputPixelType, long long >( clampingOn  ) &&
+    TestCastFromTo< TInputPixelType, unsigned long long >( clampingOff ) &&
+    TestCastFromTo< TInputPixelType, unsigned long long >( clampingOn  ) &&
+    TestCastFromTo< TInputPixelType, float >( clampingOff ) &&
+    TestCastFromTo< TInputPixelType, float >( clampingOn  ) &&
+    TestCastFromTo< TInputPixelType, double >( clampingOff ) &&
+    TestCastFromTo< TInputPixelType, double >( clampingOn  );
 
   return success;
 }
@@ -151,18 +193,18 @@ int itkCastImageFilterTest( int, char* [] )
   std::cout << "itkCastImageFilterTest Start" << std::endl;
 
   bool success =
-    TestCastTo< char >() &&
-    TestCastTo< unsigned char >() &&
-    TestCastTo< short >() &&
-    TestCastTo< unsigned short >() &&
-    TestCastTo< int >() &&
-    TestCastTo< unsigned int >() &&
-    TestCastTo< long >() &&
-    TestCastTo< unsigned long >() &&
-    TestCastTo< long long >() &&
-    TestCastTo< unsigned long long >() &&
-    TestCastTo< float >() &&
-    TestCastTo< double >();
+    TestCastFrom< char >() &&
+    TestCastFrom< unsigned char >() &&
+    TestCastFrom< short >() &&
+    TestCastFrom< unsigned short >() &&
+    TestCastFrom< int >() &&
+    TestCastFrom< unsigned int >() &&
+    TestCastFrom< long >() &&
+    TestCastFrom< unsigned long >() &&
+    TestCastFrom< long long >() &&
+    TestCastFrom< unsigned long long >() &&
+    TestCastFrom< float >() &&
+    TestCastFrom< double >();
 
   std::cout << std::endl;
   if ( !success )
