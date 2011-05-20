@@ -54,8 +54,8 @@ namespace itk
  * registration is to superimpose both mass centers.  Note that this
  * assumption will probably not hold in multi-modality registration.
  *
- * \ingroup Transforms
- * \ingroup ITK-Transform
+ * \ingroup RegistrationCommon
+ * \ingroup ITK-RegistrationCommon
  */
 template< class TTransform,
           class TFixedImage,
