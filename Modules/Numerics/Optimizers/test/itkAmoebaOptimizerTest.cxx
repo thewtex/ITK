@@ -169,7 +169,7 @@ public:
     {
       OptimizerPointer optimizer =
         dynamic_cast< OptimizerPointer >( object );
-      if( m_FunctionEvent.CheckEvent( &event ) )
+      if( optimizer && m_FunctionEvent.CheckEvent( &event ) )
         {
         std::cout << m_IterationNumber++ << "   ";
         std::cout << optimizer->GetCachedValue() << "   ";
@@ -382,33 +382,6 @@ int itkAmoebaOptimizerTest(int, char* [] )
     }
   }
 
-  // Test for exception when initial simplex delta is not the
-  // same size as the number of parameters.
-  itkOptimizer->AutomaticInitialSimplexOff();
-  OptimizerType::ParametersType delta( initialValue.GetSize() + 1);
-  itkOptimizer->SetInitialSimplexDelta( delta );
-
-  std::cout << "Testing if exception is thrown when size of initial simplex "
-            << "is not the same as the size of the parameters." << std::endl;
-  try
-    {
-    itkOptimizer->StartOptimization();
-    std::cout << "[FAIL]" << std::endl;
-    return EXIT_FAILURE;
-    }
-  catch ( itk::ExceptionObject & e )
-    {
-    std::cout << "[PASS]" << std::endl;
-    std::cout << "Caught expected exception " << e << std::endl;
-    }
-
-  delta = OptimizerType::ParametersType( initialValue.GetSize() );
-  itkOptimizer->SetInitialSimplexDelta( delta );
-  itkOptimizer->SetMaximumNumberOfIterations( 1 );
-
-  std::cout << "Testing that exception is not thrown when size of initial "
-            << "simplex is the same as the size of the parameters." << std::endl;
-
   try
     {
     itkOptimizer->StartOptimization();
@@ -420,6 +393,36 @@ int itkAmoebaOptimizerTest(int, char* [] )
     std::cout << "Caught unexpected exception " << e << std::endl;
     return EXIT_FAILURE;
     }
+
+
+  // Test for exception when initial simplex delta is not the
+  // same size as the number of parameters.
+  OptimizerType::Pointer  itkOptimizer2 = OptimizerType::New();
+  itkOptimizer2->AutomaticInitialSimplexOff();
+  OptimizerType::ParametersType delta( initialValue.GetSize() + 1);
+  itkOptimizer2->SetInitialSimplexDelta( delta );
+
+  std::cout << "Testing if exception is thrown when size of initial simplex "
+            << "is not the same as the size of the parameters." << std::endl;
+  try
+    {
+    itkOptimizer2->StartOptimization();
+    std::cout << "[FAIL]" << std::endl;
+    return EXIT_FAILURE;
+    }
+  catch ( itk::ExceptionObject & e )
+    {
+    std::cout << "[PASS]" << std::endl;
+    std::cout << "Caught expected exception " << e << std::endl;
+    }
+
+  delta = OptimizerType::ParametersType( initialValue.GetSize() );
+  itkOptimizer2->SetInitialSimplexDelta( delta );
+  itkOptimizer2->SetMaximumNumberOfIterations( 1 );
+
+  std::cout << "Testing that exception is not thrown when size of initial "
+            << "simplex is the same as the size of the parameters." << std::endl;
+
 
   std::cout << "Test done." << std::endl;
   return EXIT_SUCCESS;
