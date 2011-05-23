@@ -66,6 +66,11 @@ const unsigned int vnl_numeric_traits<unsigned int>::maxval = sizeof(unsigned in
 const long vnl_numeric_traits<long>::maxval = sizeof(long)==8?s64:s32;
 const unsigned long vnl_numeric_traits<unsigned long>::maxval = sizeof(unsigned long)==8?u64:u32;
 
+#if defined(__APPLE__) && defined(ITK_USE_64BITS_IDS)
+const long long unsigned int vnl_numeric_traits<long long unsigned int>::maxval = u64;
+const long long int vnl_numeric_traits<long long int>::maxval = s64;
+#endif // defined(__APPLE__) && defined(ITK_USE_64BITS_IDS)
+
 #if !VCL_STATIC_CONST_INIT_FLOAT_NO_DEFN
 const float vnl_numeric_traits<float>::zero VCL_STATIC_CONST_INIT_FLOAT_DEFN(0.0F);
 const double vnl_numeric_traits<double>::zero VCL_STATIC_CONST_INIT_FLOAT_DEFN(0.0);

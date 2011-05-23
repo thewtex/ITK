@@ -332,6 +332,56 @@ class vnl_numeric_traits<size_t const> : public vnl_numeric_traits<size_t> {};
 
 #endif   // _WIN64
 
+#if defined(__APPLE__) && defined(ITK_USE_64BITS_IDS)
+
+VCL_DEFINE_SPECIALIZATION
+class vnl_numeric_traits<long long unsigned int>
+{
+ public:
+  //: Additive identity
+  static const long long unsigned int zero VCL_STATIC_CONST_INIT_INT_DECL(0);
+  //: Multiplicative identity
+  static const long long unsigned int one VCL_STATIC_CONST_INIT_INT_DECL(1);
+  //: Maximum value which this type can assume
+  static const long long unsigned int maxval; // = 0xffffffffL or 0xffffffffffffffffL;
+  //: Return value of abs()
+  typedef long long unsigned int abs_t;
+  //: Name of a type twice as long as this one for accumulators and products.
+  typedef vxl_uint_64 double_t;
+  //: Name of type which results from multiplying this type with a double
+  typedef double real_t;
+};
+
+#if !VCL_CANNOT_SPECIALIZE_CV
+VCL_DEFINE_SPECIALIZATION
+class vnl_numeric_traits<long long unsigned int const> : public vnl_numeric_traits<long long unsigned int> {};
+#endif
+
+VCL_DEFINE_SPECIALIZATION
+class vnl_numeric_traits<long long int>
+{
+ public:
+  //: Additive identity
+  static const long long int zero VCL_STATIC_CONST_INIT_INT_DECL(0);
+  //: Multiplicative identity
+  static const long long int one VCL_STATIC_CONST_INIT_INT_DECL(1);
+  //: Maximum value which this type can assume
+  static const long long int maxval; // = 0xffffffffL or 0xffffffffffffffffL;
+  //: Return value of abs()
+  typedef long long int abs_t;
+  //: Name of a type twice as long as this one for accumulators and products.
+  typedef vxl_uint_64 double_t;
+  //: Name of type which results from multiplying this type with a double
+  typedef double real_t;
+};
+
+#if !VCL_CANNOT_SPECIALIZE_CV
+VCL_DEFINE_SPECIALIZATION
+class vnl_numeric_traits<long long int const> : public vnl_numeric_traits<long long int> {};
+#endif
+
+#endif // defined(__APPLE__) && defined(ITK_USE_64BITS_IDS)
+
 #ifdef _WIN64
 VCL_DEFINE_SPECIALIZATION
 class vnl_numeric_traits<long long>
