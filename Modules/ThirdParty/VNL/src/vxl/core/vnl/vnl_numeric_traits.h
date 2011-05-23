@@ -332,7 +332,7 @@ class vnl_numeric_traits<size_t const> : public vnl_numeric_traits<size_t> {};
 
 #endif   // _WIN64
 
-#if defined(__APPLE__) && defined(ITK_USE_64BITS_IDS)
+#if defined(__APPLE__)
 
 VCL_DEFINE_SPECIALIZATION
 class vnl_numeric_traits<long long unsigned int>
