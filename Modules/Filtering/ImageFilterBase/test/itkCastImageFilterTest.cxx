@@ -102,7 +102,11 @@ bool TestCastFromTo()
     TInputPixelType  inValue  = it.Value();
     TOutputPixelType outValue = ot.Value();
 
-    if ( outValue != static_cast< TOutputPixelType >( inValue ) )
+    TOutputPixelType expectedValue = static_cast< TOutputPixelType >( inValue );
+    // Astoundingly,
+    // expectedValue == static_cast< TOutputPixelType >( inValue )
+    // evaluates to false on some architectures with some compilers.
+    if ( outValue != expectedValue )
       {
       success = false;
       break;
@@ -126,7 +130,7 @@ bool TestCastFromTo()
 
 
 template < class TInputPixelType >
-bool TestCastTo()
+bool TestCastFrom()
 {
   bool success =
     TestCastFromTo< TInputPixelType, char >() &&
@@ -151,18 +155,18 @@ int itkCastImageFilterTest( int, char* [] )
   std::cout << "itkCastImageFilterTest Start" << std::endl;
 
   bool success =
-    TestCastTo< char >() &&
-    TestCastTo< unsigned char >() &&
-    TestCastTo< short >() &&
-    TestCastTo< unsigned short >() &&
-    TestCastTo< int >() &&
-    TestCastTo< unsigned int >() &&
-    TestCastTo< long >() &&
-    TestCastTo< unsigned long >() &&
-    TestCastTo< long long >() &&
-    TestCastTo< unsigned long long >() &&
-    TestCastTo< float >() &&
-    TestCastTo< double >();
+    TestCastFrom< char >() &&
+    TestCastFrom< unsigned char >() &&
+    TestCastFrom< short >() &&
+    TestCastFrom< unsigned short >() &&
+    TestCastFrom< int >() &&
+    TestCastFrom< unsigned int >() &&
+    TestCastFrom< long >() &&
+    TestCastFrom< unsigned long >() &&
+    TestCastFrom< long long >() &&
+    TestCastFrom< unsigned long long >() &&
+    TestCastFrom< float >() &&
+    TestCastFrom< double >();
 
   std::cout << std::endl;
   if ( !success )
