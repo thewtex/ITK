@@ -27,10 +27,14 @@ namespace itk
  * \brief Shift and scale the pixels in an image.
  *
  * ShiftScaleImageFilter shifts the input pixel by Shift (default 0.0)
- * and then scales the pixel by Scale (default 1.0). All computattions
+ * and then scales the pixel by Scale (default 1.0). All computations
  * are performed in the precison of the input pixel's RealType. Before
  * assigning the computed value to the output pixel, the value is clamped
  * at the NonpositiveMin and max of the pixel type.
+ *
+ * The operation of the filter can be changed so that the Scale is
+ * applied before the Shift by calling SetOperationOrderToScaleShift().
+ *
  * \ingroup IntensityImageFilters
  *
  * \ingroup ITK-ImageIntensity
@@ -89,6 +93,25 @@ public:
   itkSetMacro(Scale, RealType);
   itkGetConstMacro(Scale, RealType);
 
+  /** Describes the order of the shift and scale operations. */
+  typedef enum {
+    SHIFT_SCALE=0,
+    SCALE_SHIFT
+  } OperationOrderType;
+
+  /** Set/Get the operation order. Acceptable values are SHIFT_SCALE
+   * and SCALE_SHIFT. Defaults to SHIFT_SCALE. */
+  itkSetMacro(OperationOrder, OperationOrderType);
+  itkGetConstMacro(OperationOrder, OperationOrderType);
+  void SetOperationOrderToShiftScale()
+  {
+    this->SetOperationOrder( SHIFT_SCALE );
+  }
+  void SetOperationOrderToScaleShift()
+  {
+    this->SetOperationOrder( SCALE_SHIFT );
+  }
+
   /** Get the number of pixels that underflowed and overflowed. */
   itkGetConstMacro(UnderflowCount, long);
   itkGetConstMacro(OverflowCount, long);
@@ -122,6 +145,8 @@ protected:
 private:
   ShiftScaleImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);        //purposely not implemented
+
+  OperationOrderType m_OperationOrder;
 
   RealType m_Shift;
   RealType m_Scale;

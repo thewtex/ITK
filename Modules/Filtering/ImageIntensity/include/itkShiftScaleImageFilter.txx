@@ -29,6 +29,7 @@ template< class TInputImage, class TOutputImage >
 ShiftScaleImageFilter< TInputImage, TOutputImage >
 ::ShiftScaleImageFilter()
 {
+  m_OperationOrder = SHIFT_SCALE;
   m_Shift = NumericTraits< RealType >::Zero;
   m_Scale = NumericTraits< RealType >::One;
   m_UnderflowCount = 0;
@@ -88,28 +89,63 @@ ShiftScaleImageFilter< TInputImage, TOutputImage >
   // support progress methods/callbacks
   ProgressReporter progress( this, threadId, outputRegionForThread.GetNumberOfPixels() );
 
-  // shift and scale the input pixels
-  while ( !it.IsAtEnd() )
+  if ( m_OperationOrder == SHIFT_SCALE )
     {
-    value = ( static_cast< RealType >( it.Get() ) + m_Shift ) * m_Scale;
-    if ( value < NumericTraits< OutputImagePixelType >::NonpositiveMin() )
+    while ( !it.IsAtEnd() )
       {
-      ot.Set ( NumericTraits< OutputImagePixelType >::NonpositiveMin() );
-      m_ThreadUnderflow[threadId]++;
-      }
-    else if ( value > NumericTraits< OutputImagePixelType >::max() )
-      {
-      ot.Set ( NumericTraits< OutputImagePixelType >::max() );
-      m_ThreadOverflow[threadId]++;
-      }
-    else
-      {
-      ot.Set( static_cast< OutputImagePixelType >( value ) );
-      }
-    ++it;
-    ++ot;
+      // shift and scale the input pixels
+      value = ( static_cast< RealType >( it.Get() ) + m_Shift ) * m_Scale;
 
-    progress.CompletedPixel();
+      if ( value < NumericTraits< OutputImagePixelType >::NonpositiveMin() )
+        {
+        ot.Set ( NumericTraits< OutputImagePixelType >::NonpositiveMin() );
+        m_ThreadUnderflow[threadId]++;
+        }
+      else if ( value > NumericTraits< OutputImagePixelType >::max() )
+        {
+        ot.Set ( NumericTraits< OutputImagePixelType >::max() );
+        m_ThreadOverflow[threadId]++;
+        }
+      else
+        {
+        ot.Set( static_cast< OutputImagePixelType >( value ) );
+        }
+      ++it;
+      ++ot;
+
+      progress.CompletedPixel();
+      }
+    }
+  else if ( m_OperationOrder == SCALE_SHIFT )
+    {
+    while ( !it.IsAtEnd() )
+      {
+      // scale and shift the input pixels
+      value = ( static_cast< RealType >( it.Get() ) * m_Scale ) + m_Shift;
+
+      if ( value < NumericTraits< OutputImagePixelType >::NonpositiveMin() )
+        {
+        ot.Set ( NumericTraits< OutputImagePixelType >::NonpositiveMin() );
+        m_ThreadUnderflow[threadId]++;
+        }
+      else if ( value > NumericTraits< OutputImagePixelType >::max() )
+        {
+        ot.Set ( NumericTraits< OutputImagePixelType >::max() );
+        m_ThreadOverflow[threadId]++;
+        }
+      else
+        {
+        ot.Set( static_cast< OutputImagePixelType >( value ) );
+        }
+      ++it;
+      ++ot;
+
+      progress.CompletedPixel();
+      }
+    }
+  else
+    {
+    itkExceptionMacro( << "Unknown operation order " << m_OperationOrder );
     }
 }
 
@@ -119,6 +155,23 @@ ShiftScaleImageFilter< TInputImage, TOutputImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
+  os << indent << "OperationOrder: ";
+  switch ( m_OperationOrder )
+    {
+    case SHIFT_SCALE:
+      os << "SHIFT_SCALE";
+      break;
+
+    case SCALE_SHIFT:
+      os << "SCALE_SHIFT";
+      break;
+
+    default:
+      os << "Unknown";
+      break;
+    }
+  os << std::endl;
 
   os << indent << "Shift: "  << m_Shift << std::endl;
   os << indent << "Scale: "  << m_Scale << std::endl;

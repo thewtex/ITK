@@ -89,16 +89,49 @@ int itkShiftScaleImageFilterTest(int, char* [] )
   std::cout << "filter->GetOverflowCount(): " << overflowCount << std::endl;
 
 
+  std::cout << "Testing filter update with shift scale order" << std::endl;
+
   filter->SetInput(source->GetOutput());
   filter->SetScale(4.0);
   try
     {
     filter->UpdateLargestPossibleRegion();
+    std::cout << "[PASS]" << std::endl;
     }
   catch (itk::ExceptionObject& e)
     {
+    std::cerr << "[FAIL]" << std::endl;
     std::cerr << "Exception detected: "  << e;
-    return -1;
+    return EXIT_FAILURE;
+    }
+
+  std::cout << "Testing filter update with scale shift order" << std::endl;
+  filter->SetOperationOrderToScaleShift();
+  try
+    {
+    filter->UpdateLargestPossibleRegion();
+    std::cout << "[PASS]" << std::endl;
+    }
+  catch (itk::ExceptionObject& e)
+    {
+    std::cerr << "[FAIL]" << std::endl;
+    std::cerr << "Unexpected exception detected: " << e << std::endl;
+    return EXIT_FAILURE;
+    }
+
+  std::cout << "Test for exception when invalid operation order is specified"
+            << std::endl;
+  filter->SetOperationOrder
+    ( static_cast< FilterType::OperationOrderType >( 455 ) );
+  try
+    {
+    filter->UpdateLargestPossibleRegion();
+    std::cerr << "[FAIL]" << std::endl;
+    }
+  catch ( itk::ExceptionObject & e )
+    {
+    std::cout << std::endl << "[PASS]" << std::endl;
+    std::cout << "Caught expected exception " << e << std::endl;
     }
 
   return EXIT_SUCCESS;
