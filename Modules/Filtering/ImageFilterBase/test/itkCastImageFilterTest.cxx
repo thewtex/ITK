@@ -26,47 +26,47 @@
 #include "itkRandomImageSource.h"
 
 template < class T >
-std::string GetTypeName() { return "unknown type"; }
+static std::string GetTypeName() { return "unknown type"; }
 
 template < >
-std::string GetTypeName< char >() { return "char"; }
+static std::string GetTypeName< char >() { return "char"; }
 
 template < >
-std::string GetTypeName< unsigned char >() { return "unsigned char"; }
+static std::string GetTypeName< unsigned char >() { return "unsigned char"; }
 
 template < >
-std::string GetTypeName< short >() { return "short"; }
+static std::string GetTypeName< short >() { return "short"; }
 
 template < >
-std::string GetTypeName< unsigned short >() { return "unsigned short"; }
+static std::string GetTypeName< unsigned short >() { return "unsigned short"; }
 
 template < >
-std::string GetTypeName< int >() { return "int"; }
+static std::string GetTypeName< int >() { return "int"; }
 
 template < >
-std::string GetTypeName< unsigned int >() { return "unsigned int"; }
+static std::string GetTypeName< unsigned int >() { return "unsigned int"; }
 
 template < >
-std::string GetTypeName< long >() { return "long"; }
+static std::string GetTypeName< long >() { return "long"; }
 
 template < >
-std::string GetTypeName< unsigned long >() { return "unsigned long"; }
+static std::string GetTypeName< unsigned long >() { return "unsigned long"; }
 
 template < >
-std::string GetTypeName< long long >() { return "long long"; }
+static std::string GetTypeName< long long >() { return "long long"; }
 
 template < >
-std::string GetTypeName< unsigned long long >() { return "unsigned long long"; }
+static std::string GetTypeName< unsigned long long >() { return "unsigned long long"; }
 
 template < >
-std::string GetTypeName< float >() { return "float"; }
+static std::string GetTypeName< float >() { return "float"; }
 
 template < >
-std::string GetTypeName< double >() { return "double"; }
+static std::string GetTypeName< double >() { return "double"; }
 
 
 template < class TInputPixelType, class TOutputPixelType >
-bool TestCastFromTo()
+static bool TestCastFromTo()
 {
   typedef itk::Image< TInputPixelType, 3 >                        InputImageType;
   typedef itk::Image< TOutputPixelType, 3 >                       OutputImageType;
@@ -102,7 +102,11 @@ bool TestCastFromTo()
     TInputPixelType  inValue  = it.Value();
     TOutputPixelType outValue = ot.Value();
 
-    if ( outValue != static_cast< TOutputPixelType >( inValue ) )
+    TOutputPixelType expectedValue = static_cast< TOutputPixelType >( inValue );
+    // Astoundingly,
+    // expectedValue == static_cast< TOutputPixelType >( inValue )
+    // evaluates to false on some architectures with some compilers.
+    if ( outValue != expectedValue )
       {
       success = false;
       break;
@@ -126,7 +130,7 @@ bool TestCastFromTo()
 
 
 template < class TInputPixelType >
-bool TestCastTo()
+static bool TestCastFrom()
 {
   bool success =
     TestCastFromTo< TInputPixelType, char >() &&
@@ -151,18 +155,18 @@ int itkCastImageFilterTest( int, char* [] )
   std::cout << "itkCastImageFilterTest Start" << std::endl;
 
   bool success =
-    TestCastTo< char >() &&
-    TestCastTo< unsigned char >() &&
-    TestCastTo< short >() &&
-    TestCastTo< unsigned short >() &&
-    TestCastTo< int >() &&
-    TestCastTo< unsigned int >() &&
-    TestCastTo< long >() &&
-    TestCastTo< unsigned long >() &&
-    TestCastTo< long long >() &&
-    TestCastTo< unsigned long long >() &&
-    TestCastTo< float >() &&
-    TestCastTo< double >();
+    TestCastFrom< char >() &&
+    TestCastFrom< unsigned char >() &&
+    TestCastFrom< short >() &&
+    TestCastFrom< unsigned short >() &&
+    TestCastFrom< int >() &&
+    TestCastFrom< unsigned int >() &&
+    TestCastFrom< long >() &&
+    TestCastFrom< unsigned long >() &&
+    TestCastFrom< long long >() &&
+    TestCastFrom< unsigned long long >() &&
+    TestCastFrom< float >() &&
+    TestCastFrom< double >();
 
   std::cout << std::endl;
   if ( !success )
