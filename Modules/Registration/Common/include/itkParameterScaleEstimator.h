@@ -95,6 +95,9 @@ public:
   typedef Array< double > ScalesType;
   typedef Array< double > DerivativeType;
 
+  /** The stratigies to decide scales. */
+  typedef enum { MaximumShift, Jacobian } ScaleStrategyType;
+
   itkStaticConstMacro(ImageDimension, unsigned int,
                       TFixedImage::ImageDimension);
 
@@ -135,8 +138,13 @@ public:
    */
   itkSetMacro(TransformForward, bool);
 
+  /** Set the scale strategy */
+  itkSetMacro(ScaleStrategy, ScaleStrategyType);
+
   /** Estimate parameter scales */
   void EstimateScales(TransformPointer transform, ScalesType &parameterScales);
+  void EstimateScalesFromMaximumShift(TransformPointer transform, ScalesType &parameterScales);
+  void EstimateScalesFromJacobian(TransformPointer transform, ScalesType &parameterScales);
 
   /** Estimate parameter scales and learningRate*/
   void EstimateScalesAndLearningRate(TransformPointer transform,
@@ -147,9 +155,20 @@ public:
   /** Set the sample points for computing pixel shifts */
   void SampleImageDomain();
 
+protected:
+  ParameterScaleEstimator();
+  ~ParameterScaleEstimator(){};
+
+  void PrintSelf(std::ostream &os, Indent indent) const;
+
   /** Get the physical coordinates of image corners */
   template <class ImageType>
   void GetImageCornerPoints(const ImageType *image,
+                            std::vector<PointType> &samples);
+
+  /** Randomly select some points as samples */
+  template <class ImageType>
+  void RandomlySampleImageDomain(const ImageType *image,
                             std::vector<PointType> &samples);
 
   /** Compute the maximum shift when deltaParameters is applied onto the
@@ -159,12 +178,6 @@ public:
 
   /** Compute the L-norm of a point */
   double ComputeLNorm(Point<double, ImageDimension> point);
-
-protected:
-  ParameterScaleEstimator();
-  ~ParameterScaleEstimator(){};
-
-  void PrintSelf(std::ostream &os, Indent indent) const;
 
 private:
   ParameterScaleEstimator(const Self&); //purposely not implemented
@@ -185,6 +198,9 @@ private:
   /** Specify the transformation direction. Set to true when the transform
    * mapps from FixedImage domain to MovingImage domain*/
   bool m_TransformForward;
+
+  ScaleStrategyType m_ScaleStrategy;
+
 }; //class ParameterScaleEstimator
 
 

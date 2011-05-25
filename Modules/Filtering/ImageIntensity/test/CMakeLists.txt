@@ -33,6 +33,7 @@ itkIntensityWindowingImageFilterTest.cxx
 itkTernaryMagnitudeImageFilterTest.cxx
 itkAbsImageFilterAndAdaptorTest.cxx
 itkJoinSeriesImageFilterTest.cxx
+itkJoinSeriesImageFilterStreamingTest.cxx
 itkMaximumImageFilterTest.cxx
 itkBinaryMagnitudeImageFilterTest.cxx
 itkMatrixIndexSelectionImageFilterTest.cxx
@@ -63,8 +64,10 @@ itkVectorToRGBImageAdaptorTest.cxx
 itkSinImageFilterAndAdaptorTest.cxx
 itkPolylineMask2DImageFilterTest.cxx
 itkPolylineMaskImageFilterTest.cxx
+itkPromoteDimensionImageTest.cxx
 itkModulusImageFilterTest.cxx
 itkVectorMagnitudeImageFilterTest.cxx
+itkNormalizeToConstantImageFilterTest.cxx
 )
 
 CreateTestDriver(ITK-ImageIntensity  "${ITK-ImageIntensity-Test_LIBRARIES}" "${ITK-ImageIntensityTests}")
@@ -149,6 +152,11 @@ itk_add_test(NAME itkAbsImageFilterAndAdaptorTest
       COMMAND ITK-ImageIntensityTestDriver itkAbsImageFilterAndAdaptorTest)
 itk_add_test(NAME itkJoinSeriesImageFilterTest
       COMMAND ITK-ImageIntensityTestDriver itkJoinSeriesImageFilterTest)
+itk_add_test(NAME itkJoinSeriesImageFilterStreamingTest
+      COMMAND ITK-ImageIntensityTestDriver
+    --compare ${ITK_DATA_ROOT}/Input/HeadMRVolume.mhd
+              ${ITK_TEST_OUTPUT_DIR}/itkJoinSeriesImageFilterStreamingTest.mha
+    itkJoinSeriesImageFilterStreamingTest ${ITK_DATA_ROOT}/Input/HeadMRVolume.mhd ${ITK_TEST_OUTPUT_DIR}/itkJoinSeriesImageFilterStreamingTest.mha)
 itk_add_test(NAME itkMaximumImageFilterTest
       COMMAND ITK-ImageIntensityTestDriver itkMaximumImageFilterTest)
 itk_add_test(NAME itkBinaryMagnitudeImageFilterTest
@@ -215,6 +223,11 @@ itk_add_test(NAME itkPolylineMask2DImageFilterTest
               ${ITK_DATA_ROOT}/Input/cthead1.png ${ITK_TEST_OUTPUT_DIR}/itkPolylineMask2DImageFilterTest.png)
 itk_add_test(NAME itkPolylineMaskImageFilterTest
       COMMAND ITK-ImageIntensityTestDriver itkPolylineMaskImageFilterTest)
+itk_add_test(NAME itkPromoteDimensionImageTest
+      COMMAND ITK-ImageIntensityTestDriver
+    --compare ${ITK_DATA_ROOT}/Baseline/BasicFilters/PromoteDimensionImageTest.mhd
+              ${ITK_TEST_OUTPUT_DIR}/PromoteDimensionImageTest.mhd
+    itkPromoteDimensionImageTest ${ITK_DATA_ROOT}/Input/VisibleWomanEyeSlice.png ${ITK_TEST_OUTPUT_DIR}/PromoteDimensionImageTest.mhd)
 itk_add_test(NAME itkModulusImageFilterTest
       COMMAND ITK-ImageIntensityTestDriver
     --compare ${ITK_DATA_ROOT}/Baseline/BasicFilters/ModulusImageFilterTest.png
@@ -222,3 +235,5 @@ itk_add_test(NAME itkModulusImageFilterTest
     itkModulusImageFilterTest ${ITK_DATA_ROOT}/Input/Spots.png ${ITK_TEST_OUTPUT_DIR}/ModulusImageFilterTest.png)
 itk_add_test(NAME itkVectorMagnitudeImageFilterTest
       COMMAND ITK-ImageIntensityTestDriver itkVectorMagnitudeImageFilterTest)
+itk_add_test(NAME itkNormalizeToConstantImageFilterTest
+      COMMAND ITK-ImageIntensityTestDriver itkNormalizeToConstantImageFilterTest)

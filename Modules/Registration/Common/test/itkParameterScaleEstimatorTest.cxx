@@ -168,6 +168,7 @@ int itkParameterScaleEstimatorTest_Func( int argc,
 
   scaleEstimator->SetFixedImage(fixedImage);
   scaleEstimator->SetMovingImage(movingImage);
+  scaleEstimator->SetScaleStrategy(ScaleEstimatorType::Jacobian);
   scaleEstimator->SetGlobalScalingFactor(3.5e+7);
 
   scaleEstimator->EstimateScales(transform, scales);
