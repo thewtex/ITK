@@ -66,15 +66,13 @@
 #include "itkTranslationTransform.txx"
 #include "itkTxtTransformIO.h"
 #include "itkTxtTransformIOFactory.h"
-#include "itkv3Rigid3DTransform.h"
 #include "itkVersorRigid3DTransform.txx"
 #include "itkVersorTransform.txx"
 #include "itkVolumeSplineKernelTransform.txx"
-
+#include "itkv3Rigid3DTransform.h"
 
 
 int itkTransformHeaderTest ( int , char * [] )
 {
-
   return EXIT_SUCCESS;
 }

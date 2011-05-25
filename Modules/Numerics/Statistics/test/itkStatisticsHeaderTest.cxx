@@ -88,9 +88,7 @@
 #include "itkWeightedMeanSampleFilter.txx"
 
 
-
 int itkStatisticsHeaderTest ( int , char * [] )
 {
-
   return EXIT_SUCCESS;
 }

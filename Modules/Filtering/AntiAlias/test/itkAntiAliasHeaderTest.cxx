@@ -24,9 +24,7 @@
 #include "itkAntiAliasBinaryImageFilter.txx"
 
 
-
 int itkAntiAliasHeaderTest ( int , char * [] )
 {
-
   return EXIT_SUCCESS;
 }

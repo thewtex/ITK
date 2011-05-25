@@ -21,20 +21,18 @@
 
 #include <iostream>
 
+#include "itkConnectedComponentAlgorithm.h"
 #include "itkConnectedComponentFunctorImageFilter.txx"
-#include "itkScalarConnectedComponentImageFilter.h"
 #include "itkConnectedComponentImageFilter.txx"
 #include "itkHardConnectedComponentImageFilter.h"
-#include "itkConnectedComponentAlgorithm.h"
-#include "itkVectorConnectedComponentImageFilter.h"
-#include "itkThresholdMaximumConnectedComponentsImageFilter.txx"
 #include "itkHardConnectedComponentImageFilter.txx"
 #include "itkRelabelComponentImageFilter.txx"
-
+#include "itkScalarConnectedComponentImageFilter.h"
+#include "itkThresholdMaximumConnectedComponentsImageFilter.txx"
+#include "itkVectorConnectedComponentImageFilter.h"
 
 
 int itkConnectedComponentsHeaderTest ( int , char * [] )
 {
-
   return EXIT_SUCCESS;
 }

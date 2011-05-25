@@ -22,30 +22,28 @@
 #include <iostream>
 
 #include "itkBilateralImageFilter.txx"
-#include "itkSobelEdgeDetectionImageFilter.txx"
-#include "itkDerivativeImageFilter.h"
-#include "itkSimpleContourExtractorImageFilter.txx"
-#include "itkLaplacianSharpeningImageFilter.txx"
-#include "itkHessianRecursiveGaussianImageFilter.txx"
-#include "itkGradientVectorFlowImageFilter.h"
-#include "itkLaplacianRecursiveGaussianImageFilter.txx"
-#include "itkHoughTransform2DCirclesImageFilter.txx"
 #include "itkCannyEdgeDetectionImageFilter.txx"
+#include "itkDerivativeImageFilter.h"
 #include "itkDerivativeImageFilter.txx"
-#include "itkZeroCrossingImageFilter.txx"
-#include "itkHessian3DToVesselnessMeasureImageFilter.txx"
-#include "itkHoughTransform2DLinesImageFilter.h"
-#include "itkZeroCrossingBasedEdgeDetectionImageFilter.txx"
+#include "itkGradientVectorFlowImageFilter.h"
 #include "itkGradientVectorFlowImageFilter.txx"
-#include "itkLaplacianImageFilter.txx"
+#include "itkHessian3DToVesselnessMeasureImageFilter.txx"
+#include "itkHessianRecursiveGaussianImageFilter.txx"
+#include "itkHoughTransform2DCirclesImageFilter.txx"
+#include "itkHoughTransform2DLinesImageFilter.h"
 #include "itkHoughTransform2DLinesImageFilter.txx"
-#include "itkTensorRelativeAnisotropyImageFilter.h"
+#include "itkLaplacianImageFilter.txx"
+#include "itkLaplacianRecursiveGaussianImageFilter.txx"
+#include "itkLaplacianSharpeningImageFilter.txx"
+#include "itkSimpleContourExtractorImageFilter.txx"
+#include "itkSobelEdgeDetectionImageFilter.txx"
 #include "itkTensorFractionalAnisotropyImageFilter.h"
-
+#include "itkTensorRelativeAnisotropyImageFilter.h"
+#include "itkZeroCrossingBasedEdgeDetectionImageFilter.txx"
+#include "itkZeroCrossingImageFilter.txx"
 
 
 int itkImageFeatureHeaderTest ( int , char * [] )
 {
-
   return EXIT_SUCCESS;
 }

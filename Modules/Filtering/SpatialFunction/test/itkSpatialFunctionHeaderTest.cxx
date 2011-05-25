@@ -24,9 +24,7 @@
 #include "itkSpatialFunctionImageEvaluatorFilter.txx"
 
 
-
 int itkSpatialFunctionHeaderTest ( int , char * [] )
 {
-
   return EXIT_SUCCESS;
 }

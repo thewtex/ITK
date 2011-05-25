@@ -31,6 +31,5 @@
 
 int itkKLMRegionGrowingHeaderTest ( int , char * [] )
 {
-
   return EXIT_SUCCESS;
 }

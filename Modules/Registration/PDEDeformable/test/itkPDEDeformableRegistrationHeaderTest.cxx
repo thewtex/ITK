@@ -21,24 +21,22 @@
 
 #include <iostream>
 
-#include "itkSymmetricForcesDemonsRegistrationFunction.h"
-#include "itkDemonsRegistrationFilter.h"
-#include "itkSymmetricForcesDemonsRegistrationFilter.txx"
 #include "itkCurvatureRegistrationFilter.h"
-#include "itkMultiResolutionPDEDeformableRegistration.txx"
 #include "itkCurvatureRegistrationFilter.txx"
-#include "itkPDEDeformableRegistrationFilter.txx"
-#include "itkLevelSetMotionRegistrationFilter.txx"
-#include "itkDemonsRegistrationFunction.txx"
-#include "itkSymmetricForcesDemonsRegistrationFunction.txx"
-#include "itkLevelSetMotionRegistrationFunction.txx"
+#include "itkDemonsRegistrationFilter.h"
 #include "itkDemonsRegistrationFilter.txx"
+#include "itkDemonsRegistrationFunction.txx"
 #include "itkFastSymmetricForcesDemonsRegistrationFunction.txx"
-
+#include "itkLevelSetMotionRegistrationFilter.txx"
+#include "itkLevelSetMotionRegistrationFunction.txx"
+#include "itkMultiResolutionPDEDeformableRegistration.txx"
+#include "itkPDEDeformableRegistrationFilter.txx"
+#include "itkSymmetricForcesDemonsRegistrationFilter.txx"
+#include "itkSymmetricForcesDemonsRegistrationFunction.h"
+#include "itkSymmetricForcesDemonsRegistrationFunction.txx"
 
 
 int itkPDEDeformableRegistrationHeaderTest ( int , char * [] )
 {
-
   return EXIT_SUCCESS;
 }

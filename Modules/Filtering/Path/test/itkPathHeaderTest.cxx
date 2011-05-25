@@ -21,34 +21,32 @@
 
 #include <iostream>
 
-#include "itkPolyLineParametricPath.txx"
-#include "itkOrthogonalSwath2DPathFilter.txx"
-#include "itkPathToChainCodePathFilter.txx"
-#include "itkPathIterator.txx"
-#include "itkPathFunctions.h"
-#include "itkImageAndPathToImageFilter.txx"
-#include "itkPathSource.txx"
-#include "itkPathToPathFilter.txx"
-#include "itkChainCodePath2D.h"
 #include "itkChainCodePath.txx"
-#include "itkPath.txx"
+#include "itkChainCodePath2D.h"
+#include "itkChainCodeToFourierSeriesPathFilter.txx"
 #include "itkExtractOrthogonalSwath2DImageFilter.txx"
 #include "itkFourierSeriesPath.h"
-#include "itkPathToImageFilter.txx"
+#include "itkFourierSeriesPath.txx"
+#include "itkImageAndPathToImageFilter.txx"
+#include "itkOrthogonalSwath2DPathFilter.txx"
 #include "itkOrthogonallyCorrected2DParametricPath.h"
 #include "itkParametricPath.h"
-#include "itkChainCodeToFourierSeriesPathFilter.txx"
 #include "itkParametricPath.txx"
-#include "itkPathAndImageToPathFilter.txx"
-#include "itkFourierSeriesPath.txx"
-#include "itkPathConstIterator.txx"
-#include "itkPathSource.h"
 #include "itkPath.h"
-
+#include "itkPath.txx"
+#include "itkPathAndImageToPathFilter.txx"
+#include "itkPathConstIterator.txx"
+#include "itkPathFunctions.h"
+#include "itkPathIterator.txx"
+#include "itkPathSource.h"
+#include "itkPathSource.txx"
+#include "itkPathToChainCodePathFilter.txx"
+#include "itkPathToImageFilter.txx"
+#include "itkPathToPathFilter.txx"
+#include "itkPolyLineParametricPath.txx"
 
 
 int itkPathHeaderTest ( int , char * [] )
 {
-
   return EXIT_SUCCESS;
 }

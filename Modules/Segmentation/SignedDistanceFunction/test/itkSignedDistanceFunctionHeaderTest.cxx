@@ -21,14 +21,12 @@
 
 #include <iostream>
 
-#include "itkShapeSignedDistanceFunction.h"
 #include "itkPCAShapeSignedDistanceFunction.txx"
+#include "itkShapeSignedDistanceFunction.h"
 #include "itkSphereSignedDistanceFunction.txx"
-
 
 
 int itkSignedDistanceFunctionHeaderTest ( int , char * [] )
 {
-
   return EXIT_SUCCESS;
 }

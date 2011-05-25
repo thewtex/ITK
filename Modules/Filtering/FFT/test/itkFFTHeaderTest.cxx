@@ -32,8 +32,8 @@
 #include "itkVnlFFTComplexConjugateToRealImageFilter.txx"
 #include "itkVnlFFTRealToComplexConjugateImageFilter.txx"
 
+
 int itkFFTHeaderTest ( int , char * [] )
 {
-
   return EXIT_SUCCESS;
 }

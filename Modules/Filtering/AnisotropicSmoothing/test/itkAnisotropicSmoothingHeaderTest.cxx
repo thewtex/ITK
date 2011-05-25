@@ -21,25 +21,23 @@
 
 #include <iostream>
 
-#include "itkVectorGradientNDAnisotropicDiffusionFunction.txx"
-#include "itkCurvatureNDAnisotropicDiffusionFunction.h"
-#include "itkScalarAnisotropicDiffusionFunction.txx"
-#include "itkGradientNDAnisotropicDiffusionFunction.h"
-#include "itkCurvatureAnisotropicDiffusionImageFilter.h"
+#include "itkAnisotropicDiffusionFunction.h"
 #include "itkAnisotropicDiffusionImageFilter.txx"
-#include "itkGradientNDAnisotropicDiffusionFunction.txx"
-#include "itkVectorAnisotropicDiffusionFunction.txx"
-#include "itkVectorGradientAnisotropicDiffusionImageFilter.h"
-#include "itkVectorCurvatureNDAnisotropicDiffusionFunction.txx"
+#include "itkCurvatureAnisotropicDiffusionImageFilter.h"
+#include "itkCurvatureNDAnisotropicDiffusionFunction.h"
 #include "itkCurvatureNDAnisotropicDiffusionFunction.txx"
 #include "itkGradientAnisotropicDiffusionImageFilter.h"
+#include "itkGradientNDAnisotropicDiffusionFunction.h"
+#include "itkGradientNDAnisotropicDiffusionFunction.txx"
+#include "itkScalarAnisotropicDiffusionFunction.txx"
+#include "itkVectorAnisotropicDiffusionFunction.txx"
 #include "itkVectorCurvatureAnisotropicDiffusionImageFilter.h"
-#include "itkAnisotropicDiffusionFunction.h"
-
+#include "itkVectorCurvatureNDAnisotropicDiffusionFunction.txx"
+#include "itkVectorGradientAnisotropicDiffusionImageFilter.h"
+#include "itkVectorGradientNDAnisotropicDiffusionFunction.txx"
 
 
 int itkAnisotropicSmoothingHeaderTest ( int , char * [] )
 {
-
   return EXIT_SUCCESS;
 }

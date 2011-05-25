@@ -43,9 +43,7 @@
 #include "itkSumProjectionImageFilter.h"
 
 
-
 int itkImageStatisticsHeaderTest ( int , char * [] )
 {
-
   return EXIT_SUCCESS;
 }

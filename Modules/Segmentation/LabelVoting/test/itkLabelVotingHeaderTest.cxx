@@ -22,15 +22,13 @@
 #include <iostream>
 
 #include "itkBinaryMedianImageFilter.txx"
-#include "itkVotingBinaryHoleFillingImageFilter.txx"
 #include "itkLabelVotingImageFilter.txx"
+#include "itkVotingBinaryHoleFillingImageFilter.txx"
 #include "itkVotingBinaryImageFilter.txx"
 #include "itkVotingBinaryIterativeHoleFillingImageFilter.txx"
 
 
-
 int itkLabelVotingHeaderTest ( int , char * [] )
 {
-
   return EXIT_SUCCESS;
 }

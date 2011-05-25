@@ -31,13 +31,13 @@
 #include "itkCompose3DCovariantVectorImageFilter.h"
 #include "itkCompose3DVectorImageFilter.h"
 #include "itkComposeRGBImageFilter.h"
+#include "itkDICOMImageIO2.h"
+#include "itkDICOMImageIO2Factory.h"
+#include "itkDICOMSeriesFileNames.h"
 #include "itkDefaultImageTraits.h"
 #include "itkDeformableMesh3DFilter.txx"
 #include "itkDicomImageIO.h"
 #include "itkDicomImageIOFactory.h"
-#include "itkDICOMImageIO2.h"
-#include "itkDICOMImageIO2Factory.h"
-#include "itkDICOMSeriesFileNames.h"
 #include "itkGradientToMagnitudeImageFilter.h"
 #include "itkImageToVectorImageFilter.h"
 #include "itkNonThreadedShrinkImageFilter.h"
@@ -53,8 +53,8 @@
 #include "itkTestDriverIncludeAnalyzeIOFactory.h"
 #include "itkTestDriverIncludeDeprecatedIOFactories.h"
 
+
 int itkDeprecatedHeaderTest ( int , char * [] )
 {
-
   return EXIT_SUCCESS;
 }

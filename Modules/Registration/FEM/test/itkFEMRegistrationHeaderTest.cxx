@@ -22,15 +22,13 @@
 #include <iostream>
 
 #include "itkFEMFiniteDifferenceFunctionLoad.txx"
-#include "itkMIRegistrationFunction.h"
-#include "itkNCCRegistrationFunction.txx"
 #include "itkFEMRegistrationFilter.txx"
+#include "itkMIRegistrationFunction.h"
 #include "itkMIRegistrationFunction.txx"
-
+#include "itkNCCRegistrationFunction.txx"
 
 
 int itkFEMRegistrationHeaderTest ( int , char * [] )
 {
-
   return EXIT_SUCCESS;
 }

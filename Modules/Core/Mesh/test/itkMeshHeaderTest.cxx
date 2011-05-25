@@ -27,10 +27,10 @@
 #include "itkImageToMeshFilter.txx"
 #include "itkImageToParametricSpaceFilter.txx"
 #include "itkInteriorExteriorMeshFilter.txx"
+#include "itkMesh.txx"
 #include "itkMeshRegion.h"
 #include "itkMeshSource.txx"
 #include "itkMeshToMeshFilter.txx"
-#include "itkMesh.txx"
 #include "itkParametricSpaceToImageSpaceMeshFilter.txx"
 #include "itkRegularSphereMeshSource.txx"
 #include "itkSimplexMeshAdaptTopologyFilter.txx"
@@ -47,6 +47,5 @@
 
 int itkMeshHeaderTest ( int , char * [] )
 {
-
   return EXIT_SUCCESS;
 }

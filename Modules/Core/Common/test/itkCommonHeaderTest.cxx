@@ -28,6 +28,8 @@
 #include "itkAnnulusOperator.txx"
 #include "itkArray.txx"
 #include "itkArray2D.txx"
+#include "itkAtanRegularizedHeavisideStepFunction.h"
+#include "itkAtanRegularizedHeavisideStepFunction.txx"
 #include "itkAutoPointer.h"
 #include "itkAutoPointerDataObjectDecorator.txx"
 #include "itkBackwardDifferenceOperator.txx"
@@ -93,6 +95,9 @@
 #include "itkGaussianKernelFunction.h"
 #include "itkGaussianOperator.txx"
 #include "itkGaussianSpatialFunction.txx"
+#include "itkHeavisideStepFunction.h"
+#include "itkHeavisideStepFunction.txx"
+#include "itkHeavisideStepFunctionBase.h"
 #include "itkHexahedronCell.txx"
 #include "itkHexahedronCellTopology.h"
 #include "itkImage.txx"
@@ -224,6 +229,8 @@
 #include "itkRealTimeInterval.h"
 #include "itkRealTimeStamp.h"
 #include "itkRegion.h"
+#include "itkRegularizedHeavisideStepFunction.h"
+#include "itkRegularizedHeavisideStepFunction.txx"
 #include "itkResourceProbe.txx"
 #include "itkResourceProbesCollectorBase.txx"
 #include "itkRGBAPixel.txx"
@@ -234,6 +241,8 @@
 #include "itkSimpleDataObjectDecorator.txx"
 #include "itkSimpleFastMutexLock.h"
 #include "itkSimpleFilterWatcher.h"
+#include "itkSinRegularizedHeavisideStepFunction.h"
+#include "itkSinRegularizedHeavisideStepFunction.txx"
 #include "itkSize.h"
 #include "itkSliceIterator.h"
 #include "itkSmapsFileParser.txx"
@@ -293,18 +302,9 @@
 #include "itkZeroFluxNeumannBoundaryCondition.txx"
 #include "vcl_alloc.h"
 #include "VNLIterativeSparseSolverTraits.h"
-#include "itkAtanRegularizedHeavisideStepFunction.h"
-#include "itkAtanRegularizedHeavisideStepFunction.txx"
-#include "itkHeavisideStepFunction.h"
-#include "itkHeavisideStepFunction.txx"
-#include "itkHeavisideStepFunctionBase.h"
-#include "itkRegularizedHeavisideStepFunction.h"
-#include "itkRegularizedHeavisideStepFunction.txx"
-#include "itkSinRegularizedHeavisideStepFunction.h"
-#include "itkSinRegularizedHeavisideStepFunction.txx"
+
 
 int itkCommonHeaderTest ( int , char * [] )
 {
-
   return EXIT_SUCCESS;
 }

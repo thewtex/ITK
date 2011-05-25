@@ -21,18 +21,16 @@
 
 #include <iostream>
 
-#include "itkBioGenome.h"
-#include "itkBioCellularAggregateBase.h"
-#include "itkBioGeneNetwork.h"
 #include "itkBioCell.txx"
-#include "itkBioGene.h"
-#include "itkBioCellularAggregate.txx"
 #include "itkBioCellBase.h"
-
+#include "itkBioCellularAggregate.txx"
+#include "itkBioCellularAggregateBase.h"
+#include "itkBioGene.h"
+#include "itkBioGeneNetwork.h"
+#include "itkBioGenome.h"
 
 
 int itkBioCellHeaderTest ( int , char * [] )
 {
-
   return EXIT_SUCCESS;
 }

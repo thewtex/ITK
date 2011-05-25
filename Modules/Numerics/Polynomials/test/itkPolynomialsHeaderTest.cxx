@@ -24,9 +24,7 @@
 #include "itkMultivariateLegendrePolynomial.h"
 
 
-
 int itkPolynomialsHeaderTest ( int , char * [] )
 {
-
   return EXIT_SUCCESS;
 }

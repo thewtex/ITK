@@ -51,9 +51,7 @@
 #include "itkWindowedSincInterpolateImageFunction.txx"
 
 
-
 int itkImageFunctionHeaderTest ( int , char * [] )
 {
-
   return EXIT_SUCCESS;
 }

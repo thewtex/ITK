@@ -21,13 +21,11 @@
 
 #include <iostream>
 
-#include "itkNarrowBandImageFilterBase.txx"
 #include "itkNarrowBand.txx"
-
+#include "itkNarrowBandImageFilterBase.txx"
 
 
 int itkNarrowBandHeaderTest ( int , char * [] )
 {
-
   return EXIT_SUCCESS;
 }

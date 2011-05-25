@@ -26,6 +26,5 @@
 
 int itkImageComposeHeaderTest ( int , char * [] )
 {
-
   return EXIT_SUCCESS;
 }

@@ -21,16 +21,14 @@
 
 #include <iostream>
 
-#include "itkImageClassifierBase.txx"
-#include "itkRGBGibbsPriorFilter.txx"
-#include "itkMRFImageFilter.txx"
 #include "itkClassifierBase.txx"
+#include "itkImageClassifierBase.txx"
+#include "itkMRFImageFilter.txx"
 #include "itkRGBGibbsPriorFilter.h"
-
+#include "itkRGBGibbsPriorFilter.txx"
 
 
 int itkMarkovRandomFieldsClassifiersHeaderTest ( int , char * [] )
 {
-
   return EXIT_SUCCESS;
 }

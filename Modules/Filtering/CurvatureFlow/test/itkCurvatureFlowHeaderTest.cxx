@@ -21,18 +21,16 @@
 
 #include <iostream>
 
+#include "itkBinaryMinMaxCurvatureFlowFunction.txx"
 #include "itkBinaryMinMaxCurvatureFlowImageFilter.h"
-#include "itkMinMaxCurvatureFlowImageFilter.txx"
+#include "itkBinaryMinMaxCurvatureFlowImageFilter.txx"
 #include "itkCurvatureFlowFunction.txx"
 #include "itkCurvatureFlowImageFilter.txx"
 #include "itkMinMaxCurvatureFlowFunction.txx"
-#include "itkBinaryMinMaxCurvatureFlowImageFilter.txx"
-#include "itkBinaryMinMaxCurvatureFlowFunction.txx"
-
+#include "itkMinMaxCurvatureFlowImageFilter.txx"
 
 
 int itkCurvatureFlowHeaderTest ( int , char * [] )
 {
-
   return EXIT_SUCCESS;
 }

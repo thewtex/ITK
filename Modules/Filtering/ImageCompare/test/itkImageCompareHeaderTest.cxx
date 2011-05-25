@@ -21,18 +21,16 @@
 
 #include <iostream>
 
+#include "itkAbsoluteValueDifferenceImageFilter.h"
 #include "itkCheckerBoardImageFilter.txx"
 #include "itkDifferenceImageFilter.h"
-#include "itkSTAPLEImageFilter.txx"
-#include "itkAbsoluteValueDifferenceImageFilter.h"
-#include "itkSimilarityIndexImageFilter.txx"
 #include "itkDifferenceImageFilter.txx"
+#include "itkSTAPLEImageFilter.txx"
+#include "itkSimilarityIndexImageFilter.txx"
 #include "itkSquaredDifferenceImageFilter.h"
-
 
 
 int itkImageCompareHeaderTest ( int , char * [] )
 {
-
   return EXIT_SUCCESS;
 }

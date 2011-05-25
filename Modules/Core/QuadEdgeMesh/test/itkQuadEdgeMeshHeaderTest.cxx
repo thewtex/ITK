@@ -43,15 +43,14 @@
 #include "itkQuadEdgeMeshPoint.txx"
 #include "itkQuadEdgeMeshPolygonCell.txx"
 #include "itkQuadEdgeMeshScalarDataVTKPolyDataWriter.txx"
+#include "itkQuadEdgeMeshToQuadEdgeMeshFilter.h"
+#include "itkQuadEdgeMeshToQuadEdgeMeshFilter.txx"
 #include "itkQuadEdgeMeshTopologyChecker.txx"
 #include "itkQuadEdgeMeshTraits.h"
 #include "itkQuadEdgeMeshZipMeshFunction.txx"
-#include "itkQuadEdgeMeshToQuadEdgeMeshFilter.h"
-#include "itkQuadEdgeMeshToQuadEdgeMeshFilter.txx"
 
 
 int itkQuadEdgeMeshHeaderTest ( int , char * [] )
 {
-
   return EXIT_SUCCESS;
 }

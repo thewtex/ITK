@@ -38,8 +38,8 @@
 #include "itkMeanSquaredErrorFunction.txx"
 #include "itkMultilayerNeuralNetworkBase.txx"
 #include "itkMultiquadricRadialBasisFunction.txx"
-#include "itkNeuralNetworkObject.txx"
 #include "itkNNetDistanceMetricBase.h"
+#include "itkNeuralNetworkObject.txx"
 #include "itkOneHiddenLayerBackPropagationNeuralNetwork.txx"
 #include "itkProductInputFunction.txx"
 #include "itkQuickPropLearningRule.txx"
@@ -58,8 +58,8 @@
 #include "itkTwoHiddenLayerBackPropagationNeuralNetwork.txx"
 #include "itkWeightSetBase.txx"
 
+
 int itkNeuralNetworksHeaderTest ( int , char * [] )
 {
-
   return EXIT_SUCCESS;
 }

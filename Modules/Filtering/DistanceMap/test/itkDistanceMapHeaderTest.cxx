@@ -21,24 +21,22 @@
 
 #include <iostream>
 
+#include "itkApproximateSignedDistanceMapImageFilter.txx"
+#include "itkContourDirectedMeanDistanceImageFilter.txx"
+#include "itkContourMeanDistanceImageFilter.txx"
+#include "itkDanielssonDistanceMapImageFilter.txx"
+#include "itkDirectedHausdorffDistanceImageFilter.txx"
+#include "itkFastChamferDistanceImageFilter.h"
+#include "itkFastChamferDistanceImageFilter.txx"
+#include "itkHausdorffDistanceImageFilter.txx"
+#include "itkIsoContourDistanceImageFilter.txx"
 #include "itkReflectiveImageRegionConstIterator.txx"
 #include "itkReflectiveImageRegionIterator.txx"
-#include "itkApproximateSignedDistanceMapImageFilter.txx"
-#include "itkHausdorffDistanceImageFilter.txx"
 #include "itkSignedDanielssonDistanceMapImageFilter.txx"
-#include "itkDanielssonDistanceMapImageFilter.txx"
-#include "itkContourMeanDistanceImageFilter.txx"
-#include "itkDirectedHausdorffDistanceImageFilter.txx"
-#include "itkContourDirectedMeanDistanceImageFilter.txx"
-#include "itkIsoContourDistanceImageFilter.txx"
-#include "itkFastChamferDistanceImageFilter.h"
 #include "itkSignedMaurerDistanceMapImageFilter.txx"
-#include "itkFastChamferDistanceImageFilter.txx"
-
 
 
 int itkDistanceMapHeaderTest ( int , char * [] )
 {
-
   return EXIT_SUCCESS;
 }

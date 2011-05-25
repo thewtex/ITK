@@ -24,9 +24,7 @@
 #include "itkDiffusionTensor3DReconstructionImageFilter.txx"
 
 
-
 int itkDiffusionTensorImageHeaderTest ( int , char * [] )
 {
-
   return EXIT_SUCCESS;
 }

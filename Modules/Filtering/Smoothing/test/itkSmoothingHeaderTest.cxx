@@ -21,18 +21,16 @@
 
 #include <iostream>
 
-#include "itkSmoothingRecursiveGaussianImageFilter.h"
-#include "itkDiscreteGaussianImageFilter.txx"
-#include "itkRecursiveGaussianImageFilter.txx"
 #include "itkBinomialBlurImageFilter.txx"
+#include "itkDiscreteGaussianImageFilter.txx"
 #include "itkMeanImageFilter.txx"
-#include "itkSmoothingRecursiveGaussianImageFilter.txx"
 #include "itkMedianImageFilter.txx"
-
+#include "itkRecursiveGaussianImageFilter.txx"
+#include "itkSmoothingRecursiveGaussianImageFilter.h"
+#include "itkSmoothingRecursiveGaussianImageFilter.txx"
 
 
 int itkSmoothingHeaderTest ( int , char * [] )
 {
-
   return EXIT_SUCCESS;
 }

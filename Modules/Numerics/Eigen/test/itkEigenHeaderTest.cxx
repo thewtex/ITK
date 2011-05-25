@@ -25,9 +25,7 @@
 #include "itkSymmetricEigenSystem.txx"
 
 
-
 int itkEigenHeaderTest ( int , char * [] )
 {
-
   return EXIT_SUCCESS;
 }

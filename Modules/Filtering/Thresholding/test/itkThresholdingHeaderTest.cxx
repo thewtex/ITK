@@ -31,9 +31,7 @@
 #include "itkThresholdLabelerImageFilter.txx"
 
 
-
 int itkThresholdingHeaderTest ( int , char * [] )
 {
-
   return EXIT_SUCCESS;
 }

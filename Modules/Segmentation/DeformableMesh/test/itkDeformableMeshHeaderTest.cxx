@@ -21,14 +21,12 @@
 
 #include <iostream>
 
-#include "itkDeformableSimplexMesh3DGradientConstraintForceFilter.txx"
 #include "itkDeformableSimplexMesh3DBalloonForceFilter.txx"
 #include "itkDeformableSimplexMesh3DFilter.txx"
-
+#include "itkDeformableSimplexMesh3DGradientConstraintForceFilter.txx"
 
 
 int itkDeformableMeshHeaderTest ( int , char * [] )
 {
-
   return EXIT_SUCCESS;
 }

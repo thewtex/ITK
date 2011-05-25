@@ -21,22 +21,21 @@
 
 #include <iostream>
 
-#include "itkFastMarchingExtensionImageFilter.txx"
-#include "itkFastMarchingUpwindGradientImageFilter.txx"
-#include "itkFastMarchingImageFilter.txx"
-
 #include "itkFastMarchingBase.h"
+#include "itkFastMarchingExtensionImageFilter.txx"
 #include "itkFastMarchingExtensionImageFilterBase.h"
+#include "itkFastMarchingImageFilter.txx"
 #include "itkFastMarchingImageFilterBase.h"
+#include "itkFastMarchingImageToNodePairContainerAdaptor.h"
 #include "itkFastMarchingQuadEdgeMeshFilterBase.h"
 #include "itkFastMarchingReachedTargetNodesStoppingCriterion.h"
 #include "itkFastMarchingStoppingCriterionBase.h"
 #include "itkFastMarchingTraits.h"
+#include "itkFastMarchingUpwindGradientImageFilter.txx"
 #include "itkFastMarchingUpwindGradientImageFilterBase.h"
-#include "itkFastMarchingImageToNodePairContainerAdaptor.h"
+
 
 int itkFastMarchingHeaderTest ( int , char * [] )
 {
-
   return EXIT_SUCCESS;
 }

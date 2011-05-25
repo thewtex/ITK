@@ -21,18 +21,16 @@
 
 #include <iostream>
 
-#include "itkIterativeInverseDeformationFieldImageFilter.txx"
+#include "itkDeformationFieldJacobianDeterminantFilter.h"
+#include "itkDeformationFieldJacobianDeterminantFilter.txx"
+#include "itkDeformationFieldSource.txx"
+#include "itkDisplacementFieldJacobianDeterminantFilter.h"
 #include "itkDisplacementFieldJacobianDeterminantFilter.txx"
 #include "itkInverseDeformationFieldImageFilter.txx"
-#include "itkDeformationFieldJacobianDeterminantFilter.h"
-#include "itkDeformationFieldSource.txx"
-#include "itkDeformationFieldJacobianDeterminantFilter.txx"
-#include "itkDisplacementFieldJacobianDeterminantFilter.h"
-
+#include "itkIterativeInverseDeformationFieldImageFilter.txx"
 
 
 int itkDeformationFieldHeaderTest ( int , char * [] )
 {
-
   return EXIT_SUCCESS;
 }

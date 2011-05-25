@@ -21,18 +21,16 @@
 
 #include <iostream>
 
-#include "itkVoronoiPartitioningImageFilter.txx"
-#include "itkVoronoiSegmentationRGBImageFilter.txx"
-#include "itkVoronoiDiagram2DGenerator.txx"
-#include "itkVoronoiSegmentationImageFilter.txx"
-#include "itkVoronoiSegmentationImageFilterBase.txx"
 #include "itkVoronoiDiagram2D.txx"
 #include "itkVoronoiDiagram2DGenerator.h"
-
+#include "itkVoronoiDiagram2DGenerator.txx"
+#include "itkVoronoiPartitioningImageFilter.txx"
+#include "itkVoronoiSegmentationImageFilter.txx"
+#include "itkVoronoiSegmentationImageFilterBase.txx"
+#include "itkVoronoiSegmentationRGBImageFilter.txx"
 
 
 int itkVoronoiHeaderTest ( int , char * [] )
 {
-
   return EXIT_SUCCESS;
 }

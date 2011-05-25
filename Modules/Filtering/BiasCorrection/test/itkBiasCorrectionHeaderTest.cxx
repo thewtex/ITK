@@ -21,15 +21,13 @@
 
 #include <iostream>
 
-#include "itkMRIBiasFieldCorrectionFilter.txx"
 #include "itkCacheableScalarFunction.h"
-#include "itkMRASlabIdentifier.txx"
 #include "itkCompositeValleyFunction.h"
-
+#include "itkMRASlabIdentifier.txx"
+#include "itkMRIBiasFieldCorrectionFilter.txx"
 
 
 int itkBiasCorrectionHeaderTest ( int , char * [] )
 {
-
   return EXIT_SUCCESS;
 }

@@ -21,18 +21,16 @@
 
 #include <iostream>
 
-#include "itkConnectedThresholdImageFilter.txx"
-#include "itkVectorConfidenceConnectedImageFilter.h"
 #include "itkConfidenceConnectedImageFilter.txx"
-#include "itkNeighborhoodConnectedImageFilter.txx"
-#include "itkNeighborhoodConnectedImageFilter.h"
+#include "itkConnectedThresholdImageFilter.txx"
 #include "itkIsolatedConnectedImageFilter.txx"
+#include "itkNeighborhoodConnectedImageFilter.h"
+#include "itkNeighborhoodConnectedImageFilter.txx"
+#include "itkVectorConfidenceConnectedImageFilter.h"
 #include "itkVectorConfidenceConnectedImageFilter.txx"
-
 
 
 int itkRegionGrowingHeaderTest ( int , char * [] )
 {
-
   return EXIT_SUCCESS;
 }

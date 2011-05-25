@@ -21,25 +21,23 @@
 
 #include <iostream>
 
+#include "itkIsolatedWatershedImageFilter.txx"
+#include "itkOneWayEquivalencyTable.h"
+#include "itkTobogganImageFilter.txx"
+#include "itkWatershedBoundary.txx"
+#include "itkWatershedBoundaryResolver.txx"
+#include "itkWatershedEquivalenceRelabeler.txx"
+#include "itkWatershedImageFilter.h"
+#include "itkWatershedImageFilter.txx"
+#include "itkWatershedMiniPipelineProgressCommand.h"
 #include "itkWatershedRelabeler.txx"
 #include "itkWatershedSegmentTable.txx"
 #include "itkWatershedSegmentTree.txx"
-#include "itkWatershedBoundaryResolver.txx"
-#include "itkTobogganImageFilter.txx"
-#include "itkWatershedBoundary.txx"
-#include "itkOneWayEquivalencyTable.h"
-#include "itkIsolatedWatershedImageFilter.txx"
-#include "itkWatershedEquivalenceRelabeler.txx"
-#include "itkWatershedImageFilter.txx"
-#include "itkWatershedMiniPipelineProgressCommand.h"
-#include "itkWatershedSegmenter.txx"
-#include "itkWatershedImageFilter.h"
 #include "itkWatershedSegmentTreeGenerator.txx"
-
+#include "itkWatershedSegmenter.txx"
 
 
 int itkWatershedsHeaderTest ( int , char * [] )
 {
-
   return EXIT_SUCCESS;
 }

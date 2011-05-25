@@ -21,19 +21,17 @@
 
 #include <iostream>
 
-#include "itkBayesianClassifierInitializationImageFilter.h"
 #include "itkBayesianClassifierImageFilter.txx"
+#include "itkBayesianClassifierInitializationImageFilter.h"
 #include "itkBayesianClassifierInitializationImageFilter.txx"
-#include "itkImageKmeansModelEstimator.txx"
-#include "itkScalarImageKmeansImageFilter.h"
 #include "itkImageGaussianModelEstimator.txx"
-#include "itkScalarImageKmeansImageFilter.txx"
+#include "itkImageKmeansModelEstimator.txx"
 #include "itkImageModelEstimatorBase.txx"
-
+#include "itkScalarImageKmeansImageFilter.h"
+#include "itkScalarImageKmeansImageFilter.txx"
 
 
 int itkClassifiersHeaderTest ( int , char * [] )
 {
-
   return EXIT_SUCCESS;
 }
