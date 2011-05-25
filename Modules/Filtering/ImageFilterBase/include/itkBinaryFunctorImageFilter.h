@@ -20,6 +20,9 @@
 
 #include "itkInPlaceImageFilter.h"
 #include "itkSimpleDataObjectDecorator.h"
+#include "itkImageFunction.h"
+#include "itkNearestNeighborInterpolateImageFunction.h"
+#include "itkVectorNearestNeighborInterpolateImageFunction.h"
 
 namespace itk
 {
@@ -40,6 +43,7 @@ namespace itk
  * \ingroup IntensityImageFilters   Multithreaded
  * \ingroup ITK-ImageFilterBase
  *
+
  * \wiki
  * \wikiexample{ImageProcessing/BinaryFunctorImageFilter,Apply a predefined operation to corresponding pixels in two images}
  * \wikiexample{ImageProcessing/BinaryFunctorImageFilterCustom,Apply a custom operation to corresponding pixels in two images}
@@ -83,6 +87,10 @@ public:
   typedef typename OutputImageType::Pointer    OutputImagePointer;
   typedef typename OutputImageType::RegionType OutputImageRegionType;
   typedef typename OutputImageType::PixelType  OutputImagePixelType;
+
+  typedef ImageFunction<Input2ImageType,
+                        ITK_TYPENAME NumericTraits<Input2ImagePixelType>::RealType,
+                        double> InterpolatorType;
 
   /** Connect one of the operands for pixel-wise operation */
   virtual void SetInput1(const TInputImage1 *image1);
@@ -148,6 +156,16 @@ public:
       }
   }
 
+  /** Set/Get UsePhysicalSpace */
+  itkSetMacro(UsePhysicalSpace,bool)
+  itkGetMacro(UsePhysicalSpace,bool)
+
+  /** Set the Interpolator for Physical Space Mode */
+  void SetInterpolator(InterpolatorType *interpolator)
+    {
+    m_Interpolator = interpolator;
+    }
+
   /** ImageDimension constants */
   itkStaticConstMacro(
     InputImage1Dimension, unsigned int, TInputImage1::ImageDimension);
@@ -170,6 +188,9 @@ protected:
   BinaryFunctorImageFilter();
   virtual ~BinaryFunctorImageFilter() {}
 
+  /** Set up interpolator if necessary before threaded execution */
+  virtual void BeforeThreadedGenerateData();
+
   /** BinaryFunctorImageFilter can be implemented as a multithreaded filter.
    * Therefore, this implementation provides a ThreadedGenerateData() routine
    * which is called for each processing thread. The output image data is
@@ -180,18 +201,37 @@ protected:
    *
    * \sa ImageToImageFilter::ThreadedGenerateData(),
    *     ImageToImageFilter::GenerateData()  */
-  void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
-                            int threadId);
+  virtual void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
+                                    int threadId);
 
   // needed to take the image information from the 2nd input, if the first one is
   // a simple decorated object
   virtual void GenerateOutputInformation();
 
 private:
+  /** to avoid false branch type error, implement creating
+   *  interpolator as template function.
+   */
+  template <typename TScalar>
+    typename InterpolatorType::Pointer
+    NewDefaultInterpolator(TScalar *)
+  {
+    return NearestNeighborInterpolateImageFunction<TInputImage2>::New().GetPointer();
+  }
+
+  template <typename TScalar,unsigned VVecLength>
+    typename InterpolatorType::Pointer
+    NewDefaultInterpolator(Vector<TScalar,VVecLength> *)
+  {
+    return VectorNearestNeighborInterpolateImageFunction<TInputImage2>::New().GetPointer();
+  }
+
   BinaryFunctorImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);           //purposely not implemented
 
-  FunctorType m_Functor;
+  FunctorType                        m_Functor;
+  bool                               m_UsePhysicalSpace;
+  typename InterpolatorType::Pointer m_Interpolator;
 };
 } // end namespace itk
 

@@ -20,6 +20,7 @@
 
 #include "itkBinaryFunctorImageFilter.h"
 #include "itkImageRegionIterator.h"
+#include "itkImageRegionIteratorWithIndex.h"
 #include "itkProgressReporter.h"
 
 namespace itk
@@ -30,7 +31,7 @@ namespace itk
 template< class TInputImage1, class TInputImage2,
           class TOutputImage, class TFunction  >
 BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage, TFunction >
-::BinaryFunctorImageFilter()
+::BinaryFunctorImageFilter() : m_UsePhysicalSpace(false)
 {
   this->SetNumberOfRequiredInputs(2);
   this->InPlaceOff();
@@ -196,6 +197,19 @@ BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage, TFunction >
     }
 }
 
+/** Set up interpolator if necessary before threaded execution */
+template< class TInputImage1, class TInputImage2, class TOutputImage, class TFunction  >
+void
+BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage, TFunction >
+::BeforeThreadedGenerateData()
+{
+  if(this->m_UsePhysicalSpace && this->m_Interpolator.IsNull())
+    {
+    this->m_Interpolator =
+      NewDefaultInterpolator(static_cast<typename TInputImage2::PixelType *>(0));
+    }
+}
+
 /**
  * ThreadedGenerateData Performs the pixel-wise addition
  */
@@ -216,24 +230,50 @@ BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage, TFunction >
 
   if( inputPtr1 && inputPtr2 )
     {
-    ImageRegionConstIterator< TInputImage1 > inputIt1(inputPtr1, outputRegionForThread);
-    ImageRegionConstIterator< TInputImage2 > inputIt2(inputPtr2, outputRegionForThread);
-
+    ImageRegionConstIteratorWithIndex< TInputImage1 > inputIt1(inputPtr1, outputRegionForThread);
     ImageRegionIterator< TOutputImage > outputIt(outputPtr, outputRegionForThread);
-
-    ProgressReporter progress( this, threadId, outputRegionForThread.GetNumberOfPixels() );
-
     inputIt1.GoToBegin();
-    inputIt2.GoToBegin();
     outputIt.GoToBegin();
 
-    while ( !inputIt1.IsAtEnd() )
+    if(this->m_UsePhysicalSpace)
       {
-      outputIt.Set( m_Functor( inputIt1.Get(), inputIt2.Get() ) );
-      ++inputIt2;
-      ++inputIt1;
-      ++outputIt;
-      progress.CompletedPixel(); // potential exception thrown here
+      this->m_Interpolator->SetInputImage(inputPtr2);
+      while( !inputIt1.IsAtEnd())
+        {
+        typename TInputImage1::IndexType index1 = inputIt1.GetIndex();
+        typename TInputImage2::PointType pt;
+        inputPtr1->TransformIndexToPhysicalPoint(index1,pt);
+        typename InterpolatorType::OutputType interpVal;
+        if(this->m_Interpolator->IsInsideBuffer(pt))
+          {
+          interpVal = this->m_Interpolator->Evaluate(pt);
+          }
+        else
+          {
+          interpVal = NumericTraits<typename InterpolatorType::OutputType>::Zero;
+          }
+        outputIt.Set( this->m_Functor(inputIt1.Get(), interpVal ) );
+        ++inputIt1;
+        ++outputIt;
+        }
+      }
+    else
+      {
+      ImageRegionConstIterator< TInputImage2 > inputIt2(inputPtr2, outputRegionForThread);
+
+
+      ProgressReporter progress( this, threadId, outputRegionForThread.GetNumberOfPixels() );
+
+      inputIt2.GoToBegin();
+
+      while ( !inputIt1.IsAtEnd() )
+        {
+        outputIt.Set( m_Functor( inputIt1.Get(), inputIt2.Get() ) );
+        ++inputIt2;
+        ++inputIt1;
+        ++outputIt;
+        progress.CompletedPixel(); // potential exception thrown here
+        }
       }
     }
   else if( inputPtr1 )
