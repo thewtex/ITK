@@ -18,7 +18,7 @@
 #ifndef __itkGaussianImageSource_h
 #define __itkGaussianImageSource_h
 
-#include "itkImageSource.h"
+#include "itkParametricImageSource.h"
 #include "itkFixedArray.h"
 #include "itkSize.h"
 
@@ -41,14 +41,15 @@ namespace itk
  * \ingroup ITK-ImageFilterBase
  */
 template< typename TOutputImage >
-class ITK_EXPORT GaussianImageSource:public ImageSource< TOutputImage >
+class ITK_EXPORT GaussianImageSource :
+    public ParametricImageSource< TOutputImage >
 {
 public:
   /** Standard class typedefs. */
-  typedef GaussianImageSource         Self;
-  typedef ImageSource< TOutputImage > Superclass;
-  typedef SmartPointer< Self >        Pointer;
-  typedef SmartPointer< const Self >  ConstPointer;
+  typedef GaussianImageSource                   Self;
+  typedef ParametricImageSource< TOutputImage > Superclass;
+  typedef SmartPointer< Self >                  Pointer;
+  typedef SmartPointer< const Self >            ConstPointer;
 
   /** Typedef for the output image PixelType. */
   typedef typename TOutputImage::PixelType OutputImagePixelType;
@@ -71,15 +72,19 @@ public:
   /** Dimensionality of the output image */
   itkStaticConstMacro(NDimensions, unsigned int, TOutputImage::ImageDimension);
 
-  /** Type used to store gaussian parameters. */
+  /** Type used to store Gaussian parameters. */
   typedef FixedArray< double, itkGetStaticConstMacro(NDimensions) > ArrayType;
 
   /** Size type matches that used for images */
   typedef typename TOutputImage::SizeType      SizeType;
   typedef typename TOutputImage::SizeValueType SizeValueType;
 
+  /** Types for parameters. */
+  typedef typename Superclass::ParametersValueType ParametersValueType;
+  typedef typename Superclass::ParametersType      ParametersType;
+
   /** Run-time type information (and related methods). */
-  itkTypeMacro(GaussianImageSource, ImageSource);
+  itkTypeMacro(GaussianImageSource, ParametricImageSource);
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -118,6 +123,12 @@ public:
   itkGetConstReferenceMacro(Sigma, ArrayType);
   itkSetMacro(Mean, ArrayType);
   itkGetConstReferenceMacro(Mean, ArrayType);
+
+  /** Set/get the  parameters for this source. */
+  virtual void SetParameters(const ParametersType & parameters);
+  virtual ParametersType GetParameters() const;
+  virtual unsigned int GetNumberOfParameters() const;
+
 protected:
   GaussianImageSource();
   ~GaussianImageSource();
@@ -131,9 +142,9 @@ private:
   GaussianImageSource(const GaussianImageSource &); //purposely not implemented
   void operator=(const GaussianImageSource &);      //purposely not implemented
 
-  SizeType      m_Size;              //size of the output image
-  SpacingType   m_Spacing;           //spacing
-  PointType     m_Origin;            //origin
+  SizeType      m_Size;              // size of the output image
+  SpacingType   m_Spacing;           // spacing
+  PointType     m_Origin;            // origin
   DirectionType m_Direction;         // direction
 
   /** Parameters for the Gaussian. */
