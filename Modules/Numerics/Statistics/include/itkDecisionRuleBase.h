@@ -18,61 +18,21 @@
 #ifndef __itkDecisionRuleBase_h
 #define __itkDecisionRuleBase_h
 
-#include <vector>
-#include "vnl/vnl_matrix.h"
-#include "itkObject.h"
-#include "itkObjectFactory.h"
-#include "itkArray.h"
-#include "itkVariableLengthVector.h"
+/**
+ * The original class DecisionRuleBase has been removed from ITK. It
+ * has been replaced by DecisionRule. This file allows for backward
+ * compatibility.
+ */
+
+#ifndef __itkDecisionRule_h
+#warning "itk::DecisionRuleBase has been deprecated. itk::Statistics::DecisionRule has been substituted in its place. Please use itk::Statistics::DecisionRule directly."
+#endif
+
+#include "itkDecisionRule.h"
 
 namespace itk
 {
-/** \class DecisionRuleBase
- *  \brief Base class that allows the setting of usage of differnt
- *  decision rules used in classification
- *  This class has the pure virtual function, Evaluate(). Therefore,
- *  any subclass should implement the function to be instantiated.
- * \ingroup ITK-Statistics
- */
-
-class ITK_EXPORT DecisionRuleBase:public Object
-{
-public:
-  /** Standard class typedefs */
-  typedef DecisionRuleBase           Self;
-  typedef Object                     Superclass;
-  typedef SmartPointer< Self >       Pointer;
-  typedef SmartPointer< const Self > ConstPointer;
-
-  /** Run-time type information (and related methods) */
-  itkTypeMacro(DecisionRuleBase, Object);
-
-  /** Types for the arguments that are acceptable in the Evaluate() method */
-  typedef std::vector< double >          VectorType;
-  typedef Array< double >                ArrayType;
-  typedef VariableLengthVector< double > VariableLengthVectorType;
-
-  /** The return value of this function is a class label.
-   * Basically, using its internal logic based on the discriminant
-   * scores, this function decides best class label and return it.
-   */
-  virtual unsigned int Evaluate(const VectorType & discriminantScores) const = 0;
-
-  /** The return value of this function is a class label.
-   * Basically, using its internal logic based on the discriminant
-   * scores, this function decides best class label and return it.
-   */
-  virtual unsigned int Evaluate(const ArrayType & discriminantScores) const = 0;
-
-protected:
-  DecisionRuleBase();
-  virtual ~DecisionRuleBase();
-  void PrintSelf(std::ostream & os, Indent indent) const;
-
-private:
-  DecisionRuleBase(const Self &); //purposely not implemented
-  void operator=(const Self &);   //purposely not implemented
-};                                // end of class
-} // namespace itk
+typedef Statistics::DecisionRule DecisionRuleBase;
+}
 
 #endif

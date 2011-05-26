@@ -19,110 +19,85 @@
 
 namespace itk
 {
-MaximumRatioDecisionRule::MaximumRatioDecisionRule()
-{}
-
-void MaximumRatioDecisionRule::SetAPriori(APrioriVectorType & values)
+namespace Statistics
 {
-  m_NumberOfClasses = values.size();
-  m_APrioriRatioMatrix.set_size( values.size(), values.size() );
-  APrioriVectorSizeType i, j;
-  double                APrioriRatio;
-  for ( i = 0; i < m_NumberOfClasses; i++ )
-    {
-    for ( j = 0; j < m_NumberOfClasses; j++ )
-      {
-      if ( values[i] > 0 )
-        {
-        APrioriRatio = (double)values[j]
-                       / (double)values[i];
-        }
-      else
-        {
-        APrioriRatio = NumericTraits< double >::max();
-        }
-      m_APrioriRatioMatrix.put(i, j, APrioriRatio);
-      }
-    }
+MaximumRatioDecisionRule
+::MaximumRatioDecisionRule()
+{
 }
 
-unsigned int
-MaximumRatioDecisionRule::Evaluate(const VectorType & discriminantScores) const
+void
+MaximumRatioDecisionRule
+::PrintSelf(std::ostream & os, Indent indent) const
 {
-  unsigned int i, j;
-  double       temp;
+  Superclass::PrintSelf(os, indent);
 
-  for ( i = 0; i < m_NumberOfClasses; i++ )
+  os << "Prior probabilities: ";
+  PriorProbabilityVectorType::const_iterator it = m_PriorProbabilities.begin();
+  PriorProbabilityVectorType::size_type N = 10;
+  if (m_PriorProbabilities.size() < N)
     {
-    j = 0;
-    while ( j < m_NumberOfClasses )
+    N = m_PriorProbabilities.size();
+    }
+  os << "[" << std::endl;
+  for (PriorProbabilityVectorType::size_type i = 0; i < N; ++i)
+    {
+    os << m_PriorProbabilities[i];
+    if (i+1 < N)
       {
-      if ( j != i )
-        {
-        if ( discriminantScores[j] != 0.0 )
-          {
-          temp = discriminantScores[i] / discriminantScores[j];
-          }
-        else
-          {
-          temp = NumericTraits< double >::max();
-          }
-
-        if ( temp < m_APrioriRatioMatrix.get(i, j) )
-          {
-          break;
-          }
-        }
-
-      ++j;
-
-      if ( j == m_NumberOfClasses )
-        {
-        return i;
-        }
+      os << ", ";
       }
     }
-
-  return i;
+  if (m_PriorProbabilities.size() > 0 && m_PriorProbabilities.size() < N)
+    {
+    os << ", ...";
+    }
+  os << "]" << std::endl;
 }
 
-unsigned int
-MaximumRatioDecisionRule::Evaluate(const ArrayType & discriminantScores) const
+MaximumRatioDecisionRule::ClassIdentifierType
+MaximumRatioDecisionRule
+::Evaluate(const MembershipVectorType & discriminantScores) const
 {
-  unsigned int i, j;
-  double       temp;
-
-  for ( i = 0; i < m_NumberOfClasses; i++ )
+  bool uniformPrior = false;
+  if (discriminantScores.size() != m_PriorProbabilities.size())
     {
-    j = 0;
-    while ( j < m_NumberOfClasses )
-      {
-      if ( j != i )
-        {
-        if ( discriminantScores[j] != 0.0 )
-          {
-          temp = discriminantScores[i] / discriminantScores[j];
-          }
-        else
-          {
-          temp = NumericTraits< double >::max();
-          }
-
-        if ( temp < m_APrioriRatioMatrix.get(i, j) )
-          {
-          break;
-          }
-        }
-
-      ++j;
-
-      if ( j == m_NumberOfClasses )
-        {
-        return i;
-        }
-      }
+    itkWarningMacro("Size mismatch between discriminant scores (" << discriminantScores.size() << ") and priors (" << m_PriorProbabilities.size() << "). Reverting to a uniform prior.");
+    uniformPrior = true;
     }
 
-  return i;
+  if (uniformPrior)
+    {
+    // find the maximum discriminant score. if list is empty, return 0.
+    ClassIdentifierType i, besti = 0;
+    MembershipValueType best = NumericTraits<MembershipValueType>::NonpositiveMin();
+    for (i=0; i < discriminantScores.size(); ++i)
+      {
+      if (discriminantScores[i] > best)
+        {
+        best = discriminantScores[i];
+        besti = i;
+        }
+      }
+    return besti;
+    }
+
+  // Non-uniform prior case
+  // find the maximum p(x|i)*p(i)
+  ClassIdentifierType i, besti = 0;
+  MembershipValueType best = NumericTraits<MembershipValueType>::NonpositiveMin();
+  MembershipValueType temp = NumericTraits<MembershipValueType>::NonpositiveMin();
+
+  for (i=0; i < discriminantScores.size(); ++i)
+    {
+    temp = discriminantScores[i] * m_PriorProbabilities[i];
+    if (temp > best)
+      {
+      best = temp;
+      besti = i;
+      }
+    }
+  return besti;
 }
-} // end of namespace
+} // end of Statistics namespace
+} // end of ITK namespace

@@ -18,48 +18,24 @@
 #ifndef __itkMinimumDecisionRule2_h
 #define __itkMinimumDecisionRule2_h
 
-#include "itkDecisionRule.h"
+/**
+ * The class MinimumDecisionRule2 has been removed from ITK. It has
+ * been replaced by MinimumDecisionRule. This file allows for backward
+ * compatibility.
+ */
+
+#ifndef __itkMinimumDecisionRule_h
+#warning "itk::Statistics::MinimumDecisionRule2 has been deprecated. itk::Statistics::MinimumDecisionRule has been substituted in its place. Please use itk::Statistics::MinimumDecisionRule directly."
+#endif
+
+#include "itkMinimumDecisionRule.h"
 
 namespace itk
 {
 namespace Statistics
 {
-/** \class MinimumDecisionRule2
- *  \brief A Decision rule that choose the class of which discriminant
- *  score is the largest. This class will replace the MinimumDecisionRule
- *  in Code/Common
- * \ingroup ITK-Statistics
- */
-
-class ITK_EXPORT MinimumDecisionRule2:public DecisionRule
-{
-public:
-  /** Standard class typedefs */
-  typedef MinimumDecisionRule2       Self;
-  typedef DecisionRule               Superclass;
-  typedef SmartPointer< Self >       Pointer;
-  typedef SmartPointer< const Self > ConstPointer;
-
-  /** Run-time type information (and related methods) */
-  itkTypeMacro(MinimumDecisionRule2, DecisionRule);
-
-  /** Standard New() method support */
-  itkNewMacro(Self);
-
-  typedef Superclass::MembershipVectorType MembershipVectorType;
-
-  /** The return value of this function is a class label.
-   * Basically, using its internal logic based on the discriminant
-   * scores, this function decides best class label and return it.
-   */
-  virtual unsigned int Evaluate(const MembershipVectorType & discriminantScores) const;
-
-protected:
-  MinimumDecisionRule2() {}
-  virtual ~MinimumDecisionRule2() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
-};  // end of class
-} // end of namespace itk
-} // end of namespace Statistics
+typedef MinimumDecisionRule MinimumDecisionRule2;
+}
+}
 
 #endif

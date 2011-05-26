@@ -18,48 +18,24 @@
 #ifndef __itkMaximumDecisionRule2_h
 #define __itkMaximumDecisionRule2_h
 
-#include "itkDecisionRule.h"
+/**
+ * The class MaximumDecisionRule2 has been removed from ITK. It has
+ * been replaced by MaximumDecisionRule. This file allows for backward
+ * compatibility.
+ */
+
+#ifndef __itkMaximumDecisionRule_h
+#warning "itk::Statistics::MaximumDecisionRule2 has been deprecated. itk::Statistics::MaximumDecisionRule has been substituted in its place. Please use itk::Statistics::MaximumDecisionRule directly."
+#endif
+
+#include "itkMaximumDecisionRule.h"
 
 namespace itk
 {
 namespace Statistics
 {
-/** \class MaximumDecisionRule2
- *  \brief A Decision rule that choose the class of which discriminant
- *  score is the largest. This class will replace the MaximumDecisionRule
- *  in Code/Common
- * \ingroup ITK-Statistics
- */
-
-class ITK_EXPORT MaximumDecisionRule2:public DecisionRule
-{
-public:
-  /** Standard class typedefs */
-  typedef MaximumDecisionRule2       Self;
-  typedef DecisionRule               Superclass;
-  typedef SmartPointer< Self >       Pointer;
-  typedef SmartPointer< const Self > ConstPointer;
-
-  /** Run-time type information (and related methods) */
-  itkTypeMacro(MaximumDecisionRule2, DecisionRule);
-
-  /** Standard New() method support */
-  itkNewMacro(Self);
-
-  typedef Superclass::MembershipVectorType MembershipVectorType;
-
-  /** The return value of this function is a class label.
-   * Basically, using its internal logic based on the discriminant
-   * scores, this function decides best class label and return it.
-   */
-  virtual unsigned int Evaluate(const MembershipVectorType & discriminantScores) const;
-
-protected:
-  MaximumDecisionRule2() {}
-  virtual ~MaximumDecisionRule2() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
-};  // end of class
-} // end of namespace itk
-} // end of namespace Statistics
+typedef MaximumDecisionRule MaximumDecisionRule2;
+}
+}
 
 #endif

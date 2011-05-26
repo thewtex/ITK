@@ -283,7 +283,7 @@ int itkMRFImageFilterTest(int, char* [] )
   //----------------------------------------------------------------------
   typedef itk::DecisionRuleBase::Pointer DecisionRuleBasePointer;
 
-  typedef itk::MinimumDecisionRule DecisionRuleType;
+  typedef itk::Statistics::MinimumDecisionRule DecisionRuleType;
   DecisionRuleType::Pointer
     myDecisionRule = DecisionRuleType::New();
 

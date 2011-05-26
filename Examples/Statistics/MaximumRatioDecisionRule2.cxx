@@ -22,7 +22,7 @@
 // Software Guide : BeginLatex
 // \index{itk::Statistics::Maximum\-Ratio\-Decision\-Rule}
 //
-// The \code{Evaluate()} method of the \doxygen{MaximumRatioDecisionRule2}
+// The \code{Evaluate()} method of the \doxygen{MaximumRatioDecisionRule}
 // returns the index, $i$ if
 // \begin{equation}
 //   \frac{f_{i}(\overrightarrow{x})}{f_{j}(\overrightarrow{x})} >
@@ -39,7 +39,7 @@
 // Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-#include "itkMaximumRatioDecisionRule2.h"
+#include "itkMaximumRatioDecisionRule.h"
 #include <vector>
 // Software Guide : EndCodeSnippet
 
@@ -53,7 +53,7 @@ int main(int, char*[])
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::Statistics::MaximumRatioDecisionRule2 DecisionRuleType;
+  typedef itk::Statistics::MaximumRatioDecisionRule DecisionRuleType;
   DecisionRuleType::Pointer decisionRule = DecisionRuleType::New();
   // Software Guide : EndCodeSnippet
 
