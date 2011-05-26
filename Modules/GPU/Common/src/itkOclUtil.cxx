@@ -265,3 +265,41 @@ void OclCheckError(cl_int error)
       assert( false );
     }
 }
+
+
+void GetTypenameInString( const type_info& intype, std::ostringstream& ret )
+{
+  if ( intype == typeid ( unsigned char ) )
+  {
+    ret << "unsigned char\n";
+  }
+  else if ( intype == typeid ( char ) )
+  {
+    ret << "char\n";
+  }
+  else if ( intype == typeid ( short ) )
+  {
+    ret << "short\n";
+  }
+  else if ( intype == typeid ( int ) )
+  {
+    ret << "int\n";
+  }
+  else if ( intype == typeid ( unsigned int ) )
+  {
+    ret << "unsigned int\n";
+  }
+  else if ( intype == typeid ( float ) )
+  {
+    ret << "float\n";
+  }
+  else if ( intype == typeid ( double ) )
+  {
+    ret << "double\n";
+  }
+  else
+  {
+    //std::cerr << "Pixeltype is not supported by GPUMeanImageFilter." << std::endl;
+    itkGenericExceptionMacro("Pixeltype is not supported by GPUMeanImageFilter.");
+  }
+}
