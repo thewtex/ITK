@@ -48,7 +48,7 @@ GPUFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilter >
 template< class TInputImage, class TOutputImage, class TParentImageFilter >
 void
 GPUFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilter >
-::GenerateData()
+::GPUGenerateData()
 {
   // Test whether the output pixel type (or its components) are not of type
   // float or double:
@@ -89,8 +89,8 @@ GPUFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilter >
     this->InitializeIteration(); // An optional method for precalculating
                                  // global values, or otherwise setting up
                                  // for the next iteration
-    dt = this->CalculateChange();
-    this->ApplyUpdate(dt);
+    dt = this->GPUCalculateChange();
+    this->GPUApplyUpdate(dt);
     ++m_ElapsedIterations;
 
     // Invoke the iteration event.

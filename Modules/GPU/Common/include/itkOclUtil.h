@@ -4,6 +4,10 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+
+#include <iostream>
+#include <sstream>
+
 #ifdef __APPLE__
 
 #include <OpenCL/cl.h>
@@ -17,6 +21,8 @@
 #include <CL/opencl.h>
 #include <CL/cl_gl.h>
 #include <CL/cl_ext.h>
+
+#include <itkMacro.h>
 
 #endif
 
@@ -44,5 +50,11 @@ cl_platform_id OclSelectPlatform(const char* name);
 // Check OpenCL error
 //
 void OclCheckError(cl_int error);
+
+//
+// Get Typename in String
+//
+void GetTypenameInString( const type_info& intype, std::ostringstream& ret );
+
 
 #endif

@@ -12,57 +12,48 @@ GPUMeanImageFilter< TInputImage, TOutputImage >::GPUMeanImageFilter()
   std::ostringstream defines;
 
   if(TInputImage::ImageDimension > 3)
-    {
+  {
     itkExceptionMacro("GPUMeanImageFilter supports 1/2/3D image.");
-    }
+  }
 
   defines << "#define DIM_" << TInputImage::ImageDimension << "\n";
+  defines << "#define PIXELTYPE ";
+  GetTypenameInString( typeid ( typename TInputImage::PixelType ), defines );
 
+  /*
   if ( typeid ( typename TInputImage::PixelType ) == typeid ( unsigned char ) )
-    {
-    defines << "#define PIXELTYPE unsigned char\n";
-    }
-  else if ( typeid ( typename TInputImage::PixelType ) == typeid ( short ) )
-    {
-    defines << "#define PIXELTYPE short\n";
-    }
-  else if ( typeid ( typename TInputImage::PixelType ) == typeid ( int ) )
-    {
-    defines << "#define PIXELTYPE int\n";
-    }
-  else if ( typeid ( typename TInputImage::PixelType ) == typeid ( float ) )
-    {
-    defines << "#define PIXELTYPE float\n";
-    }
-
-  else if ( typeid ( typename TInputImage::PixelType ) == typeid ( unsigned char ) )
   {
-    defines << "unsigned char\n";
+    defines << "#define PIXELTYPE unsigned char\n";
   }
   else if ( typeid ( typename TInputImage::PixelType ) == typeid ( char ) )
   {
-    defines << "char\n";
+    defines << "#define PIXELTYPE char\n";
+  }
+  else if ( typeid ( typename TInputImage::PixelType ) == typeid ( short ) )
+  {
+    defines << "#define PIXELTYPE short\n";
   }
   else if ( typeid ( typename TInputImage::PixelType ) == typeid ( int ) )
   {
-    defines << "int\n";
+    defines << "#define PIXELTYPE int\n";
   }
   else if ( typeid ( typename TInputImage::PixelType ) == typeid ( unsigned int ) )
   {
-    defines << "unsigned int\n";
+    defines << "#define PIXELTYPE unsigned int\n";
   }
   else if ( typeid ( typename TInputImage::PixelType ) == typeid ( float ) )
   {
-    defines << "float\n";
+    defines << "#define PIXELTYPE float\n";
   }
   else if ( typeid ( typename TInputImage::PixelType ) == typeid ( double ) )
   {
-    defines << "double\n";
+    defines << "#define PIXELTYPE double\n";
   }
   else
-    {
-    itkExceptionMacro("GPUMeanImageFilter supports unsigned char, short, int and float images.");
-    }
+  {
+    itkExceptionMacro("Pixeltype is not supported by GPUMeanImageFilter.");
+  }
+  */
 
   //std::string oclSrcPath = std::string ( itk_root_path ) + "/Code/GPU/GPUMeanImageFilter.cl";
 
