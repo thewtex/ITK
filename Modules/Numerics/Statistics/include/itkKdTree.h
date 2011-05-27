@@ -473,7 +473,7 @@ public:
    */
   class NearestNeighbors
   {
-public:
+  public:
     /** Constructor */
     NearestNeighbors() {}
 
@@ -534,7 +534,7 @@ public:
       return m_Distances;
     }
 
-private:
+  private:
     /** The index of the farthest neighbor among k-neighbors */
     unsigned int m_FarthestNeighborIndex;
 
