@@ -38,59 +38,109 @@ typedef PointSet::PointType  PointType;
 
 int itkPointSetTest(int, char* [] )
 {
-  /**
-   * Define the 3d geometric positions for 8 points in a cube.
-   */
-  PointSet::CoordRepType testPointCoords[3];
 
   /**
    * Create the point set through its object factory.
    */
-  PointSet::Pointer pset(PointSet::New());
+  PointSet::Pointer pset = PointSet::New();
+  pset->Initialize();
 
   /**
-   * Add our test points to the mesh.
-   * pset->SetPoint(pointId, point)
-   * Note that the constructor for Point is public, and takes an array
-   * of coordinates for the point.
+   * Create a simple point set structure that will create a non-degenerate
+   * bounding box but will allow simple querying tests.
    */
-  for(int i=0; i < 100 ; ++i)
+  PointSet::CoordRepType testPointCoords[3];
+  for(int i=1; i <= 100 ; ++i)
     {
-    testPointCoords[0] = (PointSet::CoordRepType)
-      vnl_sample_uniform((double)-1.0,(double)1.0);
-    testPointCoords[1] = (PointSet::CoordRepType)
-      vnl_sample_uniform((double)-1.0,(double)1.0);
-    testPointCoords[2] = (PointSet::CoordRepType)
-      vnl_sample_uniform((double)-1.0,(double)1.0);
-    pset->SetPoint(i, PointType(testPointCoords));
+    testPointCoords[0] = static_cast<PointSet::CoordRepType>( i );
+    testPointCoords[1] = static_cast<PointSet::CoordRepType>( i );
+    testPointCoords[2] = static_cast<PointSet::CoordRepType>( i );
+    pset->SetPoint( i - 1, PointType( testPointCoords ) );
     }
 
   /**
    * Perform some geometric operations (coordinate transformations)
    * to see if they are working.
    */
+  std::cout << "Test:  FindClosestPoint() 1" << std::endl;
+
   PointSet::CoordRepType coords[PointSet::PointDimension];
+  coords[0] = 50;
+  coords[1] = 50;
+  coords[2] = 50;
+
   PointSet::PointIdentifier pointId;
-  pset->FindClosestPoint(coords,&pointId);
+  bool isFound = pset->FindClosestPoint( coords, &pointId );
+  if( !isFound || pointId != 49 )
+    {
+    std::cerr << "Error with FindClosestPoint() 1" << std::endl;
+    return EXIT_FAILURE;
+    }
+
+  std::cout << "Test:  FindClosestPoint() 2" << std::endl;
+
+  PointSet::PointType point;
+  point[0] = 50;
+  point[1] = 50;
+  point[2] = 50;
+  isFound = pset->FindClosestPoint( point, &pointId );
+  if( !isFound || pointId != 49 )
+    {
+    std::cerr << "Error with FindClosestPoint() 2" << std::endl;
+    return EXIT_FAILURE;
+    }
+
+  PointSet::NeighborhoodIdentifierType neighborhood;
+
+  isFound = pset->FindClosestNPoints( coords, 10u, &neighborhood );
+  if( !isFound || neighborhood.size() != 10 )
+    {
+    std::cerr << "Error with FindClosestNPoints() 1" << std::endl;
+    return EXIT_FAILURE;
+    }
+
+  isFound = pset->FindClosestNPoints( point, 10u, &neighborhood );
+  if( !isFound || neighborhood.size() != 10 )
+    {
+    std::cerr << "Error with FindClosestNPoints() 2" << std::endl;
+    return EXIT_FAILURE;
+    }
+
+  double radius = vcl_sqrt( 3 * vnl_math_sqr( 5.1 ) );
+
+  isFound = pset->FindPointsWithinRadius( coords, radius, &neighborhood );
+  if( !isFound || neighborhood.size() != 10 )
+    {
+    std::cerr << "Error with FindPointsWithinRadius() 1" << std::endl;
+    return EXIT_FAILURE;
+    }
+
+  isFound = pset->FindPointsWithinRadius( point, radius, &neighborhood );
+  if( !isFound || neighborhood.size() != 10 )
+    {
+    std::cerr << "Error with FindPointsWithinRadius() 2" << std::endl;
+    return EXIT_FAILURE;
+    }
 
   /**
    * Compute the bounding box of the mesh
    */
-  typedef itk::BoundingBox<PointSet::PointIdentifier,PointSet::PointDimension,
-    PointSet::CoordRepType,PointSet::PointsContainer> BoundingBox;
+  PointType minPoint;
+  minPoint.Fill( 1.0 );
 
-  BoundingBox::Pointer bbox(BoundingBox::New());
-  bbox->SetPoints(pset->GetPoints());
-  bbox->ComputeBoundingBox();
-  std::cout << bbox << std::endl;
+  PointType maxPoint;
+  maxPoint.Fill( 100.0 );
 
-
-  /**
-   *  Test the internal bounding box
-   */
-  std::cout << "Internal bounding box " << std::endl;
-  BoundingBox::ConstPointer bbox2 = pset->GetBoundingBox();
-  std::cout << bbox2 << std::endl;
+  if( pset->GetBoundingBox()->GetMinimum() != minPoint )
+    {
+    std::cerr << "Minimum bounding box point is incorrect." << std::endl;
+    return EXIT_FAILURE;
+    }
+  if( pset->GetBoundingBox()->GetMaximum() != maxPoint )
+    {
+    std::cerr << "Maximum bounding box point is incorrect." << std::endl;
+    return EXIT_FAILURE;
+    }
 
   return EXIT_SUCCESS;
 

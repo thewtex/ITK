@@ -29,8 +29,12 @@
 #define __itkPointSet_h
 
 #include "itkDataObject.h"
-#include "itkDefaultStaticMeshTraits.h"
+
 #include "itkBoundingBox.h"
+#include "itkDefaultStaticMeshTraits.h"
+#include "itkKdTreeGenerator.h"
+#include "itkVectorContainerToListSampleAdaptor.h"
+
 #include <vector>
 #include <set>
 
@@ -135,11 +139,11 @@ public:
                        CoordRepType, PointsContainer >   BoundingBoxType;
 
   /** Create types that are pointers to each of the container types. */
-  typedef typename PointsContainer::Pointer         PointsContainerPointer;
-  typedef typename PointsContainer::ConstPointer    PointsContainerConstPointer;
-  typedef typename PointDataContainer::Pointer      PointDataContainerPointer;
-  typedef typename PointDataContainer::ConstPointer PointDataContainerConstPointer;
-  typedef typename BoundingBoxType::Pointer         BoundingBoxPointer;
+  typedef typename PointsContainer::Pointer          PointsContainerPointer;
+  typedef typename PointsContainer::ConstPointer     PointsContainerConstPointer;
+  typedef typename PointDataContainer::Pointer       PointDataContainerPointer;
+  typedef typename PointDataContainer::ConstPointer  PointDataContainerConstPointer;
+  typedef typename BoundingBoxType::Pointer          BoundingBoxPointer;
 
   /** Create types that are iterators for each of the container types. */
   typedef typename PointsContainer::ConstIterator    PointsContainerConstIterator;
@@ -148,6 +152,18 @@ public:
 
   /** Type used to define Regions */
   typedef long RegionType;
+
+  /** Kd tree specific typedefs used for locating points quickly. */
+  typedef typename Statistics::
+    VectorContainerToListSampleAdaptor<PointsContainer> SampleAdaptorType;
+  typedef typename Statistics::
+    KdTreeGenerator<SampleAdaptorType>                  TreeGeneratorType;
+  typedef typename TreeGeneratorType::Pointer           TreeGeneratorPointer;
+  typedef typename TreeGeneratorType::KdTreeType        KdTreeType;
+  typedef typename TreeGeneratorType::
+    MeasurementVectorType                               MeasurementVectorType;
+  typedef typename KdTreeType
+    ::InstanceIdentifierVectorType                      NeighborhoodIdentifierType;
 
   /** Get the maximum number of regions that this data can be
    * separated into. */
@@ -166,6 +182,13 @@ protected:
   /** The bounding box (xmin,xmax, ymin,ymax, ...) of the mesh. The
    * bounding box is used for searching, picking, display, etc. */
   BoundingBoxPointer m_BoundingBox;
+
+  /** The Kd Tree generator of the point set for searching, picking, display,
+   * etc.  Provides more information than the bounding box. */
+  TreeGeneratorPointer m_KdTreeGenerator;
+
+  typename SampleAdaptorType::Pointer m_SampleAdaptor;
+
 public:
   /** PointSet-level operation interface. */
   void PassStructure(Self *inputPointSet);
@@ -204,10 +227,39 @@ public:
    * the user-supplied bounding box as a convenience. */
   const BoundingBoxType * GetBoundingBox(void) const;
 
-  /** Geometric operations convert between coordinate systems, perform
-   * interpolation, and locate points and cells. */
-  bool FindClosestPoint(CoordRepType * /*coords[PointDimension]*/,
-                        PointIdentifier *pointId);
+  /** Find closest point to the specified coords.
+   * Requires construction of kd-tree. */
+  bool FindClosestPoint(const CoordRepType *, PointIdentifier *);
+
+  /** Find closest point to the specified point.
+   * Requires construction of kd-tree. */
+  bool FindClosestPoint(const PointType, PointIdentifier *);
+
+  /** Find closest N points to the specified coords.
+   * Requires construction of kd-tree. */
+  bool FindClosestNPoints(const CoordRepType *, const unsigned int,
+    NeighborhoodIdentifierType *);
+
+  /** Find closest N points to the specified point.
+   * Requires construction of kd-tree. */
+  bool FindClosestNPoints(const PointType, const unsigned int,
+    NeighborhoodIdentifierType *);
+
+  /** Find points within a given radius to the specified coords.
+   * Requires construction of kd-tree. */
+  bool FindPointsWithinRadius(const CoordRepType *, const double,
+    NeighborhoodIdentifierType *);
+
+  /** Find points within a given radius to the specified point.
+   * Requires construction of kd-tree. */
+  bool FindPointsWithinRadius(const PointType, const double,
+    NeighborhoodIdentifierType *);
+
+  /** Kd-tree to facilitate querying of the point set.  Construction time is
+   * O(n log^2 n) or O(n log n) while a nearest neighbor query is O(log n).
+   * This is useful for large point sets.
+   */
+  const KdTreeType * GetKdTree(void) const;
 
   /** Methods to manage streaming. */
   virtual void UpdateOutputInformation();

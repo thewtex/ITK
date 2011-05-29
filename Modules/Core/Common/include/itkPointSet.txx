@@ -305,12 +305,34 @@ const typename PointSet< TPixelType, VDimension, TMeshTraits >::BoundingBoxType 
 PointSet< TPixelType, VDimension, TMeshTraits >
 ::GetBoundingBox(void) const
 {
-  m_BoundingBox->SetPoints( this->GetPoints() );
-  if ( m_BoundingBox->GetMTime() > this->GetMTime() )
+  if ( m_BoundingBox->GetMTime() < this->GetMTime() )
     {
+    m_BoundingBox->SetPoints( this->GetPoints() );
     m_BoundingBox->ComputeBoundingBox();
     }
   return m_BoundingBox;
+}
+
+/**
+ * Get the kd tree of the entire pointSet.
+ */
+template< typename TPixelType, unsigned int VDimension, typename TMeshTraits >
+const typename PointSet< TPixelType, VDimension, TMeshTraits >::KdTreeType *
+PointSet< TPixelType, VDimension, TMeshTraits >
+::GetKdTree(void) const
+{
+  if( m_KdTreeGenerator->GetMTime() < this->GetMTime() )
+    {
+    m_SampleAdaptor->SetVectorContainer( const_cast< PointsContainer * >(
+      m_PointsContainer.GetPointer() ) );
+    m_SampleAdaptor->SetMeasurementVectorSize( PointDimension );
+
+    m_KdTreeGenerator->SetSample( m_SampleAdaptor );
+    m_KdTreeGenerator->SetBucketSize( 16 );
+    m_KdTreeGenerator->Update();
+    }
+
+  return m_KdTreeGenerator->GetOutput();
 }
 
 /**
@@ -322,11 +344,160 @@ PointSet< TPixelType, VDimension, TMeshTraits >
 template< typename TPixelType, unsigned int VDimension, typename TMeshTraits >
 bool
 PointSet< TPixelType, VDimension, TMeshTraits >
-::FindClosestPoint(CoordRepType *,
-                   PointIdentifier *)
+::FindClosestPoint( const PointType point, PointIdentifier *pointId )
 {
-  m_BoundingBox->SetPoints( this->GetPoints() );
-  return bool();
+  if( this->GetNumberOfPoints() == 0 )
+    {
+    return false;
+    }
+
+  MeasurementVectorType queryPoint;
+  for( unsigned int d = 0; d < PointDimension; d++ )
+    {
+    queryPoint[d] = point[d];
+    }
+
+  NeighborhoodIdentifierType neighborIds;
+  this->GetKdTree()->Search( queryPoint, 1u, neighborIds );
+
+  *pointId = neighborIds[0];
+
+  return true;
+}
+
+/**
+ * Find the closest point in the pointSet to the given point
+ * (PointType).  Returns whether a closest point was found.  If
+ * a point is found, its PointIdentifier is set through the "pointId" pointer
+ * (if it isn't NULL).
+ */
+template< typename TPixelType, unsigned int VDimension, typename TMeshTraits >
+bool
+PointSet< TPixelType, VDimension, TMeshTraits >
+::FindClosestPoint( const CoordRepType *coords, PointIdentifier *pointId )
+{
+  if( this->GetNumberOfPoints() == 0 )
+    {
+    return false;
+    }
+  MeasurementVectorType queryPoint;
+  for( unsigned int d = 0; d < PointDimension; d++ )
+    {
+    queryPoint[d] = coords[d];
+    }
+
+  NeighborhoodIdentifierType neighborIds;
+  this->GetKdTree()->Search( queryPoint, 1u, neighborIds );
+
+  *pointId = neighborIds[0];
+
+  return true;
+}
+
+/**
+ * Find the nearest N closest points in the pointSet to the given point.
+ * PointType.  Returns whether a closest point was found.  If
+ * a point is found, its PointIdentifier is set through the "pointId" pointer
+ * (if it isn't NULL).
+ */
+template< typename TPixelType, unsigned int VDimension, typename TMeshTraits >
+bool
+PointSet< TPixelType, VDimension, TMeshTraits >
+::FindClosestNPoints( const CoordRepType *coords, const unsigned int numberOfNeighbors,
+  NeighborhoodIdentifierType *neighborIds )
+{
+  if( this->GetNumberOfPoints() == 0 )
+    {
+    return false;
+    }
+
+  MeasurementVectorType queryPoint;
+  for( unsigned int d = 0; d < PointDimension; d++ )
+    {
+    queryPoint[d] = coords[d];
+    }
+
+  this->GetKdTree()->Search( queryPoint, numberOfNeighbors, *neighborIds );
+
+  return true;
+}
+
+/**
+ * Find the nearest N closest points in the pointSet to the given point.
+ * PointType.  Returns whether a closest point was found.  If
+ * a point is found, its PointIdentifier is set through the "pointId" pointer
+ * (if it isn't NULL).
+ */
+template< typename TPixelType, unsigned int VDimension, typename TMeshTraits >
+bool
+PointSet< TPixelType, VDimension, TMeshTraits >
+::FindClosestNPoints( const PointType point, const unsigned int numberOfNeighbors,
+  NeighborhoodIdentifierType *neighborIds )
+{
+  if( this->GetNumberOfPoints() == 0 )
+    {
+    return false;
+    }
+
+  MeasurementVectorType queryPoint;
+  for( unsigned int d = 0; d < PointDimension; d++ )
+    {
+    queryPoint[d] = point[d];
+    }
+
+  this->GetKdTree()->Search( queryPoint, numberOfNeighbors, *neighborIds );
+
+  return true;
+}
+
+/**
+ * Find the points of the point set within a given radius.
+ */
+template< typename TPixelType, unsigned int VDimension, typename TMeshTraits >
+bool
+PointSet< TPixelType, VDimension, TMeshTraits >
+::FindPointsWithinRadius( const CoordRepType *coords, const double radius,
+  NeighborhoodIdentifierType *neighborIds )
+{
+  if( this->GetNumberOfPoints() == 0 )
+    {
+    return false;
+    }
+
+  MeasurementVectorType queryPoint;
+  for( unsigned int d = 0; d < PointDimension; d++ )
+    {
+    queryPoint[d] = coords[d];
+    }
+
+  this->GetKdTree()->Search( queryPoint, radius, *neighborIds );
+
+  return true;
+}
+
+/**
+ * Find the points of the point set within a given radius.
+ */
+template< typename TPixelType, unsigned int VDimension, typename TMeshTraits >
+bool
+PointSet< TPixelType, VDimension, TMeshTraits >
+::FindPointsWithinRadius( const PointType point, const double radius,
+  NeighborhoodIdentifierType *neighborIds )
+{
+  if( this->GetNumberOfPoints() == 0 )
+    {
+    return false;
+    }
+
+  MeasurementVectorType queryPoint;
+  for( unsigned int d = 0; d < PointDimension; d++ )
+    {
+    queryPoint[d] = point[d];
+    }
+
+  this->GetKdTree()->Search( queryPoint, radius, *neighborIds );
+
+  return true;
 }
 
 /**
@@ -359,6 +530,8 @@ PointSet< TPixelType, VDimension, TMeshTraits >
   m_PointDataContainer(0)
 {
   m_BoundingBox  = BoundingBoxType::New();
+  m_SampleAdaptor = SampleAdaptorType::New();
+  m_KdTreeGenerator = TreeGeneratorType::New();
 
   // If we used unstructured regions instead of structured regions, then
   // assume this object was created by the user and this is region 0 of
@@ -439,6 +612,7 @@ PointSet< TPixelType, VDimension, TMeshTraits >
   m_RequestedNumberOfRegions = pointSet->m_RequestedNumberOfRegions;
   m_BufferedRegion  = pointSet->m_BufferedRegion;
   m_RequestedRegion = pointSet->m_RequestedRegion;
+
 }
 
 //----------------------------------------------------------------------------
