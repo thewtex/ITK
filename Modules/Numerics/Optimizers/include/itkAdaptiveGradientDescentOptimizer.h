@@ -57,10 +57,10 @@ class ITK_EXPORT AdaptiveGradientDescentOptimizer:
 {
 public:
   /** Standard class typedefs. */
-  typedef AdaptiveGradientDescentOptimizer Self;
-  typedef GradientDescentOptimizer       Superclass;
-  typedef SmartPointer< Self >           Pointer;
-  typedef SmartPointer< const Self >     ConstPointer;
+  typedef AdaptiveGradientDescentOptimizer  Self;
+  typedef GradientDescentOptimizer          Superclass;
+  typedef SmartPointer< Self >              Pointer;
+  typedef SmartPointer< const Self >        ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
