@@ -23,9 +23,9 @@
 #include "itkAffineTransform.h"
 #include "itkNormalizedCorrelationImageToImageMetric.h"
 #include "itkLinearInterpolateImageFunction.h"
-#include "itkGradientDescentOptimizer.h"
+#include "itkAdaptiveGradientDescentOptimizer.h"
 
-#include "itkParameterScaleEstimator.h"
+#include "itkOptimizerParameterEstimator.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 #include "itkImageRegistrationMethodImageSource.h"
@@ -36,7 +36,7 @@
  *
  */
 
-int itkParameterScaleEstimatorTest_Func( int argc,
+int itkOptimizerParameterEstimatorTest_Func( int argc,
                                            char* argv[],
                                            bool subtractMean )
 {
@@ -65,7 +65,7 @@ int itkParameterScaleEstimatorTest_Func( int argc,
   typedef TransformType::ParametersType             ParametersType;
 
   // Optimizer Type
-  typedef itk::GradientDescentOptimizer                  OptimizerType;
+  typedef itk::AdaptiveGradientDescentOptimizer            OptimizerType;
 
   // Metric Type
   typedef itk::NormalizedCorrelationImageToImageMetric<
@@ -129,7 +129,7 @@ int itkParameterScaleEstimatorTest_Func( int argc,
   OptimizerType::ScalesType scales( transform->GetNumberOfParameters() );
   scales.Fill( 1.0 );
 
-  unsigned long   numberOfIterations =   200;
+  unsigned long   numberOfIterations =   100;
   double          learningRate       = 1e-4;
 
   if( subtractMean )
@@ -151,7 +151,7 @@ int itkParameterScaleEstimatorTest_Func( int argc,
     std::cout << "learningRate = " << learningRate << std::endl;
     }
 
-  optimizer->SetLearningRate( learningRate );
+  //optimizer->SetLearningRate( learningRate );
   optimizer->SetNumberOfIterations( numberOfIterations );
   optimizer->SetMaximize(false);
 
@@ -161,18 +161,18 @@ int itkParameterScaleEstimatorTest_Func( int argc,
   registration->SetInitialTransformParameters( transform->GetParameters() );
 
   // Testing parameter scale estimator
-  typedef itk::ParameterScaleEstimator< FixedImageType,
+  typedef itk::OptimizerParameterEstimator< FixedImageType,
                                         MovingImageType,
-                                        TransformType > ScaleEstimatorType;
-  ScaleEstimatorType::Pointer scaleEstimator = ScaleEstimatorType::New();
+                                        TransformType > OptimizerParameterEstimatorType;
+  OptimizerParameterEstimatorType::Pointer parameterEstimator = OptimizerParameterEstimatorType::New();
 
-  scaleEstimator->SetFixedImage(fixedImage);
-  scaleEstimator->SetMovingImage(movingImage);
-  scaleEstimator->SetScaleStrategy(ScaleEstimatorType::Jacobian);
-  scaleEstimator->SetGlobalScalingFactor(3.5e+7);
+  parameterEstimator->SetFixedImage(fixedImage);
+  parameterEstimator->SetMovingImage(movingImage);
+  parameterEstimator->SetScaleStrategy(OptimizerParameterEstimatorType::ScaleWithShift);
+  //parameterEstimator->SetScaleStrategy(OptimizerParameterEstimatorType::ScaleWithJacobian);
+  parameterEstimator->SetLearningRateStrategy(OptimizerParameterEstimatorType::LearningWithShift);
 
-  scaleEstimator->EstimateScales(transform, scales);
-  optimizer->SetScales( scales );
+  optimizer->SetOptimizerHelper( parameterEstimator );
   // Setting parameter scales done
 
   // Initialize the internal connections of the registration method.
@@ -197,7 +197,8 @@ int itkParameterScaleEstimatorTest_Func( int argc,
   const unsigned int offsetOrder = finalParameters.Size()-actualParameters.Size();
 
   const double tolerance = 1.0;  // equivalent to 1 pixel.
-  std::cout << "Estimated scales = " << scales << std::endl;
+  std::cout << "Estimated scales = " << optimizer->GetScales() << std::endl;
+  std::cout << "Estimated learningRate = " << optimizer->GetLearningRate() << std::endl;
   std::cout << "finalParameters = " << finalParameters << std::endl;
   std::cout << "actualParameters = " << actualParameters << std::endl;
 
@@ -213,7 +214,6 @@ int itkParameterScaleEstimatorTest_Func( int argc,
       }
     }
 
-
   if( !pass )
     {
     std::cout << "Test FAILED." << std::endl;
@@ -226,13 +226,13 @@ int itkParameterScaleEstimatorTest_Func( int argc,
 
 }
 
-int itkParameterScaleEstimatorTest( int argc, char* argv[] )
+int itkOptimizerParameterEstimatorTest( int argc, char* argv[] )
 {
   // test metric without factoring out the mean.
-  int fail1 = itkParameterScaleEstimatorTest_Func( argc, argv, false );
+  int fail1 = itkOptimizerParameterEstimatorTest_Func( argc, argv, false );
 
   // test metric with factoring out the mean.
-  int fail2 = itkParameterScaleEstimatorTest_Func( argc, argv, true );
+  int fail2 = itkOptimizerParameterEstimatorTest_Func( argc, argv, true );
 
   if( fail1 || fail2 )
     {

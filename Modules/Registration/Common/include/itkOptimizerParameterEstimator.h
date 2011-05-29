@@ -15,19 +15,20 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkParameterScaleEstimator_h
-#define __itkParameterScaleEstimator_h
+#ifndef __itkOptimizerParameterEstimator_h
+#define __itkOptimizerParameterEstimator_h
 
 #include "itkObject.h"
 #include "itkObjectFactory.h"
+#include "itkOptimizerHelper.h"
 
 #include <iostream>
 
 namespace itk
 {
 
-/** \class ParameterScaleEstimator
- *  \brief ParameterScaleEstimator is a helper class intended to
+/** \class OptimizerParameterEstimator
+ *  \brief OptimizerParameterEstimator is a helper class intended to
  * initialize the scales of Transform parameters in registration.
  *
  * This class is connected to the fixed image, moving image and transform
@@ -67,11 +68,12 @@ namespace itk
 template < class TFixedImage,
            class TMovingImage,
            class TTransform >
-class ITK_EXPORT ParameterScaleEstimator : public Object
+class ITK_EXPORT OptimizerParameterEstimator : public OptimizerHelper
 {
 public:
   /** Standard class typedefs. */
-  typedef ParameterScaleEstimator               Self;
+  typedef OptimizerParameterEstimator           Self;
+  typedef OptimizerHelper                       Superclass;
   typedef SmartPointer<Self>                    Pointer;
   typedef SmartPointer<const Self>              ConstPointer;
 
@@ -79,24 +81,22 @@ public:
   itkNewMacro( Self );
 
   /** Run-time type information (and related methods). */
-  itkTypeMacro( ParameterScaleEstimator, Object );
+  itkTypeMacro( OptimizerParameterEstimator, OptimizerHelper );
 
   /** Type of the transform to initialize */
   typedef TTransform                                TransformType;
   typedef typename TransformType::Pointer           TransformPointer;
   typedef typename TransformType::ParametersType    ParametersType;
 
-  /** Scale type.
-   * This array defines scale to be applied to parameters before
-   * being evaluated in the cost function. This allows to
-   * map to a more convenient space. In particular this is
-   * used to normalize parameter spaces in which some parameters
-   * have a different dynamic range.   */
-  typedef Array< double > ScalesType;
-  typedef Array< double > DerivativeType;
+  /** The stratigies to decide scales */
+  typedef enum { ScaleWithShift, ScaleWithJacobian } ScaleStrategyType;
+  /** Set the learning rate strategy */
+  itkSetMacro(ScaleStrategy, ScaleStrategyType);
 
-  /** The stratigies to decide scales. */
-  typedef enum { MaximumShift, Jacobian } ScaleStrategyType;
+  /** The stratigies to decide the learning rate */
+  typedef enum { LearningWithShift, LearningWithAdaption } LearningRateStrategyType;
+  /** Set the learning rate strategy */
+  itkSetMacro(LearningRateStrategy, LearningRateStrategyType);
 
   itkStaticConstMacro(ImageDimension, unsigned int,
                       TFixedImage::ImageDimension);
@@ -119,16 +119,22 @@ public:
   typedef   typename MovingImageType::ConstPointer  MovingImagePointer;
 
   /** Set the fixed image used in the registration process */
-  itkSetConstObjectMacro( FixedImage,  FixedImageType  );
+  itkSetConstObjectMacro(FixedImage,  FixedImageType);
+  /** Get the Fixed Image. */
+  itkGetConstObjectMacro(FixedImage, FixedImageType);
 
   /** Set the moving image used in the registration process */
-  itkSetConstObjectMacro( MovingImage, MovingImageType );
+  itkSetConstObjectMacro(MovingImage, MovingImageType);
+  /** Get the Moving Image. */
+  itkGetConstObjectMacro(MovingImage, MovingImageType);
+
+  /** Set the transform */
+  itkSetObjectMacro(Transform, TransformType);
+  /** Get the transform */
+  itkGetObjectMacro(Transform, TransformType);
 
   /** Set the order of L-norm */
   itkSetMacro(LNorm, int);
-
-  /** Set the global scaling factor */
-  itkSetMacro(GlobalScalingFactor, double);
 
   /** Set the flag for forward direction:
    * m_TransformForward = true when the transform mapps from FixedImage
@@ -138,77 +144,84 @@ public:
    */
   itkSetMacro(TransformForward, bool);
 
-  /** Set the scale strategy */
-  itkSetMacro(ScaleStrategy, ScaleStrategyType);
+  /** Set the maximum voxel shift caused by a step. */
+  itkSetMacro(MaximumVoxelShift, double);
 
   /** Estimate parameter scales */
-  void EstimateScales(TransformPointer transform, ScalesType &parameterScales);
-  void EstimateScalesFromMaximumShift(TransformPointer transform, ScalesType &parameterScales);
-  void EstimateScalesFromJacobian(TransformPointer transform, ScalesType &parameterScales);
-
-  /** Estimate parameter scales and learningRate*/
-  void EstimateScalesAndLearningRate(TransformPointer transform,
-                                DerivativeType   gradient,
-                                ScalesType       &parameterScales,
-                                double           &learningRate);
-
-  /** Set the sample points for computing pixel shifts */
-  void SampleImageDomain();
+  void EstimateScales(ParametersType parameters,
+                              ScalesType &scales);
+  void EstimateLearningRate(ParametersType parameters,
+                                    DerivativeType step,
+                                    ScalesType scales,
+                                    double &learningRate);
 
 protected:
-  ParameterScaleEstimator();
-  ~ParameterScaleEstimator(){};
+  OptimizerParameterEstimator();
+  ~OptimizerParameterEstimator(){};
 
-  void PrintSelf(std::ostream &os, Indent indent) const;
+  virtual void PrintSelf(std::ostream &os, Indent indent) const;
 
   /** Get the physical coordinates of image corners */
-  template <class ImageType>
-  void GetImageCornerPoints(const ImageType *image,
-                            std::vector<PointType> &samples);
+  template <class ImageType> void SampleWithCornerPoints();
 
   /** Randomly select some points as samples */
-  template <class ImageType>
-  void RandomlySampleImageDomain(const ImageType *image,
-                            std::vector<PointType> &samples);
+  template <class ImageType> void SampleImageDomainRandomly();
 
   /** Compute the maximum shift when deltaParameters is applied onto the
    * current transform. */
-  void ComputeMaximumShift(typename TransformType::Pointer transform,
-                           ParametersType deltaParameters, double &maxShift);
+  void ComputeMaximumShift(ParametersType parameters,
+                           ParametersType deltaParameters,
+                           double &maxShift);
 
   /** Compute the L-norm of a point */
   double ComputeLNorm(Point<double, ImageDimension> point);
 
+  /** Set the sample points for computing pixel shifts */
+  void SampleImageDomain();
+
+  void EstimateScalesFromMaximumShift(ParametersType parameters,
+                                    ScalesType &parameterScales);
+  void EstimateScalesFromJacobian(ParametersType parameters,
+                                    ScalesType &parameterScales);
+
+  void EstimateLearningRateFromMaximumShift(ParametersType parameters,
+                                    DerivativeType step,
+                                    ScalesType scales,
+                                    double &learningRate);
+  void EstimateLearningRateFromAdaption(ParametersType parameters,
+                                    DerivativeType step,
+                                    ScalesType scales,
+                                    double &learningRate);
+
 private:
-  ParameterScaleEstimator(const Self&); //purposely not implemented
+  OptimizerParameterEstimator(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
 
   FixedImagePointer   m_FixedImage;
   MovingImagePointer  m_MovingImage;
+  TransformPointer    m_Transform;
 
-  std::vector<PointType> m_FixedImageSamples;
-  std::vector<PointType> m_MovingImageSamples;
+  std::vector<PointType> m_ImageSamples;
 
   /** Specify how to calculate the distance between two points */
   int m_LNorm;
-
-  /** Change all scales by this denominator */
-  double m_GlobalScalingFactor;
 
   /** Specify the transformation direction. Set to true when the transform
    * mapps from FixedImage domain to MovingImage domain*/
   bool m_TransformForward;
 
   ScaleStrategyType m_ScaleStrategy;
+  LearningRateStrategyType m_LearningRateStrategy;
+  double m_MaximumVoxelShift;
 
-}; //class ParameterScaleEstimator
+}; //class OptimizerParameterEstimator
 
 
 }  // namespace itk
 
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkParameterScaleEstimator.txx"
+#include "itkOptimizerParameterEstimator.txx"
 #endif
 
-#endif /* __itkParameterScaleEstimator_h */
+#endif /* __itkOptimizerParameterEstimator_h */

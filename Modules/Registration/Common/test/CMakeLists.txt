@@ -47,7 +47,7 @@ itkMeanSquaresImageMetricTest.cxx
 itkMutualInformationMetricTest.cxx
 itkPointSetToPointSetRegistrationTest.cxx
 itkSpatialObjectToImageRegistrationTest.cxx
-itkParameterScaleEstimatorTest.cxx
+itkOptimizerParameterEstimatorTest.cxx
 )
 
 CreateTestDriver(ITK-RegistrationCommon  "${ITK-RegistrationCommon-Test_LIBRARIES}" "${ITK-RegistrationCommonTests}")
@@ -172,5 +172,5 @@ itk_add_test(NAME itkPointSetToPointSetRegistrationTest
       COMMAND ITK-RegistrationCommonTestDriver itkPointSetToPointSetRegistrationTest)
 itk_add_test(NAME itkSpatialObjectToImageRegistrationTest
       COMMAND ITK-RegistrationCommonTestDriver itkSpatialObjectToImageRegistrationTest)
-itk_add_test(NAME itkParameterScaleEstimatorTest
+itk_add_test(NAME itkOptimizerParameterEstimatorTest
       COMMAND ITK-RegistrationCommonTestDriver itkParameterScaleEstimatorTest)

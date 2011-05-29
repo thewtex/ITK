@@ -15,42 +15,48 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkParameterScaleEstimator_txx
-#define __itkParameterScaleEstimator_txx
+#ifndef __itkOptimizerParameterEstimator_txx
+#define __itkOptimizerParameterEstimator_txx
 
-#include "itkParameterScaleEstimator.h"
+#include "itkOptimizerParameterEstimator.h"
 
 namespace itk
 {
 
 template< class TFixedImage, class TMovingImage, class TTransform >
-ParameterScaleEstimator< TFixedImage, TMovingImage, TTransform >
-::ParameterScaleEstimator()
+OptimizerParameterEstimator< TFixedImage, TMovingImage, TTransform >
+::OptimizerParameterEstimator()
 {
   // Euclidean distance
   m_LNorm = 2;
-  m_GlobalScalingFactor = 100;
   // true means to transform from fixed domain to moving domain
   m_TransformForward = true;
-  m_ScaleStrategy = MaximumShift;
+
+  m_ScaleStrategy = ScaleWithShift;
+
+  m_LearningRateStrategy = LearningWithShift;
+  m_MaximumVoxelShift = 1.0;
+
 }
 
 /** Compute parameter scales */
 template< class TFixedImage, class TMovingImage, class TTransform >
 void
-ParameterScaleEstimator< TFixedImage, TMovingImage, TTransform >
-::EstimateScales(TransformPointer transform, ScalesType &parameterScales)
+OptimizerParameterEstimator< TFixedImage, TMovingImage, TTransform >
+::EstimateScales(ParametersType parameters,
+                 ScalesType &parameterScales)
 {
+
   switch (m_ScaleStrategy)
     {
-    case MaximumShift:
+    case ScaleWithShift:
       {
-      this->EstimateScalesFromMaximumShift(transform, parameterScales);
+      this->EstimateScalesFromMaximumShift(parameters, parameterScales);
       break;
       }
-    case Jacobian:
+    case ScaleWithJacobian:
       {
-      this->EstimateScalesFromJacobian(transform, parameterScales);
+      this->EstimateScalesFromJacobian(parameters, parameterScales);
       break;
       }
     default:
@@ -63,14 +69,16 @@ ParameterScaleEstimator< TFixedImage, TMovingImage, TTransform >
 /** Compute parameter scales */
 template< class TFixedImage, class TMovingImage, class TTransform >
 void
-ParameterScaleEstimator< TFixedImage, TMovingImage, TTransform >
-::EstimateScalesFromMaximumShift(TransformPointer transform, ScalesType &parameterScales)
+OptimizerParameterEstimator< TFixedImage, TMovingImage, TTransform >
+::EstimateScalesFromMaximumShift(ParametersType parameters,
+                                 ScalesType &parameterScales)
 {
-  // Save the original transform
-  ParametersType oldParameters = transform->GetParameters();
+  TransformPointer transform = TransformType::New();
+  transform->SetParameters(parameters);
+  this->SetTransform(transform);
 
   double maxShift;
-  unsigned int numPara = oldParameters.size();
+  unsigned int numPara = parameters.size();
 
   if (parameterScales.size() != numPara)
     {
@@ -95,7 +103,7 @@ ParameterScaleEstimator< TFixedImage, TMovingImage, TTransform >
   for (unsigned int i=0; i<numPara; i++)
     {
     deltaParameters[i] = 1;
-    this->ComputeMaximumShift(transform, deltaParameters, maxShift);
+    this->ComputeMaximumShift(parameters, deltaParameters, maxShift);
     deltaParameters[i] = 0;
 
     parameterScales[i] = maxShift;
@@ -112,166 +120,21 @@ ParameterScaleEstimator< TFixedImage, TMovingImage, TTransform >
       parameterScales[i] = minNonZeroShift;
       }
     parameterScales[i] *= parameterScales[i];
-    deltaParameters[i] = 1.0 / parameterScales[i];
     }
 
-  this->ComputeMaximumShift(transform, deltaParameters, maxShift);
-  for (unsigned int i=0; i<numPara; i++)
-    {
-    parameterScales[i] = parameterScales[i] * maxShift / m_GlobalScalingFactor;
-    }
-
-}
-
-
-/** Compute parameter scales and learningRate (global factor)*/
-template< class TFixedImage, class TMovingImage, class TTransform >
-void
-ParameterScaleEstimator< TFixedImage, TMovingImage, TTransform >
-::EstimateScalesAndLearningRate(TransformPointer transform,
-                                DerivativeType   gradient,
-                                ScalesType       &parameterScales,
-                                double           &learningRate)
-{
-    this->EstimateScales(transform, parameterScales);
-
-    unsigned int numPara = transform->GetParameters().size();
-    ParametersType deltaParameters(numPara);
-    for (unsigned int i=0; i<numPara; i++)
-      {
-      deltaParameters[i] = gradient[i] / parameterScales[i];
-      }
-
-    double maxShift;
-    this->ComputeMaximumShift(transform, deltaParameters, maxShift);
-    if (maxShift > 1)
-      {
-      learningRate = 1 / maxShift; //limit maximum voxel shift
-      }
-    else
-      {
-      learningRate = 1.0;
-      }
-}
-
-/** Set the sample points for computing pixel shifts */
-template< class TFixedImage, class TMovingImage, class TTransform >
-void
-ParameterScaleEstimator< TFixedImage, TMovingImage, TTransform >
-::SampleImageDomain()
-{
-  //typedef TFixedImage ImageType;
-  if (m_TransformForward)
-    {
-    switch (m_ScaleStrategy)
-      {
-      case MaximumShift:
-        {
-        this->GetImageCornerPoints<TFixedImage>(m_FixedImage.GetPointer(), m_FixedImageSamples);
-        break;
-        }
-      case Jacobian:
-        {
-        this->RandomlySampleImageDomain<TFixedImage>(m_FixedImage.GetPointer(), m_FixedImageSamples);
-        break;
-        }
-      default:
-        {
-        itkExceptionMacro(" Undefined strategy to decide scales.");
-        }
-      }
-    }
-  else
-    {
-    switch (m_ScaleStrategy)
-      {
-      case MaximumShift:
-        {
-        this->GetImageCornerPoints<TMovingImage>(m_MovingImage.GetPointer(), m_MovingImageSamples);
-        break;
-        }
-      case Jacobian:
-        {
-        this->RandomlySampleImageDomain<TMovingImage>(m_MovingImage.GetPointer(), m_MovingImageSamples);
-        break;
-        }
-      default:
-        {
-        itkExceptionMacro(" Undefined strategy to decide scales.");
-        }
-      }
-    }
-}
-
-/**
- * Get the physical coordinates of image corners
- */
-template< class TFixedImage, class TMovingImage, class TTransform >
-template< class ImageType >
-void
-ParameterScaleEstimator< TFixedImage, TMovingImage, TTransform >
-::RandomlySampleImageDomain(const ImageType *image,
-                            std::vector<PointType> &samples)
-{
-  int numSamples = 1000;
-  samples.clear();
-
-  // Set up a random interator within the user specified fixed image region.
-  typedef ImageRandomConstIteratorWithIndex<ImageType> RandomIterator;
-  RandomIterator randIter( image, image->GetLargestPossibleRegion() );
-  randIter.SetNumberOfSamples( numSamples );
-  randIter.GoToBegin();
-
-  PointType point;
-  IndexType index;
-
-  for (int i=0; i<numSamples; i++)
-    {
-    index = randIter.GetIndex();
-    image->TransformIndexToPhysicalPoint( index, point );
-    samples.push_back(point);
-    ++randIter;
-    }
-}
-
-/**
- * Get the physical coordinates of image corners
- */
-template< class TFixedImage, class TMovingImage, class TTransform >
-template< class ImageType >
-void
-ParameterScaleEstimator< TFixedImage, TMovingImage, TTransform >
-::GetImageCornerPoints(const ImageType *image, std::vector<PointType> &samples)
-{
-  samples.clear();
-
-  ImageRegionType region = image->GetLargestPossibleRegion();
-  IndexType firstCorner = region.GetIndex();
-  IndexType corner;
-  PointType point;
-
-  SizeType size = region.GetSize();
-  int cornerNumber = 1 << ImageDimension; // 2^ImageDimension
-
-  for(int i=0; i<cornerNumber; i++)
-    {
-    int bit;
-    for (int d=0; d<ImageDimension; d++)
-      {
-      bit = (int) (( i & (1 << d) ) != 0); // 0 or 1
-      corner[d] = firstCorner[d] + bit * (size[d] - 1);
-      }
-    image->TransformIndexToPhysicalPoint(corner, point);
-    samples.push_back(point);
-    }
 }
 
 /** Compute parameter scales */
 template< class TFixedImage, class TMovingImage, class TTransform >
 void
-ParameterScaleEstimator< TFixedImage, TMovingImage, TTransform >
-::EstimateScalesFromJacobian(TransformPointer transform, ScalesType &parameterScales)
+OptimizerParameterEstimator< TFixedImage, TMovingImage, TTransform >
+::EstimateScalesFromJacobian(ParametersType parameters,
+                             ScalesType &parameterScales)
 {
+  TransformPointer transform = TransformType::New();
+  transform->SetParameters(parameters);
+  this->SetTransform(transform);
+
   this->SampleImageDomain();
 
   unsigned int numPara = parameterScales.size();
@@ -279,17 +142,10 @@ ParameterScaleEstimator< TFixedImage, TMovingImage, TTransform >
   double *norms = new double[numPara];
   unsigned int numSamples = 0;
 
-  if (m_TransformForward)
-    {
-    numSamples = m_FixedImageSamples.size();
-    }
-  else
-    {
-    numSamples = m_MovingImageSamples.size();
-    }
+  numSamples = m_ImageSamples.size();
 
   PointType point;
-  TTransform::JacobianType jacobian;
+  TransformType::JacobianType jacobian;
 
   for (unsigned int p=0; p<numPara; p++)
     {
@@ -299,15 +155,7 @@ ParameterScaleEstimator< TFixedImage, TMovingImage, TTransform >
   // find max shift by checking each sample point
   for (unsigned int c=0; c<numSamples; c++)
     {
-    if (this->m_TransformForward)
-      {
-      point = this->m_FixedImageSamples[c];
-      }
-    else
-      {
-      point = this->m_MovingImageSamples[c];
-      }
-
+    point = m_ImageSamples[c];
     jacobian = transform->GetJacobian(point);
 
     for (unsigned int p=0; p<numPara; p++)
@@ -325,11 +173,173 @@ ParameterScaleEstimator< TFixedImage, TMovingImage, TTransform >
     {
     parameterScales[p] = norms[p] / numSamples;
     }
-  for (unsigned int i=0; i<numPara; i++)
+
+}
+
+/** Compute learning late */
+template< class TFixedImage, class TMovingImage, class TTransform >
+void
+OptimizerParameterEstimator< TFixedImage, TMovingImage, TTransform >
+::EstimateLearningRate(ParametersType parameters,
+                       DerivativeType step,
+                       ScalesType scales,
+                       double &learningRate)
+{
+  if (m_LearningRateStrategy == LearningWithShift)
     {
-    parameterScales[i] = parameterScales[i] / m_GlobalScalingFactor;
+    this->EstimateLearningRateFromMaximumShift(parameters, step, scales, learningRate);
+    }
+  else if (m_LearningRateStrategy == LearningWithAdaption)
+    {
+    this->EstimateLearningRateFromAdaption(parameters, step, scales, learningRate);
+    }
+  else
+    {
+    itkExceptionMacro(" Undefined strategy to decide learning rate.");
+    }
+}
+
+/** Compute learning late */
+template< class TFixedImage, class TMovingImage, class TTransform >
+void
+OptimizerParameterEstimator< TFixedImage, TMovingImage, TTransform >
+::EstimateLearningRateFromMaximumShift(ParametersType parameters,
+                                DerivativeType step,
+                                ScalesType scales,
+                                double &learningRate)
+{
+  TransformPointer transform = TransformType::New();
+  transform->SetParameters(parameters);
+  this->SetTransform(transform);
+
+  int numPara = parameters.size();
+
+  ParametersType deltaParameters(numPara);
+  for (int i=0; i<numPara; i++)
+    {
+      deltaParameters[i] = step[i] / scales[i];
     }
 
+  double shift;
+  ComputeMaximumShift(parameters, deltaParameters, shift);
+  learningRate = m_MaximumVoxelShift/shift;
+
+}
+
+/** Compute learning late */
+template< class TFixedImage, class TMovingImage, class TTransform >
+void
+OptimizerParameterEstimator< TFixedImage, TMovingImage, TTransform >
+::EstimateLearningRateFromAdaption(ParametersType parameters,
+                                    DerivativeType step,
+                                    ScalesType scales,
+                                    double &learningRate)
+{
+  //to be done
+  itkExceptionMacro(" The adaptive learning rate hasn't been implemented.");
+
+}
+
+
+/** Set the sample points for computing pixel shifts */
+template< class TFixedImage, class TMovingImage, class TTransform >
+void
+OptimizerParameterEstimator< TFixedImage, TMovingImage, TTransform >
+::SampleImageDomain()
+{
+  switch (m_ScaleStrategy)
+    {
+    case ScaleWithShift:
+      {
+      if (m_TransformForward) { this->SampleWithCornerPoints<TMovingImage>(); }
+      else { this->SampleWithCornerPoints<TMovingImage>(); }
+      break;
+      }
+    case ScaleWithJacobian:
+      {
+      if (m_TransformForward) { this->SampleImageDomainRandomly<TFixedImage>(); }
+      else { this->SampleImageDomainRandomly<TMovingImage>(); }
+      break;
+      }
+    default:
+      {
+      itkExceptionMacro(" Undefined strategy to decide scales.");
+      }
+    }
+}
+
+/**
+ * Sample the physical coordinates of image in uniform random
+ */
+template< class TFixedImage, class TMovingImage, class TTransform >
+template< class TImage>
+void
+OptimizerParameterEstimator< TFixedImage, TMovingImage, TTransform >
+::SampleImageDomainRandomly()
+{
+  TImage::ConstPointer image;
+  if ( typeid(TImage) == typeid(TFixedImage) ) { image = m_FixedImage; }
+  else if ( typeid(TImage) == typeid(TMovingImage) ) { image = m_MovingImage; }
+  else itkExceptionMacro(" TImage must be either TFixedImage or TMovingImage.");
+
+  int numSamples = 1000;
+  m_ImageSamples.clear();
+
+  // Set up a random interator within the user specified fixed image region.
+  typedef ImageRandomConstIteratorWithIndex<TImage> RandomIterator;
+  RandomIterator randIter( image, image->GetLargestPossibleRegion() );
+
+  randIter.SetNumberOfSamples( numSamples );
+  randIter.GoToBegin();
+
+  PointType point;
+  IndexType index;
+
+  for (int i=0; i<numSamples; i++)
+    {
+    index = randIter.GetIndex();
+    image->TransformIndexToPhysicalPoint( index, point );
+    m_ImageSamples.push_back(point);
+    ++randIter;
+    }
+}
+
+/**
+ * Get the physical coordinates of image corners
+ */
+template< class TFixedImage, class TMovingImage, class TTransform >
+template< class TImage >
+void
+OptimizerParameterEstimator< TFixedImage, TMovingImage, TTransform >
+::SampleWithCornerPoints()
+{
+  TImage::ConstPointer image;
+  if ( typeid(TImage) == typeid(TFixedImage) ) { image = m_FixedImage; }
+  else if ( typeid(TImage) == typeid(TMovingImage) ) { image = m_MovingImage; }
+  else itkExceptionMacro(" TImage must be either TFixedImage or TMovingImage.");
+
+  m_ImageSamples.clear();
+
+  ImageRegionType region = image->GetLargestPossibleRegion();
+  IndexType firstCorner = region.GetIndex();
+  IndexType corner;
+  PointType point;
+
+  SizeType size = region.GetSize();
+  int cornerNumber = 1 << ImageDimension; // 2^ImageDimension
+
+  for(int i=0; i<cornerNumber; i++)
+    {
+    int bit;
+    for (int d=0; d<ImageDimension; d++)
+      {
+      bit = (int) (( i & (1 << d) ) != 0); // 0 or 1
+      corner[d] = firstCorner[d] + bit * (size[d] - 1);
+      }
+
+    image->TransformIndexToPhysicalPoint(corner, point);
+    m_ImageSamples.push_back(point);
+    }
 }
 
 /**
@@ -337,11 +347,11 @@ ParameterScaleEstimator< TFixedImage, TMovingImage, TTransform >
  */
 template < class TFixedImage, class TMovingImage, class TTransform >
 void
-ParameterScaleEstimator< TFixedImage, TMovingImage, TTransform >
-::ComputeMaximumShift(TransformPointer transform,
+OptimizerParameterEstimator< TFixedImage, TMovingImage, TTransform >
+::ComputeMaximumShift(ParametersType parameters,
                       ParametersType deltaParameters, double &maxShift)
 {
-  ParametersType oldParameters = transform->GetParameters();
+  ParametersType oldParameters = parameters;
   ParametersType newParameters(oldParameters.size());
   for (unsigned int p=0; p<oldParameters.size(); p++)
     {
@@ -358,29 +368,14 @@ ParameterScaleEstimator< TFixedImage, TMovingImage, TTransform >
   ContinuousIndex<double, ImageDimension> oldMappedIndex, newMappedIndex;
   ContinuousIndex<double, ImageDimension> diffIndex;
 
-  if (m_TransformForward)
-    {
-    numSamples = m_FixedImageSamples.size();
-    }
-  else
-    {
-    numSamples = m_MovingImageSamples.size();
-    }
+  numSamples = m_ImageSamples.size();
 
   maxShift = 0;
 
   // find max shift by checking each sample point
   for (unsigned int c=0; c<numSamples; c++)
     {
-    if (this->m_TransformForward)
-      {
-      point = this->m_FixedImageSamples[c];
-      }
-    else
-      {
-      point = this->m_MovingImageSamples[c];
-      }
-
+    point = this->m_ImageSamples[c];
     oldMappedPoint = oldTransform->TransformPoint(point);
     newMappedPoint = newTransform->TransformPoint(point);
 
@@ -404,7 +399,7 @@ ParameterScaleEstimator< TFixedImage, TMovingImage, TTransform >
       {
       maxShift = distance;
       }
-  }
+  } // end for numSamples
 }
 
 /**
@@ -412,7 +407,7 @@ ParameterScaleEstimator< TFixedImage, TMovingImage, TTransform >
  */
 template< class TFixedImage, class TMovingImage, class TTransform >
 double
-ParameterScaleEstimator< TFixedImage, TMovingImage, TTransform >
+OptimizerParameterEstimator< TFixedImage, TMovingImage, TTransform >
 ::ComputeLNorm(Point<double, ImageDimension> point)
 {
   double distance = 0;
@@ -444,7 +439,7 @@ ParameterScaleEstimator< TFixedImage, TMovingImage, TTransform >
     }
   else
     {
-    std::cerr << "ParameterScaleEstimator: norm undefined" << std::endl;
+    std::cerr << "OptimizerParameterEstimator: norm undefined" << std::endl;
     }
 
   return distance;
@@ -452,7 +447,7 @@ ParameterScaleEstimator< TFixedImage, TMovingImage, TTransform >
 
 template< class TFixedImage, class TMovingImage, class TTransform >
 void
-ParameterScaleEstimator< TFixedImage, TMovingImage, TTransform >
+OptimizerParameterEstimator< TFixedImage, TMovingImage, TTransform >
 ::PrintSelf(std::ostream& os, Indent indent) const
 {
   Superclass::PrintSelf(os,indent);
@@ -461,7 +456,6 @@ ParameterScaleEstimator< TFixedImage, TMovingImage, TTransform >
   os << indent << typeid(TransformType).name()  << std::endl;
 
   os << indent << "m_LNorm   = " << this->m_LNorm << std::endl;
-  os << indent << "m_GlobalScalingFactor   = " << this->m_GlobalScalingFactor << std::endl;
   os << indent << "TransformForward   = " << this->m_TransformForward << std::endl;
 
   os << indent << "FixedImage   = " << std::endl;
@@ -484,14 +478,11 @@ ParameterScaleEstimator< TFixedImage, TMovingImage, TTransform >
     os << indent << "None" << std::endl;
     }
 
-  os << indent << "FixedImageSamples Size   = " << std::endl;
-  os << indent << this->m_FixedImageSamples.size()  << std::endl;
-
-  os << indent << "MovingImageSamples Size  = " << std::endl;
-  os << indent << this->m_MovingImageSamples.size()  << std::endl;
+  os << indent << "ImageSamples Size   = " << std::endl;
+  os << indent << this->m_ImageSamples.size()  << std::endl;
 
 }
 
 }  // namespace itk
 
-#endif /* __itkParameterScaleEstimator_txx */
+#endif /* __itkOptimizerParameterEstimator_txx */
