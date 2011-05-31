@@ -77,7 +77,7 @@ int main(int, char*[])
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  std::vector< double > discriminantScores;
+  DecisionRuleType::MembershipVectorType discriminantScores;
   discriminantScores.push_back( 0.1 );
   discriminantScores.push_back( 0.3 );
   discriminantScores.push_back( 0.6 );
