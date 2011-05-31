@@ -105,6 +105,7 @@
 #include "itkImageHelper.h"
 #include "itkImageIterator.txx"
 #include "itkImageIteratorWithIndex.txx"
+#include "itkImageKernelOperator.txx"
 #include "itkImageLinearConstIteratorWithIndex.txx"
 #include "itkImageLinearIteratorWithIndex.txx"
 //BUG 11903
