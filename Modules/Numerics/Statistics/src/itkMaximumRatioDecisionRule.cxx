@@ -55,6 +55,35 @@ MaximumRatioDecisionRule
   os << "]" << std::endl;
 }
 
+void
+MaximumRatioDecisionRule
+::SetPriorProbabilities(const PriorProbabilityVectorType& p)
+{
+  if (p.size() != m_PriorProbabilities.size())
+    {
+    m_PriorProbabilities = p;
+    this->Modified();
+    }
+  else
+    {
+    PriorProbabilityVectorType::const_iterator pit, it;
+
+    for (pit = p.begin(), it = m_PriorProbabilities.begin();
+         pit != p.end(); ++pit, ++it)
+      {
+      if ( fabs( *pit - *it ) > vnl_math::eps )
+        {
+        break;
+        }
+      }
+    if (pit != p.end())
+      {
+      m_PriorProbabilities = p;
+      this->Modified();
+      }
+    }
+}
+
 MaximumRatioDecisionRule::ClassIdentifierType
 MaximumRatioDecisionRule
 ::Evaluate(const MembershipVectorType & discriminantScores) const

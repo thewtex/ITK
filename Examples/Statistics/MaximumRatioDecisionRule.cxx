@@ -22,15 +22,24 @@
 // Software Guide : BeginLatex
 // \index{itk::Statistics::Maximum\-Ratio\-Decision\-Rule}
 //
-// The \code{Evaluate()} method of the \doxygen{MaximumRatioDecisionRule}
-// returns the index, $i$ if
+// MaximumRatioDecisionRule returns the class label using a Bayesian
+// style decision rule. The discriminant scores are evaluated in the
+// context of class priors. If the discriminant scores are actual
+// conditional probabilites (likelihoods) and the class priors are
+// actual a priori class probabilities, then this decision rule operates
+// as Bayes rule, returning the class $i$ if
 // \begin{equation}
-//   \frac{f_{i}(\overrightarrow{x})}{f_{j}(\overrightarrow{x})} >
-//   \frac{K_{j}}{K_{i}} \textrm{ for all } j \not= i
+//     p(x|i) p(i) > p(x|j) p(j)
 // \end{equation}
-// where the $i$ is the index of a class which has membership function
-// $f_{i}$ and its prior value (usually, the \emph{a priori}
-// probability of the class) is $K_{i}$
+// for all class $j$. The discriminant scores and priors are not
+// required to be true probabilities.
+//
+// This class is named the MaximumRatioDecisionRule as it can be
+// implemented as returning the class $i$ if
+// \begin{equation}
+//     \frac{p(x|i)}{p(x|j)} > \frac{p(j)}{p(i)}
+// \end{equation}
+// for all class $j$.
 //
 // We include the header files for the class as well as the header file for
 // the \code{std::vector} class that will be the container for the
@@ -73,12 +82,12 @@ int main(int, char*[])
   discriminantScores.push_back( 0.3 );
   discriminantScores.push_back( 0.6 );
 
-  DecisionRuleType::APrioriVectorType aPrioris;
+  DecisionRuleType::PriorProbabilityVectorType aPrioris;
   aPrioris.push_back( 0.1 );
   aPrioris.push_back( 0.8 );
   aPrioris.push_back( 0.1 );
 
-  decisionRule->SetAPriori( aPrioris );
+  decisionRule->SetPriorProbabilities( aPrioris );
   std::cout << "MaximumRatioDecisionRule: The index of the chosen = "
             << decisionRule->Evaluate( discriminantScores )
             << std::endl;

@@ -80,25 +80,23 @@ public:
   typedef std::vector< PriorProbabilityValueType > PriorProbabilityVectorType;
   typedef PriorProbabilityVectorType::size_type    PriorProbabilityVectorSizeType;
 
-  /** Typdef for backward compatibility */
-  typedef PriorProbabilityVectorType APrioriVectorType;
-
   /**
-   * Evaluate the decision rule, returning the class label associated
-   * with the largest ratio of discriminant score to a priori probability.
+   * Evaluate the decision rule \f$p(x|i) p(i) > p(x|j) p(j)\f$. Prior
+   * probabilities need to be set before calling Evaluate() using the
+   * SetPriorProbabilities() method (otherwise a uniform prior is
+   * assumed). Parameter to Evaluate() is the discriminant score in
+   * the form of a likelihood \f$p(x|i)\f$.
    */
   virtual ClassIdentifierType Evaluate(const MembershipVectorType & discriminantScores) const;
 
-  /** Set the prior probabilities. Needs to be called before
-   * Evaluate(). If not set, assume a uniform prior.  */
-  itkSetMacro(PriorProbabilities, PriorProbabilityVectorType);
+  /** Set the prior probabilities used in evaluating
+   * \f$p(x|i) p(i) > p(x|j) p(j)\f$. The likelihoods are set using
+   * the Evaluate() method. SetPriorProbabilities needs to be called before
+   * Evaluate(). If not set, assumes a uniform prior.  */
+  void SetPriorProbabilities(const PriorProbabilityVectorType& p);
 
-  /** Set the prior probabilities. Needs to be called before
-   * Evaluate(). If not set, assume a uniform prior.  This method is
-   * provided for backward compatibility. Recommended method is
-   * SetPriorProbabilities() */
-  void SetAPriori(const PriorProbabilityVectorType& p)
-  { this->SetPriorProbabilities(p); };
+  /** Get the prior probabilities. */
+  itkGetConstReferenceMacro(PriorProbabilities, PriorProbabilityVectorType);
 
 protected:
   MaximumRatioDecisionRule();
@@ -113,11 +111,5 @@ private:
 
 };  // end of class
 } // end of Statistics namespace
-
-// Backward compatibility mechanism. MaximumRatioDecisionRule used to be in
-// itk namespace. Now it is in itk::Statistics namespace. Here, we
-// make it available to both.
-using Statistics::MaximumRatioDecisionRule;
-
 } // end of ITK namespace
 #endif

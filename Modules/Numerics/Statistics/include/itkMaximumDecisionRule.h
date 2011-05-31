@@ -70,13 +70,6 @@ protected:
 
 };  // end of class
 } // end of namespace Statistics
-
-// Backward compatibility mechanism. MaximumDecisionRule used to be in
-// itk namespace. Now it is in itk::Statistics namespace. Here, we
-// make it available to both.
-using Statistics::MaximumDecisionRule;
-
-
 } // end of namespace itk
 
 #endif

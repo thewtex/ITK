@@ -1,7 +1,6 @@
 itk_module_test()
 set(ITK-StatisticsTests
 itkDecisionRuleTest.cxx
-itkDecisionRuleBackwardCompatibilityTest.cxx
 itkDenseFrequencyContainer2Test.cxx
 itkExpectationMaximizationMixtureModelEstimatorTest.cxx
 itkGaussianDistributionTest.cxx
@@ -93,8 +92,6 @@ itk_add_test(NAME itkStatisticsHeaderTest
       COMMAND ITK-StatisticsTestDriver itkStatisticsHeaderTest)
 itk_add_test(NAME itkDecisionRuleTest
      COMMAND ITK-StatisticsTestDriver itkDecisionRuleTest)
-itk_add_test(NAME itkDecisionRuleBackwardCompatibilityTest
-     COMMAND ITK-StatisticsTestDriver itkDecisionRuleBackwardCompatibilityTest)
 itk_add_test(NAME itkDenseFrequencyContainer2Test
       COMMAND ITK-StatisticsTestDriver itkDenseFrequencyContainer2Test)
 itk_add_test(NAME itkExpectationMaximizationMixtureModelEstimatorTest

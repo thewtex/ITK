@@ -81,10 +81,4 @@ private:
 } // end of namespace Statistics
 } // end of namespace itk
 
-
-// Backward compatibility mechanism. Including shim file for
-// deprecated class allows user code that includes a filter that used
-// to use DecisionRuleBase to still access a class by that name.
-#include "itkDecisionRuleBase.h"
-
 #endif
