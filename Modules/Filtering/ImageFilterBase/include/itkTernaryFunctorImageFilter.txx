@@ -80,6 +80,57 @@ TernaryFunctorImageFilter< TInputImage1, TInputImage2, TInputImage3, TOutputImag
   this->SetNthInput( 2, const_cast< TInputImage3 * >( image3 ) );
 }
 
+template< class TInputImage1, class TInputImage2,
+          class TInputImage3, class TOutputImage, class TFunction  >
+void
+TernaryFunctorImageFilter< TInputImage1, TInputImage2, TInputImage3, TOutputImage, TFunction >
+::GenerateInputRequestedRegion()
+{
+  // call the superclass implementation of this method
+  Superclass::GenerateInputRequestedRegion();
+
+  Input1ImagePointer inputPtr1 =
+    dynamic_cast< const TInputImage1 * >( ( ProcessObject::GetInput(0) ) );
+  Input2ImagePointer inputPtr2 =
+    dynamic_cast< const TInputImage2 * >( ProcessObject::GetInput(1) );
+  Input3ImagePointer inputPtr3 =
+    dynamic_cast< const TInputImage3 * >( ProcessObject::GetInput(2) );
+
+  if(!inputPtr1 || !inputPtr2 || !inputPtr3) // should never happen
+    {
+    return;
+    }
+  //
+  // if the physical spaces are the same, then you can work in index space.
+  this->m_PhysicalSpacesMatch = inputPtr1->GetOrigin() == inputPtr2->GetOrigin() &&
+    inputPtr1->GetLargestPossibleRegion() == inputPtr2->GetLargestPossibleRegion() &&
+    inputPtr1->GetSpacing() == inputPtr2->GetSpacing() &&
+    inputPtr1->GetDirection() == inputPtr2->GetDirection() &&
+    inputPtr1->GetOrigin() == inputPtr3->GetOrigin() &&
+    inputPtr1->GetLargestPossibleRegion() == inputPtr3->GetLargestPossibleRegion() &&
+    inputPtr1->GetSpacing() == inputPtr3->GetSpacing() &&
+    inputPtr1->GetDirection() == inputPtr3->GetDirection();
+  if(this->m_PhysicalSpacesMatch)
+    {
+    return;
+    }
+  //
+  // if processing is to take place in Physical Space, the default
+  // requested region is irrelevant, and could possibly fail
+  // verification, so set the requested region to the largest possible
+  // region.
+  if(this->m_UsePhysicalSpace)
+    {
+    typedef typename Input2ImageType::Pointer Input2NonConstPointer;
+    Input2NonConstPointer NCInputPtr2 = const_cast<Input2ImageType *>(inputPtr2.GetPointer());
+
+    typedef typename Input3ImageType::Pointer Input3NonConstPointer;
+    Input3NonConstPointer NCInputPtr3 = const_cast<Input3ImageType *>(inputPtr3.GetPointer());
+    NCInputPtr2->SetRequestedRegion(NCInputPtr2->GetLargestPossibleRegion());
+    NCInputPtr3->SetRequestedRegion(NCInputPtr3->GetLargestPossibleRegion());
+    }
+}
+
 /**
  * BeforeThreadedGenerateData function. Validate inputs
  */
@@ -103,16 +154,6 @@ TernaryFunctorImageFilter< TInputImage1, TInputImage2, TInputImage3, TOutputImag
                        << " Input2 is " << inputPtr2.GetPointer() << ", "
                        << " Input3 is " << inputPtr3.GetPointer() );
     }
-  //
-  // if the physical spaces are the same, then you can work in index space.
-  this->m_PhysicalSpacesMatch = inputPtr1->GetOrigin() == inputPtr2->GetOrigin() &&
-    inputPtr1->GetLargestPossibleRegion() == inputPtr2->GetLargestPossibleRegion() &&
-    inputPtr1->GetSpacing() == inputPtr2->GetSpacing() &&
-    inputPtr1->GetDirection() == inputPtr2->GetDirection() &&
-    inputPtr1->GetOrigin() == inputPtr3->GetOrigin() &&
-    inputPtr1->GetLargestPossibleRegion() == inputPtr3->GetLargestPossibleRegion() &&
-    inputPtr1->GetSpacing() == inputPtr3->GetSpacing() &&
-    inputPtr1->GetDirection() == inputPtr3->GetDirection();
   //
   // don't bother allocating an interpolator if it isn't going to be used.
   if(this->m_UsePhysicalSpace && !this->m_PhysicalSpacesMatch)
@@ -190,11 +231,11 @@ TernaryFunctorImageFilter< TInputImage1, TInputImage2, TInputImage3, TOutputImag
       typename TInputImage1::IndexType index1 = inputIt1.GetIndex();
       typename TInputImage2::PointType pt;
       inputPtr1->TransformIndexToPhysicalPoint(index1,pt);
-      Interpolator2OutputPixelType interpVal2;
-      Interpolator3OutputPixelType interpVal3;
+      Input2ImagePixelType interpVal2;
+      Input3ImagePixelType interpVal3;
       if(this->m_Interpolator2->IsInsideBuffer(pt))
         {
-        interpVal2 = this->m_Interpolator2->Evaluate(pt);
+        interpVal2 = static_cast<Input2ImagePixelType>(this->m_Interpolator2->Evaluate(pt));
         }
       else
         {
@@ -202,7 +243,7 @@ TernaryFunctorImageFilter< TInputImage1, TInputImage2, TInputImage3, TOutputImag
         }
       if(this->m_Interpolator3->IsInsideBuffer(pt))
         {
-        interpVal3 = this->m_Interpolator3->Evaluate(pt);
+        interpVal3 = static_cast<Input3ImagePixelType>(this->m_Interpolator3->Evaluate(pt));
         }
       else
         {
