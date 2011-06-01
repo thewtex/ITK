@@ -290,16 +290,16 @@ BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage, TFunction >
         typename TInputImage1::IndexType index1 = inputIt1.GetIndex();
         typename TInputImage2::PointType pt;
         inputPtr1->TransformIndexToPhysicalPoint(index1,pt);
-        typename InterpolatorType::OutputType interpVal;
+        Input2ImagePixelType interpVal;
         if(this->m_Interpolator->IsInsideBuffer(pt))
           {
-          interpVal = this->m_Interpolator->Evaluate(pt);
+          interpVal = static_cast<Input2ImagePixelType>(this->m_Interpolator->Evaluate(pt));
           }
         else
           {
           interpVal = this->m_DefaultValue;
           }
-        outputIt.Set( this->m_Functor(inputIt1.Get(), interpVal ) );
+        outputIt.Set( this->m_Functor(inputIt1.Get(),interpVal) );
         ++inputIt1;
         ++outputIt;
         }

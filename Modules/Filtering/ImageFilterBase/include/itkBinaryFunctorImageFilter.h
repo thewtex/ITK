@@ -186,8 +186,8 @@ public:
    *  and in that case, the default pixel value will be used for
    *  pixels outside Image2's image volume.
    */
-  itkSetMacro(DefaultValue, InterpolatorOutputPixelType);
-  itkGetMacro(DefaultValue, InterpolatorOutputPixelType);
+  itkSetMacro(DefaultValue, Input2ImagePixelType);
+  itkGetMacro(DefaultValue, Input2ImagePixelType);
 
   /** ImageDimension constants */
   itkStaticConstMacro(
@@ -258,7 +258,7 @@ private:
   /** true if size, spacing, origin, and orientation match */
   bool                               m_PhysicalSpacesMatch;
   typename InterpolatorType::Pointer m_Interpolator;
-  InterpolatorOutputPixelType        m_DefaultValue;
+  Input2ImagePixelType               m_DefaultValue;
 };
 } // end namespace itk
 

@@ -190,11 +190,11 @@ TernaryFunctorImageFilter< TInputImage1, TInputImage2, TInputImage3, TOutputImag
       typename TInputImage1::IndexType index1 = inputIt1.GetIndex();
       typename TInputImage2::PointType pt;
       inputPtr1->TransformIndexToPhysicalPoint(index1,pt);
-      Interpolator2OutputPixelType interpVal2;
-      Interpolator3OutputPixelType interpVal3;
+      Input2ImagePixelType interpVal2;
+      Input3ImagePixelType interpVal3;
       if(this->m_Interpolator2->IsInsideBuffer(pt))
         {
-        interpVal2 = this->m_Interpolator2->Evaluate(pt);
+        interpVal2 = static_cast<Input2ImagePixelType>(this->m_Interpolator2->Evaluate(pt));
         }
       else
         {
@@ -202,7 +202,7 @@ TernaryFunctorImageFilter< TInputImage1, TInputImage2, TInputImage3, TOutputImag
         }
       if(this->m_Interpolator3->IsInsideBuffer(pt))
         {
-        interpVal3 = this->m_Interpolator3->Evaluate(pt);
+        interpVal3 = static_cast<Input3ImagePixelType>(this->m_Interpolator3->Evaluate(pt));
         }
       else
         {
