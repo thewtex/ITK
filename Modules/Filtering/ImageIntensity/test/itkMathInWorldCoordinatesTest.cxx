@@ -19,6 +19,7 @@
 #pragma warning ( disable : 4786 )
 #endif
 #include "itkImage.h"
+#include "itkProcessObject.h"
 #include "itkVector.h"
 #include "itkAddImageFilter.h"
 #include "itkSubtractImageFilter.h"
@@ -229,6 +230,8 @@ int itkMathOpTest(float valA, float valB, float valC, typename TImage::PixelType
   // Get the Smart Pointer to the Filter Output
   TImagePointer outputImage = filter->GetOutput();
 
+  filter->SetNumberOfThreads(1);
+
   // Execute the filter
   filter->Update();
   filter->SetFunctor(filter->GetFunctor());
@@ -241,13 +244,13 @@ int itkMathOpTest(float valA, float valB, float valC, typename TImage::PixelType
   {
   if(!IsSame(expectedResult,it3.Get()))
     {
-    std::cout << "Result "
+    std::cout << "Result at "
+              << it3.GetIndex() << " "
               << it3.Get()
               << " didn't match expected result "
               << expectedResult
               << std::endl;
-    return EXIT_FAILURE;
-    }
+     }
     ++it3;
   }
 

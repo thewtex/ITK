@@ -185,7 +185,7 @@ protected:
 
   /** Validate the presence of all three inputs. If one or more inputs
    * are missing, throw an exception. */
-  void BeforeThreadedGenerateData();
+  virtual void BeforeThreadedGenerateData();
 
   /** TernaryFunctorImageFilter can be implemented as a multithreaded filter.
    * Therefore, this implementation provides a ThreadedGenerateData() routine
@@ -197,9 +197,16 @@ protected:
    *
    * \sa ImageToImageFilter::ThreadedGenerateData(),
    *     ImageToImageFilter::GenerateData()  */
-  void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
+  virtual void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
                             int threadId);
 
+  /** TernaryFunctorImageFilter might try to work on images of different
+   * sizes in UsePhysicalSpace mode. So it needs an implementation for
+   * GenerateInputRequestedRegion() in order to inform
+   * the pipeline execution model.
+   *
+   * \sa ProcessObject::GenerateInputRequestedRegion() */
+  virtual void GenerateInputRequestedRegion();
 private:
   TernaryFunctorImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);            //purposely not implemented

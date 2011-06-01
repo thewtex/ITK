@@ -231,6 +231,14 @@ protected:
   // a simple decorated object
   virtual void GenerateOutputInformation();
 
+  /** BinaryFunctorImageFilter might try to work on images of different
+   * sizes in UsePhysicalSpace mode. So it needs an implementation for
+   * GenerateInputRequestedRegion() in order to inform
+   * the pipeline execution model.
+   *
+   * \sa ProcessObject::GenerateInputRequestedRegion() */
+  virtual void GenerateInputRequestedRegion();
+
 private:
   /** Instantiate default interpolator, based on pixel type
    */
