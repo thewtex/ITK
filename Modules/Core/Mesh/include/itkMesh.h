@@ -33,6 +33,8 @@
 #endif
 
 #include "itkPointSet.h"
+
+#include "itkBoundingBox.h"
 #include "itkCellInterface.h"
 #include "itkMapContainer.h"
 #include <vector>
