@@ -154,10 +154,10 @@ public:
    *  and in that case, the default pixel value will be used for
    *  pixels outside Image2's image volume.
    */
-  itkSetMacro(DefaultValue2, Interpolator2OutputPixelType);
-  itkGetMacro(DefaultValue2, Interpolator2OutputPixelType);
-  itkSetMacro(DefaultValue3, Interpolator3OutputPixelType);
-  itkGetMacro(DefaultValue3, Interpolator3OutputPixelType);
+  itkSetMacro(DefaultValue2, Input2ImagePixelType);
+  itkGetMacro(DefaultValue2, Input2ImagePixelType);
+  itkSetMacro(DefaultValue3, Input3ImagePixelType);
+  itkGetMacro(DefaultValue3, Input3ImagePixelType);
 
   /** Image dimensions */
   itkStaticConstMacro(Input1ImageDimension, unsigned int,
@@ -185,7 +185,7 @@ protected:
 
   /** Validate the presence of all three inputs. If one or more inputs
    * are missing, throw an exception. */
-  void BeforeThreadedGenerateData();
+  virtual void BeforeThreadedGenerateData();
 
   /** TernaryFunctorImageFilter can be implemented as a multithreaded filter.
    * Therefore, this implementation provides a ThreadedGenerateData() routine
@@ -197,9 +197,16 @@ protected:
    *
    * \sa ImageToImageFilter::ThreadedGenerateData(),
    *     ImageToImageFilter::GenerateData()  */
-  void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
+  virtual void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
                             int threadId);
 
+  /** TernaryFunctorImageFilter might try to work on images of different
+   * sizes in UsePhysicalSpace mode. So it needs an implementation for
+   * GenerateInputRequestedRegion() in order to inform
+   * the pipeline execution model.
+   *
+   * \sa ProcessObject::GenerateInputRequestedRegion() */
+  virtual void GenerateInputRequestedRegion();
 private:
   TernaryFunctorImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);            //purposely not implemented
@@ -246,8 +253,8 @@ private:
   /** default pixel value to use if interpolator is given a
    *  point outside the image volume.
    */
-  Interpolator2OutputPixelType        m_DefaultValue2;
-  Interpolator3OutputPixelType        m_DefaultValue3;
+  Input2ImagePixelType        m_DefaultValue2;
+  Input3ImagePixelType        m_DefaultValue3;
 };
 } // end namespace itk
 

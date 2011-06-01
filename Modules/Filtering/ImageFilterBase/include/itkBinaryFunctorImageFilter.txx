@@ -167,6 +167,37 @@ template< class TInputImage1, class TInputImage2,
           class TOutputImage, class TFunction  >
 void
 BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage, TFunction >
+::GenerateInputRequestedRegion()
+{
+  // call the superclass implementation of this method
+  Superclass::GenerateInputRequestedRegion();
+
+  Input1ImagePointer inputPtr1 =
+    dynamic_cast< const TInputImage1 * >( ProcessObject::GetInput(0) );
+  Input2ImagePointer inputPtr2 =
+    dynamic_cast< const TInputImage2 * >( ProcessObject::GetInput(1) );
+
+  if(!inputPtr1 || !inputPtr2)
+    {
+    return;
+    }
+  typedef typename Input2ImageType::Pointer Input2NonConstPointer;
+  Input2NonConstPointer NCInputPtr2 = const_cast<Input2ImageType *>(inputPtr2.GetPointer());
+  //
+  // if processing is to take place in Physical Space, the default
+  // requested region is irrelevant, and could possibly fail
+  // verification, so set the requested region to the largest possible
+  // region.
+  if(!NCInputPtr2->VerifyRequestedRegion() && this->m_UsePhysicalSpace)
+    {
+    NCInputPtr2->SetRequestedRegion(NCInputPtr2->GetLargestPossibleRegion());
+    }
+}
+
+template< class TInputImage1, class TInputImage2,
+          class TOutputImage, class TFunction  >
+void
+BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage, TFunction >
 ::GenerateOutputInformation()
 {
   const DataObject * input = NULL;
@@ -290,16 +321,16 @@ BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage, TFunction >
         typename TInputImage1::IndexType index1 = inputIt1.GetIndex();
         typename TInputImage2::PointType pt;
         inputPtr1->TransformIndexToPhysicalPoint(index1,pt);
-        typename InterpolatorType::OutputType interpVal;
+        Input2ImagePixelType interpVal;
         if(this->m_Interpolator->IsInsideBuffer(pt))
           {
-          interpVal = this->m_Interpolator->Evaluate(pt);
+          interpVal = static_cast<Input2ImagePixelType>(this->m_Interpolator->Evaluate(pt));
           }
         else
           {
           interpVal = this->m_DefaultValue;
           }
-        outputIt.Set( this->m_Functor(inputIt1.Get(), interpVal ) );
+        outputIt.Set( this->m_Functor(inputIt1.Get(),interpVal) );
         ++inputIt1;
         ++outputIt;
         }
