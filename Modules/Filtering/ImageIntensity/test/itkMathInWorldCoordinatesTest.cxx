@@ -19,6 +19,7 @@
 #pragma warning ( disable : 4786 )
 #endif
 #include "itkImage.h"
+#include "itkProcessObject.h"
 #include "itkVector.h"
 #include "itkAddImageFilter.h"
 #include "itkSubtractImageFilter.h"
@@ -72,6 +73,7 @@ class SetThirdFilterInput
 public:
   static void Set(typename TTernaryFilter::Pointer &,typename TImage::Pointer &)
     {}
+  static bool ThirdInputNeeded() { return false; }
 };
 
 template<class TImage>
@@ -84,6 +86,7 @@ public:
     {
       filter->SetInput3(ptr);
     }
+  static bool ThirdInputNeeded() { return true; }
 };
 
 template <class TImage,class TMathFilter,unsigned VDimension>
@@ -140,6 +143,7 @@ int itkMathOpTest(float valA, float valB, float valC, typename TImage::PixelType
   size[0] = size[0] / 2;
   size[1] = size[1] / 2;
   size[2] = size[2] / 2;
+  region.SetSize( size );
 
   spacing[0] *= 2.0;
   spacing[1] *= 2.0;
@@ -184,17 +188,12 @@ int itkMathOpTest(float valA, float valB, float valC, typename TImage::PixelType
   TMathFilterPointer filter = TMathFilter::New();
   filter->SetUsePhysicalSpace(true);
 
-  typedef typename TMathFilter::FunctorType TernaryFunctorType;
-  //
-  // If it is a ternary filter, concoct a third image
-  if(dynamic_cast<itk::TernaryFunctorImageFilter<TImage,TImage,
-                                                 TImage,TImage,
-                                                 TernaryFunctorType> *>(filter.GetPointer())
-     != 0)
+  if(SetThirdFilterInput<TMathFilter,TImage>::ThirdInputNeeded())
     {
     size[0] = (3 * size[0])/2;
     size[1] = (3 * size[1])/2;
     size[2] = (3 * size[2])/2;
+    region.SetSize( size );
 
     spacing[0] /= 1.5;
     spacing[1] /= 1.5;
@@ -231,6 +230,8 @@ int itkMathOpTest(float valA, float valB, float valC, typename TImage::PixelType
   // Get the Smart Pointer to the Filter Output
   TImagePointer outputImage = filter->GetOutput();
 
+  filter->SetNumberOfThreads(1);
+
   // Execute the filter
   filter->Update();
   filter->SetFunctor(filter->GetFunctor());
@@ -243,13 +244,13 @@ int itkMathOpTest(float valA, float valB, float valC, typename TImage::PixelType
   {
   if(!IsSame(expectedResult,it3.Get()))
     {
-    std::cout << "Result "
+    std::cout << "Result at "
+              << it3.GetIndex() << " "
               << it3.Get()
               << " didn't match expected result "
               << expectedResult
               << std::endl;
-    return EXIT_FAILURE;
-    }
+     }
     ++it3;
   }
 
