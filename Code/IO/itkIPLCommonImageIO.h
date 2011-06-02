@@ -133,11 +133,13 @@ protected:
                        const int offset,
                        const int XDim,
                        const int YDim,
+                       const float XRes,
+                       const float YRes,
                        const int Key1,
                        const int Key2 );
   void sortImageListAscend ();
   void sortImageListDescend ();
-  int statTimeToAscii (void *clock, char *timeString);
+  int statTimeToAscii(void *clock, char *timeString, int len);
   virtual GEImageHeader *ReadHeader(const char *FileNameToRead);
   //
   // data members

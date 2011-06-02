@@ -262,13 +262,23 @@ void IPLCommonImageIO::ReadImageInformation()
   // if anything fails in the header read, just let
   // exceptions propogate up.
 
+  bool isCT = false;
+  std::string modality = m_ImageHeader->modality;
+  if( modality == "CT" )
+    {
+    isCT = true;
+    }
+
   AddElementToList(m_ImageHeader->filename,
                    m_ImageHeader->sliceLocation,
                    m_ImageHeader->offset,
                    m_ImageHeader->imageXsize,
                    m_ImageHeader->imageYsize,
+                   m_ImageHeader->imageXres,
+                   m_ImageHeader->imageYres,
                    m_ImageHeader->seriesNumber,
-                   m_ImageHeader->echoNumber);
+                   (isCT)?m_ImageHeader->examNumber:
+                   m_ImageHeader->echoNumber);  // If CT use examNumber, otherwise use echoNumber.
     
   // Add header info to metadictionary
   
@@ -341,16 +351,19 @@ void IPLCommonImageIO::ReadImageInformation()
       // throw an exception, and we'd just want to skip it.
       continue;
       }
-    if(curImageHeader->echoNumber == m_FilenameList->GetKey2() &&
-       curImageHeader->seriesNumber == m_FilenameList->GetKey1())
+    if( (((isCT)?curImageHeader->examNumber:curImageHeader->echoNumber)
+      == m_FilenameList->GetKey2()) &&
+      (curImageHeader->seriesNumber == m_FilenameList->GetKey1()))
       {
       AddElementToList(curImageHeader->filename,
                        curImageHeader->sliceLocation,
                        curImageHeader->offset,
                        curImageHeader->imageXsize,
                        curImageHeader->imageYsize,
+                       curImageHeader->imageXres,
+                       curImageHeader->imageYres,
                        curImageHeader->seriesNumber,
-                       curImageHeader->echoNumber);
+                       curImageHeader->examNumber);
       }
     delete curImageHeader;
     }
@@ -562,16 +575,23 @@ double IPLCommonImageIO
 }
 
 int IPLCommonImageIO
-::AddElementToList(char const * const filename, const float sliceLocation, const int offset, const int XDim, const int YDim, const int Key1, const int Key2 )
+::AddElementToList(char const * const filename, const float sliceLocation, const int offset,
+  const int XDim, const int YDim, const float XRes, const float YRes, const int Key1, const int Key2 )
 {
   if(m_FilenameList->NumFiles() == 0)
     {
     m_FilenameList->SetXDim(XDim);
     m_FilenameList->SetYDim(YDim);
+    m_FilenameList->SetXRes(XRes);
+    m_FilenameList->SetYRes(YRes);
     m_FilenameList->SetKey1(Key1);
     m_FilenameList->SetKey2(Key2);
     }
   else if(XDim != m_FilenameList->GetXDim() || YDim != m_FilenameList->GetYDim()  )
+    {
+    return 0;
+    }
+  else if(XRes != m_FilenameList->GetXRes() || YRes != m_FilenameList->GetYRes()  )
     {
     return 0;
     }
@@ -580,7 +600,7 @@ int IPLCommonImageIO
     return 1;  //It is OK for keys to not match,  Just don't add.
     }
   m_FilenameList->AddElementToList(filename,sliceLocation,
-                                   offset,XDim,YDim,0,Key1,Key2);
+                                   offset,XDim,YDim,XRes,YRes,0,Key1,Key2);
   return 1;
 }
 
@@ -597,10 +617,10 @@ void IPLCommonImageIO
   return;
 }
 int IPLCommonImageIO
-::statTimeToAscii (void *clock, char *timeString)
+::statTimeToAscii(void *clock, char *timeString,int len)
 {
-  char *asciiTime;
-  unsigned int i;
+  char *       asciiTime;
+
 #ifdef SGI
   timespec_t *lclock;
 #else
@@ -608,25 +628,22 @@ int IPLCommonImageIO
 #endif
 
 #ifdef SGI
-  lclock = (timespec_t *) clock;
-  asciiTime = ctime (&(lclock->tv_sec));
+  lclock = (timespec_t *)clock;
+  asciiTime = ctime ( &( lclock->tv_sec ) );
 #else
-  time_t tclock = (time_t) *((int *) clock);
+  time_t tclock = (time_t)*( (int *)clock );
   asciiTime = ctime (&tclock);
 #endif
 
-  strncpy (timeString, asciiTime, 64);
-
-  for (i = 0; i < 26; i++)
+  strncpy (timeString, asciiTime, len);
+  timeString[len-1] = '\0';
+  char *newline;
+  if((newline = strrchr(timeString,'\n')) != 0 ||
+     (newline = strrchr(timeString,'\r')))
     {
-    if (timeString[i] == '\n')
-      {
-      timeString[i] = '\0';
-      }
+    *newline = '\0';
     }
-
   return 1;
-
 }
 
 } // end namespace itk

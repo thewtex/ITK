@@ -164,8 +164,10 @@ public:
   bool AddElementToList(char const *const filename, 
                         const float sliceLocation, 
                         const int offset, 
-                        const int XDim, 
-                        const int YDim, 
+                        const int XDim,
+                        const int YDim,
+                        const float XRes,
+                        const float YRes,
                         const int imageNumber, 
                         const int Key1,
                         const int Key2)
@@ -174,10 +176,16 @@ public:
       {
       m_XDim = XDim;
       m_YDim = YDim;
+      m_XRes = XRes;
+      m_YRes = YRes;
       m_Key1 = Key1;
       m_Key2 = Key2;
       }
     else if(XDim != m_XDim || YDim != YDim)
+      {
+      return false;
+      }
+    else if(XRes != m_XRes || YRes != YRes)
       {
       return false;
       }
@@ -233,8 +241,12 @@ public:
 
   IPLSetMacro(XDim,int );
   IPLGetMacro(XDim,int );
+  IPLSetMacro(XRes,float );
+  IPLGetMacro(XRes,float );
   IPLSetMacro(YDim,int );
   IPLGetMacro(YDim,int );
+  IPLSetMacro(YRes,float );
+  IPLGetMacro(YRes,float );
   IPLSetMacro(Key1,int );
   IPLGetMacro(Key1,int );
   IPLSetMacro(Key2,int );
@@ -243,7 +255,9 @@ public:
 private:
   ListType m_List;
   int m_XDim;
+  float m_XRes;
   int m_YDim;
+  float m_YRes;
   int m_Key1;  /** Key that must be matched for image to be used, 
                      i.e. seriesNumber, extensionkey */
   int m_Key2;  /** Key that must be matched for image to be used,
