@@ -25,6 +25,7 @@
 #include "itkCovariantVector.h"
 #include "itkDefaultStaticMeshTraits.h"
 #include "itkImageRegionConstIterator.h"
+#include "itkImageRegionConstIteratorWithIndex.h"
 
 namespace itk
 {
