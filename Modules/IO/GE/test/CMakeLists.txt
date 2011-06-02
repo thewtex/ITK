@@ -18,6 +18,16 @@ itk_add_test(NAME itkGE5
     --compare ${ITK_DATA_ROOT}/Baseline/IO/113766.003.001.mha
               ${ITK_TEST_OUTPUT_DIR}/113766.003.001.mha
     itkGEImageIOTest ${ITK_TEST_OUTPUT_DIR} true GE5 ${ITK_DATA_ROOT}/Input/test_ge5/113766.003.001 ${ITK_TEST_OUTPUT_DIR}/113766.003.001.mha)
+itk_add_test(NAME itkGE5Test2
+      COMMAND ITK-IO-GETestDriver
+    --compare DATA{Baseline/c_vf1122.fre.mha}
+              ${ITK_TEST_OUTPUT_DIR}/c_vf1122.fre.mha
+    itkGEImageIOTest ${ITK_TEST_OUTPUT_DIR} true GE5 DATA{Input/c_vf1122.fre} ${ITK_TEST_OUTPUT_DIR}/c_vf1122.fre.mha)
+itk_add_test(NAME itkGE5Test3
+      COMMAND ITK-IO-GETestDriver
+    --compare DATA{Baseline/c_vf1210.fre.mha}
+              ${ITK_TEST_OUTPUT_DIR}/c_vf1210.fre.mha
+    itkGEImageIOTest ${ITK_TEST_OUTPUT_DIR} true GE5 DATA{Input/c_vf1210.fre} ${ITK_TEST_OUTPUT_DIR}/c_vf1210.fre.mha)
 itk_add_test(NAME itkGEAdw
       COMMAND ITK-IO-GETestDriver
     --compare ${ITK_DATA_ROOT}/Baseline/IO/I.001.mha
