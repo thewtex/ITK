@@ -177,7 +177,7 @@ private:
   //static ITK_THREAD_RETURN_TYPE CalculateChangeThreaderCallback(void *arg);
 
   /** The buffer that holds the updates for an iteration of the algorithm. */
-  typename UpdateBufferType::Pointer m_UpdateBuffer;
+  //typename UpdateBufferType::Pointer m_UpdateBuffer;
 };
 } // end namespace itk
 

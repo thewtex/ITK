@@ -75,6 +75,35 @@ GPUGradientNDAnisotropicDiffusionFunction< TImage >
                           // fashion.
   dx_op.SetOrder(1);
   dx_op.CreateDirectional();
+
+  //
+  // Create GPU Kernel
+  //
+  std::ostringstream defines;
+
+  if(TImage::ImageDimension > 3)
+  {
+    itkExceptionMacro("GPUGradientNDAnisotropicDiffusionFunction supports 1/2/3D image.");
+  }
+
+  defines << "#define DIM_" << TImage::ImageDimension << "\n";
+
+  defines << "#define BUFPIXELTYPE ";
+  GetTypenameInString( typeid ( typename TImage::PixelType ), defines );
+
+  defines << "#define INPIXELTYPE ";
+  GetTypenameInString( typeid ( typename TImage::PixelType ), defines );
+
+  std::string oclSrcPath = "./../OpenCL/GPUGradientNDAnisotropicDiffusionFunction.cl";
+
+  std::cout << "Defines: " << defines.str() << "Source code path: " << oclSrcPath << std::endl;
+
+  // load and build program
+  this->m_KernelManager->LoadProgramFromFile( oclSrcPath.c_str(), defines.str().c_str() );
+
+  // create kernel
+  this->m_ComputeUpdateKernelHandle = this->m_KernelManager->CreateKernel("ComputeUpdate");
+
 }
 
 template< class TImage >
@@ -83,8 +112,40 @@ GPUGradientNDAnisotropicDiffusionFunction< TImage >
 ::GPUComputeUpdate( typename const TImage::Pointer output, typename TImage::Pointer buffer, void *globalData )
 {
   // Launch GPU kernel to update buffer with output
+  //std::cout << "Calling GPU kernel for GradientNDAnisotropicDiffusionFunction!" << std::endl;
 
-  std::cout << "Calling GPU kernel for GradientNDAnisotropicDiffusionFunction!" << std::endl;
+
+  // GPU version of ComputeUpdate() - compute entire update buffer
+  typedef typename itk::GPUTraits< TImage >::Type GPUImageType;
+
+  typename GPUImageType::Pointer inPtr =  dynamic_cast< GPUImageType * >( output.GetPointer() );
+  typename GPUImageType::Pointer bfPtr =  dynamic_cast< GPUImageType * >( buffer.GetPointer() );
+  typename GPUImageType::SizeType outSize = bfPtr->GetLargestPossibleRegion().GetSize();
+
+  int imgSize[3];
+  imgSize[0] = imgSize[1] = imgSize[2] = 1;
+
+  for(int i=0; i<(int)TImage::ImageDimension; i++)
+  {
+    imgSize[i] = outSize[i];
+  }
+
+  size_t localSize[2], globalSize[2];
+  localSize[0] = localSize[1] = 16;
+  globalSize[0] = localSize[0]*(unsigned int)ceil((float)outSize[0]/(float)localSize[0]); // total # of threads
+  globalSize[1] = localSize[1]*(unsigned int)ceil((float)outSize[1]/(float)localSize[1]);
+
+  // arguments set up
+  int argidx = 0;
+  this->m_KernelManager->SetKernelArgWithImage(this->m_ComputeUpdateKernelHandle, argidx++, inPtr->GetGPUDataManager());
+  this->m_KernelManager->SetKernelArgWithImage(this->m_ComputeUpdateKernelHandle, argidx++, bfPtr->GetGPUDataManager());
+  for(int i=0; i<(int)TImage::ImageDimension; i++)
+  {
+    this->m_KernelManager->SetKernelArg(this->m_ComputeUpdateKernelHandle, argidx++, sizeof(int), &(imgSize[i]));
+  }
+
+  // launch kernel
+  this->m_KernelManager->LaunchKernel( this->m_ComputeUpdateKernelHandle, (int)TImage::ImageDimension, globalSize, localSize );
 }
 
 /*

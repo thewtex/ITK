@@ -19,6 +19,7 @@
 //
 // Apply Update : out = out + dt*buf
 //
+
 #ifdef DIM_1
 __kernel void ApplyUpdate(__global const BUFPIXELTYPE *buf,
                           __global OUTPIXELTYPE *out,
