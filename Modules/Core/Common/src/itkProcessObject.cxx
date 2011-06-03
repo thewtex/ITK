@@ -657,6 +657,38 @@ ProcessObject
  */
 void
 ProcessObject
+::VerifyInputs()
+{
+
+  /**
+    * Count the number of required inputs which have been assigned
+    */
+  DataObjectPointerArraySizeType ninputs = this->GetNumberOfValidRequiredInputs();
+
+  if ( ninputs < m_NumberOfRequiredInputs )
+    {
+    itkExceptionMacro(<< "At least " << m_NumberOfRequiredInputs
+                      << " inputs are required but only " << ninputs
+                      << " are specified.");
+    }
+}
+
+
+/**
+ *
+ */
+void
+ProcessObject
+::VerifyInputInformation()
+{
+}
+
+
+/**
+ *
+ */
+void
+ProcessObject
 ::UpdateOutputInformation()
 {
   unsigned long                  t1, t2;
@@ -678,6 +710,8 @@ ProcessObject
     this->Modified();
     return;
     }
+
+  this->VerifyInputs();
 
   /**
    * We now wish to set the PipelineMTime of each output DataObject to
@@ -743,6 +777,10 @@ ProcessObject
         output->SetPipelineMTime(t1);
         }
       }
+
+    // verify that all the inputs are consistent, with the
+    // requirements of the filter
+    this->VerifyInputInformation();
 
     this->GenerateOutputInformation();
 
@@ -964,17 +1002,6 @@ ProcessObject
 
   try
     {
-    /**
-    * Count the number of required inputs which have been assigned
-    */
-    DataObjectPointerArraySizeType ninputs = this->GetNumberOfValidRequiredInputs();
-    if ( ninputs < m_NumberOfRequiredInputs )
-      {
-      itkExceptionMacro(<< "At least " << m_NumberOfRequiredInputs
-                        << " inputs are required but only " << ninputs
-                        << " are specified.");
-      }
-
     this->GenerateData();
     }
   catch ( ProcessAborted & excp )
