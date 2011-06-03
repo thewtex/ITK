@@ -16,8 +16,14 @@
  *
  *=========================================================================*/
 
+// assume input and output pixel type is same
+#define INPIXELTYPE PIXELTYPE
+#define BUFPIXELTYPE PIXELTYPE
+
+__constant unsigned int m_Stride[3] = {1, 3, 9};
+
 // forward declaration
-BUFPIXELTYPE Functor(__global const INPIXELTYPE *, unsigned int, unsigned int *, float *, float);
+BUFPIXELTYPE Functor(__global const INPIXELTYPE *, unsigned int, float *, float);
 
 #ifdef DIM_1
 #define ImageDimension 1
@@ -35,25 +41,22 @@ __kernel void ComputeUpdate(__global const INPIXELTYPE *in, __global BUFPIXELTYP
 
 #ifdef DIM_2
 #define ImageDimension 2
-__kernel void ComputeUpdate(__global const INPIXELTYPE *in, __global BUFPIXELTYPE *buf, int width, int height)
+__kernel void ComputeUpdate(__global const INPIXELTYPE *in, __global BUFPIXELTYPE *buf, PIXELTYPE K, float scalex, float scaley, int width, int height)
 {
 	int gix = get_global_id(0);
   int giy = get_global_id(1);
   unsigned int gidx = width*giy + gix;
 
-	unsigned int stride[2];
-	float scale[2];
-	float K;
+  __local float shrm[BLOCK_SIZE][BLOCK_SIZE];
 
-	stride[0] = width;
-	stride[1] = height;
-	scale[0] = scale[1] = 1.0f;
-	K = 1.0f;
+  float scale[2];
+  scale[0] = scalex;
+  scale[1] = scaley;
 
 	// test
 	if(gix < width && giy < height)
   {
-		buf[gix] = Functor( in, gix, stride, scale, K );
+		buf[gix] = Functor( in, gix, scale, K );
   }
 }
 #endif
@@ -74,7 +77,7 @@ __kernel void ComputeUpdate(__global const INPIXELTYPE *in, __global BUFPIXELTYP
 }
 #endif
 
-BUFPIXELTYPE Functor(__global const INPIXELTYPE *it, unsigned int idx, unsigned int m_Stride[], float m_ScaleCoefficients[], float m_K)
+BUFPIXELTYPE Functor(__global const INPIXELTYPE *it, unsigned int idx, float m_ScaleCoefficients[], PIXELTYPE m_K)
 {
   unsigned int i, j;
 

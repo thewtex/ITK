@@ -21,6 +21,12 @@
 #include "itkNumericTraits.h"
 #include "itkGPUGradientNDAnisotropicDiffusionFunction.h"
 
+// OpenCL workgroup (block) size for 1/2/3D - needs to be tuned based on the GPU architecture
+// 1D : 256
+// 2D : 16x16 = 256
+// 3D : 8x8x8 = 512
+static int BLOCK_SIZE[3] = { 256, 16, 8 };
+
 namespace itk
 {
 template< class TImage >
@@ -87,11 +93,17 @@ GPUGradientNDAnisotropicDiffusionFunction< TImage >
   }
 
   defines << "#define DIM_" << TImage::ImageDimension << "\n";
+  defines << "#define BLOCK_SIZE " << BLOCK_SIZE[TImage::ImageDimension-1] << "\n";
 
+  /*
   defines << "#define BUFPIXELTYPE ";
   GetTypenameInString( typeid ( typename TImage::PixelType ), defines );
 
   defines << "#define INPIXELTYPE ";
+  GetTypenameInString( typeid ( typename TImage::PixelType ), defines );
+*/
+
+  defines << "#define PIXELTYPE ";
   GetTypenameInString( typeid ( typename TImage::PixelType ), defines );
 
   std::string oclSrcPath = "./../OpenCL/GPUGradientNDAnisotropicDiffusionFunction.cl";
@@ -114,7 +126,6 @@ GPUGradientNDAnisotropicDiffusionFunction< TImage >
   // Launch GPU kernel to update buffer with output
   //std::cout << "Calling GPU kernel for GradientNDAnisotropicDiffusionFunction!" << std::endl;
 
-
   // GPU version of ComputeUpdate() - compute entire update buffer
   typedef typename itk::GPUTraits< TImage >::Type GPUImageType;
 
@@ -125,13 +136,15 @@ GPUGradientNDAnisotropicDiffusionFunction< TImage >
   int imgSize[3];
   imgSize[0] = imgSize[1] = imgSize[2] = 1;
 
-  for(int i=0; i<(int)TImage::ImageDimension; i++)
+  int ImageDim = (int)TImage::ImageDimension;
+
+  for(int i=0; i<ImageDim; i++)
   {
     imgSize[i] = outSize[i];
   }
 
   size_t localSize[2], globalSize[2];
-  localSize[0] = localSize[1] = 16;
+  localSize[0] = localSize[1] = BLOCK_SIZE[ImageDim-1];
   globalSize[0] = localSize[0]*(unsigned int)ceil((float)outSize[0]/(float)localSize[0]); // total # of threads
   globalSize[1] = localSize[1]*(unsigned int)ceil((float)outSize[1]/(float)localSize[1]);
 
@@ -139,13 +152,22 @@ GPUGradientNDAnisotropicDiffusionFunction< TImage >
   int argidx = 0;
   this->m_KernelManager->SetKernelArgWithImage(this->m_ComputeUpdateKernelHandle, argidx++, inPtr->GetGPUDataManager());
   this->m_KernelManager->SetKernelArgWithImage(this->m_ComputeUpdateKernelHandle, argidx++, bfPtr->GetGPUDataManager());
-  for(int i=0; i<(int)TImage::ImageDimension; i++)
+  this->m_KernelManager->SetKernelArg(this->m_ComputeUpdateKernelHandle, argidx++, sizeof(typename TImage::PixelType), &(m_K));
+
+  // filter scale parameter
+  for(int i=0; i<ImageDim; i++)
+  {
+    this->m_KernelManager->SetKernelArg(this->m_ComputeUpdateKernelHandle, argidx++, sizeof(float), &(this->m_ScaleCoefficients[i]));
+  }
+
+  // image size
+  for(int i=0; i<ImageDim; i++)
   {
     this->m_KernelManager->SetKernelArg(this->m_ComputeUpdateKernelHandle, argidx++, sizeof(int), &(imgSize[i]));
   }
 
   // launch kernel
-  this->m_KernelManager->LaunchKernel( this->m_ComputeUpdateKernelHandle, (int)TImage::ImageDimension, globalSize, localSize );
+  this->m_KernelManager->LaunchKernel( this->m_ComputeUpdateKernelHandle, ImageDim, globalSize, localSize );
 }
 
 /*

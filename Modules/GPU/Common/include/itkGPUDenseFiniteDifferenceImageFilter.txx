@@ -94,8 +94,7 @@ GPUDenseFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilt
   typedef typename itk::GPUTraits< UpdateBufferType >::Type   GPUBufferImage;
   typedef typename itk::GPUTraits< TOutputImage >::Type       GPUOutputImage;
 
-  // ToDo : &(*m_UpdateBuffer) -> hack..
-  typename GPUBufferImage::Pointer bfPtr =  dynamic_cast< GPUBufferImage * >( m_UpdateBuffer.GetPointer() );//&(*m_UpdateBuffer) );
+  typename GPUBufferImage::Pointer bfPtr =  dynamic_cast< GPUBufferImage * >( m_UpdateBuffer.GetPointer() );
   typename GPUOutputImage::Pointer otPtr =  dynamic_cast< GPUOutputImage * >( this->ProcessObject::GetOutput(0) );
   typename GPUOutputImage::SizeType outSize = otPtr->GetLargestPossibleRegion().GetSize();
 
