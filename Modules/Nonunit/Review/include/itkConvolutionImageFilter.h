@@ -107,7 +107,7 @@ public:
 
 protected:
   ConvolutionImageFilter();
-  ~ConvolutionImageFilter();
+  // ~ConvolutionImageFilter(); {} default implementation ok
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
@@ -119,6 +119,8 @@ protected:
 
   /** Calculates the padding width needed to make each dimension odd. */
   InputSizeType GetKernelPadSize() const;
+
+  virtual void VerifyInputInformation();
 
 private:
   ConvolutionImageFilter(const Self &); //purposely not implemented
