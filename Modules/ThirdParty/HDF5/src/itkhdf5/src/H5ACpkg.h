@@ -19,12 +19,12 @@
  * Purpose:     This file contains declarations which are normally visible
  *              only within the H5AC package (just H5AC.c at present).
  *
- *		Source files outside the H5AC package should include
- *		H5ACprivate.h instead.
+ *              Source files outside the H5AC package should include
+ *              H5ACprivate.h instead.
  *
- *		The one exception to this rule is testpar/t_cache.c.  The
- *		test code is easier to write if it can look at H5AC_aux_t.
- *		Indeed, this is the main reason why this file was created.
+ *              The one exception to this rule is testpar/t_cache.c.  The
+ *              test code is easier to write if it can look at H5AC_aux_t.
+ *              Indeed, this is the main reason why this file was created.
  *
  */
 
@@ -36,7 +36,7 @@
 #define _H5ACpkg_H
 
 /* Get package's private header */
-#include "H5ACprivate.h"	/* Metadata cache			*/
+#include "H5ACprivate.h"        /* Metadata cache                       */
 
 
 /* Get needed headers */
@@ -44,7 +44,18 @@
 #include "H5SLprivate.h"        /* Skip lists */
 
 
-#define H5AC_DEBUG_DIRTY_BYTES_CREATION	0
+#define H5AC_DEBUG_DIRTY_BYTES_CREATION 0
+
+#ifdef H5_HAVE_PARALLEL
+
+/* the following #defined are used to specify the operation required
+ * at a sync point.
+ */
+
+#define H5AC_SYNC_POINT_OP__FLUSH_TO_MIN_CLEAN          0
+#define H5AC_SYNC_POINT_OP__FLUSH_CACHE                 1
+
+#endif /* H5_HAVE_PARALLEL */
 
 /*-------------------------------------------------------------------------
  *  It is a bit difficult to set ranges of allowable values on the
@@ -53,11 +64,14 @@
  *-------------------------------------------------------------------------
  */
 
-#define H5AC__MIN_DIRTY_BYTES_THRESHOLD		(int32_t) \
-						(H5C__MIN_MAX_CACHE_SIZE / 2)
-#define H5AC__DEFAULT_DIRTY_BYTES_THRESHOLD	(256 * 1024)
-#define H5AC__MAX_DIRTY_BYTES_THRESHOLD   	(int32_t) \
-						(H5C__MAX_MAX_CACHE_SIZE / 4)
+#define H5AC__MIN_DIRTY_BYTES_THRESHOLD         (int32_t) \
+                                                (H5C__MIN_MAX_CACHE_SIZE / 2)
+#define H5AC__DEFAULT_DIRTY_BYTES_THRESHOLD     (256 * 1024)
+#define H5AC__MAX_DIRTY_BYTES_THRESHOLD         (int32_t) \
+                                                (H5C__MAX_MAX_CACHE_SIZE / 4)
+
+#define H5AC__DEFAULT_METADATA_WRITE_STRATEGY   \
+                                H5AC_METADATA_WRITE_STRATEGY__DISTRIBUTED
 
 /****************************************************************************
  *
@@ -131,133 +145,163 @@
  *                                              JRM - 6/27/05
  *
  * magic:       Unsigned 32 bit integer always set to
- *		H5AC__H5AC_AUX_T_MAGIC.  This field is used to validate
- *		pointers to instances of H5AC_aux_t.
+ *              H5AC__H5AC_AUX_T_MAGIC.  This field is used to validate
+ *              pointers to instances of H5AC_aux_t.
  *
- * mpi_comm:	MPI communicator associated with the file for which the
- *		cache has been created.
+ * mpi_comm:    MPI communicator associated with the file for which the
+ *              cache has been created.
  *
- * mpi_rank:	MPI rank of this process within mpi_comm.
+ * mpi_rank:    MPI rank of this process within mpi_comm.
  *
- * mpi_size:	Number of processes in mpi_comm.
+ * mpi_size:    Number of processes in mpi_comm.
  *
  * write_permitted:  Boolean flag used to control whether the cache
- *		is permitted to write to file.
+ *              is permitted to write to file.
  *
  * dirty_bytes_threshold: Integer field containing the dirty bytes
- *		generation threashold.  Whenever dirty byte creation
- *		exceeds this value, the metadata cache on process 0
- *		broadcasts a list of the entries it has flushed since
- *		the last broadcast (or since the beginning of execution)
- *		and which are currently clean (if they are still in the
- *		cache)
+ *              generation threashold.  Whenever dirty byte creation
+ *              exceeds this value, the metadata cache on process 0
+ *              broadcasts a list of the entries it has flushed since
+ *              the last broadcast (or since the beginning of execution)
+ *              and which are currently clean (if they are still in the
+ *              cache)
  *
- *		Similarly, metadata caches on processes other than process
- *		0 will attempt to receive a list of clean entries whenever
- *		the threshold is exceeded.
+ *              Similarly, metadata caches on processes other than process
+ *              0 will attempt to receive a list of clean entries whenever
+ *              the threshold is exceeded.
  *
  * dirty_bytes:  Integer field containing the number of bytes of dirty
- *		metadata generated since the beginning of the computation,
- *		or (more typically) since the last clean entries list
- *		broadcast.  This field is reset to zero after each such
- *		broadcast.
+ *              metadata generated since the beginning of the computation,
+ *              or (more typically) since the last clean entries list
+ *              broadcast.  This field is reset to zero after each such
+ *              broadcast.
+ *
+ * metadata_write_strategy: Integer code indicating how we will be
+ *              writing the metadata.  In the first incarnation of
+ *              this code, all writes were done from process 0.  This
+ *              field exists to facilitate experiments with other
+ *              strategies.
  *
  * dirty_bytes_propagations: This field only exists when the
- *		H5AC_DEBUG_DIRTY_BYTES_CREATION #define is TRUE.
+ *              H5AC_DEBUG_DIRTY_BYTES_CREATION #define is TRUE.
  *
- *		It is used to track the number of times the cleaned list
- *		has been propagated from process 0 to the other
- *		processes.
+ *              It is used to track the number of times the cleaned list
+ *              has been propagated from process 0 to the other
+ *              processes.
  *
  * unprotect_dirty_bytes:  This field only exists when the
  *              H5AC_DEBUG_DIRTY_BYTES_CREATION #define is TRUE.
  *
- *		It is used to track the number of dirty bytes created
- *		via unprotect operations since the last time the cleaned
- *		list was propagated.
+ *              It is used to track the number of dirty bytes created
+ *              via unprotect operations since the last time the cleaned
+ *              list was propagated.
  *
  * unprotect_dirty_bytes_updates: This field only exists when the
  *              H5AC_DEBUG_DIRTY_BYTES_CREATION #define is TRUE.
  *
- *		It is used to track the number of times dirty bytes have
- *		been created via unprotect operations since the last time
- *		the cleaned list was propagated.
+ *              It is used to track the number of times dirty bytes have
+ *              been created via unprotect operations since the last time
+ *              the cleaned list was propagated.
  *
  * insert_dirty_bytes:  This field only exists when the
  *              H5AC_DEBUG_DIRTY_BYTES_CREATION #define is TRUE.
  *
- *		It is used to track the number of dirty bytes created
- *		via insert operations since the last time the cleaned
- *		list was propagated.
+ *              It is used to track the number of dirty bytes created
+ *              via insert operations since the last time the cleaned
+ *              list was propagated.
  *
  * insert_dirty_bytes_updates:  This field only exists when the
  *              H5AC_DEBUG_DIRTY_BYTES_CREATION #define is TRUE.
  *
- *		It is used to track the number of times dirty bytes have
- *		been created via insert operations since the last time
- *		the cleaned list was propagated.
+ *              It is used to track the number of times dirty bytes have
+ *              been created via insert operations since the last time
+ *              the cleaned list was propagated.
  *
  * move_dirty_bytes:  This field only exists when the
  *              H5AC_DEBUG_DIRTY_BYTES_CREATION #define is TRUE.
  *
- *		It is used to track the number of dirty bytes created
- *		via move operations since the last time the cleaned
- *		list was propagated.
+ *              It is used to track the number of dirty bytes created
+ *              via move operations since the last time the cleaned
+ *              list was propagated.
  *
  * move_dirty_bytes_updates:  This field only exists when the
  *              H5AC_DEBUG_DIRTY_BYTES_CREATION #define is TRUE.
  *
- *		It is used to track the number of times dirty bytes have
- *		been created via move operations since the last time
- *		the cleaned list was propagated.
+ *              It is used to track the number of times dirty bytes have
+ *              been created via move operations since the last time
+ *              the cleaned list was propagated.
+ *
+ * Things have changed a bit since the following four fields were defined.
+ * If metadata_write_strategy is H5AC_METADATA_WRITE_STRATEGY__PROCESS_0_ONLY,
+ * all comments hold as before -- with the caviate that pending further
+ * coding, the process 0 metadata cache is forbidden to flush entries outside
+ * of a sync point.
+ *
+ * However, for different metadata write strategies, these fields are used
+ * only to maintain the correct dirty byte count on process zero -- and in
+ * most if not all cases, this is redundant, as process zero will be barred
+ * from flushing entries outside of a sync point.
+ *
+ *                                              JRM -- 3/16/10
  *
  * d_slist_ptr:  Pointer to an instance of H5SL_t used to maintain a list
- *		of entries that have been dirtied since the last time they
- *		were listed in a clean entries broadcast.  This list is
- *		only maintained by the metadata cache on process 0 -- it
- *		it used to maintain a view of the dirty entries as seen
- *		by the other caches, so as to keep the dirty bytes count
- *		in synchronization with them.
+ *              of entries that have been dirtied since the last time they
+ *              were listed in a clean entries broadcast.  This list is
+ *              only maintained by the metadata cache on process 0 -- it
+ *              it used to maintain a view of the dirty entries as seen
+ *              by the other caches, so as to keep the dirty bytes count
+ *              in synchronization with them.
  *
- *		Thus on process 0, the dirty_bytes count is incremented
- *		only if either
+ *              Thus on process 0, the dirty_bytes count is incremented
+ *              only if either
  *
- *		1) an entry is inserted in the metadata cache, or
+ *              1) an entry is inserted in the metadata cache, or
  *
- *		2) a previously clean entry is moved, and it does not
- *		   already appear in the dirty entry list, or
+ *              2) a previously clean entry is moved, and it does not
+ *                 already appear in the dirty entry list, or
  *
- *		3) a previously clean entry is unprotected with the
- *		   dirtied flag set and the entry does not already appear
- *		   in the dirty entry list.
+ *              3) a previously clean entry is unprotected with the
+ *                 dirtied flag set and the entry does not already appear
+ *                 in the dirty entry list.
  *
- *		Entries are added to the dirty entry list whever they cause
- *		the dirty bytes count to be increased.  They are removed
- *		when they appear in a clean entries broadcast.  Note that
- *		moves must be reflected in the dirty entry list.
+ *              Entries are added to the dirty entry list whever they cause
+ *              the dirty bytes count to be increased.  They are removed
+ *              when they appear in a clean entries broadcast.  Note that
+ *              moves must be reflected in the dirty entry list.
  *
- *		To reitterate, this field is only used on process 0 -- it
- *		should be NULL on all other processes.
+ *              To reitterate, this field is only used on process 0 -- it
+ *              should be NULL on all other processes.
  *
  * d_slist_len: Integer field containing the number of entries in the
- *		dirty entry list.  This field should always contain the
- *		value 0 on all processes other than process 0.  It exists
- *		primarily for sanity checking.
+ *              dirty entry list.  This field should always contain the
+ *              value 0 on all processes other than process 0.  It exists
+ *              primarily for sanity checking.
  *
  * c_slist_ptr: Pointer to an instance of H5SL_t used to maintain a list
- *		of entries that were dirty, have been flushed
- *		to disk since the last clean entries broadcast, and are
- *		still clean.  Since only process 0 can write to disk, this
- *		list only exists on process 0.
+ *              of entries that were dirty, have been flushed
+ *              to disk since the last clean entries broadcast, and are
+ *              still clean.  Since only process 0 can write to disk, this
+ *              list only exists on process 0.
  *
- *		In essence, this slist is used to assemble the contents of
- *		the next clean entries broadcast.  The list emptied after
- *		each broadcast.
+ *              In essence, this slist is used to assemble the contents of
+ *              the next clean entries broadcast.  The list emptied after
+ *              each broadcast.
  *
  * c_slist_len: Integer field containing the number of entries in the clean
- *		entries list (*c_slist_ptr).  This field should always
- *		contain the value 0 on all processes other than process 0.
- *		It exists primarily for sanity checking.
+ *              entries list (*c_slist_ptr).  This field should always
+ *              contain the value 0 on all processes other than process 0.
+ *              It exists primarily for sanity checking.
+ *
+ * The following two fields are used only when metadata_write_strategy
+ * is H5AC_METADATA_WRITE_STRATEGY__DISTRIBUTED.
+ *
+ * candidate_slist_ptr: Pointer to an instance of H5SL_t used by process 0
+ *              to construct a list of entries to be flushed at this sync
+ *              point.  This list is then broadcast to the other processes,
+ *              which then either flush or mark clean all entries on it.
+ *
+ * candidate_slist_len: Integer field containing the number of entries on the
+ *              candidate list.  It exists primarily for sanity checking.
  *
  * write_done:  In the parallel test bed, it is necessary to ensure that
  *              all writes to the server process from cache 0 complete
@@ -271,6 +315,19 @@
  *              This field must be set to NULL when the callback is not
  *              needed.
  *
+ *              Note: This field has been extended for use by all processes
+ *                    with the addition of support for the distributed
+ *                    metadata write strategy.
+ *                                                     JRM -- 5/9/10
+ *
+ * sync_point_done:  In the parallel test bed, it is necessary to verify
+ *              that the expected writes, and only the expected writes,
+ *              have taken place at the end of each sync point.
+ *
+ *              The sync_point_done callback allows t_cache to perform
+ *              this verification.  The field is set to NULL when the
+ *              callback is not needed.
+ *
  ****************************************************************************/
 
 #ifdef H5_HAVE_PARALLEL
@@ -279,23 +336,25 @@
 
 typedef struct H5AC_aux_t
 {
-    uint32_t	magic;
+    uint32_t    magic;
 
-    MPI_Comm	mpi_comm;
+    MPI_Comm    mpi_comm;
 
-    int		mpi_rank;
+    int         mpi_rank;
 
-    int		mpi_size;
+    int         mpi_size;
 
-    hbool_t	write_permitted;
+    hbool_t     write_permitted;
 
-    int32_t	dirty_bytes_threshold;
+    int32_t     dirty_bytes_threshold;
 
-    int32_t	dirty_bytes;
+    int32_t     dirty_bytes;
+
+    int32_t     metadata_write_strategy;
 
 #if H5AC_DEBUG_DIRTY_BYTES_CREATION
 
-    int32_t	dirty_bytes_propagations;
+    int32_t     dirty_bytes_propagations;
 
     int32_t     unprotect_dirty_bytes;
     int32_t     unprotect_dirty_bytes_updates;
@@ -308,15 +367,22 @@ typedef struct H5AC_aux_t
 
 #endif /* H5AC_DEBUG_DIRTY_BYTES_CREATION */
 
-    H5SL_t *	d_slist_ptr;
+    H5SL_t *    d_slist_ptr;
 
-    int32_t	d_slist_len;
+    int32_t     d_slist_len;
 
-    H5SL_t *	c_slist_ptr;
+    H5SL_t *    c_slist_ptr;
 
-    int32_t	c_slist_len;
+    int32_t     c_slist_len;
 
-    void	(* write_done)(void);
+    H5SL_t *    candidate_slist_ptr;
+
+    int32_t     candidate_slist_len;
+
+    void        (* write_done)(void);
+
+    void        (* sync_point_done)(int num_writes,
+                                    haddr_t * written_entries_tbl);
 
 } H5AC_aux_t; /* struct H5AC_aux_t */
 

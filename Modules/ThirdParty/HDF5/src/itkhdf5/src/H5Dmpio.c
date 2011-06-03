@@ -17,32 +17,32 @@
  * Programmer:  rky 980813
  * KY 2005 revised the code and made the change to support and optimize
  * collective IO support.
- * Purpose:	Functions to read/write directly between app buffer and file.
+ * Purpose:     Functions to read/write directly between app buffer and file.
  *
- * 		Beware of the ifdef'ed print statements.
- *		I didn't make them portable.
+ *              Beware of the ifdef'ed print statements.
+ *              I didn't make them portable.
  */
 
 /****************/
 /* Module Setup */
 /****************/
 
-#define H5D_PACKAGE		/*suppress error about including H5Dpkg	  */
+#define H5D_PACKAGE             /*suppress error about including H5Dpkg   */
 
 
 /***********/
 /* Headers */
 /***********/
-#include "H5private.h"		/* Generic Functions			*/
-#include "H5Dpkg.h"		/* Datasets				*/
-#include "H5Eprivate.h"		/* Error handling		  	*/
-#include "H5Fprivate.h"		/* File access				*/
-#include "H5FDprivate.h"	/* File drivers				*/
-#include "H5Iprivate.h"		/* IDs			  		*/
-#include "H5MMprivate.h"	/* Memory management			*/
-#include "H5Oprivate.h"		/* Object headers		  	*/
+#include "H5private.h"          /* Generic Functions                    */
+#include "H5Dpkg.h"             /* Datasets                             */
+#include "H5Eprivate.h"         /* Error handling                       */
+#include "H5Fprivate.h"         /* File access                          */
+#include "H5FDprivate.h"        /* File drivers                         */
+#include "H5Iprivate.h"         /* IDs                                  */
+#include "H5MMprivate.h"        /* Memory management                    */
+#include "H5Oprivate.h"         /* Object headers                       */
 #include "H5Pprivate.h"         /* Property lists                       */
-#include "H5Sprivate.h"		/* Dataspaces 				*/
+#include "H5Sprivate.h"         /* Dataspaces                           */
 #include "H5Vprivate.h"         /* Vector                               */
 
 #ifdef H5_HAVE_PARALLEL
@@ -115,7 +115,7 @@ static herr_t H5D_inter_collective_io(H5D_io_info_t *io_info,
     const H5D_type_info_t *type_info, const H5S_t *file_space,
     const H5S_t *mem_space);
 static herr_t H5D_final_collective_io(H5D_io_info_t *io_info,
-    const H5D_type_info_t *type_info, size_t nelmts, MPI_Datatype *mpi_file_type,
+    const H5D_type_info_t *type_info, hsize_t nelmts, MPI_Datatype *mpi_file_type,
     MPI_Datatype *mpi_buf_type);
 #ifdef H5_MPI_COMPLEX_DERIVED_DATATYPE_WORKS
 static herr_t H5D_sort_chunk(H5D_io_info_t *io_info, const H5D_chunk_map_t *fm,
@@ -145,15 +145,15 @@ static herr_t H5D_mpio_get_sum_chunk(const H5D_io_info_t *io_info,
 
 
 /*-------------------------------------------------------------------------
- * Function:	H5D_mpio_opt_possible
+ * Function:    H5D_mpio_opt_possible
  *
- * Purpose:	Checks if an direct I/O transfer is possible between memory and
+ * Purpose:     Checks if an direct I/O transfer is possible between memory and
  *                  the file.
  *
- * Return:	Success:        Non-negative: TRUE or FALSE
- *		Failure:	Negative
+ * Return:      Success:        Non-negative: TRUE or FALSE
+ *              Failure:        Negative
  *
- * Programmer:	Quincey Koziol
+ * Programmer:  Quincey Koziol
  *              Wednesday, April 3, 2002
  *
  *-------------------------------------------------------------------------
@@ -280,11 +280,11 @@ done:
 
 
 /*-------------------------------------------------------------------------
- * Function:	H5D_mpio_select_read
+ * Function:    H5D_mpio_select_read
  *
- * Purpose:	MPI-IO function to read directly from app buffer to file.
+ * Purpose:     MPI-IO function to read directly from app buffer to file.
  *
- * Return:	non-negative on success, negative on failure.
+ * Return:      non-negative on success, negative on failure.
  *
  * Programmer:
  *
@@ -301,7 +301,7 @@ H5D_mpio_select_read(const H5D_io_info_t *io_info, const H5D_type_info_t UNUSED 
 
     H5_CHECK_OVERFLOW(mpi_buf_count, hsize_t, size_t);
     if(H5F_block_read(io_info->dset->oloc.file, H5FD_MEM_DRAW, store_contig->dset_addr, (size_t)mpi_buf_count, io_info->dxpl_id, io_info->u.rbuf) < 0)
-	HGOTO_ERROR(H5E_IO, H5E_READERROR, FAIL, "can't finish collective parallel read")
+        HGOTO_ERROR(H5E_IO, H5E_READERROR, FAIL, "can't finish collective parallel read")
 
 done:
     FUNC_LEAVE_NOAPI(ret_value)
@@ -309,11 +309,11 @@ done:
 
 
 /*-------------------------------------------------------------------------
- * Function:	H5D_mpio_select_write
+ * Function:    H5D_mpio_select_write
  *
- * Purpose:	MPI-IO function to write directly from app buffer to file.
+ * Purpose:     MPI-IO function to write directly from app buffer to file.
  *
- * Return:	non-negative on success, negative on failure.
+ * Return:      non-negative on success, negative on failure.
  *
  * Programmer:
  *
@@ -339,14 +339,14 @@ done:
 
 
 /*-------------------------------------------------------------------------
- * Function:	H5D_ioinfo_xfer_mode
+ * Function:    H5D_ioinfo_xfer_mode
  *
- * Purpose:	Switch to between collective & independent MPI I/O
+ * Purpose:     Switch to between collective & independent MPI I/O
  *
- * Return:	Non-negative on success/Negative on failure
+ * Return:      Non-negative on success/Negative on failure
  *
- * Programmer:	Quincey Koziol
- *		Friday, August 12, 2005
+ * Programmer:  Quincey Koziol
+ *              Friday, August 12, 2005
  *
  *-------------------------------------------------------------------------
  */
@@ -354,7 +354,7 @@ static herr_t
 H5D_ioinfo_xfer_mode(H5D_io_info_t *io_info, H5P_genplist_t *dx_plist,
     H5FD_mpio_xfer_t xfer_mode)
 {
-    herr_t	ret_value = SUCCEED;	/*return value		*/
+    herr_t      ret_value = SUCCEED;    /*return value          */
 
     FUNC_ENTER_NOAPI_NOINIT(H5D_ioinfo_xfer_mode)
 
@@ -383,15 +383,15 @@ done:
 
 
 /*-------------------------------------------------------------------------
- * Function:	H5D_ioinfo_coll_opt_mode
+ * Function:    H5D_ioinfo_coll_opt_mode
  *
- * Purpose:	Switch between using collective & independent MPI I/O w/file
+ * Purpose:     Switch between using collective & independent MPI I/O w/file
  *              set view
  *
- * Return:	Non-negative on success/Negative on failure
+ * Return:      Non-negative on success/Negative on failure
  *
- * Programmer:	MuQun Yang
- *		Oct. 5th, 2006
+ * Programmer:  MuQun Yang
+ *              Oct. 5th, 2006
  *
  *-------------------------------------------------------------------------
  */
@@ -399,7 +399,7 @@ static herr_t
 H5D_ioinfo_coll_opt_mode(H5D_io_info_t *io_info, H5P_genplist_t *dx_plist,
     H5FD_mpio_collective_opt_t coll_opt_mode)
 {
-    herr_t	ret_value = SUCCEED;	/*return value		*/
+    herr_t      ret_value = SUCCEED;    /*return value          */
 
     FUNC_ENTER_NOAPI_NOINIT(H5D_ioinfo_coll_opt_mode)
 
@@ -414,14 +414,14 @@ done:
 
 
 /*-------------------------------------------------------------------------
- * Function:	H5D_mpio_get_min_chunk
+ * Function:    H5D_mpio_get_min_chunk
  *
- * Purpose:	Routine for obtaining minimum number of chunks to cover
+ * Purpose:     Routine for obtaining minimum number of chunks to cover
  *              hyperslab selection selected by all processors.
  *
- * Return:	Non-negative on success/Negative on failure
+ * Return:      Non-negative on success/Negative on failure
  *
- * Programmer:	Muqun Yang
+ * Programmer:  Muqun Yang
  *              Monday, Feb. 13th, 2006
  *
  *-------------------------------------------------------------------------
@@ -449,14 +449,14 @@ done:
 
 
 /*-------------------------------------------------------------------------
- * Function:	H5D_mpio_get_sum_chunk
+ * Function:    H5D_mpio_get_sum_chunk
  *
- * Purpose:	Routine for obtaining total number of chunks to cover
+ * Purpose:     Routine for obtaining total number of chunks to cover
  *              hyperslab selection selected by all processors.
  *
- * Return:	Non-negative on success/Negative on failure
+ * Return:      Non-negative on success/Negative on failure
  *
- * Programmer:	Muqun Yang
+ * Programmer:  Muqun Yang
  *              Monday, Feb. 13th, 2006
  *
  *-------------------------------------------------------------------------
@@ -487,14 +487,14 @@ done:
 
 
 /*-------------------------------------------------------------------------
- * Function:	H5D_contig_collective_read
+ * Function:    H5D_contig_collective_read
  *
- * Purpose:	Reads directly from contiguous data in file into application
+ * Purpose:     Reads directly from contiguous data in file into application
  *              memory using collective I/O.
  *
- * Return:	Non-negative on success/Negative on failure
+ * Return:      Non-negative on success/Negative on failure
  *
- * Programmer:	Quincey Koziol
+ * Programmer:  Quincey Koziol
  *              Tuesday, March  4, 2008
  *
  *-------------------------------------------------------------------------
@@ -514,7 +514,7 @@ H5D_contig_collective_read(H5D_io_info_t *io_info, const H5D_type_info_t *type_i
 
     /* Call generic internal collective I/O routine */
     if(H5D_inter_collective_io(io_info, type_info, file_space, mem_space) < 0)
-	HGOTO_ERROR(H5E_IO, H5E_READERROR, FAIL, "couldn't finish shared collective MPI-IO")
+        HGOTO_ERROR(H5E_IO, H5E_READERROR, FAIL, "couldn't finish shared collective MPI-IO")
 
 done:
     FUNC_LEAVE_NOAPI(ret_value)
@@ -522,14 +522,14 @@ done:
 
 
 /*-------------------------------------------------------------------------
- * Function:	H5D_contig_collective_write
+ * Function:    H5D_contig_collective_write
  *
- * Purpose:	Write directly to contiguous data in file from application
+ * Purpose:     Write directly to contiguous data in file from application
  *              memory using collective I/O.
  *
- * Return:	Non-negative on success/Negative on failure
+ * Return:      Non-negative on success/Negative on failure
  *
- * Programmer:	Quincey Koziol
+ * Programmer:  Quincey Koziol
  *              Tuesday, March  4, 2008
  *
  *-------------------------------------------------------------------------
@@ -549,7 +549,7 @@ H5D_contig_collective_write(H5D_io_info_t *io_info, const H5D_type_info_t *type_
 
     /* Call generic internal collective I/O routine */
     if(H5D_inter_collective_io(io_info, type_info, file_space, mem_space) < 0)
-	HGOTO_ERROR(H5E_IO, H5E_WRITEERROR, FAIL, "couldn't finish shared collective MPI-IO")
+        HGOTO_ERROR(H5E_IO, H5E_WRITEERROR, FAIL, "couldn't finish shared collective MPI-IO")
 
 done:
     FUNC_LEAVE_NOAPI(ret_value)
@@ -557,9 +557,9 @@ done:
 
 
 /*-------------------------------------------------------------------------
- * Function:	H5D_chunk_collective_io
+ * Function:    H5D_chunk_collective_io
  *
- * Purpose:	Routine for
+ * Purpose:     Routine for
  *              1) choose an IO option:
  *                    a) One collective IO defined by one MPI derived datatype to link through all chunks
  *              or    b) multiple chunk IOs,to do MPI-IO for each chunk, the IO mode may be adjusted
@@ -579,9 +579,9 @@ done:
  *                      3. Set up collective IO property list for collective mode
  *                      4. DO IO
  *
- * Return:	Non-negative on success/Negative on failure
+ * Return:      Non-negative on success/Negative on failure
  *
- * Programmer:	Muqun Yang
+ * Programmer:  Muqun Yang
  *              Monday, Feb. 13th, 2006
  *
  *-------------------------------------------------------------------------
@@ -735,14 +735,14 @@ done:
 
 
 /*-------------------------------------------------------------------------
- * Function:	H5D_chunk_collective_read
+ * Function:    H5D_chunk_collective_read
  *
- * Purpose:	Reads directly from chunks in file into application memory
+ * Purpose:     Reads directly from chunks in file into application memory
  *              using collective I/O.
  *
- * Return:	Non-negative on success/Negative on failure
+ * Return:      Non-negative on success/Negative on failure
  *
- * Programmer:	Quincey Koziol
+ * Programmer:  Quincey Koziol
  *              Tuesday, March  4, 2008
  *
  *-------------------------------------------------------------------------
@@ -766,14 +766,14 @@ done:
 
 
 /*-------------------------------------------------------------------------
- * Function:	H5D_chunk_collective_write
+ * Function:    H5D_chunk_collective_write
  *
- * Purpose:	Write directly to chunks in file from application memory
+ * Purpose:     Write directly to chunks in file from application memory
  *              using collective I/O.
  *
- * Return:	Non-negative on success/Negative on failure
+ * Return:      Non-negative on success/Negative on failure
  *
- * Programmer:	Quincey Koziol
+ * Programmer:  Quincey Koziol
  *              Tuesday, March  4, 2008
  *
  *-------------------------------------------------------------------------
@@ -798,18 +798,18 @@ done:
 #ifdef H5_MPI_COMPLEX_DERIVED_DATATYPE_WORKS
 
 /*-------------------------------------------------------------------------
- * Function:	H5D_link_chunk_collective_io
+ * Function:    H5D_link_chunk_collective_io
  *
- * Purpose:	Routine for one collective IO with one MPI derived datatype to link with all chunks
+ * Purpose:     Routine for one collective IO with one MPI derived datatype to link with all chunks
  *
  *                      1. Sort the chunk address and chunk info
  *                      2. Build up MPI derived datatype for each chunk
  *                      3. Build up the final MPI derived datatype
  *                      4. Use common collective IO routine to do MPI-IO
  *
- * Return:	Non-negative on success/Negative on failure
+ * Return:      Non-negative on success/Negative on failure
  *
- * Programmer:	Muqun Yang
+ * Programmer:  Muqun Yang
  *              Monday, Feb. 13th, 2006
  *
  *-------------------------------------------------------------------------
@@ -819,10 +819,10 @@ H5D_link_chunk_collective_io(H5D_io_info_t *io_info, const H5D_type_info_t *type
     H5D_chunk_map_t *fm, int sum_chunk)
 {
     H5D_chunk_addr_info_t *chunk_addr_info_array = NULL;
-    hbool_t mbt_is_derived = FALSE;
-    hbool_t mft_is_derived = FALSE;
     MPI_Datatype chunk_final_mtype;         /* Final memory MPI datatype for all chunks with seletion */
+    hbool_t chunk_final_mtype_is_derived = FALSE;
     MPI_Datatype chunk_final_ftype;         /* Final file MPI datatype for all chunks with seletion */
+    hbool_t chunk_final_ftype_is_derived = FALSE;
     H5D_storage_t ctg_store;                /* Storage info for "fake" contiguous dataset */
     size_t              total_chunks;
     haddr_t            *total_chunk_addr_array = NULL;
@@ -830,7 +830,10 @@ H5D_link_chunk_collective_io(H5D_io_info_t *io_info, const H5D_type_info_t *type
     MPI_Datatype       *chunk_ftype = NULL;
     MPI_Aint           *chunk_disp_array = NULL;
     MPI_Aint           *chunk_mem_disp_array = NULL;
-    int                *blocklen = NULL;
+    hbool_t            *chunk_mft_is_derived_array = NULL;      /* Flags to indicate each chunk's MPI file datatype is derived */
+    hbool_t            *chunk_mbt_is_derived_array = NULL;      /* Flags to indicate each chunk's MPI memory datatype is derived */
+    int                *chunk_mpi_file_counts = NULL;   /* Count of MPI file datatype for each chunk */
+    int                *chunk_mpi_mem_counts = NULL;    /* Count of MPI memory datatype for each chunk */
     int                 mpi_code;           /* MPI return code */
     herr_t              ret_value = SUCCEED;
 
@@ -861,17 +864,18 @@ H5D_link_chunk_collective_io(H5D_io_info_t *io_info, const H5D_type_info_t *type
         HDmemset(coords, 0, sizeof(coords));
 
         /* Look up address of chunk */
-        if(H5D_chunk_get_info(io_info->dset, io_info->dxpl_id, coords, &udata) < 0)
+        if(H5D_chunk_lookup(io_info->dset, io_info->dxpl_id, coords,
+                io_info->store->chunk.index, &udata) < 0)
             HGOTO_ERROR(H5E_STORAGE, H5E_CANTGET, FAIL, "couldn't get chunk info from skipped list")
         ctg_store.contig.dset_addr = udata.addr;
 
         /* Check for this process having selection in this chunk */
         chunk_node = H5SL_first(fm->sel_chunks);
-	if(chunk_node == NULL) {
+        if(chunk_node == NULL) {
             /* Set the dataspace info for I/O to NULL, this process doesn't have any I/O to perform */
             fspace = mspace = NULL;
-	} /* end if */
-	else {
+        } /* end if */
+        else {
             H5D_chunk_info_t *chunk_info;
 
             /* Get the chunk info, for the selection in the chunk */
@@ -881,7 +885,7 @@ H5D_link_chunk_collective_io(H5D_io_info_t *io_info, const H5D_type_info_t *type
             /* Set the dataspace info for I/O */
             fspace = chunk_info->fspace;
             mspace = chunk_info->mspace;
-	} /* end else */
+        } /* end else */
 
         /* Set up the base storage address for this chunk */
         io_info->store = &ctg_store;
@@ -896,7 +900,7 @@ if(H5DEBUG(D))
             HGOTO_ERROR(H5E_STORAGE, H5E_CANTGET, FAIL, "couldn't finish shared collective MPI-IO")
     } /* end if */
     else {
-        size_t mpi_buf_count;   /* Number of MPI types */
+        hsize_t mpi_buf_count;  /* Number of MPI types */
         size_t num_chunk;       /* Number of chunks for this process */
         size_t u;               /* Local index variable */
 
@@ -911,21 +915,25 @@ if(H5DEBUG(D))
 
         /* Set up MPI datatype for chunks selected */
         if(num_chunk) {
-            hsize_t mpi_mem_extra_offset;       /* Extra offset for memory MPI datatype */
-            hsize_t mpi_file_extra_offset;      /* Extra offset for file MPI datatype */
-            size_t mpi_mem_count;               /* Memory MPI datatype count */
-            size_t mpi_file_count;              /* File MPI datatype count */
-            hbool_t locl_mbt_is_derived = FALSE,     /* Whether the buffer (memory) type is derived and needs to be free'd */
-                    local_mft_is_derived = FALSE;     /* Whether the file type is derived and needs to be free'd */
-            int blocklen_value;                 /* Placeholder for array fill */
-
             /* Allocate chunking information */
-            chunk_addr_info_array= H5MM_malloc(num_chunk * sizeof(H5D_chunk_addr_info_t));
-            chunk_mtype          = H5MM_malloc(num_chunk * sizeof(MPI_Datatype));
-            chunk_ftype          = H5MM_malloc(num_chunk * sizeof(MPI_Datatype));
-            chunk_disp_array     = H5MM_malloc(num_chunk * sizeof(MPI_Aint));
-            chunk_mem_disp_array = H5MM_calloc(num_chunk * sizeof(MPI_Aint));
-            blocklen             = H5MM_malloc(num_chunk * sizeof(int));
+            if(NULL == (chunk_addr_info_array = (H5D_chunk_addr_info_t *)H5MM_malloc(num_chunk * sizeof(H5D_chunk_addr_info_t))))
+                HGOTO_ERROR(H5E_DATASET, H5E_CANTALLOC, FAIL, "couldn't allocate chunk array buffer")
+            if(NULL == (chunk_mtype           = (MPI_Datatype *)H5MM_malloc(num_chunk * sizeof(MPI_Datatype))))
+                HGOTO_ERROR(H5E_DATASET, H5E_CANTALLOC, FAIL, "couldn't allocate chunk memory datatype buffer")
+            if(NULL == (chunk_ftype           = (MPI_Datatype *)H5MM_malloc(num_chunk * sizeof(MPI_Datatype))))
+                HGOTO_ERROR(H5E_DATASET, H5E_CANTALLOC, FAIL, "couldn't allocate chunk file datatype buffer")
+            if(NULL == (chunk_disp_array      = (MPI_Aint *)H5MM_malloc(num_chunk * sizeof(MPI_Aint))))
+                HGOTO_ERROR(H5E_DATASET, H5E_CANTALLOC, FAIL, "couldn't allocate chunk file displacement buffer")
+            if(NULL == (chunk_mem_disp_array  = (MPI_Aint *)H5MM_calloc(num_chunk * sizeof(MPI_Aint))))
+                HGOTO_ERROR(H5E_DATASET, H5E_CANTALLOC, FAIL, "couldn't allocate chunk memory displacement buffer")
+            if(NULL == (chunk_mpi_mem_counts        = (int *)H5MM_calloc(num_chunk * sizeof(int))))
+                HGOTO_ERROR(H5E_DATASET, H5E_CANTALLOC, FAIL, "couldn't allocate chunk memory counts buffer")
+            if(NULL == (chunk_mpi_file_counts       = (int *)H5MM_calloc(num_chunk * sizeof(int))))
+                HGOTO_ERROR(H5E_DATASET, H5E_CANTALLOC, FAIL, "couldn't allocate chunk file counts buffer")
+            if(NULL == (chunk_mbt_is_derived_array  = (hbool_t *)H5MM_calloc(num_chunk * sizeof(hbool_t))))
+                HGOTO_ERROR(H5E_DATASET, H5E_CANTALLOC, FAIL, "couldn't allocate chunk memory is derived datatype flags buffer")
+            if(NULL == (chunk_mft_is_derived_array  = (hbool_t *)H5MM_calloc(num_chunk * sizeof(hbool_t))))
+                HGOTO_ERROR(H5E_DATASET, H5E_CANTALLOC, FAIL, "couldn't allocate chunk file is derived datatype flags buffer")
 
 #ifdef H5D_DEBUG
 if(H5DEBUG(D))
@@ -944,14 +952,12 @@ if(H5DEBUG(D))
             for(u = 0; u < num_chunk; u++) {
                 /* Disk MPI derived datatype */
                 if(H5S_mpio_space_type(chunk_addr_info_array[u].chunk_info.fspace,
-                        type_info->src_type_size, &chunk_ftype[u], &mpi_file_count,
-                        &mpi_file_extra_offset, &local_mft_is_derived) < 0)
+                        type_info->src_type_size, &chunk_ftype[u], &chunk_mpi_file_counts[u], &(chunk_mft_is_derived_array[u])) < 0)
                     HGOTO_ERROR(H5E_DATASPACE, H5E_BADTYPE, FAIL, "couldn't create MPI file type")
 
                 /* Buffer MPI derived datatype */
                 if(H5S_mpio_space_type(chunk_addr_info_array[u].chunk_info.mspace,
-                        type_info->dst_type_size, &chunk_mtype[u], &mpi_mem_count,
-                        &mpi_mem_extra_offset, &locl_mbt_is_derived) < 0)
+                        type_info->dst_type_size, &chunk_mtype[u], &chunk_mpi_mem_counts[u], &(chunk_mbt_is_derived_array[u])) < 0)
                     HGOTO_ERROR(H5E_DATASPACE, H5E_BADTYPE, FAIL, "couldn't create MPI buf type")
 
                 /* Chunk address relative to the first chunk */
@@ -962,39 +968,38 @@ if(H5DEBUG(D))
                 chunk_disp_array[u] = (MPI_Aint)chunk_addr_info_array[u].chunk_addr;
             } /* end for */
 
-            /* Initialize the buffer with the constant value 1 */
-            blocklen_value = 1;
-            H5V_array_fill(blocklen, &blocklen_value, sizeof(int), num_chunk);
-
             /* Create final MPI derived datatype for the file */
-            if(MPI_SUCCESS != (mpi_code = MPI_Type_struct((int)num_chunk, blocklen, chunk_disp_array, chunk_ftype, &chunk_final_ftype)))
+            if(MPI_SUCCESS != (mpi_code = MPI_Type_struct((int)num_chunk, chunk_mpi_file_counts, chunk_disp_array, chunk_ftype, &chunk_final_ftype)))
                 HMPI_GOTO_ERROR(FAIL, "MPI_Type_struct failed", mpi_code)
             if(MPI_SUCCESS != (mpi_code = MPI_Type_commit(&chunk_final_ftype)))
                 HMPI_GOTO_ERROR(FAIL, "MPI_Type_commit failed", mpi_code)
+            chunk_final_ftype_is_derived = TRUE;
 
             /* Create final MPI derived datatype for memory */
-            if(MPI_SUCCESS != (mpi_code = MPI_Type_struct(num_chunk, blocklen, chunk_mem_disp_array, chunk_mtype, &chunk_final_mtype)))
+            if(MPI_SUCCESS != (mpi_code = MPI_Type_struct((int)num_chunk, chunk_mpi_mem_counts, chunk_mem_disp_array, chunk_mtype, &chunk_final_mtype)))
                 HMPI_GOTO_ERROR(FAIL, "MPI_Type_struct failed", mpi_code)
             if(MPI_SUCCESS != (mpi_code = MPI_Type_commit(&chunk_final_mtype)))
                 HMPI_GOTO_ERROR(FAIL, "MPI_Type_commit failed", mpi_code)
+            chunk_final_mtype_is_derived = TRUE;
 
             /* Free the file & memory MPI datatypes for each chunk */
             for(u = 0; u < num_chunk; u++) {
-                if(MPI_SUCCESS != (mpi_code = MPI_Type_free(chunk_mtype + u)))
-                    HMPI_DONE_ERROR(FAIL, "MPI_Type_free failed", mpi_code)
+                if(chunk_mbt_is_derived_array[u])
+                    if(MPI_SUCCESS != (mpi_code = MPI_Type_free(chunk_mtype + u)))
+                        HMPI_DONE_ERROR(FAIL, "MPI_Type_free failed", mpi_code)
 
-                if(MPI_SUCCESS != (mpi_code = MPI_Type_free(chunk_ftype + u)))
-                    HMPI_DONE_ERROR(FAIL, "MPI_Type_free failed", mpi_code)
+                if(chunk_mft_is_derived_array[u])
+                    if(MPI_SUCCESS != (mpi_code = MPI_Type_free(chunk_ftype + u)))
+                        HMPI_DONE_ERROR(FAIL, "MPI_Type_free failed", mpi_code)
             } /* end for */
 
-            /* buffer, file derived datatypes should be true */
-            mbt_is_derived = TRUE;
-            mft_is_derived = TRUE;
-            mpi_buf_count  = (size_t)1;
+            /* We have a single, complicated MPI datatype for both memory & file */
+            mpi_buf_count  = (hsize_t)1;
         } /* end if */
         else {      /* no selection at all for this process */
             /* Allocate chunking information */
-            total_chunk_addr_array = H5MM_malloc(sizeof(haddr_t) * total_chunks);
+            if(NULL == (total_chunk_addr_array = (haddr_t *)H5MM_malloc(sizeof(haddr_t) * total_chunks)))
+                HGOTO_ERROR(H5E_DATASET, H5E_CANTALLOC, FAIL, "couldn't allocate total chunk address arraybuffer")
 
             /* Retrieve chunk address map */
             if(H5D_chunk_addrmap(io_info, total_chunk_addr_array) < 0)
@@ -1011,8 +1016,8 @@ if(H5DEBUG(D))
             chunk_final_ftype = MPI_BYTE;
             chunk_final_mtype = MPI_BYTE;
 
-            /* buffer, file derived datatypes should be true */
-            mpi_buf_count  = (size_t)0;
+            /* No chunks selected for this process */
+            mpi_buf_count  = (hsize_t)0;
         } /* end else */
 #ifdef H5D_DEBUG
 if(H5DEBUG(D))
@@ -1032,6 +1037,7 @@ done:
 if(H5DEBUG(D))
     HDfprintf(H5DEBUG(D),"before freeing memory inside H5D_link_collective_io ret_value = %d\n", ret_value);
 #endif
+    /* Release resources */
     if(total_chunk_addr_array)
         H5MM_xfree(total_chunk_addr_array);
     if(chunk_addr_info_array)
@@ -1044,13 +1050,19 @@ if(H5DEBUG(D))
         H5MM_xfree(chunk_disp_array);
     if(chunk_mem_disp_array)
         H5MM_xfree(chunk_mem_disp_array);
-    if(blocklen)
-        H5MM_xfree(blocklen);
+    if(chunk_mpi_mem_counts)
+        H5MM_xfree(chunk_mpi_mem_counts);
+    if(chunk_mpi_file_counts)
+        H5MM_xfree(chunk_mpi_file_counts);
+    if(chunk_mbt_is_derived_array)
+        H5MM_xfree(chunk_mbt_is_derived_array);
+    if(chunk_mft_is_derived_array)
+        H5MM_xfree(chunk_mft_is_derived_array);
 
     /* Free the MPI buf and file types, if they were derived */
-    if(mbt_is_derived && MPI_SUCCESS != (mpi_code = MPI_Type_free(&chunk_final_mtype)))
+    if(chunk_final_mtype_is_derived && MPI_SUCCESS != (mpi_code = MPI_Type_free(&chunk_final_mtype)))
         HMPI_DONE_ERROR(FAIL, "MPI_Type_free failed", mpi_code)
-    if(mft_is_derived && MPI_SUCCESS != (mpi_code = MPI_Type_free(&chunk_final_ftype)))
+    if(chunk_final_ftype_is_derived && MPI_SUCCESS != (mpi_code = MPI_Type_free(&chunk_final_ftype)))
         HMPI_DONE_ERROR(FAIL, "MPI_Type_free failed", mpi_code)
 
     FUNC_LEAVE_NOAPI(ret_value)
@@ -1059,18 +1071,18 @@ if(H5DEBUG(D))
 
 
 /*-------------------------------------------------------------------------
- * Function:	H5D_multi_chunk_collective_io
+ * Function:    H5D_multi_chunk_collective_io
  *
- * Purpose:	To do IO per chunk according to IO mode(collective/independent/none)
+ * Purpose:     To do IO per chunk according to IO mode(collective/independent/none)
  *
  *              1. Use MPI_gather and MPI_Bcast to obtain IO mode in each chunk(collective/independent/none)
  *              2. Depending on whether the IO mode is collective or independent or none,
  *                 Create either MPI derived datatype for each chunk or just do independent IO
  *              3. Use common collective IO routine to do MPI-IO
  *
- * Return:	Non-negative on success/Negative on failure
+ * Return:      Non-negative on success/Negative on failure
  *
- * Programmer:	Muqun Yang
+ * Programmer:  Muqun Yang
  *              Monday, Feb. 13th, 2006
  *
  *-------------------------------------------------------------------------
@@ -1157,7 +1169,7 @@ if(H5DEBUG(D))
             /* Pass in chunk's coordinates in a union. */
             store.chunk.offset  = chunk_info->coords;
             store.chunk.index   = chunk_info->index;
-	} /* end if */
+        } /* end if */
 
         /* Collective IO for this chunk,
          * Note: even there is no selection for this process, the process still
@@ -1173,10 +1185,10 @@ if(H5DEBUG(D))
             if(chunk_info) {
                 fspace = chunk_info->fspace;
                 mspace = chunk_info->mspace;
-	    } /* end if */
-	    else {
+            } /* end if */
+            else {
                 fspace = mspace = NULL;
-	    } /* end else */
+            } /* end else */
 
             /* Switch back to collective I/O */
             if(last_xfer_mode != H5FD_MPIO_COLLECTIVE) {
@@ -1196,8 +1208,8 @@ if(H5DEBUG(D))
             /* Perform the I/O */
             if(H5D_inter_collective_io(&ctg_io_info, type_info, fspace, mspace) < 0)
                 HGOTO_ERROR(H5E_IO, H5E_CANTGET, FAIL, "couldn't finish shared collective MPI-IO")
-	} /* end if */
-	else {  /* possible independent IO for this chunk */
+        } /* end if */
+        else {  /* possible independent IO for this chunk */
 #ifdef H5D_DEBUG
 if(H5DEBUG(D))
     HDfprintf(H5DEBUG(D),"inside independent IO mpi_rank = %d, chunk index = %Zu\n", mpi_rank, u);
@@ -1209,10 +1221,9 @@ if(H5DEBUG(D))
             /* Check if this process has something to do with this chunk */
             if(chunk_info) {
                 H5D_io_info_t *chk_io_info;     /* Pointer to I/O info object for this chunk */
-                H5D_chunk_ud_t udata;         /* B-tree pass-through	*/
+                H5D_chunk_ud_t udata;         /* B-tree pass-through    */
                 void *chunk;                    /* Pointer to the data chunk in cache */
                 uint32_t accessed_bytes;          /* Total accessed size in a chunk */
-                unsigned idx_hint = 0;          /* Cache index hint      */
                 htri_t cacheable;               /* Whether the chunk is cacheable */
 
                 /* Switch to independent I/O */
@@ -1225,7 +1236,8 @@ if(H5DEBUG(D))
                 /* Load the chunk into cache.  But if the whole chunk is written,
                  * simply allocate space instead of load the chunk.
                  */
-                if(H5D_chunk_get_info(io_info->dset, io_info->dxpl_id, chunk_info->coords, &udata) < 0)
+                if(H5D_chunk_lookup(io_info->dset, io_info->dxpl_id,
+                        chunk_info->coords, chunk_info->index, &udata) < 0)
                     HGOTO_ERROR(H5E_STORAGE, H5E_CANTGET, FAIL, "couldn't get chunk info from skipped list")
 
                 /* Load the chunk into cache and lock it. */
@@ -1244,7 +1256,7 @@ if(H5DEBUG(D))
                         entire_chunk = FALSE;
 
                     /* Lock the chunk into the cache */
-                    if(NULL == (chunk = H5D_chunk_lock(io_info, &udata, entire_chunk, &idx_hint)))
+                    if(NULL == (chunk = H5D_chunk_lock(io_info, &udata, entire_chunk)))
                         HGOTO_ERROR(H5E_IO, H5E_READERROR, FAIL, "unable to read raw data chunk")
 
                     /* Set up the storage buffer information for this chunk */
@@ -1276,7 +1288,7 @@ if(H5DEBUG(D))
                 } /* end else */
 
                 /* Release the cache lock on the chunk. */
-                if(chunk && H5D_chunk_unlock(io_info, &udata, (io_info->op_type == H5D_IO_OP_WRITE), idx_hint, chunk, accessed_bytes) < 0)
+                if(chunk && H5D_chunk_unlock(io_info, &udata, (io_info->op_type == H5D_IO_OP_WRITE), chunk, accessed_bytes) < 0)
                     HGOTO_ERROR(H5E_IO, H5E_READERROR, FAIL, "unable to unlock raw data chunk")
             } /* end if */
 #else /* !defined(H5_MPI_COMPLEX_DERIVED_DATATYPE_WORKS) || !defined(H5_MPI_SPECIAL_COLLECTIVE_IO_WORKS) */
@@ -1321,9 +1333,9 @@ done:
 
 
 /*-------------------------------------------------------------------------
- * Function:	H5D_multi_chunk_collective_io_no_opt
+ * Function:    H5D_multi_chunk_collective_io_no_opt
  *
- * Purpose:	To do collective IO without any optimization per chunk base
+ * Purpose:     To do collective IO without any optimization per chunk base
  *              The internal independent IO inside HDF5 cannot handle
  *              non-contiguous(or with holes) storage efficiently.
  *              Under this case, the one independent IO call may consist of
@@ -1340,9 +1352,9 @@ done:
  *              The HDF5 library won't do any IO management but leave it to MPI-IO to figure
  *              out.
  *
- * Return:	Non-negative on success/Negative on failure
+ * Return:      Non-negative on success/Negative on failure
  *
- * Programmer:	Muqun Yang
+ * Programmer:  Muqun Yang
  *              Monday, Feb. 13th, 2006
  *
  *-------------------------------------------------------------------------
@@ -1404,7 +1416,7 @@ if(H5DEBUG(D)) {
      /* Iterate through chunks to be operated on */
     while(chunk_node) {
         H5D_chunk_info_t *chunk_info;   /* chunk information */
-        H5D_chunk_ud_t udata;		/* B-tree pass-through	*/
+        H5D_chunk_ud_t udata;           /* B-tree pass-through  */
         hbool_t make_ind, make_coll;    /* Flags to indicate that the MPI mode should change */
 
         /* Get the actual chunk information from the skip list node */
@@ -1441,7 +1453,8 @@ if(H5DEBUG(D)) {
 #endif /* H5_MPI_COMPLEX_DERIVED_DATATYPE_WORKS */
 
         /* Retrieve the chunk's address */
-        if(H5D_chunk_get_info(io_info->dset, io_info->dxpl_id, chunk_info->coords, &udata) < 0)
+        if(H5D_chunk_lookup(io_info->dset, io_info->dxpl_id, chunk_info->coords,
+                chunk_info->index, &udata) < 0)
             HGOTO_ERROR(H5E_STORAGE, H5E_CANTGET, FAIL, "couldn't get chunk info from skipped list")
 
         /* Independent I/O */
@@ -1449,7 +1462,6 @@ if(H5DEBUG(D)) {
             void *chunk;                    /* Pointer to the data chunk in cache */
             H5D_io_info_t *chk_io_info;     /* Pointer to I/O info object for this chunk */
             uint32_t accessed_bytes = 0;    /* Total accessed size in a chunk */
-            unsigned idx_hint = 0;          /* Cache index hint      */
             htri_t cacheable;               /* Whether the chunk is cacheable */
 
             /* Switch to independent I/O */
@@ -1472,7 +1484,7 @@ if(H5DEBUG(D)) {
                     entire_chunk = FALSE;
 
                 /* Lock the chunk into the cache */
-                if(NULL == (chunk = H5D_chunk_lock(io_info, &udata, entire_chunk, &idx_hint)))
+                if(NULL == (chunk = H5D_chunk_lock(io_info, &udata, entire_chunk)))
                     HGOTO_ERROR(H5E_IO, H5E_READERROR, FAIL, "unable to read raw data chunk")
 
                 /* Set up the storage buffer information for this chunk */
@@ -1505,7 +1517,7 @@ if(H5DEBUG(D)) {
 
             /* Release the cache lock on the chunk. */
             if(chunk)
-                if(H5D_chunk_unlock(io_info, &udata, (io_info->op_type == H5D_IO_OP_WRITE), idx_hint, chunk, accessed_bytes) < 0)
+                if(H5D_chunk_unlock(io_info, &udata, (io_info->op_type == H5D_IO_OP_WRITE), chunk, accessed_bytes) < 0)
                     HGOTO_ERROR(H5E_IO, H5E_READERROR, FAIL, "unable to unlock raw data chunk")
         } /* end if */
         else { /*collective I/O */
@@ -1530,14 +1542,14 @@ done:
 
 
 /*-------------------------------------------------------------------------
- * Function:	H5D_inter_collective_io
+ * Function:    H5D_inter_collective_io
  *
- * Purpose:	Routine for the shared part of collective IO between multiple chunk
+ * Purpose:     Routine for the shared part of collective IO between multiple chunk
  *              collective IO and contiguous collective IO
  *
- * Return:	Non-negative on success/Negative on failure
+ * Return:      Non-negative on success/Negative on failure
  *
- * Programmer:	Muqun Yang
+ * Programmer:  Muqun Yang
  *              Monday, Feb. 13th, 2006
  *
  *-------------------------------------------------------------------------
@@ -1546,32 +1558,29 @@ static herr_t
 H5D_inter_collective_io(H5D_io_info_t *io_info, const H5D_type_info_t *type_info,
     const H5S_t *file_space, const H5S_t *mem_space)
 {
-    size_t mpi_buf_count;               /* # of MPI types */
+    int mpi_buf_count;                  /* # of MPI types */
     hbool_t mbt_is_derived = FALSE;
     hbool_t mft_is_derived = FALSE;
     MPI_Datatype        mpi_file_type, mpi_buf_type;
-    int                 mpi_code;           /* MPI return code */
-    herr_t       ret_value = SUCCEED;  /* return value */
+    int                 mpi_code;       /* MPI return code */
+    herr_t       ret_value = SUCCEED;   /* return value */
 
     FUNC_ENTER_NOAPI_NOINIT(H5D_inter_collective_io)
 
     if((file_space != NULL) && (mem_space != NULL)) {
-        hsize_t	mpi_buf_offset, mpi_file_offset;   /* Offset within dataset where selection (ie. MPI type) begins */
-        size_t  mpi_file_count;         /* Number of file "objects" to transfer */
+        int  mpi_file_count;         /* Number of file "objects" to transfer */
 
         /* Obtain disk and memory MPI derived datatype */
-        if(H5S_mpio_space_type(file_space, type_info->src_type_size,
-                &mpi_file_type, &mpi_file_count, &mpi_file_offset, &mft_is_derived) < 0)
+        if(H5S_mpio_space_type(file_space, type_info->src_type_size, &mpi_file_type, &mpi_file_count, &mft_is_derived) < 0)
             HGOTO_ERROR(H5E_DATASPACE, H5E_BADTYPE, FAIL, "couldn't create MPI file type")
-        if(H5S_mpio_space_type(mem_space, type_info->src_type_size,
-                &mpi_buf_type, &mpi_buf_count, &mpi_buf_offset, &mbt_is_derived) < 0)
+        if(H5S_mpio_space_type(mem_space, type_info->src_type_size, &mpi_buf_type, &mpi_buf_count, &mbt_is_derived) < 0)
             HGOTO_ERROR(H5E_DATASPACE, H5E_BADTYPE, FAIL, "couldn't create MPI buffer type")
     } /* end if */
     else {
         /* For non-selection, participate with a none MPI derived datatype, the count is 0.  */
         mpi_buf_type   = MPI_BYTE;
         mpi_file_type  = MPI_BYTE;
-        mpi_buf_count  = (size_t)0;
+        mpi_buf_count  = 0;
         mbt_is_derived = FALSE;
         mft_is_derived = FALSE;
     } /* end else */
@@ -1582,7 +1591,7 @@ if(H5DEBUG(D))
 #endif
 
     /* Perform final collective I/O operation */
-    if(H5D_final_collective_io(io_info, type_info, mpi_buf_count, &mpi_file_type, &mpi_buf_type) < 0)
+    if(H5D_final_collective_io(io_info, type_info, (hsize_t)mpi_buf_count, &mpi_file_type, &mpi_buf_type) < 0)
         HGOTO_ERROR(H5E_IO, H5E_CANTGET, FAIL, "couldn't finish collective MPI-IO")
 
 done:
@@ -1602,22 +1611,22 @@ if(H5DEBUG(D))
 
 
 /*-------------------------------------------------------------------------
- * Function:	H5D_final_collective_io
+ * Function:    H5D_final_collective_io
  *
- * Purpose:	Routine for the common part of collective IO with different storages.
+ * Purpose:     Routine for the common part of collective IO with different storages.
  *
- * Return:	Non-negative on success/Negative on failure
+ * Return:      Non-negative on success/Negative on failure
  *
- * Programmer:	Muqun Yang
+ * Programmer:  Muqun Yang
  *              Monday, Feb. 13th, 2006
  *
  *-------------------------------------------------------------------------
  */
 static herr_t
 H5D_final_collective_io(H5D_io_info_t *io_info, const H5D_type_info_t *type_info,
-    size_t mpi_buf_count, MPI_Datatype *mpi_file_type, MPI_Datatype *mpi_buf_type)
+    hsize_t mpi_buf_count, MPI_Datatype *mpi_file_type, MPI_Datatype *mpi_buf_type)
 {
-    hbool_t	plist_is_setup = FALSE; /* Whether the dxpl has been customized */
+    hbool_t     plist_is_setup = FALSE; /* Whether the dxpl has been customized */
     herr_t      ret_value = SUCCEED;
 
     FUNC_ENTER_NOAPI_NOINIT(H5D_final_collective_io)
@@ -1628,11 +1637,11 @@ H5D_final_collective_io(H5D_io_info_t *io_info, const H5D_type_info_t *type_info
     plist_is_setup = TRUE;
 
     if(io_info->op_type == H5D_IO_OP_WRITE) {
-        if((io_info->io_ops.single_write)(io_info, type_info, (hsize_t)mpi_buf_count, NULL, NULL) < 0)
-	    HGOTO_ERROR(H5E_DATASET, H5E_WRITEERROR, FAIL, "optimized write failed")
+        if((io_info->io_ops.single_write)(io_info, type_info, mpi_buf_count, NULL, NULL) < 0)
+            HGOTO_ERROR(H5E_DATASET, H5E_WRITEERROR, FAIL, "optimized write failed")
     } /* end if */
     else {
-        if((io_info->io_ops.single_read)(io_info, type_info, (hsize_t)mpi_buf_count, NULL, NULL) < 0)
+        if((io_info->io_ops.single_read)(io_info, type_info, mpi_buf_count, NULL, NULL) < 0)
             HGOTO_ERROR(H5E_DATASET, H5E_READERROR, FAIL, "optimized read failed")
     } /* end else */
 
@@ -1652,9 +1661,9 @@ if(H5DEBUG(D))
 #ifdef H5_MPI_COMPLEX_DERIVED_DATATYPE_WORKS
 
 /*-------------------------------------------------------------------------
- * Function:	H5D_sort_chunk
+ * Function:    H5D_sort_chunk
  *
- * Purpose:	Routine to sort chunks in increasing order of chunk address
+ * Purpose:     Routine to sort chunks in increasing order of chunk address
  *              Each chunk address is also obtained.
  *
  * Description:
@@ -1669,9 +1678,9 @@ if(H5DEBUG(D))
  *                     many_chunk_opt                         : flag to optimize the way to obtain chunk addresses
  *                                                              for many chunks
  *
- * Return:	Non-negative on success/Negative on failure
+ * Return:      Non-negative on success/Negative on failure
  *
- * Programmer:	Muqun Yang
+ * Programmer:  Muqun Yang
  *              Monday, Feb. 13th, 2006
  *
  *-------------------------------------------------------------------------
@@ -1690,7 +1699,7 @@ H5D_sort_chunk(H5D_io_info_t *io_info, const H5D_chunk_map_t *fm,
     int             mpi_size;                   /* Number of MPI processes */
     int             mpi_code;                   /* MPI return code */
     int             i;                          /* Local index variable */
-    herr_t	    ret_value = SUCCEED;        /* Return value		*/
+    herr_t          ret_value = SUCCEED;        /* Return value         */
 
     FUNC_ENTER_NOAPI_NOINIT(H5D_sort_chunk)
 
@@ -1731,14 +1740,14 @@ if(H5DEBUG(D))
         /* Retrieve all the chunk addresses with process 0 */
         if((mpi_rank = H5F_mpi_get_rank(io_info->dset->oloc.file)) < 0)
             HGOTO_ERROR(H5E_IO, H5E_MPI, FAIL, "unable to obtain mpi rank")
-	if(mpi_rank == 0) {
+        if(mpi_rank == 0) {
             if(H5D_chunk_addrmap(io_info, total_chunk_addr_array) < 0)
                 HGOTO_ERROR(H5E_DATASET, H5E_CANTGET, FAIL, "can't get chunk address")
-	} /* end if */
+        } /* end if */
 
-	/* Broadcasting the MPI_IO option info. and chunk address info. */
-	if(MPI_SUCCESS != (mpi_code = MPI_Bcast(total_chunk_addr_array, (int)(sizeof(haddr_t) * fm->layout->u.chunk.nchunks), MPI_BYTE, (int)0, io_info->comm)))
-	   HMPI_GOTO_ERROR(FAIL, "MPI_BCast failed", mpi_code)
+        /* Broadcasting the MPI_IO option info. and chunk address info. */
+        if(MPI_SUCCESS != (mpi_code = MPI_Bcast(total_chunk_addr_array, (int)(sizeof(haddr_t) * fm->layout->u.chunk.nchunks), MPI_BYTE, (int)0, io_info->comm)))
+           HMPI_GOTO_ERROR(FAIL, "MPI_BCast failed", mpi_code)
     } /* end if */
 
     /* Start at first node in chunk skip list */
@@ -1755,7 +1764,8 @@ if(H5DEBUG(D))
             H5D_chunk_ud_t udata;   /* User data for querying chunk info */
 
             /* Get address of chunk */
-            if(H5D_chunk_get_info(io_info->dset, io_info->dxpl_id, chunk_info->coords, &udata) < 0)
+            if(H5D_chunk_lookup(io_info->dset, io_info->dxpl_id,
+                    chunk_info->coords, chunk_info->index, &udata) < 0)
                 HGOTO_ERROR(H5E_STORAGE, H5E_CANTGET, FAIL, "couldn't get chunk info from skipped list")
             chunk_addr = udata.addr;
         } /* end if */
@@ -1795,9 +1805,9 @@ done:
 
 
 /*-------------------------------------------------------------------------
- * Function:	H5D_obtain_mpio_mode
+ * Function:    H5D_obtain_mpio_mode
  *
- * Purpose:	Routine to obtain each io mode(collective,independent or none) for each chunk;
+ * Purpose:     Routine to obtain each io mode(collective,independent or none) for each chunk;
  *              Each chunk address is also obtained.
  *
  * Description:
@@ -1823,9 +1833,9 @@ done:
  *              Output: uint8_t assign_io_mode[], : IO mode, collective, independent or none
  *                      haddr_t chunk_addr[],     : chunk address array for each chunk
  *
- * Return:	Non-negative on success/Negative on failure
+ * Return:      Non-negative on success/Negative on failure
  *
- * Programmer:	Muqun Yang
+ * Programmer:  Muqun Yang
  *              Monday, Feb. 13th, 2006
  *
  *-------------------------------------------------------------------------

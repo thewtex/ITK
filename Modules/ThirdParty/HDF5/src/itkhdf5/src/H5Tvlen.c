@@ -1241,8 +1241,8 @@ done:
  * Function:	H5T_vlen_reclaim_elmt
  *
  * Purpose: Alternative method to reclaim any VL data for a buffer element.
- * 
- *          Use this function when the datatype is already available, but 
+ *
+ *          Use this function when the datatype is already available, but
  *          the allocation info is needed from the dxpl_id before jumping
  *          into recursion.
  *

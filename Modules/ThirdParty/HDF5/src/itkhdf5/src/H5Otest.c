@@ -16,27 +16,27 @@
 /* Programmer:  Quincey Koziol <koziol@hdfgroup.org>
  *              Monday, December 4, 2006
  *
- * Purpose:	Object header testing functions.
+ * Purpose:     Object header testing functions.
  */
 
 /****************/
 /* Module Setup */
 /****************/
 
-#define H5A_PACKAGE		/*suppress error about including H5Apkg	  */
-#define H5O_PACKAGE		/*suppress error about including H5Opkg	  */
-#define H5O_TESTING		/*suppress warning about H5O testing funcs*/
+#define H5A_PACKAGE             /*suppress error about including H5Apkg   */
+#define H5O_PACKAGE             /*suppress error about including H5Opkg   */
+#define H5O_TESTING             /*suppress warning about H5O testing funcs*/
 
 
 /***********/
 /* Headers */
 /***********/
-#include "H5private.h"		/* Generic Functions			*/
-#include "H5Apkg.h"		/* Attributes	  			*/
-#include "H5ACprivate.h"	/* Metadata cache			*/
-#include "H5Eprivate.h"		/* Error handling		  	*/
-#include "H5Iprivate.h"		/* IDs			  		*/
-#include "H5Opkg.h"             /* Object headers			*/
+#include "H5private.h"          /* Generic Functions                    */
+#include "H5Apkg.h"             /* Attributes                           */
+#include "H5ACprivate.h"        /* Metadata cache                       */
+#include "H5Eprivate.h"         /* Error handling                       */
+#include "H5Iprivate.h"         /* IDs                                  */
+#include "H5Opkg.h"             /* Object headers                       */
 
 
 /****************/
@@ -109,7 +109,7 @@ H5O_is_attr_dense_test(hid_t oid)
 
     /* Get the object header */
     if(NULL == (oh = H5O_protect(loc, H5AC_ind_dxpl_id, H5AC_READ)))
-	HGOTO_ERROR(H5E_OHDR, H5E_CANTPROTECT, FAIL, "unable to load object header")
+        HGOTO_ERROR(H5E_OHDR, H5E_CANTPROTECT, FAIL, "unable to load object header")
 
     /* Check for attribute info stored */
     ainfo.fheap_addr = HADDR_UNDEF;
@@ -131,7 +131,7 @@ H5O_is_attr_dense_test(hid_t oid)
 
 done:
     if(oh && H5O_unprotect(loc, H5AC_ind_dxpl_id, oh, H5AC__NO_FLAGS_SET) < 0)
-	HDONE_ERROR(H5E_OHDR, H5E_CANTUNPROTECT, FAIL, "unable to release object header")
+        HDONE_ERROR(H5E_OHDR, H5E_CANTUNPROTECT, FAIL, "unable to release object header")
 
     FUNC_LEAVE_NOAPI(ret_value)
 }   /* H5O_is_attr_dense_test() */
@@ -174,7 +174,7 @@ H5O_is_attr_empty_test(hid_t oid)
 
     /* Get the object header */
     if(NULL == (oh = H5O_protect(loc, H5AC_ind_dxpl_id, H5AC_READ)))
-	HGOTO_ERROR(H5E_OHDR, H5E_CANTPROTECT, FAIL, "unable to load object header")
+        HGOTO_ERROR(H5E_OHDR, H5E_CANTPROTECT, FAIL, "unable to load object header")
 
     /* Check for attribute info stored */
     if(oh->version > H5O_VERSION_1) {
@@ -218,7 +218,7 @@ done:
     if(bt2_name && H5B2_close(bt2_name, H5AC_ind_dxpl_id) < 0)
         HDONE_ERROR(H5E_OHDR, H5E_CANTCLOSEOBJ, FAIL, "can't close v2 B-tree for name index")
     if(oh && H5O_unprotect(loc, H5AC_ind_dxpl_id, oh, H5AC__NO_FLAGS_SET) < 0)
-	HDONE_ERROR(H5E_OHDR, H5E_CANTUNPROTECT, FAIL, "unable to release object header")
+        HDONE_ERROR(H5E_OHDR, H5E_CANTUNPROTECT, FAIL, "unable to release object header")
 
     FUNC_LEAVE_NOAPI(ret_value)
 }   /* H5O_is_attr_empty_test() */
@@ -261,7 +261,7 @@ H5O_num_attrs_test(hid_t oid, hsize_t *nattrs)
 
     /* Get the object header */
     if(NULL == (oh = H5O_protect(loc, H5AC_ind_dxpl_id, H5AC_READ)))
-	HGOTO_ERROR(H5E_OHDR, H5E_CANTPROTECT, FAIL, "unable to load object header")
+        HGOTO_ERROR(H5E_OHDR, H5E_CANTPROTECT, FAIL, "unable to load object header")
 
     /* Check for attribute info stored */
     ainfo.fheap_addr = HADDR_UNDEF;
@@ -302,7 +302,7 @@ done:
     if(bt2_name && H5B2_close(bt2_name, H5AC_ind_dxpl_id) < 0)
         HDONE_ERROR(H5E_OHDR, H5E_CANTCLOSEOBJ, FAIL, "can't close v2 B-tree for name index")
     if(oh && H5O_unprotect(loc, H5AC_ind_dxpl_id, oh, H5AC__NO_FLAGS_SET) < 0)
-	HDONE_ERROR(H5E_OHDR, H5E_CANTUNPROTECT, FAIL, "unable to release object header")
+        HDONE_ERROR(H5E_OHDR, H5E_CANTUNPROTECT, FAIL, "unable to release object header")
 
     FUNC_LEAVE_NOAPI(ret_value)
 }   /* H5O_num_attrs_test() */
@@ -347,7 +347,7 @@ H5O_attr_dense_info_test(hid_t oid, hsize_t *name_count, hsize_t *corder_count)
 
     /* Get the object header */
     if(NULL == (oh = H5O_protect(loc, H5AC_ind_dxpl_id, H5AC_READ)))
-	HGOTO_ERROR(H5E_OHDR, H5E_CANTPROTECT, FAIL, "unable to load object header")
+        HGOTO_ERROR(H5E_OHDR, H5E_CANTPROTECT, FAIL, "unable to load object header")
 
     /* Check for attribute info stored */
     ainfo.fheap_addr = HADDR_UNDEF;
@@ -391,7 +391,7 @@ done:
     if(bt2_corder && H5B2_close(bt2_corder, H5AC_ind_dxpl_id) < 0)
         HDONE_ERROR(H5E_OHDR, H5E_CANTCLOSEOBJ, FAIL, "can't close v2 B-tree for creation order index")
     if(oh && H5O_unprotect(loc, H5AC_ind_dxpl_id, oh, H5AC__NO_FLAGS_SET) < 0)
-	HDONE_ERROR(H5E_OHDR, H5E_CANTUNPROTECT, FAIL, "unable to release object header")
+        HDONE_ERROR(H5E_OHDR, H5E_CANTUNPROTECT, FAIL, "unable to release object header")
 
     FUNC_LEAVE_NOAPI(ret_value)
 }   /* H5O_attr_dense_info_test() */
@@ -435,11 +435,11 @@ H5O_check_msg_marked_test(hid_t oid, hbool_t flag_val)
 
     /* Get the object header */
     if(NULL == (oh = H5O_protect(loc, H5AC_ind_dxpl_id, H5AC_READ)))
-	HGOTO_ERROR(H5E_OHDR, H5E_CANTPROTECT, FAIL, "unable to load object header")
+        HGOTO_ERROR(H5E_OHDR, H5E_CANTPROTECT, FAIL, "unable to load object header")
 
     /* Locate "unknown" message  */
     for(idx = 0, idx_msg = &oh->mesg[0]; idx < oh->nmesgs; idx++, idx_msg++)
-	if(idx_msg->type->id == H5O_UNKNOWN_ID) {
+        if(idx_msg->type->id == H5O_UNKNOWN_ID) {
             /* Check for "unknown" message having the correct flags */
             if(((idx_msg->flags & H5O_MSG_FLAG_WAS_UNKNOWN) > 0) != flag_val)
                 HGOTO_ERROR(H5E_OHDR, H5E_BADVALUE, FAIL, "'unknown' message has incorrect 'was unknown' flag value")
@@ -454,7 +454,7 @@ H5O_check_msg_marked_test(hid_t oid, hbool_t flag_val)
 
 done:
     if(oh && H5O_unprotect(loc, H5AC_ind_dxpl_id, oh, H5AC__NO_FLAGS_SET) < 0)
-	HDONE_ERROR(H5E_OHDR, H5E_CANTUNPROTECT, FAIL, "unable to release object header")
+        HDONE_ERROR(H5E_OHDR, H5E_CANTUNPROTECT, FAIL, "unable to release object header")
 
     FUNC_LEAVE_NOAPI(ret_value)
 }   /* H5O_check_msg_marked_test() */
@@ -494,7 +494,7 @@ H5O_expunge_chunks_test(const H5O_loc_t *loc, hid_t dxpl_id)
 
     /* Get the object header */
     if(NULL == (oh = H5O_protect(loc, dxpl_id, H5AC_WRITE)))
-	HGOTO_ERROR(H5E_OHDR, H5E_CANTPROTECT, FAIL, "unable to protect object header")
+        HGOTO_ERROR(H5E_OHDR, H5E_CANTPROTECT, FAIL, "unable to protect object header")
 
     /* Safety check */
     nchunks = oh->nchunks;
@@ -506,7 +506,7 @@ H5O_expunge_chunks_test(const H5O_loc_t *loc, hid_t dxpl_id)
 
     /* Release the object header */
     if(H5O_unprotect(loc, dxpl_id, oh, H5AC__NO_FLAGS_SET) < 0)
-	HGOTO_ERROR(H5E_OHDR, H5E_CANTUNPROTECT, FAIL, "unable to unprotect object header")
+        HGOTO_ERROR(H5E_OHDR, H5E_CANTUNPROTECT, FAIL, "unable to unprotect object header")
 
     /* Iterate over all the saved chunk addresses, evicting them from the cache */
     /* (in reverse order, so that chunk #0 is unpinned) */
@@ -515,6 +515,55 @@ H5O_expunge_chunks_test(const H5O_loc_t *loc, hid_t dxpl_id)
             HGOTO_ERROR(H5E_OHDR, H5E_CANTEXPUNGE, FAIL, "unable to expunge object header chunk")
 
 done:
+    FUNC_LEAVE_NOAPI(ret_value)
+}   /* H5O_expunge_chunks_test() */
+
+
+/*--------------------------------------------------------------------------
+ NAME
+    H5O_get_rc
+ PURPOSE
+    Retrieve the refcount for the object header
+ USAGE
+    herr_t H5O_expunge_chunks_test(loc, dxpl_id, rc)
+        const H5O_loc_t *loc;   IN: Object location for object header to query
+        hid_t dxpl_id;          IN: DXPL to use for operation
+        unsigned *rc;           OUT: Pointer to refcount for object header
+ RETURNS
+    Non-negative on success, negative on failure
+ DESCRIPTION
+    Protects object header, retrieves the object header's refcount, and
+    unprotects object header.
+ GLOBAL VARIABLES
+ COMMENTS, BUGS, ASSUMPTIONS
+    DO NOT USE THIS FUNCTION FOR ANYTHING EXCEPT TESTING
+ EXAMPLES
+ REVISION LOG
+--------------------------------------------------------------------------*/
+herr_t
+H5O_get_rc(const H5O_loc_t *loc, hid_t dxpl_id, unsigned *rc)
+{
+    H5O_t *oh = NULL;           /* Object header */
+    herr_t ret_value = SUCCEED; /* Return value */
+
+    FUNC_ENTER_NOAPI(H5O_get_rc, FAIL)
+
+    /* Sanity check */
+    HDassert(loc);
+    HDassert(rc);
+
+    /* Get the object header */
+    if(NULL == (oh = H5O_protect(loc, dxpl_id, H5AC_READ)))
+        HGOTO_ERROR(H5E_OHDR, H5E_CANTPROTECT, FAIL, "unable to protect object header")
+
+    /* Save the refcount for the object header */
+    *rc = oh->nlink;
+
+done:
+    /* Release the object header */
+    if(oh && H5O_unprotect(loc, dxpl_id, oh, H5AC__NO_FLAGS_SET) < 0)
+        HDONE_ERROR(H5E_OHDR, H5E_CANTUNPROTECT, FAIL, "unable to unprotect object header")
+
     FUNC_LEAVE_NOAPI(ret_value)
 }   /* H5O_expunge_chunks_test() */
 

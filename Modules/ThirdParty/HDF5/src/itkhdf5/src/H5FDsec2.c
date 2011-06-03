@@ -42,15 +42,6 @@
 /* The driver identification number, initialized at runtime */
 static hid_t H5FD_SEC2_g = 0;
 
-/* File operations */
-typedef enum {
-    OP_UNKNOWN = 0,             /* Unknown last file operation */
-    OP_READ = 1,                /* Last file I/O operation was a read */
-    OP_WRITE = 2                /* Last file I/O operation was a write */
-} H5FD_sec2_file_op_t;
-
-#define H5FD_SEC2_MAX_FILENAME_LEN      1024
-
 /*
  * The description of a file belonging to this driver. The `eoa' and `eof'
  * determine the amount of hdf5 address space in use and the high-water mark
@@ -64,23 +55,23 @@ typedef enum {
  * occurs), and `op' will be set to H5F_OP_UNKNOWN.
  */
 typedef struct H5FD_sec2_t {
-    H5FD_t	pub;			/*public stuff, must be first	*/
-    int		fd;			/*the unix file			*/
-    haddr_t	eoa;			/*end of allocated region	*/
-    haddr_t	eof;			/*end of file; current file size*/
-    haddr_t	pos;			/*current file I/O position	*/
-    H5FD_sec2_file_op_t	op;		/*last operation		*/
-    char	filename[H5FD_SEC2_MAX_FILENAME_LEN];     /* Copy of file name from open operation */
+    H5FD_t      pub;                    /*public stuff, must be first   */
+    int         fd;                     /*the unix file                 */
+    haddr_t     eoa;                    /*end of allocated region       */
+    haddr_t     eof;                    /*end of file; current file size*/
+    haddr_t     pos;                    /*current file I/O position     */
+    H5FD_file_op_t      op;             /*last operation                */
+    char        filename[H5FD_MAX_FILENAME_LEN];     /* Copy of file name from open operation */
 #ifndef _WIN32
     /*
      * On most systems the combination of device and i-node number uniquely
      * identify a file.
      */
-    dev_t	device;			/*file device number		*/
+    dev_t       device;                 /*file device number            */
 #ifdef H5_VMS
-    ino_t	inode[3];		/*file i-node number		*/
+    ino_t       inode[3];               /*file i-node number            */
 #else
-    ino_t	inode;			/*file i-node number		*/
+    ino_t       inode;                  /*file i-node number            */
 #endif /*H5_VMS*/
 #else
     /*
@@ -107,47 +98,37 @@ typedef struct H5FD_sec2_t {
  * some macros here so we don't have to have conditional compilations later
  * throughout the code.
  *
- * file_offset_t:	The datatype for file offsets, the second argument of
- *			the lseek() or lseek64() call.
+ * HDoff_t:     The datatype for file offsets, the second argument of
+ *              the lseek() or lseek64() call.
  *
  */
-/* adding for windows NT file system support. */
-
-#ifdef H5_HAVE_LSEEK64
-#   define file_offset_t	off64_t
-#elif defined (_WIN32) && !defined(__MWERKS__)
-# /*MSVC*/
-#   define file_offset_t        __int64
-#else
-#   define file_offset_t	off_t
-#endif
 
 /*
  * These macros check for overflow of various quantities.  These macros
- * assume that file_offset_t is signed and haddr_t and size_t are unsigned.
+ * assume that HDoff_t is signed and haddr_t and size_t are unsigned.
  *
- * ADDR_OVERFLOW:	Checks whether a file address of type `haddr_t'
- *			is too large to be represented by the second argument
- *			of the file seek function.
+ * ADDR_OVERFLOW:       Checks whether a file address of type `haddr_t'
+ *                      is too large to be represented by the second argument
+ *                      of the file seek function.
  *
- * SIZE_OVERFLOW:	Checks whether a buffer size of type `hsize_t' is too
- *			large to be represented by the `size_t' type.
+ * SIZE_OVERFLOW:       Checks whether a buffer size of type `hsize_t' is too
+ *                      large to be represented by the `size_t' type.
  *
- * REGION_OVERFLOW:	Checks whether an address and size pair describe data
- *			which can be addressed entirely by the second
- *			argument of the file seek function.
+ * REGION_OVERFLOW:     Checks whether an address and size pair describe data
+ *                      which can be addressed entirely by the second
+ *                      argument of the file seek function.
  */
-#define MAXADDR (((haddr_t)1<<(8*sizeof(file_offset_t)-1))-1)
-#define ADDR_OVERFLOW(A)	(HADDR_UNDEF==(A) ||			      \
-				 ((A) & ~(haddr_t)MAXADDR))
-#define SIZE_OVERFLOW(Z)	((Z) & ~(hsize_t)MAXADDR)
-#define REGION_OVERFLOW(A,Z)	(ADDR_OVERFLOW(A) || SIZE_OVERFLOW(Z) ||      \
-                                 HADDR_UNDEF==(A)+(Z) ||		      \
-				 (file_offset_t)((A)+(Z))<(file_offset_t)(A))
+#define MAXADDR (((haddr_t)1<<(8*sizeof(HDoff_t)-1))-1)
+#define ADDR_OVERFLOW(A)        (HADDR_UNDEF==(A) ||                          \
+                                 ((A) & ~(haddr_t)MAXADDR))
+#define SIZE_OVERFLOW(Z)        ((Z) & ~(hsize_t)MAXADDR)
+#define REGION_OVERFLOW(A,Z)    (ADDR_OVERFLOW(A) || SIZE_OVERFLOW(Z) ||      \
+                                 HADDR_UNDEF==(A)+(Z) ||                      \
+                                 (HDoff_t)((A)+(Z))<(HDoff_t)(A))
 
 /* Prototypes */
 static H5FD_t *H5FD_sec2_open(const char *name, unsigned flags, hid_t fapl_id,
-			      haddr_t maxaddr);
+                              haddr_t maxaddr);
 static herr_t H5FD_sec2_close(H5FD_t *_file);
 static int H5FD_sec2_cmp(const H5FD_t *_f1, const H5FD_t *_f2);
 static herr_t H5FD_sec2_query(const H5FD_t *_f1, unsigned long *flags);
@@ -156,43 +137,43 @@ static herr_t H5FD_sec2_set_eoa(H5FD_t *_file, H5FD_mem_t type, haddr_t addr);
 static haddr_t H5FD_sec2_get_eof(const H5FD_t *_file);
 static herr_t  H5FD_sec2_get_handle(H5FD_t *_file, hid_t fapl, void** file_handle);
 static herr_t H5FD_sec2_read(H5FD_t *_file, H5FD_mem_t type, hid_t fapl_id, haddr_t addr,
-			     size_t size, void *buf);
+                             size_t size, void *buf);
 static herr_t H5FD_sec2_write(H5FD_t *_file, H5FD_mem_t type, hid_t fapl_id, haddr_t addr,
-			      size_t size, const void *buf);
+                              size_t size, const void *buf);
 static herr_t H5FD_sec2_truncate(H5FD_t *_file, hid_t dxpl_id, hbool_t closing);
 
 static const H5FD_class_t H5FD_sec2_g = {
-    "sec2",					/*name			*/
-    MAXADDR,					/*maxaddr		*/
-    H5F_CLOSE_WEAK,				/* fc_degree		*/
-    NULL,					/*sb_size		*/
-    NULL,					/*sb_encode		*/
-    NULL,					/*sb_decode		*/
-    0, 						/*fapl_size		*/
-    NULL,					/*fapl_get		*/
-    NULL,					/*fapl_copy		*/
-    NULL, 					/*fapl_free		*/
-    0,						/*dxpl_size		*/
-    NULL,					/*dxpl_copy		*/
-    NULL,					/*dxpl_free		*/
-    H5FD_sec2_open,			        /*open			*/
-    H5FD_sec2_close,		                /*close			*/
-    H5FD_sec2_cmp,			        /*cmp			*/
-    H5FD_sec2_query,		                /*query			*/
-    NULL,					/*get_type_map		*/
-    NULL,					/*alloc			*/
-    NULL,					/*free			*/
-    H5FD_sec2_get_eoa,				/*get_eoa		*/
-    H5FD_sec2_set_eoa, 				/*set_eoa		*/
-    H5FD_sec2_get_eof,				/*get_eof		*/
+    "sec2",                                     /*name                  */
+    MAXADDR,                                    /*maxaddr               */
+    H5F_CLOSE_WEAK,                             /* fc_degree            */
+    NULL,                                       /*sb_size               */
+    NULL,                                       /*sb_encode             */
+    NULL,                                       /*sb_decode             */
+    0,                                          /*fapl_size             */
+    NULL,                                       /*fapl_get              */
+    NULL,                                       /*fapl_copy             */
+    NULL,                                       /*fapl_free             */
+    0,                                          /*dxpl_size             */
+    NULL,                                       /*dxpl_copy             */
+    NULL,                                       /*dxpl_free             */
+    H5FD_sec2_open,                             /*open                  */
+    H5FD_sec2_close,                            /*close                 */
+    H5FD_sec2_cmp,                              /*cmp                   */
+    H5FD_sec2_query,                            /*query                 */
+    NULL,                                       /*get_type_map          */
+    NULL,                                       /*alloc                 */
+    NULL,                                       /*free                  */
+    H5FD_sec2_get_eoa,                          /*get_eoa               */
+    H5FD_sec2_set_eoa,                          /*set_eoa               */
+    H5FD_sec2_get_eof,                          /*get_eof               */
     H5FD_sec2_get_handle,                       /*get_handle            */
-    H5FD_sec2_read,				/*read			*/
-    H5FD_sec2_write,				/*write			*/
-    NULL,					/*flush			*/
-    H5FD_sec2_truncate,				/*truncate		*/
+    H5FD_sec2_read,                             /*read                  */
+    H5FD_sec2_write,                            /*write                 */
+    NULL,                                       /*flush                 */
+    H5FD_sec2_truncate,                         /*truncate              */
     NULL,                                       /*lock                  */
     NULL,                                       /*unlock                */
-    H5FD_FLMAP_SINGLE 				/*fl_map		*/
+    H5FD_FLMAP_SINGLE                           /*fl_map                */
 };
 
 /* Declare a free list to manage the H5FD_sec2_t struct */
@@ -222,15 +203,15 @@ H5FD_sec2_init_interface(void)
 
 
 /*-------------------------------------------------------------------------
- * Function:	H5FD_sec2_init
+ * Function:    H5FD_sec2_init
  *
- * Purpose:	Initialize this driver by registering the driver with the
- *		library.
+ * Purpose:     Initialize this driver by registering the driver with the
+ *              library.
  *
- * Return:	Success:	The driver ID for the sec2 driver.
- *		Failure:	Negative.
+ * Return:      Success:        The driver ID for the sec2 driver.
+ *              Failure:        Negative.
  *
- * Programmer:	Robb Matzke
+ * Programmer:  Robb Matzke
  *              Thursday, July 29, 1999
  *
  *-------------------------------------------------------------------------
@@ -238,7 +219,7 @@ H5FD_sec2_init_interface(void)
 hid_t
 H5FD_sec2_init(void)
 {
-    hid_t ret_value;        /* Return value */
+    hid_t ret_value;            /* Return value */
 
     FUNC_ENTER_NOAPI(H5FD_sec2_init, FAIL)
 
@@ -254,11 +235,11 @@ done:
 
 
 /*---------------------------------------------------------------------------
- * Function:	H5FD_sec2_term
+ * Function:    H5FD_sec2_term
  *
- * Purpose:	Shut down the VFD
+ * Purpose:     Shut down the VFD
  *
- * Return:	<none>
+ * Return:      <none>
  *
  * Programmer:  Quincey Koziol
  *              Friday, Jan 30, 2004
@@ -278,16 +259,16 @@ H5FD_sec2_term(void)
 
 
 /*-------------------------------------------------------------------------
- * Function:	H5Pset_fapl_sec2
+ * Function:    H5Pset_fapl_sec2
  *
- * Purpose:	Modify the file access property list to use the H5FD_SEC2
- *		driver defined in this source file.  There are no driver
- *		specific properties.
+ * Purpose:     Modify the file access property list to use the H5FD_SEC2
+ *              driver defined in this source file.  There are no driver
+ *              specific properties.
  *
- * Return:	Non-negative on success/Negative on failure
+ * Return:      Non-negative on success/Negative on failure
  *
- * Programmer:	Robb Matzke
- *		Thursday, February 19, 1998
+ * Programmer:  Robb Matzke
+ *              Thursday, February 19, 1998
  *
  *-------------------------------------------------------------------------
  */
@@ -300,51 +281,48 @@ H5Pset_fapl_sec2(hid_t fapl_id)
     FUNC_ENTER_API(H5Pset_fapl_sec2, FAIL)
     H5TRACE1("e", "i", fapl_id);
 
-    if(NULL == (plist = H5P_object_verify(fapl_id,H5P_FILE_ACCESS)))
+    if(NULL == (plist = H5P_object_verify(fapl_id, H5P_FILE_ACCESS)))
         HGOTO_ERROR(H5E_ARGS, H5E_BADTYPE, FAIL, "not a file access property list")
 
-    ret_value= H5P_set_driver(plist, H5FD_SEC2, NULL);
+    ret_value = H5P_set_driver(plist, H5FD_SEC2, NULL);
 
 done:
     FUNC_LEAVE_API(ret_value)
-}
+} /* end H5Pset_fapl_sec2() */
 
 
 /*-------------------------------------------------------------------------
- * Function:	H5FD_sec2_open
+ * Function:    H5FD_sec2_open
  *
- * Purpose:	Create and/or opens a Unix file as an HDF5 file.
+ * Purpose:     Create and/or opens a Unix file as an HDF5 file.
  *
- * Return:	Success:	A pointer to a new file data structure. The
- *				public fields will be initialized by the
- *				caller, which is always H5FD_open().
+ * Return:      Success:        A pointer to a new file data structure. The
+ *                              public fields will be initialized by the
+ *                              caller, which is always H5FD_open().
+ *              Failure:        NULL
  *
- *		Failure:	NULL
- *
- * Programmer:	Robb Matzke
+ * Programmer:  Robb Matzke
  *              Thursday, July 29, 1999
- *
- * Modifications:
  *
  *-------------------------------------------------------------------------
  */
 static H5FD_t *
 H5FD_sec2_open(const char *name, unsigned flags, hid_t fapl_id, haddr_t maxaddr)
 {
-    H5FD_sec2_t	*file = NULL;   /* sec2 VFD info */
-    int	fd = (-1);              /* File descriptor */
-    int	o_flags;                /* Flags for open() call */
+    H5FD_sec2_t *file = NULL;   /* sec2 VFD info */
+    int         fd = (-1);      /* File descriptor */
+    int         o_flags;        /* Flags for open() call */
 #ifdef _WIN32
     HFILE filehandle;
     struct _BY_HANDLE_FILE_INFORMATION fileinfo;
 #endif
-    h5_stat_t	sb;
-    H5FD_t	*ret_value;     /* Return value */
+    h5_stat_t   sb;
+    H5FD_t      *ret_value;     /* Return value */
 
-    FUNC_ENTER_NOAPI(H5FD_sec2_open, NULL)
+    FUNC_ENTER_NOAPI_NOINIT(H5FD_sec2_open)
 
     /* Sanity check on file offsets */
-    HDassert(sizeof(file_offset_t) >= sizeof(size_t));
+    HDcompile_assert(sizeof(HDoff_t) >= sizeof(size_t));
 
     /* Check arguments */
     if(!name || !*name)
@@ -435,15 +413,14 @@ done:
 
 
 /*-------------------------------------------------------------------------
- * Function:	H5FD_sec2_close
+ * Function:    H5FD_sec2_close
  *
- * Purpose:	Closes a Unix file.
+ * Purpose:     Closes a Unix file.
  *
- * Return:	Success:	0
+ * Return:      Success:        0
+ *              Failure:        -1, file not closed.
  *
- *		Failure:	-1, file not closed.
- *
- * Programmer:	Robb Matzke
+ * Programmer:  Robb Matzke
  *              Thursday, July 29, 1999
  *
  *-------------------------------------------------------------------------
@@ -451,10 +428,10 @@ done:
 static herr_t
 H5FD_sec2_close(H5FD_t *_file)
 {
-    H5FD_sec2_t	*file = (H5FD_sec2_t*)_file;
+    H5FD_sec2_t *file = (H5FD_sec2_t *)_file;
     herr_t ret_value = SUCCEED;                 /* Return value */
 
-    FUNC_ENTER_NOAPI(H5FD_sec2_close, FAIL)
+    FUNC_ENTER_NOAPI_NOINIT(H5FD_sec2_close)
 
     /* Sanity check */
     HDassert(file);
@@ -472,77 +449,74 @@ done:
 
 
 /*-------------------------------------------------------------------------
- * Function:	H5FD_sec2_cmp
+ * Function:    H5FD_sec2_cmp
  *
- * Purpose:	Compares two files belonging to this driver using an
- *		arbitrary (but consistent) ordering.
+ * Purpose:     Compares two files belonging to this driver using an
+ *              arbitrary (but consistent) ordering.
  *
- * Return:	Success:	A value like strcmp()
+ * Return:      Success:        A value like strcmp()
+ *              Failure:        never fails (arguments were checked by the
+ *                              caller).
  *
- *		Failure:	never fails (arguments were checked by the
- *				caller).
- *
- * Programmer:	Robb Matzke
+ * Programmer:  Robb Matzke
  *              Thursday, July 29, 1999
- *
- * Modifications:
  *
  *-------------------------------------------------------------------------
  */
 static int
 H5FD_sec2_cmp(const H5FD_t *_f1, const H5FD_t *_f2)
 {
-    const H5FD_sec2_t	*f1 = (const H5FD_sec2_t*)_f1;
-    const H5FD_sec2_t	*f2 = (const H5FD_sec2_t*)_f2;
-    int ret_value=0;
+    const H5FD_sec2_t   *f1 = (const H5FD_sec2_t *)_f1;
+    const H5FD_sec2_t   *f2 = (const H5FD_sec2_t *)_f2;
+    int ret_value = 0;
 
-    FUNC_ENTER_NOAPI(H5FD_sec2_cmp, H5FD_VFD_DEFAULT)
+    FUNC_ENTER_NOAPI_NOINIT_NOFUNC(H5FD_sec2_cmp)
 
 #ifdef _WIN32
-    if (f1->fileindexhi < f2->fileindexhi) HGOTO_DONE(-1)
-    if (f1->fileindexhi > f2->fileindexhi) HGOTO_DONE(1)
+    if(f1->fileindexhi < f2->fileindexhi) HGOTO_DONE(-1)
+    if(f1->fileindexhi > f2->fileindexhi) HGOTO_DONE(1)
 
-    if (f1->fileindexlo < f2->fileindexlo) HGOTO_DONE(-1)
-    if (f1->fileindexlo > f2->fileindexlo) HGOTO_DONE(1)
+    if(f1->fileindexlo < f2->fileindexlo) HGOTO_DONE(-1)
+    if(f1->fileindexlo > f2->fileindexlo) HGOTO_DONE(1)
 
 #else
 #ifdef H5_DEV_T_IS_SCALAR
-    if (f1->device < f2->device) HGOTO_DONE(-1)
-    if (f1->device > f2->device) HGOTO_DONE(1)
+    if(f1->device < f2->device) HGOTO_DONE(-1)
+    if(f1->device > f2->device) HGOTO_DONE(1)
 #else /* H5_DEV_T_IS_SCALAR */
     /* If dev_t isn't a scalar value on this system, just use memcmp to
      * determine if the values are the same or not.  The actual return value
      * shouldn't really matter...
      */
-    if(HDmemcmp(&(f1->device),&(f2->device),sizeof(dev_t))<0) HGOTO_DONE(-1)
-    if(HDmemcmp(&(f1->device),&(f2->device),sizeof(dev_t))>0) HGOTO_DONE(1)
+    if(HDmemcmp(&(f1->device),&(f2->device),sizeof(dev_t)) < 0) HGOTO_DONE(-1)
+    if(HDmemcmp(&(f1->device),&(f2->device),sizeof(dev_t)) > 0) HGOTO_DONE(1)
 #endif /* H5_DEV_T_IS_SCALAR */
 
 #ifndef H5_VMS
-    if (f1->inode < f2->inode) HGOTO_DONE(-1)
-    if (f1->inode > f2->inode) HGOTO_DONE(1)
+    if(f1->inode < f2->inode) HGOTO_DONE(-1)
+    if(f1->inode > f2->inode) HGOTO_DONE(1)
 #else
-    if(HDmemcmp(&(f1->inode),&(f2->inode),3*sizeof(ino_t))<0) HGOTO_DONE(-1)
-    if(HDmemcmp(&(f1->inode),&(f2->inode),3*sizeof(ino_t))>0) HGOTO_DONE(1)
+    if(HDmemcmp(&(f1->inode), &(f2->inode), 3 * sizeof(ino_t)) < 0) HGOTO_DONE(-1)
+    if(HDmemcmp(&(f1->inode), &(f2->inode), 3 * sizeof(ino_t)) > 0) HGOTO_DONE(1)
 #endif /*H5_VMS*/
 
 #endif
 
 done:
     FUNC_LEAVE_NOAPI(ret_value)
-}
+} /* end H5FD_sec2_cmp() */
 
 
 /*-------------------------------------------------------------------------
- * Function:	H5FD_sec2_query
+ * Function:    H5FD_sec2_query
  *
- * Purpose:	Set the flags that this VFL driver is capable of supporting.
+ * Purpose:     Set the flags that this VFL driver is capable of supporting.
  *              (listed in H5FDpublic.h)
  *
- * Return:	Success:	non-negative
- *		Failure:	negative
+ * Return:      Success:        non-negative
+ *              Failure:        negative
  *
- * Programmer:	Quincey Koziol
+ * Programmer:  Quincey Koziol
  *              Friday, August 25, 2000
  *
  *-------------------------------------------------------------------------
@@ -550,7 +524,7 @@ done:
 static herr_t
 H5FD_sec2_query(const H5FD_t *_file, unsigned long *flags /* out */)
 {
-    const H5FD_sec2_t	*file = (const H5FD_sec2_t*)_file;    /* sec2 VFD info */
+    const H5FD_sec2_t   *file = (const H5FD_sec2_t *)_file;    /* sec2 VFD info */
 
     FUNC_ENTER_NOAPI_NOINIT_NOFUNC(H5FD_sec2_query)
 
@@ -573,112 +547,85 @@ H5FD_sec2_query(const H5FD_t *_file, unsigned long *flags /* out */)
 
 
 /*-------------------------------------------------------------------------
- * Function:	H5FD_sec2_get_eoa
+ * Function:    H5FD_sec2_get_eoa
  *
- * Purpose:	Gets the end-of-address marker for the file. The EOA marker
- *		is the first address past the last byte allocated in the
- *		format address space.
+ * Purpose:     Gets the end-of-address marker for the file. The EOA marker
+ *              is the first address past the last byte allocated in the
+ *              format address space.
  *
- * Return:	Success:	The end-of-address marker.
+ * Return:      Success:        The end-of-address marker.
+ *              Failure:        HADDR_UNDEF
  *
- *		Failure:	HADDR_UNDEF
- *
- * Programmer:	Robb Matzke
+ * Programmer:  Robb Matzke
  *              Monday, August  2, 1999
- *
- * Modifications:
- *              Raymond Lu
- *              21 Dec. 2006
- *              Added the parameter TYPE.  It's only used for MULTI driver.
  *
  *-------------------------------------------------------------------------
  */
 static haddr_t
 H5FD_sec2_get_eoa(const H5FD_t *_file, H5FD_mem_t UNUSED type)
 {
-    const H5FD_sec2_t	*file = (const H5FD_sec2_t*)_file;
-    haddr_t ret_value;  /* Return value */
+    const H5FD_sec2_t   *file = (const H5FD_sec2_t *)_file;
 
-    FUNC_ENTER_NOAPI(H5FD_sec2_get_eoa, HADDR_UNDEF)
+    FUNC_ENTER_NOAPI_NOINIT_NOFUNC(H5FD_sec2_get_eoa)
 
-    /* Set return value */
-    ret_value = file->eoa;
-
-done:
-    FUNC_LEAVE_NOAPI(ret_value)
+    FUNC_LEAVE_NOAPI(file->eoa)
 } /* end H5FD_sec2_get_eoa() */
 
 
 /*-------------------------------------------------------------------------
- * Function:	H5FD_sec2_set_eoa
+ * Function:    H5FD_sec2_set_eoa
  *
- * Purpose:	Set the end-of-address marker for the file. This function is
- *		called shortly after an existing HDF5 file is opened in order
- *		to tell the driver where the end of the HDF5 data is located.
+ * Purpose:     Set the end-of-address marker for the file. This function is
+ *              called shortly after an existing HDF5 file is opened in order
+ *              to tell the driver where the end of the HDF5 data is located.
  *
- * Return:	Success:	0
+ * Return:      Success:        0
+ *              Failure:        -1
  *
- *		Failure:	-1
- *
- * Programmer:	Robb Matzke
+ * Programmer:  Robb Matzke
  *              Thursday, July 29, 1999
- *
- * Modifications:
- *              Raymond Lu
- *              21 Dec. 2006
- *              Added the parameter TYPE.  It's only used for MULTI driver.
  *
  *-------------------------------------------------------------------------
  */
 static herr_t
 H5FD_sec2_set_eoa(H5FD_t *_file, H5FD_mem_t UNUSED type, haddr_t addr)
 {
-    H5FD_sec2_t	*file = (H5FD_sec2_t*)_file;
-    herr_t ret_value=SUCCEED;   /* Return value */
+    H5FD_sec2_t *file = (H5FD_sec2_t *)_file;
 
-    FUNC_ENTER_NOAPI(H5FD_sec2_set_eoa, FAIL)
+    FUNC_ENTER_NOAPI_NOINIT_NOFUNC(H5FD_sec2_set_eoa)
 
     file->eoa = addr;
 
-done:
-    FUNC_LEAVE_NOAPI(ret_value)
+    FUNC_LEAVE_NOAPI(SUCCEED)
 } /* end H5FD_sec2_set_eoa() */
 
 
 /*-------------------------------------------------------------------------
- * Function:	H5FD_sec2_get_eof
+ * Function:    H5FD_sec2_get_eof
  *
- * Purpose:	Returns the end-of-file marker, which is the greater of
- *		either the Unix end-of-file or the HDF5 end-of-address
- *		markers.
+ * Purpose:     Returns the end-of-file marker, which is the greater of
+ *              either the Unix end-of-file or the HDF5 end-of-address
+ *              markers.
  *
- * Return:	Success:	End of file address, the first address past
- *				the end of the "file", either the Unix file
- *				or the HDF5 file.
+ * Return:      Success:        End of file address, the first address past
+ *                              the end of the "file", either the Unix file
+ *                              or the HDF5 file.
+ *              Failure:        HADDR_UNDEF
  *
- *		Failure:	HADDR_UNDEF
- *
- * Programmer:	Robb Matzke
+ * Programmer:  Robb Matzke
  *              Thursday, July 29, 1999
- *
- * Modifications:
  *
  *-------------------------------------------------------------------------
  */
 static haddr_t
 H5FD_sec2_get_eof(const H5FD_t *_file)
 {
-    const H5FD_sec2_t	*file = (const H5FD_sec2_t*)_file;
-    haddr_t ret_value;  /* Return value */
+    const H5FD_sec2_t   *file = (const H5FD_sec2_t *)_file;
 
-    FUNC_ENTER_NOAPI(H5FD_sec2_get_eof, HADDR_UNDEF)
+    FUNC_ENTER_NOAPI_NOINIT_NOFUNC(H5FD_sec2_get_eof)
 
-    /* Set return value */
-    ret_value=MAX(file->eof, file->eoa);
-
-done:
-    FUNC_LEAVE_NOAPI(ret_value)
-}
+    FUNC_LEAVE_NOAPI(MAX(file->eof, file->eoa))
+} /* end H5FD_sec2_get_eof() */
 
 
 /*-------------------------------------------------------------------------
@@ -700,10 +647,11 @@ H5FD_sec2_get_handle(H5FD_t *_file, hid_t UNUSED fapl, void **file_handle)
     H5FD_sec2_t         *file = (H5FD_sec2_t *)_file;
     herr_t              ret_value = SUCCEED;
 
-    FUNC_ENTER_NOAPI(H5FD_sec2_get_handle, FAIL)
+    FUNC_ENTER_NOAPI_NOINIT(H5FD_sec2_get_handle)
 
     if(!file_handle)
         HGOTO_ERROR(H5E_ARGS, H5E_BADVALUE, FAIL, "file handle not valid")
+
     *file_handle = &(file->fd);
 
 done:
@@ -712,17 +660,17 @@ done:
 
 
 /*-------------------------------------------------------------------------
- * Function:	H5FD_sec2_read
+ * Function:    H5FD_sec2_read
  *
- * Purpose:	Reads SIZE bytes of data from FILE beginning at address ADDR
- *		into buffer BUF according to data transfer properties in
- *		DXPL_ID.
+ * Purpose:     Reads SIZE bytes of data from FILE beginning at address ADDR
+ *              into buffer BUF according to data transfer properties in
+ *              DXPL_ID.
  *
- * Return:	Success:	Zero. Result is stored in caller-supplied
- *				buffer BUF.
- *		Failure:	-1, Contents of buffer BUF are undefined.
+ * Return:      Success:        Zero. Result is stored in caller-supplied
+ *                              buffer BUF.
+ *              Failure:        -1, Contents of buffer BUF are undefined.
  *
- * Programmer:	Robb Matzke
+ * Programmer:  Robb Matzke
  *              Thursday, July 29, 1999
  *
  *-------------------------------------------------------------------------
@@ -732,11 +680,11 @@ static herr_t
 H5FD_sec2_read(H5FD_t *_file, H5FD_mem_t UNUSED type, hid_t UNUSED dxpl_id,
     haddr_t addr, size_t size, void *buf/*out*/)
 {
-    H5FD_sec2_t		*file = (H5FD_sec2_t*)_file;
-    ssize_t		nbytes;
-    herr_t      ret_value = SUCCEED;       /* Return value */
+    H5FD_sec2_t         *file = (H5FD_sec2_t *)_file;
+    ssize_t             nbytes;
+    herr_t              ret_value = SUCCEED;       /* Return value */
 
-    FUNC_ENTER_NOAPI(H5FD_sec2_read, FAIL)
+    FUNC_ENTER_NOAPI_NOINIT(H5FD_sec2_read)
 
     HDassert(file && file->pub.cls);
     HDassert(buf);
@@ -750,9 +698,10 @@ H5FD_sec2_read(H5FD_t *_file, H5FD_mem_t UNUSED type, hid_t UNUSED dxpl_id,
         HGOTO_ERROR(H5E_ARGS, H5E_OVERFLOW, FAIL, "addr overflow, addr = %llu", (unsigned long long)addr)
 
     /* Seek to the correct location */
-    if((addr != file->pos || OP_READ != file->op) &&
-            HDlseek(file->fd, (file_offset_t)addr, SEEK_SET) < 0)
-        HSYS_GOTO_ERROR(H5E_IO, H5E_SEEKERROR, FAIL, "unable to seek to proper position")
+    if(addr != file->pos || OP_READ != file->op) {
+        if(HDlseek(file->fd, (HDoff_t)addr, SEEK_SET) < 0)
+            HSYS_GOTO_ERROR(H5E_IO, H5E_SEEKERROR, FAIL, "unable to seek to proper position")
+    } /* end if */
 
     /*
      * Read data, being careful of interrupted system calls, partial results,
@@ -765,7 +714,7 @@ H5FD_sec2_read(H5FD_t *_file, H5FD_mem_t UNUSED type, hid_t UNUSED dxpl_id,
         if(-1 == nbytes) { /* error */
             int myerrno = errno;
             time_t mytime = HDtime(NULL);
-            file_offset_t myoffset = HDlseek(file->fd, (file_offset_t)0, SEEK_CUR);
+            HDoff_t myoffset = HDlseek(file->fd, (HDoff_t)0, SEEK_CUR);
 
             HGOTO_ERROR(H5E_IO, H5E_READERROR, FAIL, "file read failed: time = %s, filename = '%s', file descriptor = %d, errno = %d, error message = '%s', buf = %p, size = %lu, offset = %llu", HDctime(&mytime), file->filename, file->fd, myerrno, HDstrerror(myerrno), buf, (unsigned long)size, (unsigned long long)myoffset);
         } /* end if */
@@ -799,16 +748,16 @@ done:
 
 
 /*-------------------------------------------------------------------------
- * Function:	H5FD_sec2_write
+ * Function:    H5FD_sec2_write
  *
- * Purpose:	Writes SIZE bytes of data to FILE beginning at address ADDR
- *		from buffer BUF according to data transfer properties in
- *		DXPL_ID.
+ * Purpose:     Writes SIZE bytes of data to FILE beginning at address ADDR
+ *              from buffer BUF according to data transfer properties in
+ *              DXPL_ID.
  *
- * Return:	Success:	Zero
- *		Failure:	-1
+ * Return:      Success:        Zero
+ *              Failure:        -1
  *
- * Programmer:	Robb Matzke
+ * Programmer:  Robb Matzke
  *              Thursday, July 29, 1999
  *
  *-------------------------------------------------------------------------
@@ -816,13 +765,13 @@ done:
 /* ARGSUSED */
 static herr_t
 H5FD_sec2_write(H5FD_t *_file, H5FD_mem_t UNUSED type, hid_t UNUSED dxpl_id, haddr_t addr,
-		size_t size, const void *buf)
+                size_t size, const void *buf)
 {
-    H5FD_sec2_t		*file = (H5FD_sec2_t*)_file;
-    ssize_t		nbytes;
-    herr_t      ret_value = SUCCEED;       /* Return value */
+    H5FD_sec2_t         *file = (H5FD_sec2_t *)_file;
+    ssize_t             nbytes;
+    herr_t              ret_value = SUCCEED;       /* Return value */
 
-    FUNC_ENTER_NOAPI(H5FD_sec2_write, FAIL)
+    FUNC_ENTER_NOAPI_NOINIT(H5FD_sec2_write)
 
     HDassert(file && file->pub.cls);
     HDassert(buf);
@@ -836,9 +785,10 @@ H5FD_sec2_write(H5FD_t *_file, H5FD_mem_t UNUSED type, hid_t UNUSED dxpl_id, had
         HGOTO_ERROR(H5E_ARGS, H5E_OVERFLOW, FAIL, "addr overflow, addr = %llu, size = %llu, eoa = %llu", (unsigned long long)addr, (unsigned long long)size, (unsigned long long)file->eoa)
 
     /* Seek to the correct location */
-    if((addr != file->pos || OP_WRITE != file->op) &&
-            HDlseek(file->fd, (file_offset_t)addr, SEEK_SET) < 0)
-        HSYS_GOTO_ERROR(H5E_IO, H5E_SEEKERROR, FAIL, "unable to seek to proper position")
+    if(addr != file->pos || OP_WRITE != file->op) {
+        if(HDlseek(file->fd, (HDoff_t)addr, SEEK_SET) < 0)
+            HSYS_GOTO_ERROR(H5E_IO, H5E_SEEKERROR, FAIL, "unable to seek to proper position")
+    } /* end if */
 
     /*
      * Write the data, being careful of interrupted system calls and partial
@@ -851,7 +801,7 @@ H5FD_sec2_write(H5FD_t *_file, H5FD_mem_t UNUSED type, hid_t UNUSED dxpl_id, had
         if(-1 == nbytes) { /* error */
             int myerrno = errno;
             time_t mytime = HDtime(NULL);
-            file_offset_t myoffset = HDlseek(file->fd, (file_offset_t)0, SEEK_CUR);
+            HDoff_t myoffset = HDlseek(file->fd, (HDoff_t)0, SEEK_CUR);
 
             HGOTO_ERROR(H5E_IO, H5E_WRITEERROR, FAIL, "file write failed: time = %s, filename = '%s', file descriptor = %d, errno = %d, error message = '%s', buf = %p, size = %lu, offset = %llu", HDctime(&mytime), file->filename, file->fd, myerrno, HDstrerror(myerrno), buf, (unsigned long)size, (unsigned long long)myoffset);
         } /* end if */
@@ -882,16 +832,15 @@ done:
 
 
 /*-------------------------------------------------------------------------
- * Function:	H5FD_sec2_truncate
+ * Function:    H5FD_sec2_truncate
  *
- * Purpose:	Makes sure that the true file size is the same (or larger)
- *		than the end-of-address.
+ * Purpose:     Makes sure that the true file size is the same (or larger)
+ *              than the end-of-address.
  *
- * Return:	Success:	Non-negative
+ * Return:      Success:        Non-negative
+ *              Failure:        Negative
  *
- *		Failure:	Negative
- *
- * Programmer:	Robb Matzke
+ * Programmer:  Robb Matzke
  *              Wednesday, August  4, 1999
  *
  *-------------------------------------------------------------------------
@@ -900,10 +849,10 @@ done:
 static herr_t
 H5FD_sec2_truncate(H5FD_t *_file, hid_t UNUSED dxpl_id, hbool_t UNUSED closing)
 {
-    H5FD_sec2_t *file = (H5FD_sec2_t*)_file;
+    H5FD_sec2_t *file = (H5FD_sec2_t *)_file;
     herr_t ret_value = SUCCEED;                 /* Return value */
 
-    FUNC_ENTER_NOAPI(H5FD_sec2_truncate, FAIL)
+    FUNC_ENTER_NOAPI_NOINIT(H5FD_sec2_truncate)
 
     HDassert(file);
 
@@ -926,11 +875,11 @@ H5FD_sec2_truncate(H5FD_t *_file, hid_t UNUSED dxpl_id, hbool_t UNUSED closing)
 #ifdef H5_VMS
         /* Reset seek offset to the beginning of the file, so that the file isn't
          * re-extended later.  This may happen on Open VMS. */
-        if(-1 == HDlseek(file->fd, (file_offset_t)0, SEEK_SET))
+        if(-1 == HDlseek(file->fd, (HDoff_t)0, SEEK_SET))
             HSYS_GOTO_ERROR(H5E_IO, H5E_SEEKERROR, FAIL, "unable to seek to proper position")
 #endif
 
-        if(-1 == HDftruncate(file->fd, (file_offset_t)file->eoa))
+        if(-1 == HDftruncate(file->fd, (HDoff_t)file->eoa))
             HSYS_GOTO_ERROR(H5E_IO, H5E_SEEKERROR, FAIL, "unable to extend file properly")
 #endif /* _WIN32 */
 

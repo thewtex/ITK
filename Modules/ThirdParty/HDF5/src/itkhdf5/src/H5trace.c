@@ -574,7 +574,7 @@ H5_trace(const double *returning, const char *func, const char *type, ...)
 
                     if(status >= 0)
                         fprintf(out, "SUCCEED");
-                    else 
+                    else
                         fprintf(out, "FAIL");
                 } /* end else */
                 break;
@@ -1933,6 +1933,10 @@ H5_trace(const double *returning, const char *func, const char *type, ...)
 
                                 case H5T_ORDER_VAX:
                                     fprintf(out, "H5T_ORDER_VAX");
+                                    break;
+
+                                case H5T_ORDER_MIXED:
+                                    fprintf(out, "H5T_ORDER_MIXED");
                                     break;
 
                                 case H5T_ORDER_NONE:

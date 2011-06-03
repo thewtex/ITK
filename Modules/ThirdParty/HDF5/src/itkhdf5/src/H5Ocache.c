@@ -15,11 +15,11 @@
 
 /*-------------------------------------------------------------------------
  *
- * Created:		H5Ocache.c
- *			Sep 28 2005
- *			Quincey Koziol <koziol@ncsa.uiuc.edu>
+ * Created:             H5Ocache.c
+ *                      Sep 28 2005
+ *                      Quincey Koziol <koziol@ncsa.uiuc.edu>
  *
- * Purpose:		Object header metadata cache virtual functions.
+ * Purpose:             Object header metadata cache virtual functions.
  *
  *-------------------------------------------------------------------------
  */
@@ -28,17 +28,17 @@
 /* Module Setup */
 /****************/
 
-#define H5O_PACKAGE		/*suppress error about including H5Opkg	  */
+#define H5O_PACKAGE             /*suppress error about including H5Opkg   */
 
 
 /***********/
 /* Headers */
 /***********/
-#include "H5private.h"		/* Generic Functions			*/
-#include "H5Eprivate.h"		/* Error handling		  	*/
-#include "H5FLprivate.h"	/* Free lists                           */
-#include "H5MFprivate.h"	/* File memory management		*/
-#include "H5Opkg.h"             /* Object headers			*/
+#include "H5private.h"          /* Generic Functions                    */
+#include "H5Eprivate.h"         /* Error handling                       */
+#include "H5FLprivate.h"        /* Free lists                           */
+#include "H5MFprivate.h"        /* File memory management               */
+#include "H5Opkg.h"             /* Object headers                       */
 #include "H5WBprivate.h"        /* Wrapped Buffers                      */
 
 
@@ -139,34 +139,34 @@ H5FL_SEQ_DEFINE(H5O_cont_t);
 
 
 /*-------------------------------------------------------------------------
- * Function:	H5O_load
+ * Function:    H5O_load
  *
- * Purpose:	Loads an object header from disk.
+ * Purpose:     Loads an object header from disk.
  *
- * Return:	Success:	Pointer to the new object header.
+ * Return:      Success:        Pointer to the new object header.
  *
- *		Failure:	NULL
+ *              Failure:        NULL
  *
- * Programmer:	Robb Matzke
- *		matzke@llnl.gov
- *		Aug  5 1997
+ * Programmer:  Robb Matzke
+ *              matzke@llnl.gov
+ *              Aug  5 1997
  *
  *-------------------------------------------------------------------------
  */
 static H5O_t *
 H5O_load(H5F_t *f, hid_t dxpl_id, haddr_t addr, void *_udata)
 {
-    H5O_t	*oh = NULL;     /* Object header read in */
+    H5O_t       *oh = NULL;     /* Object header read in */
     H5O_cache_ud_t *udata = (H5O_cache_ud_t *)_udata;       /* User data for callback */
     H5WB_t      *wb = NULL;     /* Wrapped buffer for prefix data */
     uint8_t     read_buf[H5O_SPEC_READ_SIZE];       /* Buffer for speculative read */
     const uint8_t *p;           /* Pointer into buffer to decode */
     uint8_t     *buf;           /* Buffer to decode */
-    size_t	spec_read_size; /* Size of buffer to speculatively read in */
-    size_t	prefix_size;    /* Size of object header prefix */
-    size_t	buf_size;       /* Size of prefix+chunk #0 buffer */
-    haddr_t     eoa;		/* Relative end of file address	*/
-    H5O_t	*ret_value;     /* Return value */
+    size_t      spec_read_size; /* Size of buffer to speculatively read in */
+    size_t      prefix_size;    /* Size of object header prefix */
+    size_t      buf_size;       /* Size of prefix+chunk #0 buffer */
+    haddr_t     eoa;            /* Relative end of file address */
+    H5O_t       *ret_value;     /* Return value */
 
     FUNC_ENTER_NOAPI_NOINIT(H5O_load)
 
@@ -186,12 +186,12 @@ H5O_load(H5F_t *f, hid_t dxpl_id, haddr_t addr, void *_udata)
 
     /* Attempt to speculatively read both object header prefix and first chunk */
     if(H5F_block_read(f, H5FD_MEM_OHDR, addr, spec_read_size, dxpl_id, read_buf) < 0)
-	HGOTO_ERROR(H5E_OHDR, H5E_READERROR, NULL, "unable to read object header")
+        HGOTO_ERROR(H5E_OHDR, H5E_READERROR, NULL, "unable to read object header")
     p = read_buf;
 
     /* Allocate space for the object header data structure */
     if(NULL == (oh = H5FL_CALLOC(H5O_t)))
-	HGOTO_ERROR(H5E_RESOURCE, H5E_NOSPACE, NULL, "memory allocation failed")
+        HGOTO_ERROR(H5E_RESOURCE, H5E_NOSPACE, NULL, "memory allocation failed")
 
     /* File-specific, non-stored information */
     oh->sizeof_size = H5F_SIZEOF_SIZE(udata->common.f);
@@ -348,22 +348,22 @@ done:
     /* Release the [possibly partially initialized] object header on errors */
     if(!ret_value && oh)
         if(H5O_free(oh) < 0)
-	    HDONE_ERROR(H5E_OHDR, H5E_CANTRELEASE, NULL, "unable to destroy object header data")
+            HDONE_ERROR(H5E_OHDR, H5E_CANTRELEASE, NULL, "unable to destroy object header data")
 
     FUNC_LEAVE_NOAPI(ret_value)
 } /* end H5O_load() */
 
 
 /*-------------------------------------------------------------------------
- * Function:	H5O_flush
+ * Function:    H5O_flush
  *
- * Purpose:	Flushes (and destroys) an object header.
+ * Purpose:     Flushes (and destroys) an object header.
  *
- * Return:	Non-negative on success/Negative on failure
+ * Return:      Non-negative on success/Negative on failure
  *
- * Programmer:	Robb Matzke
- *		matzke@llnl.gov
- *		Aug  5 1997
+ * Programmer:  Robb Matzke
+ *              matzke@llnl.gov
+ *              Aug  5 1997
  *
  *-------------------------------------------------------------------------
  */
@@ -381,7 +381,7 @@ H5O_flush(H5F_t *f, hid_t dxpl_id, hbool_t destroy, haddr_t UNUSED addr, H5O_t *
 
     /* flush */
     if(oh->cache_info.is_dirty) {
-        uint8_t	*p;             /* Pointer to object header prefix buffer */
+        uint8_t *p;             /* Pointer to object header prefix buffer */
 
 #ifdef H5O_DEBUG
 H5O_assert(oh);
@@ -437,7 +437,7 @@ H5O_assert(oh);
                     break;
 
                 case 2:     /* 4 byte size */
-		    /* use <= 2**32 -1 to stay within 4 bytes integer range */
+                    /* use <= 2**32 -1 to stay within 4 bytes integer range */
                     HDassert(chunk0_size <= 4294967295UL);
                     UINT32ENCODE(p, chunk0_size);
                     break;
@@ -487,13 +487,13 @@ H5O_assert(oh);
             HGOTO_ERROR(H5E_OHDR, H5E_WRITEERROR, FAIL, "unable to write object header chunk to disk")
 
         /* Mark object header as clean now */
-	oh->cache_info.is_dirty = FALSE;
+        oh->cache_info.is_dirty = FALSE;
     } /* end if */
 
     /* Destroy the object header, if requested */
     if(destroy)
         if(H5O_dest(f, oh) < 0)
-	    HGOTO_ERROR(H5E_OHDR, H5E_CANTFREE, FAIL, "unable to destroy object header data")
+            HGOTO_ERROR(H5E_OHDR, H5E_CANTFREE, FAIL, "unable to destroy object header data")
 
 done:
     FUNC_LEAVE_NOAPI(ret_value)
@@ -501,15 +501,15 @@ done:
 
 
 /*-------------------------------------------------------------------------
- * Function:	H5O_dest
+ * Function:    H5O_dest
  *
- * Purpose:	Destroys an object header.
+ * Purpose:     Destroys an object header.
  *
- * Return:	Non-negative on success/Negative on failure
+ * Return:      Non-negative on success/Negative on failure
  *
- * Programmer:	Quincey Koziol
- *		koziol@ncsa.uiuc.edu
- *		Jan 15 2003
+ * Programmer:  Quincey Koziol
+ *              koziol@ncsa.uiuc.edu
+ *              Jan 15 2003
  *
  *-------------------------------------------------------------------------
  */
@@ -548,28 +548,67 @@ done:
 
 
 /*-------------------------------------------------------------------------
- * Function:	H5O_clear
+ * Function:    H5O_clear
  *
- * Purpose:	Mark a object header in memory as non-dirty.
+ * Purpose:     Mark a object header in memory as non-dirty.
  *
- * Return:	Non-negative on success/Negative on failure
+ * Return:      Non-negative on success/Negative on failure
  *
- * Programmer:	Quincey Koziol
- *		koziol@ncsa.uiuc.edu
- *		Mar 20 2003
+ * Programmer:  Quincey Koziol
+ *              koziol@ncsa.uiuc.edu
+ *              Mar 20 2003
+ *
+ * Changes:     In the parallel case, there is the possibility that the
+ *              the object header may be flushed by different processes
+ *              over the life of the computation.  Thus we must ensure
+ *              that the chunk images are up to date before we mark the
+ *              messages clean -- as otherwise we may overwrite valid
+ *              data with a blank section of a chunk image.
+ *
+ *              To deal with this, I have added code to call
+ *              H5O_chunk_serialize() for all chunks before we
+ *              mark all messages as clean if we are not destroying the
+ *              object.  Do this in the parallel case only, as the problem
+ *              can only occur in this context.
+ *
+ *                                              JRM -- 10/12/10
  *
  *-------------------------------------------------------------------------
  */
 static herr_t
 H5O_clear(H5F_t *f, H5O_t *oh, hbool_t destroy)
 {
-    unsigned	u;      /* Local index variable */
+    unsigned    u;      /* Local index variable */
     herr_t ret_value = SUCCEED;
 
     FUNC_ENTER_NOAPI_NOINIT(H5O_clear)
 
     /* check args */
     HDassert(oh);
+
+#ifdef H5_HAVE_PARALLEL
+    if ( ( oh->cache_info.is_dirty ) && ( ! destroy ) ) {
+
+        size_t i;
+
+        /* scan through all chunks associated with the object header,
+         * and cause them to update their images for all entries currently
+         * marked dirty.  Must do this in the parallel case, as it is possible
+         * that this processor may clear this object header several times
+         * before flushing it -- thus causing undefined sections of the image
+         * to be written to disk overwriting valid data.
+         */
+
+        for ( i = 0; i < oh->nchunks; i++ ) {
+
+            if ( H5O_chunk_serialize(f, oh, i) < 0 ) {
+
+                HGOTO_ERROR(H5E_OHDR, H5E_CANTSERIALIZE, FAIL,
+                            "unable to serialize object header chunk")
+            }
+        }
+    }
+#endif /* H5_HAVE_PARALLEL */
 
     /* Mark messages as clean */
     for(u = 0; u < oh->nmesgs; u++)
@@ -593,16 +632,16 @@ done:
 
 
 /*-------------------------------------------------------------------------
- * Function:	H5O_size
+ * Function:    H5O_size
  *
- * Purpose:	Compute the size in bytes of the specified instance of
+ * Purpose:     Compute the size in bytes of the specified instance of
  *              H5O_t on disk, and return it in *len_ptr.  On failure,
  *              the value of *len_ptr is undefined.
  *
- * Return:	Non-negative on success/Negative on failure
+ * Return:      Non-negative on success/Negative on failure
  *
- * Programmer:	John Mainzer
- *		5/13/04
+ * Programmer:  John Mainzer
+ *              5/13/04
  *
  *-------------------------------------------------------------------------
  */
@@ -616,35 +655,38 @@ H5O_size(const H5F_t UNUSED *f, const H5O_t *oh, size_t *size_ptr)
     HDassert(size_ptr);
 
     /* Report the object header's prefix+first chunk length */
-    *size_ptr = (size_t)H5O_SIZEOF_HDR(oh) + oh->chunk0_size;
+    if(oh->chunk0_size)
+       *size_ptr = H5O_SIZEOF_HDR(oh) + oh->chunk0_size;
+    else
+       *size_ptr = oh->chunk[0].size;
 
     FUNC_LEAVE_NOAPI(SUCCEED)
 } /* H5O_size() */
 
 
 /*-------------------------------------------------------------------------
- * Function:	H5O_cache_chk_load
+ * Function:    H5O_cache_chk_load
  *
- * Purpose:	Loads an object header continuation chunk from disk.
+ * Purpose:     Loads an object header continuation chunk from disk.
  *
- * Return:	Success:	Pointer to the new object header chunk proxy.
- *		Failure:	NULL
+ * Return:      Success:        Pointer to the new object header chunk proxy.
+ *              Failure:        NULL
  *
- * Programmer:	Quincey Koziol
- *		koziol@hdfgroup.org
- *		Jul 12 2008
+ * Programmer:  Quincey Koziol
+ *              koziol@hdfgroup.org
+ *              Jul 12 2008
  *
  *-------------------------------------------------------------------------
  */
 static H5O_chunk_proxy_t *
 H5O_cache_chk_load(H5F_t *f, hid_t dxpl_id, haddr_t addr, void *_udata)
 {
-    H5O_chunk_proxy_t	*chk_proxy = NULL;     /* Chunk proxy object */
+    H5O_chunk_proxy_t   *chk_proxy = NULL;     /* Chunk proxy object */
     H5O_chk_cache_ud_t *udata = (H5O_chk_cache_ud_t *)_udata;       /* User data for callback */
     H5WB_t      *wb = NULL;             /* Wrapped buffer for prefix data */
     uint8_t     chunk_buf[H5O_SPEC_READ_SIZE];       /* Buffer for speculative read */
     uint8_t     *buf;                   /* Buffer to decode */
-    H5O_chunk_proxy_t	*ret_value;     /* Return value */
+    H5O_chunk_proxy_t   *ret_value;     /* Return value */
 
     FUNC_ENTER_NOAPI_NOINIT(H5O_cache_chk_load)
 
@@ -656,18 +698,18 @@ H5O_cache_chk_load(H5F_t *f, hid_t dxpl_id, haddr_t addr, void *_udata)
 
     /* Allocate space for the object header data structure */
     if(NULL == (chk_proxy = H5FL_CALLOC(H5O_chunk_proxy_t)))
-	HGOTO_ERROR(H5E_OHDR, H5E_CANTALLOC, NULL, "memory allocation failed")
+        HGOTO_ERROR(H5E_OHDR, H5E_CANTALLOC, NULL, "memory allocation failed")
 
     /* Wrap the local buffer for serialized header info */
     if(NULL == (wb = H5WB_wrap(chunk_buf, sizeof(chunk_buf))))
         HGOTO_ERROR(H5E_OHDR, H5E_CANTINIT, NULL, "can't wrap buffer")
 
     /* Get a pointer to a buffer that's large enough for serialized header */
-    if(NULL == (buf = (uint8_t *)H5WB_actual(wb, udata->chunk_size)))
+    if(NULL == (buf = (uint8_t *)H5WB_actual(wb, udata->size)))
         HGOTO_ERROR(H5E_OHDR, H5E_NOSPACE, NULL, "can't get actual buffer")
 
     /* Read rest of the raw data */
-    if(H5F_block_read(f, H5FD_MEM_OHDR, addr, udata->chunk_size, dxpl_id, buf) < 0)
+    if(H5F_block_read(f, H5FD_MEM_OHDR, addr, udata->size, dxpl_id, buf) < 0)
         HGOTO_ERROR(H5E_OHDR, H5E_READERROR, NULL, "unable to read object header continuation chunk")
 
     /* Check if we are still decoding the object header */
@@ -678,7 +720,7 @@ H5O_cache_chk_load(H5F_t *f, hid_t dxpl_id, haddr_t addr, void *_udata)
         HDassert(udata->common.cont_msg_info);
 
         /* Parse the chunk */
-        if(H5O_chunk_deserialize(udata->oh, udata->common.addr, udata->chunk_size, buf, &(udata->common), &chk_proxy->cache_info.is_dirty) < 0)
+        if(H5O_chunk_deserialize(udata->oh, udata->common.addr, udata->size, buf, &(udata->common), &chk_proxy->cache_info.is_dirty) < 0)
             HGOTO_ERROR(H5E_OHDR, H5E_CANTINIT, NULL, "can't deserialize object header chunk")
 
         /* Set the fields for the chunk proxy */
@@ -714,22 +756,22 @@ done:
     /* Release the [possibly partially initialized] object header on errors */
     if(!ret_value && chk_proxy)
         if(H5O_chunk_proxy_dest(chk_proxy) < 0)
-	    HDONE_ERROR(H5E_OHDR, H5E_CANTRELEASE, NULL, "unable to destroy object header chunk proxy")
+            HDONE_ERROR(H5E_OHDR, H5E_CANTRELEASE, NULL, "unable to destroy object header chunk proxy")
 
     FUNC_LEAVE_NOAPI(ret_value)
 } /* end H5O_cache_chk_load() */
 
 
 /*-------------------------------------------------------------------------
- * Function:	H5O_cache_chk_flush
+ * Function:    H5O_cache_chk_flush
  *
- * Purpose:	Flushes (and destroys) an object header continuation chunk.
+ * Purpose:     Flushes (and destroys) an object header continuation chunk.
  *
- * Return:	Non-negative on success/Negative on failure
+ * Return:      Non-negative on success/Negative on failure
  *
- * Programmer:	Quincey Koziol
- *		koziol@hdfgroup.org
- *		Jul 12 2008
+ * Programmer:  Quincey Koziol
+ *              koziol@hdfgroup.org
+ *              Jul 12 2008
  *
  *-------------------------------------------------------------------------
  */
@@ -754,13 +796,13 @@ H5O_cache_chk_flush(H5F_t *f, hid_t dxpl_id, hbool_t destroy, haddr_t addr,
             HGOTO_ERROR(H5E_OHDR, H5E_WRITEERROR, FAIL, "unable to write object header continuation chunk to disk")
 
         /* Mark object header as clean now */
-	chk_proxy->cache_info.is_dirty = FALSE;
+        chk_proxy->cache_info.is_dirty = FALSE;
     } /* end if */
 
     /* Destroy the object header, if requested */
     if(destroy)
         if(H5O_cache_chk_dest(f, chk_proxy) < 0)
-	    HGOTO_ERROR(H5E_OHDR, H5E_CANTFREE, FAIL, "unable to destroy object header continuation chunk data")
+            HGOTO_ERROR(H5E_OHDR, H5E_CANTFREE, FAIL, "unable to destroy object header continuation chunk data")
 
 done:
     FUNC_LEAVE_NOAPI(ret_value)
@@ -768,13 +810,13 @@ done:
 
 
 /*-------------------------------------------------------------------------
- * Function:	H5O_cache_chk_dest
+ * Function:    H5O_cache_chk_dest
  *
- * Purpose:	Destroys an object header continuation chunk.
+ * Purpose:     Destroys an object header continuation chunk.
  *
- * Return:	Non-negative on success/Negative on failure
+ * Return:      Non-negative on success/Negative on failure
  *
- * Programmer:	Quincey Koziol
+ * Programmer:  Quincey Koziol
  *              koziol@hdfgroup.org
  *              July 12, 2008
  *
@@ -815,28 +857,63 @@ done:
 
 
 /*-------------------------------------------------------------------------
- * Function:	H5O_cache_chk_clear
+ * Function:    H5O_cache_chk_clear
  *
- * Purpose:	Mark a object header continuation chunk in memory as non-dirty.
+ * Purpose:     Mark a object header continuation chunk in memory as non-dirty.
  *
- * Return:	Non-negative on success/Negative on failure
+ * Return:      Non-negative on success/Negative on failure
  *
- * Programmer:	Quincey Koziol
+ * Programmer:  Quincey Koziol
  *              koziol@hdfgroup.org
  *              July 12, 2008
+ *
+ * Changes:     In the parallel case, there is the possibility that the
+ *              the object header chunk may be flushed by different
+ *              processes over the life of the computation.  Thus we must
+ *              ensure that the chunk image is up to date before we mark its
+ *              messages clean -- as otherwise we may overwrite valid
+ *              data with a blank section of a chunk image.
+ *
+ *              To deal with this, I have added code to call
+ *              H5O_chunk_serialize() for this chunk before we
+ *              mark all messages as clean if we are not destroying the
+ *              chunk.
+ *
+ *              Do this in the parallel case only, as the problem
+ *              can only occur in this context.
+ *
+ *              Note that at present at least, it seems that this fix
+ *              is not necessary, as we don't seem to be able to
+ *              generate a dirty chunk without creating a dirty object
+ *              header.  However, the object header code will be changing
+ *              a lot in the near future, so I'll leave this fix in
+ *              for now, unless Quincey requests otherwise.
+ *
+ *                                              JRM -- 10/12/10
  *
  *-------------------------------------------------------------------------
  */
 static herr_t
 H5O_cache_chk_clear(H5F_t *f, H5O_chunk_proxy_t *chk_proxy, hbool_t destroy)
 {
-    unsigned	u;      /* Local index variable */
+    unsigned    u;      /* Local index variable */
     herr_t ret_value = SUCCEED;
 
     FUNC_ENTER_NOAPI_NOINIT(H5O_cache_chk_clear)
 
     /* check args */
     HDassert(chk_proxy);
+
+#ifdef H5_HAVE_PARALLEL
+    if ( ( chk_proxy->oh->cache_info.is_dirty ) && ( ! destroy ) ) {
+
+        if ( H5O_chunk_serialize(f, chk_proxy->oh, chk_proxy->chunkno) < 0 ) {
+
+            HGOTO_ERROR(H5E_OHDR, H5E_CANTSERIALIZE, FAIL,
+                       "unable to serialize object header chunk")
+        }
+    }
+#endif /* H5_HAVE_PARALLEL */
 
     /* Mark messages in chunk as clean */
     for(u = 0; u < chk_proxy->oh->nmesgs; u++)
@@ -856,15 +933,15 @@ done:
 
 
 /*-------------------------------------------------------------------------
- * Function:	H5O_cache_chk_size
+ * Function:    H5O_cache_chk_size
  *
- * Purpose:	Compute the size in bytes of the specified instance of
+ * Purpose:     Compute the size in bytes of the specified instance of
  *              an object header continuation chunk on disk, and return it in
  *              *len_ptr.  On failure, the value of *len_ptr is undefined.
  *
- * Return:	Non-negative on success/Negative on failure
+ * Return:      Non-negative on success/Negative on failure
  *
- * Programmer:	Quincey Koziol
+ * Programmer:  Quincey Koziol
  *              koziol@hdfgroup.org
  *              July 12, 2008
  *
@@ -887,15 +964,15 @@ H5O_cache_chk_size(const H5F_t UNUSED *f, const H5O_chunk_proxy_t *chk_proxy, si
 
 
 /*-------------------------------------------------------------------------
- * Function:	H5O_add_cont_msg
+ * Function:    H5O_add_cont_msg
  *
- * Purpose:	Add information from a continuation message to the list of
+ * Purpose:     Add information from a continuation message to the list of
  *              continuation messages in the object header
  *
- * Return:	Success: SUCCEED
+ * Return:      Success: SUCCEED
  *              Failure: FAIL
  *
- * Programmer:	Quincey Koziol
+ * Programmer:  Quincey Koziol
  *              koziol@hdfgroup.org
  *              July 12, 2008
  *
@@ -936,14 +1013,14 @@ done:
 
 
 /*-------------------------------------------------------------------------
- * Function:	H5O_chunk_deserialize
+ * Function:    H5O_chunk_deserialize
  *
- * Purpose:	Deserialize a chunk for an object header
+ * Purpose:     Deserialize a chunk for an object header
  *
- * Return:	Success: SUCCEED
+ * Return:      Success: SUCCEED
  *              Failure: FAIL
  *
- * Programmer:	Quincey Koziol
+ * Programmer:  Quincey Koziol
  *              koziol@hdfgroup.org
  *              July 12, 2008
  *
@@ -1028,7 +1105,7 @@ H5O_chunk_deserialize(H5O_t *oh, haddr_t addr, size_t len, const uint8_t *image,
         unsigned mesgno;        /* Current message to operate on */
         size_t mesg_size;       /* Size of message read in */
         unsigned id;            /* ID (type) of current message */
-        uint8_t	flags;          /* Flags for current message */
+        uint8_t flags;          /* Flags for current message */
         H5O_msg_crt_idx_t crt_idx = 0;  /* Creation index for current message */
 
         /* Decode message prefix info */
@@ -1208,7 +1285,7 @@ H5O_chunk_deserialize(H5O_t *oh, haddr_t addr, size_t len, const uint8_t *image,
 
             /* Decode continuation message */
             cont = (H5O_cont_t *)(H5O_MSG_CONT->decode)(udata->f, udata->dxpl_id, NULL, 0, &ioflags, oh->mesg[curmesg].raw);
-            cont->chunkno = udata->cont_msg_info->nmsgs + 1;	/*the next continuation message/chunk */
+            cont->chunkno = udata->cont_msg_info->nmsgs + 1;    /*the next continuation message/chunk */
 
             /* Save 'native' form of continuation message */
             oh->mesg[curmesg].native = cont;
@@ -1265,7 +1342,7 @@ H5O_chunk_deserialize(H5O_t *oh, haddr_t addr, size_t len, const uint8_t *image,
     /* Mark the chunk dirty if we've merged null messages */
     if(merged_null_msgs) {
         udata->mesgs_modified = TRUE;
-	*dirty = TRUE;
+        *dirty = TRUE;
     } /* end if */
 
 done:
@@ -1274,14 +1351,14 @@ done:
 
 
 /*-------------------------------------------------------------------------
- * Function:	H5O_chunk_serialize
+ * Function:    H5O_chunk_serialize
  *
- * Purpose:	Serialize a chunk for an object header
+ * Purpose:     Serialize a chunk for an object header
  *
- * Return:	Success: SUCCEED
+ * Return:      Success: SUCCEED
  *              Failure: FAIL
  *
- * Programmer:	Quincey Koziol
+ * Programmer:  Quincey Koziol
  *              koziol@hdfgroup.org
  *              July 12, 2008
  *
@@ -1291,7 +1368,7 @@ static herr_t
 H5O_chunk_serialize(const H5F_t *f, H5O_t *oh, unsigned chunkno)
 {
     H5O_mesg_t *curr_msg;       /* Pointer to current message being operated on */
-    unsigned	u;              /* Local index variable */
+    unsigned    u;              /* Local index variable */
     herr_t ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI_NOINIT(H5O_chunk_serialize)
@@ -1318,7 +1395,7 @@ H5O_chunk_serialize(const H5F_t *f, H5O_t *oh, unsigned chunkno)
     /* Extra work, for later versions of the format */
     if(oh->version > H5O_VERSION_1) {
         uint32_t metadata_chksum;   /* Computed metadata checksum value */
-        uint8_t	*p;                 /* Pointer into object header chunk */
+        uint8_t *p;                 /* Pointer into object header chunk */
 
         /* Check for gap in chunk & zero it out */
         if(oh->chunk[chunkno].gap)
@@ -1339,14 +1416,14 @@ done:
 
 
 /*-------------------------------------------------------------------------
- * Function:	H5O_chunk_proxy_dest
+ * Function:    H5O_chunk_proxy_dest
  *
- * Purpose:	Destroy a chunk proxy object
+ * Purpose:     Destroy a chunk proxy object
  *
- * Return:	Success: SUCCEED
+ * Return:      Success: SUCCEED
  *              Failure: FAIL
  *
- * Programmer:	Quincey Koziol
+ * Programmer:  Quincey Koziol
  *              koziol@hdfgroup.org
  *              July 13, 2008
  *

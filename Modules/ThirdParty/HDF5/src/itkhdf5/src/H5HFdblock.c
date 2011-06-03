@@ -15,11 +15,11 @@
 
 /*-------------------------------------------------------------------------
  *
- * Created:		H5HFdblock.c
- *			Apr 10 2006
- *			Quincey Koziol <koziol@ncsa.uiuc.edu>
+ * Created:             H5HFdblock.c
+ *                      Apr 10 2006
+ *                      Quincey Koziol <koziol@ncsa.uiuc.edu>
  *
- * Purpose:		Direct block routines for fractal heaps.
+ * Purpose:             Direct block routines for fractal heaps.
  *
  *-------------------------------------------------------------------------
  */
@@ -28,17 +28,17 @@
 /* Module Setup */
 /****************/
 
-#define H5HF_PACKAGE		/*suppress error about including H5HFpkg  */
+#define H5HF_PACKAGE            /*suppress error about including H5HFpkg  */
 
 /***********/
 /* Headers */
 /***********/
-#include "H5private.h"		/* Generic Functions			*/
-#include "H5Eprivate.h"		/* Error handling		  	*/
-#include "H5Fprivate.h"		/* File access				*/
-#include "H5HFpkg.h"		/* Fractal heaps			*/
-#include "H5MFprivate.h"	/* File memory management		*/
-#include "H5Vprivate.h"		/* Vectors and arrays 			*/
+#include "H5private.h"          /* Generic Functions                    */
+#include "H5Eprivate.h"         /* Error handling                       */
+#include "H5Fprivate.h"         /* File access                          */
+#include "H5HFpkg.h"            /* Fractal heaps                        */
+#include "H5MFprivate.h"        /* File memory management               */
+#include "H5Vprivate.h"         /* Vectors and arrays                   */
 
 /****************/
 /* Local Macros */
@@ -80,15 +80,15 @@ H5FL_DEFINE(H5HF_direct_t);
 
 
 /*-------------------------------------------------------------------------
- * Function:	H5HF_man_dblock_create
+ * Function:    H5HF_man_dblock_create
  *
- * Purpose:	Allocate & initialize a managed direct block
+ * Purpose:     Allocate & initialize a managed direct block
  *
- * Return:	Pointer to new direct block on success, NULL on failure
+ * Return:      Pointer to new direct block on success, NULL on failure
  *
- * Programmer:	Quincey Koziol
- *		koziol@ncsa.uiuc.edu
- *		Feb 27 2006
+ * Programmer:  Quincey Koziol
+ *              koziol@ncsa.uiuc.edu
+ *              Feb 27 2006
  *
  *-------------------------------------------------------------------------
  */
@@ -113,7 +113,7 @@ H5HF_man_dblock_create(hid_t dxpl_id, H5HF_hdr_t *hdr, H5HF_indirect_t *par_iblo
      * Allocate file and memory data structures.
      */
     if(NULL == (dblock = H5FL_MALLOC(H5HF_direct_t)))
-	HGOTO_ERROR(H5E_RESOURCE, H5E_NOSPACE, FAIL, "memory allocation failed for fractal heap direct block")
+        HGOTO_ERROR(H5E_RESOURCE, H5E_NOSPACE, FAIL, "memory allocation failed for fractal heap direct block")
 
     /* Reset the metadata cache info for the heap header */
     HDmemset(&dblock->cache_info, 0, sizeof(H5AC_info_t));
@@ -121,7 +121,7 @@ H5HF_man_dblock_create(hid_t dxpl_id, H5HF_hdr_t *hdr, H5HF_indirect_t *par_iblo
     /* Share common heap information */
     dblock->hdr = hdr;
     if(H5HF_hdr_incr(hdr) < 0)
-	HGOTO_ERROR(H5E_HEAP, H5E_CANTINC, FAIL, "can't increment reference count on shared heap header")
+        HGOTO_ERROR(H5E_HEAP, H5E_CANTINC, FAIL, "can't increment reference count on shared heap header")
 
     /* Set info for direct block */
     if(par_iblock) {
@@ -183,8 +183,8 @@ HDmemset(dblock->blk, 0, dblock->size);
     } /* end else */
 
     /* Cache the new fractal heap direct block */
-    if(H5AC_set(hdr->f, dxpl_id, H5AC_FHEAP_DBLOCK, dblock_addr, dblock, H5AC__NO_FLAGS_SET) < 0)
-	HGOTO_ERROR(H5E_HEAP, H5E_CANTINIT, FAIL, "can't add fractal heap direct block to cache")
+    if(H5AC_insert_entry(hdr->f, dxpl_id, H5AC_FHEAP_DBLOCK, dblock_addr, dblock, H5AC__NO_FLAGS_SET) < 0)
+        HGOTO_ERROR(H5E_HEAP, H5E_CANTINIT, FAIL, "can't add fractal heap direct block to cache")
 
     /* Increase the allocated heap size */
     if(H5HF_hdr_inc_alloc(hdr, dblock->size) < 0)
@@ -205,19 +205,19 @@ done:
 
 
 /*-------------------------------------------------------------------------
- * Function:	H5HF_man_dblock_destroy
+ * Function:    H5HF_man_dblock_destroy
  *
- * Purpose:	Destroy a managed direct block
+ * Purpose:     Destroy a managed direct block
  *
- * Note:	This routine does _not_ insert a range section for the
+ * Note:        This routine does _not_ insert a range section for the
  *              destroyed direct block, that must be handled by the
  *              caller.
  *
- * Return:	SUCCEED/FAIL
+ * Return:      SUCCEED/FAIL
  *
- * Programmer:	Quincey Koziol
- *		koziol@ncsa.uiuc.edu
- *		May 17 2006
+ * Programmer:  Quincey Koziol
+ *              koziol@ncsa.uiuc.edu
+ *              May 17 2006
  *
  *-------------------------------------------------------------------------
  */
@@ -322,16 +322,16 @@ done:
 
 
 /*-------------------------------------------------------------------------
- * Function:	H5HF_man_dblock_new
+ * Function:    H5HF_man_dblock_new
  *
- * Purpose:	Create a direct block large enough to hold an object of
+ * Purpose:     Create a direct block large enough to hold an object of
  *              the requested size
  *
- * Return:	SUCCEED/FAIL
+ * Return:      SUCCEED/FAIL
  *
- * Programmer:	Quincey Koziol
- *		koziol@ncsa.uiuc.edu
- *		Mar 13 2006
+ * Programmer:  Quincey Koziol
+ *              koziol@ncsa.uiuc.edu
+ *              Mar 13 2006
  *
  *-------------------------------------------------------------------------
  */
@@ -420,16 +420,16 @@ done:
 
 
 /*-------------------------------------------------------------------------
- * Function:	H5HF_man_dblock_protect
+ * Function:    H5HF_man_dblock_protect
  *
- * Purpose:	Convenience wrapper around H5AC_protect on a direct block
+ * Purpose:     Convenience wrapper around H5AC_protect on a direct block
  *              (Use H5AC_unprotect to unprotect it for now)
  *
- * Return:	Pointer to direct block on success, NULL on failure
+ * Return:      Pointer to direct block on success, NULL on failure
  *
- * Programmer:	Quincey Koziol
- *		koziol@ncsa.uiuc.edu
- *		Apr 17 2006
+ * Programmer:  Quincey Koziol
+ *              koziol@ncsa.uiuc.edu
+ *              Apr 17 2006
  *
  *-------------------------------------------------------------------------
  */
@@ -439,7 +439,7 @@ H5HF_man_dblock_protect(H5HF_hdr_t *hdr, hid_t dxpl_id, haddr_t dblock_addr,
     H5AC_protect_t rw)
 {
     H5HF_direct_t *dblock;      /* Direct block from cache */
-    H5HF_dblock_cache_ud_t udata;	/* parent and other infor for deserializing direct block */
+    H5HF_dblock_cache_ud_t udata;       /* parent and other infor for deserializing direct block */
     H5HF_direct_t *ret_value;   /* Return value */
 
     FUNC_ENTER_NOAPI_NOINIT(H5HF_man_dblock_protect)
@@ -467,18 +467,22 @@ H5HF_man_dblock_protect(H5HF_hdr_t *hdr, hid_t dxpl_id, haddr_t dblock_addr,
      */
     if(hdr->filter_len > 0) {
         if(par_iblock == NULL) {
-	    udata.filter_mask = hdr->pline_root_direct_filter_mask;
-	} /* end if */
+            udata.odi_size = hdr->pline_root_direct_size;
+            udata.filter_mask = hdr->pline_root_direct_filter_mask;
+        } /* end if */
         else {
-	    /* Sanity check */
-	    HDassert(H5F_addr_eq(par_iblock->ents[par_entry].addr, dblock_addr));
+            /* Sanity check */
+            HDassert(H5F_addr_eq(par_iblock->ents[par_entry].addr, dblock_addr));
 
-	    /* Set up parameters to read filtered direct block */
+            /* Set up parameters to read filtered direct block */
+            udata.odi_size = par_iblock->filt_ents[par_entry].size;
             udata.filter_mask = par_iblock->filt_ents[par_entry].filter_mask;
-	} /* end else */
+        } /* end else */
     } /* end if */
-    else
+    else {
+        udata.odi_size = dblock_size;
         udata.filter_mask = 0;
+    } /* end else */
 
     /* Protect the direct block */
     if(NULL == (dblock = (H5HF_direct_t *)H5AC_protect(hdr->f, dxpl_id, H5AC_FHEAP_DBLOCK, dblock_addr, &udata, rw)))
@@ -493,15 +497,15 @@ done:
 
 
 /*-------------------------------------------------------------------------
- * Function:	H5HF_man_dblock_locate
+ * Function:    H5HF_man_dblock_locate
  *
- * Purpose:	Locate a direct block in a managed heap
+ * Purpose:     Locate a direct block in a managed heap
  *
- * Return:	SUCCEED/FAIL
+ * Return:      SUCCEED/FAIL
  *
- * Programmer:	Quincey Koziol
- *		koziol@ncsa.uiuc.edu
- *		May  8 2006
+ * Programmer:  Quincey Koziol
+ *              koziol@ncsa.uiuc.edu
+ *              May  8 2006
  *
  *-------------------------------------------------------------------------
  */
@@ -594,20 +598,20 @@ done:
 
 
 /*-------------------------------------------------------------------------
- * Function:	H5HF_man_dblock_delete
+ * Function:    H5HF_man_dblock_delete
  *
- * Purpose:	Delete a managed direct block
+ * Purpose:     Delete a managed direct block
  *
- * Note:	This routine does _not_ modify any indirect block that points
+ * Note:        This routine does _not_ modify any indirect block that points
  *              to this direct block, it is assumed that the whole heap is
  *              being deleted.  (H5HF_man_dblock_destroy modifies the indirect
  *              block)
  *
- * Return:	SUCCEED/FAIL
+ * Return:      SUCCEED/FAIL
  *
- * Programmer:	Quincey Koziol
- *		koziol@hdfgroup.org
- *		Aug  7 2006
+ * Programmer:  Quincey Koziol
+ *              koziol@hdfgroup.org
+ *              Aug  7 2006
  *
  *-------------------------------------------------------------------------
  */
@@ -668,15 +672,15 @@ done:
 
 
 /*-------------------------------------------------------------------------
- * Function:	H5HF_man_dblock_dest
+ * Function:    H5HF_man_dblock_dest
  *
- * Purpose:	Destroys a fractal heap direct block in memory.
+ * Purpose:     Destroys a fractal heap direct block in memory.
  *
- * Return:	Non-negative on success/Negative on failure
+ * Return:      Non-negative on success/Negative on failure
  *
- * Programmer:	Quincey Koziol
- *		koziol@ncsa.uiuc.edu
- *		Feb 27 2006
+ * Programmer:  Quincey Koziol
+ *              koziol@ncsa.uiuc.edu
+ *              Feb 27 2006
  *
  *-------------------------------------------------------------------------
  */

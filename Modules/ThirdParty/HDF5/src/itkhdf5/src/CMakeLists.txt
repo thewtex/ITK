@@ -114,6 +114,7 @@ SET (H5F_SRCS
     ${HDF5_SRC_DIR}/H5F.c
     ${HDF5_SRC_DIR}/H5Faccum.c
     ${HDF5_SRC_DIR}/H5Fdbg.c
+    ${HDF5_SRC_DIR}/H5Fefc.c
     ${HDF5_SRC_DIR}/H5Ffake.c
     ${HDF5_SRC_DIR}/H5Fio.c
     ${HDF5_SRC_DIR}/H5Fmount.c
@@ -452,6 +453,7 @@ SET (common_SRCS
     ${HDF5_SRC_DIR}/H5FO.c
     ${HDF5_SRC_DIR}/H5HP.c
     ${HDF5_SRC_DIR}/H5I.c
+    ${HDF5_SRC_DIR}/H5Itest.c
     ${HDF5_SRC_DIR}/H5L.c
     ${HDF5_SRC_DIR}/H5Lexternal.c
     ${HDF5_SRC_DIR}/H5MM.c

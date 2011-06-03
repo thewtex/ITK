@@ -198,7 +198,7 @@ void Attribute::read(const DataType& mem_type, H5std_string& strg) const
 //--------------------------------------------------------------------------
 size_t Attribute::getInMemDataSize() const
 {
-    const char *func = "Attribute::getInMemDataSize";
+    char *func = "Attribute::getInMemDataSize";
 
     // Get the data type of this attribute
     hid_t mem_type_id = H5Aget_type(id);
@@ -318,7 +318,6 @@ H5std_string Attribute::getName( size_t buf_size ) const
 {
    H5std_string attr_name;
    ssize_t name_size = getName( buf_size, attr_name );
-   static_cast<void>(name_size);
    return( attr_name );
    // let caller catch exception if any
 }
@@ -509,10 +508,8 @@ void Attribute::close()
 	{
 	    throw AttributeIException("Attribute::close", "H5Aclose failed");
 	}
-	// reset the id when the attribute that it represents is no longer
-	// referenced
-	if (getCounter() == 0)
-	    id = 0;
+	// reset the id
+	id = 0;
     }
 }
 

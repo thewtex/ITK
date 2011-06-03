@@ -52,7 +52,7 @@ namespace H5 {
 ///\brief	Default constructor: creates a stub DataSet.
 // Programmer	Binh-Minh Ribler - 2000
 //--------------------------------------------------------------------------
-DataSet::DataSet() : H5Object(), AbstractDs(), id(0) {}
+DataSet::DataSet() : AbstractDs(), H5Object(), id(0) {}
 
 //--------------------------------------------------------------------------
 // Function:	DataSet overloaded constructor
@@ -60,7 +60,7 @@ DataSet::DataSet() : H5Object(), AbstractDs(), id(0) {}
 ///\param	existing_id - IN: Id of an existing dataset
 // Programmer	Binh-Minh Ribler - 2000
 //--------------------------------------------------------------------------
-DataSet::DataSet(const hid_t existing_id) : H5Object(), AbstractDs()
+DataSet::DataSet(const hid_t existing_id) : AbstractDs(), H5Object()
 {
     id = existing_id;
 }
@@ -71,7 +71,7 @@ DataSet::DataSet(const hid_t existing_id) : H5Object(), AbstractDs()
 ///\param	original - IN: DataSet instance to copy
 // Programmer	Binh-Minh Ribler - 2000
 //--------------------------------------------------------------------------
-DataSet::DataSet(const DataSet& original) : H5Object(original), AbstractDs(original)
+DataSet::DataSet(const DataSet& original) : AbstractDs(original), H5Object(original)
 {
     id = original.getId();
     incRefCount(); // increment number of references to this id
@@ -94,7 +94,7 @@ DataSet::DataSet(const DataSet& original) : H5Object(original), AbstractDs(origi
 //	Jul, 2008
 //		Added for application convenience.
 //--------------------------------------------------------------------------
-DataSet::DataSet(H5Object& obj, const void* ref, H5R_type_t ref_type) : H5Object(), AbstractDs()
+DataSet::DataSet(H5Object& obj, const void* ref, H5R_type_t ref_type) : AbstractDs(), H5Object()
 {
     try {
 	id = p_dereference(obj.getId(), ref, ref_type);
@@ -117,7 +117,7 @@ DataSet::DataSet(H5Object& obj, const void* ref, H5R_type_t ref_type) : H5Object
 //	Jul, 2008
 //		Added for application convenience.
 //--------------------------------------------------------------------------
-DataSet::DataSet(H5File& h5file, const void* ref, H5R_type_t ref_type) : H5Object(), AbstractDs()
+DataSet::DataSet(H5File& h5file, const void* ref, H5R_type_t ref_type) : AbstractDs(), H5Object()
 {
     try {
 	id = p_dereference(h5file.getId(), ref, ref_type);
@@ -140,7 +140,7 @@ DataSet::DataSet(H5File& h5file, const void* ref, H5R_type_t ref_type) : H5Objec
 //	Jul, 2008
 //		Added for application convenience.
 //--------------------------------------------------------------------------
-DataSet::DataSet(Attribute& attr, const void* ref, H5R_type_t ref_type) : H5Object(), AbstractDs()
+DataSet::DataSet(Attribute& attr, const void* ref, H5R_type_t ref_type) : AbstractDs(), H5Object()
 {
     try {
 	id = p_dereference(attr.getId(), ref, ref_type);
@@ -229,7 +229,7 @@ hsize_t DataSet::getStorageSize() const
 //--------------------------------------------------------------------------
 size_t DataSet::getInMemDataSize() const
 {
-    const char *func = "DataSet::getInMemDataSize";
+    char *func = "DataSet::getInMemDataSize";
 
     // Get the data type of this dataset
     hid_t mem_type_id = H5Dget_type(id);
@@ -800,10 +800,8 @@ void DataSet::close()
 	{
 	    throw DataSetIException("DataSet::close", "H5Dclose failed");
 	}
-	// reset the id when the dataset that it represents is no longer
-	// referenced
-	if (getCounter() == 0)
-	    id = 0;
+	// reset the id
+	id = 0;
     }
 }
 

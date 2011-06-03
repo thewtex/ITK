@@ -154,7 +154,7 @@ typedef struct H5F_blk_aggr_t H5F_blk_aggr_t;
 /* Decode a variable-sized buffer into a 32-bit unsigned integer */
 /* (Assumes that the high bits of the integer will be zero) */
 /* (Note: this is exactly the same code as the 64-bit variable-length decoder
- *      and bugs/improvements should be made in both places - QAK)
+ *      and bugs/improvements should be make in both places - QAK)
  */
 #  define UINT32DECODE_VAR(p, n, l) {					      \
    size_t _i;								      \
@@ -191,7 +191,7 @@ typedef struct H5F_blk_aggr_t H5F_blk_aggr_t;
 /* Decode a variable-sized buffer into a 64-bit unsigned integer */
 /* (Assumes that the high bits of the integer will be zero) */
 /* (Note: this is exactly the same code as the 32-bit variable-length decoder
- *      and bugs/improvements should be made in both places - QAK)
+ *      and bugs/improvements should be make in both places - QAK)
  */
 #  define UINT64DECODE_VAR(p, n, l) {					      \
    size_t _i;								      \
@@ -379,6 +379,7 @@ typedef struct H5F_blk_aggr_t H5F_blk_aggr_t;
 #define H5F_ACS_MULTI_TYPE_NAME                 "multi_type"    /* Data type in multi file driver */
 #define H5F_ACS_LATEST_FORMAT_NAME              "latest_format" /* 'Use latest format version' flag */
 #define H5F_ACS_WANT_POSIX_FD_NAME              "want_posix_fd" /* Internal: query the file descriptor from the core VFD, instead of the memory address */
+#define H5F_ACS_EFC_SIZE_NAME                   "efc_size"      /* Size of external file cache */
 
 /* ======================== File Mount properties ====================*/
 #define H5F_MNT_SYM_LOCAL_NAME 		"local"                 /* Whether absolute symlinks local to file. */
@@ -537,6 +538,11 @@ H5_DLL int H5F_mpi_get_rank(const H5F_t *f);
 H5_DLL MPI_Comm H5F_mpi_get_comm(const H5F_t *f);
 H5_DLL int H5F_mpi_get_size(const H5F_t *f);
 #endif /* H5_HAVE_PARALLEL */
+
+/* External file cache routines */
+H5_DLL H5F_t *H5F_efc_open(H5F_t *parent, const char *name, unsigned flags,
+    hid_t fcpl_id, hid_t fapl_id, hid_t dxpl_id);
+H5_DLL herr_t H5F_efc_close(H5F_t *parent, H5F_t *file);
 
 /* Debugging functions */
 H5_DLL herr_t H5F_debug(H5F_t *f, FILE * stream, int indent, int fwidth);

@@ -15,11 +15,11 @@
 
 /*-------------------------------------------------------------------------
  *
- * Created:		H5Plapl.c
- *			July 14 2006
- *			James Laird <jlaird@ncsa.uiuc.edu>
+ * Created:             H5Plapl.c
+ *                      July 14 2006
+ *                      James Laird <jlaird@ncsa.uiuc.edu>
  *
- * Purpose:		Link access property list class routines
+ * Purpose:             Link access property list class routines
  *
  *-------------------------------------------------------------------------
  */
@@ -27,17 +27,17 @@
 /****************/
 /* Module Setup */
 /****************/
-#define H5P_PACKAGE		/*suppress error about including H5Ppkg	  */
+#define H5P_PACKAGE             /*suppress error about including H5Ppkg   */
 
 /***********/
 /* Headers */
 /***********/
-#include "H5private.h"		/* Generic Functions			*/
-#include "H5Eprivate.h"		/* Error handling		  	*/
-#include "H5Iprivate.h"		/* IDs			  		*/
-#include "H5Lprivate.h"		/* Links		  		*/
-#include "H5MMprivate.h"	/* Memory management			*/
-#include "H5Ppkg.h"		/* Property lists		  	*/
+#include "H5private.h"          /* Generic Functions                    */
+#include "H5Eprivate.h"         /* Error handling                       */
+#include "H5Iprivate.h"         /* IDs                                  */
+#include "H5Lprivate.h"         /* Links                                */
+#include "H5MMprivate.h"        /* Memory management                    */
+#include "H5Ppkg.h"             /* Property lists                       */
 
 
 /****************/
@@ -56,11 +56,11 @@
 #define H5L_ACS_ELINK_PREFIX_CLOSE       H5P_lacc_elink_pref_close
 
 /* Definitions for setting fapl of external link access */
-#define H5L_ACS_ELINK_FAPL_SIZE        	sizeof(hid_t)
-#define H5L_ACS_ELINK_FAPL_DEF         	H5P_DEFAULT
-#define H5L_ACS_ELINK_FAPL_DEL		H5P_lacc_elink_fapl_del
-#define H5L_ACS_ELINK_FAPL_COPY        	H5P_lacc_elink_fapl_copy
-#define H5L_ACS_ELINK_FAPL_CLOSE       	H5P_lacc_elink_fapl_close
+#define H5L_ACS_ELINK_FAPL_SIZE         sizeof(hid_t)
+#define H5L_ACS_ELINK_FAPL_DEF          H5P_DEFAULT
+#define H5L_ACS_ELINK_FAPL_DEL          H5P_lacc_elink_fapl_del
+#define H5L_ACS_ELINK_FAPL_COPY         H5P_lacc_elink_fapl_copy
+#define H5L_ACS_ELINK_FAPL_CLOSE        H5P_lacc_elink_fapl_close
 
 /* Definitions for file access flags for external link traversal */
 #define H5L_ACS_ELINK_FLAGS_SIZE        sizeof(unsigned)
@@ -103,17 +103,17 @@ static herr_t H5P_lacc_elink_fapl_close(const char* name, size_t size, void* val
 
 /* Dataset creation property list class library initialization object */
 const H5P_libclass_t H5P_CLS_LACC[1] = {{
-    "link access",		/* Class name for debugging     */
-    &H5P_CLS_ROOT_g,		/* Parent class ID              */
-    &H5P_CLS_LINK_ACCESS_g,	/* Pointer to class ID          */
-    &H5P_LST_LINK_ACCESS_g,	/* Pointer to default property list ID */
-    H5P_lacc_reg_prop,		/* Default property registration routine */
-    NULL,		        /* Class creation callback      */
-    NULL,		        /* Class creation callback info */
-    NULL,			/* Class copy callback          */
-    NULL,		        /* Class copy callback info     */
-    NULL,			/* Class close callback         */
-    NULL 		        /* Class close callback info    */
+    "link access",              /* Class name for debugging     */
+    &H5P_CLS_ROOT_g,            /* Parent class ID              */
+    &H5P_CLS_LINK_ACCESS_g,     /* Pointer to class ID          */
+    &H5P_LST_LINK_ACCESS_g,     /* Pointer to default property list ID */
+    H5P_lacc_reg_prop,          /* Default property registration routine */
+    NULL,                       /* Class creation callback      */
+    NULL,                       /* Class creation callback info */
+    NULL,                       /* Class copy callback          */
+    NULL,                       /* Class copy callback info     */
+    NULL,                       /* Class close callback         */
+    NULL                        /* Class close callback info    */
 }};
 
 
@@ -139,21 +139,21 @@ const H5P_libclass_t H5P_CLS_LACC[1] = {{
  *              October 31, 2006
  *
  * Modifications:
- *	Vailin Choi, Sept. 12th 2008
- *	Register the setting of file access property list for link access
+ *      Vailin Choi, Sept. 12th 2008
+ *      Register the setting of file access property list for link access
  *
  *-------------------------------------------------------------------------
  */
 static herr_t
 H5P_lacc_reg_prop(H5P_genclass_t *pclass)
 {
-    size_t nlinks = H5L_ACS_NLINKS_DEF; 	   /* Default number of soft links to traverse */
+    size_t nlinks = H5L_ACS_NLINKS_DEF;            /* Default number of soft links to traverse */
     char *elink_prefix = H5L_ACS_ELINK_PREFIX_DEF; /* Default external link prefix string */
     hid_t def_fapl_id = H5L_ACS_ELINK_FAPL_DEF;    /* Default fapl for external link access */
     unsigned elink_flags = H5L_ACS_ELINK_FLAGS_DEF; /* Default file access flags for external link traversal */
     H5L_elink_cb_t elink_cb = H5L_ACS_ELINK_CB_DEF; /* Default external link traversal callback */
 
-    herr_t ret_value = SUCCEED;         	   /* Return value */
+    herr_t ret_value = SUCCEED;                    /* Return value */
 
     FUNC_ENTER_NOAPI_NOINIT(H5P_lacc_reg_prop)
 
@@ -183,15 +183,15 @@ done:
 
 
 /*--------------------------------------------------------------------------
- * Function:	H5P_lacc_elink_fapl_del
+ * Function:    H5P_lacc_elink_fapl_del
  *
- * Purpose:	Close the FAPL for link access
+ * Purpose:     Close the FAPL for link access
  *
- * Return:	Success:	Non-negative
- * 		Failure:	Negative
+ * Return:      Success:        Non-negative
+ *              Failure:        Negative
  *
- * Programmer:	Vailin Choi
- *		Tuesday, Sept 23, 2008
+ * Programmer:  Vailin Choi
+ *              Tuesday, Sept 23, 2008
  *
  *--------------------------------------------------------------------------
  */
@@ -208,8 +208,8 @@ H5P_lacc_elink_fapl_del(hid_t UNUSED prop_id, const char UNUSED *name, size_t UN
 
     l_fapl_id = (*(const hid_t *)value);
 
-    if((l_fapl_id > H5P_DEFAULT) && (H5I_dec_ref(l_fapl_id, FALSE) < 0))
-	HGOTO_ERROR(H5E_ATOM, H5E_CANTRELEASE, FAIL, "unable to close atom for file access property list")
+    if((l_fapl_id > H5P_DEFAULT) && (H5I_dec_ref(l_fapl_id) < 0))
+        HGOTO_ERROR(H5E_PLIST, H5E_CANTRELEASE, FAIL, "unable to close atom for file access property list")
 
 done:
     FUNC_LEAVE_NOAPI(ret_value)
@@ -217,15 +217,15 @@ done:
 
 
 /*--------------------------------------------------------------------------
- * Function:	H5P_lacc_elink_fapl_copy
+ * Function:    H5P_lacc_elink_fapl_copy
  *
- * Purpose:	Copy the FAPL for link access
+ * Purpose:     Copy the FAPL for link access
  *
- * Return:	Success:	Non-negative
- * 		Failure:	Negative
+ * Return:      Success:        Non-negative
+ *              Failure:        Negative
  *
- * Programmer:	Vailin Choi
- *		Tuesday, Sept 23, 2008
+ * Programmer:  Vailin Choi
+ *              Tuesday, Sept 23, 2008
  *
  *--------------------------------------------------------------------------
  */
@@ -248,8 +248,8 @@ H5P_lacc_elink_fapl_copy(const char UNUSED *name, size_t UNUSED size, void *valu
         if(NULL == (l_fapl_plist = (H5P_genplist_t *)H5P_object_verify(l_fapl_id, H5P_FILE_ACCESS)))
             HGOTO_ERROR(H5E_ARGS, H5E_BADTYPE, FAIL, "can't get property list")
 
-	if(((*(hid_t *)value) = H5P_copy_plist(l_fapl_plist, FALSE)) < 0)
-	    HGOTO_ERROR(H5E_INTERNAL, H5E_CANTINIT, FAIL, "unable to copy file access properties")
+        if(((*(hid_t *)value) = H5P_copy_plist(l_fapl_plist, FALSE)) < 0)
+            HGOTO_ERROR(H5E_INTERNAL, H5E_CANTINIT, FAIL, "unable to copy file access properties")
     } /* end if */
 
 done:
@@ -258,15 +258,15 @@ done:
 
 
 /*--------------------------------------------------------------------------
- * Function:	H5P_lacc_elink_fapl_close
+ * Function:    H5P_lacc_elink_fapl_close
  *
- * Purpose:	Close the FAPL for link access
+ * Purpose:     Close the FAPL for link access
  *
- * Return:	Success:	Non-negative
- * 		Failure:	Negative
+ * Return:      Success:        Non-negative
+ *              Failure:        Negative
  *
- * Programmer:	Vailin Choi
- *		Tuesday, Sept 23, 2008
+ * Programmer:  Vailin Choi
+ *              Tuesday, Sept 23, 2008
  *
  *---------------------------------------------------------------------------
  */
@@ -274,16 +274,16 @@ done:
 static herr_t
 H5P_lacc_elink_fapl_close(const char UNUSED *name, size_t UNUSED size, void *value)
 {
-    hid_t		l_fapl_id;
-    herr_t     		ret_value = SUCCEED;
+    hid_t               l_fapl_id;
+    herr_t              ret_value = SUCCEED;
 
     FUNC_ENTER_NOAPI_NOINIT(H5P_lacc_elink_fapl_close)
 
     HDassert(value);
 
     l_fapl_id = (*(const hid_t *)value);
-    if((l_fapl_id > H5P_DEFAULT) && (H5I_dec_ref(l_fapl_id, FALSE) < 0))
-	HGOTO_ERROR(H5E_ATOM, H5E_CANTRELEASE, FAIL, "unable to close atom for file access property list")
+    if((l_fapl_id > H5P_DEFAULT) && (H5I_dec_ref(l_fapl_id) < 0))
+        HGOTO_ERROR(H5E_PLIST, H5E_CANTRELEASE, FAIL, "unable to close atom for file access property list")
 
 done:
     FUNC_LEAVE_NOAPI(ret_value)
@@ -382,9 +382,9 @@ H5P_lacc_elink_pref_close(const char UNUSED *name, size_t UNUSED size, void *val
  *              This property can be used to allow traversal of as many
  *              links as desired.
  *
- * Return:	Non-negative on success/Negative on failure
+ * Return:      Non-negative on success/Negative on failure
  *
- * Programmer:	James Laird
+ * Programmer:  James Laird
  *              Friday, July 14, 2006
  *
  *-------------------------------------------------------------------------
@@ -417,15 +417,15 @@ done:
 /*-------------------------------------------------------------------------
  * Function:    H5Pget_nlinks
  *
- * Purpose:	Gets the number of soft or user-defined links that can be
+ * Purpose:     Gets the number of soft or user-defined links that can be
  *              traversed before a failure occurs.
  *
  *              Retrieves the current setting for the nlinks property on
  *              the given property list.
  *
- * Return:	Non-negative on success/Negative on failure
+ * Return:      Non-negative on success/Negative on failure
  *
- * Programmer:	James Laird
+ * Programmer:  James Laird
  *              Friday, July 14, 2006
  *
  *-------------------------------------------------------------------------
@@ -462,9 +462,9 @@ done:
  *              traversed.  The prefix is appended to the filename stored
  *              in the external link.
  *
- * Return:	Non-negative on success/Negative on failure
+ * Return:      Non-negative on success/Negative on failure
  *
- * Programmer:	James Laird
+ * Programmer:  James Laird
  *              Thursday, August 3, 2006
  *
  *-------------------------------------------------------------------------
@@ -506,15 +506,15 @@ done:
 /*-------------------------------------------------------------------------
  * Function:    H5Pget_elink_prefix
  *
- * Purpose:	Gets the prefix to be applied to any external link
+ * Purpose:     Gets the prefix to be applied to any external link
  *              traversals made using this property list.
  *
  *              If the pointer is not NULL, it points to a user-allocated
  *              buffer.
  *
- * Return:	Non-negative on success/Negative on failure
+ * Return:      Non-negative on success/Negative on failure
  *
- * Programmer:	James Laird
+ * Programmer:  James Laird
  *              Thursday, August 3, 2006
  *
  *-------------------------------------------------------------------------
@@ -524,8 +524,8 @@ H5Pget_elink_prefix(hid_t plist_id, char *prefix, size_t size)
 {
     H5P_genplist_t *plist;              /* Property list pointer */
     char *my_prefix;                    /* Library's copy of the prefix */
-    size_t	len;                    /* Length of prefix string */
-    ssize_t 	ret_value;              /* Return value */
+    size_t      len;                    /* Length of prefix string */
+    ssize_t     ret_value;              /* Return value */
 
     FUNC_ENTER_API(H5Pget_elink_prefix, FAIL)
     H5TRACE3("Zs", "i*sz", plist_id, prefix, size);
@@ -563,7 +563,7 @@ done:
  *
  * Purpose:     Sets the file access property list for link access
  *
- * Return:	Non-negative on success/Negative on failure
+ * Return:      Non-negative on success/Negative on failure
  *
  * Programmer:
  *              Vailin Choi; Tuesday, September 12th, 2008
@@ -573,9 +573,9 @@ done:
 herr_t
 H5Pset_elink_fapl(hid_t lapl_id, hid_t fapl_id)
 {
-    H5P_genplist_t 	*plist, *fapl_plist;	/* Property list pointer */
-    hid_t		l_fapl_id, new_fapl_id;
-    herr_t 		ret_value = SUCCEED;         		/* Return value */
+    H5P_genplist_t      *plist, *fapl_plist;    /* Property list pointer */
+    hid_t               l_fapl_id, new_fapl_id;
+    herr_t              ret_value = SUCCEED;                    /* Return value */
 
     FUNC_ENTER_API(H5Pset_elink_fapl, FAIL)
     H5TRACE2("e", "ii", lapl_id, fapl_id);
@@ -589,15 +589,15 @@ H5Pset_elink_fapl(hid_t lapl_id, hid_t fapl_id)
         HGOTO_ERROR(H5E_PLIST, H5E_CANTGET, FAIL, "can't get fapl")
 
     /* Close the current file access property list if set */
-    if((l_fapl_id > H5P_DEFAULT) && (H5I_dec_ref(l_fapl_id, FALSE) < 0))
-	HGOTO_ERROR(H5E_ATOM, H5E_CANTRELEASE, FAIL, "unable to close atom for file access property list")
+    if((l_fapl_id > H5P_DEFAULT) && (H5I_dec_ref(l_fapl_id) < 0))
+        HGOTO_ERROR(H5E_PLIST, H5E_CANTRELEASE, FAIL, "unable to close atom for file access property list")
 
     if(NULL == (fapl_plist = H5P_object_verify(fapl_id, H5P_FILE_ACCESS)))
-	HGOTO_ERROR(H5E_ARGS, H5E_BADTYPE, FAIL, "not a file access property list");
+        HGOTO_ERROR(H5E_PLIST, H5E_BADTYPE, FAIL, "not a file access property list");
 
     /* Make a copy of the property list for FAPL_ID */
     if((new_fapl_id = H5P_copy_plist(fapl_plist, FALSE)) < 0)
-	HGOTO_ERROR(H5E_INTERNAL, H5E_CANTINIT, FAIL, "unable to copy file access properties")
+        HGOTO_ERROR(H5E_PLIST, H5E_CANTINIT, FAIL, "unable to copy file access properties")
 
     /* Set the file access property list for the link access */
     if(H5P_set(plist, H5L_ACS_ELINK_FAPL_NAME, &new_fapl_id) < 0)
@@ -611,10 +611,10 @@ done:
 /*-------------------------------------------------------------------------
  * Function:    H5Pget_elink_fapl
  *
- * Purpose:	Gets the file access property list identifier that is
- *		set for link access property.
+ * Purpose:     Gets the file access property list identifier that is
+ *              set for link access property.
  *
- * Return:	Non-negative on success/Negative on failure
+ * Return:      Non-negative on success/Negative on failure
  *
  * Programmer:
  *              Vailin Choi; Tuesday, September 12th, 2008
@@ -624,9 +624,9 @@ done:
 hid_t
 H5Pget_elink_fapl(hid_t lapl_id)
 {
-    H5P_genplist_t 	*plist, *fapl_plist; 	/* Property list pointer */
-    hid_t		l_fapl_id;
-    hid_t		ret_value=FAIL;		/* Return value */
+    H5P_genplist_t      *plist, *fapl_plist;    /* Property list pointer */
+    hid_t               l_fapl_id;
+    hid_t               ret_value=FAIL;         /* Return value */
 
     FUNC_ENTER_API(H5Pget_elink_fapl, FAIL)
     H5TRACE1("i", "i", lapl_id);
@@ -639,13 +639,13 @@ H5Pget_elink_fapl(hid_t lapl_id)
         HGOTO_ERROR(H5E_PLIST, H5E_CANTGET, FAIL, "can't get fapl for links")
 
     if(l_fapl_id > H5P_DEFAULT) {
-	if(NULL==(fapl_plist = H5P_object_verify(l_fapl_id, H5P_FILE_ACCESS)))
-	    HGOTO_ERROR(H5E_ARGS, H5E_BADTYPE, FAIL, "not a file access property list");
+        if(NULL==(fapl_plist = H5P_object_verify(l_fapl_id, H5P_FILE_ACCESS)))
+            HGOTO_ERROR(H5E_ARGS, H5E_BADTYPE, FAIL, "not a file access property list");
 
-	if((ret_value = H5P_copy_plist(fapl_plist, TRUE)) < 0)
-	    HGOTO_ERROR(H5E_INTERNAL, H5E_CANTINIT, FAIL, "unable to copy file access properties")
+        if((ret_value = H5P_copy_plist(fapl_plist, TRUE)) < 0)
+            HGOTO_ERROR(H5E_INTERNAL, H5E_CANTINIT, FAIL, "unable to copy file access properties")
     } else
-	ret_value = l_fapl_id;
+        ret_value = l_fapl_id;
 
 done:
     FUNC_LEAVE_API(ret_value);

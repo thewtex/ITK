@@ -17,17 +17,17 @@
  * Programmer: Robb Matzke <matzke@llnl.gov>
  *             Friday, September 19, 1997
  */
-#define H5G_PACKAGE		/*suppress error about including H5Gpkg	  */
-#define H5F_PACKAGE		/*suppress error about including H5Fpkg	  */
+#define H5G_PACKAGE             /*suppress error about including H5Gpkg   */
+#define H5F_PACKAGE             /*suppress error about including H5Fpkg   */
 
 
 /* Packages needed by this file... */
-#include "H5private.h"		/* Generic Functions			*/
-#include "H5Eprivate.h"		/* Error handling		  	*/
-#include "H5Fpkg.h"             /* File access				*/
-#include "H5FLprivate.h"	/* Free Lists                           */
-#include "H5Gpkg.h"		/* Groups		  		*/
-#include "H5HLprivate.h"	/* Local Heaps				*/
+#include "H5private.h"          /* Generic Functions                    */
+#include "H5Eprivate.h"         /* Error handling                       */
+#include "H5Fpkg.h"             /* File access                          */
+#include "H5FLprivate.h"        /* Free Lists                           */
+#include "H5Gpkg.h"             /* Groups                               */
+#include "H5HLprivate.h"        /* Local Heaps                          */
 
 /* Private macros */
 
@@ -96,8 +96,8 @@ done:
 herr_t
 H5G_ent_decode(const H5F_t *f, const uint8_t **pp, H5G_entry_t *ent)
 {
-    const uint8_t	*p_ret = *pp;
-    uint32_t		tmp;
+    const uint8_t       *p_ret = *pp;
+    uint32_t            tmp;
     herr_t      ret_value = SUCCEED;       /* Return value */
 
     FUNC_ENTER_NOAPI(H5G_ent_decode, FAIL)
@@ -202,7 +202,7 @@ done:
 herr_t
 H5G_ent_encode(const H5F_t *f, uint8_t **pp, const H5G_entry_t *ent)
 {
-    uint8_t	*p_ret = *pp + H5G_SIZEOF_ENTRY(f);
+    uint8_t     *p_ret = *pp + H5G_SIZEOF_ENTRY(f);
     herr_t      ret_value = SUCCEED;    /* Return value */
 
     FUNC_ENTER_NOAPI(H5G_ent_encode, FAIL)
@@ -217,7 +217,7 @@ H5G_ent_encode(const H5F_t *f, uint8_t **pp, const H5G_entry_t *ent)
         H5F_ENCODE_LENGTH(f, *pp, ent->name_off);
         H5F_addr_encode(f, pp, ent->header);
         UINT32ENCODE(*pp, ent->type);
-	UINT32ENCODE(*pp, 0); /*reserved*/
+        UINT32ENCODE(*pp, 0); /*reserved*/
 
         /* encode scratch-pad */
         switch(ent->type) {
@@ -244,7 +244,7 @@ H5G_ent_encode(const H5F_t *f, uint8_t **pp, const H5G_entry_t *ent)
         H5F_ENCODE_LENGTH(f, *pp, 0);
         H5F_addr_encode(f, pp, HADDR_UNDEF);
         UINT32ENCODE(*pp, H5G_NOTHING_CACHED);
-	UINT32ENCODE(*pp, 0); /*reserved*/
+        UINT32ENCODE(*pp, 0); /*reserved*/
     } /* end else */
 
     /* fill with zero */
@@ -262,10 +262,10 @@ done:
  *
  * Purpose:     Do a deep copy of symbol table entries
  *
- * Return:	Success:	Non-negative
- *		Failure:	Negative
+ * Return:      Success:        Non-negative
+ *              Failure:        Negative
  *
- * Programmer:	Pedro Vicente
+ * Programmer:  Pedro Vicente
  *              pvn@ncsa.uiuc.edu
  *              ???day, August ??, 2002
  *
@@ -308,14 +308,14 @@ H5G_ent_copy(H5G_entry_t *dst, const H5G_entry_t *src, H5_copy_depth_t depth)
 
 
 /*-------------------------------------------------------------------------
- * Function:	H5G_ent_reset
+ * Function:    H5G_ent_reset
  *
- * Purpose:	Reset a symbol table entry to an empty state
+ * Purpose:     Reset a symbol table entry to an empty state
  *
- * Return:	Success:	Non-negative
- *		Failure:	Negative
+ * Return:      Success:        Non-negative
+ *              Failure:        Negative
  *
- * Programmer:	Quincey Koziol
+ * Programmer:  Quincey Koziol
  *              ?day, August ??, 2005
  *
  *-------------------------------------------------------------------------
@@ -341,8 +341,8 @@ H5G_ent_reset(H5G_entry_t *ent)
  *
  * Purpose:     Convert a link to a symbol table entry
  *
- * Return:	Success:	Non-negative
- *		Failure:	Negative
+ * Return:      Success:        Non-negative
+ *              Failure:        Negative
  *
  * Programmer:  Quincey Koziol
  *              koziol@ncsa.uiuc.edu
@@ -352,9 +352,10 @@ H5G_ent_reset(H5G_entry_t *ent)
  */
 herr_t
 H5G_ent_convert(H5F_t *f, hid_t dxpl_id, H5HL_t *heap, const char *name,
-    const H5O_link_t *lnk, H5G_entry_t *ent)
+    const H5O_link_t *lnk, H5O_type_t obj_type, const void *crt_info,
+    H5G_entry_t *ent)
 {
-    size_t	name_offset;            /* Offset of name in heap */
+    size_t      name_offset;            /* Offset of name in heap */
     herr_t      ret_value = SUCCEED;    /* Return value */
 
     FUNC_ENTER_NOAPI(H5G_ent_convert, FAIL)
@@ -373,19 +374,97 @@ H5G_ent_convert(H5F_t *f, hid_t dxpl_id, H5HL_t *heap, const char *name,
      */
     name_offset = H5HL_insert(f, dxpl_id, heap, HDstrlen(name) + 1, name);
     if(0 == name_offset || (size_t)(-1) == name_offset)
-	HGOTO_ERROR(H5E_SYM, H5E_CANTINSERT, H5B_INS_ERROR, "unable to insert symbol name into heap")
+        HGOTO_ERROR(H5E_SYM, H5E_CANTINSERT, FAIL, "unable to insert symbol name into heap")
     ent->name_off = name_offset;
 
     /* Build correct information for symbol table entry based on link type */
     switch(lnk->type) {
         case H5L_TYPE_HARD:
-            ent->type = H5G_NOTHING_CACHED;
+            if(obj_type == H5O_TYPE_GROUP) {
+                const H5G_obj_create_t *gcrt_info = (const H5G_obj_create_t *)crt_info;
+
+                ent->type = gcrt_info->cache_type;
+                if(ent->type != H5G_NOTHING_CACHED)
+                    ent->cache = gcrt_info->cache;
+#ifndef NDEBUG
+                else {
+                    /* Make sure there is no stab message in the target object
+                     */
+                    H5O_loc_t   targ_oloc;      /* Location of link target */
+                    htri_t      stab_exists;    /* Whether the target symbol table exists */
+
+                    /* Build target object location */
+                    if(H5O_loc_reset(&targ_oloc) < 0)
+                        HGOTO_ERROR(H5E_SYM, H5E_CANTRESET, FAIL, "unable to initialize target location")
+                    targ_oloc.file = f;
+                    targ_oloc.addr = lnk->u.hard.addr;
+
+                    /* Check if a symbol table message exists */
+                    if((stab_exists = H5O_msg_exists(&targ_oloc, H5O_STAB_ID,
+                            dxpl_id)) < 0)
+                        HGOTO_ERROR(H5E_SYM, H5E_NOTFOUND, FAIL, "unable to check for STAB message")
+
+                    HDassert(!stab_exists);
+                } /* end else */
+#endif /* NDEBUG */
+            } /* end if */
+            else if(obj_type == H5O_TYPE_UNKNOWN){
+                /* Try to retrieve symbol table information for caching */
+                H5O_loc_t       targ_oloc;      /* Location of link target */
+                H5O_t           *oh;            /* Link target object header */
+                H5O_stab_t      stab;           /* Link target symbol table */
+                htri_t          stab_exists;    /* Whether the target symbol table exists */
+
+                /* Build target object location */
+                if(H5O_loc_reset(&targ_oloc) < 0)
+                    HGOTO_ERROR(H5E_SYM, H5E_CANTRESET, FAIL, "unable to initialize target location")
+                targ_oloc.file = f;
+                targ_oloc.addr = lnk->u.hard.addr;
+
+                /* Get the object header */
+                if(NULL == (oh = H5O_protect(&targ_oloc, dxpl_id, H5AC_READ)))
+                    HGOTO_ERROR(H5E_SYM, H5E_CANTPROTECT, FAIL, "unable to protect target object header")
+
+                /* Check if a symbol table message exists */
+                if((stab_exists = H5O_msg_exists_oh(oh, H5O_STAB_ID)) < 0) {
+                    if(H5O_unprotect(&targ_oloc, dxpl_id, oh, H5AC__NO_FLAGS_SET)
+                            < 0)
+                        HERROR(H5E_SYM, H5E_CANTUNPROTECT, "unable to release object header");
+                    HGOTO_ERROR(H5E_SYM, H5E_NOTFOUND, FAIL, "unable to check for STAB message")
+                } /* end if */
+
+                if(stab_exists) {
+                    /* Read symbol table message */
+                    if(NULL == H5O_msg_read_oh(f, dxpl_id, oh, H5O_STAB_ID,
+                            &stab)) {
+                        if(H5O_unprotect(&targ_oloc, dxpl_id, oh,
+                                H5AC__NO_FLAGS_SET) < 0)
+                            HERROR(H5E_SYM, H5E_CANTUNPROTECT, "unable to release object header");
+                        HGOTO_ERROR(H5E_SYM, H5E_CANTGET, FAIL, "unable to read STAB message")
+                    } /* end if */
+
+                    /* Cache symbol table message */
+                    ent->type = H5G_CACHED_STAB;
+                    ent->cache.stab.btree_addr = stab.btree_addr;
+                    ent->cache.stab.heap_addr = stab.heap_addr;
+                } /* end if */
+                else
+                    /* No symbol table message, don't cache anything */
+                    ent->type = H5G_NOTHING_CACHED;
+
+                if(H5O_unprotect(&targ_oloc, dxpl_id, oh, H5AC__NO_FLAGS_SET)
+                        < 0)
+                    HGOTO_ERROR(H5E_SYM, H5E_CANTUNPROTECT, FAIL, "unable to release object header")
+            } /* end else */
+            else
+                ent->type = H5G_NOTHING_CACHED;
+
             ent->header = lnk->u.hard.addr;
             break;
 
         case H5L_TYPE_SOFT:
             {
-                size_t	lnk_offset;		/* Offset to sym-link value	*/
+                size_t  lnk_offset;             /* Offset to sym-link value     */
 
                 /* Insert link value into local heap */
                 if((size_t)(-1) == (lnk_offset = H5HL_insert(f, dxpl_id, heap,
@@ -426,7 +505,7 @@ herr_t
 H5G_ent_debug(const H5G_entry_t *ent, FILE *stream, int indent, int fwidth,
     const H5HL_t *heap)
 {
-    const char		*lval = NULL;
+    const char          *lval = NULL;
     int nested_indent, nested_fwidth;
 
     FUNC_ENTER_NOAPI_NOFUNC(H5G_ent_debug)
@@ -436,14 +515,14 @@ H5G_ent_debug(const H5G_entry_t *ent, FILE *stream, int indent, int fwidth,
     nested_fwidth = MAX(0, fwidth - 3);
 
     HDfprintf(stream, "%*s%-*s %lu\n", indent, "", fwidth,
-	      "Name offset into private heap:",
-	      (unsigned long) (ent->name_off));
+              "Name offset into private heap:",
+              (unsigned long) (ent->name_off));
 
     HDfprintf(stream, "%*s%-*s %a\n", indent, "", fwidth,
-	      "Object header address:", ent->header);
+              "Object header address:", ent->header);
 
     HDfprintf(stream, "%*s%-*s ", indent, "", fwidth,
-	      "Cache info type:");
+              "Cache info type:");
     switch(ent->type) {
         case H5G_NOTHING_CACHED:
             HDfprintf(stream, "Nothing Cached\n");
