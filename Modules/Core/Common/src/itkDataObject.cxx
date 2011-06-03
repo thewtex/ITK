@@ -341,6 +341,7 @@ DataObject
 {
   if ( this->GetSource() )
     {
+    this->GetSource()->VerifyInputs();
     this->GetSource()->UpdateOutputInformation();
     }
 }
