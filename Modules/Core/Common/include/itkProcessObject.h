@@ -199,6 +199,18 @@ public:
    * then they should call the method Update(). */
   virtual void UpdateLargestPossibleRegion();
 
+  /**
+   *
+   *
+   */
+  virtual void VerifyInputs();
+
+ /**
+   *
+   *
+   */
+  virtual void VerifyInputInformation();
+
   /** Update the information decribing the output data. This method
    * transverses up the pipeline gathering modified time information.
    * On the way back down the pipeline, this method calls
