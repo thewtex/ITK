@@ -86,11 +86,13 @@ public:
 protected:
   /** de/constructor */
   ConvolutionImageFilter();
-  ~ConvolutionImageFilter();
+  // ~ConvolutionImageFilter(); {} default implementation ok
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   void ThreadedGenerateData(const OutputRegionType & outputRegionForThread, ThreadIdType threadId);
+
+  virtual void VerifyInputInformation();
 
 private:
   ConvolutionImageFilter(const Self &); //purposely not implemented
