@@ -184,6 +184,59 @@ ImageToImageFilter< TInputImage, TOutputImage >
 template< class TInputImage, class TOutputImage >
 void
 ImageToImageFilter< TInputImage, TOutputImage >
+::VerifyInputInformation()
+{
+
+  typedef ImageBase< InputImageDimension > ImageBaseType;
+
+  ImageBaseType *inputPtr1 = 0;
+  unsigned int idx = 0;
+
+
+  for (; idx < this->GetNumberOfOutputs(); ++idx )
+    {
+    // Check whether the output is an image of the appropriate
+    // dimension (use ProcessObject's version of the GetInput()
+    // method since it returns the input as a pointer to a
+    // DataObject as opposed to the subclass version which
+    // static_casts the input to an TInputImage).
+    inputPtr1 = dynamic_cast< ImageBaseType * >( this->ProcessObject::GetOutput(idx) );
+
+    if ( inputPtr1 )
+      {
+      break;
+      }
+    }
+
+
+  for (; idx < this->GetNumberOfOutputs(); ++idx )
+    {
+    ImageBaseType *inputPtrN =
+      dynamic_cast< ImageBaseType * >( this->ProcessObject::GetOutput(idx) );
+
+    // Physical space computation only matters if we're using two
+    // images, and not an image and a constant.
+    if( inputPtrN )
+      {
+
+      // check that the image occupy the same physical space, and that
+      // each index is at the same physical locatoin
+      if ( inputPtr1->GetOrigin() != inputPtrN->GetOrigin() ||
+           inputPtr1->GetLargestPossibleRegion() != inputPtrN->GetLargestPossibleRegion() ||
+           inputPtr1->GetSpacing() != inputPtrN->GetSpacing() ||
+           inputPtr1->GetDirection() != inputPtrN->GetDirection() )
+        {
+        itkExceptionMacro(<< "Inputs do not occupy the same physical space!"
+                          << "The origin, largest possible region, spacing or direction does not match." );
+        }
+      }
+    }
+
+}
+
+template< class TInputImage, class TOutputImage >
+void
+ImageToImageFilter< TInputImage, TOutputImage >
 ::PushBackInput(const InputImageType *input)
 {
   // Forward to the protected method in the superclass
