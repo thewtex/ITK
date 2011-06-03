@@ -152,8 +152,8 @@ GPUDenseFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilt
 
   typename OutputImageType::Pointer output = this->GetOutput();
 
-  //TimeStepType timeStep;
-  //void *       globalData;
+  TimeStepType timeStep;
+  void *       globalData;
 
   // Get the FiniteDifferenceFunction to use in calculations.
   //const typename FiniteDifferenceFunctionType::Pointer df = this->GetDifferenceFunction();
@@ -163,7 +163,8 @@ GPUDenseFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilt
 
   const SizeType radius = df->GetRadius();
 
-  df->GPUComputeUpdate( NULL, NULL, df->GetGlobalDataPointer() );
+  globalData = df->GetGlobalDataPointer();
+  df->GPUComputeUpdate( output, m_UpdateBuffer, globalData );
 
   // Break the input into a series of regions.  The first region is free
   // of boundary conditions, the rest with boundary conditions.  We operate
@@ -218,20 +219,10 @@ GPUDenseFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilt
   //// Ask the finite difference function to compute the time step for
   //// this iteration.  We give it the global data pointer to use, then
   //// ask it to free the global data memory.
-  //timeStep = df->ComputeGlobalTimeStep(globalData);
-  //df->ReleaseGlobalDataPointer(globalData);
+  timeStep = df->ComputeGlobalTimeStep(globalData);
+  df->ReleaseGlobalDataPointer(globalData);
 
-  //return timeStep;
-
-//-----------
-
-
-
-  TimeStepType dt;
-
-  dt = 0.125;
-
-  return dt;
+  return timeStep;
 
 
   /*

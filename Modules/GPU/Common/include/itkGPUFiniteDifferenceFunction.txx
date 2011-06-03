@@ -32,6 +32,9 @@ GPUFiniteDifferenceFunction()
     {
     m_ScaleCoefficients[i] = 1.0;
     }
+
+  // Create GPU Kernel Manager
+  m_KernelManager = GPUKernelManager::New();
 }
 
 

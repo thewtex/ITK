@@ -196,6 +196,13 @@ protected:
 
   RadiusType m_Radius;
   PixelRealType m_ScaleCoefficients[ImageDimension];
+
+  // GPU kernel manager
+  typename GPUKernelManager::Pointer m_KernelManager;
+
+  // GPU kernel handle for GPUComputeUpdate()
+  int m_ComputeUpdateKernelHandle;
+
 private:
   GPUFiniteDifferenceFunction(const Self &); //purposely not implemented
   void operator=(const Self &);           //purposely not implemented
