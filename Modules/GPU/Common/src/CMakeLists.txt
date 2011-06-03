@@ -6,6 +6,6 @@ itkOclUtil.cxx
 )
 
 include_directories(${OPENCL_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/../include/ ${CMAKE_CURRENT_BINARY_DIR})
-add_library(ITK-GPUCommon ${ITK-GPUCommon_SRC} ${itkGPUHDR})
-target_link_libraries(ITK-GPUCommon ${ITK-Common_LIBRARIES} ${ITK-FiniteDifference_LIBRARIES} ${OPENCL_LIBRARIES} )
+add_library(ITK-GPUCommon ${ITK-GPUCommon_SRC} ${itkGPUHDR} ${itkTxxSRC})
+target_link_libraries(ITK-GPUCommon ${ITK-Common_LIBRARIES} ${ITK-FiniteDifference_LIBRARIES} ${ITK-Statistics_LIBRARIES} ${OPENCL_LIBRARIES} )
 itk_module_target(ITK-GPUCommon)

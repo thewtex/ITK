@@ -182,8 +182,8 @@ int itkGPUImageFilterTestTemp(int argc, char *argv[])
   reader->SetFileName( argv[1] );
   writer->SetFileName( argv[2] );
 */
-
-  reader->SetFileName( "C:/Users/wkjeong/Proj/ITK/Examples/Data/BrainProtonDensitySlice.png" );
+  reader->SetFileName( "C:/vision/git/gpu/ITKBuild/bin/data/BrainProtonDensitySlice.png" );
+  //reader->SetFileName( "C:/Users/wkjeong/Proj/ITK/Examples/Data/BrainProtonDensitySlice.png" );
   writer->SetFileName( "output-GPUImageFilterTest.png" );
 
   //

@@ -64,8 +64,11 @@ private:
   //int m_KernelHandle;
 };
 
-/** Object Factory implemenatation for GPUMedianImageFilter */
-class GPUMeanImageFilterFactory : public itk::ObjectFactoryBase
+/** \class GPUMeanImageFilterFactory
+ *
+ * \brief Object Factory implemenatation for GPUMeanImageFilter
+ */
+class GPUMeanImageFilterFactory : public ObjectFactoryBase
 {
 public:
   typedef GPUMeanImageFilterFactory     Self;
@@ -87,7 +90,7 @@ public:
   static void RegisterOneFactory(void)
   {
     GPUMeanImageFilterFactory::Pointer factory = GPUMeanImageFilterFactory::New();
-    itk::ObjectFactoryBase::RegisterFactory(factory);
+    ObjectFactoryBase::RegisterFactory(factory);
   }
 
 private:
@@ -96,14 +99,14 @@ private:
 
 #define OverrideMeanFilterTypeMacro(ipt,opt,dm)\
   {\
-  typedef itk::Image<ipt,dm> InputImageType;\
-  typedef itk::Image<opt,dm> OutputImageType;\
+  typedef Image<ipt,dm> InputImageType;\
+  typedef Image<opt,dm> OutputImageType;\
   this->RegisterOverride(\
-  typeid(itk::MeanImageFilter<InputImageType,OutputImageType>).name(),\
-        typeid(itk::GPUMeanImageFilter<InputImageType,OutputImageType>).name(),\
+  typeid(MeanImageFilter<InputImageType,OutputImageType>).name(),\
+        typeid(GPUMeanImageFilter<InputImageType,OutputImageType>).name(),\
         "GPU Mean Image Filter Override",\
         true,\
-        itk::CreateObjectFunction<GPUMeanImageFilter<InputImageType,OutputImageType> >::New());\
+        CreateObjectFunction<GPUMeanImageFilter<InputImageType,OutputImageType> >::New());\
   }
 
 

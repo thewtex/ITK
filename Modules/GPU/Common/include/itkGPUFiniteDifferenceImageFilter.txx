@@ -60,7 +60,7 @@ GPUFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilter >
   if ( this->GetState() == UNINITIALIZED )
     {
     // Allocate the output image
-    this->AllocateOutputs();
+    //this->AllocateOutputs(); //done in GPUImageToImageFilter::GenerateData()
 
     // Copy the input image to the output image.  Algorithms will operate
     // directly on the output image and the update buffer.
