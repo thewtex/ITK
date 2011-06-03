@@ -148,7 +148,7 @@ SparseFieldLevelSetImageFilter< TInputImage, TOutputImage >
 template< class TInputImage, class TOutputImage >
 void
 SparseFieldLevelSetImageFilter< TInputImage, TOutputImage >
-::ApplyUpdate(TimeStepType dt)
+::ApplyUpdate(const TimeStepType& dt)
 {
   unsigned int i, j, k, t;
 
@@ -924,8 +924,6 @@ SparseFieldLevelSetImageFilter< TInputImage, TOutputImage >
   NeighborhoodIterator< OutputImageType > outputIt( df->GetRadius(),
                                                     this->GetOutput(), this->GetOutput()->GetRequestedRegion() );
   TimeStepType timeStep;
-
-  const NeighborhoodScalesType neighborhoodScales = this->GetDifferenceFunction()->ComputeNeighborhoodScales();
 
   if ( m_BoundsCheckingActive == false )
     {

@@ -37,7 +37,7 @@ namespace itk
  * This class was contributed to the Insight Journal by author Gaetan Lehmann.
  * Biologie du Developpement et de la Reproduction, INRA de Jouy-en-Josas,
  * France. The paper can be found at
- * http://insight-journal.org/midas/handle.php?handle=1926/153
+ * http://hdl.handle.net/1926/153
  *
  * \sa ValuedRegionalMaximaImageFilter
  * \sa HConvexImageFilter
@@ -45,7 +45,10 @@ namespace itk
  *
  * \ingroup MathematicalMorphologyImageFilters
  * \ingroup ITK-Review
+ *
+ * \wiki
  * \wikiexample{ImageProcessing/RegionalMaximaImageFilter,RegionalMaximaImageFilter}
+ * \endwiki
  */
 template< class TInputImage, class TOutputImage >
 class ITK_EXPORT RegionalMaximaImageFilter:

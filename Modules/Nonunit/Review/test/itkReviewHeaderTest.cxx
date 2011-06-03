@@ -21,11 +21,9 @@
 
 #include <iostream>
 
-#include "itkAddConstantToImageFilter.h"
 #include "itkAggregateLabelMapFilter.txx"
 #include "itkAreaClosingImageFilter.h"
 #include "itkAreaOpeningImageFilter.h"
-#include "itkAtanRegularizedHeavisideStepFunction.h"
 #include "itkAttributeKeepNObjectsLabelMapFilter.txx"
 #include "itkAttributeLabelObject.h"
 #include "itkAttributeMorphologyBaseImageFilter.txx"
@@ -68,7 +66,6 @@
 #include "itkChangeRegionLabelMapFilter.txx"
 #include "itkColormapFunction.h"
 #include "itkComplexBSplineInterpolateImageFunction.txx"
-#include "itkComposeRGBAImageFilter.h"
 #include "itkCompositeTransform.txx"
 #include "itkConformalFlatteningMeshFilter.txx"
 #include "itkConstrainedRegionBasedLevelSetFunctionSharedData.h"
@@ -86,7 +83,6 @@
 #include "itkDiscreteGaussianDerivativeImageFunction.txx"
 #include "itkDiscreteGradientMagnitudeGaussianImageFunction.txx"
 #include "itkDiscreteHessianGaussianImageFunction.txx"
-#include "itkDivideByConstantImageFilter.h"
 #include "itkESMDemonsRegistrationFunction.txx"
 #include "itkExponentialDeformationFieldImageFilter.txx"
 #include "itkFastApproximateRankImageFilter.h"
@@ -100,8 +96,6 @@
 #include "itkGreyColormapFunction.txx"
 #include "itkGridForwardWarpImageFilter.txx"
 #include "itkGridImageSource.txx"
-#include "itkHeavisideStepFunction.h"
-#include "itkHeavisideStepFunctionBase.h"
 #include "itkHessianToObjectnessMeasureImageFilter.txx"
 #include "itkHotColormapFunction.txx"
 #include "itkHSVColormapFunction.txx"
@@ -113,7 +107,6 @@
 #include "itkJPEG2000ImageIOFactory.h"
 #include "itkKappaSigmaThresholdImageCalculator.txx"
 #include "itkKappaSigmaThresholdImageFilter.txx"
-#include "itkLabelContourImageFilter.txx"
 #include "itkLabelGeometryImageFilter.txx"
 #include "itkLabelImageToLabelMapFilter.txx"
 #include "itkLabelImageToShapeLabelMapFilter.txx"
@@ -155,7 +148,6 @@
 #include "itkMultiphaseDenseFiniteDifferenceImageFilter.txx"
 #include "itkMultiphaseFiniteDifferenceImageFilter.txx"
 #include "itkMultiphaseSparseFiniteDifferenceImageFilter.txx"
-#include "itkMultiplyByConstantImageFilter.h"
 #include "itkMultiScaleHessianBasedMeasureImageFilter.txx"
 #include "itkN4MRIBiasFieldCorrectionImageFilter.txx"
 #include "itkNeuralNetworkFileReader.txx"
@@ -169,7 +161,6 @@
 #include "itkPhilipsRECImageIOFactory.h"
 #include "itkRankHistogram.h"
 #include "itkRankImageFilter.txx"
-#include "itkRealAndImaginaryToComplexImageFilter.h"
 #include "itkRedColormapFunction.txx"
 #include "itkRegionalMaximaImageFilter.txx"
 #include "itkRegionalMinimaImageFilter.txx"
@@ -177,7 +168,6 @@
 #include "itkRegionBasedLevelSetFunctionData.txx"
 #include "itkRegionBasedLevelSetFunctionSharedData.h"
 #include "itkRegionFromReferenceLabelMapFilter.txx"
-#include "itkRegularizedHeavisideStepFunction.h"
 #include "itkRelabelLabelMapFilter.h"
 #include "itkRobustAutomaticThresholdCalculator.txx"
 #include "itkRobustAutomaticThresholdImageFilter.txx"
@@ -200,7 +190,6 @@
 #include "itkShapeRelabelLabelMapFilter.txx"
 #include "itkShapeUniqueLabelMapFilter.txx"
 #include "itkShiftScaleLabelMapFilter.txx"
-#include "itkSinRegularizedHeavisideStepFunction.h"
 #include "itkSliceBySliceImageFilter.txx"
 #include "itkSpringColormapFunction.txx"
 #include "itkStatisticsKeepNObjectsLabelMapFilter.txx"
@@ -213,7 +202,6 @@
 #include "itkStatisticsRelabelLabelMapFilter.txx"
 #include "itkStatisticsUniqueLabelMapFilter.txx"
 #include "itkStochasticFractalDimensionImageFilter.txx"
-#include "itkSubtractConstantFromImageFilter.h"
 #include "itkSummerColormapFunction.txx"
 #include "itkTransformToDeformationFieldSource.txx"
 #include "itkUnconstrainedRegionBasedLevelSetFunctionSharedData.h"
@@ -227,10 +215,7 @@
 #include "itkWarpHarmonicEnergyCalculator.txx"
 #include "itkWinterColormapFunction.txx"
 
-
-
 int itkReviewHeaderTest ( int , char * [] )
 {
-
   return EXIT_SUCCESS;
 }

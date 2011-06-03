@@ -28,9 +28,12 @@ namespace itk
  *
  * \ingroup IntensityImageFilters  Multithreaded
  * \ingroup ITK-ImageIntensity
+ *
+ * \wiki
  * \wikiexample{ImageProcessing/AbsImageFilter,Compute the absolute value of an image}
+ * \endwiki
  */
-namespace Function
+namespace Functor
 {
 template< class TInput, class TOutput >
 class Abs
@@ -59,7 +62,7 @@ template< class TInputImage, class TOutputImage >
 class ITK_EXPORT AbsImageFilter:
   public
   UnaryFunctorImageFilter< TInputImage, TOutputImage,
-                           Function::Abs<
+                           Functor::Abs<
                              typename TInputImage::PixelType,
                              typename TOutputImage::PixelType >   >
 {
@@ -67,8 +70,8 @@ public:
   /** Standard class typedefs. */
   typedef AbsImageFilter Self;
   typedef UnaryFunctorImageFilter< TInputImage, TOutputImage,
-                                   Function::Abs< typename TInputImage::PixelType,
-                                                  typename TOutputImage::PixelType > >  Superclass;
+                                   Functor::Abs< typename TInputImage::PixelType,
+                                                 typename TOutputImage::PixelType > >  Superclass;
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
 

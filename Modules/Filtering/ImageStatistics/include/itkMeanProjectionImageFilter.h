@@ -28,7 +28,7 @@ namespace itk
  *
  * This class was contributed to the Insight Journal by Gaetan Lehmann.
  * The original paper can be found at
- *      http://insight-journal.org/midas/handle.php?handle=1926/164
+ *   http://hdl.handle.net/1926/164
  *
  * \author Gaetan Lehmann. Biologie du Developpement et de la Reproduction,
  * INRA de Jouy-en-Josas, France.
@@ -44,7 +44,7 @@ namespace itk
  * \ingroup ITK-ImageStatistics
  */
 
-namespace Function
+namespace Functor
 {
 template< class TInputPixel, class TAccumulate >
 class MeanAccumulator
@@ -88,12 +88,12 @@ template< class TInputImage, class TOutputImage,
               ITK_TYPENAME TOutputImage::PixelType >::AccumulateType >
 class ITK_EXPORT MeanProjectionImageFilter:public
   ProjectionImageFilter< TInputImage, TOutputImage,
-                         Function::MeanAccumulator< typename TInputImage::PixelType, TAccumulate > >
+                         Functor::MeanAccumulator< typename TInputImage::PixelType, TAccumulate > >
 {
 public:
   typedef MeanProjectionImageFilter Self;
   typedef ProjectionImageFilter< TInputImage, TOutputImage,
-                                 Function::MeanAccumulator<
+                                 Functor::MeanAccumulator<
                                    typename TInputImage::PixelType, TAccumulate > > Superclass;
 
   typedef SmartPointer< Self >       Pointer;

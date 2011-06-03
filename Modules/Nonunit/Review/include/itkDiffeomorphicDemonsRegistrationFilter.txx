@@ -246,7 +246,7 @@ DiffeomorphicDemonsRegistrationFilter< TFixedImage, TMovingImage, TDeformationFi
 template< class TFixedImage, class TMovingImage, class TDeformationField >
 void
 DiffeomorphicDemonsRegistrationFilter< TFixedImage, TMovingImage, TDeformationField >
-::ApplyUpdate(TimeStepType dt)
+::ApplyUpdate(const TimeStepType& dt)
 {
   // If we smooth the update buffer before applying it, then the are
   // approximating a viscuous problem as opposed to an elastic problem
@@ -260,7 +260,7 @@ DiffeomorphicDemonsRegistrationFilter< TFixedImage, TMovingImage, TDeformationFi
   if ( vcl_fabs(dt - 1.0) > 1.0e-4 )
     {
     itkDebugMacro("Using timestep: " << dt);
-    m_Multiplier->SetConstant(dt);
+    m_Multiplier->SetInput2(dt);
     m_Multiplier->SetInput( this->GetUpdateBuffer() );
     m_Multiplier->GraftOutput( this->GetUpdateBuffer() );
     // in place update

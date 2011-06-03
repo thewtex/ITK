@@ -28,7 +28,7 @@ namespace itk
  *
  * This class was contributed to the Insight Journal by Gaetan Lehmann.
  * The original paper can be found at
- *      http://insight-journal.org/midas/handle.php?handle=1926/164
+ *      http://hdl.handle.net/1926/164
  *
  *
  * \author Gaetan Lehmann. Biologie du Developpement et de la Reproduction,
@@ -43,7 +43,7 @@ namespace itk
  * \ingroup ITK-ImageStatistics
  */
 
-namespace Function
+namespace Functor
 {
 template< class TInputPixel >
 class MinimumAccumulator
@@ -74,12 +74,12 @@ public:
 template< class TInputImage, class TOutputImage >
 class ITK_EXPORT MinimumProjectionImageFilter:public
   ProjectionImageFilter< TInputImage, TOutputImage,
-                         Function::MinimumAccumulator< typename TInputImage::PixelType > >
+                         Functor::MinimumAccumulator< typename TInputImage::PixelType > >
 {
 public:
   typedef MinimumProjectionImageFilter Self;
   typedef ProjectionImageFilter< TInputImage, TOutputImage,
-                                 Function::MinimumAccumulator<
+                                 Functor::MinimumAccumulator<
                                    typename TInputImage::PixelType > > Superclass;
 
   typedef TInputImage                        InputImageType;

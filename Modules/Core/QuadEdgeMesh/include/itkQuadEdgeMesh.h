@@ -104,7 +104,7 @@ namespace itk
  * \author Alexandre Gouaillard, Leonardo Florez-Valencia, Eric Boix
  *
  * This implementation was contributed as a paper to the Insight Journal
- * http://insight-journal.org/midas/handle.php?handle=1926/306
+ * http://hdl.handle.net/1926/306
  *
  * \ingroup ITK-QuadEdgeMesh
  */
@@ -302,7 +302,7 @@ public:
     int dimension) const
   {
     (void)dimension;
-    return ( (const BoundaryAssignmentsContainerPointer)0 );
+    return ( (BoundaryAssignmentsContainerPointer)0 );
   }
 
 #endif

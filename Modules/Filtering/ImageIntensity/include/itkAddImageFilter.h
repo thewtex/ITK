@@ -55,7 +55,11 @@ namespace itk
  *
  * \ingroup IntensityImageFilters  Multithreaded
  * \ingroup ITK-ImageIntensity
+ *
+ * \wiki
  * \wikiexample{ImageProcessing/AddImageFilter,Add two images together}
+ * \wikiexample{ImageProcessing/AddConstantToImageFilter,Add a constant to every pixel in an image}
+ * \endwiki
  */
 namespace Functor
 {

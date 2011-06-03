@@ -174,7 +174,7 @@ if( NOT ITK_DISABLE_CXX_TESTING )
 
 if(BUILD_TESTING)
 
-add_test(NAME ImageRegistration1Test COMMAND  ${ITK_TEST_DRIVER}
+itk_add_test(NAME ImageRegistration1Test COMMAND  ${ITK_TEST_DRIVER}
   --compare ${BASELINE}/ImageRegistration1TestPixelCentered.png
             ${TEMP}/ImageRegistration1TestPixelCentered.png
   $<TARGET_FILE:ImageRegistration1>
@@ -185,7 +185,7 @@ add_test(NAME ImageRegistration1Test COMMAND  ${ITK_TEST_DRIVER}
         ${TEMP}/ImageRegistration1DifferenceBeforeTestPixelCentered.png
 )
 
-add_test(NAME ImageRegistration2Test COMMAND ${ITK_TEST_DRIVER}
+itk_add_test(NAME ImageRegistration2Test COMMAND ${ITK_TEST_DRIVER}
   --compare ${BASELINE}/ImageRegistration2Test.png
             ${TEMP}/ImageRegistration2Test.png
   $<TARGET_FILE:ImageRegistration2>
@@ -196,7 +196,7 @@ add_test(NAME ImageRegistration2Test COMMAND ${ITK_TEST_DRIVER}
         ${TEMP}/ImageRegistration2AfterTest.png
 )
 
-add_test(NAME ImageRegistration3Test COMMAND ${ITK_TEST_DRIVER}
+itk_add_test(NAME ImageRegistration3Test COMMAND ${ITK_TEST_DRIVER}
   --compare ${BASELINE}/ImageRegistration3TestPixelCentered.png
             ${TEMP}/ImageRegistration3TestPixelCentered.png
   $<TARGET_FILE:ImageRegistration3>
@@ -205,7 +205,7 @@ add_test(NAME ImageRegistration3Test COMMAND ${ITK_TEST_DRIVER}
         ${TEMP}/ImageRegistration3TestPixelCentered.png
 )
 
-add_test(NAME ImageRegistration4Test COMMAND ${ITK_TEST_DRIVER}
+itk_add_test(NAME ImageRegistration4Test COMMAND ${ITK_TEST_DRIVER}
   --compare ${BASELINE}/ImageRegistration4Test.png
             ${TEMP}/ImageRegistration4Test.png
   $<TARGET_FILE:ImageRegistration4>
@@ -217,7 +217,7 @@ add_test(NAME ImageRegistration4Test COMMAND ${ITK_TEST_DRIVER}
         24 10000 1
 )
 
-add_test(NAME ImageRegistration4Test2 COMMAND ${ITK_TEST_DRIVER}
+itk_add_test(NAME ImageRegistration4Test2 COMMAND ${ITK_TEST_DRIVER}
   --compare ${BASELINE}/ImageRegistration4Test.png
             ${TEMP}/ImageRegistration4Test2.png
   $<TARGET_FILE:ImageRegistration4>
@@ -229,7 +229,7 @@ add_test(NAME ImageRegistration4Test2 COMMAND ${ITK_TEST_DRIVER}
         24 10000 0
 )
 
-add_test(NAME ImageRegistration4Test3 COMMAND ${ITK_TEST_DRIVER}
+itk_add_test(NAME ImageRegistration4Test3 COMMAND ${ITK_TEST_DRIVER}
   $<TARGET_FILE:ImageRegistration4>
         ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceBorder20Mask.png
         ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceBorder20Mask.png
@@ -239,7 +239,7 @@ add_test(NAME ImageRegistration4Test3 COMMAND ${ITK_TEST_DRIVER}
         5 10000 0
 )
 
-add_test(NAME ImageRegistration5Test1 COMMAND ${ITK_TEST_DRIVER}
+itk_add_test(NAME ImageRegistration5Test1 COMMAND ${ITK_TEST_DRIVER}
   --compare ${BASELINE}/ImageRegistration5Test1PixelCentered.png
             ${TEMP}/ImageRegistration5Test1PixelCentered.png
   $<TARGET_FILE:ImageRegistration5>
@@ -248,7 +248,7 @@ add_test(NAME ImageRegistration5Test1 COMMAND ${ITK_TEST_DRIVER}
         ${TEMP}/ImageRegistration5Test1PixelCentered.png
 )
 
-add_test(NAME ImageRegistration5Test2 COMMAND ${ITK_TEST_DRIVER}
+itk_add_test(NAME ImageRegistration5Test2 COMMAND ${ITK_TEST_DRIVER}
   --compare ${BASELINE}/ImageRegistration5Test2PixelCentered.png
             ${TEMP}/ImageRegistration5Test2PixelCentered.png
   $<TARGET_FILE:ImageRegistration5>
@@ -257,7 +257,7 @@ add_test(NAME ImageRegistration5Test2 COMMAND ${ITK_TEST_DRIVER}
         ${TEMP}/ImageRegistration5Test2PixelCentered.png
 )
 
-add_test(NAME ImageRegistration6Test COMMAND ${ITK_TEST_DRIVER}
+itk_add_test(NAME ImageRegistration6Test COMMAND ${ITK_TEST_DRIVER}
   --compare ${BASELINE}/ImageRegistration6TestPixelCentered.png
             ${TEMP}/ImageRegistration6TestPixelCentered.png
   $<TARGET_FILE:ImageRegistration6>
@@ -266,7 +266,7 @@ add_test(NAME ImageRegistration6Test COMMAND ${ITK_TEST_DRIVER}
         ${TEMP}/ImageRegistration6TestPixelCentered.png
 )
 
-add_test(NAME ImageRegistration7Test COMMAND ${ITK_TEST_DRIVER}
+itk_add_test(NAME ImageRegistration7Test COMMAND ${ITK_TEST_DRIVER}
   --compare ${BASELINE}/ImageRegistration7TestPixelCentered.png
             ${TEMP}/ImageRegistration7TestPixelCentered.png
   $<TARGET_FILE:ImageRegistration7>
@@ -282,7 +282,7 @@ if(ITK_USE_BRAINWEB_DATA)
 itk_add_test(NAME ImageRegistration8Test COMMAND ${ITK_TEST_DRIVER}
   --compare ${BASELINE}/ImageRegistration8RegisteredSlice.png
             ${TEMP}/ImageRegistration8RegisteredSlice.png
-  ImageRegistration8
+  $<TARGET_FILE:ImageRegistration8>
         DATA{../Data/BrainWeb/brainweb1e1a10f20.mha}
         DATA{../Data/BrainWeb/brainweb1e1a10f20Rot10Tx15.mha}
         ${TEMP}/ImageRegistration8Output.mhd
@@ -297,8 +297,8 @@ itk_add_test(NAME ImageRegistration8Test COMMAND ${ITK_TEST_DRIVER}
 if( ${CMAKE_BUILD_TYPE} MATCHES "Release")
   # This test is computationally demanding.
   # Therefore we only run it in a Release build
-  itk_add_test(NAME ImageRegistration20
-    ImageRegistration20
+  itk_add_test(NAME ImageRegistration20Test COMMAND ${ITK_TEST_DRIVER}
+    $<TARGET_FILE:ImageRegistration20>
       DATA{../Data/BrainWeb/brainweb1e1a10f20.mha}
       DATA{../Data/BrainWeb/brainweb1e1a10f20Rot10Tx15.mha}
       ${TEMP}/ImageRegistration20Output.mhd
@@ -312,7 +312,7 @@ endif( ${CMAKE_BUILD_TYPE} MATCHES "Release")
 
 endif(ITK_USE_BRAINWEB_DATA)
 
-add_test(NAME ImageRegistration9Test COMMAND ${ITK_TEST_DRIVER}
+itk_add_test(NAME ImageRegistration9Test COMMAND ${ITK_TEST_DRIVER}
   --compare ${BASELINE}/ImageRegistration9TestPixelCentered.png
             ${TEMP}/ImageRegistration9TestPixelCentered.png
   $<TARGET_FILE:ImageRegistration9>
@@ -321,7 +321,7 @@ add_test(NAME ImageRegistration9Test COMMAND ${ITK_TEST_DRIVER}
         ${TEMP}/ImageRegistration9TestPixelCentered.png
 )
 
-add_test(NAME ImageRegistration10Test COMMAND ${ITK_TEST_DRIVER}
+itk_add_test(NAME ImageRegistration10Test COMMAND ${ITK_TEST_DRIVER}
   --compare ${BASELINE}/ImageRegistration10TestPixelCentered.png
             ${TEMP}/ImageRegistration10TestPixelCentered.png
   $<TARGET_FILE:ImageRegistration10>
@@ -332,7 +332,7 @@ add_test(NAME ImageRegistration10Test COMMAND ${ITK_TEST_DRIVER}
         -11 -13
 )
 
-add_test(NAME ImageRegistration13Test COMMAND ${ITK_TEST_DRIVER}
+itk_add_test(NAME ImageRegistration13Test COMMAND ${ITK_TEST_DRIVER}
   --compare ${BASELINE}/ImageRegistration13TestPixelCentered.png
             ${TEMP}/ImageRegistration13TestPixelCentered.png
   --compareNumberOfPixelsTolerance 5
@@ -342,7 +342,7 @@ add_test(NAME ImageRegistration13Test COMMAND ${ITK_TEST_DRIVER}
         ${TEMP}/ImageRegistration13TestPixelCentered.png
 )
 
-add_test(NAME ImageRegistration13Test2 COMMAND ${ITK_TEST_DRIVER}
+itk_add_test(NAME ImageRegistration13Test2 COMMAND ${ITK_TEST_DRIVER}
   --compare ${BASELINE}/ImageRegistration13TestPixelCentered.png
             ${TEMP}/ImageRegistration13Test2PixelCentered.png
   --compareNumberOfPixelsTolerance 10
@@ -353,7 +353,7 @@ add_test(NAME ImageRegistration13Test2 COMMAND ${ITK_TEST_DRIVER}
         0 0
 )
 
-add_test(NAME ImageRegistration13Test3 COMMAND ${ITK_TEST_DRIVER}
+itk_add_test(NAME ImageRegistration13Test3 COMMAND ${ITK_TEST_DRIVER}
   --compare ${BASELINE}/ImageRegistration13TestPixelCentered.png
             ${TEMP}/ImageRegistration13Test3PixelCentered.png
   --compareNumberOfPixelsTolerance 10
@@ -364,7 +364,7 @@ add_test(NAME ImageRegistration13Test3 COMMAND ${ITK_TEST_DRIVER}
         0 1
 )
 
-add_test(NAME ImageRegistration13Test4 COMMAND ${ITK_TEST_DRIVER}
+itk_add_test(NAME ImageRegistration13Test4 COMMAND ${ITK_TEST_DRIVER}
   --compare ${BASELINE}/ImageRegistration13TestPixelCentered.png
             ${TEMP}/ImageRegistration13Test4PixelCentered.png
   --compareNumberOfPixelsTolerance 5
@@ -375,7 +375,7 @@ add_test(NAME ImageRegistration13Test4 COMMAND ${ITK_TEST_DRIVER}
         1 0
 )
 
-add_test(NAME ImageRegistration13Test5 COMMAND ${ITK_TEST_DRIVER}
+itk_add_test(NAME ImageRegistration13Test5 COMMAND ${ITK_TEST_DRIVER}
   --compare ${BASELINE}/ImageRegistration13TestPixelCentered.png
             ${TEMP}/ImageRegistration13Test5PixelCentered.png
   --compareNumberOfPixelsTolerance 5
@@ -386,7 +386,7 @@ add_test(NAME ImageRegistration13Test5 COMMAND ${ITK_TEST_DRIVER}
         1 1
 )
 
-add_test(NAME ImageRegistration14Test COMMAND ${ITK_TEST_DRIVER}
+itk_add_test(NAME ImageRegistration14Test COMMAND ${ITK_TEST_DRIVER}
   --compare ${BASELINE}/ImageRegistration14Test.png
             ${TEMP}/ImageRegistration14Test.png
   --compareNumberOfPixelsTolerance 2000
@@ -396,7 +396,7 @@ add_test(NAME ImageRegistration14Test COMMAND ${ITK_TEST_DRIVER}
         ${TEMP}/ImageRegistration14Test.png 32 0.01 0.1  0.15  10.0  14.0
 )
 
-add_test(NAME ImageRegistration15Test COMMAND ${ITK_TEST_DRIVER}
+itk_add_test(NAME ImageRegistration15Test COMMAND ${ITK_TEST_DRIVER}
   --compare ${BASELINE}/ImageRegistration15TestPixelCentered.png
             ${TEMP}/ImageRegistration15TestPixelCentered.png
   $<TARGET_FILE:ImageRegistration15>
@@ -405,7 +405,7 @@ add_test(NAME ImageRegistration15Test COMMAND ${ITK_TEST_DRIVER}
         ${TEMP}/ImageRegistration15TestPixelCentered.png 32 0.1 0.05  0.0 0.0
 )
 
-add_test(NAME ImageRegistration16Test COMMAND ${ITK_TEST_DRIVER}
+itk_add_test(NAME ImageRegistration16Test COMMAND ${ITK_TEST_DRIVER}
   --compare ${BASELINE}/ImageRegistration16TestPixelCentered.png
             ${TEMP}/ImageRegistration16TestPixelCentered.png
   $<TARGET_FILE:ImageRegistration16>
@@ -414,7 +414,7 @@ add_test(NAME ImageRegistration16Test COMMAND ${ITK_TEST_DRIVER}
         ${TEMP}/ImageRegistration16TestPixelCentered.png 0.0 0.0
 )
 
-add_test(NAME ImageRegistration16Test2 COMMAND ${ITK_TEST_DRIVER}
+itk_add_test(NAME ImageRegistration16Test2 COMMAND ${ITK_TEST_DRIVER}
   --compare ${BASELINE}/ImageRegistration16TestPixelCentered.png
             ${TEMP}/ImageRegistration16Test2PixelCentered.png
   $<TARGET_FILE:ImageRegistration16>
@@ -424,7 +424,7 @@ add_test(NAME ImageRegistration16Test2 COMMAND ${ITK_TEST_DRIVER}
         0
 )
 
-add_test(NAME ImageRegistration17Test COMMAND ${ITK_TEST_DRIVER}
+itk_add_test(NAME ImageRegistration17Test COMMAND ${ITK_TEST_DRIVER}
   --compare ${BASELINE}/ImageRegistration17TestPixelCentered.png
             ${TEMP}/ImageRegistration17TestPixelCentered.png
   --compareNumberOfPixelsTolerance 5
@@ -434,13 +434,13 @@ add_test(NAME ImageRegistration17Test COMMAND ${ITK_TEST_DRIVER}
         ${TEMP}/ImageRegistration17TestPixelCentered.png 0.0 0.0
 )
 
-add_test(NAME ImageRegistration18Test COMMAND  ImageRegistration18
+itk_add_test(NAME ImageRegistration18Test COMMAND  ImageRegistration18
         ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceBorder20.png
         ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceShifted13x17y.png
         ${TEMP}/ImageRegistration18Test.png 0.0 0.0
 )
 
-add_test(NAME ImageRegistration19Test COMMAND ImageRegistration19
+itk_add_test(NAME ImageRegistration19Test COMMAND ImageRegistration19
         ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceBorder20Mask.png
         ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceBorder20Mask.png
         ${TEMP}/ImageRegistration19Test.png
@@ -448,7 +448,7 @@ add_test(NAME ImageRegistration19Test COMMAND ImageRegistration19
         2.0 2.0 # Initial translation parameters
 )
 
-add_test(NAME MultiResImageRegistration1Test COMMAND ${ITK_TEST_DRIVER}
+itk_add_test(NAME MultiResImageRegistration1Test COMMAND ${ITK_TEST_DRIVER}
   --compare ${BASELINE}/MultiResImageRegistration1Test.png
             ${TEMP}/MultiResImageRegistration1Test.png
   --compareNumberOfPixelsTolerance 100
@@ -460,7 +460,7 @@ add_test(NAME MultiResImageRegistration1Test COMMAND ${ITK_TEST_DRIVER}
         ${TEMP}/MultiResImageRegistration1CheckerBoardAfterTest.png
 )
 
-add_test(NAME MultiResImageRegistration1Test2 COMMAND ${ITK_TEST_DRIVER}
+itk_add_test(NAME MultiResImageRegistration1Test2 COMMAND ${ITK_TEST_DRIVER}
   --compare ${BASELINE}/MultiResImageRegistration1Test.png
             ${TEMP}/MultiResImageRegistration1Test2.png
   --compareNumberOfPixelsTolerance 100
@@ -474,7 +474,7 @@ add_test(NAME MultiResImageRegistration1Test2 COMMAND ${ITK_TEST_DRIVER}
 )
 
 
-add_test(NAME MultiResImageRegistration2Test COMMAND ${ITK_TEST_DRIVER}
+itk_add_test(NAME MultiResImageRegistration2Test COMMAND ${ITK_TEST_DRIVER}
   --compare ${BASELINE}/MultiResImageRegistration2Test.png
             ${TEMP}/MultiResImageRegistration2Test.png
   --compareNumberOfPixelsTolerance 10000
@@ -487,7 +487,7 @@ add_test(NAME MultiResImageRegistration2Test COMMAND ${ITK_TEST_DRIVER}
 )
 
 
-add_test(NAME MultiResImageRegistration2Test2 COMMAND ${ITK_TEST_DRIVER}
+itk_add_test(NAME MultiResImageRegistration2Test2 COMMAND ${ITK_TEST_DRIVER}
   --compare ${BASELINE}/MultiResImageRegistration2Test.png
             ${TEMP}/MultiResImageRegistration2Test2.png
   --compareNumberOfPixelsTolerance 10000
@@ -501,7 +501,7 @@ add_test(NAME MultiResImageRegistration2Test2 COMMAND ${ITK_TEST_DRIVER}
 )
 
 
-add_test(NAME DeformableRegistration2Test COMMAND ${ITK_TEST_DRIVER}
+itk_add_test(NAME DeformableRegistration2Test COMMAND ${ITK_TEST_DRIVER}
   --compare ${BASELINE}/DeformableRegistration2Test.png
             ${TEMP}/DeformableRegistration2Test.png
   $<TARGET_FILE:DeformableRegistration2>
@@ -510,7 +510,7 @@ add_test(NAME DeformableRegistration2Test COMMAND ${ITK_TEST_DRIVER}
         ${TEMP}/DeformableRegistration2Test.png
 )
 
-add_test(NAME DeformableRegistration3Test COMMAND ${ITK_TEST_DRIVER}
+itk_add_test(NAME DeformableRegistration3Test COMMAND ${ITK_TEST_DRIVER}
   --compare ${BASELINE}/DeformableRegistration3Test.png
             ${TEMP}/DeformableRegistration3Test.png
   --compareNumberOfPixelsTolerance 100
@@ -520,7 +520,7 @@ add_test(NAME DeformableRegistration3Test COMMAND ${ITK_TEST_DRIVER}
         ${TEMP}/DeformableRegistration3Test.png
 )
 
-add_test(NAME DeformableRegistration4Test COMMAND ${ITK_TEST_DRIVER}
+itk_add_test(NAME DeformableRegistration4Test COMMAND ${ITK_TEST_DRIVER}
   --compare ${BASELINE}/DeformableRegistration4TestPixelCentered.png
             ${TEMP}/DeformableRegistration4TestPixelCentered.png
   $<TARGET_FILE:DeformableRegistration4>
@@ -529,7 +529,7 @@ add_test(NAME DeformableRegistration4Test COMMAND ${ITK_TEST_DRIVER}
         ${TEMP}/DeformableRegistration4TestPixelCentered.png
 )
 
-add_test(NAME DeformableRegistration5Test COMMAND ${ITK_TEST_DRIVER}
+itk_add_test(NAME DeformableRegistration5Test COMMAND ${ITK_TEST_DRIVER}
   --compare ${BASELINE}/DeformableRegistration5Test.png
             ${TEMP}/DeformableRegistration5Test.png
   --compareNumberOfPixelsTolerance 5
@@ -539,7 +539,7 @@ add_test(NAME DeformableRegistration5Test COMMAND ${ITK_TEST_DRIVER}
         ${TEMP}/DeformableRegistration5Test.png
 )
 
-add_test(NAME DeformableRegistration6Test COMMAND ${ITK_TEST_DRIVER}
+itk_add_test(NAME DeformableRegistration6Test COMMAND ${ITK_TEST_DRIVER}
   --compare ${BASELINE}/DeformableRegistration6TestPixelCentered.png
             ${TEMP}/DeformableRegistration6TestPixelCentered.png
   $<TARGET_FILE:DeformableRegistration6>
@@ -548,7 +548,7 @@ add_test(NAME DeformableRegistration6Test COMMAND ${ITK_TEST_DRIVER}
         ${TEMP}/DeformableRegistration6TestPixelCentered.png
 )
 
-add_test(NAME BSplineWarping1Test COMMAND ${ITK_TEST_DRIVER}
+itk_add_test(NAME BSplineWarping1Test COMMAND ${ITK_TEST_DRIVER}
   --compare ${BASELINE}/BSplineWarping1Test.png
             ${TEMP}/BSplineWarping1Test.png
   $<TARGET_FILE:BSplineWarping1>
@@ -560,7 +560,7 @@ add_test(NAME BSplineWarping1Test COMMAND ${ITK_TEST_DRIVER}
         ${TEMP}/BSplineWarping1TestTransform.txt
 )
 
-add_test(NAME DeformableRegistration12Test1 COMMAND ${ITK_TEST_DRIVER}
+itk_add_test(NAME DeformableRegistration12Test1 COMMAND ${ITK_TEST_DRIVER}
   --compare ${BASELINE}/DeformableRegistration12Test.png
             ${TEMP}/DeformableRegistration12Test1.png
   --compareNumberOfPixelsTolerance 400
@@ -575,7 +575,7 @@ add_test(NAME DeformableRegistration12Test1 COMMAND ${ITK_TEST_DRIVER}
         ${TEMP}/DeformableRegistration12Test1FinalTransformParameters.txt
 )
 
-add_test(NAME DeformableRegistration12Test2 COMMAND ${ITK_TEST_DRIVER}
+itk_add_test(NAME DeformableRegistration12Test2 COMMAND ${ITK_TEST_DRIVER}
   --compare ${BASELINE}/DeformableRegistration12Test.png
             ${TEMP}/DeformableRegistration12Test2.png
   --compareNumberOfPixelsTolerance 400
@@ -590,7 +590,7 @@ add_test(NAME DeformableRegistration12Test2 COMMAND ${ITK_TEST_DRIVER}
         ${TEMP}/DeformableRegistration12Test2FinalTransformParameters.txt
 )
 
-add_test(NAME DeformableRegistration12Test3 COMMAND ${ITK_TEST_DRIVER}
+itk_add_test(NAME DeformableRegistration12Test3 COMMAND ${ITK_TEST_DRIVER}
   --compare ${BASELINE}/DeformableRegistration12Test.png
             ${TEMP}/DeformableRegistration12Test3.png
   --compareNumberOfPixelsTolerance 400
@@ -605,7 +605,7 @@ add_test(NAME DeformableRegistration12Test3 COMMAND ${ITK_TEST_DRIVER}
         ${TEMP}/DeformableRegistration12Test3FinalTransformParameters.txt
 )
 
-add_test(NAME DeformableRegistration12Test4 COMMAND ${ITK_TEST_DRIVER}
+itk_add_test(NAME DeformableRegistration12Test4 COMMAND ${ITK_TEST_DRIVER}
   --compare ${BASELINE}/DeformableRegistration12Test.png
             ${TEMP}/DeformableRegistration12Test4.png
   --compareNumberOfPixelsTolerance 400
@@ -620,7 +620,7 @@ add_test(NAME DeformableRegistration12Test4 COMMAND ${ITK_TEST_DRIVER}
         ${TEMP}/DeformableRegistration12Test4FinalTransformParameters.txt
 )
 
-add_test(NAME DeformableRegistration13Test1 COMMAND ${ITK_TEST_DRIVER}
+itk_add_test(NAME DeformableRegistration13Test1 COMMAND ${ITK_TEST_DRIVER}
   --compare ${BASELINE}/DeformableRegistration13Test.png
             ${TEMP}/DeformableRegistration13Test1.png
   --compareNumberOfPixelsTolerance 400
@@ -635,7 +635,7 @@ add_test(NAME DeformableRegistration13Test1 COMMAND ${ITK_TEST_DRIVER}
         ${TEMP}/DeformableRegistration13Test1FinalTransformParameters.txt
 )
 
-add_test(NAME DeformableRegistration13Test2 COMMAND ${ITK_TEST_DRIVER}
+itk_add_test(NAME DeformableRegistration13Test2 COMMAND ${ITK_TEST_DRIVER}
   --compare ${BASELINE}/DeformableRegistration13Test.png
             ${TEMP}/DeformableRegistration13Test2.png
   --compareNumberOfPixelsTolerance 400
@@ -650,7 +650,7 @@ add_test(NAME DeformableRegistration13Test2 COMMAND ${ITK_TEST_DRIVER}
         ${TEMP}/DeformableRegistration13Test2FinalTransformParameters.txt
 )
 
-add_test(NAME DeformableRegistration13Test3 COMMAND ${ITK_TEST_DRIVER}
+itk_add_test(NAME DeformableRegistration13Test3 COMMAND ${ITK_TEST_DRIVER}
   --compare ${BASELINE}/DeformableRegistration13Test.png
             ${TEMP}/DeformableRegistration13Test3.png
   --compareNumberOfPixelsTolerance 400
@@ -665,7 +665,7 @@ add_test(NAME DeformableRegistration13Test3 COMMAND ${ITK_TEST_DRIVER}
         ${TEMP}/DeformableRegistration13Test3FinalTransformParameters.txt
 )
 
-add_test(NAME DeformableRegistration13Test4 COMMAND ${ITK_TEST_DRIVER}
+itk_add_test(NAME DeformableRegistration13Test4 COMMAND ${ITK_TEST_DRIVER}
   --compare ${BASELINE}/DeformableRegistration13Test.png
             ${TEMP}/DeformableRegistration13Test4.png
   --compareNumberOfPixelsTolerance 400
@@ -683,7 +683,7 @@ add_test(NAME DeformableRegistration13Test4 COMMAND ${ITK_TEST_DRIVER}
 if(ITK_USE_BRAINWEB_DATA)
 
 itk_add_test(NAME BSplineWarping2Test COMMAND ${ITK_TEST_DRIVER}
-  BSplineWarping2
+  $<TARGET_FILE:BSplineWarping2>
         ${ITK_SOURCE_DIR}/Examples/Data/BSplineDisplacements2.txt
         DATA{../Data/BrainWeb/brainweb1e1a10f20.mha}
         DATA{../Data/BrainWeb/brainweb1e1a10f20.mha}
@@ -701,7 +701,7 @@ itk_add_test(NAME DeformableRegistration8Test1 COMMAND ${ITK_TEST_DRIVER}
               ${TEMP}/DeformableRegistration8Test1.mhd
     --compareNumberOfPixelsTolerance 700000
     --compareIntensityTolerance 15
-  DeformableRegistration8
+  $<TARGET_FILE:DeformableRegistration8>
         DATA{../Data/BrainWeb/brainweb1e1a10f20.mha}
         ${TEMP}/BSplineWarping2Test.mhd
         ${TEMP}/DeformableRegistration8Test1.mhd
@@ -713,13 +713,14 @@ itk_add_test(NAME DeformableRegistration8Test1 COMMAND ${ITK_TEST_DRIVER}
         ${NUMBER_OF_BSPLINE_GRID_NODES}
         ${ITK_SOURCE_DIR}/Examples/Data/IdentityTransform.tfm
 )
+set_property(TEST DeformableRegistration8Test1 PROPERTY DEPENDS BSplineWarping2Test)
 
 itk_add_test(NAME DeformableRegistration8Test2 COMMAND ${ITK_TEST_DRIVER}
     --compare DATA{../Data/BrainWeb/brainweb1e1a10f20.mha}
               ${TEMP}/DeformableRegistration8Test2.mhd
     --compareNumberOfPixelsTolerance 700000
     --compareIntensityTolerance 15
-  DeformableRegistration8
+  $<TARGET_FILE:DeformableRegistration8>
         DATA{../Data/BrainWeb/brainweb1e1a10f20.mha}
         ${TEMP}/BSplineWarping2Test.mhd
         ${TEMP}/DeformableRegistration8Test2.mhd
@@ -731,13 +732,14 @@ itk_add_test(NAME DeformableRegistration8Test2 COMMAND ${ITK_TEST_DRIVER}
         ${NUMBER_OF_BSPLINE_GRID_NODES}
         ${ITK_SOURCE_DIR}/Examples/Data/IdentityTransform.tfm
 )
+set_property(TEST DeformableRegistration8Test2 PROPERTY DEPENDS BSplineWarping2Test)
 
 itk_add_test(NAME DeformableRegistration8Test3 COMMAND ${ITK_TEST_DRIVER}
     --compare DATA{../Data/BrainWeb/brainweb1e1a10f20.mha}
               ${TEMP}/DeformableRegistration8Test3.mhd
     --compareNumberOfPixelsTolerance 700000
     --compareIntensityTolerance 15
-  DeformableRegistration8
+  $<TARGET_FILE:DeformableRegistration8>
         DATA{../Data/BrainWeb/brainweb1e1a10f20.mha}
         ${TEMP}/BSplineWarping2Test.mhd
         ${TEMP}/DeformableRegistration8Test3.mhd
@@ -749,13 +751,14 @@ itk_add_test(NAME DeformableRegistration8Test3 COMMAND ${ITK_TEST_DRIVER}
         ${NUMBER_OF_BSPLINE_GRID_NODES}
         ${ITK_SOURCE_DIR}/Examples/Data/IdentityTransform.tfm
 )
+set_property(TEST DeformableRegistration8Test3 PROPERTY DEPENDS BSplineWarping2Test)
 
 itk_add_test(NAME DeformableRegistration8Test4 COMMAND ${ITK_TEST_DRIVER}
     --compare DATA{../Data/BrainWeb/brainweb1e1a10f20.mha}
               ${TEMP}/DeformableRegistration8Test4.mhd
     --compareNumberOfPixelsTolerance 700000
     --compareIntensityTolerance 15
-  DeformableRegistration8
+  $<TARGET_FILE:DeformableRegistration8>
         DATA{../Data/BrainWeb/brainweb1e1a10f20.mha}
         ${TEMP}/BSplineWarping2Test.mhd
         ${TEMP}/DeformableRegistration8Test4.mhd
@@ -767,13 +770,14 @@ itk_add_test(NAME DeformableRegistration8Test4 COMMAND ${ITK_TEST_DRIVER}
         ${NUMBER_OF_BSPLINE_GRID_NODES}
         ${ITK_SOURCE_DIR}/Examples/Data/IdentityTransform.tfm
 )
+set_property(TEST DeformableRegistration8Test4 PROPERTY DEPENDS BSplineWarping2Test)
 
 itk_add_test(NAME DeformableRegistration14Test1 COMMAND ${ITK_TEST_DRIVER}
     --compare DATA{../Data/BrainWeb/brainweb1e1a10f20.mha}
               ${TEMP}/DeformableRegistration14Test1.mhd
     --compareNumberOfPixelsTolerance 700000
     --compareIntensityTolerance 15
-  DeformableRegistration14
+  $<TARGET_FILE:DeformableRegistration14>
         DATA{../Data/BrainWeb/brainweb1e1a10f20.mha}
         ${TEMP}/BSplineWarping2Test.mhd
         ${TEMP}/DeformableRegistration14Test1.mhd
@@ -786,13 +790,14 @@ itk_add_test(NAME DeformableRegistration14Test1 COMMAND ${ITK_TEST_DRIVER}
         ${ITK_SOURCE_DIR}/Examples/Data/IdentityTransform.tfm
         10.0 50
 )
+set_property(TEST DeformableRegistration14Test1 PROPERTY DEPENDS BSplineWarping2Test)
 
 itk_add_test(NAME DeformableRegistration14Test2 COMMAND ${ITK_TEST_DRIVER}
     --compare DATA{../Data/BrainWeb/brainweb1e1a10f20.mha}
               ${TEMP}/DeformableRegistration14Test2.mhd
     --compareNumberOfPixelsTolerance 700000
     --compareIntensityTolerance 15
-  DeformableRegistration14
+  $<TARGET_FILE:DeformableRegistration14>
         DATA{../Data/BrainWeb/brainweb1e1a10f20.mha}
         ${TEMP}/BSplineWarping2Test.mhd
         ${TEMP}/DeformableRegistration14Test2.mhd
@@ -805,13 +810,14 @@ itk_add_test(NAME DeformableRegistration14Test2 COMMAND ${ITK_TEST_DRIVER}
         ${ITK_SOURCE_DIR}/Examples/Data/IdentityTransform.tfm
         10.0 50
 )
+set_property(TEST DeformableRegistration14Test2 PROPERTY DEPENDS BSplineWarping2Test)
 
 itk_add_test(NAME DeformableRegistration14Test3 COMMAND ${ITK_TEST_DRIVER}
     --compare DATA{../Data/BrainWeb/brainweb1e1a10f20.mha}
               ${TEMP}/DeformableRegistration14Test3.mhd
     --compareNumberOfPixelsTolerance 700000
     --compareIntensityTolerance 15
-  DeformableRegistration14
+  $<TARGET_FILE:DeformableRegistration14>
         DATA{../Data/BrainWeb/brainweb1e1a10f20.mha}
         ${TEMP}/BSplineWarping2Test.mhd
         ${TEMP}/DeformableRegistration14Test3.mhd
@@ -824,13 +830,14 @@ itk_add_test(NAME DeformableRegistration14Test3 COMMAND ${ITK_TEST_DRIVER}
         ${ITK_SOURCE_DIR}/Examples/Data/IdentityTransform.tfm
         10.0 50
 )
+set_property(TEST DeformableRegistration14Test3 PROPERTY DEPENDS BSplineWarping2Test)
 
 itk_add_test(NAME DeformableRegistration14Test4 COMMAND ${ITK_TEST_DRIVER}
     --compare DATA{../Data/BrainWeb/brainweb1e1a10f20.mha}
               ${TEMP}/DeformableRegistration14Test4.mhd
     --compareNumberOfPixelsTolerance 700000
     --compareIntensityTolerance 15
-  DeformableRegistration14
+  $<TARGET_FILE:DeformableRegistration14>
         DATA{../Data/BrainWeb/brainweb1e1a10f20.mha}
         ${TEMP}/BSplineWarping2Test.mhd
         ${TEMP}/DeformableRegistration14Test4.mhd
@@ -843,10 +850,11 @@ itk_add_test(NAME DeformableRegistration14Test4 COMMAND ${ITK_TEST_DRIVER}
         ${ITK_SOURCE_DIR}/Examples/Data/IdentityTransform.tfm
         10.0 50
 )
+set_property(TEST DeformableRegistration14Test4 PROPERTY DEPENDS BSplineWarping2Test)
 endif( DART_TESTING_TIMEOUT GREATER 3000 )
 
-itk_add_test(NAME ChangeInformationTest1
-        ChangeInformationImageFilter
+itk_add_test(NAME ChangeInformationTest1 COMMAND ${ITK_TEST_DRIVER}
+        $<TARGET_FILE:ChangeInformationImageFilter>
         DATA{../Data/BrainWeb/brainweb1e1a10f20.mha}
         ${TEMP}/BSplinedTranlatedScaledRotated.mhd
         1.05
@@ -860,7 +868,7 @@ itk_add_test(NAME DeformableRegistration15Test1 COMMAND ${ITK_TEST_DRIVER}
               ${TEMP}/DeformableRegistration15Test1.mhd
     --compareNumberOfPixelsTolerance 700000
     --compareIntensityTolerance 15
-        DeformableRegistration15
+  $<TARGET_FILE:DeformableRegistration15>
         DATA{../Data/BrainWeb/brainweb1e1a10f20.mha}
         ${TEMP}/BSplinedTranlatedScaledRotated.mhd
         ${TEMP}/DeformableRegistration15Test1.mhd
@@ -872,13 +880,14 @@ itk_add_test(NAME DeformableRegistration15Test1 COMMAND ${ITK_TEST_DRIVER}
         5 100
         10.0 50
 )
+set_property(TEST DeformableRegistration15Test1 PROPERTY DEPENDS ChangeInformationTest1)
 endif( DART_TESTING_TIMEOUT GREATER 10000 )
 
 if( "${ITK_COMPUTER_MEMORY_SIZE}" GREATER 6 )
 
 set(NUMBER_OF_BSPLINE_GRID_NODES 32)
 itk_add_test(NAME DeformableRegistration8Test5 COMMAND ${ITK_TEST_DRIVER}
-  DeformableRegistration8
+  $<TARGET_FILE:DeformableRegistration8>
         DATA{../Data/BrainWeb/brainweb1e1a10f20.mha}
         ${TEMP}/BSplineWarping2Test.mhd
         ${TEMP}/DeformableRegistration8Test5.mhd
@@ -889,9 +898,10 @@ itk_add_test(NAME DeformableRegistration8Test5 COMMAND ${ITK_TEST_DRIVER}
         ${TEMP}/DeformableRegistration8Test5FinalTransformParameters.txt
         ${NUMBER_OF_BSPLINE_GRID_NODES}
 )
+set_property(TEST DeformableRegistration8Test5 PROPERTY DEPENDS BSplineWarping2Test)
 
 itk_add_test(NAME DeformableRegistration8Test6 COMMAND ${ITK_TEST_DRIVER}
-  DeformableRegistration8
+  $<TARGET_FILE:DeformableRegistration8>
         DATA{../Data/BrainWeb/brainweb1e1a10f20.mha}
         ${TEMP}/BSplineWarping2Test.mhd
         ${TEMP}/DeformableRegistration8Test6.mhd
@@ -902,9 +912,10 @@ itk_add_test(NAME DeformableRegistration8Test6 COMMAND ${ITK_TEST_DRIVER}
         ${TEMP}/DeformableRegistration8Test6FinalTransformParameters.txt
         ${NUMBER_OF_BSPLINE_GRID_NODES}
 )
+set_property(TEST DeformableRegistration8Test6 PROPERTY DEPENDS BSplineWarping2Test)
 
 itk_add_test(NAME DeformableRegistration8Test7 COMMAND ${ITK_TEST_DRIVER}
-  DeformableRegistration8
+  $<TARGET_FILE:DeformableRegistration8>
         DATA{../Data/BrainWeb/brainweb1e1a10f20.mha}
         ${TEMP}/BSplineWarping2Test.mhd
         ${TEMP}/DeformableRegistration8Test7.mhd
@@ -915,9 +926,10 @@ itk_add_test(NAME DeformableRegistration8Test7 COMMAND ${ITK_TEST_DRIVER}
         ${TEMP}/DeformableRegistration8Test7FinalTransformParameters.txt
         ${NUMBER_OF_BSPLINE_GRID_NODES}
 )
+set_property(TEST DeformableRegistration8Test7 PROPERTY DEPENDS BSplineWarping2Test)
 
 itk_add_test(NAME DeformableRegistration8Test8 COMMAND ${ITK_TEST_DRIVER}
-  DeformableRegistration8
+  $<TARGET_FILE:DeformableRegistration8>
         DATA{../Data/BrainWeb/brainweb1e1a10f20.mha}
         ${TEMP}/BSplineWarping2Test.mhd
         ${TEMP}/DeformableRegistration8Test8.mhd
@@ -928,10 +940,11 @@ itk_add_test(NAME DeformableRegistration8Test8 COMMAND ${ITK_TEST_DRIVER}
         ${TEMP}/DeformableRegistration8Test8FinalTransformParameters.txt
         ${NUMBER_OF_BSPLINE_GRID_NODES}
 )
+set_property(TEST DeformableRegistration8Test8 PROPERTY DEPENDS BSplineWarping2Test)
 
 set(NUMBER_OF_BSPLINE_GRID_NODES 100)
 itk_add_test(NAME DeformableRegistration8Test9 COMMAND ${ITK_TEST_DRIVER}
-  DeformableRegistration8
+  $<TARGET_FILE:DeformableRegistration8>
         DATA{../Data/BrainWeb/brainweb1e1a10f20.mha}
         ${TEMP}/BSplineWarping2Test.mhd
         ${TEMP}/DeformableRegistration8Test9.mhd
@@ -942,9 +955,10 @@ itk_add_test(NAME DeformableRegistration8Test9 COMMAND ${ITK_TEST_DRIVER}
         ${TEMP}/DeformableRegistration8Test9FinalTransformParameters.txt
         ${NUMBER_OF_BSPLINE_GRID_NODES}
 )
+set_property(TEST DeformableRegistration8Test9 PROPERTY DEPENDS BSplineWarping2Test)
 
 itk_add_test(NAME DeformableRegistration8Test10 COMMAND ${ITK_TEST_DRIVER}
-  DeformableRegistration8
+  $<TARGET_FILE:DeformableRegistration8>
         DATA{../Data/BrainWeb/brainweb1e1a10f20.mha}
         ${TEMP}/BSplineWarping2Test.mhd
         ${TEMP}/DeformableRegistration8Test10.mhd
@@ -955,6 +969,7 @@ itk_add_test(NAME DeformableRegistration8Test10 COMMAND ${ITK_TEST_DRIVER}
         ${TEMP}/DeformableRegistration8Test10FinalTransformParameters.txt
         ${NUMBER_OF_BSPLINE_GRID_NODES}
 )
+set_property(TEST DeformableRegistration8Test10 PROPERTY DEPENDS BSplineWarping2Test)
 
 # Due to the large memory requirements this tests must be run one by one
 set_tests_properties(
@@ -971,7 +986,7 @@ set_tests_properties(
 if( "${ITK_COMPUTER_MEMORY_SIZE}" GREATER 16 )
 
 itk_add_test(NAME DeformableRegistration8Test11 COMMAND ${ITK_TEST_DRIVER}
-  DeformableRegistration8
+  $<TARGET_FILE:DeformableRegistration8>
         DATA{../Data/BrainWeb/brainweb1e1a10f20.mha}
         ${TEMP}/BSplineWarping2Test.mhd
         ${TEMP}/DeformableRegistration8Test11.mhd
@@ -982,9 +997,10 @@ itk_add_test(NAME DeformableRegistration8Test11 COMMAND ${ITK_TEST_DRIVER}
         ${TEMP}/DeformableRegistration8Test11FinalTransformParameters.txt
         ${NUMBER_OF_BSPLINE_GRID_NODES}
 )
+set_property(TEST DeformableRegistration8Test11 PROPERTY DEPENDS BSplineWarping2Test)
 
 itk_add_test(NAME DeformableRegistration8Test12 COMMAND ${ITK_TEST_DRIVER}
-  DeformableRegistration8
+  $<TARGET_FILE:DeformableRegistration8>
         DATA{../Data/BrainWeb/brainweb1e1a10f20.mha}
         ${TEMP}/BSplineWarping2Test.mhd
         ${TEMP}/DeformableRegistration8Test12.mhd
@@ -995,6 +1011,7 @@ itk_add_test(NAME DeformableRegistration8Test12 COMMAND ${ITK_TEST_DRIVER}
         ${TEMP}/DeformableRegistration8Test12FinalTransformParameters.txt
         ${NUMBER_OF_BSPLINE_GRID_NODES}
 )
+set_property(TEST DeformableRegistration8Test12 PROPERTY DEPENDS BSplineWarping2Test)
 
 # Due to the large memory requirements this tests must be run one by one
   set_tests_properties(
@@ -1013,7 +1030,7 @@ endif(ITK_USE_BRAINWEB_DATA)
 if(ITK_MRI_UNC_DATABASE_DATA_ROOT)
 
 if( DART_TESTING_TIMEOUT GREATER 10000 )
-add_test(NAME DeformableRegistration15Test2 COMMAND ${ITK_TEST_DRIVER}
+itk_add_test(NAME DeformableRegistration15Test2 COMMAND ${ITK_TEST_DRIVER}
         $<TARGET_FILE:DeformableRegistration15>
         ${ITK_MRI_UNC_DATABASE_DATA_ROOT}/b/I.hdr
         ${ITK_MRI_UNC_DATABASE_DATA_ROOT}/d/I.hdr
@@ -1031,7 +1048,7 @@ endif( DART_TESTING_TIMEOUT GREATER 10000 )
 endif(ITK_MRI_UNC_DATABASE_DATA_ROOT)
 
 
-add_test(NAME LandmarkWarping2Test COMMAND ${ITK_TEST_DRIVER}
+itk_add_test(NAME LandmarkWarping2Test COMMAND ${ITK_TEST_DRIVER}
   --compare ${BASELINE}/LandmarkWarping2Test.png
             ${TEMP}/LandmarkWarping2Test.png
   $<TARGET_FILE:LandmarkWarping2>
@@ -1040,7 +1057,7 @@ add_test(NAME LandmarkWarping2Test COMMAND ${ITK_TEST_DRIVER}
         ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceBorder20.png
         ${TEMP}/LandmarkWarping2Test.png
 )
-add_test(NAME ImageRegistration12Test COMMAND ${ITK_TEST_DRIVER}
+itk_add_test(NAME ImageRegistration12Test COMMAND ${ITK_TEST_DRIVER}
   --compare ${BASELINE}/ImageRegistration12TestPixelCentered.png
             ${TEMP}/ImageRegistration12TestPixelCentered.png
   --compareNumberOfPixelsTolerance 2
@@ -1051,25 +1068,25 @@ add_test(NAME ImageRegistration12Test COMMAND ${ITK_TEST_DRIVER}
         ${TEMP}/ImageRegistration12TestPixelCentered.png
 )
 
-add_test(NAME ModelToImageRegistration2Test COMMAND ${ITK_TEST_DRIVER}
+itk_add_test(NAME ModelToImageRegistration2Test COMMAND ${ITK_TEST_DRIVER}
   $<TARGET_FILE:ModelToImageRegistration2>
         ${ITK_SOURCE_DIR}/Testing/Data/Input/cake_easy.png  12 12
 )
 
 
-add_test(NAME IterativeClosestPoint1Test COMMAND ${ITK_TEST_DRIVER}
+itk_add_test(NAME IterativeClosestPoint1Test COMMAND ${ITK_TEST_DRIVER}
   $<TARGET_FILE:IterativeClosestPoint1>
         ${ITK_SOURCE_DIR}/Examples/Data/IterativeClosestPointFixedPoints.txt
         ${ITK_SOURCE_DIR}/Examples/Data/IterativeClosestPointMovingPoints.txt
 )
 
-add_test(NAME IterativeClosestPoint2Test COMMAND ${ITK_TEST_DRIVER}
+itk_add_test(NAME IterativeClosestPoint2Test COMMAND ${ITK_TEST_DRIVER}
   $<TARGET_FILE:IterativeClosestPoint2>
         ${ITK_SOURCE_DIR}/Examples/Data/IterativeClosestPointFixedPoints2.txt
         ${ITK_SOURCE_DIR}/Examples/Data/IterativeClosestPointMovingPoints2.txt
 )
 
-add_test(NAME IterativeClosestPoint3Test COMMAND ${ITK_TEST_DRIVER}
+itk_add_test(NAME IterativeClosestPoint3Test COMMAND ${ITK_TEST_DRIVER}
   $<TARGET_FILE:IterativeClosestPoint3>
         ${ITK_SOURCE_DIR}/Examples/Data/IterativeClosestPointFixedPoints.txt
         ${ITK_SOURCE_DIR}/Examples/Data/IterativeClosestPointMovingPoints.txt

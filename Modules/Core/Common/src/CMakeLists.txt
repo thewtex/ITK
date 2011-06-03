@@ -47,6 +47,7 @@ itkRealTimeClock.cxx
 itkMetaDataObjectBase.cxx
 itkCovariantVector.cxx
 itkMemoryUsageObserver.cxx
+itkMersenneTwisterRandomVariateGenerator.cxx
 itkLoggerBase.cxx
 itkNumericTraitsCovariantVectorPixel.cxx
 itkProgressReporter.cxx
@@ -71,6 +72,7 @@ itkSimpleFastMutexLock.cxx
 itkNumericTraitsDiffusionTensor3DPixel.cxx
 itkEquivalencyTable.cxx
 itkXMLFileOutputWindow.cxx
+itkStoppingCriterionBase.cxx
 )
 
 if(WIN32)

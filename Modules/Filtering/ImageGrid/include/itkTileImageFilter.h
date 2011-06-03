@@ -40,7 +40,12 @@ namespace itk
  * filter can be used to create a volume from a series of inputs by
  * specifying a layout of 1,1,0.
  * \ingroup ITK-ImageGrid
+ *
+ * \wiki
  * \wikiexample{ImageProcessing/TileImageFilter,Tile multiple images into another image}
+ * \wikiexample{ImageProcessing/TileImageFilter_CreateVolume,Stack multiple 2D images into a 3D image}
+ * \wikiexample{ImageProcessing/TileImageFilter_SideBySide,Tile multiple images side by side}
+ * \endwiki
  */
 
 template< class TInputImage, class TOutputImage >

@@ -28,7 +28,7 @@ namespace itk
  *
  * This class was contributed to the Insight Journal by Gaetan Lehmann.
  * The original paper can be found at
- *      http://insight-journal.org/midas/handle.php?handle=1926/164
+ *      http://hdl.handle.net/1926/164
  *
  * \author Gaetan Lehmann. Biologie du Developpement et de la Reproduction
  * , INRA de Jouy-en-Josas, France.
@@ -44,7 +44,7 @@ namespace itk
  * \ingroup ITK-ImageStatistics
  */
 
-namespace Function
+namespace Functor
 {
 template< class TInputPixel, class TOuputPixel >
 class SumAccumulator
@@ -77,13 +77,13 @@ template< class TInputImage, class TOutputImage >
 class ITK_EXPORT SumProjectionImageFilter:
   public
   ProjectionImageFilter< TInputImage, TOutputImage,
-                         Function::SumAccumulator<
+                         Functor::SumAccumulator<
                            typename TInputImage::PixelType, typename TOutputImage::PixelType > >
 {
 public:
   typedef SumProjectionImageFilter Self;
   typedef ProjectionImageFilter< TInputImage, TOutputImage,
-                                 Function::SumAccumulator<
+                                 Functor::SumAccumulator<
                                    typename TInputImage::PixelType,
                                    typename TOutputImage::PixelType > > Superclass;
 
