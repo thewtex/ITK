@@ -66,7 +66,6 @@ public:
   /** @} */
   /**
    * Determines the color value of the specified Child for for this OctreeNode
-   * \param ChildID The numerical identifier of the desired child.
    * \return A value between 0 and 255 to indicate the color of the Disired child.
    * \pre Must determine that the specified node is colored (Use IsNodeColored()
    * member function.  Behavior is undefined when the child is another Octree.
@@ -75,8 +74,7 @@ public:
 
   /**
    * Sets the color value of the specified Child for for this OctreeNode
-   * \param ChildID The numerical identifier of the desired child.
-   * \param NodeColor The disired color of this node.
+   * \param NodeColor The desired color of this node.
    * \post All children of the specified child are removed, and the child is set to
    * the desired value.
    */
@@ -84,8 +82,6 @@ public:
 
   /**
    * Sets the color value of the specified Child for for this OctreeNode
-   * \param ChildID The numerical identifier of the desired child.
-   * \param NodeColor The disired color of this node.
    * \post All children of the specified child are removed, and the child is set to
    * the desired value.
    */
@@ -93,7 +89,6 @@ public:
 
   /**
    * Determines if the child is a leaf node (colored), or a branch node (uncolored)
-   * \param ChildID The numerical identifier of the desired child.
    * \return true if it is colored, false if it is not
    */
   bool IsNodeColored(void) const;
