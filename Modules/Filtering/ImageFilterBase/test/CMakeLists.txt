@@ -9,6 +9,22 @@ itkMaskNeighborhoodOperatorImageFilterTest.cxx
 itkCastImageFilterTest.cxx
 )
 
+set(DISABLE_OPTIMIZATION_FLAG "-O0")
+if (MSVC)
+  set(DISABLE_OPTIMIZATION_FLAG "/Od")
+endif (MSVC)
+
+# Disable optimization on the tests below to avoid possible
+# optimization bugs in some compilers. This option will appear on the
+# command line after any other optimization flag (including those from
+# CMAKE_CXX_FLAGS) which means that on gcc, MSVC, and the Intel
+# compiler, it will override any other optimization flag.
+set_source_files_properties(
+  itkCastImageFilterTest.cxx
+  PROPERTIES COMPILE_FLAGS ${DISABLE_OPTIMIZATION_FLAG}
+)
+
+
 CreateTestDriver(ITK-ImageFilterBase  "${ITK-ImageFilterBase-Test_LIBRARIES}" "${ITK-ImageFilterBaseTests}")
 
 itk_add_test(NAME itkImageFilterBaseHeaderTest
