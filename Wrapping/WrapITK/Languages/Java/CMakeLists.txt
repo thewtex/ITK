@@ -237,7 +237,7 @@ macro(END_WRAP_LIBRARY_JAVA)
       COMMENT "Creating java archive: ${java_jar_file_name}"
       )
     add_custom_target(${lib_jar} ALL DEPENDS ${java_bin_file} ${java_jar_file_path})
-    WRAP_ITK_INSTALL(/lib ${java_jar_file_path})
+    WRAP_ITK_BINDINGS_INSTALL(/lib ${java_jar_file_path})
 
     add_dependencies(${lib_jar} ${lib})
     if(NOT EXTERNAL_WRAP_ITK_PROJECT)
