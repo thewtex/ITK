@@ -20,10 +20,27 @@
 
 #include "itkImageToImageFilter.h"
 
+#include "itkConstantPadImageFilter.h"
+
 namespace itk
 {
 /** \class ConvolutionImageFilter
- * \brief Convolve a given image with an arbitrary image kernel
+ * \brief Convolve a given image with an arbitrary image kernel.
+ *
+ * This filter operates by centering the kernel at each pixel in the
+ * image and computing the inner product between pixel values in the
+ * image and pixel values in the kernel. The center of the kernel is
+ * defined as \f$ \lfloor (2*i+s-1)/2 \rfloor \f$ where \f$i\f$ is the
+ * index and \f$s\f$ is the size of the largest possible region of the
+ * kernel image. For kernels with odd sizes in all dimensions, this
+ * corresponds to the center pixel. If a dimension of the kernel image
+ * has an even size, then the center index of the kernel in that
+ * dimension will be the largest integral index that is less than the
+ * continuous index of the image center.
+ *
+ * \warning This filter ignores the spacing, origin, and orientation
+ * of the kernel image and treats them as identical to those in the
+ * input image.
  *
  * This code was contributed in the Insight Journal paper:
  *
@@ -64,7 +81,11 @@ public:
   typedef TOutputImage                         OutputImageType;
   typedef typename InputImageType::PixelType   InputPixelType;
   typedef typename OutputImageType::PixelType  OutputPixelType;
+  typedef typename InputImageType::SizeType    InputSizeType;
   typedef typename OutputImageType::RegionType OutputRegionType;
+
+  typedef ConstantPadImageFilter< InputImageType, InputImageType > KernelPadImageFilterType;
+  typedef typename KernelPadImageFilterType::Pointer               KernelPadImageFilterPointer;
 
   itkSetInputMacro(ImageKernel, InputImageType, 1);
   itkGetInputMacro(ImageKernel, InputImageType, 1);
@@ -90,14 +111,19 @@ protected:
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
+  void BeforeThreadedGenerateData();
+
   void ThreadedGenerateData(const OutputRegionType & outputRegionForThread, int threadId);
+
+  InputSizeType GetKernelPadSize();
 
 private:
   ConvolutionImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);         //purposely not implemented
 
-private:
   bool m_Normalize;
+
+  KernelPadImageFilterPointer m_KernelPadImageFilter;
 };
 }
 

@@ -50,12 +50,25 @@ ConvolutionImageFilter< TInputImage, TOutputImage >
 {
   this->SetNumberOfRequiredInputs(2);
   m_Normalize = false;
+  m_KernelPadImageFilter = KernelPadImageFilterType::New();
 }
 
 template< class TInputImage, class TOutputImage >
 ConvolutionImageFilter< TInputImage, TOutputImage >
 ::~ConvolutionImageFilter()
 {}
+
+template< class TInputImage, class TOutputImage >
+void
+ConvolutionImageFilter< TInputImage, TOutputImage >
+::BeforeThreadedGenerateData()
+{
+  m_KernelPadImageFilter->SetConstant( NumericTraits<InputPixelType>::ZeroValue() );
+  m_KernelPadImageFilter->SetPadLowerBound( this->GetKernelPadSize() );
+  m_KernelPadImageFilter->SetInput( this->GetImageKernelInput() );
+  m_KernelPadImageFilter->SetNumberOfThreads( this->GetNumberOfThreads() );
+  m_KernelPadImageFilter->UpdateLargestPossibleRegion();
+}
 
 template< class TInputImage, class TOutputImage >
 void
@@ -71,16 +84,16 @@ ConvolutionImageFilter< TInputImage, TOutputImage >
   RadiusType radius;
   for ( unsigned int i = 0; i < ImageDimension; i++ )
     {
-    radius[i] = Math::Floor< SizeValueType >(0.5
-                                             * this->GetImageKernelInput()->GetLargestPossibleRegion().GetSize()[i]);
+    radius[i] = Math::Floor< SizeValueType >
+      ( 0.5 * m_KernelPadImageFilter->GetOutput()->GetLargestPossibleRegion().GetSize()[i] );
     }
 
   double scalingFactor = 1.0;
   if ( this->GetNormalize() )
     {
     double                                     sum = 0.0;
-    ImageRegionConstIterator< InputImageType > It( this->GetImageKernelInput(),
-                                                   this->GetImageKernelInput()->GetLargestPossibleRegion() );
+    ImageRegionConstIterator< InputImageType > It( m_KernelPadImageFilter->GetOutput(),
+                                                   m_KernelPadImageFilter->GetOutput()->GetLargestPossibleRegion() );
     for ( It.GoToBegin(); !It.IsAtEnd(); ++It )
       {
       sum += static_cast< double >( It.Get() );
@@ -98,9 +111,7 @@ ConvolutionImageFilter< TInputImage, TOutputImage >
   NeighborhoodInnerProduct< InputImageType, InputPixelType, double > innerProduct;
 
   ImageKernelOperator< InputPixelType, ImageDimension > imageKernelOperator;
-  imageKernelOperator.SetImageKernel( const_cast< InputImageType * >(
-                                        static_cast< const InputImageType * >(
-                                          this->ProcessObject::GetInput(1) ) ) );
+  imageKernelOperator.SetImageKernel( m_KernelPadImageFilter->GetOutput() );
   imageKernelOperator.CreateToRadius(radius);
 
   typename FaceCalculatorType::FaceListType faceList = faceCalculator(
@@ -120,6 +131,23 @@ ConvolutionImageFilter< TInputImage, TOutputImage >
       progress.CompletedPixel();
       }
     }
+}
+
+/** Calculate the boundary width needed to pad the filter so that the
+ * size in each dimension is odd. */
+template< class TInputImage, class TOutputImage >
+typename ConvolutionImageFilter< TInputImage, TOutputImage >::InputSizeType
+ConvolutionImageFilter< TInputImage, TOutputImage >
+::GetKernelPadSize()
+{
+  InputSizeType kernelSize = this->GetImageKernelInput()->GetLargestPossibleRegion().GetSize();
+  InputSizeType padSize;
+  for ( unsigned int i = 0; i < ImageDimension; i++)
+    {
+    padSize[i] = 1 - (kernelSize[i] % 2);
+    }
+
+  return padSize;
 }
 
 /**
@@ -192,8 +220,6 @@ ConvolutionImageFilter< TInputImage, TOutputImage >
   Superclass::PrintSelf(os, indent);
 
   os << indent << "Normalize: "  << m_Normalize << std::endl;
-  //  NOT REALLY MEMBER DATA. Need to fool PrintSelf check
-  //  os << indent << "ImageKernel: "  << m_ImageKernel << std::e0ndl;
 }
 }
 #endif
