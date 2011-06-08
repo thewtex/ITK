@@ -133,11 +133,9 @@ public:
   {
     for ( unsigned int j = 0; j < ImageDimension; j++ )
       {
-      if ( index[j] < m_StartIndex[j] )
-        {
-        return false;
-        }
-      if ( index[j] > m_EndIndex[j] )
+      /* Test for negative of a positive so we can catch NaN's. */
+      if ( ! (index[j] >= m_StartIndex[j] &&
+              index[j] <= m_EndIndex[j] ) )
         {
         return false;
         }
