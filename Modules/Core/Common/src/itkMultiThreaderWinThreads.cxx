@@ -38,9 +38,9 @@
 
 namespace itk
 {
-int MultiThreader::GetGlobalDefaultNumberOfThreadsByPlatform()
+ThreadIDType MultiThreader::GetGlobalDefaultNumberOfThreadsByPlatform()
 {
-  int num;
+  ThreadIDType num;
   SYSTEM_INFO sysInfo;
   GetSystemInfo(&sysInfo);
   num = sysInfo.dwNumberOfProcessors;
@@ -49,7 +49,7 @@ int MultiThreader::GetGlobalDefaultNumberOfThreadsByPlatform()
 
 void MultiThreader::MultipleMethodExecute()
 {
-  int thread_loop;
+  ThreadIDType thread_loop;
 
   DWORD  threadId;
   HANDLE process_id[ITK_MAX_THREADS];
@@ -117,9 +117,9 @@ void MultiThreader::MultipleMethodExecute()
     }
 }
 
-int MultiThreader::SpawnThread(ThreadFunctionType f, void *UserData)
+ThreadIDType MultiThreader::SpawnThread(ThreadFunctionType f, void *UserData)
 {
-  int id = 0;
+  ThreadIDType id = 0;
 
   DWORD threadId;
 
@@ -165,21 +165,21 @@ int MultiThreader::SpawnThread(ThreadFunctionType f, void *UserData)
   return id;
 }
 
-void MultiThreader::TerminateThread(int ThreadID)
+void MultiThreader::TerminateThread(ThreadIDType threadId)
 {
-  if ( !m_SpawnedThreadActiveFlag[ThreadID] )
+  if ( !m_SpawnedThreadActiveFlag[threadID] )
     {
     return;
     }
 
-  m_SpawnedThreadActiveFlagLock[ThreadID]->Lock();
-  m_SpawnedThreadActiveFlag[ThreadID] = 0;
-  m_SpawnedThreadActiveFlagLock[ThreadID]->Unlock();
+  m_SpawnedThreadActiveFlagLock[threadID]->Lock();
+  m_SpawnedThreadActiveFlag[threadID] = 0;
+  m_SpawnedThreadActiveFlagLock[threadID]->Unlock();
 
-  WaitForSingleObject(m_SpawnedThreadProcessID[ThreadID], INFINITE);
-  CloseHandle(m_SpawnedThreadProcessID[ThreadID]);
-  m_SpawnedThreadActiveFlagLock[ThreadID] = 0;
-  m_SpawnedThreadActiveFlagLock[ThreadID] = 0;
+  WaitForSingleObject(m_SpawnedThreadProcessID[threadID], INFINITE);
+  CloseHandle(m_SpawnedThreadProcessID[threadID]);
+  m_SpawnedThreadActiveFlagLock[threadID] = 0;
+  m_SpawnedThreadActiveFlagLock[threadID] = 0;
 }
 
 void
