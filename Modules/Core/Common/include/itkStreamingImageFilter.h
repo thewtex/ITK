@@ -36,6 +36,9 @@ namespace itk
  * This filter will produce the entire output as one image, but the upstream
  * filters will do their processing in pieces.
  *
+ * \warning The StreamingImageFilter produces only one output for
+ * input index 0. Other inputs are ignored.
+ *
  * \ingroup ITKSystemObjects
  * \ingroup DataProcessing
  * \ingroup ITK-Common
