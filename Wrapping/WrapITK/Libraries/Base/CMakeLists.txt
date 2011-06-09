@@ -23,6 +23,7 @@ set(WRAPPER_LIBRARY_GROUPS
   itkRGBAPixel
   itkVariableLengthVector
   ITKRegions
+  itkImageRegion
   itkMatrix
   itkSymmetricSecondRankTensor
   itkImage
