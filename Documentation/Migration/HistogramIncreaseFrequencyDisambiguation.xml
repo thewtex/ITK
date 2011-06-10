@@ -65,8 +65,9 @@
     Based on signature, perhaps replace with
     IncreaseFrequencyOfMeasurement
     IncreaseFrequencyOfIndex
-    >
+    -->
   </MigrationFix-Manual>
+
 
 
 </Change>

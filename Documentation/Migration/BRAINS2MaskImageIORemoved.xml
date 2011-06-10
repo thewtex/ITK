@@ -68,7 +68,6 @@
       Testing/Code/IO/itkBrains2MaskImageIOTest.cxx
       Testing/Code/IO/itkIOHeaderTest.cxx
     </FileList>
-</Change>
 
 <MigrationFix-Manual>
   <Old>
@@ -84,3 +83,5 @@
     See http://www.
   </New>
 </MigrationFix-Manual>
+
+</Change>
