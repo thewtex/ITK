@@ -88,10 +88,10 @@ GPUBinaryThresholdImageFilter< TInputImage, TOutputImage >
   std::cout << "Defines: " << defines.str() << "Source code path: " << oclSrcPath << std::endl;
 
   // load and build program
-  this->m_KernelManager->LoadProgramFromFile( oclSrcPath.c_str(), defines.str().c_str() );
+  this->m_GPUKernelManager->LoadProgramFromFile( oclSrcPath.c_str(), defines.str().c_str() );
 
   // create kernel
-  this->m_KernelHandle = this->m_KernelManager->CreateKernel("BinaryThresholdFilter");
+  this->m_UnaryFunctorImageFilterGPUKernelHandle = this->m_GPUKernelManager->CreateKernel("BinaryThresholdFilter");
 }
 /**
  *

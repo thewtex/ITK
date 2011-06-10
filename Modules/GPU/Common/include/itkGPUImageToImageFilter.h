@@ -65,10 +65,10 @@ protected:
   virtual void GPUGenerateData() {};
 
   // GPU kernel manager
-  typename GPUKernelManager::Pointer m_KernelManager;
+  typename GPUKernelManager::Pointer m_GPUKernelManager;
 
-  // GPU kernel handle
-  int m_KernelHandle;
+  // GPU kernel handle - kernel should be defined in specific filter (not in the base class)
+  //int m_KernelHandle;
 
 private:
   GPUImageToImageFilter(const Self &); //purposely not implemented

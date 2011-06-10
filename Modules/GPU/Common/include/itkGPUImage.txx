@@ -76,14 +76,22 @@ void GPUImage< TPixel, VImageDimension >::SetPixel(const IndexType & index, cons
 template <class TPixel, unsigned int VImageDimension>
 TPixel & GPUImage< TPixel, VImageDimension >::GetPixel(const IndexType & index)
 {
+  /* Original version - very conservative
   m_GPUManager->SetGPUBufferDirty();
+  return Superclass::GetPixel( index );
+  */
+  m_GPUManager->MakeCPUBufferUpToDate();
   return Superclass::GetPixel( index );
 }
 
 template <class TPixel, unsigned int VImageDimension>
 TPixel & GPUImage< TPixel, VImageDimension >::operator[](const IndexType & index)
 {
+  /* Original version - very conservative
   m_GPUManager->SetGPUBufferDirty();
+  return Superclass::operator[]( index );
+  */
+  m_GPUManager->MakeCPUBufferUpToDate();
   return Superclass::operator[]( index );
 }
 
@@ -98,7 +106,15 @@ void GPUImage< TPixel, VImageDimension >::SetPixelContainer(PixelContainer *cont
 template <class TPixel, unsigned int VImageDimension>
 TPixel* GPUImage< TPixel, VImageDimension >::GetBufferPointer()
 {
+  /* Original version - very conservative
+   * Always set GPU dirty (even though pixel values are not modified)
   m_GPUManager->SetGPUBufferDirty();
+  return Superclass::GetBufferPointer();
+  */
+
+  /* less conservative version - if you modify pixel value using
+   * this pointer then you must set the image as modified manually!!! */
+  m_GPUManager->MakeCPUBufferUpToDate();
   return Superclass::GetBufferPointer();
 }
 

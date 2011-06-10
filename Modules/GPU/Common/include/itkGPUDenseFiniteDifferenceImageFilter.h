@@ -77,7 +77,7 @@ public:
   typedef SmartPointer< const Self > ConstPointer;
 
   /** Run-time type information (and related methods) */
-  itkTypeMacro(GPUDenseFiniteDifferenceImageFilter, GPUImageToImageFilter);
+  itkTypeMacro(GPUDenseFiniteDifferenceImageFilter, GPUFiniteDifferenceImageFilter);
 
   /** Convenient typedefs */
   typedef typename Superclass::InputImageType  InputImageType;
@@ -178,6 +178,9 @@ private:
 
   /** The buffer that holds the updates for an iteration of the algorithm. */
   //typename UpdateBufferType::Pointer m_UpdateBuffer;
+
+  /* GPU kernel handle for GPUApplyUpdate */
+  int m_ApplyUpdateGPUKernelHandle;
 };
 } // end namespace itk
 

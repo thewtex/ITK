@@ -213,6 +213,11 @@ void GPUDataManager::Initialize()
     m_CommandQueueId = 0; // default command queue
   }
 
+  if( m_GPUBuffer ) // Release GPU memory if exists
+  {
+    clReleaseMemObject(m_GPUBuffer);
+  }
+
   m_BufferSize = 0;
   m_GPUBuffer = NULL;
   m_CPUBuffer = NULL;

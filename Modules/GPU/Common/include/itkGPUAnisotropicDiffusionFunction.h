@@ -143,7 +143,7 @@ public:
   typedef SmartPointer< const Self >         ConstPointer;
 
   /** Run-time type information (and related methods) */
-  itkTypeMacro(AnisotropicDiffusionFunction, FiniteDifferenceFunction);
+  itkTypeMacro(GPUAnisotropicDiffusionFunction, GPUFiniteDifferenceFunction);
 
   /** Inherit some parameters from the superclass type */
   typedef typename Superclass::ImageType        ImageType;
@@ -238,6 +238,12 @@ protected:
     os << indent << "ConductanceParameter: " << m_ConductanceParameter
        << std::endl;
   }
+
+
+  // GPU buffer for Computing Average Squared Gradient Magnitude
+  typename GPUDataManager::Pointer m_GPUAnisotropicDiffusionFunctionBuffer;
+  typename GPUKernelManager::Pointer m_GPUAnisotropicDiffusionFunctionBufferKernelManager;
+  int m_CalculateAverageGradientMagnitudeSquaredKernelHandle;
 
 private:
   GPUAnisotropicDiffusionFunction(const Self &); //purposely not implemented

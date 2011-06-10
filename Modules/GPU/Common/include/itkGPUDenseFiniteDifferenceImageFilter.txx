@@ -24,6 +24,7 @@
 #include "itkImageRegionIterator.h"
 #include "itkNumericTraits.h"
 #include "itkNeighborhoodAlgorithm.h"
+#include "itkOclUtil.h"
 
 namespace itk
 {
@@ -44,7 +45,7 @@ GPUDenseFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilt
 
   std::ostringstream defines;
 
-  if(TInputImage::ImageDimension > 3)
+  if(TInputImage::ImageDimension > 3 || ImageDimension < 1)
   {
     itkExceptionMacro("GPUDenseFiniteDifferenceImageFilter supports 1/2/3D image.");
   }
@@ -62,10 +63,10 @@ GPUDenseFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilt
   std::cout << "Defines: " << defines.str() << "Source code path: " << oclSrcPath << std::endl;
 
   // load and build program
-  this->m_KernelManager->LoadProgramFromFile( oclSrcPath.c_str(), defines.str().c_str() );
+  this->m_GPUKernelManager->LoadProgramFromFile( oclSrcPath.c_str(), defines.str().c_str() );
 
   // create kernel
-  this->m_KernelHandle = this->m_KernelManager->CreateKernel("ApplyUpdate");
+  m_ApplyUpdateGPUKernelHandle = this->m_GPUKernelManager->CreateKernel("ApplyUpdate");
 }
 
 template< class TInputImage, class TOutputImage, class TParentImageFilter >
@@ -74,6 +75,9 @@ GPUDenseFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilt
 ::CopyInputToOutput()
 {
   CPUSuperclass::CopyInputToOutput();
+
+  // Mark GPU is dirty by setting CPU as modified
+  this->GetOutput()->Modified();
 }
 
 template< class TInputImage, class TOutputImage, class TParentImageFilter >
@@ -95,34 +99,40 @@ GPUDenseFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilt
   typedef typename itk::GPUTraits< TOutputImage >::Type       GPUOutputImage;
 
   typename GPUBufferImage::Pointer bfPtr =  dynamic_cast< GPUBufferImage * >( m_UpdateBuffer.GetPointer() );
-  typename GPUOutputImage::Pointer otPtr =  dynamic_cast< GPUOutputImage * >( this->ProcessObject::GetOutput(0) );
+  typename GPUOutputImage::Pointer otPtr =  dynamic_cast< GPUOutputImage * >( this->GetOutput() );//this->ProcessObject::GetOutput(0) );
   typename GPUOutputImage::SizeType outSize = otPtr->GetLargestPossibleRegion().GetSize();
 
   int imgSize[3];
   imgSize[0] = imgSize[1] = imgSize[2] = 1;
 
-  for(int i=0; i<(int)TInputImage::ImageDimension; i++)
+  float timeStep = dt;
+
+  int ImageDim = (int)TInputImage::ImageDimension;
+
+  for(int i=0; i<ImageDim; i++)
   {
     imgSize[i] = outSize[i];
   }
 
-  size_t localSize[2], globalSize[2];
-  localSize[0] = localSize[1] = 16;
-  globalSize[0] = localSize[0]*(unsigned int)ceil((float)outSize[0]/(float)localSize[0]); // total # of threads
-  globalSize[1] = localSize[1]*(unsigned int)ceil((float)outSize[1]/(float)localSize[1]);
+  size_t localSize[3], globalSize[3];
+  localSize[0] = localSize[1] = localSize[2] = BLOCK_SIZE[ImageDim-1];
+  for(int i=0; i<ImageDim; i++)
+  {
+    globalSize[i] = localSize[i]*(unsigned int)ceil((float)outSize[i]/(float)localSize[i]); // total # of threads
+  }
 
   // arguments set up
   int argidx = 0;
-  this->m_KernelManager->SetKernelArgWithImage(this->m_KernelHandle, argidx++, bfPtr->GetGPUDataManager());
-  this->m_KernelManager->SetKernelArgWithImage(this->m_KernelHandle, argidx++, otPtr->GetGPUDataManager());
-  this->m_KernelManager->SetKernelArg(this->m_KernelHandle, argidx++, sizeof(float), &(dt));
-  for(int i=0; i<(int)TInputImage::ImageDimension; i++)
+  this->m_GPUKernelManager->SetKernelArgWithImage(m_ApplyUpdateGPUKernelHandle, argidx++, bfPtr->GetGPUDataManager());
+  this->m_GPUKernelManager->SetKernelArgWithImage(m_ApplyUpdateGPUKernelHandle, argidx++, otPtr->GetGPUDataManager());
+  this->m_GPUKernelManager->SetKernelArg(m_ApplyUpdateGPUKernelHandle, argidx++, sizeof(float), &(timeStep));
+  for(int i=0; i<ImageDim; i++)
   {
-    this->m_KernelManager->SetKernelArg(this->m_KernelHandle, argidx++, sizeof(int), &(imgSize[i]));
+    this->m_GPUKernelManager->SetKernelArg(m_ApplyUpdateGPUKernelHandle, argidx++, sizeof(int), &(imgSize[i]));
   }
 
   // launch kernel
-  this->m_KernelManager->LaunchKernel( this->m_KernelHandle, (int)TInputImage::ImageDimension, globalSize, localSize );
+  this->m_GPUKernelManager->LaunchKernel(m_ApplyUpdateGPUKernelHandle, (int)TInputImage::ImageDimension, globalSize, localSize );
 
   // Explicitely call Modified on GetOutput here. Do we need this?
   //this->GetOutput()->Modified();

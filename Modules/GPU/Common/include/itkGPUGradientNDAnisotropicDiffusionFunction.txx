@@ -21,11 +21,7 @@
 #include "itkNumericTraits.h"
 #include "itkGPUGradientNDAnisotropicDiffusionFunction.h"
 
-// OpenCL workgroup (block) size for 1/2/3D - needs to be tuned based on the GPU architecture
-// 1D : 256
-// 2D : 16x16 = 256
-// 3D : 8x8x8 = 512
-static int BLOCK_SIZE[3] = { 256, 16, 8 };
+#include "itkOclUtil.h"
 
 namespace itk
 {
@@ -95,14 +91,6 @@ GPUGradientNDAnisotropicDiffusionFunction< TImage >
   defines << "#define DIM_" << TImage::ImageDimension << "\n";
   defines << "#define BLOCK_SIZE " << BLOCK_SIZE[TImage::ImageDimension-1] << "\n";
 
-  /*
-  defines << "#define BUFPIXELTYPE ";
-  GetTypenameInString( typeid ( typename TImage::PixelType ), defines );
-
-  defines << "#define INPIXELTYPE ";
-  GetTypenameInString( typeid ( typename TImage::PixelType ), defines );
-*/
-
   defines << "#define PIXELTYPE ";
   GetTypenameInString( typeid ( typename TImage::PixelType ), defines );
 
@@ -111,10 +99,10 @@ GPUGradientNDAnisotropicDiffusionFunction< TImage >
   std::cout << "Defines: " << defines.str() << "Source code path: " << oclSrcPath << std::endl;
 
   // load and build program
-  this->m_KernelManager->LoadProgramFromFile( oclSrcPath.c_str(), defines.str().c_str() );
+  this->m_GPUFiniteDifferenceFunctionKernelManager->LoadProgramFromFile( oclSrcPath.c_str(), defines.str().c_str() );
 
   // create kernel
-  this->m_ComputeUpdateKernelHandle = this->m_KernelManager->CreateKernel("ComputeUpdate");
+  this->m_ComputeUpdateKernelHandle = this->m_GPUFiniteDifferenceFunctionKernelManager->CreateKernel("ComputeUpdate");
 
 }
 
@@ -135,39 +123,44 @@ GPUGradientNDAnisotropicDiffusionFunction< TImage >
 
   int imgSize[3];
   imgSize[0] = imgSize[1] = imgSize[2] = 1;
+  float imgScale[3];
+  imgScale[0] = imgScale[1] = imgScale[2] = 1.0f;
 
   int ImageDim = (int)TImage::ImageDimension;
 
   for(int i=0; i<ImageDim; i++)
   {
     imgSize[i] = outSize[i];
+    imgScale[i] = this->m_ScaleCoefficients[i];
   }
 
-  size_t localSize[2], globalSize[2];
-  localSize[0] = localSize[1] = BLOCK_SIZE[ImageDim-1];
-  globalSize[0] = localSize[0]*(unsigned int)ceil((float)outSize[0]/(float)localSize[0]); // total # of threads
-  globalSize[1] = localSize[1]*(unsigned int)ceil((float)outSize[1]/(float)localSize[1]);
+  size_t localSize[3], globalSize[3];
+  localSize[0] = localSize[1] = localSize[2] = BLOCK_SIZE[ImageDim-1];
+  for(int i=0; i<ImageDim; i++)
+  {
+    globalSize[i] = localSize[i]*(unsigned int)ceil((float)outSize[i]/(float)localSize[i]); // total # of threads
+  }
 
   // arguments set up
   int argidx = 0;
-  this->m_KernelManager->SetKernelArgWithImage(this->m_ComputeUpdateKernelHandle, argidx++, inPtr->GetGPUDataManager());
-  this->m_KernelManager->SetKernelArgWithImage(this->m_ComputeUpdateKernelHandle, argidx++, bfPtr->GetGPUDataManager());
-  this->m_KernelManager->SetKernelArg(this->m_ComputeUpdateKernelHandle, argidx++, sizeof(typename TImage::PixelType), &(m_K));
+  this->m_GPUFiniteDifferenceFunctionKernelManager->SetKernelArgWithImage(this->m_ComputeUpdateKernelHandle, argidx++, inPtr->GetGPUDataManager());
+  this->m_GPUFiniteDifferenceFunctionKernelManager->SetKernelArgWithImage(this->m_ComputeUpdateKernelHandle, argidx++, bfPtr->GetGPUDataManager());
+  this->m_GPUFiniteDifferenceFunctionKernelManager->SetKernelArg(this->m_ComputeUpdateKernelHandle, argidx++, sizeof(typename TImage::PixelType), &(m_K));
 
   // filter scale parameter
   for(int i=0; i<ImageDim; i++)
   {
-    this->m_KernelManager->SetKernelArg(this->m_ComputeUpdateKernelHandle, argidx++, sizeof(float), &(this->m_ScaleCoefficients[i]));
+    this->m_GPUFiniteDifferenceFunctionKernelManager->SetKernelArg(this->m_ComputeUpdateKernelHandle, argidx++, sizeof(float), &(imgScale[i]));
   }
 
   // image size
   for(int i=0; i<ImageDim; i++)
   {
-    this->m_KernelManager->SetKernelArg(this->m_ComputeUpdateKernelHandle, argidx++, sizeof(int), &(imgSize[i]));
+    this->m_GPUFiniteDifferenceFunctionKernelManager->SetKernelArg(this->m_ComputeUpdateKernelHandle, argidx++, sizeof(int), &(imgSize[i]));
   }
 
   // launch kernel
-  this->m_KernelManager->LaunchKernel( this->m_ComputeUpdateKernelHandle, ImageDim, globalSize, localSize );
+  this->m_GPUFiniteDifferenceFunctionKernelManager->LaunchKernel( this->m_ComputeUpdateKernelHandle, ImageDim, globalSize, localSize );
 }
 
 /*
@@ -253,6 +246,8 @@ GPUGradientNDAnisotropicDiffusionFunction< TImage >
   return static_cast< PixelType >( delta );
 }
 */
+
+
 } // end namespace itk
 
 #endif

@@ -38,6 +38,8 @@
 
 #include "itkRescaleIntensityImageFilter.h"
 
+#include "itkTimeProbe.h"
+
 // test
 #include "itkGPUBinaryThresholdImageFilter.h"
 #include "itkGPUGradientAnisotropicDiffusionImageFilter.h"
@@ -153,6 +155,82 @@ int itkGPUImageFilterTestTemp(int argc, char *argv[])
 
 
 #ifdef ANISODIFFUSIONTEST
+
+#define DIM_3 //DIM_2
+int itkGPUImageFilterTestTemp(int argc, char *argv[])
+{
+  // register object factory for GPU image and filter
+  itk::ObjectFactoryBase::RegisterFactory( itk::GPUImageFactory::New() );
+  //itk::ObjectFactoryBase::RegisterFactory( itk::GPUMeanImageFilterFactory::New() );
+
+  typedef float InputPixelType;
+  typedef float OutputPixelType;
+
+  typedef itk::Image< InputPixelType,  3 >   InputImageType;
+  typedef itk::Image< OutputPixelType, 3 >   OutputImageType;
+
+  typedef itk::ImageFileReader< InputImageType  >  ReaderType;
+
+  ReaderType::Pointer reader = ReaderType::New();
+
+  reader->SetFileName( "E:/proj/CUDA_ITK/ITK_CUDA_TEST/data/AD63368_tensor_double_up.nhdr");
+
+  //
+  // Note: We use regular itk filter type here but factory will automatically create
+  //       GPU filter for Median filter and CPU filter for threshold filter.
+  //
+  typedef itk::GPUGradientAnisotropicDiffusionImageFilter< InputImageType, OutputImageType > AnisoDiffFilterType;
+  //typedef itk::GradientAnisotropicDiffusionImageFilter< InputImageType, OutputImageType > AnisoDiffFilterType;
+
+  AnisoDiffFilterType::Pointer anisoFilter = AnisoDiffFilterType::New();
+
+  // GPU test
+  reader->Update();
+
+  itk::TimeProbe timer;
+  timer.Start();
+
+  //anisoFilter->SetInPlace( true );// false/*true*/ );
+  anisoFilter->SetInput( reader->GetOutput() );
+  anisoFilter->SetNumberOfIterations( 10 );
+  anisoFilter->SetTimeStep( 0.0625 );
+  anisoFilter->SetConductanceParameter( 3.0 );
+  anisoFilter->UseImageSpacingOn();
+  //anisoFilter->SetFixedAverageGradientMagnitude( 10.0 );
+  anisoFilter->Update();
+
+  timer.Stop();
+  std::cerr << "Anisotropic diffusion took " << timer.GetMeanTime() << " seconds.\n";
+
+  //
+  //  The output of the filter is rescaled here and then sent to a writer.
+  //
+  typedef unsigned char WritePixelType;
+  typedef itk::Image< WritePixelType, 3 > WriteImageType;
+  typedef itk::RescaleIntensityImageFilter< OutputImageType, WriteImageType > RescaleFilterType;
+
+  RescaleFilterType::Pointer rescaler = RescaleFilterType::New();
+  rescaler->SetOutputMinimum(   0 );
+  rescaler->SetOutputMaximum( 255 );
+
+  typedef itk::ImageFileWriter< WriteImageType >  WriterType;
+
+  WriterType::Pointer writer = WriterType::New();
+  writer->SetFileName( "output-GPUImageFilterTest.nrrd" );
+
+  rescaler->SetInput( anisoFilter->GetOutput() );
+  writer->SetInput( rescaler->GetOutput() );
+  writer->Update();
+
+  return EXIT_SUCCESS;
+}
+
+
+#ifdef DIM_3
+
+#endif
+
+#ifdef DIM_2
 /**
  * Testing GPU BInary Threshold Filter
  */
@@ -191,6 +269,7 @@ int itkGPUImageFilterTestTemp(int argc, char *argv[])
   anisoFilter->SetTimeStep( 0.125 );
   anisoFilter->SetConductanceParameter( 3.0 );
   anisoFilter->UseImageSpacingOn();
+  //anisoFilter->SetFixedAverageGradientMagnitude( 10.0 );
   anisoFilter->Update();
 
 
@@ -216,4 +295,6 @@ int itkGPUImageFilterTestTemp(int argc, char *argv[])
 
   return EXIT_SUCCESS;
 }
+#endif
+
 #endif

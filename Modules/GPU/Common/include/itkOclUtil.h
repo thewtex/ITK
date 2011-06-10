@@ -26,6 +26,12 @@
 
 #endif
 
+// OpenCL workgroup (block) size for 1/2/3D - needs to be tuned based on the GPU architecture
+// 1D : 256
+// 2D : 16x16 = 256
+// 3D : 8x8x8 = 512
+static int BLOCK_SIZE[3] = { 256, 16, 8 };
+
 //
 // Get the devices that are available
 //

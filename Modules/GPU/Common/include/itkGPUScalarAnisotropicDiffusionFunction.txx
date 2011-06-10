@@ -26,11 +26,56 @@
 
 namespace itk
 {
+
+template< class TImage >
+GPUScalarAnisotropicDiffusionFunction< TImage >
+::GPUScalarAnisotropicDiffusionFunction()
+{
+  m_GPUAnisotropicDiffusionFunctionBuffer = GPUDataManager::New();
+  m_GPUAnisotropicDiffusionFunctionBufferKernelManager = GPUKernelManager::New();
+
+  // load GPU kernel
+  std::ostringstream defines;
+
+  if(ImageDimension > 3 || ImageDimension < 1)
+  {
+    itkExceptionMacro("GPUScalarAnisotropicDiffusionFunction supports 1/2/3D image.");
+  }
+
+  defines << "#define DIM_" << ImageDimension << "\n";
+
+  defines << "#define PIXELTYPE ";
+  GetTypenameInString( typeid ( typename TImage::PixelType ), defines );
+
+  std::string oclSrcPath = "./../OpenCL/GPUScalarAnisotropicDiffusionFunction.cl";
+
+  std::cout << "Defines: " << defines.str() << "Source code path: " << oclSrcPath << std::endl;
+
+  // load and build program
+  this->m_GPUFiniteDifferenceFunctionKernelManager->LoadProgramFromFile( oclSrcPath.c_str(), defines.str().c_str() );
+
+  // create kernel
+  this->m_CalculateAverageGradientMagnitudeSquaredKernelHandle = this->m_GPUFiniteDifferenceFunctionKernelManager->CreateKernel("CalculateAverageGradientMagnitudeSquared");
+
+}
+
 template< class TImage >
 void
 GPUScalarAnisotropicDiffusionFunction< TImage >
 ::CalculateAverageGradientMagnitudeSquared(TImage *ip)
 {
+  // Initialize & Allocate GPU Buffer
+  unsigned long numPixel = ip->GetOffsetTable()[ImageDimension];
+  if(numPixel != m_GPUAnisotropicDiffusionFunctionBuffer->GetBufferSize())
+  {
+    m_GPUAnisotropicDiffusionFunctionBuffer->Initialize();
+    m_GPUAnisotropicDiffusionFunctionBuffer->SetBufferSize( sizeof(TImage::PixelType)*numPixel );
+    m_GPUAnisotropicDiffusionFunctionBuffer->Allocate();
+  }
+
+  // GPU kernel to compute Average Squared Gradient Magnitude
+
+  // CPU version
   typedef ConstNeighborhoodIterator< TImage >                           RNI_type;
   typedef ConstNeighborhoodIterator< TImage >                           SNI_type;
   typedef NeighborhoodAlgorithm::ImageBoundaryFacesCalculator< TImage > BFC_type;
@@ -128,6 +173,7 @@ GPUScalarAnisotropicDiffusionFunction< TImage >
     }
 
   this->SetAverageGradientMagnitudeSquared( (double)( accumulator / counter ) );
+
 }
 } // end namespace itk
 

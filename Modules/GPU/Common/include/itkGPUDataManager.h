@@ -58,6 +58,8 @@ namespace itk
     /** total buffer size in bytes */
     void SetBufferSize( unsigned int num );
 
+    unsigned int GetBufferSize() { return m_BufferSize; }
+
     void SetBufferFlag( cl_mem_flags flags );
 
     void SetCPUBufferPointer( void* ptr );

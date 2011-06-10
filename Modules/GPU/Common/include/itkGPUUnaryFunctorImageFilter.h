@@ -104,11 +104,16 @@ protected:
 
   virtual void GPUGenerateData();
 
+  // GPU kernel handle is defined here instead of in the child class
+  // because GPUGenerateData() in this base class is used.
+  int m_UnaryFunctorImageFilterGPUKernelHandle;
+
 private:
   GPUUnaryFunctorImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);             //purposely not implemented
 
   FunctorType m_Functor;
+
 };
 
 } // end of namespace itk

@@ -1,7 +1,6 @@
 #ifndef __itkGPUMeanImageFilter_h
 #define __itkGPUMeanImageFilter_h
 
-//#include "pathToOpenCLSourceCode.h"
 #include "itkMeanImageFilter.h"
 #include "itkGPUImageToImageFilter.h"
 #include "itkVersion.h"
@@ -61,7 +60,7 @@ private:
   GPUMeanImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);     //purposely not implemented
 
-  //int m_KernelHandle;
+  int m_MeanFilterGPUKernelHandle;
 };
 
 /** \class GPUMeanImageFilterFactory

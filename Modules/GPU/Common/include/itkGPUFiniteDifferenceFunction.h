@@ -23,6 +23,9 @@
 #include "itkConstNeighborhoodIterator.h"
 #include "itkVector.h"
 
+#include "itkGPUDataManager.h"
+#include "itkGPUKernelManager.h"
+
 namespace itk
 {
 /**
@@ -198,7 +201,7 @@ protected:
   PixelRealType m_ScaleCoefficients[ImageDimension];
 
   // GPU kernel manager
-  typename GPUKernelManager::Pointer m_KernelManager;
+  typename GPUKernelManager::Pointer m_GPUFiniteDifferenceFunctionKernelManager;
 
   // GPU kernel handle for GPUComputeUpdate()
   int m_ComputeUpdateKernelHandle;

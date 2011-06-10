@@ -9,7 +9,7 @@ namespace itk
 template< class TInputImage, class TOutputImage, class TParentImageFilter >
 GPUImageToImageFilter< TInputImage, TOutputImage, TParentImageFilter >::GPUImageToImageFilter(): m_GPUEnabled(true)
 {
-  m_KernelManager = GPUKernelManager::New();
+  m_GPUKernelManager = GPUKernelManager::New();
 }
 
 template< class TInputImage, class TOutputImage, class TParentImageFilter >

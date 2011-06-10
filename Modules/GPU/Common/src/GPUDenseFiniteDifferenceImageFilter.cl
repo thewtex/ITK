@@ -45,7 +45,7 @@ __kernel void ApplyUpdate(__global const BUFPIXELTYPE *buf,
   unsigned int gidx = width*giy + gix;
   if(gix < width && giy < height)
   {
-    out[gix] = (OUTPIXELTYPE)( (float)out[gix] + dt*(float)(buf[gix]) );
+    out[gidx] = (OUTPIXELTYPE)( (float)out[gidx] + dt*(float)(buf[gidx]) );
   }
 }
 #endif
@@ -59,10 +59,10 @@ __kernel void ApplyUpdate(__global const BUFPIXELTYPE *buf,
   int gix = get_global_id(0);
   int giy = get_global_id(1);
   int giz = get_global_id(2);
-  unsigned int gidx = width*(giz*heigh + giy) + gix;
+  unsigned int gidx = width*(giz*height + giy) + gix;
   if(gix < width && giy < height && giz < depth)
   {
-    out[gix] = (OUTPIXELTYPE)( (float)out[gix] + dt*(float)(buf[gix]) );
+    out[gidx] = (OUTPIXELTYPE)( (float)out[gidx] + dt*(float)(buf[gidx]) );
   }
 }
 #endif
