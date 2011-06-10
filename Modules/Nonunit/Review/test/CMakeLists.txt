@@ -400,7 +400,7 @@ itk_add_test(NAME itkBSplineDeformableTransformInitializerTest1
               ${ITK_EXAMPLE_DATA_ROOT}/BSplineDisplacements1.txt ${ITK_EXAMPLE_DATA_ROOT}/BrainProtonDensitySliceBorder20.png ${ITK_EXAMPLE_DATA_ROOT}/BrainProtonDensitySliceBorder20.png ${ITK_TEST_OUTPUT_DIR}/itkBSplineDeformableTransformInitializerTest1.png ${ITK_TEST_OUTPUT_DIR}/itkBSplineDeformableTransformInitializerTest1DeformationField.mhd)
 itk_add_test(NAME itkBSplineDeformableTransformInitializerTest2
       COMMAND ITKReviewTestDriver itkBSplineDeformableTransformInitializerTest2
-              ${ITK_EXAMPLE_DATA_ROOT}/BSplineDisplacements1.txt ${ITK_EXAMPLE_DATA_ROOT}/BrainProtonDensitySliceBorder20.png ${ITK_EXAMPLE_DATA_ROOT}/BrainProtonDensitySliceBorder20.png ${ITK_TEST_OUTPUT_DIR}/itkBSplineDeformableTransformInitializerTest2.png ${ITK_TEST_OUTPUT_DIR}/itkBSplineDeformableTransformInitializerTest2DeformationField.mhd)
+              ${ITK_EXAMPLE_DATA_ROOT}/BrainProtonDensitySliceBorder20.png )
 itk_add_test(NAME itkTransformToDeformationFieldSourceTest03
       COMMAND ITKReviewTestDriver
     --compare ${TEMP}/transformedImage.nii
