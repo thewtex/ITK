@@ -91,7 +91,7 @@
     Code/SpatialObject/itkSpatialObject.txx
     Testing/Code/BasicFilters/itkTwoOutputExampleImageFilterTest.cxx
     Testing/Code/IO/itkImageFileWriterStreamingPastingCompressingTest1.cxx
-</Change>
+  </FileList>
 
 <MigrationFix-Automatic>
   <Old>
@@ -101,3 +101,4 @@
     std::ostringstream
   </New>
 </MigrationFix-Automatic>
+</Change>

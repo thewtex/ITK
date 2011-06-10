@@ -51,7 +51,7 @@
       Code/Common/itkQuaternionOrientationAdapter.h
       Code/Common/itkSpatialOrientationAdapter.h
     </FileList>
-</Change>
+
 
 <MigrationFix-Automatic>
   <Old>
@@ -61,3 +61,5 @@
   "itkOrientationAdapterBase.h"
   </New>
 </MigrationFix-Automatic>
+
+</Change>

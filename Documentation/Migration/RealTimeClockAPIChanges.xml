@@ -56,7 +56,6 @@
     Code/Common/itkRealTimeClock.h
     Code/Common/itkRealTimeClock.cxx
   </FileList>
-</Change>
 
 <MigrationFix-Automatic>
   <Old>
@@ -66,3 +65,5 @@
     GetTimeInSeconds
   </New>
 </MigrationFix-Automatic>
+
+</Change>
