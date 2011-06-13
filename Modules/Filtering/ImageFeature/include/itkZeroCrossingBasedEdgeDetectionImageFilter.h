@@ -24,34 +24,34 @@
 namespace itk
 {
 /** \class ZeroCrossingBasedEdgeDetectionImageFilter
+ * \brief This filter implements a zero-crossing based edge detecor.
  *
- * This filter implements a zero-crossing based edge detecor. The zero-crossing
- * based edge detector looks for pixels in the Laplacian of an image where the
- * value of the Laplacian passes through zero --- points where the Laplacian
- * changes sign.  Such points often occur at ``edges'' in images ---
- * i.e. points where the intensity of the image changes rapidly, but they also
- * occur at places that are not as easy to associate with edges. It is best to
- * think of the zero crossing detector as some sort of feature detector rather
- * than as a specific edge detector.
+ * The zero-crossing based edge detector looks for pixels in the Laplacian of
+ * an image where the value of the Laplacian passes through zero --- points
+ * where the Laplacian changes sign.  Such points often occur at ``edges'' in
+ * images --- i.e. points where the intensity of the image changes rapidly,
+ * but they also occur at places that are not as easy to associate with edges.
+ * It is best to think of the zero crossing detector as some sort of feature
+ * detector rather than as a specific edge detector.
  *
- * /par
+ * \par
  * Zero crossings always lie on closed contours and so the output from the zero
  * crossing detector is usually a binary image with single pixel thickness
  * lines showing the positions of the zero crossing points.
  *
- * /par
+ * \par
  * In this implementation, the input image is first smoothed with a Gaussian
  * filter, then the LaplacianImageFilter is applied to smoothed image. Finally
  * the zero-crossing of the Laplacian of the smoothed image is detected. The
  * output is a binary image.
  *
- * /par Inputs and Outputs
+ * \par Inputs and Outputs
  * The input to the filter should be a scalar, itk::Image of arbitrary
  * dimension.  The output image is a binary, labeled image.  See
  * itkZeroCrossingImageFilter for more information on requirements of the data
  * type of the output.
  *
- * /par
+ * \par
  * To use this filter, first set the parameters (variance and maximum error)
  * needed by the embedded DiscreteGaussianImageFilter, i.e.  See
  * DiscreteGaussianImageFilter for information about these parameters.
@@ -119,9 +119,9 @@ public:
 
   /** Set the variance parameter needed by the embedded gaussian filter  */
   void SetVariance(const typename ArrayType::ValueType v)
-  {
+    {
     m_Variance.Fill(v);
-  }
+    }
 
   /** Set the MaximumError parameter needed by the embedded gaussian filter
  * This value is used to set the desired maximum error of the gaussian
@@ -130,9 +130,9 @@ public:
  * error affects the Gaussian operator size. The value must be between 0.0 and
  * 1.0. */
   void SetMaximumError(const typename ArrayType::ValueType v)
-  {
+    {
     m_MaximumError.Fill(v);
-  }
+    }
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   /** Begin concept checking */
@@ -150,12 +150,12 @@ public:
 #endif
 protected:
   ZeroCrossingBasedEdgeDetectionImageFilter()
-  {
+    {
     m_Variance.Fill(1.0);
     m_MaximumError.Fill(0.01);
     m_BackgroundValue = NumericTraits< OutputImagePixelType >::Zero;
     m_ForegroundValue = NumericTraits< OutputImagePixelType >::One;
-  }
+    }
 
   ~ZeroCrossingBasedEdgeDetectionImageFilter(){}
   ZeroCrossingBasedEdgeDetectionImageFilter(const Self &) {}

@@ -39,12 +39,11 @@ public:
 };
 
 /** \class CannyEdgeDetectionImageFilter
- *
- * This filter is an implementation of a Canny edge detector for scalar-valued
- * images.  Based on John Canny's paper "A Computational Approach to Edge
- * Detection"(IEEE Transactions on Pattern Analysis and Machine Intelligence,
- * Vol. PAMI-8, No.6, November 1986),  there are four major steps used in the
- * edge-detection scheme:
+ * \brief This filter is an implementation of a Canny edge detector for
+ * scalar-valued images.  Based on John Canny's paper "A Computational Approach
+ * to Edge Detection"(IEEE Transactions on Pattern Analysis and Machine
+ * Intelligence, Vol. PAMI-8, No.6, November 1986),  there are four major steps
+ * used in the edge-detection scheme:
  * (1) Smooth the input image with Gaussian filter.
  * (2) Calculate the second directional derivatives of the smoothed image.
  * (3) Non-Maximum Suppression: the zero-crossings of 2nd derivative are found,
@@ -148,7 +147,7 @@ public:
   /** Set/Get the Variance parameter used by the Gaussian smoothing
       filter in this algorithm */
   void SetVariance(const typename ArrayType::ValueType v)
-  {
+    {
     for ( unsigned int i = 0; i < TInputImage::ImageDimension; i++ )
       {
       if ( m_Variance[i] != v )
@@ -158,12 +157,12 @@ public:
         break;
         }
       }
-  }
+    }
 
   /** Set/Get the MaximumError paramter used by the Gaussian smoothing filter
       in this algorithm */
   void SetMaximumError(const typename ArrayType::ValueType v)
-  {
+    {
     for ( unsigned int i = 0; i < TInputImage::ImageDimension; i++ )
       {
       if ( m_MaximumError[i] != v )
@@ -173,9 +172,9 @@ public:
         break;
         }
       }
-  }
+    }
 
-  /* TODO:  Document in the ITKv4 migration guide that
+  /** TODO:  Document in the ITKv4 migration guide that
    * the SetThreshold member function was removed from
    * the CannyEdgeDetectionImageFilter, and that both
    * UpperThreshold and LowerThreshold need to be set.
@@ -196,9 +195,9 @@ public:
   itkGetConstMacro(OutsideValue, OutputImagePixelType);
 
   OutputImageType * GetNonMaximumSuppressionImage()
-  {
+    {
     return this->m_MultiplyImageFilter->GetOutput();
-  }
+    }
 
   /** CannyEdgeDetectionImageFilter needs a larger input requested
    * region than the output requested region ( derivative operators, etc).
@@ -239,9 +238,10 @@ private:
   virtual ~CannyEdgeDetectionImageFilter(){}
 
   /** Thread-Data Structure   */
-  struct CannyThreadStruct {
+  struct CannyThreadStruct
+    {
     CannyEdgeDetectionImageFilter *Filter;
-  };
+    };
 
   /** This allocate storage for m_UpdateBuffer, m_UpdateBuffer1 */
   void AllocateUpdateBuffer();
