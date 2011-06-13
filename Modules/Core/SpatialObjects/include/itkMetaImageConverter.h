@@ -18,14 +18,17 @@
 #ifndef __itkMetaImageConverter_h
 #define __itkMetaImageConverter_h
 
-//
 // to avoid an Internal Compiler Error in Visual Studio 6.0
-//
 #include "metaImage.h"
 #include "itkImageMaskSpatialObject.h"
 
 namespace itk
 {
+/** \class MetaImageConverter
+ * \brief This is the MetaImageConverter class.
+ *
+ * \ingroup ITK-SpatialObjects
+ */
 template< unsigned int NDimensions = 3, class PixelType = unsigned char >
 class ITK_EXPORT MetaImageConverter
 {

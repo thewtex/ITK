@@ -24,6 +24,11 @@
 
 namespace itk
 {
+/** \class MetaSurfaceConverter
+ * \brief This is the MetaSurfaceConverter class.
+ *
+ * \ingroup ITK-SpatialObjects
+ */
 template< unsigned int NDimensions = 3 >
 class ITK_EXPORT MetaSurfaceConverter
 {

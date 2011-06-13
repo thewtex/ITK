@@ -24,6 +24,11 @@
 
 namespace itk
 {
+/** \class MetaBlobConverter
+ * \brief This is the MetaBlobConverter class.
+ *
+ * \ingroup ITK-SpatialObjects
+ */
 template< unsigned int NDimensions = 3 >
 class ITK_EXPORT MetaBlobConverter
 {

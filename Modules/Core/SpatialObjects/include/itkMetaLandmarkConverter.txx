@@ -28,7 +28,7 @@ MetaLandmarkConverter< NDimensions >
 ::MetaLandmarkConverter()
 {}
 
-/** Convert a metaLandmark into an Landmark SpatialObject  */
+/** Convert a metaLandmark into a Landmark SpatialObject  */
 template< unsigned int NDimensions >
 typename MetaLandmarkConverter< NDimensions >::SpatialObjectPointer
 MetaLandmarkConverter< NDimensions >
@@ -89,7 +89,7 @@ MetaLandmarkConverter< NDimensions >
   return landmark;
 }
 
-/** Convert an Landmark SpatialObject into a metaLandmark */
+/** Convert a Landmark SpatialObject into a metaLandmark */
 template< unsigned int NDimensions >
 MetaLandmark *
 MetaLandmarkConverter< NDimensions >
@@ -98,7 +98,6 @@ MetaLandmarkConverter< NDimensions >
   MetaLandmark *Landmark = new MetaLandmark(NDimensions);
 
   // fill in the Landmark information
-
   typename SpatialObjectType::PointListType::const_iterator i;
   for ( i = dynamic_cast< SpatialObjectType * >( spatialObject )->GetPoints().begin();
         i != dynamic_cast< SpatialObjectType * >( spatialObject )->GetPoints().end();

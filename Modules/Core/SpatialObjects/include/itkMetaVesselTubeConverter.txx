@@ -28,7 +28,7 @@ MetaVesselTubeConverter< NDimensions >
 ::MetaVesselTubeConverter()
 {}
 
-/** Convert a MetaVesselTube into an Tube SpatialObject  */
+/** Convert a MetaVesselTube into a Tube SpatialObject  */
 template< unsigned int NDimensions >
 typename MetaVesselTubeConverter< NDimensions >::SpatialObjectPointer
 MetaVesselTubeConverter< NDimensions >
@@ -122,7 +122,7 @@ MetaVesselTubeConverter< NDimensions >
   return tub;
 }
 
-/** Convert an Tube SpatialObject into a MetaVesselTube */
+/** Convert a Tube SpatialObject into a MetaVesselTube */
 template< unsigned int NDimensions >
 MetaVesselTube *
 MetaVesselTubeConverter< NDimensions >

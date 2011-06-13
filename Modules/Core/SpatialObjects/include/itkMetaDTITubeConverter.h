@@ -24,6 +24,11 @@
 
 namespace itk
 {
+/** \class MetaDTITubeConverter
+ * \brief This is the MetaDTITubeConverter class.
+ *
+ * \ingroup ITK-SpatialObjects
+ */
 template< unsigned int NDimensions = 3 >
 class ITK_EXPORT MetaDTITubeConverter
 {

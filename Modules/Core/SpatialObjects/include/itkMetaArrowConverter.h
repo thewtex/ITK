@@ -23,6 +23,11 @@
 
 namespace itk
 {
+/** \class MetaArrowConverter
+ * \brief This is the MetaArrowConverter class.
+ *
+ * \ingroup ITK-SpatialObjects
+ */
 template< unsigned int NDimensions = 3 >
 class ITK_EXPORT MetaArrowConverter : public Object
 {

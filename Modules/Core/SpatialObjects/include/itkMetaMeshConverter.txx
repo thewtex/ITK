@@ -33,7 +33,7 @@ MetaMeshConverter< NDimensions, PixelType, TMeshTraits >
 ::MetaMeshConverter()
 {}
 
-/** Convert a metaMesh into an Mesh SpatialObject  */
+/** Convert a metaMesh into a Mesh SpatialObject  */
 template< unsigned int NDimensions, typename PixelType, typename TMeshTraits >
 typename
 MetaMeshConverter< NDimensions, PixelType, TMeshTraits >::SpatialObjectPointer
@@ -209,7 +209,7 @@ MetaMeshConverter< NDimensions, PixelType, TMeshTraits >
   return meshSO;
 }
 
-/** Convert an Mesh SpatialObject into a metaMesh */
+/** Convert a Mesh SpatialObject into a metaMesh */
 template< unsigned int NDimensions, typename PixelType, typename TMeshTraits >
 MetaMesh *
 MetaMeshConverter< NDimensions, PixelType, TMeshTraits >

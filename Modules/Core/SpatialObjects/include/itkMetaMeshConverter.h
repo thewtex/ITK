@@ -23,6 +23,11 @@
 
 namespace itk
 {
+/** \class MetaMeshConverter
+ * \brief This is the MetaMeshConverter class.
+ *
+ * \ingroup ITK-SpatialObjects
+ */
 template< unsigned int NDimensions,
           typename PixelType = unsigned char,
           typename TMeshTraits =

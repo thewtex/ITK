@@ -28,7 +28,7 @@ MetaSurfaceConverter< NDimensions >
 ::MetaSurfaceConverter()
 {}
 
-/** Convert a metaSurface into an Surface SpatialObject */
+/** Convert a metaSurface into a Surface SpatialObject */
 template< unsigned int NDimensions >
 typename MetaSurfaceConverter< NDimensions >::SpatialObjectPointer
 MetaSurfaceConverter< NDimensions >
@@ -96,7 +96,7 @@ MetaSurfaceConverter< NDimensions >
   return surface;
 }
 
-/** Convert an Surface SpatialObject into a metaSurface */
+/** Convert a Surface SpatialObject into a metaSurface */
 template< unsigned int NDimensions >
 MetaSurface *
 MetaSurfaceConverter< NDimensions >
@@ -105,7 +105,6 @@ MetaSurfaceConverter< NDimensions >
   MetaSurface *Surface = new MetaSurface(NDimensions);
 
   // fill in the Surface information
-
   typename SpatialObjectType::PointListType::const_iterator i;
   for ( i = dynamic_cast< SpatialObjectType * >( spatialObject )->GetPoints().begin();
         i != dynamic_cast< SpatialObjectType * >( spatialObject )->GetPoints().end();

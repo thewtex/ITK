@@ -90,7 +90,7 @@ MetaBlobConverter< NDimensions >
   return blob;
 }
 
-/** Convert an Blob SpatialObject into a metaBlob */
+/** Convert a Blob SpatialObject into a metaBlob */
 template< unsigned int NDimensions >
 MetaBlob *
 MetaBlobConverter< NDimensions >
@@ -99,7 +99,6 @@ MetaBlobConverter< NDimensions >
   MetaBlob *Blob = new MetaBlob(NDimensions);
 
   // fill in the Blob information
-
   typename SpatialObjectType::PointListType::const_iterator i;
   for ( i = dynamic_cast< SpatialObjectType * >( spatialObject )->GetPoints().begin();
         i != dynamic_cast< SpatialObjectType * >( spatialObject )->GetPoints().end();

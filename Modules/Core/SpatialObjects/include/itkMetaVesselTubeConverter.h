@@ -24,6 +24,11 @@
 
 namespace itk
 {
+/** \class MetaVesselTubeConverter
+ * \brief This is the MetaVesselTubeConverter class.
+ *
+ * \ingroup ITK-SpatialObjects
+ */
 template< unsigned int NDimensions = 3 >
 class ITK_EXPORT MetaVesselTubeConverter
 {

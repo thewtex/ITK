@@ -28,7 +28,7 @@ MetaGroupConverter< NDimensions >
 ::MetaGroupConverter()
 {}
 
-/** Convert a metaGroup into an group SpatialObject  */
+/** Convert a metaGroup into a group SpatialObject  */
 template< unsigned int NDimensions >
 typename MetaGroupConverter< NDimensions >::SpatialObjectPointer
 MetaGroupConverter< NDimensions >
@@ -53,7 +53,7 @@ MetaGroupConverter< NDimensions >
   return spatialObject;
 }
 
-/** Convert an group SpatialObject into a metaGroup */
+/** Convert a group SpatialObject into a metaGroup */
 template< unsigned int NDimensions >
 MetaGroup *
 MetaGroupConverter< NDimensions >

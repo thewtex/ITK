@@ -23,6 +23,11 @@
 
 namespace itk
 {
+/** \class MetaGroupConverter
+ * \brief This is the MetaGroupConverter class.
+ *
+ * \ingroup ITK-SpatialObjects
+ */
 template< unsigned int NDimensions = 3 >
 class ITK_EXPORT MetaGroupConverter
 {

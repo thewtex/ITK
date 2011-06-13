@@ -28,7 +28,7 @@ MetaTubeConverter< NDimensions >
 ::MetaTubeConverter()
 {}
 
-/** Convert a metaTube into an Tube SpatialObject  */
+/** Convert a metaTube into a Tube SpatialObject  */
 template< unsigned int NDimensions >
 typename MetaTubeConverter< NDimensions >::SpatialObjectPointer
 MetaTubeConverter< NDimensions >
@@ -111,7 +111,7 @@ MetaTubeConverter< NDimensions >
   return tub;
 }
 
-/** Convert an Tube SpatialObject into a metaTube */
+/** Convert a Tube SpatialObject into a metaTube */
 template< unsigned int NDimensions >
 MetaTube *
 MetaTubeConverter< NDimensions >

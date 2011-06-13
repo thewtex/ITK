@@ -24,6 +24,11 @@
 
 namespace itk
 {
+/** \class MetaLandmarkConverter
+ * \brief This is the MetaLandmarkConverter class.
+ *
+ * \ingroup ITK-SpatialObjects
+ */
 template< unsigned int NDimensions = 3 >
 class ITK_EXPORT MetaLandmarkConverter
 {

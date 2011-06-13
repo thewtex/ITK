@@ -28,7 +28,7 @@ MetaLineConverter< NDimensions >
 ::MetaLineConverter()
 {}
 
-/** Convert a metaLine into an Line SpatialObject  */
+/** Convert a metaLine into a Line SpatialObject  */
 template< unsigned int NDimensions >
 typename MetaLineConverter< NDimensions >::SpatialObjectPointer
 MetaLineConverter< NDimensions >
@@ -97,7 +97,7 @@ MetaLineConverter< NDimensions >
   return line;
 }
 
-/** Convert an Line SpatialObject into a metaLine */
+/** Convert a Line SpatialObject into a metaLine */
 template< unsigned int NDimensions >
 MetaLine *
 MetaLineConverter< NDimensions >
@@ -106,7 +106,6 @@ MetaLineConverter< NDimensions >
   MetaLine *Line = new MetaLine(NDimensions);
 
   // fill in the Line information
-
   typename SpatialObjectType::PointListType::const_iterator i;
   for ( i = dynamic_cast< SpatialObjectType * >( spatialObject )->GetPoints().begin();
         i != dynamic_cast< SpatialObjectType * >( spatialObject )->GetPoints().end();

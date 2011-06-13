@@ -23,6 +23,11 @@
 
 namespace itk
 {
+/** \class MetaGaussianConverter
+ * \brief This is the MetaGaussianConverter class.
+ *
+ * \ingroup ITK-SpatialObjects
+ */
 template< unsigned int NDimensions = 3 >
 class ITK_EXPORT MetaGaussianConverter
 {

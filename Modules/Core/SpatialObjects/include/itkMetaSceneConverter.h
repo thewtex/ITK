@@ -25,6 +25,11 @@
 
 namespace itk
 {
+/** \class MetaSceneConverter
+ * \brief This is the MetaSceneConverter class.
+ *
+ * \ingroup ITK-SpatialObjects
+ */
 template< unsigned int NDimensions,
           typename PixelType = unsigned char,
           typename TMeshTraits =

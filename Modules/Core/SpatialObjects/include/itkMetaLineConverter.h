@@ -24,6 +24,11 @@
 
 namespace itk
 {
+/** \class MetaLineConverter
+ * \brief This is the MetaLineConverter class.
+ *
+ * \ingroup ITK-SpatialObjects
+ */
 template< unsigned int NDimensions = 3 >
 class ITK_EXPORT MetaLineConverter
 {

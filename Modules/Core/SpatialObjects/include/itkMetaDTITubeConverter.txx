@@ -28,7 +28,7 @@ MetaDTITubeConverter< NDimensions >
 ::MetaDTITubeConverter()
 {}
 
-/** Convert a MetaDTITube into an Tube SpatialObject  */
+/** Convert a MetaDTITube into a Tube SpatialObject  */
 template< unsigned int NDimensions >
 typename MetaDTITubeConverter< NDimensions >::SpatialObjectPointer
 MetaDTITubeConverter< NDimensions >
@@ -118,7 +118,7 @@ MetaDTITubeConverter< NDimensions >
 
     delete[] tensor;
 
-    // This attribute are optional
+    // This attribute is optional
     if ( ( *it2 )->GetField("r") != -1 )
       {
       pnt.SetRadius( ( *it2 )->GetField("r") );
@@ -189,7 +189,7 @@ MetaDTITubeConverter< NDimensions >
   return tub;
 }
 
-/** Convert an Tube SpatialObject into a MetaDTITube */
+/** Convert a Tube SpatialObject into a MetaDTITube */
 template< unsigned int NDimensions >
 MetaDTITube *
 MetaDTITubeConverter< NDimensions >

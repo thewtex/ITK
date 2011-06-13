@@ -23,6 +23,11 @@
 
 namespace itk
 {
+/** \class MetaEllipseConverter
+ * \brief This is the MetaEllipseConverter class.
+ *
+ * \ingroup ITK-SpatialObjects
+ */
 template< unsigned int NDimensions = 3 >
 class ITK_EXPORT MetaEllipseConverter
 {
