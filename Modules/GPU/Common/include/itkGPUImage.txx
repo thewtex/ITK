@@ -74,6 +74,13 @@ void GPUImage< TPixel, VImageDimension >::SetPixel(const IndexType & index, cons
 }
 
 template <class TPixel, unsigned int VImageDimension>
+const TPixel & GPUImage< TPixel, VImageDimension >::GetPixel(const IndexType & index) const
+{
+  //m_GPUManager->MakeCPUBufferUpToDate();
+  return Superclass::GetPixel( index );
+}
+
+template <class TPixel, unsigned int VImageDimension>
 TPixel & GPUImage< TPixel, VImageDimension >::GetPixel(const IndexType & index)
 {
   /* Original version - very conservative
@@ -128,7 +135,7 @@ const TPixel * GPUImage< TPixel, VImageDimension >::GetBufferPointer() const
 
 template <class TPixel, unsigned int VImageDimension>
 GPUDataManager::Pointer
-GPUImage< TPixel, VImageDimension >::GetGPUDataManager()
+GPUImage< TPixel, VImageDimension >::GetGPUDataManager() const
 {
   typedef typename GPUImageDataManager< GPUImage >::Superclass GPUImageDataSuperclass;
   typedef typename GPUImageDataSuperclass::Pointer             GPUImageDataSuperclassPointer;

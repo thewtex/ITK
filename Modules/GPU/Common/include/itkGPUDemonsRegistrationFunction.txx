@@ -69,18 +69,21 @@ GPUDemonsRegistrationFunction< TFixedImage, TMovingImage, TDeformationField >
 
   std::ostringstream defines;
 
-  if(TInputImage::ImageDimension > 3 || ImageDimension < 1)
+  if(TDeformationField::ImageDimension > 3 || TDeformationField::ImageDimension < 1)
   {
     itkExceptionMacro("GPUDenseFiniteDifferenceImageFilter supports 1/2/3D image.");
   }
 
-  defines << "#define DIM_" << TInputImage::ImageDimension << "\n";
+  defines << "#define DIM_" << TDeformationField::ImageDimension << "\n";
+
+  defines << "#define IMGPIXELTYPE ";
+  GetTypenameInString( typeid ( typename TFixedImage::PixelType ), defines );
 
   defines << "#define BUFPIXELTYPE ";
-  GetTypenameInString( typeid ( typename UpdateBufferType::PixelType ), defines );
+  GetTypenameInString( typeid ( typename TDeformationField::PixelType::ValueType ), defines );
 
   defines << "#define OUTPIXELTYPE ";
-  GetTypenameInString( typeid ( typename TOutputImage::PixelType ), defines );
+  GetTypenameInString( typeid ( typename TDeformationField::PixelType::ValueType ), defines );
 
   std::string oclSrcPath = "./../OpenCL/GPUDemonsRegistrationFunction.cl";
 
@@ -191,24 +194,23 @@ GPUDemonsRegistrationFunction< TFixedImage, TMovingImage, TDeformationField >
 /**
  * Compute update at a specify neighbourhood
  */
+
 template< class TFixedImage, class TMovingImage, class TDeformationField >
 void
 GPUDemonsRegistrationFunction< TFixedImage, TMovingImage, TDeformationField >
-::GPUComputeUpdate( TDeformationField output,
-                    TDeformationField update,
+::GPUComputeUpdate( DeformationFieldTypePointer output,
+                    DeformationFieldTypePointer update,
                     void *gd
                     )
 {
-  TFixedImage  fixedImage  = this->GetFixedImage();
-  TMovingImage movingImage = this->GetMovingImage();
-  typename GPUOutputImage::SizeType outSize = output->GetLargestPossibleRegion().GetSize();
+  TFixedImage::ConstPointer  fixedImage  = dynamic_cast< const TFixedImage * >( this->GetFixedImage() );
+  TMovingImage::ConstPointer movingImage = dynamic_cast< const TMovingImage * >( this->GetMovingImage() );
+  typename DeformationFieldType::SizeType outSize = output->GetLargestPossibleRegion().GetSize();
 
   int imgSize[3];
   imgSize[0] = imgSize[1] = imgSize[2] = 1;
 
-  float timeStep = dt;
-
-  int ImageDim = (int)TInputImage::ImageDimension;
+  int ImageDim = (int)DeformationFieldType::ImageDimension;
 
   for(int i=0; i<ImageDim; i++)
   {
@@ -238,7 +240,7 @@ GPUDemonsRegistrationFunction< TFixedImage, TMovingImage, TDeformationField >
   }
 
   // launch kernel
-  this->m_GPUKernelManager->LaunchKernel(m_ComputeUpdateGPUKernelHandle, (int)TInputImage::ImageDimension, globalSize, localSize );
+  this->m_GPUKernelManager->LaunchKernel(m_ComputeUpdateGPUKernelHandle, (int)DeformationFieldType::ImageDimension, globalSize, localSize );
 
 }
 

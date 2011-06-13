@@ -141,13 +141,15 @@ public:
   {
     PixelType pix;
     return pix;
-  };
+  }
 
 //#endif
 
   /** GPU function to compute update buffer */
-  virtual void GPUComputeUpdate( typename const TImageType::Pointer in, typename TImageType::Pointer out, void *globalData ) = 0;
-
+  virtual void GPUComputeUpdate( const typename TImageType::Pointer output,
+                                 typename TImageType::Pointer update,
+                                 void *gd) = 0;
+  //virtual void GPUComputeUpdate( typename const TImageType::Pointer in, typename TImageType::Pointer out, void *globalData ) = 0;
 
   /** Sets the radius of the neighborhood this FiniteDifferenceFunction
    * needs to perform its calculations. */

@@ -83,6 +83,8 @@ public:
 
   void SetPixel(const IndexType & index, const TPixel & value);
 
+  const TPixel & GetPixel(const IndexType & index) const;
+
   TPixel & GetPixel(const IndexType & index);
 
   const TPixel & operator[](const IndexType & index) const
@@ -115,14 +117,16 @@ public:
   NeighborhoodAccessorFunctorType GetNeighborhoodAccessor()
   {
     m_GPUManager->SetGPUBufferDirty();
-    return Superclass::GetNeighborhoodAccessor();
+    //return Superclass::GetNeighborhoodAccessor();
+    return NeighborhoodAccessorFunctorType();
   }
 
   /** Return the NeighborhoodAccessor functor */
   const NeighborhoodAccessorFunctorType GetNeighborhoodAccessor() const
   {
     m_GPUManager->MakeCPUBufferUpToDate();
-    return Superclass::GetNeighborhoodAccessor();
+    //return Superclass::GetNeighborhoodAccessor();
+    return NeighborhoodAccessorFunctorType();
   }
 
   void SetPixelContainer(PixelContainer *container);
@@ -144,7 +148,7 @@ public:
 
   int  GetCurrentCommandQueueID() { return m_GPUManager->GetCurrentCommandQueueID(); };
 
-  GPUDataManager::Pointer GetGPUDataManager();
+  GPUDataManager::Pointer GetGPUDataManager() const;
 
   /* Override DataHasBeenGenerated() in DataObject class.
    * We need this because CPU time stamp is always bigger

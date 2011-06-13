@@ -66,6 +66,7 @@ public:
    * because PixelType may often be a vector value, while the TimeStep is
    * a scalar value. */
   typedef typename GPUFiniteDifferenceFunction< TOutputImage >::DifferenceFunctionType FiniteDifferenceFunctionType;
+  //typedef typename GPUFiniteDifferenceFunction< TOutputImage > FiniteDifferenceFunctionType;
   typedef typename FiniteDifferenceFunctionType::TimeStepType TimeStepType;
   typedef typename FiniteDifferenceFunctionType::RadiusType   RadiusType;
   typedef typename FiniteDifferenceFunctionType::NeighborhoodScalesType NeighborhoodScalesType;
@@ -138,8 +139,6 @@ public:
                    ( Concept::IsFloatingPoint< OutputPixelValueType > ) );
   /** End concept checking */
 #endif
-
-
 
 protected:
   GPUFiniteDifferenceImageFilter();

@@ -181,10 +181,10 @@ private:
 
 #define OverrideDemonsRegistrationFilterTypeMacro(ipt,opt,dm)\
   {\
-  typedef Image<ipt,dm> InputImageType;\
-  typedef Image<opt,dm> OutputImageType;\
+  typedef GPUImage<ipt,dm> InputImageType;\
+  typedef GPUImage<opt,dm> OutputImageType;\
   typedef Vector< float, dm >           VectorPixelType;\
-  typedef Image<  VectorPixelType, dm > DeformationFieldType;\
+  typedef GPUImage<  VectorPixelType, dm > DeformationFieldType;\
   this->RegisterOverride(\
   typeid(DemonsRegistrationFilter<InputImageType,OutputImageType,DeformationFieldType>).name(),\
         typeid(GPUDemonsRegistrationFilter<InputImageType,OutputImageType,DeformationFieldType>).name(),\
