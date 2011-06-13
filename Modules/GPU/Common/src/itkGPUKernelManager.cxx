@@ -320,6 +320,11 @@ namespace itk
     errid = clEnqueueNDRangeKernel(m_Manager->GetCommandQueue(m_CommandQueueId), m_KernelContainer[kernelIdx], dim, NULL, globalWorkSize, localWorkSize, 0, NULL, NULL);
     OclCheckError(errid);
 
+
+    // debug - synchronization
+    //clFinish(m_Manager->GetCommandQueue(m_CommandQueueId));
+    //
+
     if(errid != CL_SUCCESS)
     {
       itkWarningMacro("GPU kernel launch failed");

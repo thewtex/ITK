@@ -99,10 +99,10 @@ GPUGradientNDAnisotropicDiffusionFunction< TImage >
   std::cout << "Defines: " << defines.str() << "Source code path: " << oclSrcPath << std::endl;
 
   // load and build program
-  this->m_GPUFiniteDifferenceFunctionKernelManager->LoadProgramFromFile( oclSrcPath.c_str(), defines.str().c_str() );
+  this->m_GPUKernelManager->LoadProgramFromFile( oclSrcPath.c_str(), defines.str().c_str() );
 
   // create kernel
-  this->m_ComputeUpdateKernelHandle = this->m_GPUFiniteDifferenceFunctionKernelManager->CreateKernel("ComputeUpdate");
+  this->m_ComputeUpdateGPUKernelHandle = this->m_GPUKernelManager->CreateKernel("ComputeUpdate");
 
 }
 
@@ -143,24 +143,24 @@ GPUGradientNDAnisotropicDiffusionFunction< TImage >
 
   // arguments set up
   int argidx = 0;
-  this->m_GPUFiniteDifferenceFunctionKernelManager->SetKernelArgWithImage(this->m_ComputeUpdateKernelHandle, argidx++, inPtr->GetGPUDataManager());
-  this->m_GPUFiniteDifferenceFunctionKernelManager->SetKernelArgWithImage(this->m_ComputeUpdateKernelHandle, argidx++, bfPtr->GetGPUDataManager());
-  this->m_GPUFiniteDifferenceFunctionKernelManager->SetKernelArg(this->m_ComputeUpdateKernelHandle, argidx++, sizeof(typename TImage::PixelType), &(m_K));
+  this->m_GPUKernelManager->SetKernelArgWithImage(this->m_ComputeUpdateGPUKernelHandle, argidx++, inPtr->GetGPUDataManager());
+  this->m_GPUKernelManager->SetKernelArgWithImage(this->m_ComputeUpdateGPUKernelHandle, argidx++, bfPtr->GetGPUDataManager());
+  this->m_GPUKernelManager->SetKernelArg(this->m_ComputeUpdateGPUKernelHandle, argidx++, sizeof(typename TImage::PixelType), &(m_K));
 
   // filter scale parameter
   for(int i=0; i<ImageDim; i++)
   {
-    this->m_GPUFiniteDifferenceFunctionKernelManager->SetKernelArg(this->m_ComputeUpdateKernelHandle, argidx++, sizeof(float), &(imgScale[i]));
+    this->m_GPUKernelManager->SetKernelArg(this->m_ComputeUpdateGPUKernelHandle, argidx++, sizeof(float), &(imgScale[i]));
   }
 
   // image size
   for(int i=0; i<ImageDim; i++)
   {
-    this->m_GPUFiniteDifferenceFunctionKernelManager->SetKernelArg(this->m_ComputeUpdateKernelHandle, argidx++, sizeof(int), &(imgSize[i]));
+    this->m_GPUKernelManager->SetKernelArg(this->m_ComputeUpdateGPUKernelHandle, argidx++, sizeof(int), &(imgSize[i]));
   }
 
   // launch kernel
-  this->m_GPUFiniteDifferenceFunctionKernelManager->LaunchKernel( this->m_ComputeUpdateKernelHandle, ImageDim, globalSize, localSize );
+  this->m_GPUKernelManager->LaunchKernel( this->m_ComputeUpdateGPUKernelHandle, ImageDim, globalSize, localSize );
 }
 
 /*

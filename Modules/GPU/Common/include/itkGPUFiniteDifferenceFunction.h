@@ -200,11 +200,11 @@ protected:
   RadiusType m_Radius;
   PixelRealType m_ScaleCoefficients[ImageDimension];
 
-  // GPU kernel manager
-  typename GPUKernelManager::Pointer m_GPUFiniteDifferenceFunctionKernelManager;
+  // GPU kernel manager for GPUFiniteDifferenceFunction class
+  typename GPUKernelManager::Pointer m_GPUKernelManager;
 
   // GPU kernel handle for GPUComputeUpdate()
-  int m_ComputeUpdateKernelHandle;
+  int m_ComputeUpdateGPUKernelHandle;
 
 private:
   GPUFiniteDifferenceFunction(const Self &); //purposely not implemented

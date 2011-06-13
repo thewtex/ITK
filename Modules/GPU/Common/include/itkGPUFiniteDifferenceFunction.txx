@@ -34,7 +34,7 @@ GPUFiniteDifferenceFunction()
     }
 
   // Create GPU Kernel Manager
-  m_GPUFiniteDifferenceFunctionKernelManager = GPUKernelManager::New();
+  m_GPUKernelManager = GPUKernelManager::New();
 }
 
 

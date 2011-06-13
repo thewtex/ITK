@@ -47,7 +47,6 @@ public:
   typedef SmartPointer< Self >                   Pointer;
   typedef SmartPointer< const Self >             ConstPointer;
 
- // itkNewMacro(Self);
   itkTypeMacro(GPUScalarAnisotropicDiffusionFunction, GPUAnisotropicDiffusionFunction);
 
   /** Inherit some parameters from the superclass type. */
@@ -62,14 +61,9 @@ public:
   typedef typename Superclass::NeighborhoodType NeighborhoodType;
   typedef typename Superclass::TimeStepType     TimeStepType;
 
-  /** Run-time type information (and related methods). */
-  /*itkTypeMacro(ScalarAnisotropicDiffusionFunction,
-               AnisotropicDiffusionFunction);
-*/
+
   // ToDo : Convert this to GPU function!!!
   virtual void CalculateAverageGradientMagnitudeSquared(TImage *);
-
-  //virtual void GPUComputeUpdate( typename const TImage::Pointer output, typename TImage::Pointer buffer, void *globalData ) {};
 
 protected:
   GPUScalarAnisotropicDiffusionFunction();// {}
