@@ -20,12 +20,14 @@
 
 #include "itkImageToImageFilter.h"
 #include "itkNarrowBand.h"
+#include "itkNeighborhoodIterator.h"
 #include "itkBarrier.h"
 
 namespace itk
 {
 /** \class IsoContourDistanceImageFilter
- *  \brief Compute an approximate distance from an interpolated isocontour to the close grid points.
+ *  \brief Compute an approximate distance from an interpolated isocontour
+ *  to the close grid points.
  *
  * For standard level set algorithms, it is useful to periodically
  * reinitialize the evolving image to prevent numerical accuracy
@@ -51,7 +53,6 @@ namespace itk
  *
  * \ingroup ITK-DistanceMap
  */
-
 template< class TInputImage, class TOutputImage >
 class ITK_EXPORT IsoContourDistanceImageFilter:
   public ImageToImageFilter< TInputImage, TOutputImage >
@@ -75,7 +76,8 @@ public:
 
   /** Dimensionality of input and output data is assumed to be the same.
    * It is inherited from the superclass. */
-  itkStaticConstMacro(ImageDimension, unsigned int, TInputImage::ImageDimension);
+  itkStaticConstMacro(ImageDimension, unsigned int,
+                      TInputImage::ImageDimension);
   itkStaticConstMacro(OutputImageDimension, unsigned int,
                       TOutputImage::ImageDimension);
 
@@ -160,12 +162,22 @@ protected:
 
   virtual void EnlargeOutputRequestedRegion(DataObject *);
 
+  typedef ConstNeighborhoodIterator< InputImageType > InputNeighbordIteratorType;
+  typedef NeighborhoodIterator< OutputImageType >     OutputNeighborhoodIteratorType;
+
+  void ComputeValue( const InputNeighbordIteratorType& inNeigIt,
+                     OutputNeighborhoodIteratorType& outNeigIt,
+                     unsigned int center,
+                     const std::vector< OffsetValueType >& stride );
+
 private:
   IsoContourDistanceImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);                //purposely not implemented
 
   InputPixelType m_LevelSetValue;
   PixelType      m_FarValue;
+
+  typename InputImageType::SpacingType m_Spacing;
 
   bool                      m_NarrowBanding;
   NarrowBandPointer         m_NarrowBand;
