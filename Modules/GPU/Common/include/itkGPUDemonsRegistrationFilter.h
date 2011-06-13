@@ -112,7 +112,7 @@ public:
    * computed over the the overlapping region between the two images.
    * This is value is only available for the previous iteration and
    * NOT the current iteration. */
-  //virtual double GetMetric() const;
+  virtual double GetMetric() const;
 
   /** Switch between using the fixed image and moving image gradient
    * for computing the deformation field updates. */

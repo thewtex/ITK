@@ -69,8 +69,8 @@ public:
 
   typedef DefaultPixelAccessorFunctor< Self > AccessorFunctorType;
 
-  //typedef NeighborhoodAccessorFunctor< Self > NeighborhoodAccessorFunctorType;
-  typedef typename Superclass::NeighborhoodAccessorFunctorType NeighborhoodAccessorFunctorType;
+  typedef NeighborhoodAccessorFunctor< Self > NeighborhoodAccessorFunctorType;
+  //typedef typename Superclass::NeighborhoodAccessorFunctorType NeighborhoodAccessorFunctorType;
 
   //
   // Allocate CPU and GPU memory space
