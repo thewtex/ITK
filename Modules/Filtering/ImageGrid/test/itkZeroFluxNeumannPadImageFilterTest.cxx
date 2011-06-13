@@ -39,6 +39,9 @@ static bool VerifyFilterOutput(const ShortImage * inputImage,
                                const SizeValueType * lowerBound,
                                const SizeValueType * upperBound)
 {
+  (void) lowerBound;
+  (void) upperBound;
+
   ShortImage::RegionType inputRegion  = inputImage->GetLargestPossibleRegion();
   ShortImage::IndexType inputIndex = inputRegion.GetIndex();
   ShortImage::SizeType  inputSize  = inputRegion.GetSize();
