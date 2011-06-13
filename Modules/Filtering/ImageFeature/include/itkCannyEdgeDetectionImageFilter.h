@@ -39,12 +39,11 @@ public:
 };
 
 /** \class CannyEdgeDetectionImageFilter
- *
- * This filter is an implementation of a Canny edge detector for scalar-valued
- * images.  Based on John Canny's paper "A Computational Approach to Edge
- * Detection"(IEEE Transactions on Pattern Analysis and Machine Intelligence,
- * Vol. PAMI-8, No.6, November 1986),  there are four major steps used in the
- * edge-detection scheme:
+ * \brief This filter is an implementation of a Canny edge detector for
+ * scalar-valued images.  Based on John Canny's paper "A Computational Approach
+ * to Edge Detection"(IEEE Transactions on Pattern Analysis and Machine
+ * Intelligence, Vol. PAMI-8, No.6, November 1986),  there are four major steps
+ * used in the edge-detection scheme:
  * (1) Smooth the input image with Gaussian filter.
  * (2) Calculate the second directional derivatives of the smoothed image.
  * (3) Non-Maximum Suppression: the zero-crossings of 2nd derivative are found,
@@ -150,14 +149,14 @@ public:
   void SetVariance(const typename ArrayType::ValueType v)
   {
     for ( unsigned int i = 0; i < TInputImage::ImageDimension; i++ )
-      {
+    {
       if ( m_Variance[i] != v )
-        {
+      {
         m_Variance.Fill(v);
         this->Modified();
         break;
-        }
       }
+    }
   }
 
   /** Set/Get the MaximumError paramter used by the Gaussian smoothing filter
@@ -165,17 +164,17 @@ public:
   void SetMaximumError(const typename ArrayType::ValueType v)
   {
     for ( unsigned int i = 0; i < TInputImage::ImageDimension; i++ )
-      {
+    {
       if ( m_MaximumError[i] != v )
-        {
+      {
         m_MaximumError.Fill(v);
         this->Modified();
         break;
-        }
       }
+    }
   }
 
-  /* TODO:  Document in the ITKv4 migration guide that
+  /** TODO:  Document in the ITKv4 migration guide that
    * the SetThreshold member function was removed from
    * the CannyEdgeDetectionImageFilter, and that both
    * UpperThreshold and LowerThreshold need to be set.
@@ -239,7 +238,8 @@ private:
   virtual ~CannyEdgeDetectionImageFilter(){}
 
   /** Thread-Data Structure   */
-  struct CannyThreadStruct {
+  struct CannyThreadStruct
+  {
     CannyEdgeDetectionImageFilter *Filter;
   };
 
