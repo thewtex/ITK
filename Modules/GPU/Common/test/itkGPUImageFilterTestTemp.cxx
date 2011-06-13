@@ -156,7 +156,7 @@ int itkGPUImageFilterTestTemp(int argc, char *argv[])
 
 #ifdef ANISODIFFUSIONTEST
 
-#define DIM_2 // DIM_3 //
+#define  DIM_3 //DIM_2 //
 
 #ifdef DIM_3
 int itkGPUImageFilterTestTemp(int argc, char *argv[])
@@ -189,10 +189,11 @@ int itkGPUImageFilterTestTemp(int argc, char *argv[])
   // GPU test
   reader->Update();
 
+  /*
   itk::TimeProbe timer;
   timer.Start();
 
-  //anisoFilter->SetInPlace( true );// false/*true*/ );
+  //anisoFilter->SetInPlace( true );
   anisoFilter->SetInput( reader->GetOutput() );
   anisoFilter->SetNumberOfIterations( 10 );
   anisoFilter->SetTimeStep( 0.0625 );
@@ -203,7 +204,7 @@ int itkGPUImageFilterTestTemp(int argc, char *argv[])
 
   timer.Stop();
   std::cerr << "Anisotropic diffusion took " << timer.GetMeanTime() << " seconds.\n";
-
+*/
   //
   //  The output of the filter is rescaled here and then sent to a writer.
   //
@@ -218,9 +219,9 @@ int itkGPUImageFilterTestTemp(int argc, char *argv[])
   typedef itk::ImageFileWriter< WriteImageType >  WriterType;
 
   WriterType::Pointer writer = WriterType::New();
-  writer->SetFileName( "output-GPUImageFilterTest.nrrd" );
+  writer->SetFileName( "input-testvolume.nrrd" );
 
-  rescaler->SetInput( anisoFilter->GetOutput() );
+  rescaler->SetInput( reader->GetOutput() );// anisoFilter->GetOutput() );
   writer->SetInput( rescaler->GetOutput() );
   writer->Update();
 
