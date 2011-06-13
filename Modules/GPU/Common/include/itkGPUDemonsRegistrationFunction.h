@@ -50,18 +50,17 @@ namespace itk
  */
 template< class TFixedImage, class TMovingImage, class TDeformationField >
 class ITK_EXPORT GPUDemonsRegistrationFunction:
-  public DemonsRegistrationFunction< TFixedImage,
+  public GPUPDEDeformableRegistrationFunction< TFixedImage,
                                             TMovingImage,
                                             TDeformationField >
 {
 public:
   /** Standard class typedefs. */
   typedef GPUDemonsRegistrationFunction Self;
-  typedef DemonsRegistrationFunction< TFixedImage,
-                                             TMovingImage, TDeformationField
-                                             >                                      Superclass;
-  typedef SmartPointer< Self >       Pointer;
-  typedef SmartPointer< const Self > ConstPointer;
+  typedef GPUPDEDeformableRegistrationFunction< TFixedImage, TMovingImage,
+    TDeformationField>                  Superclass;
+  typedef SmartPointer< Self >          Pointer;
+  typedef SmartPointer< const Self >    ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -155,8 +154,8 @@ public:
                                     const FloatOffsetType & offset =
                                       FloatOffsetType(0.0) );
 
-  virtual void GPUComputeUpdate( TDeformationField output,
-                                 TDeformationField update,
+  virtual void GPUComputeUpdate( const DeformationFieldTypePointer output,
+                                 DeformationFieldTypePointer update,
                                  void *gd);
 
   /** Get the metric value. The metric value is the mean square difference

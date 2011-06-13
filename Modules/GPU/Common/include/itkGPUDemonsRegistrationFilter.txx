@@ -86,7 +86,7 @@ GPUDemonsRegistrationFilter< TFixedImage, TMovingImage, TDeformationField, TPare
 /**
  * Get the metric value from the difference function
  */
-/*
+
 template< class TFixedImage, class TMovingImage, class TDeformationField, class TParentImageFilter >
 double
 GPUDemonsRegistrationFilter< TFixedImage, TMovingImage, TDeformationField, TParentImageFilter >
@@ -104,7 +104,7 @@ GPUDemonsRegistrationFilter< TFixedImage, TMovingImage, TDeformationField, TPare
 
   return drfp->GetMetric();
 }
-*/
+
 /**
  *
  */

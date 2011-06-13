@@ -112,7 +112,7 @@ public:
    * computed over the the overlapping region between the two images.
    * This is value is only available for the previous iteration and
    * NOT the current iteration. */
-  //virtual double GetMetric() const;
+  virtual double GetMetric() const;
 
   /** Switch between using the fixed image and moving image gradient
    * for computing the deformation field updates. */
@@ -181,10 +181,10 @@ private:
 
 #define OverrideDemonsRegistrationFilterTypeMacro(ipt,opt,dm)\
   {\
-  typedef Image<ipt,dm> InputImageType;\
-  typedef Image<opt,dm> OutputImageType;\
+  typedef GPUImage<ipt,dm> InputImageType;\
+  typedef GPUImage<opt,dm> OutputImageType;\
   typedef Vector< float, dm >           VectorPixelType;\
-  typedef Image<  VectorPixelType, dm > DeformationFieldType;\
+  typedef GPUImage<  VectorPixelType, dm > DeformationFieldType;\
   this->RegisterOverride(\
   typeid(DemonsRegistrationFilter<InputImageType,OutputImageType,DeformationFieldType>).name(),\
         typeid(GPUDemonsRegistrationFilter<InputImageType,OutputImageType,DeformationFieldType>).name(),\
