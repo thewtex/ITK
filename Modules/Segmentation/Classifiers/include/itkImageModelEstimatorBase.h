@@ -27,7 +27,7 @@ namespace itk
  *
  * itkImageModelEstimatorBase is the base class for the ImageModelEstimator
  * objects. It provides the basic function definitions that are inherent to
- *  a ImageModelEstimator objects.
+ * ImageModelEstimator objects.
  *
  * This is the SuperClass for the ImageModelEstimator framework. This is an
  * abstract class defining an interface for all such objects
@@ -44,7 +44,7 @@ namespace itk
  * image is treated as a single band scalar image.
  *
  * EstimateModels() is a pure virtual function making this an abstract class.
- * The template parameter is the type of a membership function the
+ * The template parameter is the type of membership function the
  * ImageModelEstimator populates.
  *
  * A membership function represents a specific knowledge about
@@ -52,11 +52,9 @@ namespace itk
  * measurement vector (pattern) belong to the class.
  *
  * As the method name indicates, you can have more than one membership
- * function. One for each classes. The order you put the membership
+ * function. One for each classes. The order of the membership
  * calculator becomes the class label for the class that is represented
  * by the membership calculator.
- *
-
  *
  * \ingroup ClassificationFilters
  * \ingroup ITK-Classifiers
@@ -103,27 +101,27 @@ public:
   /** Set the classified image. */
   void SetMembershipFunctions(MembershipFunctionPointerVector
                               membershipFunctions)
-  {
+    {
     m_MembershipFunctions = membershipFunctions;
-  }
+    }
 
   /** Method to get mean */
   const MembershipFunctionPointerVector GetMembershipFunctions() const
-  {
+    {
     return m_MembershipFunctions;
-  }
+    }
 
   /** Method to number of membership functions */
   unsigned int GetNumberOfMembershipFunctions()
-  {
+    {
     return static_cast< unsigned int >( m_MembershipFunctions.size() );
-  }
+    }
 
   /** Method to reset the membership fucntion mean */
   void DeleteAllMembershipFunctions()
-  {
+    {
     m_MembershipFunctions.resize(0);
-  }
+    }
 
   /** Stores a MembershipCalculator of a class in its internal vector */
   unsigned int AddMembershipFunction(MembershipFunctionPointer function);

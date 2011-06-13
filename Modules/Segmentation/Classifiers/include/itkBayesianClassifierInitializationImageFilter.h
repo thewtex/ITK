@@ -29,10 +29,12 @@ namespace itk
 /** \class BayesianClassifierInitializationImageFilter
  *
  * \brief This filter is intended to be used as a helper class to
- * initialize the BayesianClassifierImageFilter. The goal of this filter
- * is to generate a membership image that indicates the membership of each
- * pixel to each class. These membership images are fed as input to the
- * bayesian classfier filter.
+ * initialize the BayesianClassifierImageFilter.
+ *
+ * \par
+ * The goal of this filter is to generate a membership image that indicates
+ * the membership of each pixel to each class. These membership images are fed
+ * as input to the bayesian classfier filter.
  *
  * \par Parameters
  * Number of classes: This defines the number of classes, which will determine
