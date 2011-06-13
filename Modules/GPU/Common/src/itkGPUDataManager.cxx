@@ -25,22 +25,9 @@ namespace itk
 GPUDataManager::GPUDataManager()
 {
   m_ContextManager = GPUContextManager::GetInstance();
+  m_GPUBuffer = NULL;
 
   this->Initialize();
-
-/*
-  if( m_ContextManager->GetNumCommandQueue() > 0 )
-    {
-    m_CommandQueueId = 0; // default command queue
-    }
-
-  m_BufferSize = 0;
-  m_GPUBuffer = NULL;
-  m_CPUBuffer = NULL;
-  m_MemFlags  = CL_MEM_READ_WRITE; // default flag
-  m_IsGPUBufferDirty = false;
-  m_IsCPUBufferDirty = false;
-*/
 }
 
 GPUDataManager::~GPUDataManager()

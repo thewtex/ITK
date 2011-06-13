@@ -156,7 +156,9 @@ int itkGPUImageFilterTestTemp(int argc, char *argv[])
 
 #ifdef ANISODIFFUSIONTEST
 
-#define DIM_3 //DIM_2
+#define DIM_2 // DIM_3 //
+
+#ifdef DIM_3
 int itkGPUImageFilterTestTemp(int argc, char *argv[])
 {
   // register object factory for GPU image and filter
@@ -224,9 +226,6 @@ int itkGPUImageFilterTestTemp(int argc, char *argv[])
 
   return EXIT_SUCCESS;
 }
-
-
-#ifdef DIM_3
 
 #endif
 

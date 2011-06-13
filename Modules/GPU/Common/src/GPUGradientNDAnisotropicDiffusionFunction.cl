@@ -25,7 +25,7 @@
 //
 #ifdef DIM_1
 #define ImageDimension 1
-__kernel void ComputeUpdate(__global const INPIXELTYPE *in, __global BUFPIXELTYPE *buf, int width)
+__kernel void ComputeUpdate(__global const INPIXELTYPE *in, __global BUFPIXELTYPE *buf, PIXELTYPE K, float scalex, int width)
 {
 	int gix = get_global_id(0);
 
