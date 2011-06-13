@@ -80,9 +80,9 @@ public:
   itkTypeMacro(GPUDenseFiniteDifferenceImageFilter, GPUFiniteDifferenceImageFilter);
 
   /** Convenient typedefs */
-  typedef typename Superclass::InputImageType  InputImageType;
-  typedef typename Superclass::OutputImageType OutputImageType;
-  typedef typename Superclass::FiniteDifferenceFunctionType FiniteDifferenceFunctionType;
+  typedef typename GPUSuperclass::InputImageType  InputImageType;
+  typedef typename GPUSuperclass::OutputImageType OutputImageType;
+  typedef typename GPUSuperclass::FiniteDifferenceFunctionType FiniteDifferenceFunctionType;
 
   /** Dimensionality of input and output data is assumed to be the same.
    * It is inherited from the superclass. */

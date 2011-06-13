@@ -24,7 +24,7 @@
  */
 //#include "pathToOpenCLSourceCode.h"
 
-#include "itkDemonsRegistrationFilter.h"
+#include "itkGPUDemonsRegistrationFilter.h"
 #include "itkHistogramMatchingImageFilter.h"
 #include "itkCastImageFilter.h"
 #include "itkWarpImageFilter.h"
@@ -97,7 +97,7 @@ int itkGPUDemonsRegistrationFilterTest(int argc, char *argv[])
 
   //casting pixel type from short to float
   typedef float                                      InternalPixelType;
-  typedef itk::Image< InternalPixelType, Dimension > InternalImageType;
+  typedef itk::GPUImage< InternalPixelType, Dimension > InternalImageType;
   typedef itk::CastImageFilter< FixedImageType,
                                 InternalImageType >  FixedImageCasterType;
   typedef itk::CastImageFilter< MovingImageType,
@@ -126,8 +126,8 @@ int itkGPUDemonsRegistrationFilterTest(int argc, char *argv[])
 
   //demons registration
   typedef itk::Vector< float, Dimension >             VectorPixelType;
-  typedef itk::Image<  VectorPixelType, Dimension >   DeformationFieldType;
-  typedef itk::DemonsRegistrationFilter<
+  typedef itk::GPUImage<  VectorPixelType, Dimension >   DeformationFieldType;
+  typedef itk::GPUDemonsRegistrationFilter<
                                 InternalImageType,
                                 InternalImageType,
                                 DeformationFieldType> RegistrationFilterType;

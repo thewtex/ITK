@@ -60,7 +60,7 @@ GPUFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilter >
   if ( this->GetState() == UNINITIALIZED )
     {
     // Allocate the output image
-    //this->AllocateOutputs(); //done in GPUImageToImageFilter::GenerateData()
+    //this->AllocateOutputs();
 
     // Copy the input image to the output image.  Algorithms will operate
     // directly on the output image and the update buffer.
@@ -71,6 +71,7 @@ GPUFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilter >
     this->InitializeFunctionCoefficients();
 
     // Perform any other necessary pre-iteration initialization.
+    // also allocate the smoothing buffer
     this->Initialize();
 
     // Allocate the internal update buffer.  This takes place entirely within
@@ -277,6 +278,7 @@ GPUFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilter >
     }
   m_DifferenceFunction->SetScaleCoefficients(coeffs);
 }
+
 
 template< class TInputImage, class TOutputImage, class TParentImageFilter >
 void

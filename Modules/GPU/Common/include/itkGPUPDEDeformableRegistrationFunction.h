@@ -38,18 +38,18 @@ namespace itk
  */
 template< class TFixedImage, class TMovingImage, class TDeformationField >
 class ITK_EXPORT GPUPDEDeformableRegistrationFunction:
-  public FiniteDifferenceFunction< TDeformationField >
+  public GPUFiniteDifferenceFunction< TDeformationField >
 {
 public:
   /** Standard class typedefs. */
   typedef GPUPDEDeformableRegistrationFunction          Self;
-  typedef FiniteDifferenceFunction< TDeformationField > Superclass;
+  typedef GPUFiniteDifferenceFunction< TDeformationField > Superclass;
   typedef SmartPointer< Self >                          Pointer;
   typedef SmartPointer< const Self >                    ConstPointer;
 
   /** Run-time type information (and related methods) */
   itkTypeMacro(GPUPDEDeformableRegistrationFunction,
-               FiniteDifferenceFunction);
+               GPUFiniteDifferenceFunction);
 
   /** MovingImage image type. */
   typedef TMovingImage                           MovingImageType;
