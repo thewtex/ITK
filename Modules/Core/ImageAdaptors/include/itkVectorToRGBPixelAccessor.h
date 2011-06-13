@@ -56,19 +56,19 @@ public:
 
   /** Write access to the VectorToRGB component */
   inline void Set(InternalType & output, const ExternalType & input) const
-  {
+    {
     output[0] = input[0];
     output[1] = input[1];
     output[2] = input[2];
-  }
+    }
 
   /** Read access to the VectorToRGB component */
   inline ExternalType Get(const InternalType & input) const
-  {
+    {
     ExternalType rgb( input.GetDataPointer() );
 
     return rgb;
-  }
+    }
 
 private:
 };
