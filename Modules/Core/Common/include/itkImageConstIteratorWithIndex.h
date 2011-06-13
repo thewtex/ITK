@@ -30,11 +30,11 @@ namespace itk
  * position.
  *
  * ImageConstIteratorWithIndex is a templated class to represent a
- * multi-dimensional iterator. ImageConstIteratorWithIndex is templated
- * over the dimension of the image and the data type of the image.
+ * multi-dimensional iterator, and is templated over both the dimension
+ * and data type of the image.
  *
  * ImageConstIteratorWithIndex is a base class for the "WithIndex" family of
- * ITK image iterators, which are designed to effeciently keep track of the
+ * ITK image iterators, which are designed to efficiently keep track of the
  * image index position of the iterator during increment and decrement
  * operations.  This iterator is a base class and provides only the basic
  * construction and comparison operations. It does not provide mechanisms for
@@ -95,7 +95,7 @@ public:
   /** Standard class typedefs. */
   typedef ImageConstIteratorWithIndex Self;
 
-  /** Dimension of the image the iterator walks.  This constant is needed so
+  /** Dimension of the image that the iterator walks.  This constant is needed so
    * functions that are templated over image iterator type (as opposed to
    * being templated over pixel type and dimension) can have compile time
    * access to the dimension of the image that the iterator walks. */
@@ -116,7 +116,7 @@ public:
   typedef TImage ImageType;
 
   /** PixelContainer typedef support. Used to refer to the container for
-   * the pixel data. While this was already typdef'ed in the superclass
+   * the pixel data. While this was already typdef'ed in the superclass,
    * it needs to be redone here for this subclass to compile properly with gcc. */
   typedef typename TImage::PixelContainer  PixelContainer;
   typedef typename PixelContainer::Pointer PixelContainerPointer;
@@ -127,7 +127,7 @@ public:
   /** External Pixel Type */
   typedef typename TImage::PixelType PixelType;
 
-  /**  Accessor type that convert data between internal and external
+  /**  Accessor type that converts data between internal and external
    *  representations. */
   typedef typename TImage::AccessorType        AccessorType;
   typedef typename TImage::AccessorFunctorType AccessorFunctorType;
@@ -155,93 +155,103 @@ public:
 
   /** Get the dimension (size) of the index. */
   static unsigned int GetImageDimension()
-  { return ImageDimension; }
+    {
+    return ImageDimension;
+    }
 
   /** Comparison operator. Two iterators are the same if they "point to" the
    * same memory location */
   bool
   operator!=(const Self & it) const
-  {
+    {
     // two iterators are the same if they "point to" the same memory location
     return ( m_Position ) != ( it.m_Position );
-  }
+    }
 
   /** Comparison operator. Two iterators are the same if they "point to" the
    * same memory location */
   bool
   operator==(const Self & it) const
-  {
+    {
     // two iterators are the same if they "point to" the same memory location
     return ( m_Position ) == ( it.m_Position );
-  }
+    }
 
   /** Comparison operator. An iterator is "less than" another if it "points to"
    * a lower memory location. */
   bool
   operator<=(const Self & it) const
-  {
+    {
     // an iterator is "less than" another if it "points to" a lower
     // memory location
     return ( m_Position ) <= ( it.m_Position );
-  }
+    }
 
   /** Comparison operator. An iterator is "less than" another if it "points to"
    * a lower memory location. */
   bool
   operator<(const Self & it) const
-  {
+    {
     // an iterator is "less than" another if it "points to" a lower
     // memory location
     return ( m_Position ) < ( it.m_Position );
-  }
+    }
 
   /** Comparison operator. An iterator is "greater than" another if it
    * "points to" a higher location. */
   bool
   operator>=(const Self & it) const
-  {
+    {
     // an iterator is "greater than" another if it "points to" a higher
     // memory location
     return ( m_Position ) >= ( it.m_Position );
-  }
+    }
 
   /** Comparison operator. An iterator is "greater than" another if it
    * "points to" a higher location. */
   bool
   operator>(const Self & it) const
-  {
+    {
     // an iterator is "greater than" another if it "points to" a higher
     // memory location
     return ( m_Position ) > ( it.m_Position );
-  }
+    }
 
   /** Get the index. This provides a read only reference to the index.
    * \sa SetIndex */
   const IndexType & GetIndex() const
-  { return m_PositionIndex; }
+    {
+    return m_PositionIndex;
+    }
 
   /** Get the region that this iterator walks. ImageIterators know the
    * beginning and the end of the region of the image to iterate over. */
   const RegionType & GetRegion() const
-  { return m_Region; }
+    {
+    return m_Region;
+    }
 
   /** Set the index. No bounds checking is performed.
    * \sa GetIndex */
   void SetIndex(const IndexType & ind)
-  {
+    {
     m_Position = m_Image->GetBufferPointer() + m_Image->ComputeOffset(ind);
     m_PositionIndex = ind;
-  }
+    }
 
   /** Get the pixel value */
   PixelType Get(void) const
-  { return m_PixelAccessorFunctor.Get(*m_Position); }
+    {
+    return m_PixelAccessorFunctor.Get(*m_Position);
+    }
 
   /** Return a const reference to the pixel
    * This method will provide the fastest access to pixel
    * data, but it will NOT support ImageAdaptors. */
   const PixelType & Value(void) const
-  { return *m_Position; }
+    {
+    return *m_Position;
+    }
 
   /** Move an iterator to the beginning of the region.
    * \deprecated Use GoToBegin() instead */
@@ -259,21 +269,21 @@ public:
 
   /** Is the iterator at the beginning of the region? */
   bool IsAtReverseEnd(void) const
-  {
+    {
     return !m_Remaining;
-  }
+    }
 
   /** Is the iterator at the end of the region? */
   bool IsAtEnd(void) const
-  {
+    {
     return !m_Remaining;
-  }
+    }
 
   /** Are there data remainning in the region ? */
   bool Remaining()
-  {
+    {
     return m_Remaining;
-  }
+    }
 
 protected: //made protected so other iterators can access
   typename TImage::ConstWeakPointer m_Image;

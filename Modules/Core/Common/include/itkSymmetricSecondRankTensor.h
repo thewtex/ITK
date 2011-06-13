@@ -122,10 +122,10 @@ public:
   /** Templated Pass-through assignment  for the Array base class. */
   template< typename TCoordRepB >
   Self & operator=(const SymmetricSecondRankTensor< TCoordRepB, NDimension > & pa)
-  {
+    {
     BaseArray::operator=(pa);
     return *this;
-  }
+    }
 
   /** Pass-through assignment operator for the Array base class. */
   Self & operator=(const ComponentType & r);
@@ -153,25 +153,23 @@ public:
 
   /** Return the number of components. */
   static unsigned int GetNumberOfComponents()
-  {
+    {
     return itkGetStaticConstMacro(InternalDimension);
-  }
+    }
 
   /** Return the value for the Nth component. */
-  ComponentType GetNthComponent(int c) const
-  { return this->operator[](c); }
+  ComponentType GetNthComponent(int c) const { return this->operator[](c); }
 
   /** Set the Nth component to v. */
-  void SetNthComponent(int c, const ComponentType & v)
-  {  this->operator[](c) = v; }
+  void SetNthComponent(int c, const ComponentType & v) {  this->operator[](c) = v; }
 
   /** Matrix notation, in const and non-const forms. */
   ValueType & operator()(unsigned int row, unsigned int col);
 
   const ValueType & operator()(unsigned int row, unsigned int col) const;
 
-  /** Set the tensor to an identity tensor. This has 1 in its diagonal elements
-   * zero elsewhere */
+  /** Set the tensor to an identity tensor. This has 1 in its diagonal elements and
+   * zero elsewhere. */
   void SetIdentity();
 
   /** Get Trace value */

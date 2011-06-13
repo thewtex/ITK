@@ -176,20 +176,20 @@ public:
    *  BufferedRegion and RequestedRegion. Allocate must still be called.
    */
   void SetRegions(RegionType region)
-  {
+    {
     this->SetLargestPossibleRegion(region);
     this->SetBufferedRegion(region);
     this->SetRequestedRegion(region);
-  }
+    }
 
   void SetRegions(SizeType size)
-  {
+    {
     RegionType region; region.SetSize(size);
 
     this->SetLargestPossibleRegion(region);
     this->SetBufferedRegion(region);
     this->SetRequestedRegion(region);
-  }
+    }
 
   /** Restore the data object to its initial state. This means releasing
    * memory. */
@@ -205,14 +205,14 @@ public:
    * this function does not check that the image has actually been
    * allocated yet. */
   void SetPixel(const IndexType & index, const PixelType & value)
-  {
+    {
     OffsetValueType offset = m_VectorLength * this->ComputeOffset(index);
 
     for ( VectorLengthType i = 0; i < m_VectorLength; i++ )
       {
       ( *m_Buffer )[offset + i] = value[i];
       }
-  }
+    }
 
   /** \brief Get a pixel (read only version).
    *
@@ -220,55 +220,55 @@ public:
    * image has actually been allocated yet. Note that the method returns a
    * pixel on the stack. */
   const PixelType GetPixel(const IndexType & index) const
-  {
+    {
     OffsetValueType offset = m_VectorLength * this->ComputeOffset(index);
     PixelType       p(&( ( *m_Buffer )[offset] ), m_VectorLength);
 
     return p;
-  }
+    }
 
   /** \brief Get a reference to a pixel (e.g. for editing).
    *
    * For efficiency, this function does not check that the
    * image has actually been allocated yet. */
   PixelType  GetPixel(const IndexType & index)
-  {
+    {
     OffsetValueType offset = m_VectorLength * this->ComputeOffset(index);
     PixelType       p(&( ( *m_Buffer )[offset] ), m_VectorLength);
 
     return p;
-  }
+    }
 
   /** \brief Access a pixel. This version cannot be an lvalue because the pixel
    * is converted on the fly to a VariableLengthVector.
    *
    * For efficiency, this function does not check that the
    * image has actually been allocated yet. */
-  PixelType operator[](const IndexType & index)
-  { return this->GetPixel(index); }
+  PixelType operator[](const IndexType & index) { return this->GetPixel(index); }
 
   /** \brief Access a pixel. This version can only be an rvalue because the
    * pixel is converted on the fly to a VariableLengthVector.
    *
    * For efficiency, this function does not check that the
    * image has actually been allocated yet. */
-  PixelType operator[](const IndexType & index) const
-  { return this->GetPixel(index); }
+  PixelType operator[](const IndexType & index) const { return this->GetPixel(index); }
 
   /** Return a pointer to the beginning of the buffer.  This is used by
    * the image iterator class. */
   InternalPixelType * GetBufferPointer()
-  { return m_Buffer ? m_Buffer->GetBufferPointer() : 0; }
+    {
+    return m_Buffer ? m_Buffer->GetBufferPointer() : 0;
+    }
   const InternalPixelType * GetBufferPointer() const
-  { return m_Buffer ? m_Buffer->GetBufferPointer() : 0; }
+    {
+    return m_Buffer ? m_Buffer->GetBufferPointer() : 0;
+    }
 
   /** Return a pointer to the container. */
-  PixelContainer * GetPixelContainer()
-  { return m_Buffer.GetPointer(); }
+  PixelContainer * GetPixelContainer() { return m_Buffer.GetPointer(); }
 
   /** Return a pointer to the container. */
-  const PixelContainer * GetPixelContainer() const
-  { return m_Buffer.GetPointer(); }
+  const PixelContainer * GetPixelContainer() const { return m_Buffer.GetPointer(); }
 
   /** Set the container to use. Note that this does not cause the
    * DataObject to be modified. */
@@ -287,20 +287,22 @@ public:
   virtual void Graft(const DataObject *data);
 
   /** Return the Pixel Accessor object */
-  AccessorType GetPixelAccessor(void)
-  { return AccessorType(m_VectorLength); }
+  AccessorType GetPixelAccessor(void) { return AccessorType(m_VectorLength); }
 
   /** Return the Pixel Accesor object */
-  const AccessorType GetPixelAccessor(void) const
-  { return AccessorType(m_VectorLength); }
+  const AccessorType GetPixelAccessor(void) const { return AccessorType(m_VectorLength); }
 
   /** Return the NeighborhoodAccessor functor */
   NeighborhoodAccessorFunctorType GetNeighborhoodAccessor()
-  { return NeighborhoodAccessorFunctorType(m_VectorLength); }
+    {
+    return NeighborhoodAccessorFunctorType(m_VectorLength);
+    }
 
   /** Return the NeighborhoodAccessor functor */
   const NeighborhoodAccessorFunctorType GetNeighborhoodAccessor() const
-  { return NeighborhoodAccessorFunctorType(m_VectorLength); }
+    {
+    return NeighborhoodAccessorFunctorType(m_VectorLength);
+    }
 
   /** Set/Get macros for the length of each vector in the vector image */
   itkSetMacro(VectorLength, VectorLengthType);

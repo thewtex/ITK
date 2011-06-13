@@ -23,6 +23,7 @@ namespace itk
 /** \class CorrespondenceDataStructureIterator
  * \brief An iterator designed to easily traverse an
  *        CorrespondenceDataStructure.
+ *
  * \ingroup ITK-Common
  */
 template< class TStructureType >
@@ -34,7 +35,7 @@ public:
 
   /** Get the dimension (size) of the index. */
   static unsigned int GetIteratorDimension()
-  { return TStructureType::dim; }
+    { return TStructureType::dim; }
 
   /** Is the iterator at the end of the region? */
   bool IsAtEnd();

@@ -30,7 +30,7 @@
 namespace itk
 {
 /** \class RGBPixel
- * \brief Represent Red, Green and Blue component for color images
+ * \brief Represent Red, Green and Blue component for color images.
  *
  * This class is templated over the representation used for each
  * component.
@@ -82,10 +82,10 @@ public:
   /** Pass-through assignment operator for the Array base class. */
   template< class TRGBPixelValueType >
   Self & operator=(const RGBPixel< TRGBPixelValueType > & r)
-  {
+    {
     BaseArray::operator=(r);
     return *this;
-  }
+    }
 
   Self & operator=(const ComponentType r[3]);
 
@@ -108,12 +108,11 @@ public:
   static unsigned int GetNumberOfComponents(){ return 3; }
 
   /** Return the value for the Nth component. */
-  ComponentType GetNthComponent(int c) const
-  { return this->operator[](c); }
+  ComponentType GetNthComponent(int c) const { return this->operator[](c); }
 
   /** Return the value for the Nth component. */
   ComponentType GetScalarValue() const
-  {
+    {
     return static_cast< ComponentType >( vcl_sqrt(
                                            static_cast< double >( this->operator[](0) )
                                            * static_cast< double >( this->operator[](0) )
@@ -121,11 +120,10 @@ public:
                                            * static_cast< double >( this->operator[](1) )
                                            + static_cast< double >( this->operator[](2) )
                                            * static_cast< double >( this->operator[](2) ) ) );
-  }
+    }
 
   /** Set the Nth component to v. */
-  void SetNthComponent(int c, const ComponentType & v)
-  {  this->operator[](c) = v; }
+  void SetNthComponent(int c, const ComponentType & v) {  this->operator[](c) = v; }
 
   /** Set the Red component. */
   void SetRed(ComponentType red) { this->operator[](0) = red; }
@@ -138,7 +136,11 @@ public:
 
   /** Set the three components. */
   void Set(ComponentType red, ComponentType green, ComponentType blue)
-  { this->operator[](0) = red; this->operator[](1) = green; this->operator[](2) = blue; }
+    {
+    this->operator[](0) = red;
+    this->operator[](1) = green;
+    this->operator[](2) = blue;
+    }
 
   /** Get the Red component. */
   const ComponentType & GetRed(void) const { return this->operator[](0); }

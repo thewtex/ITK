@@ -107,26 +107,26 @@ public:
   typedef ImageLinearConstIteratorWithIndex     Self;
   typedef ImageConstIteratorWithIndex< TImage > Superclass;
 
-  /** Index typedef support. While this was already typdef'ed in the superclass
+  /** Index typedef support. While this was already typdef'ed in the superclass,
    * it needs to be redone here for this subclass to compile properly with gcc.
-   * Note that we have to rescope Index back to itk::Index to that is it not
+   * Note that we have to rescope Index back to itk::Index so that it is not
    * confused with ImageIterator::Index. */
   typedef typename TImage::IndexType IndexType;
 
-  /** Region typedef support. While this was already typdef'ed in the superclass
+  /** Region typedef support. While this was already typdef'ed in the superclass,
    * it needs to be redone here for this subclass to compile properly with gcc.
-   * Note that we have to rescope Region back to itk::ImageRegion so that is
-   * it not confused with ImageIterator::Index. */
+   * Note that we have to rescope Region back to itk::ImageRegion so that it
+   * is not confused with ImageIterator::Index. */
   typedef typename TImage::RegionType RegionType;
 
-  /** Image typedef support. While this was already typdef'ed in the superclass
+  /** Image typedef support. While this was already typdef'ed in the superclass,
    * it needs to be redone here for this subclass to compile properly with gcc.
-   * Note that we have to rescope Index back to itk::Index to that is it not
+   * Note that we have to rescope Index back to itk::Index so that it is not
    * confused with ImageIterator::Index. */
   typedef TImage ImageType;
 
   /** PixelContainer typedef support. Used to refer to the container for
-   * the pixel data. While this was already typdef'ed in the superclass
+   * the pixel data. While this was already typdef'ed in the superclass,
    * it needs to be redone here for this subclass to compile properly with gcc. */
   typedef typename TImage::PixelContainer  PixelContainer;
   typedef typename PixelContainer::Pointer PixelContainerPointer;
@@ -169,19 +169,19 @@ public:
 
   /** Test if the index is at the end of line */
   inline bool IsAtEndOfLine(void)
-  {
+    {
     return this->m_PositionIndex[m_Direction] >= this->m_EndIndex[m_Direction];
-  }
+    }
 
   /** Test if the index is at the begin of line */
   inline bool IsAtReverseEndOfLine(void)
-  {
+    {
     return this->m_PositionIndex[m_Direction] < this->m_BeginIndex[m_Direction];
-  }
+    }
 
   /** Set the direction of movement */
   inline void SetDirection(unsigned int direction)
-  {
+    {
     if ( direction >= TImage::ImageDimension )
       {
       itkGenericExceptionMacro(
@@ -189,31 +189,31 @@ public:
       }
     m_Direction = direction;
     m_Jump = this->m_OffsetTable[m_Direction];
-  }
+    }
 
   /** get the direction of movement */
   unsigned int GetDirection()
-  {
+    {
     return m_Direction;
-  }
+    }
 
   /** Increment (prefix) the selected dimension.
    * No bounds checking is performed. \sa GetIndex \sa operator-- */
   inline Self & operator++()
-  {
+    {
     this->m_PositionIndex[m_Direction]++;
     this->m_Position += m_Jump;
     return *this;
-  }
+    }
 
   /** Decrement (prefix) the selected dimension.
    * No bounds checking is performed.  \sa GetIndex \sa operator++ */
   inline Self & operator--()
-  {
+    {
     this->m_PositionIndex[m_Direction]--;
     this->m_Position -= m_Jump;
     return *this;
-  }
+    }
 
 private:
   OffsetValueType m_Jump;

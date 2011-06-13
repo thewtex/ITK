@@ -179,7 +179,7 @@ public:
   bool TransformPhysicalPointToContinuousIndex(
     const Point< TCoordRep, 3 > & point,
     ContinuousIndex< TCoordRep, 3 > & index) const
-  {
+    {
     RegionType region = this->GetLargestPossibleRegion();
     double     maxAzimuth =    region.GetSize(0) - 1;
     double     maxElevation =  region.GetSize(1) - 1;
@@ -203,7 +203,7 @@ public:
     const bool isInside = region.IsInside(index);
 
     return isInside;
-  }
+    }
 
   /** Get the index (discrete) from a physical point.
    * Floating point index results are truncated to integers.
@@ -213,7 +213,7 @@ public:
   bool TransformPhysicalPointToIndex(
     const Point< TCoordRep, 3 > & point,
     IndexType & index) const
-  {
+    {
     RegionType region = this->GetLargestPossibleRegion();
     double     maxAzimuth =    region.GetSize(0) - 1;
     double     maxElevation =  region.GetSize(1) - 1;
@@ -240,7 +240,7 @@ public:
     const bool isInside = region.IsInside(index);
 
     return isInside;
-  }
+    }
 
   /** Get a physical point (in the space which
    * the origin and spacing infomation comes from)
@@ -250,7 +250,7 @@ public:
   void TransformContinuousIndexToPhysicalPoint(
     const ContinuousIndex< TCoordRep, 3 > & index,
     Point< TCoordRep, 3 > & point) const
-  {
+    {
     RegionType region = this->GetLargestPossibleRegion();
     double     maxAzimuth =    region.GetSize(0) - 1;
     double     maxElevation =  region.GetSize(1) - 1;
@@ -272,7 +272,7 @@ public:
                                                     + tanOfElevation * tanOfElevation) );
     point[1] = static_cast< TCoordRep >( point[2] * tanOfElevation );
     point[0] = static_cast< TCoordRep >( point[2] * tanOfAzimuth );
-  }
+    }
 
   /** Get a physical point (in the space which
    * the origin and spacing infomation comes from)
@@ -283,7 +283,7 @@ public:
   void TransformIndexToPhysicalPoint(
     const IndexType & index,
     Point< TCoordRep, 3 > & point) const
-  {
+    {
     RegionType region = this->GetLargestPossibleRegion();
     double     maxAzimuth =    region.GetSize(0) - 1;
     double     maxElevation =  region.GetSize(1) - 1;
@@ -308,7 +308,7 @@ public:
         1.0 + tanOfAzimuth * tanOfAzimuth + tanOfElevation * tanOfElevation) );
     point[1] = static_cast< TCoordRep >( point[2] * tanOfElevation );
     point[0] = static_cast< TCoordRep >( point[2] * tanOfAzimuth );
-  }
+    }
 
   /**  Set the number of radians between each azimuth unit.   */
   itkSetMacro(AzimuthAngularSeparation, double);
@@ -326,18 +326,18 @@ public:
   void TransformLocalVectorToPhysicalVector(
     const FixedArray< TCoordRep, 3 > & inputGradient,
     FixedArray< TCoordRep, 3 > & outputGradient) const
-  {}
+    {}
 
 protected:
   PhasedArray3DSpecialCoordinatesImage()
-  {
+    {
     m_RadiusSampleSize = 1;
     m_AzimuthAngularSeparation   =  1 * ( 2.0 * vnl_math::pi / 360.0 ); // 1
                                                                         // degree
     m_ElevationAngularSeparation =  1 * ( 2.0 * vnl_math::pi / 360.0 ); // 1
                                                                         // degree
     m_FirstSampleDistance = 0;
-  }
+    }
 
   virtual ~PhasedArray3DSpecialCoordinatesImage() {}
   void PrintSelf(std::ostream & os, Indent indent) const;

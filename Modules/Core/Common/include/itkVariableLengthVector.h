@@ -119,7 +119,7 @@ public:
    */
   template< class T >
   VariableLengthVector(const VariableLengthVector< T > & v)
-  {
+    {
     m_NumElements = v.Size();
     m_Data = this->AllocateElements(m_NumElements);
     m_LetArrayManageMemory = true;
@@ -127,7 +127,7 @@ public:
       {
       this->m_Data[i] = static_cast< ValueType >( v[i] );
       }
-  }
+    }
 
   /** Copy constructer.. Override the default non-templated copy constructor
    * that the compiler provides */
@@ -140,7 +140,7 @@ public:
   template< class T >
   const VariableLengthVector< TValueType > & operator=
     (const VariableLengthVector< T > & v)
-  {
+    {
     if ( m_Data == static_cast< void * >( const_cast< T * >
                                           ( ( const_cast< VariableLengthVector< T > & >( v ) ).GetDataPointer() ) ) )
       {
@@ -152,7 +152,7 @@ public:
       this->m_Data[i] = static_cast< ValueType >( v[i] );
       }
     return *this;
-  }
+    }
 
   /** Assignment operators  */
   const Self & operator=(const Self & v);
@@ -160,10 +160,8 @@ public:
   const Self & operator=(TValueType const & v);
 
   /** Return the number of elements in the Array  */
-  inline unsigned int Size(void) const
-  { return m_NumElements; }
-  inline unsigned int GetNumberOfElements(void) const
-  { return m_NumElements; }
+  inline unsigned int Size(void) const { return m_NumElements; }
+  inline unsigned int GetNumberOfElements(void) const { return m_NumElements; }
 
   /** Return reference to the element at specified index. No range checking. */
   TValueType       & operator[](unsigned int i) { return this->m_Data[i]; }
@@ -171,12 +169,10 @@ public:
   TValueType const & operator[](unsigned int i) const { return this->m_Data[i]; }
 
   /** Get one element */
-  inline const TValueType & GetElement(unsigned int i) const
-  { return m_Data[i]; }
+  inline const TValueType & GetElement(unsigned int i) const { return m_Data[i]; }
 
   /** Set one element */
-  void SetElement(unsigned int i, const TValueType & value)
-  { m_Data[i] = value; }
+  void SetElement(unsigned int i, const TValueType & value) { m_Data[i] = value; }
 
   /** Set the size to that given.
    *
@@ -194,8 +190,7 @@ public:
    * true. */
   void DestroyExistingData();
 
-  inline unsigned int GetSize(void) const
-  { return m_NumElements; }
+  inline unsigned int GetSize(void) const { return m_NumElements; }
 
   /** Set the pointer from which the data is imported.
    * If "LetArrayManageMemory" is false, then the application retains
@@ -238,7 +233,7 @@ public:
    * VariableLengthVector a and b, they are of the same length. */
   template< class T >
   inline Self operator+(const VariableLengthVector< T > & v) const
-  {
+    {
     // if( m_NumElements != v.GetSize() )
     //   {
     //   itkGenericExceptionMacro( << "Cannot add VariableLengthVector of length
@@ -253,11 +248,11 @@ public:
       result[i] = ( *this )[i] + static_cast< ValueType >( v[i] );
       }
     return result;
-  }
+    }
 
   template< class T >
   inline Self operator-(const VariableLengthVector< T > & v) const
-  {
+    {
     // if( m_NumElements != v.GetSize() )
     //   {
     //   itkGenericExceptionMacro( << "Cannot add VariableLengthVector of length
@@ -272,11 +267,11 @@ public:
       result[i] = ( *this )[i] - static_cast< ValueType >( v[i] );
       }
     return result;
-  }
+    }
 
   template< class T >
   inline Self operator*(T s) const
-  {
+    {
     Self result(m_NumElements);
 
     for ( ElementIdentifier i = 0; i < m_NumElements; i++ )
@@ -284,11 +279,11 @@ public:
       result[i] = m_Data[i] * static_cast< ValueType >( s );
       }
     return result;
-  }
+    }
 
   template< class T >
   inline Self operator/(T s) const
-  {
+    {
     Self result(m_NumElements);
 
     for ( ElementIdentifier i = 0; i < m_NumElements; i++ )
@@ -298,10 +293,10 @@ public:
         / static_cast< RealValueType >( s ) );
       }
     return result;
-  }
+    }
 
   inline Self operator+(TValueType s) const
-  {
+    {
     Self result(m_NumElements);
 
     for ( ElementIdentifier i = 0; i < m_NumElements; i++ )
@@ -309,10 +304,10 @@ public:
       result[i] = m_Data[i] + s;
       }
     return result;
-  }
+    }
 
   inline Self operator-(TValueType s) const
-  {
+    {
     Self result(m_NumElements);
 
     for ( ElementIdentifier i = 0; i < m_NumElements; i++ )
@@ -320,95 +315,95 @@ public:
       result[i] = m_Data[i] - s;
       }
     return result;
-  }
+    }
 
   inline Self & operator--()
-  {
+    {
     for ( ElementIdentifier i = 0; i < m_NumElements; i++ )
       {
       this->m_Data[i] -= static_cast< ValueType >( 1.0 );
       }
     return *this;
-  }
+    }
 
   inline Self & operator++() // prefix operator ++v;
-  {
+    {
     for ( ElementIdentifier i = 0; i < m_NumElements; i++ )
       {
       this->m_Data[i] += static_cast< ValueType >( 1.0 );
       }
     return *this;
-  }
+    }
 
   inline Self operator--(int) // postfix operator v--;
-  {
+    {
     Self tmp(*this);
 
     --tmp;
     return tmp;
-  }
+    }
 
   inline Self operator++(int) // postfix operator v++;
-  {
+    {
     Self tmp(*this);
 
     ++tmp;
     return tmp;
-  }
+    }
 
   template< class T >
   inline Self & operator-=
     (const VariableLengthVector< T > & v)
-  {
+    {
     for ( ElementIdentifier i = 0; i < m_NumElements; i++ )
       {
       m_Data[i] -= static_cast< ValueType >( v[i] );
       }
     return *this;
-  }
+    }
 
   inline Self & operator-=(TValueType s)
-  {
+    {
     for ( ElementIdentifier i = 0; i < m_NumElements; i++ )
       {
       m_Data[i] -= s;
       }
     return *this;
-  }
+    }
 
   template< class T >
   inline Self & operator+=
     (const VariableLengthVector< T > & v)
-  {
+    {
     for ( ElementIdentifier i = 0; i < m_NumElements; i++ )
       {
       m_Data[i] += static_cast< ValueType >( v[i] );
       }
     return *this;
-  }
+    }
 
   inline Self & operator+=(TValueType s)
-  {
+    {
     for ( ElementIdentifier i = 0; i < m_NumElements; i++ )
       {
       m_Data[i] += s;
       }
     return *this;
-  }
+    }
 
   template< class T >
   inline Self & operator*=(T s)
-  {
+    {
     for ( ElementIdentifier i = 0; i < m_NumElements; i++ )
       {
       m_Data[i] *= ( static_cast< ValueType >( s ) );
       }
     return *this;
-  }
+    }
 
   template< class T >
   inline Self & operator/=(T s)
-  {
+    {
     for ( ElementIdentifier i = 0; i < m_NumElements; i++ )
       {
       m_Data[i] = static_cast< ValueType >(
@@ -416,7 +411,7 @@ public:
         / static_cast< RealValueType >( s ) );
       }
     return *this;
-  }
+    }
 
   Self & operator-();  // negation operator
 
