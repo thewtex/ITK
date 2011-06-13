@@ -6,7 +6,7 @@ set(ITK-GPUCommon-tests
  itkGPUImageTest.cxx
  itkGPUImageFilterTest.cxx
  itkGPUImageFilterTestTemp.cxx
- itkGPUDemonsRegistrationFilterTest.cxx
+# itkGPUDemonsRegistrationFilterTest.cxx
  )
 
 include_directories(${OPENCL_INCLUDE_DIRS} ${CMAKE_CURRENT_BINARY_DIR}/../)

@@ -192,7 +192,7 @@ int itkGPUImageFilterTestTemp(int argc, char *argv[])
   itk::TimeProbe timer;
   timer.Start();
 
-  //anisoFilter->SetInPlace( true );// false/*true*/ );
+  //anisoFilter->SetInPlace( true );
   anisoFilter->SetInput( reader->GetOutput() );
   anisoFilter->SetNumberOfIterations( 10 );
   anisoFilter->SetTimeStep( 0.0625 );
@@ -218,9 +218,9 @@ int itkGPUImageFilterTestTemp(int argc, char *argv[])
   typedef itk::ImageFileWriter< WriteImageType >  WriterType;
 
   WriterType::Pointer writer = WriterType::New();
-  writer->SetFileName( "output-GPUImageFilterTest.nrrd" );
+  writer->SetFileName( "input-testvolume.nrrd" );
 
-  rescaler->SetInput( anisoFilter->GetOutput() );
+  rescaler->SetInput( anisoFilter->GetOutput() );// anisoFilter->GetOutput() );
   writer->SetInput( rescaler->GetOutput() );
   writer->Update();
 

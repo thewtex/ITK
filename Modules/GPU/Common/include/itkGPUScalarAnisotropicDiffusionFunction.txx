@@ -64,6 +64,9 @@ void
 GPUScalarAnisotropicDiffusionFunction< TImage >
 ::CalculateAverageGradientMagnitudeSquared(TImage *ip)
 {
+  //itk::TimeProbe timer;
+  //timer.Start();
+
   // GPU kernel to compute Average Squared Gradient Magnitude
   typedef typename itk::GPUTraits< TImage >::Type GPUImageType;
   typename GPUImageType::Pointer inPtr =  dynamic_cast< GPUImageType * >( ip );
@@ -133,17 +136,22 @@ GPUScalarAnisotropicDiffusionFunction< TImage >
   for(int i=0; i<bufferSize; i++)
   {
     sum += (double)intSum[i];
-    std::cout << "Partial sum : " << intSum[i] << ", Total sum : " << sum << std::endl;
+    //std::cout << "Partial sum : " << intSum[i] << ", Total sum : " << sum << std::endl;
   }
 
   this->SetAverageGradientMagnitudeSquared( (double)( sum / (double)numPixel ) );
 
-  std::cout << "GPU average squared gradient magnitude : " << (double)( sum / numPixel ) << std::endl;
+  //std::cerr << "GPU took " << timer.GetMeanTime() << " seconds.\n";
+
+  //std::cout << "GPU average squared gradient magnitude : " << (double)( sum / numPixel ) << std::endl;
 
   delete [] intSum;
 
-
   // -------------------
+
+/*
+  itk::TimeProbe cputimer;
+  cputimer.Start();
 
   // CPU version
   typedef ConstNeighborhoodIterator< TImage >                           RNI_type;
@@ -244,8 +252,9 @@ GPUScalarAnisotropicDiffusionFunction< TImage >
 
   this->SetAverageGradientMagnitudeSquared( (double)( accumulator / counter ) );
 
+  std::cerr << "CPU took " << cputimer.GetMeanTime() << " seconds.\n";
   std::cout << "CPU average squared gradient magnitude : " << (double)( accumulator / counter ) << std::endl;
-
+*/
 }
 } // end namespace itk
 

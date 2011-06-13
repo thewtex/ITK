@@ -20,50 +20,33 @@
 
 #include "itkDenseFiniteDifferenceImageFilter.h"
 #include "itkGPUFiniteDifferenceImageFilter.h"
-#include "itkMultiThreader.h"
 
 namespace itk
 {
 /**
- * \class DenseFiniteDifferenceImageFilter
+ * \class GPUDenseFiniteDifferenceImageFilter
  *
- * This filter implements a layer of the finite difference solver hierarchy that
- * performs ``dense'' iteration, ie. iteration over all pixels in the input and
- * output at each change calculation and update step. Dense iteration is in
- * contrast to a ``sparse'' iteration over a subset of the pixels.  See
- * documentation for FiniteDifferenceImageFilter for an overview of the
- * iterative finite difference algorithm:
+ * This is the GPU version of DenseFiniteDifferenceImageFilter class.
+ * Currently only single-threaded, single GPU version is implemented.
+ * See documentation for FiniteDifferenceImageFilter for an overview
+ * of the iterative finite difference algorithm:
  *
  * \par
  * \f$u_{\mathbf{i}}^{n+1}=u^n_{\mathbf{i}}+\Delta u^n_{\mathbf{i}}\Delta t\f$
  *
  * \par
- * The generic code for performing iterations and updates at each time
- * step is inherited from the parent class.  This class defines an update
- * buffer for \f$ \Delta \f$ and the methods CalculateChange() and
- * ApplyUpdate(). These methods are designed to automatically thread their
- * execution.  \f$ \Delta \f$ is defined as an image of identical size and type
- * as the output image.
+ * This class defines an update buffer for \f$ \Delta \f$ and the methods
+ * GPUCalculateChange() and GPUApplyUpdate(), which are GPU version of
+ * CalculateChange() and ApplyUpdate().
  *
- * \par
- * As we descend through each layer in the hierarchy, we know more and more
- * about the specific application of our filter.  At this level, we
- * have committed to iteration over each pixel in an image. We take advantage
- * of that knowledge to multithread the iteration and update methods.
- *
- * \par Inputs and Outputs
- * This is an image to image filter.  The specific types of the images are not
- * fixed at this level in the hierarchy.
+ * Use m_UpdateBuffer defined in CPU superclass (DenseFiniteDifferenceImageFilter).
  *
  * \par How to use this class
- * This filter is only one layer in a branch the finite difference solver
- * hierarchy.  It does not define the function used in the CalculateChange() and
- * it does not define the stopping criteria (Halt method).  To use this class,
- * subclass it to a specific instance that supplies a function and Halt()
- * method.
+ * This filter can be used as a base class for GPU implementation of
+ * DenseFiniteDifferenceImageFilter.
  *
- * \ingroup ImageFilters
- * \sa FiniteDifferenceImageFilter */
+ * \ingroup GPUCommon
+ */
   template< class TInputImage, class TOutputImage, class TParentImageFilter = itk::DenseFiniteDifferenceImageFilter< TInputImage, TOutputImage > >
 class ITK_EXPORT GPUDenseFiniteDifferenceImageFilter:
   public GPUFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilter >
@@ -129,55 +112,15 @@ protected:
 
   /** Method to allow subclasses to get direct access to the update
    * buffer */
-  virtual UpdateBufferType * GetUpdateBuffer() { return m_UpdateBuffer; }
+  virtual UpdateBufferType * GetUpdateBuffer() { return CPUSuperclass::GetUpdateBuffer(); }
 
   /** This method allocates storage in m_UpdateBuffer.  It is called from
    * Superclass::GenerateData(). */
   virtual void AllocateUpdateBuffer();
 
-  ///** The type of region used for multithreading */
-  //typedef typename UpdateBufferType::RegionType ThreadRegionType;
-
-  ///**  Does the actual work of updating the output from the UpdateContainer over
-  // *  an output region supplied by the multithreading mechanism.
-  // *  \sa ApplyUpdate
-  // *  \sa ApplyUpdateThreaderCallback */
-  //virtual
-  //void ThreadedApplyUpdate(TimeStepType dt,
-  //                         const ThreadRegionType & regionToProcess,
-  //                         int threadId);
-
-  ///** Does the actual work of calculating change over a region supplied by
-  // * the multithreading mechanism.
-  // * \sa CalculateChange
-  // * \sa CalculateChangeThreaderCallback */
-  //virtual
-  //TimeStepType ThreadedCalculateChange(const ThreadRegionType & regionToProcess,
-  //                                     int threadId);
-
 private:
   GPUDenseFiniteDifferenceImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);                   //purposely not implemented
-
-  ///** Structure for passing information into static callback methods.  Used in
-  // * the subclasses' threading mechanisms. */
-  //struct DenseFDThreadStruct {
-  //  GPUDenseFiniteDifferenceImageFilter *Filter;
-  //  TimeStepType TimeStep;
-  //  TimeStepType *TimeStepList;
-  //  bool *ValidTimeStepList;
-  //};
-
-  ///** This callback method uses ImageSource::SplitRequestedRegion to acquire an
-  // * output region that it passes to ThreadedApplyUpdate for processing. */
-  //static ITK_THREAD_RETURN_TYPE ApplyUpdateThreaderCallback(void *arg);
-
-  ///** This callback method uses SplitUpdateContainer to acquire a region
-  // * which it then passes to ThreadedCalculateChange for processing. */
-  //static ITK_THREAD_RETURN_TYPE CalculateChangeThreaderCallback(void *arg);
-
-  /** The buffer that holds the updates for an iteration of the algorithm. */
-  //typename UpdateBufferType::Pointer m_UpdateBuffer;
 
   /* GPU kernel handle for GPUApplyUpdate */
   int m_ApplyUpdateGPUKernelHandle;

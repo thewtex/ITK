@@ -58,38 +58,52 @@ __kernel void AverageGradientMagnitudeSquared(__global const INPIXELTYPE *in, __
   __local float sm[BLOCK_SIZE+2][BLOCK_SIZE+2];
 
   // Read (BLOCK_SIZE+2)x(BLOCK_SIZE+2) data - 1 pixel boundary around block
-  sm[lix][liy] = in[gidx];
 
-  if(lix == 1)
+  // inner
+  if(gix < width && giy < height)
   {
-    // Left
-    if(gix > 0) sm[lix-1][liy] = in[gidx-1];
-    else sm[lix-1][liy] = in[gidx];
+    sm[lix][liy] = in[gidx];
   }
-  else if(lix == BLOCK_SIZE)
-  {
-    // Right
-    if(gix < (width-1)) sm[lix+1][liy] = in[gidx+1];
-    else sm[lix+1][liy] = in[gidx];
-  }
-  else {}
+  else sm[lix][liy] = 0;
 
-  if(liy == 1)
+  barrier(CLK_LOCAL_MEM_FENCE);
+
+  // boundary
+  if(gix < width && giy < height)
   {
-    // Bottom
-    if(giy > 0) sm[lix][liy-1] = in[gidx - width];
-    else sm[lix][liy-1] = in[gidx];
+    if(lix == 1)
+    {
+      // Left
+      if(gix > 0) sm[lix-1][liy] = in[gidx-1];
+      else sm[lix-1][liy] = in[gidx];
+    }
+    else if(lix == BLOCK_SIZE || gix == width-1)
+    {
+      // Right
+      if(gix < (width-1)) sm[lix+1][liy] = in[gidx+1];
+      else sm[lix+1][liy] = in[gidx];
+    }
+    else {}
+
+    if(liy == 1)
+    {
+      // Bottom
+      if(giy > 0) sm[lix][liy-1] = in[gidx - width];
+      else sm[lix][liy-1] = in[gidx];
+    }
+    else if(liy == BLOCK_SIZE || giy == height-1)
+    {
+      // Up
+      if(giy < (height-1)) sm[lix][liy+1] = in[gidx + width];
+      else sm[lix][liy+1] = in[gidx];
+    }
+    else {}
   }
-  else if(liy == BLOCK_SIZE)
-  {
-    // Up
-    if(giy < (height-1)) sm[lix][liy+1] = in[gidx + width];
-    else sm[lix][liy+1] = in[gidx];
-  }
-  else {}
 
   // Synchronize shared memory
   barrier(CLK_LOCAL_MEM_FENCE);
+
+  float val = 0;
 
   // Compute Update
   if(gix < width && giy < height)
@@ -98,11 +112,15 @@ __kernel void AverageGradientMagnitudeSquared(__global const INPIXELTYPE *in, __
     dx[0] = (sm[lix+1][liy] - sm[lix-1][liy])*0.5f*scalex;  // grad x
     dx[1] = (sm[lix][liy+1] - sm[lix][liy-1])*0.5f*scaley;  // grad y
 
-		sm[lix][liy] = dx[0]*dx[0] + dx[1]*dx[1];
+		//sm[lix][liy] = dx[0]*dx[0] + dx[1]*dx[1];
+    val = dx[0]*dx[0] + dx[1]*dx[1];
   }
-  else sm[lix][liy] = 0;
 
   // Synchronize shared memory
+  barrier(CLK_LOCAL_MEM_FENCE);
+
+  sm[lix][liy] = val;
+
   barrier(CLK_LOCAL_MEM_FENCE);
 
   // Reduction on shared memory
@@ -134,7 +152,9 @@ __kernel void AverageGradientMagnitudeSquared(__global const INPIXELTYPE *in, __
         sm[lix][liy] += sm[lix + interval][liy];
       }
 
-      if(interval > 16) barrier(CLK_LOCAL_MEM_FENCE);  // don't need to synchronize if within a warp (only for NVIDIA)
+      //if(interval > 16) barrier(CLK_LOCAL_MEM_FENCE);  // don't need to synchronize if within a warp (only for NVIDIA)
+
+      barrier(CLK_LOCAL_MEM_FENCE);
 
       interval = interval >> 1; // divide by 2
     }
@@ -184,59 +204,67 @@ __kernel void AverageGradientMagnitudeSquared(__global const INPIXELTYPE *in, __
   __local float xy_l[BLOCK_SIZE][BLOCK_SIZE]; // for z boundary
   __local float xy_r[BLOCK_SIZE][BLOCK_SIZE];
 
-
   //
   // Read (BLOCK_SIZE+2)x(BLOCK_SIZE+2) data - 1 pixel boundary around block
   //
 
   // Center
-  sm[lix][liy][liz] = in[gidx];
+  if(gix < width && giy < height && giz < depth)
+  {
+    sm[lix][liy][liz] = in[gidx];
+  }
+  else sm[lix][liy][liz] = 0;
 
-  // 6 top/bottom/left/right/up/down planes
-  if(lix == 0)
+  // 6 top/bottom/left/right/up/down neighbor planes
+  if(gix < width && giy < height && giz < depth)
   {
-    // y/z top plane
-    if(gix > 0) yz_l[liy][liz] = in[gidx-1];
-    else yz_l[liy][liz] = in[gidx];
-  }
-  else if(lix == BLOCK_SIZE-1)
-  {
-    // y/z bottom plane
-    if(gix < (width-1)) yz_r[liy][liz] = in[gidx+1];
-    else yz_r[liy][liz] = in[gidx];
-  }
-  else {}
+    if(lix == 0)
+    {
+      // y/z top plane
+      if(gix > 0) yz_l[liy][liz] = in[gidx-1];
+      else yz_l[liy][liz] = in[gidx];
+    }
+    else if(lix == BLOCK_SIZE-1 || gix == width-1)
+    {
+      // y/z bottom plane
+      if(gix < (width-1)) yz_r[liy][liz] = in[gidx+1];
+      else yz_r[liy][liz] = in[gidx];
+    }
+    else {}
 
-  if(liy == 0)
-  {
-    // x/z top plane
-    if(giy > 0) xz_l[lix][liz] = in[gidx - width];
-    else xz_l[lix][liz] = in[gidx];
-  }
-  else if(liy == BLOCK_SIZE-1)
-  {
-    // x/z bottom plane
-    if(giy < (height-1)) xz_r[lix][liz] = in[gidx + width];
-    else xz_r[lix][liz] = in[gidx];
-  }
-  else {}
+    if(liy == 0)
+    {
+      // x/z top plane
+      if(giy > 0) xz_l[lix][liz] = in[gidx - width];
+      else xz_l[lix][liz] = in[gidx];
+    }
+    else if(liy == BLOCK_SIZE-1 || giy == height-1)
+    {
+      // x/z bottom plane
+      if(giy < (height-1)) xz_r[lix][liz] = in[gidx + width];
+      else xz_r[lix][liz] = in[gidx];
+    }
+    else {}
 
-  if(liz == 0)
-  {
-    // x/y top plane
-    if(giz > 0) xy_l[lix][liy] = in[gidx - width*height];
-    else xy_l[lix][liy] = in[gidx];
+    if(liz == 0)
+    {
+      // x/y top plane
+      if(giz > 0) xy_l[lix][liy] = in[gidx - width*height];
+      else xy_l[lix][liy] = in[gidx];
+    }
+    else if(liz == BLOCK_SIZE-1 || giz == depth-1)
+    {
+      // x/z bottom plane
+      if(giz < (depth-1)) xy_r[lix][liy] = in[gidx + width*height];
+      else xy_r[lix][liy] = in[gidx];
+    }
+    else {}
   }
-  else if(liz == BLOCK_SIZE-1)
-  {
-    // x/z bottom plane
-    if(giz < (depth-1)) xy_r[lix][liy] = in[gidx + width*height];
-    else xy_r[lix][liy] = in[gidx];
-  }
-  else {}
 
   // synchronize shared memory
   barrier(CLK_LOCAL_MEM_FENCE);
+
+  float val = 0;
 
   // Compute Update
   if(gix < width && giy < height && giz < depth)
@@ -244,21 +272,24 @@ __kernel void AverageGradientMagnitudeSquared(__global const INPIXELTYPE *in, __
     // centralized derivatives
     float df, db;
 
-    df = (lix == BLOCK_SIZE-1) ? yz_r[liy][liz] : sm[lix+1][liy][liz];
+    df = (lix == BLOCK_SIZE-1 || gix == width-1) ? yz_r[liy][liz] : sm[lix+1][liy][liz];
     db = (lix == 0) ? yz_l[liy][liz] : sm[lix-1][liy][liz];
     dx[0] = (df - db)*0.5f*scalex;
 
-    df = (liy == BLOCK_SIZE-1) ? xz_r[lix][liz] : sm[lix][liy+1][liz];
+    df = (liy == BLOCK_SIZE-1 || giy == height-1) ? xz_r[lix][liz] : sm[lix][liy+1][liz];
     db = (liy == 0) ? xz_l[lix][liz] : sm[lix][liy-1][liz];
     dx[1] = (df - db)*0.5f*scaley;
 
-    df = (liz == BLOCK_SIZE-1) ? xy_r[lix][liy] : sm[lix][liy][liz+1];
+    df = (liz == BLOCK_SIZE-1 || giz == depth-1) ? xy_r[lix][liy] : sm[lix][liy][liz+1];
     db = (liz == 0) ? xy_l[lix][liy] : sm[lix][liy][liz-1];
     dx[2] = (df - db)*0.5f*scalez;
 
-		sm[lix][liy][liz] = dx[0]*dx[0] + dx[1]*dx[1] * dx[2]*dx[2];
+		val = dx[0]*dx[0] + dx[1]*dx[1] * dx[2]*dx[2];
   }
-  else sm[lix][liy][liz] = 0;
+
+  barrier(CLK_LOCAL_MEM_FENCE);
+
+  sm[lix][liy][liz] = val;
 
   barrier(CLK_LOCAL_MEM_FENCE);
 
@@ -307,7 +338,9 @@ __kernel void AverageGradientMagnitudeSquared(__global const INPIXELTYPE *in, __
           sm[lix][liy][liz] += sm[lix + interval][liy][liz];
         }
 
-        if(interval > 16) barrier(CLK_LOCAL_MEM_FENCE);  // don't need to synchronize if within a warp (only for NVIDIA)
+        //if(interval > 16) barrier(CLK_LOCAL_MEM_FENCE);  // don't need to synchronize if within a warp (only for NVIDIA)
+
+        barrier(CLK_LOCAL_MEM_FENCE);
 
         interval = interval >> 1; // divide by 2
       }
