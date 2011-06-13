@@ -19,6 +19,9 @@
 //
 // Apply Update : out = out + dt*buf
 //
+// the element is a vector in DeformationField
+
+// interpolating functions
 
 #ifdef DIM_1
 __kernel void ApplyUpdate(__global const BUFPIXELTYPE *buf,
@@ -45,6 +48,9 @@ __kernel void ApplyUpdate(__global const BUFPIXELTYPE *buf,
   unsigned int gidx = width*giy + gix;
   if(gix < width && giy < height)
   {
+    gidx *= 2;
+    out[gidx] = (OUTPIXELTYPE)( (float)out[gidx] + dt*(float)(buf[gidx]) );
+    gidx ++;
     out[gidx] = (OUTPIXELTYPE)( (float)out[gidx] + dt*(float)(buf[gidx]) );
   }
 }
@@ -62,6 +68,11 @@ __kernel void ApplyUpdate(__global const BUFPIXELTYPE *buf,
   unsigned int gidx = width*(giz*height + giy) + gix;
   if(gix < width && giy < height && giz < depth)
   {
+    gidx *= 3;
+    out[gidx] = (OUTPIXELTYPE)( (float)out[gidx] + dt*(float)(buf[gidx]) );
+    gidx ++;
+    out[gidx] = (OUTPIXELTYPE)( (float)out[gidx] + dt*(float)(buf[gidx]) );
+    gidx ++;
     out[gidx] = (OUTPIXELTYPE)( (float)out[gidx] + dt*(float)(buf[gidx]) );
   }
 }

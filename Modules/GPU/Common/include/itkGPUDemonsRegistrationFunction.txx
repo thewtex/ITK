@@ -64,6 +64,34 @@ GPUDemonsRegistrationFunction< TFixedImage, TMovingImage, TDeformationField >
 
   m_MovingImageGradientCalculator = MovingImageGradientCalculatorType::New();
   m_UseMovingImageGradient = false;
+
+  /*** Prepare GPU opencl program ***/
+
+  std::ostringstream defines;
+
+  if(TInputImage::ImageDimension > 3 || ImageDimension < 1)
+  {
+    itkExceptionMacro("GPUDenseFiniteDifferenceImageFilter supports 1/2/3D image.");
+  }
+
+  defines << "#define DIM_" << TInputImage::ImageDimension << "\n";
+
+  defines << "#define BUFPIXELTYPE ";
+  GetTypenameInString( typeid ( typename UpdateBufferType::PixelType ), defines );
+
+  defines << "#define OUTPIXELTYPE ";
+  GetTypenameInString( typeid ( typename TOutputImage::PixelType ), defines );
+
+  std::string oclSrcPath = "./../OpenCL/GPUDemonsRegistrationFunction.cl";
+
+  std::cout << "Defines: " << defines.str() << "Source code path: " << oclSrcPath << std::endl;
+
+  // load and build program
+  this->m_GPUKernelManager->LoadProgramFromFile( oclSrcPath.c_str(), defines.str().c_str() );
+
+  // create kernel
+  m_ComputeUpdateGPUKernelHandle = this->m_GPUKernelManager->CreateKernel("ComputeUpdate");
+
 }
 
 /**
@@ -158,6 +186,60 @@ GPUDemonsRegistrationFunction< TFixedImage, TMovingImage, TDeformationField >
   m_SumOfSquaredDifference  = 0.0;
   m_NumberOfPixelsProcessed = 0L;
   m_SumOfSquaredChange      = 0.0;
+}
+
+/**
+ * Compute update at a specify neighbourhood
+ */
+template< class TFixedImage, class TMovingImage, class TDeformationField >
+void
+GPUDemonsRegistrationFunction< TFixedImage, TMovingImage, TDeformationField >
+::GPUComputeUpdate( TDeformationField output,
+                    TDeformationField update,
+                    void *gd
+                    )
+{
+  TFixedImage  fixedImage  = this->GetFixedImage();
+  TMovingImage movingImage = this->GetMovingImage();
+  typename GPUOutputImage::SizeType outSize = output->GetLargestPossibleRegion().GetSize();
+
+  int imgSize[3];
+  imgSize[0] = imgSize[1] = imgSize[2] = 1;
+
+  float timeStep = dt;
+
+  int ImageDim = (int)TInputImage::ImageDimension;
+
+  for(int i=0; i<ImageDim; i++)
+  {
+    imgSize[i] = outSize[i];
+  }
+
+  size_t localSize[3], globalSize[3];
+  localSize[0] = localSize[1] = localSize[2] = BLOCK_SIZE[ImageDim-1];
+  for(int i=0; i<ImageDim; i++)
+  {
+    globalSize[i] = localSize[i]*(unsigned int)ceil((float)outSize[i]/(float)localSize[i]); // total # of threads
+  }
+
+  float normalizer = 1;
+
+  // arguments set up
+  int argidx = 0;
+  this->m_GPUKernelManager->SetKernelArgWithImage(m_ComputeUpdateGPUKernelHandle, argidx++, fixedImage->GetGPUDataManager());
+  this->m_GPUKernelManager->SetKernelArgWithImage(m_ComputeUpdateGPUKernelHandle, argidx++, movingImage->GetGPUDataManager());
+  this->m_GPUKernelManager->SetKernelArgWithImage(m_ComputeUpdateGPUKernelHandle, argidx++, output->GetGPUDataManager());
+  this->m_GPUKernelManager->SetKernelArgWithImage(m_ComputeUpdateGPUKernelHandle, argidx++, update->GetGPUDataManager());
+
+  this->m_GPUKernelManager->SetKernelArg(m_ComputeUpdateGPUKernelHandle, argidx++, sizeof(float), &(normalizer));
+  for(int i=0; i<ImageDim; i++)
+  {
+    this->m_GPUKernelManager->SetKernelArg(m_ComputeUpdateGPUKernelHandle, argidx++, sizeof(int), &(imgSize[i]));
+  }
+
+  // launch kernel
+  this->m_GPUKernelManager->LaunchKernel(m_ComputeUpdateGPUKernelHandle, (int)TInputImage::ImageDimension, globalSize, localSize );
+
 }
 
 /**

@@ -50,14 +50,14 @@ namespace itk
  */
 template< class TFixedImage, class TMovingImage, class TDeformationField >
 class ITK_EXPORT GPUDemonsRegistrationFunction:
-  public GPUPDEDeformableRegistrationFunction< TFixedImage,
+  public DemonsRegistrationFunction< TFixedImage,
                                             TMovingImage,
                                             TDeformationField >
 {
 public:
   /** Standard class typedefs. */
   typedef GPUDemonsRegistrationFunction Self;
-  typedef GPUPDEDeformableRegistrationFunction< TFixedImage,
+  typedef DemonsRegistrationFunction< TFixedImage,
                                              TMovingImage, TDeformationField
                                              >                                      Superclass;
   typedef SmartPointer< Self >       Pointer;
@@ -68,7 +68,7 @@ public:
 
   /** Run-time type information (and related methods). */
   itkTypeMacro(GPUDemonsRegistrationFunction,
-               GPUPDEDeformableRegistrationFunction);
+               DemonsRegistrationFunction);
 
   /** MovingImage image type. */
   typedef typename Superclass::MovingImageType    MovingImageType;
@@ -155,6 +155,10 @@ public:
                                     const FloatOffsetType & offset =
                                       FloatOffsetType(0.0) );
 
+  virtual void GPUComputeUpdate( TDeformationField output,
+                                 TDeformationField update,
+                                 void *gd);
+
   /** Get the metric value. The metric value is the mean square difference
    * in intensity between the fixed image and transforming moving image
    * computed over the the overlapping region between the two images. */
@@ -237,6 +241,10 @@ private:
 
   /** Mutex lock to protect modification to metric. */
   mutable SimpleFastMutexLock m_MetricCalculationLock;
+
+  /* GPU kernel handle for GPUComputeUpdate */
+  int m_ComputeUpdateGPUKernelHandle;
+
 };
 } // end namespace itk
 

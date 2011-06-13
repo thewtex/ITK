@@ -34,86 +34,120 @@ namespace itk
 /**
  * Default constructor
  */
-template< class TFixedImage, class TMovingImage, class TDeformationField >
-GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField >
+template< class TFixedImage, class TMovingImage, class TDeformationField, class TParentImageFilter >
+GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField, TParentImageFilter >
 ::GPUPDEDeformableRegistrationFilter()
 {
   this->SetNumberOfRequiredInputs(2);
 
   this->SetNumberOfIterations(10);
 
-  unsigned int j;
+  /*unsigned int j;
   for ( j = 0; j < ImageDimension; j++ )
     {
     m_StandardDeviations[j] = 1.0;
     m_UpdateFieldStandardDeviations[j] = 1.0;
     }
-
+  */
   m_TempField = DeformationFieldType::New();
+  /*
   m_MaximumError = 0.1;
   m_MaximumKernelWidth = 30;
   m_StopRegistrationFlag = false;
 
   m_SmoothDeformationField = true;
   m_SmoothUpdateField = false;
+
+  m_SmoothingKernel = NULL;
+  */
+  /** Build GPU Program */
+
+  std::ostringstream defines;
+
+  if(TFixedImage::ImageDimension > 3 || TFixedImage::ImageDimension < 1)
+  {
+    itkExceptionMacro("GPUDenseFiniteDifferenceImageFilter supports 1/2/3D image.");
+  }
+
+  defines << "#define DIM_" << TDeformationField::ImageDimension << "\n";
+
+  //PixelType is a Vector
+  defines << "#define OUTPIXELTYPE ";
+  GetTypenameInString( typeid ( typename TDeformationField::PixelType::ValueType ), defines );
+
+  std::string oclSrcPath = "./../OpenCL/GPUPDEDeformableRegistrationFilter.cl";
+
+  std::cout << "Defines: " << defines.str() << "Source code path: " << oclSrcPath << std::endl;
+
+  // load and build program
+  this->m_GPUKernelManager->LoadProgramFromFile( oclSrcPath.c_str(), defines.str().c_str() );
+
+  // create kernel
+  m_SmoothDeformationFieldGPUKernelHandle = this->m_GPUKernelManager->CreateKernel("SmoothDeformationField");
+
 }
 
 /*
  * Set the fixed image.
  */
-template< class TFixedImage, class TMovingImage, class TDeformationField >
+/*
+template< class TFixedImage, class TMovingImage, class TDeformationField, class TParentImageFilter >
 void
-GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField >
+GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField, TParentImageFilter >
 ::SetFixedImage(
   const FixedImageType *ptr)
 {
   this->ProcessObject::SetNthInput( 1, const_cast< FixedImageType * >( ptr ) );
 }
-
+*/
 /*
  * Get the fixed image.
  */
-template< class TFixedImage, class TMovingImage, class TDeformationField >
-const typename GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField >
+/*
+template< class TFixedImage, class TMovingImage, class TDeformationField, class TParentImageFilter >
+const typename GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField, TParentImageFilter >
 ::FixedImageType *
-GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField >
+GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField, TParentImageFilter >
 ::GetFixedImage() const
 {
   return dynamic_cast< const FixedImageType * >
          ( this->ProcessObject::GetInput(1) );
 }
-
+*/
 /*
  * Set the moving image.
  */
-template< class TFixedImage, class TMovingImage, class TDeformationField >
+/*
+template< class TFixedImage, class TMovingImage, class TDeformationField, class TParentImageFilter >
 void
-GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField >
+GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField, TParentImageFilter >
 ::SetMovingImage(
   const MovingImageType *ptr)
 {
   this->ProcessObject::SetNthInput( 2, const_cast< MovingImageType * >( ptr ) );
 }
-
+*/
 /*
  * Get the moving image.
  */
-template< class TFixedImage, class TMovingImage, class TDeformationField >
-const typename GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField >
+/*
+template< class TFixedImage, class TMovingImage, class TDeformationField, class TParentImageFilter >
+const typename GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField, TParentImageFilter >
 ::MovingImageType *
-GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField >
+GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField, TParentImageFilter >
 ::GetMovingImage() const
 {
   return dynamic_cast< const MovingImageType * >
          ( this->ProcessObject::GetInput(2) );
 }
-
+*/
 /*
  *
  */
-template< class TFixedImage, class TMovingImage, class TDeformationField >
+/*
+template< class TFixedImage, class TMovingImage, class TDeformationField, class TParentImageFilter >
 std::vector< SmartPointer< DataObject > >::size_type
-GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField >
+GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField, TParentImageFilter >
 ::GetNumberOfValidRequiredInputs() const
 {
   typename std::vector< SmartPointer< DataObject > >::size_type num = 0;
@@ -130,13 +164,14 @@ GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField
 
   return num;
 }
-
+*/
 /**
  * Set the standard deviations.
  */
-template< class TFixedImage, class TMovingImage, class TDeformationField >
+/*
+template< class TFixedImage, class TMovingImage, class TDeformationField, class TParentImageFilter >
 void
-GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField >
+GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField, TParentImageFilter >
 ::SetStandardDeviations(
   double value)
 {
@@ -158,13 +193,14 @@ GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField
       }
     }
 }
-
+*/
 /*
  * Set the standard deviations.
  */
-template< class TFixedImage, class TMovingImage, class TDeformationField >
+/*
+template< class TFixedImage, class TMovingImage, class TDeformationField, class TParentImageFilter >
 void
-GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField >
+GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField, TParentImageFilter >
 ::SetUpdateFieldStandardDeviations(
   double value)
 {
@@ -186,16 +222,17 @@ GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField
       }
     }
 }
-
+*/
 /*
  * Standard PrintSelf method.
  */
-template< class TFixedImage, class TMovingImage, class TDeformationField >
+template< class TFixedImage, class TMovingImage, class TDeformationField, class TParentImageFilter >
 void
-GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField >
+GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField, TParentImageFilter >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+  /*
   os << indent << "Smooth deformation field: "
      << ( m_SmoothDeformationField ? "on" : "off" ) << std::endl;
   os << indent << "Standard deviations: [";
@@ -219,14 +256,16 @@ GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField
   os << m_MaximumError << std::endl;
   os << indent << "MaximumKernelWidth: ";
   os << m_MaximumKernelWidth << std::endl;
+  */
 }
 
 /*
  * Set the function state values before each iteration
  */
-template< class TFixedImage, class TMovingImage, class TDeformationField >
+/*
+template< class TFixedImage, class TMovingImage, class TDeformationField, class TParentImageFilter >
 void
-GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField >
+GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField, TParentImageFilter >
 ::InitializeIteration()
 {
   MovingImageConstPointer movingPtr = this->GetMovingImage();
@@ -252,16 +291,16 @@ GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField
 
   this->Superclass::InitializeIteration();
 }
-
+*/
 /*
  * Override the default implemenation for the case when the
  * initial deformation is not set.
  * If the initial deformation is not set, the output is
  * fill with zero vectors.
  */
-template< class TFixedImage, class TMovingImage, class TDeformationField >
+template< class TFixedImage, class TMovingImage, class TDeformationField, class TParentImageFilter >
 void
-GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField >
+GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField, TParentImageFilter >
 ::CopyInputToOutput()
 {
   typename Superclass::InputImageType::ConstPointer inputPtr  = this->GetInput();
@@ -278,7 +317,8 @@ GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField
       zeros[j] = 0;
       }
 
-    typename OutputImageType::Pointer output = this->GetOutput();
+    typedef typename itk::GPUTraits< TDeformationField >::Type       GPUOutputImage;
+    typename GPUOutputImage::Pointer output = dynamic_cast<GPUOutputImage *>(this->GetOutput());
 
     ImageRegionIterator< OutputImageType > out( output, output->GetRequestedRegion() );
 
@@ -287,12 +327,16 @@ GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField
       out.Value() =  zeros;
       ++out;
       }
+
+    //copy to gpu
+    output->GetGPUDataManager()->SetCPUBufferDirty();
     }
 }
 
-template< class TFixedImage, class TMovingImage, class TDeformationField >
+/*
+template< class TFixedImage, class TMovingImage, class TDeformationField, class TParentImageFilter >
 void
-GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField >
+GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField, TParentImageFilter >
 ::GenerateOutputInformation()
 {
   typename DataObject::Pointer output;
@@ -318,10 +362,11 @@ GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField
       }
     }
 }
-
-template< class TFixedImage, class TMovingImage, class TDeformationField >
+*/
+/*
+template< class TFixedImage, class TMovingImage, class TDeformationField, class TParentImageFilter >
 void
-GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField >
+GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField, TParentImageFilter >
 ::GenerateInputRequestedRegion()
 {
   // call the superclass's implementation
@@ -353,37 +398,154 @@ GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField
     fixedPtr->SetRequestedRegion( outputPtr->GetRequestedRegion() );
     }
 }
-
+*/
 /*
  * Release memory of internal buffers
  */
-template< class TFixedImage, class TMovingImage, class TDeformationField >
+/*
+template< class TFixedImage, class TMovingImage, class TDeformationField, class TParentImageFilter >
 void
-GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField >
+GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField, TParentImageFilter >
 ::PostProcessOutput()
 {
   this->Superclass::PostProcessOutput();
   m_TempField->Initialize();
 }
-
+*/
 /*
  * Initialize flags
  */
-template< class TFixedImage, class TMovingImage, class TDeformationField >
+template< class TFixedImage, class TMovingImage, class TDeformationField, class TParentImageFilter >
 void
-GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField >
+GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField, TParentImageFilter >
 ::Initialize()
 {
   this->Superclass::Initialize();
   m_StopRegistrationFlag = false;
+  this->AllocateSmoothingBuffer();
 }
 
 /*
  * Smooth deformation using a separable Gaussian kernel
  */
-template< class TFixedImage, class TMovingImage, class TDeformationField >
+template< class TFixedImage, class TMovingImage, class TDeformationField, class TParentImageFilter >
 void
-GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField >
+GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField, TParentImageFilter >
+::AllocateSmoothingBuffer()
+{
+  DeformationFieldPointer field = this->GetOutput();
+
+  // copy field to TempField
+  m_TempField->SetOrigin( field->GetOrigin() );
+  m_TempField->SetSpacing( field->GetSpacing() );
+  m_TempField->SetDirection( field->GetDirection() );
+  m_TempField->SetLargestPossibleRegion(
+    field->GetLargestPossibleRegion() );
+  m_TempField->SetRequestedRegion(
+    field->GetRequestedRegion() );
+  m_TempField->SetBufferedRegion( field->GetBufferedRegion() );
+  m_TempField->Allocate();
+}
+
+
+/*
+ * Smooth deformation using a separable Gaussian kernel
+ */
+template< class TFixedImage, class TMovingImage, class TDeformationField, class TParentImageFilter >
+void
+GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField, TParentImageFilter >
+::GPUSmoothDeformationField()
+{
+  typedef typename DeformationFieldType::PixelType       VectorType;
+  typedef typename VectorType::ValueType                 ScalarType;
+  typedef GaussianOperator< ScalarType, ImageDimension > OperatorType;
+
+  if (m_SmoothingKernel == NULL)
+    {
+    /*
+    OperatorType *oper = new OperatorType;
+
+    oper->SetDirection(0);
+    double variance = vnl_math_sqr(m_StandardDeviations[j]);
+    oper->SetVariance(variance);
+    oper->SetMaximumError(m_MaximumError);
+    oper->SetMaximumKernelWidth(m_MaximumKernelWidth);
+
+    typename OperatorType::CoefficientVector coefficients;
+    coefficients = oper->GenerateCoefficients(); //to be fixed
+    //oper->CreateDirectional();
+    */
+    float coefficients[5] = {0.050882235450215044,
+      0.21183832469709751, 0.47455887970537486,
+      0.21183832469709751, 0.050882235450215044};
+
+    m_SmoothingKernelSize = 5;
+    m_SmoothingKernel     = new float[m_SmoothingKernelSize];
+
+    for (int i=0; i<m_SmoothingKernelSize; i++)
+      {
+      m_SmoothingKernel[i] = (float) coefficients[i];
+      }
+
+    // convolution kernel for GPU
+    m_GPUSmoothingKernel = GPUDataManager::New();
+    m_GPUSmoothingKernel->SetBufferSize( sizeof(float)*m_SmoothingKernelSize );
+    m_GPUSmoothingKernel->SetCPUBufferPointer( m_SmoothingKernel );
+    m_GPUSmoothingKernel->Allocate();
+    //m_GPUSmoothingKernel->SetTimeStamp( this->GetTimeStamp() );
+
+    //delete oper;
+    }
+  // image arguments
+  typedef typename itk::GPUTraits< TDeformationField >::Type   GPUBufferImage;
+  typedef typename itk::GPUTraits< TDeformationField >::Type   GPUOutputImage;
+
+  typename GPUBufferImage::Pointer bfPtr =  dynamic_cast< GPUBufferImage * >( m_TempField.GetPointer() );
+  typename GPUOutputImage::Pointer otPtr =  dynamic_cast< GPUOutputImage * >( this->GetOutput() );//this->ProcessObject::GetOutput(0) );
+  typename GPUOutputImage::SizeType outSize = otPtr->GetLargestPossibleRegion().GetSize();
+
+  int imgSize[3];
+  imgSize[0] = imgSize[1] = imgSize[2] = 1;
+
+  int ImageDim = (int)TDeformationField::ImageDimension;
+
+  for(int i=0; i<ImageDim; i++)
+  {
+    imgSize[i] = outSize[i];
+  }
+
+  size_t localSize[3], globalSize[3];
+  localSize[0] = localSize[1] = localSize[2] = BLOCK_SIZE[ImageDim-1];
+  for(int i=0; i<ImageDim; i++)
+  {
+    globalSize[i] = localSize[i]*(unsigned int)ceil((float)outSize[i]/(float)localSize[i]); // total # of threads
+  }
+
+  // arguments set up
+  int argidx = 0;
+  this->m_GPUKernelManager->SetKernelArgWithImage(m_SmoothDeformationFieldGPUKernelHandle, argidx++, otPtr->GetGPUDataManager());
+  this->m_GPUKernelManager->SetKernelArgWithImage(m_SmoothDeformationFieldGPUKernelHandle, argidx++, bfPtr->GetGPUDataManager());
+
+  this->m_GPUKernelManager->SetKernelArgWithImage(m_SmoothDeformationFieldGPUKernelHandle, argidx++, m_GPUSmoothingKernel);
+  this->m_GPUKernelManager->SetKernelArg(m_SmoothDeformationFieldGPUKernelHandle, argidx++, sizeof(int), &(m_SmoothingKernelSize));
+
+  for(int i=0; i<ImageDim; i++)
+  {
+    this->m_GPUKernelManager->SetKernelArg(m_SmoothDeformationFieldGPUKernelHandle, argidx++, sizeof(int), &(imgSize[i]));
+  }
+
+  // launch kernel
+  this->m_GPUKernelManager->LaunchKernel(m_SmoothDeformationFieldGPUKernelHandle, (int)TDeformationField::ImageDimension, globalSize, localSize );
+
+}
+
+/*
+ * Smooth deformation using a separable Gaussian kernel
+ */
+/*
+template< class TFixedImage, class TMovingImage, class TDeformationField, class TParentImageFilter >
+void
+GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField, TParentImageFilter >
 ::SmoothDeformationField()
 {
   DeformationFieldPointer field = this->GetOutput();
@@ -447,13 +609,14 @@ GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField
 
   delete oper;
 }
-
+*/
 /*
  * Smooth deformation using a separable Gaussian kernel
  */
-template< class TFixedImage, class TMovingImage, class TDeformationField >
+/*
+template< class TFixedImage, class TMovingImage, class TDeformationField, class TParentImageFilter >
 void
-GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField >
+GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField, TParentImageFilter >
 ::SmoothUpdateField()
 {
   // The update buffer will be overwritten with new data.
@@ -506,6 +669,7 @@ GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField
                                    ->GetLargestPossibleRegion() );
   field->CopyInformation( smoothers[ImageDimension - 1]->GetOutput() );
 }
+*/
 } // end namespace itk
 
 #endif

@@ -24,8 +24,8 @@ namespace itk
 /**
  * Default constructor
  */
-template< class TFixedImage, class TMovingImage, class TDeformationField >
-GPUDemonsRegistrationFilter< TFixedImage, TMovingImage, TDeformationField >
+template< class TFixedImage, class TMovingImage, class TDeformationField, class TParentImageFilter >
+GPUDemonsRegistrationFilter< TFixedImage, TMovingImage, TDeformationField, TParentImageFilter >
 ::GPUDemonsRegistrationFilter()
 {
   typename GPUDemonsRegistrationFunctionType::Pointer drfp;
@@ -37,24 +37,27 @@ GPUDemonsRegistrationFilter< TFixedImage, TMovingImage, TDeformationField >
   m_UseMovingImageGradient = false;
 }
 
-template< class TFixedImage, class TMovingImage, class TDeformationField >
+template< class TFixedImage, class TMovingImage, class TDeformationField, class TParentImageFilter >
 void
-GPUDemonsRegistrationFilter< TFixedImage, TMovingImage, TDeformationField >
+GPUDemonsRegistrationFilter< TFixedImage, TMovingImage, TDeformationField, TParentImageFilter >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+  /*
   os << indent << "UseMovingImageGradient: ";
   os << m_UseMovingImageGradient << std::endl;
   os << indent << "Intensity difference threshold: "
      << this->GetIntensityDifferenceThreshold() << std::endl;
+  */
 }
 
 /*
  * Set the function state values before each iteration
  */
-template< class TFixedImage, class TMovingImage, class TDeformationField >
+/*
+template< class TFixedImage, class TMovingImage, class TDeformationField, class TParentImageFilter >
 void
-GPUDemonsRegistrationFilter< TFixedImage, TMovingImage, TDeformationField >
+GPUDemonsRegistrationFilter< TFixedImage, TMovingImage, TDeformationField, TParentImageFilter >
 ::InitializeIteration()
 {
   // call the superclass  implementation
@@ -73,21 +76,20 @@ GPUDemonsRegistrationFilter< TFixedImage, TMovingImage, TDeformationField >
 
   drfp->SetUseMovingImageGradient(m_UseMovingImageGradient);
 
-  /**
-   * Smooth the deformation field
-   */
+  // Smooth the deformation field
   if ( this->GetSmoothDeformationField() )
     {
     this->SmoothDeformationField();
     }
 }
-
+*/
 /**
  * Get the metric value from the difference function
  */
-template< class TFixedImage, class TMovingImage, class TDeformationField >
+/*
+template< class TFixedImage, class TMovingImage, class TDeformationField, class TParentImageFilter >
 double
-GPUDemonsRegistrationFilter< TFixedImage, TMovingImage, TDeformationField >
+GPUDemonsRegistrationFilter< TFixedImage, TMovingImage, TDeformationField, TParentImageFilter >
 ::GetMetric() const
 {
   GPUDemonsRegistrationFunctionType *drfp =
@@ -102,13 +104,14 @@ GPUDemonsRegistrationFilter< TFixedImage, TMovingImage, TDeformationField >
 
   return drfp->GetMetric();
 }
-
+*/
 /**
  *
  */
-template< class TFixedImage, class TMovingImage, class TDeformationField >
+/*
+template< class TFixedImage, class TMovingImage, class TDeformationField, class TParentImageFilter >
 double
-GPUDemonsRegistrationFilter< TFixedImage, TMovingImage, TDeformationField >
+GPUDemonsRegistrationFilter< TFixedImage, TMovingImage, TDeformationField, TParentImageFilter >
 ::GetIntensityDifferenceThreshold() const
 {
   GPUDemonsRegistrationFunctionType *drfp =
@@ -123,13 +126,14 @@ GPUDemonsRegistrationFilter< TFixedImage, TMovingImage, TDeformationField >
 
   return drfp->GetIntensityDifferenceThreshold();
 }
-
+*/
 /**
  *
  */
-template< class TFixedImage, class TMovingImage, class TDeformationField >
+/*
+template< class TFixedImage, class TMovingImage, class TDeformationField, class TParentImageFilter >
 void
-GPUDemonsRegistrationFilter< TFixedImage, TMovingImage, TDeformationField >
+GPUDemonsRegistrationFilter< TFixedImage, TMovingImage, TDeformationField, TParentImageFilter >
 ::SetIntensityDifferenceThreshold(double threshold)
 {
   GPUDemonsRegistrationFunctionType *drfp =
@@ -144,13 +148,14 @@ GPUDemonsRegistrationFilter< TFixedImage, TMovingImage, TDeformationField >
 
   drfp->SetIntensityDifferenceThreshold(threshold);
 }
-
+*/
 /**
  * Get the metric value from the difference function
  */
-template< class TFixedImage, class TMovingImage, class TDeformationField >
+/*
+template< class TFixedImage, class TMovingImage, class TDeformationField, class TParentImageFilter >
 void
-GPUDemonsRegistrationFilter< TFixedImage, TMovingImage, TDeformationField >
+GPUDemonsRegistrationFilter< TFixedImage, TMovingImage, TDeformationField, TParentImageFilter >
 ::ApplyUpdate(TimeStepType dt)
 {
   // If we smooth the update buffer before applying it, then the are
@@ -174,6 +179,7 @@ GPUDemonsRegistrationFilter< TFixedImage, TMovingImage, TDeformationField >
 
   this->SetRMSChange( drfp->GetRMSChange() );
 }
+*/
 } // end namespace itk
 
 #endif

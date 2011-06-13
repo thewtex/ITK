@@ -62,15 +62,18 @@ namespace itk
  * \sa GPUDemonsRegistrationFunction
  * \ingroup DeformableImageRegistration MultiThreaded
  */
-template< class TFixedImage, class TMovingImage, class TDeformationField >
+template< class TFixedImage, class TMovingImage, class TDeformationField,
+          class TParentImageFilter = itk::DemonsRegistrationFilter< TFixedImage, TMovingImage, TDeformationField >
+        >
 class ITK_EXPORT GPUDemonsRegistrationFilter:
   public GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage,
-                                          TDeformationField >
+                                          TDeformationField, TParentImageFilter >
 {
 public:
   /** Standard class typedefs. */
   typedef GPUDemonsRegistrationFilter                                                        Self;
-  typedef GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField > Superclass;
+  typedef GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField, TParentImageFilter > GPUSuperclass;
+  typedef TParentImageFilter                                                                 CPUSuperclass;
   typedef SmartPointer< Self >                                                               Pointer;
   typedef SmartPointer< const Self >                                                         ConstPointer;
 
@@ -85,18 +88,16 @@ public:
   typedef typename Superclass::TimeStepType TimeStepType;
 
   /** FixedImage image type. */
-  typedef typename Superclass::FixedImageType    FixedImageType;
-  typedef typename Superclass::FixedImagePointer FixedImagePointer;
+  typedef TFixedImage                     FixedImageType;
+  typedef typename TFixedImage::Pointer   FixedImagePointer;
 
   /** MovingImage image type. */
-  typedef typename Superclass::MovingImageType    MovingImageType;
-  typedef typename Superclass::MovingImagePointer MovingImagePointer;
+  typedef TMovingImage                    MovingImageType;
+  typedef typename TMovingImage::Pointer  MovingImagePointer;
 
   /** Deformation field type. */
-  typedef typename Superclass::DeformationFieldType
-  DeformationFieldType;
-  typedef typename Superclass::DeformationFieldPointer
-  DeformationFieldPointer;
+  typedef TDeformationField                     DeformationFieldType;
+  typedef typename TDeformationField::Pointer   DeformationFieldPointer;
 
   /** FiniteDifferenceFunction type. */
   typedef typename Superclass::FiniteDifferenceFunctionType
@@ -111,21 +112,21 @@ public:
    * computed over the the overlapping region between the two images.
    * This is value is only available for the previous iteration and
    * NOT the current iteration. */
-  virtual double GetMetric() const;
+  //virtual double GetMetric() const;
 
   /** Switch between using the fixed image and moving image gradient
    * for computing the deformation field updates. */
-  itkSetMacro(UseMovingImageGradient, bool);
-  itkGetConstMacro(UseMovingImageGradient, bool);
-  itkBooleanMacro(UseMovingImageGradient);
+  //itkSetMacro(UseMovingImageGradient, bool);
+  //itkGetConstMacro(UseMovingImageGradient, bool);
+  //itkBooleanMacro(UseMovingImageGradient);
 
   /** Set/Get the threshold below which the absolute difference of
    * intensity yields a match. When the intensities match between a
    * moving and fixed image pixel, the update vector (for that
    * iteration) will be the zero vector. Default is 0.001. */
-  virtual void SetIntensityDifferenceThreshold(double);
+  //virtual void SetIntensityDifferenceThreshold(double);
 
-  virtual double GetIntensityDifferenceThreshold() const;
+  //virtual double GetIntensityDifferenceThreshold() const;
 
 protected:
   GPUDemonsRegistrationFilter();
@@ -133,16 +134,16 @@ protected:
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Initialize the state of filter and equation before each iteration. */
-  virtual void InitializeIteration();
+  //virtual void InitializeIteration();
 
   /** Apply update. */
-  virtual void ApplyUpdate(TimeStepType dt);
+  //virtual void ApplyUpdate(TimeStepType dt);
 
 private:
   GPUDemonsRegistrationFilter(const Self &); //purposely not implemented
   void operator=(const Self &);           //purposely not implemented
 
-  bool m_UseMovingImageGradient;
+  //bool m_UseMovingImageGradient;
 };
 
 /** \class GPUDemonsRegistrationFilterFactory
