@@ -20,9 +20,7 @@
 
 #include "itkImageKernelOperator.h"
 
-#include "itkImageRegionIterator.h"
-
-#include "vnl/vnl_math.h"
+#include "itkImageRegionConstIterator.h"
 
 /*
  *
@@ -45,8 +43,8 @@ ImageKernelOperator< TPixel, VDimension, TAllocator >
 {
   CoefficientVector coeff;
 
-  ImageRegionIterator< ImageType > It( this->m_ImageKernel,
-                                       this->m_ImageKernel->GetLargestPossibleRegion() );
+  ImageRegionConstIterator< ImageType > It( this->m_ImageKernel,
+                                            this->m_ImageKernel->GetLargestPossibleRegion() );
 
   for ( It.GoToBegin(); !It.IsAtEnd(); ++It )
     {

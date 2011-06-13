@@ -54,6 +54,7 @@ public:
   typedef NeighborhoodOperator< TPixel, VDimension, TAllocator > Superclass;
 
   typedef Image< TPixel, VDimension >            ImageType;
+  typedef typename Superclass::SizeType          SizeType;
   typedef typename Superclass::CoefficientVector CoefficientVector;
 
   /** Constructor. */
@@ -71,7 +72,7 @@ public:
     return *this;
   }
 
-  void SetImageKernel(ImageType *kernel)
+  void SetImageKernel(const ImageType *kernel)
   {
     this->m_ImageKernel = kernel;
   }
@@ -94,7 +95,7 @@ protected:
 
 private:
 
-  typename ImageType::Pointer m_ImageKernel;
+  typename ImageType::ConstPointer m_ImageKernel;
 
   /** For compatibility with itkWarningMacro */
   const char * GetNameOfClass()
