@@ -22,9 +22,9 @@
 
 #ifdef DIM_1
 #define DIM 1
-__kernel void SmoothDeformationField(__global const OUTPIXELTYPE *out,
+__kernel void SmoothDeformationField(__global OUTPIXELTYPE *out,
                           __global OUTPIXELTYPE *swap,
-						              __global OUTPIXELTYPE *kernel, int ksize,
+						              __global OUTPIXELTYPE *filter, int ksize,
                           int width)
 {
   int gix = get_global_id(0);
@@ -39,18 +39,23 @@ __kernel void SmoothDeformationField(__global const OUTPIXELTYPE *out,
     {
     ext = gix + i - radius;
     if (ext < 0 || ext >= width) continue;
-    dotx += out[gix+(i-radius)] * kernel[i];
+    dotx += out[gix+(i-radius)] * filter[i];
     }
   swap[gix] = dotx;
+
+  //wait for x direction to be done
+  barrier(CLK_GLOBAL_MEM_FENCE);
+
+  out[gix] = swap[gix];
   }
 }
 #endif
 
 #ifdef DIM_2
 #define DIM 2
-__kernel void SmoothDeformationField(__global const OUTPIXELTYPE *out,
+__kernel void SmoothDeformationField(__global OUTPIXELTYPE *out,
                           __global OUTPIXELTYPE *swap,
-						              __global OUTPIXELTYPE *kernel, int ksize,
+						              __global OUTPIXELTYPE *filter, int ksize,
                           int width, int height)
 {
   int gix = get_global_id(0);
@@ -71,14 +76,14 @@ __kernel void SmoothDeformationField(__global const OUTPIXELTYPE *out,
     {
     ext = gix + i - radius;
     if (ext < 0 || ext >= width) continue;
-    dotx += out[gidx+(i-radius)*DIM  ] * kernel[i];
-    doty += out[gidx+(i-radius)*DIM+1] * kernel[i];
+    dotx += out[gidx+(i-radius)*DIM  ] * filter[i];
+    doty += out[gidx+(i-radius)*DIM+1] * filter[i];
     }
   swap[gidx]   = dotx;
   swap[gidx+1] = doty;
 
   //wait for x direction to be done
-  barrier(CL_GLOBAL_MEM_FENCE);
+  barrier(CLK_GLOBAL_MEM_FENCE);
 
   //smoothing along y direction
   dotx = 0;
@@ -87,8 +92,8 @@ __kernel void SmoothDeformationField(__global const OUTPIXELTYPE *out,
     {
     ext = giy + i - radius;
     if (ext < 0 || ext >= height) continue;
-    dotx += swap[gidx+(i-radius)*width*DIM  ] * kernel[i];
-    doty += swap[gidx+(i-radius)*width*DIM+1] * kernel[i];
+    dotx += swap[gidx+(i-radius)*width*DIM  ] * filter[i];
+    doty += swap[gidx+(i-radius)*width*DIM+1] * filter[i];
     }
   out[gidx]   = dotx;
   out[gidx+1] = doty;
@@ -99,9 +104,9 @@ __kernel void SmoothDeformationField(__global const OUTPIXELTYPE *out,
 
 #ifdef DIM_3
 #define DIM 3
-__kernel void SmoothDeformationField(__global const OUTPIXELTYPE *out,
+__kernel void SmoothDeformationField(__global OUTPIXELTYPE *out,
                           __global OUTPIXELTYPE *swap,
-						              __global OUTPIXELTYPE *kernel, int ksize,
+						              __global OUTPIXELTYPE *filter, int ksize,
                           int width, int height, int depth)
 {
   int gix = get_global_id(0);
@@ -124,16 +129,16 @@ __kernel void SmoothDeformationField(__global const OUTPIXELTYPE *out,
     {
     ext = gix + i - radius;
     if (ext < 0 || ext >= width) continue;
-    dotx += out[gidx+(i-radius)*DIM  ] * kernel[i];
-    doty += out[gidx+(i-radius)*DIM+1] * kernel[i];
-    dotz += out[gidx+(i-radius)*DIM+2] * kernel[i];
+    dotx += out[gidx+(i-radius)*DIM  ] * filter[i];
+    doty += out[gidx+(i-radius)*DIM+1] * filter[i];
+    dotz += out[gidx+(i-radius)*DIM+2] * filter[i];
     }
   swap[gidx]   = dotx;
   swap[gidx+1] = doty;
   swap[gidx+2] = dotz;
 
   //wait for x direction to be done
-  barrier(CL_GLOBAL_MEM_FENCE);
+  barrier(CLK_GLOBAL_MEM_FENCE);
 
   //smoothing along y direction
   dotx = 0;
@@ -143,16 +148,16 @@ __kernel void SmoothDeformationField(__global const OUTPIXELTYPE *out,
     {
     ext = giy + i - radius;
     if (ext < 0 || ext >= height) continue;
-    dotx += swap[gidx+(i-radius)*width*DIM  ] * kernel[i];
-    doty += swap[gidx+(i-radius)*width*DIM+1] * kernel[i];
-    dotz += swap[gidx+(i-radius)*width*DIM+2] * kernel[i];
+    dotx += swap[gidx+(i-radius)*width*DIM  ] * filter[i];
+    doty += swap[gidx+(i-radius)*width*DIM+1] * filter[i];
+    dotz += swap[gidx+(i-radius)*width*DIM+2] * filter[i];
     }
   out[gidx]   = dotx;
   out[gidx+1] = doty;
   out[gidx+2] = dotz;
 
   //wait for y direction to be done
-  barrier(CL_GLOBAL_MEM_FENCE);
+  barrier(CLK_GLOBAL_MEM_FENCE);
 
   //smoothing along y direction
   dotx = 0;
@@ -162,16 +167,16 @@ __kernel void SmoothDeformationField(__global const OUTPIXELTYPE *out,
     {
     ext = giz + i - radius;
     if (ext < 0 || ext >= depth) continue;
-    dotx += out[gidx+(i-radius)*width*height*DIM  ] * kernel[i];
-    doty += out[gidx+(i-radius)*width*height*DIM+1] * kernel[i];
-    dotz += out[gidx+(i-radius)*width*height*DIM+2] * kernel[i];
+    dotx += out[gidx+(i-radius)*width*height*DIM  ] * filter[i];
+    doty += out[gidx+(i-radius)*width*height*DIM+1] * filter[i];
+    dotz += out[gidx+(i-radius)*width*height*DIM+2] * filter[i];
     }
   swap[gidx]   = dotx;
   swap[gidx+1] = doty;
   swap[gidx+2] = dotz;
 
   //wait for z direction to be done
-  barrier(CL_GLOBAL_MEM_FENCE);
+  barrier(CLK_GLOBAL_MEM_FENCE);
 
   out[gidx]   = swap[gidx];
   out[gidx+1] = swap[gidx+1];

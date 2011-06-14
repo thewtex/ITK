@@ -53,10 +53,10 @@ GPUDenseFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilt
   defines << "#define DIM_" << TInputImage::ImageDimension << "\n";
 
   //PixelType is a Vector
-  defines << "#define BUFPIXELTYPE float";
+  defines << "#define BUFPIXELTYPE float\n";
   //GetTypenameInString( typeid ( typename UpdateBufferType::PixelType::ValueType ), defines );
 
-  defines << "#define OUTPIXELTYPE float";
+  defines << "#define OUTPIXELTYPE float\n";
   //GetTypenameInString( typeid ( typename TOutputImage::PixelType::ValueType ), defines );
 
   std::string oclSrcPath = "./../OpenCL/GPUDenseFiniteDifferenceImageFilter.cl";
