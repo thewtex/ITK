@@ -21,169 +21,198 @@
 
 namespace itk
 {
-  // constructor
-  GPUDataManager::GPUDataManager()
-  {
-    m_Manager = GPUContextManager::GetInstance();
+// constructor
+GPUDataManager::GPUDataManager()
+{
+  m_ContextManager = GPUContextManager::GetInstance();
+  m_GPUBuffer = NULL;
 
-    if( m_Manager->GetNumCommandQueue() > 0 )
-      {
-      m_CommandQueueId = 0; // default command queue
-      }
+  this->Initialize();
+}
 
-    m_BufferSize = 0;
-    m_GPUBuffer = NULL;
-    m_CPUBuffer = NULL;
-    m_MemFlags  = CL_MEM_READ_WRITE; // default flag
-    m_IsGPUBufferDirty = false;
-    m_IsCPUBufferDirty = false;
-  }
+GPUDataManager::~GPUDataManager()
+{
+  if( m_GPUBuffer )
+    {
+    clReleaseMemObject(m_GPUBuffer);
+    }
+}
 
-  GPUDataManager::~GPUDataManager()
-  {
-    if( m_GPUBuffer )
-      {
-      clReleaseMemObject(m_GPUBuffer);
-      }
-  }
+void GPUDataManager::SetBufferSize( unsigned int num )
+{
+  m_BufferSize = num;
+}
 
-  void GPUDataManager::SetBufferSize( unsigned int num )
-  {
-    m_BufferSize = num;
-  }
+void GPUDataManager::SetBufferFlag( cl_mem_flags flags )
+{
+  m_MemFlags = flags;
+}
 
-  void GPUDataManager::SetBufferFlag( cl_mem_flags flags )
-  {
-    m_MemFlags = flags;
-  }
+void GPUDataManager::Allocate()
+{
+  cl_int errid;
 
-  void GPUDataManager::Allocate()
-  {
+  if( m_BufferSize > 0 )
+    {
+    m_GPUBuffer = clCreateBuffer(m_ContextManager->GetCurrentContext(), m_MemFlags, m_BufferSize, NULL, &errid);
+    OclCheckError(errid);
+    }
+
+  //m_IsGPUBufferDirty = true;
+
+  //MakeGPUBufferUpToDate();
+}
+
+void GPUDataManager::SetCPUBufferPointer( void* ptr )
+{
+  m_CPUBuffer = ptr;
+}
+
+void GPUDataManager::SetCPUDirtyFlag( bool isDirty )
+{
+  m_IsCPUBufferDirty = isDirty;
+}
+
+void GPUDataManager::SetGPUDirtyFlag( bool isDirty )
+{
+  m_IsGPUBufferDirty = isDirty;
+}
+
+void GPUDataManager::SetGPUBufferDirty()
+{
+  MakeCPUBufferUpToDate();
+  m_IsGPUBufferDirty = true;
+}
+
+void GPUDataManager::SetCPUBufferDirty()
+{
+  MakeGPUBufferUpToDate();
+  m_IsCPUBufferDirty = true;
+}
+
+void GPUDataManager::MakeCPUBufferUpToDate()
+{
+  m_Mutex.Lock();
+
+  if( m_IsCPUBufferDirty && m_GPUBuffer != NULL )
+    {
     cl_int errid;
+#ifdef VERBOSE
+    std::cout << "GPU->CPU data copy" << std::endl;
+#endif
+    errid = clEnqueueReadBuffer(m_ContextManager->GetCommandQueue(m_CommandQueueId), m_GPUBuffer, CL_TRUE, 0, m_BufferSize, m_CPUBuffer, 0, NULL, NULL);
+    OclCheckError(errid);
 
-    if( m_BufferSize > 0 )
-      {
-      m_GPUBuffer = clCreateBuffer(m_Manager->GetCurrentContext(), m_MemFlags, m_BufferSize, NULL, &errid);
-      OclCheckError(errid);
-      }
+    m_IsCPUBufferDirty = false;
+    }
 
-    //m_IsGPUBufferDirty = true;
+  m_Mutex.Unlock();
+}
 
-    //MakeGPUBufferUpToDate();
-  }
 
-  void GPUDataManager::SetCPUBufferPointer( void* ptr )
-  {
-    m_CPUBuffer = ptr;
-  }
+void GPUDataManager::MakeGPUBufferUpToDate()
+{
+   m_Mutex.Lock();
 
-  void GPUDataManager::SetCPUDirtyFlag( bool isDirty )
-  {
-    m_IsCPUBufferDirty = isDirty;
-  }
+  if( m_IsGPUBufferDirty && m_CPUBuffer != NULL )
+    {
+    cl_int errid;
+#ifdef VERBOSE
+    std::cout << "CPU->GPU data copy" << std::endl;
+#endif
+    errid = clEnqueueWriteBuffer(m_ContextManager->GetCommandQueue(m_CommandQueueId), m_GPUBuffer, CL_TRUE, 0, m_BufferSize, m_CPUBuffer, 0, NULL, NULL);
+    OclCheckError(errid);
 
-  void GPUDataManager::SetGPUDirtyFlag( bool isDirty )
-  {
-    m_IsGPUBufferDirty = isDirty;
-  }
+    m_IsGPUBufferDirty = false;
+    }
 
-  void GPUDataManager::SetGPUBufferDirty()
-  {
+   m_Mutex.Unlock();
+}
+
+
+cl_mem* GPUDataManager::GetGPUBufferPointer()
+{
+  SetCPUBufferDirty();
+  return &m_GPUBuffer;
+}
+
+
+bool GPUDataManager::MakeUpToDate()
+{
+  if( m_IsGPUBufferDirty && m_IsCPUBufferDirty )
+    {
+    itkExceptionMacro("Cannot make up-to-date buffer because both CPU and GPU buffers are dirty");
+    return false;
+    }
+
+  MakeGPUBufferUpToDate();
+  MakeCPUBufferUpToDate();
+
+  m_IsGPUBufferDirty = m_IsCPUBufferDirty = false;
+
+  return true;
+}
+
+/**
+ * NOTE: each device has a command queue. Therefore, changing command queue
+ *       means change a compute device.
+ */
+void GPUDataManager::SetCurrentCommandQueue( int queueid )
+{
+  if( queueid >= 0 && queueid < (int)m_ContextManager->GetNumCommandQueue() )
+    {
     MakeCPUBufferUpToDate();
+
+    // Assumption: different command queue is assigned to different device
+    m_CommandQueueId = queueid;
+
     m_IsGPUBufferDirty = true;
-  }
+    }
+  else
+    {
+    itkWarningMacro("Not a valid command queue id");
+    }
+}
 
-  void GPUDataManager::SetCPUBufferDirty()
+int GPUDataManager::GetCurrentCommandQueueID()
+{
+  return m_CommandQueueId;
+}
+
+void GPUDataManager::Graft(const GPUDataManager* data)
+{
+  if( data )
   {
-    MakeGPUBufferUpToDate();
-    m_IsCPUBufferDirty = true;
+    m_BufferSize = data->m_BufferSize;
+    m_ContextManager = data->m_ContextManager;
+    m_CommandQueueId = data->m_CommandQueueId;
+    m_GPUBuffer = data->m_GPUBuffer;
+    m_CPUBuffer = data->m_CPUBuffer;
+//    m_Platform  = data->m_Platform;
+//    m_Context   = data->m_Context;
+    m_IsCPUBufferDirty = data->m_IsCPUBufferDirty;
+    m_IsGPUBufferDirty = data->m_IsGPUBufferDirty;
   }
+}
 
-  void GPUDataManager::MakeCPUBufferUpToDate()
+void GPUDataManager::Initialize()
+{
+  if( m_ContextManager->GetNumCommandQueue() > 0 )
   {
-    m_Mutex.Lock();
-
-    if( m_IsCPUBufferDirty && m_GPUBuffer != NULL )
-      {
-      cl_int errid;
-
-      std::cout << "GPU->CPU data copy" << std::endl;
-      errid = clEnqueueReadBuffer(m_Manager->GetCommandQueue(m_CommandQueueId), m_GPUBuffer, CL_TRUE, 0, m_BufferSize, m_CPUBuffer, 0, NULL, NULL);
-      OclCheckError(errid);
-
-      m_IsCPUBufferDirty = false;
-      }
-
-    m_Mutex.Unlock();
+    m_CommandQueueId = 0; // default command queue
   }
 
-
-  void GPUDataManager::MakeGPUBufferUpToDate()
+  if( m_GPUBuffer ) // Release GPU memory if exists
   {
-     m_Mutex.Lock();
-
-    if( m_IsGPUBufferDirty && m_CPUBuffer != NULL )
-      {
-      cl_int errid;
-
-      std::cout << "CPU->GPU data copy" << std::endl;
-      errid = clEnqueueWriteBuffer(m_Manager->GetCommandQueue(m_CommandQueueId), m_GPUBuffer, CL_TRUE, 0, m_BufferSize, m_CPUBuffer, 0, NULL, NULL);
-      OclCheckError(errid);
-
-      m_IsGPUBufferDirty = false;
-      }
-
-     m_Mutex.Unlock();
+    clReleaseMemObject(m_GPUBuffer);
   }
 
-
-  cl_mem* GPUDataManager::GetGPUBufferPointer()
-  {
-    SetCPUBufferDirty();
-    return &m_GPUBuffer;
-  }
-
-
-  bool GPUDataManager::MakeUpToDate()
-  {
-    if( m_IsGPUBufferDirty && m_IsCPUBufferDirty )
-      {
-      itkExceptionMacro("Cannot make up-to-date buffer because both CPU and GPU buffers are dirty");
-      return false;
-      }
-
-    MakeGPUBufferUpToDate();
-    MakeCPUBufferUpToDate();
-
-    m_IsGPUBufferDirty = m_IsCPUBufferDirty = false;
-
-    return true;
-  }
-
-  //
-  // NOTE: each device has a command queue. Therefore, changing command queue
-  //       means change a compute device.
-  //
-  void GPUDataManager::SetCurrentCommandQueue( int queueid )
-  {
-    if( queueid >= 0 && queueid < (int)m_Manager->GetNumCommandQueue() )
-      {
-      MakeCPUBufferUpToDate();
-
-      // Assumption: different command queue is assigned to different device
-      m_CommandQueueId = queueid;
-
-      m_IsGPUBufferDirty = true;
-      }
-    else
-      {
-      itkWarningMacro("Not a valid command queue id");
-      }
-  }
-
-  int GPUDataManager::GetCurrentCommandQueueID()
-  {
-    return m_CommandQueueId;
-  }
+  m_BufferSize = 0;
+  m_GPUBuffer = NULL;
+  m_CPUBuffer = NULL;
+  m_MemFlags  = CL_MEM_READ_WRITE; // default flag
+  m_IsGPUBufferDirty = false;
+  m_IsCPUBufferDirty = false;
+}
 
 } // namespace itk
