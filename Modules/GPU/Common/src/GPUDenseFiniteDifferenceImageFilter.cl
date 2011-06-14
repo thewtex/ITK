@@ -23,7 +23,7 @@
 //
 
 #ifdef DIM_1
-__kernel void ApplyUpdate(__global const1 BUFPIXELTYPE *buf,
+__kernel void ApplyUpdate(__global const BUFPIXELTYPE *buf,
                           __global OUTPIXELTYPE *out,
 						              float dt, int width)
 {
