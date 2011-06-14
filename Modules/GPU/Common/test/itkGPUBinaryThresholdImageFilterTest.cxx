@@ -17,30 +17,31 @@
 *=========================================================================*/
 
 /**
- * Test program for itkGPUImageToImageFilter class
+ * Test program for itkGPUBinaryThresholdImageFilter class
  *
- * This program creates a GPU Mean filter and a CPU threshold filter using
- * object factory framework and test pipelining of GPU and CPU filters.
  */
-//#include "pathToOpenCLSourceCode.h"
 
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
-#include "itkMeanImageFilter.h"
 #include "itkBinaryThresholdImageFilter.h"
+#include "itkRescaleIntensityImageFilter.h"
+#include "itkTimeProbe.h"
 
 #include "itkGPUImage.h"
 #include "itkGPUKernelManager.h"
 #include "itkGPUContextManager.h"
 #include "itkGPUImageToImageFilter.h"
-#include "itkGPUMeanImageFilter.h"
+#include "itkGPUBinaryThresholdImageFilter.h"
 
 
-int itkGPUImageFilterTest(int argc, char *argv[])
+/**
+ * Testing GPU Binary Threshold Filter
+ */
+int itkGPUBinaryThresholdImageFilterTest(int argc, char *argv[])
 {
   // register object factory for GPU image and filter
   itk::ObjectFactoryBase::RegisterFactory( itk::GPUImageFactory::New() );
-  itk::ObjectFactoryBase::RegisterFactory( itk::GPUMeanImageFilterFactory::New() );
+  itk::ObjectFactoryBase::RegisterFactory( itk::GPUBinaryThresholdImageFilterFactory::New() );
 
   typedef   unsigned char  InputPixelType;
   typedef   unsigned char  OutputPixelType;
@@ -64,21 +65,9 @@ int itkGPUImageFilterTest(int argc, char *argv[])
   reader->SetFileName( argv[1] );
   writer->SetFileName( argv[2] );
 
-  //
-  // Note: We use regular itk filter type here but factory will automatically create
-  //       GPU filter for Median filter and CPU filter for threshold filter.
-  //
-  typedef itk::MeanImageFilter< InputImageType, OutputImageType > MeanFilterType;
   typedef itk::BinaryThresholdImageFilter< InputImageType, OutputImageType > ThresholdFilterType;
 
-  MeanFilterType::Pointer filter1 = MeanFilterType::New();
-  MeanFilterType::Pointer filter2 = MeanFilterType::New();
-  ThresholdFilterType::Pointer filter3 = ThresholdFilterType::New();
-
-  // Mean filter kernel radius
-  InputImageType::SizeType indexRadius;
-  indexRadius[0] = 2; // radius along x
-  indexRadius[1] = 2; // radius along y
+  ThresholdFilterType::Pointer filter = ThresholdFilterType::New();
 
   // threshold parameters
   const InputPixelType upperThreshold = 255;
@@ -86,18 +75,14 @@ int itkGPUImageFilterTest(int argc, char *argv[])
   const OutputPixelType outsideValue = 0;
   const OutputPixelType insideValue  = 255;
 
-  filter1->SetRadius( indexRadius );
-  filter2->SetRadius( indexRadius );
-  filter3->SetOutsideValue( outsideValue );
-  filter3->SetInsideValue(  insideValue  );
-  filter3->SetUpperThreshold( upperThreshold );
-  filter3->SetLowerThreshold( lowerThreshold );
-
   // build pipeline
-  filter1->SetInput( reader->GetOutput() ); // copy CPU->GPU implicilty
-  filter2->SetInput( filter1->GetOutput() );
-  filter3->SetInput( filter2->GetOutput() );
-  writer->SetInput( filter3->GetOutput() ); // copy GPU->CPU implicilty
+  filter->SetOutsideValue( outsideValue );
+  filter->SetInsideValue(  insideValue  );
+  filter->SetUpperThreshold( upperThreshold );
+  filter->SetLowerThreshold( lowerThreshold );
+  filter->SetInPlace( true );
+  filter->SetInput( reader->GetOutput() );
+  writer->SetInput( filter->GetOutput() );
 
   // execute pipeline filter and write output
   writer->Update();
