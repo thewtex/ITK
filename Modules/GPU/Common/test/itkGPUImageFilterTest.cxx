@@ -22,7 +22,7 @@
  * This program creates a GPU Mean filter and a CPU threshold filter using
  * object factory framework and test pipelining of GPU and CPU filters.
  */
-#include "pathToOpenCLSourceCode.h"
+//#include "pathToOpenCLSourceCode.h"
 
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
@@ -35,13 +35,12 @@
 #include "itkGPUImageToImageFilter.h"
 #include "itkGPUMeanImageFilter.h"
 
-using namespace itk;
 
-int main(int argc, char *argv[])
+int itkGPUImageFilterTest(int argc, char *argv[])
 {
   // register object factory for GPU image and filter
-  ObjectFactoryBase::RegisterFactory( GPUImageFactory::New() );
-  ObjectFactoryBase::RegisterFactory( GPUMeanImageFilterFactory::New() );
+  itk::ObjectFactoryBase::RegisterFactory( itk::GPUImageFactory::New() );
+  itk::ObjectFactoryBase::RegisterFactory( itk::GPUMeanImageFilterFactory::New() );
 
   typedef   unsigned char  InputPixelType;
   typedef   unsigned char  OutputPixelType;

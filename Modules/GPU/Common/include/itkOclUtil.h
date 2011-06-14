@@ -4,6 +4,12 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+
+#include <iostream>
+#include <sstream>
+
+#include <itkVector.h>
+
 #ifdef __APPLE__
 
 #include <OpenCL/cl.h>
@@ -18,31 +24,39 @@
 #include <CL/cl_gl.h>
 #include <CL/cl_ext.h>
 
+#include <itkMacro.h>
+
 #endif
 
-//
-// Get the devices that are available
-//
+/** OpenCL workgroup (block) size for 1/2/3D - needs to be tuned based on the GPU architecture
+ * 1D : 256
+ * 2D : 16x16 = 256
+ * 3D : 4x4x4 = 64  */
+static int BLOCK_SIZE[3] = { 256, 16, 4 /*8*/ };
+
+/** Get the devices that are available */
 cl_device_id* OclGetAvailableDevices(cl_platform_id platform, cl_device_type devType, cl_uint* numAvailableDevices);
 
-//
-// Get the device that has the maximum FLOPS in the current context
-//
+/** Get the device that has the maximum FLOPS in the current context */
 cl_device_id OclGetMaxFlopsDev(cl_context cxGPUContext);
 
-//
-// Print device name
-//
+/** Print device name */
 void OclPrintDeviceName(cl_device_id device);
 
-//
-// Find the OpenCL platform that matches the "name"
-//
+/** Find the OpenCL platform that matches the "name" */
 cl_platform_id OclSelectPlatform(const char* name);
 
-//
-// Check OpenCL error
-//
+/** Check OpenCL error */
 void OclCheckError(cl_int error);
+
+/** Check if OpenCL-enabled GPU is present. */
+bool IsGPUAvailable();
+
+/** Get Typename in String */
+void GetTypenameInString( const std::type_info& intype, std::ostringstream& ret );
+
+/** Get pixel dimension (number of channels).
+ * For high-dimensional pixel format, only itk::Vector< type, 2/3 > is acceptable. */
+int GetPixelDimension( const std::type_info& intype );
 
 #endif

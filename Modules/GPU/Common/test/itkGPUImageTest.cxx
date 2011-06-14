@@ -20,16 +20,15 @@
  * Test program for itkGPUImage class.
  * This program shows how to use GPU image and GPU program.
  */
-#include "pathToOpenCLSourceCode.h"
+//#include "pathToOpenCLSourceCode.h"
 #include "itkGPUImage.h"
 #include "itkGPUKernelManager.h"
 #include "itkGPUContextManager.h"
 
 typedef itk::GPUImage<float, 2> ItkImage1f;
 
-using namespace itk;
 
-int main()
+int itkGPUImageTest(int argc, char *argv[])
 {
   unsigned int width, height;
 
@@ -80,11 +79,12 @@ int main()
   //
   // create GPU program object
   //
-  GPUKernelManager::Pointer kernelManager = GPUKernelManager::New();
+  itk::GPUKernelManager::Pointer kernelManager = itk::GPUKernelManager::New();
 
   // load program and compile
-  std::string oclSrcPath = itk_root_path;
-  oclSrcPath += "/Code/GPU/ImageOps.cl";
+  //std::string oclSrcPath = itk_root_path;
+  //oclSrcPath += "/Modules/GPU/Common/ImageOps.cl";
+  std::string oclSrcPath = "./OpenCL/ImageOps.cl";
   kernelManager->LoadProgramFromFile( oclSrcPath.c_str(), "#define PIXELTYPE float\n" );
 
   //
@@ -149,8 +149,8 @@ int main()
   //
   // Change Command Queue
   //
-  GPUContextManager *contextManager = GPUContextManager::GetInstance();
-  if(contextManager->GetNumCommandQueue() < 2) return 1;
+  itk::GPUContextManager *contextManager = itk::GPUContextManager::GetInstance();
+  if(contextManager->GetNumberOfCommandQueues() < 2) return 1;
 
   std::cout << "Current Command Queue ID : 1 " << std::endl;
 

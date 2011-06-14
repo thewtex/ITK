@@ -33,63 +33,72 @@
 
 namespace itk
 {
-  class ITK_EXPORT GPUKernelManager: public LightObject
-  {
-  public:
+class ITK_EXPORT GPUKernelManager : public LightObject
+{
+public:
 
-    struct KernelArgumentList
+  struct KernelArgumentList
     {
-      bool m_IsReady;
-      GPUDataManager::Pointer m_GPUDataManager;
+    bool m_IsReady;
+    GPUDataManager::Pointer m_GPUDataManager;
     };
 
-    typedef GPUKernelManager          Self;
-    typedef LightObject               Superclass;
-    typedef SmartPointer<Self>        Pointer;
-    typedef SmartPointer<const Self>  ConstPointer;
+  typedef GPUKernelManager         Self;
+  typedef LightObject              Superclass;
+  typedef SmartPointer<Self>       Pointer;
+  typedef SmartPointer<const Self> ConstPointer;
 
-    itkNewMacro(Self);
-    itkTypeMacro(GPUKernelManager, LightObject);
+  itkNewMacro(Self);
+  itkTypeMacro(GPUKernelManager, LightObject);
 
-    bool LoadProgramFromFile(const char* filename, const char* cPreamble="");
+  bool LoadProgramFromFile(const char* filename, const char* cPreamble="");
 
-    int  CreateKernel(const char* kernelName);
+  int  CreateKernel(const char* kernelName);
 
-    bool SetKernelArg(int kernelIdx, cl_uint argIdx, size_t argSize, const void* argVal);
-    bool SetKernelArgWithImage(int kernelIdx, cl_uint argIdx, GPUDataManager::Pointer manager);
+  cl_int GetKernelWorkGroupInfo(int kernelIdx,
+                                cl_kernel_work_group_info paramName,void *value);
 
-    bool LaunchKernel(int kernelIdx, int dim, size_t *globalWorkSize, size_t *localWorkSize);
-    bool LaunchKernel1D(int kernelIdx, size_t globalWorkSize, size_t localWorkSize);
-    bool LaunchKernel2D(int kernelIdx,
-      size_t globalWorkSizeX, size_t globalWorkSizeY,
-      size_t localWorkSizeX,  size_t localWorkSizeY );
-    bool LaunchKernel3D(int kernelIdx,
-      size_t globalWorkSizeX, size_t globalWorkSizeY, size_t globalWorkSizeZ,
-      size_t localWorkSizeX,  size_t localWorkSizeY, size_t localWorkSizeZ );
+  bool SetKernelArg(int kernelIdx, cl_uint argIdx, size_t argSize, const void* argVal);
 
-    void SetCurrentCommandQueue( int queueid );
+  bool SetKernelArgWithImage(int kernelIdx, cl_uint argIdx, GPUDataManager::Pointer manager);
 
-    int  GetCurrentCommandQueueID();
+  bool LaunchKernel(int kernelIdx, int dim, size_t *globalWorkSize, size_t *localWorkSize);
 
-  protected:
-    GPUKernelManager();
-    virtual ~GPUKernelManager() {};
+  bool LaunchKernel1D(int kernelIdx, size_t globalWorkSize, size_t localWorkSize);
 
-    bool CheckArgumentReady(int kernelIdx);
-    void ResetArguments(int kernelIdx);
+  bool LaunchKernel2D(int kernelIdx,
+                      size_t globalWorkSizeX, size_t globalWorkSizeY,
+                      size_t localWorkSizeX,  size_t localWorkSizeY );
 
-  private:
-    GPUKernelManager(const Self&); //purposely not implemented
-    void operator=(const Self&);
+  bool LaunchKernel3D(int kernelIdx,
+                      size_t globalWorkSizeX, size_t globalWorkSizeY, size_t globalWorkSizeZ,
+                      size_t localWorkSizeX,  size_t localWorkSizeY, size_t localWorkSizeZ );
 
-    cl_program            m_Program;
+  void SetCurrentCommandQueue( int queueid );
 
-    GPUContextManager *   m_Manager;
-    int                   m_CommandQueueId;
+  int  GetCurrentCommandQueueID();
 
-    std::vector< cl_kernel >                              m_KernelContainer;
-    std::vector< std::vector< KernelArgumentList > >      m_KernelArgumentReady;
-  };
+protected:
+  GPUKernelManager();
+  virtual ~GPUKernelManager() {
+  }
+
+  bool CheckArgumentReady(int kernelIdx);
+
+  void ResetArguments(int kernelIdx);
+
+private:
+  GPUKernelManager(const Self&);   //purposely not implemented
+  void operator=(const Self&);
+
+  cl_program m_Program;
+
+  GPUContextManager * m_Manager;
+  int                 m_CommandQueueId;
+
+  std::vector< cl_kernel >                         m_KernelContainer;
+  std::vector< std::vector< KernelArgumentList > > m_KernelArgumentReady;
+};
 }
 
 #endif

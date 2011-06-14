@@ -10,9 +10,15 @@ this GPU support.")
 itk_module(ITKGPUCommon
   DEPENDS
     ITKCommon
-    OpenCL
+    ITKImageFunction
+    ITKThresholding
+    ITKSmoothing
+    ITKFiniteDifference
+    ITKAnisotropicSmoothing
+    ITKPDEDeformableRegistration
   TEST_DEPENDS
     ITKTestKernel
+    ITKStatistics
   DESCRIPTION
     "${DOCUMENTATION}"
 )
