@@ -20,85 +20,99 @@
 
 #include "itkGPUImageDataManager.h"
 
+//#define VERBOSE
 
 namespace itk
 {
-  template < class ImageType >
-  void GPUImageDataManager< ImageType >::SetImagePointer( typename ImageType::Pointer img )
-  {
-    m_Image = img;
-  }
+template < class ImageType >
+void GPUImageDataManager< ImageType >::SetImagePointer( typename ImageType::Pointer img )
+{
+  m_Image = img;
+}
 
-  template < class ImageType >
-  void GPUImageDataManager< ImageType >::MakeCPUBufferUpToDate()
+template < class ImageType >
+void GPUImageDataManager< ImageType >::MakeCPUBufferUpToDate()
+{
+  if( m_Image.IsNotNull() )
   {
-    if( m_Image.IsNotNull() )
+    m_Mutex.Lock();
+
+    unsigned long gpu_time = this->GetMTime();
+    TimeStamp cpu_time_stamp = m_Image->GetTimeStamp();
+    unsigned long cpu_time = cpu_time_stamp.GetMTime();
+
+    /* Why we check dirty flag and time stamp together?
+     * Because existing CPU image filters do not use pixel/buffer
+     * access function in GPUImage and therefore dirty flag is not
+     * correctly managed. Therefore, we check the time stamp of
+     * CPU and GPU data as well
+     */
+    if( (m_IsCPUBufferDirty || (gpu_time > cpu_time)) && m_GPUBuffer != NULL)
     {
-      m_Mutex.Lock();
+      cl_int errid;
+#ifdef VERBOSE
+      std::cout << "GPU->CPU data copy" << std::endl;
+#endif
+      errid = clEnqueueReadBuffer(m_ContextManager->GetCommandQueue(m_CommandQueueId), m_GPUBuffer, CL_TRUE, 0, m_BufferSize, m_CPUBuffer, 0, NULL, NULL);
+      OclCheckError(errid);
 
-      unsigned long gpu_time = this->GetMTime();
-      TimeStamp cpu_time_stamp = m_Image->GetTimeStamp();
-      unsigned long cpu_time = cpu_time_stamp.GetMTime();
+      m_Image->Modified();
+      this->SetTimeStamp( m_Image->GetTimeStamp() );
 
-      /* Why we check dirty flag and time stamp together?
-       * Because existing CPU image filters do not use pixel/buffer
-       * access function in GPUImage and therefore dirty flag is not
-       * correctly managed. Therefore, we check the time stamp of
-       * CPU and GPU data as well
-       */
-      if( (m_IsCPUBufferDirty || (gpu_time > cpu_time)) && m_GPUBuffer != NULL)
-      {
-        cl_int errid;
-
-        std::cout << "GPU->CPU data copy" << std::endl;
-        errid = clEnqueueReadBuffer(m_Manager->GetCommandQueue(m_CommandQueueId), m_GPUBuffer, CL_TRUE, 0, m_BufferSize, m_CPUBuffer, 0, NULL, NULL);
-        OclCheckError(errid);
-
-        m_Image->Modified();
-        this->SetTimeStamp( m_Image->GetTimeStamp() );
-
-        m_IsCPUBufferDirty = false;
-        m_IsGPUBufferDirty = false;
-      }
-
-      m_Mutex.Unlock();
+      m_IsCPUBufferDirty = false;
+      m_IsGPUBufferDirty = false;
     }
-  }
 
-  template < class ImageType >
-  void GPUImageDataManager< ImageType >::MakeGPUBufferUpToDate()
+    m_Mutex.Unlock();
+  }
+}
+
+template < class ImageType >
+void GPUImageDataManager< ImageType >::MakeGPUBufferUpToDate()
+{
+  if( m_Image.IsNotNull() )
   {
-    if( m_Image.IsNotNull() )
+    m_Mutex.Lock();
+
+    unsigned long gpu_time = this->GetMTime();
+    TimeStamp cpu_time_stamp = m_Image->GetTimeStamp();
+    unsigned long cpu_time = m_Image->GetMTime();
+
+    /* Why we check dirty flag and time stamp together?
+    * Because existing CPU image filters do not use pixel/buffer
+    * access function in GPUImage and therefore dirty flag is not
+    * correctly managed. Therefore, we check the time stamp of
+    * CPU and GPU data as well
+    */
+    if( (m_IsGPUBufferDirty || (gpu_time < cpu_time)) && m_CPUBuffer != NULL )
     {
-      m_Mutex.Lock();
+      cl_int errid;
+#ifdef VERBOSE
+      std::cout << "CPU->GPU data copy" << std::endl;
+#endif
+      errid = clEnqueueWriteBuffer(m_ContextManager->GetCommandQueue(m_CommandQueueId), m_GPUBuffer, CL_TRUE, 0, m_BufferSize, m_CPUBuffer, 0, NULL, NULL);
+      OclCheckError(errid);
 
-      unsigned long gpu_time = this->GetMTime();
-      TimeStamp cpu_time_stamp = m_Image->GetTimeStamp();
-      unsigned long cpu_time = m_Image->GetMTime();
+      this->SetTimeStamp( cpu_time_stamp );
 
-      /* Why we check dirty flag and time stamp together?
-      * Because existing CPU image filters do not use pixel/buffer
-      * access function in GPUImage and therefore dirty flag is not
-      * correctly managed. Therefore, we check the time stamp of
-      * CPU and GPU data as well
-      */
-      if( (m_IsGPUBufferDirty || (gpu_time < cpu_time)) && m_CPUBuffer != NULL )
-      {
-        cl_int errid;
-
-        std::cout << "CPU->GPU data copy" << std::endl;
-        errid = clEnqueueWriteBuffer(m_Manager->GetCommandQueue(m_CommandQueueId), m_GPUBuffer, CL_TRUE, 0, m_BufferSize, m_CPUBuffer, 0, NULL, NULL);
-        OclCheckError(errid);
-
-        this->SetTimeStamp( cpu_time_stamp );
-
-        m_IsCPUBufferDirty = false;
-        m_IsGPUBufferDirty = false;
-      }
-
-      m_Mutex.Unlock();
+      m_IsCPUBufferDirty = false;
+      m_IsGPUBufferDirty = false;
     }
+
+    m_Mutex.Unlock();
   }
+}
+
+
+template < class ImageType >
+void GPUImageDataManager< ImageType >::Graft(const typename GPUImageDataManager* data)
+{
+  //std::cout << "GPU timestamp : " << this->GetMTime() << ", CPU timestamp : " << m_Image->GetMTime() << std::endl;
+
+  Superclass::Graft( data );
+
+  //std::cout << "GPU timestamp : " << this->GetMTime() << ", CPU timestamp : " << m_Image->GetMTime() << std::endl;
+}
 
 
 } // namespace itk
