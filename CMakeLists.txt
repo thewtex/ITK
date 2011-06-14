@@ -189,7 +189,7 @@ option(BUILD_EXAMPLES "Build the Examples directory."
 
 #-----------------------------------------------------------------------------
 # Enable GPU support. Requires OpenCL to be installed
-option(ITK_USE_GPU "GPU acceleration via OpenCL" OFF)
+option(ITK_USE_GPU "GPU acceleration via OpenCL" ON)
 mark_as_advanced(ITK_USE_GPU)
 
 # Manage FFT v3 Options

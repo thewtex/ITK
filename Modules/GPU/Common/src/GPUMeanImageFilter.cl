@@ -19,19 +19,35 @@
 //
 // Brute-force mean filter
 //
+// The current implementation does not use shared memory, so this could be
+// very slow on older GPUs (pre-Fermi) that do not have hardware cache.
+//
+
 #ifdef DIM_1
 __kernel void MeanFilter(__global const PIXELTYPE* in,__global PIXELTYPE* out, int radiusx, int width)
 {
   int gix = get_global_id(0);
   float sum = 0;
-  int   num = 0;
+  unsigned int num = 0;
   if(gix < width)
   {
+    /*
+    // Clamping boundary condition
     for(int x = max((int)0, (int)(gix-radiusx)); x <= min((int)(width-1), (int)(gix+radiusx)); x++)
     {
       sum += (float)in[x];
       num++;
     }
+    */
+
+    // Zero-flux boundary condition
+    num = 2*radiusx + 1;
+    for(int x = gix-radiusx; x <= gix+radiusx; x++)
+    {
+      unsigned int cidx = (unsigned int)(min(max(0, x),width-1));
+      sum += (float)in[cidx];
+    }
+
     out[gix] = (PIXELTYPE)(sum/(float)num);
   }
 }
@@ -46,9 +62,12 @@ __kernel void MeanFilter(__global const PIXELTYPE* in,
   int giy = get_global_id(1);
   unsigned int gidx = width*giy + gix;
   float sum = 0;
-  int   num = 0;
+  unsigned int   num = 0;
+
   if(gix < width && giy < height)
   {
+    /*
+    // Clamping boundary condition
     for(int y = max((int)0, (int)(giy-radiusy)); y <= min((int)(height-1), (int)(giy+radiusy)); y++)
     {
       for(int x = max((int)0, (int)(gix-radiusx)); x <= min((int)(width-1), (int)(gix+radiusx)); x++)
@@ -59,26 +78,58 @@ __kernel void MeanFilter(__global const PIXELTYPE* in,
         num++;
       }
     }
+    */
+
+    // Zero-flux boundary condition
+    num = (2*radiusx + 1)*(2*radiusy + 1);
+    for(int y = giy-radiusy; y <= giy+radiusy; y++)
+    {
+      unsigned int yid = (unsigned int)(min(max(0, y),height-1));
+      for(int x = gix-radiusx; x <= gix+radiusx; x++)
+      {
+        unsigned int cidx = width*yid + (unsigned int)(min(max(0, x),width-1));
+
+        sum += (float)in[cidx];
+      }
+    }
+
     out[gidx] = (PIXELTYPE)(sum/(float)num);
   }
 }
 #endif
 
 #ifdef DIM_3
-__kernel void MeanFilter(__global const PIXELTYPE* in,
+__kernel void MeanFilter(const __global PIXELTYPE* in,
                          __global PIXELTYPE* out,
                          int radiusx, int radiusy, int radiusz,
                          int width, int height, int depth)
 {
-  int gix = get_global_id(0);
-  int giy = get_global_id(1);
-  int giz = get_global_id(2);
-  unsigned int gidx = width*(giz*heigh + giy) + gix;
+
+  int gix = (int)get_global_id(0);
+  int giy = (int)get_global_id(1);
+  int giz = (int)get_global_id(2);
+
+  unsigned int gidx = width*(giz*height + giy) + gix;
+
   float sum = 0;
-  int   num = 0;
-  if(gix < width && giy < height && giz < depth)
+  unsigned int num = 0;
+
+  /* NOTE: More than three-level nested conditional statement (e.g., (if A && B && C..)
+   * invalidates command queue during kernel execution on Apple OpenCL 1.0 (such as
+   * Macbook Pro with NVIDIA 9600M GT). Therefore, we should use flattened conditional
+   * statements as below. */
+  bool isValid;
+  if(gix < width) isValid = true;
+  else if(giy < height) isValid = true;
+  else if(giz < depth) isValid = true;
+  else isValid = false;
+
+  if( isValid )
   {
-    for(int z = max(0, (int)(giz-radiusz)); z <= min((int)(depth-1), (int)giz+radiusz)); z++)
+
+/*
+    // Clamping boundary condition
+    for(int z = max(0, (int)(giz-radiusz)); z <= min((int)(depth-1), (int)(giz+radiusz)); z++)
     {
       for(int y = max((int)0, (int)(giy-radiusy)); y <= min((int)(height-1), (int)(giy+radiusy)); y++)
       {
@@ -91,7 +142,27 @@ __kernel void MeanFilter(__global const PIXELTYPE* in,
         }
       }
     }
+*/
+
+    // Zero-flux boundary condition
+    num = (2*radiusx + 1)*(2*radiusy + 1)*(2*radiusz + 1);
+    for(int z = giz-radiusz; z <= giz+radiusz; z++)
+    {
+      unsigned int zid = (unsigned int)(min(max(0, z),depth-1));
+      for(int y = giy-radiusy; y <= giy+radiusy; y++)
+      {
+        unsigned int yid = (unsigned int)(min(max(0, y),height-1));
+        for(int x = gix-radiusx; x <= gix+radiusx; x++)
+        {
+          unsigned int cidx = width*(zid*height + yid) + (unsigned int)(min(max(0, x),width-1));
+
+          sum += (float)in[cidx];
+        }
+      }
+    }
+
     out[gidx] = (PIXELTYPE)(sum/(float)num);
   }
+
 }
 #endif
