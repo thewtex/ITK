@@ -82,16 +82,16 @@ public:
    * \returns A FiniteDifferenceObject pointer. */
   itkSetObjectMacro(DifferenceFunction, FiniteDifferenceFunctionType);
 
-  //typedef enum { UNINITIALIZED = 0, INITIALIZED = 1 } FilterStateType;
+  typedef enum { UNINITIALIZED = 0, INITIALIZED = 1 } FilterStateType;
 
-  typedef typename CPUSuperclass::FilterStateType FilterStateType;
+  //typedef typename CPUSuperclass::FilterStateType FilterStateType;
 
   /** Get the number of elapsed iterations of the filter. */
-  itkGetConstReferenceMacro(ElapsedIterations, unsigned int);
+  //itkGetConstReferenceMacro(ElapsedIterations, unsigned int);
 
   /** Set/Get the number of iterations that the filter will run. */
-  itkSetMacro(NumberOfIterations, unsigned int);
-  itkGetConstReferenceMacro(NumberOfIterations, unsigned int);
+  //itkSetMacro(NumberOfIterations, unsigned int);
+  //itkGetConstReferenceMacro(NumberOfIterations, unsigned int);
 
   /** Use the image spacing information in calculations. Use this option if you
    *  want derivatives in physical space. Default is UseImageSpacingOff. */
@@ -239,11 +239,11 @@ protected:
   itkSetMacro(ElapsedIterations, unsigned int);
 
   /** The maximum number of iterations this filter will run */
-  unsigned int m_NumberOfIterations;
+  //unsigned int m_NumberOfIterations;
 
   /** A counter for keeping track of the number of elapsed
       iterations during filtering. */
-  unsigned int m_ElapsedIterations;
+  //unsigned int m_ElapsedIterations;
 
   /** Indicates whether the filter automatically resets to UNINITIALIZED state
       after completing, or whether filter must be manually reset */

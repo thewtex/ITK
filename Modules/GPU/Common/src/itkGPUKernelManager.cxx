@@ -57,7 +57,7 @@ namespace itk
     fseek(pFileStream, 0, SEEK_SET);
 
     // allocate a buffer for the source code string and read it in
-    char* cSourceString = (char *)malloc(szSourceLength + szPreambleLength + 1);
+    char* cSourceString = (char *)malloc(szSourceLength + szPreambleLength + 1000);
     if(szPreambleLength > 0) memcpy(cSourceString, cPreamble, szPreambleLength);
     if (fread((cSourceString) + szPreambleLength, szSourceLength, 1, pFileStream) != 1)
     {
@@ -80,6 +80,7 @@ namespace itk
     m_Program = clCreateProgramWithSource(m_Manager->GetCurrentContext(), 1, (const char **)&cSourceString, &szFinalLength, &errid);
     OclCheckError(errid);
     free(cSourceString);
+
     if(errid != CL_SUCCESS)
     {
       itkWarningMacro("Cannot create GPU program");
@@ -122,7 +123,6 @@ namespace itk
       return false;
     }
 
-    free(cSourceString);
     return true;
   }
 
