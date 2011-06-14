@@ -32,8 +32,6 @@ template< class TInputImage, class TOutputImage, class TParentImageFilter >
 GPUDenseFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilter >
 ::GPUDenseFiniteDifferenceImageFilter()
 {
-  //GetUpdateBuffer() = UpdateBufferType::New();
-
   /**
    * FiniteDifferenceImageFilter requires two GPU kernels
    * 1. CalculateChange
@@ -53,11 +51,14 @@ GPUDenseFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilt
   defines << "#define DIM_" << TInputImage::ImageDimension << "\n";
 
   //PixelType is a Vector
-  defines << "#define BUFPIXELTYPE float";
-  //GetTypenameInString( typeid ( typename UpdateBufferType::PixelType::ValueType ), defines );
+  defines << "#define BUFPIXELTYPE ";
+  GetTypenameInString( typeid ( typename UpdateBufferType::PixelType ), defines );
 
-  defines << "#define OUTPIXELTYPE float";
-  //GetTypenameInString( typeid ( typename TOutputImage::PixelType::ValueType ), defines );
+  defines << "#define OUTPIXELTYPE ";
+  GetTypenameInString( typeid ( typename TOutputImage::PixelType ), defines );
+
+  // assumes input and output pixel type is same
+  defines << "#define PIXELDIM " << GetPixelDimension( typeid ( typename TOutputImage::PixelType ) ) << "\n";
 
   std::string oclSrcPath = "./../OpenCL/GPUDenseFiniteDifferenceImageFilter.cl";
 
@@ -68,6 +69,7 @@ GPUDenseFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilt
 
   // create kernel
   m_ApplyUpdateGPUKernelHandle = this->m_GPUKernelManager->CreateKernel("ApplyUpdate");
+
 }
 
 template< class TInputImage, class TOutputImage, class TParentImageFilter >

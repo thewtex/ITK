@@ -20,6 +20,7 @@
 
 #include "itkGPUImageDataManager.h"
 
+//#define VERBOSE
 
 namespace itk
 {
@@ -49,8 +50,9 @@ void GPUImageDataManager< ImageType >::MakeCPUBufferUpToDate()
     if( (m_IsCPUBufferDirty || (gpu_time > cpu_time)) && m_GPUBuffer != NULL)
     {
       cl_int errid;
-
+#ifdef VERBOSE
       std::cout << "GPU->CPU data copy" << std::endl;
+#endif
       errid = clEnqueueReadBuffer(m_ContextManager->GetCommandQueue(m_CommandQueueId), m_GPUBuffer, CL_TRUE, 0, m_BufferSize, m_CPUBuffer, 0, NULL, NULL);
       OclCheckError(errid);
 
@@ -85,17 +87,13 @@ void GPUImageDataManager< ImageType >::MakeGPUBufferUpToDate()
     if( (m_IsGPUBufferDirty || (gpu_time < cpu_time)) && m_CPUBuffer != NULL )
     {
       cl_int errid;
-
+#ifdef VERBOSE
       std::cout << "CPU->GPU data copy" << std::endl;
+#endif
       errid = clEnqueueWriteBuffer(m_ContextManager->GetCommandQueue(m_CommandQueueId), m_GPUBuffer, CL_TRUE, 0, m_BufferSize, m_CPUBuffer, 0, NULL, NULL);
       OclCheckError(errid);
 
       this->SetTimeStamp( cpu_time_stamp );
-
-      // Debug
-      //unsigned long new_gpu_time = this->GetMTime();
-      //assert( new_gpu_time == cpu_time );
-      //
 
       m_IsCPUBufferDirty = false;
       m_IsGPUBufferDirty = false;

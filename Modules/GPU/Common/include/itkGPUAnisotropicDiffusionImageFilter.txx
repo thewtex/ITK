@@ -23,21 +23,6 @@
 
 namespace itk
 {
-/**
- * Constructor
- */
-template< class TInputImage, class TOutputImage, class TParentImageFilter >
-GPUAnisotropicDiffusionImageFilter< TInputImage, TOutputImage, TParentImageFilter >
-::GPUAnisotropicDiffusionImageFilter()
-{
-  this->SetNumberOfIterations(1);
-  m_ConductanceParameter = 1.0;
-  m_ConductanceScalingParameter = 1.0;
-  m_ConductanceScalingUpdateInterval = 1;
-  m_TimeStep = 0.5 / vcl_pow( 2.0, static_cast< double >( ImageDimension ) );
-  m_FixedAverageGradientMagnitude = 1.0;
-  m_GradientMagnitudeIsFixed = false;
-}
 
 /** Prepare for the iteration process. */
 template< class TInputImage, class TOutputImage, class TParentImageFilter >
@@ -53,8 +38,8 @@ GPUAnisotropicDiffusionImageFilter< TInputImage, TOutputImage, TParentImageFilte
     throw ExceptionObject(__FILE__, __LINE__, "GPU anisotropic diffusion function is not set.", ITK_LOCATION);
     }
 
-  f->SetConductanceParameter(m_ConductanceParameter);
-  f->SetTimeStep(m_TimeStep);
+  f->SetConductanceParameter( this->GetConductanceParameter() );
+  f->SetTimeStep( this->GetTimeStep() );
 
   // Check the timestep for stability
   double minSpacing;
@@ -73,28 +58,29 @@ GPUAnisotropicDiffusionImageFilter< TInputImage, TOutputImage, TParentImageFilte
     {
     minSpacing = 1.0;
     }
-  if ( m_TimeStep >  ( minSpacing / vcl_pow(2.0, static_cast< double >( ImageDimension ) + 1) ) )
+  if ( this->GetTimeStep() >  ( minSpacing / vcl_pow(2.0, static_cast< double >( ImageDimension ) + 1) ) )
     {
     //    f->SetTimeStep(1.0 / vcl_pow(2.0,
     // static_cast<double>(ImageDimension)));
     itkWarningMacro( << "Anisotropic diffusion unstable time step: "
-                     << m_TimeStep << std::endl
+                     << this->GetTimeStep() << std::endl
                      << "Stable time step for this image must be smaller than "
                      << minSpacing / vcl_pow( 2.0, static_cast< double >( ImageDimension + 1 ) ) );
     }
 
   if ( m_GradientMagnitudeIsFixed == false )
     {
-    if ( ( this->GetElapsedIterations() % m_ConductanceScalingUpdateInterval ) == 0 )
+    if ( ( this->GetElapsedIterations() % this->GetConductanceScalingUpdateInterval() ) == 0 )
       {
-      f->CalculateAverageGradientMagnitudeSquared( this->GetOutput() );
+      /** GPU version of average squared gradient magniture calculation */
+      f->GPUCalculateAverageGradientMagnitudeSquared( this->GetOutput() );
       }
     }
   else
     {
-    f->SetAverageGradientMagnitudeSquared(m_FixedAverageGradientMagnitude
-                                          *
-                                          m_FixedAverageGradientMagnitude);
+    f->SetAverageGradientMagnitudeSquared( this->GetFixedAverageGradientMagnitude()
+                                           *
+                                           this->GetFixedAverageGradientMagnitude() );
     }
   f->InitializeIteration();
 
@@ -115,15 +101,6 @@ GPUAnisotropicDiffusionImageFilter< TInputImage, TOutputImage, TParentImageFilte
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf( os, indent.GetNextIndent() );
-  os << indent << "TimeStep: " << m_TimeStep << std::endl;
-  os << indent << "ConductanceParameter: "
-     << m_ConductanceParameter << std::endl;
-  os << indent << "ConductanceScalingParameter: "
-     << m_ConductanceScalingParameter << std::endl;
-  os << indent << "ConductanceScalingUpdateInterval: "
-     << m_ConductanceScalingUpdateInterval << std::endl;
-  os << indent << "FixedAverageGradientMagnitude: "
-     << m_FixedAverageGradientMagnitude << std::endl;
 }
 } // end namespace itk
 

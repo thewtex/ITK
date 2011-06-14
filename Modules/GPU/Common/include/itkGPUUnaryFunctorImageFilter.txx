@@ -12,7 +12,6 @@ GPUUnaryFunctorImageFilter< TInputImage, TOutputImage, TFunction, TParentImageFi
 ::GenerateOutputInformation()
 {
   CPUSuperclass::GenerateOutputInformation();
-  //std::cout << "ToDo: GPUUnaryFunctorImageFilter::GenerateOutputInformation()" << std::endl;
 }
 
 
@@ -21,8 +20,6 @@ void
 GPUUnaryFunctorImageFilter< TInputImage, TOutputImage, TFunction, TParentImageFilter >
 ::GPUGenerateData()
 {
-  std::cout << "GPUGenerateData() from GPUUnaryFunctorImageFilter" <<std::endl;
-
   // Applying functor using GPU kernel
   typedef typename itk::GPUTraits< TInputImage >::Type  GPUInputImage;
   typedef typename itk::GPUTraits< TOutputImage >::Type GPUOutputImage;
@@ -58,46 +55,6 @@ GPUUnaryFunctorImageFilter< TInputImage, TOutputImage, TFunction, TParentImageFi
   // launch kernel
   this->m_GPUKernelManager->LaunchKernel(m_UnaryFunctorImageFilterGPUKernelHandle, (int)TInputImage::ImageDimension, globalSize, localSize );
 }
-
-/*
-template< class TInputImage, class TOutputImage, class TFunction, class TParentImageFilter >
-void
-GPUUnaryFunctorImageFilter< TInputImage, TOutputImage, TFunction, TParentImageFilter >
-::ThreadedGPUGenerateData(const OutputImageRegionType & outputRegionForThread,
-                          int threadId)
-{
-  InputImagePointer  inputPtr = this->GetInput();
-  OutputImagePointer outputPtr = this->GetOutput(0);
-
-  // Define the portion of the input to walk for this thread, using
-  // the CallCopyOutputRegionToInputRegion method allows for the input
-  // and output images to be different dimensions
-  InputImageRegionType inputRegionForThread;
-
-  this->CallCopyOutputRegionToInputRegion(inputRegionForThread, outputRegionForThread);
-
-  //
-  // ToDo : launch GPU kernel
-  //
-
-  // Define the iterators
-  ImageRegionConstIterator< TInputImage > inputIt(inputPtr, inputRegionForThread);
-  ImageRegionIterator< TOutputImage >     outputIt(outputPtr, outputRegionForThread);
-
-  ProgressReporter progress( this, threadId, outputRegionForThread.GetNumberOfPixels() );
-
-  inputIt.GoToBegin();
-  outputIt.GoToBegin();
-
-  while ( !inputIt.IsAtEnd() )
-    {
-    outputIt.Set( m_Functor( inputIt.Get() ) );
-    ++inputIt;
-    ++outputIt;
-    progress.CompletedPixel();  // potential exception thrown here
-    }
-}
-*/
 
 } // end of namespace itk
 

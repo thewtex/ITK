@@ -269,37 +269,89 @@ void OclCheckError(cl_int error)
 
 void GetTypenameInString( const type_info& intype, std::ostringstream& ret )
 {
-  if ( intype == typeid ( unsigned char ) )
+  if ( intype == typeid ( unsigned char ) ||
+       intype == typeid ( itk::Vector< unsigned char, 2 > ) ||
+       intype == typeid ( itk::Vector< unsigned char, 3 > ) )
   {
     ret << "unsigned char\n";
   }
-  else if ( intype == typeid ( char ) )
+  else if ( intype == typeid ( char ) ||
+            intype == typeid ( itk::Vector< char, 2 > ) ||
+            intype == typeid ( itk::Vector< char, 3 > ) )
   {
     ret << "char\n";
   }
-  else if ( intype == typeid ( short ) )
+  else if ( intype == typeid ( short ) ||
+            intype == typeid ( itk::Vector< short, 2 > ) ||
+            intype == typeid ( itk::Vector< short, 3 > ) )
   {
     ret << "short\n";
   }
-  else if ( intype == typeid ( int ) )
+  else if ( intype == typeid ( int ) ||
+            intype == typeid ( itk::Vector< int, 2 > ) ||
+            intype == typeid ( itk::Vector< int, 3 > ) )
   {
     ret << "int\n";
   }
-  else if ( intype == typeid ( unsigned int ) )
+  else if ( intype == typeid ( unsigned int ) ||
+            intype == typeid ( itk::Vector< unsigned int, 2 > ) ||
+            intype == typeid ( itk::Vector< unsigned int, 3 > ) )
   {
     ret << "unsigned int\n";
   }
-  else if ( intype == typeid ( float ) )
+  else if ( intype == typeid ( float ) ||
+            intype == typeid ( itk::Vector< float, 2 > ) ||
+            intype == typeid ( itk::Vector< float, 3 > ) )
   {
     ret << "float\n";
   }
-  else if ( intype == typeid ( double ) )
+  else if ( intype == typeid ( double ) ||
+            intype == typeid ( itk::Vector< double, 2 > ) ||
+            intype == typeid ( itk::Vector< double, 3 > ) )
   {
     ret << "double\n";
   }
   else
   {
     //std::cerr << "Pixeltype is not supported by GPUMeanImageFilter." << std::endl;
-    itkGenericExceptionMacro("Pixeltype is not supported by GPUMeanImageFilter.");
+    itkGenericExceptionMacro("Pixeltype is not supported by the filter.");
+  }
+}
+
+int GetPixelDimension( const type_info& intype )
+{
+  if ( intype == typeid ( unsigned char ) ||
+       intype == typeid ( char ) ||
+       intype == typeid ( short ) ||
+       intype == typeid ( int ) ||
+       intype == typeid ( unsigned int ) ||
+       intype == typeid ( float ) ||
+       intype == typeid ( double ) )
+  {
+    return 1;
+  }
+  else if( intype == typeid ( itk::Vector< unsigned char, 2 > ) ||
+           intype == typeid ( itk::Vector< char, 2 > ) ||
+           intype == typeid ( itk::Vector< short, 2 > ) ||
+           intype == typeid ( itk::Vector< int, 2 > ) ||
+           intype == typeid ( itk::Vector< unsigned int, 2 > ) ||
+           intype == typeid ( itk::Vector< float, 2 > ) ||
+           intype == typeid ( itk::Vector< double, 2 > ) )
+  {
+    return 2;
+  }
+  else if( intype == typeid ( itk::Vector< unsigned char, 3 > ) ||
+           intype == typeid ( itk::Vector< char, 3 > ) ||
+           intype == typeid ( itk::Vector< short, 3 > ) ||
+           intype == typeid ( itk::Vector< int, 3 > ) ||
+           intype == typeid ( itk::Vector< unsigned int, 3 > ) ||
+           intype == typeid ( itk::Vector< float, 3 > ) ||
+           intype == typeid ( itk::Vector< double, 3 > ) )
+  {
+    return 3;
+  }
+  else
+  {
+    itkGenericExceptionMacro("Pixeltype is not supported by the filter.");
   }
 }

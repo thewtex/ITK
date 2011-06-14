@@ -25,10 +25,10 @@
 
 namespace itk
 {
-/** \class GradientNDAnisotropicDiffusionFunction
+/** \class GPUGradientNDAnisotropicDiffusionFunction
  *
  * This class implements an N-dimensional version of the classic Perona-Malik
- * anisotropic diffusion equation for scalar-valued images.  See
+ * anisotropic diffusion equation for scalar-valued images on the GPU.  See
  * itkAnisotropicDiffusionFunction for an overview of the anisotropic diffusion
  * framework and equation.
  *
@@ -49,12 +49,7 @@ namespace itk
  * anisotropic diffusion,'' IEEE Transactions on Pattern Analysis Machine
  * Intelligence, vol. 12, pp. 629-639, 1990.
  *
- * \sa AnisotropicDiffusionFunction
- * \sa VectorAnisotropicDiffusionFunction
- * \sa VectorGradientAnisotropicDiffusionFunction
- * \sa CurvatureNDAnisotropicDiffusionFunction
- * \ingroup FiniteDifferenceFunctions
- * \ingroup ImageEnhancement
+ * \ingroup GPUCommon
  */
 template< class TImage >
 class ITK_EXPORT GPUGradientNDAnisotropicDiffusionFunction:
@@ -88,13 +83,7 @@ public:
   /** Inherit some parameters from the superclass type. */
   itkStaticConstMacro(ImageDimension, unsigned int, Superclass::ImageDimension);
 
-  /** Compute the equation value.
-  virtual PixelType ComputeUpdate(const NeighborhoodType & neighborhood,
-                                  void *globalData,
-                                  const FloatOffsetType & offset = FloatOffsetType(0.0)
-                                  );
-  */
-
+  /** Compute the equation value. */
   virtual void GPUComputeUpdate( typename const TImage::Pointer output, typename TImage::Pointer buffer, void *globalData );
 
 

@@ -16,11 +16,14 @@
 *
 *=========================================================================*/
 
-//
-// GPUImage Data Management
-//
-// This class will take care of synchronization between CPU Image and GPU Image
-//
+/**
+ * \class GPUImage Data Management
+ *
+ * DataManager for GPUImage. This class will take care of data synchronization
+ * between CPU Image and GPU Image.
+ *
+ * \ingroup GPUCommon
+ */
 
 #ifndef __itkGPUImageDataManager_h
 #define __itkGPUImageDataManager_h
@@ -58,13 +61,13 @@ namespace itk
 
     void SetImagePointer( typename ImageType::Pointer img );
 
-    // actual GPU->CPU memory copy takes place here
+    /** actual GPU->CPU memory copy takes place here */
     virtual void MakeCPUBufferUpToDate();
 
-    // actual CPU->GPU memory copy takes place here
+    /** actual CPU->GPU memory copy takes place here */
     virtual void MakeGPUBufferUpToDate();
 
-    // Grafting GPU Image Data
+    /** Grafting GPU Image Data */
     virtual void Graft(const typename GPUImageDataManager* data);
 
   protected:

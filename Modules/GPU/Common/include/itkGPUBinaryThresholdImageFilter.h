@@ -56,25 +56,6 @@ public:
   void SetOutsideValue(const TOutput & value)
   { m_OutsideValue = value; }
 
-  /*
-  bool operator!=(const GPUBinaryThreshold & other) const
-  {
-    if ( m_LowerThreshold != other.m_LowerThreshold
-         || m_UpperThreshold != other.m_UpperThreshold
-         || m_InsideValue    != other.m_InsideValue
-         || m_OutsideValue   != other.m_OutsideValue  )
-      {
-      return true;
-      }
-    return false;
-  }
-
-  bool operator==(const GPUBinaryThreshold & other) const
-  {
-    return !( *this != other );
-  }
-  */
-
   /** Setup GPU kernel arguments for this functor.
    * Returns current argument index to set additional arguments in the GPU kernel */
   int SetGPUKernelArguments(GPUKernelManager::Pointer KernelManager, int KernelHandle)
@@ -147,14 +128,12 @@ private:
   GPUBinaryThresholdImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);             //purposely not implemented
 
-  //OutputPixelType m_InsideValue;
-  //OutputPixelType m_OutsideValue;
 };
 
 
 
 /** Object Factory implemenatation for GPUBinaryThresholdImageFilter */
-class GPUBinaryThresholdImageFilterFactory : public itk::ObjectFactoryBase
+class GPUBinaryThresholdImageFilterFactory : public ObjectFactoryBase
 {
 public:
   typedef GPUBinaryThresholdImageFilterFactory     Self;
@@ -164,7 +143,7 @@ public:
 
   /** Class methods used to interface with the registered factories. */
   virtual const char* GetITKSourceVersion() const { return ITK_SOURCE_VERSION; }
-  const char* GetDescription() const { return "A Factory for GPUMeanImageFilter"; }
+  const char* GetDescription() const { return "A Factory for GPUBinaryThresholdImageFilter"; }
 
   /** Method for class instantiation. */
   itkFactorylessNewMacro(Self);
