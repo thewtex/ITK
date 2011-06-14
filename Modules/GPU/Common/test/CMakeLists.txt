@@ -1,14 +1,5 @@
 IF (ITK_USE_GPU)
 
-<<<<<<< HEAD
-add_executable(ITK-GPUCommon-tests  ${Tests} )
-itk_module_target_label(ITK-GPUCommon-tests)
-target_link_libraries(ITK-GPUCommon-tests  ${ITK-GPUCommon_LIBRARIES} )
-
-itk_add_test(NAME itkGPUImageFilterTest
-        COMMAND ITK-GPUCommon-tests itkGPUImageFilterTest
-        ${ITK_EXAMPLE_DATA_ROOT}/BrainProtonDensitySlice.png
-=======
 itk_module_test()
 
 set(ITK-GPUCommon-tests
@@ -28,7 +19,6 @@ CreateTestDriver(ITK-GPUCommon "${ITK-GPUCommon-Test_LIBRARIES}" "${ITK-GPUCommo
 add_test(NAME itkGPUImageFilterTest
         COMMAND ITK-GPUCommonTestDriver itkGPUImageFilterTest
         ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySlice.png
->>>>>>> b5d4d3e... WIP: Enable GPUCommon module, fix CMake bugs.
         ${TEMP}/gpuImageFilterTest.png)
 
 #add_test(NAME itkGPUImageTest COMMAND ITK-GPUCommonTestDriver itkGPUImageTest)
