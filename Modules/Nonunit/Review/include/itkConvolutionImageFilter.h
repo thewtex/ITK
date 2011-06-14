@@ -90,19 +90,38 @@ public:
   itkSetInputMacro(ImageKernel, InputImageType, 1);
   itkGetInputMacro(ImageKernel, InputImageType, 1);
 
-  /**
-   * Normalize the output image by the sum of the kernel components
+  /** Normalize the kernel image so that the sum of all its pixels is
+   * 1.0. When this option is on, the kernel pixel values will be
+   * cast to a floating-point type, otherwise no casting is done.
    */
   itkSetMacro(Normalize, bool);
   itkGetConstMacro(Normalize, bool);
   itkBooleanMacro(Normalize);
 
-  /** ConvolutionImageFilter needs a smaller 2nd input (the image kernel)
-   * requested region than output requested region.  As such, this filter
-   * needs to provide an implementation for GenerateInputRequestedRegion() in
-   * order to inform the pipeline execution model.
-   * \sa ProcessObject::GenerateInputRequestedRegion()  */
-  virtual void GenerateInputRequestedRegion();
+  /** Enumeration for boundary condition. */
+  typedef enum {
+    ZERO = 0,
+    PERIODIC,
+    ZERO_FLUX_NEUMANN
+  } BoundaryConditionType;
+
+
+  /** Select the boundary condition to be used in the
+   * convolution. Defaults to zero padding. */
+  itkSetMacro(BoundaryCondition, BoundaryConditionType);
+  itkGetConstMacro(BoundaryCondition, BoundaryConditionType);
+  void SetBoundaryConditionToZero()
+  {
+    this->SetBoundaryCondition( ZERO );
+  }
+  void SetBoundaryConditionToPeriodic()
+  {
+    this->SetBoundaryCondition( PERIODIC );
+  }
+  void SetBoundaryConditionToZeroFluxNeumann()
+  {
+    this->SetBoundaryCondition( ZERO_FLUX_NEUMANN );
+  }
 
 protected:
   /** de/constructor */
@@ -110,6 +129,13 @@ protected:
   ~ConvolutionImageFilter();
 
   void PrintSelf(std::ostream & os, Indent indent) const;
+
+  /** ConvolutionImageFilter needs a smaller 2nd input (the image kernel)
+   * requested region than output requested region.  As such, this filter
+   * needs to provide an implementation for GenerateInputRequestedRegion() in
+   * order to inform the pipeline execution model.
+   * \sa ProcessObject::GenerateInputRequestedRegion()  */
+  virtual void GenerateInputRequestedRegion();
 
   void GenerateData();
 
@@ -129,6 +155,8 @@ private:
                            ProgressAccumulator *progress );
 
   bool m_Normalize;
+
+  BoundaryConditionType m_BoundaryCondition;
 };
 }
 

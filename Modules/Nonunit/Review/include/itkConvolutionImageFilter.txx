@@ -21,11 +21,14 @@
 
 #include "itkConvolutionImageFilter.h"
 
+#include "itkConstantBoundaryCondition.h"
 #include "itkConstantPadImageFilter.h"
 #include "itkImageBase.h"
 #include "itkImageKernelOperator.h"
 #include "itkNeighborhoodOperatorImageFilter.h"
 #include "itkNormalizeToConstantImageFilter.h"
+#include "itkPeriodicBoundaryCondition.h"
+#include "itkZeroFluxNeumannBoundaryCondition.h"
 
 
 /*
@@ -47,6 +50,7 @@ ConvolutionImageFilter< TInputImage, TOutputImage >
 {
   this->SetNumberOfRequiredInputs(2);
   m_Normalize = false;
+  m_BoundaryCondition = ZERO;
 }
 
 template< class TInputImage, class TOutputImage >
@@ -147,6 +151,7 @@ ConvolutionImageFilter< TInputImage, TOutputImage >
 
   kernelOperator.CreateToRadius( radius );
 
+
   typedef NeighborhoodOperatorImageFilter< InputImageType, OutputImageType, KernelPixelType >
     ConvolutionFilterType;
   typename ConvolutionFilterType::Pointer convolutionFilter =
@@ -156,6 +161,29 @@ ConvolutionImageFilter< TInputImage, TOutputImage >
   convolutionFilter->SetNumberOfThreads( this->GetNumberOfThreads() );
   progress->RegisterInternalFilter( convolutionFilter, 0.8f );
 
+  // Set up the boundary condition.
+  typedef typename ConvolutionFilterType::ImageBoundaryConditionPointerType
+    BoundaryConditionBasePointerType;
+  BoundaryConditionBasePointerType boundaryCondition;
+
+  if ( m_BoundaryCondition == PERIODIC )
+    {
+    boundaryCondition = new PeriodicBoundaryCondition< InputImageType >();
+    }
+  else if ( m_BoundaryCondition == ZERO_FLUX_NEUMANN )
+    {
+    boundaryCondition = new ZeroFluxNeumannBoundaryCondition< InputImageType >();
+    }
+  else
+    {
+    // Use default case ZERO
+    ConstantBoundaryCondition< InputImageType > *constantBoundaryCondition =
+      new ConstantBoundaryCondition< InputImageType >();
+    constantBoundaryCondition->SetConstant( NumericTraits< InputPixelType >::Zero );
+    boundaryCondition = constantBoundaryCondition;
+    }
+  convolutionFilter->OverrideBoundaryCondition( boundaryCondition );
+
   // Graft the minipipeline output to this filter.
   convolutionFilter->GraftOutput( this->GetOutput() );
   convolutionFilter->Update();
@@ -163,6 +191,8 @@ ConvolutionImageFilter< TInputImage, TOutputImage >
   // Graft the output of the convolution filter back onto this
   // filter's output.
   this->GraftOutput( convolutionFilter->GetOutput() );
+
+  delete boundaryCondition;
 }
 
 template< class TInputImage, class TOutputImage >
@@ -269,6 +299,26 @@ ConvolutionImageFilter< TInputImage, TOutputImage >
   Superclass::PrintSelf(os, indent);
 
   os << indent << "Normalize: "  << m_Normalize << std::endl;
+  os << indent << "BoundaryCondition: ";
+  switch ( m_BoundaryCondition )
+    {
+    case ZERO:
+      os << "ZERO";
+      break;
+
+    case PERIODIC:
+      os << "PERIODIC";
+      break;
+
+    case ZERO_FLUX_NEUMANN:
+      os << "ZERO_FLUX_NEUMANN";
+      break;
+
+    default:
+      os << "(unknown)";
+      break;
+    }
+  os << std::endl;
 }
 }
 #endif

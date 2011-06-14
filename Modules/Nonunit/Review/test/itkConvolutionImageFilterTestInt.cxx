@@ -61,6 +61,25 @@ int itkConvolutionImageFilterTestInt(int argc, char * argv[])
     convoluter->SetNormalize( static_cast<bool>( atoi( argv[4] ) ) );
     }
 
+  if( argc >= 6 )
+    {
+    int boundaryConditionCode = atoi( argv[5] );
+    switch ( boundaryConditionCode )
+      {
+      case 0:
+        convoluter->SetBoundaryConditionToZero();
+        break;
+
+      case 1:
+        convoluter->SetBoundaryConditionToPeriodic();
+        break;
+
+      case 2:
+        convoluter->SetBoundaryConditionToZeroFluxNeumann();
+        break;
+      }
+    }
+
   typedef itk::ImageFileWriter<ImageType> WriterType;
   WriterType::Pointer writer = WriterType::New();
   writer->SetFileName( argv[3] );
