@@ -51,6 +51,49 @@ namespace itk
  * then increases the number of control points at each level so that
  * the B-spline n-D grid is refined to twice the previous level.
  *
+ * There are two parts to fitting scattered data: the parameterization
+ * assignment problem and the fitting problem given a parameterization.
+ * This filter only addresses the second problem. The interpretation of this is
+ * that if you only provide a set of points, there are a number of curves that
+ * could be produce based on the ordering of the points.
+ *
+ * Input to this filter is an n-D point set, and a parameterization of the point
+ * set. This filter can produce BSpline objects from data of any combination of
+ * parametric dimension and data dimension.
+ * Typical objects are curves, which have a parametric dimension of 1, and deformations,
+ * which have a parametric dimension of 2. The data dimension for any object
+ * is simply the dimensionality of the input points.
+ * An an example, a curve through a set of 2D points has data dimension 2 and
+ * parametric dimension 1. The curve could be represented as: <x(u),y(u)>
+ * Another example is a 2D deformation of 3D points, which has parametric dimension 2
+ * and data dimension 3 and can be represented as:  <dx(u,v), dy(u,v), dz(u,v)>
+ *
+ * The output is an image defining the parametric domain where each pixel
+ * is the B-spline object value.  For a curve fit to 3D points, the output is a
+ * 1-D image  where each voxel contains the approximated (x,y,z) location. The
+ * number of voxels is set via the combination of SetSpacing and SetSize.
+ * For a 2D deformation on 2D points, the output is a 2-D image where each voxel
+ * contains the approximated (dx, dy) vector.
+ *
+ * The parameterization must be specified using SetPoint, where the actual
+ * coordinates of the point are set via SetPointData. For example, to compute a
+ * spline through the (ordered) 2D points (5,6) and (7,8), you should use:
+ *
+ * typedef itk::Vector< float, 2 > DataType;
+ * PointSetType::PointType param0;
+ * param0[0] = 0.0;
+ * DataType p0;
+ * p0[0] =  10.0; p0[1]= 10.0;
+ * pointSet->SetPoint(0, param0);
+ * pointSet->SetPointData( 0, p0 );
+ *
+ * PointSetType::PointType param1;
+ * param1[0] = 1.0;
+ * DataType p1;
+ * p1[0] =  80.0; p1[1]= 50.0;
+ * pointSet->SetPoint(1, param1);
+ * pointSet->SetPointData( 1, p1 );
+ *
  * \author Nicholas J. Tustison
  *
  *
