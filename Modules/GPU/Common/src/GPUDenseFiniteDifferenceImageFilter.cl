@@ -25,14 +25,14 @@
 #ifdef DIM_1
 __kernel void ApplyUpdate(__global const BUFPIXELTYPE *buf,
                           __global OUTPIXELTYPE *out,
-						  float dt, int width)
+						              float dt, int width)
 {
   int gix = get_global_id(0);
   float sum = 0;
   int   num = 0;
   if(gix < width)
   {
-	  gidx *= PIXELDIM;
+    gidx *= PIXELDIM;
     for(int i=0; i<PIXELDIM; i++)
     {
       out[gidx] = (OUTPIXELTYPE)( (float)out[gidx] + dt*(float)(buf[gidx]) );

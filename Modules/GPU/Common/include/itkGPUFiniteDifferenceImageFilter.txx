@@ -85,7 +85,8 @@ GPUFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilter >
   // Iterative algorithm
   TimeStepType dt;
 
-  while ( !this->Halt() )
+
+  while ( !this->Halt() && m_ElapsedIterations < 200)
     {
     this->InitializeIteration(); // An optional method for precalculating
                                  // global values, or otherwise setting up
