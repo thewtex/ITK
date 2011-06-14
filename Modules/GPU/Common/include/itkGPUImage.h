@@ -26,145 +26,161 @@
 
 namespace itk
 {
-  template <class TPixel, unsigned int VImageDimension = 2>
-  class ITK_EXPORT GPUImage : public Image<TPixel,VImageDimension>
+/** \class GPUImage
+ *  \brief Templated n-dimensional image class for the GPU.
+ *
+ * Derived from itk Image class to use with GPU image filters.
+ * This class manages both CPU and GPU memory implicitly, and
+ * can be used with non-GPU itk filters as well. Memory transfer
+ * between CPU and GPU is done automatically and implicitly.
+ *
+ * \ingroup GPUCommon
+ */
+template <class TPixel, unsigned int VImageDimension = 2>
+class ITK_EXPORT GPUImage : public Image<TPixel,VImageDimension>
+{
+public:
+  typedef GPUImage                        Self;
+  typedef Image<TPixel,VImageDimension>   Superclass;
+  typedef SmartPointer<Self>              Pointer;
+  typedef SmartPointer<const Self>        ConstPointer;
+  typedef WeakPointer<const Self>         ConstWeakPointer;
+
+  itkNewMacro(Self);
+
+  itkTypeMacro(GPUImage, Image);
+
+  itkStaticConstMacro(ImageDimension, unsigned int, VImageDimension);
+
+  typedef typename Superclass::PixelType           PixelType;
+  typedef typename Superclass::ValueType           ValueType;
+  typedef typename Superclass::InternalPixelType   InternalPixelType;
+  typedef typename Superclass::IOPixelType         IOPixelType;
+  typedef typename Superclass::DirectionType       DirectionType;
+  typedef typename Superclass::SpacingType         SpacingType;
+  typedef typename Superclass::PixelContainer      PixelContainer;
+  typedef typename Superclass::SizeType            SizeType;
+  typedef typename Superclass::IndexType           IndexType;
+  typedef typename Superclass::OffsetType          OffsetType;
+  typedef typename Superclass::RegionType          RegionType;
+  typedef typename PixelContainer::Pointer         PixelContainerPointer;
+  typedef typename PixelContainer::ConstPointer    PixelContainerConstPointer;
+  typedef typename Superclass::AccessorType        AccessorType;
+
+  typedef DefaultPixelAccessorFunctor< Self > AccessorFunctorType;
+
+  typedef NeighborhoodAccessorFunctor< Self > NeighborhoodAccessorFunctorType;
+  //typedef typename Superclass::NeighborhoodAccessorFunctorType NeighborhoodAccessorFunctorType;
+
+  //
+  // Allocate CPU and GPU memory space
+  //
+  void Allocate();
+
+  virtual void Initialize();
+
+  void FillBuffer(const TPixel & value);
+
+  void SetPixel(const IndexType & index, const TPixel & value);
+
+  const TPixel & GetPixel(const IndexType & index) const;
+
+  TPixel & GetPixel(const IndexType & index);
+
+  const TPixel & operator[](const IndexType & index) const
+  { return Superclass::GetPixel(index); }
+
+  TPixel & operator[](const IndexType & index);
+
+  //
+  // Get CPU buffer pointer
+  //
+  TPixel* GetBufferPointer();
+
+  const TPixel * GetBufferPointer() const;
+
+  /** Return the Pixel Accessor object */
+  AccessorType GetPixelAccessor(void)
   {
-  public:
-    typedef GPUImage                        Self;
-    typedef Image<TPixel,VImageDimension>   Superclass;
-    typedef SmartPointer<Self>              Pointer;
-    typedef SmartPointer<const Self>        ConstPointer;
-    typedef WeakPointer<const Self>         ConstWeakPointer;
+    m_GPUManager->SetGPUBufferDirty();
+    return Superclass::GetPixelAccessor();
+  }
 
-    itkNewMacro(Self);
+  /** Return the Pixel Accesor object */
+  const AccessorType GetPixelAccessor(void) const
+  {
+    m_GPUManager->MakeCPUBufferUpToDate();
+    return Superclass::GetPixelAccessor();
+  }
 
-    itkTypeMacro(GPUImage, Image);
+  /** Return the NeighborhoodAccessor functor */
+  NeighborhoodAccessorFunctorType GetNeighborhoodAccessor()
+  {
+    m_GPUManager->SetGPUBufferDirty();
+    //return Superclass::GetNeighborhoodAccessor();
+    return NeighborhoodAccessorFunctorType();
+  }
 
-    itkStaticConstMacro(ImageDimension, unsigned int, VImageDimension);
+  /** Return the NeighborhoodAccessor functor */
+  const NeighborhoodAccessorFunctorType GetNeighborhoodAccessor() const
+  {
+    m_GPUManager->MakeCPUBufferUpToDate();
+    //return Superclass::GetNeighborhoodAccessor();
+    return NeighborhoodAccessorFunctorType();
+  }
 
-    typedef typename Superclass::PixelType           PixelType;
-    typedef typename Superclass::ValueType           ValueType;
-    typedef typename Superclass::InternalPixelType   InternalPixelType;
-    typedef typename Superclass::IOPixelType         IOPixelType;
-    typedef typename Superclass::DirectionType       DirectionType;
-    typedef typename Superclass::SpacingType         SpacingType;
-    typedef typename Superclass::PixelContainer      PixelContainer;
-    typedef typename Superclass::SizeType            SizeType;
-    typedef typename Superclass::IndexType           IndexType;
-    typedef typename Superclass::OffsetType          OffsetType;
-    typedef typename Superclass::RegionType          RegionType;
-    typedef typename PixelContainer::Pointer         PixelContainerPointer;
-    typedef typename PixelContainer::ConstPointer    PixelContainerConstPointer;
-    typedef typename Superclass::AccessorType        AccessorType;
+  void SetPixelContainer(PixelContainer *container);
 
-    typedef DefaultPixelAccessorFunctor< Self > AccessorFunctorType;
+   /** Return a pointer to the container. */
+  PixelContainer * GetPixelContainer()
+  { m_GPUManager->SetGPUBufferDirty(); return Superclass::GetPixelContainer(); }
 
-    //typedef NeighborhoodAccessorFunctor< Self > NeighborhoodAccessorFunctorType;
-    typedef typename Superclass::NeighborhoodAccessorFunctorType NeighborhoodAccessorFunctorType;
+  const PixelContainer * GetPixelContainer() const
+  {
+    m_GPUManager->MakeCPUBufferUpToDate();
+    return Superclass::GetPixelContainer();
+  }
 
-    //
-    // Allocate CPU and GPU memory space
-    //
-    void Allocate();
+  void SetCurrentCommandQueue( int queueid )
+  {
+    m_GPUManager->SetCurrentCommandQueue( queueid );
+  }
 
-    virtual void Initialize();
+  int  GetCurrentCommandQueueID() { return m_GPUManager->GetCurrentCommandQueueID(); };
 
-    void FillBuffer(const TPixel & value);
+  GPUDataManager::Pointer GetGPUDataManager() const;
 
-    void SetPixel(const IndexType & index, const TPixel & value);
+  /* Override DataHasBeenGenerated() in DataObject class.
+   * We need this because CPU time stamp is always bigger
+   * than GPU's. That is because Modified() is called at
+   * the end of each filter in the pipeline so although we
+   * increment GPU's time stamp in GPUGenerateData() the
+   * CPU's time stamp will be increased after that.
+   */
+  void DataHasBeenGenerated()
+  {
+    Superclass::DataHasBeenGenerated();
+    if( m_GPUManager->IsCPUBufferDirty() )
+      {
+      m_GPUManager->Modified();
+      }
+  }
 
-    TPixel & GetPixel(const IndexType & index);
+  /** Graft the data and information from one GPUImage to another. */
+  virtual void Graft(const DataObject *data);
 
-    const TPixel & operator[](const IndexType & index) const
-    { return Superclass::GetPixel(index); }
+protected:
+  GPUImage();
+  virtual ~GPUImage();
 
-    TPixel & operator[](const IndexType & index);
+private:
 
-    //
-    // Get CPU buffer pointer
-    //
-    TPixel* GetBufferPointer();
+  // functions that are purposely not implemented
+  GPUImage(const Self&);
+  void operator=(const Self&);
 
-    const TPixel * GetBufferPointer() const;
-
-    /** Return the Pixel Accessor object */
-    AccessorType GetPixelAccessor(void)
-    {
-      m_GPUManager->SetGPUBufferDirty();
-      return Superclass::GetPixelAccessor();
-    }
-
-    /** Return the Pixel Accesor object */
-    const AccessorType GetPixelAccessor(void) const
-    {
-      m_GPUManager->MakeCPUBufferUpToDate();
-      return Superclass::GetPixelAccessor();
-    }
-
-    /** Return the NeighborhoodAccessor functor */
-    NeighborhoodAccessorFunctorType GetNeighborhoodAccessor()
-    {
-      m_GPUManager->SetGPUBufferDirty();
-      return Superclass::GetNeighborhoodAccessor();
-    }
-
-    /** Return the NeighborhoodAccessor functor */
-    const NeighborhoodAccessorFunctorType GetNeighborhoodAccessor() const
-    {
-      m_GPUManager->MakeCPUBufferUpToDate();
-      return Superclass::GetNeighborhoodAccessor();
-    }
-
-    void SetPixelContainer(PixelContainer *container);
-
-     /** Return a pointer to the container. */
-    PixelContainer * GetPixelContainer()
-    { m_GPUManager->SetGPUBufferDirty(); return Superclass::GetPixelContainer(); }
-
-    const PixelContainer * GetPixelContainer() const
-    {
-      m_GPUManager->MakeCPUBufferUpToDate();
-      return Superclass::GetPixelContainer();
-    }
-
-    void SetCurrentCommandQueue( int queueid )
-    {
-      m_GPUManager->SetCurrentCommandQueue( queueid );
-    }
-
-    int  GetCurrentCommandQueueID() { return m_GPUManager->GetCurrentCommandQueueID(); };
-
-    GPUDataManager::Pointer GetGPUDataManager();
-
-    /* Override DataHasBeenGenerated() in DataObject class.
-     * We need this because CPU time stamp is always bigger
-     * than GPU's. That is because Modified() is called at
-     * the end of each filter in the pipeline so although we
-     * increment GPU's time stamp in GPUGenerateData() the
-     * CPU's time stamp will be increased after that.
-     */
-    void DataHasBeenGenerated()
-    {
-      Superclass::DataHasBeenGenerated();
-      if( m_GPUManager->IsCPUBufferDirty() )
-        {
-        m_GPUManager->Modified();
-        }
-    }
-
-
-  protected:
-    GPUImage();
-    virtual ~GPUImage();
-
-  private:
-
-    // functions that are purposely not implemented
-    GPUImage(const Self&);
-    void operator=(const Self&);
-
-    typename GPUImageDataManager< GPUImage >::Pointer m_GPUManager;
-  };
+  typename GPUImageDataManager< GPUImage >::Pointer m_GPUManager;
+};
 
 
 class GPUImageFactory : public itk::ObjectFactoryBase
@@ -249,23 +265,7 @@ public:
   typedef GPUImage<TPixelType,NDimension>   Type;
 };
 
-
 } // end namespace itk
-
-// Define instantiation macro for this template.
-#define ITK_TEMPLATE_GPUImage(_, EXPORT, TypeX, TypeY)     \
-  namespace itk                                         \
-  {                                                     \
-  _( 2 ( class EXPORT GPUImage< ITK_TEMPLATE_2 TypeX > ) ) \
-  namespace Templates                                   \
-  {                                                     \
-  typedef GPUImage< ITK_TEMPLATE_2 TypeX > GPUImage##TypeY; \
-  }                                                     \
-  }
-
-#if ITK_TEMPLATE_EXPLICIT
-#include "Templates/itkGPUImage+-.h"
-#endif
 
 #if ITK_TEMPLATE_TXX
 #include "itkGPUImage.txx"

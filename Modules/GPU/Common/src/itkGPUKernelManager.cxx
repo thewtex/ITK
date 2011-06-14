@@ -104,12 +104,16 @@ namespace itk
       // get error message
       clGetProgramBuildInfo(m_Program, m_Manager->GetDeviceId(0), CL_PROGRAM_BUILD_LOG, paramValueSize, paramValue, NULL);
 
+      /*
       std::ostringstream itkmsg;
       itkmsg << "ERROR: In " __FILE__ ", line " << __LINE__ << "\n"
              << this->GetNameOfClass() << " (" << this << "): "
              << "OpenCL program build error:" << paramValue
              << "\n\n";
       ::itk::OutputWindowDisplayErrorText( itkmsg.str().c_str() );
+      */
+
+      std::cerr << paramValue << std::endl;
 
       free( paramValue );
 
