@@ -61,6 +61,7 @@ namespace itk
  * \sa VectorExpandImageFilter
  *
  * \ingroup GeometricTransform
+ * \ingroup ITK-ImageGrid
  */
 template< class TInputImage, class TOutputImage >
 class ITK_EXPORT ExpandImageFilter:
@@ -162,7 +163,7 @@ protected:
    *     ImageToImageFilter::GenerateData() */
   virtual
   void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
-                            int threadId);
+                            ThreadIdType threadId);
 
   /** This method is used to set the state of the filter before
    * multi-threading. */

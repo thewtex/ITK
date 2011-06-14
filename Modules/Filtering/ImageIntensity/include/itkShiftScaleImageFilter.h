@@ -33,6 +33,7 @@ namespace itk
  * at the NonpositiveMin and max of the pixel type.
  * \ingroup IntensityImageFilters
  *
+ * \ingroup ITK-ImageIntensity
  */
 template< class TInputImage, class TOutputImage >
 class ITK_EXPORT ShiftScaleImageFilter:
@@ -116,7 +117,7 @@ protected:
   /** Multi-thread version GenerateData. */
   void  ThreadedGenerateData(const OutputImageRegionType &
                              outputRegionForThread,
-                             int threadId);
+                             ThreadIdType threadId);
 
 private:
   ShiftScaleImageFilter(const Self &); //purposely not implemented

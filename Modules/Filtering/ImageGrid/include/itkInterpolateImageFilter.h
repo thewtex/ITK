@@ -38,6 +38,7 @@ namespace itk
  * It assumes that the input and output have the same number of dimensions.
  *
  * \ingroup Multithreaded
+ * \ingroup ITK-ImageGrid
  */
 template< class TInputImage, class TOutputImage >
 class ITK_EXPORT InterpolateImageFilter:
@@ -116,7 +117,7 @@ protected:
 
   /** InterpolateImageFilter can be implemented as a multithreaded filter. */
   void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
-                            int threadId);
+                            ThreadIdType threadId);
 
 private:
   InterpolateImageFilter(const Self &); //purposely not implemented

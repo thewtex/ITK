@@ -43,7 +43,8 @@ namespace itk
 * \sa NeighborhoodIterator
 *
 * \ingroup IntensityImageFilters
-  */
+  * \ingroup ITK-ImageFeature
+*/
 template< class TInputImage, class TOutputImage >
 class ITK_EXPORT SimpleContourExtractorImageFilter:
   public BoxImageFilter< TInputImage, TOutputImage >
@@ -138,7 +139,7 @@ protected:
      * \sa ImageToImageFilter::ThreadedGenerateData(),
      *     ImageToImageFilter::GenerateData() */
   void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
-                            int threadId);
+                            ThreadIdType threadId);
 
 private:
   SimpleContourExtractorImageFilter(const Self &); //purposely not implemented

@@ -61,6 +61,7 @@ namespace itk
  * buffers conditional on any assigned masks.
  *
  * \ingroup RegistrationMetrics
+ * \ingroup ITK-RegistrationCommon
  */
 template< class TFixedImage, class TMovingImage >
 class ITK_EXPORT MatchCardinalityImageToImageMetric:
@@ -143,7 +144,7 @@ protected:
    * GetValue(). */
   virtual
   void ThreadedGetValue(const FixedImageRegionType & outputRegionForThread,
-                        int threadId);
+                        ThreadIdType threadId);
 
   /** Split the FixedImageRegion into "num" pieces, returning
    * region "i" as "splitRegion". This method is called "num" times. The

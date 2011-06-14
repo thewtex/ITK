@@ -40,6 +40,12 @@ namespace itk
  * \ingroup DataRepresentation
  *
  * \sa Image \sa Mesh \sa Vector \sa CovariantVector \sa Matrix
+ * \ingroup ITK-Common
+ *
+ * \wiki
+ * \wikiexample{SimpleOperations/DistanceBetweenPoints,Distance between two points}
+ * \wikiexample{SimpleOperations/DistanceBetweenIndices,Distance between two indices}
+ * \endwiki
  */
 template< class TCoordRep, unsigned int NPointDimension = 3 >
 class Point:public FixedArray< TCoordRep, NPointDimension >
@@ -78,6 +84,7 @@ public:
   template< class TPointValueType >
   Point(const Point< TPointValueType, NPointDimension > & r):BaseArray(r) {}
   Point(const ValueType r[NPointDimension]):BaseArray(r) {}
+  Point(const ValueType & v):BaseArray(v) {}
 
   /** Pass-through assignment operator for the Array base class. */
   Point & operator=(const Self & r);
@@ -282,6 +289,7 @@ ITK_EXPORT std::istream & operator>>(std::istream & is,
  * having a operator[i].
  *
  * \ingroup Geometry
+ * \ingroup ITK-Common
  */
 template< class TPointContainer, class TWeightContainer >
 ITK_EXPORT class BarycentricCombination

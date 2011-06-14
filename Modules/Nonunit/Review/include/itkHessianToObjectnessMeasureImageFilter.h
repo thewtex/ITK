@@ -56,6 +56,7 @@ namespace itk
  *
  * \ingroup IntensityImageFilters TensorObjects
  *
+ * \ingroup ITK-Review
  */
 template< typename TInputImage, typename TOutputImage >
 class ITK_EXPORT HessianToObjectnessMeasureImageFilter:public
@@ -135,7 +136,7 @@ protected:
 
   void BeforeThreadedGenerateData(void);
 
-  void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread, int threadId);
+  void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread, ThreadIdType threadId);
 
 private:
   HessianToObjectnessMeasureImageFilter(const Self &); //purposely not

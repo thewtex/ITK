@@ -27,8 +27,9 @@ namespace itk
  * \brief Computes the vcl_sin(x) pixel-wise
  *
  * \ingroup IntensityImageFilters  Multithreaded
+ * \ingroup ITK-ImageIntensity
  */
-namespace Function
+namespace Functor
 {
 template< class TInput, class TOutput >
 class Sin
@@ -55,7 +56,7 @@ template< class TInputImage, class TOutputImage >
 class ITK_EXPORT SinImageFilter:
   public
   UnaryFunctorImageFilter< TInputImage, TOutputImage,
-                           Function::Sin<
+                           Functor::Sin<
                              typename TInputImage::PixelType,
                              typename TOutputImage::PixelType >   >
 {
@@ -64,8 +65,8 @@ public:
   typedef SinImageFilter Self;
   typedef UnaryFunctorImageFilter<
     TInputImage, TOutputImage,
-    Function::Sin< typename TInputImage::PixelType,
-                   typename TOutputImage::PixelType > >  Superclass;
+    Functor::Sin< typename TInputImage::PixelType,
+                  typename TOutputImage::PixelType > >  Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;

@@ -33,6 +33,7 @@ namespace itk
  *
  *  \sa HistogramToProbabilityImageFilter, HistogramToLogProbabilityImageFilter,
  *  HistogramToImageFilter, HistogramToEntropyImageFilter
+ * \ingroup ITK-Statistics
  */
 
 namespace Function
@@ -70,10 +71,10 @@ private:
 };
 }
 
-template< class THistogram, unsigned int NDimension, class TOutputPixel = SizeValueType >
+template< class THistogram, class TImage=Image< SizeValueType, 3 > >
 class ITK_EXPORT HistogramToIntensityImageFilter:
-  public HistogramToImageFilter< THistogram, NDimension,
-                                 Function::HistogramIntensityFunction< SizeValueType, TOutputPixel > >
+  public HistogramToImageFilter< THistogram, TImage,
+                                 Function::HistogramIntensityFunction< SizeValueType, typename TImage::PixelType > >
 {
 public:
 
@@ -81,8 +82,8 @@ public:
   typedef HistogramToIntensityImageFilter Self;
 
   /** Standard "Superclass" typedef. */
-  typedef HistogramToImageFilter< THistogram, NDimension,
-                                  Function::HistogramIntensityFunction< SizeValueType, TOutputPixel > >
+  typedef HistogramToImageFilter< THistogram, TImage,
+                                 Function::HistogramIntensityFunction< SizeValueType, typename TImage::PixelType > >
   Superclass;
 
   //typedef typename Function::HistogramIntensityFunction  FunctorType;

@@ -21,7 +21,7 @@
 #include "itkPDEDeformableRegistrationFilter.h"
 #include "itkESMDemonsRegistrationFunction.h"
 
-#include "itkMultiplyByConstantImageFilter.h"
+#include "itkMultiplyImageFilter.h"
 #include "itkExponentialDeformationFieldImageFilter.h"
 
 namespace itk
@@ -67,6 +67,7 @@ namespace itk
  * \sa DemonsRegistrationFilter
  * \sa DemonsRegistrationFunction
  * \ingroup DeformableImageRegistration MultiThreaded
+ * \ingroup ITK-Review
  */
 template< class TFixedImage, class TMovingImage, class TDeformationField >
 class ITK_EXPORT FastSymmetricForcesDemonsRegistrationFilter:
@@ -98,6 +99,9 @@ public:
   /** Deformation field type. */
   typedef typename Superclass::DeformationFieldType    DeformationFieldType;
   typedef typename Superclass::DeformationFieldPointer DeformationFieldPointer;
+
+  itkStaticConstMacro(
+    ImageDimension, unsigned int, FixedImageType::ImageDimension);
 
   /** Get the metric value. The metric value is the mean square difference
    * in intensity between the fixed image and transforming moving image
@@ -154,12 +158,13 @@ protected:
   FiniteDifferenceFunctionType::TimeStepType TimeStepType;
 
   /** Apply update. */
-  virtual void ApplyUpdate(TimeStepType dt);
+  virtual void ApplyUpdate(const TimeStepType& dt);
 
   /** other typedefs */
-  typedef MultiplyByConstantImageFilter<
+  typedef MultiplyImageFilter<
     DeformationFieldType,
-    TimeStepType, DeformationFieldType >                  MultiplyByConstantType;
+    itk::Image<TimeStepType, ImageDimension>,
+    DeformationFieldType >                                MultiplyByConstantType;
 
   typedef AddImageFilter<
     DeformationFieldType,

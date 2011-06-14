@@ -38,6 +38,11 @@ namespace itk
  * \sa NeighborhoodIterator
  *
  * \ingroup IntensityImageFilters
+ * \ingroup ITK-Smoothing
+ *
+ * \wiki
+ * \wikiexample{Smoothing/MeanImageFilter,Mean filter an image}
+ * \endwiki
  */
 template< class TInputImage, class TOutputImage >
 class ITK_EXPORT MeanImageFilter:
@@ -97,7 +102,7 @@ protected:
    * \sa BoxImageFilter::ThreadedGenerateData(),
    *     BoxImageFilter::GenerateData() */
   void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
-                            int threadId);
+                            ThreadIdType threadId);
 
 private:
   MeanImageFilter(const Self &); //purposely not implemented

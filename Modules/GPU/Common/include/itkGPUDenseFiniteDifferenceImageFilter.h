@@ -25,7 +25,6 @@ namespace itk
 {
 /**
  * \class GPUDenseFiniteDifferenceImageFilter
- *
  * This is the GPU version of DenseFiniteDifferenceImageFilter class.
  * Currently only single-threaded, single GPU version is implemented.
  * See documentation for FiniteDifferenceImageFilter for an overview
@@ -47,7 +46,7 @@ namespace itk
  *
  * \ingroup GPUCommon
  */
-  template< class TInputImage, class TOutputImage, class TParentImageFilter = itk::DenseFiniteDifferenceImageFilter< TInputImage, TOutputImage > >
+  template< class TInputImage, class TOutputImage, class TParentImageFilter = DenseFiniteDifferenceImageFilter< TInputImage, TOutputImage > >
 class ITK_EXPORT GPUDenseFiniteDifferenceImageFilter:
   public GPUFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilter >
 {
@@ -118,12 +117,12 @@ protected:
    * Superclass::GenerateData(). */
   virtual void AllocateUpdateBuffer();
 
+  /* GPU kernel handle for GPUApplyUpdate */
+  int m_ApplyUpdateGPUKernelHandle;
+
 private:
   GPUDenseFiniteDifferenceImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);                   //purposely not implemented
-
-  /* GPU kernel handle for GPUApplyUpdate */
-  int m_ApplyUpdateGPUKernelHandle;
 };
 } // end namespace itk
 

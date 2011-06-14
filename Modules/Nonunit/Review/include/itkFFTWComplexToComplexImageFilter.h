@@ -31,6 +31,14 @@ namespace itk
  * This filter is multithreaded and supports input images with sizes which are not
  * a power of two.
  *
+ *
+ * This code was contributed in the Insight Journal paper:
+ * "FFT Complex to Complex filters and helper classes"
+ * by Warfield S.
+ * http://hdl.handle.net/1926/326
+ * http://www.insight-journal.org/browse/publication/128
+ *
+ *
  * \ingroup FourierTransform, Multithreaded
  * \sa FFTWGlobalConfiguration
  *
@@ -43,6 +51,7 @@ namespace itk
  * responsibility of the authors and do not necessarily represent the
  * official view of NCRR or NIH.
  *
+ * \ingroup ITK-Review
  */
 template< class TImage >
 class ITK_EXPORT FFTWComplexToComplexImageFilter:
@@ -123,7 +132,7 @@ protected:
   virtual void UpdateOutputData(DataObject *output);
 
   virtual void BeforeThreadedGenerateData();
-  void ThreadedGenerateData(const OutputImageRegionType& outputRegionForThread, int threadId );
+  void ThreadedGenerateData(const OutputImageRegionType& outputRegionForThread, ThreadIdType threadId );
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 

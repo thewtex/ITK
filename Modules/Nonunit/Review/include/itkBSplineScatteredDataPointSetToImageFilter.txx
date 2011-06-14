@@ -35,9 +35,12 @@ namespace itk
 /**
  * \author Nicholas J. Tustison
  *
- * Contributed by Nicholas J. Tustison, James C. Gee
- * in the Insight Journal paper:
+ * This code was contributed in the Insight Journal paper:
+ * "N-D C^k B-Spline Scattered Data Approximation"
+ * by Nicholas J. Tustison, James C. Gee
  * http://hdl.handle.net/1926/140
+ * http://www.insight-journal.org/browse/publication/57
+ *
  */
 
 template<class TInputPointSet, class TOutputImage>
@@ -510,7 +513,7 @@ BSplineScatteredDataPointSetToImageFilter<TInputPointSet, TOutputImage>
 template<class TInputPointSet, class TOutputImage>
 void
 BSplineScatteredDataPointSetToImageFilter<TInputPointSet, TOutputImage>
-::ThreadedGenerateData( const RegionType &region, int threadId )
+::ThreadedGenerateData( const RegionType &region, ThreadIdType threadId )
 {
   if( !this->m_IsFittingComplete )
     {
@@ -526,7 +529,7 @@ template<class TInputPointSet, class TOutputImage>
 void
 BSplineScatteredDataPointSetToImageFilter<TInputPointSet, TOutputImage>
 ::ThreadedGenerateDataForFitting(
-  const RegionType & itkNotUsed( region ), int threadId )
+  const RegionType & itkNotUsed( region ), ThreadIdType threadId )
 {
   /**
    * Ignore the output region as we're only interested in dividing the
@@ -579,7 +582,7 @@ BSplineScatteredDataPointSetToImageFilter<TInputPointSet, TOutputImage>
   /**
    * Determine which points should be handled by this particular thread.
    */
-  int numberOfThreads = this->GetNumberOfThreads();
+  ThreadIdType numberOfThreads = this->GetNumberOfThreads();
   SizeValueType numberOfPointsPerThread = static_cast<SizeValueType>(
     this->GetInput()->GetNumberOfPoints() / numberOfThreads );
 
@@ -688,7 +691,7 @@ BSplineScatteredDataPointSetToImageFilter<TInputPointSet, TOutputImage>
 template<class TInputPointSet, class TOutputImage>
 void
 BSplineScatteredDataPointSetToImageFilter<TInputPointSet, TOutputImage>
-::ThreadedGenerateDataForReconstruction( const RegionType &region, int
+::ThreadedGenerateDataForReconstruction( const RegionType &region, ThreadIdType
   itkNotUsed( threadId ) )
 {
   typename PointDataImageType::Pointer collapsedPhiLattices[ImageDimension + 1];
@@ -794,7 +797,7 @@ BSplineScatteredDataPointSetToImageFilter<TInputPointSet, TOutputImage>
       this->m_OmegaLatticePerThread[0],
       this->m_OmegaLatticePerThread[0]->GetLargestPossibleRegion() );
 
-    for( int n = 1; n < this->GetNumberOfThreads(); n++ )
+    for( ThreadIdType n = 1; n < this->GetNumberOfThreads(); n++ )
       {
       ImageRegionIterator< PointDataImageType > Itd(
         this->m_DeltaLatticePerThread[n],

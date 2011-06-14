@@ -38,6 +38,7 @@ namespace itk
  * The pixels must support the operators >= and <=.
  *
  * \ingroup IntensityImageFilters Multithreaded
+ * \ingroup ITK-Deprecated
  */
 template< class TImage >
 class ITK_EXPORT TwoOutputExampleImageFilter:
@@ -115,7 +116,7 @@ protected:
    * \sa ImageToImageFilter::ThreadedGenerateData(),
    *     ImageToImageFilter::GenerateData()  */
   void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
-                            int threadId);
+                            ThreadIdType threadId);
 
 private:
   TwoOutputExampleImageFilter(const Self &); //purposely not implemented

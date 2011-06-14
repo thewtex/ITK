@@ -59,6 +59,7 @@ namespace itk
  * GrayscaleFunctionErodeImageFilter, BinaryErodeImageFilter,
  * ReconstructionByErosionImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
+ * \ingroup ITK-MathematicalMorphology
  */
 template< class TInputImage, class TOutputImage >
 class ITK_EXPORT GrayscaleGeodesicErodeImageFilter:
@@ -181,7 +182,7 @@ protected:
    * called. */
   void ThreadedGenerateData(const OutputImageRegionType &
                             outputRegionForThread,
-                            int threadId);
+                            ThreadIdType threadId);
 
 private:
   GrayscaleGeodesicErodeImageFilter(const Self &); //purposely not implemented

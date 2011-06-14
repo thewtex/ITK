@@ -129,6 +129,7 @@ namespace itk
  * \sa Neighborhood
  * \sa NeighborhoodOperator
  * \sa NeighborhoodIterator
+ * \ingroup ITK-ImageGradient
  */
 template< typename TInputImage,
           typename TRealType = float,
@@ -278,7 +279,7 @@ protected:
    * \sa ImageToImageFilter::ThreadedGenerateData(),
    *     ImageToImageFilter::GenerateData() */
   void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
-                            int threadId);
+                            ThreadIdType threadId);
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
@@ -470,7 +471,7 @@ private:
   bool m_UseImageSpacing;
   bool m_UsePrincipleComponents;
 
-  int m_RequestedNumberOfThreads;
+  ThreadIdType m_RequestedNumberOfThreads;
 
   typename ImageBaseType::ConstPointer m_RealValuedInputImage;
 

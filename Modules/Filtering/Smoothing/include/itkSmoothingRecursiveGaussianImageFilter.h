@@ -40,6 +40,11 @@ namespace itk
  *
  * \ingroup IntensityImageFilters
  * \ingroup Singlethreaded
+ * \ingroup ITK-Smoothing
+ *
+ * \wiki
+ * \wikiexample{Smoothing/SmoothingRecursiveGaussianImageFilter,Gaussian smoothing that works with image adaptors}
+ * \endwiki
  */
 template< typename TInputImage,
           typename TOutputImage = TInputImage >
@@ -132,7 +137,7 @@ public:
 
   // See super class for doxygen documentation
   //
-  void SetNumberOfThreads(int nb);
+  void SetNumberOfThreads(ThreadIdType nb);
 
   // See super class for doxygen documentation
   //

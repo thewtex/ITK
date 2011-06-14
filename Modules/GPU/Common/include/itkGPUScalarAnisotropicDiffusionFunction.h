@@ -24,18 +24,13 @@
 namespace itk
 {
 /**
- * \class ScalarAnisotropicDiffusionFunction
- * This class forms the base for any anisotropic diffusion function that
- * operates on scalar data (see itkAnisotropicDiffusionFunction).  It provides
- * some common functionality used in classes like
- * CurvatureNDAnisotropicDiffusionFunction and
- * GradientNDAnisotropicDiffusionFunction.
+ * \class GPUScalarAnisotropicDiffusionFunction
  *
- * \sa AnisotropicDiffusionFunction
- * \sa AnisotropicDiffusionImageFilter
- * \sa VectorAnisotropicDiffusionFunction
- * \ingroup FiniteDifferenceFunctions
- * \ingroup ImageEnhancement */
+ * This class forms the base for any GPU anisotropic diffusion function that
+ * operates on scalar data (see itkGPUAnisotropicDiffusionFunction).
+ *
+ * \ingroup GPUCommon
+ * */
 template< class TImage >
 class ITK_EXPORT GPUScalarAnisotropicDiffusionFunction:
   public GPUAnisotropicDiffusionFunction< TImage >
@@ -62,16 +57,16 @@ public:
   typedef typename Superclass::TimeStepType     TimeStepType;
 
 
-  // ToDo : Convert this to GPU function!!!
-  virtual void CalculateAverageGradientMagnitudeSquared(TImage *);
+  /** Compute average squared gradient of magnitude using the GPU */
+  virtual void GPUCalculateAverageGradientMagnitudeSquared(TImage *);
 
 protected:
-  GPUScalarAnisotropicDiffusionFunction();// {}
+  GPUScalarAnisotropicDiffusionFunction();
   ~GPUScalarAnisotropicDiffusionFunction() {}
 
 private:
   GPUScalarAnisotropicDiffusionFunction(const Self &); //purposely not implemented
-  void operator=(const Self &);                     //purposely not implemented
+  void operator=(const Self &);                        //purposely not implemented
 
 };
 } // end namespace itk

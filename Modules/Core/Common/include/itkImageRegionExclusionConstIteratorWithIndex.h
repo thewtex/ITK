@@ -57,8 +57,6 @@ namespace itk
  * next row, starting at the first pixel in the row that is part of the
  * region. This allows for simple processing loops of the form:
  *
- * \example itkImageRegionExclusionConstIteratorWithIndex
- *
  * \code
  *
  *  IteratorType it( image, image->GetRequestedRegion() );
@@ -120,7 +118,13 @@ namespace itk
  * \sa ImageSliceConstIteratorWithIndex  \sa ImageSliceIteratorWithIndex
  * \sa NeighborhoodIterator \sa PathConstIterator  \sa PathIterator
  * \sa ShapedNeighborhoodIterator  \sa SliceIterator
- * \sa ImageConstIteratorWithIndex */
+ * \sa ImageConstIteratorWithIndex
+ * \ingroup ITK-Common
+ *
+ * \wiki
+ * \wikiexample{Iterators/ImageRegionExclusionConstIteratorWithIndex,Iterator over an image skipping a specified region}
+ * \endwiki
+ */
 template< typename TImage >
 class ITK_EXPORT ImageRegionExclusionConstIteratorWithIndex:public ImageConstIteratorWithIndex< TImage >
 {

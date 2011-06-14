@@ -38,6 +38,7 @@ namespace itk
  *
  * \ingroup ITKSystemObjects
  * \ingroup DataAccess
+ * \ingroup ITK-Common
  */
 template< class TObjectType >
 class ITK_EXPORT WeakPointer
@@ -102,6 +103,7 @@ public:
   { return (void *)m_Pointer >= (void *)r.m_Pointer; }
 
   /** Overload operator assignment.  */
+  // cppcheck-suppress operatorEqVarError
   WeakPointer & operator=(const WeakPointer & r)
   { return this->operator=( r.GetPointer() ); }
 

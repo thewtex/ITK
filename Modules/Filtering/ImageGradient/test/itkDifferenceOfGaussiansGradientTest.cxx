@@ -33,12 +33,11 @@
 // DOG gradient related stuff
 #include "itkBinomialBlurImageFilter.h"
 #include "itkDifferenceOfGaussiansGradientImageFilter.h"
-#include "itkGradientToMagnitudeImageFilter.h"
+#include "itkVectorMagnitudeImageFilter.h"
 
 /*
 This file tests:
   itkDifferenceOfGaussiansGradientImageFilter
-  itkGradientToMagnitudeImageFilter
 */
 
 int itkDifferenceOfGaussiansGradientTest(int, char* [] )
@@ -94,7 +93,7 @@ int itkDifferenceOfGaussiansGradientTest(int, char* [] )
   //---------Create and initialize a spatial function-----------
 
   typedef itk::SphereSpatialFunction<dim> TFunctionType;
-  typedef TFunctionType::InputType TFunctionPositionType;
+  typedef TFunctionType::InputType        TFunctionPositionType;
 
   // Create and initialize a new sphere function
 
@@ -118,13 +117,28 @@ int itkDifferenceOfGaussiansGradientTest(int, char* [] )
     <TImageType, TFunctionType> TItType;
   TItType sfi = TItType(sourceImage, spatialFunc, seedPos);
 
+  // for coverage, recover the seeds
+  const TItType::SeedsContainerType &seeds(sfi.GetSeeds());
+  //
+  // show seed indices
+  std::cout << "Seeds for FloodFilledSpatialFunctionConditionalIterator"
+            << std::endl;
+  for(TItType::SeedsContainerType::const_iterator s_it
+        = seeds.begin();
+      s_it != seeds.end(); ++s_it)
+    {
+    std::cout << (*s_it) << " ";
+    }
+  std::cout << std::endl;
+
   // Iterate through the entire image and set interior pixels to 255
-  for( ; !( sfi.IsAtEnd() ); ++sfi)
+  for(; !( sfi.IsAtEnd() ); ++sfi)
     {
     sfi.Set(255);
     }
 
-  printf("Spatial function iterator created, sphere drawn\n");
+  std::cout << "Spatial function iterator created, sphere drawn"
+            << std::endl;
 
   //--------------------Do blurring----------------
   typedef TImageType TOutputType;
@@ -144,7 +158,8 @@ int itkDifferenceOfGaussiansGradientTest(int, char* [] )
 
   // Execute the filter
   binfilter->Update();
-  printf("Binomial blur filter updated\n");
+  std::cout << "Binomial blur filter updated"
+            << std::endl;
 
   //------------Finally we can test the DOG filter------------
 
@@ -168,14 +183,14 @@ int itkDifferenceOfGaussiansGradientTest(int, char* [] )
   // Go!
   DOGFilter->Update();
 
-  //-------------Test gradient magnitude-------------
-  typedef itk::GradientToMagnitudeImageFilter<TDOGFilterType::TOutputImage,
-    itk::Image<unsigned char, dim> > TGradMagType;
+  //-------------Test vector magnitude-------------
+  typedef itk::VectorMagnitudeImageFilter<TDOGFilterType::TOutputImage,
+    itk::Image<unsigned char, dim> > VectorMagType;
 
-  TGradMagType::Pointer gradMagFilter = TGradMagType::New();
+  VectorMagType::Pointer vectorMagFilter = VectorMagType::New();
 
-  gradMagFilter->SetInput(gradientImage);
-  gradMagFilter->Update();
+  vectorMagFilter->SetInput(gradientImage);
+  vectorMagFilter->Update();
 
   return EXIT_SUCCESS;
 }

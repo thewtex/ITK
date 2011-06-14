@@ -41,6 +41,7 @@ namespace itk
  * of threads, instantiate the afilter and apply the
  * SetNumberOfThreads(1) methods.
  * \ingroup GeometricTransforms
+ * \ingroup ITK-Deprecated
  */
 template< class TInputImage, class TOutputImage >
 class ITK_EXPORT NonThreadedShrinkImageFilter:
@@ -59,7 +60,7 @@ public:
   /** Run-time type information (and related methods). */
   itkTypeMacro(NonThreadedShrinkImageFilter, ShrinkImageFilter);
 
-  virtual void SetNumberOfThreads(int)
+  virtual void SetNumberOfThreads(ThreadIdType)
   {
     Superclass::SetNumberOfThreads(1);
   }

@@ -41,6 +41,7 @@ namespace itk
  *
  * \ingroup FourierTransform, Multithreaded
  * \sa FFTWGlobalConfiguration
+ * \ingroup ITK-FFT
  */
 template< class TInputImage, class TOutputImage=Image< typename TInputImage::PixelType::value_type, TInputImage::ImageDimension> >
 class ITK_EXPORT FFTWComplexConjugateToRealImageFilter:
@@ -120,7 +121,7 @@ protected:
   virtual void UpdateOutputData(DataObject *output);
 
   virtual void BeforeThreadedGenerateData();
-  void ThreadedGenerateData(const OutputImageRegionType& outputRegionForThread, int threadId );
+  void ThreadedGenerateData(const OutputImageRegionType& outputRegionForThread, ThreadIdType threadId );
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 

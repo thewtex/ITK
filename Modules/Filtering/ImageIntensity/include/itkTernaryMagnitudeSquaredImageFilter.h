@@ -30,8 +30,9 @@ namespace itk
  * Numeric conversions (castings) are done by the C++ defaults.
  *
  * \ingroup IntensityImageFilters
+ * \ingroup ITK-ImageIntensity
  */
-namespace Function
+namespace Functor
 {
 template< class TInput1, class TInput2, class TInput3, class TOutput >
 class ModulusSquare3
@@ -62,7 +63,7 @@ class ITK_EXPORT TernaryMagnitudeSquaredImageFilter:
   public
   TernaryFunctorImageFilter< TInputImage1, TInputImage2,
                              TInputImage3, TOutputImage,
-                             Function::ModulusSquare3<
+                             Functor::ModulusSquare3<
                                typename TInputImage1::PixelType,
                                typename TInputImage2::PixelType,
                                typename TInputImage3::PixelType,
@@ -74,7 +75,7 @@ public:
   typedef TernaryFunctorImageFilter<
     TInputImage1, TInputImage2,
     TInputImage3, TOutputImage,
-    Function::ModulusSquare3<
+    Functor::ModulusSquare3<
       typename TInputImage1::PixelType,
       typename TInputImage2::PixelType,
       typename TInputImage3::PixelType,

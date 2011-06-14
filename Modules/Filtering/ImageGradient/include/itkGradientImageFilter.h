@@ -43,6 +43,7 @@ namespace itk
  * \sa NeighborhoodIterator
  *
  * \ingroup GradientFilters
+ * \ingroup ITK-ImageGradient
  */
 template< class TInputImage, class TOperatorValueType = float, class TOutputValueType = float >
 class ITK_EXPORT GradientImageFilter:
@@ -152,7 +153,7 @@ protected:
    * \sa ImageToImageFilter::ThreadedGenerateData(),
    *     ImageToImageFilter::GenerateData() */
   void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
-                            int threadId);
+                            ThreadIdType threadId);
 
 private:
   GradientImageFilter(const Self &); //purposely not implemented

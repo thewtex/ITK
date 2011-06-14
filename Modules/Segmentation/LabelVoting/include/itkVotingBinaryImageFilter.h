@@ -32,6 +32,7 @@ namespace itk
  * \sa NeighborhoodIterator
  *
  * \ingroup IntensityImageFilters
+ * \ingroup ITK-LabelVoting
  */
 template< class TInputImage, class TOutputImage >
 class ITK_EXPORT VotingBinaryImageFilter:
@@ -134,7 +135,7 @@ protected:
    * \sa ImageToImageFilter::ThreadedGenerateData(),
    *     ImageToImageFilter::GenerateData() */
   void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
-                            int threadId);
+                            ThreadIdType threadId);
 
 private:
   VotingBinaryImageFilter(const Self &); //purposely not implemented

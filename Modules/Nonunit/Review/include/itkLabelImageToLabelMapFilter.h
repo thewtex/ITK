@@ -38,6 +38,7 @@ namespace itk
  *
  * \sa BinaryImageToLabelMapFilter, LabelMapToLabelImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
+ * \ingroup ITK-Review
  */
 template< class TInputImage, class TOutputImage =
             LabelMap< LabelObject< typename TInputImage::PixelType,
@@ -102,7 +103,7 @@ protected:
 
   virtual void BeforeThreadedGenerateData();
 
-  virtual void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread, int threadId);
+  virtual void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread, ThreadIdType threadId);
 
   virtual void AfterThreadedGenerateData();
 

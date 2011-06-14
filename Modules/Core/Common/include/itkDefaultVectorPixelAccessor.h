@@ -43,6 +43,7 @@ namespace itk
  * for Medical Research, Grant U54 EB005149.
  *
  * \ingroup ImageAdaptors
+ * \ingroup ITK-Common
  */
 template< class TType >
 class ITK_EXPORT DefaultVectorPixelAccessor
@@ -90,7 +91,7 @@ public:
   /** Get Vector lengths */
   VectorLengthType GetVectorLength() const { return m_VectorLength; }
 
-  DefaultVectorPixelAccessor() {}
+  DefaultVectorPixelAccessor() : m_VectorLength(0), m_OffsetMultiplier(0) {}
 
   /** Constructor to initialize VectorLength at construction time */
   DefaultVectorPixelAccessor(VectorLengthType l)

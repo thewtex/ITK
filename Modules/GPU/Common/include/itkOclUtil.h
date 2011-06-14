@@ -23,6 +23,7 @@
 #include <CL/cl_ext.h>
 
 #include <itkMacro.h>
+#include <itkVector.h>
 
 #endif
 
@@ -62,5 +63,10 @@ void OclCheckError(cl_int error);
 //
 void GetTypenameInString( const type_info& intype, std::ostringstream& ret );
 
+//
+// Get pixel dimension (number of channels).
+// For high-dimensional pixel format, only itk::Vector< type, 2/3 > is acceptable.
+//
+int GetPixelDimension( const type_info& intype );
 
 #endif

@@ -69,6 +69,7 @@ namespace itk
  *
  * \author Torsten Rohlfing, SRI International, Neuroscience Program
  *
+ * \ingroup ITK-LabelVoting
  */
 template< typename TInputImage, typename TOutputImage = TInputImage >
 class ITK_EXPORT LabelVotingImageFilter:
@@ -168,7 +169,7 @@ protected:
   void BeforeThreadedGenerateData();
 
   void ThreadedGenerateData
-    (const OutputImageRegionType & outputRegionForThread, int threadId);
+    (const OutputImageRegionType & outputRegionForThread, ThreadIdType threadId);
 
   void PrintSelf(std::ostream &, Indent) const;
 

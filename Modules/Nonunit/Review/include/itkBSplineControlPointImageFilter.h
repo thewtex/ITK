@@ -47,7 +47,14 @@ namespace itk
  * domain, origin, direction, spacing).  The output of the filter is the sampled
  * B-spline object.
  *
+ * This code was contributed in the Insight Journal paper:
+ * "N-D C^k B-Spline Scattered Data Approximation"
+ * by Nicholas J. Tustison, James C. Gee
+ * http://hdl.handle.net/1926/140
+ * http://www.insight-journal.org/browse/publication/57
+ *
  * \author Nicholas J. Tustison
+ * \ingroup ITK-Review
  */
 
 template <class TInputImage, class TOutputImage = TInputImage>
@@ -216,7 +223,7 @@ protected:
   /**
    * Multithreaded function which generates the output sampled B-spline object.
    */
-  void ThreadedGenerateData( const OutputImageRegionType &, int );
+  void ThreadedGenerateData( const OutputImageRegionType &, ThreadIdType );
 
 private:
   BSplineControlPointImageFilter( const Self& ); //purposely not implemented

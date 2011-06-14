@@ -21,6 +21,16 @@
 #include "itkMiniPipelineSeparableImageFilter.h"
 #include "itkProgressAccumulator.h"
 
+/*
+ *
+ * This code was contributed in the Insight Journal paper:
+ * "Efficient implementation of kernel filtering"
+ * by Beare R., Lehmann G
+ * http://hdl.handle.net/1926/555
+ * http://www.insight-journal.org/browse/publication/160
+ *
+ */
+
 namespace itk
 {
 template< class TInputImage, class TOutputImage, class TFilter >
@@ -59,7 +69,7 @@ MiniPipelineSeparableImageFilter< TInputImage, TOutputImage, TFilter >
 template< class TInputImage, class TOutputImage, class TFilter >
 void
 MiniPipelineSeparableImageFilter< TInputImage, TOutputImage, TFilter >
-::SetNumberOfThreads(int nb)
+::SetNumberOfThreads(ThreadIdType nb)
 {
   Superclass::SetNumberOfThreads(nb);
   for ( unsigned i = 0; i < ImageDimension; i++ )

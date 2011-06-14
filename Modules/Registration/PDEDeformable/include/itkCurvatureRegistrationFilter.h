@@ -92,6 +92,7 @@ namespace itk
  * \ingroup DeformableImageRegistration MultiThreaded
  *
  * \author Torsten Rohlfing, SRI International, Neuroscience Program
+ * \ingroup ITK-PDEDeformableRegistration
  */
 template< class TFixedImage, class TMovingImage, class TDeformationField,
           class TImageForceFunction =
@@ -179,7 +180,7 @@ protected:
   virtual void Initialize();
 
   /** Apply update. */
-  virtual void ApplyUpdate(TimeStepType dt);
+  virtual void ApplyUpdate(const TimeStepType& dt);
 
 private:
   CurvatureRegistrationFilter(const Self &); //purposely not implemented

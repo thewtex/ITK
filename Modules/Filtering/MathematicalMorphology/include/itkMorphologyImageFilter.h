@@ -66,6 +66,7 @@ namespace itk
  * \sa NeighborhoodIterator
  * \sa Neighborhood
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
+ * \ingroup ITK-MathematicalMorphology
  */
 template< class TInputImage, class TOutputImage, class TKernel >
 class ITK_EXPORT MorphologyImageFilter:
@@ -137,7 +138,7 @@ protected:
   /** Multi-thread version GenerateData. */
   void  ThreadedGenerateData(const OutputImageRegionType &
                              outputRegionForThread,
-                             int threadId);
+                             ThreadIdType threadId);
 
   /** Evaluate image neighborhood with kernel to find the new value
    * for the center pixel value. */

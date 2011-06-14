@@ -41,6 +41,11 @@ namespace itk
  * \sa NeighborhoodIterator
  *
  * \ingroup IntensityImageFilters
+ * \ingroup ITK-Smoothing
+ *
+ * \wiki
+ * \wikiexample{Smoothing/MedianImageFilter,Median filter an image}
+ * \endwiki
  */
 template< class TInputImage, class TOutputImage >
 class ITK_EXPORT MedianImageFilter:
@@ -103,7 +108,7 @@ protected:
    * \sa ImageToImageFilter::ThreadedGenerateData(),
    *     ImageToImageFilter::GenerateData() */
   void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
-                            int threadId);
+                            ThreadIdType threadId);
 
 private:
   MedianImageFilter(const Self &); //purposely not implemented

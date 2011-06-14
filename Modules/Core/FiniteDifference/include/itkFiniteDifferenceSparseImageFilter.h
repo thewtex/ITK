@@ -56,6 +56,7 @@ namespace itk
  * \par IMPORTANT
  * The output sparse image type must be templated with a node type that at
  * least has the following member variables: m_Index, m_Data and m_Update.
+ * \ingroup ITK-FiniteDifference
  */
 
 template< class TInputImageType, class TSparseOutputImageType >
@@ -142,14 +143,14 @@ protected:
 
   /** This function updates the m_Data variable in the output image nodes using
       the update values computed by CalculateChange. */
-  virtual void ApplyUpdate(TimeStepType dt);
+  virtual void ApplyUpdate(const TimeStepType& dt);
 
   /** Multi-threaded implementation of ApplyUpdate. */
   static ITK_THREAD_RETURN_TYPE ApplyUpdateThreaderCallback(void *arg);
 
-  virtual void ThreadedApplyUpdate(TimeStepType dt,
+  virtual void ThreadedApplyUpdate(const TimeStepType& dt,
                                    const ThreadRegionType & regionToProcess,
-                                   int threadId);
+                                   ThreadIdType threadId);
 
   /** This method computes changes to the output image using the
       ComputeSparseUpdate method in the Sparse Function object. */
@@ -159,7 +160,7 @@ protected:
   static ITK_THREAD_RETURN_TYPE CalculateChangeThreaderCallback(void *arg);
 
   virtual TimeStepType ThreadedCalculateChange
-    (const ThreadRegionType & regionToProcess, int threadId);
+    (const ThreadRegionType & regionToProcess, ThreadIdType threadId);
 
   /** This method provides a means of performing a first pass for computing the
    *  change and storing intermediate values that will then be used by
@@ -170,15 +171,15 @@ protected:
   static ITK_THREAD_RETURN_TYPE PrecalculateChangeThreaderCallback(void *arg);
 
   virtual void ThreadedPrecalculateChange
-    (const ThreadRegionType & regionToProcess, int threadId);
+    (const ThreadRegionType & regionToProcess, ThreadIdType threadId);
 
   /** Structure for passing information into static callback methods.
    *  Used in  the subclasses' threading mechanisms. */
   struct FDThreadStruct {
     FiniteDifferenceSparseImageFilter *Filter;
     TimeStepType TimeStep;
-    TimeStepType *TimeStepList;
-    bool *ValidTimeStepList;
+    std::vector< TimeStepType > TimeStepList;
+    std::vector< bool > ValidTimeStepList;
   };
 private:
   /** Flag to let the class know whether or not to call PrecalculateChange. */

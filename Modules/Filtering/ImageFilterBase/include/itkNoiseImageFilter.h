@@ -41,6 +41,7 @@ namespace itk
  * \sa NeighborhoodIterator
  *
  * \ingroup IntensityImageFilters
+ * \ingroup ITK-ImageFilterBase
  */
 template< class TInputImage, class TOutputImage >
 class ITK_EXPORT NoiseImageFilter:
@@ -100,7 +101,7 @@ protected:
    * \sa BoxImageFilter::ThreadedGenerateData(),
    *     BoxImageFilter::GenerateData() */
   void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
-                            int threadId);
+                            ThreadIdType threadId);
 
 private:
   NoiseImageFilter(const Self &); //purposely not implemented

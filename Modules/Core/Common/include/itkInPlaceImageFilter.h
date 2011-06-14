@@ -64,6 +64,7 @@ namespace itk
  * ReleaseInputs() and AllocateOutputs() provided here.
  *
  * \ingroup ImageFilters
+ * \ingroup ITK-Common
  */
 template< class TInputImage, class TOutputImage = TInputImage >
 class ITK_EXPORT InPlaceImageFilter:public ImageToImageFilter< TInputImage, TOutputImage >
@@ -152,6 +153,8 @@ private:
   void operator=(const Self &);     //purposely not implemented
 
   bool m_InPlace;
+
+  /** \cond HIDE_META_PROGRAMMING */
   /** borrowed from type_traits */
   struct true_type { };
   struct false_type{ };
@@ -165,7 +168,7 @@ private:
 
   static bool CanRunInPlace(const true_type &) { return true; }
   static bool CanRunInPlace(const false_type &) { return false; }
-
+  /** \endcond */
 };
 } // end namespace itk
 

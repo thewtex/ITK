@@ -27,6 +27,11 @@ namespace itk
 /** \class TransformFileWriter
  *
  * \brief TODO
+ * \ingroup ITK-Transform
+ *
+ * \wiki
+ * \wikiexample{IO/TransformFileWriter,Write a transform to a file}
+ * \endwiki
  */
 class ITK_EXPORT TransformFileWriter:public LightProcessObject
 {

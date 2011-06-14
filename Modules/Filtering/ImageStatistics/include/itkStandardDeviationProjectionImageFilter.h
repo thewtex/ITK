@@ -28,7 +28,7 @@ namespace itk
  *
  * This class was contributed to the Insight Journal by Gaetan Lehmann.
  * The original paper can be found at
- *      http://insight-journal.org/midas/handle.php?handle=1926/164
+ *   http://hdl.handle.net/1926/164
  *
  * \author Gaetan Lehmann. Biologie du Developpement et de la Reproduction,
  * INRA de Jouy-en-Josas, France.
@@ -42,9 +42,10 @@ namespace itk
  * \sa MaximumProjectionImageFilter
  * \sa MinimumProjectionImageFilter
  * \sa BinaryProjectionImageFilter
+ * \ingroup ITK-ImageStatistics
  */
 
-namespace Function
+namespace Functor
 {
 template< class TInputPixel, class TAccumulate >
 class StandardDeviationAccumulator
@@ -105,16 +106,16 @@ template< class TInputImage,
 class ITK_EXPORT StandardDeviationProjectionImageFilter:
   public
   ProjectionImageFilter< TInputImage, TOutputImage,
-                         Function::StandardDeviationAccumulator< ITK_TYPENAME
-                                                                 TInputImage::PixelType, TAccumulate > >
+                         Functor::StandardDeviationAccumulator< ITK_TYPENAME
+                                                                TInputImage::PixelType, TAccumulate > >
 {
 public:
   typedef StandardDeviationProjectionImageFilter Self;
 
   typedef ProjectionImageFilter< TInputImage, TOutputImage,
-                                 Function::StandardDeviationAccumulator< typename
-                                                                         TInputImage::PixelType,
-                                                                         TAccumulate > > Superclass;
+                                 Functor::StandardDeviationAccumulator< typename
+                                                                        TInputImage::PixelType,
+                                                                        TAccumulate > > Superclass;
 
   typedef TInputImage                        InputImageType;
   typedef typename InputImageType::PixelType InputPixelType;

@@ -35,6 +35,7 @@ namespace itk
  * \sa NeighborhoodIterator
  *
  * \ingroup IntensityImageFilters
+ * \ingroup ITK-LabelVoting
  */
 template< class TInputImage, class TOutputImage >
 class ITK_EXPORT VotingBinaryHoleFillingImageFilter:
@@ -117,7 +118,7 @@ protected:
    * \sa ImageToImageFilter::ThreadedGenerateData(),
    *     ImageToImageFilter::GenerateData() */
   void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
-                            int threadId);
+                            ThreadIdType threadId);
 
   /** Methods to be called before and after the invokation of
    * ThreadedGenerateData(). */

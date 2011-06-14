@@ -46,6 +46,7 @@ namespace fem {
  * and solver.
  *
  * \sa Solver::SetLinearSystemWrapper
+ * \ingroup ITK-FEM
  */
 class LinearSystemWrapper : public Solution
 {
@@ -95,7 +96,7 @@ public:
    */
   void SetNumberOfMatrices(unsigned int nMatrices) { m_NumberOfMatrices = nMatrices; }
 
-  /**
+  /*
    * Set the maximum number of entries permitted in a matrix
    * \param matrixIndex index of matrix to set value for
    * \param maxNonZeros maximum number of entries allowed in matrix

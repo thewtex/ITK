@@ -19,9 +19,8 @@
 //
 // Apply Update : out = out + dt*buf
 //
-// the element is a vector in DeformationField
-
-// interpolating functions
+// PIXELDIM must be defined at runtime. Only 1/2/3 is accepted.
+//
 
 #ifdef DIM_1
 __kernel void ApplyUpdate(__global const BUFPIXELTYPE *buf,
@@ -33,7 +32,12 @@ __kernel void ApplyUpdate(__global const BUFPIXELTYPE *buf,
   int   num = 0;
   if(gix < width)
   {
-	out[gix] = (OUTPIXELTYPE)( (float)out[gix] + dt*(float)(buf[gix]) );
+    gidx *= PIXELDIM;
+    for(int i=0; i<PIXELDIM; i++)
+    {
+      out[gidx] = (OUTPIXELTYPE)( (float)out[gidx] + dt*(float)(buf[gidx]) );
+      gidx ++;
+    }
   }
 }
 #endif
@@ -48,10 +52,12 @@ __kernel void ApplyUpdate(__global const BUFPIXELTYPE *buf,
   unsigned int gidx = width*giy + gix;
   if(gix < width && giy < height)
   {
-    gidx *= 2;
-    out[gidx] = (OUTPIXELTYPE)( (float)out[gidx] + dt*(float)(buf[gidx]) );
-    gidx ++;
-    out[gidx] = (OUTPIXELTYPE)( (float)out[gidx] + dt*(float)(buf[gidx]) );
+    gidx *= PIXELDIM;
+    for(int i=0; i<PIXELDIM; i++)
+    {
+      out[gidx] = (OUTPIXELTYPE)( (float)out[gidx] + dt*(float)(buf[gidx]) );
+      gidx ++;
+    }
   }
 }
 #endif
@@ -68,12 +74,12 @@ __kernel void ApplyUpdate(__global const BUFPIXELTYPE *buf,
   unsigned int gidx = width*(giz*height + giy) + gix;
   if(gix < width && giy < height && giz < depth)
   {
-    gidx *= 3;
-    out[gidx] = (OUTPIXELTYPE)( (float)out[gidx] + dt*(float)(buf[gidx]) );
-    gidx ++;
-    out[gidx] = (OUTPIXELTYPE)( (float)out[gidx] + dt*(float)(buf[gidx]) );
-    gidx ++;
-    out[gidx] = (OUTPIXELTYPE)( (float)out[gidx] + dt*(float)(buf[gidx]) );
+    gidx *= PIXELDIM;
+    for(int i=0; i<PIXELDIM; i++)
+    {
+      out[gidx] = (OUTPIXELTYPE)( (float)out[gidx] + dt*(float)(buf[gidx]) );
+      gidx ++;
+    }
   }
 }
 #endif

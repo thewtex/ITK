@@ -41,6 +41,7 @@ namespace itk
  *  \sa HistogramToImageFilter, HistogramToProbabilityImageFilter,
  *  HistogramToIntensityImageFilter, HistogramToEntropyImageFilter
  *
+ * \ingroup ITK-Statistics
  */
 
 namespace Function
@@ -92,10 +93,10 @@ private:
 };
 }
 
-template< class THistogram, unsigned int NDimension, class TOutputPixel = double >
+template< class THistogram, class TImage=Image< double, 3 > >
 class ITK_EXPORT HistogramToLogProbabilityImageFilter:
-  public HistogramToImageFilter< THistogram, NDimension,
-                                 Function::HistogramLogProbabilityFunction< SizeValueType, TOutputPixel > >
+  public HistogramToImageFilter< THistogram, TImage,
+                                 Function::HistogramLogProbabilityFunction< SizeValueType, typename TImage::PixelType > >
 {
 public:
 
@@ -103,8 +104,8 @@ public:
   typedef HistogramToLogProbabilityImageFilter Self;
 
   /** Standard "Superclass" typedef. */
-  typedef HistogramToImageFilter< THistogram, NDimension,
-                                  Function::HistogramLogProbabilityFunction< SizeValueType, TOutputPixel > >
+  typedef HistogramToImageFilter< THistogram, TImage,
+                                 Function::HistogramLogProbabilityFunction< SizeValueType, typename TImage::PixelType > >
   Superclass;
 
   typedef SmartPointer< Self >       Pointer;

@@ -75,7 +75,13 @@ namespace itk
  * \example RGBImage.cxx
  * \example VectorImage.cxx
  *
- * \ingroup ImageObjects */
+ * \ingroup ImageObjects
+ * \ingroup ITK-Common
+ *
+ * \wiki
+ * \wikiexample{SimpleOperations/SetPixels,Set specified pixels to specified values}
+ * \endwiki
+ */
 template< class TPixel, unsigned int VImageDimension = 2 >
 class ITK_EXPORT Image:public ImageBase< VImageDimension >
 {
@@ -280,6 +286,9 @@ public:
   /** Return the NeighborhoodAccessor functor */
   const NeighborhoodAccessorFunctorType GetNeighborhoodAccessor() const
   { return NeighborhoodAccessorFunctorType(); }
+
+  virtual unsigned int GetNumberOfComponentsPerPixel() const;
+
 protected:
   Image();
   void PrintSelf(std::ostream & os, Indent indent) const;

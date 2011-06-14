@@ -44,6 +44,7 @@ namespace itk
  * Filters", so far unpublished.
  *
  * \ingroup ImageFilters
+ * \ingroup ITK-ImageFilterBase
  */
 template< typename TInputImage, typename TOutputImage = TInputImage >
 class ITK_EXPORT RecursiveSeparableImageFilter:
@@ -100,7 +101,7 @@ protected:
   /** GenerateData (apply) the filter. */
   void BeforeThreadedGenerateData();
 
-  void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread, int threadId);
+  void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread, ThreadIdType threadId);
 
   int SplitRequestedRegion(int i, int num, OutputImageRegionType & splitRegion);
 

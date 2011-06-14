@@ -19,12 +19,23 @@
 #define __itkFFTWComplexToComplexImageFilter_txx
 
 #include "itkFFTWComplexToComplexImageFilter.h"
-#include "itkFFTComplexToComplexImageFilter.txx"
+#include "itkFFTComplexToComplexImageFilter.h"
 #include <iostream>
 #include "itkIndent.h"
 #include "itkMetaDataObject.h"
 #include "itkImageRegionIterator.h"
 #include "itkProgressReporter.h"
+
+
+/*
+ *
+ * This code was contributed in the Insight Journal paper:
+ * "FFT Complex to Complex filters and helper classes"
+ * by Warfield S.
+ * http://hdl.handle.net/1926/326
+ * http://www.insight-journal.org/browse/publication/128
+ *
+ */
 
 namespace itk
 {
@@ -108,7 +119,7 @@ BeforeThreadedGenerateData()
 template <class TImage>
 void
 FFTWComplexToComplexImageFilter< TImage >::
-ThreadedGenerateData(const OutputImageRegionType& outputRegionForThread, int itkNotUsed(threadId) )
+ThreadedGenerateData(const OutputImageRegionType& outputRegionForThread, ThreadIdType itkNotUsed(threadId) )
 {
   //
   // Normalize the output if backward transform

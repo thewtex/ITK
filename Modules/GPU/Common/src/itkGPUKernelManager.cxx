@@ -79,6 +79,7 @@ namespace itk
     cl_int errid;
     m_Program = clCreateProgramWithSource(m_Manager->GetCurrentContext(), 1, (const char **)&cSourceString, &szFinalLength, &errid);
     OclCheckError(errid);
+    free(cSourceString);
     if(errid != CL_SUCCESS)
     {
       itkWarningMacro("Cannot create GPU program");
@@ -121,6 +122,7 @@ namespace itk
       return false;
     }
 
+    free(cSourceString);
     return true;
   }
 
@@ -319,12 +321,7 @@ namespace itk
     cl_int errid;
     errid = clEnqueueNDRangeKernel(m_Manager->GetCommandQueue(m_CommandQueueId), m_KernelContainer[kernelIdx], dim, NULL, globalWorkSize, localWorkSize, 0, NULL, NULL);
     OclCheckError(errid);
-/*
-    // debug - synchronization
-    clFlush(m_Manager->GetCommandQueue(m_CommandQueueId));
-    clFinish(m_Manager->GetCommandQueue(m_CommandQueueId));
-    //
-*/
+
     if(errid != CL_SUCCESS)
     {
       itkWarningMacro("GPU kernel launch failed");

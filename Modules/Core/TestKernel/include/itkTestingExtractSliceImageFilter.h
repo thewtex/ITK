@@ -75,6 +75,7 @@ namespace Testing
  *
  * \sa CropImageFilter
  * \ingroup GeometricTransforms
+ * \ingroup ITK-TestKernel
  */
 
 template< class TInputImage, class TOutputImage >
@@ -257,7 +258,7 @@ protected:
    * parameter "outputRegionForThread"
    */
   void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
-                            int threadId);
+                            ThreadIdType threadId);
 
   InputImageRegionType m_ExtractionRegion;
 

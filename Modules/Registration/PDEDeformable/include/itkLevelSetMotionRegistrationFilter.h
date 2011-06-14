@@ -85,6 +85,7 @@ namespace itk
  * \sa LevelSetMotionRegistrationFunction
  * \sa DemonsRegistrationFilter
  * \ingroup DeformableImageRegistration MultiThreaded
+ * \ingroup ITK-PDEDeformableRegistration
  */
 template< class TFixedImage, class TMovingImage, class TDeformationField >
 class ITK_EXPORT LevelSetMotionRegistrationFilter:
@@ -186,7 +187,7 @@ protected:
   virtual void InitializeIteration();
 
   /** Apply update. */
-  virtual void ApplyUpdate(TimeStepType dt);
+  virtual void ApplyUpdate(const TimeStepType& dt);
 
   /** This method returns true when the current iterative solution of the
    * equation has met the criteria to stop solving.  This version

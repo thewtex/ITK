@@ -25,6 +25,16 @@
 
 // #include "ioutils.h"
 
+/*
+ *
+ * This code was contributed in the Insight Journal paper:
+ * "Efficient implementation of kernel filtering"
+ * by Beare R., Lehmann G
+ * http://hdl.handle.net/1926/555
+ * http://www.insight-journal.org/browse/publication/160
+ *
+ */
+
 namespace itk
 {
 template< class TInputImage, class TOutputImage >
@@ -35,7 +45,7 @@ BoxSigmaImageFilter< TInputImage, TOutputImage >
 template< class TInputImage, class TOutputImage >
 void
 BoxSigmaImageFilter< TInputImage, TOutputImage >
-::ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread, int threadId)
+::ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread, ThreadIdType threadId)
 {
   // Accumulate type is too small
   typedef typename itk::NumericTraits< PixelType >::RealType             AccValueType;

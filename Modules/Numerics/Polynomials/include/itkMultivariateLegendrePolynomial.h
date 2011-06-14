@@ -46,7 +46,7 @@ namespace itk
  *
  * The size of the parameter vector for 2D is
  * \f$\frac{(l+1)\cdot(1+2)}{2}\f$,
- * and for 3D is \f$\frac{(l+1)*(l+2)*(l+3){3!}\f$
+ * and for 3D is \f$\frac{(l+1)*(l+2)*(l+3)}{3!}\f$
  *
  * To get the size of the parameter vector, users can use one of the
  * two GetNumberOfCoefficients() member functions
@@ -68,6 +68,7 @@ namespace itk
  * "Evaluation of 2D/3D bias correction with 1+1ES-optimization"
  * Martin Styner, Prof. Dr. G. Gerig (IKT, BIWI, ETH Zuerich), TR-197
  * (http://www.cs.unc.edu/~styner/docs/StynerTR97.pdf)
+ * \ingroup ITK-Polynomials
  */
 
 class ITK_EXPORT MultivariateLegendrePolynomial
@@ -120,6 +121,7 @@ public:
 
   /** \class CoefficientVectorSizeMismatch
    * \brief Exception object.
+   * \ingroup ITK-Polynomials
    */
   class CoefficientVectorSizeMismatch
   {
@@ -206,6 +208,7 @@ public:
    * \brief Iterator which only supports forward iteration and
    * Begin(), IsAtEnd(), and Get() method which work just like as
    * SimpleImageRegionIterator.
+   * \ingroup ITK-Polynomials
    */
   class SimpleForwardIterator
   {

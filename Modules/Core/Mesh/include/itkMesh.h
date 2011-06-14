@@ -33,6 +33,8 @@
 #endif
 
 #include "itkPointSet.h"
+
+#include "itkBoundingBox.h"
 #include "itkCellInterface.h"
 #include "itkMapContainer.h"
 #include <vector>
@@ -110,6 +112,7 @@ struct GetMeshDimension {
  * No reference information is available.
  *
  * \ingroup MeshObjects
+ * \ingroup ITK-Mesh
  */
 template<
   typename TPixelType,
@@ -209,7 +212,9 @@ public:
    *
    *  This class provides a pair of these identifiers with appropriate
    *  comparison operators available for use of the Ids in sorted container
-   *  classes.  */
+   *  classes.
+   * \ingroup ITK-Mesh
+   */
   class BoundaryAssignmentIdentifier
   {
 public:
@@ -297,6 +302,10 @@ public:
   virtual void CopyInformation(const DataObject *data);
 
   virtual void Graft(const DataObject *data);
+
+  /** Get the bounding box of the mesh. The methods return a pointer to
+   * the user-supplied bounding box as a convenience. */
+  const BoundingBoxType * GetBoundingBox(void) const;
 
   /** Access m_CellsLinksContainer, which contains parent cell links
    * for each point.  Since a point can be used by multiple cells,
@@ -452,6 +461,10 @@ protected:
       based on information provided by the user through the method
       SetCellsAllocationMethod()   */
   void ReleaseCellsMemory();
+
+  /** The bounding box (xmin,xmax, ymin,ymax, ...) of the mesh. The
+   * bounding box is used for searching, picking, display, etc. */
+  BoundingBoxPointer m_BoundingBox;
 
 private:
   Mesh(const Self &);           //purposely not implemented

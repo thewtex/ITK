@@ -38,6 +38,7 @@ namespace itk
  *
  * \ingroup Operators
  * \sa StatisticsImageFilter
+ * \ingroup ITK-ImageStatistics
  */
 template< class TInputImage >
 class ITK_EXPORT MinimumMaximumImageFilter:
@@ -126,7 +127,7 @@ protected:
   /** Multi-thread version GenerateData. */
   void  ThreadedGenerateData(const RegionType &
                              outputRegionForThread,
-                             int threadId);
+                             ThreadIdType threadId);
 
   // Override since the filter needs all the data for the algorithm
   void GenerateInputRequestedRegion();

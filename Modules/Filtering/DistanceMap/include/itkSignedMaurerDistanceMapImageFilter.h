@@ -56,6 +56,7 @@ namespace itk
  *
  * \ingroup ImageFeatureExtraction
  *
+ * \ingroup ITK-DistanceMap
  */
 
 template< class TInputImage, class TOutputImage >
@@ -155,7 +156,7 @@ protected:
 
   int SplitRequestedRegion(int i, int num, OutputImageRegionType & splitRegion);
 
-  void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread, int threadId);
+  void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread, ThreadIdType threadId);
 
 private:
 

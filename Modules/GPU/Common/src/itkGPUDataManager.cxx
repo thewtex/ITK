@@ -97,8 +97,9 @@ void GPUDataManager::MakeCPUBufferUpToDate()
   if( m_IsCPUBufferDirty && m_GPUBuffer != NULL )
     {
     cl_int errid;
-
+#ifdef VERBOSE
     std::cout << "GPU->CPU data copy" << std::endl;
+#endif
     errid = clEnqueueReadBuffer(m_ContextManager->GetCommandQueue(m_CommandQueueId), m_GPUBuffer, CL_TRUE, 0, m_BufferSize, m_CPUBuffer, 0, NULL, NULL);
     OclCheckError(errid);
 
@@ -116,8 +117,9 @@ void GPUDataManager::MakeGPUBufferUpToDate()
   if( m_IsGPUBufferDirty && m_CPUBuffer != NULL )
     {
     cl_int errid;
-
+#ifdef VERBOSE
     std::cout << "CPU->GPU data copy" << std::endl;
+#endif
     errid = clEnqueueWriteBuffer(m_ContextManager->GetCommandQueue(m_CommandQueueId), m_GPUBuffer, CL_TRUE, 0, m_BufferSize, m_CPUBuffer, 0, NULL, NULL);
     OclCheckError(errid);
 

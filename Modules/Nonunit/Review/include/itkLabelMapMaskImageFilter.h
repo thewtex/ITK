@@ -41,6 +41,7 @@ namespace itk {
  *
  * \sa LabelMapToBinaryImageFilter, LabelMapToLabelImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
+ * \ingroup ITK-Review
  */
 template<class TInputImage, class TOutputImage>
 class ITK_EXPORT LabelMapMaskImageFilter :
@@ -163,7 +164,7 @@ protected:
 
   virtual void BeforeThreadedGenerateData();
 
-  virtual void ThreadedGenerateData(const OutputImageRegionType& outputRegionForThread, int threadId );
+  virtual void ThreadedGenerateData(const OutputImageRegionType& outputRegionForThread, ThreadIdType threadId );
 
   virtual void ThreadedProcessLabelObject( LabelObjectType * labelObject );
 

@@ -25,6 +25,16 @@
 #include "itkImageRegionIterator.h"
 #include "itkImageRegionIteratorWithIndex.h"
 
+/*
+ *
+ * This code was contributed in the Insight Journal paper:
+ * "N-D C^k B-Spline Scattered Data Approximation"
+ * by Nicholas J. Tustison, James C. Gee
+ * http://hdl.handle.net/1926/140
+ * http://www.insight-journal.org/browse/publication/57
+ *
+ */
+
 namespace itk
 {
 
@@ -214,7 +224,7 @@ template<class InputImage, class TOutputImage>
 void
 BSplineControlPointImageFilter<InputImage, TOutputImage>
 ::ThreadedGenerateData( const OutputImageRegionType & region,
-  int itkNotUsed( threadId ) )
+  ThreadIdType itkNotUsed( threadId ) )
 {
   typename PointDataImageType::Pointer collapsedPhiLattices[ImageDimension + 1];
   for( unsigned int i = 0; i < ImageDimension; i++ )

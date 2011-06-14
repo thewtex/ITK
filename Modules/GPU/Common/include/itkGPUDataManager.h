@@ -28,7 +28,6 @@
 
 namespace itk
 {
-
 /** \class GPUDataManager
  * \brief GPU memory manager implemented using OpenCL. Reguired by GPUImage class.
  *
@@ -68,8 +67,12 @@ namespace itk
 
     void SetGPUDirtyFlag( bool isDirty );
 
+    /** Make CPU up-to-date and mark CPU as dirty.
+     * Call this function when you want to modify CPU data */
     void SetCPUBufferDirty();
 
+    /** Make GPU up-to-date and mark GPU as dirty.
+     * Call this function when you want to modify GPU data */
     void SetGPUBufferDirty();
 
     bool IsCPUBufferDirty() { return m_IsCPUBufferDirty; }
@@ -129,9 +132,7 @@ namespace itk
     bool m_IsGPUBufferDirty;
     bool m_IsCPUBufferDirty;
 
-    //cl_platform_id* m_Platform; // are these used here?
-    //cl_context*     m_Context;
-
+    /** Mutex lock to prevent r/w hazard for multithreaded code */
     SimpleFastMutexLock m_Mutex;
   };
 

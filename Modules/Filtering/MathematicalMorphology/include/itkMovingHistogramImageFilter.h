@@ -80,6 +80,7 @@ namespace itk
  *
  * \author Gaetan Lehmann
  * \author Richard Beare
+ * \ingroup ITK-MathematicalMorphology
  */
 
 template< class TInputImage, class TOutputImage, class TKernel, class THistogram >
@@ -138,7 +139,7 @@ protected:
   /** Multi-thread version GenerateData. */
   void  ThreadedGenerateData(const OutputImageRegionType &
                              outputRegionForThread,
-                             int threadId);
+                             ThreadIdType threadId);
 
   // declare the type used to store the histogram
   typedef THistogram HistogramType;

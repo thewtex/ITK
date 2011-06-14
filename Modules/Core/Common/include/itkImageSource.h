@@ -54,6 +54,11 @@ namespace itk
  * set this flag to limit peak memory usage during a pipeline update.
  *
  * \ingroup DataSources
+ * \ingroup ITK-Common
+ *
+ * \wiki
+ * \wikiexample{Developer/ImageSource,Produce an image programmatically.}
+ * \endwiki
  */
 template< class TOutputImage >
 class ITK_EXPORT ImageSource:public ProcessObject
@@ -237,7 +242,7 @@ protected:
    * \sa GenerateData(), SplitRequestedRegion() */
   virtual
   void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
-                            int threadId) ITK_NO_RETURN;
+                            ThreadIdType threadId) ITK_NO_RETURN;
 
   /** The GenerateData method normally allocates the buffers for all of the
    * outputs of a filter. Some filters may want to override this default

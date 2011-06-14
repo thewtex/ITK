@@ -35,7 +35,8 @@ namespace itk
  * This work is part of the National Alliance for Medical Image Computing
  * (NAMIC), funded by the National Institutes of Health through the NIH Roadmap
  * for Medical Research, Grant U54 EB005149.
-  */
+  * \ingroup ITK-Common
+ */
 template< class TImage >
 class VectorImageNeighborhoodAccessorFunctor
 {
@@ -53,9 +54,9 @@ public:
   *ImageBoundaryConditionConstPointerType;
 
   VectorImageNeighborhoodAccessorFunctor(VectorLengthType length):
-    m_VectorLength(length), m_OffsetMultiplier(length - 1) {}
+    m_VectorLength(length), m_OffsetMultiplier(length - 1), m_Begin(NULL) {}
   VectorImageNeighborhoodAccessorFunctor():
-    m_VectorLength(0), m_OffsetMultiplier(0) {}
+    m_VectorLength(0), m_OffsetMultiplier(0), m_Begin(NULL) {}
 
   /** Set the pointer index to the start of the buffer.
    * This must be set by the iterators to the starting location of the buffer.

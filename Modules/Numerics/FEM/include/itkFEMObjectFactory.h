@@ -67,6 +67,7 @@ namespace fem {
  *  - namespace { static Base* NewDerivedClass() { return new DerivedClass; } }
  *    const int OF_Derived=FEMObjectFactory<BaseClass>::Register( NewDerivedClass, "NewDerivedObjectName" );
  * \endcode
+ * \ingroup ITK-FEM
  */
 template<class T>
 class FEMObjectFactory
@@ -75,6 +76,7 @@ class FEMObjectFactory
   /**
    * Type that holds a pointer to function which can create a new object of a derived class.
    */
+  // cppcheck-suppress syntaxError
   typedef typename T::Pointer (*COF)();
 
   /**
@@ -189,6 +191,7 @@ private:
    * \class Dummy
    * \brief This class is defined in FEMObjectFactory just to get rid of some
             warnings about destructor being private in gcc.
+   * \ingroup ITK-FEM
    */
   class Dummy {};
 

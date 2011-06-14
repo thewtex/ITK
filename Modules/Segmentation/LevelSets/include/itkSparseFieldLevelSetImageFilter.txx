@@ -131,7 +131,7 @@ SparseFieldLevelSetImageFilter< TInputImage, TOutputImage >
 ::SparseFieldLevelSetImageFilter()
 {
   m_IsoSurfaceValue = m_ValueZero;
-  m_NumberOfLayers = ImageDimension;
+  m_NumberOfLayers = 2;
   m_LayerNodeStore = LayerNodeStorageType::New();
   m_LayerNodeStore->SetGrowthStrategyToExponential();
   this->SetRMSChange( static_cast< double >( m_ValueZero ) );
@@ -148,7 +148,7 @@ SparseFieldLevelSetImageFilter< TInputImage, TOutputImage >
 template< class TInputImage, class TOutputImage >
 void
 SparseFieldLevelSetImageFilter< TInputImage, TOutputImage >
-::ApplyUpdate(TimeStepType dt)
+::ApplyUpdate(const TimeStepType& dt)
 {
   unsigned int i, j, k, t;
 
@@ -924,8 +924,6 @@ SparseFieldLevelSetImageFilter< TInputImage, TOutputImage >
   NeighborhoodIterator< OutputImageType > outputIt( df->GetRadius(),
                                                     this->GetOutput(), this->GetOutput()->GetRequestedRegion() );
   TimeStepType timeStep;
-
-  const NeighborhoodScalesType neighborhoodScales = this->GetDifferenceFunction()->ComputeNeighborhoodScales();
 
   if ( m_BoundsCheckingActive == false )
     {

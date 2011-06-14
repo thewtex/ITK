@@ -43,6 +43,7 @@ namespace itk
  *
  * \ingroup GeometricTransforms
  * \sa WrapPadImageFilter, ConstantPadImageFilter
+ * \ingroup ITK-ImageGrid
  */
 template< class TInputImage, class TOutputImage >
 class ITK_EXPORT MirrorPadImageFilter:
@@ -115,7 +116,7 @@ protected:
    * \sa ImageToImageFilter::ThreadedGenerateData(),
    *     ImageToImageFilter::GenerateData()  */
   void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
-                            int threadId);
+                            ThreadIdType threadId);
 
   /** Given an n dimensional list of input region breakpoints in indices
    * and size (where the current region and maximum region for each dimension

@@ -58,6 +58,7 @@ namespace itk
  * \sa MorphologyImageFilter, GrayscaleDilateImageFilter,
  * GrayscaleFunctionDilateImageFilter, BinaryDilateImageFilter, ReconstructionByDilationImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
+ * \ingroup ITK-MathematicalMorphology
  */
 template< class TInputImage, class TOutputImage >
 class ITK_EXPORT GrayscaleGeodesicDilateImageFilter:
@@ -180,7 +181,7 @@ protected:
    * called. */
   void ThreadedGenerateData(const OutputImageRegionType &
                             outputRegionForThread,
-                            int threadId);
+                            ThreadIdType threadId);
 
 private:
   GrayscaleGeodesicDilateImageFilter(const Self &); //purposely not implemented

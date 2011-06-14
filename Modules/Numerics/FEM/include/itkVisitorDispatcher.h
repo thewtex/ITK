@@ -125,6 +125,7 @@ public:
  *       have to be a pointer to function. In fact, it can be any type
  *       Object of this type will be returned, when calling the
  *       VisitorDispatcher::Visit function.
+ * \ingroup ITK-FEM
  */
 template< class TVisitedClass,
           class TVisitorBase,
@@ -193,7 +194,7 @@ public:
    * \note Dummy class pointer must be passed as a first parameter to
    *       automatically deduct the correct template parameter TVisitorClass.
    *       Technically we would like to call the this function as
-   *       VisitorDispatcher<...>::RegisterVisitor<MyVisitorClass>(...),
+   *       VisitorDispatcher\<...\>\\::RegisterVisitor\<MyVisitorClass\>(...),
    *       but MS C compiler crashes if we do this. This is a work around.
    *       You should pass null pointer casted to the TVisitorClass when
    *       calling this function.

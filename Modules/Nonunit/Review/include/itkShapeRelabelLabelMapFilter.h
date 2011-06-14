@@ -38,6 +38,7 @@ namespace itk
  *
  * \sa ShapeLabelObject, RelabelComponentImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
+ * \ingroup ITK-Review
  */
 template< class TImage >
 class ITK_EXPORT ShapeRelabelLabelMapFilter:
@@ -148,7 +149,7 @@ protected:
 
     // and put back the objects in the map
     output->ClearLabels();
-    unsigned int label = 0;
+    PixelType label = NumericTraits<PixelType>::ZeroValue();
     typename VectorType::const_iterator it2 = labelObjects.begin();
     while ( it2 != labelObjects.end() )
       {

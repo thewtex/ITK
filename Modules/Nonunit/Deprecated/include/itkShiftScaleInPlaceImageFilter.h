@@ -40,6 +40,7 @@ namespace itk
  * \ingroup IntensityImageFilters
  * \sa ShiftScaleImageFilter
  * \sa InPlaceImageFilter
+ * \ingroup ITK-Deprecated
  */
 template< class TInputImage >
 class ITK_EXPORT ShiftScaleInPlaceImageFilter:
@@ -123,7 +124,7 @@ protected:
   /** Multi-thread version GenerateData. */
   void  ThreadedGenerateData(const OutputImageRegionType &
                              outputRegionForThread,
-                             int threadId);
+                             ThreadIdType threadId);
 
 private:
   ShiftScaleInPlaceImageFilter(const Self &); //purposely not implemented

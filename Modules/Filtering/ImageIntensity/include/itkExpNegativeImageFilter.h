@@ -31,9 +31,10 @@ namespace itk
  *
  * \ingroup IntensityImageFilters  Multithreaded
  *
+ * \ingroup ITK-ImageIntensity
  */
 
-namespace Function
+namespace Functor
 {
 template< class TInput, class TOutput >
 class ExpNegative
@@ -79,7 +80,7 @@ template< class TInputImage, class TOutputImage >
 class ITK_EXPORT ExpNegativeImageFilter:
   public
   UnaryFunctorImageFilter< TInputImage, TOutputImage,
-                           Function::ExpNegative<
+                           Functor::ExpNegative<
                              typename TInputImage::PixelType,
                              typename TOutputImage::PixelType >   >
 {
@@ -88,8 +89,8 @@ public:
   typedef ExpNegativeImageFilter Self;
   typedef UnaryFunctorImageFilter<
     TInputImage, TOutputImage,
-    Function::ExpNegative< typename TInputImage::PixelType,
-                           typename TOutputImage::PixelType > >  Superclass;
+    Functor::ExpNegative< typename TInputImage::PixelType,
+                          typename TOutputImage::PixelType > >  Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;

@@ -33,6 +33,7 @@ namespace itk
  * The SetBoundary facility isn't necessary for operation of the
  * anchor method but is included for compatability with other
  * morphology classes in itk.
+ * \ingroup ITK-MathematicalMorphology
  */
 template< class TImage, class TKernel,
           class TFunction1 >
@@ -82,7 +83,7 @@ protected:
 
   /** Multi-thread version GenerateData. */
   void  ThreadedGenerateData(const InputImageRegionType & outputRegionForThread,
-                             int threadId);
+                             ThreadIdType threadId);
 
   // should be set by the meta filter
   InputImagePixelType m_Boundary;

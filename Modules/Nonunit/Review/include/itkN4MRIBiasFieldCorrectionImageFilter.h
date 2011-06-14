@@ -83,6 +83,7 @@ namespace itk {
  * N.J. Tustison, B.B. Avants, P.A. Cook, Y. Zheng, A. Egan, P.A. Yushkevich,
  * and J.C. Gee. "N4ITK:  Improved N3 Bias Correction
  * IEEE Transactions on Medical Imaging, 29(6):1310-1320, June 2010.
+ * \ingroup ITK-Review
  */
 
 template<class TInputImage, class TMaskImage =
@@ -133,6 +134,12 @@ public:
   typedef typename BSplineFilterType::ArrayType             ArrayType;
 
   /**
+   * The image expected for input for bias correction.
+   */
+  void SetInput1( const InputImageType *image ) { this->SetInput( image ); }
+
+
+  /**
    * Set mask image function.  If a binary mask image is specified, only
    * those input image voxels corresponding with mask image values equal
    * to m_MaskLabel are used in estimating the bias field.
@@ -141,6 +148,7 @@ public:
     {
     this->SetNthInput( 1, const_cast<MaskImageType *>( mask ) );
     }
+  void SetInput2( const MaskImageType *mask ) { this->SetMaskImage( mask ); }
 
   /**
    * Get mask image function.  If a binary mask image is specified, only
@@ -166,6 +174,7 @@ public:
     {
     this->SetNthInput( 2, const_cast<RealImageType *>( image ) );
     }
+  void SetInput3( const RealImageType *image ) { this->SetConfidenceImage( image ); }
 
   /**
    * Get confidence image function.  If a confidence image is specified,

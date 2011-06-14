@@ -41,6 +41,11 @@ namespace itk
  * \ingroup GeometricTransforms
  * \ingroup Multithreaded
  * \ingroup Streamed
+ * \ingroup ITK-ImageGrid
+ *
+ * \wiki
+ * \wikiexample{ImageProcessing/PermuteAxesImageFilter,Switch the axes of an image}
+ * \endwiki
  */
 template< class TImage >
 class ITK_EXPORT PermuteAxesImageFilter:
@@ -113,7 +118,7 @@ protected:
    * \sa ImageToImageFilter::ThreadedGenerateData(),
    *     ImageToImageFilter::GenerateData()  */
   void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
-                            int threadId);
+                            ThreadIdType threadId);
 
 private:
   PermuteAxesImageFilter(const Self &); //purposely not implemented

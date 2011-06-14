@@ -31,6 +31,7 @@ namespace itk
  * classes, is designed to provide a mechanism for storing a collection of
  * arbitrary data types. The main motivation for such a collection is to
  * associate arbitrary data elements with itk DataObjects.
+ * \ingroup ITK-Common
  */
 class ITKCommon_EXPORT MetaDataDictionary
 {
@@ -72,8 +73,10 @@ public:
   // API. The implementation will be in the DLL.
   MetaDataObjectBase::Pointer & operator[](const std::string &);
 
-  const MetaDataObjectBase   * operator[](const std::string &) const;
+  const MetaDataObjectBase * operator[](const std::string &) const;
 
+  const MetaDataObjectBase * Get(const std::string &) const;
+  void Set(const std::string &, MetaDataObjectBase * );
   bool HasKey(const std::string &) const;
 
   /** \warning the following functions SHOULD NOT be used with

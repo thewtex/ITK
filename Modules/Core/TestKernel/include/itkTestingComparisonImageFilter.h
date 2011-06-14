@@ -18,8 +18,9 @@
 #ifndef __itkTestingComparisonImageFilter_h
 #define __itkTestingComparisonImageFilter_h
 
-#include "itkNumericTraits.h"
 #include "itkArray.h"
+#include "itkNumericTraits.h"
+#include "itkImageSource.h"
 
 namespace itk
 {
@@ -35,6 +36,7 @@ namespace Testing
  * pixel in the other image.
  *
  * \ingroup IntensityImageFilters   Multithreaded
+ * \ingroup ITK-TestKernel
  */
 template< class TInputImage, class TOutputImage >
 class ITK_EXPORT ComparisonImageFilter:
@@ -110,7 +112,7 @@ protected:
    * "outputRegionForThread"
    */
   void ThreadedGenerateData(const OutputImageRegionType & threadRegion,
-                            int threadId);
+                            ThreadIdType threadId);
 
   void BeforeThreadedGenerateData();
 

@@ -38,6 +38,7 @@ namespace itk {
  * http://www.insight-journal.org/browse/publication/176
  *
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
+ * \ingroup ITK-Review
  */
 template<class TImage, class TMarkerImage, class TAttributeAccessor=
   typename Functor::AttributeLabelObjectAccessor< typename TImage::LabelObjectType > >
@@ -117,8 +118,8 @@ public:
    * Set/Get the value used as "foreground" in the output image.
    * Defaults to NumericTraits<MaskPixelType>::max().
    */
-  itkSetMacro(ForegroundValue, PixelType);
-  itkGetConstMacro(ForegroundValue, PixelType);
+  itkSetMacro(ForegroundValue, MarkerImagePixelType);
+  itkGetConstMacro(ForegroundValue, MarkerImagePixelType);
 
 protected:
   BinaryReconstructionLabelMapFilter();

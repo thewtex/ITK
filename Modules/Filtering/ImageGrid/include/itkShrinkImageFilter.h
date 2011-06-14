@@ -57,6 +57,11 @@ namespace itk
  * ThreadedGenerateData() method for its implementation.
  *
  * \ingroup GeometricTransforms Streamed
+ * \ingroup ITK-ImageGrid
+ *
+ * \wiki
+ * \wikiexample{Images/ShrinkImageFilter,Shrink an image}
+ * \endwiki
  */
 template< class TInputImage, class TOutputImage >
 class ITK_EXPORT ShrinkImageFilter:
@@ -149,7 +154,7 @@ protected:
    * \sa ImageToImageFilter::ThreadedGenerateData(),
    *     ImageToImageFilter::GenerateData() */
   void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
-                            int threadId);
+                            ThreadIdType threadId);
 
 private:
   ShrinkImageFilter(const Self &); //purposely not implemented

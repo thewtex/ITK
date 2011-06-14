@@ -33,6 +33,7 @@ namespace itk
  * \sa BinaryFunctorImageFilter UnaryFunctorImageFilter
  *
  * \ingroup IntensityImageFilters Multithreaded
+ * \ingroup ITK-ImageFilterBase
  */
 template< class TInputImage1, class TInputImage2,
           class TInputImage3, class TOutputImage, class TFunction    >
@@ -149,7 +150,7 @@ protected:
    * \sa ImageToImageFilter::ThreadedGenerateData(),
    *     ImageToImageFilter::GenerateData()  */
   void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
-                            int threadId);
+                            ThreadIdType threadId);
 
 private:
   TernaryFunctorImageFilter(const Self &); //purposely not implemented

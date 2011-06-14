@@ -31,6 +31,17 @@
 
 #include "vnl/vnl_math.h"
 
+/*
+ *
+ * This code was contributed in the Insight Journal paper:
+ *
+ * "Image Kernel Convolution"
+ * by Tustison N., Gee J.
+ * http://hdl.handle.net/1926/1323
+ * http://www.insight-journal.org/browse/publication/208
+ *
+ */
+
 namespace itk
 {
 template< class TInputImage, class TOutputImage >
@@ -49,7 +60,7 @@ ConvolutionImageFilter< TInputImage, TOutputImage >
 template< class TInputImage, class TOutputImage >
 void
 ConvolutionImageFilter< TInputImage, TOutputImage >
-::ThreadedGenerateData(const OutputRegionType & outputRegionForThread, int threadId)
+::ThreadedGenerateData(const OutputRegionType & outputRegionForThread, ThreadIdType threadId)
 {
   // setup the progress reporter
   ProgressReporter progress( this, threadId, outputRegionForThread.GetNumberOfPixels() );

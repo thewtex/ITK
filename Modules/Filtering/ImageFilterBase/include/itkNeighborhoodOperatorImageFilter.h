@@ -41,6 +41,11 @@ namespace itk
  * \sa Neighborhood
  * \sa NeighborhoodOperator
  * \sa NeighborhoodIterator
+ * \ingroup ITK-ImageFilterBase
+ *
+ * \wiki
+ * \wikiexample{Images/NeighborhoodOperatorImageFilter,Apply a kernel to every pixel in an image}
+ * \endwiki
  */
 template< class TInputImage, class TOutputImage, class TOperatorValueType = ITK_TYPENAME TOutputImage::PixelType >
 class ITK_EXPORT NeighborhoodOperatorImageFilter:
@@ -162,7 +167,7 @@ protected:
    * \sa ImageToImageFilter::ThreadedGenerateData(),
    *     ImageToImageFilter::GenerateData() */
   void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
-                            int threadId);
+                            ThreadIdType threadId);
 
   void PrintSelf(std::ostream & os, Indent indent) const
   {  Superclass::PrintSelf(os, indent); }

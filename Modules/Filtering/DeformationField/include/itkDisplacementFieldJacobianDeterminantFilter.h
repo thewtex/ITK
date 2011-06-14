@@ -106,6 +106,7 @@ namespace itk
  * from code provided by
  * \author Tom Vercauteren, INRIA & Mauna Kea Technologies
  * \author Torsten Rohlfing, Neuroscience Program, SRI International.
+ * \ingroup ITK-DeformationField
  */
 template< typename TInputImage,
           typename TRealType = float,
@@ -220,7 +221,7 @@ protected:
    * \sa ImageToImageFilter::ThreadedGenerateData(),
    *     ImageToImageFilter::GenerateData() */
   void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
-                            int threadId);
+                            ThreadIdType threadId);
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
@@ -243,7 +244,7 @@ protected:
 private:
   bool m_UseImageSpacing;
 
-  int m_RequestedNumberOfThreads;
+  ThreadIdType m_RequestedNumberOfThreads;
 
   typename ImageBaseType::ConstPointer m_RealValuedInputImage;
 

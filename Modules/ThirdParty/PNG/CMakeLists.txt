@@ -1,4 +1,5 @@
 project(ITK-PNG)
+set(ITK-PNG_THIRD_PARTY 1)
 
 option(ITK_USE_SYSTEM_PNG "Use system-installed png" OFF)
 mark_as_advanced(ITK_USE_SYSTEM_PNG)
@@ -10,6 +11,7 @@ if(ITK_USE_SYSTEM_PNG)
     )
   set(ITK-PNG_SYSTEM_INCLUDE_DIRS
     ${PNG_INCLUDE_DIRS}
+    ${PNG_INCLUDE_DIR}
     )
   set(ITK-PNG_LIBRARIES "${PNG_LIBRARIES}")
   set(ITK-PNG_NO_SRC 1)

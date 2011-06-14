@@ -33,8 +33,13 @@ namespace itk
  * Numeric conversions (castings) are done by the C++ defaults.
  *
  * \ingroup IntensityImageFilters  Multithreaded
+ * \ingroup ITK-ImageIntensity
+ *
+ * \wiki
+ * \wikiexample{ImageProcessing/MaximumImageFilter,Pixel wise compare two input images and set the output pixel to their max}
+ * \endwiki
  */
-namespace Function
+namespace Functor
 {
 template< class TInput1, class TInput2 = TInput1, class TOutput = TInput1 >
 class Maximum
@@ -70,7 +75,7 @@ template< class TInputImage1, class TInputImage2 = TInputImage1, class TOutputIm
 class ITK_EXPORT MaximumImageFilter:
   public
   BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage,
-                            Function::Maximum<
+                            Functor::Maximum<
                               typename TInputImage1::PixelType,
                               typename TInputImage2::PixelType,
                               typename TOutputImage::PixelType >   >
@@ -79,7 +84,7 @@ public:
   /** Standard class typedefs. */
   typedef MaximumImageFilter Self;
   typedef BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage,
-                                    Function::Maximum<
+                                    Functor::Maximum<
                                       typename TInputImage1::PixelType,
                                       typename TInputImage2::PixelType,
                                       typename TOutputImage::PixelType >

@@ -45,6 +45,11 @@ namespace itk
  * The pixels must support the operators >= and <=.
  *
  * \ingroup IntensityImageFilters Multithreaded
+ * \ingroup ITK-Thresholding
+ *
+ * \wiki
+ * \wikiexample{ImageProcessing/ThresholdImageFilter,Threshold an image}
+ * \endwiki
  */
 template< class TImage >
 class ITK_EXPORT ThresholdImageFilter:public InPlaceImageFilter< TImage, TImage >
@@ -126,7 +131,7 @@ protected:
    * \sa ImageToImageFilter::ThreadedGenerateData(),
    *     ImageToImageFilter::GenerateData()  */
   void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
-                            int threadId);
+                            ThreadIdType threadId);
 
 private:
   ThresholdImageFilter(const Self &); //purposely not implemented

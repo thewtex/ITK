@@ -30,6 +30,7 @@ namespace itk
 /** \class  SparseFieldLevelSetNode
  * A data structure used in the SparseFieldLevelSetImageFilter to construct
  * lists of indicies and other values.
+ * \ingroup ITK-LevelSets
  */
 template< class TValueType >
 class SparseFieldLevelSetNode
@@ -65,7 +66,9 @@ public:
  *  * 4 *
  *
  * \endcode
- * */
+ *
+ * \ingroup ITK-LevelSets
+ */
 template< class TNeighborhoodType >
 class SparseFieldCityBlockNeighborList
 {
@@ -194,13 +197,12 @@ private:
  * The NumberOfLayers parameter controls the number of layers inside and
  * outside of the active set (see description above).  The sparse field will
  * contain 2*NumberOfLayers+1 lists of indices: the active set and city block
- * neighbors inside and outside the active set.   It is important to
+ * neighbors inside and outside the active set. It is important to
  * specify enough layers to cover the footprint of your calculations.
- * Curvature calculations in three dimensions, for example, require 3 layers.
- * In two dimensions, a minimum of 2 layers is probably required.  Higher order
- * derivatives and other geometrical measures may require more layers.  If too
- * few layers are specified, then the calculations will pull values from the
- * background, which may consist of arbitrary or random values.
+ * Curvature calculations require a minimum of 2 layers. Higher order
+ * derivatives and other geometrical measures may require more layers.
+ * If too few layers are specified, then the calculations will pull values
+ * from the background, which may consist of arbitrary or random values.
  *
  * \par
  * The IsoSurfaceValue indicates which value in the input represents the
@@ -221,6 +223,7 @@ private:
  * \par
  * Sethian, J.A. Level Set Methods. Cambridge University Press. 1996.
  *
+ * \ingroup ITK-LevelSets
  */
 template< class TInputImage, class TOutputImage >
 class ITK_EXPORT SparseFieldLevelSetImageFilter:
@@ -360,7 +363,7 @@ protected:
 
   /** Applies the update buffer values to the active layer and reconstructs the
    *  sparse field layers for the next iteration. */
-  void ApplyUpdate(TimeStepType dt);
+  void ApplyUpdate(const TimeStepType& dt);
 
   /** Traverses the active layer list and calculates the change at these
    *  indicies to be applied in the current iteration. */

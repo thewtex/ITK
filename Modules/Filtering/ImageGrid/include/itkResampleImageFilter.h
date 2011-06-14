@@ -67,6 +67,12 @@ namespace itk
  * user-designated coordinate transform must be threadsafe.
  *
  * \ingroup GeometricTransforms
+ * \ingroup ITK-ImageGrid
+ *
+ * \wiki
+ * \wikiexample{SimpleOperations/TranslationTransform,Translate an image}
+ * \wikiexample{ImageProcessing/Upsampling,Upsampling an image}
+ * \endwiki
  */
 template< class TInputImage,
           class TOutputImage,
@@ -276,20 +282,20 @@ protected:
    * \sa ImageToImageFilter::ThreadedGenerateData(),
    *     ImageToImageFilter::GenerateData() */
   void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
-                            int threadId);
+                            ThreadIdType threadId);
 
   /** Default implementation for resampling that works for any
    * transformation type. */
   void NonlinearThreadedGenerateData(const OutputImageRegionType &
                                      outputRegionForThread,
-                                     int threadId);
+                                     ThreadIdType threadId);
 
   /** Implementation for resampling that works for with linear
    *  transformation types.
    */
   void LinearThreadedGenerateData(const OutputImageRegionType &
                                   outputRegionForThread,
-                                  int threadId);
+                                  ThreadIdType threadId);
 
 private:
   ResampleImageFilter(const Self &); //purposely not implemented

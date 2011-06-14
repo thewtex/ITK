@@ -40,6 +40,7 @@ namespace itk
  * \sa NeighborhoodOperator
  * \sa NeighborhoodOperatorImageFilter
  * \sa NeighborhoodIterator
+ * \ingroup ITK-ImageFilterBase
  */
 template< class TInputImage, class TMaskImage, class TOutputImage, class TOperatorValueType =
             ITK_TYPENAME TOutputImage::PixelType >
@@ -169,7 +170,7 @@ protected:
    * \sa ImageToImageFilter::ThreadedGenerateData(),
    *     ImageToImageFilter::GenerateData() */
   void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
-                            int threadId);
+                            ThreadIdType threadId);
 
 private:
   MaskNeighborhoodOperatorImageFilter(const Self &); //purposely not implemented

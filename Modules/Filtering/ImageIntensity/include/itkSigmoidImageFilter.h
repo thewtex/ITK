@@ -37,9 +37,14 @@ namespace itk
  *
  * \ingroup IntensityImageFilters  Multithreaded
  *
+ * \ingroup ITK-ImageIntensity
+ *
+ * \wiki
+ * \wikiexample{ImageProcessing/SigmoidImageFilter,Pass image pixels through a sigmoid function}
+ * \endwiki
  */
 
-namespace Function
+namespace Functor
 {
 template< class TInput, class TOutput >
 class Sigmoid
@@ -133,7 +138,7 @@ template< class TInputImage, class TOutputImage >
 class ITK_EXPORT SigmoidImageFilter:
   public
   UnaryFunctorImageFilter< TInputImage, TOutputImage,
-                           Function::Sigmoid<
+                           Functor::Sigmoid<
                              typename TInputImage::PixelType,
                              typename TOutputImage::PixelType >   >
 {
@@ -142,7 +147,7 @@ public:
   typedef SigmoidImageFilter Self;
   typedef UnaryFunctorImageFilter<
     TInputImage, TOutputImage,
-    Function::Sigmoid< typename TInputImage::PixelType,
+    Functor::Sigmoid< typename TInputImage::PixelType,
                        typename TOutputImage::PixelType > >  Superclass;
 
   typedef SmartPointer< Self >       Pointer;

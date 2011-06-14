@@ -55,6 +55,7 @@ namespace itk
  *
  * \ingroup IntensityImageFilters Multithreaded
  *
+ * \ingroup ITK-ImageIntensity
  */
 /* THistogramMeasurement -- The precision level for which to do
   HistogramMeasurmenets */
@@ -165,7 +166,7 @@ protected:
   void AfterThreadedGenerateData();
 
   void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
-                            int threadId);
+                            ThreadIdType threadId);
 
   /** Compute min, max and mean of an image. */
   void ComputeMinMaxMean(const InputImageType *image,

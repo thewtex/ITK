@@ -42,6 +42,11 @@ namespace itk
  *
  * \sa MorphologyImageFilter, GrayscaleFunctionErodeImageFilter, BinaryErodeImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
+ * \ingroup ITK-MathematicalMorphology
+ *
+ * \wiki
+ * \wikiexample{Morphology/GrayscaleErodeImageFilter,Erode a grayscale image}
+ * \endwiki
  */
 
 template< class TInputImage, class TOutputImage, class TKernel >
@@ -122,7 +127,7 @@ public:
     VHGW = 3
     } AlgorithmChoice;
 
-  void SetNumberOfThreads(int nb);
+  void SetNumberOfThreads(ThreadIdType nb);
 
 protected:
   GrayscaleErodeImageFilter();

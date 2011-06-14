@@ -45,6 +45,12 @@ namespace itk
  * \author Gaetan Lehmann. Biologie du Developpement et de la Reproduction, INRA de Jouy-en-Josas, France.
  *
  * \sa LabelContourImageFilter BinaryErodeImageFilter SimpleContourExtractorImageFilter
+ * \ingroup ITK-Review
+ *
+ * \wiki
+ * \wikiexample{EdgesAndGradients/BinaryContourImageFilter,Extract the boundaries of connected regions in a binary image}
+ * \wikiexample{EdgesAndGradients/BinaryBoundaries,Extract the inner and outer boundaries of blobs in a binary image}
+ * \endwiki
  */
 
 template< class TInputImage, class TOutputImage >
@@ -150,9 +156,9 @@ protected:
     m_NumberOfThreads = 0;
     this->SetInPlace(false);
   }
+  BinaryContourImageFilter(const Self &); //Purposefully not implemented
 
   virtual ~BinaryContourImageFilter() {}
-  BinaryContourImageFilter(const Self &) {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /**
@@ -162,7 +168,7 @@ protected:
 
   void AfterThreadedGenerateData();
 
-  void ThreadedGenerateData(const RegionType & outputRegionForThread, int threadId);
+  void ThreadedGenerateData(const RegionType & outputRegionForThread, ThreadIdType threadId);
 
   /** BinaryContourImageFilter needs the entire input. Therefore
    * it must provide an implementation GenerateInputRequestedRegion().

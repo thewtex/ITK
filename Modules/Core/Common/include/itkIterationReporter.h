@@ -50,12 +50,13 @@ namespace itk
  *     }
  *
  * When used in a non-threaded filter, the threadId argument should be 0.
+ * \ingroup ITK-Common
  */
 class ITKCommon_EXPORT IterationReporter
 {
 public:
   /** Constructor sets progress to 0 because the filter is starting.  */
-  IterationReporter(ProcessObject *filter, int threadId,
+  IterationReporter(ProcessObject *filter, ThreadIdType threadId,
                     unsigned long stepsPerUpdate = 100);
 
   /** Destructor */

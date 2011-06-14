@@ -53,9 +53,13 @@ namespace itk
  *
  * \author Nicholas J. Tustison
  *
- * Contributed by Nicholas J. Tustison, James C. Gee
- * in the Insight Journal paper:
+ *
+ * This code was contributed in the Insight Journal paper:
+ * "N-D C^k B-Spline Scattered Data Approximation"
+ * by Nicholas J. Tustison, James C. Gee
  * http://hdl.handle.net/1926/140
+ * http://www.insight-journal.org/browse/publication/57
+ *
  *
  * \par REFERENCE
  * S. Lee, G. Wolberg, and S. Y. Shin, "Scattered Data Interpolation
@@ -65,6 +69,7 @@ namespace itk
  * \par REFERENCE
  * N.J. Tustison and J.C. Gee, "Generalized n-D C^k Scattered Data Approximation
  * with COnfidence Values", Proceedings of the MIAR conference, August 2006.
+ * \ingroup ITK-Review
  */
 
 template< class TInputPointSet, class TOutputImage >
@@ -270,7 +275,7 @@ protected:
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
-  void ThreadedGenerateData( const RegionType &, int );
+  void ThreadedGenerateData( const RegionType &, ThreadIdType );
 
   void BeforeThreadedGenerateData();
 
@@ -306,12 +311,12 @@ private:
   /**
    * Function used to generate the sampled B-spline object quickly.
    */
-  void ThreadedGenerateDataForFitting( const RegionType &, int  );
+  void ThreadedGenerateDataForFitting( const RegionType &, ThreadIdType  );
 
   /**
    * Function used to generate the sampled B-spline object quickly.
    */
-  void ThreadedGenerateDataForReconstruction( const RegionType &, int  );
+  void ThreadedGenerateDataForReconstruction( const RegionType &, ThreadIdType  );
 
   /**
    * Sub-function used by GenerateOutputImageFast() to generate the sampled

@@ -62,7 +62,9 @@ namespace itk
  * method.
  *
  * \ingroup ImageFilters
- * \sa FiniteDifferenceImageFilter */
+ * \sa FiniteDifferenceImageFilter
+ * \ingroup ITK-FiniteDifference
+ */
 template< class TInputImage, class TOutputImage >
 class ITK_EXPORT DenseFiniteDifferenceImageFilter:
   public FiniteDifferenceImageFilter< TInputImage, TOutputImage >
@@ -123,7 +125,7 @@ protected:
   /** This method applies changes from the m_UpdateBuffer to the output using
    * the ThreadedApplyUpdate() method and a multithreading mechanism.  "dt" is
    * the time step to use for the update of each pixel. */
-  virtual void ApplyUpdate(TimeStepType dt);
+  virtual void ApplyUpdate(const TimeStepType& dt);
 
   /** Method to allow subclasses to get direct access to the update
    * buffer */
@@ -147,9 +149,9 @@ protected:
    *  \sa ApplyUpdate
    *  \sa ApplyUpdateThreaderCallback */
   virtual
-  void ThreadedApplyUpdate(TimeStepType dt,
+  void ThreadedApplyUpdate(const TimeStepType& dt,
                            const ThreadRegionType & regionToProcess,
-                           int threadId);
+                           ThreadIdType threadId);
 
   /** Does the actual work of calculating change over a region supplied by
    * the multithreading mechanism.
@@ -157,7 +159,7 @@ protected:
    * \sa CalculateChangeThreaderCallback */
   virtual
   TimeStepType ThreadedCalculateChange(const ThreadRegionType & regionToProcess,
-                                       int threadId);
+                                       ThreadIdType threadId);
 
 private:
   DenseFiniteDifferenceImageFilter(const Self &); //purposely not implemented
@@ -168,8 +170,8 @@ private:
   struct DenseFDThreadStruct {
     DenseFiniteDifferenceImageFilter *Filter;
     TimeStepType TimeStep;
-    TimeStepType *TimeStepList;
-    bool *ValidTimeStepList;
+    std::vector< TimeStepType > TimeStepList;
+    std::vector< bool > ValidTimeStepList;
   };
 
   /** This callback method uses ImageSource::SplitRequestedRegion to acquire an

@@ -79,33 +79,13 @@ protected:
   GPUUnaryFunctorImageFilter() {};
   virtual ~GPUUnaryFunctorImageFilter() {}
 
-  /** GPUUnaryFunctorImageFilter can produce an image which is a different
-   * resolution than its input image.  As such, UnaryFunctorImageFilter
-   * needs to provide an implementation for
-   * GenerateOutputInformation() in order to inform the pipeline
-   * execution model.  The original documentation of this method is
-   * below.
-   *
-   * \sa ProcessObject::GenerateOutputInformaton()  */
   virtual void GenerateOutputInformation();
 
-  /** GPUUnaryFunctorImageFilter can be implemented as a multithreaded filter.
-   * Therefore, this implementation provides a ThreadedGPUGenerateData() routine
-   * which is called for each processing thread. The output image data is
-   * allocated automatically by the superclass prior to calling
-   * ThreadedGPUGenerateData().  ThreadedGPUGenerateData can only write to the
-   * portion of the output image specified by the parameter
-   * "outputRegionForThread"
-   *
-   * \sa ImageToImageFilter::ThreadedGenerateData(),
-   *     ImageToImageFilter::GenerateData()  */
-  //void ThreadedGPUGenerateData(const OutputImageRegionType & outputRegionForThread,
-  //                             int threadId);
 
   virtual void GPUGenerateData();
 
-  // GPU kernel handle is defined here instead of in the child class
-  // because GPUGenerateData() in this base class is used.
+  /** GPU kernel handle is defined here instead of in the child class
+   * because GPUGenerateData() in this base class is used. */
   int m_UnaryFunctorImageFilterGPUKernelHandle;
 
 private:

@@ -25,6 +25,11 @@ namespace itk
 /** \class TransformFileReader
  *
  * \brief TODO
+ * \ingroup ITK-Transform
+ *
+ * \wiki
+ * \wikiexample{IO/TransformFileReader,Read a transform from a file}
+ * \endwiki
  */
 class ITK_EXPORT TransformFileReader:public LightProcessObject
 {

@@ -51,6 +51,7 @@ namespace itk
  * \sa NeighborhoodOperator
  * \sa NeighborhoodIterator
  * \sa NeighborhoodOperatorImageFilter
+ * \ingroup ITK-ImageFilterBase
  */
 
 template< class TInputImage, class TOutputImage >
@@ -145,7 +146,7 @@ protected:
    * \sa ImageToImageFilter::ThreadedGenerateData(),
    *     ImageToImageFilter::GenerateData() */
   void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
-                            int threadId);
+                            ThreadIdType threadId);
 
   void PrintSelf(std::ostream & os, Indent indent) const
   { Superclass::PrintSelf(os, indent);  }

@@ -34,6 +34,7 @@ namespace itk
  * pixel in the other image.
  *
  * \ingroup IntensityImageFilters   Multithreaded
+ * \ingroup ITK-TestKernel
  */
 template< class TInputImage, class TOutputImage >
 class ITK_EXPORT DifferenceImageFilter:
@@ -104,7 +105,7 @@ protected:
    * \sa ImageToImageFilter::ThreadedGenerateData(),
    *     ImageToImageFilter::GenerateData()  */
   void ThreadedGenerateData(const OutputImageRegionType & threadRegion,
-                            int threadId);
+                            ThreadIdType threadId);
 
   void BeforeThreadedGenerateData();
 

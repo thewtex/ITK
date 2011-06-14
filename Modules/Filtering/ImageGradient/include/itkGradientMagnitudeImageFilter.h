@@ -25,13 +25,17 @@ namespace itk
 /** \class GradientMagnitudeImageFilter
  * \brief Computes the gradient magnitude of an image region at each pixel.
  *
- *
  * \ingroup GradientFilters
  *
  * \sa Image
  * \sa Neighborhood
  * \sa NeighborhoodOperator
  * \sa NeighborhoodIterator
+ * \ingroup ITK-ImageGradient
+ *
+ * \wiki
+ * \wikiexample{EdgesAndGradients/GradientMagnitudeImageFilter,Compute the gradient magnitude image}
+ * \endwiki
  */
 template< typename TInputImage, typename TOutputImage >
 class ITK_EXPORT GradientMagnitudeImageFilter:
@@ -122,7 +126,7 @@ protected:
    * \sa ImageToImageFilter::ThreadedGenerateData(),
    *     ImageToImageFilter::GenerateData() */
   void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
-                            int threadId);
+                            ThreadIdType threadId);
 
   void PrintSelf(std::ostream &, Indent) const;
 private:

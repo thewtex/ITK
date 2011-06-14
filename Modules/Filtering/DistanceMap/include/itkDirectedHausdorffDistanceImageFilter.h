@@ -57,6 +57,7 @@ namespace itk
  * \sa HausdorffDistanceImageFilter
  *
  * \ingroup MultiThreaded
+ * \ingroup ITK-DistanceMap
  */
 template< class TInputImage1, class TInputImage2 >
 class ITK_EXPORT DirectedHausdorffDistanceImageFilter:
@@ -111,6 +112,9 @@ public:
   /** Get the second input. */
   const InputImage2Type * GetInput2(void);
 
+  /** Set if image spacing should be used in computing distances. */
+  itkSetMacro(UseImageSpacing, bool);
+
   /** Return the computed directed Hausdorff distance. */
   itkGetConstMacro(DirectedHausdorffDistance, RealType);
   itkGetConstMacro(AverageHausdorffDistance, RealType);
@@ -140,7 +144,7 @@ protected:
   /** Multi-thread version GenerateData. */
   void  ThreadedGenerateData(const RegionType &
                              outputRegionForThread,
-                             int threadId);
+                             ThreadIdType threadId);
 
   // Override since the filter needs all the data for the algorithm
   void GenerateInputRequestedRegion();
@@ -164,6 +168,7 @@ private:
   Array< RealType >     m_Sum;
   RealType              m_DirectedHausdorffDistance;
   RealType              m_AverageHausdorffDistance;
+  bool                  m_UseImageSpacing;
 }; // end of class
 } // end namespace itk
 

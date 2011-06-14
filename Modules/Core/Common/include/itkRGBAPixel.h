@@ -46,6 +46,11 @@ namespace itk
  * pixel[0], pixel[1], pixel[2], pixel[3]
  * \ingroup ImageObjects
  *
+ * \ingroup ITK-Common
+ *
+ * \wiki
+ * \wikiexample{SimpleOperations/Transparency,Make part of an image transparent}
+ * \endwiki
  */
 
 template< typename TComponent = unsigned short >
@@ -82,6 +87,19 @@ public:
   RGBAPixel & operator=(const Self & r);
 
   RGBAPixel & operator=(const ComponentType r[4]);
+
+  /** Aritmetic operations between pixels. Return a new RGBPixel. */
+  Self operator+(const Self & vec) const;
+
+  Self operator-(const Self & vec) const;
+
+  const Self & operator+=(const Self & vec);
+
+  const Self & operator-=(const Self & vec);
+
+  Self operator *(const ComponentType & f) const;
+
+  bool operator==(const Self & vec) const;
 
   /** Return the number of componentsxquery-rep. */
   static unsigned int GetNumberOfComponents(){ return 4; }

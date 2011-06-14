@@ -57,6 +57,7 @@ namespace itk
  *
  * \sa DemonsRegistrationFunction
  * \ingroup DeformableImageRegistration MultiThreaded
+ * \ingroup ITK-PDEDeformableRegistration
  */
 template< class TFixedImage, class TMovingImage, class TDeformationField >
 class ITK_EXPORT DemonsRegistrationFilter:
@@ -132,7 +133,7 @@ protected:
   virtual void InitializeIteration();
 
   /** Apply update. */
-  virtual void ApplyUpdate(TimeStepType dt);
+  virtual void ApplyUpdate(const TimeStepType& dt);
 
   bool m_UseMovingImageGradient;
 

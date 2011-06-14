@@ -31,10 +31,15 @@ namespace itk
  * This class is parametrized over the types of the two
  * input images and the type of the output image.
  * Numeric conversions (castings) are done by the C++ defaults.
-+ *
+ * + *
  * \ingroup IntensityImageFilters  Multithreaded
+ * \ingroup ITK-ImageIntensity
+ *
+ * \wiki
+ * \wikiexample{ImageProcessing/MinimumImageFilter,Pixel wise compare two input images and set the output pixel to their min}
+ * \endwiki
  */
-namespace Function
+namespace Functor
 {
 template< class TInput1, class TInput2 = TInput1, class TOutput = TInput1 >
 class Minimum
@@ -61,7 +66,7 @@ template< class TInputImage1, class TInputImage2 = TInputImage1, class TOutputIm
 class ITK_EXPORT MinimumImageFilter:
   public
   BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage,
-                            Function::Minimum<
+                            Functor::Minimum<
                               typename TInputImage1::PixelType,
                               typename TInputImage2::PixelType,
                               typename TOutputImage::PixelType >   >
@@ -71,7 +76,7 @@ public:
   typedef MinimumImageFilter Self;
   typedef BinaryFunctorImageFilter<
     TInputImage1, TInputImage2, TOutputImage,
-    Function::Minimum<
+    Functor::Minimum<
       typename TInputImage1::PixelType,
       typename TInputImage2::PixelType,
       typename TOutputImage::PixelType >

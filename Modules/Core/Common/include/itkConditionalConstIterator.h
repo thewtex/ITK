@@ -33,6 +33,7 @@ namespace itk
  * for this reason it doesn't support the Set() method.
  *
  * \ingroup ImageIterators
+ * \ingroup ITK-Common
  */
 template< class TImage >
 class ConditionalConstIterator
@@ -72,6 +73,7 @@ public:
    * reference counted. */
   Self & operator=(const Self & it)
   {
+    m_IsAtEnd = it.m_IsAtEnd; // copy the end flag
     m_Image = it.m_Image;     // copy the smart pointer
     m_Region = it.m_Region;   // copy the region
     return *this;

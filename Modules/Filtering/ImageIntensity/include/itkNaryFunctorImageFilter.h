@@ -35,6 +35,7 @@ namespace itk
  * All the input images are of the same type.
  *
  * \ingroup IntensityImageFilters   Multithreaded
+ * \ingroup ITK-ImageIntensity
  */
 
 template< class TInputImage, class TOutputImage, class TFunction >
@@ -116,7 +117,7 @@ protected:
    * \sa ImageToImageFilter::ThreadedGenerateData(),
    *     ImageToImageFilter::GenerateData()  */
   void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
-                            int threadId);
+                            ThreadIdType threadId);
 
 private:
   NaryFunctorImageFilter(const Self &); //purposely not implemented

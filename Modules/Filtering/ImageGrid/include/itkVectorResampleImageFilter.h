@@ -49,6 +49,11 @@ namespace itk
  * ThreadedGenerateData() method for its implementation.
  *
  * \ingroup GeometricTransforms
+ * \ingroup ITK-ImageGrid
+ *
+ * \wiki
+ * \wikiexample{VectorImages/VectorResampleImageFilter,Translate a vector image}
+ * \endwiki
  */
 template< class TInputImage, class TOutputImage, class TInterpolatorPrecisionType = double >
 class ITK_EXPORT VectorResampleImageFilter:
@@ -215,7 +220,7 @@ protected:
    * \sa ImageToImageFilter::ThreadedGenerateData(),
    *     ImageToImageFilter::GenerateData() */
   void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
-                            int threadId);
+                            ThreadIdType threadId);
 
 private:
   VectorResampleImageFilter(const Self &); //purposely not implemented

@@ -27,8 +27,9 @@ namespace itk
  * \brief Computes pixel-wise the real(x) part of a complex image.
  *
  * \ingroup IntensityImageFilters  Multithreaded
+ * \ingroup ITK-ImageIntensity
  */
-namespace Function
+namespace Functor
 {
 template< class TInput, class TOutput >
 class ComplexToReal
@@ -57,7 +58,7 @@ template< class TInputImage, class TOutputImage >
 class ITK_EXPORT ComplexToRealImageFilter:
   public
   UnaryFunctorImageFilter< TInputImage, TOutputImage,
-                           Function::ComplexToReal<
+                           Functor::ComplexToReal<
                              typename TInputImage::PixelType,
                              typename TOutputImage::PixelType >   >
 {
@@ -66,8 +67,8 @@ public:
   typedef ComplexToRealImageFilter Self;
   typedef UnaryFunctorImageFilter<
     TInputImage, TOutputImage,
-    Function::ComplexToReal< typename TInputImage::PixelType,
-                             typename TOutputImage::PixelType > > Superclass;
+    Functor::ComplexToReal< typename TInputImage::PixelType,
+                            typename TOutputImage::PixelType > > Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;

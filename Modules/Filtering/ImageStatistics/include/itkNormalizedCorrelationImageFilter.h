@@ -40,6 +40,11 @@ namespace itk
  * \sa Neighborhood
  * \sa NeighborhoodOperator
  * \sa NeighborhoodIterator
+ * \ingroup ITK-ImageStatistics
+ *
+ * \wiki
+ * \wikiexample{Images/NormalizedCorrelationImageFilter,Normalized correlation}
+ * \endwiki
  */
 template< class TInputImage, class TMaskImage, class TOutputImage, class TOperatorValueType =
             ITK_TYPENAME TOutputImage::PixelType >
@@ -148,7 +153,7 @@ protected:
    * \sa ImageToImageFilter::ThreadedGenerateData(),
    *     ImageToImageFilter::GenerateData() */
   void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
-                            int threadId);
+                            ThreadIdType threadId);
 
   /** Standard PrintSelf method */
   void PrintSelf(std::ostream & os, Indent indent) const

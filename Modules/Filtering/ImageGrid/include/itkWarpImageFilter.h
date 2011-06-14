@@ -74,6 +74,7 @@ namespace itk
  * and deformation field type all have the same number of dimensions.
  *
  * \ingroup GeometricTransforms MultiThreaded Streamed
+ * \ingroup ITK-ImageGrid
  */
 template<
   class TInputImage,
@@ -235,7 +236,7 @@ protected:
    * As such, it needs to provide and implementation for
    * ThreadedGenerateData(). */
   void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
-                            int threadId);
+                            ThreadIdType threadId);
 
 private:
   WarpImageFilter(const Self &); //purposely not implemented

@@ -74,6 +74,7 @@ namespace itk
  *
  * \sa CropImageFilter
  * \ingroup GeometricTransforms
+ * \ingroup ITK-Common
  */
 
 template< class TInputImage, class TOutputImage >
@@ -254,7 +255,7 @@ protected:
    * \sa ImageToImageFilter::ThreadedGenerateData(),
    *     ImageToImageFilter::GenerateData()  */
   void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
-                            int threadId);
+                            ThreadIdType threadId);
 
   InputImageRegionType m_ExtractionRegion;
 

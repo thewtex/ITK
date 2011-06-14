@@ -237,7 +237,7 @@ int itkGPUImageFilterTestTemp(int argc, char *argv[])
 {
   // register object factory for GPU image and filter
   itk::ObjectFactoryBase::RegisterFactory( itk::GPUImageFactory::New() );
-  //itk::ObjectFactoryBase::RegisterFactory( itk::GPUMeanImageFilterFactory::New() );
+  itk::ObjectFactoryBase::RegisterFactory( itk::GPUGradientAnisotropicDiffusionImageFilterFactory::New() );
 
   typedef float InputPixelType;
   typedef float OutputPixelType;
@@ -255,13 +255,17 @@ int itkGPUImageFilterTestTemp(int argc, char *argv[])
   // Note: We use regular itk filter type here but factory will automatically create
   //       GPU filter for Median filter and CPU filter for threshold filter.
   //
-  typedef itk::GPUGradientAnisotropicDiffusionImageFilter< InputImageType, OutputImageType > AnisoDiffFilterType;
-  //typedef itk::GradientAnisotropicDiffusionImageFilter< InputImageType, OutputImageType > AnisoDiffFilterType;
+  //typedef itk::GPUGradientAnisotropicDiffusionImageFilter< InputImageType, OutputImageType > AnisoDiffFilterType;
+  typedef itk::GradientAnisotropicDiffusionImageFilter< InputImageType, OutputImageType > AnisoDiffFilterType;
 
   AnisoDiffFilterType::Pointer anisoFilter = AnisoDiffFilterType::New();
 
   // GPU test
   reader->Update();
+
+  itk::TimeProbe timer;
+  timer.Start();
+
   //anisoFilter->SetInPlace( true );// false/*true*/ );
   anisoFilter->SetInput( reader->GetOutput() );
   anisoFilter->SetNumberOfIterations( 5 );
@@ -270,6 +274,9 @@ int itkGPUImageFilterTestTemp(int argc, char *argv[])
   anisoFilter->UseImageSpacingOn();
   //anisoFilter->SetFixedAverageGradientMagnitude( 10.0 );
   anisoFilter->Update();
+
+  timer.Stop();
+  std::cerr << "Anisotropic diffusion took " << timer.GetMeanTime() << " seconds.\n";
 
 
   //

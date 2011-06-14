@@ -27,8 +27,9 @@ namespace itk
  * \brief Computes pixel-wise the Modulus of a complex image.
  *
  * \ingroup IntensityImageFilters  Multithreaded
+ * \ingroup ITK-ImageIntensity
  */
-namespace Function
+namespace Functor
 {
 template< class TInput, class TOutput >
 class ComplexToModulus
@@ -58,7 +59,7 @@ template< class TInputImage, class TOutputImage >
 class ITK_EXPORT ComplexToModulusImageFilter:
   public
   UnaryFunctorImageFilter< TInputImage, TOutputImage,
-                           Function::ComplexToModulus<
+                           Functor::ComplexToModulus<
                              typename TInputImage::PixelType,
                              typename TOutputImage::PixelType >   >
 {
@@ -67,8 +68,8 @@ public:
   typedef ComplexToModulusImageFilter Self;
   typedef UnaryFunctorImageFilter<
     TInputImage, TOutputImage,
-    Function::ComplexToModulus< typename TInputImage::PixelType,
-                                typename TOutputImage::PixelType > > Superclass;
+    Functor::ComplexToModulus< typename TInputImage::PixelType,
+                               typename TOutputImage::PixelType > > Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;

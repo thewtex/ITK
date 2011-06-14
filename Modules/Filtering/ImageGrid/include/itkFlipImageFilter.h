@@ -43,6 +43,11 @@ namespace itk
  * \ingroup GeometricTransforms
  * \ingroup Multithreaded
  * \ingroup Streamed
+ * \ingroup ITK-ImageGrid
+ *
+ * \wiki
+ * \wikiexample{Images/FlipImageFilter,Flip an image over specified axes}
+ * \endwiki
  */
 template< class TImage >
 class ITK_EXPORT FlipImageFilter:
@@ -121,7 +126,7 @@ protected:
    * \sa ImageToImageFilter::ThreadedGenerateData(),
    *     ImageToImageFilter::GenerateData()  */
   void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
-                            int threadId);
+                            ThreadIdType threadId);
 
 private:
   FlipImageFilter(const Self &); //purposely not implemented

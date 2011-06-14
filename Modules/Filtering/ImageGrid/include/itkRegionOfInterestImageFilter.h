@@ -43,6 +43,11 @@ namespace itk
  * \sa ExtractImageFilter
  *
  * \ingroup GeometricTransforms
+ * \ingroup ITK-ImageGrid
+ *
+ * \wiki
+ * \wikiexample{ImageProcessing/RegionOfInterestImageFilter,Extract a portion of an image (region of interest)}
+ * \endwiki
  */
 template< class TInputImage, class TOutputImage >
 class ITK_EXPORT RegionOfInterestImageFilter:
@@ -118,7 +123,7 @@ protected:
    * \sa ImageToImageFilter::ThreadedGenerateData(),
    *     ImageToImageFilter::GenerateData()  */
   void ThreadedGenerateData(const RegionType & outputRegionForThread,
-                            int threadId);
+                            ThreadIdType threadId);
 
 private:
   RegionOfInterestImageFilter(const Self &); //purposely not implemented

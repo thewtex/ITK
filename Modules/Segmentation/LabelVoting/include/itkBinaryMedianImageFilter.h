@@ -43,6 +43,7 @@ namespace itk
  * \sa NeighborhoodIterator
  *
  * \ingroup IntensityImageFilters
+ * \ingroup ITK-LabelVoting
  */
 template< class TInputImage, class TOutputImage >
 class ITK_EXPORT BinaryMedianImageFilter:
@@ -134,7 +135,7 @@ protected:
    * \sa ImageToImageFilter::ThreadedGenerateData(),
    *     ImageToImageFilter::GenerateData() */
   void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
-                            int threadId);
+                            ThreadIdType threadId);
 
 private:
   BinaryMedianImageFilter(const Self &); //purposely not implemented

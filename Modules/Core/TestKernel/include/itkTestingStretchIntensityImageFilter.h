@@ -35,6 +35,7 @@
  * is defined by the user in terms of the minimum and maximum values that
  * the output image should have.
  *
+ * \ingroup ITK-TestKernel
  */
 template< typename  TInputImage, typename  TOutputImage = TInputImage >
 class ITK_EXPORT StretchIntensityImageFilter: public ImageSource< TOutputImage >
@@ -110,7 +111,7 @@ protected:
    * portion of the output image specified by the parameter
    * "outputRegionForThread"
    */
-  void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread, int threadId);
+  void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread, ThreadIdType threadId);
 
 private:
   StretchIntensityImageFilter(const Self &); //purposely not implemented

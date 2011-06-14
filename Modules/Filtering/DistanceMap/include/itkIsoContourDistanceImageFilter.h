@@ -49,6 +49,7 @@ namespace itk
  *
  * \ingroup LevelSetSegmentation
  *
+ * \ingroup ITK-DistanceMap
  */
 
 template< class TInputImage, class TOutputImage >
@@ -145,13 +146,13 @@ protected:
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
-                            int threadId);
+                            ThreadIdType threadId);
 
   void ThreadedGenerateDataFull(const OutputImageRegionType & outputRegionForThread,
-                                int threadId);
+                                ThreadIdType threadId);
 
   void ThreadedGenerateDataBand(const OutputImageRegionType & outputRegionForThread,
-                                int threadId);
+                                ThreadIdType threadId);
 
   void BeforeThreadedGenerateData();
 

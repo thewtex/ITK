@@ -44,6 +44,11 @@ namespace itk
  * to 1.
  *
  * \ingroup DataSources Multithreaded
+ * \ingroup ITK-TestKernel
+ *
+ * \wiki
+ * \wikiexample{SimpleOperations/RandomImageSource,Produce an image of noise}
+ * \endwiki
  */
 template< typename TOutputImage >
 class ITK_EXPORT RandomImageSource:public ImageSource< TOutputImage >
@@ -121,7 +126,7 @@ protected:
 
   virtual void
   ThreadedGenerateData(const OutputImageRegionType &
-                       outputRegionForThread, int threadId);
+                       outputRegionForThread, ThreadIdType threadId);
 
   virtual void GenerateOutputInformation();
 
