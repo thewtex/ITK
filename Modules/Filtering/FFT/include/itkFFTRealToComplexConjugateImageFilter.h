@@ -29,7 +29,7 @@ namespace itk
  *
  * This is a base class for the "forward" or "direct" discrete Fourier
  * Transform.  This is an abstract base class: the actual implementation is
- * provided by the best child available on the the system when the object is
+ * provided by the best child available on the system when the object is
  * created via the object factory system.
  *
  * This class transforms a real input image into its complex Fourier Transform.

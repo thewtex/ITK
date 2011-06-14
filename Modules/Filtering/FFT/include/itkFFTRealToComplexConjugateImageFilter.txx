@@ -120,7 +120,7 @@ FFTRealToComplexConjugateImageFilter< TInputImage, TOutputImage >
   // of a real-to-complex FFT is N * N ... + (N /2+1)
   //                              1   2        d
   // complex numbers.
-  // static_cast prob. not necessary but want to make sure integer
+  // static_cast probably not necessary but want to make sure integer
   // division is used.
   outputSize[0] = static_cast< unsigned int >( inputSize[0] ) / 2 + 1;
   outputStartIndex[0] = inputStartIndex[0];

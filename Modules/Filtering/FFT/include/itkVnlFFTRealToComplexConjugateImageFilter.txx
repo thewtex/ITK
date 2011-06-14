@@ -39,16 +39,6 @@ bool VnlFFTRealToComplexConjugateImageFilter< TInputImage, TOutputImage >::Legal
 
   for ( int l = 1; l <= 3; l++ )
     {
-    // Original code
-//       k = 0;
-//       L10:
-//       if (n % ifac != 0) goto L20;
-//       ++k;
-//       N /= ifac;
-//       goto L10;
-//       L20:
-//       pqr[l-1] = k;
-//       ifac += l;
     for (; n % ifac == 0; )
       {
       n /= ifac;
@@ -104,22 +94,31 @@ VnlFFTRealToComplexConjugateImageFilter< TInputImage, TOutputImage >::GenerateDa
     //#endif
     vec_size *= inputSize[i];
     }
+
   vnl_vector< vcl_complex< InputPixelType > > signal(vec_size);
   for ( i = 0; i < vec_size; i++ )
     {
     signal[i] = in[i];
     }
 
+  // In the following, we use the VNL "bwd_transform" even though this
+  // filter is actually taking the forward transform.  This is done
+  // because the VNL definitions are switched from the standard
+  // definition.  The standard definition uses a negative exponent for
+  // the forward transform and positive for the reverse transform.
+  // VNL does the opposite.
   switch ( num_dims )
     {
     case 1:
       {
       vnl_fft_1d< InputPixelType > v1d(vec_size);
-      v1d.bwd_transform(signal);
+      //v1d.bwd_transform(signal);
+      v1d.vnl_fft_1d< InputPixelType >::base::transform(signal.data_block(), -1);
       }
       break;
     case 2:
       {
+      // The arguments are specified in the order rows, columns.
       vnl_fft_2d< InputPixelType > v2d(inputSize[1], inputSize[0]);
       v2d.vnl_fft_2d< InputPixelType >::base::transform(signal.data_block(), -1);
       }
@@ -133,6 +132,8 @@ VnlFFTRealToComplexConjugateImageFilter< TInputImage, TOutputImage >::GenerateDa
     default:
       break;
     }
+
+  // Copy the VNL output back to the ITK image.
   for ( i = 0; i < vec_size; i++ )
     {
     out[i] = signal[i];

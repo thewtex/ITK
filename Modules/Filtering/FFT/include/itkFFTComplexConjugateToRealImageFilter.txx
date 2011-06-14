@@ -102,8 +102,7 @@ FFTComplexConjugateToRealImageFilter< TInputImage, TOutputImage >
     return;
     }
 
-  //
-  // This is all based on the same function in itk::ShrinkImageFilter
+  // This is all based on the same function in itk::ShrinkImageFilter.
   // ShrinkImageFilter also modifies the image spacing, but spacing
   // has no meaning in the result of an FFT. For an IFFT, since the
   // spacing is propagated to the complex result, we can use the spacing
@@ -118,11 +117,11 @@ FFTComplexConjugateToRealImageFilter< TInputImage, TOutputImage >
   typename OutputImageType::IndexType outputStartIndex;
 
   //
-  // in 4.3.4 of the FFT documentation, they indicate the size of
+  // in 4.3.4 of the FFTW documentation, they indicate the size of
   // of a real-to-complex FFT is N * N ... + (N /2+1)
   //                              1   2        d
   // complex numbers.
-  // going from complex to real, you know the output is at least
+  // Going from complex to real, you know the output is at least
   // twice the size in the last dimension as the input, but it might
   // be 2*size+1.  Consequently, the output of the FFT:R2C operation
   //

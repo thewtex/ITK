@@ -26,9 +26,9 @@ namespace itk
 {
 /** \class FFTWRealToComplexConjugateImageFilter
  *
- * \brief FFTW based Fast Fourier Transform
+ * \brief FFTW based forward Fast Fourier Transform
  *
- * This filter computes the Fourier transform of an image. The implementation is
+ * This filter computes the forward Fourier transform of an image. The implementation is
  * based on the FFTW library.
  * This filter is multithreaded and supports input images with sizes which are not
  * a power of two.

@@ -30,11 +30,11 @@ namespace itk
  *
  * This is a base class for the "inverse" or "reverse" discrete Fourier
  * Transform.  This is an abstract base class: the actual implementation is
- * provided by the best child available on the the system when the object is
+ * provided by the best child available on the system when the object is
  * created via the object factory system.
  *
  * This class transforms a complex conjugate symmetric image into its real
- * spatial domain representation.  If the input in not complex conjugate symmetric, the
+ * spatial domain representation.  If the input is not complex conjugate symmetric, the
  * imaginary component is discarded.  The transform of a real input image has
  * complex conjugate symmetry.  That is, values in the second half of the
  * transform are the complex conjugates of values in the first half.  Some
@@ -89,7 +89,7 @@ public:
   /** This class requires the entire input. */
   virtual void GenerateInputRequestedRegion();
 
-  /** Returns true if the outputs size is the same size as the input, i.e.
+  /** Returns true if the output's size is the same size as the input, i.e.
    * we do not take advantage of complex conjugate symmetry. */
   virtual bool FullMatrix() = 0; // must be implemented in child
 

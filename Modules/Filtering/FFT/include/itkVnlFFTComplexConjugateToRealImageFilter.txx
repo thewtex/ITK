@@ -29,6 +29,22 @@
 namespace itk
 {
 template< class TInputImage, class TOutputImage >
+bool VnlFFTComplexConjugateToRealImageFilter< TInputImage, TOutputImage >::Legaldim(int n)
+{
+  int ifac = 2;
+
+  for ( int l = 1; l <= 3; l++ )
+    {
+    for (; n % ifac == 0; )
+      {
+      n /= ifac;
+      }
+    ifac += l;
+    }
+  return ( n == 1 ); // return false if decomposition failed
+}
+
+template< class TInputImage, class TOutputImage >
 void
 VnlFFTComplexConjugateToRealImageFilter< TInputImage, TOutputImage >::GenerateData()
 {
@@ -66,6 +82,15 @@ VnlFFTComplexConjugateToRealImageFilter< TInputImage, TOutputImage >::GenerateDa
   unsigned int vec_size = 1;
   for ( i = 0; i < num_dims; i++ )
     {
+    //#if 0
+    if ( !this->Legaldim(outputSize[i]) )
+      {
+      ExceptionObject exception(__FILE__, __LINE__);
+      exception.SetDescription("Illegal Array DIM for FFT");
+      exception.SetLocation(ITK_LOCATION);
+      throw exception;
+      }
+    //#endif
     vec_size *= outputSize[i];
     }
 
@@ -77,16 +102,24 @@ VnlFFTComplexConjugateToRealImageFilter< TInputImage, TOutputImage >::GenerateDa
 
   OutputPixelType *out = outputPtr->GetBufferPointer();
 
+  // In the following, we use the VNL "fwd_transform" even though this
+  // filter is actually taking the reverse transform.  This is done
+  // because the VNL definitions are switched from the standard
+  // definition.  The standard definition uses a negative exponent for
+  // the forward transform and positive for the reverse transform.
+  // VNL does the opposite.
   switch ( num_dims )
     {
     case 1:
       {
       vnl_fft_1d< OutputPixelType > v1d(vec_size);
-      v1d.fwd_transform(signal);
+      //v1d.fwd_transform(signal);
+      v1d.vnl_fft_1d< OutputPixelType >::base::transform(signal.data_block(), +1);
       }
       break;
     case 2:
       {
+      // The arguments are specified in the order rows, columns.
       vnl_fft_2d< OutputPixelType > v2d(outputSize[1], outputSize[0]);
       v2d.vnl_fft_2d< OutputPixelType >::base::transform(signal.data_block(), +1);
       }
@@ -100,6 +133,13 @@ VnlFFTComplexConjugateToRealImageFilter< TInputImage, TOutputImage >::GenerateDa
     default:
       break;
     }
+
+  // Copy the VNL output back to the ITK image.
+  // Extract the real part of the signal.
+  // Ideally, the normalization by the number of elements
+  // should have been accounted for by the VNL inverse Fourier transform,
+  // but it is not.  So, we take care of it by dividing the signal by
+  // the vec_size.
   for ( i = 0; i < vec_size; i++ )
     {
     out[i] = signal[i].real() / vec_size;

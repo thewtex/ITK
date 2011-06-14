@@ -25,9 +25,7 @@ namespace itk
  *
  * \brief VNL based forward Fast Fourier Transform.
  *
- * Input image must be a power of two in all directions.
- *
- * \sa ConstantPadImageFilter
+ * Input image must be a multiple of combinations of 2s, 3s, and/or 5s in all dimensions.
  *
  * \ingroup FourierTransform
  *

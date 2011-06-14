@@ -26,11 +26,11 @@ namespace itk
  *
  * \brief VNL based reverse Fast Fourier Transform.
  *
- * Input image must be a power of two in all directions.
+ * Input image must be a multiple of combinations of 2s, 3s, and/or 5s in all dimensions.
  *
  * \ingroup FourierTransform
  *
- * \sa ConstantPadImageFilter
+ * \sa FFTComplexConjugateToRealImageFilter
  * \ingroup ITK-FFT
  *
  * \wiki
@@ -78,8 +78,10 @@ public:
 protected:
   VnlFFTComplexConjugateToRealImageFilter()  {}
   virtual ~VnlFFTComplexConjugateToRealImageFilter(){}
-private:
+  ///** Method to check if an array dimension is legal for PFA FFT */
+  bool Legaldim(int n);
 
+private:
   VnlFFTComplexConjugateToRealImageFilter(const Self &); //purposely not
                                                          // implemented
   void operator=(const Self &);                          //purposely not
