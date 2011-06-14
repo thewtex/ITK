@@ -51,6 +51,47 @@ namespace itk
  * then increases the number of control points at each level so that
  * the B-spline n-D grid is refined to twice the previous level.
  *
+ * There are two different B-spline objects that can be produced.
+ * 1) Curve: <x(u),y(u)>
+ * 2) Deformation:  <dx(u,v), dy(u,v)>
+ * (the above are 2D, but the filter works in ND)
+ *
+ * Each object has a parametric dimension and a data dimension.
+ * The parametric dimension for a curve is 1. The parametric dimension
+ * for a deformation is 2. The data dimension for both a curve or and
+ * a deformation is the dimensionality of the input points.
+ *
+ * The output is an image defining the parametric domain where each pixel
+ * is the B-spline object value.  So for 1), the output is an 1-D image  where
+ * each voxel contains the approximated (x,y,z) location.  For 2), the output
+ * is a 2-D image where each voxel contains the approximated (dx, dy)
+ * vector.  This is why the output is always an n-D image with a vector as a
+ * pixel type (B-spline scalar fields have a vector dimension of 1).
+ *
+ * There are two parts to fitting scattered data: 1) the parameterization
+ * assignment problem and 2) the fitting problem given the parameterization.
+ * This filter only addresses the second problem. The interpretation of this is
+ * that if you only provide a set of points, there are a number of curves that
+ * could be produce based on the ordering of the points.
+ * The parameterization must be specified using SetPoint, where the actual
+ * coordinates of the point are set via SetPointData. For example, to compute a
+ * spline through the (ordered) 2D points (5,6) and (7,8), you should use:
+ *
+ * typedef itk::Vector< float, 2 > DataType;
+ * PointSetType::PointType param0;
+ * param0[0] = 0.0;
+ * DataType p0;
+ * p0[0] =  10.0; p0[1]= 10.0;
+ * pointSet->SetPoint(0, param0);
+ * pointSet->SetPointData( 0, p0 );
+ *
+ * PointSetType::PointType param1;
+ * param1[0] = 1.0;
+ * DataType p1;
+ * p1[0] =  80.0; p1[1]= 50.0;
+ * pointSet->SetPoint(1, param1);
+ * pointSet->SetPointData( 1, p1 );
+ *
  * \author Nicholas J. Tustison
  *
  *
