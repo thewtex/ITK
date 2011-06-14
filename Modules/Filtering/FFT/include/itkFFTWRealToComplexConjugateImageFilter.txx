@@ -28,16 +28,24 @@
 namespace itk
 {
 /** TODO:  There should be compile time type checks so that
-           if only USE_FFTWF is defined, then only floats are valid.
+           if only USE_FFTWF is defined, then only floats are valid,
            and if USE_FFTWD is defined, then only doubles are valid.
 */
 
 template< class TInputImage, class TOutputImage >
-void
-FFTWRealToComplexConjugateImageFilter< TInputImage, TOutputImage >::GenerateData()
+FFTWRealToComplexConjugateImageFilter< TInputImage, TOutputImage >
+::FFTWRealToComplexConjugateImageFilter()
 {
-  // get pointers to the input and output
-  typename InputImageType::ConstPointer inputPtr  = this->GetInput();
+  m_PlanRigor = FFTWGlobalConfiguration::GetPlanRigor();
+}
+
+template< class TInputImage, class TOutputImage >
+void
+FFTWRealToComplexConjugateImageFilter< TInputImage, TOutputImage >
+::GenerateData()
+{
+  // Get pointers to the input and output.
+  typename InputImageType::ConstPointer inputPtr = this->GetInput();
   typename OutputImageType::Pointer outputPtr = this->GetOutput();
 
   if ( !inputPtr || !outputPtr )
@@ -45,30 +53,28 @@ FFTWRealToComplexConjugateImageFilter< TInputImage, TOutputImage >::GenerateData
     return;
     }
 
-  // we don't have a nice progress to report, but at least this simple line
-  // reports the begining and the end of the process
-  ProgressReporter progress(this, 0, 1);
+  // We don't have a nice progress to report, but at least this simple line
+  // reports the begining and the end of the process.
+  ProgressReporter progress( this, 0, 1 );
 
-  // allocate output buffer memory
+  // Allocate output buffer memory.
   outputPtr->SetBufferedRegion( outputPtr->GetRequestedRegion() );
   outputPtr->Allocate();
 
-  const typename InputImageType::SizeType &   inputSize =
-    inputPtr->GetLargestPossibleRegion().GetSize();
-  const typename OutputImageType::SizeType &   outputSize =
-    outputPtr->GetLargestPossibleRegion().GetSize();
+  const InputSizeType inputSize = inputPtr->GetLargestPossibleRegion().GetSize();
+  const OutputSizeType outputSize = outputPtr->GetLargestPossibleRegion().GetSize();
 
-  // figure out sizes
-  // size of input and output aren't the same which is handled in the superclass,
+  // Figure out sizes.
+  // Size of input and output aren't the same which is handled in the superclass,
   // sort of.
-  // the input size and output size only differ in the fastest moving dimension
-  unsigned int total_inputSize = 1;
-  unsigned int total_outputSize = 1;
+  // The input size and output size only differ in the fastest moving dimension.
+  unsigned int totalInputSize = 1;
+  unsigned int totalOutputSize = 1;
 
   for ( unsigned i = 0; i < ImageDimension; i++ )
     {
-    total_inputSize *= inputSize[i];
-    total_outputSize *= outputSize[i];
+    totalInputSize *= inputSize[i];
+    totalOutputSize *= outputSize[i];
     }
 
   typename FFTWProxyType::PlanType plan;
@@ -77,41 +83,41 @@ FFTWRealToComplexConjugateImageFilter< TInputImage, TOutputImage >::GenerateData
   int flags = m_PlanRigor;
   if( !m_CanUseDestructiveAlgorithm )
     {
-    // if the input is about to be destroyed, there is no need to force fftw
-    // to use an non destructive algorithm. If it is not released however,
-    // we must be careful to not destroy it.
+    // If the input is about to be destroyed, there is no need to
+    // force FFTW to use a non-destructive algorithm. If it is not
+    // released however, we must be careful to not destroy it.
     flags = flags | FFTW_PRESERVE_INPUT;
     }
-  int *sizes = new int[ImageDimension];
-  for(unsigned int i = 0; i < ImageDimension; i++)
+  int sizes[ImageDimension];
+  for( unsigned int i = 0; i < ImageDimension; i++ )
     {
     sizes[(ImageDimension - 1) - i] = inputSize[i];
     }
 
-  plan = FFTWProxyType::Plan_dft_r2c(ImageDimension,sizes,
-                                    in,
-                                    out,
-                                    flags,
-                                    this->GetNumberOfThreads());
-  delete [] sizes;
-  FFTWProxyType::Execute(plan);
-  FFTWProxyType::DestroyPlan(plan);
+  plan = FFTWProxyType::Plan_dft_r2c( ImageDimension,sizes,
+                                      in,
+                                      out,
+                                      flags,
+                                      this->GetNumberOfThreads() );
+  FFTWProxyType::Execute( plan );
+  FFTWProxyType::DestroyPlan( plan );
 }
 
 template< class TInputImage, class TOutputImage >
 bool
-FFTWRealToComplexConjugateImageFilter< TInputImage, TOutputImage >::FullMatrix()
+FFTWRealToComplexConjugateImageFilter< TInputImage, TOutputImage >
+::FullMatrix()
 {
   return false;
 }
 
 template< class TInputImage, class TOutputImage >
 void
-FFTWRealToComplexConjugateImageFilter< TInputImage, TOutputImage >::
-UpdateOutputData(DataObject * output)
+FFTWRealToComplexConjugateImageFilter< TInputImage, TOutputImage >
+::UpdateOutputData(DataObject * output)
 {
-  // we need to catch that information now, because it is changed later
-  // during the pipeline execution, and thus can't be grabbed in
+  // We need to catch that information now, because it is changed
+  // later during the pipeline execution, and thus can't be grabbed in
   // GenerateData().
   m_CanUseDestructiveAlgorithm = this->GetInput()->GetReleaseDataFlag();
   Superclass::UpdateOutputData( output );
@@ -122,9 +128,10 @@ void
 FFTWRealToComplexConjugateImageFilter< TInputImage, TOutputImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
-  Superclass::PrintSelf(os, indent);
+  Superclass::PrintSelf( os, indent );
 
-  os << indent << "PlanRigor: " << FFTWGlobalConfiguration::GetPlanRigorName(m_PlanRigor) << " (" << m_PlanRigor << ")" << std::endl;
+  os << indent << "PlanRigor: " << FFTWGlobalConfiguration::GetPlanRigorName( m_PlanRigor )
+     << " (" << m_PlanRigor << ")" << std::endl;
 }
 
 } // namespace itk
