@@ -56,6 +56,15 @@ LineSpatialObject< TDimension >
   return m_Points;
 }
 
+template< unsigned int TDimension >
+typename LineSpatialObject< TDimension >::ConstPointListType &
+LineSpatialObject< TDimension >
+::GetPoints() const
+{
+  itkDebugMacro("Getting LinePoint list");
+  return m_Points;
+}
+
 /** Set the list of Line points. */
 template< unsigned int TDimension >
 void
