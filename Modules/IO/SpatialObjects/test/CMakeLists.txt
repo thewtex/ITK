@@ -1,8 +1,14 @@
 itk_module_test()
+
+if(NewMetaObjectTypeTest)
+  set(itkNewMetaObjectTypeTest itkNewMetaObjectTypeTest.cxx)
+endif()
+
 set(ITK-IO-SpatialObjectsTests
 itkPolygonGroupSpatialObjectXMLFileTest.cxx
 itkIOSpatialobjectsHeaderTest.cxx
 itkReadWriteSpatialObjectTest.cxx
+${itkNewMetaObjectTypeTest}
 )
 
 CreateTestDriver(ITK-IO-SpatialObjects  "${ITK-IO-SpatialObjects-Test_LIBRARIES}" "${ITK-IO-SpatialObjectsTests}")
@@ -21,3 +27,12 @@ itk_add_test(NAME itkReadWriteSpatialObjectTest2
 itk_add_test(NAME itkPolygonGroupSpatialObjectXMLFileTest
       COMMAND ITK-IO-SpatialObjectsTestDriver itkPolygonGroupSpatialObjectXMLFileTest
               ${ITK_TEST_OUTPUT_DIR})
+
+#
+# this test won't work unless/until MetaIO supports
+# dynamically adding new metaObject Types.
+if(NewMetaObjectTypeTest)
+  itk_add_test(NAME itkNewMetaObjectTypeTest
+    COMMAND ITK-IO-SpatialObjectsTestDriver itkNewMetaObjectTypeTest
+    ${ITK_TEST_OUTPUT_DIR}/NewMetaObjectType.meta)
+endif()
