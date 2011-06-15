@@ -15,42 +15,46 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkMetaDTITubeConverter_h
-#define __itkMetaDTITubeConverter_h
+#ifndef __itkMetaImageMaskConverter_h
+#define __itkMetaImageMaskConverter_h
 
+//
+// to avoid an Internal Compiler Error in Visual Studio 6.0
+//
+#include "metaImage.h"
+#include "itkImageMaskSpatialObject.h"
 #include "itkMetaConverterBase.h"
-#include "metaDTITube.h"
-#include "itkDTITubeSpatialObject.h"
 
 namespace itk
 {
+
 template< unsigned int NDimensions = 3 >
-class ITK_EXPORT MetaDTITubeConverter :
-    public MetaConverterBase< NDimensions >
+class ITK_EXPORT MetaImageMaskConverter :
+    public MetaImageConverter< NDimensions, unsigned char >
 {
 public:
   /** Standard class typedefs */
-  typedef MetaDTITubeConverter             Self;
-  typedef MetaConverterBase< NDimensions > Superclass;
-  typedef SmartPointer< Self >             Pointer;
-  typedef SmartPointer< const Self >       ConstPointer;
+  typedef MetaImageMaskConverter                           Self;
+  typedef MetaImageConverter< NDimensions, unsigned char > Superclass;
+  typedef SmartPointer< Self >                             Pointer;
+  typedef SmartPointer< const Self >                       ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
 
   /** Run-time type information (and related methods). */
-  itkTypeMacro(MetaDTITubeConverter, MetaConverterBase);
+  itkTypeMacro(MetaImageMaskConverter, MetaImageConverter);
 
   typedef typename Superclass::SpatialObjectType SpatialObjectType;
   typedef typename SpatialObjectType::Pointer    SpatialObjectPointer;
   typedef typename Superclass::MetaObjectType    MetaObjectType;
 
   /** Specific class types for conversion */
-  typedef DTITubeSpatialObject<NDimensions>               DTITubeSpatialObjectType;
-  typedef typename DTITubeSpatialObjectType::Pointer      DTITubeSpatialObjectPointer;
-  typedef typename DTITubeSpatialObjectType::ConstPointer DTITubeSpatialObjectConstPointer;
-  typedef MetaDTITube                                     DTITubeMetaObjectType;
-
+  typedef ImageMaskSpatialObject<NDimensions> ImageMaskSpatialObjectType;
+  typedef typename ImageMaskSpatialObjectType::Pointer      ImageMaskSpatialObjectPointer;
+  typedef typename ImageMaskSpatialObjectType::ConstPointer ImageMaskSpatialObjectConstPointer;
+  typedef MetaImage                                         ImageMaskMetaObjectType;
+  typedef typename Superclass::ImageType                    ImageType;
   /** Convert the MetaObject to Spatial Object */
   virtual SpatialObjectPointer MetaObjectToSpatialObject(const MetaObjectType *mo);
 
@@ -61,18 +65,18 @@ protected:
   /** Create the specific MetaObject for this class */
   virtual MetaObjectType *CreateMetaObject();
 
-  MetaDTITubeConverter();
-  ~MetaDTITubeConverter() {}
+  MetaImageMaskConverter();
+  ~MetaImageMaskConverter() {}
 
 private:
-  MetaDTITubeConverter(const Self &);   //purposely not implemented
+  MetaImageMaskConverter(const Self &);   //purposely not implemented
   void operator=(const Self &);       //purposely not implemented
-
 };
+
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-  #include "itkMetaDTITubeConverter.txx"
+  #include "itkMetaImageMaskConverter.txx"
 #endif
 
 #endif

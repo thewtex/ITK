@@ -28,13 +28,22 @@ MetaBlobConverter< NDimensions >
 ::MetaBlobConverter()
 {}
 
+template< unsigned int NDimensions >
+typename MetaBlobConverter< NDimensions >::MetaObjectType *
+MetaBlobConverter< NDimensions>
+::CreateMetaObject()
+{
+  return dynamic_cast<MetaObjectType *>(new BlobMetaObjectType);
+}
+
 /** Convert a metaBlob into an Blob SpatialObject  */
 template< unsigned int NDimensions >
 typename MetaBlobConverter< NDimensions >::SpatialObjectPointer
 MetaBlobConverter< NDimensions >
-::MetaBlobToBlobSpatialObject(MetaBlob *Blob)
+::MetaObjectToSpatialObject(const MetaObjectType *mo)
 {
-  typedef itk::BlobSpatialObject< NDimensions > BlobSpatialObjectType;
+  const BlobMetaObjectType *Blob = dynamic_cast<const BlobMetaObjectType *>(mo);
+
   typename BlobSpatialObjectType::Pointer blob = BlobSpatialObjectType::New();
 
   //typedef BlobSpatialObjectType::VectorType VectorType;
@@ -59,8 +68,7 @@ MetaBlobConverter< NDimensions >
   typedef itk::SpatialObjectPoint< NDimensions > BlobPointType;
   typedef BlobPointType *                        BlobPointPointer;
 
-  typedef MetaBlob::PointListType ListType;
-  ListType::iterator it2 = Blob->GetPoints().begin();
+  MetaBlob::PointListType::const_iterator it2 = Blob->GetPoints().begin();
 
   vnl_vector< double > v(ndims);
 
@@ -87,22 +95,22 @@ MetaBlobConverter< NDimensions >
     it2++;
     }
 
-  return blob;
+  return SpatialObjectPointer(blob.GetPointer());
 }
 
 /** Convert an Blob SpatialObject into a metaBlob */
 template< unsigned int NDimensions >
-MetaBlob *
+typename MetaBlobConverter<NDimensions>::MetaObjectType *
 MetaBlobConverter< NDimensions >
-::BlobSpatialObjectToMetaBlob(SpatialObjectType *spatialObject)
+::SpatialObjectToMetaObject(const SpatialObjectType *spatialObject)
 {
-  MetaBlob *Blob = new MetaBlob(NDimensions);
-
+  BlobMetaObjectType *Blob = new MetaBlob(NDimensions);
+  BlobSpatialObjectConstPointer BlobSO = dynamic_cast<const BlobSpatialObjectType *>(spatialObject);
   // fill in the Blob information
 
-  typename SpatialObjectType::PointListType::const_iterator i;
-  for ( i = dynamic_cast< SpatialObjectType * >( spatialObject )->GetPoints().begin();
-        i != dynamic_cast< SpatialObjectType * >( spatialObject )->GetPoints().end();
+  typename BlobSpatialObjectType::PointListType::const_iterator i;
+  for ( i = BlobSO->GetPoints().begin();
+        i != BlobSO->GetPoints().end();
         i++ )
     {
     BlobPnt *pnt = new BlobPnt(NDimensions);
@@ -152,33 +160,6 @@ MetaBlobConverter< NDimensions >
   return Blob;
 }
 
-/** Read a meta file give the type */
-template< unsigned int NDimensions >
-typename MetaBlobConverter< NDimensions >::SpatialObjectPointer
-MetaBlobConverter< NDimensions >
-::ReadMeta(const char *name)
-{
-  SpatialObjectPointer spatialObject;
-  MetaBlob *           Blob = new MetaBlob();
-
-  Blob->Read(name);
-  spatialObject = MetaBlobToBlobSpatialObject(Blob);
-
-  return spatialObject;
-}
-
-/** Write a meta Blob file */
-template< unsigned int NDimensions >
-bool
-MetaBlobConverter< NDimensions >
-::WriteMeta(SpatialObjectType *spatialObject, const char *name)
-{
-  MetaBlob *Blob = BlobSpatialObjectToMetaBlob(spatialObject);
-
-  Blob->BinaryData(true);
-  Blob->Write(name);
-  return true;
-}
 } // end namespace itk
 
 #endif
