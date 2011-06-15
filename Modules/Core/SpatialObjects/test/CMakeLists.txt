@@ -28,7 +28,11 @@ itkEllipseSpatialObjectTest.cxx
 itkMeshSpatialObjectTest.cxx
 itkArrowSpatialObjectTest.cxx
 itkLineSpatialObjectTest.cxx
+<<<<<<< HEAD
 itkSpatialObjectTreeContainerIteratorTest.cxx
+=======
+itkNewMetaObjectTypeTest.cxx
+>>>>>>> ENH: Add ability to add SpatialObject types at runtime
 )
 
 CreateTestDriver(ITK-SpatialObjects  "${ITK-SpatialObjects-Test_LIBRARIES}" "${ITK-SpatialObjectsTests}")
@@ -95,3 +99,6 @@ itk_add_test(NAME itkLineSpatialObjectTest
       COMMAND ITK-SpatialObjectsTestDriver itkLineSpatialObjectTest)
 itk_add_test(NAME itkSpatialObjectTreeContainerIteratorTest
       COMMAND ITK-SpatialObjectsTestDriver itkSpatialObjectTreeContainerIteratorTest)
+itk_add_test(NAME itkNewMetaObjectTypeTest
+      COMMAND ITK-SpatialObjectsTestDriver itkNewMetaObjectTypeTest
+      ${ITK_TEST_OUTPUT_DIR}/NewMetaObjectType.meta)
