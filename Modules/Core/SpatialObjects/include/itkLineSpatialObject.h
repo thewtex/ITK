@@ -52,6 +52,7 @@ public:
   typedef double                                       ScalarType;
   typedef LineSpatialObjectPoint< TDimension >         LinePointType;
   typedef std::vector< LinePointType >                 PointListType;
+  typedef const PointListType                          ConstPointListType;
   typedef typename Superclass::SpatialObjectPointType  SpatialObjectPointType;
   typedef typename Superclass::PointType               PointType;
   typedef typename Superclass::TransformType           TransformType;
