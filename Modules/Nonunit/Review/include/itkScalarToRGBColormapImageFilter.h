@@ -30,6 +30,17 @@ namespace itk
  * This class is parameterized over the type of the input image and
  * the type of the output image.
  *
+ * The input image's scalar pixel values are mapped into a color map.
+ * The color map is specified by passing the SetColormap function one of the
+ * predefined maps. The following selects the "Hot" colormap:
+ * \code
+ * RGBFilterType::Pointer colormapImageFilter = RGBFilterType::New();
+ * colormapImageFilter->SetColormap( RGBFilterType::Hot );
+ * \endcode
+ *
+ * The input image's scalar range is used as the range to map to the entire
+ * range of colors.
+ *
  * This code was contributed in the Insight Journal paper:
  * "Meeting Andy Warhol Somewhere Over the Rainbow: RGB Colormapping and ITK"
  * by Tustison N., Zhang H., Lehmann G., Yushkevich P., Gee J.
