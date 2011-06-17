@@ -65,7 +65,7 @@ template< class TTreeType >
 PostOrderTreeIterator< TTreeType >::PostOrderTreeIterator(TTreeType *tree):
   TreeIteratorBase< TTreeType >(tree, NULL)
 {
-  this->m_Position = const_cast< TreeNode< ValueType > * >( tree->GetRoot() );
+  this->m_Position = reinterpret_cast<TreeNodeType *>(const_cast< TreeNode< ValueType > * >( tree->GetRoot() ));
 
   if ( this->m_Position == NULL )
     {
@@ -123,7 +123,7 @@ PostOrderTreeIterator< TTreeType >::FindNextNode() const
     return FindMostRightLeaf(sister);
     }
 
-  return this->m_Position->GetParent();
+  return reinterpret_cast<TreeNodeType *>(this->m_Position->GetParent());
 }
 
 /** Find the sister node */
@@ -136,13 +136,13 @@ PostOrderTreeIterator< TTreeType >::FindSister(TreeNodeType *node) const
     return NULL;
     }
 
-  TreeNodeType *parent = node->GetParent();
+  TreeNodeType *parent = reinterpret_cast<TreeNodeType *>(node->GetParent());
   int           childPosition = parent->ChildPosition(node);
   int           lastChildPosition = parent->CountChildren() - 1;
 
   while ( childPosition < lastChildPosition )
     {
-    TreeNodeType *sister = parent->GetChild(childPosition + 1);
+    TreeNodeType *sister = reinterpret_cast<TreeNodeType *>(parent->GetChild(childPosition + 1));
 
     if ( sister != NULL )
       {
@@ -166,7 +166,7 @@ PostOrderTreeIterator< TTreeType >::FindMostRightLeaf(TreeNodeType *node) const
 
     do
       {
-      helpNode = node->GetChild(i);
+      helpNode = reinterpret_cast<TreeNodeType *>(node->GetChild(i));
       i++;
       }
     while ( helpNode == NULL && i < childCount );
