@@ -18,7 +18,7 @@
 #ifndef __itkGPUPDEDeformableRegistrationFunction_h
 #define __itkGPUPDEDeformableRegistrationFunction_h
 
-#include "itkFiniteDifferenceFunction.h"
+#include "itkGPUFiniteDifferenceFunction.h"
 
 namespace itk
 {

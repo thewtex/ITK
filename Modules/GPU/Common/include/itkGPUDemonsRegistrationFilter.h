@@ -84,20 +84,22 @@ public:
   itkTypeMacro(GPUDemonsRegistrationFilter,
                GPUPDEDeformableRegistrationFilter);
 
-  /** Inherit types from superclass. */
-  typedef typename Superclass::TimeStepType TimeStepType;
+  /** Inherit types from GPUSuperclass. */
+  typedef typename GPUSuperclass::TimeStepType TimeStepType;
 
   /** FixedImage image type. */
-  typedef TFixedImage                     FixedImageType;
-  typedef typename TFixedImage::Pointer   FixedImagePointer;
+  typedef typename GPUSuperclass::FixedImageType    FixedImageType;
+  typedef typename GPUSuperclass::FixedImagePointer FixedImagePointer;
 
   /** MovingImage image type. */
-  typedef TMovingImage                    MovingImageType;
-  typedef typename TMovingImage::Pointer  MovingImagePointer;
+  typedef typename GPUSuperclass::MovingImageType    MovingImageType;
+  typedef typename GPUSuperclass::MovingImagePointer MovingImagePointer;
 
   /** Deformation field type. */
-  typedef TDeformationField                     DeformationFieldType;
-  typedef typename TDeformationField::Pointer   DeformationFieldPointer;
+  typedef typename GPUSuperclass::DeformationFieldType
+  DeformationFieldType;
+  typedef typename GPUSuperclass::DeformationFieldPointer
+  DeformationFieldPointer;
 
   /** FiniteDifferenceFunction type. */
   typedef typename Superclass::FiniteDifferenceFunctionType
@@ -107,15 +109,43 @@ public:
   typedef GPUDemonsRegistrationFunction< FixedImageType, MovingImageType,
                                       DeformationFieldType >  GPUDemonsRegistrationFunctionType;
 
+  /** Get the metric value. The metric value is the mean square difference
+   * in intensity between the fixed image and transforming moving image
+   * computed over the the overlapping region between the two images.
+   * This is value is only available for the previous iteration and
+   * NOT the current iteration. */
+  virtual double GetMetric() const;
+
+  /** Switch between using the fixed image and moving image gradient
+   * for computing the deformation field updates. */
+  itkSetMacro(UseMovingImageGradient, bool);
+  itkGetConstMacro(UseMovingImageGradient, bool);
+  itkBooleanMacro(UseMovingImageGradient);
+
+  /** Set/Get the threshold below which the absolute difference of
+   * intensity yields a match. When the intensities match between a
+   * moving and fixed image pixel, the update vector (for that
+   * iteration) will be the zero vector. Default is 0.001. */
+  virtual void SetIntensityDifferenceThreshold(double);
+
+  virtual double GetIntensityDifferenceThreshold() const;
+
 protected:
   GPUDemonsRegistrationFilter();
   ~GPUDemonsRegistrationFilter() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
+  /** Initialize the state of filter and equation before each iteration. */
+  virtual void InitializeIteration();
+
+  /** Apply update. */
+  virtual void ApplyUpdate(const TimeStepType& dt);
+
 private:
   GPUDemonsRegistrationFilter(const Self &); //purposely not implemented
   void operator=(const Self &);           //purposely not implemented
 
+  bool m_UseMovingImageGradient;
 };
 
 /** \class GPUDemonsRegistrationFilterFactory
@@ -126,7 +156,7 @@ class GPUDemonsRegistrationFilterFactory : public itk::ObjectFactoryBase
 {
 public:
   typedef GPUDemonsRegistrationFilterFactory     Self;
-  typedef ObjectFactoryBase                      Superclass;
+  typedef ObjectFactoryBase                      GPUSuperclass;
   typedef SmartPointer<Self>                     Pointer;
   typedef SmartPointer<const Self>               ConstPointer;
 
