@@ -6,4 +6,9 @@ particular, you will find here the classes that enable you to convert an
 itkImage into an vtkImageData, and to convert a vtkImageData into an itkImage,
 all without having to duplicate their buffers.")
 
-itk_module(ITK-VTK DEPENDS ITK-Common DESCRIPTION "${DOCUMENTATION}")
+itk_module(ITK-VTK
+  DEPENDS
+    ITK-Common
+  DESCRIPTION
+    "${DOCUMENTATION}"
+)

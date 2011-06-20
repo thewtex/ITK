@@ -5,4 +5,13 @@ This type of filtering is convenient as a preprocessing stage of segmentation
 algorithms. You may find useful as well the filters in the CurvatureFlow module
 and the SmoothingModule.")
 
-itk_module(ITK-AnisotropicSmoothing DEPENDS ITK-ImageGrid ITK-CurvatureFlow ITK-FiniteDifference TEST_DEPENDS ITK-TestKernel DESCRIPTION "${DOCUMENTATION}")
+itk_module(ITK-AnisotropicSmoothing
+  DEPENDS
+    ITK-ImageGrid
+    ITK-CurvatureFlow
+    ITK-FiniteDifference
+  TEST_DEPENDS
+    ITK-TestKernel
+  DESCRIPTION
+    "${DOCUMENTATION}"
+)
