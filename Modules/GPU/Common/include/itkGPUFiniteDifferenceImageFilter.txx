@@ -88,11 +88,16 @@ GPUFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilter >
 
   while ( !this->Halt() && m_ElapsedIterations < 200)
     {
+
+    //this->GetOutput()->GetBufferPointer();
     this->InitializeIteration(); // An optional method for precalculating
                                  // global values, or otherwise setting up
                                  // for the next iteration
+    //this->GetOutput()->GetBufferPointer();
     dt = this->GPUCalculateChange();
+    //this->GetOutput()->GetBufferPointer();
     this->GPUApplyUpdate(dt);
+    //this->GetOutput()->GetBufferPointer();
     ++m_ElapsedIterations;
 
     // Invoke the iteration event.

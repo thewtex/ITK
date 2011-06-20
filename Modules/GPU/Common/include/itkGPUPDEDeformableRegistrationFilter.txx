@@ -316,7 +316,7 @@ GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField
       }
 
     //copy the deformation output to gpu
-    //output->GetGPUDataManager()->SetCPUBufferDirty();
+    output->GetGPUDataManager()->SetGPUDirtyFlag(true);
     }
 }
 
@@ -393,7 +393,10 @@ GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField
 ::PostProcessOutput()
 {
   this->GPUSuperclass::PostProcessOutput();
-  m_TempField->Initialize();
+  m_TempField->Initialize(); //release memory
+
+  //update the cpu buffer from gpu
+  this->GetOutput()->GetBufferPointer();
 }
 
 /*
@@ -406,6 +409,8 @@ GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField
 {
   this->GPUSuperclass::Initialize();
   m_StopRegistrationFlag = false;
+
+  this->AllocateSmoothingBuffer();
 }
 
 /*
@@ -419,8 +424,6 @@ GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField
   typedef typename DeformationFieldType::PixelType       VectorType;
   typedef typename VectorType::ValueType                 ScalarType;
   typedef GaussianOperator< ScalarType, ImageDimension > OperatorType;
-
-  this->AllocateSmoothingBuffer();
 
   // image arguments
   typedef typename itk::GPUTraits< TDeformationField >::Type   GPUBufferImage;
@@ -575,6 +578,9 @@ GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField
   m_GPUSmoothingKernel->SetBufferSize( sizeof(float)*m_SmoothingKernelSize );
   m_GPUSmoothingKernel->SetCPUBufferPointer( m_SmoothingKernel );
   m_GPUSmoothingKernel->Allocate();
+
+  m_GPUSmoothingKernel->SetGPUDirtyFlag(true);
+
 
 }
 

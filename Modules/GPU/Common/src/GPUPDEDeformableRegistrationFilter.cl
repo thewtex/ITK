@@ -29,6 +29,7 @@ __kernel void SmoothDeformationField(__global OUTPIXELTYPE *out,
                           int width)
 {
   int gix = get_global_id(0);
+
   OUTPIXELTYPE dotx;
   int i, ext;
   int radius = ksize / 2;
@@ -68,6 +69,13 @@ __kernel void SmoothDeformationField(__global OUTPIXELTYPE *out,
   int radius = ksize / 2;
 
   unsigned int gidx = DIM * (width*giy + gix);
+
+  /*if (gix < ksize) {
+    out[gidx*DIM] = ksize;
+    out[gidx*DIM+1] = width;
+    out[gidx*DIM+2] = filter[0];
+  }
+  return;*/
 
   if(gix < width && giy < height)
   {

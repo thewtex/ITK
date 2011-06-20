@@ -67,8 +67,8 @@ public:
 int itkGPUDemonsRegistrationFilterTest(int argc, char *argv[])
 {
   // register object factory for GPU image and filter
-  itk::ObjectFactoryBase::RegisterFactory( itk::GPUImageFactory::New() );
-  itk::ObjectFactoryBase::RegisterFactory( itk::GPUMeanImageFilterFactory::New() );
+  //itk::ObjectFactoryBase::RegisterFactory( itk::GPUImageFactory::New() );
+  //itk::ObjectFactoryBase::RegisterFactory( itk::GPUMeanImageFilterFactory::New() );
 
   if( argc < 4 )
     {
@@ -145,7 +145,7 @@ int itkGPUDemonsRegistrationFilterTest(int argc, char *argv[])
   filter->SetFixedImage( fixedImageCaster->GetOutput() );
   filter->SetMovingImage( matcher->GetOutput() );
 
-  filter->SetNumberOfIterations( 50 );
+  filter->SetNumberOfIterations( 5 );
   filter->SetStandardDeviations( 1.0 );
   filter->Update();
 
