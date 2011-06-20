@@ -93,7 +93,7 @@ void GPUImage< TPixel, VImageDimension >::SetPixel(const IndexType & index, cons
 template <class TPixel, unsigned int VImageDimension>
 const TPixel & GPUImage< TPixel, VImageDimension >::GetPixel(const IndexType & index) const
 {
-  //m_GPUManager->MakeCPUBufferUpToDate();
+  m_GPUManager->MakeCPUBufferUpToDate();
   return Superclass::GetPixel( index );
 }
 
@@ -120,11 +120,25 @@ TPixel & GPUImage< TPixel, VImageDimension >::operator[](const IndexType & index
 }
 
 template <class TPixel, unsigned int VImageDimension>
+const TPixel & GPUImage< TPixel, VImageDimension >::operator[](const IndexType & index) const
+{
+  m_GPUManager->MakeCPUBufferUpToDate();
+  return Superclass::operator[]( index );
+}
+
+template <class TPixel, unsigned int VImageDimension>
 void GPUImage< TPixel, VImageDimension >::SetPixelContainer(PixelContainer *container)
 {
   Superclass::SetPixelContainer( container );
   m_GPUManager->SetCPUDirtyFlag( false );
   m_GPUManager->SetGPUDirtyFlag( true );
+}
+
+template <class TPixel, unsigned int VImageDimension>
+void GPUImage< TPixel, VImageDimension >::MakeUpToDate()
+{
+   m_GPUManager->MakeCPUBufferUpToDate();
+   m_GPUManager->MakeGPUBufferUpToDate();
 }
 
 template <class TPixel, unsigned int VImageDimension>

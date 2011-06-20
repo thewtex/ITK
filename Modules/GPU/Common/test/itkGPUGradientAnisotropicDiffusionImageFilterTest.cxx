@@ -78,52 +78,63 @@ int itkGPUGradientAnisotropicDiffusionImageFilterTest(int argc, char *argv[])
 
   // -------
 
-  itk::TimeProbe cputimer;
-  cputimer.Start();
-
-  CPUFilter->SetInput( reader->GetOutput() );
-  CPUFilter->SetNumberOfIterations( 10 );
-  CPUFilter->SetTimeStep( 0.0625 );//125 );
-  CPUFilter->SetConductanceParameter( 3.0 );
-  CPUFilter->UseImageSpacingOn();
-  CPUFilter->Update();
-
-  cputimer.Stop();
-  std::cout << "CPU Anisotropic diffusion took " << cputimer.GetMeanTime() << " seconds.\n" << std::endl;
-
-  // -------
-
-  itk::TimeProbe gputimer;
-  gputimer.Start();
-
-  GPUFilter->SetInput( reader->GetOutput() );
-  GPUFilter->SetNumberOfIterations( 10 );
-  GPUFilter->SetTimeStep( 0.0625 );//125 );
-  GPUFilter->SetConductanceParameter( 3.0 );
-  GPUFilter->UseImageSpacingOn();
-  GPUFilter->Update();
-
-  gputimer.Stop();
-  std::cout << "GPU Anisotropic diffusion took " << gputimer.GetMeanTime() << " seconds.\n" << std::endl;
-
-  // ---------------
-  // RMS Error check
-  // ---------------
-
-  double diff = 0;
-  unsigned int nPix = 0;
-  itk::ImageRegionIterator<OutputImageType> cit(CPUFilter->GetOutput(), CPUFilter->GetOutput()->GetLargestPossibleRegion());
-  itk::ImageRegionIterator<OutputImageType> git(GPUFilter->GetOutput(), GPUFilter->GetOutput()->GetLargestPossibleRegion());
-
-  for(cit.GoToBegin(), git.GoToBegin(); !cit.IsAtEnd(); ++cit, ++git)
+  // test 1~8 threads for CPU
+  for(int nThreads = 1; nThreads <= 8; nThreads++)
   {
-    double err = cit.Get() - git.Get();
-    diff += err*err;
-    nPix++;
+    itk::TimeProbe cputimer;
+    cputimer.Start();
+
+    CPUFilter->SetNumberOfThreads( nThreads );
+
+    CPUFilter->SetInput( reader->GetOutput() );
+    CPUFilter->SetNumberOfIterations( 10 );
+    CPUFilter->SetTimeStep( 0.0625 );//125 );
+    CPUFilter->SetConductanceParameter( 3.0 );
+    CPUFilter->UseImageSpacingOn();
+    CPUFilter->Update();
+
+    cputimer.Stop();
+
+    std::cout << "CPU Anisotropic diffusion took " << cputimer.GetMeanTime() << " seconds with "
+              << CPUFilter->GetNumberOfThreads() << " threads.\n" << std::endl;
+
+    // -------
+
+    if( nThreads == 8 )
+    {
+      itk::TimeProbe gputimer;
+      gputimer.Start();
+
+      GPUFilter->SetInput( reader->GetOutput() );
+      GPUFilter->SetNumberOfIterations( 10 );
+      GPUFilter->SetTimeStep( 0.0625 );//125 );
+      GPUFilter->SetConductanceParameter( 3.0 );
+      GPUFilter->UseImageSpacingOn();
+      GPUFilter->Update();
+
+      gputimer.Stop();
+      std::cout << "GPU Anisotropic diffusion took " << gputimer.GetMeanTime() << " seconds.\n" << std::endl;
+
+      // ---------------
+      // RMS Error check
+      // ---------------
+
+      double diff = 0;
+      unsigned int nPix = 0;
+      itk::ImageRegionIterator<OutputImageType> cit(CPUFilter->GetOutput(), CPUFilter->GetOutput()->GetLargestPossibleRegion());
+      itk::ImageRegionIterator<OutputImageType> git(GPUFilter->GetOutput(), GPUFilter->GetOutput()->GetLargestPossibleRegion());
+
+      for(cit.GoToBegin(), git.GoToBegin(); !cit.IsAtEnd(); ++cit, ++git)
+      {
+        double err = cit.Get() - git.Get();
+        diff += err*err;
+        nPix++;
+      }
+
+      std::cout << "RMS Error : " << sqrt( diff / (double)nPix ) << std::endl;
+    }
+
   }
-
-  std::cout << "Error : " << sqrt( diff / (double)nPix ) << std::endl;
-
 
   return EXIT_SUCCESS;
 }

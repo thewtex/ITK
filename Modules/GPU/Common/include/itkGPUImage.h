@@ -87,10 +87,12 @@ public:
 
   TPixel & GetPixel(const IndexType & index);
 
-  const TPixel & operator[](const IndexType & index) const
-  { return Superclass::GetPixel(index); }
+  const TPixel & operator[](const IndexType & index) const;
 
   TPixel & operator[](const IndexType & index);
+
+  /** Explicit synchronize CPU/GPU buffers */
+  void MakeUpToDate();
 
   //
   // Get CPU buffer pointer

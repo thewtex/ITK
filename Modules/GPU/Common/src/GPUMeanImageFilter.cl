@@ -24,7 +24,7 @@ __kernel void MeanFilter(__global const PIXELTYPE* in,__global PIXELTYPE* out, i
 {
   int gix = get_global_id(0);
   float sum = 0;
-  int   num = 0;
+  unsigned int   num = 0;
   if(gix < width)
   {
     for(int x = max((int)0, (int)(gix-radiusx)); x <= min((int)(width-1), (int)(gix+radiusx)); x++)
@@ -46,7 +46,7 @@ __kernel void MeanFilter(__global const PIXELTYPE* in,
   int giy = get_global_id(1);
   unsigned int gidx = width*giy + gix;
   float sum = 0;
-  int   num = 0;
+  unsigned int   num = 0;
   if(gix < width && giy < height)
   {
     for(int y = max((int)0, (int)(giy-radiusy)); y <= min((int)(height-1), (int)(giy+radiusy)); y++)
@@ -73,12 +73,12 @@ __kernel void MeanFilter(__global const PIXELTYPE* in,
   int gix = get_global_id(0);
   int giy = get_global_id(1);
   int giz = get_global_id(2);
-  unsigned int gidx = width*(giz*heigh + giy) + gix;
+  unsigned int gidx = width*(giz*height + giy) + gix;
   float sum = 0;
-  int   num = 0;
+  unsigned int   num = 0;
   if(gix < width && giy < height && giz < depth)
   {
-    for(int z = max(0, (int)(giz-radiusz)); z <= min((int)(depth-1), (int)giz+radiusz)); z++)
+    for(int z = max(0, (int)(giz-radiusz)); z <= min((int)(depth-1), (int)(giz+radiusz)); z++)
     {
       for(int y = max((int)0, (int)(giy-radiusy)); y <= min((int)(height-1), (int)(giy+radiusy)); y++)
       {

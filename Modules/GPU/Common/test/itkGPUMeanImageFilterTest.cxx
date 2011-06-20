@@ -40,22 +40,31 @@
  */
 int itkGPUMeanImageFilterTest(int argc, char *argv[])
 {
+  if(!IsGPUAvailable())
+  {
+    std::cerr << "OpenCL-enabled GPU is not present." << std::endl;
+    return EXIT_FAILURE;
+  }
+
   // register object factory for GPU image and filter
-  itk::ObjectFactoryBase::RegisterFactory( itk::GPUImageFactory::New() );
-  itk::ObjectFactoryBase::RegisterFactory( itk::GPUMeanImageFilterFactory::New() );
+  //itk::ObjectFactoryBase::RegisterFactory( itk::GPUImageFactory::New() );
+  //itk::ObjectFactoryBase::RegisterFactory( itk::GPUMeanImageFilterFactory::New() );
 
   typedef   unsigned char  InputPixelType;
   typedef   unsigned char  OutputPixelType;
 
-  typedef itk::Image< InputPixelType,  2 >   InputImageType;
-  typedef itk::Image< OutputPixelType, 2 >   OutputImageType;
+  //typedef itk::Image< InputPixelType,  3 >   InputImageType;
+  //typedef itk::Image< OutputPixelType, 3 >   OutputImageType;
+
+  typedef itk::GPUImage< InputPixelType,  3 >   InputImageType;
+  typedef itk::GPUImage< OutputPixelType, 3 >   OutputImageType;
 
   typedef itk::ImageFileReader< InputImageType  >  ReaderType;
   typedef itk::ImageFileWriter< OutputImageType >  WriterType;
 
   ReaderType::Pointer reader = ReaderType::New();
   WriterType::Pointer writer = WriterType::New();
-
+/*
   if( argc <  3 )
     {
     std::cerr << "Error: missing arguments" << std::endl;
@@ -65,27 +74,80 @@ int itkGPUMeanImageFilterTest(int argc, char *argv[])
 
   reader->SetFileName( argv[1] );
   writer->SetFileName( argv[2] );
-
+*/
   //
   // Note: We use regular itk filter type here but factory will automatically create
   //       GPU filter for Median filter and CPU filter for threshold filter.
   //
   typedef itk::MeanImageFilter< InputImageType, OutputImageType > MeanFilterType;
+  typedef itk::GPUMeanImageFilter< InputImageType, OutputImageType > GPUMeanFilterType;
 
-  MeanFilterType::Pointer filter = MeanFilterType::New();
+  MeanFilterType::Pointer CPUFilter = MeanFilterType::New();
+  GPUMeanFilterType::Pointer GPUFilter = GPUMeanFilterType::New();
 
   // Mean filter kernel radius
   InputImageType::SizeType indexRadius;
   indexRadius[0] = 2; // radius along x
   indexRadius[1] = 2; // radius along y
+  indexRadius[2] = 2; // radius along z
 
-  // Build pipeline
-  filter->SetRadius( indexRadius );
-  filter->SetInput( reader->GetOutput() );
-  writer->SetInput( filter->GetOutput() ); // copy GPU->CPU implicilty
+  reader->SetFileName( "E:/proj/CUDA_ITK/ITK_CUDA_TEST/data/AD63368_tensor_double_up.nhdr" );
 
-  // execute pipeline filter and write output
-  writer->Update();
+  // test 1~8 threads for CPU
+  for(int nThreads = 1; nThreads <= 8; nThreads++)
+  {
+    itk::TimeProbe cputimer;
+    cputimer.Start();
+
+    CPUFilter->SetNumberOfThreads( nThreads );
+
+    CPUFilter->SetInput( reader->GetOutput() );
+    CPUFilter->SetRadius( indexRadius );
+    CPUFilter->Update();
+
+    cputimer.Stop();
+
+    std::cout << "CPU Anisotropic diffusion took " << cputimer.GetMeanTime() << " seconds with "
+              << CPUFilter->GetNumberOfThreads() << " threads.\n" << std::endl;
+
+    // -------
+
+    if( nThreads == 8 )
+    {
+      itk::TimeProbe gputimer;
+      gputimer.Start();
+
+      GPUFilter->SetInput( reader->GetOutput() );
+      GPUFilter->SetRadius( indexRadius );
+      GPUFilter->Update();
+
+      GPUFilter->GetOutput()->MakeUpToDate(); // synchronization point for computing time
+
+      gputimer.Stop();
+      std::cout << "GPU Anisotropic diffusion took " << gputimer.GetMeanTime() << " seconds.\n" << std::endl;
+
+      // ---------------
+      // RMS Error check
+      // ---------------
+
+      double diff = 0;
+      unsigned int nPix = 0;
+      itk::ImageRegionIterator<OutputImageType> cit(CPUFilter->GetOutput(), CPUFilter->GetOutput()->GetLargestPossibleRegion());
+      itk::ImageRegionIterator<OutputImageType> git(GPUFilter->GetOutput(), GPUFilter->GetOutput()->GetLargestPossibleRegion());
+
+      for(cit.GoToBegin(), git.GoToBegin(); !cit.IsAtEnd(); ++cit, ++git)
+      {
+        double err = cit.Get() - git.Get();
+        diff += err*err;
+        nPix++;
+      }
+
+      std::cout << "RMS Error : " << sqrt( diff / (double)nPix ) << std::endl;
+    }
+
+  }
+
+
 
   return EXIT_SUCCESS;
 }

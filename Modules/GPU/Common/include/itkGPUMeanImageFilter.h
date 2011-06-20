@@ -22,15 +22,16 @@
 #include "itkGPUImageToImageFilter.h"
 #include "itkVersion.h"
 #include "itkObjectFactoryBase.h"
+#include "itkOclUtil.h"
 
 namespace itk
 {
 
 /** \class GPUMeanImageFilter
  *
- * \brief GPU enabled implementation of the MeanImageFilter.
+ * \brief GPU-enabled implementation of the MeanImageFilter.
  *
- * FIXME   Won-Ki to write more documentation here...
+ * Current GPU mean filter reads in neighborhood pixels from global memory.
  *
  * \ingroup ITKGPUCommon
  */
