@@ -4,4 +4,11 @@ pixel-wise operations that do not justify the memory duplication that a normal
 ITK filter may imply. They are also very useful for implementing casting
 operations on the fly.")
 
-itk_module(ITK-ImageAdaptors DEPENDS ITK-Common TEST_DEPENDS ITK-TestKernel DESCRIPTION "${DOCUMENTATION}")
+itk_module(ITK-ImageAdaptors
+  DEPENDS
+    ITK-Common
+  TEST_DEPENDS
+    ITK-TestKernel
+  DESCRIPTION
+  "${DOCUMENTATION}"
+)
