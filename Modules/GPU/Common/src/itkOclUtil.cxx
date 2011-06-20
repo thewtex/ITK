@@ -283,6 +283,23 @@ void OclCheckError(cl_int error)
     }
 }
 
+/** Check if OpenCL-enabled GPU is present. */
+bool IsGPUAvailable()
+{
+  cl_platform_id platformId = OclSelectPlatform("NVIDIA");
+
+  if(platformId == NULL) return false;
+
+  cl_device_type devType = CL_DEVICE_TYPE_GPU;
+
+  // Get the devices
+  cl_uint numDevices;
+  OclGetAvailableDevices(platformId, devType, &numDevices);
+
+  if(numDevices < 1) return false;
+
+  return true;
+}
 
 void GetTypenameInString( const type_info& intype, std::ostringstream& ret )
 {

@@ -24,7 +24,9 @@
 #include "itkGradientAnisotropicDiffusionImageFilter.h"
 #include "itkRescaleIntensityImageFilter.h"
 #include "itkTimeProbe.h"
+#include "itkImageRegionIterator.h"
 
+#include "itkOclUtil.h"
 #include "itkGPUImage.h"
 #include "itkGPUKernelManager.h"
 #include "itkGPUContextManager.h"
@@ -36,13 +38,13 @@ int itkGPUGradientAnisotropicDiffusionImageFilterTest(int argc, char *argv[])
 {
   // register object factory for GPU image and filter
   itk::ObjectFactoryBase::RegisterFactory( itk::GPUImageFactory::New() );
-  itk::ObjectFactoryBase::RegisterFactory( itk::GPUGradientAnisotropicDiffusionImageFilterFactory::New() );
+  //itk::ObjectFactoryBase::RegisterFactory( itk::GPUGradientAnisotropicDiffusionImageFilterFactory::New() );
 
   typedef float InputPixelType;
   typedef float OutputPixelType;
 
-  typedef itk::Image< InputPixelType,  2 >   InputImageType;
-  typedef itk::Image< OutputPixelType, 2 >   OutputImageType;
+  typedef itk::Image< InputPixelType,  3 >   InputImageType;
+  typedef itk::Image< OutputPixelType, 3 >   OutputImageType;
 
   typedef itk::ImageFileReader< InputImageType  >  ReaderType;
 
@@ -50,37 +52,84 @@ int itkGPUGradientAnisotropicDiffusionImageFilterTest(int argc, char *argv[])
   {
     std::cerr << "Error: missing arguments" << std::endl;
     std::cerr << "inputfile outputfile " << std::endl;
+    //return EXIT_FAILURE;
+  }
+
+  if(!IsGPUAvailable())
+  {
+    std::cerr << "OpenCL-enabled GPU is not present." << std::endl;
     return EXIT_FAILURE;
   }
 
   ReaderType::Pointer reader = ReaderType::New();
 
-  reader->SetFileName( argv[1] );//"C:/Users/wkjeong/Proj/ITK/Examples/Data/BrainProtonDensitySlice.png" );
+  //reader->SetFileName( argv[1] );
+  //reader->SetFileName( "C:/Users/wkjeong/Proj/ITK/Examples/Data/BrainProtonDensitySlice.png" );
+  reader->SetFileName( "E:/proj/CUDA_ITK/ITK_CUDA_TEST/data/AD63368_tensor_double_up.nhdr" );
 
-  //
-  // Note: We use regular itk filter type here but factory will automatically create
-  //       GPU filter for Median filter and CPU filter for threshold filter.
-  //
-  typedef itk::GradientAnisotropicDiffusionImageFilter< InputImageType, OutputImageType > AnisoDiffFilterType;
+  // Create CPU/GPU anistorpic diffusion filter
+  typedef itk::GradientAnisotropicDiffusionImageFilter< InputImageType, OutputImageType > CPUAnisoDiffFilterType;
+  typedef itk::GPUGradientAnisotropicDiffusionImageFilter< InputImageType, OutputImageType > GPUAnisoDiffFilterType;
 
-  AnisoDiffFilterType::Pointer anisoFilter = AnisoDiffFilterType::New();
+  CPUAnisoDiffFilterType::Pointer CPUFilter = CPUAnisoDiffFilterType::New();
+  GPUAnisoDiffFilterType::Pointer GPUFilter = GPUAnisoDiffFilterType::New();
 
-  // GPU test
   reader->Update();
 
-  itk::TimeProbe timer;
-  timer.Start();
+  // -------
 
-  anisoFilter->SetInput( reader->GetOutput() );
-  anisoFilter->SetNumberOfIterations( 10 );
-  anisoFilter->SetTimeStep( 0.125 );
-  anisoFilter->SetConductanceParameter( 3.0 );
-  anisoFilter->UseImageSpacingOn();
-  anisoFilter->Update();
+  itk::TimeProbe cputimer;
+  cputimer.Start();
 
-  timer.Stop();
-  std::cerr << "Anisotropic diffusion took " << timer.GetMeanTime() << " seconds.\n";
+  CPUFilter->SetInput( reader->GetOutput() );
+  CPUFilter->SetNumberOfIterations( 10 );
+  CPUFilter->SetTimeStep( 0.0625 );//125 );
+  CPUFilter->SetConductanceParameter( 3.0 );
+  CPUFilter->UseImageSpacingOn();
+  CPUFilter->Update();
 
+  cputimer.Stop();
+  std::cout << "CPU Anisotropic diffusion took " << cputimer.GetMeanTime() << " seconds.\n" << std::endl;
+
+  // -------
+
+  itk::TimeProbe gputimer;
+  gputimer.Start();
+
+  GPUFilter->SetInput( reader->GetOutput() );
+  GPUFilter->SetNumberOfIterations( 10 );
+  GPUFilter->SetTimeStep( 0.0625 );//125 );
+  GPUFilter->SetConductanceParameter( 3.0 );
+  GPUFilter->UseImageSpacingOn();
+  GPUFilter->Update();
+
+  gputimer.Stop();
+  std::cout << "GPU Anisotropic diffusion took " << gputimer.GetMeanTime() << " seconds.\n" << std::endl;
+
+  // ---------------
+  // RMS Error check
+  // ---------------
+
+  double diff = 0;
+  unsigned int nPix = 0;
+  itk::ImageRegionIterator<OutputImageType> cit(CPUFilter->GetOutput(), CPUFilter->GetOutput()->GetLargestPossibleRegion());
+  itk::ImageRegionIterator<OutputImageType> git(GPUFilter->GetOutput(), GPUFilter->GetOutput()->GetLargestPossibleRegion());
+
+  for(cit.GoToBegin(), git.GoToBegin(); !cit.IsAtEnd(); ++cit, ++git)
+  {
+    double err = cit.Get() - git.Get();
+    diff += err*err;
+    nPix++;
+  }
+
+  std::cout << "Error : " << sqrt( diff / (double)nPix ) << std::endl;
+
+
+  return EXIT_SUCCESS;
+}
+
+
+/*
   //
   //  The output of the filter is rescaled here and then sent to a writer.
   //
@@ -100,6 +149,4 @@ int itkGPUGradientAnisotropicDiffusionImageFilterTest(int argc, char *argv[])
   rescaler->SetInput( anisoFilter->GetOutput() );
   writer->SetInput( rescaler->GetOutput() );
   writer->Update();
-
-  return EXIT_SUCCESS;
-}
+*/
