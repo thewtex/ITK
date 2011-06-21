@@ -15,14 +15,12 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-
 #ifndef __itkImageToVTKImageFilter_h
 #define __itkImageToVTKImageFilter_h
 
 #include "itkVTKImageExport.h"
 #include "vtkImageImport.h"
 #include "vtkImageData.h"
-#include <vector>
 
 namespace itk
 {
@@ -37,7 +35,7 @@ namespace itk
  *  an itk::Image can be plugged as input and a vtkImage is produced as
  *  output.
  *
- * \ingroup   ImageFilters
+ * \ingroup   ITK-ItkVtkGlue
  */
 template <class TInputImage >
 class ITK_EXPORT ImageToVTKImageFilter : public ProcessObject
@@ -56,10 +54,11 @@ public:
   itkTypeMacro(ImageToVTKImageFilter, ProcessObject);
 
   /** Some typedefs. */
-  typedef TInputImage                                 InputImageType;
-  typedef typename    InputImageType::ConstPointer    InputImagePointer;
-  typedef VTKImageExport< InputImageType>             ExporterFilterType;
-  typedef typename ExporterFilterType::Pointer        ExporterFilterPointer;
+  typedef TInputImage                            InputImageType;
+  typedef typename InputImageType::ConstPointer  InputImagePointer;
+
+  typedef VTKImageExport< InputImageType>        ExporterFilterType;
+  typedef typename ExporterFilterType::Pointer   ExporterFilterPointer;
 
   /** Get the output in the form of a vtkImage.
       This call is delegated to the internal vtkImageImporter filter  */
@@ -78,9 +77,8 @@ public:
       to methods in the exporter */
   ExporterFilterType * GetExporter() const;
 
-  /** This call delegate the update to the importer */
+  /** This call delegates the update to the importer */
   void Update();
-
 
 protected:
   ImageToVTKImageFilter();
@@ -88,11 +86,10 @@ protected:
 
 private:
   ImageToVTKImageFilter(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);        //purposely not implemented
 
   ExporterFilterPointer       m_Exporter;
-  vtkImageImport            * m_Importer;
-
+  vtkImageImport *            m_Importer;
 };
 
 } // end namespace itk

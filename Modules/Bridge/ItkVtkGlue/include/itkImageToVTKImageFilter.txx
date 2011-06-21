@@ -15,7 +15,6 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-
 #ifndef __itkImageToVTKImageFilter_txx
 #define __itkImageToVTKImageFilter_txx
 
@@ -31,9 +30,7 @@ template <class TInputImage>
 ImageToVTKImageFilter<TInputImage>
 ::ImageToVTKImageFilter()
 {
-
   m_Importer = vtkImageImport::New();
-
   m_Exporter = ExporterFilterType::New();
 
   m_Importer->SetUpdateInformationCallback(m_Exporter->GetUpdateInformationCallback());
@@ -119,7 +116,6 @@ ImageToVTKImageFilter<TInputImage>
 {
   m_Importer->Update();
 }
-
 } // end namespace itk
 
 #endif
