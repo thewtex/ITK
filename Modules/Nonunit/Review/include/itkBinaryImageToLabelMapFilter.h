@@ -39,6 +39,25 @@ namespace itk
  * that are reached earlier by a raster order scan have a lower
  * label.
  *
+ * The GetOutput() function of this class returns an itk::LabelMap.
+ * A typical use would be to iterate over the LabelObjects in the map,
+ * using something like this:
+ * \code
+ * for(unsigned int i = 0; i < filter->GetOutput()->GetNumberOfLabelObjects(); ++i)
+ *   {
+ *   FilterType::OutputImageType::LabelObjectType* labelObject =
+ *     filter->GetOutput()->GetNthLabelObject(i);
+ *   }
+ * \endcode
+ *
+ * The pixels locations belonging to each label can then be obtained using:
+ * \code
+ * for(unsigned int pixelId = 0; pixelId < labelObject->Size(); pixelId++)
+ *   {
+ *   std::cout << labelObject->GetIndex(pixelId);
+ *   }
+ * \endcode
+ *
  * This implementation was taken from the Insight Journal paper:
  * http://hdl.handle.net/1926/584  or
  * http://www.insight-journal.org/browse/publication/176

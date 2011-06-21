@@ -133,7 +133,11 @@ public:
 
   bool Empty() const;
 
-  IndexType GetIndex(SizeValueType offset) const;
+  /**
+   * Get the index of the ith pixel associated with the object.
+   * Valid indices are from 0 to LabelObject->GetSize() - 1.
+   */
+  IndexType GetIndex(SizeValueType i) const;
 
   /** Copy the attributes of another node to this one */
   virtual void CopyAttributesFrom(const Self *src);
