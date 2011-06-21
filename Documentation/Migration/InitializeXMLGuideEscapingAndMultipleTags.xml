@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--**
+**
+** InitializeXMLGuideEscapingAndMultipleTags.xml
+**
+** >>>>>>>>>>>>>>>>>>>>>>>>>>>>
+** THIS FILE HAS BEEN AUTOMATICALLY GENERATED. EDIT IT BEFORE COMMITING
+** <<<<<<<<<<<<<<<<<<<<<<<<<<<
+**
+** Please, make sure this file validates the following w3c test before committing it: http://validator.w3.org
+**-->
+<Change>
+    <!--**
+    ** Title for the online migration page
+    **-->
+    <Title>
+      Initialize X M L Guide Escaping And Multiple Tags
+    </Title>
+
+    <!--**
+    ** The author of the change
+    **-->
+    <Author>
+      Charles Marion
+    </Author>
+
+    <!--**
+    ** Date of creation for the XML document
+    **-->
+    <Date>
+      2011-06-21
+    </Date>
+
+    <!--**
+    ** Plain text description of the change
+    ** Extracted from git commit messages
+    **-->
+    <Description>
+      <![CDATA[
+      ENH: Fixed Migration Files (XML and python script)
+      The python script which generates the XML files (for the migration guide) now creates multiple SampleCode tags
+      The generated files are now correctly escaped and validate the W3C validation process.
+
+      The previous migration XML files are now fixed. Now all the migration files validate the w3c test
+      ]]>
+    </Description>
+
+
+    <!--**
+    ** The change-ids for all commits in the topic branch
+    **-->
+    <Gerrit-ChangeId>
+      Ib0ac13ceec8eb1da662978580d5de0f025e17246
+    </Gerrit-ChangeId>
+
+    <!--**
+    ** List of all changed files from the topic branch
+    **-->
+    <FileList>
+      Documentation/Migration/BRAINS2MaskImageIORemoved.xml
+      Documentation/Migration/ColorTableDeprecatedMethods.xml
+      Documentation/Migration/HistogramIncreaseFrequencyDisambiguation.xml
+      Documentation/Migration/InitializeXMLGuide.py
+      Documentation/Migration/OStringStreamRemoved.xml
+      Documentation/Migration/OrientationAdapterBaseRename.xml
+      Documentation/Migration/QuadEdgeMesh-Changes.xml
+      Documentation/Migration/RealTimeClockAPIChanges.xml
+    </FileList>
+
+    <!--**
+    ** If the migration can be accomplished by a simple string
+    ** substitution, then use the following construct to define
+    ** the substitution rule.
+    **
+    ** <MigrationFix-Automatic>
+    **   <Old>
+    **     <![CDATA[MipsleledName]]>
+    **   </Old>
+    **   <New>
+    **     <![CDATA[MisspelledName]]>
+    **   </New>
+    ** </MigrationFix-Automatic>
+    **-->
+
+    <!--**
+    ** If the migration can NOT be accomplished by a simple string
+    ** substitution, but potential problem spots can be identified,
+    ** use the following construct to define a migration flag rule.
+    **
+    ** <MigrationFix-Manual>
+    **   OldFunctionName
+    ** </MigrationFix-Manual>
+    **-->
+
+</Change>
