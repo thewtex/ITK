@@ -129,9 +129,9 @@ private:
 
 
   GPUMeanImageFilterFactory()
+  {
+    if( IsGPUAvailable() )
     {
-      //this->IfGPUISAvailable()
-      //{
       OverrideMeanFilterTypeMacro(unsigned char, unsigned char, 1);
       OverrideMeanFilterTypeMacro(char, char, 1);
       OverrideMeanFilterTypeMacro(float,float,1);
@@ -152,8 +152,8 @@ private:
       OverrideMeanFilterTypeMacro(int,int,3);
       OverrideMeanFilterTypeMacro(unsigned int,unsigned int,3);
       OverrideMeanFilterTypeMacro(double,double,3);
-      //}
     }
+  }
 };
 
 } // end namespace itk

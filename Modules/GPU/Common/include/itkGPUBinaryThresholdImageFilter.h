@@ -18,6 +18,7 @@
 #ifndef __itkGPUBinaryThresholdImageFilter_h
 #define __itkGPUBinaryThresholdImageFilter_h
 
+#include "itkOclUtil.h"
 #include "itkGPUFunctorBase.h"
 #include "itkGPUKernelManager.h"
 #include "itkBinaryThresholdImageFilter.h"
@@ -169,37 +170,36 @@ private:
   this->RegisterOverride(\
   typeid(itk::BinaryThresholdImageFilter<InputImageType,OutputImageType>).name(),\
         typeid(itk::GPUBinaryThresholdImageFilter<InputImageType,OutputImageType>).name(),\
-        "GPU Mean Image Filter Override",\
+        "GPU Binary Threshold Image Filter Override",\
         true,\
         itk::CreateObjectFunction<GPUBinaryThresholdImageFilter<InputImageType,OutputImageType> >::New());\
   }
 
-
-GPUBinaryThresholdImageFilterFactory()
+  GPUBinaryThresholdImageFilterFactory()
   {
-    //this->IfGPUISAvailable()
-    //{
-    OverrideThresholdFilterTypeMacro(unsigned char, unsigned char, 1);
-    OverrideThresholdFilterTypeMacro(char, char, 1);
-    OverrideThresholdFilterTypeMacro(float,float,1);
-    OverrideThresholdFilterTypeMacro(int,int,1);
-    OverrideThresholdFilterTypeMacro(unsigned int,unsigned int,1);
-    OverrideThresholdFilterTypeMacro(double,double,1);
+    if( IsGPUAvailable() )
+    {
+      OverrideThresholdFilterTypeMacro(unsigned char, unsigned char, 1);
+      OverrideThresholdFilterTypeMacro(char, char, 1);
+      OverrideThresholdFilterTypeMacro(float,float,1);
+      OverrideThresholdFilterTypeMacro(int,int,1);
+      OverrideThresholdFilterTypeMacro(unsigned int,unsigned int,1);
+      OverrideThresholdFilterTypeMacro(double,double,1);
 
-    OverrideThresholdFilterTypeMacro(unsigned char, unsigned char, 2);
-    OverrideThresholdFilterTypeMacro(char, char, 2);
-    OverrideThresholdFilterTypeMacro(float,float,2);
-    OverrideThresholdFilterTypeMacro(int,int,2);
-    OverrideThresholdFilterTypeMacro(unsigned int,unsigned int,2);
-    OverrideThresholdFilterTypeMacro(double,double,2);
+      OverrideThresholdFilterTypeMacro(unsigned char, unsigned char, 2);
+      OverrideThresholdFilterTypeMacro(char, char, 2);
+      OverrideThresholdFilterTypeMacro(float,float,2);
+      OverrideThresholdFilterTypeMacro(int,int,2);
+      OverrideThresholdFilterTypeMacro(unsigned int,unsigned int,2);
+      OverrideThresholdFilterTypeMacro(double,double,2);
 
-    OverrideThresholdFilterTypeMacro(unsigned char, unsigned char, 3);
-    OverrideThresholdFilterTypeMacro(char, char, 3);
-    OverrideThresholdFilterTypeMacro(float,float,3);
-    OverrideThresholdFilterTypeMacro(int,int,3);
-    OverrideThresholdFilterTypeMacro(unsigned int,unsigned int,3);
-    OverrideThresholdFilterTypeMacro(double,double,3);
-    //}
+      OverrideThresholdFilterTypeMacro(unsigned char, unsigned char, 3);
+      OverrideThresholdFilterTypeMacro(char, char, 3);
+      OverrideThresholdFilterTypeMacro(float,float,3);
+      OverrideThresholdFilterTypeMacro(int,int,3);
+      OverrideThresholdFilterTypeMacro(unsigned int,unsigned int,3);
+      OverrideThresholdFilterTypeMacro(double,double,3);
+    }
   }
 };
 

@@ -18,6 +18,7 @@
 #ifndef __itkGPUDemonsRegistrationFilter_h
 #define __itkGPUDemonsRegistrationFilter_h
 
+#include "itkOclUtil.h"
 #include "itkDemonsRegistrationFilter.h"
 #include "itkGPUPDEDeformableRegistrationFilter.h"
 #include "itkGPUDemonsRegistrationFunction.h"
@@ -197,9 +198,9 @@ private:
 
 
   GPUDemonsRegistrationFilterFactory()
+  {
+    if( IsGPUAvailable() )
     {
-      //this->IfGPUISAvailable()
-      //{
       OverrideDemonsRegistrationFilterTypeMacro(unsigned char, unsigned char, 1);
       OverrideDemonsRegistrationFilterTypeMacro(char, char, 1);
       OverrideDemonsRegistrationFilterTypeMacro(float,float,1);
@@ -220,8 +221,8 @@ private:
       OverrideDemonsRegistrationFilterTypeMacro(int,int,3);
       OverrideDemonsRegistrationFilterTypeMacro(unsigned int,unsigned int,3);
       OverrideDemonsRegistrationFilterTypeMacro(double,double,3);
-      //}
     }
+  }
 };
 } // end namespace itk
 

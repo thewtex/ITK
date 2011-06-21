@@ -37,28 +37,28 @@
 int itkGPUGradientAnisotropicDiffusionImageFilterTest(int argc, char *argv[])
 {
   // register object factory for GPU image and filter
-  itk::ObjectFactoryBase::RegisterFactory( itk::GPUImageFactory::New() );
+  //itk::ObjectFactoryBase::RegisterFactory( itk::GPUImageFactory::New() );
   //itk::ObjectFactoryBase::RegisterFactory( itk::GPUGradientAnisotropicDiffusionImageFilterFactory::New() );
 
   typedef float InputPixelType;
   typedef float OutputPixelType;
 
-  typedef itk::Image< InputPixelType,  3 >   InputImageType;
-  typedef itk::Image< OutputPixelType, 3 >   OutputImageType;
+  typedef itk::GPUImage< InputPixelType,  3 >   InputImageType;
+  typedef itk::GPUImage< OutputPixelType, 3 >   OutputImageType;
 
   typedef itk::ImageFileReader< InputImageType  >  ReaderType;
+
+  if(!IsGPUAvailable())
+  {
+    std::cerr << "OpenCL-enabled GPU is not present." << std::endl;
+    return EXIT_FAILURE;
+  }
 
   if( argc <  3 )
   {
     std::cerr << "Error: missing arguments" << std::endl;
     std::cerr << "inputfile outputfile " << std::endl;
     //return EXIT_FAILURE;
-  }
-
-  if(!IsGPUAvailable())
-  {
-    std::cerr << "OpenCL-enabled GPU is not present." << std::endl;
-    return EXIT_FAILURE;
   }
 
   ReaderType::Pointer reader = ReaderType::New();
@@ -112,6 +112,8 @@ int itkGPUGradientAnisotropicDiffusionImageFilterTest(int argc, char *argv[])
       GPUFilter->UseImageSpacingOn();
       GPUFilter->Update();
 
+      GPUFilter->GetOutput()->MakeUpToDate(); // synchronization point
+
       gputimer.Stop();
       std::cout << "GPU Anisotropic diffusion took " << gputimer.GetMeanTime() << " seconds.\n" << std::endl;
 
@@ -126,7 +128,7 @@ int itkGPUGradientAnisotropicDiffusionImageFilterTest(int argc, char *argv[])
 
       for(cit.GoToBegin(), git.GoToBegin(); !cit.IsAtEnd(); ++cit, ++git)
       {
-        double err = cit.Get() - git.Get();
+        double err = (double)(cit.Get()) - (double)(git.Get());
         diff += err*err;
         nPix++;
       }

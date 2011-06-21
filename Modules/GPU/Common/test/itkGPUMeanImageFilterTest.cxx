@@ -82,9 +82,6 @@ int itkGPUMeanImageFilterTest(int argc, char *argv[])
   typedef itk::MeanImageFilter< InputImageType, OutputImageType > MeanFilterType;
   typedef itk::GPUMeanImageFilter< InputImageType, OutputImageType > GPUMeanFilterType;
 
-  MeanFilterType::Pointer CPUFilter = MeanFilterType::New();
-  GPUMeanFilterType::Pointer GPUFilter = GPUMeanFilterType::New();
-
   // Mean filter kernel radius
   InputImageType::SizeType indexRadius;
   indexRadius[0] = 2; // radius along x
@@ -96,6 +93,8 @@ int itkGPUMeanImageFilterTest(int argc, char *argv[])
   // test 1~8 threads for CPU
   for(int nThreads = 1; nThreads <= 8; nThreads++)
   {
+    MeanFilterType::Pointer CPUFilter = MeanFilterType::New();
+
     itk::TimeProbe cputimer;
     cputimer.Start();
 
@@ -114,6 +113,8 @@ int itkGPUMeanImageFilterTest(int argc, char *argv[])
 
     if( nThreads == 8 )
     {
+      GPUMeanFilterType::Pointer GPUFilter = GPUMeanFilterType::New();
+
       itk::TimeProbe gputimer;
       gputimer.Start();
 
@@ -121,7 +122,7 @@ int itkGPUMeanImageFilterTest(int argc, char *argv[])
       GPUFilter->SetRadius( indexRadius );
       GPUFilter->Update();
 
-      GPUFilter->GetOutput()->MakeUpToDate(); // synchronization point for computing time
+      GPUFilter->GetOutput()->MakeUpToDate(); // synchronization point (GPU->CPU memcpy)
 
       gputimer.Stop();
       std::cout << "GPU Anisotropic diffusion took " << gputimer.GetMeanTime() << " seconds.\n" << std::endl;
@@ -137,7 +138,7 @@ int itkGPUMeanImageFilterTest(int argc, char *argv[])
 
       for(cit.GoToBegin(), git.GoToBegin(); !cit.IsAtEnd(); ++cit, ++git)
       {
-        double err = cit.Get() - git.Get();
+        double err = (double)(cit.Get()) - (double)(git.Get());
         diff += err*err;
         nPix++;
       }

@@ -18,6 +18,7 @@
 #ifndef __itkGPUGradientAnisotropicDiffusionImageFilter_h
 #define __itkGPUGradientAnisotropicDiffusionImageFilter_h
 
+#include "itkOclUtil.h"
 #include "itkGradientAnisotropicDiffusionImageFilter.h"
 #include "itkGPUAnisotropicDiffusionImageFilter.h"
 #include "itkGPUGradientNDAnisotropicDiffusionFunction.h"
@@ -133,32 +134,31 @@ private:
         itk::CreateObjectFunction<GPUGradientAnisotropicDiffusionImageFilter<InputImageType,OutputImageType> >::New());\
   }
 
-
   GPUGradientAnisotropicDiffusionImageFilterFactory()
   {
-    //this->IfGPUISAvailable()
-    //{
-    GradientAnisotropicDiffusionImageFilterTypeMacro(unsigned char, unsigned char, 1);
-    GradientAnisotropicDiffusionImageFilterTypeMacro(char, char, 1);
-    GradientAnisotropicDiffusionImageFilterTypeMacro(float,float,1);
-    GradientAnisotropicDiffusionImageFilterTypeMacro(int,int,1);
-    GradientAnisotropicDiffusionImageFilterTypeMacro(unsigned int,unsigned int,1);
-    GradientAnisotropicDiffusionImageFilterTypeMacro(double,double,1);
+    if( IsGPUAvailable() )
+    {
+      GradientAnisotropicDiffusionImageFilterTypeMacro(unsigned char, unsigned char, 1);
+      GradientAnisotropicDiffusionImageFilterTypeMacro(char, char, 1);
+      GradientAnisotropicDiffusionImageFilterTypeMacro(float,float,1);
+      GradientAnisotropicDiffusionImageFilterTypeMacro(int,int,1);
+      GradientAnisotropicDiffusionImageFilterTypeMacro(unsigned int,unsigned int,1);
+      GradientAnisotropicDiffusionImageFilterTypeMacro(double,double,1);
 
-    GradientAnisotropicDiffusionImageFilterTypeMacro(unsigned char, unsigned char, 2);
-    GradientAnisotropicDiffusionImageFilterTypeMacro(char, char, 2);
-    GradientAnisotropicDiffusionImageFilterTypeMacro(float,float,2);
-    GradientAnisotropicDiffusionImageFilterTypeMacro(int,int,2);
-    GradientAnisotropicDiffusionImageFilterTypeMacro(unsigned int,unsigned int,2);
-    GradientAnisotropicDiffusionImageFilterTypeMacro(double,double,2);
+      GradientAnisotropicDiffusionImageFilterTypeMacro(unsigned char, unsigned char, 2);
+      GradientAnisotropicDiffusionImageFilterTypeMacro(char, char, 2);
+      GradientAnisotropicDiffusionImageFilterTypeMacro(float,float,2);
+      GradientAnisotropicDiffusionImageFilterTypeMacro(int,int,2);
+      GradientAnisotropicDiffusionImageFilterTypeMacro(unsigned int,unsigned int,2);
+      GradientAnisotropicDiffusionImageFilterTypeMacro(double,double,2);
 
-    GradientAnisotropicDiffusionImageFilterTypeMacro(unsigned char, unsigned char, 3);
-    GradientAnisotropicDiffusionImageFilterTypeMacro(char, char, 3);
-    GradientAnisotropicDiffusionImageFilterTypeMacro(float,float,3);
-    GradientAnisotropicDiffusionImageFilterTypeMacro(int,int,3);
-    GradientAnisotropicDiffusionImageFilterTypeMacro(unsigned int,unsigned int,3);
-    GradientAnisotropicDiffusionImageFilterTypeMacro(double,double,3);
-    //}
+      GradientAnisotropicDiffusionImageFilterTypeMacro(unsigned char, unsigned char, 3);
+      GradientAnisotropicDiffusionImageFilterTypeMacro(char, char, 3);
+      GradientAnisotropicDiffusionImageFilterTypeMacro(float,float,3);
+      GradientAnisotropicDiffusionImageFilterTypeMacro(int,int,3);
+      GradientAnisotropicDiffusionImageFilterTypeMacro(unsigned int,unsigned int,3);
+      GradientAnisotropicDiffusionImageFilterTypeMacro(double,double,3);
+    }
   }
 };
 
