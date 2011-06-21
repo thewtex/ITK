@@ -24,14 +24,6 @@
   #endif
 #endif // defined(WIN32) || defined(_WIN32)
 
-#ifdef linux
-  #include "itkSmapsFileParser.h"
-#endif // linux
-
-#if defined( __APPLE__ ) && MAC_OS_X_VERSION >= MAC_OS_X_VERSION_10_2
-  #include "itkSmapsFileParser.h"
-#endif // Mac OS X
-
 #if defined( __SUNPRO_CC ) || defined ( __sun__ )
   #include <unistd.h>
   #include <stdio.h>
@@ -49,6 +41,11 @@
 
 #if defined( __OpenBSD__ )
 #include <stdlib.h>
+#endif
+
+#ifdef linux
+#include <sstream>
+#include <unistd.h>
 #endif
 
 namespace itk
@@ -277,14 +274,22 @@ LinuxMemoryUsageObserver::~LinuxMemoryUsageObserver()
 MemoryUsageObserverBase::MemoryLoadType
 LinuxMemoryUsageObserver::GetMemoryUsage()
 {
-  SmapsFileParser< SmapsData_2_6 > m_ParseSmaps;
-  m_ParseSmaps.ReadFile();
-  return m_ParseSmaps.GetHeapUsage() + m_ParseSmaps.GetStackUsage();
+  std::Estringstream ss(std::stringstream::in);
+  ss << "/proc/" << getpid() << "/statm";
+  std::ifstream procstats(ss.str().c_str());
+  unsigned long size, resident, share, text, lib, data, dt;
+  procstats >> size;
+  procstats >> resident;
+  procstats >> share;
+  procstats >> text;
+  procstats >> lib;
+  procstats >> data;
+  return data * 1024;
 }
 
 #endif // linux
 
-#if defined( __APPLE__ ) && MAC_OS_X_VERSION >= MAC_OS_X_VERSION_10_2
+#if defined(__APPLE__)
 
 /**         ----         Mac OS X Memory Usage Observer       ----       */
 
@@ -294,9 +299,23 @@ MacOSXMemoryUsageObserver::~MacOSXMemoryUsageObserver()
 MemoryUsageObserverBase::MemoryLoadType
 MacOSXMemoryUsageObserver::GetMemoryUsage()
 {
-  VMMapFileParser< VMMapData_10_2 > m_ParseVMMmap;
-  m_ParseVMMmap.ReadFile();
-  return m_ParseVMMmap.GetHeapUsage() + m_ParseVMMmap.GetStackUsage();
+  //
+  // this method comes from
+  // http://stackoverflow.com/questions/5839626/how-is-top-able-to-see-memory-usage
+  task_t targetTask = mach_task_self();
+  struct task_basic_info ti;
+  mach_msg_type_number_t count = TASK_BASIC_INFO_64_COUNT;
+  kern_return_t kr =
+    task_info(targetTask, TASK_BASIC_INFO_64,
+              (task_info_t) &ti, &count);
+  if (kr != KERN_SUCCESS)
+    {
+    return 0;
+    }
+
+  // On Mac OS X, the resident_size is in bytes, not pages!
+  // (This differs from the GNU Mach kernel)
+  return ti.resident_size;
 }
 
 #endif // Mac OS X
