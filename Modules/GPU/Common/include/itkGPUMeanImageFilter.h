@@ -19,14 +19,13 @@
 #define __itkGPUMeanImageFilter_h
 
 #include "itkMeanImageFilter.h"
-#include "itkGPUImageToImageFilter.h"
+#include "itkGPUBoxImageFilter.h"
 #include "itkVersion.h"
 #include "itkObjectFactoryBase.h"
 #include "itkOclUtil.h"
 
 namespace itk
 {
-
 /** \class GPUMeanImageFilter
  *
  * \brief GPU-enabled implementation of the MeanImageFilter.
@@ -36,7 +35,8 @@ namespace itk
  * \ingroup ITKGPUCommon
  */
 template< class TInputImage, class TOutputImage >
-class ITK_EXPORT GPUMeanImageFilter: public GPUImageToImageFilter< TInputImage, TOutputImage, MeanImageFilter< TInputImage, TOutputImage > >
+class ITK_EXPORT GPUMeanImageFilter: //public GPUImageToImageFilter< TInputImage, TOutputImage, MeanImageFilter< TInputImage, TOutputImage > >
+  public GPUBoxImageFilter< TInputImage, TOutputImage, MeanImageFilter< TInputImage, TOutputImage > >
 {
 public:
   /** Standard class typedefs. */
