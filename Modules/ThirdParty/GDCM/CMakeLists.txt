@@ -1,5 +1,17 @@
-project(ITK-GDCM)
-set(ITK-GDCM_THIRD_PARTY 1)
+project( ITK-GDCM )
+set( ITK-GDCM_THIRD_PARTY 1 )
+
+if( WIN32 )
+  string( LENGTH "${CMAKE_CURRENT_SOURCE_DIR}" n )
+  if( n GREATER 75 )
+    message(
+      FATAL_ERROR
+      "Source tree directory of GDCM thirdparty module is too deep (${n} > 75)."
+      "Please remove GDCM from the list of module to be built,"
+      "or use a shorter directory for the ITK source tree."
+      )
+  endif()
+endif()
 
 if(ITK_USE_SYSTEM_GDCM)
   set(ITK-GDCM_SYSTEM_INCLUDE_DIRS
