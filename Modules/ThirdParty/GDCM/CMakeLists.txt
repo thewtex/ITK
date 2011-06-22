@@ -23,7 +23,7 @@ else()
   if(NOT GDCM_HAVE_STDINT_H)
     # for MSVC only gdcm has a stdint.h that works for that
     # compiler found in Utilities/C99
-    if(MSVC)
+    if(MSVC OR "${CMAKE_CXX_COMPILER_ID}" MATCHES "Intel")
       list(APPEND ITK-GDCM_INCLUDE_DIRS
         ${ITK-GDCM_SOURCE_DIR}/src/gdcm/Utilities/C99)
     endif()
