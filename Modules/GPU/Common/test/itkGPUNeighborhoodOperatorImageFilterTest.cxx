@@ -30,15 +30,19 @@
 #include "itkGPUKernelManager.h"
 #include "itkGPUContextManager.h"
 #include "itkGPUImageToImageFilter.h"
-#include "itkGPUMeanImageFilter.h"
+#include "itkGPUNeighborhoodOperatorImageFilter.h"
 
 #include "itkRescaleIntensityImageFilter.h"
 #include "itkTimeProbe.h"
+#include "itkGaussianOperator.h"
 
 /**
- * Testing GPU Mean Image Filter
+ * Testing GPU Neighborhood Operator Image Filter
  */
-int itkGPUMeanImageFilterTest(int argc, char *argv[])
+
+#define ImageDimension 3 //2
+
+int itkGPUNeighborhoodOperatorImageFilterTest(int argc, char *argv[])
 {
   if(!IsGPUAvailable())
   {
@@ -53,17 +57,20 @@ int itkGPUMeanImageFilterTest(int argc, char *argv[])
   typedef   unsigned char  InputPixelType;
   typedef   unsigned char  OutputPixelType;
 
+
   //typedef itk::Image< InputPixelType,  3 >   InputImageType;
   //typedef itk::Image< OutputPixelType, 3 >   OutputImageType;
 
-  typedef itk::GPUImage< InputPixelType,  3 >   InputImageType;
-  typedef itk::GPUImage< OutputPixelType, 3 >   OutputImageType;
+  typedef itk::GPUImage< InputPixelType,  ImageDimension >   InputImageType;
+  typedef itk::GPUImage< OutputPixelType, ImageDimension >   OutputImageType;
 
   typedef itk::ImageFileReader< InputImageType  >  ReaderType;
   typedef itk::ImageFileWriter< OutputImageType >  WriterType;
 
   ReaderType::Pointer reader = ReaderType::New();
   WriterType::Pointer writer = WriterType::New();
+
+
 /*
   if( argc <  3 )
     {
@@ -79,21 +86,44 @@ int itkGPUMeanImageFilterTest(int argc, char *argv[])
   // Note: We use regular itk filter type here but factory will automatically create
   //       GPU filter for Median filter and CPU filter for threshold filter.
   //
-  typedef itk::MeanImageFilter< InputImageType, OutputImageType > MeanFilterType;
-  typedef itk::GPUMeanImageFilter< InputImageType, OutputImageType > GPUMeanFilterType;
+  typedef itk::NeighborhoodOperatorImageFilter< InputImageType, OutputImageType > NeighborhoodFilterType;
+  typedef itk::GPUNeighborhoodOperatorImageFilter< InputImageType, OutputImageType > GPUNeighborhoodFilterType;
 
-  // Mean filter kernel radius
-  InputImageType::SizeType indexRadius;
-  indexRadius[0] = 2; // radius along x
-  indexRadius[1] = 2; // radius along y
-  indexRadius[2] = 2; // radius along z
+  if( ImageDimension == 3 )
+  {
+    reader->SetFileName( "E:/proj/CUDA_ITK/ITK_CUDA_TEST/data/AD63368_tensor_double_up.nhdr" );
+  }
+  else
+  {
+      exit(0);
+  }
 
-  reader->SetFileName( "E:/proj/CUDA_ITK/ITK_CUDA_TEST/data/AD63368_tensor_double_up.nhdr" );
+  // Create a series of  1D Gaussian operators
+  typedef itk::GaussianOperator< float, ImageDimension > OperatorType;
+
+  std::vector< OperatorType > oper;
+  oper.resize( ImageDimension );
+
+  // Set up the operators
+  unsigned int i;
+  for ( i = 0; i < ImageDimension; ++i )
+  {
+    // we reverse the direction to minimize computation while, because
+    // the largest dimension will be split slice wise for streaming
+    unsigned int reverse_i = ImageDimension - i - 1;
+
+    // Set up the operator for this dimension
+    oper[reverse_i].SetDirection(i);
+    oper[reverse_i].SetVariance( 3.0 );
+    oper[reverse_i].SetMaximumKernelWidth( 20 );
+    oper[reverse_i].SetMaximumError( 0.1 );
+    oper[reverse_i].CreateDirectional();
+  }
 
   // test 1~8 threads for CPU
   for(int nThreads = 1; nThreads <= 8; nThreads++)
   {
-    MeanFilterType::Pointer CPUFilter = MeanFilterType::New();
+    NeighborhoodFilterType::Pointer CPUFilter = NeighborhoodFilterType::New();
 
     itk::TimeProbe cputimer;
     cputimer.Start();
@@ -101,31 +131,31 @@ int itkGPUMeanImageFilterTest(int argc, char *argv[])
     CPUFilter->SetNumberOfThreads( nThreads );
 
     CPUFilter->SetInput( reader->GetOutput() );
-    CPUFilter->SetRadius( indexRadius );
+    CPUFilter->SetOperator( oper[0] );
     CPUFilter->Update();
 
     cputimer.Stop();
 
-    std::cout << "CPU mean filter took " << cputimer.GetMeanTime() << " seconds with "
+    std::cout << "CPU NeighborhoodFilter took " << cputimer.GetMeanTime() << " seconds with "
               << CPUFilter->GetNumberOfThreads() << " threads.\n" << std::endl;
 
     // -------
 
     if( nThreads == 8 )
     {
-      GPUMeanFilterType::Pointer GPUFilter = GPUMeanFilterType::New();
+      GPUNeighborhoodFilterType::Pointer GPUFilter = GPUNeighborhoodFilterType::New();
 
       itk::TimeProbe gputimer;
       gputimer.Start();
 
       GPUFilter->SetInput( reader->GetOutput() );
-      GPUFilter->SetRadius( indexRadius );
+      GPUFilter->SetOperator( oper[0] );
       GPUFilter->Update();
 
       GPUFilter->GetOutput()->MakeUpToDate(); // synchronization point (GPU->CPU memcpy)
 
       gputimer.Stop();
-      std::cout << "GPU mean filter took " << gputimer.GetMeanTime() << " seconds.\n" << std::endl;
+      std::cout << "GPU NeighborhoodFilter took " << gputimer.GetMeanTime() << " seconds.\n" << std::endl;
 
       // ---------------
       // RMS Error check
@@ -147,8 +177,6 @@ int itkGPUMeanImageFilterTest(int argc, char *argv[])
     }
 
   }
-
-
 
   return EXIT_SUCCESS;
 }

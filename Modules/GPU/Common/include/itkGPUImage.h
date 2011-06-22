@@ -222,10 +222,9 @@ private:
         itk::CreateObjectFunction<GPUImage<pt,dm> >::New())
 
   GPUImageFactory()
+  {
+    if( IsGPUAvailable() )
     {
-      //TODO: we need global function to check GPU availability
-      //this->IfGPUISAvailable()
-      //{
       // 1/2/3D
       OverrideImageTypeMacro(unsigned char, 1);
       OverrideImageTypeMacro(signed char,  1);
@@ -247,9 +246,8 @@ private:
       OverrideImageTypeMacro(unsigned int, 3);
       OverrideImageTypeMacro(float, 3);
       OverrideImageTypeMacro(double, 3);
-      // need more type here!
-      //}
     }
+  }
 };
 
 template <class T>
