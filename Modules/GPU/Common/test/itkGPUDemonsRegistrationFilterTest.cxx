@@ -145,7 +145,7 @@ int itkGPUDemonsRegistrationFilterTest(int argc, char *argv[])
   filter->SetFixedImage( fixedImageCaster->GetOutput() );
   filter->SetMovingImage( matcher->GetOutput() );
 
-  filter->SetNumberOfIterations( 5 );
+  filter->SetNumberOfIterations( 100 );
   filter->SetStandardDeviations( 1.0 );
   filter->Update();
 

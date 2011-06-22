@@ -393,9 +393,14 @@ GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField
 ::PostProcessOutput()
 {
   this->GPUSuperclass::PostProcessOutput();
-  m_TempField->Initialize(); //release memory
 
-  //update the cpu buffer from gpu
+  // release memory
+  m_TempField->Initialize();
+  m_GPUSmoothingKernel->Initialize();
+  delete m_SmoothingKernel;
+  m_SmoothingKernel = NULL;
+
+  // update the cpu buffer from gpu
   this->GetOutput()->GetBufferPointer();
 }
 
