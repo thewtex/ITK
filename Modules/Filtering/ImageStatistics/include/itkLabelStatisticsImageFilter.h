@@ -18,7 +18,7 @@
 #ifndef __itkLabelStatisticsImageFilter_h
 #define __itkLabelStatisticsImageFilter_h
 
-#include "itkImageToImageFilter.h"
+#include "itkImageSink.h"
 #include "itkNumericTraits.h"
 #include "itkSimpleDataObjectDecorator.h"
 #include "itk_hash_map.h"
@@ -54,14 +54,14 @@ namespace itk
  */
 template< class TInputImage, class TLabelImage >
 class ITK_EXPORT LabelStatisticsImageFilter:
-  public ImageToImageFilter< TInputImage, TInputImage >
+  public ImageSink< TInputImage >
 {
 public:
   /** Standard Self typedef */
-  typedef LabelStatisticsImageFilter                     Self;
-  typedef ImageToImageFilter< TInputImage, TInputImage > Superclass;
-  typedef SmartPointer< Self >                           Pointer;
-  typedef SmartPointer< const Self >                     ConstPointer;
+  typedef LabelStatisticsImageFilter Self;
+  typedef ImageSink< TInputImage >   Superclass;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -103,6 +103,11 @@ public:
   /** Histogram-related typedefs */
   typedef itk::Statistics::Histogram< RealType > HistogramType;
   typedef typename HistogramType::Pointer        HistogramPointer;
+
+  // Change the access from protected to public
+  using Superclass::SetNumberOfStreamDivisions;
+  using Superclass::GetNumberOfStreamDivisions;
+
 
   /** \class LabelStatistics
    * \brief Statistics stored per label
@@ -318,30 +323,19 @@ public:
 #endif
 protected:
   LabelStatisticsImageFilter();
-  ~LabelStatisticsImageFilter(){}
+  //  ~LabelStatisticsImageFilter(){} default implementation ok
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
-  /** Pass the input through unmodified. Do this by Grafting in the
-    AllocateOutputs method. */
-  void AllocateOutputs();
+  /** Initialize some accumulators before the iterative runs. */
+  void BeforeStreamedGenerateData();
 
-  /** Initialize some accumulators before the threads run. */
-  void BeforeThreadedGenerateData();
-
-  /** Do final mean and variance computation from data accumulated in threads.
+  /** Do final mean and variance computation from data accumulated in interations.
     */
-  void AfterThreadedGenerateData();
+  virtual void AfterStreamedGenerateData();
 
   /** Multi-thread version GenerateData. */
-  void  ThreadedGenerateData(const RegionType &
-                             outputRegionForThread,
-                             ThreadIdType threadId);
-
-  // Override since the filter needs all the data for the algorithm
-  void GenerateInputRequestedRegion();
-
-  // Override since the filter produces all of its output
-  void EnlargeOutputRequestedRegion(DataObject *data);
+  virtual void  ThreadedStreamedGenerateData( const RegionType &inputRegion, ThreadIdType id );
 
 private:
   LabelStatisticsImageFilter(const Self &); //purposely not implemented

@@ -72,8 +72,7 @@ NormalizeImageFilter< TInputImage, TOutputImage >
   // Gather statistics
 
   m_StatisticsFilter->SetInput( this->GetInput() );
-  m_StatisticsFilter->GetOutput()->SetRequestedRegion( this->GetOutput()->GetRequestedRegion() );
-  m_StatisticsFilter->Update();
+  m_StatisticsFilter->UpdateLargestPossibleRegion();
 
   // Set the parameters for Shift
   m_ShiftScaleFilter->SetShift( -m_StatisticsFilter->GetMean() );

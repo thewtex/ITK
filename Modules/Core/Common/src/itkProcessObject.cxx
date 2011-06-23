@@ -1111,7 +1111,8 @@ ProcessObject
   if ( this->GetOutput(0) )
     {
     this->GetOutput(0)->SetRequestedRegionToLargestPossibleRegion();
-    this->GetOutput(0)->Update();
     }
+
+  this->Update();
 }
 } // end namespace itk

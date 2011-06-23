@@ -38,6 +38,7 @@ namespace itk
  *
  * \ingroup ITKSystemObjects
  * \ingroup DataProcessing
+ * \ingroup Streamed
  * \ingroup ITK-Common
  */
 template< class TInputImage, class TOutputImage >

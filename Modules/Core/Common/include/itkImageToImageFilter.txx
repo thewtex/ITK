@@ -101,8 +101,10 @@ const typename ImageToImageFilter< TInputImage, TOutputImage >::InputImageType *
 ImageToImageFilter< TInputImage, TOutputImage >
 ::GetInput(unsigned int idx) const
 {
-  return static_cast< const TInputImage * >
-         ( this->ProcessObject::GetInput(idx) );
+   // The nth input may not be the same as the rest should do dynamic
+  // cast to ensure we are returning correct type
+  return dynamic_cast< const TInputImage * >
+    ( this->ProcessObject::GetInput(idx) );
 }
 
 //-----------------------------------------------------------------------
