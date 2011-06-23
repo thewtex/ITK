@@ -151,6 +151,26 @@ public:
 
   /** Get Luminance out of RGB */
   ComponentType GetLuminance(void) const;
+
+  class LexicographicCompare
+  {
+  public:
+    bool operator()(Self const & l, Self const & r) const
+    {
+      for ( unsigned int i = 0; i < 3; ++i )
+        {
+        if ( l[i] < r[i] )
+          {
+          return true;
+          }
+        else if ( l[i] > r[i] )
+          {
+          return false;
+          }
+        }
+      return false;
+    }
+  };
 };
 
 template< typename TComponent  >
