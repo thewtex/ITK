@@ -82,6 +82,7 @@ itkKappaSigmaThresholdImageCalculatorTest.cxx
 itkKappaSigmaThresholdImageFilterTest.cxx
 itkLabelGeometryImageFilterTest.cxx
 itkLabelImageToLabelMapFilterTest.cxx
+itkDestructiveLabelImageToLabelMapFilterTest.cxx
 itkLabelImageToShapeLabelMapFilterTest1.cxx
 itkLabelImageToStatisticsLabelMapFilterTest1.cxx
 itkLabelMapContourOverlayImageFilterTest1.cxx
@@ -323,6 +324,9 @@ itk_add_test(NAME itkBinaryImageToLabelMapFilterTest5
     --compare ${ITK_DATA_ROOT}/Baseline/Review/nonConnected3DLines-0.tif
               ${ITK_TEST_OUTPUT_DIR}/nonConnected3DLines-0.tif
     itkBinaryImageToLabelMapFilterTest ${ITK_DATA_ROOT}/Input/nonConnected3DLines.tif ${ITK_TEST_OUTPUT_DIR}/nonConnected3DLines-0.tif 0 255 0 0)
+itk_add_test(NAME itkDestructiveLabelImageToLabelMapFilterTest
+      COMMAND ITK-ReviewTestDriver
+    itkDestructiveLabelImageToLabelMapFilterTest ${ITK_DATA_ROOT}/Input/RGBTestImage.tif ${ITK_TEST_OUTPUT_DIR}/destructive.png )
 itk_add_test(NAME itkBinaryImageToShapeLabelMapFilterTest1
       COMMAND ITK-ReviewTestDriver
     --compare ${ITK_DATA_ROOT}/Baseline/Review/Spots-binaryimage-to-shapelabel.mha

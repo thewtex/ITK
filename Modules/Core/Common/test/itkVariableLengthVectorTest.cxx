@@ -31,6 +31,27 @@ int itkVariableLengthVectorTest(int, char*[])
   f[0]=1.0; f[1] = 2.0; f[2] = 3.0;
   DoubleVariableLengthVectorType g( 3 );
   g[0]=4.0; g[1] = 5.0; g[2] = 6.0;
+
+  typedef FloatVariableLengthVectorType::LexicographicCompare CompareType;
+
+  CompareType compare;
+
+  if( compare( static_cast< FloatVariableLengthVectorType >( g ), f ) )
+    {
+    std::cerr << "LexicographicCompare(g,f) FAILED" << std::endl;
+    return EXIT_FAILURE;
+    }
+
+    {
+    FloatVariableLengthVectorType temp( 4 );
+    temp[0] = 1.0; temp[1] = 2.0; temp[2] = 3.0; temp[3] = 4.0;
+
+    if( compare( f, temp ) == false )
+      {
+      std::cerr << "LexicographicCompare(f,temp) FAILED" << std::endl;
+      return EXIT_FAILURE;
+      }
+    }
   FloatVariableLengthVectorType h;
   h  = g + f;
   g  = h++;

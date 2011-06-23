@@ -430,6 +430,32 @@ public:
   /** Returns vector's Squared Euclidean Norm  */
   RealValueType GetSquaredNorm() const;
 
+  class LexicographicCompare
+  {
+  public:
+    bool operator()(Self const & l, Self const & r) const
+    {
+      // first look at all the elements in common
+      ElementIdentifier s = vnl_math_min( l.GetNumberOfElements(),
+                                          r.GetNumberOfElements() );
+
+      for ( unsigned int i = 0; i < s; ++i )
+        {
+        if ( l[i] < r[i] )
+          {
+          return true;
+          }
+        else if ( l[i] > r[i] )
+          {
+          return false;
+          }
+        }
+      // the common elements are the same.
+      // if l has less elements than r, then it is smaller
+      return ( l.GetNumberOfElements() < r.GetNumberOfElements() );
+    }
+  };
+
 private:
 
   bool              m_LetArrayManageMemory; // if true, the array is responsible
