@@ -82,7 +82,7 @@ private:
  *
  * \ingroup IntensityImageFilters  Multithreaded
  *
- * \ingroup ITK-ImageIntensity
+ * \ingroup ITK_ImageIntensity
  *
  * \wiki
  * \wikiexample{Images/VectorRescaleIntensityImageFilter,Apply a transformation to the magnitude of vector valued image pixels}

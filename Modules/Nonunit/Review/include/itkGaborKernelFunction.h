@@ -45,7 +45,7 @@ namespace itk
  * \sa KernelFunction
  *
  * \ingroup Functions
- * \ingroup ITK-Review
+ * \ingroup ITK_Review
  */
 class ITK_EXPORT GaborKernelFunction:public KernelFunction
 {

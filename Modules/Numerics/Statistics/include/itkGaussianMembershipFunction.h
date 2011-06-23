@@ -36,7 +36,7 @@ namespace Statistics
  * double and return 0 for others
  *
  *
- * \ingroup ITK-Statistics
+ * \ingroup ITK_Statistics
  */
 
 template< class TMeasurementVector >

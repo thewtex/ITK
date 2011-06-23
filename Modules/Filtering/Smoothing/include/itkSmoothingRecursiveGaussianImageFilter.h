@@ -40,7 +40,7 @@ namespace itk
  *
  * \ingroup IntensityImageFilters
  * \ingroup Singlethreaded
- * \ingroup ITK-Smoothing
+ * \ingroup ITK_Smoothing
  *
  * \wiki
  * \wikiexample{Smoothing/SmoothingRecursiveGaussianImageFilter,Gaussian smoothing that works with image adaptors}

@@ -54,7 +54,7 @@ namespace Statistics
  * vector to be specified at run time. Please use the function
  * GetMeasurementVectorSize() instead.
  *
- * \ingroup ITK-Statistics
+ * \ingroup ITK_Statistics
  */
 
 template< class TMeasurementVector >

@@ -1,7 +1,7 @@
-itk_module(ITK-IO-GE
+itk_module(ITK_IO_GE
   DEPENDS
-    ITK-IO-IPL
+    ITK_IO_IPL
   TEST_DEPENDS
-    ITK-TestKernel
-    ITK-IO-Siemens
+    ITK_TestKernel
+    ITK_IO_Siemens
 )

@@ -65,7 +65,7 @@ namespace itk
  * \par INPUT
  * The input should be a 3D binary image.
  *
- * \ingroup ITK-Mesh
+ * \ingroup ITK_Mesh
  */
 template< class TInputImage, class TOutputMesh >
 class ITK_EXPORT BinaryMask3DMeshSource:public ImageToMeshFilter< TInputImage, TOutputMesh >

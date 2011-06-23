@@ -50,7 +50,7 @@ namespace itk
  *  \author Samson Timoner.
  *
  *  \ingroup RegistrationMetrics
- * \ingroup ITK-RegistrationCommon
+ * \ingroup ITK_RegistrationCommon
  */
 template< class TFixedImage, class TMovingImage >
 class ITK_EXPORT CompareHistogramImageToImageMetric:

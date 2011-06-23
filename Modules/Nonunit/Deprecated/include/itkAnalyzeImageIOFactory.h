@@ -29,7 +29,7 @@ namespace itk
 {
 /** \class AnalyzeImageIOFactory
    * \brief Create instances of AnalyzeImageIO objects using an object factory.
-   * \ingroup ITK-Deprecated
+   * \ingroup ITK_Deprecated
    */
 class ITK_EXPORT AnalyzeImageIOFactory:public ObjectFactoryBase
 {

@@ -137,7 +137,7 @@ namespace itk
  *
  * \par
  *  See LevelSetFunction for more information.
- * \ingroup ITK-LevelSets
+ * \ingroup ITK_LevelSets
  */
 template< class TInputImage,
           class TFeatureImage,

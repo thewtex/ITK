@@ -41,7 +41,7 @@ namespace itk
  * \sa ImageFileReader
  *
  * \ingroup IOFilters
- * \ingroup ITK-IO-RAW
+ * \ingroup ITK_IO_RAW
  */
 
 template< class TPixel, unsigned int VImageDimension = 2 >

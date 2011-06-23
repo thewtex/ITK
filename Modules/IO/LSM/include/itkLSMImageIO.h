@@ -41,7 +41,7 @@ namespace itk
  *
  * \ingroup IOFilters
  *
- * \ingroup ITK-IO-LSM
+ * \ingroup ITK_IO_LSM
  */
 class ITK_EXPORT LSMImageIO:public TIFFImageIO
 {

@@ -50,7 +50,7 @@ namespace itk
  *     }
  *
  * When used in a non-threaded filter, the threadId argument should be 0.
- * \ingroup ITK-Common
+ * \ingroup ITK_Common
  */
 class ITKCommon_EXPORT IterationReporter
 {

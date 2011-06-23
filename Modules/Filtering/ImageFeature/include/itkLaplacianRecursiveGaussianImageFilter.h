@@ -33,7 +33,7 @@ namespace itk
  *
  * \ingroup GradientFilters
  * \ingroup Singlethreaded
- * \ingroup ITK-ImageFeature
+ * \ingroup ITK_ImageFeature
  *
  * \wiki
  * \wikiexample{EdgesAndGradients/LaplacianRecursiveGaussianImageFilter,Compute the Laplacian of Gaussian (LoG) of an image}

@@ -85,7 +85,7 @@ namespace itk
  * \sa BackwardDifferenceOperator
  *
  * \ingroup Operators
- * \ingroup ITK-Common
+ * \ingroup ITK_Common
  *
  * \wiki
  * \wikiexample{Operators/SobelOperator,Create the Sobel kernel}

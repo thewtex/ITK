@@ -45,7 +45,7 @@ namespace itk
  *                     ISIS Center, Georgetown University.
  *
  * \ingroup OSSystemObjects
- * \ingroup ITK-Common
+ * \ingroup ITK_Common
  */
 class ITKCommon_EXPORT LoggerOutput:public OutputWindow
 {

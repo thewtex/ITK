@@ -68,7 +68,7 @@ namespace itk
  *
  * \ingroup IOFilters
  *
- * \ingroup ITK-IO-Base
+ * \ingroup ITK_IO_Base
  */
 class ITK_EXPORT RegularExpressionSeriesFileNames:public Object
 {

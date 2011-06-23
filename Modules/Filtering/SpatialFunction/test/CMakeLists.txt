@@ -1,12 +1,12 @@
 itk_module_test()
-set(ITK-SpatialFunctionTests
+set(ITK_SpatialFunctionTests
 itkSpatialFunctionImageEvaluatorFilterTest.cxx
 itkSpatialFunctionHeaderTest.cxx
 )
 
-CreateTestDriver(ITK-SpatialFunction  "${ITK-SpatialFunction-Test_LIBRARIES}" "${ITK-SpatialFunctionTests}")
+CreateTestDriver(ITK_SpatialFunction  "${ITK_SpatialFunction-Test_LIBRARIES}" "${ITK_SpatialFunctionTests}")
 
 itk_add_test(NAME itkSpatialFunctionHeaderTest
-      COMMAND ITK-SpatialFunctionTestDriver itkSpatialFunctionHeaderTest)
+      COMMAND ITK_SpatialFunctionTestDriver itkSpatialFunctionHeaderTest)
 itk_add_test(NAME itkSpatialFunctionImageEvaluatorFilterTest
-      COMMAND ITK-SpatialFunctionTestDriver itkSpatialFunctionImageEvaluatorFilterTest)
+      COMMAND ITK_SpatialFunctionTestDriver itkSpatialFunctionImageEvaluatorFilterTest)

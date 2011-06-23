@@ -1,2 +1,2 @@
-project(ITK-FEMRegistration)
+project(ITK_FEMRegistration)
 itk_module_impl()

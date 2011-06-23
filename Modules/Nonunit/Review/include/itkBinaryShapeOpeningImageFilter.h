@@ -41,7 +41,7 @@ namespace itk
  *
  * \sa ShapeLabelObject, LabelShapeOpeningImageFilter, BinaryStatisticsOpeningImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
- * \ingroup ITK-Review
+ * \ingroup ITK_Review
  */
 template< class TInputImage >
 class ITK_EXPORT BinaryShapeOpeningImageFilter:

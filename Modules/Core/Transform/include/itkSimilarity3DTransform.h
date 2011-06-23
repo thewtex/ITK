@@ -42,7 +42,7 @@ namespace itk
  * \ingroup Transforms
  *
  * \sa VersorRigid3DTransform
- * \ingroup ITK-Transform
+ * \ingroup ITK_Transform
  */
 template< class TScalarType = double >
 // Data type for scalars (float or double)

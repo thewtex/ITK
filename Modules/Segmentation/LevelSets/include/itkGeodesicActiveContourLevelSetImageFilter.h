@@ -99,7 +99,7 @@ namespace itk
  * \sa SparseFieldLevelSetImageFilter
  *
  * \ingroup LevelSetSegmentation
- * \ingroup ITK-LevelSets
+ * \ingroup ITK_LevelSets
  */
 template< class TInputImage,
           class TFeatureImage,

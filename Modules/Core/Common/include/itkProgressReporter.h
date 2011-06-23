@@ -55,7 +55,7 @@ namespace itk
  * progress information, see:
  *  - ProcessObject::ReportProgress()
  *  - Object::AddObserver()
- * \ingroup ITK-Common
+ * \ingroup ITK_Common
  */
 class ITKCommon_EXPORT ProgressReporter
 {

@@ -32,7 +32,7 @@ namespace itk
  * This implementation was contributed as a paper to the Insight Journal
  * http://hdl.handle.net/1926/1381
  *
- * \ingroup ITK-Review
+ * \ingroup ITK_Review
  */
 class ITK_EXPORT Bruker2DSEQImageIOFactory:public ObjectFactoryBase
 {

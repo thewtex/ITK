@@ -45,7 +45,7 @@ namespace itk
  * http://www.insight-journal.org/browse/publication/176
  *
  * \ingroup IntensityImageFilters  Multithreaded
- * \ingroup ITK-Review
+ * \ingroup ITK_Review
  *
  * \wiki
  * \wikiexample{ImageProcessing/BinaryNotImageFilter,Invert an image using the Binary Not operation}

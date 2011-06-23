@@ -4,14 +4,14 @@ middle of the image are higher than the intensities in the borders of the
 image. The same need is common in microscopy images when the ilumination is not
 uniform accross the field of view.")
 
-itk_module(ITK-BiasCorrection
+itk_module(ITK_BiasCorrection
   DEPENDS
-    ITK-ImageFilterBase
-    ITK-Polynomials
-    ITK-Statistics
-    ITK-Optimizers
+    ITK_ImageFilterBase
+    ITK_Polynomials
+    ITK_Statistics
+    ITK_Optimizers
   TEST_DEPENDS
-    ITK-TestKernel
+    ITK_TestKernel
   DESCRIPTION
     "${DOCUMENTATION}"
 )

@@ -47,7 +47,7 @@ namespace itk
  *
  * \ingroup IOFilters
  *
- * \ingroup ITK-IO-Base
+ * \ingroup ITK_IO_Base
  */
 class ITK_EXPORT NumericSeriesFileNames:public Object
 {

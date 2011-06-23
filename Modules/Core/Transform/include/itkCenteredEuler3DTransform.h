@@ -32,7 +32,7 @@ namespace itk
  * centre of rotation followed by a translation.
  *
  * \ingroup Transforms
- * \ingroup ITK-Transform
+ * \ingroup ITK_Transform
  */
 template< class TScalarType = double >
 // Data type for scalars

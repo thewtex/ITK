@@ -121,7 +121,7 @@ bool operator==(const hash_multimap< Key, T, HashFcn, EqualKey, Alloc > &,
 /** \class hash_map
  * \brief Replacement for STL hash map because some systems do not support it,
  * or support it incorrectly.
- * \ingroup ITK-Common
+ * \ingroup ITK_Common
  */
 template< class Key, class T,
           VCL_DFL_TMPL_PARAM_STLDECL(HashFcn, hash< Key > ),

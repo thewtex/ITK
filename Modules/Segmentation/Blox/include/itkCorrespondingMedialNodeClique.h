@@ -37,7 +37,7 @@ namespace itk
  * set of medial nodes (cliques).
  *
  *
- * \ingroup ITK-Blox
+ * \ingroup ITK_Blox
  */
 
 template< unsigned int VImageDimension, unsigned int VCliqueSize >

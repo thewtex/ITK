@@ -33,7 +33,7 @@ namespace itk
  * basically container which holds NodeOfPermutation objects.  The
  * node class overloads the < operator, which allows the sort algorithm
  * from the STL to be used on it.
- * \ingroup ITK-Common
+ * \ingroup ITK_Common
  */
 class NodeOfPermutation
 {
@@ -64,7 +64,7 @@ public:
 
 /** \class RandomPermutation
  * \brief Random Permutation
- * \ingroup ITK-Common
+ * \ingroup ITK_Common
  */
 class RandomPermutation
 {
@@ -201,7 +201,7 @@ public:
  * \sa ShapedNeighborhoodIterator  \sa SliceIterator
  * \sa ImageConstIteratorWithIndex
  *
- * \ingroup ITK-Common
+ * \ingroup ITK_Common
  *
  * \wiki
  * \wikiexample{Iterators/ImageRandomNonRepeatingConstIteratorWithIndex,Randomly select pixels from a region of an image without replacement}

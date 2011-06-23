@@ -50,7 +50,7 @@ namespace itk
  * \sa ResampleImageFilter
  *
  * \ingroup ImageFunctions
- * \ingroup ITK-ImageFunction
+ * \ingroup ITK_ImageFunction
  */
 template< class TImageType, class TCoordRep = float >
 class ITK_EXPORT BSplineResampleImageFunction:

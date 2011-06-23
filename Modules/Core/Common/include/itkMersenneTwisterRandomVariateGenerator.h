@@ -100,7 +100,7 @@ namespace Statistics
  * when you write.
  *
  * \ingroup Common
- * \ingroup ITK-Common
+ * \ingroup ITK_Common
  *
  * \wiki
  * \wikiexample{Utilities/MersenneTwisterRandomVariateGenerator,Random number generator}

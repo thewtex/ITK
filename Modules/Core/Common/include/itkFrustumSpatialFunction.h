@@ -32,7 +32,7 @@ namespace itk
  * \ingroup SpatialFunctions
  *
  *
- * \ingroup ITK-Common
+ * \ingroup ITK_Common
  */
 
 template< unsigned int VImageDimension = 3, typename TInput = Point< double, 3 > >

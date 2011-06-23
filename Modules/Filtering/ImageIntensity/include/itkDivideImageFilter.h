@@ -32,7 +32,7 @@ namespace itk
  * avoid exception. Numeric conversions (castings) are done by the C++ defaults.
  *
  * \ingroup IntensityImageFilters  Multithreaded
- * \ingroup ITK-ImageIntensity
+ * \ingroup ITK_ImageIntensity
  */
 
 namespace Functor

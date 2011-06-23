@@ -39,7 +39,7 @@ namespace itk
  * inner product calculation (defaults to the operator type).
  *
  * \ingroup Operators
- * \ingroup ITK-Common
+ * \ingroup ITK_Common
  */
 
 template< class TImage, class TOperator = ITK_TYPENAME TImage::PixelType, class TComputation = TOperator >

@@ -6,13 +6,13 @@ filter may apply to every pixel. These classes are rarely used from
 applications. Their main role is to assist in the implementation of ITK
 filters.")
 
-itk_module(ITK-ImageFunction
+itk_module(ITK_ImageFunction
   DEPENDS
-    ITK-ImageAdaptors
-    ITK-Transform
-    ITK-Statistics
+    ITK_ImageAdaptors
+    ITK_Transform
+    ITK_Statistics
   TEST_DEPENDS
-    ITK-TestKernel
+    ITK_TestKernel
   DESCRIPTION
     "${DOCUMENTATION}"
 )

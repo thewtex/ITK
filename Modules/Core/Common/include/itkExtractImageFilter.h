@@ -74,7 +74,7 @@ namespace itk
  *
  * \sa CropImageFilter
  * \ingroup GeometricTransforms
- * \ingroup ITK-Common
+ * \ingroup ITK_Common
  */
 
 template< class TInputImage, class TOutputImage >

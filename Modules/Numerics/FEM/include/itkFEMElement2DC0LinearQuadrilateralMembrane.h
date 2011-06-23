@@ -27,7 +27,7 @@ namespace fem {
 /**
  * \class Element2DC0LinearQuadrilateralMembrane
  * \brief 4-noded finite element class in 2D space for linear elasticity problem
- * \ingroup ITK-FEM
+ * \ingroup ITK_FEM
  */
 class Element2DC0LinearQuadrilateralMembrane : public Element2DMembrane<Element2DC0LinearQuadrilateral>
 {

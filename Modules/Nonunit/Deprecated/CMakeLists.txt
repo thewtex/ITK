@@ -1,3 +1,3 @@
-project(ITK-Deprecated)
-set(ITK-Deprecated_LIBRARIES ITK-Deprecated)
+project(ITK_Deprecated)
+set(ITK_Deprecated_LIBRARIES ITK_Deprecated)
 itk_module_impl()

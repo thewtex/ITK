@@ -68,7 +68,7 @@ namespace itk
  * \sa ConnectedComponentImageFilter, BinaryThresholdImageFilter, ThresholdImageFilter
  *
  * \ingroup Singlethreaded
- * \ingroup ITK-ConnectedComponents
+ * \ingroup ITK_ConnectedComponents
  *
  * \wiki
  * \wikiexample{ImageProcessing/RelabelComponentImageFilter,Assign contiguous labels to connected regions of an image}

@@ -67,7 +67,7 @@ namespace itk
  * Questions: email Ken Urish at ken.urish(at)gmail.com
  * Please cc the itk list serve for archival purposes.
  *
- * \ingroup ITK-ConnectedComponents
+ * \ingroup ITK_ConnectedComponents
  */
 template< class TInputImage, class TOutputImage = TInputImage >
 class ITK_EXPORT ThresholdMaximumConnectedComponentsImageFilter:

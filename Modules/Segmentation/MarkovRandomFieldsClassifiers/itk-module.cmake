@@ -1,7 +1,7 @@
-itk_module(ITK-MarkovRandomFieldsClassifiers
+itk_module(ITK_MarkovRandomFieldsClassifiers
   DEPENDS
-    ITK-Statistics
-    ITK-Classifiers
+    ITK_Statistics
+    ITK_Classifiers
   TEST_DEPENDS
-    ITK-TestKernel
+    ITK_TestKernel
 )

@@ -45,7 +45,7 @@ namespace itk {
  * \sa DivideImageFilter
  *
  * \ingroup MathematicalImageFilters
- * \ingroup ITK-ImageIntensity
+ * \ingroup ITK_ImageIntensity
  *
  */
 template<class TInputImage, class TOutputImage>

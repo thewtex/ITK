@@ -1,13 +1,13 @@
-create_test_sourcelist(Tests ITK-GPUCommon-tests.cxx
+create_test_sourcelist(Tests ITK_GPUCommon-tests.cxx
 itkGPUImageTest.cxx
 itkGPUImageFilterTest.cxx
 )
 
-add_executable(ITK-GPUCommon-tests  ${Tests} )
-itk_module_target_label(ITK-GPUCommon-tests)
-target_link_libraries(ITK-GPUCommon-tests  ${ITK-GPUCommon_LIBRARIES} )
+add_executable(ITK_GPUCommon-tests  ${Tests} )
+itk_module_target_label(ITK_GPUCommon-tests)
+target_link_libraries(ITK_GPUCommon-tests  ${ITK_GPUCommon_LIBRARIES} )
 
 itk_add_test(NAME itkGPUImageFilterTest
-        COMMAND ITK-GPUCommon-tests itkGPUImageFilterTest
+        COMMAND ITK_GPUCommon-tests itkGPUImageFilterTest
         ${ITK_EXAMPLE_DATA_ROOT}/BrainProtonDensitySlice.png
         ${TEMP}/gpuImageFilterTest.png)

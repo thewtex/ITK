@@ -71,7 +71,7 @@ namespace itk
  * \sa BSplineDecompositionImageFilter
  *
  * \ingroup ImageFunctions
- * \ingroup ITK-ImageGrid
+ * \ingroup ITK_ImageGrid
  *
  * \wiki
  * \wikiexample{ImageProcessing/Upsampling,Upsampling an image}

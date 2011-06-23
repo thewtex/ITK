@@ -48,7 +48,7 @@ namespace itk
  *
  * \ingroup IOFilters
  *
- * \ingroup ITK-IO-GE
+ * \ingroup ITK_IO_GE
  */
 class ITK_EXPORT GE5ImageIO:public IPLCommonImageIO
 {

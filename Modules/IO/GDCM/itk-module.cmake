@@ -1,8 +1,8 @@
-itk_module(ITK-IO-GDCM
+itk_module(ITK_IO_GDCM
   DEPENDS
-    ITK-GDCM
-    ITK-IO-Base
+    ITK_GDCM
+    ITK_IO_Base
   TEST_DEPENDS
-    ITK-TestKernel
-    ITK-ImageIntensity
+    ITK_TestKernel
+    ITK_ImageIntensity
 )

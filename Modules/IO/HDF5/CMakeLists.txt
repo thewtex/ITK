@@ -1,3 +1,3 @@
-project(ITK-IO-HDF5)
-set(ITK-IO-HDF5_LIBRARIES ITK-IO-HDF5)
+project(ITK_IO_HDF5)
+set(ITK_IO_HDF5_LIBRARIES ITK_IO_HDF5)
 itk_module_impl()

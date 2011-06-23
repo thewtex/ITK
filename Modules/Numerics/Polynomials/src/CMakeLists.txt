@@ -1,7 +1,7 @@
-set(ITK-Polynomials_SRC
+set(ITK_Polynomials_SRC
 itkMultivariateLegendrePolynomial.cxx
 )
 
-add_library(ITK-Polynomials ${ITK-Polynomials_SRC})
-target_link_libraries(ITK-Polynomials  ${ITK-Common_LIBRARIES})
-itk_module_target(ITK-Polynomials)
+add_library(ITK_Polynomials ${ITK_Polynomials_SRC})
+target_link_libraries(ITK_Polynomials  ${ITK_Common_LIBRARIES})
+itk_module_target(ITK_Polynomials)

@@ -37,7 +37,7 @@ namespace itk
  * The filter expect both images to have the same number of dimensions.
  *
  * \ingroup IntensityImageFilters  Multithreaded
- * \ingroup ITK-Thresholding
+ * \ingroup ITK_Thresholding
  */
 namespace Functor
 {

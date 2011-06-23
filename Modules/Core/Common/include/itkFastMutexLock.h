@@ -54,7 +54,7 @@ namespace itk
  * should replace the implementations in this class
  *
  * \ingroup OSSystemObjects
- * \ingroup ITK-Common
+ * \ingroup ITK_Common
  */
 class ITKCommon_EXPORT FastMutexLock:public Object
 {

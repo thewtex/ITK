@@ -1,5 +1,5 @@
 itk_module_test()
-set(ITK-QuadEdgeMeshTests
+set(ITK_QuadEdgeMeshTests
 itkQuadEdgeMeshPointTest1.cxx
 itkQuadEdgeMeshTest1.cxx
 itkQuadEdgeMeshTest2.cxx
@@ -32,93 +32,93 @@ itkVTKPolyDataReaderQuadEdgeMeshTest.cxx
 itkDynamicQuadEdgeMeshTest.cxx
 )
 
-CreateTestDriver(ITK-QuadEdgeMesh  "${ITK-QuadEdgeMesh-Test_LIBRARIES}" "${ITK-QuadEdgeMeshTests}")
+CreateTestDriver(ITK_QuadEdgeMesh  "${ITK_QuadEdgeMesh-Test_LIBRARIES}" "${ITK_QuadEdgeMeshTests}")
 
 itk_add_test(NAME itkQuadEdgeMeshHeaderTest
-      COMMAND ITK-QuadEdgeMeshTestDriver itkQuadEdgeMeshHeaderTest)
+      COMMAND ITK_QuadEdgeMeshTestDriver itkQuadEdgeMeshHeaderTest)
 itk_add_test(NAME itkQuadEdgeMeshPointTest1
-      COMMAND ITK-QuadEdgeMeshTestDriver itkQuadEdgeMeshPointTest1)
+      COMMAND ITK_QuadEdgeMeshTestDriver itkQuadEdgeMeshPointTest1)
 itk_add_test(NAME itkQuadEdgeMeshTest1
-      COMMAND ITK-QuadEdgeMeshTestDriver itkQuadEdgeMeshTest1)
+      COMMAND ITK_QuadEdgeMeshTestDriver itkQuadEdgeMeshTest1)
 itk_add_test(NAME itkQuadEdgeMeshTest2
-      COMMAND ITK-QuadEdgeMeshTestDriver itkQuadEdgeMeshTest2)
+      COMMAND ITK_QuadEdgeMeshTestDriver itkQuadEdgeMeshTest2)
 itk_add_test(NAME itkQuadEdgeMeshTest3
-      COMMAND ITK-QuadEdgeMeshTestDriver itkQuadEdgeMeshTest3)
+      COMMAND ITK_QuadEdgeMeshTestDriver itkQuadEdgeMeshTest3)
 itk_add_test(NAME itkQuadEdgeMeshPolygonCellTest
-      COMMAND ITK-QuadEdgeMeshTestDriver itkQuadEdgeMeshPolygonCellTest)
+      COMMAND ITK_QuadEdgeMeshTestDriver itkQuadEdgeMeshPolygonCellTest)
 itk_add_test(NAME itkQuadEdgeMeshFrontIteratorTest
-      COMMAND ITK-QuadEdgeMeshTestDriver itkQuadEdgeMeshFrontIteratorTest)
+      COMMAND ITK_QuadEdgeMeshTestDriver itkQuadEdgeMeshFrontIteratorTest)
 itk_add_test(NAME itkQuadEdgeMeshScalarDataVTKPolyDataWriterTest1
-      COMMAND ITK-QuadEdgeMeshTestDriver itkQuadEdgeMeshScalarDataVTKPolyDataWriterTest1
+      COMMAND ITK_QuadEdgeMeshTestDriver itkQuadEdgeMeshScalarDataVTKPolyDataWriterTest1
               ${ITK_TEST_OUTPUT_DIR}/sphere.vtk)
 itk_add_test(NAME itkQuadEdgeTest1
-      COMMAND ITK-QuadEdgeMeshTestDriver itkQuadEdgeTest1)
+      COMMAND ITK_QuadEdgeMeshTestDriver itkQuadEdgeTest1)
 itk_add_test(NAME itkGeometricalQuadEdgeTest1
-      COMMAND ITK-QuadEdgeMeshTestDriver itkGeometricalQuadEdgeTest1)
+      COMMAND ITK_QuadEdgeMeshTestDriver itkGeometricalQuadEdgeTest1)
 itk_add_test(NAME itkQuadEdgeMeshAddFaceTest1_0
-      COMMAND ITK-QuadEdgeMeshTestDriver itkQuadEdgeMeshAddFaceTest1
+      COMMAND ITK_QuadEdgeMeshTestDriver itkQuadEdgeMeshAddFaceTest1
               0)
 itk_add_test(NAME itkQuadEdgeMeshAddFaceTest1_1
-      COMMAND ITK-QuadEdgeMeshTestDriver itkQuadEdgeMeshAddFaceTest1
+      COMMAND ITK_QuadEdgeMeshTestDriver itkQuadEdgeMeshAddFaceTest1
               1)
 itk_add_test(NAME itkQuadEdgeMeshAddFaceTest1_2
-      COMMAND ITK-QuadEdgeMeshTestDriver itkQuadEdgeMeshAddFaceTest1
+      COMMAND ITK_QuadEdgeMeshTestDriver itkQuadEdgeMeshAddFaceTest1
               2)
 itk_add_test(NAME itkQuadEdgeMeshAddFaceTest1_3
-      COMMAND ITK-QuadEdgeMeshTestDriver itkQuadEdgeMeshAddFaceTest1
+      COMMAND ITK_QuadEdgeMeshTestDriver itkQuadEdgeMeshAddFaceTest1
               3)
 itk_add_test(NAME itkQuadEdgeMeshAddFaceTest1_4
-      COMMAND ITK-QuadEdgeMeshTestDriver itkQuadEdgeMeshAddFaceTest1
+      COMMAND ITK_QuadEdgeMeshTestDriver itkQuadEdgeMeshAddFaceTest1
               4)
 itk_add_test(NAME itkQuadEdgeMeshAddFaceTest1_5
-      COMMAND ITK-QuadEdgeMeshTestDriver itkQuadEdgeMeshAddFaceTest1
+      COMMAND ITK_QuadEdgeMeshTestDriver itkQuadEdgeMeshAddFaceTest1
               5)
 itk_add_test(NAME itkQuadEdgeMeshAddFaceTest2
-      COMMAND ITK-QuadEdgeMeshTestDriver itkQuadEdgeMeshAddFaceTest2)
+      COMMAND ITK_QuadEdgeMeshTestDriver itkQuadEdgeMeshAddFaceTest2)
 itk_add_test(NAME itkQuadEdgeMeshCellInterfaceTest
-      COMMAND ITK-QuadEdgeMeshTestDriver itkQuadEdgeMeshCellInterfaceTest)
+      COMMAND ITK_QuadEdgeMeshTestDriver itkQuadEdgeMeshCellInterfaceTest)
 itk_add_test(NAME itkQuadEdgeMeshCountingCellsTest
-      COMMAND ITK-QuadEdgeMeshTestDriver itkQuadEdgeMeshCountingCellsTest)
+      COMMAND ITK_QuadEdgeMeshTestDriver itkQuadEdgeMeshCountingCellsTest)
 itk_add_test(NAME itkQuadEdgeMeshDeleteEdgeTest
-      COMMAND ITK-QuadEdgeMeshTestDriver itkQuadEdgeMeshDeleteEdgeTest)
+      COMMAND ITK_QuadEdgeMeshTestDriver itkQuadEdgeMeshDeleteEdgeTest)
 itk_add_test(NAME itkQuadEdgeMeshDeletePointAndReorderIDsTest
-      COMMAND ITK-QuadEdgeMeshTestDriver itkQuadEdgeMeshDeletePointAndReorderIDsTest)
+      COMMAND ITK_QuadEdgeMeshTestDriver itkQuadEdgeMeshDeletePointAndReorderIDsTest)
 itk_add_test(NAME itkQuadEdgeMeshEulerOperatorCreateCenterVertexTest
-      COMMAND ITK-QuadEdgeMeshTestDriver itkQuadEdgeMeshEulerOperatorCreateCenterVertexTest)
+      COMMAND ITK_QuadEdgeMeshTestDriver itkQuadEdgeMeshEulerOperatorCreateCenterVertexTest)
 itk_add_test(NAME itkQuadEdgeMeshEulerOperatorDeleteCenterVertexTest
-      COMMAND ITK-QuadEdgeMeshTestDriver itkQuadEdgeMeshEulerOperatorDeleteCenterVertexTest)
+      COMMAND ITK_QuadEdgeMeshTestDriver itkQuadEdgeMeshEulerOperatorDeleteCenterVertexTest)
 itk_add_test(NAME itkQuadEdgeMeshEulerOperatorFlipTest
-      COMMAND ITK-QuadEdgeMeshTestDriver itkQuadEdgeMeshEulerOperatorFlipTest)
+      COMMAND ITK_QuadEdgeMeshTestDriver itkQuadEdgeMeshEulerOperatorFlipTest)
 itk_add_test(NAME itkQuadEdgeMeshEulerOperatorJoinFacetTest
-      COMMAND ITK-QuadEdgeMeshTestDriver itkQuadEdgeMeshEulerOperatorJoinFacetTest)
+      COMMAND ITK_QuadEdgeMeshTestDriver itkQuadEdgeMeshEulerOperatorJoinFacetTest)
 itk_add_test(NAME itkQuadEdgeMeshEulerOperatorJoinVertexTest0
-      COMMAND ITK-QuadEdgeMeshTestDriver itkQuadEdgeMeshEulerOperatorJoinVertexTest
+      COMMAND ITK_QuadEdgeMeshTestDriver itkQuadEdgeMeshEulerOperatorJoinVertexTest
               0)
 itk_add_test(NAME itkQuadEdgeMeshEulerOperatorJoinVertexTest1
-      COMMAND ITK-QuadEdgeMeshTestDriver itkQuadEdgeMeshEulerOperatorJoinVertexTest
+      COMMAND ITK_QuadEdgeMeshTestDriver itkQuadEdgeMeshEulerOperatorJoinVertexTest
               1)
 itk_add_test(NAME itkQuadEdgeMeshEulerOperatorJoinVertexTest2
-      COMMAND ITK-QuadEdgeMeshTestDriver itkQuadEdgeMeshEulerOperatorJoinVertexTest
+      COMMAND ITK_QuadEdgeMeshTestDriver itkQuadEdgeMeshEulerOperatorJoinVertexTest
               2)
 itk_add_test(NAME itkQuadEdgeMeshEulerOperatorJoinVertexTest3
-      COMMAND ITK-QuadEdgeMeshTestDriver itkQuadEdgeMeshEulerOperatorJoinVertexTest
+      COMMAND ITK_QuadEdgeMeshTestDriver itkQuadEdgeMeshEulerOperatorJoinVertexTest
               3)
 itk_add_test(NAME itkQuadEdgeMeshEulerOperatorJoinVertexTest4
-      COMMAND ITK-QuadEdgeMeshTestDriver itkQuadEdgeMeshEulerOperatorJoinVertexTest
+      COMMAND ITK_QuadEdgeMeshTestDriver itkQuadEdgeMeshEulerOperatorJoinVertexTest
               4)
 itk_add_test(NAME itkQuadEdgeMeshEulerOperatorSplitEdgeTest
-      COMMAND ITK-QuadEdgeMeshTestDriver itkQuadEdgeMeshEulerOperatorSplitEdgeTest)
+      COMMAND ITK_QuadEdgeMeshTestDriver itkQuadEdgeMeshEulerOperatorSplitEdgeTest)
 itk_add_test(NAME itkQuadEdgeMeshEulerOperatorSplitVertexTest
-      COMMAND ITK-QuadEdgeMeshTestDriver itkQuadEdgeMeshEulerOperatorSplitVertexTest)
+      COMMAND ITK_QuadEdgeMeshTestDriver itkQuadEdgeMeshEulerOperatorSplitVertexTest)
 itk_add_test(NAME itkQuadEdgeMeshIteratorTest
-      COMMAND ITK-QuadEdgeMeshTestDriver itkQuadEdgeMeshIteratorTest)
+      COMMAND ITK_QuadEdgeMeshTestDriver itkQuadEdgeMeshIteratorTest)
 itk_add_test(NAME itkQuadEdgeMeshNoPointConstTest
-      COMMAND ITK-QuadEdgeMeshTestDriver itkQuadEdgeMeshNoPointConstTest)
+      COMMAND ITK_QuadEdgeMeshTestDriver itkQuadEdgeMeshNoPointConstTest)
 itk_add_test(NAME itkVTKPolyDataIOQuadEdgeMeshTest
-      COMMAND ITK-QuadEdgeMeshTestDriver itkVTKPolyDataIOQuadEdgeMeshTest
+      COMMAND ITK_QuadEdgeMeshTestDriver itkVTKPolyDataIOQuadEdgeMeshTest
               ${ITK_DATA_ROOT}/Input/genusZeroSurface01.vtk ${ITK_TEST_OUTPUT_DIR}/VTKPolyDataIOTest.vtk)
 itk_add_test(NAME itkVTKPolyDataReaderQuadEdgeMeshTest
-      COMMAND ITK-QuadEdgeMeshTestDriver itkVTKPolyDataReaderQuadEdgeMeshTest
+      COMMAND ITK_QuadEdgeMeshTestDriver itkVTKPolyDataReaderQuadEdgeMeshTest
               ${ITK_DATA_ROOT}/Input/genusZeroSurface01.vtk)
 itk_add_test(NAME itkDynamicQuadEdgeMeshTest
-      COMMAND ITK-QuadEdgeMeshTestDriver itkDynamicQuadEdgeMeshTest)
+      COMMAND ITK_QuadEdgeMeshTestDriver itkDynamicQuadEdgeMeshTest)

@@ -44,7 +44,7 @@ namespace itk
  * \sa ImageToImageFilter
  *
  * \ingroup Singlethreaded
- * \ingroup ITK-ConnectedComponents
+ * \ingroup ITK_ConnectedComponents
  *
  * \wiki
  * \wikiexample{ImageProcessing/ConnectedComponentImageFilter,Label connected components in a binary image}

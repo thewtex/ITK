@@ -33,7 +33,7 @@ namespace itk
  * Based on filters from the Insight Journal paper:
  * http://hdl.handle.net/1926/510
  *
- * \ingroup ITK-Deprecated
+ * \ingroup ITK_Deprecated
  * \sa AddImageFilter
  */
 template <class TInputImage, class TConstant, class TOutputImage>

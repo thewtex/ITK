@@ -53,7 +53,7 @@ namespace itk
  *
  * \ingroup DataRepresentation
  * \ingroup ImageObjects
- * \ingroup ITK-Common
+ * \ingroup ITK_Common
  *
  * \wiki
  * \wikiexample{Iterators/ConstantBoundaryCondition,Make out of bounds pixels return a constant value}

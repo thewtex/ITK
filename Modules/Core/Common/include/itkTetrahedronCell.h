@@ -35,7 +35,7 @@ namespace itk
  * TCellTraits =
  *     Type information of mesh containing cell.
  * \ingroup MeshObjects
- * \ingroup ITK-Common
+ * \ingroup ITK_Common
  */
 template< typename TCellInterface >
 class ITK_EXPORT TetrahedronCell:public TCellInterface, private TetrahedronCellTopology

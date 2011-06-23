@@ -63,7 +63,7 @@ namespace itk
  * to the number of membership functions.
  *
  * \ingroup ImageClassificationFilters
- * \ingroup ITK-Classifiers
+ * \ingroup ITK_Classifiers
  */
 
 template< class TInputImage,

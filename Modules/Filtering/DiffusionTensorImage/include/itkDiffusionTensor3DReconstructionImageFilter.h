@@ -117,7 +117,7 @@ namespace itk
  *
  * \sa DiffusionTensor3D SymmetricSecondRankTensor
  * \ingroup Multithreaded TensorObjects
- * \ingroup ITK-DiffusionTensorImage
+ * \ingroup ITK_DiffusionTensorImage
  */
 
 template< class TReferenceImagePixelType,

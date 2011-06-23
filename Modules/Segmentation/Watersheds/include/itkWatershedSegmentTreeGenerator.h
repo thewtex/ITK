@@ -72,7 +72,7 @@ namespace watershed
  * == do not merge).
  * \sa itk::WatershedImageFilter
  * \ingroup WatershedSegmentation
- * \ingroup ITK-Watersheds
+ * \ingroup ITK_Watersheds
  */
 template< class TScalarType >
 class ITK_EXPORT SegmentTreeGenerator:public ProcessObject

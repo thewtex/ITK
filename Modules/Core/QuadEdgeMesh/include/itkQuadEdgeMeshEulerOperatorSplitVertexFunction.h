@@ -31,7 +31,7 @@ namespace itk
  * a new edge between e->Destination() and f->Destination().
  *
  * \sa \ref itk::QuadEdgeMeshEulerOperatorJoinVertexFunction
- * \ingroup ITK-QuadEdgeMesh
+ * \ingroup ITK_QuadEdgeMesh
  */
 template< class TMesh, class TQEType >
 class ITK_EXPORT QuadEdgeMeshEulerOperatorSplitVertexFunction:

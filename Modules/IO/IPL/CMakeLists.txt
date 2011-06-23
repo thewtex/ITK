@@ -1,3 +1,3 @@
-project(ITK-IO-IPL)
-set(ITK-IO-IPL_LIBRARIES ITK-IO-IPL)
+project(ITK_IO_IPL)
+set(ITK_IO_IPL_LIBRARIES ITK_IO_IPL)
 itk_module_impl()

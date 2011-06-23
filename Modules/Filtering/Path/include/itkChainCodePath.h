@@ -43,7 +43,7 @@ namespace itk
  * \sa Offset
  *
  * \ingroup PathObjects
- * \ingroup ITK-Path
+ * \ingroup ITK_Path
  */
 template< unsigned int VDimension >
 class ITK_EXPORT ChainCodePath:public

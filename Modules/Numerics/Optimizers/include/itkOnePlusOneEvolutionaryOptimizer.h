@@ -64,7 +64,7 @@ namespace itk
  * \ingroup Numerics Optimizers
  *
  * \sa NormalVariateGenerator
- * \ingroup ITK-Optimizers
+ * \ingroup ITK_Optimizers
  */
 
 class ITK_EXPORT OnePlusOneEvolutionaryOptimizer:

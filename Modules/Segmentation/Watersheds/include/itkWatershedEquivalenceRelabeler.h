@@ -47,7 +47,7 @@ namespace watershed
  * \ingroup WatershedSegmentation
  * \sa itk::WatershedImageFilter
  * \sa EquivalencyTable
- * \ingroup ITK-Watersheds
+ * \ingroup ITK_Watersheds
  */
 template< class TScalarType, unsigned int TImageDimension >
 class ITK_EXPORT EquivalenceRelabeler:

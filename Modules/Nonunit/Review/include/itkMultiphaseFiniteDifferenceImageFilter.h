@@ -155,7 +155,7 @@ namespace itk
  * \ingroup ImageFilter
  * \ingroup LevelSetSegmentation
  * \sa DenseFiniteDifferenceImageFilter2
- * \ingroup ITK-Review
+ * \ingroup ITK_Review
  */
 template< class TInputImage,
           class TFeatureImage,

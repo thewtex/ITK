@@ -60,7 +60,7 @@ namespace itk
  * are the specialized api of FiniteDifferenceFunction.
  *
  * \ingroup Functions
- * \ingroup ITK-FiniteDifference
+ * \ingroup ITK_FiniteDifference
  */
 template< class TImageType >
 class ITK_EXPORT FiniteDifferenceFunction:public LightObject

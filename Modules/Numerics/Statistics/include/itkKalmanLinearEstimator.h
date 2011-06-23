@@ -36,7 +36,7 @@ namespace itk
  * estimate.
  *
  * \ingroup Numerics
- * \ingroup ITK-Statistics
+ * \ingroup ITK_Statistics
  */
 template< class T, unsigned int VEstimatorDimension >
 class ITK_EXPORT KalmanLinearEstimator

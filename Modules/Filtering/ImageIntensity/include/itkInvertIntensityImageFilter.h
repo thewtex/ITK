@@ -74,7 +74,7 @@ private:
  * \sa IntensityWindowingImageFilter ShiftScaleImageFilter
  * \ingroup IntensityImageFilters  Multithreaded
  *
- * \ingroup ITK-ImageIntensity
+ * \ingroup ITK_ImageIntensity
  *
  * \wiki
  * \wikiexample{ImageProcessing/InvertIntensityImageFilter,Invert an image}

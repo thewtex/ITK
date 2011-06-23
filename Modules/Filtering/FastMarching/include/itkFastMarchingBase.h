@@ -74,7 +74,7 @@ namespace itk
  *
  * \sa FastMarchingStoppingCriterionBase
  *
- * \ingroup ITK-FastMarching
+ * \ingroup ITK_FastMarching
 */
 template< class TInput, class TOutput >
 class FastMarchingBase : public FastMarchingTraits<TInput, TOutput>::SuperclassType

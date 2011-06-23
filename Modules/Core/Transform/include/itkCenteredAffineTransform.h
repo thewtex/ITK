@@ -29,7 +29,7 @@ namespace itk
  * can be explicitly selected.
  *
  * \ingroup Transforms
- * \ingroup ITK-Transform
+ * \ingroup ITK_Transform
  */
 template<
   class TScalarType = double,      // Data type for scalars

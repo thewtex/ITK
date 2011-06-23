@@ -35,7 +35,7 @@ namespace itk
  * \sa NeighborhoodIterator
  *
  * \ingroup IntensityImageFilters
- * \ingroup ITK-LabelVoting
+ * \ingroup ITK_LabelVoting
  */
 template< class TInputImage, class TOutputImage >
 class ITK_EXPORT VotingBinaryHoleFillingImageFilter:

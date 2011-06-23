@@ -37,7 +37,7 @@ namespace itk
  * \sa LabelMapToBinaryImageFilter, LabelMapMaskImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
  * \ingroup LabeledImageFilters
- * \ingroup ITK-Review
+ * \ingroup ITK_Review
  */
 template< class TInputImage, class TOutputImage >
 class ITK_EXPORT ConvertLabelMapFilter:

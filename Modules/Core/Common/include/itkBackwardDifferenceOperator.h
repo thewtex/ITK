@@ -35,7 +35,7 @@ namespace itk
  *
  * \ingroup Operators
  *
- * \ingroup ITK-Common
+ * \ingroup ITK_Common
  *
  * \wiki
  * \wikiexample{Operators/BackwardDifferenceOperator,Create a backward difference kernel}

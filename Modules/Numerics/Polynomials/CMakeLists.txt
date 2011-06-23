@@ -1,3 +1,3 @@
-project(ITK-Polynomials)
-set(ITK-Polynomials_LIBRARIES ITK-Polynomials)
+project(ITK_Polynomials)
+set(ITK_Polynomials_LIBRARIES ITK_Polynomials)
 itk_module_impl()

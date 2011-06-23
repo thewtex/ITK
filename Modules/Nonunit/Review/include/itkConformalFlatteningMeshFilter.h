@@ -42,7 +42,7 @@ namespace itk
  *
  * \ingroup MeshFilters
  * \sa TransformMeshFilter
- * \ingroup ITK-Review
+ * \ingroup ITK_Review
  */
 
 template< class TInputMesh, class TOutputMesh >

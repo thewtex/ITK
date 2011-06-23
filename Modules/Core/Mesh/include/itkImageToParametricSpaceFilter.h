@@ -40,7 +40,7 @@ namespace itk
  * of input images to this filter.
  *
  * \ingroup ImageFilters
- * \ingroup ITK-Mesh
+ * \ingroup ITK_Mesh
  */
 template< class TInputImage, class TOutputMesh >
 class ITK_EXPORT ImageToParametricSpaceFilter:

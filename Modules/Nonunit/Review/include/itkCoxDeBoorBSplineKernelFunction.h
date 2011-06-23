@@ -54,7 +54,7 @@ namespace itk
  * \sa KernelFunction
  *
  * \ingroup Functions
- * \ingroup ITK-Review
+ * \ingroup ITK_Review
  */
 template< unsigned int VSplineOrder = 3 >
 class ITK_EXPORT CoxDeBoorBSplineKernelFunction:

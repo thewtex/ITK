@@ -32,7 +32,7 @@ namespace itk
  *
  * \ingroup OSSystemObjects
  *
- * \ingroup ITK-Common
+ * \ingroup ITK_Common
  */
 
 class ITKCommon_EXPORT FileOutputWindow:public OutputWindow

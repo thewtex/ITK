@@ -1,17 +1,17 @@
-itk_module(ITK-RegistrationCommon
+itk_module(ITK_RegistrationCommon
   DEPENDS
-    ITK-Optimizers
-    ITK-ImageIntensity
-    ITK-ImageFunction
-    ITK-ImageGrid
-    ITK-SpatialObjects
-    ITK-Smoothing
-    ITK-ImageGradient
-    ITK-ImageFeature
-    ITK-FiniteDifference
+    ITK_Optimizers
+    ITK_ImageIntensity
+    ITK_ImageFunction
+    ITK_ImageGrid
+    ITK_SpatialObjects
+    ITK_Smoothing
+    ITK_ImageGradient
+    ITK_ImageFeature
+    ITK_FiniteDifference
   TEST_DEPENDS
-    ITK-TestKernel
-    ITK-DistanceMap
+    ITK_TestKernel
+    ITK_DistanceMap
 )
 
-# Extra test dependency on ITK-DistanceMap is introduced by itkPointSetToPointSetRegistrationTest.
+# Extra test dependency on ITK_DistanceMap is introduced by itkPointSetToPointSetRegistrationTest.

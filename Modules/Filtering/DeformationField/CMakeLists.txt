@@ -1,2 +1,2 @@
-project(ITK-DeformationField)
+project(ITK_DeformationField)
 itk_module_impl()

@@ -39,7 +39,7 @@ namespace Statistics
  * method to return the probability density
  * of an instance.  MeasurementVectorSize is the dimension of measurement space.
  * double is type of measurement.
- * \ingroup ITK-Statistics
+ * \ingroup ITK_Statistics
  */
 
 template< class TVector >

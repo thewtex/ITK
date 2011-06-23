@@ -41,7 +41,7 @@ namespace itk
  *
  * \sa NeighborhoodOperator
  * \sa ImageFunction
- * \ingroup ITK-Review
+ * \ingroup ITK_Review
  */
 template< class TInputImage, class TOutput = double >
 class ITK_EXPORT DiscreteGaussianDerivativeImageFunction:

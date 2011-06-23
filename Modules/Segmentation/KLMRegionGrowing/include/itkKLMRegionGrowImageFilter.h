@@ -158,7 +158,7 @@ namespace itk
  *     GetLabelledImage() function.
  *
  * \ingroup RegionGrowingSegmentation
- * \ingroup ITK-KLMRegionGrowing
+ * \ingroup ITK_KLMRegionGrowing
  */
 
 template< class TInputImage, class TOutputImage >

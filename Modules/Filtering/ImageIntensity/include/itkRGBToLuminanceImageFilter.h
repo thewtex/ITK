@@ -31,7 +31,7 @@ namespace itk
  * case of the itk::RGBPixel class.
  *
  * \ingroup IntensityImageFilters  Multithreaded
- * \ingroup ITK-ImageIntensity
+ * \ingroup ITK_ImageIntensity
  */
 namespace Functor
 {

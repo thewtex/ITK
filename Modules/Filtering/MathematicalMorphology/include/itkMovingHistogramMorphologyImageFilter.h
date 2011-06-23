@@ -35,7 +35,7 @@ namespace itk
  *
  * \sa MovingHistogramImageFilter, MovingHistogramDilateImageFilter, MovingHistogramErodeImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
- * \ingroup ITK-MathematicalMorphology
+ * \ingroup ITK_MathematicalMorphology
  */
 
 template< class TInputImage, class TOutputImage, class TKernel, class THistogram >

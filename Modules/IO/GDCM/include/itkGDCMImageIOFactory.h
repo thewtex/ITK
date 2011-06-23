@@ -25,7 +25,7 @@ namespace itk
 {
 /** \class GDCMImageIOFactory
  * \brief Create instances of GDCMImageIO objects using an object factory.
- * \ingroup ITK-IO-GDCM
+ * \ingroup ITK_IO_GDCM
  */
 class ITK_EXPORT GDCMImageIOFactory:public ObjectFactoryBase
 {

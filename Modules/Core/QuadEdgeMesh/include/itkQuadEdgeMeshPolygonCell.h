@@ -32,7 +32,7 @@ namespace itk
  * This implementation was contributed as a paper to the Insight Journal
  * http://hdl.handle.net/1926/306
  *
- * \ingroup ITK-QuadEdgeMesh
+ * \ingroup ITK_QuadEdgeMesh
  */
 template< class TCellInterface >
 class ITK_EXPORT QuadEdgeMeshPolygonCell:public TCellInterface

@@ -34,7 +34,7 @@ namespace itk
  * pixel in the other image.
  *
  * \ingroup IntensityImageFilters   Multithreaded
- * \ingroup ITK-TestKernel
+ * \ingroup ITK_TestKernel
  */
 template< class TInputImage, class TOutputImage >
 class ITK_EXPORT DifferenceImageFilter:

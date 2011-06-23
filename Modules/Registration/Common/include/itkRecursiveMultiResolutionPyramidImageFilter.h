@@ -54,7 +54,7 @@ namespace itk
  * \sa MultiResolutionPyramidImageFilter
  *
  * \ingroup PyramidImageFilter Multithreaded Streamed
- * \ingroup ITK-RegistrationCommon
+ * \ingroup ITK_RegistrationCommon
  */
 template<
   class TInputImage,

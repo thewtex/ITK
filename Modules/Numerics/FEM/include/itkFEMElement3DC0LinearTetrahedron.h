@@ -30,7 +30,7 @@ namespace fem {
 /**
  * \class Element3DC0LinearTetrahedron
  * \brief 4-noded, linear, C0 continuous finite element in 3D space.
- * \ingroup ITK-FEM
+ * \ingroup ITK_FEM
  */
 class Element3DC0LinearTetrahedron : public ElementStd<4,3>
 {

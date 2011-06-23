@@ -1,3 +1,3 @@
-project(ITK-BiasCorrection)
-set(ITK-BiasCorrection_LIBRARIES ITK-BiasCorrection)
+project(ITK_BiasCorrection)
+set(ITK_BiasCorrection_LIBRARIES ITK_BiasCorrection)
 itk_module_impl()

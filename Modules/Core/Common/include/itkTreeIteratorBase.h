@@ -38,7 +38,7 @@ namespace itk
  *  note that this iterator may not be fully functional, but you should always be able to use its Get() method to retrieve
  *  the thing it points to.
  *
- * \ingroup ITK-Common
+ * \ingroup ITK_Common
  */
 template< class TTreeType >
 class TreeIteratorBase

@@ -48,7 +48,7 @@ namespace itk
  *
  * \sa NumericTraits
  * \ingroup DataRepresentation
- * \ingroup ITK-Common
+ * \ingroup ITK_Common
  */
 template< typename T >
 class NumericTraits< VariableLengthVector< T > >

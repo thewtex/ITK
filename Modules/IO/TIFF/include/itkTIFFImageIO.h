@@ -33,7 +33,7 @@ class TIFFReaderInternal;
  *
  * \ingroup IOFilters
  *
- * \ingroup ITK-IO-TIFF
+ * \ingroup ITK_IO_TIFF
  *
  * \wiki
  * \wikiexample{IO/TIFFImageIO,Write a TIFF image}

@@ -42,7 +42,7 @@ namespace itk
  *  any sort of data.
  *
  * \ingroup Transforms
- * \ingroup ITK-Transform
+ * \ingroup ITK_Transform
  */
 class HDF5TransformIO:public TransformIOBase
 {

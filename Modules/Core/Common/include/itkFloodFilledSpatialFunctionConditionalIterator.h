@@ -28,7 +28,7 @@ namespace itk
  *
  * \ingroup ImageIterators
  *
- * \ingroup ITK-Common
+ * \ingroup ITK_Common
  */
 template< class TImage, class TFunction >
 class ITK_EXPORT FloodFilledSpatialFunctionConditionalIterator:public

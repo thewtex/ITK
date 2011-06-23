@@ -6,19 +6,19 @@ for multi-threading, and a collection of classes that isolate ITK from
 platform specific features. It is anticipated that most other ITK modules will
 depend on this one.")
 
-itk_module(ITK-Common
+itk_module(ITK_Common
   DEPENDS
-    ITK-VNLInstantiation
-    ITK-KWSys
+    ITK_VNLInstantiation
+    ITK_KWSys
   TEST_DEPENDS
-    ITK-TestKernel
-    ITK-Mesh
-    ITK-ImageIntensity
-    ITK-IO-Base
+    ITK_TestKernel
+    ITK_Mesh
+    ITK_ImageIntensity
+    ITK_IO_Base
   DESCRIPTION
     "${DOCUMENTATION}"
 )
 
-# Extra test dependency on ITK-Mesh is introduced by itkCellInterfaceTest.
-# Extra test dependency on ITK-ImageIntensity is introduced by itkImageDuplicatorTest.
-# Extra test dependency on ITK-IO-Base is introduced by itkImageRandomIteratorTest22.
+# Extra test dependency on ITK_Mesh is introduced by itkCellInterfaceTest.
+# Extra test dependency on ITK_ImageIntensity is introduced by itkImageDuplicatorTest.
+# Extra test dependency on ITK_IO_Base is introduced by itkImageRandomIteratorTest22.

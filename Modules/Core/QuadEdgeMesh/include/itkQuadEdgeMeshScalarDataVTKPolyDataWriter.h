@@ -31,7 +31,7 @@ namespace itk
  *
  * \ingroup Writers
  *
- * \ingroup ITK-QuadEdgeMesh
+ * \ingroup ITK_QuadEdgeMesh
  */
 template< class TMesh >
 class QuadEdgeMeshScalarDataVTKPolyDataWriter:public VTKPolyDataWriter< TMesh >

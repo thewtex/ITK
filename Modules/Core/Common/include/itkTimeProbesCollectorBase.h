@@ -33,7 +33,7 @@ namespace itk
  *  \sa TimeProbe
  *  \sa RealTimeClock
  *
- * \ingroup ITK-Common
+ * \ingroup ITK_Common
  */
 class ITKCommon_EXPORT TimeProbesCollectorBase:public ResourceProbesCollectorBase< TimeProbe >
 {

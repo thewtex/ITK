@@ -35,7 +35,7 @@ namespace itk
  * A tube is also identified by an id number when connected to a network.
  *
  * \sa DTITubeSpatialObjectPoint
- * \ingroup ITK-SpatialObjects
+ * \ingroup ITK_SpatialObjects
  */
 
 template< unsigned int TDimension = 3 >

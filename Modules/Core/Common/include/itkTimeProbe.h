@@ -35,7 +35,7 @@ namespace itk
  *
  *   \sa RealTimeClock
  *
- * \ingroup ITK-Common
+ * \ingroup ITK_Common
  *
  * \wiki
  * \wikiexample{Utilities/TimeProbe,Time probe}

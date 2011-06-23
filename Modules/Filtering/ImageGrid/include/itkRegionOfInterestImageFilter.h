@@ -43,7 +43,7 @@ namespace itk
  * \sa ExtractImageFilter
  *
  * \ingroup GeometricTransforms
- * \ingroup ITK-ImageGrid
+ * \ingroup ITK_ImageGrid
  *
  * \wiki
  * \wikiexample{ImageProcessing/RegionOfInterestImageFilter,Extract a portion of an image (region of interest)}

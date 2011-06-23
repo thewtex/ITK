@@ -30,7 +30,7 @@ namespace itk
  * and an itkMesh.
  *
  * \sa SpatialObject
- * \ingroup ITK-SpatialObjects
+ * \ingroup ITK_SpatialObjects
  */
 
 template< class TMesh = Mesh< int > >

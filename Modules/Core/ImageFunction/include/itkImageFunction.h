@@ -48,7 +48,7 @@ namespace itk
  * \sa ContinuousIndex
  *
  * \ingroup ImageFunctions
- * \ingroup ITK-ImageFunction
+ * \ingroup ITK_ImageFunction
  */
 template<
   class TInputImage,

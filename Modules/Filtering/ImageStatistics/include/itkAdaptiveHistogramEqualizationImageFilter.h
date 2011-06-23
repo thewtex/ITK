@@ -56,7 +56,7 @@ namespace itk
  * J.Alex Stark. IEEE Transactions on Image Processing, May 2000.
  *
  * \ingroup ImageEnhancement
- * \ingroup ITK-ImageStatistics
+ * \ingroup ITK_ImageStatistics
  */
 template< class TImageType >
 class ITK_EXPORT AdaptiveHistogramEqualizationImageFilter:

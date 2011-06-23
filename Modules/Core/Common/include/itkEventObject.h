@@ -52,7 +52,7 @@ namespace itk
  * \sa itk::ExceptionObject
  *
  * \ingroup ITKSystemObjects
- * \ingroup ITK-Common
+ * \ingroup ITK_Common
  */
 class ITKCommon_EXPORT EventObject
 {

@@ -1,2 +1,2 @@
-project(ITK-ImageCompose)
+project(ITK_ImageCompose)
 itk_module_impl()

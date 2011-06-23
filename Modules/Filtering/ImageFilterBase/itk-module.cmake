@@ -5,12 +5,12 @@ filters). You will find here: Unary, Binary and Ternary Functor filters, Noise
 sources, recursive separable filters and the base classes for neighborhood
 filters.")
 
-itk_module(ITK-ImageFilterBase
+itk_module(ITK_ImageFilterBase
   DEPENDS
-    ITK-Common
+    ITK_Common
   TEST_DEPENDS
-    ITK-TestKernel
-    ITK-ImageIntensity
+    ITK_TestKernel
+    ITK_ImageIntensity
   DESCRIPTION
     "${DOCUMENTATION}"
 )

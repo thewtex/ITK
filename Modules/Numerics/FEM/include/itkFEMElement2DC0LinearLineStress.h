@@ -27,7 +27,7 @@ namespace fem {
 /**
  * \class Element2DC0LinearLineStress
  * \brief 2-noded finite element class in 2D space for linear elasticity problem.
- * \ingroup ITK-FEM
+ * \ingroup ITK_FEM
  */
 class Element2DC0LinearLineStress : public Element1DStress<Element2DC0LinearLine>
 {

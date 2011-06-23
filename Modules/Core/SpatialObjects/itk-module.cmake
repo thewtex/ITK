@@ -5,13 +5,13 @@ commonly used for representing masks in an analytical form, as well as
 approximations of shape by combining them into hierarchical structures similar
 to scene graphs.")
 
-itk_module(ITK-SpatialObjects
+itk_module(ITK_SpatialObjects
   DEPENDS
-    ITK-ImageFunction
-    ITK-Mesh
-    ITK-IO-Base
+    ITK_ImageFunction
+    ITK_Mesh
+    ITK_IO_Base
   TEST_DEPENDS
-    ITK-TestKernel
+    ITK_TestKernel
   DESCRIPTION
     "${DOCUMENTATION}"
 )

@@ -95,7 +95,7 @@ namespace itk
  *
  * \ingroup ImageFilters
  * \sa FiniteDifferenceImageFilter
- * \ingroup ITK-Review
+ * \ingroup ITK_Review
  */
 template< class TInputImage, class TFeatureImage, class TOutputImage, class TFunction,
           typename TIdCell = unsigned int >

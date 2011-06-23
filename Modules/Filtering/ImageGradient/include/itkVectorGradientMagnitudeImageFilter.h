@@ -129,7 +129,7 @@ namespace itk
  * \sa Neighborhood
  * \sa NeighborhoodOperator
  * \sa NeighborhoodIterator
- * \ingroup ITK-ImageGradient
+ * \ingroup ITK_ImageGradient
  */
 template< typename TInputImage,
           typename TRealType = float,

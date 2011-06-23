@@ -28,7 +28,7 @@ namespace itk
  *
  * \brief  FIXME   add documentation here
  *
- * \ingroup ITK-QuadEdgeMeshFiltering
+ * \ingroup ITK_QuadEdgeMeshFiltering
  */
 template< class TInputMesh, class TOutputMesh=TInputMesh >
 class ITK_EXPORT DiscretePrincipalCurvaturesQuadEdgeMeshFilter:

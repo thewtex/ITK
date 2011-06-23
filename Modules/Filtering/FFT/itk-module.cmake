@@ -5,11 +5,11 @@ computations of Fast Fourier Transforms based on
 <a href=\"http://www.fftw.org\">FFTW</a>. Note that when using the FFTW
 implementation you must comply with the GPL license.")
 
-itk_module(ITK-FFT
+itk_module(ITK_FFT
   DEPENDS
-    ITK-Common
+    ITK_Common
   TEST_DEPENDS
-    ITK-TestKernel
+    ITK_TestKernel
   DESCRIPTION
     "${DOCUMENTATION}"
 )

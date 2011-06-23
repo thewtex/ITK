@@ -35,7 +35,7 @@ namespace Statistics
 /** \class MeasurementVectorTraits
  * \brief
  * \ingroup Statistics
- * \ingroup ITK-Statistics
+ * \ingroup ITK_Statistics
  */
 
 class MeasurementVectorTraits
@@ -417,7 +417,7 @@ public:
 /** \class MeasurementVectorTraitsTypes
  * \brief
  * \ingroup Statistics
- * \ingroup ITK-Statistics
+ * \ingroup ITK_Statistics
  */
 
 template< class TMeasurementVector >
@@ -448,7 +448,7 @@ public:
 /**
  *  \cond HIDE_SPECIALIZATION_DOCUMENTATION
  *  \class MeasurementVectorPixelTraits
- * \ingroup ITK-Statistics
+ * \ingroup ITK_Statistics
  */
 template< >
 class MeasurementVectorPixelTraits< char >

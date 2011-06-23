@@ -64,7 +64,7 @@ public:
  *\sa LabelObject, ShapeLabelObject, StatisticsLabelObject
  *
  * \ingroup DataRepresentation
- * \ingroup ITK-Review
+ * \ingroup ITK_Review
  */
 template < class TLabel, unsigned int VImageDimension, class TAttributeValue >
 class ITK_EXPORT AttributeLabelObject : public LabelObject< TLabel, VImageDimension >

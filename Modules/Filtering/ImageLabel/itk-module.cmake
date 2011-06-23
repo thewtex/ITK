@@ -4,12 +4,12 @@ classification filters, such as watersheds or statistical classifiers. The
 filters in this module compute label statistics and perform operations between
 labels.")
 
-itk_module(ITK-ImageLabel
+itk_module(ITK_ImageLabel
   DEPENDS
-    ITK-ImageFilterBase
-    ITK-ImageIntensity
+    ITK_ImageFilterBase
+    ITK_ImageIntensity
   TEST_DEPENDS
-    ITK-TestKernel
+    ITK_TestKernel
   DESCRIPTION
     "${DOCUMENTATION}"
 )

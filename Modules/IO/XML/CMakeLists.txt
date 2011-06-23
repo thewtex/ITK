@@ -1,3 +1,3 @@
-project(ITK-IO-XML)
-set(ITK-IO-XML_LIBRARIES ITK-IO-XML)
+project(ITK_IO_XML)
+set(ITK_IO_XML_LIBRARIES ITK_IO_XML)
 itk_module_impl()

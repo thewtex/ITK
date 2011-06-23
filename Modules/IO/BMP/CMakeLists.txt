@@ -1,3 +1,3 @@
-project(ITK-IO-BMP)
-set(ITK-IO-BMP_LIBRARIES ITK-IO-BMP)
+project(ITK_IO_BMP)
+set(ITK_IO_BMP_LIBRARIES ITK_IO_BMP)
 itk_module_impl()

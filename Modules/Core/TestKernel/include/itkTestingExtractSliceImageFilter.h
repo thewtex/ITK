@@ -75,7 +75,7 @@ namespace Testing
  *
  * \sa CropImageFilter
  * \ingroup GeometricTransforms
- * \ingroup ITK-TestKernel
+ * \ingroup ITK_TestKernel
  */
 
 template< class TInputImage, class TOutputImage >

@@ -103,7 +103,7 @@ private:
  *
  * \ingroup IntensityImageFilters  Multithreaded
  *
- * \ingroup ITK-ImageIntensity
+ * \ingroup ITK_ImageIntensity
  *
  * \wiki
  * \wikiexample{ImageProcessing/IntensityWindowingImageFilter,IntensityWindowingImageFilter}

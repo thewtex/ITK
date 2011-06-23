@@ -1,7 +1,7 @@
-itk_module(ITK-IO-GIPL
+itk_module(ITK_IO_GIPL
   DEPENDS
-    ITK-IO-Base
-    ITK-ZLIB
+    ITK_IO_Base
+    ITK_ZLIB
   TEST_DEPENDS
-    ITK-TestKernel
+    ITK_TestKernel
 )

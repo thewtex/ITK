@@ -1,16 +1,16 @@
 itk_module_test()
-set(ITK-IO-PNGTests
+set(ITK_IO_PNGTests
 itkPNGImageIOTest.cxx
 itkIOPNGHeaderTest.cxx
 )
 
-CreateTestDriver(ITK-IO-PNG  "${ITK-IO-PNG-Test_LIBRARIES}" "${ITK-IO-PNGTests}")
+CreateTestDriver(ITK_IO_PNG  "${ITK_IO_PNG-Test_LIBRARIES}" "${ITK_IO_PNGTests}")
 
 itk_add_test(NAME itkIOPNGHeaderTest
-      COMMAND ITK-IO-PNGTestDriver itkIOPNGHeaderTest)
+      COMMAND ITK_IO_PNGTestDriver itkIOPNGHeaderTest)
 itk_add_test(NAME itkPNGImageIOTest1
-      COMMAND ITK-IO-PNGTestDriver itkPNGImageIOTest
+      COMMAND ITK_IO_PNGTestDriver itkPNGImageIOTest
               ${ITK_DATA_ROOT}/Input/cthead1.png ${ITK_TEST_OUTPUT_DIR}/itkPNGImageIOTest1.png)
 itk_add_test(NAME itkPNGImageIOTest2
-      COMMAND ITK-IO-PNGTestDriver itkPNGImageIOTest
+      COMMAND ITK_IO_PNGTestDriver itkPNGImageIOTest
               ${ITK_DATA_ROOT}/Input/VisibleWomanEyeSlice.png ${ITK_TEST_OUTPUT_DIR}/itkPNGImageIOTest2.png)

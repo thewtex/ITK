@@ -48,7 +48,7 @@ namespace itk
  * \sa AuxVarTypeDefault
  *
  * \ingroup LevelSetSegmentation
- * \ingroup ITK-FastMarching
+ * \ingroup ITK_FastMarching
  */
 template< class TInput, class TOutput,
          typename TAuxValue,

@@ -33,7 +33,7 @@ namespace Statistics
  * of an instance.  MeasurementVectorSize is the dimension of measurement
  * space.
  * double is type of measurement.
- * \ingroup ITK-Statistics
+ * \ingroup ITK_Statistics
  */
 template< class TVector >
 class ITK_EXPORT DistanceToCentroidMembershipFunction:

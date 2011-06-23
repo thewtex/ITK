@@ -54,7 +54,7 @@ namespace itk
  *    Numerical type to store interpolation weights.
  *
  * \ingroup MeshObjects
- * \ingroup ITK-Common
+ * \ingroup ITK_Common
  */
 template<
   typename TPixelType,

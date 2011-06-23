@@ -44,7 +44,7 @@ namespace itk
  * \f[ b = \arg \max_{b^k} N^k \f]
  *
  * \sa ParameterizationQuadEdgeMeshFilter
- * \ingroup ITK-QuadEdgeMeshFiltering
+ * \ingroup ITK_QuadEdgeMeshFiltering
  */
 template< class TInputMesh, class TOutputMesh=TInputMesh >
 class ITK_EXPORT BorderQuadEdgeMeshFilter:

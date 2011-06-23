@@ -43,7 +43,7 @@ namespace itk
  *
  * \author Gaetan Lehmann
  * \author Richard Beare
- * \ingroup ITK-Review
+ * \ingroup ITK_Review
  */
 
 template< class TInputImage, class TOutputImage, class TFilter >

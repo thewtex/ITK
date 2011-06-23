@@ -36,7 +36,7 @@ namespace Statistics
  *
  * \sa MeanSampleFilter
  *
- * \ingroup ITK-Statistics
+ * \ingroup ITK_Statistics
  */
 template< class TSample >
 class ITK_EXPORT WeightedMeanSampleFilter : public MeanSampleFilter< TSample >

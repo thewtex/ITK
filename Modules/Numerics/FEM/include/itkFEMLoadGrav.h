@@ -32,7 +32,7 @@ namespace fem {
  * Fg member function defined in a derived class. The Fg function accepts a vector
  * specifying a point in global coordinate system and returns a load vector
  * defined at the point. Derived LoadClasses must define this function.
- * \ingroup ITK-FEM
+ * \ingroup ITK_FEM
  */
 class LoadGrav : public LoadElement
 {
@@ -49,7 +49,7 @@ public:
  *
  * This is a special case of LoadGrav. The load vector is the same on
  * every point in space.
- * \ingroup ITK-FEM
+ * \ingroup ITK_FEM
  */
 class LoadGravConst : public LoadGrav
 {

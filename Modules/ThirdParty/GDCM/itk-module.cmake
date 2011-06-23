@@ -1,6 +1,6 @@
-itk_module(ITK-GDCM
+itk_module(ITK_GDCM
   DEPENDS
-    ITK-ZLIB
-    ITK-Expat
-    ITK-OpenJPEG
+    ITK_ZLIB
+    ITK_Expat
+    ITK_OpenJPEG
 )

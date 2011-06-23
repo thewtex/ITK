@@ -57,7 +57,7 @@ namespace itk
  * ThreadedGenerateData() method for its implementation.
  *
  * \ingroup GeometricTransforms Streamed
- * \ingroup ITK-ImageGrid
+ * \ingroup ITK_ImageGrid
  *
  * \wiki
  * \wikiexample{Images/ShrinkImageFilter,Shrink an image}

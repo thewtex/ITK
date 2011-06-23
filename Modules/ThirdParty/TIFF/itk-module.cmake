@@ -1,5 +1,5 @@
-itk_module(ITK-TIFF
+itk_module(ITK_TIFF
   DEPENDS
-    ITK-ZLIB
-    ITK-JPEG
+    ITK_ZLIB
+    ITK_JPEG
 )

@@ -27,7 +27,7 @@ namespace itk
  * \brief Wrap of the vnl_levenberg_marquardt algorithm
  *
  * \ingroup Numerics Optimizers
- * \ingroup ITK-Optimizers
+ * \ingroup ITK_Optimizers
  */
 class ITK_EXPORT LevenbergMarquardtOptimizer:
   public MultipleValuedNonLinearVnlOptimizer

@@ -36,7 +36,7 @@ namespace itk
  *
  * \ingroup ImageObjects
  *
- * \ingroup ITK-Blox
+ * \ingroup ITK_Blox
  */
 
 template< unsigned int NDimensions >

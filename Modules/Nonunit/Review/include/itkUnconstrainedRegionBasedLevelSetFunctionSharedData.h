@@ -55,7 +55,7 @@ namespace itk
  *      http://hdl.handle.net/1926/1533
  *
  *
- * \ingroup ITK-Review
+ * \ingroup ITK_Review
  */
 template< class TInputImage, class TFeatureImage, class TSingleData >
 class UnconstrainedRegionBasedLevelSetFunctionSharedData:

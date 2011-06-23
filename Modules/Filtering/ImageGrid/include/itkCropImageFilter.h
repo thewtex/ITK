@@ -33,7 +33,7 @@ namespace itk
  * This filter uses ExtractImageFilter to perform the cropping.
  *
  * \ingroup GeometricTransforms
- * \ingroup ITK-ImageGrid
+ * \ingroup ITK_ImageGrid
  *
  * \wiki
  * \wikiexample{ImageProcessing/CropImageFilter,Crop an image}

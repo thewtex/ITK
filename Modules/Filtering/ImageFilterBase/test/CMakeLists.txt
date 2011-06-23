@@ -1,5 +1,5 @@
 itk_module_test()
-set(ITK-ImageFilterBaseTests
+set(ITK_ImageFilterBaseTests
 itkImageFilterBaseHeaderTest.cxx
 itkNeighborhoodOperatorImageFilterTest.cxx
 itkImageToImageFilterTest.cxx
@@ -24,24 +24,24 @@ if (DEFINED ITK_CXX_DISABLE_OPTIMIZATION_FLAG)
 endif()
 
 
-CreateTestDriver(ITK-ImageFilterBase  "${ITK-ImageFilterBase-Test_LIBRARIES}" "${ITK-ImageFilterBaseTests}")
+CreateTestDriver(ITK_ImageFilterBase  "${ITK_ImageFilterBase-Test_LIBRARIES}" "${ITK_ImageFilterBaseTests}")
 
 itk_add_test(NAME itkImageFilterBaseHeaderTest
-      COMMAND ITK-ImageFilterBaseTestDriver itkImageFilterBaseHeaderTest)
+      COMMAND ITK_ImageFilterBaseTestDriver itkImageFilterBaseHeaderTest)
 itk_add_test(NAME itkNeighborhoodOperatorImageFilterTest
-      COMMAND ITK-ImageFilterBaseTestDriver itkNeighborhoodOperatorImageFilterTest)
+      COMMAND ITK_ImageFilterBaseTestDriver itkNeighborhoodOperatorImageFilterTest)
 itk_add_test(NAME itkImageToImageFilterTest
-      COMMAND ITK-ImageFilterBaseTestDriver itkImageToImageFilterTest)
+      COMMAND ITK_ImageFilterBaseTestDriver itkImageToImageFilterTest)
 itk_add_test(NAME itkVectorNeighborhoodOperatorImageFilterTest
-      COMMAND ITK-ImageFilterBaseTestDriver itkVectorNeighborhoodOperatorImageFilterTest)
+      COMMAND ITK_ImageFilterBaseTestDriver itkVectorNeighborhoodOperatorImageFilterTest)
 itk_add_test(NAME itkGaussianImageSourceTest
-      COMMAND ITK-ImageFilterBaseTestDriver itkGaussianImageSourceTest)
+      COMMAND ITK_ImageFilterBaseTestDriver itkGaussianImageSourceTest)
 itk_add_test(NAME itkMaskNeighborhoodOperatorImageFilterTest
-      COMMAND ITK-ImageFilterBaseTestDriver
+      COMMAND ITK_ImageFilterBaseTestDriver
     --compare ${ITK_DATA_ROOT}/Baseline/BasicFilters/MaskNeighborhoodOperatorImageFilterTest.png
               ${ITK_TEST_OUTPUT_DIR}/MaskNeighborhoodOperatorImageFilterTest.png
     itkMaskNeighborhoodOperatorImageFilterTest ${ITK_DATA_ROOT}/Input/cthead1.png ${ITK_TEST_OUTPUT_DIR}/MaskNeighborhoodOperatorImageFilterTest.png)
 itk_add_test(NAME itkCastImageFilterTest
-      COMMAND ITK-ImageFilterBaseTestDriver itkCastImageFilterTest)
+      COMMAND ITK_ImageFilterBaseTestDriver itkCastImageFilterTest)
 itk_add_test(NAME itkClampImageFilterTest
-      COMMAND ITK-ImageFilterBaseTestDriver itkClampImageFilterTest)
+      COMMAND ITK_ImageFilterBaseTestDriver itkClampImageFilterTest)

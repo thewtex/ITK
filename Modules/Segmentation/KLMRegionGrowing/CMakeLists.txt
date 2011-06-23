@@ -1,3 +1,3 @@
-project(ITK-KLMRegionGrowing)
-set(ITK-KLMRegionGrowing_LIBRARIES ITK-KLMRegionGrowing)
+project(ITK_KLMRegionGrowing)
+set(ITK_KLMRegionGrowing_LIBRARIES ITK_KLMRegionGrowing)
 itk_module_impl()

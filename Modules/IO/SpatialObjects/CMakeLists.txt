@@ -1,3 +1,3 @@
-project(ITK-IO-SpatialObjects)
-set(ITK-IO-SpatialObjects_LIBRARIES ITK-IO-SpatialObjects)
+project(ITK_IO_SpatialObjects)
+set(ITK_IO_SpatialObjects_LIBRARIES ITK_IO_SpatialObjects)
 itk_module_impl()

@@ -50,7 +50,7 @@ namespace itk
  * This can be use to overide the creation of any object in ITK.
  *
  * \ingroup ITKSystemObjects
- * \ingroup ITK-Common
+ * \ingroup ITK_Common
  */
 
 class OverRideMap;
@@ -179,7 +179,7 @@ public:
 
   /** \class OverrideInformation
    * \brief Internal implementation class for ObjectFactorBase.
-   * \ingroup ITK-Common
+   * \ingroup ITK_Common
    */
   struct OverrideInformation {
     std::string m_Description;

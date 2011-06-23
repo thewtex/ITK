@@ -42,7 +42,7 @@ namespace itk {
  *
  * \sa MorphologyImageFilter, ClosingByReconstructionImageFilter, BinaryOpeningByReconstructionImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
- * \ingroup ITK-Review
+ * \ingroup ITK_Review
  */
 
 template<class TInputImage, class TKernel>

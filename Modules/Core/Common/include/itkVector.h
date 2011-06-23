@@ -51,7 +51,7 @@ namespace itk
  * \sa Point
  * \sa CovariantVector
  * \sa Matrix
- * \ingroup ITK-Common
+ * \ingroup ITK_Common
  *
  * \wiki
  * \wikiexample{SimpleOperations/CreateVector,Create a vector}

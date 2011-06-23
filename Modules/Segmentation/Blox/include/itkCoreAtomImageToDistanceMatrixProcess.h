@@ -31,7 +31,7 @@ namespace itk
  * nodes (voted core atoms) in a core atom image (input) and stores
  * them in a matrix data object (output)
  *
- * \ingroup ITK-Blox
+ * \ingroup ITK_Blox
  */
 template< typename TSourceImage >
 class CoreAtomImageToDistanceMatrixProcess:public ProcessObject

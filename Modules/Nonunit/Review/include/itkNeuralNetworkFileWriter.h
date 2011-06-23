@@ -49,7 +49,7 @@ namespace itk
  * \sa NeuralNetworkFileReader
  * \sa MultilayerNeuralNetworkBase
  *
- * \ingroup ITK-Review
+ * \ingroup ITK_Review
  */
 template< class TNetwork >
 class NeuralNetworkFileWriter:public Object

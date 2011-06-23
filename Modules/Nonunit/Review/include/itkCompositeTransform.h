@@ -95,7 +95,7 @@ namespace itk
  *
  * \ingroup Transforms
  *
- * \ingroup ITK-Review
+ * \ingroup ITK_Review
  */
 template
 <class TScalar = double, unsigned int NDimensions = 3>

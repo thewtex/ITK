@@ -37,7 +37,7 @@ namespace itk
  *
  * \ingroup Operators
  *
- * \ingroup ITK-Common
+ * \ingroup ITK_Common
  */
 template< class TImage >
 class ITK_EXPORT VectorNeighborhoodInnerProduct

@@ -4,14 +4,14 @@ dilation, opening and closing filters, you will find here geodesic operations,
 maxima and minima filters, and reconstruction filters. This module contains
 filters for both binary and grayscale mathematical morphology.")
 
-itk_module(ITK-MathematicalMorphology
+itk_module(ITK_MathematicalMorphology
   DEPENDS
-    ITK-ImageIntensity
-    ITK-ImageGrid
-    ITK-ConnectedComponents
-    ITK-IO-PNG
+    ITK_ImageIntensity
+    ITK_ImageGrid
+    ITK_ConnectedComponents
+    ITK_IO_PNG
   TEST_DEPENDS
-    ITK-TestKernel
+    ITK_TestKernel
   DESCRIPTION
     "${DOCUMENTATION}"
 )

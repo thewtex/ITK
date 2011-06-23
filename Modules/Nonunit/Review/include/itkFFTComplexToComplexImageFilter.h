@@ -45,7 +45,7 @@ namespace itk
  * \ingroup FourierTransform
  *
  * \sa FFTRealToComplexConjugateImageFilter
- * \ingroup ITK-Review
+ * \ingroup ITK_Review
  */
 template< class TImage >
 class FFTComplexToComplexImageFilter:

@@ -37,7 +37,7 @@ namespace itk
  *                     ISIS Center, Georgetown University.
  *
  *  \ingroup OSSystemObjects LoggingObjects
- * \ingroup ITK-Common
+ * \ingroup ITK_Common
  */
 
 // MSVS6 can't do this type of nested template

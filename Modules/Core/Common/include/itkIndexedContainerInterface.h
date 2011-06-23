@@ -48,7 +48,7 @@ namespace itk
  *    The element type stored in the container.
  *
  * \ingroup DataRepresentation
- * \ingroup ITK-Common
+ * \ingroup ITK_Common
  */
 
 template< typename TElementIdentifier, typename TElement >
@@ -128,7 +128,7 @@ public:
    * methods:
    *   ElementIdentifier Index(void) const;
    *   Element&          Value(void);
-   * \ingroup ITK-Common
+   * \ingroup ITK_Common
    */
   class Iterator {};
 
@@ -138,7 +138,7 @@ public:
    * methods:
    *   ElementIdentifier Index(void) const;
    *   const Element&    Value(void) const;
-   * \ingroup ITK-Common
+   * \ingroup ITK_Common
    */
   class ConstIterator {};
 

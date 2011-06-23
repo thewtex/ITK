@@ -1,8 +1,8 @@
-project(ITK-Netlib)
-set(ITK-Netlib_THIRD_PARTY 1)
+project(ITK_Netlib)
+set(ITK_Netlib_THIRD_PARTY 1)
 
-set(ITK-Netlib_INCLUDE_DIRS
-   ${ITK-Netlib_BINARY_DIR})
-set(ITK-Netlib_LIBRARIES itkNetlibSlatec)
+set(ITK_Netlib_INCLUDE_DIRS
+   ${ITK_Netlib_BINARY_DIR})
+set(ITK_Netlib_LIBRARIES itkNetlibSlatec)
 
 itk_module_impl()

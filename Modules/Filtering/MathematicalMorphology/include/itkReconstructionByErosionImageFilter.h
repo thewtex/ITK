@@ -55,7 +55,7 @@ namespace itk
 OpeningByReconstructionImageFilter, ClosingByReconstructionImageFilter, ReconstructionImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
  * \ingroup MathematicalMorphologyImageFilters
- * \ingroup ITK-MathematicalMorphology
+ * \ingroup ITK_MathematicalMorphology
  */
 
 template< class TInputImage, class TOutputImage >

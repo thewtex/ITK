@@ -58,7 +58,7 @@ namespace itk
  * \author Teo Popa, ISIS Center, Georgetown University
  *
  * \ingroup MultiThreaded
- * \ingroup ITK-DistanceMap
+ * \ingroup ITK_DistanceMap
  *
  * \wiki
  * \wikiexample{Curves/ContourMeanDistanceImageFilter,Compute the mean distance between all points of two curves}

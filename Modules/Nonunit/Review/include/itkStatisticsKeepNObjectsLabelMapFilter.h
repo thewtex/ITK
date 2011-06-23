@@ -40,7 +40,7 @@ namespace itk
  *
  * \sa StatisticsLabelObject, BinaryStatisticsKeepNObjectsImageFilter, LabelShapeKeepNObjectsImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
- * \ingroup ITK-Review
+ * \ingroup ITK_Review
  */
 template< class TImage >
 class ITK_EXPORT StatisticsKeepNObjectsLabelMapFilter:

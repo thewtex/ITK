@@ -30,7 +30,7 @@ namespace itk
  * the necessity of templating BloxPixel over item type.
  * \ingroup ImageObjects
  *
- * \ingroup ITK-Blox
+ * \ingroup ITK_Blox
  */
 
 class ITK_EXPORT BloxItem

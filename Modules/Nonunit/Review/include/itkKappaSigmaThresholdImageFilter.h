@@ -44,7 +44,7 @@ namespace itk
  * \sa MaximumEntropyThresholdImageCalculator
  * \sa ThresholdLabelerImageFilter
  * \ingroup IntensityImageFilters  Multithreaded
- * \ingroup ITK-Review
+ * \ingroup ITK_Review
  */
 
 template< class TInputImage,

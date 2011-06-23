@@ -39,7 +39,7 @@ namespace itk
  * - TValueType = Element type stored in the node
  *
  * \ingroup DataRepresentation
- * \ingroup ITK-Common
+ * \ingroup ITK_Common
  */
 template< class TValueType >
 class TreeNode:public Object

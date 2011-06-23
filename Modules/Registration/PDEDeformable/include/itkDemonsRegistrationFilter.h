@@ -57,7 +57,7 @@ namespace itk
  *
  * \sa DemonsRegistrationFunction
  * \ingroup DeformableImageRegistration MultiThreaded
- * \ingroup ITK-PDEDeformableRegistration
+ * \ingroup ITK_PDEDeformableRegistration
  */
 template< class TFixedImage, class TMovingImage, class TDeformationField >
 class ITK_EXPORT DemonsRegistrationFilter:

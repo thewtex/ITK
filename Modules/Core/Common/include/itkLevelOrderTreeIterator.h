@@ -26,7 +26,7 @@ namespace itk
 {
 /**
  * \class LevelOrderTreeIterator
- * \ingroup ITK-Common
+ * \ingroup ITK_Common
  */
 template< class TTreeType >
 class LevelOrderTreeIterator:public TreeIteratorBase< TTreeType >

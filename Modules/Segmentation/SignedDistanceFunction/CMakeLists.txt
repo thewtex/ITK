@@ -1,2 +1,2 @@
-project(ITK-SignedDistanceFunction)
+project(ITK_SignedDistanceFunction)
 itk_module_impl()

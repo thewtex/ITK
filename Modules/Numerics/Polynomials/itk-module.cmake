@@ -1,6 +1,6 @@
-itk_module(ITK-Polynomials
+itk_module(ITK_Polynomials
   DEPENDS
-    ITK-Common
+    ITK_Common
   TEST_DEPENDS
-    ITK-TestKernel
+    ITK_TestKernel
 )

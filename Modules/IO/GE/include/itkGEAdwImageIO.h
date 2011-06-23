@@ -46,7 +46,7 @@ namespace itk
  * \brief Class that defines how to read GEAdw file format.
  *
  * \ingroup IOFilters
- * \ingroup ITK-IO-GE
+ * \ingroup ITK_IO_GE
  */
 class ITK_EXPORT GEAdwImageIO:public IPLCommonImageIO
 {

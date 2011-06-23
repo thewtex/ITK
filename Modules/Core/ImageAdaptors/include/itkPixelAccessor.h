@@ -48,7 +48,7 @@ namespace itk
  * in order to get and set the values of pixels.
  *
  * \ingroup ImageAdaptors
- * \ingroup ITK-ImageAdaptors
+ * \ingroup ITK_ImageAdaptors
  */
 template< class TInternalType, class TExternalType >
 class ITK_EXPORT PixelAccessor

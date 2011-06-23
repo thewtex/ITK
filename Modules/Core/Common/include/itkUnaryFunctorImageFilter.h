@@ -38,7 +38,7 @@ namespace itk
  * \sa BinaryFunctorImageFilter TernaryFunctorImageFilter
  *
  * \ingroup   IntensityImageFilters     Multithreaded
- * \ingroup ITK-Common
+ * \ingroup ITK_Common
  *
  * \wiki
  * \wikiexample{ImageProcessing/UnaryFunctorImageFilter,Apply a custom operation to each pixel in an image}

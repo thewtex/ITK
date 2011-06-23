@@ -1,10 +1,10 @@
-itk_module(ITK-Blox
+itk_module(ITK_Blox
   DEPENDS
-    ITK-ImageIntensity
-    ITK-ImageGradient
-    ITK-Smoothing
-    ITK-Optimizers
-    ITK-IO-RAW
+    ITK_ImageIntensity
+    ITK_ImageGradient
+    ITK_Smoothing
+    ITK_Optimizers
+    ITK_IO_RAW
   TEST_DEPENDS
-    ITK-TestKernel
+    ITK_TestKernel
 )

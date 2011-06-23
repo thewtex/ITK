@@ -55,7 +55,7 @@ namespace itk
  * assumption will probably not hold in multi-modality registration.
  *
  * \ingroup Transforms
- * \ingroup ITK-RegistrationCommon
+ * \ingroup ITK_RegistrationCommon
  */
 template< class TTransform,
           class TFixedImage,

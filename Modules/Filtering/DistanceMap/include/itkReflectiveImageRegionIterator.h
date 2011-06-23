@@ -40,7 +40,7 @@ namespace itk
  * \ingroup ImageIterators
  *
  *
- * \ingroup ITK-DistanceMap
+ * \ingroup ITK_DistanceMap
  */
 template< typename TImage >
 class ITK_EXPORT ReflectiveImageRegionIterator:public ReflectiveImageRegionConstIterator< TImage >

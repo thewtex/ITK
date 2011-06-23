@@ -3,12 +3,12 @@ functions. The spatial function classes implement the concept of defining
 regions of space, typically as masks. You will find here the filter that can
 take a spatial function, and rasterize it into the grid of an image.")
 
-itk_module(ITK-SpatialFunction
+itk_module(ITK_SpatialFunction
   DEPENDS
-    ITK-ImageFunction
-    ITK-ImageFilterBase
+    ITK_ImageFunction
+    ITK_ImageFilterBase
   TEST_DEPENDS
-    ITK-TestKernel
+    ITK_TestKernel
   DESCRIPTION
     "${DOCUMENTATION}"
 )

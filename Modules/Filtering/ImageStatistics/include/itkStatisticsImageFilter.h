@@ -39,7 +39,7 @@ namespace itk
  * its AfterThreadedGenerate method.
  *
  * \ingroup MathematicalStatisticsImageFilters
- * \ingroup ITK-ImageStatistics
+ * \ingroup ITK_ImageStatistics
  */
 template< class TInputImage >
 class ITK_EXPORT StatisticsImageFilter:

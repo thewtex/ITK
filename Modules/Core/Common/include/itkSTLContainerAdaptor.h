@@ -29,7 +29,7 @@ namespace itk
  *     std::vector<ElementType> & vec = vecAdaptor.GetSTLContainerRef();
  *     // do things with vec ...
  *     // upon return from function, vecAdaptor is destroyed and aContainer is Modified()
- * \ingroup ITK-Common
+ * \ingroup ITK_Common
  */
 
 template< typename TContainer >

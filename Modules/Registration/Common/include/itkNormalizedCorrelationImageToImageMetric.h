@@ -36,7 +36,7 @@ namespace itk
  * the fixed and moving images.
  *
  * \ingroup RegistrationMetrics
- * \ingroup ITK-RegistrationCommon
+ * \ingroup ITK_RegistrationCommon
  */
 template< class TFixedImage, class TMovingImage >
 class ITK_EXPORT NormalizedCorrelationImageToImageMetric:

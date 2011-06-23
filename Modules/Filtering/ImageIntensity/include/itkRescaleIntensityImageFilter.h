@@ -111,7 +111,7 @@ private:
  *
  * \ingroup IntensityImageFilters  Multithreaded
  *
- * \ingroup ITK-ImageIntensity
+ * \ingroup ITK_ImageIntensity
  *
  * \wiki
  * \wikiexample{ImageProcessing/RescaleIntensityImageFilter,Rescale the intensity values of an image to a specified range}

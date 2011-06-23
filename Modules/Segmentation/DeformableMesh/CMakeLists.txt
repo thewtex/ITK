@@ -1,2 +1,2 @@
-project(ITK-DeformableMesh)
+project(ITK_DeformableMesh)
 itk_module_impl()

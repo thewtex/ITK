@@ -28,7 +28,7 @@ namespace itk
  * the contained items.
  *
  * \ingroup ImageObjects
- * \ingroup ITK-Blox
+ * \ingroup ITK_Blox
  */
 
 template< typename TItemType >

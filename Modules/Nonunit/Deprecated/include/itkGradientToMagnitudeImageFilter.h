@@ -37,7 +37,7 @@ namespace itk
  * VectorMagnitudeImageFilter in the ImageIntensity module.
  *
  * \ingroup IntensityImageFilters  Multithreaded
- * \ingroup ITK-Deprecated
+ * \ingroup ITK_Deprecated
  */
 
 template< class TInputImage, class TOutputImage >

@@ -1,10 +1,10 @@
-project(ITK-NIFTI)
-set(ITK-NIFTI_THIRD_PARTY 1)
+project(ITK_NIFTI)
+set(ITK_NIFTI_THIRD_PARTY 1)
 
-set(ITK-NIFTI_INCLUDE_DIRS
-  ${ITK-NIFTI_SOURCE_DIR}/src/nifti/niftilib
-  ${ITK-NIFTI_SOURCE_DIR}/src/nifti/znzlib
+set(ITK_NIFTI_INCLUDE_DIRS
+  ${ITK_NIFTI_SOURCE_DIR}/src/nifti/niftilib
+  ${ITK_NIFTI_SOURCE_DIR}/src/nifti/znzlib
   )
-set(ITK-NIFTI_LIBRARIES ITKznz ITKniftiio)
+set(ITK_NIFTI_LIBRARIES ITKznz ITKniftiio)
 
 itk_module_impl()

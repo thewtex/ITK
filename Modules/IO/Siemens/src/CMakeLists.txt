@@ -1,8 +1,8 @@
-set(ITK-IO-Siemens_SRC
+set(ITK_IO_Siemens_SRC
 itkSiemensVisionImageIOFactory.cxx
 itkSiemensVisionImageIO.cxx
 )
 
-add_library(ITK-IO-Siemens ${ITK-IO-Siemens_SRC})
-target_link_libraries(ITK-IO-Siemens  ${ITK-IO-IPL_LIBRARIES} ${ITK-IO-GE_LIBRARIES})
-itk_module_target(ITK-IO-Siemens)
+add_library(ITK_IO_Siemens ${ITK_IO_Siemens_SRC})
+target_link_libraries(ITK_IO_Siemens  ${ITK_IO_IPL_LIBRARIES} ${ITK_IO_GE_LIBRARIES})
+itk_module_target(ITK_IO_Siemens)

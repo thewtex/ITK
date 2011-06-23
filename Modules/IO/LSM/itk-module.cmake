@@ -1,6 +1,6 @@
-itk_module(ITK-IO-LSM
+itk_module(ITK_IO_LSM
   DEPENDS
-    ITK-IO-TIFF
+    ITK_IO_TIFF
   TEST_DEPENDS
-    ITK-TestKernel
+    ITK_TestKernel
 )

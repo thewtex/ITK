@@ -1,1 +1,1 @@
-itk_module(ITK-JPEG)
+itk_module(ITK_JPEG)

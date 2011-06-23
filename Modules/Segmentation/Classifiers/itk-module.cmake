@@ -1,11 +1,11 @@
-itk_module(ITK-Classifiers
+itk_module(ITK_Classifiers
   DEPENDS
-    ITK-ImageGrid
-    ITK-Statistics
-    ITK-ConnectedComponents
+    ITK_ImageGrid
+    ITK_Statistics
+    ITK_ConnectedComponents
   TEST_DEPENDS
-    ITK-TestKernel
-    ITK-AnisotropicSmoothing
+    ITK_TestKernel
+    ITK_AnisotropicSmoothing
 )
 
-# Extra test dependency on ITK-AnisotropicSmoothing is introduced by itkBayesianClassifierImageFilterTest.
+# Extra test dependency on ITK_AnisotropicSmoothing is introduced by itkBayesianClassifierImageFilterTest.

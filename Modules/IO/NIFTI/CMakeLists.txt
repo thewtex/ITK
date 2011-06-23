@@ -1,3 +1,3 @@
-project(ITK-IO-NIFTI)
-set(ITK-IO-NIFTI_LIBRARIES ITK-IO-NIFTI)
+project(ITK_IO_NIFTI)
+set(ITK_IO_NIFTI_LIBRARIES ITK_IO_NIFTI)
 itk_module_impl()

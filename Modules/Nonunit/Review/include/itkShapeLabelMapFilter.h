@@ -45,7 +45,7 @@ namespace itk
  * http://www.insight-journal.org/browse/publication/176
  *
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
- * \ingroup ITK-Review
+ * \ingroup ITK_Review
  */
 
 template< class TImage, class TLabelImage =

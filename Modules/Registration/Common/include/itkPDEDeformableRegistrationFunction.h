@@ -35,7 +35,7 @@ namespace itk
  *
  * \sa PDEDeformableRegistrationFilter
  * \ingroup FiniteDifferenceFunctions
- * \ingroup ITK-RegistrationCommon
+ * \ingroup ITK_RegistrationCommon
  */
 template< class TFixedImage, class TMovingImage, class TDeformationField >
 class ITK_EXPORT PDEDeformableRegistrationFunction:

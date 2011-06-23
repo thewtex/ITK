@@ -58,7 +58,7 @@ namespace itk
  *
  * \todo Allow any stream object to be used for the output (not just std::cout)
  *
- * \ingroup ITK-Common
+ * \ingroup ITK_Common
  *
  * \wiki
  * \wikiexample{Utilities/SimpleFilterWatcher,Monitor a filter}

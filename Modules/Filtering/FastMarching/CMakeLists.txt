@@ -1,2 +1,2 @@
-project(ITK-FastMarching)
+project(ITK_FastMarching)
 itk_module_impl()

@@ -38,7 +38,7 @@ namespace itk
  *
  * \ingroup Functions
  *
- * \ingroup ITK-Common
+ * \ingroup ITK_Common
  */
 template< class TInput, class TOutput >
 class ITK_EXPORT FunctionBase:public Object

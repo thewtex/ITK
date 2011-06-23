@@ -41,7 +41,7 @@ namespace itk
  * \sa ContinuousIndex
  *
  * \ingroup Functions ImageInterpolators
- * \ingroup ITK-Common
+ * \ingroup ITK_Common
  */
 template<
   class TCoordRep = float,

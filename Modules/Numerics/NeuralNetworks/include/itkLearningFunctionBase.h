@@ -20,7 +20,7 @@
  *  These include error back propagation, bp+momentum, conjugte gradient descent, quick prop.
  *  This class specifies how the errors are backpropagated for a layer. They take a LayerBase
  *  object as input and compute the input for the layers input weightset
- * \ingroup ITK-NeuralNetworks
+ * \ingroup ITK_NeuralNetworks
  */
 
 #ifndef __itkLearningFunctionBase_h

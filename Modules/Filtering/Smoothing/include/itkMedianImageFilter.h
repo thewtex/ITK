@@ -41,7 +41,7 @@ namespace itk
  * \sa NeighborhoodIterator
  *
  * \ingroup IntensityImageFilters
- * \ingroup ITK-Smoothing
+ * \ingroup ITK_Smoothing
  *
  * \wiki
  * \wikiexample{Smoothing/MedianImageFilter,Median filter an image}

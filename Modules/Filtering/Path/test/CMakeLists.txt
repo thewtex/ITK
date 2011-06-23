@@ -1,5 +1,5 @@
 itk_module_test()
-set(ITK-PathTests
+set(ITK_PathTests
 itkPathIteratorTest.cxx
 itkPathHeaderTest.cxx
 itkChainCodePathTest.cxx
@@ -15,34 +15,34 @@ itkExtractOrthogonalSwath2DImageFilterTest.cxx
 itkOrthogonalSwath2DPathFilterTest.cxx
 )
 
-CreateTestDriver(ITK-Path  "${ITK-Path-Test_LIBRARIES}" "${ITK-PathTests}")
+CreateTestDriver(ITK_Path  "${ITK_Path-Test_LIBRARIES}" "${ITK_PathTests}")
 
 itk_add_test(NAME itkPathHeaderTest
-      COMMAND ITK-PathTestDriver itkPathHeaderTest)
+      COMMAND ITK_PathTestDriver itkPathHeaderTest)
 itk_add_test(NAME itkPathIteratorTest
-      COMMAND ITK-PathTestDriver itkPathIteratorTest)
+      COMMAND ITK_PathTestDriver itkPathIteratorTest)
 itk_add_test(NAME itkChainCodePathTest
-      COMMAND ITK-PathTestDriver itkChainCodePathTest)
+      COMMAND ITK_PathTestDriver itkChainCodePathTest)
 itk_add_test(NAME itkChainCodePath2DTest
-      COMMAND ITK-PathTestDriver itkChainCodePath2DTest)
+      COMMAND ITK_PathTestDriver itkChainCodePath2DTest)
 itk_add_test(NAME itkOrthogonallyCorrected2DParametricPathTest
-      COMMAND ITK-PathTestDriver itkOrthogonallyCorrected2DParametricPathTest)
+      COMMAND ITK_PathTestDriver itkOrthogonallyCorrected2DParametricPathTest)
 itk_add_test(NAME itkPathToImageFilterTest
-      COMMAND ITK-PathTestDriver itkPathToImageFilterTest)
+      COMMAND ITK_PathTestDriver itkPathToImageFilterTest)
 itk_add_test(NAME itkPathToChainCodePathFilterTest
-      COMMAND ITK-PathTestDriver itkPathToChainCodePathFilterTest)
+      COMMAND ITK_PathTestDriver itkPathToChainCodePathFilterTest)
 itk_add_test(NAME itkFourierSeriesPathTest
-      COMMAND ITK-PathTestDriver itkFourierSeriesPathTest)
+      COMMAND ITK_PathTestDriver itkFourierSeriesPathTest)
 itk_add_test(NAME itkPathFunctionsTest
-      COMMAND ITK-PathTestDriver itkPathFunctionsTest)
+      COMMAND ITK_PathTestDriver itkPathFunctionsTest)
 itk_add_test(NAME itkPolyLineParametricPathTest
-      COMMAND ITK-PathTestDriver itkPolyLineParametricPathTest)
+      COMMAND ITK_PathTestDriver itkPolyLineParametricPathTest)
 itk_add_test(NAME itkChainCodeToFourierSeriesPathFilterTest
-      COMMAND ITK-PathTestDriver itkChainCodeToFourierSeriesPathFilterTest)
+      COMMAND ITK_PathTestDriver itkChainCodeToFourierSeriesPathFilterTest)
 itk_add_test(NAME itkExtractOrthogonalSwath2DImageFilterTest
-      COMMAND ITK-PathTestDriver
+      COMMAND ITK_PathTestDriver
     --compare ${ITK_DATA_ROOT}/Baseline/BasicFilters/ExtractOrthogonalSwath2DImageFilterTest.png
               ${ITK_TEST_OUTPUT_DIR}/ExtractOrthogonalSwath2DImageFilterTest.png
     itkExtractOrthogonalSwath2DImageFilterTest ${ITK_TEST_OUTPUT_DIR}/ExtractOrthogonalSwath2DImageFilterTest.png)
 itk_add_test(NAME itkOrthogonalSwath2DPathFilterTest
-      COMMAND ITK-PathTestDriver itkOrthogonalSwath2DPathFilterTest)
+      COMMAND ITK_PathTestDriver itkOrthogonalSwath2DPathFilterTest)

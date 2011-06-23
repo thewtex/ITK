@@ -58,7 +58,7 @@ namespace itk
  * http://www.insight-journal.org/browse/publication/160
  *
  * \author Richard Beare
- * \ingroup ITK-Review
+ * \ingroup ITK_Review
  */
 
 template< class TInputImage, class TMaskImage, class TOutputImage, class TKernel =

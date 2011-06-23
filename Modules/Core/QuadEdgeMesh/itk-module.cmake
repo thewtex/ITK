@@ -5,11 +5,11 @@ therefore they are used as a base for implementing common mesh filters and
 operations. They are commonly used for representing the output of image
 segmentation algorithms.")
 
-itk_module(ITK-QuadEdgeMesh
+itk_module(ITK_QuadEdgeMesh
   DEPENDS
-    ITK-Mesh
+    ITK_Mesh
   TEST_DEPENDS
-    ITK-TestKernel
+    ITK_TestKernel
   DESCRIPTION
     "${DOCUMENTATION}"
 )

@@ -1,4 +1,4 @@
-set(ITK-Statistics_SRC
+set(ITK_Statistics_SRC
 itkMaximumDecisionRule.cxx
 itkDenseFrequencyContainer2.cxx
 itkChiSquareDistribution.cxx
@@ -15,6 +15,6 @@ itkMaximumRatioDecisionRule.cxx
 itkMinimumDecisionRule.cxx
 )
 
-add_library(ITK-Statistics ${ITK-Statistics_SRC})
-target_link_libraries(ITK-Statistics  ${ITK-Common_LIBRARIES} ${ITK-Netlib_LIBRARIES})
-itk_module_target(ITK-Statistics)
+add_library(ITK_Statistics ${ITK_Statistics_SRC})
+target_link_libraries(ITK_Statistics  ${ITK_Common_LIBRARIES} ${ITK_Netlib_LIBRARIES})
+itk_module_target(ITK_Statistics)

@@ -66,7 +66,7 @@ namespace itk
  * \sa ExpandImageFilter
  *
  * \ingroup GeometricTransform
- * \ingroup ITK-ImageIntensity
+ * \ingroup ITK_ImageIntensity
  */
 template< class TInputImage, class TOutputImage >
 class ITK_EXPORT VectorExpandImageFilter:

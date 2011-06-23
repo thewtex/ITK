@@ -60,7 +60,7 @@ namespace itk
  * \ingroup ImageFunctions
  *
  *
- * \ingroup ITK-SignedDistanceFunction
+ * \ingroup ITK_SignedDistanceFunction
  */
 template< typename TCoordRep,
           unsigned int VSpaceDimension,

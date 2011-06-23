@@ -58,7 +58,7 @@ namespace watershed
  * \sa itk::WatershedImageFilter
  * \sa itk::EquivalencyTable
  * \sa itk::watershed::SegmentTree
- * \ingroup ITK-Watersheds
+ * \ingroup ITK_Watersheds
  */
 template< class TScalarType, unsigned int TImageDimension >
 class ITK_EXPORT Relabeler:

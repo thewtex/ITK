@@ -38,7 +38,7 @@ class CellInterface;
  * of CellInterfaceVisitor.
  *
  * \ingroup MeshAccess
- * \ingroup ITK-Common
+ * \ingroup ITK_Common
  */
 template<
   typename TPixelType,
@@ -94,7 +94,7 @@ private:
  *               Visit(int id, CellTopology*)
  *
  * \ingroup MeshAccess
- * \ingroup ITK-Common
+ * \ingroup ITK_Common
  */
 template<
   typename TPixelType,

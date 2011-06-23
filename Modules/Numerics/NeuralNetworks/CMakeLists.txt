@@ -1,2 +1,2 @@
-project(ITK-NeuralNetworks)
+project(ITK_NeuralNetworks)
 itk_module_impl()

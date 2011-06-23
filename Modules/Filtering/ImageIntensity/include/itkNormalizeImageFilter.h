@@ -39,7 +39,7 @@ namespace itk
  * \sa NormalizeToConstantImageFilter
  *
  * \ingroup MathematicalImageFilters
- * \ingroup ITK-ImageIntensity
+ * \ingroup ITK_ImageIntensity
  *
  * \wiki
  * \wikiexample{ImageProcessing/NormalizeImageFilter,Normalize an image}

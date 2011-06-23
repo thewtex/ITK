@@ -55,7 +55,7 @@ namespace NeighborhoodAlgorithm
 * regionToProcess and bufferedRegion. The non-boundary regions (if
 * any) are the remaining faces in faceList.
 *
-* \ingroup ITK-Common
+* \ingroup ITK_Common
 */
 template< class TImage >
 struct ITK_EXPORT ImageBoundaryFacesCalculator {
@@ -75,7 +75,7 @@ struct ITK_EXPORT ImageBoundaryFacesCalculator {
  * buffers. Calculates the necessary modifiers to synchronize input and output
  * iteration between images with equal RequestedRegion sizes but unequal
  * BufferedRegion sizes.
- * \ingroup ITK-Common
+ * \ingroup ITK_Common
  */
 template< class TImage >
 struct ITK_EXPORT CalculateOutputWrapOffsetModifiers {

@@ -52,7 +52,7 @@ struct GetDimension {
  * http://hdl.handle.net/1926/510
  *
  * \ingroup ImageFunctions
- * \ingroup ITK-Review
+ * \ingroup ITK_Review
  */
 template<
   class TInputImage,

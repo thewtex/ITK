@@ -59,7 +59,7 @@ namespace itk
  *
  * NOTE: The convention followed is
  * inside of the level-set function is negative and outside is positive.
- * \ingroup ITK-Review
+ * \ingroup ITK_Review
  */
 template< class TInput,   // LevelSetImageType
           class TFeature, // FeatureImageType

@@ -6,15 +6,15 @@ images, particulaly when mapping them between coordinate systems. Transforms
 are a large family in ITK and form a prolific group of classes in the
 toolkit.")
 
-itk_module(ITK-Transform
+itk_module(ITK_Transform
   DEPENDS
-    ITK-Statistics
-    ITK-HDF5
+    ITK_Statistics
+    ITK_HDF5
   TEST_DEPENDS
-    ITK-TestKernel
-    ITK-ImageFunction
-    ITK-ImageGrid
-    ITK-SpatialObjects
+    ITK_TestKernel
+    ITK_ImageFunction
+    ITK_ImageGrid
+    ITK_SpatialObjects
   DESCRIPTION
     "${DOCUMENTATION}"
 )

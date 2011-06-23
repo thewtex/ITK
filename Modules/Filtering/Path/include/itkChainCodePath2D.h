@@ -45,7 +45,7 @@ namespace itk
  * \sa Index
  *
  * \ingroup PathObjects
- * \ingroup ITK-Path
+ * \ingroup ITK_Path
  */
 class ITK_EXPORT ChainCodePath2D:public
   ChainCodePath< 2 >

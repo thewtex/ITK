@@ -35,7 +35,7 @@ namespace itk
  * All the input images are of the same type.
  *
  * \ingroup IntensityImageFilters   Multithreaded
- * \ingroup ITK-ImageIntensity
+ * \ingroup ITK_ImageIntensity
  */
 
 template< class TInputImage, class TOutputImage, class TFunction >

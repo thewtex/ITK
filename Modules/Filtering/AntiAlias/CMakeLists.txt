@@ -1,2 +1,2 @@
-project(ITK-AntiAlias)
+project(ITK_AntiAlias)
 itk_module_impl()

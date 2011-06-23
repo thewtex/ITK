@@ -38,7 +38,7 @@ namespace itk
  *
  * \ingroup ITKSystemObjects
  * \ingroup DataAccess
- * \ingroup ITK-Common
+ * \ingroup ITK_Common
  */
 template< class TObjectType >
 class ITK_EXPORT WeakPointer

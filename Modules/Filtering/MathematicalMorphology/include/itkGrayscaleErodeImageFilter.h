@@ -42,7 +42,7 @@ namespace itk
  *
  * \sa MorphologyImageFilter, GrayscaleFunctionErodeImageFilter, BinaryErodeImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
- * \ingroup ITK-MathematicalMorphology
+ * \ingroup ITK_MathematicalMorphology
  *
  * \wiki
  * \wikiexample{Morphology/GrayscaleErodeImageFilter,Erode a grayscale image}

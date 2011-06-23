@@ -1,5 +1,5 @@
 itk_module_test()
-set(ITK-DeprecatedTests
+set(ITK_DeprecatedTests
 itk2DDeformableTest.cxx
 itkDeformableTest.cxx
 itkNonThreadedShrinkImageTest.cxx
@@ -15,33 +15,33 @@ itkSubtractConstantFromImageFilterTest.cxx
 )
 
 
-CreateTestDriver_SupportBuildInIOFactories(ITK-Deprecated  "${ITK-Deprecated-Test_LIBRARIES}" "${ITK-DeprecatedTests}")
+CreateTestDriver_SupportBuildInIOFactories(ITK_Deprecated  "${ITK_Deprecated-Test_LIBRARIES}" "${ITK_DeprecatedTests}")
 
 itk_add_test(NAME itk2DDeformableTest
-      COMMAND ITK-DeprecatedTestDriver itk2DDeformableTest)
+      COMMAND ITK_DeprecatedTestDriver itk2DDeformableTest)
 itk_add_test(NAME itkDeformableTest
-      COMMAND ITK-DeprecatedTestDriver itkDeformableTest)
+      COMMAND ITK_DeprecatedTestDriver itkDeformableTest)
 itk_add_test(NAME itkNonThreadedShrinkImageTest
-      COMMAND ITK-DeprecatedTestDriver itkNonThreadedShrinkImageTest)
+      COMMAND ITK_DeprecatedTestDriver itkNonThreadedShrinkImageTest)
 itk_add_test(NAME itkNonUniformBSplineTest
-      COMMAND ITK-DeprecatedTestDriver itkNonUniformBSplineTest)
+      COMMAND ITK_DeprecatedTestDriver itkNonUniformBSplineTest)
 itk_add_test(NAME itkReflectImageFilterTest
-      COMMAND ITK-DeprecatedTestDriver itkReflectImageFilterTest)
+      COMMAND ITK_DeprecatedTestDriver itkReflectImageFilterTest)
 itk_add_test(NAME itkShiftScaleInPlaceImageFilterTest
-      COMMAND ITK-DeprecatedTestDriver itkShiftScaleInPlaceImageFilterTest)
+      COMMAND ITK_DeprecatedTestDriver itkShiftScaleInPlaceImageFilterTest)
 itk_add_test(NAME itkTwoOutputExampleImageFilterTest
-      COMMAND ITK-DeprecatedTestDriver itkTwoOutputExampleImageFilterTest)
+      COMMAND ITK_DeprecatedTestDriver itkTwoOutputExampleImageFilterTest)
 itk_add_test(NAME itkGradientToMagnitudeImageFilterTest
-      COMMAND ITK-DeprecatedTestDriver itkGradientToMagnitudeImageFilterTest)
+      COMMAND ITK_DeprecatedTestDriver itkGradientToMagnitudeImageFilterTest)
 
 itk_add_test(NAME DeprecatedAddConstantToImageFilterTest
-  COMMAND ITK-DeprecatedTestDriver itkAddConstantToImageFilterTest)
+  COMMAND ITK_DeprecatedTestDriver itkAddConstantToImageFilterTest)
 itk_add_test(NAME DeprecatedSubtractConstantFromaImageFilterTest
-  COMMAND ITK-DeprecatedTestDriver itkSubtractConstantFromImageFilterTest)
+  COMMAND ITK_DeprecatedTestDriver itkSubtractConstantFromImageFilterTest)
 itk_add_test(NAME DeprecatedMultiplyByConstantImageFilterTest
-  COMMAND ITK-DeprecatedTestDriver itkMultiplyByConstantImageFilterTest)
+  COMMAND ITK_DeprecatedTestDriver itkMultiplyByConstantImageFilterTest)
 itk_add_test(NAME DeprecatedDivideByConstantImageFilterTest
-  COMMAND ITK-DeprecatedTestDriver itkDivideByConstantImageFilterTest)
+  COMMAND ITK_DeprecatedTestDriver itkDivideByConstantImageFilterTest)
 
 create_test_sourcelist(DeprecatedIOTests  DeprecatedIOTestDriver.cxx
         itkDICOMImageIO2Test.cxx
@@ -64,12 +64,12 @@ create_test_sourcelist(DeprecatedIOTests  DeprecatedIOTestDriver.cxx
 )
 add_library(ITK-AnalyzeIO-TestHelper itkAnalyzeImageIOTestHelper.cxx)
 itk_module_target_label(ITK-AnalyzeIO-TestHelper)
-target_link_libraries(ITK-AnalyzeIO-TestHelper  ${ITK-Deprecated_LIBRARIES})
+target_link_libraries(ITK-AnalyzeIO-TestHelper  ${ITK_Deprecated_LIBRARIES})
 
-list(APPEND ITK-Deprecated-Test_LIBRARIES ITK-AnalyzeIO-TestHelper)
+list(APPEND ITK_Deprecated-Test_LIBRARIES ITK-AnalyzeIO-TestHelper)
 add_executable(DeprecatedIOTestDriver DeprecatedIOTestDriver.cxx  ${DeprecatedIOTests})
 itk_module_target_label(DeprecatedIOTestDriver)
-target_link_libraries(DeprecatedIOTestDriver ${ITK-Deprecated-Test_LIBRARIES})
+target_link_libraries(DeprecatedIOTestDriver ${ITK_Deprecated-Test_LIBRARIES})
 
 
 ##Analyze Test Suite

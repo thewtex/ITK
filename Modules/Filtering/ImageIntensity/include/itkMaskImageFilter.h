@@ -49,7 +49,7 @@ namespace itk
  *
  * \sa MaskNegatedImageFilter
  * \ingroup IntensityImageFilters  Multithreaded
- * \ingroup ITK-ImageIntensity
+ * \ingroup ITK_ImageIntensity
  *
  * \wiki
  * \wikiexample{ImageProcessing/MaskImageFilter,Apply a mask to an image}

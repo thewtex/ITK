@@ -48,7 +48,7 @@ namespace itk
  * http://hdl.handle.net/1926/326
  *
  * \sa RealAndImaginaryToComplexImageFilter
- * \ingroup ITK-Review
+ * \ingroup ITK_Review
  */
 namespace Functor
 {

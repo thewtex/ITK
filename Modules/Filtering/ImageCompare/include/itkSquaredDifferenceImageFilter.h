@@ -44,7 +44,7 @@ namespace itk
  * (e.g. all 2D, or all 3D, or all ND)
  *
  * \ingroup IntensityImageFilters Multithreaded
- * \ingroup ITK-ImageCompare
+ * \ingroup ITK_ImageCompare
  *
  * \wiki
  * \wikiexample{ImageProcessing/SquaredDifferenceImageFilter,Compute the squared difference of corresponding pixels in two images}

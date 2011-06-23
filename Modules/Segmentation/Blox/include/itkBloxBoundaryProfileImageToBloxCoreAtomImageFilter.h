@@ -27,7 +27,7 @@ namespace itk
 {
 /** \class BloxBoundaryProfileImageToBloxCoreAtomImageFilter
  * \brief Converts a blox boundary profile image to an image of core atoms.
- * \ingroup ITK-Blox
+ * \ingroup ITK_Blox
  */
 template< typename TInputImage, typename TOutputImage, typename TSourceImage >
 class ITK_EXPORT BloxBoundaryProfileImageToBloxCoreAtomImageFilter:

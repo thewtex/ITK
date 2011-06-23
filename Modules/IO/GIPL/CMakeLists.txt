@@ -1,3 +1,3 @@
-project(ITK-IO-GIPL)
-set(ITK-IO-GIPL_LIBRARIES ITK-IO-GIPL)
+project(ITK_IO_GIPL)
+set(ITK_IO_GIPL_LIBRARIES ITK_IO_GIPL)
 itk_module_impl()

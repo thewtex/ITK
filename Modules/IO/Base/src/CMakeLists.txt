@@ -1,4 +1,4 @@
-set(ITK-IO-Base_SRC
+set(ITK_IO_Base_SRC
 itkImageIORegion.cxx
 itkArchetypeSeriesFileNames.cxx
 itkImageIOFactory.cxx
@@ -9,6 +9,6 @@ itkRegularExpressionSeriesFileNames.cxx
 itkStreamingImageIOBase.cxx
 )
 
-add_library(ITK-IO-Base ${ITK-IO-Base_SRC})
-target_link_libraries(ITK-IO-Base  ${ITK-Common_LIBRARIES})
-itk_module_target(ITK-IO-Base)
+add_library(ITK_IO_Base ${ITK_IO_Base_SRC})
+target_link_libraries(ITK_IO_Base  ${ITK_Common_LIBRARIES})
+itk_module_target(ITK_IO_Base)

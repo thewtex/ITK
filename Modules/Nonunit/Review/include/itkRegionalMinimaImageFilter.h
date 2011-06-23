@@ -41,7 +41,7 @@ namespace itk
  * \sa ValuedRegionalMinimaImageFilter, HConcaveImageFilter,
  * RegionalMaximaImageFilter \ingroup ImageEnhancement
  * MathematicalMorphologyImageFilters
- * \ingroup ITK-Review
+ * \ingroup ITK_Review
  */
 template< class TInputImage, class TOutputImage >
 class ITK_EXPORT RegionalMinimaImageFilter:

@@ -31,7 +31,7 @@ namespace itk
  * a BloxBoundaryPointImage
  *
  * \ingroup ImageEnhancement
- * \ingroup ITK-Blox
+ * \ingroup ITK_Blox
  */
 template< typename TInputImage >
 class ITK_EXPORT GradientImageToBloxBoundaryPointImageFilter:

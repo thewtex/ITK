@@ -1,2 +1,2 @@
-project(ITK-MarkovRandomFieldsClassifiers)
+project(ITK_MarkovRandomFieldsClassifiers)
 itk_module_impl()

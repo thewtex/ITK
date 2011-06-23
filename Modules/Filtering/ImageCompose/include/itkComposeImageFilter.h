@@ -44,7 +44,7 @@ namespace itk
  * the same size and origin.
  *
  * \sa VectorImage
- * \ingroup ITK-ImageCompose
+ * \ingroup ITK_ImageCompose
  *
  * \wiki
  * \wikiexample{VectorImages/ImageToVectorImageFilter,Create a vector image from a collection of scalar images}

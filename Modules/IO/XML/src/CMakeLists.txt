@@ -1,7 +1,7 @@
-set(ITK-IO-XML_SRC
+set(ITK_IO_XML_SRC
 itkXMLFile.cxx
 )
 
-add_library(ITK-IO-XML ${ITK-IO-XML_SRC})
-target_link_libraries(ITK-IO-XML  ${ITK-Expat_LIBRARIES} ${ITK-IO-Base_LIBRARIES})
-itk_module_target(ITK-IO-XML)
+add_library(ITK_IO_XML ${ITK_IO_XML_SRC})
+target_link_libraries(ITK_IO_XML  ${ITK_Expat_LIBRARIES} ${ITK_IO_Base_LIBRARIES})
+itk_module_target(ITK_IO_XML)

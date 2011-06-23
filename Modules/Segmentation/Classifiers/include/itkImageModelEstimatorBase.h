@@ -59,7 +59,7 @@ namespace itk
 
  *
  * \ingroup ClassificationFilters
- * \ingroup ITK-Classifiers
+ * \ingroup ITK_Classifiers
  */
 template< class TInputImage,
           class TMembershipFunction >

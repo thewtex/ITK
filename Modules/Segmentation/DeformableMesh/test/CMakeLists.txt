@@ -1,5 +1,5 @@
 itk_module_test()
-set(ITK-DeformableMeshTests
+set(ITK_DeformableMeshTests
 itkDeformableSimplexMesh3DFilterTest.cxx
 itkDeformableMeshHeaderTest.cxx
 itkDeformableSimplexMesh3DBalloonForceFilterTest.cxx
@@ -7,15 +7,15 @@ itkDeformableSimplexMesh3DGradientConstraintForceFilterTest.cxx
 itkSimplexMeshWithFloatCoordRepTest.cxx
 )
 
-CreateTestDriver(ITK-DeformableMesh  "${ITK-DeformableMesh-Test_LIBRARIES}" "${ITK-DeformableMeshTests}")
+CreateTestDriver(ITK_DeformableMesh  "${ITK_DeformableMesh-Test_LIBRARIES}" "${ITK_DeformableMeshTests}")
 
 itk_add_test(NAME itkDeformableMeshHeaderTest
-      COMMAND ITK-DeformableMeshTestDriver itkDeformableMeshHeaderTest)
+      COMMAND ITK_DeformableMeshTestDriver itkDeformableMeshHeaderTest)
 itk_add_test(NAME itkDeformableSimplexMesh3DFilterTest
-      COMMAND ITK-DeformableMeshTestDriver itkDeformableSimplexMesh3DFilterTest)
+      COMMAND ITK_DeformableMeshTestDriver itkDeformableSimplexMesh3DFilterTest)
 itk_add_test(NAME itkDeformableSimplexMesh3DBalloonForceFilterTest
-      COMMAND ITK-DeformableMeshTestDriver itkDeformableSimplexMesh3DBalloonForceFilterTest)
+      COMMAND ITK_DeformableMeshTestDriver itkDeformableSimplexMesh3DBalloonForceFilterTest)
 itk_add_test(NAME itkDeformableSimplexMesh3DGradientConstaintForceFilterTest
-      COMMAND ITK-DeformableMeshTestDriver itkDeformableSimplexMesh3DGradientConstraintForceFilterTest)
+      COMMAND ITK_DeformableMeshTestDriver itkDeformableSimplexMesh3DGradientConstraintForceFilterTest)
 itk_add_test(NAME itkSimplexMeshWithFloatCoordRepTest
-      COMMAND ITK-DeformableMeshTestDriver itkSimplexMeshWithFloatCoordRepTest)
+      COMMAND ITK_DeformableMeshTestDriver itkSimplexMeshWithFloatCoordRepTest)

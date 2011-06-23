@@ -49,7 +49,7 @@ namespace itk {
  *
  * \sa MorphologyImageFilter, ReconstructionByDilationImageFilter, BinaryReconstructionByErosionImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
- * \ingroup ITK-Review
+ * \ingroup ITK_Review
  */
 template<class TInputImage>
 class ITK_EXPORT BinaryReconstructionByDilationImageFilter :

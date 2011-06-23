@@ -1,4 +1,4 @@
-set(ITK-VNLInstantiation_SRC
+set(ITK_VNLInstantiation_SRC
 vnl_vector+ulonglong-.cxx
 vnl_fft_base+float.3-.cxx
 vnl_matrix_fixed_ref+double.2.2-.cxx
@@ -24,6 +24,6 @@ vnl_vector+short-.cxx
 vnl_matrix+ushort-.cxx
 )
 
-add_library(ITK-VNLInstantiation ${ITK-VNLInstantiation_SRC})
-target_link_libraries(ITK-VNLInstantiation ${ITK-VNL_LIBRARIES})
-itk_module_target(ITK-VNLInstantiation)
+add_library(ITK_VNLInstantiation ${ITK_VNLInstantiation_SRC})
+target_link_libraries(ITK_VNLInstantiation ${ITK_VNL_LIBRARIES})
+itk_module_target(ITK_VNLInstantiation)

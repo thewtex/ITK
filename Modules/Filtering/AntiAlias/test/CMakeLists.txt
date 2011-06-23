@@ -1,12 +1,12 @@
 itk_module_test()
-set(ITK-AntiAliasTests
+set(ITK_AntiAliasTests
 itkAntiAliasHeaderTest.cxx
 itkAntiAliasBinaryImageFilterTest.cxx
 )
 
-CreateTestDriver(ITK-AntiAlias  "${ITK-AntiAlias-Test_LIBRARIES}" "${ITK-AntiAliasTests}")
+CreateTestDriver(ITK_AntiAlias  "${ITK_AntiAlias-Test_LIBRARIES}" "${ITK_AntiAliasTests}")
 
 itk_add_test(NAME itkAntiAliasHeaderTest
-      COMMAND ITK-AntiAliasTestDriver itkAntiAliasHeaderTest)
+      COMMAND ITK_AntiAliasTestDriver itkAntiAliasHeaderTest)
 itk_add_test(NAME itkAntiAliasBinaryImageFilterTest
-      COMMAND ITK-AntiAliasTestDriver itkAntiAliasBinaryImageFilterTest)
+      COMMAND ITK_AntiAliasTestDriver itkAntiAliasBinaryImageFilterTest)

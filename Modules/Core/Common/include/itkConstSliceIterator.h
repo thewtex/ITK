@@ -43,7 +43,7 @@ namespace itk
  *
  * \ingroup Iterators
  *
- * \ingroup ITK-Common
+ * \ingroup ITK_Common
  */
 template< class TPixel, class TContainer >
 class ITK_EXPORT ConstSliceIterator

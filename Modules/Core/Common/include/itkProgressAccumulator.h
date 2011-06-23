@@ -35,7 +35,7 @@ namespace itk
  *
  * \sa DiscreteGaussianImageFilter
  *
- * \ingroup ITK-Common
+ * \ingroup ITK_Common
  */
 class ITKCommon_EXPORT ProgressAccumulator:public Object
 {

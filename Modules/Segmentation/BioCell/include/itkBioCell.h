@@ -31,7 +31,7 @@ namespace bio
  * The basic behavior of a cell is related with the
  * cell cycle. Geometrical concepts like size and shape
  * are also managed by this abstract cell.
- * \ingroup ITK-BioCell
+ * \ingroup ITK_BioCell
  */
 
 template< unsigned int NSpaceDimension = 3 >

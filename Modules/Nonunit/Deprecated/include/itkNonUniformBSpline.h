@@ -42,7 +42,7 @@ namespace itk
  *
  * CAUTION: THIS CLASS IS STILL UNDER DEVELOPMENT.
  *
- * \ingroup ITK-Deprecated
+ * \ingroup ITK_Deprecated
  */
 
 template< unsigned int TDimension = 3 >

@@ -40,7 +40,7 @@ namespace itk
  * Users should set the a priori values before calling the Evaluate method.
  *
  * \sa MaximumDecisionRule, MinimumDecisionRule
- * \ingroup ITK-Statistics
+ * \ingroup ITK_Statistics
  */
 
 class ITK_EXPORT MaximumRatioDecisionRule:

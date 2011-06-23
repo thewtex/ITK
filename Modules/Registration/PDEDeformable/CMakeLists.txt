@@ -1,2 +1,2 @@
-project(ITK-PDEDeformableRegistration)
+project(ITK_PDEDeformableRegistration)
 itk_module_impl()

@@ -73,7 +73,7 @@ namespace itk
  * membership function objects and populates them.
  *
  * \ingroup ClassificationFilters
- * \ingroup ITK-Classifiers
+ * \ingroup ITK_Classifiers
  */
 template< class TInputImage,
           class TMembershipFunction,

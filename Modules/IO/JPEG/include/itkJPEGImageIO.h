@@ -32,7 +32,7 @@ namespace itk
  *
  * \ingroup IOFilters
  *
- * \ingroup ITK-IO-JPEG
+ * \ingroup ITK_IO_JPEG
  */
 class ITK_EXPORT JPEGImageIO:public ImageIOBase
 {

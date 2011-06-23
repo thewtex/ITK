@@ -42,7 +42,7 @@ namespace itk
  *
  * \ingroup ImageToImageFilter
  * \sa  PolylineMaskImageFilter
- * \ingroup ITK-ImageIntensity
+ * \ingroup ITK_ImageIntensity
  */
 template< class TInputImage, class TPolyline,
           class TOutputImage >

@@ -34,7 +34,7 @@ namespace Statistics
  *  domain -- pixel's physical coordinates).
  *
  * \sa JointDomainImageToListSampleAdaptor
- * \ingroup ITK-Statistics
+ * \ingroup ITK_Statistics
  */
 template< class TImage >
 struct ImageJointDomainTraits {
@@ -84,7 +84,7 @@ struct ImageJointDomainTraits {
  * component is divided by the corresponding component of the factor array.
  *
  * \sa Sample, ListSample, ImageToListSampleAdaptor
- * \ingroup ITK-Statistics
+ * \ingroup ITK_Statistics
  */
 
 template< class TImage >
@@ -195,7 +195,7 @@ public:
 
   /** \class ConstIterator
    * \brief Const Iterator
-   * \ingroup ITK-Statistics
+   * \ingroup ITK_Statistics
    */
   class ConstIterator
   {
@@ -271,7 +271,7 @@ private:
 
   /** \class Iterator
    * \brief Iterator
-   * \ingroup ITK-Statistics
+   * \ingroup ITK_Statistics
    */
   class Iterator:public ConstIterator
   {

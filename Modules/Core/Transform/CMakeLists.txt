@@ -1,3 +1,3 @@
-project(ITK-Transform)
-set(ITK-Transform_LIBRARIES ITK-Transform)
+project(ITK_Transform)
+set(ITK_Transform_LIBRARIES ITK_Transform)
 itk_module_impl()

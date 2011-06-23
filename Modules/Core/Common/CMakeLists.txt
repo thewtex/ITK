@@ -1,4 +1,4 @@
-project(ITK-Common)
+project(ITK_Common)
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/CMake ${CMAKE_MODULE_PATH})
 
 # Version string should not include patch level.  The major.minor is
@@ -45,14 +45,14 @@ include(CheckSupportForSSERounding)
 
 configure_file(src/itkConfigure.h.in itkConfigure.h)
 
-set(ITK-Common_INCLUDE_DIRS
-  ${ITK-Common_BINARY_DIR}
+set(ITK_Common_INCLUDE_DIRS
+  ${ITK_Common_BINARY_DIR}
   )
-set(ITK-Common_LIBRARIES ITK-Common)
+set(ITK_Common_LIBRARIES ITK_Common)
 
 itk_module_impl()
 
 install(FILES
-  ${ITK-Common_BINARY_DIR}/itkConfigure.h
-  DESTINATION ${ITK-Common_INSTALL_INCLUDE_DIR}
+  ${ITK_Common_BINARY_DIR}/itkConfigure.h
+  DESTINATION ${ITK_Common_INSTALL_INCLUDE_DIR}
   )

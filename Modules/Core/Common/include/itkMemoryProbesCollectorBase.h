@@ -32,7 +32,7 @@ namespace itk
  *
  *  \sa MemoryProbe
  *
- * \ingroup ITK-Common
+ * \ingroup ITK_Common
  */
 class ITK_EXPORT MemoryProbesCollectorBase:public ResourceProbesCollectorBase< MemoryProbe >
 {

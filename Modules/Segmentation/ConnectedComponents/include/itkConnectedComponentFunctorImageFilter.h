@@ -47,7 +47,7 @@ namespace itk
  * RelabelComponentImageFilter.
  *
  * \sa ImageToImageFilter
- * \ingroup ITK-ConnectedComponents
+ * \ingroup ITK_ConnectedComponents
  */
 
 template< class TInputImage, class TOutputImage, class TFunctor, class TMaskImage = TInputImage >

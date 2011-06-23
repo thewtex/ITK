@@ -56,7 +56,7 @@ namespace itk
  * \sa DirectedHausdorffDistanceImageFilter
  *
  * \ingroup MultiThreaded
- * \ingroup ITK-DistanceMap
+ * \ingroup ITK_DistanceMap
  */
 template< class TInputImage1, class TInputImage2 >
 class ITK_EXPORT HausdorffDistanceImageFilter:

@@ -1,12 +1,12 @@
 itk_module_test()
-set(ITK-KLMRegionGrowingTests
+set(ITK_KLMRegionGrowingTests
 itkKLMRegionGrowingHeaderTest.cxx
 itkRegionGrow2DTest.cxx
 )
 
-CreateTestDriver(ITK-KLMRegionGrowing  "${ITK-KLMRegionGrowing-Test_LIBRARIES}" "${ITK-KLMRegionGrowingTests}")
+CreateTestDriver(ITK_KLMRegionGrowing  "${ITK_KLMRegionGrowing-Test_LIBRARIES}" "${ITK_KLMRegionGrowingTests}")
 
 itk_add_test(NAME itkKLMRegionGrowingHeaderTest
-      COMMAND ITK-KLMRegionGrowingTestDriver itkKLMRegionGrowingHeaderTest)
+      COMMAND ITK_KLMRegionGrowingTestDriver itkKLMRegionGrowingHeaderTest)
 itk_add_test(NAME itkRegionGrow2DTest
-      COMMAND ITK-KLMRegionGrowingTestDriver itkRegionGrow2DTest)
+      COMMAND ITK_KLMRegionGrowingTestDriver itkRegionGrow2DTest)

@@ -1,7 +1,7 @@
-itk_module(ITK-IO-NRRD
+itk_module(ITK_IO_NRRD
   DEPENDS
-    ITK-NrrdIO
-    ITK-IO-Base
+    ITK_NrrdIO
+    ITK_IO_Base
   TEST_DEPENDS
-    ITK-TestKernel
+    ITK_TestKernel
 )

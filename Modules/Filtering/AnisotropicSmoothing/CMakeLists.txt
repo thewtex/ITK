@@ -1,2 +1,2 @@
-project(ITK-AnisotropicSmoothing)
+project(ITK_AnisotropicSmoothing)
 itk_module_impl()

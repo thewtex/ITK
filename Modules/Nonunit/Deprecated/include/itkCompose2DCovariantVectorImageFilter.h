@@ -63,7 +63,7 @@ public:
  * type is preserved from the PixelType of the input images.
  *
  * \ingroup Deprecated
- * \ingroup ITK-Deprecated
+ * \ingroup ITK_Deprecated
  */
 
 template< typename TInputImage,

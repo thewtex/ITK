@@ -1,5 +1,5 @@
 itk_module_test()
-set(ITK-RegistrationCommonTests
+set(ITK_RegistrationCommonTests
 itkCenteredTransformInitializerTest.cxx
 itkCenteredVersorTransformInitializerTest.cxx
 itkMultiResolutionImageRegistrationMethodTest_1.cxx
@@ -49,125 +49,125 @@ itkPointSetToPointSetRegistrationTest.cxx
 itkSpatialObjectToImageRegistrationTest.cxx
 )
 
-CreateTestDriver(ITK-RegistrationCommon  "${ITK-RegistrationCommon-Test_LIBRARIES}" "${ITK-RegistrationCommonTests}")
+CreateTestDriver(ITK_RegistrationCommon  "${ITK_RegistrationCommon-Test_LIBRARIES}" "${ITK_RegistrationCommonTests}")
 
 itk_add_test(NAME itkRegistrationCommonHeaderTest
-      COMMAND ITK-RegistrationCommonTestDriver itkRegistrationCommonHeaderTest)
+      COMMAND ITK_RegistrationCommonTestDriver itkRegistrationCommonHeaderTest)
 itk_add_test(NAME itkCenteredTransformInitializerTest
-      COMMAND ITK-RegistrationCommonTestDriver itkCenteredTransformInitializerTest)
+      COMMAND ITK_RegistrationCommonTestDriver itkCenteredTransformInitializerTest)
 itk_add_test(NAME itkCenteredVersorTransformInitializerTest
-      COMMAND ITK-RegistrationCommonTestDriver itkCenteredVersorTransformInitializerTest)
+      COMMAND ITK_RegistrationCommonTestDriver itkCenteredVersorTransformInitializerTest)
 itk_add_test(NAME itkMultiResolutionImageRegistrationMethodTest_1
-      COMMAND ITK-RegistrationCommonTestDriver itkMultiResolutionImageRegistrationMethodTest_1)
+      COMMAND ITK_RegistrationCommonTestDriver itkMultiResolutionImageRegistrationMethodTest_1)
 itk_add_test(NAME itkMultiResolutionImageRegistrationMethodTest_2
-      COMMAND ITK-RegistrationCommonTestDriver itkMultiResolutionImageRegistrationMethodTest_2)
+      COMMAND ITK_RegistrationCommonTestDriver itkMultiResolutionImageRegistrationMethodTest_2)
 itk_add_test(NAME itkImageRegistrationMethodTest_10
-      COMMAND ITK-RegistrationCommonTestDriver itkImageRegistrationMethodTest_10)
+      COMMAND ITK_RegistrationCommonTestDriver itkImageRegistrationMethodTest_10)
 itk_add_test(NAME itkImageRegistrationMethodTest_11
-      COMMAND ITK-RegistrationCommonTestDriver itkImageRegistrationMethodTest_11)
+      COMMAND ITK_RegistrationCommonTestDriver itkImageRegistrationMethodTest_11)
 itk_add_test(NAME itkImageRegistrationMethodTest_12
-      COMMAND ITK-RegistrationCommonTestDriver itkImageRegistrationMethodTest_12)
+      COMMAND ITK_RegistrationCommonTestDriver itkImageRegistrationMethodTest_12)
 itk_add_test(NAME itkImageRegistrationMethodTest_13
-      COMMAND ITK-RegistrationCommonTestDriver itkImageRegistrationMethodTest_13)
+      COMMAND ITK_RegistrationCommonTestDriver itkImageRegistrationMethodTest_13)
 itk_add_test(NAME itkImageRegistrationMethodTest_14
-      COMMAND ITK-RegistrationCommonTestDriver itkImageRegistrationMethodTest_14)
+      COMMAND ITK_RegistrationCommonTestDriver itkImageRegistrationMethodTest_14)
 itk_add_test(NAME itkImageRegistrationMethodTest_15
-      COMMAND ITK-RegistrationCommonTestDriver itkImageRegistrationMethodTest_15)
+      COMMAND ITK_RegistrationCommonTestDriver itkImageRegistrationMethodTest_15)
 itk_add_test(NAME itkImageRegistrationMethodTest_16
-      COMMAND ITK-RegistrationCommonTestDriver itkImageRegistrationMethodTest_16)
+      COMMAND ITK_RegistrationCommonTestDriver itkImageRegistrationMethodTest_16)
 itk_add_test(NAME itkMeanSquaresPointSetToImageMetricTest
-      COMMAND ITK-RegistrationCommonTestDriver itkMeanSquaresPointSetToImageMetricTest)
+      COMMAND ITK_RegistrationCommonTestDriver itkMeanSquaresPointSetToImageMetricTest)
 itk_add_test(NAME itkGradientDifferenceImageToImageMetricTest
-      COMMAND ITK-RegistrationCommonTestDriver itkGradientDifferenceImageToImageMetricTest)
+      COMMAND ITK_RegistrationCommonTestDriver itkGradientDifferenceImageToImageMetricTest)
 itk_add_test(NAME itkHistogramImageToImageMetricTest
-      COMMAND ITK-RegistrationCommonTestDriver itkHistogramImageToImageMetricTest)
+      COMMAND ITK_RegistrationCommonTestDriver itkHistogramImageToImageMetricTest)
 itk_add_test(NAME itkMutualInformationHistogramImageToImageMetricTest
-      COMMAND ITK-RegistrationCommonTestDriver itkMutualInformationHistogramImageToImageMetricTest)
+      COMMAND ITK_RegistrationCommonTestDriver itkMutualInformationHistogramImageToImageMetricTest)
 itk_add_test(NAME itkMeanReciprocalSquareDifferencePointSetToImageMetricTest
-      COMMAND ITK-RegistrationCommonTestDriver itkMeanReciprocalSquareDifferencePointSetToImageMetricTest)
+      COMMAND ITK_RegistrationCommonTestDriver itkMeanReciprocalSquareDifferencePointSetToImageMetricTest)
 itk_add_test(NAME itkMultiResolutionImageRegistrationMethodTest
-      COMMAND ITK-RegistrationCommonTestDriver itkMultiResolutionImageRegistrationMethodTest)
+      COMMAND ITK_RegistrationCommonTestDriver itkMultiResolutionImageRegistrationMethodTest)
 itk_add_test(NAME itkCompareHistogramImageToImageMetricTest
-      COMMAND ITK-RegistrationCommonTestDriver itkCompareHistogramImageToImageMetricTest)
+      COMMAND ITK_RegistrationCommonTestDriver itkCompareHistogramImageToImageMetricTest)
 itk_add_test(NAME itkMeanSquaresHistogramImageToImageMetricTest
-      COMMAND ITK-RegistrationCommonTestDriver itkMeanSquaresHistogramImageToImageMetricTest)
+      COMMAND ITK_RegistrationCommonTestDriver itkMeanSquaresHistogramImageToImageMetricTest)
 itk_add_test(NAME itkImageRegistrationMethodTest
-      COMMAND ITK-RegistrationCommonTestDriver itkImageRegistrationMethodTest)
+      COMMAND ITK_RegistrationCommonTestDriver itkImageRegistrationMethodTest)
 itk_add_test(NAME itkCorrelationCoefficientHistogramImageToImageMetricTest
-      COMMAND ITK-RegistrationCommonTestDriver itkCorrelationCoefficientHistogramImageToImageMetricTest)
+      COMMAND ITK_RegistrationCommonTestDriver itkCorrelationCoefficientHistogramImageToImageMetricTest)
 itk_add_test(NAME itkNormalizedCorrelationPointSetToImageMetricTest
-      COMMAND ITK-RegistrationCommonTestDriver itkNormalizedCorrelationPointSetToImageMetricTest)
+      COMMAND ITK_RegistrationCommonTestDriver itkNormalizedCorrelationPointSetToImageMetricTest)
 itk_add_test(NAME itkKullbackLeiblerCompareHistogramImageToImageMetricTest
-      COMMAND ITK-RegistrationCommonTestDriver itkKullbackLeiblerCompareHistogramImageToImageMetricTest)
+      COMMAND ITK_RegistrationCommonTestDriver itkKullbackLeiblerCompareHistogramImageToImageMetricTest)
 itk_add_test(NAME itkNormalizedMutualInformationHistogramImageToImageMetricTest
-      COMMAND ITK-RegistrationCommonTestDriver itkNormalizedMutualInformationHistogramImageToImageMetricTest)
+      COMMAND ITK_RegistrationCommonTestDriver itkNormalizedMutualInformationHistogramImageToImageMetricTest)
 itk_add_test(NAME itkPointSetToSpatialObjectDemonsRegistrationTest
-      COMMAND ITK-RegistrationCommonTestDriver itkPointSetToSpatialObjectDemonsRegistrationTest)
+      COMMAND ITK_RegistrationCommonTestDriver itkPointSetToSpatialObjectDemonsRegistrationTest)
 itk_add_test(NAME itkPointSetToImageRegistrationTest_1
-      COMMAND ITK-RegistrationCommonTestDriver itkPointSetToImageRegistrationTest_1)
+      COMMAND ITK_RegistrationCommonTestDriver itkPointSetToImageRegistrationTest_1)
 itk_add_test(NAME itkKappaStatisticImageToImageMetricTest
-      COMMAND ITK-RegistrationCommonTestDriver itkKappaStatisticImageToImageMetricTest
+      COMMAND ITK_RegistrationCommonTestDriver itkKappaStatisticImageToImageMetricTest
               ${ITK_DATA_ROOT}/Input/Spots.png)
 itk_add_test(NAME itkMattesMutualInformationImageToImageMetricTest
-      COMMAND ITK-RegistrationCommonTestDriver itkMattesMutualInformationImageToImageMetricTest
+      COMMAND ITK_RegistrationCommonTestDriver itkMattesMutualInformationImageToImageMetricTest
               1 1)
 itk_add_test(NAME itkMattesMutualInformationImageToImageMetricTest2
-      COMMAND ITK-RegistrationCommonTestDriver itkMattesMutualInformationImageToImageMetricTest
+      COMMAND ITK_RegistrationCommonTestDriver itkMattesMutualInformationImageToImageMetricTest
               1 0)
 itk_add_test(NAME itkMattesMutualInformationImageToImageMetricTest3
-      COMMAND ITK-RegistrationCommonTestDriver itkMattesMutualInformationImageToImageMetricTest
+      COMMAND ITK_RegistrationCommonTestDriver itkMattesMutualInformationImageToImageMetricTest
               0 1)
 itk_add_test(NAME itkMattesMutualInformationImageToImageMetricTest4
-      COMMAND ITK-RegistrationCommonTestDriver itkMattesMutualInformationImageToImageMetricTest
+      COMMAND ITK_RegistrationCommonTestDriver itkMattesMutualInformationImageToImageMetricTest
               0 0)
 itk_add_test(NAME itkMatchCardinalityImageToImageMetricTest
-      COMMAND ITK-RegistrationCommonTestDriver itkMatchCardinalityImageToImageMetricTest
+      COMMAND ITK_RegistrationCommonTestDriver itkMatchCardinalityImageToImageMetricTest
               ${ITK_DATA_ROOT}/Input/Spots.png)
 itk_add_test(NAME itkMultiResolutionPyramidImageFilterWithResampleFilterTest
-      COMMAND ITK-RegistrationCommonTestDriver itkMultiResolutionPyramidImageFilterTest
+      COMMAND ITK_RegistrationCommonTestDriver itkMultiResolutionPyramidImageFilterTest
               Resample)
 itk_add_test(NAME itkMultiResolutionPyramidImageFilterWithShrinkFilterTest
-      COMMAND ITK-RegistrationCommonTestDriver itkMultiResolutionPyramidImageFilterTest
+      COMMAND ITK_RegistrationCommonTestDriver itkMultiResolutionPyramidImageFilterTest
               Shrink)
 itk_add_test(NAME itkRecursiveMultiResolutionPyramidImageFilterWithResampleFilterTest2
-      COMMAND ITK-RegistrationCommonTestDriver itkMultiResolutionPyramidImageFilterTest
+      COMMAND ITK_RegistrationCommonTestDriver itkMultiResolutionPyramidImageFilterTest
               Resample TestRecursive)
 itk_add_test(NAME itkRecursiveMultiResolutionPyramidImageFilterWithShrinkFilterTest2
-      COMMAND ITK-RegistrationCommonTestDriver itkMultiResolutionPyramidImageFilterTest
+      COMMAND ITK_RegistrationCommonTestDriver itkMultiResolutionPyramidImageFilterTest
               Shrink TestRecursive)
 itk_add_test(NAME itkImageRegistrationMethodTest_1
-      COMMAND ITK-RegistrationCommonTestDriver itkImageRegistrationMethodTest_1)
+      COMMAND ITK_RegistrationCommonTestDriver itkImageRegistrationMethodTest_1)
 itk_add_test(NAME itkImageRegistrationMethodTest_2
-      COMMAND ITK-RegistrationCommonTestDriver itkImageRegistrationMethodTest_2)
+      COMMAND ITK_RegistrationCommonTestDriver itkImageRegistrationMethodTest_2)
 itk_add_test(NAME itkImageRegistrationMethodTest_3
-      COMMAND ITK-RegistrationCommonTestDriver itkImageRegistrationMethodTest_3)
+      COMMAND ITK_RegistrationCommonTestDriver itkImageRegistrationMethodTest_3)
 itk_add_test(NAME itkImageRegistrationMethodTest_4
-      COMMAND ITK-RegistrationCommonTestDriver itkImageRegistrationMethodTest_4)
+      COMMAND ITK_RegistrationCommonTestDriver itkImageRegistrationMethodTest_4)
 itk_add_test(NAME itkImageRegistrationMethodTest_5
-      COMMAND ITK-RegistrationCommonTestDriver itkImageRegistrationMethodTest_5)
+      COMMAND ITK_RegistrationCommonTestDriver itkImageRegistrationMethodTest_5)
 itk_add_test(NAME itkImageRegistrationMethodTest_6
-      COMMAND ITK-RegistrationCommonTestDriver itkImageRegistrationMethodTest_6)
+      COMMAND ITK_RegistrationCommonTestDriver itkImageRegistrationMethodTest_6)
 itk_add_test(NAME itkImageRegistrationMethodTest_7
-      COMMAND ITK-RegistrationCommonTestDriver itkImageRegistrationMethodTest_7)
+      COMMAND ITK_RegistrationCommonTestDriver itkImageRegistrationMethodTest_7)
 itk_add_test(NAME itkImageRegistrationMethodTest_8
-      COMMAND ITK-RegistrationCommonTestDriver itkImageRegistrationMethodTest_8)
+      COMMAND ITK_RegistrationCommonTestDriver itkImageRegistrationMethodTest_8)
 itk_add_test(NAME itkImageRegistrationMethodTest_9
-      COMMAND ITK-RegistrationCommonTestDriver itkImageRegistrationMethodTest_9)
+      COMMAND ITK_RegistrationCommonTestDriver itkImageRegistrationMethodTest_9)
 itk_add_test(NAME itkRecursiveMultiResolutionPyramidImageFilterWithResampleFilterTest
-      COMMAND ITK-RegistrationCommonTestDriver itkRecursiveMultiResolutionPyramidImageFilterTest
+      COMMAND ITK_RegistrationCommonTestDriver itkRecursiveMultiResolutionPyramidImageFilterTest
               Resample)
 itk_add_test(NAME itkRecursiveMultiResolutionPyramidImageFilterWithShrinkFilterTest
-      COMMAND ITK-RegistrationCommonTestDriver itkRecursiveMultiResolutionPyramidImageFilterTest
+      COMMAND ITK_RegistrationCommonTestDriver itkRecursiveMultiResolutionPyramidImageFilterTest
               Shrink)
 itk_add_test(NAME itkNormalizedCorrelationImageMetricTest
-      COMMAND ITK-RegistrationCommonTestDriver  itkNormalizedCorrelationImageMetricTest)
+      COMMAND ITK_RegistrationCommonTestDriver  itkNormalizedCorrelationImageMetricTest)
 itk_add_test(NAME itkMeanReciprocalSquareDifferenceImageMetricTest
-      COMMAND ITK-RegistrationCommonTestDriver  itkMeanReciprocalSquareDifferenceImageMetricTest)
+      COMMAND ITK_RegistrationCommonTestDriver  itkMeanReciprocalSquareDifferenceImageMetricTest)
 itk_add_test(NAME itkMeanSquaresImageMetricTest
-      COMMAND ITK-RegistrationCommonTestDriver itkMeanSquaresImageMetricTest)
+      COMMAND ITK_RegistrationCommonTestDriver itkMeanSquaresImageMetricTest)
 itk_add_test(NAME itkMutualInformationMetricTest
-      COMMAND ITK-RegistrationCommonTestDriver itkMutualInformationMetricTest)
+      COMMAND ITK_RegistrationCommonTestDriver itkMutualInformationMetricTest)
 itk_add_test(NAME itkPointSetToPointSetRegistrationTest
-      COMMAND ITK-RegistrationCommonTestDriver itkPointSetToPointSetRegistrationTest)
+      COMMAND ITK_RegistrationCommonTestDriver itkPointSetToPointSetRegistrationTest)
 itk_add_test(NAME itkSpatialObjectToImageRegistrationTest
-      COMMAND ITK-RegistrationCommonTestDriver itkSpatialObjectToImageRegistrationTest)
+      COMMAND ITK_RegistrationCommonTestDriver itkSpatialObjectToImageRegistrationTest)

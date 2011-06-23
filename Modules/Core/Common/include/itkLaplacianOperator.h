@@ -52,7 +52,7 @@ namespace itk
  * \sa NeighborhoodOperator
  * \sa Neighborhood
  * \ingroup Operators
- * \ingroup ITK-Common
+ * \ingroup ITK_Common
  *
  * \wiki
  * \wikiexample{Operators/LaplacianOperator,Create a Laplacian kernel}

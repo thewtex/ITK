@@ -1,6 +1,6 @@
-itk_module(ITK-LabelVoting
+itk_module(ITK_LabelVoting
   DEPENDS
-    ITK-Thresholding
+    ITK_Thresholding
   TEST_DEPENDS
-    ITK-TestKernel
+    ITK_TestKernel
 )

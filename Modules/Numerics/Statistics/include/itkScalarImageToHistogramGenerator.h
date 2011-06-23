@@ -30,7 +30,7 @@ namespace Statistics
 /** \class ScalarImageToHistogramGenerator
  *
  * \brief TODO
- * \ingroup ITK-Statistics
+ * \ingroup ITK_Statistics
  */
 template< class TImageType >
 class ScalarImageToHistogramGenerator:public Object

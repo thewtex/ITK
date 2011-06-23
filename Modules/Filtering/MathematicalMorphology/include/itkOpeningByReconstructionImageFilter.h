@@ -49,7 +49,7 @@ namespace itk
  *
  * \sa GrayscaleMorphologicalOpeningImageFilter
  * \ingroup ImageEnhancement  MathematicalMorphologyImageFilters
- * \ingroup ITK-MathematicalMorphology
+ * \ingroup ITK_MathematicalMorphology
  */
 template< class TInputImage, class TOutputImage, class TKernel >
 class ITK_EXPORT OpeningByReconstructionImageFilter:

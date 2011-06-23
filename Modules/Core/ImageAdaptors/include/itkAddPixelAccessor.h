@@ -31,7 +31,7 @@ namespace Accessor
  *
  * \sa ImageAdaptor
  * \ingroup ImageAdaptors
- * \ingroup ITK-ImageAdaptors
+ * \ingroup ITK_ImageAdaptors
  *
  * \wiki
  * \wikiexample{ImageProcessing/AddPixelAccessor,Add a constant to every pixel without duplicating the image in memory (an accessor)}

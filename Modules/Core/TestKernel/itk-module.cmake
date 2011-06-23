@@ -3,19 +3,19 @@ infrastructure of ITK. As an application developer you should not normally need
 any of these classes. However, they are essential for the quality control
 system supporting ITK.")
 
-itk_module(ITK-TestKernel
+itk_module(ITK_TestKernel
   DEPENDS
-    ITK-IO-PNG
-    ITK-IO-Meta
-    ITK-IO-TIFF
-    ITK-IO-BMP
-    ITK-IO-VTK
-    ITK-IO-JPEG
-    ITK-IO-NRRD
-    ITK-IO-GDCM
-    ITK-IO-GIPL
-    ITK-IO-NIFTI
-    ITK-KWSys
+    ITK_IO_PNG
+    ITK_IO_Meta
+    ITK_IO_TIFF
+    ITK_IO_BMP
+    ITK_IO_VTK
+    ITK_IO_JPEG
+    ITK_IO_NRRD
+    ITK_IO_GDCM
+    ITK_IO_GIPL
+    ITK_IO_NIFTI
+    ITK_KWSys
   DESCRIPTION
     "${DOCUMENTATION}"
 )

@@ -36,7 +36,7 @@ namespace itk
  *
  * \author Richard Beare
  * \author Gaetan Lehmann
- * \ingroup ITK-Review
+ * \ingroup ITK_Review
  */
 
 template< class TInputImage, class TMaskImage, class TOutputImage, class TKernel, class THistogram >

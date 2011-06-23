@@ -82,7 +82,7 @@ namespace itk
  *  \end{tabular}\f]
  *
  * \ingroup RegionGrowingSegmentation
- * \ingroup ITK-KLMRegionGrowing
+ * \ingroup ITK_KLMRegionGrowing
  */
 class KLMSegmentationBorder;
 

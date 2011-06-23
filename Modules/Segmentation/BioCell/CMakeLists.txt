@@ -1,3 +1,3 @@
-project(ITK-BioCell)
-set(ITK-BioCell_LIBRARIES ITK-BioCell)
+project(ITK_BioCell)
+set(ITK_BioCell_LIBRARIES ITK_BioCell)
 itk_module_impl()

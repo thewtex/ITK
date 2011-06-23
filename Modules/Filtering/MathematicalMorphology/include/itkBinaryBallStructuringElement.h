@@ -47,7 +47,7 @@ namespace itk
  *
  * \ingroup Operators
  * \ingroup ImageIterators
- * \ingroup ITK-MathematicalMorphology
+ * \ingroup ITK_MathematicalMorphology
  *
  * \wiki
  * \wikiexample{Morphology/BinaryBallStructuringElement,An elliptical structuring element}

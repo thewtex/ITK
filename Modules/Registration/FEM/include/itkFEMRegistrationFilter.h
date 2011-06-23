@@ -97,7 +97,7 @@ namespace fem
  *   \note TODO :  Keep the full field around (if using
  *   re-gridding). Introduce compensation for kinematic non-linearity
  *   in time (if using Eulerian frame).
- * \ingroup ITK-FEMRegistration
+ * \ingroup ITK_FEMRegistration
  */
 
 template< class TMovingImage, class TFixedImage >
@@ -475,7 +475,7 @@ protected:
    * A non-templated class to access FEMObjectFactory
    * Easy access to the FEMObjectFactory. We create a new class
    * whose name is shorter and it's not templated...
-   * \ingroup ITK-FEMRegistration
+   * \ingroup ITK_FEMRegistration
    */
   class FEMOF:public FEMObjectFactory< FEMLightObject >
   {
