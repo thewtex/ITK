@@ -33,13 +33,18 @@ int itkLabelStatisticsImageFilterTest(int argc, char* argv [] )
 {
   std::cout << "itkLabelStatisticsImageFilterTest Start" << std::endl;
 
-  if( argc < 2 )
+  if( argc < 4 )
   {
     std::cerr << "Missing Arguments" << std::endl;
     std::cerr << "Usage: " << std::endl;
-    std::cerr << argv[0] << " inputImage labeledImage " << std::endl;
+    std::cerr << argv[0] << " inputImage labeledImage numberOfStreamDivisions" << std::endl;
     return EXIT_FAILURE;
   }
+
+  std::string iFileName1 = argv[1];
+  std::string iFileName2 = argv[2];
+ unsigned int numberOfStreamDivisions = std::max( atoi( argv[3] ), 1 );
+
   typedef itk::Image<unsigned char,2> ImageType;
 
   typedef itk::ImageFileReader< ImageType >    ReaderType;
@@ -47,8 +52,8 @@ int itkLabelStatisticsImageFilterTest(int argc, char* argv [] )
   ReaderType::Pointer reader1 = ReaderType::New();
   ReaderType::Pointer reader2 = ReaderType::New();
 
-  reader1->SetFileName( argv[1] );
-  reader2->SetFileName( argv[2] );
+  reader1->SetFileName( iFileName1 );
+  reader2->SetFileName( iFileName2 );
 
   typedef itk::LabelStatisticsImageFilter< ImageType, ImageType > FilterType;
 
@@ -59,6 +64,8 @@ int itkLabelStatisticsImageFilterTest(int argc, char* argv [] )
   filter->SetInput (      reader1->GetOutput() );
   filter->SetLabelInput ( reader2->GetOutput() );
   filter->UseHistogramsOn();
+  filter->SetNumberOfStreamDivisions( numberOfStreamDivisions );
+
   try
     {
     filter->Update();

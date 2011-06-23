@@ -59,7 +59,7 @@ int itkStatisticsImageFilterTest(int, char* [] )
   FilterWatcher filterWatch(filter);
 
   filter->SetInput (image);
-  filter->UpdateLargestPossibleRegion();
+  filter->Update();
 
   if (filter->GetMinimum() != fillValue)
     {

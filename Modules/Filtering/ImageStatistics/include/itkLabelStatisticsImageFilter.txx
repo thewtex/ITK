@@ -36,53 +36,9 @@ LabelStatisticsImageFilter< TInputImage, TLabelImage >
   m_LowerBound = static_cast< RealType >( NumericTraits< PixelType >::NonpositiveMin() );
   m_UpperBound = static_cast< RealType >( NumericTraits< PixelType >::max() );
   m_ValidLabelValues.clear();
+
 }
 
-template< class TInputImage, class TLabelImage >
-void
-LabelStatisticsImageFilter< TInputImage, TLabelImage >
-::GenerateInputRequestedRegion()
-{
-  Superclass::GenerateInputRequestedRegion();
-  if ( this->GetInput() )
-    {
-    InputImagePointer image =
-      const_cast< typename Superclass::InputImageType * >( this->GetInput() );
-    if ( image )
-      {
-      image->SetRequestedRegionToLargestPossibleRegion();
-      }
-    }
-  if ( this->GetLabelInput() )
-    {
-    LabelImagePointer label =
-      const_cast< TLabelImage * >( this->GetLabelInput() );
-    label->SetRequestedRegionToLargestPossibleRegion();
-    }
-}
-
-template< class TInputImage, class TLabelImage >
-void
-LabelStatisticsImageFilter< TInputImage, TLabelImage >
-::EnlargeOutputRequestedRegion(DataObject *data)
-{
-  Superclass::EnlargeOutputRequestedRegion(data);
-  data->SetRequestedRegionToLargestPossibleRegion();
-}
-
-template< class TInputImage, class TLabelImage >
-void
-LabelStatisticsImageFilter< TInputImage, TLabelImage >
-::AllocateOutputs()
-{
-  // Pass the input through as the output
-  InputImagePointer image =
-    const_cast< TInputImage * >( this->GetInput() );
-
-  this->GraftOutput(image);
-
-  // Nothing that needs to be allocated for the remaining outputs
-}
 
 template< class TInputImage, class TLabelImage >
 void
@@ -98,8 +54,9 @@ LabelStatisticsImageFilter< TInputImage, TLabelImage >
 template< class TInputImage, class TLabelImage >
 void
 LabelStatisticsImageFilter< TInputImage, TLabelImage >
-::BeforeThreadedGenerateData()
+::BeforeStreamedGenerateData()
 {
+  itkDebugMacro( << "BeforeStreamedGenerateData()" );
   ThreadIdType numberOfThreads = this->GetNumberOfThreads();
 
   // Resize the thread temporaries
@@ -113,12 +70,13 @@ LabelStatisticsImageFilter< TInputImage, TLabelImage >
 
   // Initialize the final map
   m_LabelStatistics.clear();
+
 }
 
 template< class TInputImage, class TLabelImage >
 void
 LabelStatisticsImageFilter< TInputImage, TLabelImage >
-::AfterThreadedGenerateData()
+::AfterStreamedGenerateData()
 {
   MapIterator      mapIt;
   MapConstIterator threadIt;
@@ -239,21 +197,30 @@ LabelStatisticsImageFilter< TInputImage, TLabelImage >
 template< class TInputImage, class TLabelImage >
 void
 LabelStatisticsImageFilter< TInputImage, TLabelImage >
-::ThreadedGenerateData(const RegionType & outputRegionForThread,
-                       ThreadIdType threadId)
+::ThreadedStreamedGenerateData( const RegionType &inputRegion, ThreadIdType threadId )
 {
   RealType       value;
   LabelPixelType label;
 
   ImageRegionConstIteratorWithIndex< TInputImage > it (this->GetInput(),
-                                                       outputRegionForThread);
+                                                       inputRegion);
   ImageRegionConstIterator< TLabelImage > labelIt (this->GetLabelInput(),
-                                                   outputRegionForThread);
+                                                   inputRegion );
   MapIterator mapIt;
+
+  int currentIterationNumber = this->GetCurrentRequestNumber();
+  int numberOfIterations = this->GetNumberOfInputRequestedRegions();
+
+  itkDebugMacro( << "StreamedGenerateData: processing inputRegion: " << inputRegion );
+
 
   // support progress methods/callbacks
   ProgressReporter progress( this, threadId,
-                             outputRegionForThread.GetNumberOfPixels() );
+                             inputRegion.GetNumberOfPixels(),
+                             100,
+                             float( currentIterationNumber ) / numberOfIterations,
+                             1.0 / numberOfIterations
+    );
 
   // do the work
   while ( !it.IsAtEnd() )

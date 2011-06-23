@@ -19,19 +19,11 @@
 #define __itkImageFileWriter_txx
 
 #include "itkImageFileWriter.h"
-#include "itkDataObject.h"
-#include "itkObjectFactoryBase.h"
 #include "itkImageIOFactory.h"
 #include "itkCommand.h"
 #include "vnl/vnl_vector.h"
-#include "itkVectorImage.h"
 #include "itkImageRegionIterator.h"
-#include "itkRGBPixel.h"
-#include "itkRGBAPixel.h"
-#include "itkSymmetricSecondRankTensor.h"
-#include "itkDiffusionTensor3D.h"
 #include "itkMatrix.h"
-#include <complex>
 
 namespace itk
 {
@@ -46,14 +38,8 @@ ImageFileWriter< TInputImage >
   m_FactorySpecifiedImageIO = false;
   m_UserSpecifiedIORegion = false;
   m_UserSpecifiedImageIO = false;
-  m_NumberOfStreamDivisions = 1;
+  m_NumberOfInputRequestedRegions = 1;
 }
-
-//---------------------------------------------------------
-template< class TInputImage >
-ImageFileWriter< TInputImage >
-::~ImageFileWriter()
-{}
 
 //---------------------------------------------------------
 template< class TInputImage >
@@ -78,7 +64,7 @@ ImageFileWriter< TInputImage >
     }
 
   return static_cast< TInputImage * >
-         ( this->ProcessObject::GetInput(0) );
+    ( this->ProcessObject::GetInput(0) );
 }
 
 //---------------------------------------------------------
@@ -105,16 +91,71 @@ ImageFileWriter< TInputImage >
     }
 }
 
+
 //---------------------------------------------------------
 template< class TInputImage >
 void
 ImageFileWriter< TInputImage >
-::Write()
+::Update()
 {
+  // This methods is overloaded because there are certain cases where
+  // we don't wan't to call UpdateOutputInformation
+
+  InputImageType *input =  const_cast< InputImageType * >( this->GetInput() );
+
+  //  Update the meta data if needed
+  // This should be moved to Update method
+  if ( !m_UserSpecifiedIORegion )
+    {
+    input->UpdateOutputInformation();
+    }
+  else
+    {
+    // The user specified an io paste region.
+
+    // If the input image is does not have a source filter, then we
+    // do not want to update the output information, because it will
+    // change the largest possible region to the buffered region. When
+    // we are pasting the largest possible regions of the input must
+    // match the file.
+    if ( input->GetSource() )
+      {
+      input->UpdateOutputInformation();
+      }
+
+    }
+
+  // Do the real processing
+  this->UpdateOutputData( NULL );
+}
+
+//---------------------------------------------------------
+template< class TInputImage >
+void
+ImageFileWriter< TInputImage >
+::UpdateLargestPossibleRegion()
+{
+  // set not to use paste region, just use the largest
+  m_PasteIORegion = ImageIORegion(TInputImage::ImageDimension);
+  m_UserSpecifiedIORegion = false;
+
+  this->Update();
+}
+
+
+//---------------------------------------------------------
+template< class TInputImage >
+void
+ImageFileWriter< TInputImage >
+::BeforeStreamedGenerateData()
+{
+
   const InputImageType *input = this->GetInput();
 
   itkDebugMacro(<< "Writing an image file");
 
+//---------------------------------------------------------
+  // TODO Move to VerifyInputs method
   // Make sure input is available
   if ( input == 0 )
     {
@@ -127,6 +168,8 @@ ImageFileWriter< TInputImage >
     {
     itkExceptionMacro(<< "No filename was specified");
     }
+
+  //---------------------------------------------------------
 
 #if !defined(SPECIFIC_IMAGEIO_MODULE_TEST)
   if ( m_ImageIO.IsNull() ) //try creating via factory
@@ -159,16 +202,16 @@ ImageFileWriter< TInputImage >
     msg << " Could not create IO object for file "
         << m_FileName.c_str() << std::endl;
     msg << "  Tried to create one of the following:" << std::endl;
+    {
+    std::list< LightObject::Pointer > allobjects =
+      ObjectFactoryBase::CreateAllInstance("itkImageIOBase");
+    for ( std::list< LightObject::Pointer >::iterator i = allobjects.begin();
+          i != allobjects.end(); ++i )
       {
-      std::list< LightObject::Pointer > allobjects =
-        ObjectFactoryBase::CreateAllInstance("itkImageIOBase");
-      for ( std::list< LightObject::Pointer >::iterator i = allobjects.begin();
-            i != allobjects.end(); ++i )
-        {
-        ImageIOBase *io = dynamic_cast< ImageIOBase * >( i->GetPointer() );
-        msg << "    " << io->GetNameOfClass() << std::endl;
-        }
+      ImageIOBase *io = dynamic_cast< ImageIOBase * >( i->GetPointer() );
+      msg << "    " << io->GetNameOfClass() << std::endl;
       }
+    }
     msg << "  You probably failed to set a file suffix, or" << std::endl;
     msg << "    set the suffix to an unsupported type." << std::endl;
     e.SetDescription( msg.str().c_str() );
@@ -176,38 +219,14 @@ ImageFileWriter< TInputImage >
     throw e;
     }
 
-  // NOTE: this const_cast<> is due to the lack of const-correctness
-  // of the ProcessObject.
-  InputImageType *nonConstInput = const_cast< InputImageType * >( input );
-
-  // Update the meta data if needed
-  if ( !m_UserSpecifiedIORegion )
-    {
-    nonConstInput->UpdateOutputInformation();
-    }
-  else
-    {
-    // The user specified an io paste region.
-
-    // If the input image is does not have an source filter, then we
-    // do not want to update the output information, because it will
-    // change the largest possible region to the buffered region. When
-    // we are pasting the largest possible regions of the input must
-    // match the file.
-    if ( nonConstInput->GetSource() )
-      {
-      nonConstInput->UpdateOutputInformation();
-      }
-
-    }
-
-
+  //
   // Setup the ImageIO
   //
   m_ImageIO->SetNumberOfDimensions(TInputImage::ImageDimension);
   InputImageRegionType largestRegion = input->GetLargestPossibleRegion();
   const typename TInputImage::SpacingType & spacing = input->GetSpacing();
   const typename TInputImage::DirectionType & direction = input->GetDirection();
+
   // BUG 8436: Wrong origin when writing a file with non-zero index
   // origin = input->GetOrigin();
   const typename TInputImage::IndexType & startIndex = largestRegion.GetIndex();
@@ -257,17 +276,18 @@ ImageFileWriter< TInputImage >
   //
   m_ImageIO->SetFileName( m_FileName.c_str() );
 
-  // Notify start event observers
-  this->InvokeEvent( StartEvent() );
-
-  if ( m_NumberOfStreamDivisions > 1 || m_UserSpecifiedIORegion )
+  if ( this->GetNumberOfStreamDivisions() > 1 || m_UserSpecifiedIORegion )
     {
     m_ImageIO->SetUseStreamedWriting(true);
     }
 
+
+  //
+  // Compute Number of InputRequestedRegions
+  //
   ImageIORegion largestIORegion(TInputImage::ImageDimension);
   ImageIORegionAdaptor< TInputImage::ImageDimension >::
-  Convert( largestRegion, largestIORegion, largestRegion.GetIndex() );
+    Convert( largestRegion, largestIORegion, largestRegion.GetIndex() );
 
   // this pasteIORegion is the region we are going to write
   ImageIORegion pasteIORegion;
@@ -279,6 +299,7 @@ ImageFileWriter< TInputImage >
     {
     pasteIORegion = largestIORegion;
     }
+
 
   // Check whether the paste region is fully contained inside the
   // largest region or not.
@@ -292,86 +313,107 @@ ImageFileWriter< TInputImage >
 
   // Determin the actual number of divisions of the input. This is determined
   // by what the ImageIO can do
-  unsigned int numDivisions;
 
   // this may fail and throw an exception if the configuration is not supported
-  numDivisions = m_ImageIO->GetActualNumberOfSplitsForWriting(m_NumberOfStreamDivisions,
-                                                              pasteIORegion,
-                                                              largestIORegion);
-
-  /**
-   * Loop over the number of pieces, execute the upstream pipeline on each
-   * piece, and copy the results into the output image.
-   */
-  unsigned int piece;
-
-  for ( piece = 0;
-        piece < numDivisions && !this->GetAbortGenerateData();
-        piece++ )
-    {
-    // get the actual piece to write
-    ImageIORegion streamIORegion = m_ImageIO->GetSplitRegionForWriting(piece, numDivisions,
-                                                                       pasteIORegion, largestIORegion);
-
-    // Check whether the paste region is fully contained inside the
-    // largest region or not.
-    if ( !pasteIORegion.IsInside(streamIORegion) )
-      {
-      itkExceptionMacro(
-        << "ImageIO returns streamable region that is not fully contain in paste IO region"
-        << "Paste IO region: " << pasteIORegion
-        << "Streamable region: " << streamIORegion);
-      }
-
-    InputImageRegionType streamRegion;
-    ImageIORegionAdaptor< TInputImage::ImageDimension >::
-    Convert( streamIORegion, streamRegion, largestRegion.GetIndex() );
-
-    // execute the the upstream pipeline with the requested
-    // region for streaming
-    nonConstInput->SetRequestedRegion(streamRegion);
-    nonConstInput->PropagateRequestedRegion();
-    nonConstInput->UpdateOutputData();
-
-    // check to see if we tried to stream but got the largest possible region
-    if ( piece == 0 && streamRegion != largestRegion )
-      {
-      InputImageRegionType bufferedRegion = input->GetBufferedRegion();
-      if ( bufferedRegion == largestRegion )
-        {
-        // if so, then just write the entire image
-        itkDebugMacro("Requested stream region  matches largest region input filter may not support streaming well.");
-        itkDebugMacro("Writer is not streaming now!");
-        numDivisions = 1;
-        streamRegion = largestRegion;
-        ImageIORegionAdaptor< TInputImage::ImageDimension >::
-        Convert( streamRegion, streamIORegion, largestRegion.GetIndex() );
-        }
-      }
-
-    m_ImageIO->SetIORegion(streamIORegion);
-
-    // write the data
-    this->GenerateData();
-
-    this->UpdateProgress( (float)( piece + 1 ) / numDivisions );
-    }
-
-  // Notify end event observers
-  this->InvokeEvent( EndEvent() );
-
-  // Release upstream data if requested
-  this->ReleaseInputs();
+  this->m_NumberOfInputRequestedRegions =
+    m_ImageIO->GetActualNumberOfSplitsForWriting(this->GetNumberOfStreamDivisions(),
+                                                 pasteIORegion,
+                                                 largestIORegion);
 }
+
+//---------------------------------------------------------
+template< class TInputImage >
+unsigned int
+ImageFileWriter< TInputImage >
+::GetNumberOfInputRequestedRegions( void )
+{
+
+
+  return this->m_NumberOfInputRequestedRegions;
+}
+
 
 //---------------------------------------------------------
 template< class TInputImage >
 void
 ImageFileWriter< TInputImage >
-::GenerateData(void)
+::GenerateNthInputRequestedRegion(unsigned int piece)
+{
+  InputImageType *input =  const_cast< InputImageType * >( this->GetInput() );
+
+  InputImageRegionType largestRegion = input->GetLargestPossibleRegion();
+
+  ImageIORegion largestIORegion(TInputImage::ImageDimension);
+  ImageIORegionAdaptor< TInputImage::ImageDimension >::
+    Convert( largestRegion, largestIORegion, largestRegion.GetIndex() );
+
+
+  // this pasteIORegion is the region we are going to write
+  ImageIORegion pasteIORegion;
+  if ( m_UserSpecifiedIORegion )
+    {
+    pasteIORegion = m_PasteIORegion;
+    }
+  else
+    {
+    pasteIORegion = largestIORegion;
+    }
+
+  unsigned int numDivisions = this->GetNumberOfInputRequestedRegions();
+
+  // get the actual piece to write
+  ImageIORegion streamIORegion = m_ImageIO->GetSplitRegionForWriting(piece, numDivisions,
+                                                                     pasteIORegion, largestIORegion);
+
+  // Check whether the paste region is fully contained inside the
+  // largest region or not.
+  if ( !pasteIORegion.IsInside(streamIORegion) )
+    {
+    itkExceptionMacro(
+      << "ImageIO returns streamable region that is not fully contain in paste IO region"
+      << "Paste IO region: " << pasteIORegion
+      << "Streamable region: " << streamIORegion);
+    }
+
+
+  InputImageRegionType streamRegion;
+  ImageIORegionAdaptor< TInputImage::ImageDimension >::
+    Convert( streamIORegion, streamRegion, largestRegion.GetIndex() );
+
+  this->m_CurrentIORegion = streamIORegion;
+
+  input->SetRequestedRegion( streamRegion );
+}
+
+
+//---------------------------------------------------------
+template< class TInputImage >
+void
+ImageFileWriter< TInputImage >
+::StreamedGenerateData( unsigned int piece )
 {
   const InputImageType *input = this->GetInput();
-  InputImageRegionType  largestRegion = input->GetLargestPossibleRegion();
+  InputImageRegionType largestRegion = input->GetLargestPossibleRegion();
+
+  InputImageRegionType streamRegion;
+  ImageIORegionAdaptor< TInputImage::ImageDimension >::
+    Convert( m_CurrentIORegion, streamRegion, largestRegion.GetIndex() );
+
+
+  // check to see if we tried to stream but got the largest possible region
+  if ( piece == 0 && streamRegion != largestRegion )
+    {
+    InputImageRegionType bufferedRegion = input->GetBufferedRegion();
+    if ( bufferedRegion == largestRegion )
+      {
+      // if so, then just write the entire image
+      itkDebugMacro("Requested stream region  matches largest region input filter may not support streaming well.");
+      itkDebugMacro("Writer is not streaming now!");
+      }
+    }
+
+  m_ImageIO->SetIORegion( m_CurrentIORegion );
+
   InputImagePointer     cacheImage;
 
   itkDebugMacro(<< "Writing file: " << m_FileName);
@@ -383,13 +425,13 @@ ImageFileWriter< TInputImage >
   // ImageIO is expecting and we requested
   InputImageRegionType ioRegion;
   ImageIORegionAdaptor< TInputImage::ImageDimension >::
-  Convert( m_ImageIO->GetIORegion(), ioRegion, largestRegion.GetIndex() );
+    Convert( m_ImageIO->GetIORegion(), ioRegion, largestRegion.GetIndex() );
   InputImageRegionType bufferedRegion = input->GetBufferedRegion();
 
   // before this test, bad stuff would happend when they don't match
   if ( bufferedRegion != ioRegion )
     {
-    if ( m_NumberOfStreamDivisions > 1 || m_UserSpecifiedIORegion )
+    if ( this->GetNumberOfStreamDivisions() > 1 || m_UserSpecifiedIORegion )
       {
       itkDebugMacro("Requested stream region does not match generated output");
       itkDebugMacro("input filter may not support streaming well");
@@ -429,7 +471,10 @@ ImageFileWriter< TInputImage >
     }
 
   m_ImageIO->Write(dataPtr);
+
+  this->UpdateProgress( (float)( piece + 1 ) / this->m_NumberOfInputRequestedRegions );
 }
+
 
 //---------------------------------------------------------
 template< class TInputImage >
@@ -453,7 +498,6 @@ ImageFileWriter< TInputImage >
     }
 
   os << indent << "IO Region: " << m_PasteIORegion << "\n";
-  os << indent << "Number of Stream Divisions: " << m_NumberOfStreamDivisions << "\n";
 
   if ( m_UseCompression )
     {

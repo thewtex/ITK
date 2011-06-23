@@ -22,6 +22,7 @@ itkNumericTraitsTensorPixel2.cxx
 itkNumericTraitsFixedArrayPixel2.cxx
 itkConditionVariable.cxx
 itkProcessObject.cxx
+itkStreamingProcessObject.cxx
 itkBarrier.cxx
 itkSpatialOrientationAdapter.cxx
 itkRealTimeInterval.cxx

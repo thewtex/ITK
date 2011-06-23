@@ -18,7 +18,7 @@
 #ifndef __itkStatisticsImageFilter_h
 #define __itkStatisticsImageFilter_h
 
-#include "itkImageToImageFilter.h"
+#include "itkImageSink.h"
 #include "itkNumericTraits.h"
 #include "itkArray.h"
 #include "itkSimpleDataObjectDecorator.h"
@@ -40,17 +40,18 @@ namespace itk
  *
  * \ingroup MathematicalStatisticsImageFilters
  * \ingroup ITK-ImageStatistics
+ * \ingroup Streamed
  */
 template< class TInputImage >
 class ITK_EXPORT StatisticsImageFilter:
-  public ImageToImageFilter< TInputImage, TInputImage >
+  public ImageSink< TInputImage >
 {
 public:
   /** Standard Self typedef */
-  typedef StatisticsImageFilter                          Self;
-  typedef ImageToImageFilter< TInputImage, TInputImage > Superclass;
-  typedef SmartPointer< Self >                           Pointer;
-  typedef SmartPointer< const Self >                     ConstPointer;
+  typedef StatisticsImageFilter      Self;
+  typedef ImageSink< TInputImage >   Superclass;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -79,6 +80,11 @@ public:
   /** Type of DataObjects used for scalar outputs */
   typedef SimpleDataObjectDecorator< RealType >  RealObjectType;
   typedef SimpleDataObjectDecorator< PixelType > PixelObjectType;
+
+
+  // Change the access from protected to public
+  using Superclass::SetNumberOfStreamDivisions;
+  using Superclass::GetNumberOfStreamDivisions;
 
   /** Return the computed Minimum. */
   PixelType GetMinimum() const
@@ -134,28 +140,18 @@ public:
 #endif
 protected:
   StatisticsImageFilter();
-  ~StatisticsImageFilter(){}
+  // ~StatisticsImageFilter(){} default implementation is ok
   void PrintSelf(std::ostream & os, Indent indent) const;
 
-  /** Pass the input through unmodified. Do this by Grafting in the
-   *  AllocateOutputs method.
-   */
-  void AllocateOutputs();
-
   /** Initialize some accumulators before the threads run. */
-  void BeforeThreadedGenerateData();
+  virtual void BeforeStreamedGenerateData();
 
   /** Do final mean and variance computation from data accumulated in threads.
    */
-  void AfterThreadedGenerateData();
+  virtual void AfterStreamedGenerateData();
 
   /** Multi-thread version GenerateData. */
-  void  ThreadedGenerateData(const RegionType &
-                             outputRegionForThread,
-                             ThreadIdType threadId);
-
-  // Override since the filter needs all the data for the algorithm
-  void GenerateInputRequestedRegion();
+  virtual void  ThreadedStreamedGenerateData(const RegionType & inputRegionForThread, ThreadIdType threadId);
 
   // Override since the filter produces all of its output
   void EnlargeOutputRequestedRegion(DataObject *data);

@@ -54,6 +54,9 @@ StatisticsImageFilter< TInputImage >
   this->GetSigmaOutput()->Set( NumericTraits< RealType >::max() );
   this->GetVarianceOutput()->Set( NumericTraits< RealType >::max() );
   this->GetSumOutput()->Set(NumericTraits< RealType >::Zero);
+
+  // todo remove me!
+  this->MakeOutput(0);
 }
 
 template< class TInputImage >
@@ -61,9 +64,11 @@ DataObject::Pointer
 StatisticsImageFilter< TInputImage >
 ::MakeOutput(unsigned int output)
 {
+  std::cout << "Allocating output " << output << std::endl;
   switch ( output )
     {
     case 0:
+      // todo remove me and renumber
       return static_cast< DataObject * >( TInputImage::New().GetPointer() );
       break;
     case 1:
@@ -184,20 +189,6 @@ StatisticsImageFilter< TInputImage >
 template< class TInputImage >
 void
 StatisticsImageFilter< TInputImage >
-::GenerateInputRequestedRegion()
-{
-  Superclass::GenerateInputRequestedRegion();
-  if ( this->GetInput() )
-    {
-    InputImagePointer image =
-      const_cast< typename Superclass::InputImageType * >( this->GetInput() );
-    image->SetRequestedRegionToLargestPossibleRegion();
-    }
-}
-
-template< class TInputImage >
-void
-StatisticsImageFilter< TInputImage >
 ::EnlargeOutputRequestedRegion(DataObject *data)
 {
   Superclass::EnlargeOutputRequestedRegion(data);
@@ -207,22 +198,10 @@ StatisticsImageFilter< TInputImage >
 template< class TInputImage >
 void
 StatisticsImageFilter< TInputImage >
-::AllocateOutputs()
+::BeforeStreamedGenerateData()
 {
-  // Pass the input through as the output
-  InputImagePointer image =
-    const_cast< TInputImage * >( this->GetInput() );
 
-  this->GraftOutput(image);
-
-  // Nothing that needs to be allocated for the remaining outputs
-}
-
-template< class TInputImage >
-void
-StatisticsImageFilter< TInputImage >
-::BeforeThreadedGenerateData()
-{
+  std::cout << "BeforeStremedGenerateData()\n";
   ThreadIdType numberOfThreads = this->GetNumberOfThreads();
 
   // Resize the thread temporaries
@@ -238,13 +217,17 @@ StatisticsImageFilter< TInputImage >
   m_SumOfSquares.Fill(NumericTraits< RealType >::Zero);
   m_ThreadMin.Fill( NumericTraits< PixelType >::max() );
   m_ThreadMax.Fill( NumericTraits< PixelType >::NonpositiveMin() );
+
+  this->Print( std::cout );
 }
 
 template< class TInputImage >
 void
 StatisticsImageFilter< TInputImage >
-::AfterThreadedGenerateData()
+::AfterStreamedGenerateData()
 {
+  this->Print( std::cout );
+
   ThreadIdType    i;
   SizeValueType   count;
   RealType        sumOfSquares;
@@ -300,16 +283,16 @@ StatisticsImageFilter< TInputImage >
 template< class TInputImage >
 void
 StatisticsImageFilter< TInputImage >
-::ThreadedGenerateData(const RegionType & outputRegionForThread,
+::ThreadedStreamedGenerateData(const RegionType & inputRegionForThread,
                        ThreadIdType threadId)
 {
   RealType  realValue;
   PixelType value;
 
-  ImageRegionConstIterator< TInputImage > it (this->GetInput(), outputRegionForThread);
+  ImageRegionConstIterator< TInputImage > it (this->GetInput(), inputRegionForThread);
 
   // support progress methods/callbacks
-  ProgressReporter progress( this, threadId, outputRegionForThread.GetNumberOfPixels() );
+  ProgressReporter progress( this, threadId, inputRegionForThread.GetNumberOfPixels() );
 
   // do the work
   while ( !it.IsAtEnd() )

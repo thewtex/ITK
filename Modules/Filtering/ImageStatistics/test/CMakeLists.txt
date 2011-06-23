@@ -40,9 +40,15 @@ itk_add_test(NAME itkImageStatisticsHeaderTest
       COMMAND ITK-ImageStatisticsTestDriver itkImageStatisticsHeaderTest)
 itk_add_test(NAME itkStatisticsImageFilterTest
       COMMAND ITK-ImageStatisticsTestDriver itkStatisticsImageFilterTest)
-itk_add_test(NAME itkLabelStatisticsImageFilterTest
+itk_add_test(NAME itkLabelStatisticsImageFilterTest1
       COMMAND ITK-ImageStatisticsTestDriver itkLabelStatisticsImageFilterTest
-              ${ITK_DATA_ROOT}/Input/peppers.png ${ITK_DATA_ROOT}/Baseline/Algorithms/OtsuMultipleThresholdsImageFilterTest.png)
+              ${ITK_DATA_ROOT}/Input/peppers.png ${ITK_DATA_ROOT}/Baseline/Algorithms/OtsuMultipleThresholdsImageFilterTest.png 1)
+itk_add_test(NAME itkLabelStatisticsImageFilterTest2
+      COMMAND ITK-ImageStatisticsTestDriver itkLabelStatisticsImageFilterTest
+              ${ITK_DATA_ROOT}/Input/peppers.png ${ITK_DATA_ROOT}/Baseline/Algorithms/OtsuMultipleThresholdsImageFilterTest.png 5)
+itk_add_test(NAME itkLabelStatisticsImageFilterTest3
+      COMMAND ITK-ImageStatisticsTestDriver itkLabelStatisticsImageFilterTest
+              ${ITK_DATA_ROOT}/Input/peppers.png ${ITK_DATA_ROOT}/Baseline/Algorithms/OtsuMultipleThresholdsImageFilterTest.png 100)
 itk_add_test(NAME itkSumProjectionImageFilterTest
       COMMAND ITK-ImageStatisticsTestDriver
     --compare ${ITK_DATA_ROOT}/Baseline/BasicFilters/HeadMRVolumeSumProjection.tif

@@ -20,7 +20,7 @@
 
 #include "itkProcessObject.h"
 #include "itkImageIOBase.h"
-#include "itkMacro.h"
+#include "itkImageSink.h"
 
 namespace itk
 {
@@ -77,12 +77,13 @@ public:
  * \endwiki
  */
 template< class TInputImage >
-class ITK_EXPORT ImageFileWriter:public ProcessObject
+class ITK_EXPORT ImageFileWriter
+  : public ImageSink<TInputImage>
 {
 public:
   /** Standard class typedefs. */
   typedef ImageFileWriter            Self;
-  typedef ProcessObject              Superclass;
+  typedef ImageSink<TInputImage>     Superclass;
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
 
@@ -138,7 +139,7 @@ public:
    * IORegion. If not set, then then the whole image is written.  Note
    * that the region will be cropped to fit the input image's
    * LargestPossibleRegion. */
-  virtual void Write(void);
+  virtual void Write(void) { this->Update(); }
 
   /** Specify the region to write. If left NULL, then the whole image
    * is written. */
@@ -149,29 +150,18 @@ public:
     return m_PasteIORegion;
   }
 
-  /** Set/Get the number of pieces to divide the input.  The upstream pipeline
-   * will try to be executed this many times. */
-  itkSetMacro(NumberOfStreamDivisions, unsigned int);
-  itkGetConstReferenceMacro(NumberOfStreamDivisions, unsigned int);
+  // Change the access from protected to public
+  using Superclass::SetNumberOfStreamDivisions;
+  using Superclass::GetNumberOfStreamDivisions;
 
-  /** Aliased to the Write() method to be consistent with the rest of the
-   * pipeline. */
-  virtual void Update()
-  {
-    this->Write();
-  }
+  virtual void Update();
 
   /** \brief Writes the entire image to file.
    *
    * Updates the pipeline, streaming it the NumberOfStreamDivisions times.
    * Existing PasteIORegion is reset.
    */
-  virtual void UpdateLargestPossibleRegion()
-  {
-    m_PasteIORegion = ImageIORegion(TInputImage::ImageDimension);
-    m_UserSpecifiedIORegion = false;
-    this->Write();
-  }
+  virtual void UpdateLargestPossibleRegion();
 
   /** Set the compression On or Off */
   itkSetMacro(UseCompression, bool);
@@ -187,17 +177,27 @@ public:
   itkSetMacro(UseInputMetaDataDictionary, bool);
   itkGetConstReferenceMacro(UseInputMetaDataDictionary, bool);
   itkBooleanMacro(UseInputMetaDataDictionary);
+
 protected:
   ImageFileWriter();
-  ~ImageFileWriter();
+  // ~ImageFileWriter() {} default implementation ok
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
-  /** Does the real work. */
-  void GenerateData(void);
+  virtual void BeforeStreamedGenerateData();
+
+  virtual void StreamedGenerateData( unsigned int piece );
+
+  virtual unsigned int GetNumberOfInputRequestedRegions( void );
+
+  virtual void GenerateNthInputRequestedRegion( unsigned int inputRequestedRegionNumber );
 
 private:
   ImageFileWriter(const Self &); //purposely not implemented
   void operator=(const Self &);  //purposely not implemented
+
+  ImageIORegion m_CurrentIORegion; // in the middle of writing this piece
+  unsigned int  m_NumberOfInputRequestedRegions; // precomputed results for method
 
   std::string m_FileName;
 
@@ -206,7 +206,6 @@ private:
                                                // is user specified
 
   ImageIORegion m_PasteIORegion;
-  unsigned int  m_NumberOfStreamDivisions;
   bool          m_UserSpecifiedIORegion;    // track whether the region
                                             // is user specified
   bool m_FactorySpecifiedImageIO;           //track whether the factory
