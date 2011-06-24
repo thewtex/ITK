@@ -229,14 +229,18 @@ __kernel void ComputeUpdate(__global const IMGPIXELTYPE *fix,
                             __global const IMGPIXELTYPE *mov,
                             __global OUTPIXELTYPE *out,
                             __global BUFPIXELTYPE *buf,
+                            __global int          *count, //statistics
+                            __global IMGPIXELTYPE *change,
+                            __global IMGPIXELTYPE *metric,
                             float normalizer,
 						                int width)
 {
   int gix = get_global_id(0);
+  unsigned int gidx = gix;
   OUTPIXELTYPE xwarp;
-  OUTPIXELTYPE diff, valueMov, denominator, gradSquare;
+  OUTPIXELTYPE diff, diffSquare, valueMov, denominator, gradSquare;
 
-  float grad;
+  float grad, update;
   int i;
 
   if(gix < width)
@@ -245,23 +249,36 @@ __kernel void ComputeUpdate(__global const IMGPIXELTYPE *fix,
     if (xwarp < 0 || xwarp > width-1)
       {
       buf[gix] = 0;
+
+      count[gidx]  = 0;
+      change[gidx] = 0;
+      metric[gidx] = 0;
       return;
       }
 
     valueMov = linear_interpolate_1D(mov, xwarp, width);
     diff = fix[gix] - valueMov;
+    diffSquare = diff * diff;
+
+    count[gidx]  = 1;
+    metric[gidx] = diffSquare;
 
     grad = ComputeGradient(fix, gix, width);
     gradSquare = grad * grad;
 
-    denominator = diff * diff / normalizer + gradSquare;
+    denominator = diffSquare / normalizer + gradSquare;
     if (denominator == 0)
       {
       buf[gix] = 0;
+
+      change[gidx] = 0;
       return;
       }
 
-    buf[gix] = grad * diff / denominator;
+    update   = grad * diff / denominator;
+    buf[gix] = update;
+
+    change[gidx] = update.x * update.x;
     }
 }
 #endif
@@ -273,6 +290,9 @@ __kernel void ComputeUpdate(__global const IMGPIXELTYPE *fix,
                             __global const IMGPIXELTYPE *mov,
                             __global OUTPIXELTYPE *out,
                             __global BUFPIXELTYPE *buf,
+                            __global int          *count, //statistics
+                            __global IMGPIXELTYPE *change,
+                            __global IMGPIXELTYPE *metric,
                             float normalizer,
 						                int width, int height)
 {
@@ -282,9 +302,9 @@ __kernel void ComputeUpdate(__global const IMGPIXELTYPE *fix,
   unsigned int gidx2 = DIM*gidx;
 
   OUTPIXELTYPE xwarp, ywarp;
-  OUTPIXELTYPE diff, valueMov, denominator, gradSquare;
+  OUTPIXELTYPE diff, diffSquare, valueMov, denominator, gradSquare;
 
-  float2 grad;
+  float2 grad, update;
 
   if(gix < width)
     {
@@ -294,25 +314,39 @@ __kernel void ComputeUpdate(__global const IMGPIXELTYPE *fix,
       {
       buf[gidx2]   = 0;
       buf[gidx2+1] = 0;
+
+      count[gidx]  = 0;
+      change[gidx] = 0;
+      metric[gidx] = 0;
       return;
       }
 
     valueMov = linear_interpolate_2D(mov, xwarp, ywarp, width, height);
     diff = fix[gidx] - valueMov;
+    diffSquare = diff * diff;
+
+    count[gidx]  = 1;
+    metric[gidx] = diffSquare;
 
     grad = ComputeGradient(fix, gix, giy, width, height);
     gradSquare = grad.x * grad.x + grad.y * grad.y;
 
-    denominator = diff * diff / normalizer + gradSquare;
+    denominator = diffSquare / normalizer + gradSquare;
     if (denominator == 0)
       {
       buf[gidx2]   = 0;
       buf[gidx2+1] = 0;
+
+      change[gidx] = 0;
       return;
       }
 
-    buf[gidx2]   = grad.x * diff / denominator;
-    buf[gidx2+1] = grad.y * diff / denominator;
+    update.x   = grad.x * diff / denominator;
+    update.y   = grad.y * diff / denominator;
+    buf[gidx2]   = update.x;
+    buf[gidx2+1] = update.y;
+
+    change[gidx] = update.x * update.x + update.y * update.y;
     }
 }
 #endif
@@ -325,6 +359,9 @@ __kernel void ComputeUpdate(__global const IMGPIXELTYPE *fix,
                             __global const IMGPIXELTYPE *mov,
                             __global OUTPIXELTYPE *out,
                             __global BUFPIXELTYPE *buf,
+                            __global int          *count, //statistics
+                            __global IMGPIXELTYPE *change,
+                            __global IMGPIXELTYPE *metric,
                             float normalizer,
 						                int width, int height, int depth)
 {
@@ -335,9 +372,9 @@ __kernel void ComputeUpdate(__global const IMGPIXELTYPE *fix,
   unsigned int gidx2 = DIM*gidx;
 
   OUTPIXELTYPE xwarp, ywarp, zwarp;
-  OUTPIXELTYPE diff, valueMov, denominator, gradSquare;
+  OUTPIXELTYPE diff, diffSquare, valueMov, denominator, gradSquare;
 
-  float3 grad;
+  float3 grad, update;
 
   if(gix < width)
     {
@@ -349,27 +386,42 @@ __kernel void ComputeUpdate(__global const IMGPIXELTYPE *fix,
       buf[gidx2]   = 0;
       buf[gidx2+1] = 0;
       buf[gidx2+2] = 0;
+
+      count[gidx]  = 0;
+      change[gidx] = 0;
+      metric[gidx] = 0;
       return;
       }
 
     valueMov = linear_interpolate_3D(mov, xwarp, ywarp, zwarp, width, height, depth);
     diff = fix[gidx] - valueMov;
+    diffSquare = diff * diff;
+
+    count[gidx]  = 1;
+    metric[gidx] = diffSquare;
 
     grad = ComputeGradient(fix, gix, giy, giz, width, height, depth);
     gradSquare = grad.x * grad.x + grad.y * grad.y + grad.z * grad.z;
 
-    denominator = diff * diff / normalizer + gradSquare;
+    denominator = diffSquare / normalizer + gradSquare;
     if (denominator == 0)
       {
       buf[gidx2]   = 0;
       buf[gidx2+1] = 0;
       buf[gidx2+2] = 0;
+
+      change[gidx] = 0;
       return;
       }
 
-    buf[gidx2]   = grad.x * diff / denominator;
-    buf[gidx2+1] = grad.y * diff / denominator;
-    buf[gidx2+2] = grad.z * diff / denominator;
+    update.x   = grad.x * diff / denominator;
+    update.y   = grad.y * diff / denominator;
+    update.z   = grad.z * diff / denominator;
+    buf[gidx2]   = update.x;
+    buf[gidx2+1] = update.y;
+    buf[gidx2+2] = update.z;
+
+    change[gidx] = update.x * update.x + update.y * update.y + update.z * update.z;
     }
 }
 #endif

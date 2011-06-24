@@ -40,6 +40,7 @@
 #include "itkGPUContextManager.h"
 #include "itkGPUDemonsRegistrationFilter.h"
 #include "itkGPUMeanImageFilter.h"
+#include "itkGPUReduction.h"
 
 namespace{
 // The following class is used to support callbacks
@@ -69,6 +70,13 @@ int itkGPUDemonsRegistrationFilterTest(int argc, char *argv[])
   // register object factory for GPU image and filter
   //itk::ObjectFactoryBase::RegisterFactory( itk::GPUImageFactory::New() );
   //itk::ObjectFactoryBase::RegisterFactory( itk::GPUMeanImageFilterFactory::New() );
+
+  // testing parallel reduction
+  /*typedef itk::GPUReduction< int > GPUReductionType;
+  GPUReductionType::Pointer  red = GPUReductionType::New();
+  red->RandomTest();
+  return 0;*/
+  // testing done
 
   if( argc < 4 )
     {

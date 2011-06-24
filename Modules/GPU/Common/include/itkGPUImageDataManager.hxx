@@ -20,7 +20,7 @@
 
 #include "itkGPUImageDataManager.h"
 
-#define VERBOSE
+//#define VERBOSE
 
 namespace itk
 {
@@ -47,7 +47,7 @@ void GPUImageDataManager< ImageType >::MakeCPUBufferUpToDate()
      * correctly managed. Therefore, we check the time stamp of
      * CPU and GPU data as well
      */
-    if( (m_IsCPUBufferDirty || (gpu_time > cpu_time)) && m_GPUBuffer != NULL)
+    if( (m_IsCPUBufferDirty || (gpu_time > cpu_time)) && m_GPUBuffer != NULL && m_CPUBuffer != NULL )
     {
       cl_int errid;
 #ifdef VERBOSE
@@ -84,7 +84,7 @@ void GPUImageDataManager< ImageType >::MakeGPUBufferUpToDate()
     * correctly managed. Therefore, we check the time stamp of
     * CPU and GPU data as well
     */
-    if( (m_IsGPUBufferDirty || (gpu_time < cpu_time)) && m_CPUBuffer != NULL )
+    if( (m_IsGPUBufferDirty || (gpu_time < cpu_time)) && m_CPUBuffer != NULL && m_GPUBuffer != NULL )
     {
       cl_int errid;
 #ifdef VERBOSE

@@ -154,6 +154,34 @@ namespace itk
     return (int)m_KernelContainer.size()-1;
   }
 
+  cl_int GPUKernelManager::GetKernelWorkGroupInfo(int kernelIdx,
+    cl_kernel_work_group_info paramName, void *value)
+  {
+    size_t valueSize, valueSizeRet;
+
+    switch (paramName)
+      {
+      case CL_KERNEL_WORK_GROUP_SIZE:
+        valueSize = sizeof(size_t);
+        break;
+      case CL_KERNEL_COMPILE_WORK_GROUP_SIZE:
+        valueSize = 3 * sizeof(size_t);
+        break;
+      case CL_KERNEL_LOCAL_MEM_SIZE:
+        valueSize = sizeof(cl_ulong);
+        break;
+      default:
+        itkGenericExceptionMacro (<< "Unknown type of work goup information");
+        break;
+      }
+
+    cl_int errid = clGetKernelWorkGroupInfo(m_KernelContainer[kernelIdx], m_Manager->GetDeviceId(0),
+      paramName, valueSize, value, &valueSizeRet);
+
+    OclCheckError(errid);
+
+    return errid;
+  }
 
   bool GPUKernelManager::SetKernelArg(int kernelIdx, cl_uint argIdx, size_t argSize, const void* argVal)
   {

@@ -17,7 +17,7 @@
 *=========================================================================*/
 
 #include "itkGPUDataManager.h"
-#define VERBOSE
+//#define VERBOSE
 
 namespace itk
 {
@@ -94,7 +94,7 @@ void GPUDataManager::MakeCPUBufferUpToDate()
 {
   m_Mutex.Lock();
 
-  if( m_IsCPUBufferDirty && m_GPUBuffer != NULL )
+  if( m_IsCPUBufferDirty && m_GPUBuffer != NULL && m_CPUBuffer != NULL )
     {
     cl_int errid;
 #ifdef VERBOSE
@@ -114,7 +114,7 @@ void GPUDataManager::MakeGPUBufferUpToDate()
 {
    m_Mutex.Lock();
 
-  if( m_IsGPUBufferDirty && m_CPUBuffer != NULL )
+  if( m_IsGPUBufferDirty && m_CPUBuffer != NULL && m_GPUBuffer != NULL )
     {
     cl_int errid;
 #ifdef VERBOSE
@@ -136,6 +136,11 @@ cl_mem* GPUDataManager::GetGPUBufferPointer()
   return &m_GPUBuffer;
 }
 
+void* GPUDataManager::GetCPUBufferPointer()
+{
+  SetGPUBufferDirty();
+  return m_CPUBuffer;
+}
 
 bool GPUDataManager::MakeUpToDate()
 {

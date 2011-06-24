@@ -55,6 +55,9 @@ namespace itk
 
     int  CreateKernel(const char* kernelName);
 
+    cl_int GetKernelWorkGroupInfo(int kernelIdx,
+      cl_kernel_work_group_info paramName,void *value);
+
     bool SetKernelArg(int kernelIdx, cl_uint argIdx, size_t argSize, const void* argVal);
     bool SetKernelArgWithImage(int kernelIdx, cl_uint argIdx, GPUDataManager::Pointer manager);
 

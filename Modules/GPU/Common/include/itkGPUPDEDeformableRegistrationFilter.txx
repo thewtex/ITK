@@ -586,7 +586,6 @@ GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField
 
   m_GPUSmoothingKernel->SetGPUDirtyFlag(true);
 
-
 }
 
 } // end namespace itk

@@ -94,6 +94,14 @@ GPUDenseFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilt
 template< class TInputImage, class TOutputImage, class TParentImageFilter >
 void
 GPUDenseFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilter >
+::ApplyUpdate(TimeStepType dt)
+{
+  this->GPUApplyUpdate( dt );
+}
+
+template< class TInputImage, class TOutputImage, class TParentImageFilter >
+void
+GPUDenseFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilter >
 ::GPUApplyUpdate(TimeStepType dt)
 {
   // GPU version of ApplyUpdate

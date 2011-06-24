@@ -100,13 +100,16 @@ namespace itk
     /** Initialize GPUDataManager */
     virtual void Initialize();
 
+    /** Get GPU buffer pointer */
+    cl_mem* GetGPUBufferPointer();
+
+    /** Get GPU buffer pointer */
+    void* GetCPUBufferPointer();
+
   protected:
 
     GPUDataManager();
     virtual ~GPUDataManager();
-
-    /** Get GPU buffer pointer */
-    cl_mem* GetGPUBufferPointer();
 
   private:
 

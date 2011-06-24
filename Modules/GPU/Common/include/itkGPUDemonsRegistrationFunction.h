@@ -22,6 +22,7 @@
 #include "itkPoint.h"
 #include "itkLinearInterpolateImageFunction.h"
 #include "itkCentralDifferenceImageFunction.h"
+#include "itkGPUReduction.h"
 
 namespace itk
 {
@@ -116,6 +117,9 @@ public:
   typedef typename MovingImageGradientCalculatorType::Pointer
   MovingImageGradientCalculatorPointer;
 
+  /** GPU data pointer type. */
+  typedef GPUDataManager::Pointer       GPUDataPointer;
+
   /** Set the moving image interpolator. */
   void SetMovingImageInterpolator(InterpolatorType *ptr)
   { m_MovingImageInterpolator = ptr; }
@@ -200,6 +204,10 @@ protected:
     SizeValueType m_NumberOfPixelsProcessed;
     double m_SumOfSquaredChange;
   };
+
+  /* GPU kernel handle for GPUComputeUpdate */
+  int m_ComputeUpdateGPUKernelHandle;
+
 private:
   GPUDemonsRegistrationFunction(const Self &); //purposely not implemented
   void operator=(const Self &);             //purposely not implemented
@@ -238,11 +246,12 @@ private:
   mutable double        m_RMSChange;
   mutable double        m_SumOfSquaredChange;
 
+  mutable GPUReduction<int>::Pointer    m_GPUPixelCounter;
+  mutable GPUReduction<float>::Pointer  m_GPUSquaredChange;
+  mutable GPUReduction<float>::Pointer  m_GPUSquaredDifference;
+
   /** Mutex lock to protect modification to metric. */
   mutable SimpleFastMutexLock m_MetricCalculationLock;
-
-  /* GPU kernel handle for GPUComputeUpdate */
-  int m_ComputeUpdateGPUKernelHandle;
 
 };
 } // end namespace itk

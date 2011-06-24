@@ -96,7 +96,7 @@ GPUFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilter >
     //this->GetOutput()->GetBufferPointer();
     dt = this->GPUCalculateChange();
     //this->GetOutput()->GetBufferPointer();
-    this->GPUApplyUpdate(dt);
+    this->ApplyUpdate(dt);
     //this->GetOutput()->GetBufferPointer();
     ++m_ElapsedIterations;
 

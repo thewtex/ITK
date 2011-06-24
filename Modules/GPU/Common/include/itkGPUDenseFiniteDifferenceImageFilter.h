@@ -98,6 +98,7 @@ protected:
 
   /** This method applies changes from the m_UpdateBuffer to the output using
    * the GPU.  "dt" is the time step to use for the update of each pixel. */
+  virtual void ApplyUpdate(TimeStepType dt);
   virtual void GPUApplyUpdate(TimeStepType dt);
 
   /** This method populates an update buffer with changes for each pixel in the
