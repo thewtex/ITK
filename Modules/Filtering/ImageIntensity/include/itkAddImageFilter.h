@@ -24,9 +24,9 @@
 namespace itk
 {
 /** \class AddImageFilter
- * \brief Implements an operator for pixel-wise addition of two images.
+ * \brief Pixel-wise addition of two images.
  *
- * This class is parametrized over the types of the two
+ * This class is templated over the types of the two
  * input images and the type of the output image.
  * Numeric conversions (castings) are done by the C++ defaults.
  *
@@ -34,7 +34,9 @@ namespace itk
  * the operator+ with a pixel type of the image 2. This condition is
  * required because internally this filter will perform the operation
  *
+ * \code
  *        pixel_from_image_1 + pixel_from_image_2
+ * \endcode
  *
  * Additionally the type resulting from the sum, will be cast to
  * the pixel type of the output image.

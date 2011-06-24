@@ -24,8 +24,9 @@
 namespace itk
 {
 /** \class ExpImageFilter
- * \brief Computes the vcl_exp(x) pixel-wise
+ * \brief Computes the exponential function of each pixel.
  *
+ * The computation is performed using vcl_exp(x).
  *
  * \ingroup IntensityImageFilters  Multithreaded
  *

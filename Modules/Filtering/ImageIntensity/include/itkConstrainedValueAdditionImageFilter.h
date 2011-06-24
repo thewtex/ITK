@@ -26,7 +26,7 @@ namespace itk
 /** \class ConstrainedValueAdditionImageFilter
  * \brief Implements pixel-wise the computation of constrained value addition.
  *
- * This filter is parametrized over the types of the two
+ * This filter is templated over the types of the two
  * input images and the type of the output image.
  *
  * Numeric conversions (castings) are done by the C++ defaults.
@@ -34,14 +34,14 @@ namespace itk
  * The filter will walk over all the pixels in the two input images, and for
  * each one of them it will do the following:
  *
- * - cast the input 1 pixel value to \c double
- * - cast the input 2 pixel value to \c double
- * - compute the addition of the two pixel values
- * - compute the constrained value (constrained to be between the
+ * \li cast the input 1 pixel value to \c double
+ * \li cast the input 2 pixel value to \c double
+ * \li compute the addition of the two pixel values
+ * \li compute the constrained value (constrained to be between the
  *   NonpositiveMin and max of the output pixel type)
- * - cast the \c double value resulting from \c the constrained value
+ * \li cast the \c double value resulting from \c the constrained value
  *   to the pixel type of the output image
- * - store the cast value into the output image.
+ * \li store the cast value into the output image.
  *
  * The filter expects all images to have the same dimension
  * (e.g. all 2D, or all 3D, or all ND)

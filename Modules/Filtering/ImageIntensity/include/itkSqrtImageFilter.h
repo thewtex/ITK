@@ -24,7 +24,9 @@
 namespace itk
 {
 /** \class SqrtImageFilter
- * \brief Computes the vcl_sqrt(x) pixel-wise
+ * \brief Computes the square root of each pixel.
+ *
+ * The computations are performed using vcl_sqrt(x).
  *
  * \ingroup IntensityImageFilters  Multithreaded
  * \ingroup ITK-ImageIntensity

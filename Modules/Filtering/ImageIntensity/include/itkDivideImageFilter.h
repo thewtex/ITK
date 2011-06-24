@@ -24,12 +24,13 @@
 namespace itk
 {
 /** \class DivideImageFilter
- * \brief Implements an operator for pixel-wise division of two images.
+ * \brief Pixel-wise division of two images.
  *
- * This class is parametrized over the types of the two
+ * This class is templated over the types of the two
  * input images and the type of the output image. When the divisor is zero,
- * the division result is set to the maximum number that can be represneted  by default to
- * avoid exception. Numeric conversions (castings) are done by the C++ defaults.
+ * the division result is set to the maximum number that can be
+ * represented  by default to avoid exception. Numeric conversions
+ * (castings) are done by the C++ defaults.
  *
  * \ingroup IntensityImageFilters  Multithreaded
  * \ingroup ITK-ImageIntensity

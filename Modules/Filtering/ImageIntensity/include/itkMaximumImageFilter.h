@@ -28,7 +28,7 @@ namespace itk
  * The pixel values of the output image are the maximum between the
  * corresponding pixels of the two input images.
  *
- * This class is parametrized over the types of the two
+ * This class is templated over the types of the two
  * input images and the type of the output image.
  * Numeric conversions (castings) are done by the C++ defaults.
  *

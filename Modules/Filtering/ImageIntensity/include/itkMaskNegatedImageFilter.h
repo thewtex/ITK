@@ -24,10 +24,9 @@
 namespace itk
 {
 /** \class MaskNegatedImageFilter
- * \brief Implements an operator for pixel-wise masking of the input
- * image with the negative of a mask.
+ * \brief Mask an image with the negative of a mask.
  *
- * This class is parametrized over the types of the
+ * This class is templated over the types of the
  * input image type, the mask image type and the type of the output image.
  * Numeric conversions (castings) are done by the C++ defaults.
  *
@@ -35,10 +34,12 @@ namespace itk
  * operator != with zero. This condition is required because internally this
  * filter will perform the operation
  *
+ * \code
  *        if pixel_from_mask_image != 0
  *             pixel_output_image = output_value
  *        else
  *             pixel_output_image = pixel_input_image
+ * \endcode
  *
  * The pixel from the input 1 is cast to the pixel type of the output image.
  *

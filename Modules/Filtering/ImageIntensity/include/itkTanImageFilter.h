@@ -24,7 +24,9 @@
 namespace itk
 {
 /** \class TanImageFilter
- * \brief Computes the vcl_tan(x) pixel-wise
+ * \brief Computes the tangent of each input pixel.
+ *
+ * The computations are performed using vcl_tan(x).
  *
  * \ingroup IntensityImageFilters  Multithreaded
  * \ingroup ITK-ImageIntensity

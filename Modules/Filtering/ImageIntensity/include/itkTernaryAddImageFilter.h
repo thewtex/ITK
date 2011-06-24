@@ -23,9 +23,9 @@
 namespace itk
 {
 /** \class TernaryAddImageFilter
- * \brief Implements pixel-wise addition of three images.
+ * \brief Pixel-wise addition of three images.
  *
- * This class is parametrized over the types of the three
+ * This class is templated over the types of the three
  * input images and the type of the output image.
  * Numeric conversions (castings) are done by the C++ defaults.
  *

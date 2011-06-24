@@ -24,9 +24,9 @@
 namespace itk
 {
 /** \class WeightedAddImageFilter
- * \brief Implements an operator for computing a weighted sum of two images pixel-wise.
+ * \brief Computes a weighted sum of two images pixel-wise.
  *
- * This class is parametrized over the types of the two
+ * This class is templated over the types of the two
  * input images and the type of the output image.
  * Numeric conversions (castings) are done by the C++ defaults.
  *
@@ -34,15 +34,19 @@ namespace itk
  * the operator+ with a pixel type of the image 2. This condition is
  * required because internally this filter will perform the operation
  *
+ * \code
  *        pixel_from_image_1 * alpha +  pixel_from_image_2 * (1.0 - alpha)
+ * \endcode
  *
  * Additionally the type resulting from the sum will be cast to
  * the pixel type of the output image.
  *
  * The total operation over one pixel will be
  *
+ * \code
  *  output_pixel = static_cast<OutputPixelType>(
  *      input1_pixel * alpha + input2_pixel * (1-alpha) )
+ * \endcode
  *
  * The alpha parameter is set using SetAlpha.
  *

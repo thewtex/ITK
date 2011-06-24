@@ -26,7 +26,7 @@ namespace itk
 /** \class AndImageFilter
  * \brief Implements the AND logical operator pixel-wise between two images.
  *
- * This class is parametrized over the types of the two
+ * This class is templated over the types of the two
  * input images and the type of the output image.
  * Numeric conversions (castings) are done by the C++ defaults.
  *

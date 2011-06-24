@@ -24,7 +24,10 @@
 namespace itk
 {
 /** \class Log10ImageFilter
- * \brief Computes the vcl_log10(x) pixel-wise
+ * \brief Computes the log10 of each pixel.
+ *
+ * The computation is performed using vcl_log10(x).
+ *
  * \ingroup IntensityImageFilters  Multithreaded
  * \ingroup ITK-ImageIntensity
  */

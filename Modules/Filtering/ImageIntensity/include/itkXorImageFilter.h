@@ -24,9 +24,9 @@
 namespace itk
 {
 /** \class XorImageFilter
- * \brief Implements the XOR logical operator pixel-wise between two images.
+ * \brief Computes the XOR logical operator pixel-wise between two images.
  *
- * This class is parametrized over the types of the two
+ * This class is templated over the types of the two
  * input images and the type of the output image.
  * Numeric conversions (castings) are done by the C++ defaults.
  *
@@ -36,7 +36,9 @@ namespace itk
  *
  * The total operation over one pixel will be
  *
+ * \code
  *  output_pixel = static_cast<OutputPixelType>( input1_pixel ^ input2_pixel )
+ * \endcode
  *
  * Where "^" is the boolean XOR operator in C++.
  *

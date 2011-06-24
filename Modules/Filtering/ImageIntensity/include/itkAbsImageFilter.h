@@ -24,7 +24,9 @@
 namespace itk
 {
 /** \class AbsImageFilter
- * \brief Computes the ABS(x) pixel-wise
+ * \brief Computes the absolute value of each pixel.
+ *
+ * vnl_math_abs() is used to perform the computation.
  *
  * \ingroup IntensityImageFilters  Multithreaded
  * \ingroup ITK-ImageIntensity
@@ -36,6 +38,9 @@ namespace itk
 namespace Functor
 {
 template< class TInput, class TOutput >
+/** \class Abs
+ * \brief Computes the absolute value of a pixel.
+ */
 class Abs
 {
 public:

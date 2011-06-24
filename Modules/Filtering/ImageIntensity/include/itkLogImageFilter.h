@@ -24,7 +24,7 @@
 namespace itk
 {
 /** \class LogImageFilter
- * \brief Computes the vcl_log(x) pixel-wise
+ * \brief Computes the log() of each pixel.
  *
  * \ingroup IntensityImageFilters  Multithreaded
  * \ingroup ITK-ImageIntensity
