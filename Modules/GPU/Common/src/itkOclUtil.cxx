@@ -344,6 +344,10 @@ void GetTypenameInString( const type_info& intype, std::ostringstream& ret )
             intype == typeid ( itk::Vector< double, 3 > ) )
   {
     ret << "double\n";
+
+    // enable 64bit computation
+    ret << "#pragma OPENCL EXTENSION cl_khr_fp64 : enable\n";
+    ret << "#pragma OPENCL EXTENSION cl_amd_fp64 : enable\n";
   }
   else
   {

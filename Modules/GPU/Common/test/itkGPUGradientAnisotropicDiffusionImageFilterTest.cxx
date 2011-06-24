@@ -65,7 +65,7 @@ int itkGPUGradientAnisotropicDiffusionImageFilterTest(int argc, char *argv[])
 
   //reader->SetFileName( argv[1] );
   //reader->SetFileName( "C:/Users/wkjeong/Proj/ITK/Examples/Data/BrainProtonDensitySlice.png" );
-  reader->SetFileName( "E:/proj/CUDA_ITK/ITK_CUDA_TEST/data/AD63368_tensor_double_up.nhdr" );
+  reader->SetFileName( "C:/Users/wkjeong/Proj/ITK/Modules/GPU/Common/data/input-testvolume.nrrd" );
 
   // Create CPU/GPU anistorpic diffusion filter
   typedef itk::GradientAnisotropicDiffusionImageFilter< InputImageType, OutputImageType > CPUAnisoDiffFilterType;

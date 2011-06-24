@@ -16,12 +16,6 @@
 *
 *=========================================================================*/
 
-/**
- * Test program for itkGPUMeanImageFilter class
- *
- * This program creates a GPU Mean filter test pipelining.
- */
-
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 #include "itkMeanImageFilter.h"
@@ -35,6 +29,9 @@
 #include "itkRescaleIntensityImageFilter.h"
 #include "itkTimeProbe.h"
 #include "itkGaussianOperator.h"
+
+#include "itkDiscreteGaussianImageFilter.h"
+#include "itkGPUDiscreteGaussianImageFilter.h"
 
 /**
  * Testing GPU Neighborhood Operator Image Filter
@@ -54,8 +51,8 @@ int itkGPUNeighborhoodOperatorImageFilterTest(int argc, char *argv[])
   //itk::ObjectFactoryBase::RegisterFactory( itk::GPUImageFactory::New() );
   //itk::ObjectFactoryBase::RegisterFactory( itk::GPUMeanImageFilterFactory::New() );
 
-  typedef   unsigned char  InputPixelType;
-  typedef   unsigned char  OutputPixelType;
+  typedef float InputPixelType;
+  typedef float OutputPixelType;
 
 
   //typedef itk::Image< InputPixelType,  3 >   InputImageType;
@@ -82,43 +79,33 @@ int itkGPUNeighborhoodOperatorImageFilterTest(int argc, char *argv[])
   reader->SetFileName( argv[1] );
   writer->SetFileName( argv[2] );
 */
+  if( ImageDimension == 3 )
+  {
+    reader->SetFileName( "C:/Users/wkjeong/Proj/ITK/Modules/GPU/Common/data/input-testvolume.nrrd" );
+  }
+  else
+  {
+    exit(0);
+  }
+
   //
   // Note: We use regular itk filter type here but factory will automatically create
   //       GPU filter for Median filter and CPU filter for threshold filter.
   //
-  typedef itk::NeighborhoodOperatorImageFilter< InputImageType, OutputImageType > NeighborhoodFilterType;
-  typedef itk::GPUNeighborhoodOperatorImageFilter< InputImageType, OutputImageType > GPUNeighborhoodFilterType;
+  typedef itk::NumericTraits< OutputPixelType >::RealType    RealOutputPixelType;
+  typedef itk::Image< OutputPixelType, ImageDimension >      RealOutputImageType;
+  typedef itk::NumericTraits<RealOutputPixelType>::ValueType RealOutputPixelValueType;
 
-  if( ImageDimension == 3 )
-  {
-    reader->SetFileName( "E:/proj/CUDA_ITK/ITK_CUDA_TEST/data/AD63368_tensor_double_up.nhdr" );
-  }
-  else
-  {
-      exit(0);
-  }
+  typedef itk::NeighborhoodOperatorImageFilter< InputImageType, OutputImageType, RealOutputPixelValueType > NeighborhoodFilterType;
+  typedef itk::GPUNeighborhoodOperatorImageFilter< InputImageType, OutputImageType, RealOutputPixelValueType > GPUNeighborhoodFilterType;
 
-  // Create a series of  1D Gaussian operators
-  typedef itk::GaussianOperator< float, ImageDimension > OperatorType;
+  // Create 1D Gaussian operator
+  typedef itk::GaussianOperator< RealOutputPixelValueType, ImageDimension > OperatorType;
 
-  std::vector< OperatorType > oper;
-  oper.resize( ImageDimension );
-
-  // Set up the operators
-  unsigned int i;
-  for ( i = 0; i < ImageDimension; ++i )
-  {
-    // we reverse the direction to minimize computation while, because
-    // the largest dimension will be split slice wise for streaming
-    unsigned int reverse_i = ImageDimension - i - 1;
-
-    // Set up the operator for this dimension
-    oper[reverse_i].SetDirection(i);
-    oper[reverse_i].SetVariance( 3.0 );
-    oper[reverse_i].SetMaximumKernelWidth( 20 );
-    oper[reverse_i].SetMaximumError( 0.1 );
-    oper[reverse_i].CreateDirectional();
-  }
+  OperatorType oper;
+  oper.SetDirection(0);
+  oper.SetVariance( 8.0 );
+  oper.CreateDirectional();
 
   // test 1~8 threads for CPU
   for(int nThreads = 1; nThreads <= 8; nThreads++)
@@ -131,7 +118,7 @@ int itkGPUNeighborhoodOperatorImageFilterTest(int argc, char *argv[])
     CPUFilter->SetNumberOfThreads( nThreads );
 
     CPUFilter->SetInput( reader->GetOutput() );
-    CPUFilter->SetOperator( oper[0] );
+    CPUFilter->SetOperator( oper );
     CPUFilter->Update();
 
     cputimer.Stop();
@@ -149,7 +136,7 @@ int itkGPUNeighborhoodOperatorImageFilterTest(int argc, char *argv[])
       gputimer.Start();
 
       GPUFilter->SetInput( reader->GetOutput() );
-      GPUFilter->SetOperator( oper[0] );
+      GPUFilter->SetOperator( oper );
       GPUFilter->Update();
 
       GPUFilter->GetOutput()->MakeUpToDate(); // synchronization point (GPU->CPU memcpy)
@@ -169,6 +156,7 @@ int itkGPUNeighborhoodOperatorImageFilterTest(int argc, char *argv[])
       for(cit.GoToBegin(), git.GoToBegin(); !cit.IsAtEnd(); ++cit, ++git)
       {
         double err = (double)(cit.Get()) - (double)(git.Get());
+        if(err > 0.1 || (double)(cit.Get()) < 0.1)   std::cout << "CPU : " << (double)(cit.Get()) << ", GPU : " << (double)(git.Get()) << std::endl;
         diff += err*err;
         nPix++;
       }

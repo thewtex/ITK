@@ -40,7 +40,7 @@ namespace itk
  */
 template< class TInputImage, class TOutputImage,
           class TOperatorValueType = ITK_TYPENAME TOutputImage::PixelType,
-          class TParentImageFilter = NeighborhoodOperatorImageFilter< TInputImage, TOutputImage> >
+          class TParentImageFilter = NeighborhoodOperatorImageFilter< TInputImage, TOutputImage, TOperatorValueType> >
 class ITK_EXPORT GPUNeighborhoodOperatorImageFilter:
   public GPUImageToImageFilter< TInputImage, TOutputImage, TParentImageFilter >
 {
@@ -69,7 +69,7 @@ public:
   typedef typename NumericTraits<InputPixelType>::ValueType InputPixelValueType;
   typedef typename NumericTraits<OutputPixelType>::RealType ComputingPixelType;
 
-  typedef typename GPUImage<float,itkGetStaticConstMacro(ImageDimension)> NeighborhoodGPUBufferType;
+  typedef typename GPUImage<TOperatorValueType,itkGetStaticConstMacro(ImageDimension)> NeighborhoodGPUBufferType;
 
   /** Extract some information from the image types.  Dimensionality
    * of the two images is assumed to be the same.

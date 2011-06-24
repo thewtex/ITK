@@ -17,48 +17,55 @@
  *=========================================================================*/
 
 //
-// Brute-force mean filter
+// Brute-force neighborhood operator filter
 //
+
 #ifdef DIM_1
-__kernel void MeanFilter(__global const PIXELTYPE* in,__global PIXELTYPE* out, int radiusx, int width)
+__kernel void NeighborOperatorFilter(__global const INTYPE* in,
+                                     __global OUTTYPE* out,
+                                     __constant OPTYPE* op,
+                                     int radiusx, int width)
 {
   int gix = get_global_id(0);
-  float sum = 0;
-  unsigned int num = 0;
+  OPTYPE sum = 0;
+  unsigned int opIdx = 0;
+
   if(gix < width)
   {
     /*
     // Clamping boundary condition
     for(int x = max((int)0, (int)(gix-radiusx)); x <= min((int)(width-1), (int)(gix+radiusx)); x++)
     {
-      sum += (float)in[x];
-      num++;
+      sum += (OPTYPE)in[x] * (OPTYPE)op[opIdx];
+      opIdx++;
     }
     */
 
     // Zero-flux boundary condition
-    num = 2*radiusx + 1;
     for(int x = gix-radiusx; x <= gix+radiusx; x++)
     {
       unsigned int cidx = (unsigned int)(min(max(0, x),width-1));
-      sum += (float)in[cidx];
+      sum += (OPTYPE)in[cidx] * (OPTYPE)op[opIdx];
     }
 
-    out[gix] = (PIXELTYPE)(sum/(float)num);
+    out[gix] = (OUTTYPE)(sum);
   }
 }
 #endif
 
 #ifdef DIM_2
-__kernel void MeanFilter(__global const PIXELTYPE* in,
-                         __global PIXELTYPE* out,
-                         int radiusx, int radiusy, int width, int height)
+__kernel void NeighborOperatorFilter(__global const INTYPE* in,
+                                     __global OUTTYPE* out,
+                                     __constant OPTYPE* op,
+                                     int radiusx, int radiusy,
+                                     int width, int height)
 {
   int gix = get_global_id(0);
   int giy = get_global_id(1);
   unsigned int gidx = width*giy + gix;
-  float sum = 0;
-  unsigned int   num = 0;
+  OPTYPE sum = 0;
+  unsigned int opIdx = 0;
+
   if(gix < width && giy < height)
   {
     /*
@@ -69,14 +76,13 @@ __kernel void MeanFilter(__global const PIXELTYPE* in,
       {
         unsigned int cidx = width*y + x;
 
-        sum += (float)in[cidx];
-        num++;
+        sum += (OPTYPE)in[cidx] * (OPTYPE)op[opIdx];
+        opIdx++;
       }
     }
     */
 
     // Zero-flux boundary condition
-    num = (2*radiusx + 1)*(2*radiusy + 1);
     for(int y = giy-radiusy; y <= giy+radiusy; y++)
     {
       unsigned int yid = (unsigned int)(min(max(0, y),height-1));
@@ -84,27 +90,31 @@ __kernel void MeanFilter(__global const PIXELTYPE* in,
       {
         unsigned int cidx = width*yid + (unsigned int)(min(max(0, x),width-1));
 
-        sum += (float)in[cidx];
+        sum += (OPTYPE)in[cidx] * (OPTYPE)op[opIdx];
+
+        opIdx++;
       }
     }
 
-    out[gidx] = (PIXELTYPE)(sum/(float)num);
+    out[gidx] = (OUTTYPE)(sum);
   }
 }
 #endif
 
 #ifdef DIM_3
-__kernel void MeanFilter(__global const PIXELTYPE* in,
-                         __global PIXELTYPE* out,
-                         int radiusx, int radiusy, int radiusz,
-                         int width, int height, int depth)
+__kernel void NeighborOperatorFilter(__global const INTYPE* in,
+                                     __global OUTTYPE* out,
+                                     __constant OPTYPE* op,
+                                     int radiusx, int radiusy, int radiusz,
+                                     int width, int height, int depth)
 {
   int gix = get_global_id(0);
   int giy = get_global_id(1);
   int giz = get_global_id(2);
   unsigned int gidx = width*(giz*height + giy) + gix;
-  float sum = 0;
-  unsigned int   num = 0;
+  OPTYPE sum = 0;
+  unsigned int opIdx = 0;
+
   if(gix < width && giy < height && giz < depth)
   {
     /*
@@ -117,15 +127,14 @@ __kernel void MeanFilter(__global const PIXELTYPE* in,
         {
           unsigned int cidx = width*(z*height + y) + x;
 
-          sum += (float)in[cidx];
-          num++;
+          sum += (OPTYPE)in[cidx] * (OPTYPE)op[opIdx];
+          opIdx++;
         }
       }
     }
     */
 
     // Zero-flux boundary condition
-    num = (2*radiusx + 1)*(2*radiusy + 1)*(2*radiusz + 1);
     for(int z = giz-radiusz; z <= giz+radiusz; z++)
     {
       unsigned int zid = (unsigned int)(min(max(0, z),depth-1));
@@ -135,13 +144,13 @@ __kernel void MeanFilter(__global const PIXELTYPE* in,
         for(int x = gix-radiusx; x <= gix+radiusx; x++)
         {
           unsigned int cidx = width*(zid*height + yid) + (unsigned int)(min(max(0, x),width-1));
-
-          sum += (float)in[cidx];
+          sum += (OPTYPE)(in[cidx]) * op[opIdx];
+          opIdx++;
         }
       }
     }
 
-    out[gidx] = (PIXELTYPE)(sum/(float)num);
+    out[gidx] = (OUTTYPE)(sum);
   }
 }
 #endif

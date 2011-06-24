@@ -65,7 +65,7 @@ int itkGPUBinaryThresholdImageFilterTest(int argc, char *argv[])
     return EXIT_FAILURE;*/
     }
 
-  reader->SetFileName( "E:/proj/CUDA_ITK/ITK_CUDA_TEST/data/AD63368_tensor_double_up.nhdr" );
+  reader->SetFileName( "C:/Users/wkjeong/Proj/ITK/Modules/GPU/Common/data/input-testvolume.nrrd" );
   //reader->SetFileName( argv[1] );
   //writer->SetFileName( argv[2] );
 
