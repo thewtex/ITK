@@ -125,7 +125,6 @@ itkMultiScaleHessianBasedMeasureImageFilterTest.cxx
 itkNeuralNetworkIOTest.cxx
 itkN4MRIBiasFieldCorrectionImageFilterTest
 itkObjectByObjectLabelMapFilterTest.cxx
-itkObjectToObjectMetricTest.cxx
 itkOptGrayscaleDilateImageFilterTest.cxx
 itkOptGrayscaleErodeImageFilterTest.cxx
 itkOptGrayscaleMorphologicalClosingImageFilterTest.cxx
@@ -134,8 +133,9 @@ itkOptImageToImageMetricsTest.cxx
 itkOptImageToImageMetricsTest2.cxx
 itkOptMattesMutualInformationImageToImageMetricThreadsTest1.cxx
 itkPadLabelMapFilterTest1.cxx
-itkPointsLocatorTest.cxx
 itkPhilipsRECImageIOTest.cxx
+itkPointsLocatorTest.cxx
+itkPointSetToPointSetMetricTest.cxx
 itkRankImageFilterTest.cxx
 itkRegionalMaximaImageFilterTest.cxx
 itkRegionalMaximaImageFilterTest2.cxx
@@ -1204,8 +1204,6 @@ itk_add_test(NAME itkObjectByObjectLabelMapFilterTest1
     --compare ${ITK_DATA_ROOT}/Baseline/Review/itkObjectByObjectLabelMapFilterTest1.png
               ${ITK_TEST_OUTPUT_DIR}/itkObjectByObjectLabelMapFilterTest1.png
     itkObjectByObjectLabelMapFilterTest ${ITK_DATA_ROOT}/Input/SpotsLabeled.png ${ITK_TEST_OUTPUT_DIR}/itkObjectByObjectLabelMapFilterTest1.png 1)
-itk_add_test(NAME itkObjectToObjectMetricTest
-      COMMAND ITK-ReviewTestDriver itkObjectToObjectMetricTest)
 itk_add_test(NAME itkOptImageToImageMetricsTest01
       COMMAND ITK-ReviewTestDriver itkOptImageToImageMetricsTest
               ${ITK_EXAMPLE_DATA_ROOT}/BrainProtonDensitySliceBorder20.png
@@ -1230,11 +1228,17 @@ itk_add_test(NAME itkPadLabelMapFilterTest1
     --compare ${ITK_DATA_ROOT}/Baseline/Review/cthead1-label-pad.mha
               ${ITK_TEST_OUTPUT_DIR}/cthead1-label-pad.mha
     itkPadLabelMapFilterTest1 ${ITK_DATA_ROOT}/Input/cthead1Label.png ${ITK_TEST_OUTPUT_DIR}/cthead1-label-pad.mha 40 50)
-itk_add_test(NAME itkPointsLocatorTest
-      COMMAND ITK-ReviewTestDriver itkPointsLocatorTest)
 itk_add_test(NAME itkPhilipsRECImageIOTest1
       COMMAND ITK-ReviewTestDriver itkPhilipsRECImageIOTest
               ${ITK_DATA_ROOT}/Input/T1_MEASUREMENT_4_1.PAR ${ITK_TEST_OUTPUT_DIR}/itkPhilipsRECImageIOTest1.mha)
+itk_add_test(NAME itkPointsLocatorTest
+      COMMAND ITK-ReviewTestDriver itkPointsLocatorTest)
+itk_add_test(NAME itkEuclideanDistancePointSetMetricTest
+      COMMAND ITK-ReviewTestDriver itkPointSetToPointSetMetricTest 1)
+itk_add_test(NAME itkExpectationBasedPointSetMetricTest
+      COMMAND ITK-ReviewTestDriver itkPointSetToPointSetMetricTest 2)
+itk_add_test(NAME itkJensenHavrdaCharvatTsallisPointSetMetricTest
+      COMMAND ITK-ReviewTestDriver itkPointSetToPointSetMetricTest 3)
 itk_add_test(NAME itkRankImageFilterTest3
       COMMAND ITK-ReviewTestDriver
     --compare ${ITK_DATA_ROOT}/Baseline/Review/itkRankImageFilter3.png

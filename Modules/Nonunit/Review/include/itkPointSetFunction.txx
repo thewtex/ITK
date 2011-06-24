@@ -15,42 +15,52 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkObjectToObjectMetric_txx
-#define __itkObjectToObjectMetric_txx
+#ifndef __itkPointSetFunction_txx
+#define __itkPointSetFunction_txx
 
-#include "itkObjectToObjectMetric.h"
-#include "itkNumericTraits.h"
+#include "itkPointSetFunction.h"
 
 namespace itk
 {
+
 /**
  * Constructor
  */
-template< class TFixedImage, class TMovingImage >
-ObjectToObjectMetric< TFixedImage, TMovingImage >
-::ObjectToObjectMetric()
+template <class TInputPointSet, class TOutput, class TCoordRep>
+PointSetFunction<TInputPointSet, TOutput, TCoordRep>
+::PointSetFunction()
 {
-  this->m_Parameters.Fill( NumericTraits< ParametersValueType >::Zero );
+  m_PointSet = NULL;
 }
 
-template< class TFixedImage, class TMovingImage >
-ObjectToObjectMetric< TFixedImage, TMovingImage >
-::~ObjectToObjectMetric()
-{
-}
 
 /**
- * PrintSelf
+ * Standard "PrintSelf" method
  */
-template< class TFixedImage, class TMovingImage >
+template <class TInputPointSet, class TOutput, class TCoordRep>
 void
-ObjectToObjectMetric< TFixedImage, TMovingImage >
-::PrintSelf(std::ostream & os, Indent indent) const
+PointSetFunction<TInputPointSet, TOutput, TCoordRep>
+::PrintSelf(
+  std::ostream& os,
+  Indent indent) const
 {
-  Superclass::PrintSelf(os, indent);
-  os << indent << "Parameters: " << m_Parameters << std::endl;
+  Superclass::PrintSelf( os, indent );
+  os << indent << "InputPointSet: " << m_PointSet.GetPointer() << std::endl;
 }
 
+
+/**
+ * Initialize by setting the input point set
+ */
+template <class TInputPointSet, class TOutput, class TCoordRep>
+void
+PointSetFunction<TInputPointSet, TOutput, TCoordRep>
+::SetInputPointSet(
+  const InputPointSetType * ptr )
+{
+  // set the input image
+  m_PointSet = ptr;
+}
 
 } // end namespace itk
 

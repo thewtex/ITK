@@ -45,7 +45,6 @@ itkNormalizedCorrelationImageMetricTest.cxx
 itkMeanReciprocalSquareDifferenceImageMetricTest.cxx
 itkMeanSquaresImageMetricTest.cxx
 itkMutualInformationMetricTest.cxx
-itkPointSetToPointSetRegistrationTest.cxx
 itkSpatialObjectToImageRegistrationTest.cxx
 )
 

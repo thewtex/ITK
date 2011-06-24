@@ -80,6 +80,8 @@ public:
 
   itkGetConstMacro(Covariance, CovarianceType);
 
+  itkGetConstMacro(InverseCovariance, CovarianceType);
+
   /** Gets the probability density of a measurement vector. */
   double Evaluate(const MeasurementVectorType & measurement) const;
 

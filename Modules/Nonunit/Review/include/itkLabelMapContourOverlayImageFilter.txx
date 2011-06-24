@@ -28,7 +28,7 @@
 #include "itkBinaryDilateImageFilter.h"
 #include "itkBinaryErodeImageFilter.h"
 #include "itkSubtractImageFilter.h"
-#include "itkBinaryContourImageFilter.h"
+//#include "itkBinaryContourImageFilter.h"
 #include "itkSliceBySliceImageFilter.h"
 #include "itkLabelUniqueLabelMapFilter.h"
 

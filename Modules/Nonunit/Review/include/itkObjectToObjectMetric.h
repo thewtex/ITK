@@ -1,4 +1,4 @@
-/*=========================================================================
+  /*=========================================================================
  *
  *  Copyright Insight Software Consortium
  *
@@ -18,7 +18,10 @@
 #ifndef __itkObjectToObjectMetric_h
 #define __itkObjectToObjectMetric_h
 
-#include "itkSingleValuedCostFunction.h"
+#include "itkObject.h"
+#include "itkObjectFactory.h"
+
+#include "itkArray.h"
 
 namespace itk
 {
@@ -26,7 +29,6 @@ namespace itk
 /** \class ObjectToObjectMetric
  * \brief Computes similarity between regions of two objects.
  *
- * This Class is templated over the type of the two input objects.
  * This is the base class for a hierarchy of similarity metrics that may, in
  * derived classes, operate on meshes, images, etc.  This class computes a
  * value that measures the similarity between the two objects.
@@ -36,51 +38,103 @@ namespace itk
  * \ingroup ITK-Review
  */
 
-template< class TFixedObject,  class TMovingObject >
 class ITK_EXPORT ObjectToObjectMetric:
-  public SingleValuedCostFunction
+  public Object
 {
 public:
   /** Standard class typedefs. */
   typedef ObjectToObjectMetric       Self;
-  typedef SingleValuedCostFunction   Superclass;
-  typedef SmartPointer< Self >       Pointer;
-  typedef SmartPointer< const Self > ConstPointer;
+  typedef Object                     Superclass;
+  typedef SmartPointer<Self>         Pointer;
+  typedef SmartPointer<const Self>   ConstPointer;
 
   /** Run-time type information (and related methods). */
-  itkTypeMacro(ObjectToObjectMetric, SingleValuedCostFunction);
+  itkTypeMacro( ObjectToObjectMetric, Object );
 
   /**  Type of the measure. */
-  typedef typename Superclass::MeasureType    MeasureType;
+  typedef double MeasureType;
 
   /**  Type of the derivative. */
-  typedef typename Superclass::DerivativeType DerivativeType;
+  typedef double                              DerivativeValueType;
+  typedef Array<DerivativeValueType>          DerivativeType;
 
-  /**  Type of the parameters. */
-  typedef typename Superclass::ParametersType       ParametersType;
-  typedef typename Superclass::ParametersValueType  ParametersValueType;
+  /** Type of coordinate system used to calculate values, derivatives */
+  typedef enum { Fixed = 0, Moving, Both }    DerivativeSourceType;
 
-  /** Initialize the Metric by making sure that all the components
-   *  are present and plugged together correctly     */
-  virtual void Initialize(void) throw ( ExceptionObject ) = 0;
+  /**
+   * Set source of derivative.  This variable allows the user to switch
+   * between calculating the derivative with respect to the fixed
+   * object or moving object.
+   */
+  itkSetMacro( DerivativeSource, DerivativeSourceType );
+
+  /**
+   * Get source of derivative.  This variable allows the user to switch
+   * between calculating the derivative with respect to the fixed object
+   * or moving object.
+   */
+  itkGetConstMacro( DerivativeSource, DerivativeSourceType );
+
+  /**
+   * Initialize the metric by making sure that all the components
+   *  are present and plugged together correctly     .
+   */
+  virtual void Initialize( void ) throw ( ExceptionObject ) = 0;
+
+  /** This method returns the value of the cost function */
+  virtual MeasureType GetValue() const = 0;
+
+  /** This method returns the derivative of the cost function */
+  virtual void GetDerivative( DerivativeType & derivative ) const
+  {
+    MeasureType value;
+    this->GetValueAndDerivative( value, derivative );
+  }
+
+  /** This method returns the value and derivative of the cost function */
+  virtual void GetValueAndDerivative( MeasureType &,
+    DerivativeType & ) const = 0;
 
 protected:
-  ObjectToObjectMetric();
-  virtual ~ObjectToObjectMetric();
+  ObjectToObjectMetric() : m_DerivativeSource( Moving ) {};
+  virtual ~ObjectToObjectMetric() {};
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  void PrintSelf( std::ostream & os, Indent indent ) const
+  {
+    Superclass::PrintSelf(os, indent);
+    os << indent << "Derivative source: ";
+    switch( this->m_DerivativeSource )
+      {
+      case Fixed:
+        {
+        os << "Fixed" << std::endl;
+        break;
+        }
+      case Moving:
+        {
+        os << "Moving" << std::endl;
+        break;
+        }
+      case Both:
+        {
+        os << "Both" << std::endl;
+        break;
+        }
+      default:
+        {
+        os << "Unknown" << std::endl;
+        break;
+        }
+      }
+  }
 
-  mutable ParametersType      m_Parameters;
+  DerivativeSourceType                      m_DerivativeSource;
 
 private:
-  ObjectToObjectMetric(const Self &); //purposely not implemented
-  void operator=(const Self &);     //purposely not implemented
+  ObjectToObjectMetric( const Self & ); //purposely not implemented
+  void operator=( const Self & );     //purposely not implemented
 
 };
 } // end namespace itk
-
-#ifndef ITK_MANUAL_INSTANTIATION
-#include "itkObjectToObjectMetric.txx"
-#endif
 
 #endif
