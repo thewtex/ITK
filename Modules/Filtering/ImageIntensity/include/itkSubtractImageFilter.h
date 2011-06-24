@@ -23,7 +23,7 @@
 namespace itk
 {
 /** \class SubtractImageFilter
- * \brief Implements an operator for pixel-wise subtraction of two images.
+ * \brief Pixel-wise subtraction of two images.
  *
  * Output = Input1 - Input2.
  *

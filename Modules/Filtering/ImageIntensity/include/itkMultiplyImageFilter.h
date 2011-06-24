@@ -23,7 +23,7 @@
 namespace itk
 {
 /** \class MultiplyImageFilter
- * \brief Implements an operator for pixel-wise multiplication of two images.
+ * \brief Pixel-wise multiplication of two images.
  *
  * This class is parametrized over the types of the two
  * input images and the type of the output image.

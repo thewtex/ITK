@@ -24,7 +24,7 @@
 namespace itk
 {
 /** \class AddImageFilter
- * \brief Implements an operator for pixel-wise addition of two images.
+ * \brief Pixel-wise addition of two images.
  *
  * This class is parametrized over the types of the two
  * input images and the type of the output image.

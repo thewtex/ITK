@@ -24,7 +24,7 @@
 namespace itk
 {
 /** \class NaryMaximumImageFilter
- * \brief Implements an operator computing the pixel-wise maximum of several images.
+ * \brief Computes the pixel-wise maximum of several images.
  *
  * This class is parametrized over the types of the input images and the type
  * of the output image.  Numeric conversions (castings) are done by the C++

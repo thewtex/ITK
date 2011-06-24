@@ -24,24 +24,24 @@
 namespace itk
 {
 /** \class NaryAddImageFilter
- * \brief Implements an operator for pixel-wise addition of two images.
+ * \brief Pixel-wise addition of N images.
  *
- * This class is parametrized over the types of the two
+ * This class is parametrized over the types of the
  * input images and the type of the output image.
  * Numeric conversions (castings) are done by the C++ defaults.
  *
- * The pixel type of the input 1 image must have a valid defintion of
- * the operator+ with a pixel type of the image 2. This condition is
+ * The pixel type of the input images must have a valid defintion of
+ * the operator+ with each other. This condition is
  * required because internally this filter will perform the operation
  *
- *        pixel_from_image_1 + pixel_from_image_2
+ *        pixel_from_image_N + pixel_from_image_(N+1)
  *
  * Additionally the type resulting from the sum, will be cast to
  * the pixel type of the output image.
  *
  * The total operation over one pixel will be
  *
- *  output_pixel = static_cast<OutputPixelType>( input1_pixel + input2_pixel )
+ *  output_pixel = static_cast<OutputPixelType>( input_pixel_N + input_pixel_(N+1) )
  *
  * For example, this filter could be used directly for adding images whose
  * pixels are vectors of the same dimension, and to store the resulting vector

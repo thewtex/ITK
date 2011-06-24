@@ -24,7 +24,9 @@
 namespace itk
 {
 /** \class SinImageFilter
- * \brief Computes the vcl_sin(x) pixel-wise
+ * \brief Computes the sine of each pixel.
+ *
+ * The computations are performed using vcl_sin(x).
  *
  * \ingroup IntensityImageFilters  Multithreaded
  * \ingroup ITK-ImageIntensity

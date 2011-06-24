@@ -24,7 +24,7 @@
 namespace itk
 {
 /** \class XorImageFilter
- * \brief Implements the XOR logical operator pixel-wise between two images.
+ * \brief Computes the XOR logical operator pixel-wise between two images.
  *
  * This class is parametrized over the types of the two
  * input images and the type of the output image.

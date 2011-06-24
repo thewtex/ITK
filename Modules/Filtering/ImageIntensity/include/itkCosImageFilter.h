@@ -24,7 +24,7 @@
 namespace itk
 {
 /** \class CosImageFilter
- * \brief Computes the vcl_cos(x) pixel-wise
+ * \brief Computes the cosine of each pixel.
  *
  * This filter is templated over the pixel type of the input image
  * and the pixel type of the output image.

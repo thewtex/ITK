@@ -61,7 +61,7 @@ private:
 }  // end namespace functor
 
 /** \class InvertIntensityImageFilter
- * \brief Invert intensity of an image
+ * \brief Invert the intensity of an image.
  *
  * InvertIntensityImageFilter invert intensity of pixels by
  * subtracting pixel value to a maximum value. The maximum value can

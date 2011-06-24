@@ -25,7 +25,7 @@
 namespace itk
 {
 /** \class NaryFunctorImageFilter
- * \brief Implements pixel-wise generic operation of Nth similar images.
+ * \brief Perform a generic pixel-wise operation on N images.
  *
  * This class is parameterized over the types of the input images
  * and the type of the output image.  It is also parameterized by the

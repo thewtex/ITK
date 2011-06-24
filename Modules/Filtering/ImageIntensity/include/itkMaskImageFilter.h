@@ -25,7 +25,7 @@
 namespace itk
 {
 /** \class MaskImageFilter
- * \brief Implements an operator for pixel-wise masking of the input
+ * \brief Mask an image with a mask.
  * image with the mask.
  *
  * This class is parametrized over the types of the

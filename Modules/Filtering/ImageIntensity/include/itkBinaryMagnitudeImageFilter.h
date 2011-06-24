@@ -23,7 +23,7 @@
 namespace itk
 {
 /** \class BinaryMagnitudeImageFilter
- * \brief Implements pixel-wise the computation of square root of the sum of squares.
+ * \brief Computes the square root of the sum of squares of corresponding input pixels.
  *
  * This filter is parametrized over the types of the two
  * input images and the type of the output image.

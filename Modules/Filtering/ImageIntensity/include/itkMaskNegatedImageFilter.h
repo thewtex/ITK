@@ -24,8 +24,7 @@
 namespace itk
 {
 /** \class MaskNegatedImageFilter
- * \brief Implements an operator for pixel-wise masking of the input
- * image with the negative of a mask.
+ * \brief Mask an image with the negative of a mask.
  *
  * This class is parametrized over the types of the
  * input image type, the mask image type and the type of the output image.

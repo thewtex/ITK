@@ -24,7 +24,7 @@
 namespace itk
 {
 /** \class AcosImageFilter
- * \brief Computes the vcl_acos(x) pixel-wise.
+ * \brief Computes the inverse cosine of each pixel.
  *
  * This filter is templated over the pixel type of the input image
  * and the pixel type of the output image.

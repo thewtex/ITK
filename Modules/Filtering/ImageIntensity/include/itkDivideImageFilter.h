@@ -24,7 +24,7 @@
 namespace itk
 {
 /** \class DivideImageFilter
- * \brief Implements an operator for pixel-wise division of two images.
+ * \brief Pixel-wise division of two images.
  *
  * This class is parametrized over the types of the two
  * input images and the type of the output image. When the divisor is zero,

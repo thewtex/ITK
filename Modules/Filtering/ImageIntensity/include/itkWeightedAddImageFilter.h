@@ -24,7 +24,7 @@
 namespace itk
 {
 /** \class WeightedAddImageFilter
- * \brief Implements an operator for computing a weighted sum of two images pixel-wise.
+ * \brief Computes a weighted sum of two images pixel-wise.
  *
  * This class is parametrized over the types of the two
  * input images and the type of the output image.

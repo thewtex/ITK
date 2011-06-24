@@ -24,7 +24,12 @@
 namespace itk
 {
 /** \class Atan2ImageFilter
- * \brief Computes arctangent pixel-wise from two images.
+ * \brief Computes two argument inverse tangent.
+ *
+ * The first argument to the atan function is provided by a pixel
+ * in the first input image (SetInput1()) and the corresponding
+ * pixel in the second input image (SetInput2()) is used as the second
+ * argument.
  *
  * This class is parametrized over the types of the two
  * input images and the type of the output image.
