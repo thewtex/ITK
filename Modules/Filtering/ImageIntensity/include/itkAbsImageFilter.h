@@ -36,6 +36,9 @@ namespace itk
 namespace Functor
 {
 template< class TInput, class TOutput >
+/** \class Abs
+ * \brief Computes the absolute value of a pixel.
+ */
 class Abs
 {
 public:
