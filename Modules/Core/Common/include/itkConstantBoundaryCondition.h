@@ -19,6 +19,7 @@
 #define __itkConstantBoundaryCondition_h
 #include "itkNumericTraits.h"
 #include "itkImageBoundaryCondition.h"
+#include "itkVariableLengthVector.h"
 
 namespace itk
 {
@@ -71,7 +72,9 @@ public:
   /** Extract information from the image type */
   typedef typename Superclass::PixelType        PixelType;
   typedef typename Superclass::PixelPointerType PixelPointerType;
+  typedef typename Superclass::RegionType       RegionType;
   typedef typename Superclass::IndexType        IndexType;
+  typedef typename Superclass::SizeType         SizeType;
   typedef typename Superclass::OffsetType       OffsetType;
   typedef typename Superclass::NeighborhoodType NeighborhoodType;
 
@@ -83,7 +86,21 @@ public:
 
   /** Default constructor. */
   ConstantBoundaryCondition()
-  { m_Constant = NumericTraits< PixelType >::Zero; }
+  {
+    PixelType *pixelPointer = NULL;
+    this->Initialize( pixelPointer );
+  }
+
+  /** Templated method to handle initialization of the constant. */
+  template < class TPixel >
+  void Initialize( const TPixel * )
+  { m_Constant = NumericTraits< TPixel >::Zero; }
+
+  /** Special version of initialize for images with pixel type
+   * VariableLengthVector. */
+  template < class TPixel >
+  void Initialize( const VariableLengthVector< TPixel > * )
+  { m_Constant.Fill( 0 ); }
 
   /** Computes and returns appropriate out-of-bounds values from
    * neighborhood iterator data. */
@@ -113,6 +130,51 @@ public:
     * the associated iterator's neighborhood or if it has some limited
     * subset (such as none) that it relies upon. */
   bool RequiresCompleteNeighborhood() { return false; }
+
+  /** Determines the necessary input region for the output region.
+   * For this boundary condition, only the intersection of the largest
+   * possible image region and the output requested region is needed.
+   *
+   * \param inputLargestPossibleRegion Largest possible region of the input image.
+   * \param outputRequestedRegion The output requested region.
+   * \return The necessary input region required to determine the
+   * pixel values in the outputRequestedRegion.
+   */
+  virtual RegionType GetInputRequestedRegion( const RegionType & inputLargestPossibleRegion,
+                                              const RegionType & outputRequestedRegion ) const
+  {
+    RegionType inputRequestedRegion( inputLargestPossibleRegion );
+    bool cropped = inputRequestedRegion.Crop( outputRequestedRegion );
+
+    if ( !cropped )
+      {
+      IndexType index; index.Fill( 0 );
+      SizeType size; size.Fill( 0 );
+      inputRequestedRegion.SetIndex( index );
+      inputRequestedRegion.SetSize( size );
+      }
+
+    return inputRequestedRegion;
+  }
+
+  /** Returns a value for a given pixel at an index. If the index is inside the
+   * bounds of the input image, then the pixel value is obtained from
+   * the input image. Otherwise, the constant value is returned.
+   *
+   * \param index The index of the desired pixel.
+   * \param image The image from which pixel values should be determined.
+   */
+  PixelType GetPixel( const IndexType & index, const TImage * image ) const
+  {
+    RegionType imageRegion = image->GetLargestPossibleRegion();
+    if ( imageRegion.IsInside( index ) )
+      {
+      return image->GetPixel( index );
+      }
+
+    return m_Constant;
+  }
+
 private:
   PixelType m_Constant;
 };
