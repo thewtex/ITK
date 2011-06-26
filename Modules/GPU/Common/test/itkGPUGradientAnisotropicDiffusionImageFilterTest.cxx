@@ -47,6 +47,7 @@ int itkGPUGradientAnisotropicDiffusionImageFilterTest(int argc, char *argv[])
   typedef itk::GPUImage< OutputPixelType, 3 >   OutputImageType;
 
   typedef itk::ImageFileReader< InputImageType  >  ReaderType;
+  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
 
   if(!IsGPUAvailable())
   {
@@ -54,18 +55,21 @@ int itkGPUGradientAnisotropicDiffusionImageFilterTest(int argc, char *argv[])
     return EXIT_FAILURE;
   }
 
-  if( argc <  3 )
-  {
-    std::cerr << "Error: missing arguments" << std::endl;
-    std::cerr << "inputfile outputfile " << std::endl;
-    //return EXIT_FAILURE;
-  }
-
   ReaderType::Pointer reader = ReaderType::New();
+  WriterType::Pointer writer = WriterType::New();
 
-  //reader->SetFileName( argv[1] );
-  //reader->SetFileName( "C:/Users/wkjeong/Proj/ITK/Examples/Data/BrainProtonDensitySlice.png" );
-  reader->SetFileName( "C:/Users/wkjeong/Proj/ITK/Modules/GPU/Common/data/input-testvolume.nrrd" );
+   if( argc <  3 )
+  {
+    /*std::cerr << "Error: missing arguments" << std::endl;
+    std::cerr << "inputfile outputfile " << std::endl;
+    return EXIT_FAILURE;*/
+    reader->SetFileName( "C:/Users/wkjeong/Proj/ITK/Modules/GPU/Common/data/input-testvolume.nrrd" );
+  }
+  else
+  {
+    reader->SetFileName( argv[1] );
+    writer->SetFileName( argv[2] );
+  }
 
   // Create CPU/GPU anistorpic diffusion filter
   typedef itk::GradientAnisotropicDiffusionImageFilter< InputImageType, OutputImageType > CPUAnisoDiffFilterType;

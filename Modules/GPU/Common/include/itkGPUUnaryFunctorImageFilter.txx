@@ -32,15 +32,19 @@ GPUUnaryFunctorImageFilter< TInputImage, TOutputImage, TFunction, TParentImageFi
   int imgSize[3];
   imgSize[0] = imgSize[1] = imgSize[2] = 1;
 
-  for(int i=0; i<(int)TInputImage::ImageDimension; i++)
+  int ImageDim = (int)TInputImage::ImageDimension;
+
+  for(int i=0; i<ImageDim; i++)
   {
      imgSize[i] = outSize[i];
   }
 
-  size_t localSize[2], globalSize[2];
-  localSize[0] = localSize[1] = 16;
-  globalSize[0] = localSize[0]*(unsigned int)ceil((float)outSize[0]/(float)localSize[0]); // total # of threads
-  globalSize[1] = localSize[1]*(unsigned int)ceil((float)outSize[1]/(float)localSize[1]);
+  size_t localSize[3], globalSize[3];
+  localSize[0] = localSize[1] = localSize[2] = BLOCK_SIZE[ImageDim-1];
+  for(int i=0; i<ImageDim; i++)
+  {
+    globalSize[i] = localSize[i]*(unsigned int)ceil((float)outSize[i]/(float)localSize[i]); // total # of threads
+  }
 
   // arguments set up using Functor
   int argidx = (this->GetFunctor()).SetGPUKernelArguments(this->m_GPUKernelManager, m_UnaryFunctorImageFilterGPUKernelHandle);
@@ -53,7 +57,7 @@ GPUUnaryFunctorImageFilter< TInputImage, TOutputImage, TFunction, TParentImageFi
   }
 
   // launch kernel
-  this->m_GPUKernelManager->LaunchKernel(m_UnaryFunctorImageFilterGPUKernelHandle, (int)TInputImage::ImageDimension, globalSize, localSize );
+  this->m_GPUKernelManager->LaunchKernel(m_UnaryFunctorImageFilterGPUKernelHandle, ImageDim, globalSize, localSize );
 }
 
 } // end of namespace itk

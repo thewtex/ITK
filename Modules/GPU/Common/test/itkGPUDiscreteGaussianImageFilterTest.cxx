@@ -71,27 +71,20 @@ int itkGPUDiscreteGaussianImageFilterTest(int argc, char *argv[])
   WriterType::Pointer writer = WriterType::New();
 
 
-/*
-  if( argc <  3 )
-    {
-    std::cerr << "Error: missing arguments" << std::endl;
-    std::cerr << "inputfile outputfile " << std::endl;
-    return EXIT_FAILURE;
-    }
-
-  reader->SetFileName( argv[1] );
-  writer->SetFileName( argv[2] );
-*/
-  if( ImageDimension == 3 )
+ if( argc <  3 )
   {
+    /*std::cerr << "Error: missing arguments" << std::endl;
+    std::cerr << "inputfile outputfile " << std::endl;
+    return EXIT_FAILURE;*/
     reader->SetFileName( "C:/Users/wkjeong/Proj/ITK/Modules/GPU/Common/data/input-testvolume.nrrd" );
   }
   else
   {
-    exit(0);
+    reader->SetFileName( argv[1] );
+    writer->SetFileName( argv[2] );
   }
 
-  float variance = 8.0;
+  float variance = 4.0;
 
   // test 1~8 threads for CPU
   for(int nThreads = 1; nThreads <= 8; nThreads++)

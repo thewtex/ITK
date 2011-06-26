@@ -33,6 +33,7 @@
 #include "itkGPUImageToImageFilter.h"
 #include "itkGPUBinaryThresholdImageFilter.h"
 
+#define ImageDimension 3 //2
 
 int itkGPUBinaryThresholdImageFilterTest(int argc, char *argv[])
 {
@@ -43,8 +44,8 @@ int itkGPUBinaryThresholdImageFilterTest(int argc, char *argv[])
   typedef   unsigned char  InputPixelType;
   typedef   unsigned char  OutputPixelType;
 
-  typedef itk::GPUImage< InputPixelType,  2 >   InputImageType;
-  typedef itk::GPUImage< OutputPixelType, 2 >   OutputImageType;
+  typedef itk::GPUImage< InputPixelType,  ImageDimension >   InputImageType;
+  typedef itk::GPUImage< OutputPixelType, ImageDimension >   OutputImageType;
 
   typedef itk::ImageFileReader< InputImageType  >  ReaderType;
   typedef itk::ImageFileWriter< OutputImageType >  WriterType;
@@ -59,15 +60,17 @@ int itkGPUBinaryThresholdImageFilterTest(int argc, char *argv[])
   }
 
   if( argc <  3 )
-    {
+  {
     /*std::cerr << "Error: missing arguments" << std::endl;
     std::cerr << "inputfile outputfile " << std::endl;
     return EXIT_FAILURE;*/
-    }
-
-  reader->SetFileName( "C:/Users/wkjeong/Proj/ITK/Modules/GPU/Common/data/input-testvolume.nrrd" );
-  //reader->SetFileName( argv[1] );
-  //writer->SetFileName( argv[2] );
+    reader->SetFileName( "C:/Users/wkjeong/Proj/ITK/Modules/GPU/Common/data/input-testvolume.nrrd" );
+  }
+  else
+  {
+    reader->SetFileName( argv[1] );
+    writer->SetFileName( argv[2] );
+  }
 
   typedef itk::BinaryThresholdImageFilter< InputImageType, OutputImageType > ThresholdFilterType;
   typedef itk::GPUBinaryThresholdImageFilter< InputImageType, OutputImageType > GPUThresholdFilterType;
@@ -91,7 +94,7 @@ int itkGPUBinaryThresholdImageFilterTest(int argc, char *argv[])
     CPUFilter->SetInsideValue(  insideValue  );
     CPUFilter->SetUpperThreshold( upperThreshold );
     CPUFilter->SetLowerThreshold( lowerThreshold );
-    CPUFilter->SetInPlace( true );
+    //CPUFilter->SetInPlace( true );
     CPUFilter->SetInput( reader->GetOutput() );
     CPUFilter->Update();
 
@@ -111,7 +114,7 @@ int itkGPUBinaryThresholdImageFilterTest(int argc, char *argv[])
       GPUFilter->SetInsideValue(  insideValue  );
       GPUFilter->SetUpperThreshold( upperThreshold );
       GPUFilter->SetLowerThreshold( lowerThreshold );
-      GPUFilter->SetInPlace( true );
+      //GPUFilter->SetInPlace( true );
       GPUFilter->SetInput( reader->GetOutput() );
       GPUFilter->Update();
 

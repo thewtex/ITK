@@ -64,17 +64,20 @@ int itkGPUMeanImageFilterTest(int argc, char *argv[])
 
   ReaderType::Pointer reader = ReaderType::New();
   WriterType::Pointer writer = WriterType::New();
-/*
-  if( argc <  3 )
-    {
-    std::cerr << "Error: missing arguments" << std::endl;
-    std::cerr << "inputfile outputfile " << std::endl;
-    return EXIT_FAILURE;
-    }
 
-  reader->SetFileName( argv[1] );
-  writer->SetFileName( argv[2] );
-*/
+  if( argc <  3 )
+  {
+    /*std::cerr << "Error: missing arguments" << std::endl;
+    std::cerr << "inputfile outputfile " << std::endl;
+    return EXIT_FAILURE;*/
+    reader->SetFileName( "C:/Users/wkjeong/Proj/ITK/Modules/GPU/Common/data/input-testvolume.nrrd" );
+  }
+  else
+  {
+    reader->SetFileName( argv[1] );
+    writer->SetFileName( argv[2] );
+  }
+
   //
   // Note: We use regular itk filter type here but factory will automatically create
   //       GPU filter for Median filter and CPU filter for threshold filter.
@@ -87,8 +90,6 @@ int itkGPUMeanImageFilterTest(int argc, char *argv[])
   indexRadius[0] = 2; // radius along x
   indexRadius[1] = 2; // radius along y
   indexRadius[2] = 2; // radius along z
-
-  reader->SetFileName( "C:/Users/wkjeong/Proj/ITK/Modules/GPU/Common/data/input-testvolume.nrrd" );
 
   // test 1~8 threads for CPU
   for(int nThreads = 1; nThreads <= 8; nThreads++)
