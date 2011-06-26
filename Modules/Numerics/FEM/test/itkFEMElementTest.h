@@ -42,10 +42,13 @@
 #define IDL_OUTPUT          0
 #define DEBUG_FEM_TESTS     ( MATLAB_OUTPUT || IDL_OUTPUT )
 
+int itkFEMElementTest(int, char * [] );
 
-int itkFEMElementTest(int, char* [] );
-//void PrintResults(Solver&, int, char);
+// void PrintResults(Solver&, int, char);
 void PrintK( itk::fem::Solver &, int, char);
-void PrintF( itk::fem::Solver&, int, char);
-void PrintNodalCoordinates( itk::fem::Solver&, int, char);
-void PrintU( itk::fem::Solver&, int, char);
+
+void PrintF( itk::fem::Solver &, int, char);
+
+void PrintNodalCoordinates( itk::fem::Solver &, int, char);
+
+void PrintU( itk::fem::Solver &, int, char);
