@@ -68,7 +68,7 @@ bool
 GPUReduction< TElement >
 ::isPow2(unsigned int x)
 {
-    return ((x&(x-1))==0);
+    return ((x&(x-1)) == 0);
 }
 
 template< class TElement >
@@ -348,10 +348,10 @@ GPUReduction< TElement >
     TElement c = (TElement)0.0;
     for (int i = 1; i < size; i++)
     {
-        TElement y = data[i] - c;
-        TElement t = sum + y;
-        c = (t - sum) - y;
-        sum = t;
+        //TElement y = data[i] - c;
+        //TElement t = sum + y;
+        //c = (t - sum) - y;
+        sum = sum + data[i];
     }
     m_CPUResult = sum;
     return sum;

@@ -471,6 +471,9 @@ GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField
   // launch kernel
   this->m_GPUKernelManager->LaunchKernel(m_SmoothDeformationFieldGPUKernelHandle, (int)TDeformationField::ImageDimension, globalSize, localSize );
 
+  //debug
+  //otPtr->GetGPUDataManager()->SetCPUDirtyFlag(false);
+  //void *tmpBuf = otPtr->GetBufferPointer();
 }
 
 /*
@@ -582,6 +585,7 @@ GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField
   m_GPUSmoothingKernel = GPUDataManager::New();
   m_GPUSmoothingKernel->SetBufferSize( sizeof(float)*m_SmoothingKernelSize );
   m_GPUSmoothingKernel->SetCPUBufferPointer( m_SmoothingKernel );
+  m_GPUSmoothingKernel->SetBufferFlag( CL_MEM_READ_ONLY );
   m_GPUSmoothingKernel->Allocate();
 
   m_GPUSmoothingKernel->SetGPUDirtyFlag(true);

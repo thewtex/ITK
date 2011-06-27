@@ -306,7 +306,7 @@ __kernel void ComputeUpdate(__global const IMGPIXELTYPE *fix,
 
   float2 grad, update;
 
-  if(gix < width)
+  if(gix < width && giy < height)
     {
     xwarp = gix + out[gidx2];
     ywarp = giy + out[gidx2+1];
@@ -376,7 +376,7 @@ __kernel void ComputeUpdate(__global const IMGPIXELTYPE *fix,
 
   float3 grad, update;
 
-  if(gix < width)
+  if(gix < width && giy < height && giz < depth)
     {
     xwarp = gix + out[gidx2];
     ywarp = giy + out[gidx2+1];

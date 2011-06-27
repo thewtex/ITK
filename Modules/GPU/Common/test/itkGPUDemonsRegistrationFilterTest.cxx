@@ -60,15 +60,17 @@ public:
     std::cout << "Metric: "   << m_Process->GetMetric()   << "  ";
     std::cout << "RMSChange: " << m_Process->GetRMSChange() << "  ";
     std::cout << std::endl;
-    if ( m_Process->GetElapsedIterations() == 5000 )
+    if ( m_Process->GetElapsedIterations() == 10000 )
       { m_Process->StopRegistration(); }
     }
   typename TRegistration::Pointer m_Process;
 };
 
 const unsigned int Dimension = 2;
-const unsigned int numOfIterations = 1000;
-itk::TimeProbe gpuInitTime;
+const unsigned int numOfIterations = 2000;
+
+itk::TimeProbe gpuTime, cpuTime;
+itk::TimeProbe gpuInitTime, computeUpdateTime, applyUpdateTime, smoothFieldTime;
 
 typedef float                                           InternalPixelType;
 typedef itk::Vector< float, Dimension >                 VectorPixelType;
@@ -109,10 +111,9 @@ int itkGPUDemonsRegistrationFilterTest(int argc, char *argv[])
   GPUDeformationFieldType::Pointer gpuOut;
   CPUDeformationFieldType::Pointer cpuOut;
 
-  int testIterations = 6;
+  int testIterations = 2;
   for (int i=0; i<testIterations; i++)
     {
-    itk::TimeProbe gpuTime, cpuTime;
     std::cout << "Starting GPU Demons" << std::endl;
     gpuTime.Start();
     gpuInitTime.Start();

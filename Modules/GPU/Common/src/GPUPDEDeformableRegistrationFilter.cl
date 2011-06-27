@@ -25,7 +25,7 @@
 
 __kernel void SmoothDeformationField(__global OUTPIXELTYPE *out,
                           __global OUTPIXELTYPE *swap,
-						              __global OUTPIXELTYPE *filter, int ksize,
+						              __constant OUTPIXELTYPE *filter, int ksize,
                           int width)
 {
   int gix = get_global_id(0);
@@ -58,7 +58,7 @@ __kernel void SmoothDeformationField(__global OUTPIXELTYPE *out,
 
 __kernel void SmoothDeformationField(__global OUTPIXELTYPE *out,
                           __global OUTPIXELTYPE *swap,
-						              __global OUTPIXELTYPE *filter, int ksize,
+						              __constant OUTPIXELTYPE *filter, int ksize,
                           int width, int height)
 {
   int gix = get_global_id(0);
@@ -116,7 +116,7 @@ __kernel void SmoothDeformationField(__global OUTPIXELTYPE *out,
 #define DIM 3
 __kernel void SmoothDeformationField(__global OUTPIXELTYPE *out,
                           __global OUTPIXELTYPE *swap,
-						              __global OUTPIXELTYPE *filter, int ksize,
+						              __constant OUTPIXELTYPE *filter, int ksize,
                           int width, int height, int depth)
 {
   int gix = get_global_id(0);
