@@ -153,11 +153,18 @@ int itkMaskNegatedImageFilterTest(int, char* [] )
 
   filter->Print( std::cout );
 
+  // Test named mutator/accessors
+  {
+  filter->SetMaskImage( inputImageB );
+  myFilterType::MaskImageType::ConstPointer mask = filter->GetMaskImage();
+  if(!mask)
+    {
+    std::cerr << "Mask not retrieved successfully!" << std::endl;
+    return EXIT_FAILURE;
+    }
+  }
+
   // All objects should be automatically destroyed at this point
   return EXIT_SUCCESS;
 
 }
-
-
-
-
