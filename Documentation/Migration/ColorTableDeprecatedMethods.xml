@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
+<!DOCTYPE Change SYSTEM "http://ij.itk.org/itkfaq/ITKMigration.dtd">
 <!--**
 **
 ** ColorTableDeprecatedMethods.xml
@@ -44,6 +44,8 @@
       colors->useDiscrete();
      ]]>
     </Old>
+  </SampleCode>
+  <SampleCode>
     <New>
      <![CDATA[
       #include "itkColorTable.h"
@@ -54,6 +56,8 @@
       colors->UseDiscreteColors();
      ]]>
     </New>
+  </SampleCode>
+  <SampleCode>
     <Old>
      <![CDATA[
       #include "itkColorTable.h"
@@ -63,6 +67,8 @@
       unsigned char green = ctable->color(0, 1);
      ]]>
     </Old>
+  </SampleCode>
+  <SampleCode>
     <New>
      <![CDATA[
       #include "itkColorTable.h"
@@ -72,6 +78,8 @@
       unsigned char green = ctable->GetColorComponent(0, 1);
      ]]>
     </New>
+  </SampleCode>
+  <SampleCode>
     <Old>
      <![CDATA[
       #include "itkColorTable.h"
@@ -81,6 +89,8 @@
       unsigned char blue = ctable->color(3)->GetBlue();
      ]]>
     </Old>
+  </SampleCode>
+  <SampleCode>
     <New>
      <![CDATA[
       #include "itkColorTable.h"
@@ -90,6 +100,8 @@
       unsigned char blue = ctable->GetColor(3).GetBlue();
      ]]>
     </New>
+  </SampleCode>
+  <SampleCode>
     <Old>
      <![CDATA[
       #include "itkColorTable.h"
@@ -99,6 +111,8 @@
       unsigned char blue = ctable->GetColor(3)->GetBlue();
      ]]>
     </Old>
+  </SampleCode>
+  <SampleCode>
     <New>
      <![CDATA[
       #include "itkColorTable.h"
@@ -108,6 +122,8 @@
       unsigned char blue = ctable->GetColor(3).GetBlue();
      ]]>
     </New>
+  </SampleCode>
+  <SampleCode>
     <Old>
      <![CDATA[
       #include "itkColorTable.h"
@@ -117,6 +133,8 @@
       char *name = ctable->GetColorName(5);
      ]]>
     </Old>
+  </SampleCode>
+  <SampleCode>
     <New>
      <![CDATA[
       #include "itkColorTable.h"
@@ -126,6 +144,8 @@
       std::string name = ctable->GetColorName(5);
      ]]>
     </New>
+  </SampleCode>
+  <SampleCode>
     <Old>
      <![CDATA[
       #include "itkColorTable.h"
@@ -135,6 +155,8 @@
       char *name = ctable->colorName(5);
      ]]>
     </Old>
+  </SampleCode>
+  <SampleCode>
     <New>
       <![CDATA[
       #include "itkColorTable.h"
