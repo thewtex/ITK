@@ -143,6 +143,21 @@ public:
     return this->GetFunctor().GetOutsideValue();
   }
 
+  /** Set/Get the mask image. Pixels set to zero in the mask image will retain
+   *  the original value of the input image while non-zero pixels in
+   *  the mask will be set to the "OutsideValue".
+   */
+  void SetMaskImage(const TMaskImage *maskImage)
+  {
+    // Process object is not const-correct so the const casting is required.
+    this->SetNthInput( 1, const_cast< TMaskImage * >( maskImage ) );
+  }
+
+  const TMaskImage * GetMaskImage()
+  {
+    return static_cast<const TMaskImage*>(this->ProcessObject::GetInput(1));
+  }
+
 #ifdef ITK_USE_CONCEPT_CHECKING
   /** Begin concept checking */
   itkConceptMacro( MaskEqualityComparableCheck,
