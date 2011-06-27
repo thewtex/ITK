@@ -34,6 +34,8 @@
 #include "itkImageFileWriter.h"
 #include "itkBinaryThresholdImageFilter.h"
 #include "itkCommand.h"
+#include "itkSmartPointer.h"
+#include "itkTimeProbe.h"
 
 #include "itkGPUImage.h"
 #include "itkGPUKernelManager.h"
@@ -58,14 +60,127 @@ public:
     std::cout << "Metric: "   << m_Process->GetMetric()   << "  ";
     std::cout << "RMSChange: " << m_Process->GetRMSChange() << "  ";
     std::cout << std::endl;
-    if ( m_Process->GetElapsedIterations() == 150 )
+    if ( m_Process->GetElapsedIterations() == 5000 )
       { m_Process->StopRegistration(); }
     }
   typename TRegistration::Pointer m_Process;
 };
+
+const unsigned int Dimension = 2;
+const unsigned int numOfIterations = 1000;
+itk::TimeProbe gpuInitTime;
+
+typedef float                                           InternalPixelType;
+typedef itk::Vector< float, Dimension >                 VectorPixelType;
+typedef itk::GPUImage<  VectorPixelType, Dimension >    GPUDeformationFieldType;
+typedef itk::Image<  VectorPixelType, Dimension >       CPUDeformationFieldType;
+
+itk::SmartPointer<GPUDeformationFieldType> itkGPUDemons(int argc, char *argv[], unsigned int &size);
+itk::SmartPointer<CPUDeformationFieldType> itkCPUDemons(int argc, char *argv[], unsigned int &size);
+
+char *AppendFileName(char *src, char *postfix)
+{
+  char *dest = new char[strlen(src) + strlen(postfix) + 1];
+  char *pos = strrchr(src, '.');
+  int skip = pos - src;
+  sprintf(dest, "%s", src);
+  sprintf(dest + skip, "%s", postfix);
+  sprintf(dest + skip + strlen(postfix), "%s", pos);
+  return dest;
+}
 }
 
 int itkGPUDemonsRegistrationFilterTest(int argc, char *argv[])
+{
+  if( argc < 4 )
+    {
+    std::cerr << "Missing Parameters " << std::endl;
+    std::cerr << "Usage: " << argv[0];
+    std::cerr << " fixedImageFile movingImageFile ";
+    std::cerr << " outputImageFile " << std::endl;
+    std::cerr << " [outputDeformationFieldFile] " << std::endl;
+    return EXIT_SUCCESS;
+    }
+
+  bool passed;
+
+  unsigned int size1 = 0, size2 = 0;
+
+  GPUDeformationFieldType::Pointer gpuOut;
+  CPUDeformationFieldType::Pointer cpuOut;
+
+  int testIterations = 6;
+  for (int i=0; i<testIterations; i++)
+    {
+    itk::TimeProbe gpuTime, cpuTime;
+    std::cout << "Starting GPU Demons" << std::endl;
+    gpuTime.Start();
+    gpuInitTime.Start();
+    gpuOut = (itkGPUDemons(argc, argv, size1));
+    gpuTime.Stop();
+    std::cout << "Finished GPU Demons" << std::endl;
+
+    std::cout << "Starting CPU Demons" << std::endl;
+    cpuTime.Start();
+    cpuOut = (itkCPUDemons(argc, argv, size2));
+    cpuTime.Stop();
+    std::cout << "Finished CPU Demons" << std::endl;
+
+    std::cout << "Total GPU time in seconds = " << gpuTime.GetMeanTime() << std::endl;
+    std::cout << "Initial GPU time in seconds = " << gpuInitTime.GetMeanTime() << std::endl;
+    std::cout << "Total CPU time in seconds = " << cpuTime.GetMeanTime() << std::endl;
+    }
+  InternalPixelType maxDiff = 0, avgDiff = 0, diff, tmp;
+
+  InternalPixelType *gpuBuf, *cpuBuf;
+  gpuBuf = (InternalPixelType *) gpuOut->GetBufferPointer();
+  cpuBuf = (InternalPixelType *) cpuOut->GetBufferPointer();
+
+  for (unsigned int i=0; i<size1; i++)
+    {
+    diff = 0;
+    for (unsigned int d=0; d<Dimension; d++)
+      {
+      tmp = gpuBuf[i*Dimension+d] - cpuBuf[i*Dimension+d];
+      diff += tmp * tmp;
+      }
+    diff = vcl_sqrt(diff);
+    avgDiff += diff;
+    if (diff > maxDiff)
+      {
+      maxDiff = diff;
+      }
+    }
+  avgDiff /= size1;
+  std::cout << "Maximum displacement difference = " << maxDiff << std::endl;
+  std::cout << "Average displacement difference = " << avgDiff << std::endl;
+
+  //std::cout << "Total GPU time in seconds = " << gpuTime.GetMeanTime() << std::endl;
+  //std::cout << "Initial GPU time in seconds = " << gpuInitTime.GetMeanTime() << std::endl;
+  //std::cout << "Total CPU time in seconds = " << cpuTime.GetMeanTime() << std::endl;
+  if (avgDiff < 2)
+    {
+    passed = true;
+    }
+  else
+    {
+    passed = false;
+    }
+
+  if ( !passed )
+    {
+    std::cout << "Test failed" << std::endl;
+    return EXIT_FAILURE;
+    }
+
+  std::cout << "Test passed" << std::endl;
+  return EXIT_SUCCESS;
+
+}
+
+namespace{
+
+itk::SmartPointer<GPUDeformationFieldType> itkGPUDemons(int argc, char *argv[], unsigned int &size)
 {
   // register object factory for GPU image and filter
   //itk::ObjectFactoryBase::RegisterFactory( itk::GPUImageFactory::New() );
@@ -77,16 +192,6 @@ int itkGPUDemonsRegistrationFilterTest(int argc, char *argv[])
   red->RandomTest();
   return 0;*/
   // testing done
-
-  if( argc < 4 )
-    {
-    std::cerr << "Missing Parameters " << std::endl;
-    std::cerr << "Usage: " << argv[0];
-    std::cerr << " fixedImageFile movingImageFile ";
-    std::cerr << " outputImageFile " << std::endl;
-    std::cerr << " [outputDeformationFieldFile] " << std::endl;
-    return EXIT_FAILURE;
-    }
 
   const unsigned int Dimension = 2;
   typedef unsigned short PixelType;
@@ -153,7 +258,7 @@ int itkGPUDemonsRegistrationFilterTest(int argc, char *argv[])
   filter->SetFixedImage( fixedImageCaster->GetOutput() );
   filter->SetMovingImage( matcher->GetOutput() );
 
-  filter->SetNumberOfIterations( 100 );
+  filter->SetNumberOfIterations( numOfIterations );
   filter->SetStandardDeviations( 1.0 );
   filter->Update();
 
@@ -189,11 +294,132 @@ int itkGPUDemonsRegistrationFilterTest(int argc, char *argv[])
   WriterType::Pointer      writer =  WriterType::New();
   CastFilterType::Pointer  caster =  CastFilterType::New();
 
-  writer->SetFileName( argv[3] );
+  char *outName = AppendFileName(argv[3], "_gpu");
+  writer->SetFileName( outName );
 
   caster->SetInput( warper->GetOutput() );
   writer->SetInput( caster->GetOutput()   );
   writer->Update();
 
-  return EXIT_SUCCESS;
+  size = (unsigned int)(filter->GetFixedImage()->GetOffsetTable()[Dimension]);
+  GPUDeformationFieldType::Pointer ret = filter->GetOutput();
+
+  return ret;
+}
+
+itk::SmartPointer<CPUDeformationFieldType> itkCPUDemons(int argc, char *argv[], unsigned int &size)
+{
+  const unsigned int Dimension = 2;
+  typedef unsigned short PixelType;
+
+  typedef itk::Image< PixelType, Dimension >  FixedImageType;
+  typedef itk::Image< PixelType, Dimension >  MovingImageType;
+
+  typedef itk::ImageFileReader< FixedImageType  > FixedImageReaderType;
+  typedef itk::ImageFileReader< MovingImageType > MovingImageReaderType;
+
+  FixedImageReaderType::Pointer fixedImageReader   = FixedImageReaderType::New();
+  MovingImageReaderType::Pointer movingImageReader = MovingImageReaderType::New();
+
+  fixedImageReader->SetFileName( argv[1] );
+  movingImageReader->SetFileName( argv[2] );
+
+  //casting pixel type from short to float
+  typedef float                                      InternalPixelType;
+  typedef itk::Image< InternalPixelType, Dimension > InternalImageType;
+  typedef itk::CastImageFilter< FixedImageType,
+                                InternalImageType >  FixedImageCasterType;
+  typedef itk::CastImageFilter< MovingImageType,
+                                InternalImageType >  MovingImageCasterType;
+
+  FixedImageCasterType::Pointer fixedImageCaster   = FixedImageCasterType::New();
+  MovingImageCasterType::Pointer movingImageCaster = MovingImageCasterType::New();
+
+  fixedImageCaster->SetInput( fixedImageReader->GetOutput() );
+  movingImageCaster->SetInput( movingImageReader->GetOutput() );
+
+  //maching intensity histogram
+  typedef itk::HistogramMatchingImageFilter<
+                                    InternalImageType,
+                                    InternalImageType >   MatchingFilterType;
+  MatchingFilterType::Pointer matcher = MatchingFilterType::New();
+
+
+  matcher->SetInput( movingImageCaster->GetOutput() );
+  matcher->SetReferenceImage( fixedImageCaster->GetOutput() );
+
+  matcher->SetNumberOfHistogramLevels( 1024 );
+  matcher->SetNumberOfMatchPoints( 7 );
+
+  matcher->ThresholdAtMeanIntensityOn();
+
+  //demons registration
+  typedef itk::Vector< float, Dimension >             VectorPixelType;
+  typedef itk::Image<  VectorPixelType, Dimension >   DeformationFieldType;
+  typedef itk::DemonsRegistrationFilter<
+                                InternalImageType,
+                                InternalImageType,
+                                DeformationFieldType> RegistrationFilterType;
+
+  RegistrationFilterType::Pointer filter = RegistrationFilterType::New();
+
+  typedef ShowProgressObject<RegistrationFilterType> ProgressType;
+  ProgressType progressWatch(filter);
+  itk::SimpleMemberCommand<ProgressType>::Pointer command;
+  command = itk::SimpleMemberCommand<ProgressType>::New();
+  command->SetCallbackFunction(&progressWatch,
+                               &ProgressType::ShowProgress);
+  filter->AddObserver( itk::ProgressEvent(), command);
+
+  filter->SetFixedImage( fixedImageCaster->GetOutput() );
+  filter->SetMovingImage( matcher->GetOutput() );
+
+  filter->SetNumberOfIterations( numOfIterations );
+  filter->SetStandardDeviations( 1.0 );
+  filter->Update();
+
+
+  //warp the image with the deformation field
+  typedef itk::WarpImageFilter<
+                          MovingImageType,
+                          MovingImageType,
+                          DeformationFieldType  >     WarperType;
+  typedef itk::LinearInterpolateImageFunction<
+                                   MovingImageType,
+                                   double          >  InterpolatorType;
+  WarperType::Pointer warper = WarperType::New();
+  InterpolatorType::Pointer interpolator = InterpolatorType::New();
+  FixedImageType::Pointer fixedImage = fixedImageReader->GetOutput();
+
+  warper->SetInput( movingImageReader->GetOutput() );
+  warper->SetInterpolator( interpolator );
+  warper->SetOutputSpacing( fixedImage->GetSpacing() );
+  warper->SetOutputOrigin( fixedImage->GetOrigin() );
+  warper->SetOutputDirection( fixedImage->GetDirection() );
+
+  warper->SetDeformationField( filter->GetOutput() );
+
+  //write the warped image into a file
+  typedef  unsigned char                           OutputPixelType;
+  typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
+  typedef itk::CastImageFilter<
+                        MovingImageType,
+                        OutputImageType > CastFilterType;
+  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+
+  WriterType::Pointer      writer =  WriterType::New();
+  CastFilterType::Pointer  caster =  CastFilterType::New();
+
+  char *outName = AppendFileName(argv[3], "_cpu");
+  writer->SetFileName( outName );
+
+  caster->SetInput( warper->GetOutput() );
+  writer->SetInput( caster->GetOutput()   );
+  writer->Update();
+
+  size = (unsigned int)(filter->GetFixedImage()->GetOffsetTable()[Dimension]);
+  CPUDeformationFieldType::Pointer ret = filter->GetOutput();
+
+  return ret;
+}
 }

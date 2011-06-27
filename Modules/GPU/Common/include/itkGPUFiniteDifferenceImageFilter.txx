@@ -86,7 +86,7 @@ GPUFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilter >
   TimeStepType dt;
 
 
-  while ( !this->Halt() && m_ElapsedIterations < 200)
+  while ( !this->Halt() ) //&& m_ElapsedIterations < 200
     {
 
     //this->GetOutput()->GetBufferPointer();
