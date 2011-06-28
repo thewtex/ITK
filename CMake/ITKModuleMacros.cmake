@@ -4,6 +4,7 @@ set(_ITKModuleMacros_DEFAULT_LABEL "ITKModular")
 
 include(${_ITKModuleMacros_DIR}/ITKModuleAPI.cmake)
 include(${_ITKModuleMacros_DIR}/ITKModuleDoxygen.cmake)
+include(${_ITKModuleMacros_DIR}/ITKModuleCPPCheckTest.cmake)
 
 macro(itk_module _name)
   itk_module_check_name(${_name})
@@ -99,6 +100,8 @@ macro(itk_module_impl)
 
   if(${itk-module}_THIRD_PARTY)
     itk_module_warnings_disable(C CXX)
+  else()
+    itk_module_cppcheck_test( ${itk-module} )
   endif()
 
   if(EXISTS ${${itk-module}_SOURCE_DIR}/src/CMakeLists.txt AND NOT ${itk-module}_NO_SRC)
