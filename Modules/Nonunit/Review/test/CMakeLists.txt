@@ -47,6 +47,9 @@ itkConvolutionImageFilterTestInt.cxx
 itkCoxDeBoorBSplineKernelFunctionTest.cxx
 itkCoxDeBoorBSplineKernelFunctionTest2.cxx
 itkCropLabelMapFilterTest1.cxx
+itkCSVFileToArray2DReaderTest.cxx
+itkCSVFileArray2DReaderWriterTest.cxx
+itkNumericObjectToCSVFileWriterTest.cxx
 itkDeformationFieldTransformTest.cxx
 itkDiffeomorphicDemonsRegistrationFilterTest.cxx
 itkDiffeomorphicDemonsRegistrationFilterTest2.cxx
@@ -493,6 +496,15 @@ itk_add_test(NAME itkCropLabelMapFilterTest1
     --compare ${ITK_DATA_ROOT}/Baseline/Review/cthead1-label-crop.mha
               ${ITK_TEST_OUTPUT_DIR}/cthead1-label-crop.mha
     itkCropLabelMapFilterTest1 ${ITK_DATA_ROOT}/Input/cthead1Label.png ${ITK_TEST_OUTPUT_DIR}/cthead1-label-crop.mha 40 50)
+itk_add_test(NAME itkCSVFileToArray2DReaderTest
+      COMMAND ITK-ReviewTestDriver itkCSVFileToArray2DReaderTest
+              DATA{Input/csvFileReaderTestInput.csv} )
+itk_add_test(NAME itkNumericObjectToCSVFileWriterTest
+      COMMAND ITK-ReviewTestDriver itkNumericObjectToCSVFileWriterTest
+              ${TEMP}/NumericObjectToCSVFileWriterOutput.csv)
+itk_add_test(NAME itkCSVFileArray2DReaderWriterTest
+      COMMAND ITK-ReviewTestDriver itkCSVFileArray2DReaderWriterTest
+              ${TEMP}/csvFileArray2DReaderWriterTestOutput.csv)
 itk_add_test(NAME itkDeformationFieldTransformTest
       COMMAND ITK-ReviewTestDriver itkDeformationFieldTransformTest)
 itk_add_test(NAME itkDiffeomorphicDemonsRegistrationFilterTest01
