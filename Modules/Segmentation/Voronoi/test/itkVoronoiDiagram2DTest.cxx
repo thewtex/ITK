@@ -77,7 +77,7 @@ int itkVoronoiDiagram2DTest(int, char* [] ){
   {
     std::cout<<"Vertices No."<<j;
     j++;
-    std::cout<<": At ("<<(*allVerts)[0]<<","<<(*allVerts)[1]<<")"<<std::endl;
+    std::cout<<": At ("<<(allVerts.Value())[0]<<","<<(allVerts.Value())[1]<<")"<<std::endl;
   }
 
   return EXIT_SUCCESS;
