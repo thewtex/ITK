@@ -159,6 +159,7 @@ add_executable(itkMathTest itkMathTest.cxx )
 itk_module_target_label(itkMathTest)
 target_link_libraries(itkMathTest ${ITK-Common_LIBRARIES})
 itk_add_test(NAME itkMathTest COMMAND itkMathTest)
+add_cppcheck_sources( CppCheckCommon itkMathTest )
 
 add_executable(itkSystemInformation itkSystemInformation.cxx)
 itk_module_target_label(itkSystemInformation)
