@@ -136,6 +136,7 @@ itkOptMattesMutualInformationImageToImageMetricThreadsTest1.cxx
 itkPadLabelMapFilterTest1.cxx
 itkPointsLocatorTest.cxx
 itkPhilipsRECImageIOTest.cxx
+itkPhilipsRECImageIOPrintTest.cxx
 itkRankImageFilterTest.cxx
 itkRegionalMaximaImageFilterTest.cxx
 itkRegionalMaximaImageFilterTest2.cxx
@@ -1245,6 +1246,12 @@ itk_add_test(NAME itkPointsLocatorTest
 itk_add_test(NAME itkPhilipsRECImageIOTest1
       COMMAND ITK-ReviewTestDriver itkPhilipsRECImageIOTest
               ${ITK_DATA_ROOT}/Input/T1_MEASUREMENT_4_1.PAR ${ITK_TEST_OUTPUT_DIR}/itkPhilipsRECImageIOTest1.mha)
+itk_add_test(NAME itkPhilipsRECImageIOTest2
+      COMMAND ITK-ReviewTestDriver itkPhilipsRECImageIOTest
+              DATA{Input/Test_Cardiac_Phase_7_1.REC.gz} ${ITK_TEST_OUTPUT_DIR}/itkPhilipsRECImageIOTest2.mha)
+itk_add_test(NAME itkPhilipsRECImageIOPrintTest1
+      COMMAND ITK-ReviewTestDriver itkPhilipsRECImageIOPrintTest
+              DATA{Input/Test_Cardiac_Phase_7_1.PAR})
 itk_add_test(NAME itkRankImageFilterTest3
       COMMAND ITK-ReviewTestDriver
     --compare ${ITK_DATA_ROOT}/Baseline/Review/itkRankImageFilter3.png
