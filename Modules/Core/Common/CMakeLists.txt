@@ -51,6 +51,10 @@ set(ITKCommon_INCLUDE_DIRS
 set(ITKCommon_LIBRARIES ITKCommon)
 
 itk_module_impl()
+add_cppcheck_dir( CommonSRC # _name
+  "${CMAKE_CURRENT_SOURCE_DIR}/src" #_dir
+  ${CMAKE_CURRENT_SOURCE_DIR}/include #_include_dirs
+  VERBOSE )
 
 install(FILES
   ${ITKCommon_BINARY_DIR}/itkConfigure.h
