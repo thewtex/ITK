@@ -99,8 +99,6 @@ itkPointGeometryTest.cxx
 itkMersenneTwisterRandomVariateGeneratorTest.cxx
 )
 
-
-
 set(ITKCommon2Tests
 itkMetaDataDictionaryTest.cxx
 itkStdStreamLogOutputTest.cxx
