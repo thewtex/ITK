@@ -28,20 +28,12 @@
 #include "itkFEMLoads.h"
 #include "itkFEMMaterials.h"
 
-#include "itkFEMSolverHyperbolic.h"
+#include "itkFEMSolver.h"
 #include "itkFEMSolverCrankNicolson.h"
 
-#include "itkFEMObjectFactory.h"
 #include "itkFEMUtility.h"
 
 #include "itkFEMException.h"
-
-#include "itkFEMGenerateMesh.h"
-
-
-// Perform the initialization of the library when this header is included
-#include "itkFEMInitialization.h"
-
 /**
  * \namespace itk::fem
  * \brief Contains finite element modeling (FEM) classes and support routines.
