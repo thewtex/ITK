@@ -90,6 +90,8 @@
 namespace itk
 {
 /** \class CellInterface
+ *  \brief An abstract interface for cells.
+ *
  * Define an abstract interface for cells.  Actual cell types derive from
  * this class.
  *

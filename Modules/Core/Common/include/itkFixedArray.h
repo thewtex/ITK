@@ -91,7 +91,7 @@ public:
   class ConstReverseIterator;
 
   /** \class ReverseIterator
-   * \brief A reverse iterator through the array.
+   * \brief A reverse iterator through an array.
    * \ingroup ITK-Common
    */
   class ReverseIterator
@@ -112,7 +112,7 @@ private:
   };
 
   /** \class ConstReverseIterator
-   * \brief A const reverse iterator through the array.
+   * \brief A const reverse iterator through an array.
    * \ingroup ITK-Common
    */
   class ConstReverseIterator

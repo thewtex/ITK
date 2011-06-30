@@ -24,7 +24,7 @@
 namespace itk
 {
 /** \class VertexCell
- * VertexCell represents a single vertex for a Mesh.
+ *  \brief Represents a single vertex for a Mesh.
  *
  * Template parameters for VertexCell:
  *

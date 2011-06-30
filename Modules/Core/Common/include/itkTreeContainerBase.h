@@ -24,6 +24,13 @@
 
 namespace itk
 {
+/** \class TreeContainerBase
+ *  \brief A base class for tree containers.
+ *
+ * \ingroup DataRepresentation
+ * \ingroup ITK-Common
+ */
+
 template< class TValueType >
 class TreeContainerBase:public Object
 {

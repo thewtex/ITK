@@ -25,6 +25,8 @@
 namespace itk
 {
 /** \class ImportImageContainer
+ *  \brief Defines an itk::Image front-end to a standard C-array.
+ *
  * Defines an itk::Image front-end to a standard C-array. This container
  * conforms to the ImageContainerInterface. This is a full-fleged Object,
  * so there is modification time, debug, and reference count information.

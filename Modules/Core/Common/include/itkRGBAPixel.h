@@ -30,7 +30,7 @@
 namespace itk
 {
 /** \class RGBAPixel
- * \brief Represent Red, Green, Blue cand Alpha component for color images
+ * \brief Represent Red, Green, Blue and Alpha components for color images.
  *
  * This class is templated over the representation used for each
  * component.

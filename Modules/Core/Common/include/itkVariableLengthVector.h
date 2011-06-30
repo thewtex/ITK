@@ -23,8 +23,7 @@
 namespace itk
 {
 /** \class VariableLengthVector
- * \brief VariableLengthVector is intended to represent an array whose
- * length can be defined at run-time.
+ * \brief Represents an array whose length can be defined at run-time.
  *
  * This class is templated over the data type. This data-type is meant
  * to be a scalar, such as float, double etc...

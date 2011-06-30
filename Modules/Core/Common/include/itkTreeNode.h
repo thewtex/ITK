@@ -28,7 +28,7 @@
 namespace itk
 {
 /** \class TreeNode
- *  \brief TreeNode class
+ *  \brief Represents a node in a tree.
  *
  * This class derives from the Object class.
  *

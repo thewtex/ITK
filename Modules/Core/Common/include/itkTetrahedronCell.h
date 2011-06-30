@@ -24,7 +24,7 @@
 namespace itk
 {
 /** \class TetrahedronCell
- * TetrahedronCell represents a tetrahedron for a Mesh.
+ *  \brief TetrahedronCell represents a tetrahedron for a Mesh.
  *
  * Template parameters for TetrahedronCell:
  *

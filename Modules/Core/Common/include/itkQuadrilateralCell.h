@@ -24,7 +24,7 @@
 namespace itk
 {
 /** \class QuadrilateralCell
- * QuadrilateralCell represents a quadrilateral for a Mesh.
+ *  \brief Represents a quadrilateral for a Mesh.
  *
  * Template parameters for QuadrilateralCell:
  *

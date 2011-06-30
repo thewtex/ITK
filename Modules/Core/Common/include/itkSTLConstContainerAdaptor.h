@@ -21,6 +21,9 @@
 namespace itk
 {
 /** \class STLConstContainerAdaptor
+ *  \brief An adapter object that casts a [const itk::XxxContainer] into [const std::xxx]
+ *         and enables access to the underlying data structure.
+ *
  * An adapter object that casts a [const itk::XxxContainer] into [const std::xxx]
  * and enables access to the underlying data structure.
  * The class is provided for interface consistency with STLContainerAdaptor

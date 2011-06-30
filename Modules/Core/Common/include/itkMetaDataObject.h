@@ -40,6 +40,9 @@ namespace itk
 {
 /**
  * \class MetaDataObject
+ * \brief Allows arbitrary data types to be stored as MetaDataObjectBase types,
+ *        and to be stored in a MetaDataDictionary.
+ *
  * \author Hans J. Johnson
  * The MetaDataObject class is a templated class that
  * is a specialization of the MetaDataObjectBase type.

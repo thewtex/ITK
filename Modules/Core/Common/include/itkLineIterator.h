@@ -24,7 +24,8 @@ namespace itk
 {
 /**
  * \class LineIterator
- * \brief Iterator that walks a Bresenham line through an ND image.
+ * \brief An iterator that walks a Bresenham line through an ND image
+ *        with write access to pixels.
  *
  * LineIterator is an iterator that walks a Bresenham line
  * through an image.  The iterator is constructed similar to other

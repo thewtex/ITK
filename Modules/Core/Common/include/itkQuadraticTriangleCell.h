@@ -24,7 +24,7 @@
 namespace itk
 {
 /** \class QuadraticTriangleCell
- * QuadraticTriangleCell represents a second order triangular patch for a Mesh.
+ *  \brief Represents a second order triangular patch for a Mesh.
  *
  * Template parameters for QuadraticTriangleCell:
  *

@@ -23,6 +23,8 @@
 namespace itk
 {
 /** \class LineCell
+ *  \brief Represents a line segment for a Mesh.
+ *
  * LineCell represents a line segment for a Mesh.
  *
  * Template parameters for LineCell:

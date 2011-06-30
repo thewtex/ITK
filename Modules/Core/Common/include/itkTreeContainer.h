@@ -24,7 +24,7 @@
 namespace itk
 {
 /** \class TreeContainer
- *  \brief TreeContainer class
+ *  \brief A tree container.
  *
  * This class derives from the TreeContainerBase class.
  *

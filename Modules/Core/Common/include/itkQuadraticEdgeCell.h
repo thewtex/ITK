@@ -23,7 +23,7 @@
 namespace itk
 {
 /** \class QuadraticEdgeCell
- * QuadraticEdgeCell represents a second order line segment for a Mesh.
+ *  \brief Represents a second order line segment for a Mesh.
  *
  * Template parameters for QuadraticEdgeCell:
  *

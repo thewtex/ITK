@@ -23,6 +23,9 @@
 namespace itk
 {
 /** \class ImageContainerInterface
+ *  \brief Used for reference when writing containers conforming to
+ *         this interface.
+ *
  * This should only be used for reference when writing containers
  * conforming to this interface.  ITK uses generic programming to
  * allow container type substitution, so polymorphism is not needed to

@@ -27,6 +27,8 @@
 namespace itk
 {
 /** \class DefaultDynamicMeshTraits
+ *  \brief A simple structure that holds type information for a mesh and its cells.
+ *
  * DefaultDynamicMeshTraits is a simple structure that holds type information
  * for a mesh and its cells.  It is used to avoid the passing of many
  * template parameters while still enjoying the benefits of generic

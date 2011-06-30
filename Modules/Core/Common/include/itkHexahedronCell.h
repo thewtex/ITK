@@ -24,6 +24,8 @@
 namespace itk
 {
 /** \class HexahedronCell
+ *  \brief Represents a hexahedron for a Mesh.
+ *
  * HexahedronCell represents a hexahedron for a Mesh.
  *
  * Template parameters for HexahedronCell:

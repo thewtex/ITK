@@ -36,6 +36,8 @@
 namespace itk
 {
 /** \class PolygonCell
+ *  \brief Represents a polygon in a Mesh.
+ *
  * PolygonCell represents a polygon for a Mesh.
  *  the points of the polygon can be dynamically changed.
  *
