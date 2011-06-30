@@ -20,6 +20,7 @@ itkImageLinearIteratorTest.cxx
 itkImageAdaptorPipeLineTest.cxx
 itkImportContainerTest.cxx
 itkImportImageTest.cxx
+itkImageFunctionImageFilterTest.cxx
 itkImageRandomIteratorTest.cxx
 itkImageRandomIteratorTest2.cxx
 itkImageRandomNonRepeatingIteratorWithIndexTest.cxx
@@ -189,6 +190,11 @@ itk_add_test(NAME itkAdaptorComparisonTest COMMAND ITK-Common1TestDriver itkAdap
 itk_add_test(NAME itkImageAdaptorPipeLineTest COMMAND ITK-Common1TestDriver itkImageAdaptorPipeLineTest)
 itk_add_test(NAME itkImportContainerTest COMMAND ITK-Common1TestDriver itkImportContainerTest)
 itk_add_test(NAME itkImportImageTest COMMAND ITK-Common1TestDriver itkImportImageTest)
+itk_add_test(NAME itkImageFunctionImageFilterTest COMMAND ITK-Common1TestDriver
+             --compare DATA{Baseline/itkImageFunctionImageFilter.mha}
+                       ${ITK_TEST_OUTPUT_DIR}/itkImageFunctionImageFilter.mha
+             itkImageFunctionImageFilterTest
+             ${ITK_TEST_OUTPUT_DIR}/itkImageFunctionImageFilter.mha)
 itk_add_test(NAME itkCellInterfaceTest COMMAND ITK-Common1TestDriver itkCellInterfaceTest)
 itk_add_test(NAME itkCovariantVectorGeometryTest COMMAND ITK-Common1TestDriver itkCovariantVectorGeometryTest)
 itk_add_test(NAME itkDataTypeTest COMMAND ITK-Common1TestDriver itkDataTypeTest)
