@@ -336,7 +336,120 @@ int itkLandmarkBasedTransformInitializerTest(int, char * [])
       }
   }
 
+  {
+  typedef unsigned char PixelType;
+  const unsigned int Dimension = 3;
+  typedef itk::Image<PixelType,Dimension> ImageType;
+  ImageType::Pointer fixedImage   = ImageType::New();
+  ImageType::Pointer movingImage = ImageType::New();
 
+  // Create fixed and moving images of size 30 x 30 x 30
+  //
+  ImageType::RegionType fRegion;
+  ImageType::SizeType   fSize;
+  ImageType::IndexType  fIndex;
+  fSize.Fill(30);
+  fIndex.Fill(0);
+  fRegion.SetSize( fSize );
+  fRegion.SetIndex( fIndex );
+  ImageType::RegionType mRegion;
+  ImageType::SizeType   mSize;
+  ImageType::IndexType  mIndex;
+  mSize.Fill(30);
+  mIndex.Fill(0);
+  mRegion.SetSize( mSize );
+  mRegion.SetIndex( mIndex );
+  fixedImage->SetLargestPossibleRegion( fRegion );
+  fixedImage->SetBufferedRegion( fRegion );
+  fixedImage->SetRequestedRegion( fRegion );
+  fixedImage->Allocate();
+  movingImage->SetLargestPossibleRegion( mRegion );
+  movingImage->SetBufferedRegion( mRegion );
+  movingImage->SetRequestedRegion( mRegion );
+  movingImage->Allocate();
+
+  typedef itk::AffineTransform<double,Dimension> TransformType;
+  TransformType::Pointer transform = TransformType::New();
+  typedef itk::LandmarkBasedTransformInitializer< TransformType,
+            ImageType, ImageType > TransformInitializerType;
+  TransformInitializerType::Pointer initializer = TransformInitializerType::New();
+  TransformInitializerType::LandmarkPointContainer fixedLandmarks;
+  TransformInitializerType::LandmarkPointContainer movingLandmarks;
+  double fixedLandMarkInit[6][3] =
+    {
+      { -1.33671, -279.739, 176.001 },
+      { 28.0989, -346.692, 183.367 },
+      { -1.36713, -257.43, 155.36 },
+      { -33.0851, -347.026, 180.865 },
+      { -0.16083, -268.529, 148.96 },
+      { -0.103873, -251.31, 122.973 }
+    };
+  double movingLandmarkInit[6][3] =
+    {
+      { -1.57264, -30.1293, 20.4644 },
+      { 28.1456, -93.081, -5.36121 },
+      { -1.57186, -0.250447, 12.5043 },
+      { -33.0134, -92.073, -8.68572 },
+      { -0.358551, -7.66854, 1.5261 },
+      { 0.194046, 20.2889, -12.6472 }
+    };
+  for(unsigned i = 0; i < 6; i++)
+    {
+    TransformInitializerType::LandmarkPointType fixedPoint, movingPoint;
+    for(unsigned j = 0; j < 3; j++)
+      {
+      fixedPoint[j] = fixedLandMarkInit[i][j];
+      movingPoint[j] = movingLandmarkInit[i][j];
+      }
+    fixedLandmarks.push_back(fixedPoint);
+    movingLandmarks.push_back(movingPoint);
+    }
+  initializer->SetFixedLandmarks(fixedLandmarks);
+  initializer->SetMovingLandmarks(movingLandmarks);
+  initializer->SetTransform(transform);
+  initializer->InitializeTransform();
+
+  std::cerr << "Transform " << transform << std::endl;
+
+  TransformInitializerType::PointsContainerConstIterator
+    fitr = fixedLandmarks.begin();
+  TransformInitializerType::PointsContainerConstIterator
+    mitr = movingLandmarks.begin();
+
+  typedef TransformInitializerType::OutputVectorType  OutputVectorType;
+  OutputVectorType error;
+  OutputVectorType::RealValueType tolerance = 0.1;
+  bool failed = false;
+
+  while( mitr != movingLandmarks.end() )
+    {
+    std::cout << "  Fixed Landmark: " << *fitr << " Moving landmark " << *mitr
+              << " Transformed fixed Landmark : " <<
+      transform->TransformPoint( *fitr ) << std::endl;
+
+    error = *mitr - transform->TransformPoint( *fitr);
+    if( error.GetNorm() > tolerance )
+      {
+      failed = true;
+      }
+
+    ++mitr;
+    ++fitr;
+    }
+
+  if( failed )
+    {
+    // Hang heads in shame
+    std::cout << "  Fixed landmarks transformed by the transform did not match closely "
+              << " enough with the moving landmarks.  The transform computed was: ";
+    transform->Print(std::cout);
+    std::cout << "  [FAILED]" << std::endl;
+    return EXIT_FAILURE;
+    }
+  else
+    {
+    std::cout << "  Landmark alignment using Affine transform [PASSED]" << std::endl;
+    }
+  }
   return EXIT_SUCCESS;
 }
-
