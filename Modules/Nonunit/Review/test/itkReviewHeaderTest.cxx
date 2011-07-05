@@ -97,6 +97,7 @@
 #include "itkGridImageSource.txx"
 #include "itkHessianToObjectnessMeasureImageFilter.txx"
 #include "itkHotColormapFunction.txx"
+#include "itkHoughTransformRadialVotingImageFilter.txx"
 #include "itkHSVColormapFunction.txx"
 #include "itkImageKernelOperator.txx"
 #include "itkImageToPathFilter.txx"

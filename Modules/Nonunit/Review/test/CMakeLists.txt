@@ -66,6 +66,7 @@ itkGaussianDerivativeOperatorTest.cxx
 itkGridForwardWarpImageFilterTest.cxx
 itkGridImageSourceTest.cxx
 itkHessianToObjectnessMeasureImageFilterTest.cxx
+itkHoughTransformRadialVotingImageFilterTest.cxx
 itkImageReadComplexWriteMagnitudeAndPhaseTest.cxx
 itkImageReadMagnitudeAndPhaseWriteComplexTest.cxx
 itkImageFunctionTest.cxx
@@ -1713,3 +1714,11 @@ itk_add_test(NAME itkHessianToObjectnessMeasureImageFilterTest2
   ${INPUTDATA}/DSA.png
   ${TEMP}/itkHessianToObjectnessMeasureImageFilterTestOutput2.mha
   0 0)
+
+itk_add_test(NAME itkHoughTransformRadialVotingImageFilterTest
+      COMMAND ITK-ReviewTestDriver
+  itkHoughTransformRadialVotingImageFilterTest
+  ${INPUTDATA}/embryo.tif
+  ${TEMP}/itkHoughTransformRadialVotingImageFilterTestOutput.mha
+  ${TEMP}/itkHoughTransformRadialVotingImageFilterTestAccumulator.mha
+  50 6 7.5 1 1 1 0.15 100 0.5 1 1 1)
