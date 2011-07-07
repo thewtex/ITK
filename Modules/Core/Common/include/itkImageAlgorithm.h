@@ -63,4 +63,4 @@ struct ImageAlgorithm
 #endif
 
 
-#endif //__itkImageAlgorithm_h
+#endif
