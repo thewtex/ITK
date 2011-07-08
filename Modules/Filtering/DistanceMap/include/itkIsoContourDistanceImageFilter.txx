@@ -310,29 +310,29 @@ IsoContourDistanceImageFilter< TInputImage, TOutputImage >
                unsigned int center,
                const std::vector< OffsetValueType >& stride )
 {
-  PixelType val0 = static_cast< PixelType >( inNeigIt.GetPixel(center) )
-      - static_cast< PixelType >( m_LevelSetValue );
+  double val0 = static_cast< double >( inNeigIt.GetPixel(center) )
+      - static_cast< double >( m_LevelSetValue );
   bool sign = ( val0 > 0 );
 
-  PixelType grad0[ImageDimension];
+  double grad0[ImageDimension];
 
   //Compute gradient at val0
   for ( unsigned int ng = 0; ng < ImageDimension; ng++ )
     {
-    grad0[ng] = static_cast< PixelType >( inNeigIt.GetNext(ng, 1) )
-        - static_cast< PixelType >( inNeigIt.GetPrevious(ng, 1) );
+    grad0[ng] = static_cast< double >( inNeigIt.GetNext(ng, 1) )
+        - static_cast< double >( inNeigIt.GetPrevious(ng, 1) );
     }
 
   for ( unsigned int n = 0; n < ImageDimension; n++ )
     {
-    PixelType val1 =  static_cast< PixelType >( inNeigIt.GetPixel(center + stride[n]) )
-        - static_cast< PixelType >( m_LevelSetValue );
+    double val1 =  static_cast< double >( inNeigIt.GetPixel(center + stride[n]) )
+        - static_cast< double >( m_LevelSetValue );
 
     bool neighSign = ( val1 > 0 );
 
     if ( sign != neighSign )
       {
-      PixelType grad1[ImageDimension];
+      double grad1[ImageDimension];
 
       for ( unsigned int ng = 0; ng < ImageDimension; ng++ )
         {
@@ -340,43 +340,43 @@ IsoContourDistanceImageFilter< TInputImage, TOutputImage >
             static_cast< PixelType >( inNeigIt.GetPixel(center + stride[n] + stride[ng]) )
             - static_cast< PixelType >( inNeigIt.GetPixel(center + stride[n] - stride[ng]) );
         }
-      PixelType diff;
+      double diff;
       if ( sign )
         {
-        diff = val0 - val1;
+        diff = static_cast< double >( val0 - val1 );
         }
       else
         {
-        diff = val1 - val0;
+        diff = static_cast< double >( val1 - val0 );
         }
-      if ( diff < NumericTraits< PixelType >::min() )
+      if ( diff < NumericTraits< double >::min() )
         {
         itkGenericExceptionMacro( << "diff " << diff
-                                 << " < NumericTraits< PixelType >::min()" );
+                                 << " < NumericTraits< double >::min()" );
         continue;
         }
 
       //Interpolate values
-      PixelType grad[ImageDimension];
+      double grad[ImageDimension];
 
-      PixelType alpha0 = 0.5;  //Interpolation factor
-      PixelType alpha1 = 0.5;  //Interpolation factor
+      double alpha0 = 0.5;  //Interpolation factor
+      double alpha1 = 0.5;  //Interpolation factor
 
-      PixelType norm = NumericTraits< PixelType >::Zero;
+      double norm = 0.;
 
       for ( unsigned int ng = 0; ng < ImageDimension; ng++ )
         {
-        grad[ng] = ( grad0[ng] * alpha0 + grad1[ng] * alpha1 ) / ( 2. * m_Spacing[ng] );
+        grad[ng] = ( grad0[ng] * alpha0 + grad1[ng] * alpha1 ) / ( 2. * static_cast< double >( m_Spacing[ng] ) );
         norm += grad[ng] * grad[ng];
         }
-      norm = vcl_sqrt( static_cast<double>(norm) );
+      norm = vcl_sqrt( norm );
 
-      if ( norm > NumericTraits< PixelType >::min() )
+      if ( norm > NumericTraits< double >::min() )
         {
-        PixelType val = vcl_fabs( grad[n] ) * m_Spacing[n] / norm / diff;
+        double val = vcl_fabs( grad[n] ) * m_Spacing[n] / norm / diff;
 
-        PixelType valNew0 = val0 * val;
-        PixelType valNew1 = val1 * val;
+        double valNew0 = val0 * val;
+        double valNew1 = val1 * val;
 
         if ( vcl_fabs( valNew0 ) < vcl_fabs( outNeigIt.GetNext(n, 0) ) )
           {
