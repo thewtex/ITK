@@ -7,6 +7,7 @@ itkNumericSeriesFileNames.cxx
 itkImageIOBase.cxx
 itkRegularExpressionSeriesFileNames.cxx
 itkStreamingImageIOBase.cxx
+itkCSVFileReaderBase.cxx
 )
 
 add_library(ITK-IO-Base ${ITK-IO-Base_SRC})
