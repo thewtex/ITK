@@ -38,6 +38,7 @@ itkMirrorPadImageTest.cxx
 itkResampleImageTest.cxx
 itkResampleImageTest2.cxx
 itkResamplePhasedArray3DSpecialCoordinatesImageTest.cxx
+itkResampleVectorImageFilterTest.cxx
 itkPushPopTileImageFilterTest.cxx
 itkShrinkImagePreserveObjectPhysicalLocations.cxx
 itkShrinkImageStreamingTest.cxx
@@ -102,6 +103,11 @@ itk_add_test(NAME itkVectorResampleImageFilterTest
     --compare ${ITK_DATA_ROOT}/Baseline/BasicFilters/VectorResampleImageFilterTest.png
               ${ITK_TEST_OUTPUT_DIR}/VectorResampleImageFilterTest.png
     itkVectorResampleImageFilterTest ${ITK_TEST_OUTPUT_DIR}/VectorResampleImageFilterTest.png)
+itk_add_test(NAME itkResampleVectorImageFilterTest
+      COMMAND ITK-ImageGridTestDriver
+    --compare ${ITK_DATA_ROOT}/Baseline/BasicFilters/ResampleVectorImageFilterTest.png
+              ${ITK_TEST_OUTPUT_DIR}/ResampleVectorImageFilterTest.png
+    itkResampleVectorImageFilterTest ${ITK_TEST_OUTPUT_DIR}/ResampleVectorImageFilterTest.png)
 itk_add_test(NAME itkPermuteAxesImageFilterTest
       COMMAND ITK-ImageGridTestDriver itkPermuteAxesImageFilterTest)
 itk_add_test(NAME itkOrientedImage2DTest01
