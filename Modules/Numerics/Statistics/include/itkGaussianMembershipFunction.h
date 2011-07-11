@@ -78,7 +78,11 @@ public:
    * Gaussian Distribution to speed up GetProbability */
   void SetCovariance(const CovarianceType & cov);
 
+  /** Get the covariance. */
   itkGetConstMacro(Covariance, CovarianceType);
+
+  /** Get the inverse covariance. */
+  itkGetConstMacro(InverseCovariance, CovarianceType)
 
   /** Gets the probability density of a measurement vector. */
   double Evaluate(const MeasurementVectorType & measurement) const;

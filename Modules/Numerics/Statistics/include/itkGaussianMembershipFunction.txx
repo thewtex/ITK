@@ -34,6 +34,7 @@ GaussianMembershipFunction< TMeasurementVector >
     }
   this->m_PreFactor = 0.0;
   this->m_Covariance.SetIdentity();
+  this->m_InverseCovariance.SetIdentity();
 }
 
 template< class TMeasurementVector >
