@@ -220,7 +220,7 @@ public:
       oValue += TriangleHelper< InputPointType >::Cotangent(pt1, pt2, ptB);
       }
 
-    return oValue / pt1.EuclideanDistanceTo(pt2);
+    return oValue / pt1.SquaredEuclideanDistanceTo(pt2);
   }
 };
 
