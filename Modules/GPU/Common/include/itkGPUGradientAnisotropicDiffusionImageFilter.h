@@ -62,10 +62,10 @@ public:
                GPUAnisotropicDiffusionImageFilter);
 
   /** Extract information from the superclass. */
-  typedef typename Superclass::UpdateBufferType UpdateBufferType;
+  typedef typename GPUSuperclass::UpdateBufferType UpdateBufferType;
 
   /** Extract information from the superclass. */
-  itkStaticConstMacro(ImageDimension, unsigned int, Superclass::ImageDimension);
+  itkStaticConstMacro(ImageDimension, unsigned int, GPUSuperclass::ImageDimension);
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   /** Begin concept checking */

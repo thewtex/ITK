@@ -25,6 +25,8 @@
 #include <iostream>
 #include <sstream>
 
+#include <itkVector.h>
+
 #ifdef __APPLE__
 
 #include <OpenCL/cl.h>
@@ -40,7 +42,6 @@
 #include <CL/cl_ext.h>
 
 #include <itkMacro.h>
-#include <itkVector.h>
 
 #endif
 
@@ -69,10 +70,10 @@ void OclCheckError(cl_int error);
 bool IsGPUAvailable();
 
 /** Get Typename in String */
-void GetTypenameInString( const type_info& intype, std::ostringstream& ret );
+void GetTypenameInString( const std::type_info& intype, std::ostringstream& ret );
 
 /** Get pixel dimension (number of channels).
  * For high-dimensional pixel format, only itk::Vector< type, 2/3 > is acceptable. */
-int GetPixelDimension( const type_info& intype );
+int GetPixelDimension( const std::type_info& intype );
 
 #endif

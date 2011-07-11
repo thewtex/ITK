@@ -31,8 +31,8 @@ template< class TImage >
 GPUScalarAnisotropicDiffusionFunction< TImage >
 ::GPUScalarAnisotropicDiffusionFunction()
 {
-  m_AnisotropicDiffusionFunctionGPUBuffer = GPUDataManager::New();
-  m_AnisotropicDiffusionFunctionGPUKernelManager = GPUKernelManager::New();
+  this->m_AnisotropicDiffusionFunctionGPUBuffer = GPUDataManager::New();
+  this->m_AnisotropicDiffusionFunctionGPUKernelManager = GPUKernelManager::New();
 
   // load GPU kernel
   std::ostringstream defines;
@@ -90,11 +90,11 @@ GPUScalarAnisotropicDiffusionFunction< TImage >
   }
 
   // Initialize & Allocate GPU Buffer
-  if(bufferSize != m_AnisotropicDiffusionFunctionGPUBuffer->GetBufferSize())
+  if(bufferSize != this->m_AnisotropicDiffusionFunctionGPUBuffer->GetBufferSize())
   {
-    m_AnisotropicDiffusionFunctionGPUBuffer->Initialize();
-    m_AnisotropicDiffusionFunctionGPUBuffer->SetBufferSize( sizeof(float)*bufferSize );
-    m_AnisotropicDiffusionFunctionGPUBuffer->Allocate();
+    this->m_AnisotropicDiffusionFunctionGPUBuffer->Initialize();
+    this->m_AnisotropicDiffusionFunctionGPUBuffer->SetBufferSize( sizeof(float)*bufferSize );
+    this->m_AnisotropicDiffusionFunctionGPUBuffer->Allocate();
   }
 
   typename GPUKernelManager::Pointer kernelManager = this->m_AnisotropicDiffusionFunctionGPUKernelManager;
@@ -103,7 +103,7 @@ GPUScalarAnisotropicDiffusionFunction< TImage >
   // Set arguments
   int argidx = 0;
   kernelManager->SetKernelArgWithImage(kernelHandle, argidx++, inPtr->GetGPUDataManager());
-  kernelManager->SetKernelArgWithImage(kernelHandle, argidx++, m_AnisotropicDiffusionFunctionGPUBuffer);
+  kernelManager->SetKernelArgWithImage(kernelHandle, argidx++, this->m_AnisotropicDiffusionFunctionGPUBuffer);
 
   // Set filter scale parameter
   for(int i=0; i<ImageDim; i++)
@@ -124,12 +124,12 @@ GPUScalarAnisotropicDiffusionFunction< TImage >
   double sum = 0;
   float *intermSum = new float[bufferSize];
 
-  m_AnisotropicDiffusionFunctionGPUBuffer->SetCPUBufferPointer( intermSum );
-  m_AnisotropicDiffusionFunctionGPUBuffer->SetCPUDirtyFlag( true );   // CPU is dirty
-  m_AnisotropicDiffusionFunctionGPUBuffer->SetGPUDirtyFlag( false );
-  m_AnisotropicDiffusionFunctionGPUBuffer->MakeCPUBufferUpToDate();   // Copy GPU->CPU
+  this->m_AnisotropicDiffusionFunctionGPUBuffer->SetCPUBufferPointer( intermSum );
+  this->m_AnisotropicDiffusionFunctionGPUBuffer->SetCPUDirtyFlag( true );   // CPU is dirty
+  this->m_AnisotropicDiffusionFunctionGPUBuffer->SetGPUDirtyFlag( false );
+  this->m_AnisotropicDiffusionFunctionGPUBuffer->MakeCPUBufferUpToDate();   // Copy GPU->CPU
 
-  for(int i=0; i<bufferSize; i++)
+  for(int i=0; i<(int)bufferSize; i++)
   {
     sum += (double)intermSum[i];
   }

@@ -69,14 +69,12 @@ public:
   typedef typename NumericTraits<InputPixelType>::ValueType InputPixelValueType;
   typedef typename NumericTraits<OutputPixelType>::RealType ComputingPixelType;
 
-  typedef typename GPUImage<TOperatorValueType,itkGetStaticConstMacro(ImageDimension)> NeighborhoodGPUBufferType;
+  typedef GPUImage<TOperatorValueType,itkGetStaticConstMacro(ImageDimension)> NeighborhoodGPUBufferType;
 
-  /** Extract some information from the image types.  Dimensionality
-   * of the two images is assumed to be the same.
-  itkStaticConstMacro(ImageDimension, unsigned int,
-                      TOutputImage::ImageDimension);
-  itkStaticConstMacro(InputImageDimension, unsigned int,
-                      TInputImage::ImageDimension);*/
+  /** ImageDimension constants */
+  itkStaticConstMacro(ImageDimension, unsigned int, TInputImage::ImageDimension);
+  itkStaticConstMacro(InputImageDimension, unsigned int, TInputImage::ImageDimension);
+  itkStaticConstMacro(OutputImageDimension, unsigned int, TOutputImage::ImageDimension);
 
   /** Image typedef support. */
   typedef TInputImage                      InputImageType;
@@ -91,7 +89,7 @@ public:
   typedef ZeroFluxNeumannBoundaryCondition< InputImageType > DefaultBoundaryCondition;
 
   /** Superclass typedefs. */
-  typedef typename Superclass::OutputImageRegionType OutputImageRegionType;
+  typedef typename GPUSuperclass::OutputImageRegionType OutputImageRegionType;
 
   /** Neighborhood types */
   typedef Neighborhood< OperatorValueType,

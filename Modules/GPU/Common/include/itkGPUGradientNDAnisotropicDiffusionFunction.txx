@@ -108,7 +108,7 @@ GPUGradientNDAnisotropicDiffusionFunction< TImage >
 template< class TImage >
 void
 GPUGradientNDAnisotropicDiffusionFunction< TImage >
-::GPUComputeUpdate( typename const TImage::Pointer output, typename TImage::Pointer buffer, void *globalData )
+::GPUComputeUpdate( const typename TImage::Pointer output, typename TImage::Pointer buffer, void *globalData )
 {
   /** Launch GPU kernel to update buffer with output
    * GPU version of ComputeUpdate() - compute entire update buffer */

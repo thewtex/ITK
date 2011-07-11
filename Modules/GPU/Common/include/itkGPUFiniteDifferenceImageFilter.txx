@@ -30,9 +30,9 @@ GPUFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilter >
 ::GPUFiniteDifferenceImageFilter()
 {
   m_UseImageSpacing    = false;
-  m_ElapsedIterations  = 0;
+  this->m_ElapsedIterations  = 0;
   m_DifferenceFunction = 0;
-  m_NumberOfIterations = NumericTraits< unsigned int >::max();
+  this->m_NumberOfIterations = NumericTraits< unsigned int >::max();
   m_MaximumRMSError = 0.0;
   m_RMSChange = 0.0;
   m_State = UNINITIALIZED;
@@ -79,7 +79,7 @@ GPUFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilter >
     this->AllocateUpdateBuffer();
 
     this->SetStateToInitialized();
-    m_ElapsedIterations = 0;
+    this->m_ElapsedIterations = 0;
     }
 
   // Iterative algorithm
@@ -98,7 +98,7 @@ GPUFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilter >
     //this->GetOutput()->GetBufferPointer();
     this->ApplyUpdate(dt);
     //this->GetOutput()->GetBufferPointer();
-    ++m_ElapsedIterations;
+    ++(this->m_ElapsedIterations);
 
     // Invoke the iteration event.
     this->InvokeEvent( IterationEvent() );
@@ -129,10 +129,10 @@ GPUFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilter >
 {
   // call the superclass' implementation of this method
   // copy the output requested region to the input requested region
-  Superclass::GenerateInputRequestedRegion();
+  CPUSuperclass::GenerateInputRequestedRegion();
 
   // get pointers to the input
-  typename Superclass::InputImagePointer inputPtr  =
+  typename GPUSuperclass::InputImagePointer inputPtr  =
     const_cast< TInputImage * >( this->GetInput() );
 
   if ( !inputPtr )
@@ -227,13 +227,13 @@ bool
 GPUFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilter >
 ::Halt()
 {
-  if ( m_NumberOfIterations != 0 )
+  if ( this->m_NumberOfIterations != 0 )
     {
     this->UpdateProgress( static_cast< float >( this->GetElapsedIterations() )
-                          / static_cast< float >( m_NumberOfIterations ) );
+                          / static_cast< float >( this->m_NumberOfIterations ) );
     }
 
-  if ( this->GetElapsedIterations() >= m_NumberOfIterations )
+  if ( this->GetElapsedIterations() >= this->m_NumberOfIterations )
     {
     return true;
     }
@@ -292,8 +292,8 @@ GPUFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilter >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   GPUSuperclass::PrintSelf(os, indent);
-
-  os << indent << "ElapsedIterations: " << m_ElapsedIterations << std::endl;
+/*
+  os << indent << "ElapsedIterations: " << this->m_ElapsedIterations << std::endl;
   os << indent << "UseImageSpacing: " << ( m_UseImageSpacing ? "On" : "Off" ) << std::endl;
   os << indent << "State: " << m_State << std::endl;
   os << indent << "MaximumRMSError: " << m_MaximumRMSError << std::endl;
@@ -311,6 +311,7 @@ GPUFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilter >
     os << indent << "DifferenceFunction: " << "(None)" << std::endl;
     }
   os << std::endl;
+*/
 }
 } // end namespace itk
 

@@ -81,12 +81,12 @@ public:
   typedef typename NumericTraits<OutputPixelType>::ValueType OutputPixelValueType;
 
   typedef typename NumericTraits< OutputPixelType >::RealType    RealOutputPixelType;
-  typedef typename GPUImage< OutputPixelType, ImageDimension >   RealOutputImageType;
+  typedef GPUImage< OutputPixelType, ImageDimension >   RealOutputImageType;
   typedef typename NumericTraits<RealOutputPixelType>::ValueType RealOutputPixelValueType;
-  typedef typename GPUNeighborhoodOperatorImageFilter< InputImageType, RealOutputImageType, RealOutputPixelValueType >      FirstFilterType;
-  typedef typename GPUNeighborhoodOperatorImageFilter< RealOutputImageType, RealOutputImageType, RealOutputPixelValueType > IntermediateFilterType;
-  typedef typename GPUNeighborhoodOperatorImageFilter< RealOutputImageType, OutputImageType, RealOutputPixelValueType >     LastFilterType;
-  typedef typename GPUNeighborhoodOperatorImageFilter< InputImageType, OutputImageType, RealOutputPixelValueType >          SingleFilterType;
+  typedef GPUNeighborhoodOperatorImageFilter< InputImageType, RealOutputImageType, RealOutputPixelValueType >      FirstFilterType;
+  typedef GPUNeighborhoodOperatorImageFilter< RealOutputImageType, RealOutputImageType, RealOutputPixelValueType > IntermediateFilterType;
+  typedef GPUNeighborhoodOperatorImageFilter< RealOutputImageType, OutputImageType, RealOutputPixelValueType >     LastFilterType;
+  typedef GPUNeighborhoodOperatorImageFilter< InputImageType, OutputImageType, RealOutputPixelValueType >          SingleFilterType;
 
   virtual void GenerateInputRequestedRegion()
   throw( InvalidRequestedRegionError );

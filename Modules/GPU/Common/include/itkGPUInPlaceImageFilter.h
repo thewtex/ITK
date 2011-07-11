@@ -27,10 +27,9 @@ namespace itk
 /** \class GPUInPlaceImageFilter
  * \brief Base class for GPU filters that take an image as input and overwrite that image as the output
  *
- * This class is the base class for GPU inplace filter.
- //The template parameter for parent class type
- //* must be InPlaceImageFilter type so that the GPU superclass of this class can be correctly defined
- //* (NOTE: TParentImageFilter::Superclass is used to define GPUImageToImageFilter class).
+ * This class is the base class for GPU inplace filter. The template parameter for parent class type
+ * must be InPlaceImageFilter type so that the GPU superclass of this class can be correctly defined
+ * (NOTE: TParentImageFilter::Superclass is used to define GPUImageToImageFilter class).
  *
  * \ingroup GPUCommon
  */
@@ -49,10 +48,14 @@ public:
   itkTypeMacro(GPUInPlaceImageFilter, GPUImageToImageFilter);
 
   /** Superclass typedefs. */
-  typedef typename Superclass::OutputImageType       OutputImageType;
-  typedef typename Superclass::OutputImagePointer    OutputImagePointer;
-  typedef typename Superclass::OutputImageRegionType OutputImageRegionType;
-  typedef typename Superclass::OutputImagePixelType  OutputImagePixelType;
+  typedef typename GPUSuperclass::OutputImageType       OutputImageType;
+  typedef typename GPUSuperclass::OutputImagePointer    OutputImagePointer;
+  typedef typename GPUSuperclass::OutputImageRegionType OutputImageRegionType;
+  typedef typename GPUSuperclass::OutputImagePixelType  OutputImagePixelType;
+
+  /** ImageDimension constants */
+  itkStaticConstMacro(InputImageDimension, unsigned int, TInputImage::ImageDimension);
+  itkStaticConstMacro(OutputImageDimension, unsigned int, TOutputImage::ImageDimension);
 
   /** Some convenient typedefs. */
   typedef TInputImage                           InputImageType;

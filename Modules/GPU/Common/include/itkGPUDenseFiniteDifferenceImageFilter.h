@@ -68,14 +68,14 @@ public:
 
   /** Dimensionality of input and output data is assumed to be the same.
    * It is inherited from the superclass. */
-  itkStaticConstMacro(ImageDimension, unsigned int, Superclass::ImageDimension);
+  itkStaticConstMacro(ImageDimension, unsigned int, GPUSuperclass::ImageDimension);
 
   /** The pixel type of the output image will be used in computations.
    * Inherited from the superclass. */
-  typedef typename Superclass::PixelType PixelType;
+  typedef typename GPUSuperclass::PixelType PixelType;
 
   /** The value type of a time step.  Inherited from the superclass. */
-  typedef typename Superclass::TimeStepType TimeStepType;
+  typedef typename GPUSuperclass::TimeStepType TimeStepType;
 
   /** The container type for the update buffer. */
   typedef OutputImageType UpdateBufferType;

@@ -36,10 +36,10 @@ class ITK_EXPORT GPUAnisotropicDiffusionImageFilter:
 public:
   /** Standard class typedefs. */
   typedef GPUAnisotropicDiffusionImageFilter                               Self;
-  typedef GPUDenseFiniteDifferenceImageFilter< TInputImage, TOutputImage > GPUSuperclass;
-  typedef AnisotropicDiffusionImageFilter< TInputImage, TOutputImage >  CPUSuperclass;
-  typedef SmartPointer< Self >                                          Pointer;
-  typedef SmartPointer< const Self >                                    ConstPointer;
+typedef GPUDenseFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilter > GPUSuperclass;
+  typedef AnisotropicDiffusionImageFilter< TInputImage, TOutputImage >     CPUSuperclass;
+  typedef SmartPointer< Self >                                             Pointer;
+  typedef SmartPointer< const Self >                                       ConstPointer;
 
   /** Run-time type information. */
   itkTypeMacro(GPUAnisotropicDiffusionImageFilter,
@@ -52,7 +52,7 @@ public:
 
   /** Dimensionality of input and output data is assumed to be the same.
    * It is inherited from the superclass. */
-  itkStaticConstMacro(ImageDimension, unsigned int, Superclass::ImageDimension);
+  itkStaticConstMacro(ImageDimension, unsigned int, GPUSuperclass::ImageDimension);
 
   /** The pixel type of the output image will be used in computations.
    * Inherited from the superclass. */

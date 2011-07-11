@@ -68,7 +68,7 @@ namespace itk
     virtual void MakeGPUBufferUpToDate();
 
     /** Grafting GPU Image Data */
-    virtual void Graft(const typename GPUImageDataManager* data);
+    virtual void Graft(const GPUImageDataManager* data);
 
   protected:
 

@@ -84,7 +84,7 @@ public:
   itkStaticConstMacro(ImageDimension, unsigned int, Superclass::ImageDimension);
 
   /** Compute the equation value. */
-  virtual void GPUComputeUpdate( typename const TImage::Pointer output, typename TImage::Pointer buffer, void *globalData );
+  virtual void GPUComputeUpdate( const typename TImage::Pointer output, typename TImage::Pointer buffer, void *globalData );
 
 
   /** This method is called prior to each iteration of the solver. */

@@ -301,7 +301,7 @@ bool IsGPUAvailable()
   return true;
 }
 
-void GetTypenameInString( const type_info& intype, std::ostringstream& ret )
+void GetTypenameInString( const std::type_info& intype, std::ostringstream& ret )
 {
   if ( intype == typeid ( unsigned char ) ||
        intype == typeid ( itk::Vector< unsigned char, 2 > ) ||
@@ -356,7 +356,7 @@ void GetTypenameInString( const type_info& intype, std::ostringstream& ret )
   }
 }
 
-int GetPixelDimension( const type_info& intype )
+int GetPixelDimension( const std::type_info& intype )
 {
   if ( intype == typeid ( unsigned char ) ||
        intype == typeid ( char ) ||

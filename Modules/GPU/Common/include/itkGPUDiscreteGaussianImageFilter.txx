@@ -52,7 +52,7 @@ GPUDiscreteGaussianImageFilter< TInputImage, TOutputImage >
     m_LastFilter = LastFilterType::New();
     for (int i = 1; i < filterDimensionality - 1; ++i )
     {
-      IntermediateFilterType::Pointer f = IntermediateFilterType::New();
+      typename IntermediateFilterType::Pointer f = IntermediateFilterType::New();
       m_IntermediateFilters.push_back( f );
     }
   }
@@ -92,7 +92,7 @@ GPUDiscreteGaussianImageFilter< TInputImage, TOutputImage >
   // (e.g. RequestedRegion). The StreamingImageFilter changes the
   // requested region as part of its normal processing.
   //typename TInputImage::Pointer localInput = TInputImage::New();
-  GPUInputImage::Pointer localInput = GPUInputImage::New();
+  typename GPUInputImage::Pointer localInput = GPUInputImage::New();
   localInput->Graft( this->GetInput() );
 
   // Determine the dimensionality to filter
@@ -238,7 +238,7 @@ GPUDiscreteGaussianImageFilter< TInputImage, TOutputImage >
     {
       for ( i = 1; i < filterDimensionality - 1; ++i )
       {
-        IntermediateFilterType::Pointer f = m_IntermediateFilters[i-1];
+        typename IntermediateFilterType::Pointer f = m_IntermediateFilters[i-1];
         f->SetOperator(oper[i]);
         f->ReleaseDataFlagOn();
         //progress->RegisterInternalFilter(f, 1.0f / numberOfStages);

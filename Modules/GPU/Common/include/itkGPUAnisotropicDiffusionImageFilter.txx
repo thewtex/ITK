@@ -68,7 +68,7 @@ GPUAnisotropicDiffusionImageFilter< TInputImage, TOutputImage, TParentImageFilte
                      << minSpacing / vcl_pow( 2.0, static_cast< double >( ImageDimension + 1 ) ) );
     }
 
-  if ( m_GradientMagnitudeIsFixed == false )
+  if ( this->m_GradientMagnitudeIsFixed == false )
     {
     if ( ( this->GetElapsedIterations() % this->GetConductanceScalingUpdateInterval() ) == 0 )
       {
@@ -100,7 +100,7 @@ void
 GPUAnisotropicDiffusionImageFilter< TInputImage, TOutputImage, TParentImageFilter >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
-  Superclass::PrintSelf( os, indent.GetNextIndent() );
+  GPUSuperclass::PrintSelf( os, indent.GetNextIndent() );
 }
 } // end namespace itk
 

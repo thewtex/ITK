@@ -104,7 +104,7 @@ GPUNeighborhoodOperatorImageFilter< TInputImage, TOutputImage, TOperatorValueTyp
   GetTypenameInString( typeid ( typename TOutputImage::PixelType ), defines );
 
   defines << "#define OPTYPE ";
-  GetTypenameInString( typeid ( typename TOperatorValueType ), defines );
+  GetTypenameInString( typeid ( TOperatorValueType ), defines );
 
   std::string oclSrcPath = "./../OpenCL/GPUNeighborhoodOperatorImageFilter.cl";
 
@@ -145,12 +145,12 @@ GPUNeighborhoodOperatorImageFilter< TInputImage, TOutputImage, TOperatorValueTyp
 
   /** Copy coefficients */
   ImageRegionIterator<NeighborhoodGPUBufferType> iit(m_NeighborhoodGPUBuffer, m_NeighborhoodGPUBuffer->GetLargestPossibleRegion());
-  OutputNeighborhoodType::ConstIterator nit = p.Begin();
+  typename OutputNeighborhoodType::ConstIterator nit = p.Begin();
 
   for(iit.GoToBegin(); !iit.IsAtEnd(); ++iit, ++nit)
   {
     //std::cout << "Coeff : " << *nit << std::endl;
-    iit.Set( static_cast< NeighborhoodGPUBufferType::PixelType >( *nit ) );
+    iit.Set( static_cast< typename NeighborhoodGPUBufferType::PixelType >( *nit ) );
   }
 
   /** Mark GPU dirty (by marking CPU buffer modified) */

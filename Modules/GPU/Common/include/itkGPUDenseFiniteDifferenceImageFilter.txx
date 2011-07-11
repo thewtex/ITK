@@ -180,7 +180,7 @@ void
 GPUDenseFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilter >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
-  Superclass::PrintSelf(os, indent);
+  GPUSuperclass::PrintSelf(os, indent);
 }
 } // end namespace itk
 

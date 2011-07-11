@@ -50,7 +50,7 @@ public:
 
   /** Standard class typedefs. */
   typedef GPUFiniteDifferenceFunction  Self;
-  typedef FiniteDifferenceFunction     Superclass;
+  typedef FiniteDifferenceFunction< TImageType >     Superclass;
   typedef Superclass                   DifferenceFunctionType;
   typedef SmartPointer< Self >         Pointer;
   typedef SmartPointer< const Self >   ConstPointer;
@@ -75,6 +75,13 @@ public:
 
   /** Neighborhood radius type */
   typedef typename Superclass::RadiusType RadiusType;
+
+  /** Neighborhood type */
+  typedef typename Superclass::NeighborhoodType NeighborhoodType;
+
+  /** A floating point offset from an image grid location. Used for
+    * interpolation among grid values in a neighborhood. */
+  typedef typename Superclass::FloatOffsetType FloatOffsetType;
 
   virtual void InitializeIteration() {}
 

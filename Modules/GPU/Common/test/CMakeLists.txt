@@ -33,7 +33,7 @@ set(ITK-GPUCommon-tests
  itkGPUNeighborhoodOperatorImageFilterTest.cxx
  itkGPUDiscreteGaussianImageFilterTest.cxx
  itkGPUGradientAnisotropicDiffusionImageFilterTest.cxx
- itkGPUDemonsRegistrationFilterTest.cxx
+# itkGPUDemonsRegistrationFilterTest.cxx
  )
 
 include_directories(${OPENCL_INCLUDE_DIRS} ${CMAKE_CURRENT_BINARY_DIR}/../)
@@ -79,11 +79,11 @@ add_test(NAME itkGPUGradientAnisotropicDiffusionImageFilterTest
         ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySlice.png
         ${TEMP}/gpuGradientAnisotropicDiffusionImageFilterTest.png)
 
-add_test(NAME itkGPUDemonsRegistrationFilterTest
-        COMMAND ITK-GPUCommonTestDriver itkGPUDemonsRegistrationFilterTest
-        ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySlice.png
-        ${TEMP}/gpuImageFilterTest.png
-        ${TEMP}/output)
+#add_test(NAME itkGPUDemonsRegistrationFilterTest
+#        COMMAND ITK-GPUCommonTestDriver itkGPUDemonsRegistrationFilterTest
+#        ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySlice.png
+#        ${TEMP}/gpuImageFilterTest.png
+#        ${TEMP}/output)
 
 
 ENDIF(ITK_USE_GPU)
