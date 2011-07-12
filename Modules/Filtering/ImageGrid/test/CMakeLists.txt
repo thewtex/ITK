@@ -43,6 +43,7 @@ itkShrinkImagePreserveObjectPhysicalLocations.cxx
 itkShrinkImageStreamingTest.cxx
 itkShrinkImageTest.cxx
 itkZeroFluxNeumannPadImageFilterTest.cxx
+itkPadImageFilterTest.cxx
 )
 
 CreateTestDriver(ITK-ImageGrid  "${ITK-ImageGrid-Test_LIBRARIES}" "${ITK-ImageGridTests}")
@@ -163,3 +164,5 @@ itk_add_test(NAME itkShrinkImageTest
       COMMAND ITK-ImageGridTestDriver itkShrinkImageTest)
 itk_add_test(NAME itkZeroFluxNeumannPadImageFilterTest
       COMMAND ITK-ImageGridTestDriver itkZeroFluxNeumannPadImageFilterTest)
+itk_add_test(NAME itkPadImageFilterTest
+      COMMAND ITK-ImageGridTestDriver itkPadImageFilterTest)
