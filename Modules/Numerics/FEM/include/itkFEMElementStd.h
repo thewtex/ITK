@@ -154,7 +154,7 @@ static void Dummy( void );
 }} // end namespace itk::fem
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkFEMElementStd.txx"
+#include "itkFEMElementStd.hxx"
 #endif
 
 #endif // #ifndef __itkFEMElementStd_h

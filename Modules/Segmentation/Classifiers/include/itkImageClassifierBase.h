@@ -166,7 +166,7 @@ private:
 } // namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkImageClassifierBase.txx"
+#include "itkImageClassifierBase.hxx"
 #endif
 
 #endif
