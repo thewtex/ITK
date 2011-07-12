@@ -124,13 +124,6 @@ public:
    */
   void AddLine(const LineType & line);
 
-  /** Return the line container of this object */
-  const LineContainerType & GetLineContainer() const;
-
-  LineContainerType & GetLineContainer();
-
-  void SetLineContainer(const LineContainerType & lineContainer);
-
   SizeValueType GetNumberOfLines() const;
 
   const LineType & GetLine(SizeValueType i) const;
@@ -140,6 +133,8 @@ public:
   SizeValueType Size() const;
 
   bool Empty() const;
+
+  void Clear();
 
   /**
    * Get the index of the ith pixel associated with the object.
@@ -161,9 +156,132 @@ public:
   /** Shift the object position */
   void Shift( OffsetType offset );
 
+  class ConstLineIterator
+  {
+  public:
+
+    ConstLineIterator(const Self *lo)
+    {
+      m_Iterator = lo->m_LineContainer.begin();
+      m_End = lo->m_LineContainer.end();
+    }
+
+    ConstLineIterator(const ConstLineIterator & iter)
+    {
+      m_Iterator = iter.m_Iterator;
+      m_End = iter.m_End;
+    }
+
+    ConstLineIterator & operator=(const ConstLineIterator & iter)
+    {
+      m_Iterator = iter.m_Iterator;
+      m_End = iter.m_End;
+      return *this;
+    }
+
+    const LineType & GetLine() const
+    {
+      return *m_Iterator;
+    }
+
+    void operator++()
+    {
+      ++m_Iterator;
+    }
+
+    void operator++(int)
+    {
+      m_Iterator++;
+    }
+
+    bool IsAtEnd()
+    {
+      return m_Iterator == m_End;
+    }
+
+  private:
+    typename LineContainerType::const_iterator       m_Iterator;
+    typename LineContainerType::const_iterator       m_End;
+  };
+
+  class ConstIndexIterator
+  {
+  public:
+
+    ConstIndexIterator(const Self *lo)
+    {
+      m_End = lo->m_LineContainer.begin();;
+      m_Iterator = lo->m_LineContainer.begin();
+      InitIterator();
+    }
+
+    ConstIndexIterator(const ConstIndexIterator & iter)
+    {
+      m_Iterator = iter.m_Iterator;
+      m_Index = iter.m_Index;
+      m_End = iter.m_End;
+    }
+
+    ConstIndexIterator & operator=(const ConstIndexIterator & iter)
+    {
+      m_Iterator = iter.m_Iterator;
+      m_Index = iter.m_Index;
+      m_End = iter.m_End;
+      return *this;
+    }
+
+    const IndexType & GetIndex() const
+    {
+      return m_Index;
+    }
+
+    void operator++(int)
+    {
+      m_Index[0]++;
+      if( m_Index[0] >= m_Iterator->GetIndex()[0] + (OffsetValueType)m_Iterator->GetLength() )
+        {
+        // we've reached the end of the line - go to the next one
+        m_Iterator++;
+        InitIterator();
+        }
+    }
+
+    void operator++()
+    {
+      this++;
+    }
+
+    void InitIterator()
+    {
+      // search for the next valid position
+      while( m_Iterator != m_End && m_Iterator->GetLength() == 0 )
+        {
+        m_Iterator++;
+        }
+      if( m_Iterator != m_End )
+        {
+        m_Index = m_Iterator->GetIndex();
+        }
+    }
+  bool IsAtEnd()
+    {
+    return m_Iterator == m_End;
+    }
+
+  private:
+    typename LineContainerType::const_iterator       m_Iterator;
+    typename LineContainerType::const_iterator       m_End;
+    IndexType                                        m_Index;
+  };
+
 protected:
   LabelObject();
   void PrintSelf(std::ostream & os, Indent indent) const;
+
+  /** Return the line container of this object */
+  const LineContainerType & GetLineContainer() const;
+  LineContainerType & GetLineContainer();
+  void SetLineContainer(const LineContainerType & lineContainer);
 
 private:
   LabelObject(const Self &);    //purposely not implemented
