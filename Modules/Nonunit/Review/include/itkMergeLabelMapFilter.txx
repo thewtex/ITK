@@ -189,12 +189,10 @@ MergeLabelMapFilter< TImage >
           {
           // add the lines of that object to the one already in the output
           LabelObjectType *         mainLo = output->GetLabelObject( lo->GetLabel() );
-          const LineContainerType & lineContainer = lo->GetLineContainer();
-
-          LineContainerIterator lit = lineContainer.begin();
-          while ( lit != lineContainer.end() )
+          typename LabelObjectType::ConstLineIterator lit( lo );
+          while ( ! lit.IsAtEnd() )
             {
-            mainLo->AddLine(*lit);
+            mainLo->AddLine( lit.GetLine() );
             lit++;
             }
 
