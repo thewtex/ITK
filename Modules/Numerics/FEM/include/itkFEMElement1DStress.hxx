@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkFEMElement1DStress_txx
-#define __itkFEMElement1DStress_txx
+#ifndef __itkFEMElement1DStress_hxx
+#define __itkFEMElement1DStress_hxx
 
 #include "itkFEMElement1DStress.h"
 
@@ -167,4 +167,4 @@ static void Dummy( void );
 
 }} // end namespace itk::fem
 
-#endif // #ifndef __itkFEMElement1DStress_txx
+#endif // #ifndef __itkFEMElement1DStress_hxx
