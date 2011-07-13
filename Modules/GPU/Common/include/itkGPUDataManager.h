@@ -39,105 +39,109 @@ namespace itk
  *
  * \ingroup GPUCommon
  */
-  class ITK_EXPORT GPUDataManager : public Object //DataObject//
-  {
-    /** allow GPUKernelManager to access GPU buffer pointer */
-    friend class GPUKernelManager;
+class ITK_EXPORT GPUDataManager : public Object   //DataObject//
+{
+  /** allow GPUKernelManager to access GPU buffer pointer */
+  friend class GPUKernelManager;
+public:
 
-  public:
+  typedef GPUDataManager           Self;
+  typedef Object                   Superclass;
+  typedef SmartPointer<Self>       Pointer;
+  typedef SmartPointer<const Self> ConstPointer;
 
-    typedef GPUDataManager            Self;
-    typedef Object                    Superclass;
-    typedef SmartPointer<Self>        Pointer;
-    typedef SmartPointer<const Self>  ConstPointer;
+  itkNewMacro(Self);
+  itkTypeMacro(GPUDataManager, Object);
 
-    itkNewMacro(Self);
-    itkTypeMacro(GPUDataManager, Object);
+  /** total buffer size in bytes */
+  void SetBufferSize( unsigned int num );
 
-    /** total buffer size in bytes */
-    void SetBufferSize( unsigned int num );
+  unsigned int GetBufferSize() {
+    return m_BufferSize;
+  }
 
-    unsigned int GetBufferSize() { return m_BufferSize; }
+  void SetBufferFlag( cl_mem_flags flags );
 
-    void SetBufferFlag( cl_mem_flags flags );
+  void SetCPUBufferPointer( void* ptr );
 
-    void SetCPUBufferPointer( void* ptr );
+  void SetCPUDirtyFlag( bool isDirty );
 
-    void SetCPUDirtyFlag( bool isDirty );
+  void SetGPUDirtyFlag( bool isDirty );
 
-    void SetGPUDirtyFlag( bool isDirty );
+  /** Make CPU up-to-date and mark CPU as dirty.
+   * Call this function when you want to modify CPU data */
+  void SetCPUBufferDirty();
 
-    /** Make CPU up-to-date and mark CPU as dirty.
-     * Call this function when you want to modify CPU data */
-    void SetCPUBufferDirty();
+  /** Make GPU up-to-date and mark GPU as dirty.
+   * Call this function when you want to modify GPU data */
+  void SetGPUBufferDirty();
 
-    /** Make GPU up-to-date and mark GPU as dirty.
-     * Call this function when you want to modify GPU data */
-    void SetGPUBufferDirty();
+  bool IsCPUBufferDirty() {
+    return m_IsCPUBufferDirty;
+  }
 
-    bool IsCPUBufferDirty() { return m_IsCPUBufferDirty; }
+  bool IsGPUBufferDirty() {
+    return m_IsGPUBufferDirty;
+  }
 
-    bool IsGPUBufferDirty() { return m_IsGPUBufferDirty; }
+  /** actual GPU->CPU memory copy takes place here */
+  virtual void MakeCPUBufferUpToDate();
 
-    /** actual GPU->CPU memory copy takes place here */
-    virtual void MakeCPUBufferUpToDate();
+  /** actual CPU->GPU memory copy takes place here */
+  virtual void MakeGPUBufferUpToDate();
 
-    /** actual CPU->GPU memory copy takes place here */
-    virtual void MakeGPUBufferUpToDate();
+  void Allocate();
 
-    void Allocate();
+  void SetCurrentCommandQueue( int queueid );
 
-    void SetCurrentCommandQueue( int queueid );
+  int  GetCurrentCommandQueueID();
 
-    int  GetCurrentCommandQueueID();
+  /** Synchronize CPU and GPU buffers (using dirty flags) */
+  bool MakeUpToDate();
 
-    /** Synchronize CPU and GPU buffers (using dirty flags) */
-    bool MakeUpToDate();
+  /** Method for grafting the content of one GPUDataManager into another one */
+  virtual void Graft(const GPUDataManager* data);
 
-    /** Method for grafting the content of one GPUDataManager into another one */
-    virtual void Graft(const GPUDataManager* data);
+  /** Initialize GPUDataManager */
+  virtual void Initialize();
 
-    /** Initialize GPUDataManager */
-    virtual void Initialize();
+  /** Get GPU buffer pointer */
+  cl_mem* GetGPUBufferPointer();
 
-    /** Get GPU buffer pointer */
-    cl_mem* GetGPUBufferPointer();
+  /** Get GPU buffer pointer */
+  void* GetCPUBufferPointer();
 
-    /** Get GPU buffer pointer */
-    void* GetCPUBufferPointer();
+protected:
 
-  protected:
+  GPUDataManager();
+  virtual ~GPUDataManager();
+private:
 
-    GPUDataManager();
-    virtual ~GPUDataManager();
+  GPUDataManager(const Self&);   //purposely not implemented
+  void operator=(const Self&);
 
-  private:
+protected:
 
-    GPUDataManager(const Self&); //purposely not implemented
-    void operator=(const Self&);
+  unsigned int m_BufferSize;   // # of bytes
 
-  protected:
+  GPUContextManager *m_ContextManager;
 
-    unsigned int m_BufferSize; // # of bytes
+  int m_CommandQueueId;
 
-    GPUContextManager *m_ContextManager;
+  /** buffer type */
+  cl_mem_flags m_MemFlags;
 
-    int m_CommandQueueId;
+  /** buffer pointers */
+  cl_mem m_GPUBuffer;
+  void*  m_CPUBuffer;
 
-    /** buffer type */
-    cl_mem_flags m_MemFlags;
+  /** checks if buffer needs to be updated */
+  bool m_IsGPUBufferDirty;
+  bool m_IsCPUBufferDirty;
 
-    /** buffer pointers */
-    cl_mem m_GPUBuffer;
-    void*  m_CPUBuffer;
-
-    /** checks if buffer needs to be updated */
-    bool m_IsGPUBufferDirty;
-    bool m_IsCPUBufferDirty;
-
-    /** Mutex lock to prevent r/w hazard for multithreaded code */
-    SimpleFastMutexLock m_Mutex;
-  };
+  /** Mutex lock to prevent r/w hazard for multithreaded code */
+  SimpleFastMutexLock m_Mutex;
+};
 
 } // namespace itk
 

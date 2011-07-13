@@ -32,10 +32,11 @@ GPUAnisotropicDiffusionImageFilter< TInputImage, TOutputImage, TParentImageFilte
 {
   GPUAnisotropicDiffusionFunction< UpdateBufferType > *f =
     dynamic_cast< GPUAnisotropicDiffusionFunction< UpdateBufferType > * >
-    ( this->GetDifferenceFunction().GetPointer() );
+      ( this->GetDifferenceFunction().GetPointer() );
   if ( !f )
     {
     throw ExceptionObject(__FILE__, __LINE__, "GPU anisotropic diffusion function is not set.", ITK_LOCATION);
+
     }
 
   f->SetConductanceParameter( this->GetConductanceParameter() );
@@ -102,6 +103,7 @@ GPUAnisotropicDiffusionImageFilter< TInputImage, TOutputImage, TParentImageFilte
 {
   GPUSuperclass::PrintSelf( os, indent.GetNextIndent() );
 }
+
 } // end namespace itk
 
 #endif

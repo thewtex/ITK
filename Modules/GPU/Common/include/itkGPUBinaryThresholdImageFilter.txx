@@ -15,72 +15,71 @@ GPUBinaryThresholdImageFilter< TInputImage, TOutputImage >
   std::ostringstream defines;
 
   if(TInputImage::ImageDimension > 3)
-  {
+    {
     itkExceptionMacro("GPUBinaryThresholdImageFilter supports 1/2/3D image.");
-  }
+    }
 
   defines << "#define DIM_" << TInputImage::ImageDimension << "\n";
   defines << "#define InPixelType ";
 
   if ( typeid ( typename TInputImage::PixelType ) == typeid ( unsigned char ) )
-  {
+    {
     defines << "unsigned char\n";
-  }
+    }
   else if ( typeid ( typename TInputImage::PixelType ) == typeid ( char ) )
-  {
+    {
     defines << "char\n";
-  }
+    }
   else if ( typeid ( typename TInputImage::PixelType ) == typeid ( int ) )
-  {
+    {
     defines << "int\n";
-  }
+    }
   else if ( typeid ( typename TInputImage::PixelType ) == typeid ( unsigned int ) )
-  {
+    {
     defines << "unsigned int\n";
-  }
+    }
   else if ( typeid ( typename TInputImage::PixelType ) == typeid ( float ) )
-  {
+    {
     defines << "float\n";
-  }
+    }
   else if ( typeid ( typename TInputImage::PixelType ) == typeid ( double ) )
-  {
+    {
     defines << "double\n";
-  }
+    }
   else
-  {
+    {
     itkExceptionMacro("GPUBinaryThresholdImageFilter supports unsigned char, short, int and float images.");
-  }
+    }
 
   defines << "#define OutPixelType ";
   if ( typeid ( typename TInputImage::PixelType ) == typeid ( unsigned char ) )
-  {
+    {
     defines << "unsigned char\n";
-  }
+    }
   else if ( typeid ( typename TInputImage::PixelType ) == typeid ( char ) )
-  {
+    {
     defines << "char\n";
-  }
+    }
   else if ( typeid ( typename TInputImage::PixelType ) == typeid ( int ) )
-  {
+    {
     defines << "int\n";
-  }
+    }
   else if ( typeid ( typename TInputImage::PixelType ) == typeid ( unsigned int ) )
-  {
+    {
     defines << "unsigned int\n";
-  }
+    }
   else if ( typeid ( typename TInputImage::PixelType ) == typeid ( float ) )
-  {
+    {
     defines << "float\n";
-  }
+    }
   else if ( typeid ( typename TInputImage::PixelType ) == typeid ( double ) )
-  {
+    {
     defines << "double\n";
-  }
+    }
   else
-  {
+    {
     itkExceptionMacro("GPUBinaryThresholdImageFilter supports unsigned char, short, int and float images.");
-  }
-
+    }
 
   // OpenCL source path
   std::string oclSrcPath = "./../OpenCL/GPUBinaryThresholdImageFilter.cl";
@@ -93,7 +92,6 @@ GPUBinaryThresholdImageFilter< TInputImage, TOutputImage >
   // create kernel
   this->m_UnaryFunctorImageFilterGPUKernelHandle = this->m_GPUKernelManager->CreateKernel("BinaryThresholdFilter");
 }
-
 
 template< class TInputImage, class TOutputImage >
 void
@@ -119,7 +117,6 @@ GPUBinaryThresholdImageFilter< TInputImage, TOutputImage >
   GPUSuperclass::GPUGenerateData();
 }
 
-
-}// end of namespace itk
+} // end of namespace itk
 
 #endif

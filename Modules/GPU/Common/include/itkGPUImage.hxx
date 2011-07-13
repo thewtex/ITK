@@ -56,7 +56,6 @@ void GPUImage< TPixel, VImageDimension >::Allocate()
   m_GPUManager->SetTimeStamp( this->GetTimeStamp() );
 }
 
-
 template< class TPixel, unsigned int VImageDimension >
 void GPUImage< TPixel, VImageDimension >::Initialize()
 {
@@ -109,22 +108,22 @@ TPixel & GPUImage< TPixel, VImageDimension >::GetPixel(const IndexType & index)
 }
 
 template <class TPixel, unsigned int VImageDimension>
-TPixel & GPUImage< TPixel, VImageDimension >::operator[](const IndexType & index)
-{
+TPixel & GPUImage< TPixel, VImageDimension >::operator[] (const IndexType &index)
+  {
   /* Original version - very conservative
   m_GPUManager->SetGPUBufferDirty();
   return Superclass::operator[]( index );
   */
   m_GPUManager->MakeCPUBufferUpToDate();
-  return Superclass::operator[]( index );
-}
+  return Superclass::operator[] ( index );
+  }
 
 template <class TPixel, unsigned int VImageDimension>
-const TPixel & GPUImage< TPixel, VImageDimension >::operator[](const IndexType & index) const
-{
+const TPixel & GPUImage< TPixel, VImageDimension >::operator[] (const IndexType &index) const
+  {
   m_GPUManager->MakeCPUBufferUpToDate();
-  return Superclass::operator[]( index );
-}
+  return Superclass::operator[] ( index );
+  }
 
 template <class TPixel, unsigned int VImageDimension>
 void GPUImage< TPixel, VImageDimension >::SetPixelContainer(PixelContainer *container)
@@ -137,8 +136,8 @@ void GPUImage< TPixel, VImageDimension >::SetPixelContainer(PixelContainer *cont
 template <class TPixel, unsigned int VImageDimension>
 void GPUImage< TPixel, VImageDimension >::MakeUpToDate()
 {
-   m_GPUManager->MakeCPUBufferUpToDate();
-   m_GPUManager->MakeGPUBufferUpToDate();
+  m_GPUManager->MakeCPUBufferUpToDate();
+  m_GPUManager->MakeGPUBufferUpToDate();
 }
 
 template <class TPixel, unsigned int VImageDimension>
@@ -187,11 +186,14 @@ GPUImage< TPixel, VImageDimension >::Graft(const DataObject *data)
   // call the superclass' implementation
   Superclass::Graft(data);
 
-  // Pass regular pointer to Graft() instead of smart pointer due to type casting problem
-  GPUImageDataManagerType* ptr = dynamic_cast<GPUImageDataManagerType*>((((GPUImage*)data)->GetGPUDataManager()).GetPointer());
+  // Pass regular pointer to Graft() instead of smart pointer due to type
+  // casting problem
+  GPUImageDataManagerType* ptr = dynamic_cast<GPUImageDataManagerType*>(
+      ( ( (GPUImage*)data)->GetGPUDataManager() ).GetPointer() );
 
   // Debug
-  //std::cout << "GPU timestamp : " << m_GPUManager->GetMTime() << ", CPU timestamp : " << this->GetMTime() << std::endl;
+  //std::cout << "GPU timestamp : " << m_GPUManager->GetMTime() << ", CPU
+  // timestamp : " << this->GetMTime() << std::endl;
 
   // call GPU data graft function
   m_GPUManager->SetImagePointer( this );
@@ -201,7 +203,8 @@ GPUImage< TPixel, VImageDimension >::Graft(const DataObject *data)
   m_GPUManager->SetTimeStamp( this->GetTimeStamp() );
 
   // Debug
-  //std::cout << "GPU timestamp : " << m_GPUManager->GetMTime() << ", CPU timestamp : " << this->GetMTime() << std::endl;
+  //std::cout << "GPU timestamp : " << m_GPUManager->GetMTime() << ", CPU
+  // timestamp : " << this->GetMTime() << std::endl;
 
 }
 

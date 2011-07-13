@@ -49,29 +49,29 @@ class ITK_EXPORT GPUFiniteDifferenceFunction : public FiniteDifferenceFunction< 
 public:
 
   /** Standard class typedefs. */
-  typedef GPUFiniteDifferenceFunction  Self;
-  typedef FiniteDifferenceFunction< TImageType >     Superclass;
-  typedef Superclass                   DifferenceFunctionType;
-  typedef SmartPointer< Self >         Pointer;
-  typedef SmartPointer< const Self >   ConstPointer;
+  typedef GPUFiniteDifferenceFunction            Self;
+  typedef FiniteDifferenceFunction< TImageType > Superclass;
+  typedef Superclass                             DifferenceFunctionType;
+  typedef SmartPointer< Self >                   Pointer;
+  typedef SmartPointer< const Self >             ConstPointer;
 
   /** Run-time type information (and related methods) */
   itkTypeMacro(GPUFiniteDifferenceFunction, FiniteDifferenceFunction);
 
   /** Extract some parameters from the image type */
-  typedef typename Superclass::ImageType       ImageType;
-  typedef typename Superclass::PixelType        PixelType;
-  typedef typename Superclass::PixelRealType    PixelRealType;
+  typedef typename Superclass::ImageType     ImageType;
+  typedef typename Superclass::PixelType     PixelType;
+  typedef typename Superclass::PixelRealType PixelRealType;
 
   /** Save image dimension. */
   itkStaticConstMacro(ImageDimension, unsigned int, ImageType::ImageDimension);
 
   /** Define the TimeStepType to always be double. */
-  typedef typename Superclass::TimeStepType  TimeStepType;
+  typedef typename Superclass::TimeStepType TimeStepType;
 
   /** The default boundary condition for finite difference
    * functions that is used unless overridden in the Evaluate() method. */
-  typedef typename Superclass::DefaultBoundaryConditionType   DefaultBoundaryConditionType;
+  typedef typename Superclass::DefaultBoundaryConditionType DefaultBoundaryConditionType;
 
   /** Neighborhood radius type */
   typedef typename Superclass::RadiusType RadiusType;
@@ -83,7 +83,8 @@ public:
     * interpolation among grid values in a neighborhood. */
   typedef typename Superclass::FloatOffsetType FloatOffsetType;
 
-  virtual void InitializeIteration() {}
+  virtual void InitializeIteration() {
+  }
 
 #if !defined( CABLE_CONFIGURATION )
   /** Empty implementation - this will not be used by GPU filters */
@@ -92,33 +93,37 @@ public:
                                     const FloatOffsetType & offset = FloatOffsetType(0.0) )
   {
     PixelType pix = itk::NumericTraits<PixelType>::Zero;
+
     return pix;
   }
+
 #endif
 
   /** GPU function to compute update buffer */
   virtual void GPUComputeUpdate( const typename TImageType::Pointer output,
                                  typename TImageType::Pointer update,
                                  void *gd) = 0;
-
 protected:
-  GPUFiniteDifferenceFunction() { m_GPUKernelManager = GPUKernelManager::New(); };
-  ~GPUFiniteDifferenceFunction() {}
+  GPUFiniteDifferenceFunction() {
+    m_GPUKernelManager = GPUKernelManager::New();
+  }
+  ~GPUFiniteDifferenceFunction() {
+  }
 
   void PrintSelf(std::ostream & os, Indent indent) const
   {
-     Superclass::PrintSelf(os, indent);
-  };
+    Superclass::PrintSelf(os, indent);
+  }
 
   /** GPU kernel manager for GPUFiniteDifferenceFunction class */
   typename GPUKernelManager::Pointer m_GPUKernelManager;
 
   /** GPU kernel handle for GPUComputeUpdate() */
   int m_ComputeUpdateGPUKernelHandle;
-
 private:
   GPUFiniteDifferenceFunction(const Self &); //purposely not implemented
-  void operator=(const Self &);           //purposely not implemented
+  void operator=(const Self &);              //purposely not implemented
+
 };
 } // end namespace itk
 

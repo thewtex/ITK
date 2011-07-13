@@ -36,15 +36,16 @@ namespace itk
  *
  * \ingroup ITKGPUCommon
  */
-template< class TInputImage, class TOutputImage, class TParentImageFilter = ImageToImageFilter< TInputImage, TOutputImage > >
-class ITK_EXPORT GPUImageToImageFilter: public TParentImageFilter
+template< class TInputImage, class TOutputImage, class TParentImageFilter =
+            ImageToImageFilter< TInputImage, TOutputImage > >
+class ITK_EXPORT GPUImageToImageFilter : public TParentImageFilter
 {
 public:
   /** Standard class typedefs. */
-  typedef GPUImageToImageFilter       Self;
-  typedef TParentImageFilter          Superclass;
-  typedef SmartPointer< Self >        Pointer;
-  typedef SmartPointer< const Self >  ConstPointer;
+  typedef GPUImageToImageFilter      Self;
+  typedef TParentImageFilter         Superclass;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
   itkNewMacro(Self);
 
@@ -81,16 +82,15 @@ protected:
 
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
-  virtual void GPUGenerateData() {};
-
-
+  virtual void GPUGenerateData() {
+  }
 
   // GPU kernel manager
   typename GPUKernelManager::Pointer m_GPUKernelManager;
 
-  // GPU kernel handle - kernel should be defined in specific filter (not in the base class)
+  // GPU kernel handle - kernel should be defined in specific filter (not in the
+  // base class)
   //int m_KernelHandle;
-
 private:
   GPUImageToImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);        //purposely not implemented

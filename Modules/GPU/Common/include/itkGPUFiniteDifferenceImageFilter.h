@@ -31,17 +31,18 @@ namespace itk
  *
  * \ingroup GPUCommon
  * \sa GPUDenseFiniteDifferenceImageFilter */
-template< class TInputImage, class TOutputImage, class TParentImageFilter = FiniteDifferenceImageFilter< TInputImage, TOutputImage > >
-class ITK_EXPORT GPUFiniteDifferenceImageFilter:
+template< class TInputImage, class TOutputImage, class TParentImageFilter =
+            FiniteDifferenceImageFilter< TInputImage, TOutputImage > >
+class ITK_EXPORT GPUFiniteDifferenceImageFilter :
   public GPUInPlaceImageFilter< TInputImage, TOutputImage, TParentImageFilter >
 {
 public:
   /** Standard class typedefs. */
-  typedef GPUFiniteDifferenceImageFilter                     Self;
+  typedef GPUFiniteDifferenceImageFilter                                         Self;
   typedef GPUInPlaceImageFilter< TInputImage, TOutputImage, TParentImageFilter > GPUSuperclass;
-  typedef TParentImageFilter                              CPUSuperclass;
-  typedef SmartPointer< Self >                            Pointer;
-  typedef SmartPointer< const Self >                      ConstPointer;
+  typedef TParentImageFilter                                                     CPUSuperclass;
+  typedef SmartPointer< Self >                                                   Pointer;
+  typedef SmartPointer< const Self >                                             ConstPointer;
 
   /** Run-time type information (and related methods) */
   itkTypeMacro(GPUFiniteDifferenceImageFilter, GPUInPlaceImageFilter);
@@ -66,9 +67,10 @@ public:
    * because PixelType may often be a vector value, while the TimeStep is
    * a scalar value. */
   typedef typename GPUFiniteDifferenceFunction< TOutputImage >::DifferenceFunctionType FiniteDifferenceFunctionType;
-  //typedef typename GPUFiniteDifferenceFunction< TOutputImage > FiniteDifferenceFunctionType;
-  typedef typename FiniteDifferenceFunctionType::TimeStepType TimeStepType;
-  typedef typename FiniteDifferenceFunctionType::RadiusType   RadiusType;
+  //typedef typename GPUFiniteDifferenceFunction< TOutputImage >
+  // FiniteDifferenceFunctionType;
+  typedef typename FiniteDifferenceFunctionType::TimeStepType           TimeStepType;
+  typedef typename FiniteDifferenceFunctionType::RadiusType             RadiusType;
   typedef typename FiniteDifferenceFunctionType::NeighborhoodScalesType NeighborhoodScalesType;
 
   /** This method returns a pointer to a FiniteDifferenceFunction object that
@@ -130,7 +132,6 @@ public:
                    ( Concept::IsFloatingPoint< OutputPixelValueType > ) );
   /** End concept checking */
 #endif
-
 protected:
   GPUFiniteDifferenceImageFilter();
   ~GPUFiniteDifferenceImageFilter();
@@ -188,14 +189,17 @@ protected:
    * Notice that ThreadedHalt is only called by the multithreaded filters, so you
    * still should implement Halt, just in case a non-threaded filter is used.
    */
-  virtual bool ThreadedHalt( void *itkNotUsed(threadInfo) ) { return this->Halt(); }
+  virtual bool ThreadedHalt( void *itkNotUsed(threadInfo) ) {
+    return this->Halt();
+  }
 
   /** This method is optionally defined by a subclass and is called before
    * the loop of iterations of calculate_change & upate. It does the global
    * initialization, i.e. in the SparseFieldLevelSetImageFilter, initialize
    * the list of layers.
    * */
-  virtual void Initialize() {}
+  virtual void Initialize() {
+  }
 
   /** This method is optionally defined by a subclass and is called immediately
    * prior to each iterative CalculateChange-ApplyUpdate cycle.  It can be
@@ -204,7 +208,9 @@ protected:
    * otherwise prepare for the next iteration.
    * */
   virtual void InitializeIteration()
-  { m_DifferenceFunction->InitializeIteration(); }
+  {
+    m_DifferenceFunction->InitializeIteration();
+  }
 
   /** Virtual method for resolving a single time step from a set of time steps
    * returned from processing threads.
@@ -224,7 +230,8 @@ protected:
 
   /** This method is called after the solution has been generated to allow
    * subclasses to apply some further processing to the output. */
-  virtual void PostProcessOutput() {}
+  virtual void PostProcessOutput() {
+  }
 
   /** Set the number of elapsed iterations of the filter. */
   itkSetMacro(ElapsedIterations, unsigned int);
@@ -243,18 +250,17 @@ protected:
 
   double m_RMSChange;
   double m_MaximumRMSError;
-
 private:
 
   GPUFiniteDifferenceImageFilter(const Self &); //purposely not implemented
-  void operator=(const Self &);              //purposely not implemented
+  void operator=(const Self &);                 //purposely not implemented
 
   /** Initialize the values of the Function coefficients. This function will
    * also take care of checking whether the image spacing should be taken into
    * account or not. */
   void InitializeFunctionCoefficients();
 
- /** The function that will be used in calculating updates for each pixel. */
+  /** The function that will be used in calculating updates for each pixel. */
   typename FiniteDifferenceFunctionType::Pointer m_DifferenceFunction;
 
   /** Control whether derivatives use spacing of the input image in

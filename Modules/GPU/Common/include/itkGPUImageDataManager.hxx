@@ -34,11 +34,11 @@ template < class ImageType >
 void GPUImageDataManager< ImageType >::MakeCPUBufferUpToDate()
 {
   if( m_Image.IsNotNull() )
-  {
+    {
     m_Mutex.Lock();
 
     unsigned long gpu_time = this->GetMTime();
-    TimeStamp cpu_time_stamp = m_Image->GetTimeStamp();
+    TimeStamp     cpu_time_stamp = m_Image->GetTimeStamp();
     unsigned long cpu_time = cpu_time_stamp.GetMTime();
 
     /* Why we check dirty flag and time stamp together?
@@ -47,13 +47,15 @@ void GPUImageDataManager< ImageType >::MakeCPUBufferUpToDate()
      * correctly managed. Therefore, we check the time stamp of
      * CPU and GPU data as well
      */
-    if( (m_IsCPUBufferDirty || (gpu_time > cpu_time)) && m_GPUBuffer != NULL && m_CPUBuffer != NULL )
-    {
+    if( (m_IsCPUBufferDirty || (gpu_time > cpu_time) ) && m_GPUBuffer != NULL && m_CPUBuffer != NULL )
+      {
       cl_int errid;
 #ifdef VERBOSE
       std::cout << "GPU->CPU data copy" << std::endl;
 #endif
-      errid = clEnqueueReadBuffer(m_ContextManager->GetCommandQueue(m_CommandQueueId), m_GPUBuffer, CL_TRUE, 0, m_BufferSize, m_CPUBuffer, 0, NULL, NULL);
+      errid = clEnqueueReadBuffer(m_ContextManager->GetCommandQueue(
+                                    m_CommandQueueId), m_GPUBuffer, CL_TRUE, 0, m_BufferSize, m_CPUBuffer, 0, NULL,
+                                  NULL);
       OclCheckError(errid);
 
       m_Image->Modified();
@@ -61,21 +63,21 @@ void GPUImageDataManager< ImageType >::MakeCPUBufferUpToDate()
 
       m_IsCPUBufferDirty = false;
       m_IsGPUBufferDirty = false;
-    }
+      }
 
     m_Mutex.Unlock();
-  }
+    }
 }
 
 template < class ImageType >
 void GPUImageDataManager< ImageType >::MakeGPUBufferUpToDate()
 {
   if( m_Image.IsNotNull() )
-  {
+    {
     m_Mutex.Lock();
 
     unsigned long gpu_time = this->GetMTime();
-    TimeStamp cpu_time_stamp = m_Image->GetTimeStamp();
+    TimeStamp     cpu_time_stamp = m_Image->GetTimeStamp();
     unsigned long cpu_time = m_Image->GetMTime();
 
     /* Why we check dirty flag and time stamp together?
@@ -84,36 +86,38 @@ void GPUImageDataManager< ImageType >::MakeGPUBufferUpToDate()
     * correctly managed. Therefore, we check the time stamp of
     * CPU and GPU data as well
     */
-    if( (m_IsGPUBufferDirty || (gpu_time < cpu_time)) && m_CPUBuffer != NULL && m_GPUBuffer != NULL )
-    {
+    if( (m_IsGPUBufferDirty || (gpu_time < cpu_time) ) && m_CPUBuffer != NULL && m_GPUBuffer != NULL )
+      {
       cl_int errid;
 #ifdef VERBOSE
       std::cout << "CPU->GPU data copy" << std::endl;
 #endif
-      errid = clEnqueueWriteBuffer(m_ContextManager->GetCommandQueue(m_CommandQueueId), m_GPUBuffer, CL_TRUE, 0, m_BufferSize, m_CPUBuffer, 0, NULL, NULL);
+      errid = clEnqueueWriteBuffer(m_ContextManager->GetCommandQueue(
+                                     m_CommandQueueId), m_GPUBuffer, CL_TRUE, 0, m_BufferSize, m_CPUBuffer, 0, NULL,
+                                   NULL);
       OclCheckError(errid);
 
       this->SetTimeStamp( cpu_time_stamp );
 
       m_IsCPUBufferDirty = false;
       m_IsGPUBufferDirty = false;
-    }
+      }
 
     m_Mutex.Unlock();
-  }
+    }
 }
-
 
 template < class ImageType >
 void GPUImageDataManager< ImageType >::Graft(const GPUImageDataManager* data)
 {
-  //std::cout << "GPU timestamp : " << this->GetMTime() << ", CPU timestamp : " << m_Image->GetMTime() << std::endl;
+  //std::cout << "GPU timestamp : " << this->GetMTime() << ", CPU timestamp : "
+  // << m_Image->GetMTime() << std::endl;
 
   Superclass::Graft( data );
 
-  //std::cout << "GPU timestamp : " << this->GetMTime() << ", CPU timestamp : " << m_Image->GetMTime() << std::endl;
+  //std::cout << "GPU timestamp : " << this->GetMTime() << ", CPU timestamp : "
+  // << m_Image->GetMTime() << std::endl;
 }
-
 
 } // namespace itk
 

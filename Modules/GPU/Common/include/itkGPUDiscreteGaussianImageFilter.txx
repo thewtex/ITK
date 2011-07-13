@@ -32,34 +32,35 @@ GPUDiscreteGaussianImageFilter< TInputImage, TOutputImage >
 ::GPUDiscreteGaussianImageFilter()
 {
   unsigned int filterDimensionality = this->GetFilterDimensionality();
+
   if ( filterDimensionality > ImageDimension )
-  {
+    {
     filterDimensionality = ImageDimension;
-  }
+    }
 
   if( filterDimensionality == 1 )
-  {
+    {
     m_SingleFilter = SingleFilterType::New();
-  }
+    }
   else if( filterDimensionality == 2 )
-  {
+    {
     m_FirstFilter = FirstFilterType::New();
     m_LastFilter  = LastFilterType::New();
-  }
+    }
   else if( filterDimensionality > 2 )
-  {
+    {
     m_FirstFilter = FirstFilterType::New();
     m_LastFilter = LastFilterType::New();
     for (int i = 1; i < filterDimensionality - 1; ++i )
-    {
+      {
       typename IntermediateFilterType::Pointer f = IntermediateFilterType::New();
       m_IntermediateFilters.push_back( f );
+      }
     }
-  }
   else
-  {
+    {
     itkExceptionMacro("GPUDiscreteGaussianImageFilter only supports n-Dimensional image.");
-  }
+    }
 }
 
 template< class TInputImage, class TOutputImage >
@@ -67,21 +68,22 @@ void
 GPUDiscreteGaussianImageFilter< TInputImage, TOutputImage >
 ::GenerateInputRequestedRegion()
 throw( InvalidRequestedRegionError )
-{
+  {
   // call the superclass' implementation of this method. this should
   // copy the output requested region to the input requested region
   CPUSuperclass::GenerateInputRequestedRegion();
-}
+  }
 
 template< class TInputImage, class TOutputImage >
 void
 GPUDiscreteGaussianImageFilter< TInputImage, TOutputImage >
 ::GPUGenerateData()
 {
-  typedef typename itk::GPUTraits< TInputImage >::Type   GPUInputImage;
-  typedef typename itk::GPUTraits< TOutputImage >::Type  GPUOutputImage;
+  typedef typename itk::GPUTraits< TInputImage >::Type  GPUInputImage;
+  typedef typename itk::GPUTraits< TOutputImage >::Type GPUOutputImage;
 
-  typename GPUOutputImage::Pointer output =  dynamic_cast< GPUOutputImage * >( this->GetOutput() ); //this->ProcessObject::GetOutput(0) );
+  typename GPUOutputImage::Pointer output =  dynamic_cast< GPUOutputImage * >( this->GetOutput() ); //this->ProcessObject::GetOutput(0)
+                                                                                                    // );
 
   //typename TOutputImage::Pointer output = this->GetOutput();
 
@@ -108,6 +110,7 @@ GPUDiscreteGaussianImageFilter< TInputImage, TOutputImage >
     ImageRegionConstIterator< InputImageType > inIt(
       localInput,
       this->GetOutput()->GetRequestedRegion() );
+
     ImageRegionIterator< OutputImageType > outIt(
       output,
       this->GetOutput()->GetRequestedRegion() );
@@ -151,7 +154,7 @@ GPUDiscreteGaussianImageFilter< TInputImage, TOutputImage >
   typedef typename SingleFilterType::Pointer       SingleFilterPointer;
 */
   typedef StreamingImageFilter< OutputImageType, OutputImageType > StreamingFilterType;
-  typedef typename StreamingFilterType::Pointer    StreamingFilterPointer;
+  typedef typename StreamingFilterType::Pointer                    StreamingFilterPointer;
 
   // Create a series of operators
   typedef GaussianOperator< RealOutputPixelValueType, ImageDimension > OperatorType;
@@ -184,16 +187,16 @@ GPUDiscreteGaussianImageFilter< TInputImage, TOutputImage >
         // convert the variance from physical units to pixels
         double s = localInput->GetSpacing()[i];
         s = s * s;
-        oper[reverse_i].SetVariance((this->GetVariance())[i] / s);
+        oper[reverse_i].SetVariance( (this->GetVariance() )[i] / s);
         }
       }
     else
       {
-      oper[reverse_i].SetVariance((this->GetVariance())[i]);
+      oper[reverse_i].SetVariance( (this->GetVariance() )[i]);
       }
 
-    oper[reverse_i].SetMaximumKernelWidth(this->GetMaximumKernelWidth());
-    oper[reverse_i].SetMaximumError((this->GetMaximumError())[i]);
+    oper[reverse_i].SetMaximumKernelWidth(this->GetMaximumKernelWidth() );
+    oper[reverse_i].SetMaximumError( (this->GetMaximumError() )[i]);
     oper[reverse_i].CreateDirectional();
     }
 
@@ -206,7 +209,8 @@ GPUDiscreteGaussianImageFilter< TInputImage, TOutputImage >
     // Use just a single filter
     m_SingleFilter->SetOperator(oper[0]);
     m_SingleFilter->SetInput(localInput);
-    //progress->RegisterInternalFilter(m_SingleFilter, 1.0f / this->GetFilterDimensionality());
+    //progress->RegisterInternalFilter(m_SingleFilter, 1.0f /
+    // this->GetFilterDimensionality());
 
     // Graft this filters output onto the mini-pipeline so the mini-pipeline
     // has the correct region ivars and will write to this filters bulk data
@@ -219,13 +223,14 @@ GPUDiscreteGaussianImageFilter< TInputImage, TOutputImage >
     // Graft the last output of the mini-pipeline onto this filters output so
     // the final output has the correct region ivars and a handle to the final
     // bulk data
-    this->GraftOutput( m_SingleFilter->GetOutput() );//output);
+    this->GraftOutput( m_SingleFilter->GetOutput() ); //output);
     }
   else
     {
     // Setup a full mini-pipeline and stream the data through the
     // pipeline.
-    //unsigned int numberOfStages = filterDimensionality * this->GetInternalNumberOfStreamDivisions() + 1;
+    //unsigned int numberOfStages = filterDimensionality *
+    // this->GetInternalNumberOfStreamDivisions() + 1;
 
     // First filter convolves and changes type from input type to real type
     m_FirstFilter->SetOperator(oper[0]);
@@ -235,25 +240,25 @@ GPUDiscreteGaussianImageFilter< TInputImage, TOutputImage >
 
     // Middle filters convolves from real to real
     if ( filterDimensionality > 2 )
-    {
-      for ( i = 1; i < filterDimensionality - 1; ++i )
       {
+      for ( i = 1; i < filterDimensionality - 1; ++i )
+        {
         typename IntermediateFilterType::Pointer f = m_IntermediateFilters[i-1];
         f->SetOperator(oper[i]);
         f->ReleaseDataFlagOn();
         //progress->RegisterInternalFilter(f, 1.0f / numberOfStages);
 
         if ( i == 1 )
-        {
+          {
           f->SetInput( m_FirstFilter->GetOutput() );
-        }
+          }
         else
-        {
+          {
           // note: first filter in vector (zeroth element) is for i==1
           f->SetInput( m_IntermediateFilters[i - 2]->GetOutput() );
+          }
         }
       }
-    }
 
     // Last filter convolves and changes type from real type to output type
     m_LastFilter->SetOperator(oper[filterDimensionality - 1]);
@@ -290,7 +295,7 @@ GPUDiscreteGaussianImageFilter< TInputImage, TOutputImage >
     // Graft the last output of the mini-pipeline onto this filters output so
     // the final output has the correct region ivars and a handle to the final
     // bulk data
-    this->GraftOutput(  m_LastFilter->GetOutput() );//output);
+    this->GraftOutput(  m_LastFilter->GetOutput() ); //output);
     }
 }
 
@@ -301,6 +306,7 @@ GPUDiscreteGaussianImageFilter< TInputImage, TOutputImage >
 {
   GPUSuperclass::PrintSelf(os, indent);
 }
+
 } // end namespace itk
 
 #endif

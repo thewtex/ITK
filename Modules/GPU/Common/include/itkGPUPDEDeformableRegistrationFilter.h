@@ -71,17 +71,17 @@ namespace itk
  */
 template< class TFixedImage, class TMovingImage, class TDeformationField,
           class TParentImageFilter = itk::PDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField >
-        >
-class ITK_EXPORT GPUPDEDeformableRegistrationFilter:
+          >
+class ITK_EXPORT GPUPDEDeformableRegistrationFilter :
   public GPUDenseFiniteDifferenceImageFilter< TDeformationField, TDeformationField, TParentImageFilter >
 {
 public:
   /** Standard class typedefs. */
-  typedef GPUPDEDeformableRegistrationFilter                                       Self;
+  typedef GPUPDEDeformableRegistrationFilter                                                              Self;
   typedef GPUDenseFiniteDifferenceImageFilter< TDeformationField, TDeformationField, TParentImageFilter > GPUSuperclass;
-  typedef TParentImageFilter                                                       CPUSuperclass;
-  typedef SmartPointer< Self >                                                     Pointer;
-  typedef SmartPointer< const Self >                                               ConstPointer;
+  typedef TParentImageFilter                                                                              CPUSuperclass;
+  typedef SmartPointer< Self >                                                                            Pointer;
+  typedef SmartPointer< const Self >                                                                      ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -114,7 +114,7 @@ public:
   /** PDEDeformableRegistrationFilterFunction type. */
   /** GPUPDEDeformableRegistrationFilterFunction type. */
   typedef GPUPDEDeformableRegistrationFunction< FixedImageType, MovingImageType,
-                                             DeformationFieldType >  GPUPDEDeformableRegistrationFunctionType;
+                                                DeformationFieldType >  GPUPDEDeformableRegistrationFunctionType;
 
   /** Inherit some enums and typedefs from the GPUSuperclass. */
   itkStaticConstMacro(ImageDimension, unsigned int,
@@ -134,11 +134,15 @@ public:
 
   /** Set initial deformation field. */
   void SetInitialDeformationField(const DeformationFieldType *ptr)
-  { this->SetInput(ptr); }
+  {
+    this->SetInput(ptr);
+  }
 
   /** Get output deformation field. */
   DeformationFieldType * GetDeformationField()
-  { return this->GetOutput(); }
+  {
+    return this->GetOutput();
+  }
 
   /** Get the number of valid inputs.  For PDEDeformableRegistration,
    * this checks whether the fixed and moving images have been
@@ -188,7 +192,9 @@ public:
 
   /** Stop the registration after the current iteration. */
   virtual void StopRegistration()
-  { m_StopRegistrationFlag = true; }
+  {
+    m_StopRegistrationFlag = true;
+  }
 
   /** Set/Get the desired maximum error of the Guassian kernel approximate.
    * \sa GaussianOperator. */
@@ -201,7 +207,8 @@ public:
   itkGetConstMacro(MaximumKernelWidth, unsigned int);
 protected:
   GPUPDEDeformableRegistrationFilter();
-  ~GPUPDEDeformableRegistrationFilter() {}
+  ~GPUPDEDeformableRegistrationFilter() {
+  }
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Supplies the halting criteria for this class of filters.  The
@@ -228,6 +235,7 @@ protected:
    * using a Guassian operator. The amount of smoothing can be specified
    * by setting the StandardDeviations. */
   virtual void SmoothDeformationField();
+
   virtual void GPUSmoothDeformationField();
 
   virtual void AllocateSmoothingBuffer();
@@ -260,7 +268,7 @@ protected:
 
 private:
   GPUPDEDeformableRegistrationFilter(const Self &); //purposely not implemented
-  void operator=(const Self &);                  //purposely not implemented
+  void operator=(const Self &);                     //purposely not implemented
 
   /** Standard deviation for Gaussian smoothing */
   StandardDeviationsType m_StandardDeviations;
@@ -284,8 +292,8 @@ private:
   bool m_StopRegistrationFlag;
 
   /** Memery buffer for smoothing kernel. */
-  int                              m_SmoothingKernelSize;
-  float*                           m_SmoothingKernel;
+  int    m_SmoothingKernelSize;
+  float* m_SmoothingKernel;
   typename GPUDataManager::Pointer m_GPUSmoothingKernel;
 
   /* GPU kernel handle for GPUSmoothDeformationField */

@@ -32,8 +32,10 @@ namespace itk
  *
  * \ingroup   GPUCommon
  */
-template< class TInputImage, class TOutputImage, class TFunction, class TParentImageFilter = InPlaceImageFilter< TInputImage, TOutputImage > >
-class ITK_EXPORT GPUUnaryFunctorImageFilter : public GPUInPlaceImageFilter< TInputImage, TOutputImage, TParentImageFilter >
+template< class TInputImage, class TOutputImage, class TFunction, class TParentImageFilter =
+            InPlaceImageFilter< TInputImage, TOutputImage > >
+class ITK_EXPORT GPUUnaryFunctorImageFilter : public GPUInPlaceImageFilter< TInputImage, TOutputImage,
+                                                                            TParentImageFilter >
 {
 public:
   /** Standard class typedefs. */
@@ -62,32 +64,36 @@ public:
   typedef typename     OutputImageType::RegionType OutputImageRegionType;
   typedef typename     OutputImageType::PixelType  OutputImagePixelType;
 
-  FunctorType &       GetFunctor() { return m_Functor; }
-  const FunctorType & GetFunctor() const { return m_Functor; }
+  FunctorType & GetFunctor() {
+    return m_Functor;
+  }
+  const FunctorType & GetFunctor() const {
+    return m_Functor;
+  }
 
   /** Set the functor object. */
   void SetFunctor(const FunctorType & functor)
   {
     if ( m_Functor != functor )
-    {
+      {
       m_Functor = functor;
       this->Modified();
-    }
+      }
   }
 
 protected:
-  GPUUnaryFunctorImageFilter() {};
-  virtual ~GPUUnaryFunctorImageFilter() {}
+  GPUUnaryFunctorImageFilter() {
+  }
+  virtual ~GPUUnaryFunctorImageFilter() {
+  }
 
   virtual void GenerateOutputInformation();
-
 
   virtual void GPUGenerateData();
 
   /** GPU kernel handle is defined here instead of in the child class
    * because GPUGenerateData() in this base class is used. */
   int m_UnaryFunctorImageFilterGPUKernelHandle;
-
 private:
   GPUUnaryFunctorImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);             //purposely not implemented

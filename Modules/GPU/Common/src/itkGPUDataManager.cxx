@@ -100,7 +100,8 @@ void GPUDataManager::MakeCPUBufferUpToDate()
 #ifdef VERBOSE
     std::cout << "GPU->CPU data copy" << std::endl;
 #endif
-    errid = clEnqueueReadBuffer(m_ContextManager->GetCommandQueue(m_CommandQueueId), m_GPUBuffer, CL_TRUE, 0, m_BufferSize, m_CPUBuffer, 0, NULL, NULL);
+    errid = clEnqueueReadBuffer(m_ContextManager->GetCommandQueue(
+                                  m_CommandQueueId), m_GPUBuffer, CL_TRUE, 0, m_BufferSize, m_CPUBuffer, 0, NULL, NULL);
     OclCheckError(errid);
 
     m_IsCPUBufferDirty = false;
@@ -109,10 +110,9 @@ void GPUDataManager::MakeCPUBufferUpToDate()
   m_Mutex.Unlock();
 }
 
-
 void GPUDataManager::MakeGPUBufferUpToDate()
 {
-   m_Mutex.Lock();
+  m_Mutex.Lock();
 
   if( m_IsGPUBufferDirty && m_CPUBuffer != NULL && m_GPUBuffer != NULL )
     {
@@ -120,15 +120,15 @@ void GPUDataManager::MakeGPUBufferUpToDate()
 #ifdef VERBOSE
     std::cout << "CPU->GPU data copy" << std::endl;
 #endif
-    errid = clEnqueueWriteBuffer(m_ContextManager->GetCommandQueue(m_CommandQueueId), m_GPUBuffer, CL_TRUE, 0, m_BufferSize, m_CPUBuffer, 0, NULL, NULL);
+    errid = clEnqueueWriteBuffer(m_ContextManager->GetCommandQueue(
+                                   m_CommandQueueId), m_GPUBuffer, CL_TRUE, 0, m_BufferSize, m_CPUBuffer, 0, NULL, NULL);
     OclCheckError(errid);
 
     m_IsGPUBufferDirty = false;
     }
 
-   m_Mutex.Unlock();
+  m_Mutex.Unlock();
 }
-
 
 cl_mem* GPUDataManager::GetGPUBufferPointer()
 {
@@ -187,7 +187,7 @@ int GPUDataManager::GetCurrentCommandQueueID()
 void GPUDataManager::Graft(const GPUDataManager* data)
 {
   if( data )
-  {
+    {
     m_BufferSize = data->m_BufferSize;
     m_ContextManager = data->m_ContextManager;
     m_CommandQueueId = data->m_CommandQueueId;
@@ -197,20 +197,20 @@ void GPUDataManager::Graft(const GPUDataManager* data)
 //    m_Context   = data->m_Context;
     m_IsCPUBufferDirty = data->m_IsCPUBufferDirty;
     m_IsGPUBufferDirty = data->m_IsGPUBufferDirty;
-  }
+    }
 }
 
 void GPUDataManager::Initialize()
 {
   if( m_ContextManager->GetNumCommandQueue() > 0 )
-  {
+    {
     m_CommandQueueId = 0; // default command queue
-  }
+    }
 
   if( m_GPUBuffer ) // Release GPU memory if exists
-  {
+    {
     clReleaseMemObject(m_GPUBuffer);
-  }
+    }
 
   m_BufferSize = 0;
   m_GPUBuffer = NULL;

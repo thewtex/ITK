@@ -35,15 +35,18 @@ namespace itk
  * \ingroup ITKGPUCommon
  */
 template< class TInputImage, class TOutputImage >
-class ITK_EXPORT GPUMeanImageFilter: //public GPUImageToImageFilter< TInputImage, TOutputImage, MeanImageFilter< TInputImage, TOutputImage > >
+class ITK_EXPORT GPUMeanImageFilter : //public GPUImageToImageFilter<
+                                      // TInputImage, TOutputImage,
+                                      // MeanImageFilter< TInputImage,
+                                      // TOutputImage > >
   public GPUBoxImageFilter< TInputImage, TOutputImage, MeanImageFilter< TInputImage, TOutputImage > >
 {
 public:
   /** Standard class typedefs. */
-  typedef GPUMeanImageFilter       Self;
+  typedef GPUMeanImageFilter                                                                               Self;
   typedef GPUImageToImageFilter< TInputImage, TOutputImage, MeanImageFilter< TInputImage, TOutputImage > > Superclass;
-  typedef SmartPointer< Self >        Pointer;
-  typedef SmartPointer< const Self >  ConstPointer;
+  typedef SmartPointer< Self >                                                                             Pointer;
+  typedef SmartPointer< const Self >                                                                       ConstPointer;
 
   itkNewMacro(Self);
 
@@ -66,7 +69,6 @@ public:
                       TInputImage::ImageDimension);
   itkStaticConstMacro(OutputImageDimension, unsigned int,
                       TOutputImage::ImageDimension);
-
 protected:
   GPUMeanImageFilter();
   ~GPUMeanImageFilter();
@@ -89,14 +91,18 @@ private:
 class GPUMeanImageFilterFactory : public ObjectFactoryBase
 {
 public:
-  typedef GPUMeanImageFilterFactory     Self;
-  typedef ObjectFactoryBase             Superclass;
-  typedef SmartPointer<Self>            Pointer;
-  typedef SmartPointer<const Self>      ConstPointer;
+  typedef GPUMeanImageFilterFactory Self;
+  typedef ObjectFactoryBase         Superclass;
+  typedef SmartPointer<Self>        Pointer;
+  typedef SmartPointer<const Self>  ConstPointer;
 
   /** Class methods used to interface with the registered factories. */
-  virtual const char* GetITKSourceVersion() const { return ITK_SOURCE_VERSION; }
-  const char* GetDescription() const { return "A Factory for GPUMeanImageFilter"; }
+  virtual const char* GetITKSourceVersion() const {
+    return ITK_SOURCE_VERSION;
+  }
+  const char* GetDescription() const {
+    return "A Factory for GPUMeanImageFilter";
+  }
 
   /** Method for class instantiation. */
   itkFactorylessNewMacro(Self);
@@ -108,30 +114,30 @@ public:
   static void RegisterOneFactory(void)
   {
     GPUMeanImageFilterFactory::Pointer factory = GPUMeanImageFilterFactory::New();
+
     ObjectFactoryBase::RegisterFactory(factory);
   }
 
 private:
-  GPUMeanImageFilterFactory(const Self&);    //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  GPUMeanImageFilterFactory(const Self&); //purposely not implemented
+  void operator=(const Self&);            //purposely not implemented
 
-#define OverrideMeanFilterTypeMacro(ipt,opt,dm)\
-  {\
-  typedef Image<ipt,dm> InputImageType;\
-  typedef Image<opt,dm> OutputImageType;\
-  this->RegisterOverride(\
-  typeid(MeanImageFilter<InputImageType,OutputImageType>).name(),\
-        typeid(GPUMeanImageFilter<InputImageType,OutputImageType>).name(),\
-        "GPU Mean Image Filter Override",\
-        true,\
-        CreateObjectFunction<GPUMeanImageFilter<InputImageType,OutputImageType> >::New());\
-  }
-
+#define OverrideMeanFilterTypeMacro(ipt,opt,dm) \
+    { \
+    typedef Image<ipt,dm> InputImageType; \
+    typedef Image<opt,dm> OutputImageType; \
+    this->RegisterOverride( \
+      typeid(MeanImageFilter<InputImageType,OutputImageType>).name(), \
+      typeid(GPUMeanImageFilter<InputImageType,OutputImageType>).name(), \
+      "GPU Mean Image Filter Override", \
+      true, \
+      CreateObjectFunction<GPUMeanImageFilter<InputImageType,OutputImageType> >::New() ); \
+    }
 
   GPUMeanImageFilterFactory()
   {
     if( IsGPUAvailable() )
-    {
+      {
       OverrideMeanFilterTypeMacro(unsigned char, unsigned char, 1);
       OverrideMeanFilterTypeMacro(char, char, 1);
       OverrideMeanFilterTypeMacro(float,float,1);
@@ -152,12 +158,12 @@ private:
       OverrideMeanFilterTypeMacro(int,int,3);
       OverrideMeanFilterTypeMacro(unsigned int,unsigned int,3);
       OverrideMeanFilterTypeMacro(double,double,3);
-    }
+      }
   }
+
 };
 
 } // end namespace itk
-
 
 #if ITK_TEMPLATE_TXX
 #include "itkGPUMeanImageFilter.hxx"

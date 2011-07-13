@@ -41,16 +41,16 @@ namespace itk
 template< class TInputImage, class TOutputImage,
           class TOperatorValueType = ITK_TYPENAME TOutputImage::PixelType,
           class TParentImageFilter = NeighborhoodOperatorImageFilter< TInputImage, TOutputImage, TOperatorValueType> >
-class ITK_EXPORT GPUNeighborhoodOperatorImageFilter:
+class ITK_EXPORT GPUNeighborhoodOperatorImageFilter :
   public GPUImageToImageFilter< TInputImage, TOutputImage, TParentImageFilter >
 {
 public:
   /** Standard "Self" & Superclass typedef. */
-  typedef GPUNeighborhoodOperatorImageFilter              Self;
-  typedef TParentImageFilter                              CPUSuperclass;
+  typedef GPUNeighborhoodOperatorImageFilter                                     Self;
+  typedef TParentImageFilter                                                     CPUSuperclass;
   typedef GPUImageToImageFilter< TInputImage, TOutputImage, TParentImageFilter > GPUSuperclass;
-  typedef SmartPointer< Self >                            Pointer;
-  typedef SmartPointer< const Self >                      ConstPointer;
+  typedef SmartPointer< Self >                                                   Pointer;
+  typedef SmartPointer< const Self >                                             ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -142,7 +142,8 @@ public:
 #endif
 protected:
   GPUNeighborhoodOperatorImageFilter();
-  virtual ~GPUNeighborhoodOperatorImageFilter() {}
+  virtual ~GPUNeighborhoodOperatorImageFilter() {
+  }
 
   /** NeighborhoodOperatorImageFilter can be implemented as a
    * multithreaded filter.  Therefore, this implementation provides a
@@ -161,11 +162,12 @@ protected:
   void GPUGenerateData();
 
   void PrintSelf(std::ostream & os, Indent indent) const
-  {  GPUSuperclass::PrintSelf(os, indent); }
-
+  {
+    GPUSuperclass::PrintSelf(os, indent);
+  }
 private:
   GPUNeighborhoodOperatorImageFilter(const Self &); //purposely not implemented
-  void operator=(const Self &);                  //purposely not implemented
+  void operator=(const Self &);                     //purposely not implemented
 
   /** Internal operator used to filter the image.
   OutputNeighborhoodType m_Operator;*/

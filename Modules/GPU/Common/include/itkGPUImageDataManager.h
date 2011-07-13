@@ -40,51 +40,51 @@
 
 namespace itk
 {
-  template < class TPixel, unsigned int NDimension > class GPUImage;
+template < class TPixel, unsigned int NDimension > class GPUImage;
 
-  template < class ImageType >
-  class ITK_EXPORT GPUImageDataManager : public GPUDataManager
-  {
-    // allow GPUKernelManager to access GPU buffer pointer
-    friend class GPUKernelManager;
-    friend class GPUImage< typename ImageType::PixelType, ImageType::ImageDimension >;
+template < class ImageType >
+class ITK_EXPORT GPUImageDataManager : public GPUDataManager
+{
+  // allow GPUKernelManager to access GPU buffer pointer
+  friend class GPUKernelManager;
+  friend class GPUImage< typename ImageType::PixelType, ImageType::ImageDimension >;
+public:
 
-  public:
+  typedef GPUImageDataManager      Self;
+  typedef GPUDataManager           Superclass;
+  typedef SmartPointer<Self>       Pointer;
+  typedef SmartPointer<const Self> ConstPointer;
 
-    typedef GPUImageDataManager        Self;
-    typedef GPUDataManager             Superclass;
-    typedef SmartPointer<Self>         Pointer;
-    typedef SmartPointer<const Self>   ConstPointer;
+  itkNewMacro(Self);
+  itkTypeMacro(GPUImageDataManager, GPUDataManager);
 
-    itkNewMacro(Self);
-    itkTypeMacro(GPUImageDataManager, GPUDataManager);
+  void SetImagePointer( typename ImageType::Pointer img );
 
-    void SetImagePointer( typename ImageType::Pointer img );
+  /** actual GPU->CPU memory copy takes place here */
+  virtual void MakeCPUBufferUpToDate();
 
-    /** actual GPU->CPU memory copy takes place here */
-    virtual void MakeCPUBufferUpToDate();
+  /** actual CPU->GPU memory copy takes place here */
+  virtual void MakeGPUBufferUpToDate();
 
-    /** actual CPU->GPU memory copy takes place here */
-    virtual void MakeGPUBufferUpToDate();
+  /** Grafting GPU Image Data */
+  virtual void Graft(const GPUImageDataManager* data);
 
-    /** Grafting GPU Image Data */
-    virtual void Graft(const GPUImageDataManager* data);
+protected:
 
-  protected:
+  GPUImageDataManager() {
+    m_Image = NULL;
+  }
+  virtual ~GPUImageDataManager() {
+  }
+private:
+  GPUImageDataManager(const Self&);   //purposely not implemented
+  void operator=(const Self&);
 
-    GPUImageDataManager() { m_Image = NULL; };
-    virtual ~GPUImageDataManager() {};
+  typename ImageType::Pointer m_Image;
 
-  private:
-    GPUImageDataManager(const Self&); //purposely not implemented
-    void operator=(const Self&);
-
-    typename ImageType::Pointer m_Image;
-
-  };
+};
 
 } // namespace itk
-
 
 #if ITK_TEMPLATE_TXX
 #include "itkGPUImageDataManager.hxx"

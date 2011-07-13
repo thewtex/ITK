@@ -37,16 +37,16 @@ namespace itk
  */
 
 template< class TInputImage, class TOutputImage, class TParentImageFilter = BoxImageFilter< TInputImage, TOutputImage > >
-class ITK_EXPORT GPUBoxImageFilter:
+class ITK_EXPORT GPUBoxImageFilter :
   public GPUImageToImageFilter< TInputImage, TOutputImage, TParentImageFilter >
 {
 public:
   /** Standard class typedefs. */
-  typedef GPUBoxImageFilter                                  Self;
+  typedef GPUBoxImageFilter                                                      Self;
   typedef GPUImageToImageFilter< TInputImage, TOutputImage, TParentImageFilter > GPUSuperclass;
-  typedef TParentImageFilter                              CPUSuperclass;
-  typedef SmartPointer< Self >                            Pointer;
-  typedef SmartPointer< const Self >                      ConstPointer;
+  typedef TParentImageFilter                                                     CPUSuperclass;
+  typedef SmartPointer< Self >                                                   Pointer;
+  typedef SmartPointer< const Self >                                             ConstPointer;
 
   /** Standard New method. */
   itkNewMacro(Self);
@@ -55,12 +55,12 @@ public:
   itkTypeMacro(GPUBoxImageFilter, GPUImageToImageFilter);
 
   /** Image related typedefs. */
-  typedef TInputImage                         InputImageType;
-  typedef typename CPUSuperclass::RegionType  RegionType;
-  typedef typename CPUSuperclass::SizeType    SizeType;
-  typedef typename CPUSuperclass::IndexType   IndexType;
-  typedef typename CPUSuperclass::OffsetType  OffsetType;
-  typedef typename TInputImage::PixelType     InputPixelType;
+  typedef TInputImage                        InputImageType;
+  typedef typename CPUSuperclass::RegionType RegionType;
+  typedef typename CPUSuperclass::SizeType   SizeType;
+  typedef typename CPUSuperclass::IndexType  IndexType;
+  typedef typename CPUSuperclass::OffsetType OffsetType;
+  typedef typename TInputImage::PixelType    InputPixelType;
 
   typedef TOutputImage                        OutputImageType;
   typedef typename OutputImageType::PixelType OutputPixelType;
@@ -68,22 +68,22 @@ public:
   /** n-dimensional Kernel radius. */
   typedef typename CPUSuperclass::SizeType       RadiusType;
   typedef typename InputImageType::SizeValueType RadiusValueType;
-
 protected:
-  GPUBoxImageFilter() {}
-  ~GPUBoxImageFilter() {}
+  GPUBoxImageFilter() {
+  }
+  ~GPUBoxImageFilter() {
+  }
 
   void PrintSelf(std::ostream & os, Indent indent) const
   {
-     GPUSuperclass::PrintSelf(os, indent);
+    GPUSuperclass::PrintSelf(os, indent);
   }
 
 private:
   GPUBoxImageFilter(const Self &); //purposely not implemented
-  void operator=(const Self &); //purposely not implemented
+  void operator=(const Self &);    //purposely not implemented
 
 };
 }
-
 
 #endif

@@ -37,15 +37,15 @@ namespace itk
  * \ingroup FiniteDifferenceFunctions
  */
 template< class TFixedImage, class TMovingImage, class TDeformationField >
-class ITK_EXPORT GPUPDEDeformableRegistrationFunction:
+class ITK_EXPORT GPUPDEDeformableRegistrationFunction :
   public GPUFiniteDifferenceFunction< TDeformationField >
 {
 public:
   /** Standard class typedefs. */
-  typedef GPUPDEDeformableRegistrationFunction          Self;
+  typedef GPUPDEDeformableRegistrationFunction             Self;
   typedef GPUFiniteDifferenceFunction< TDeformationField > Superclass;
-  typedef SmartPointer< Self >                          Pointer;
-  typedef SmartPointer< const Self >                    ConstPointer;
+  typedef SmartPointer< Self >                             Pointer;
+  typedef SmartPointer< const Self >                       ConstPointer;
 
   /** Run-time type information (and related methods) */
   itkTypeMacro(GPUPDEDeformableRegistrationFunction,
@@ -65,35 +65,59 @@ public:
 
   /** Set the moving image.  */
   void SetMovingImage(const MovingImageType *ptr)
-  { m_MovingImage = ptr; }
+  {
+    m_MovingImage = ptr;
+  }
 
   /** Get the moving image. */
   const MovingImageType * GetMovingImage(void) const
-  { return m_MovingImage; }
+  {
+    return m_MovingImage;
+  }
 
   /** Set the fixed image. */
   void SetFixedImage(const FixedImageType *ptr)
-  { m_FixedImage = ptr; }
+  {
+    m_FixedImage = ptr;
+  }
 
   /** Get the fixed image. */
   const FixedImageType * GetFixedImage(void) const
-  { return m_FixedImage; }
+  {
+    return m_FixedImage;
+  }
 
   /** Set the deformation field image. */
   void SetDeformationField(DeformationFieldTypePointer ptr)
-  { m_DeformationField = ptr; }
+  {
+    m_DeformationField = ptr;
+  }
 
   /** Get the deformation field. This function should have been
    *  declared const. It is not for backward compatibility reasons. */
   DeformationFieldType * GetDeformationField(void)
-  { return m_DeformationField; }
+  {
+    return m_DeformationField;
+  }
 
-  void SetEnergy(double e) { m_Energy = e; }
-  double GetEnergy() const { return m_Energy; }
-  void SetGradientStep(double e) { m_GradientStep = e; }
-  double GetGradientStep() const { return m_GradientStep; }
-  void SetNormalizeGradient(bool e) { m_NormalizeGradient = e; }
-  bool GetNormalizeGradient() const { return m_NormalizeGradient; }
+  void SetEnergy(double e) {
+    m_Energy = e;
+  }
+  double GetEnergy() const {
+    return m_Energy;
+  }
+  void SetGradientStep(double e) {
+    m_GradientStep = e;
+  }
+  double GetGradientStep() const {
+    return m_GradientStep;
+  }
+  void SetNormalizeGradient(bool e) {
+    m_NormalizeGradient = e;
+  }
+  bool GetNormalizeGradient() const {
+    return m_NormalizeGradient;
+  }
 protected:
   GPUPDEDeformableRegistrationFunction()
   {
@@ -105,7 +129,8 @@ protected:
     m_GradientStep = 1.0;
   }
 
-  ~GPUPDEDeformableRegistrationFunction() {}
+  ~GPUPDEDeformableRegistrationFunction() {
+  }
 
   void PrintSelf(std::ostream & os, Indent indent) const
   {
@@ -131,8 +156,11 @@ protected:
 
   mutable double m_GradientStep;
 private:
-  GPUPDEDeformableRegistrationFunction(const Self &); //purposely not implemented
-  void operator=(const Self &);                    //purposely not implemented
+  GPUPDEDeformableRegistrationFunction(const Self &); //purposely not
+                                                      // implemented
+  void operator=(const Self &);                       //purposely not
+                                                      // implemented
+
 };
 } // end namespace itk
 

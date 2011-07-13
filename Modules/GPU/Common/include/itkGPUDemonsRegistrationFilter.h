@@ -65,18 +65,22 @@ namespace itk
  */
 template< class TFixedImage, class TMovingImage, class TDeformationField,
           class TParentImageFilter = itk::DemonsRegistrationFilter< TFixedImage, TMovingImage, TDeformationField >
-        >
-class ITK_EXPORT GPUDemonsRegistrationFilter:
+          >
+class ITK_EXPORT GPUDemonsRegistrationFilter :
   public GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage,
-                                          TDeformationField, TParentImageFilter >
+                                             TDeformationField, TParentImageFilter >
 {
 public:
   /** Standard class typedefs. */
-  typedef GPUDemonsRegistrationFilter                                                        Self;
-  typedef GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField, TParentImageFilter > GPUSuperclass;
-  typedef TParentImageFilter                                                                 CPUSuperclass;
-  typedef SmartPointer< Self >                                                               Pointer;
-  typedef SmartPointer< const Self >                                                         ConstPointer;
+  typedef GPUDemonsRegistrationFilter Self;
+  typedef GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField,
+                                              TParentImageFilter > GPUSuperclass;
+  typedef TParentImageFilter
+  CPUSuperclass;
+  typedef SmartPointer< Self >
+  Pointer;
+  typedef SmartPointer< const Self >
+  ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -108,7 +112,7 @@ public:
 
   /** GPUDemonsRegistrationFilterFunction type. */
   typedef GPUDemonsRegistrationFunction< FixedImageType, MovingImageType,
-                                      DeformationFieldType >  GPUDemonsRegistrationFunctionType;
+                                         DeformationFieldType >  GPUDemonsRegistrationFunctionType;
 
   /** Get the metric value. The metric value is the mean square difference
    * in intensity between the fixed image and transforming moving image
@@ -133,7 +137,8 @@ public:
 
 protected:
   GPUDemonsRegistrationFilter();
-  ~GPUDemonsRegistrationFilter() {}
+  ~GPUDemonsRegistrationFilter() {
+  }
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Initialize the state of filter and equation before each iteration. */
@@ -144,7 +149,7 @@ protected:
 
 private:
   GPUDemonsRegistrationFilter(const Self &); //purposely not implemented
-  void operator=(const Self &);           //purposely not implemented
+  void operator=(const Self &);              //purposely not implemented
 
   bool m_UseMovingImageGradient;
 };
@@ -156,14 +161,18 @@ private:
 class GPUDemonsRegistrationFilterFactory : public itk::ObjectFactoryBase
 {
 public:
-  typedef GPUDemonsRegistrationFilterFactory     Self;
-  typedef ObjectFactoryBase                      GPUSuperclass;
-  typedef SmartPointer<Self>                     Pointer;
-  typedef SmartPointer<const Self>               ConstPointer;
+  typedef GPUDemonsRegistrationFilterFactory Self;
+  typedef ObjectFactoryBase                  GPUSuperclass;
+  typedef SmartPointer<Self>                 Pointer;
+  typedef SmartPointer<const Self>           ConstPointer;
 
   /** Class methods used to interface with the registered factories. */
-  virtual const char* GetITKSourceVersion() const { return ITK_SOURCE_VERSION; }
-  const char* GetDescription() const { return "A Factory for GPUDemonsRegistrationFilter"; }
+  virtual const char* GetITKSourceVersion() const {
+    return ITK_SOURCE_VERSION;
+  }
+  const char* GetDescription() const {
+    return "A Factory for GPUDemonsRegistrationFilter";
+  }
 
   /** Method for class instantiation. */
   itkFactorylessNewMacro(Self);
@@ -175,32 +184,32 @@ public:
   static void RegisterOneFactory(void)
   {
     GPUDemonsRegistrationFilterFactory::Pointer factory = GPUDemonsRegistrationFilterFactory::New();
+
     ObjectFactoryBase::RegisterFactory(factory);
   }
 
 private:
-  GPUDemonsRegistrationFilterFactory(const Self&);    //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  GPUDemonsRegistrationFilterFactory(const Self&); //purposely not implemented
+  void operator=(const Self&);                     //purposely not implemented
 
-#define OverrideDemonsRegistrationFilterTypeMacro(ipt,opt,dm)\
-  {\
-  typedef GPUImage<ipt,dm> InputImageType;\
-  typedef GPUImage<opt,dm> OutputImageType;\
-  typedef Vector< float, dm >           VectorPixelType;\
-  typedef GPUImage<  VectorPixelType, dm > DeformationFieldType;\
-  this->RegisterOverride(\
-  typeid(DemonsRegistrationFilter<InputImageType,OutputImageType,DeformationFieldType>).name(),\
-        typeid(GPUDemonsRegistrationFilter<InputImageType,OutputImageType,DeformationFieldType>).name(),\
-        "GPU Demons Registration Filter Override",\
-        true,\
-        CreateObjectFunction<GPUDemonsRegistrationFilter<InputImageType,OutputImageType,DeformationFieldType> >::New());\
-  }
-
+#define OverrideDemonsRegistrationFilterTypeMacro(ipt,opt,dm) \
+    { \
+    typedef GPUImage<ipt,dm>                 InputImageType; \
+    typedef GPUImage<opt,dm>                 OutputImageType; \
+    typedef Vector< float, dm >              VectorPixelType; \
+    typedef GPUImage<  VectorPixelType, dm > DeformationFieldType; \
+    this->RegisterOverride( \
+      typeid(DemonsRegistrationFilter<InputImageType,OutputImageType,DeformationFieldType>).name(), \
+      typeid(GPUDemonsRegistrationFilter<InputImageType,OutputImageType,DeformationFieldType>).name(), \
+      "GPU Demons Registration Filter Override", \
+      true, \
+      CreateObjectFunction<GPUDemonsRegistrationFilter<InputImageType,OutputImageType,DeformationFieldType> >::New() ); \
+    }
 
   GPUDemonsRegistrationFilterFactory()
   {
     if( IsGPUAvailable() )
-    {
+      {
       OverrideDemonsRegistrationFilterTypeMacro(unsigned char, unsigned char, 1);
       OverrideDemonsRegistrationFilterTypeMacro(char, char, 1);
       OverrideDemonsRegistrationFilterTypeMacro(float,float,1);
@@ -221,8 +230,9 @@ private:
       OverrideDemonsRegistrationFilterTypeMacro(int,int,3);
       OverrideDemonsRegistrationFilterTypeMacro(unsigned int,unsigned int,3);
       OverrideDemonsRegistrationFilterTypeMacro(double,double,3);
-    }
+      }
   }
+
 };
 } // end namespace itk
 

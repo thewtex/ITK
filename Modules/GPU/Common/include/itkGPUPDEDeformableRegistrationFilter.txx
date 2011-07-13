@@ -62,9 +62,9 @@ GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField
   std::ostringstream defines;
 
   if(TFixedImage::ImageDimension > 3 || TFixedImage::ImageDimension < 1)
-  {
+    {
     itkExceptionMacro("GPUDenseFiniteDifferenceImageFilter supports 1/2/3D image.");
-  }
+    }
 
   defines << "#define DIM_" << TDeformationField::ImageDimension << "\n";
 
@@ -104,10 +104,10 @@ const typename GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TD
 ::FixedImageType *
 GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField, TParentImageFilter >
 ::GetFixedImage() const
-{
+  {
   return dynamic_cast< const FixedImageType * >
-         ( this->ProcessObject::GetInput(1) );
-}
+           ( this->ProcessObject::GetInput(1) );
+  }
 
 /*
  * Set the moving image.
@@ -129,10 +129,10 @@ const typename GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TD
 ::MovingImageType *
 GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField, TParentImageFilter >
 ::GetMovingImage() const
-{
+  {
   return dynamic_cast< const MovingImageType * >
-         ( this->ProcessObject::GetInput(2) );
-}
+           ( this->ProcessObject::GetInput(2) );
+  }
 
 /*
  *
@@ -266,7 +266,7 @@ GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField
   // update variables in the equation object
   GPUPDEDeformableRegistrationFunctionType *f =
     dynamic_cast< GPUPDEDeformableRegistrationFunctionType * >
-    ( this->GetDifferenceFunction().GetPointer() );
+      ( this->GetDifferenceFunction().GetPointer() );
 
   if ( !f )
     {
@@ -304,8 +304,8 @@ GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField
       zeros[j] = 0;
       }
 
-    typedef typename itk::GPUTraits< TDeformationField >::Type       GPUOutputImage;
-    typename GPUOutputImage::Pointer output = dynamic_cast<GPUOutputImage *>(this->GetOutput());
+    typedef typename itk::GPUTraits< TDeformationField >::Type GPUOutputImage;
+    typename GPUOutputImage::Pointer output = dynamic_cast<GPUOutputImage *>(this->GetOutput() );
 
     ImageRegionIterator< OutputImageType > out( output, output->GetRequestedRegion() );
 
@@ -431,11 +431,12 @@ GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField
   typedef GaussianOperator< ScalarType, ImageDimension > OperatorType;
 
   // image arguments
-  typedef typename itk::GPUTraits< TDeformationField >::Type   GPUBufferImage;
-  typedef typename itk::GPUTraits< TDeformationField >::Type   GPUOutputImage;
+  typedef typename itk::GPUTraits< TDeformationField >::Type GPUBufferImage;
+  typedef typename itk::GPUTraits< TDeformationField >::Type GPUOutputImage;
 
-  typename GPUBufferImage::Pointer bfPtr =  dynamic_cast< GPUBufferImage * >( m_TempField.GetPointer() );
-  typename GPUOutputImage::Pointer otPtr =  dynamic_cast< GPUOutputImage * >( this->GetOutput() );//this->ProcessObject::GetOutput(0) );
+  typename GPUBufferImage::Pointer  bfPtr =  dynamic_cast< GPUBufferImage * >( m_TempField.GetPointer() );
+  typename GPUOutputImage::Pointer  otPtr =  dynamic_cast< GPUOutputImage * >( this->GetOutput() ); //this->ProcessObject::GetOutput(0)
+                                                                                                    // );
   typename GPUOutputImage::SizeType outSize = otPtr->GetLargestPossibleRegion().GetSize();
 
   int imgSize[3];
@@ -444,32 +445,42 @@ GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField
   int ImageDim = (int)TDeformationField::ImageDimension;
 
   for(int i=0; i<ImageDim; i++)
-  {
+    {
     imgSize[i] = outSize[i];
-  }
+    }
 
   size_t localSize[3], globalSize[3];
   localSize[0] = localSize[1] = localSize[2] = BLOCK_SIZE[ImageDim-1];
   for(int i=0; i<ImageDim; i++)
-  {
-    globalSize[i] = localSize[i]*(unsigned int)ceil((float)outSize[i]/(float)localSize[i]); // total # of threads
-  }
+    {
+    globalSize[i] = localSize[i]*(unsigned int)ceil( (float)outSize[i]/(float)localSize[i]); //
+                                                                                             // total
+                                                                                             // #
+                                                                                             // of
+                                                                                             // threads
+    }
 
   // arguments set up
   int argidx = 0;
-  this->m_GPUKernelManager->SetKernelArgWithImage(m_SmoothDeformationFieldGPUKernelHandle, argidx++, otPtr->GetGPUDataManager());
-  this->m_GPUKernelManager->SetKernelArgWithImage(m_SmoothDeformationFieldGPUKernelHandle, argidx++, bfPtr->GetGPUDataManager());
+  this->m_GPUKernelManager->SetKernelArgWithImage(m_SmoothDeformationFieldGPUKernelHandle, argidx++,
+                                                  otPtr->GetGPUDataManager() );
+  this->m_GPUKernelManager->SetKernelArgWithImage(m_SmoothDeformationFieldGPUKernelHandle, argidx++,
+                                                  bfPtr->GetGPUDataManager() );
 
-  this->m_GPUKernelManager->SetKernelArgWithImage(m_SmoothDeformationFieldGPUKernelHandle, argidx++, m_GPUSmoothingKernel);
-  this->m_GPUKernelManager->SetKernelArg(m_SmoothDeformationFieldGPUKernelHandle, argidx++, sizeof(int), &(m_SmoothingKernelSize));
+  this->m_GPUKernelManager->SetKernelArgWithImage(m_SmoothDeformationFieldGPUKernelHandle, argidx++,
+                                                  m_GPUSmoothingKernel);
+  this->m_GPUKernelManager->SetKernelArg(m_SmoothDeformationFieldGPUKernelHandle, argidx++, sizeof(int),
+                                         &(m_SmoothingKernelSize) );
 
   for(int i=0; i<ImageDim; i++)
-  {
-    this->m_GPUKernelManager->SetKernelArg(m_SmoothDeformationFieldGPUKernelHandle, argidx++, sizeof(int), &(imgSize[i]));
-  }
+    {
+    this->m_GPUKernelManager->SetKernelArg(m_SmoothDeformationFieldGPUKernelHandle, argidx++, sizeof(int), &(imgSize[i]) );
+    }
 
   // launch kernel
-  this->m_GPUKernelManager->LaunchKernel(m_SmoothDeformationFieldGPUKernelHandle, (int)TDeformationField::ImageDimension, globalSize, localSize );
+  this->m_GPUKernelManager->LaunchKernel(m_SmoothDeformationFieldGPUKernelHandle,
+                                         (int)TDeformationField::ImageDimension, globalSize,
+                                         localSize );
 
   //debug
   //otPtr->GetGPUDataManager()->SetCPUDirtyFlag(false);
@@ -505,7 +516,7 @@ GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField
     DeformationFieldType,
     DeformationFieldType >                             SmootherType;
 
-  OperatorType opers[ImageDimension];
+  OperatorType                   opers[ImageDimension];
   typename SmootherType::Pointer smoothers[ImageDimension];
 
   for ( unsigned int j = 0; j < ImageDimension; j++ )
@@ -569,8 +580,8 @@ GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField
 
   // allocate smoothing kernel
   float coefficients[5] = {0.050882235450215044,
-    0.21183832469709751, 0.47455887970537486,
-    0.21183832469709751, 0.050882235450215044};
+                           0.21183832469709751, 0.47455887970537486,
+                           0.21183832469709751, 0.050882235450215044};
 
   m_SmoothingKernelSize = 5;
   m_SmoothingKernel     = new float[m_SmoothingKernelSize];

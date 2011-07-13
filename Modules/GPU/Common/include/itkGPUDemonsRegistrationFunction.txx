@@ -54,7 +54,7 @@ GPUDemonsRegistrationFunction< TFixedImage, TMovingImage, TDeformationField >
     DefaultInterpolatorType::New();
 
   m_MovingImageInterpolator = static_cast< InterpolatorType * >(
-    interp.GetPointer() );
+      interp.GetPointer() );
 
   m_Metric = NumericTraits< double >::max();
   m_SumOfSquaredDifference = 0.0;
@@ -73,9 +73,9 @@ GPUDemonsRegistrationFunction< TFixedImage, TMovingImage, TDeformationField >
   std::ostringstream defines;
 
   if(TDeformationField::ImageDimension > 3 || TDeformationField::ImageDimension < 1)
-  {
+    {
     itkExceptionMacro("GPUDenseFiniteDifferenceImageFilter supports 1/2/3D image.");
-  }
+    }
 
   defines << "#define DIM_" << TDeformationField::ImageDimension << "\n";
 
@@ -221,11 +221,12 @@ GPUDemonsRegistrationFunction< TFixedImage, TMovingImage, TDeformationField >
                     void *gd
                     )
 {
-  TFixedImage::ConstPointer  fixedImage  = dynamic_cast< const TFixedImage * >( this->GetFixedImage() );
-  TMovingImage::ConstPointer movingImage = dynamic_cast< const TMovingImage * >( this->GetMovingImage() );
+  TFixedImage::ConstPointer               fixedImage  = dynamic_cast< const TFixedImage * >( this->GetFixedImage() );
+  TMovingImage::ConstPointer              movingImage = dynamic_cast< const TMovingImage * >( this->GetMovingImage() );
   typename DeformationFieldType::SizeType outSize = output->GetLargestPossibleRegion().GetSize();
 
   unsigned int numPixel = (unsigned int)(fixedImage->GetOffsetTable()[ImageDimension]);
+
   m_GPUPixelCounter->AllocateGPUInputBuffer(numPixel);
   m_GPUSquaredChange->AllocateGPUInputBuffer(numPixel);
   m_GPUSquaredDifference->AllocateGPUInputBuffer(numPixel);
@@ -236,38 +237,49 @@ GPUDemonsRegistrationFunction< TFixedImage, TMovingImage, TDeformationField >
   int ImageDim = (int)DeformationFieldType::ImageDimension;
 
   for(int i=0; i<ImageDim; i++)
-  {
+    {
     imgSize[i] = outSize[i];
-  }
+    }
 
   size_t localSize[3], globalSize[3];
   localSize[0] = localSize[1] = localSize[2] = BLOCK_SIZE[ImageDim-1];
   for(int i=0; i<ImageDim; i++)
-  {
-    globalSize[i] = localSize[i]*(unsigned int)ceil((float)outSize[i]/(float)localSize[i]); // total # of threads
-  }
+    {
+    globalSize[i] = localSize[i]*(unsigned int)ceil( (float)outSize[i]/(float)localSize[i]); //
+                                                                                             // total
+                                                                                             // #
+                                                                                             // of
+                                                                                             // threads
+    }
 
   float normalizer = 1;
 
   // arguments set up
   int argidx = 0;
-  this->m_GPUKernelManager->SetKernelArgWithImage(m_ComputeUpdateGPUKernelHandle, argidx++, fixedImage->GetGPUDataManager());
-  this->m_GPUKernelManager->SetKernelArgWithImage(m_ComputeUpdateGPUKernelHandle, argidx++, movingImage->GetGPUDataManager());
-  this->m_GPUKernelManager->SetKernelArgWithImage(m_ComputeUpdateGPUKernelHandle, argidx++, output->GetGPUDataManager());
-  this->m_GPUKernelManager->SetKernelArgWithImage(m_ComputeUpdateGPUKernelHandle, argidx++, update->GetGPUDataManager());
+  this->m_GPUKernelManager->SetKernelArgWithImage(m_ComputeUpdateGPUKernelHandle, argidx++,
+                                                  fixedImage->GetGPUDataManager() );
+  this->m_GPUKernelManager->SetKernelArgWithImage(m_ComputeUpdateGPUKernelHandle, argidx++,
+                                                  movingImage->GetGPUDataManager() );
+  this->m_GPUKernelManager->SetKernelArgWithImage(m_ComputeUpdateGPUKernelHandle, argidx++, output->GetGPUDataManager() );
+  this->m_GPUKernelManager->SetKernelArgWithImage(m_ComputeUpdateGPUKernelHandle, argidx++, update->GetGPUDataManager() );
 
-  this->m_GPUKernelManager->SetKernelArgWithImage(m_ComputeUpdateGPUKernelHandle, argidx++, m_GPUPixelCounter->GetGPUDataManager());
-  this->m_GPUKernelManager->SetKernelArgWithImage(m_ComputeUpdateGPUKernelHandle, argidx++, m_GPUSquaredChange->GetGPUDataManager());
-  this->m_GPUKernelManager->SetKernelArgWithImage(m_ComputeUpdateGPUKernelHandle, argidx++, m_GPUSquaredDifference->GetGPUDataManager());
+  this->m_GPUKernelManager->SetKernelArgWithImage(m_ComputeUpdateGPUKernelHandle, argidx++,
+                                                  m_GPUPixelCounter->GetGPUDataManager() );
+  this->m_GPUKernelManager->SetKernelArgWithImage(m_ComputeUpdateGPUKernelHandle, argidx++,
+                                                  m_GPUSquaredChange->GetGPUDataManager() );
+  this->m_GPUKernelManager->SetKernelArgWithImage(m_ComputeUpdateGPUKernelHandle, argidx++,
+                                                  m_GPUSquaredDifference->GetGPUDataManager() );
 
-  this->m_GPUKernelManager->SetKernelArg(m_ComputeUpdateGPUKernelHandle, argidx++, sizeof(float), &(normalizer));
+  this->m_GPUKernelManager->SetKernelArg(m_ComputeUpdateGPUKernelHandle, argidx++, sizeof(float), &(normalizer) );
   for(int i=0; i<ImageDim; i++)
-  {
-    this->m_GPUKernelManager->SetKernelArg(m_ComputeUpdateGPUKernelHandle, argidx++, sizeof(int), &(imgSize[i]));
-  }
+    {
+    this->m_GPUKernelManager->SetKernelArg(m_ComputeUpdateGPUKernelHandle, argidx++, sizeof(int), &(imgSize[i]) );
+    }
 
   // launch kernel
-  this->m_GPUKernelManager->LaunchKernel(m_ComputeUpdateGPUKernelHandle, (int)DeformationFieldType::ImageDimension, globalSize, localSize );
+  this->m_GPUKernelManager->LaunchKernel(m_ComputeUpdateGPUKernelHandle, (int)DeformationFieldType::ImageDimension,
+                                         globalSize,
+                                         localSize );
 
   m_GPUPixelCounter->GPUGenerateData();
   m_GPUSquaredChange->GPUGenerateData();
@@ -276,7 +288,8 @@ GPUDemonsRegistrationFunction< TFixedImage, TMovingImage, TDeformationField >
   m_SumOfSquaredDifference  = m_GPUSquaredDifference->GetGPUResult();
   m_NumberOfPixelsProcessed = m_GPUPixelCounter->GetGPUResult();
   m_SumOfSquaredChange      = m_GPUSquaredChange->GetGPUResult();
-  //std::cout << "m_NumberOfPixelsProcessed = " << m_NumberOfPixelsProcessed << std::endl;
+  //std::cout << "m_NumberOfPixelsProcessed = " << m_NumberOfPixelsProcessed <<
+  // std::endl;
   if ( m_NumberOfPixelsProcessed )
     {
     m_Metric = m_SumOfSquaredDifference /
@@ -285,9 +298,9 @@ GPUDemonsRegistrationFunction< TFixedImage, TMovingImage, TDeformationField >
                             static_cast<double>( m_NumberOfPixelsProcessed ) );
     }
 
-  m_GPUPixelCounter->ReleaseGPUInputBuffer( );
-  m_GPUSquaredChange->ReleaseGPUInputBuffer( );
-  m_GPUSquaredDifference->ReleaseGPUInputBuffer( );
+  m_GPUPixelCounter->ReleaseGPUInputBuffer();
+  m_GPUSquaredChange->ReleaseGPUInputBuffer();
+  m_GPUSquaredDifference->ReleaseGPUInputBuffer();
 }
 
 /**
@@ -365,7 +378,7 @@ GPUDemonsRegistrationFunction< TFixedImage, TMovingImage, TDeformationField >
     }
 
   const double denominator = sqr_speedValue / m_Normalizer
-                             + gradientSquaredMagnitude;
+    + gradientSquaredMagnitude;
 
   if ( vnl_math_abs(speedValue) < m_IntensityDifferenceThreshold
        || denominator < m_DenominatorThreshold )
@@ -402,7 +415,7 @@ GPUDemonsRegistrationFunction< TFixedImage, TMovingImage, TDeformationField >
   if ( m_NumberOfPixelsProcessed )
     {
     m_Metric = m_SumOfSquaredDifference
-               / static_cast< double >( m_NumberOfPixelsProcessed );
+      / static_cast< double >( m_NumberOfPixelsProcessed );
     m_RMSChange = vcl_sqrt( m_SumOfSquaredChange
                             / static_cast< double >( m_NumberOfPixelsProcessed ) );
     }
@@ -410,6 +423,7 @@ GPUDemonsRegistrationFunction< TFixedImage, TMovingImage, TDeformationField >
 
   delete globalData;
 }
+
 } // end namespace itk
 
 #endif

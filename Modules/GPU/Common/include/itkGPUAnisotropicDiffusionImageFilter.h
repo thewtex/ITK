@@ -29,17 +29,18 @@ namespace itk
  * InitializeIteration() calls GPUCalculateAverageGradientMagnitudeSquared().
  *
  * \ingroup GPUCommon  */
-template< class TInputImage, class TOutputImage, class TParentImageFilter = AnisotropicDiffusionImageFilter< TInputImage, TOutputImage > >
-class ITK_EXPORT GPUAnisotropicDiffusionImageFilter:
+template< class TInputImage, class TOutputImage, class TParentImageFilter =
+            AnisotropicDiffusionImageFilter< TInputImage, TOutputImage > >
+class ITK_EXPORT GPUAnisotropicDiffusionImageFilter :
   public GPUDenseFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilter >
 {
 public:
   /** Standard class typedefs. */
-  typedef GPUAnisotropicDiffusionImageFilter                               Self;
-typedef GPUDenseFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilter > GPUSuperclass;
-  typedef AnisotropicDiffusionImageFilter< TInputImage, TOutputImage >     CPUSuperclass;
-  typedef SmartPointer< Self >                                             Pointer;
-  typedef SmartPointer< const Self >                                       ConstPointer;
+  typedef GPUAnisotropicDiffusionImageFilter                                                   Self;
+  typedef GPUDenseFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilter > GPUSuperclass;
+  typedef AnisotropicDiffusionImageFilter< TInputImage, TOutputImage >                         CPUSuperclass;
+  typedef SmartPointer< Self >                                                                 Pointer;
+  typedef SmartPointer< const Self >                                                           ConstPointer;
 
   /** Run-time type information. */
   itkTypeMacro(GPUAnisotropicDiffusionImageFilter,
@@ -58,10 +59,11 @@ typedef GPUDenseFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentI
    * Inherited from the superclass. */
   typedef typename GPUSuperclass::PixelType    PixelType;
   typedef typename GPUSuperclass::TimeStepType TimeStepType;
-
 protected:
-  GPUAnisotropicDiffusionImageFilter() {};
-  ~GPUAnisotropicDiffusionImageFilter() {}
+  GPUAnisotropicDiffusionImageFilter() {
+  }
+  ~GPUAnisotropicDiffusionImageFilter() {
+  }
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Prepare for the iteration process. */
@@ -69,7 +71,7 @@ protected:
 
 private:
   GPUAnisotropicDiffusionImageFilter(const Self &); //purposely not implemented
-  void operator=(const Self &);                  //purposely not implemented
+  void operator=(const Self &);                     //purposely not implemented
 
 };
 } // end namspace itk

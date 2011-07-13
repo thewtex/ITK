@@ -29,6 +29,7 @@ GPUDemonsRegistrationFilter< TFixedImage, TMovingImage, TDeformationField, TPare
 ::GPUDemonsRegistrationFilter()
 {
   typename GPUDemonsRegistrationFunctionType::Pointer drfp;
+
   drfp = GPUDemonsRegistrationFunctionType::New();
 
   this->SetDifferenceFunction( static_cast< FiniteDifferenceFunctionType * >(
@@ -63,7 +64,7 @@ GPUDemonsRegistrationFilter< TFixedImage, TMovingImage, TDeformationField, TPare
   // set the gradient selection flag
   GPUDemonsRegistrationFunctionType *drfp =
     dynamic_cast< GPUDemonsRegistrationFunctionType * >
-    ( this->GetDifferenceFunction().GetPointer() );
+      ( this->GetDifferenceFunction().GetPointer() );
 
   if ( !drfp )
     {
@@ -92,7 +93,7 @@ GPUDemonsRegistrationFilter< TFixedImage, TMovingImage, TDeformationField, TPare
 {
   GPUDemonsRegistrationFunctionType *drfp =
     dynamic_cast< GPUDemonsRegistrationFunctionType * >
-    ( this->GetDifferenceFunction().GetPointer() );
+      ( this->GetDifferenceFunction().GetPointer() );
 
   if ( !drfp )
     {
@@ -113,7 +114,7 @@ GPUDemonsRegistrationFilter< TFixedImage, TMovingImage, TDeformationField, TPare
 {
   GPUDemonsRegistrationFunctionType *drfp =
     dynamic_cast< GPUDemonsRegistrationFunctionType * >
-    ( this->GetDifferenceFunction().GetPointer() );
+      ( this->GetDifferenceFunction().GetPointer() );
 
   if ( !drfp )
     {
@@ -134,7 +135,7 @@ GPUDemonsRegistrationFilter< TFixedImage, TMovingImage, TDeformationField, TPare
 {
   GPUDemonsRegistrationFunctionType *drfp =
     dynamic_cast< GPUDemonsRegistrationFunctionType * >
-    ( this->GetDifferenceFunction().GetPointer() );
+      ( this->GetDifferenceFunction().GetPointer() );
 
   if ( !drfp )
     {
@@ -164,7 +165,7 @@ GPUDemonsRegistrationFilter< TFixedImage, TMovingImage, TDeformationField, TPare
 
   GPUDemonsRegistrationFunctionType *drfp =
     dynamic_cast< GPUDemonsRegistrationFunctionType * >
-    ( this->GetDifferenceFunction().GetPointer() );
+      ( this->GetDifferenceFunction().GetPointer() );
 
   if ( !drfp )
     {
@@ -174,6 +175,7 @@ GPUDemonsRegistrationFilter< TFixedImage, TMovingImage, TDeformationField, TPare
 
   this->SetRMSChange( drfp->GetRMSChange() );
 }
+
 } // end namespace itk
 
 #endif

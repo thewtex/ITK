@@ -44,9 +44,9 @@ GPUDenseFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilt
   std::ostringstream defines;
 
   if(TInputImage::ImageDimension > 3 || ImageDimension < 1)
-  {
+    {
     itkExceptionMacro("GPUDenseFiniteDifferenceImageFilter supports 1/2/3D image.");
-  }
+    }
 
   defines << "#define DIM_" << TInputImage::ImageDimension << "\n";
 
@@ -106,11 +106,12 @@ GPUDenseFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilt
 {
   // GPU version of ApplyUpdate
   // Single threaded version : Apply entire update buffer to output image
-  typedef typename itk::GPUTraits< UpdateBufferType >::Type   GPUBufferImage;
-  typedef typename itk::GPUTraits< TOutputImage >::Type       GPUOutputImage;
+  typedef typename itk::GPUTraits< UpdateBufferType >::Type GPUBufferImage;
+  typedef typename itk::GPUTraits< TOutputImage >::Type     GPUOutputImage;
 
-  typename GPUBufferImage::Pointer bfPtr =  dynamic_cast< GPUBufferImage * >( GetUpdateBuffer() );
-  typename GPUOutputImage::Pointer otPtr =  dynamic_cast< GPUOutputImage * >( this->GetOutput() );//this->ProcessObject::GetOutput(0) );
+  typename GPUBufferImage::Pointer  bfPtr =  dynamic_cast< GPUBufferImage * >( GetUpdateBuffer() );
+  typename GPUOutputImage::Pointer  otPtr =  dynamic_cast< GPUOutputImage * >( this->GetOutput() ); //this->ProcessObject::GetOutput(0)
+                                                                                                    // );
   typename GPUOutputImage::SizeType outSize = otPtr->GetLargestPossibleRegion().GetSize();
 
   int imgSize[3];
@@ -121,29 +122,34 @@ GPUDenseFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilt
   int ImageDim = (int)TInputImage::ImageDimension;
 
   for(int i=0; i<ImageDim; i++)
-  {
+    {
     imgSize[i] = outSize[i];
-  }
+    }
 
   size_t localSize[3], globalSize[3];
   localSize[0] = localSize[1] = localSize[2] = BLOCK_SIZE[ImageDim-1];
   for(int i=0; i<ImageDim; i++)
-  {
-    globalSize[i] = localSize[i]*(unsigned int)ceil((float)outSize[i]/(float)localSize[i]); // total # of threads
-  }
+    {
+    globalSize[i] = localSize[i]*(unsigned int)ceil( (float)outSize[i]/(float)localSize[i]); //
+                                                                                             // total
+                                                                                             // #
+                                                                                             // of
+                                                                                             // threads
+    }
 
   // arguments set up
   int argidx = 0;
-  this->m_GPUKernelManager->SetKernelArgWithImage(m_ApplyUpdateGPUKernelHandle, argidx++, bfPtr->GetGPUDataManager());
-  this->m_GPUKernelManager->SetKernelArgWithImage(m_ApplyUpdateGPUKernelHandle, argidx++, otPtr->GetGPUDataManager());
-  this->m_GPUKernelManager->SetKernelArg(m_ApplyUpdateGPUKernelHandle, argidx++, sizeof(float), &(timeStep));
+  this->m_GPUKernelManager->SetKernelArgWithImage(m_ApplyUpdateGPUKernelHandle, argidx++, bfPtr->GetGPUDataManager() );
+  this->m_GPUKernelManager->SetKernelArgWithImage(m_ApplyUpdateGPUKernelHandle, argidx++, otPtr->GetGPUDataManager() );
+  this->m_GPUKernelManager->SetKernelArg(m_ApplyUpdateGPUKernelHandle, argidx++, sizeof(float), &(timeStep) );
   for(int i=0; i<ImageDim; i++)
-  {
-    this->m_GPUKernelManager->SetKernelArg(m_ApplyUpdateGPUKernelHandle, argidx++, sizeof(int), &(imgSize[i]));
-  }
+    {
+    this->m_GPUKernelManager->SetKernelArg(m_ApplyUpdateGPUKernelHandle, argidx++, sizeof(int), &(imgSize[i]) );
+    }
 
   // launch kernel
-  this->m_GPUKernelManager->LaunchKernel(m_ApplyUpdateGPUKernelHandle, (int)TInputImage::ImageDimension, globalSize, localSize );
+  this->m_GPUKernelManager->LaunchKernel(m_ApplyUpdateGPUKernelHandle, (int)TInputImage::ImageDimension, globalSize,
+                                         localSize );
 
   // Explicitely call Modified on GetOutput here. Do we need this?
   //this->GetOutput()->Modified();
@@ -182,6 +188,7 @@ GPUDenseFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilt
 {
   GPUSuperclass::PrintSelf(os, indent);
 }
+
 } // end namespace itk
 
 #endif

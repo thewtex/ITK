@@ -20,7 +20,6 @@
 
 #include "itkGPUAnisotropicDiffusionFunction.h"
 
-
 namespace itk
 {
 /**
@@ -32,15 +31,15 @@ namespace itk
  * \ingroup GPUCommon
  * */
 template< class TImage >
-class ITK_EXPORT GPUScalarAnisotropicDiffusionFunction:
+class ITK_EXPORT GPUScalarAnisotropicDiffusionFunction :
   public GPUAnisotropicDiffusionFunction< TImage >
 {
 public:
   /** Standard class typedefs. */
   typedef GPUScalarAnisotropicDiffusionFunction     Self;
   typedef GPUAnisotropicDiffusionFunction< TImage > Superclass;
-  typedef SmartPointer< Self >                   Pointer;
-  typedef SmartPointer< const Self >             ConstPointer;
+  typedef SmartPointer< Self >                      Pointer;
+  typedef SmartPointer< const Self >                ConstPointer;
 
   itkTypeMacro(GPUScalarAnisotropicDiffusionFunction, GPUAnisotropicDiffusionFunction);
 
@@ -56,17 +55,18 @@ public:
   typedef typename Superclass::NeighborhoodType NeighborhoodType;
   typedef typename Superclass::TimeStepType     TimeStepType;
 
-
   /** Compute average squared gradient of magnitude using the GPU */
   virtual void GPUCalculateAverageGradientMagnitudeSquared(TImage *);
 
 protected:
   GPUScalarAnisotropicDiffusionFunction();
-  ~GPUScalarAnisotropicDiffusionFunction() {}
-
+  ~GPUScalarAnisotropicDiffusionFunction() {
+  }
 private:
-  GPUScalarAnisotropicDiffusionFunction(const Self &); //purposely not implemented
-  void operator=(const Self &);                        //purposely not implemented
+  GPUScalarAnisotropicDiffusionFunction(const Self &); //purposely not
+                                                       // implemented
+  void operator=(const Self &);                        //purposely not
+                                                       // implemented
 
 };
 } // end namespace itk

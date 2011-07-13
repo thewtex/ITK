@@ -54,13 +54,13 @@ template< class TElement >
 unsigned int
 GPUReduction< TElement >
 ::NextPow2( unsigned int x ) {
-    --x;
-    x |= x >> 1;
-    x |= x >> 2;
-    x |= x >> 4;
-    x |= x >> 8;
-    x |= x >> 16;
-    return ++x;
+  --x;
+  x |= x >> 1;
+  x |= x >> 2;
+  x |= x >> 4;
+  x |= x >> 8;
+  x |= x >> 16;
+  return ++x;
 }
 
 template< class TElement >
@@ -68,7 +68,7 @@ bool
 GPUReduction< TElement >
 ::isPow2(unsigned int x)
 {
-    return ((x&(x-1)) == 0);
+  return ( (x&(x-1) ) == 0);
 }
 
 template< class TElement >
@@ -76,25 +76,24 @@ void
 GPUReduction< TElement >
 ::GetNumBlocksAndThreads(int whichKernel, int n, int maxBlocks, int maxThreads, int &blocks, int &threads)
 {
-    if (whichKernel < 3)
+  if (whichKernel < 3)
     {
-        threads = (n < maxThreads) ? this->NextPow2(n) : maxThreads;
-        blocks = (n + threads - 1) / threads;
+    threads = (n < maxThreads) ? this->NextPow2(n) : maxThreads;
+    blocks = (n + threads - 1) / threads;
     }
-    else
+  else
     {
-        threads = (n < maxThreads*2) ? this->NextPow2((n + 1)/ 2) : maxThreads;
-        blocks = (n + (threads * 2 - 1)) / (threads * 2);
+    threads = (n < maxThreads*2) ? this->NextPow2( (n + 1)/ 2) : maxThreads;
+    blocks = (n + (threads * 2 - 1) ) / (threads * 2);
     }
 
-
-    if (whichKernel == 6)
+  if (whichKernel == 6)
+    {
+    if (maxBlocks < blocks)
       {
-      if (maxBlocks < blocks)
-        {
-        blocks = maxBlocks;
-        }
+      blocks = maxBlocks;
       }
+    }
 }
 
 template< class TElement >
@@ -109,7 +108,7 @@ GPUReduction< TElement >
     }
 
   std::ostringstream defines;
-  std::string oclSrcPath = "./../OpenCL/GPUReduction.cl";
+  std::string        oclSrcPath = "./../OpenCL/GPUReduction.cl";
 
   defines << "#define blockSize " << blockSize << std::endl;
   defines << "#define nIsPow2 " << isPowOf2 << std::endl;
@@ -124,7 +123,7 @@ GPUReduction< TElement >
 
   std::ostringstream kernelName;
   kernelName << "reduce" << whichKernel;
-  unsigned int handle = this->m_GPUKernelManager->CreateKernel(kernelName.str().c_str());
+  unsigned int handle = this->m_GPUKernelManager->CreateKernel(kernelName.str().c_str() );
 
   size_t wgSize;
   cl_int ciErrNum = this->m_GPUKernelManager->GetKernelWorkGroupInfo(handle, CL_KERNEL_WORK_GROUP_SIZE, &wgSize);
@@ -144,7 +143,7 @@ GPUReduction< TElement >
   m_Size = size;
 
   unsigned int bytes = size * sizeof(TElement);
-  TElement* h_idata = NULL;
+  TElement*    h_idata = NULL;
 #ifdef CPU_VERIFY
   h_idata = (TElement*)malloc(bytes);
 #endif
@@ -180,18 +179,19 @@ GPUReduction< TElement >
 ::RandomTest()
 {
   int size = (1<<24)-1917;    // number of elements to reduce
+
   m_Size = size;
 
   this->InitializeKernel(size);
 
   unsigned int bytes = size * sizeof(TElement);
-  TElement* h_idata = (TElement*)malloc(bytes);
+  TElement*    h_idata = (TElement*)malloc(bytes);
 
   for(int i=0; i<size; i++)
-  {
-      // Keep the numbers small so we don't get truncation error in the sum
-      h_idata[i] = (TElement)(rand() & 0xFF);
-  }
+    {
+    // Keep the numbers small so we don't get truncation error in the sum
+    h_idata[i] = (TElement)(rand() & 0xFF);
+    }
 
   this->AllocateGPUInputBuffer(size);
   m_GPUDataManager->SetCPUBufferPointer( h_idata );
@@ -244,10 +244,10 @@ GPUReduction< TElement >
   // number of threads per block
   int maxThreads = m_SmallBlock ? 64 : 128;
 
-  int whichKernel = 6;
-  int maxBlocks = 64;
+  int  whichKernel = 6;
+  int  maxBlocks = 64;
   bool cpuFinalReduction = true;
-  int cpuFinalThreshold = 1;
+  int  cpuFinalThreshold = 1;
 
   unsigned long bytes = size * sizeof(TElement);
 
@@ -259,7 +259,7 @@ GPUReduction< TElement >
   if (numBlocks == 1) cpuFinalThreshold = 1;
 
   // allocate output data for the result
-  TElement* h_odata = (TElement*)malloc(numBlocks * sizeof(TElement));
+  TElement* h_odata = (TElement*)malloc(numBlocks * sizeof(TElement) );
 
   GPUDataPointer odata = GPUDataManager::New();
   odata->SetBufferSize( numBlocks * sizeof(TElement) );
@@ -271,9 +271,9 @@ GPUReduction< TElement >
 
   m_GPUResult = 0;
   m_GPUResult = this->GPUReduce(size, numThreads, numBlocks, maxThreads, maxBlocks,
-                                  whichKernel, cpuFinalReduction,
-                                  cpuFinalThreshold, &dTotalTime,
-                                  m_GPUDataManager, odata);
+                                whichKernel, cpuFinalReduction,
+                                cpuFinalThreshold, &dTotalTime,
+                                m_GPUDataManager, odata);
 
   double reduceTime = dTotalTime;
 
@@ -287,21 +287,22 @@ template< class TElement >
 TElement
 GPUReduction< TElement >
 ::GPUReduce(  cl_int  n,
-                  int  numThreads,
-                  int  numBlocks,
-                  int  maxThreads,
-                  int  maxBlocks,
-                  int  whichKernel,
-                  bool cpuFinalReduction,
-                  int  cpuFinalThreshold,
-                  double* dTotalTime,
-                  GPUDataPointer idata,
-                  GPUDataPointer odata)
+              int  numThreads,
+              int  numBlocks,
+              int  maxThreads,
+              int  maxBlocks,
+              int  whichKernel,
+              bool cpuFinalReduction,
+              int  cpuFinalThreshold,
+              double* dTotalTime,
+              GPUDataPointer idata,
+              GPUDataPointer odata)
 {
   TElement gpu_result = 0;
 
   // arguments set up
   int argidx = 0;
+
   this->m_GPUKernelManager->SetKernelArgWithImage(m_ReduceGPUKernelHandle, argidx++, idata);
   this->m_GPUKernelManager->SetKernelArgWithImage(m_ReduceGPUKernelHandle, argidx++, odata);
 
@@ -329,9 +330,9 @@ GPUReduction< TElement >
 #endif
 
   for(int i=0; i<numBlocks; i++)
-  {
-      gpu_result += h_odata[i];
-  }
+    {
+    gpu_result += h_odata[i];
+    }
 
   // Release the kernels
   // clReleaseKernel(reductionKernel);
@@ -344,17 +345,18 @@ TElement
 GPUReduction< TElement >
 ::CPUGenerateData(TElement *data, int size)
 {
-    TElement sum = data[0];
-    TElement c = (TElement)0.0;
-    for (int i = 1; i < size; i++)
+  TElement sum = data[0];
+  TElement c = (TElement)0.0;
+
+  for (int i = 1; i < size; i++)
     {
-        //TElement y = data[i] - c;
-        //TElement t = sum + y;
-        //c = (t - sum) - y;
-        sum = sum + data[i];
+    //TElement y = data[i] - c;
+    //TElement t = sum + y;
+    //c = (t - sum) - y;
+    sum = sum + data[i];
     }
-    m_CPUResult = sum;
-    return sum;
+  m_CPUResult = sum;
+  return sum;
 }
 
 } // end namespace itk

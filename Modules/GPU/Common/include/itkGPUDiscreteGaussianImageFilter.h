@@ -43,16 +43,16 @@ namespace itk
  */
 
 template< class TInputImage, class TOutputImage >
-class ITK_EXPORT GPUDiscreteGaussianImageFilter:
+class ITK_EXPORT GPUDiscreteGaussianImageFilter :
   public GPUImageToImageFilter< TInputImage, TOutputImage, DiscreteGaussianImageFilter< TInputImage, TOutputImage > >
 {
 public:
   /** Standard class typedefs. */
-  typedef GPUDiscreteGaussianImageFilter                     Self;
-  typedef DiscreteGaussianImageFilter< TInputImage, TOutputImage > CPUSuperclass;
+  typedef GPUDiscreteGaussianImageFilter                                    Self;
+  typedef DiscreteGaussianImageFilter< TInputImage, TOutputImage >          CPUSuperclass;
   typedef GPUImageToImageFilter< TInputImage, TOutputImage, CPUSuperclass > GPUSuperclass;
-  typedef SmartPointer< Self >                            Pointer;
-  typedef SmartPointer< const Self >                      ConstPointer;
+  typedef SmartPointer< Self >                                              Pointer;
+  typedef SmartPointer< const Self >                                        ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -77,16 +77,23 @@ public:
   typedef typename TInputImage::InternalPixelType  InputInternalPixelType;
 
   /** Pixel value type for Vector pixel types **/
-  typedef typename NumericTraits<InputPixelType>::ValueType InputPixelValueType;
+  typedef typename NumericTraits<InputPixelType>::ValueType  InputPixelValueType;
   typedef typename NumericTraits<OutputPixelType>::ValueType OutputPixelValueType;
 
-  typedef typename NumericTraits< OutputPixelType >::RealType    RealOutputPixelType;
-  typedef GPUImage< OutputPixelType, ImageDimension >   RealOutputImageType;
-  typedef typename NumericTraits<RealOutputPixelType>::ValueType RealOutputPixelValueType;
-  typedef GPUNeighborhoodOperatorImageFilter< InputImageType, RealOutputImageType, RealOutputPixelValueType >      FirstFilterType;
-  typedef GPUNeighborhoodOperatorImageFilter< RealOutputImageType, RealOutputImageType, RealOutputPixelValueType > IntermediateFilterType;
-  typedef GPUNeighborhoodOperatorImageFilter< RealOutputImageType, OutputImageType, RealOutputPixelValueType >     LastFilterType;
-  typedef GPUNeighborhoodOperatorImageFilter< InputImageType, OutputImageType, RealOutputPixelValueType >          SingleFilterType;
+  typedef typename NumericTraits< OutputPixelType >::RealType
+                                                                         RealOutputPixelType;
+  typedef GPUImage< OutputPixelType,
+                    ImageDimension >                                     RealOutputImageType;
+  typedef typename NumericTraits<RealOutputPixelType>::ValueType
+                                                                         RealOutputPixelValueType;
+  typedef GPUNeighborhoodOperatorImageFilter< InputImageType, RealOutputImageType,
+                                              RealOutputPixelValueType > FirstFilterType;
+  typedef GPUNeighborhoodOperatorImageFilter< RealOutputImageType, RealOutputImageType,
+                                              RealOutputPixelValueType > IntermediateFilterType;
+  typedef GPUNeighborhoodOperatorImageFilter< RealOutputImageType, OutputImageType,
+                                              RealOutputPixelValueType > LastFilterType;
+  typedef GPUNeighborhoodOperatorImageFilter< InputImageType, OutputImageType,
+                                              RealOutputPixelValueType > SingleFilterType;
 
   virtual void GenerateInputRequestedRegion()
   throw( InvalidRequestedRegionError );
@@ -94,7 +101,8 @@ public:
 protected:
   GPUDiscreteGaussianImageFilter();
 
-  virtual ~GPUDiscreteGaussianImageFilter() {}
+  virtual ~GPUDiscreteGaussianImageFilter() {
+  }
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Standard GPU pipeline method. */
@@ -102,7 +110,7 @@ protected:
 
 private:
   GPUDiscreteGaussianImageFilter(const Self &); //purposely not implemented
-  void operator=(const Self &);              //purposely not implemented
+  void operator=(const Self &);                 //purposely not implemented
 
   /** Intermediate 1D Gaussian filters */
   typename FirstFilterType::Pointer m_FirstFilter;

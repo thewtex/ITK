@@ -33,16 +33,17 @@ namespace itk
  *
  * \ingroup GPUCommon
  */
-template< class TInputImage, class TOutputImage = TInputImage, class TParentImageFilter = InPlaceImageFilter< TInputImage, TOutputImage > >
+template< class TInputImage, class TOutputImage = TInputImage, class TParentImageFilter =
+            InPlaceImageFilter< TInputImage, TOutputImage > >
 class ITK_EXPORT GPUInPlaceImageFilter : public GPUImageToImageFilter< TInputImage, TOutputImage, TParentImageFilter >
 {
 public:
   /** Standard class typedefs. */
-  typedef GPUInPlaceImageFilter                           Self;
+  typedef GPUInPlaceImageFilter                                                  Self;
   typedef GPUImageToImageFilter< TInputImage, TOutputImage, TParentImageFilter > GPUSuperclass;
-  typedef TParentImageFilter                              CPUSuperclass;
-  typedef SmartPointer< Self >                            Pointer;
-  typedef SmartPointer< const Self >                      ConstPointer;
+  typedef TParentImageFilter                                                     CPUSuperclass;
+  typedef SmartPointer< Self >                                                   Pointer;
+  typedef SmartPointer< const Self >                                             ConstPointer;
 
   /** Run-time type information (and related methods). */
   itkTypeMacro(GPUInPlaceImageFilter, GPUImageToImageFilter);
@@ -63,7 +64,6 @@ public:
   typedef typename InputImageType::ConstPointer InputImageConstPointer;
   typedef typename InputImageType::RegionType   InputImageRegionType;
   typedef typename InputImageType::PixelType    InputImagePixelType;
-
 protected:
   GPUInPlaceImageFilter();
   ~GPUInPlaceImageFilter();
@@ -97,12 +97,11 @@ protected:
 
 private:
   GPUInPlaceImageFilter(const Self &); //purposely not implemented
-  void operator=(const Self &);     //purposely not implemented
+  void operator=(const Self &);        //purposely not implemented
 
 };
 
 } // end namespace itk
-
 
 #if ITK_TEMPLATE_TXX
 #include "itkGPUInPlaceImageFilter.txx"

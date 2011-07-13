@@ -43,7 +43,8 @@ GPUFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilter >
 template< class TInputImage, class TOutputImage, class TParentImageFilter >
 GPUFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilter >
 ::~GPUFiniteDifferenceImageFilter()
-{}
+{
+}
 
 template< class TInputImage, class TOutputImage, class TParentImageFilter >
 void
@@ -85,7 +86,6 @@ GPUFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilter >
   // Iterative algorithm
   TimeStepType dt;
 
-
   while ( !this->Halt() ) //&& m_ElapsedIterations < 200
     {
 
@@ -107,6 +107,7 @@ GPUFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilter >
       this->InvokeEvent( IterationEvent() );
       this->ResetPipeline();
       throw ProcessAborted(__FILE__, __LINE__);
+
       }
     }
 
@@ -179,6 +180,7 @@ GPUFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilter >
 
     // build an exception
     InvalidRequestedRegionError e(__FILE__, __LINE__);
+
     e.SetLocation(ITK_LOCATION);
     e.SetDescription("Requested region is (at least partially) outside the largest possible region.");
     e.SetDataObject(inputPtr);
@@ -212,12 +214,14 @@ GPUFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilter >
     {
     // no values!
     throw ExceptionObject(__FILE__, __LINE__);
+
     }
 
   // find minimum value
   for ( int i = 0; i < size; ++i )
     {
-    if ( valid[i] && ( timeStepList[i] < min ) ) { min = timeStepList[i]; } }
+    if ( valid[i] && ( timeStepList[i] < min ) ) { min = timeStepList[i]; }
+    }
 
   return min;
 }
@@ -285,7 +289,6 @@ GPUFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilter >
   m_DifferenceFunction->SetScaleCoefficients(coeffs);
 }
 
-
 template< class TInputImage, class TOutputImage, class TParentImageFilter >
 void
 GPUFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilter >
@@ -313,6 +316,7 @@ GPUFiniteDifferenceImageFilter< TInputImage, TOutputImage, TParentImageFilter >
   os << std::endl;
 */
 }
+
 } // end namespace itk
 
 #endif

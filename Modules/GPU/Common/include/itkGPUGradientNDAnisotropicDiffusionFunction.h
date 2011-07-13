@@ -52,15 +52,15 @@ namespace itk
  * \ingroup GPUCommon
  */
 template< class TImage >
-class ITK_EXPORT GPUGradientNDAnisotropicDiffusionFunction:
+class ITK_EXPORT GPUGradientNDAnisotropicDiffusionFunction :
   public GPUScalarAnisotropicDiffusionFunction< TImage >
 {
 public:
   /** Standard class typedefs. */
   typedef GPUGradientNDAnisotropicDiffusionFunction       Self;
   typedef GPUScalarAnisotropicDiffusionFunction< TImage > Superclass;
-  typedef SmartPointer< Self >                         Pointer;
-  typedef SmartPointer< const Self >                   ConstPointer;
+  typedef SmartPointer< Self >                            Pointer;
+  typedef SmartPointer< const Self >                      ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -84,8 +84,8 @@ public:
   itkStaticConstMacro(ImageDimension, unsigned int, Superclass::ImageDimension);
 
   /** Compute the equation value. */
-  virtual void GPUComputeUpdate( const typename TImage::Pointer output, typename TImage::Pointer buffer, void *globalData );
-
+  virtual void GPUComputeUpdate( const typename TImage::Pointer output, typename TImage::Pointer buffer,
+                                 void *globalData );
 
   /** This method is called prior to each iteration of the solver. */
   virtual void InitializeIteration()
@@ -96,7 +96,8 @@ public:
 
 protected:
   GPUGradientNDAnisotropicDiffusionFunction();
-  ~GPUGradientNDAnisotropicDiffusionFunction() {}
+  ~GPUGradientNDAnisotropicDiffusionFunction() {
+  }
 
   /** Inner product function. */
   NeighborhoodInnerProduct< ImageType > m_InnerProduct;
@@ -118,8 +119,8 @@ protected:
   static double m_MIN_NORM;
 private:
   GPUGradientNDAnisotropicDiffusionFunction(const Self &); //purposely not
-                                                        // implemented
-  void operator=(const Self &);                         //purposely not
+                                                           // implemented
+  void operator=(const Self &);                            //purposely not
 
   // implemented
 };

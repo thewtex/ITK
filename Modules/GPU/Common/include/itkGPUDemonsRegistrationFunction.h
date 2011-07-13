@@ -50,18 +50,18 @@ namespace itk
  * \ingroup FiniteDifferenceFunctions
  */
 template< class TFixedImage, class TMovingImage, class TDeformationField >
-class ITK_EXPORT GPUDemonsRegistrationFunction:
+class ITK_EXPORT GPUDemonsRegistrationFunction :
   public GPUPDEDeformableRegistrationFunction< TFixedImage,
-                                            TMovingImage,
-                                            TDeformationField >
+                                               TMovingImage,
+                                               TDeformationField >
 {
 public:
   /** Standard class typedefs. */
   typedef GPUDemonsRegistrationFunction Self;
   typedef GPUPDEDeformableRegistrationFunction< TFixedImage, TMovingImage,
-    TDeformationField>                  Superclass;
-  typedef SmartPointer< Self >          Pointer;
-  typedef SmartPointer< const Self >    ConstPointer;
+                                                TDeformationField>                  Superclass;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -118,20 +118,26 @@ public:
   MovingImageGradientCalculatorPointer;
 
   /** GPU data pointer type. */
-  typedef GPUDataManager::Pointer       GPUDataPointer;
+  typedef GPUDataManager::Pointer GPUDataPointer;
 
   /** Set the moving image interpolator. */
   void SetMovingImageInterpolator(InterpolatorType *ptr)
-  { m_MovingImageInterpolator = ptr; }
+  {
+    m_MovingImageInterpolator = ptr;
+  }
 
   /** Get the moving image interpolator. */
   InterpolatorType * GetMovingImageInterpolator(void)
-  { return m_MovingImageInterpolator; }
+  {
+    return m_MovingImageInterpolator;
+  }
 
   /** This class uses a constant timestep of 1. */
   virtual TimeStepType ComputeGlobalTimeStep( void *itkNotUsed(GlobalData) )
   const
-  { return m_TimeStep; }
+  {
+    return m_TimeStep;
+  }
 
   /** Return a pointer to a global data structure that is passed to
    * this object from the solver at each calculation.  */
@@ -166,19 +172,27 @@ public:
    * in intensity between the fixed image and transforming moving image
    * computed over the the overlapping region between the two images. */
   virtual double GetMetric() const
-  { return m_Metric; }
+  {
+    return m_Metric;
+  }
 
   /** Get the rms change in deformation field. */
   virtual double GetRMSChange() const
-  { return m_RMSChange; }
+  {
+    return m_RMSChange;
+  }
 
   /** Select if the fixed image or moving image gradient is used for
    * the computating the demon forces. The fixed image gradient is used
    * by default. */
   virtual void SetUseMovingImageGradient(bool flag)
-  { m_UseMovingImageGradient = flag; }
+  {
+    m_UseMovingImageGradient = flag;
+  }
   virtual bool GetUseMovingImageGradient() const
-  { return m_UseMovingImageGradient; }
+  {
+    return m_UseMovingImageGradient;
+  }
 
   /** Set/Get the threshold below which the absolute difference of
    * intensity yields a match. When the intensities match between a
@@ -190,7 +204,8 @@ public:
 
 protected:
   GPUDemonsRegistrationFunction();
-  ~GPUDemonsRegistrationFunction() {}
+  ~GPUDemonsRegistrationFunction() {
+  }
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** FixedImage image neighborhood iterator type. */
@@ -203,14 +218,13 @@ protected:
     double m_SumOfSquaredDifference;
     SizeValueType m_NumberOfPixelsProcessed;
     double m_SumOfSquaredChange;
-  };
+    };
 
   /* GPU kernel handle for GPUComputeUpdate */
   int m_ComputeUpdateGPUKernelHandle;
-
 private:
   GPUDemonsRegistrationFunction(const Self &); //purposely not implemented
-  void operator=(const Self &);             //purposely not implemented
+  void operator=(const Self &);                //purposely not implemented
 
   /** Cache fixed image information. */
   //SpacingType                  m_FixedImageSpacing;
@@ -246,9 +260,9 @@ private:
   mutable double        m_RMSChange;
   mutable double        m_SumOfSquaredChange;
 
-  mutable GPUReduction<int>::Pointer    m_GPUPixelCounter;
-  mutable GPUReduction<float>::Pointer  m_GPUSquaredChange;
-  mutable GPUReduction<float>::Pointer  m_GPUSquaredDifference;
+  mutable GPUReduction<int>::Pointer   m_GPUPixelCounter;
+  mutable GPUReduction<float>::Pointer m_GPUSquaredChange;
+  mutable GPUReduction<float>::Pointer m_GPUSquaredDifference;
 
   /** Mutex lock to protect modification to metric. */
   mutable SimpleFastMutexLock m_MetricCalculationLock;

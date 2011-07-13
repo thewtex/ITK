@@ -34,15 +34,15 @@ namespace itk
  * \ingroup GPUCommon
  */
 template< class TElement >
-class ITK_EXPORT GPUReduction:
+class ITK_EXPORT GPUReduction :
   public Object
 {
 public:
   /** Standard class typedefs. */
-  typedef GPUReduction                  Self;
-  typedef Object                        Superclass;
-  typedef SmartPointer< Self >          Pointer;
-  typedef SmartPointer< const Self >    ConstPointer;
+  typedef GPUReduction               Self;
+  typedef Object                     Superclass;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -51,39 +51,48 @@ public:
   itkTypeMacro(GPUReduction,
                Object);
 
-  typedef typename GPUDataManager::Pointer       GPUDataPointer;
+  typedef typename GPUDataManager::Pointer GPUDataPointer;
 
   itkGetMacro(GPUDataManager, GPUDataPointer);
   itkGetMacro(GPUResult, TElement);
   itkGetMacro(CPUResult, TElement);
 
   unsigned int NextPow2( unsigned int x );
+
   bool isPow2(unsigned int x);
+
   void GetNumBlocksAndThreads(int whichKernel, int n, int maxBlocks, int maxThreads, int &blocks, int &threads);
+
   unsigned int GetReductionKernel(int whichKernel, int blockSize, int isPowOf2);
 
   void AllocateGPUInputBuffer(unsigned int size);
+
   void ReleaseGPUInputBuffer();
+
   void InitializeKernel(unsigned int size);
 
   TElement RandomTest();
+
   TElement GPUGenerateData();
+
   TElement CPUGenerateData(TElement *data, int size);
+
   TElement GPUReduce(  cl_int  n,
-                  int  numThreads,
-                  int  numBlocks,
-                  int  maxThreads,
-                  int  maxBlocks,
-                  int  whichKernel,
-                  bool cpuFinalReduction,
-                  int  cpuFinalThreshold,
-                  double* dTotalTime,
-                  GPUDataPointer idata,
-                  GPUDataPointer odata);
+                       int  numThreads,
+                       int  numBlocks,
+                       int  maxThreads,
+                       int  maxBlocks,
+                       int  whichKernel,
+                       bool cpuFinalReduction,
+                       int  cpuFinalThreshold,
+                       double* dTotalTime,
+                       GPUDataPointer idata,
+                       GPUDataPointer odata);
 
 protected:
   GPUReduction();
-  ~GPUReduction() {}
+  ~GPUReduction() {
+  }
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** GPU kernel manager for GPUFiniteDifferenceFunction class */
@@ -91,17 +100,16 @@ protected:
   typename GPUDataPointer m_GPUDataManager;
 
   /* GPU kernel handle for GPUComputeUpdate */
-  int           m_ReduceGPUKernelHandle;
-  int           m_TestGPUKernelHandle;
+  int m_ReduceGPUKernelHandle;
+  int m_TestGPUKernelHandle;
 
-  unsigned int  m_Size;
-  bool          m_SmallBlock;
+  unsigned int m_Size;
+  bool         m_SmallBlock;
 
-  TElement      m_GPUResult, m_CPUResult;
-
+  TElement m_GPUResult, m_CPUResult;
 private:
-  GPUReduction(const Self &); //purposely not implemented
-  void operator=(const Self &);             //purposely not implemented
+  GPUReduction(const Self &);   //purposely not implemented
+  void operator=(const Self &); //purposely not implemented
 
 };
 } // end namespace itk

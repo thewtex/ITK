@@ -49,7 +49,7 @@
  * 1D : 256
  * 2D : 16x16 = 256
  * 3D : 4x4x4 = 64  */
-static int BLOCK_SIZE[3] = { 256, 16, 4/*8*/ };
+static int BLOCK_SIZE[3] = { 256, 16, 4 /*8*/ };
 
 /** Get the devices that are available */
 cl_device_id* OclGetAvailableDevices(cl_platform_id platform, cl_device_type devType, cl_uint* numAvailableDevices);

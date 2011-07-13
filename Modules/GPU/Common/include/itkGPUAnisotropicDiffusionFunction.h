@@ -35,15 +35,15 @@ namespace itk
  * \ingroup GPUCommon
  */
 template< class TImage >
-class ITK_EXPORT GPUAnisotropicDiffusionFunction:
+class ITK_EXPORT GPUAnisotropicDiffusionFunction :
   public GPUFiniteDifferenceFunction< TImage >
 {
 public:
   /** Standard class typedefs. */
   typedef GPUAnisotropicDiffusionFunction       Self;
   typedef GPUFiniteDifferenceFunction< TImage > Superclass;
-  typedef SmartPointer< Self >               Pointer;
-  typedef SmartPointer< const Self >         ConstPointer;
+  typedef SmartPointer< Self >                  Pointer;
+  typedef SmartPointer< const Self >            ConstPointer;
 
   /** Run-time type information (and related methods) */
   itkTypeMacro(GPUAnisotropicDiffusionFunction, GPUFiniteDifferenceFunction);
@@ -130,7 +130,8 @@ protected:
     m_TimeStep                 = 0.125f;  // default value
   }
 
-  ~GPUAnisotropicDiffusionFunction() {}
+  ~GPUAnisotropicDiffusionFunction() {
+  }
 
   void PrintSelf(std::ostream & os, Indent indent) const
   {
@@ -146,11 +147,9 @@ protected:
 
   // GPU Kernel Handles
   int m_AverageGradientMagnitudeSquaredGPUKernelHandle;
-
-
 private:
   GPUAnisotropicDiffusionFunction(const Self &); //purposely not implemented
-  void operator=(const Self &);               //purposely not implemented
+  void operator=(const Self &);                  //purposely not implemented
 
   double       m_AverageGradientMagnitudeSquared;
   double       m_ConductanceParameter;

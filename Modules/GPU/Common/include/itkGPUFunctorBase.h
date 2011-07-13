@@ -34,10 +34,12 @@ class GPUFunctorBase
 public:
 
   // constructor
-  GPUFunctorBase() {}
+  GPUFunctorBase() {
+  }
 
   // destructor
-  ~GPUFunctorBase() {}
+  ~GPUFunctorBase() {
+  }
 
   /** Setup GPU kernel arguments for this functor.
    * Returns current argument index to set additional arguments in the GPU kernel */

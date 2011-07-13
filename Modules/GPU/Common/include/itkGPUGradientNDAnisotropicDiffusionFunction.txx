@@ -84,9 +84,9 @@ GPUGradientNDAnisotropicDiffusionFunction< TImage >
   std::ostringstream defines;
 
   if(TImage::ImageDimension > 3)
-  {
+    {
     itkExceptionMacro("GPUGradientNDAnisotropicDiffusionFunction supports 1/2/3D image.");
-  }
+    }
 
   defines << "#define DIM_" << TImage::ImageDimension << "\n";
   defines << "#define BLOCK_SIZE " << BLOCK_SIZE[TImage::ImageDimension-1] << "\n";
@@ -114,8 +114,8 @@ GPUGradientNDAnisotropicDiffusionFunction< TImage >
    * GPU version of ComputeUpdate() - compute entire update buffer */
   typedef typename itk::GPUTraits< TImage >::Type GPUImageType;
 
-  typename GPUImageType::Pointer inPtr =  dynamic_cast< GPUImageType * >( output.GetPointer() );
-  typename GPUImageType::Pointer bfPtr =  dynamic_cast< GPUImageType * >( buffer.GetPointer() );
+  typename GPUImageType::Pointer  inPtr =  dynamic_cast< GPUImageType * >( output.GetPointer() );
+  typename GPUImageType::Pointer  bfPtr =  dynamic_cast< GPUImageType * >( buffer.GetPointer() );
   typename GPUImageType::SizeType outSize = bfPtr->GetLargestPossibleRegion().GetSize();
 
   int imgSize[3];
@@ -126,40 +126,46 @@ GPUGradientNDAnisotropicDiffusionFunction< TImage >
   int ImageDim = (int)TImage::ImageDimension;
 
   for(int i=0; i<ImageDim; i++)
-  {
+    {
     imgSize[i] = outSize[i];
     imgScale[i] = this->m_ScaleCoefficients[i];
-  }
+    }
 
   size_t localSize[3], globalSize[3];
   localSize[0] = localSize[1] = localSize[2] = BLOCK_SIZE[ImageDim-1];
   for(int i=0; i<ImageDim; i++)
-  {
-    globalSize[i] = localSize[i]*(unsigned int)ceil((float)outSize[i]/(float)localSize[i]); // total # of threads
-  }
+    {
+    globalSize[i] = localSize[i]*(unsigned int)ceil( (float)outSize[i]/(float)localSize[i]); //
+                                                                                             // total
+                                                                                             // #
+                                                                                             // of
+                                                                                             // threads
+    }
 
   // arguments set up
   int argidx = 0;
-  this->m_GPUKernelManager->SetKernelArgWithImage(this->m_ComputeUpdateGPUKernelHandle, argidx++, inPtr->GetGPUDataManager());
-  this->m_GPUKernelManager->SetKernelArgWithImage(this->m_ComputeUpdateGPUKernelHandle, argidx++, bfPtr->GetGPUDataManager());
-  this->m_GPUKernelManager->SetKernelArg(this->m_ComputeUpdateGPUKernelHandle, argidx++, sizeof(typename TImage::PixelType), &(m_K));
+  this->m_GPUKernelManager->SetKernelArgWithImage(this->m_ComputeUpdateGPUKernelHandle, argidx++,
+                                                  inPtr->GetGPUDataManager() );
+  this->m_GPUKernelManager->SetKernelArgWithImage(this->m_ComputeUpdateGPUKernelHandle, argidx++,
+                                                  bfPtr->GetGPUDataManager() );
+  this->m_GPUKernelManager->SetKernelArg(this->m_ComputeUpdateGPUKernelHandle, argidx++,
+                                         sizeof(typename TImage::PixelType), &(m_K) );
 
   // filter scale parameter
   for(int i=0; i<ImageDim; i++)
-  {
-    this->m_GPUKernelManager->SetKernelArg(this->m_ComputeUpdateGPUKernelHandle, argidx++, sizeof(float), &(imgScale[i]));
-  }
+    {
+    this->m_GPUKernelManager->SetKernelArg(this->m_ComputeUpdateGPUKernelHandle, argidx++, sizeof(float), &(imgScale[i]) );
+    }
 
   // image size
   for(int i=0; i<ImageDim; i++)
-  {
-    this->m_GPUKernelManager->SetKernelArg(this->m_ComputeUpdateGPUKernelHandle, argidx++, sizeof(int), &(imgSize[i]));
-  }
+    {
+    this->m_GPUKernelManager->SetKernelArg(this->m_ComputeUpdateGPUKernelHandle, argidx++, sizeof(int), &(imgSize[i]) );
+    }
 
   // launch kernel
   this->m_GPUKernelManager->LaunchKernel( this->m_ComputeUpdateGPUKernelHandle, ImageDim, globalSize, localSize );
 }
-
 
 } // end namespace itk
 
