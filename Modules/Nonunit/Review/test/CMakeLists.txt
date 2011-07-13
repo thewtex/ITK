@@ -44,6 +44,7 @@ itkContourExtractor2DImageFilterTest.cxx
 itkConvertLabelMapFilterTest1.cxx
 itkConvolutionImageFilterTest.cxx
 itkConvolutionImageFilterTestInt.cxx
+itkConvolutionImageFilterDeltaFunctionTest.cxx
 itkCoxDeBoorBSplineKernelFunctionTest.cxx
 itkCoxDeBoorBSplineKernelFunctionTest2.cxx
 itkCropLabelMapFilterTest1.cxx
@@ -487,6 +488,11 @@ itk_add_test(NAME itkConvolutionImageFilterTest5x5Mean
     --compare ${ITK_DATA_ROOT}/Baseline/Review/itkConvolutionImageFilterTest5x5Mean.png
               ${ITK_TEST_OUTPUT_DIR}/itkConvolutionImageFilterTest5x5Mean.png
     itkConvolutionImageFilterTestInt ${ITK_DATA_ROOT}/Input/cthead1.png ${ITK_DATA_ROOT}/Input/5x5-constant.png ${ITK_TEST_OUTPUT_DIR}/itkConvolutionImageFilterTest5x5Mean.png 1)
+itk_add_test(NAME itkConvolutionImageFilterDeltaFunctionTest
+      COMMAND ITK-ReviewTestDriver
+    --compare ${ITK_DATA_ROOT}/Input/level.png
+              ${ITK_TEST_OUTPUT_DIR}/itkConvolutionImageFilterDeltaFunctionTest.png
+    itkConvolutionImageFilterDeltaFunctionTest ${ITK_DATA_ROOT}/Input/level.png ${ITK_TEST_OUTPUT_DIR}/itkConvolutionImageFilterDeltaFunctionTest.png)
 itk_add_test(NAME itkCoxDeBoorBSplineKernelFunctionTest01
       COMMAND ITK-ReviewTestDriver itkCoxDeBoorBSplineKernelFunctionTest)
 itk_add_test(NAME itkCoxDeBoorBSplineKernelFunctionTest02
