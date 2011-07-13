@@ -82,7 +82,8 @@ GPUBinaryThresholdImageFilter< TInputImage, TOutputImage >
     }
 
   // OpenCL source path
-  std::string oclSrcPath = "./../OpenCL/GPUBinaryThresholdImageFilter.cl";
+  //std::string oclSrcPath = "./../OpenCL/GPUBinaryThresholdImageFilter.cl";
+  std::string oclSrcPath = "/Users/millerjv/Projects/Insight/ITK-build/Modules/GPU/Common/OpenCL/GPUBinaryThresholdImageFilter.cl";
 
   std::cout << "Defines: " << defines.str() << "Source code path: " << oclSrcPath << std::endl;
 

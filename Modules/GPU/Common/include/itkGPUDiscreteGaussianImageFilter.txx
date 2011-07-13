@@ -51,7 +51,7 @@ GPUDiscreteGaussianImageFilter< TInputImage, TOutputImage >
     {
     m_FirstFilter = FirstFilterType::New();
     m_LastFilter = LastFilterType::New();
-    for (int i = 1; i < filterDimensionality - 1; ++i )
+    for (unsigned int i = 1; i < filterDimensionality - 1; ++i )
       {
       typename IntermediateFilterType::Pointer f = IntermediateFilterType::New();
       m_IntermediateFilters.push_back( f );

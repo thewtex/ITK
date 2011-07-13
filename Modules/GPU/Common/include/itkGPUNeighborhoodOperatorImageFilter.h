@@ -127,17 +127,17 @@ public:
   throw ( InvalidRequestedRegionError );*/
 
 #ifdef ITK_USE_CONCEPT_CHECKING
-  /** Begin concept checking *
-  itkConceptMacro( SameDimensionCheck,
-                   ( Concept::SameDimension< InputImageDimension, ImageDimension > ) );
-  itkConceptMacro( OperatorConvertibleToOutputCheck,
-                   ( Concept::Convertible< OperatorValueType, OutputPixelType > ) );
-  itkConceptMacro( InputConvertibleToOperatorCheck,
-                   ( Concept::Convertible< InputPixelValueType, OperatorValueType > ) );
-  itkConceptMacro( OperatorMultiplyOperatorCheck,
-                   ( Concept::MultiplyOperator< OperatorValueType > ) );
-  itkConceptMacro( OperatorAdditiveOperatorsCheck,
-                   ( Concept::AdditiveOperators< OperatorValueType > ) );
+  /** Begin concept checking */
+  // itkConceptMacro( SameDimensionCheck,
+  //                  ( Concept::SameDimension< InputImageDimension, ImageDimension > ) );
+  // itkConceptMacro( OperatorConvertibleToOutputCheck,
+  //                  ( Concept::Convertible< OperatorValueType, OutputPixelType > ) );
+  // itkConceptMacro( InputConvertibleToOperatorCheck,
+  //                  ( Concept::Convertible< InputPixelValueType, OperatorValueType > ) );
+  // itkConceptMacro( OperatorMultiplyOperatorCheck,
+  //                  ( Concept::MultiplyOperator< OperatorValueType > ) );
+  // itkConceptMacro( OperatorAdditiveOperatorsCheck,
+  //                  ( Concept::AdditiveOperators< OperatorValueType > ) );
   /** End concept checking */
 #endif
 protected:
