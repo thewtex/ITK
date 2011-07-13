@@ -131,7 +131,7 @@ int itkGPUNeighborhoodOperatorImageFilterTest(int argc, char *argv[])
       GPUFilter->SetOperator( oper );
       GPUFilter->Update();
 
-      GPUFilter->GetOutput()->MakeUpToDate(); // synchronization point (GPU->CPU memcpy)
+      GPUFilter->GetOutput()->UpdateBuffers(); // synchronization point (GPU->CPU memcpy)
 
       gputimer.Stop();
       std::cout << "GPU NeighborhoodFilter took " << gputimer.GetMeanTime() << " seconds.\n" << std::endl;

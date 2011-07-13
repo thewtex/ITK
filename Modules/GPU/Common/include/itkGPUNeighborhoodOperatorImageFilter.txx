@@ -158,7 +158,7 @@ GPUNeighborhoodOperatorImageFilter< TInputImage, TOutputImage, TOperatorValueTyp
   m_NeighborhoodGPUBuffer->Modified();
 
   /** Explicit synchronization (CPU->GPU data copy) */
-  m_NeighborhoodGPUBuffer->MakeUpToDate();
+  m_NeighborhoodGPUBuffer->UpdateBuffers();
 }
 
 template< class TInputImage, class TOutputImage, class TOperatorValueType, class TParentImageFilter >

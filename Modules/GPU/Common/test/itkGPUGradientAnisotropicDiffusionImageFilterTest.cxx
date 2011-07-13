@@ -116,7 +116,7 @@ int itkGPUGradientAnisotropicDiffusionImageFilterTest(int argc, char *argv[])
       GPUFilter->UseImageSpacingOn();
       GPUFilter->Update();
 
-      GPUFilter->GetOutput()->MakeUpToDate(); // synchronization point
+      GPUFilter->GetOutput()->UpdateBuffers(); // synchronization point
 
       gputimer.Stop();
       std::cout << "GPU Anisotropic diffusion took " << gputimer.GetMeanTime() << " seconds.\n" << std::endl;

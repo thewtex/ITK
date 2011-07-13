@@ -123,7 +123,7 @@ int itkGPUMeanImageFilterTest(int argc, char *argv[])
       GPUFilter->SetRadius( indexRadius );
       GPUFilter->Update();
 
-      GPUFilter->GetOutput()->MakeUpToDate(); // synchronization point (GPU->CPU memcpy)
+      GPUFilter->GetOutput()->UpdateBuffers(); // synchronization point (GPU->CPU memcpy)
 
       gputimer.Stop();
       std::cout << "GPU mean filter took " << gputimer.GetMeanTime() << " seconds.\n" << std::endl;

@@ -93,7 +93,7 @@ public:
   TPixel & operator[](const IndexType & index);
 
   /** Explicit synchronize CPU/GPU buffers */
-  void MakeUpToDate();
+  void UpdateBuffers();
 
   //
   // Get CPU buffer pointer
@@ -112,7 +112,7 @@ public:
   /** Return the Pixel Accesor object */
   const AccessorType GetPixelAccessor(void) const
   {
-    m_GPUManager->MakeCPUBufferUpToDate();
+    m_GPUManager->UpdateCPUBuffer();
     return Superclass::GetPixelAccessor();
   }
 
@@ -127,7 +127,7 @@ public:
   /** Return the NeighborhoodAccessor functor */
   const NeighborhoodAccessorFunctorType GetNeighborhoodAccessor() const
   {
-    m_GPUManager->MakeCPUBufferUpToDate();
+    m_GPUManager->UpdateCPUBuffer();
     //return Superclass::GetNeighborhoodAccessor();
     return NeighborhoodAccessorFunctorType();
   }
@@ -142,7 +142,7 @@ public:
 
   const PixelContainer * GetPixelContainer() const
   {
-    m_GPUManager->MakeCPUBufferUpToDate();
+    m_GPUManager->UpdateCPUBuffer();
     return Superclass::GetPixelContainer();
   }
 

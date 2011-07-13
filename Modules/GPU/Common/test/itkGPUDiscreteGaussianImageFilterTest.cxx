@@ -118,7 +118,7 @@ int itkGPUDiscreteGaussianImageFilterTest(int argc, char *argv[])
       GPUFilter->SetVariance( variance );
       GPUFilter->Update();
 
-      GPUFilter->GetOutput()->MakeUpToDate(); // synchronization point (GPU->CPU memcpy)
+      GPUFilter->GetOutput()->UpdateBuffers(); // synchronization point (GPU->CPU memcpy)
 
       gputimer.Stop();
       std::cout << "GPU Gaussian Filter took " << gputimer.GetMeanTime() << " seconds.\n" << std::endl;

@@ -118,7 +118,7 @@ int itkGPUBinaryThresholdImageFilterTest(int argc, char *argv[])
       GPUFilter->SetInput( reader->GetOutput() );
       GPUFilter->Update();
 
-      GPUFilter->GetOutput()->MakeUpToDate(); // synchronization point
+      GPUFilter->GetOutput()->UpdateBuffers(); // synchronization point
 
       gputimer.Stop();
 

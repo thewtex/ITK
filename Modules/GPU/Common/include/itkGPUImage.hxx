@@ -92,7 +92,7 @@ void GPUImage< TPixel, VImageDimension >::SetPixel(const IndexType & index, cons
 template <class TPixel, unsigned int VImageDimension>
 const TPixel & GPUImage< TPixel, VImageDimension >::GetPixel(const IndexType & index) const
 {
-  m_GPUManager->MakeCPUBufferUpToDate();
+  m_GPUManager->UpdateCPUBuffer();
   return Superclass::GetPixel( index );
 }
 
@@ -103,7 +103,7 @@ TPixel & GPUImage< TPixel, VImageDimension >::GetPixel(const IndexType & index)
   m_GPUManager->SetGPUBufferDirty();
   return Superclass::GetPixel( index );
   */
-  m_GPUManager->MakeCPUBufferUpToDate();
+  m_GPUManager->UpdateCPUBuffer();
   return Superclass::GetPixel( index );
 }
 
@@ -114,14 +114,14 @@ TPixel & GPUImage< TPixel, VImageDimension >::operator[] (const IndexType &index
   m_GPUManager->SetGPUBufferDirty();
   return Superclass::operator[]( index );
   */
-  m_GPUManager->MakeCPUBufferUpToDate();
+  m_GPUManager->UpdateCPUBuffer();
   return Superclass::operator[] ( index );
   }
 
 template <class TPixel, unsigned int VImageDimension>
 const TPixel & GPUImage< TPixel, VImageDimension >::operator[] (const IndexType &index) const
   {
-  m_GPUManager->MakeCPUBufferUpToDate();
+  m_GPUManager->UpdateCPUBuffer();
   return Superclass::operator[] ( index );
   }
 
@@ -134,10 +134,10 @@ void GPUImage< TPixel, VImageDimension >::SetPixelContainer(PixelContainer *cont
 }
 
 template <class TPixel, unsigned int VImageDimension>
-void GPUImage< TPixel, VImageDimension >::MakeUpToDate()
+void GPUImage< TPixel, VImageDimension >::UpdateBuffers()
 {
-  m_GPUManager->MakeCPUBufferUpToDate();
-  m_GPUManager->MakeGPUBufferUpToDate();
+  m_GPUManager->UpdateCPUBuffer();
+  m_GPUManager->UpdateGPUBuffer();
 }
 
 template <class TPixel, unsigned int VImageDimension>
@@ -151,7 +151,7 @@ TPixel* GPUImage< TPixel, VImageDimension >::GetBufferPointer()
 
   /* less conservative version - if you modify pixel value using
    * this pointer then you must set the image as modified manually!!! */
-  m_GPUManager->MakeCPUBufferUpToDate();
+  m_GPUManager->UpdateCPUBuffer();
   return Superclass::GetBufferPointer();
 }
 
@@ -159,7 +159,7 @@ template <class TPixel, unsigned int VImageDimension>
 const TPixel * GPUImage< TPixel, VImageDimension >::GetBufferPointer() const
 {
   // const does not change buffer, but if CPU is dirty then make it up-to-date
-  m_GPUManager->MakeCPUBufferUpToDate();
+  m_GPUManager->UpdateCPUBuffer();
   return Superclass::GetBufferPointer();
 }
 
