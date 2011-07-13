@@ -111,7 +111,7 @@ MahalanobisDistanceMembershipFunction< TVector >
     }
 
   // 1e-6 is an arbitrary value!!!
-  double m_DeterminantOK = ( det > 1e-6 );
+  m_DeterminantOK = ( det > 1e-6 );
 
   if( m_DeterminantOK )
     {
