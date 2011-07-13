@@ -105,21 +105,21 @@ public:
   /** Return the Pixel Accessor object */
   AccessorType GetPixelAccessor(void)
   {
-    m_GPUManager->SetGPUBufferDirty();
+    m_DataManager->SetGPUBufferDirty();
     return Superclass::GetPixelAccessor();
   }
 
   /** Return the Pixel Accesor object */
   const AccessorType GetPixelAccessor(void) const
   {
-    m_GPUManager->UpdateCPUBuffer();
+    m_DataManager->UpdateCPUBuffer();
     return Superclass::GetPixelAccessor();
   }
 
   /** Return the NeighborhoodAccessor functor */
   NeighborhoodAccessorFunctorType GetNeighborhoodAccessor()
   {
-    m_GPUManager->SetGPUBufferDirty();
+    m_DataManager->SetGPUBufferDirty();
     //return Superclass::GetNeighborhoodAccessor();
     return NeighborhoodAccessorFunctorType();
   }
@@ -127,7 +127,7 @@ public:
   /** Return the NeighborhoodAccessor functor */
   const NeighborhoodAccessorFunctorType GetNeighborhoodAccessor() const
   {
-    m_GPUManager->UpdateCPUBuffer();
+    m_DataManager->UpdateCPUBuffer();
     //return Superclass::GetNeighborhoodAccessor();
     return NeighborhoodAccessorFunctorType();
   }
@@ -137,22 +137,22 @@ public:
   /** Return a pointer to the container. */
   PixelContainer * GetPixelContainer()
   {
-    m_GPUManager->SetGPUBufferDirty(); return Superclass::GetPixelContainer();
+    m_DataManager->SetGPUBufferDirty(); return Superclass::GetPixelContainer();
   }
 
   const PixelContainer * GetPixelContainer() const
   {
-    m_GPUManager->UpdateCPUBuffer();
+    m_DataManager->UpdateCPUBuffer();
     return Superclass::GetPixelContainer();
   }
 
   void SetCurrentCommandQueue( int queueid )
   {
-    m_GPUManager->SetCurrentCommandQueue( queueid );
+    m_DataManager->SetCurrentCommandQueue( queueid );
   }
 
   int  GetCurrentCommandQueueID() {
-    return m_GPUManager->GetCurrentCommandQueueID();
+    return m_DataManager->GetCurrentCommandQueueID();
   }
 
   GPUDataManager::Pointer GetGPUDataManager() const;
@@ -167,9 +167,9 @@ public:
   void DataHasBeenGenerated()
   {
     Superclass::DataHasBeenGenerated();
-    if( m_GPUManager->IsCPUBufferDirty() )
+    if( m_DataManager->IsCPUBufferDirty() )
       {
-      m_GPUManager->Modified();
+      m_DataManager->Modified();
       }
   }
 
@@ -185,7 +185,7 @@ private:
   GPUImage(const Self&);
   void operator=(const Self&);
 
-  typename GPUImageDataManager< GPUImage >::Pointer m_GPUManager;
+  typename GPUImageDataManager< GPUImage >::Pointer m_DataManager;
 };
 
 class GPUImageFactory : public itk::ObjectFactoryBase

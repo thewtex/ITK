@@ -100,8 +100,6 @@ void GPUDataManager::UpdateCPUBuffer()
 #ifdef VERBOSE
     std::cout << "GPU->CPU data copy" << std::endl;
 #endif
-    std::cout << "Command Queue Id: " << m_CommandQueueId << std::endl;
-    std::cout << "Command Queue: " << m_ContextManager->GetCommandQueue( m_CommandQueueId) << std::endl;
     errid = clEnqueueReadBuffer(m_ContextManager->GetCommandQueue(
                                   m_CommandQueueId), m_GPUBuffer, CL_TRUE, 0, m_BufferSize, m_CPUBuffer, 0, NULL, NULL);
     OclCheckError(errid);
