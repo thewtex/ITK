@@ -135,7 +135,7 @@ GPUScalarAnisotropicDiffusionFunction< TImage >
                                                                             // is
                                                                             // dirty
   this->m_AnisotropicDiffusionFunctionGPUBuffer->SetGPUDirtyFlag( false );
-  this->m_AnisotropicDiffusionFunctionGPUBuffer->MakeCPUBufferUpToDate();   //
+  this->m_AnisotropicDiffusionFunctionGPUBuffer->UpdateCPUBuffer();   //
                                                                             // Copy
                                                                             // GPU->CPU
 

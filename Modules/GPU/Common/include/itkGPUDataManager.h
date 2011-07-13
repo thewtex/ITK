@@ -85,10 +85,10 @@ public:
   }
 
   /** actual GPU->CPU memory copy takes place here */
-  virtual void MakeCPUBufferUpToDate();
+  virtual void UpdateCPUBuffer();
 
   /** actual CPU->GPU memory copy takes place here */
-  virtual void MakeGPUBufferUpToDate();
+  virtual void UpdateGPUBuffer();
 
   void Allocate();
 
@@ -97,7 +97,7 @@ public:
   int  GetCurrentCommandQueueID();
 
   /** Synchronize CPU and GPU buffers (using dirty flags) */
-  bool MakeUpToDate();
+  bool Update();
 
   /** Method for grafting the content of one GPUDataManager into another one */
   virtual void Graft(const GPUDataManager* data);

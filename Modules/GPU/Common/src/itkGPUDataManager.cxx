@@ -60,7 +60,7 @@ void GPUDataManager::Allocate()
 
   //m_IsGPUBufferDirty = true;
 
-  //MakeGPUBufferUpToDate();
+  //this->UpdateGPUBuffer();
 }
 
 void GPUDataManager::SetCPUBufferPointer( void* ptr )
@@ -80,17 +80,17 @@ void GPUDataManager::SetGPUDirtyFlag( bool isDirty )
 
 void GPUDataManager::SetGPUBufferDirty()
 {
-  MakeCPUBufferUpToDate();
+  this->UpdateCPUBuffer();
   m_IsGPUBufferDirty = true;
 }
 
 void GPUDataManager::SetCPUBufferDirty()
 {
-  MakeGPUBufferUpToDate();
+  this->UpdateGPUBuffer();
   m_IsCPUBufferDirty = true;
 }
 
-void GPUDataManager::MakeCPUBufferUpToDate()
+void GPUDataManager::UpdateCPUBuffer()
 {
   m_Mutex.Lock();
 
@@ -110,7 +110,7 @@ void GPUDataManager::MakeCPUBufferUpToDate()
   m_Mutex.Unlock();
 }
 
-void GPUDataManager::MakeGPUBufferUpToDate()
+void GPUDataManager::UpdateGPUBuffer()
 {
   m_Mutex.Lock();
 
@@ -142,7 +142,7 @@ void* GPUDataManager::GetCPUBufferPointer()
   return m_CPUBuffer;
 }
 
-bool GPUDataManager::MakeUpToDate()
+bool GPUDataManager::Update()
 {
   if( m_IsGPUBufferDirty && m_IsCPUBufferDirty )
     {
@@ -150,8 +150,8 @@ bool GPUDataManager::MakeUpToDate()
     return false;
     }
 
-  MakeGPUBufferUpToDate();
-  MakeCPUBufferUpToDate();
+  this->UpdateGPUBuffer();
+  this->UpdateCPUBuffer();
 
   m_IsGPUBufferDirty = m_IsCPUBufferDirty = false;
 
@@ -166,7 +166,7 @@ void GPUDataManager::SetCurrentCommandQueue( int queueid )
 {
   if( queueid >= 0 && queueid < (int)m_ContextManager->GetNumberOfCommandQueues() )
     {
-    MakeCPUBufferUpToDate();
+    this->UpdateCPUBuffer();
 
     // Assumption: different command queue is assigned to different device
     m_CommandQueueId = queueid;
