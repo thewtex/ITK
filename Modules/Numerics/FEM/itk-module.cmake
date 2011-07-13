@@ -1,7 +1,7 @@
-itk_module(ITK-FEM
+itk_module(ITKFEM
   DEPENDS
-    ITK-ImageFunction
-    ITK-RegistrationCommon
+    ITKImageFunction
+    ITKRegistrationCommon
   TEST_DEPENDS
-    ITK-TestKernel
+    ITKTestKernel
 )

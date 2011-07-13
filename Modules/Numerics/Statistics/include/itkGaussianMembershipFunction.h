@@ -46,7 +46,7 @@ namespace Statistics
  * will return 0 except when evaluating at the mean where it will
  * return the maximum value of a double.
  *
- * \ingroup ITK-Statistics
+ * \ingroup ITKStatistics
  */
 
 template< class TMeasurementVector >
