@@ -23,6 +23,7 @@
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 #include "itkSimpleFilterWatcher.h"
+#include "itkStreamingImageFilter.h"
 
 int itkConvolutionImageFilterTestInt(int argc, char * argv[])
 {
@@ -42,29 +43,33 @@ int itkConvolutionImageFilterTestInt(int argc, char * argv[])
 
   ReaderType::Pointer reader1 = ReaderType::New();
   reader1->SetFileName( argv[1] );
-  reader1->Update();
+  //reader1->Update();
 
   ReaderType::Pointer reader2 = ReaderType::New();
   reader2->SetFileName( argv[2] );
   reader2->Update();
 
   typedef itk::ConvolutionImageFilter<ImageType> ConvolutionFilterType;
-  ConvolutionFilterType::Pointer convoluter
-    = ConvolutionFilterType::New();
-  convoluter->SetInput( reader1->GetOutput() );
-  convoluter->SetImageKernelInput( reader2->GetOutput() );
+  ConvolutionFilterType::Pointer convolver = ConvolutionFilterType::New();
+  convolver->SetInput( reader1->GetOutput() );
+  convolver->SetImageKernelInput( reader2->GetOutput() );
 
-  itk::SimpleFilterWatcher watcher(convoluter, "filter");
+  itk::SimpleFilterWatcher watcher(convolver, "filter");
 
   if( argc >= 5 )
     {
-    convoluter->SetNormalize( static_cast<bool>( atoi( argv[4] ) ) );
+    convolver->SetNormalize( static_cast<bool>( atoi( argv[4] ) ) );
     }
 
-  typedef itk::ImageFileWriter<ImageType> WriterType;
+  itk::StreamingImageFilter< ImageType, ImageType >::Pointer streamingFilter =
+    itk::StreamingImageFilter< ImageType, ImageType >::New();
+  streamingFilter->SetNumberOfStreamDivisions( 4 );
+  streamingFilter->SetInput( convolver->GetOutput() );
+
+  typedef itk::ImageFileWriter< ImageType > WriterType;
   WriterType::Pointer writer = WriterType::New();
   writer->SetFileName( argv[3] );
-  writer->SetInput( convoluter->GetOutput() );
+  writer->SetInput( streamingFilter->GetOutput() );
 
   try
     {
