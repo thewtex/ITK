@@ -45,8 +45,8 @@ public:
 
   cl_command_queue GetCommandQueue(int i);
 
-  unsigned int GetNumCommandQueue() {
-    return m_NumDevices;
+  unsigned int GetNumberOfCommandQueues() {
+    return m_NumberOfDevices;
   }
 
   cl_context GetCurrentContext() {
@@ -65,7 +65,7 @@ private:
   cl_device_id*     m_Devices;
   cl_command_queue* m_CommandQueue;    // one queue per device
 
-  cl_uint m_NumDevices, m_NumPlatforms;
+  cl_uint m_NumberOfDevices, m_NumberOfPlatforms;
 
   static GPUContextManager* m_Instance;
 };

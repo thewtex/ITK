@@ -24,7 +24,7 @@ GPUKernelManager::GPUKernelManager()
 {
   m_Manager = GPUContextManager::GetInstance();
 
-  if(m_Manager->GetNumCommandQueue() > 0) m_CommandQueueId = 0;   // default
+  if(m_Manager->GetNumberOfCommandQueues() > 0) m_CommandQueueId = 0;   // default
                                                                   // command
                                                                   // queue
 }
@@ -369,7 +369,7 @@ bool GPUKernelManager::LaunchKernel(int kernelIdx, int dim, size_t *globalWorkSi
 
 void GPUKernelManager::SetCurrentCommandQueue( int queueid )
 {
-  if( queueid >= 0 && queueid < (int)m_Manager->GetNumCommandQueue() )
+  if( queueid >= 0 && queueid < (int)m_Manager->GetNumberOfCommandQueues() )
     {
     // Assumption: different command queue is assigned to different device
     m_CommandQueueId = queueid;

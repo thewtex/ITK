@@ -164,7 +164,7 @@ bool GPUDataManager::MakeUpToDate()
  */
 void GPUDataManager::SetCurrentCommandQueue( int queueid )
 {
-  if( queueid >= 0 && queueid < (int)m_ContextManager->GetNumCommandQueue() )
+  if( queueid >= 0 && queueid < (int)m_ContextManager->GetNumberOfCommandQueues() )
     {
     MakeCPUBufferUpToDate();
 
@@ -202,7 +202,7 @@ void GPUDataManager::Graft(const GPUDataManager* data)
 
 void GPUDataManager::Initialize()
 {
-  if( m_ContextManager->GetNumCommandQueue() > 0 )
+  if( m_ContextManager->GetNumberOfCommandQueues() > 0 )
     {
     m_CommandQueueId = 0; // default command queue
     }

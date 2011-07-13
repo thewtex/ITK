@@ -150,7 +150,7 @@ int itkGPUImageTest(int argc, char *argv[])
   // Change Command Queue
   //
   itk::GPUContextManager *contextManager = itk::GPUContextManager::GetInstance();
-  if(contextManager->GetNumCommandQueue() < 2) return 1;
+  if(contextManager->GetNumberOfCommandQueues() < 2) return 1;
 
   std::cout << "Current Command Queue ID : 1 " << std::endl;
 
