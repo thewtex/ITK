@@ -1,8 +1,8 @@
-itk_module(ITK-IO-HDF5
+itk_module(ITKIOHDF5
   DEPENDS
-    ITK-Common
-    ITK-IO-Base
+    ITKCommon
+    ITKIOBase
     ITK-HDF5
   TEST_DEPENDS
-    ITK-TestKernel
+    ITKTestKernel
 )

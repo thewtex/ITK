@@ -1,7 +1,7 @@
-itk_module(ITK-IO-JPEG
+itk_module(ITKIOJPEG
   DEPENDS
     ITK-JPEG
-    ITK-IO-Base
+    ITKIOBase
   TEST_DEPENDS
-    ITK-TestKernel
+    ITKTestKernel
 )

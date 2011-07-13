@@ -1,4 +1,4 @@
-set(ITK-FEM_SRC
+set(ITKFEM_SRC
 itkFEMLoadGrav.cxx
 itkFEMElement2DC0QuadraticTriangularStress.cxx
 itkFEMElement2DC0QuadraticTriangular.cxx
@@ -50,6 +50,6 @@ itkFEMElement2DC0LinearQuadrilateral.cxx
 dsrc2c.c
 )
 
-add_library(ITK-FEM ${ITK-FEM_SRC})
-target_link_libraries(ITK-FEM  ${ITK-ImageFunction_LIBRARIES} ${ITK-RegistrationCommon_LIBRARIES})
-itk_module_target(ITK-FEM)
+add_library(ITKFEM ${ITKFEM_SRC})
+target_link_libraries(ITKFEM  ${ITKImageFunction_LIBRARIES} ${ITKRegistrationCommon_LIBRARIES})
+itk_module_target(ITKFEM)
