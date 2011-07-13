@@ -1,7 +1,7 @@
-itk_module(ITK-IO-TIFF
+itk_module(ITKIOTIFF
   DEPENDS
     ITK-TIFF
-    ITK-IO-Base
+    ITKIOBase
   TEST_DEPENDS
-    ITK-TestKernel
+    ITKTestKernel
 )

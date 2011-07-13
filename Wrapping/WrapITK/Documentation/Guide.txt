@@ -115,7 +115,7 @@ To add classes to be wrapped, it is recommended that you create a simple "Extern
 
 EXTERNAL PROJECTS
 -----------------
-In WrapITK/ExternalProjects there are several sample "External Projects" that can be built to provide additional functionality to WrapITK and to serve as a demonstration for how to create your own such projects. One project is an ITK-VTK bridge, and the other is a Python class to allow conversion from Numeric/Numarray/numpy matrices to ITK images (and vice-versa).
+In WrapITK/ExternalProjects there are several sample "External Projects" that can be built to provide additional functionality to WrapITK and to serve as a demonstration for how to create your own such projects. One project is an ITKVTK bridge, and the other is a Python class to allow conversion from Numeric/Numarray/numpy matrices to ITK images (and vice-versa).
 
 (0) Building
 To build an external project, first ensure that WrapITK has been properly built. Then use ccmake to configure a build directory for the external project. If WrapITK has not been installed, you will have to manually enter the path to the WrapITK build directory.

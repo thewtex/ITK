@@ -1,7 +1,7 @@
-itk_module(ITK-IO-PNG
+itk_module(ITKIOPNG
   DEPENDS
     ITK-PNG
-    ITK-IO-Base
+    ITKIOBase
   TEST_DEPENDS
-    ITK-TestKernel
+    ITKTestKernel
 )

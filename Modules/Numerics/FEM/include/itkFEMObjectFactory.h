@@ -67,7 +67,7 @@ namespace fem {
  *  - namespace { static Base* NewDerivedClass() { return new DerivedClass; } }
  *    const int OF_Derived=FEMObjectFactory<BaseClass>::Register( NewDerivedClass, "NewDerivedObjectName" );
  * \endcode
- * \ingroup ITK-FEM
+ * \ingroup ITKFEM
  */
 template<class T>
 class FEMObjectFactory
@@ -191,7 +191,7 @@ private:
    * \class Dummy
    * \brief This class is defined in FEMObjectFactory just to get rid of some
             warnings about destructor being private in gcc.
-   * \ingroup ITK-FEM
+   * \ingroup ITKFEM
    */
   class Dummy {};
 
