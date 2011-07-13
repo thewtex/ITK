@@ -116,8 +116,6 @@ protected:
   GPUBinaryThresholdImageFilter();
   virtual ~GPUBinaryThresholdImageFilter() {};
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
-
   /** This method is used to set the state of the filter before
    * multi-threading. */
   //virtual void BeforeThreadedGenerateData();

@@ -93,16 +93,6 @@ GPUBinaryThresholdImageFilter< TInputImage, TOutputImage >
   // create kernel
   this->m_UnaryFunctorImageFilterGPUKernelHandle = this->m_GPUKernelManager->CreateKernel("BinaryThresholdFilter");
 }
-/**
- *
- */
-template< class TInputImage, class TOutputImage >
-void
-GPUBinaryThresholdImageFilter< TInputImage, TOutputImage >
-::PrintSelf(std::ostream & os, Indent indent) const
-{
-  GPUSuperclass::PrintSelf( os, indent );
-}
 
 
 template< class TInputImage, class TOutputImage >
