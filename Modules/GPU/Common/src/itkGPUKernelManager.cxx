@@ -45,6 +45,7 @@ namespace itk
     pFileStream = fopen(filename, "rb");
     if(pFileStream == 0)
     {
+      itkWarningMacro("Cannot open OpenCL source file");
       return NULL;
     }
 #endif
