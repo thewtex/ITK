@@ -26,7 +26,7 @@ namespace fem {
 /**
  * \class Element2DC0QuadraticTriangular
  * \brief 3-noded, quadratic, C0 continuous finite element in 2D space.
- * \ingroup ITK-FEM
+ * \ingroup ITKFEM
  */
 class Element2DC0QuadraticTriangular : public ElementStd<6,2>
 {

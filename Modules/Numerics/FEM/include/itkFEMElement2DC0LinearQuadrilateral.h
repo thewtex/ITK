@@ -26,7 +26,7 @@ namespace fem {
 /**
  * \class Element2DC0LinearQuadrilateral
  * \brief 4-noded, linear, C0 continuous finite element in 2D space.
- * \ingroup ITK-FEM
+ * \ingroup ITKFEM
  */
 class Element2DC0LinearQuadrilateral : public ElementStd<4,2>
 {

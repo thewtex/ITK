@@ -29,7 +29,7 @@ namespace fem {
  *
  * M*ddu + C*du + K*u=F
  *
- * \ingroup ITK-FEM
+ * \ingroup ITKFEM
  */
 class SolverHyperbolic : public Solver
 {

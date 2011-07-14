@@ -28,7 +28,7 @@ namespace fem {
 /**
  * \class Element2DC1Beam
  * \brief 1D Beam (spring that also bends) finite element in 2D space.
- * \ingroup ITK-FEM
+ * \ingroup ITKFEM
  */
 class Element2DC1Beam : public ElementStd<2,2>
 {

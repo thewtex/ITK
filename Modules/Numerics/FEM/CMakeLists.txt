@@ -1,3 +1,3 @@
-project(ITK-FEM)
-set(ITK-FEM_LIBRARIES ITK-FEM)
+project(ITKFEM)
+set(ITKFEM_LIBRARIES ITKFEM)
 itk_module_impl()
