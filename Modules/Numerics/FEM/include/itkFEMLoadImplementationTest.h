@@ -43,7 +43,7 @@ namespace fem {
  *
  *     typedef LoadTest<...> MyLoadTestClass;
  *     template class LoadImplementationTest<MyLoadTestClass>;
- * \ingroup ITK-FEM
+ * \ingroup ITKFEM
  */
 template<class TLoadClass>
 class LoadImplementationTest

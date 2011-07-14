@@ -206,7 +206,7 @@ struct par_parameter  //par_parameter
  *
  * \ingroup IOFilters
  *
- * \ingroup ITK-Review
+ * \ingroup ITKReview
  */
 class ITK_EXPORT PhilipsPAR:public LightProcessObject
 {
