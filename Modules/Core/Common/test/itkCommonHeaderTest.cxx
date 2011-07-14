@@ -66,6 +66,7 @@
 #include "itkDirectory.h"
 #include "itkDynamicLoader.h"
 #include "itkEllipsoidInteriorExteriorSpatialFunction.txx"
+#include "itkEnableIf.h"
 #include "itkEquivalencyTable.h"
 #include "itkEventObject.h"
 #include "itkExceptionObject.h"
