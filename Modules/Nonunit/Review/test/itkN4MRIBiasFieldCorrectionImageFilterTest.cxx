@@ -258,6 +258,15 @@ int N4( int argc, char *argv[] )
 
   correcter->SetNumberOfControlPoints( numberOfControlPoints );
 
+
+  std::cout << "Pre-Shrink input Origin: " <<  inputImage->GetOrigin() << std::endl;
+  std::cout << "Pre-Shrink input Spacing: " << inputImage->GetSpacing() << std::endl;
+  std::cout << "Pre-Shrink input Direction: " << inputImage->GetDirection() << std::endl;
+  std::cout << "Pre-Shrink mask Origin: " <<  maskImage->GetOrigin() << std::endl;
+  std::cout << "Pre-Shrink mask Spacing: " << maskImage->GetSpacing() << std::endl;
+  std::cout << "Pre-Shrink mask Direction: " << maskImage->GetDirection() << std::endl;
+
+
   // handle the shrink factor
   typedef itk::ShrinkImageFilter<ImageType, ImageType> ShrinkerType;
   typename ShrinkerType::Pointer shrinker = ShrinkerType::New();
@@ -282,6 +291,14 @@ int N4( int argc, char *argv[] )
   maskshrinker->Update();
   maskImage = maskshrinker->GetOutput();
   maskImage->DisconnectPipeline();
+
+
+  std::cout << "Post-Shrink input Origin: " <<  inputImage->GetOrigin() << std::endl;
+  std::cout << "Post-Shrink input Spacing: " << inputImage->GetSpacing() << std::endl;
+  std::cout << "Post-Shrink input Direction: " << inputImage->GetDirection() << std::endl;
+  std::cout << "Post-Shrink mask Origin: " <<  maskImage->GetOrigin() << std::endl;
+  std::cout << "Post-Shrink mask Spacing: " << maskImage->GetSpacing() << std::endl;
+  std::cout << "Post-Shrink mask Direction: " << maskImage->GetDirection() << std::endl;
 
   // set the input image and mask image
   correcter->SetInput( inputImage );
@@ -346,10 +363,10 @@ int itkN4MRIBiasFieldCorrectionImageFilterTest( int argc, char *argv[] )
   switch( atoi( argv[1] ) )
     {
     case 2:
-      N4<2>( argc, argv );
+      return N4<2>( argc, argv );
       break;
     case 3:
-      N4<3>( argc, argv );
+      return N4<3>( argc, argv );
       break;
     default:
       std::cerr << "Unsupported dimension" << std::endl;
