@@ -19,10 +19,6 @@
 #define __itkObjectByObjectLabelMapFilter_hxx
 
 #include "itkObjectByObjectLabelMapFilter.h"
-#include "itkBinaryThresholdImageFilter.h"
-#include "itkSignedMaurerDistanceMapImageFilter.h"
-#include "itkMorphologicalWatershedImageFilter.h"
-#include "itkMaskImageFilter.h"
 #include "itkNumericTraits.h"
 
 #include "itkLabelObject.h"
@@ -33,7 +29,6 @@
 #include "itkLabelMapToLabelImageFilter.h"
 #include "itkLabelSelectionLabelMapFilter.h"
 #include "itkAutoCropLabelMapFilter.h"
-#include "itkLabelMapMaskImageFilter.h"
 
 namespace itk {
 

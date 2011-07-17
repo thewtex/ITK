@@ -8,6 +8,7 @@ itkGaussianImageSourceTest.cxx
 itkMaskNeighborhoodOperatorImageFilterTest.cxx
 itkCastImageFilterTest.cxx
 itkClampImageFilterTest.cxx
+itkSliceBySliceImageFilterTest.cxx
 )
 
 # Disable optimization on the tests below to avoid possible
