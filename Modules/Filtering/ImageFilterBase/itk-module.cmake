@@ -11,8 +11,10 @@ itk_module(ITKImageFilterBase
   TEST_DEPENDS
     ITKTestKernel
     ITKImageIntensity
+    ITKSmoothing
   DESCRIPTION
     "${DOCUMENTATION}"
 )
 
 # Extra test dependency is introduced by itkMaskNeighborhoodOperatorImageFilterTest.
+# ITKSmoothing dependency introduced by itkSliceBySliceImageFilter.
