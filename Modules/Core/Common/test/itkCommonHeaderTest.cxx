@@ -298,6 +298,7 @@
 #include "itkRegularizedHeavisideStepFunction.hxx"
 #include "itkSinRegularizedHeavisideStepFunction.h"
 #include "itkSinRegularizedHeavisideStepFunction.hxx"
+#include "itkGeometryUtilities.h"
 
 int itkCommonHeaderTest ( int , char * [] )
 {
