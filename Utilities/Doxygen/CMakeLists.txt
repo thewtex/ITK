@@ -29,9 +29,18 @@ endforeach()
 
 list( APPEND DOXYGEN_TEST_DIRS "\"${ITK_SOURCE_DIR}/Examples\" \n")
 
-string( REGEX REPLACE ";" "\$" DOXYGEN_TEST_DIRS "${DOXYGEN_TEST_DIRS}" )
+# By definition DOXYGEN_TEST_DIRS can not be empty. In the worst case if
+# BUILD_TESTING is turned OFF, there is only ${ITK_SOURCE_DIR}/Examples;
+# thus we don't need to do any replacement in the string.
+if( BUILD_TESTING )
+  string( REGEX REPLACE ";" "\$" DOXYGEN_TEST_DIRS ${DOXYGEN_TEST_DIRS} )
+endif()
 
-string( REGEX REPLACE ";" "\$" DOXYGEN_INCLUDE_DIRS "${DOXYGEN_INCLUDE_DIRS}" )
+list( LENGTH DOXYGEN_INCLUDE_DIRS _doxygen_include_dirs_size )
+
+if( ${_doxygen_include_dirs_size} GREATER 0 )
+  string( REGEX REPLACE ";" "\$" DOXYGEN_INCLUDE_DIRS ${DOXYGEN_INCLUDE_DIRS} )
+endif()
 
 #
 # Configure the script and the doxyfile, then add target
