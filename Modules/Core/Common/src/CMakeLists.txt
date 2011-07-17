@@ -72,6 +72,7 @@ itkNumericTraitsDiffusionTensor3DPixel.cxx
 itkEquivalencyTable.cxx
 itkXMLFileOutputWindow.cxx
 itkStoppingCriterionBase.cxx
+itkGeometryUtilities.cxx
 )
 
 if(WIN32)
