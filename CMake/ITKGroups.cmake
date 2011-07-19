@@ -64,12 +64,14 @@ ITKImageLabel
 ITKImageStatistics
 ITKLabelVoting
 ITKMathematicalMorphology
+ITKBinaryMathematicalMorphology
 ITKPath
 ITKQuadEdgeMeshFiltering
 ITKSmoothing
 ITKSpatialFunction
 ITKThresholding
 ITKLabelMap
+ITKVisualImage
 )
 
 set(Registration_module_list
