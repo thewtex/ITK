@@ -668,7 +668,7 @@ void FEMRegistrationFilter<TMovingImage, TFixedImage, TFemObject>::ApplyLoads(
               // now we get the element from the node -- we assume we need fix the dof only once
               // even if more than one element shares it.
 
-              l1->SetElement(*elt);
+              l1->SetElement(Element::ConstPointer(*elt));
               unsigned int localdof = whichnode * ndofpernode + jj;
               l1->SetDegreeOfFreedom(localdof);
               l1->SetValue(vnl_vector<double>(1, 0.0) );

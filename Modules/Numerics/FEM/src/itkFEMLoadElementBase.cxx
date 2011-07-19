@@ -27,7 +27,7 @@ namespace fem
 ::itk::LightObject::Pointer LoadElement::CreateAnother(void) const
 {
   ::itk::LightObject::Pointer smartPtr;
-  Pointer copyPtr = Self::New().GetPointer();
+  Pointer copyPtr = Self::New();
   for( unsigned int i = 0; i < this->m_Element.size(); i++ )
     {
     copyPtr->AddNextElement( this->m_Element[i] );
