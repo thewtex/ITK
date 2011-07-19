@@ -75,6 +75,8 @@ itk_module(ITKReview
     ITKVTK
     ITKWatersheds
     ITKLabelMap
+    ITKBinaryMathematicalMorphology
+    ITKVisualImage
   TEST_DEPENDS
     ITKTestKernel
 )
