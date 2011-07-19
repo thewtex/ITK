@@ -50,6 +50,13 @@ Solver<VDimension>
   this->ProcessObject::SetNumberOfRequiredOutputs(1);
   this->ProcessObject::SetNthOutput(0, this->MakeOutput(0) );
 }
+template <unsigned int VDimension>
+Solver<VDimension>
+::~Solver()
+{
+  FEMObjectType *output = this->GetOutput();
+  output->Clear();
+}
 
 template <unsigned int VDimension>
 void
