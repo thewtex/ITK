@@ -122,7 +122,7 @@ itk_add_test(NAME itkMattesMutualInformationImageToImageMetricTest4
               0 0)
 itk_add_test(NAME itkMatchCardinalityImageToImageMetricTest
       COMMAND ITKRegistrationCommonTestDriver itkMatchCardinalityImageToImageMetricTest
-              DATA{Baseline/r62slice.nii})
+              DATA{Baseline/r16slice_trans.nii.gz})
 itk_add_test(NAME itkMultiResolutionPyramidImageFilterWithResampleFilterTest
       COMMAND ITKRegistrationCommonTestDriver itkMultiResolutionPyramidImageFilterTest
               Resample)
