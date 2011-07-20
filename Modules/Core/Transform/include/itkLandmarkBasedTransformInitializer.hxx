@@ -69,7 +69,26 @@ LandmarkBasedTransformInitializer< TTransform, TFixedImage, TMovingImage >
     {
     itkExceptionMacro( << " size mismatch between Fixed and Moving Landmarks" );
     }
-  unsigned int NumberOfLandMarks = m_MovingLandmarks.size();
+  const unsigned int NumberOfLandMarks = m_MovingLandmarks.size();
+
+
+  //[Set Landmark Weight to Identity if it has not been set before]
+  //
+  vnl_matrix<double> vnlWeight( NumberOfLandMarks,NumberOfLandMarks,0);
+  vnlWeight.set_identity();
+
+  if( !m_LandmarkWeight.empty() )
+  {
+    if( m_LandmarkWeight.size() != NumberOfLandMarks)
+    {
+      itkExceptionMacro( << " size mismatch between number of landmars pairs and weights" );
+    }
+    LandmarkWeightConstIterator weightIt = m_LandmarkWeight.begin();
+    for(int i = 0; weightIt != m_LandmarkWeight.end(); ++i, ++weightIt )
+    {
+      vnlWeight(i,i)=(*weightIt);
+    }
+  }
 
   //[Convert Point to Matrix for Matrix Muptiplication]
   //
@@ -87,6 +106,7 @@ LandmarkBasedTransformInitializer< TTransform, TFixedImage, TMovingImage >
     q(ImageDimension,i)=1.0F;
     }
 
+  q = q * vnlWeight;
   // p
   // dim=3 * NumberOfLandMarks matrix
   vnl_matrix< double > p( ImageDimension, NumberOfLandMarks,0.0F);
@@ -98,6 +118,7 @@ LandmarkBasedTransformInitializer< TTransform, TFixedImage, TMovingImage >
       p( dim,i ) = (*movingIt)[dim];
       }
     }
+  p = p * vnlWeight;
 
   // EX) 3 dimensional case
   //          | sum( q(1,i)*q(1,i) sum( q(1,i)*q(2,i) sum( q(1,i)*q(3,i) sum( q(1,i) ) |

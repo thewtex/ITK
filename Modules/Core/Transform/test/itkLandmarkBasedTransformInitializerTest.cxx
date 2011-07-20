@@ -381,6 +381,7 @@ int itkLandmarkBasedTransformInitializerTest(int, char * [])
   TransformInitializerType::Pointer initializer = TransformInitializerType::New();
   TransformInitializerType::LandmarkPointContainer fixedLandmarks;
   TransformInitializerType::LandmarkPointContainer movingLandmarks;
+  TransformInitializerType::LandmarkWeightType landmarkWeights;
 
   const unsigned int numLandmarks(6);
   double fixedLandMarkInit[numLandmarks][3] =
@@ -401,9 +402,14 @@ int itkLandmarkBasedTransformInitializerTest(int, char * [])
       {-0.189769      , -7.3485       , 1.74263+0.008},
       {0.1021         , 20.2155       , -12.8526-0.006}
     };
+  double weights[numLandmarks] =
+    {
+      10,1,10,1,1,1
+    };
   for(unsigned i = 0; i < numLandmarks; i++)
     {
     TransformInitializerType::LandmarkPointType fixedPoint, movingPoint;
+
     for(unsigned j = 0; j < 3; j++)
       {
       fixedPoint[j] = fixedLandMarkInit[i][j];
@@ -411,10 +417,12 @@ int itkLandmarkBasedTransformInitializerTest(int, char * [])
       }
     fixedLandmarks.push_back(fixedPoint);
     movingLandmarks.push_back(movingPoint);
+    landmarkWeights.push_back(weights[i]);
     }
 
   initializer->SetFixedLandmarks(fixedLandmarks);
   initializer->SetMovingLandmarks(movingLandmarks);
+  initializer->SetLandmarkWeight(landmarkWeights);
   initializer->SetTransform(transform);
   initializer->InitializeTransform();
 
