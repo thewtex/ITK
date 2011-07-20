@@ -131,6 +131,13 @@ public:
   /** This filter requires all of the input to be in the buffer. */
   virtual void GenerateInputRequestedRegion();
 
+  /** Override VeriyInputInformation() since this filter does not expect
+   * the input images to occupy the same physical space.
+   *
+   * \sa ProcessObject::VerifyInputInformation
+   */
+  virtual void VerifyInputInformation() {}
+
   /** Methods to get the histograms of the source, reference, and
    * output. Objects are only valid after Update() has been called
    * on this filter. */
