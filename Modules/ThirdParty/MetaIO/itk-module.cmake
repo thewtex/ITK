@@ -1,4 +1,6 @@
 itk_module(ITKMetaIO
   DEPENDS
     ITKZLIB
+  DESCRIPTION
+    "${DOCUMENTATION}"
 )
