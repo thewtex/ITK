@@ -99,7 +99,7 @@ int itkFEMLoadBCMFCTestUser(int argc, char *[])
   m->SetPoissonsRatio(0.3);
   m->SetCrossSectionalArea(2000.0); /* Crossection area */
   m->SetMomentOfInertia(1.0);       /* Momemt of inertia */
-  femObject->AddNextMaterial(m.GetPointer());
+  femObject->AddNextMaterial(m);
 
   m = itk::fem::MaterialLinearElasticity::New();
   m->SetGlobalNumber(1);         /* Global number of the material */
@@ -107,7 +107,7 @@ int itkFEMLoadBCMFCTestUser(int argc, char *[])
   m->SetPoissonsRatio(0.3);
   m->SetCrossSectionalArea(1200.0); /* Crossection area */
   m->SetMomentOfInertia(1.0);       /* Momemt of inertia */
-  femObject->AddNextMaterial(m.GetPointer());
+  femObject->AddNextMaterial(m);
 
   m = itk::fem::MaterialLinearElasticity::New();
   m->SetGlobalNumber(2);        /* Global number of the material */
@@ -115,35 +115,35 @@ int itkFEMLoadBCMFCTestUser(int argc, char *[])
   m->SetPoissonsRatio(0.3);
   m->SetCrossSectionalArea(900.0); /* Crossection area */
   m->SetMomentOfInertia(1.0);      /* Momemt of inertia */
-  femObject->AddNextMaterial(m.GetPointer());
+  femObject->AddNextMaterial(m);
 
   itk::fem::Element2DC0LinearLineStress::Pointer e1;
 
   e1 = itk::fem::Element2DC0LinearLineStress::New();
   e1->SetGlobalNumber(0);
-  e1->SetNode( 0, femObject->GetNode(0).GetPointer() );
-  e1->SetNode( 1, femObject->GetNode(1).GetPointer() );
+  e1->SetNode( 0, femObject->GetNode(0) );
+  e1->SetNode( 1, femObject->GetNode(1) );
   e1->SetMaterial( dynamic_cast<itk::fem::MaterialLinearElasticity *>( femObject->GetMaterial(0).GetPointer() ) );
   femObject->AddNextElement( e1.GetPointer());
 
   e1 = itk::fem::Element2DC0LinearLineStress::New();
   e1->SetGlobalNumber(1);
-  e1->SetNode( 0, femObject->GetNode(1).GetPointer() );
-  e1->SetNode( 1, femObject->GetNode(2).GetPointer() );
+  e1->SetNode( 0, femObject->GetNode(1) );
+  e1->SetNode( 1, femObject->GetNode(2) );
   e1->SetMaterial( dynamic_cast<itk::fem::MaterialLinearElasticity *>( femObject->GetMaterial(0).GetPointer() ) );
   femObject->AddNextElement( e1.GetPointer());
 
   e1 = itk::fem::Element2DC0LinearLineStress::New();
   e1->SetGlobalNumber(2);
-  e1->SetNode( 0, femObject->GetNode(1).GetPointer() );
-  e1->SetNode( 1, femObject->GetNode(3).GetPointer() );
+  e1->SetNode( 0, femObject->GetNode(1) );
+  e1->SetNode( 1, femObject->GetNode(3) );
   e1->SetMaterial( dynamic_cast<itk::fem::MaterialLinearElasticity *>( femObject->GetMaterial(2).GetPointer() ) );
   femObject->AddNextElement( e1.GetPointer());
 
   e1 = itk::fem::Element2DC0LinearLineStress::New();
   e1->SetGlobalNumber(3);
-  e1->SetNode( 0, femObject->GetNode(0).GetPointer() );
-  e1->SetNode( 1, femObject->GetNode(4).GetPointer() );
+  e1->SetNode( 0, femObject->GetNode(0) );
+  e1->SetNode( 1, femObject->GetNode(4) );
   e1->SetMaterial( dynamic_cast<itk::fem::MaterialLinearElasticity *>( femObject->GetMaterial(1).GetPointer() ) );
   femObject->AddNextElement( e1.GetPointer());
 
@@ -154,28 +154,28 @@ int itkFEMLoadBCMFCTestUser(int argc, char *[])
   l1->SetElement( femObject->GetElement(2) );
   l1->SetDegreeOfFreedom(2);
   l1->SetValue( vnl_vector<double>(1, 0.0) );
-  femObject->AddNextLoad( l1.GetPointer());
+  femObject->AddNextLoad( l1 );
 
   l1 = itk::fem::LoadBC::New();
   l1->SetGlobalNumber(1);
   l1->SetElement( femObject->GetElement(2) );
   l1->SetDegreeOfFreedom(3);
   l1->SetValue( vnl_vector<double>(1, 0.0) );
-  femObject->AddNextLoad( l1.GetPointer());
+  femObject->AddNextLoad( l1 );
 
   l1 = itk::fem::LoadBC::New();
   l1->SetGlobalNumber(2);
   l1->SetElement( femObject->GetElement(3) );
   l1->SetDegreeOfFreedom(2);
   l1->SetValue( vnl_vector<double>(1, 0.0) );
-  femObject->AddNextLoad( l1.GetPointer());
+  femObject->AddNextLoad( l1 );
 
   l1 = itk::fem::LoadBC::New();
   l1->SetGlobalNumber(3);
   l1->SetElement( femObject->GetElement(3) );
   l1->SetDegreeOfFreedom(3);
   l1->SetValue( vnl_vector<double>(1, 0.0) );
-  femObject->AddNextLoad( l1.GetPointer());
+  femObject->AddNextLoad( l1 );
 
   itk::fem::LoadNode::Pointer l2;
 
@@ -187,7 +187,7 @@ int itkFEMLoadBCMFCTestUser(int argc, char *[])
   F[0] = 0;
   F[1] = 30000;
   l2->SetForce(F);
-  femObject->AddNextLoad( l2.GetPointer() );
+  femObject->AddNextLoad( l2 );
 
   itk::fem::LoadBCMFC::Pointer bcmfc = itk::fem::LoadBCMFC::New();
   bcmfc->SetGlobalNumber(5);
@@ -195,7 +195,7 @@ int itkFEMLoadBCMFCTestUser(int argc, char *[])
   bcmfc->AddLeftHandSideTerm( itk::fem::LoadBCMFC::MFCTerm(femObject->GetElement(0).GetPointer(), 1, 1) );
   bcmfc->AddLeftHandSideTerm( itk::fem::LoadBCMFC::MFCTerm(femObject->GetElement(1).GetPointer(), 3, -1) );
   bcmfc->AddRightHandSideTerm(0.0);
-  femObject->AddNextLoad( bcmfc.GetPointer() );
+  femObject->AddNextLoad( bcmfc );
   femObject->FinalizeMesh();
 
   solver->SetInput( femObject );

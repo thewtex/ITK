@@ -104,11 +104,11 @@ int itkFEMLandmarkLoadImplementationTest(int, char *[])
   // std::cout << "Element\n";
 
   itk::fem::LoadBC::Pointer l1 = itk::fem::LoadBC::New();
-  l1->SetElement(e0.GetPointer());
+  l1->SetElement(e0);
   l1->SetGlobalNumber(0);
   l1->SetDegreeOfFreedom(0);
   l1->SetValue( vnl_vector<double>(1, 0.0) );
-  femObject->AddNextLoad( l1.GetPointer());
+  femObject->AddNextLoad( l1 );
 
   // std::cout << "BC\n";
   itk::fem::LoadPoint::Pointer lm0 = itk::fem::LoadPoint::New();
@@ -120,7 +120,7 @@ int itkFEMLandmarkLoadImplementationTest(int, char *[])
   pt1[0] = 0.0; pt1[1] = 1.0;
   lm0->SetForce( pt1 );
   lm0->AddNextElement(e0.GetPointer());
-  femObject->AddNextLoad( lm0.GetPointer());
+  femObject->AddNextLoad( lm0 );
 
   femObject->Solve();
 

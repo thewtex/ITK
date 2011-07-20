@@ -269,7 +269,7 @@ Solver<VDimension>
     // Call the function that actually moves the element matrix
     // to the master matrix.
     Element::Pointer e = m_FEMObject->GetElement( i );
-    this->AssembleElementMatrix(e.GetPointer());
+    this->AssembleElementMatrix(e);
     }
 
   /**

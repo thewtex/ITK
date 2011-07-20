@@ -39,9 +39,10 @@ namespace fem
   return smartPtr;
 }
 
-void LoadElement::AddNextElement(Element::ConstPointer e)
+void LoadElement::AddNextElementInternal(const Element *e)
 {
-  this->m_Element.push_back(e);
+  Element::ConstPointer p(e);
+  this->m_Element.push_back(p);
 }
 
 unsigned int LoadElement::GetNumberOfElements(void)

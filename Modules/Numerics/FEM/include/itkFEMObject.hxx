@@ -103,23 +103,22 @@ FEMObject<VDimension>
       }
     n1->SetCoordinates(pt);
     n1->SetGlobalNumber(Copy->GetNode(i)->GetGlobalNumber() );
-    this->AddNextNode(n1.GetPointer());
+    this->AddNextNode(n1);
     }
 
   // copy material information
   int                                         numMat = Copy->GetNumberOfMaterials();
-  fem::MaterialLinearElasticity::Pointer m;
   for( int i = 0; i < numMat; i++ )
     {
     fem::MaterialLinearElasticity::Pointer mCopy =
       dynamic_cast<fem::MaterialLinearElasticity *>( Copy->GetMaterial(i).GetPointer() );
-    m = fem::MaterialLinearElasticity::New();
+    fem::MaterialLinearElasticity::Pointer m = fem::MaterialLinearElasticity::New();
     m->SetGlobalNumber(mCopy->GetGlobalNumber() );
     m->SetYoungsModulus(mCopy->GetYoungsModulus() );
     m->SetPoissonsRatio(mCopy->GetPoissonsRatio() );
     m->SetCrossSectionalArea(mCopy->GetCrossSectionalArea() );
     m->SetMomentOfInertia(mCopy->GetMomentOfInertia() );
-    this->AddNextMaterial(m.GetPointer());
+    this->AddNextMaterial(m);
     }
 
   // copy element information
@@ -137,13 +136,12 @@ FEMObject<VDimension>
     numNodes = elCopy->GetNumberOfNodes();
     for( int j = 0; j < numNodes; j++ )
       {
-      o1->SetNode( j, (this->GetNodeWithGlobalNumber(elCopy->GetNode(j)->GetGlobalNumber() ) ).GetPointer() );
+      o1->SetNode( j, (this->GetNodeWithGlobalNumber(elCopy->GetNode(j)->GetGlobalNumber() ) ));
       }
 
     int matNum = elCopy->GetMaterial()->GetGlobalNumber();
-    o1->SetMaterial(dynamic_cast<fem::MaterialLinearElasticity *>
-                    ( (this->GetMaterialWithGlobalNumber(matNum) ).GetPointer() ) );
-    this->AddNextElement( o1.GetPointer());
+    o1->SetMaterial(const_cast<Material *>(this->GetMaterialWithGlobalNumber(matNum).GetPointer()));
+    this->AddNextElement( o1 );
     }
 
   // Copy load/bc information
@@ -174,7 +172,7 @@ FEMObject<VDimension>
         F[i] = lCopy->GetForce()[i];
         }
       o1->SetForce(F);
-      this->AddNextLoad( o1.GetPointer());
+      this->AddNextLoad( o1 );
       }
     else if( loadname == "LoadBC" )
       {
@@ -196,7 +194,7 @@ FEMObject<VDimension>
         F[i] = lCopy->GetValue()[i];
         }
       o1->SetValue(F);
-      this->AddNextLoad( o1.GetPointer());
+      this->AddNextLoad( o1 );
       }
     else if( loadname == "LoadBCMFC" )
       {
@@ -231,7 +229,7 @@ FEMObject<VDimension>
         o1->GetRightHandSideArray().set_size(o1->GetRightHandSideArray().size() + 1);
         o1->GetRightHandSideArray().put(o1->GetRightHandSideArray().size() - 1, lCopy->GetRightHandSideArray()[i]);
         }
-      this->AddNextLoad( o1.GetPointer());
+      this->AddNextLoad( o1 );
       }
     else if( loadname == "LoadEdge" )
       {
@@ -244,7 +242,7 @@ FEMObject<VDimension>
 
       int numRows, numCols;
 
-      o1->AddNextElement(this->GetElementWithGlobalNumber(lCopy->GetElement(0)->GetGlobalNumber() ).GetPointer() );
+      o1->AddNextElement(this->GetElementWithGlobalNumber(lCopy->GetElement(0)->GetGlobalNumber() ) );
       o1->SetGlobalNumber(lCopy->GetGlobalNumber() );
       o1->SetEdge(lCopy->GetEdge() );
 
@@ -263,7 +261,7 @@ FEMObject<VDimension>
             o1->GetForce()[i][j] = force[i][j];
             }
           }
-        this->AddNextLoad( o1.GetPointer());
+        this->AddNextLoad( o1 );
         }
       }
     else if( loadname == "LoadGravConst" )
@@ -286,7 +284,7 @@ FEMObject<VDimension>
         {
         o1->GetForce()[i] = lCopy->GetForce()[i];
         }
-      this->AddNextLoad( o1.GetPointer());
+      this->AddNextLoad( o1 );
       }
     }
 
@@ -455,11 +453,11 @@ FEMObject<VDimension>
 template <unsigned int VDimension>
 void
 FEMObject<VDimension>
-::AddNextMaterial(Material::Pointer e)
+::AddNextMaterialInternal(Material *e)
 {
   MaterialIdentifier size = this->m_MaterialContainer->Size();
-
-  this->m_MaterialContainer->InsertElement(size, e);
+  Material::Pointer m(e);
+  this->m_MaterialContainer->InsertElement(size, m);
 }
 
 template <unsigned int VDimension>
@@ -473,11 +471,13 @@ FEMObject<VDimension>
 template <unsigned int VDimension>
 void
 FEMObject<VDimension>
-::AddNextLoad(Load::Pointer e)
+::AddNextLoadInternal(Load *e)
 {
+  Load::Pointer l(e);
+
   LoadIdentifier size = this->m_LoadContainer->Size();
 
-  this->m_LoadContainer->InsertElement(size, e);
+  this->m_LoadContainer->InsertElement(size, l);
 }
 
 template <unsigned int VDimension>
@@ -541,7 +541,7 @@ Element::Node::Pointer
 FEMObject<VDimension>
 ::GetNode(NodeIdentifier index)
 {
-  return this->m_NodeContainer->GetElement(index).GetPointer();
+  return this->m_NodeContainer->GetElement(index);
 }
 
 template <unsigned int VDimension>

@@ -31,7 +31,7 @@ ImageMetricLoad<TMoving, TFixed>
 ::CreateAnother(void) const
 {
   ::itk::LightObject::Pointer smartPtr;
-  Pointer copyPtr = Self::New().GetPointer();
+  Pointer copyPtr = Self::New();
 
   // Copy Load Contents
   copyPtr->m_MetricGradientImage = this->m_MetricGradientImage;

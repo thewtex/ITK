@@ -86,7 +86,7 @@ MetaFEMObjectConverter<NDimensions>
     pt[i] = node->m_X[i];
     }
     o1->SetCoordinates(pt);
-    myFEMObject->AddNextNode(o1.GetPointer());
+    myFEMObject->AddNextNode(o1);
     it_nodes++;
   }
 
@@ -113,7 +113,7 @@ MetaFEMObjectConverter<NDimensions>
     o1->SetMomentOfInertia(material->I);    /* Moment of inertia */
     o1->SetThickness(material->h);
     o1->SetDensityHeatProduct(material->RhoC);
-    myFEMObject->AddNextMaterial(o1.GetPointer());
+    myFEMObject->AddNextMaterial(o1);
     it_material++;
   }
 
@@ -133,10 +133,10 @@ MetaFEMObjectConverter<NDimensions>
     int numNodes = element->m_NumNodes;
     for (int i=0; i<numNodes; i++)
     {
-    o1->SetNode(i, myFEMObject->GetNodeWithGlobalNumber(element->m_NodesId[i]).GetPointer());
+    o1->SetNode(i, myFEMObject->GetNodeWithGlobalNumber(element->m_NodesId[i]));
     }
     o1->SetMaterial( myFEMObject->GetMaterialWithGlobalNumber(element->m_MaterialGN).GetPointer() );
-    myFEMObject->AddNextElement( o1.GetPointer());
+    myFEMObject->AddNextElement( o1 );
       it_elements++;
   }
 
@@ -169,7 +169,7 @@ MetaFEMObjectConverter<NDimensions>
          F[i] = load->m_ForceVector[i];
          }
        o1->SetForce(F);
-       myFEMObject->AddNextLoad( o1.GetPointer());
+       myFEMObject->AddNextLoad( o1 );
        }
      else if(loadname == "LoadBC")
        {
@@ -188,7 +188,7 @@ MetaFEMObjectConverter<NDimensions>
          F[i] = load->m_RHS[i];
          }
        o1->SetValue(F);
-       myFEMObject->AddNextLoad( o1.GetPointer());
+       myFEMObject->AddNextLoad( o1 );
        }
      else if(loadname == "LoadBCMFC")
        {
@@ -222,7 +222,7 @@ MetaFEMObjectConverter<NDimensions>
          o1->GetRightHandSideArray().put(o1->GetRightHandSideArray().size() - 1, load->m_RHS[i]);
          }
 
-       myFEMObject->AddNextLoad( o1.GetPointer());
+       myFEMObject->AddNextLoad( o1 );
        }
      else if(loadname == "LoadEdge")
        {
@@ -232,7 +232,7 @@ MetaFEMObjectConverter<NDimensions>
 
        int numRows;
 
-       o1->AddNextElement(myFEMObject->GetElementWithGlobalNumber(load->m_ElementGN).GetPointer());
+       o1->AddNextElement(myFEMObject->GetElementWithGlobalNumber(load->m_ElementGN));
        o1->SetGlobalNumber(load->m_GN);
        o1->SetEdge(load->m_EdgeNumber);
 
@@ -252,7 +252,7 @@ MetaFEMObjectConverter<NDimensions>
              o1->GetForce()[i][j] = forcevector[j];
              }
            }
-         myFEMObject->AddNextLoad( o1.GetPointer());
+         myFEMObject->AddNextLoad( o1 );
          }
        }
      else if(loadname == "LoadGravConst")
@@ -271,7 +271,7 @@ MetaFEMObjectConverter<NDimensions>
          {
          o1->GetForce()[i] = load->m_ForceVector[i];
          }
-       myFEMObject->AddNextLoad( o1.GetPointer());
+       myFEMObject->AddNextLoad( o1 );
        }
      else if(loadname == "LoadLandmark")
        {
@@ -319,7 +319,7 @@ MetaFEMObjectConverter<NDimensions>
       o1->GetForce()[i] = load->m_Undeformed[i] - load->m_Deformed[i];
       }
       */
-       myFEMObject->AddNextLoad( o1.GetPointer());
+       myFEMObject->AddNextLoad( o1 );
        }
      it_load++;
      }
