@@ -29,13 +29,13 @@ namespace itk
 /**
  *    Constructor
  */
-template< class TInputImage, class TOutputImage >
-SignedDanielssonDistanceMapImageFilter< TInputImage, TOutputImage >
+template< class TInputImage, class TOutputImage, class TVoronoiImage >
+SignedDanielssonDistanceMapImageFilter< TInputImage, TOutputImage, TVoronoiImage >
 ::SignedDanielssonDistanceMapImageFilter()
 {
   this->SetNumberOfRequiredOutputs(3);
 
-  OutputImagePointer voronoiMap = OutputImageType::New();
+  VoronoiImagePointer voronoiMap = VoronoiImageType::New();
   this->SetNthOutput( 1, voronoiMap.GetPointer() );
 
   VectorImagePointer distanceVectors = VectorImageType::New();
@@ -49,13 +49,17 @@ SignedDanielssonDistanceMapImageFilter< TInputImage, TOutputImage >
 }
 
 /** This is overloaded to create the VectorDistanceMap output image */
-template< class TInputImage, class TOutputImage >
-typename SignedDanielssonDistanceMapImageFilter<
-  TInputImage, TOutputImage >::DataObjectPointer
-SignedDanielssonDistanceMapImageFilter< TInputImage, TOutputImage >
+template< class TInputImage, class TOutputImage, class TVoronoiImage >
+typename
+SignedDanielssonDistanceMapImageFilter< TInputImage, TOutputImage, TVoronoiImage >::DataObjectPointer
+SignedDanielssonDistanceMapImageFilter< TInputImage, TOutputImage, TVoronoiImage >
 ::MakeOutput(unsigned int idx)
 {
-  if  ( idx == 2 )
+  if ( idx == 1 )
+    {
+    return static_cast< DataObject * >( VoronoiImageType::New().GetPointer() );
+    }
+  if ( idx == 2 )
     {
     return static_cast< DataObject * >( VectorImageType::New().GetPointer() );
     }
@@ -65,10 +69,10 @@ SignedDanielssonDistanceMapImageFilter< TInputImage, TOutputImage >
 /**
  *  Return the distance map Image pointer
  */
-template< class TInputImage, class TOutputImage >
-typename SignedDanielssonDistanceMapImageFilter<
-  TInputImage, TOutputImage >::OutputImageType *
-SignedDanielssonDistanceMapImageFilter< TInputImage, TOutputImage >
+template< class TInputImage, class TOutputImage, class TVoronoiImage >
+typename
+SignedDanielssonDistanceMapImageFilter< TInputImage, TOutputImage, TVoronoiImage >::OutputImageType *
+SignedDanielssonDistanceMapImageFilter< TInputImage, TOutputImage, TVoronoiImage >
 ::GetDistanceMap(void)
 {
   return dynamic_cast< OutputImageType * >(
@@ -78,23 +82,23 @@ SignedDanielssonDistanceMapImageFilter< TInputImage, TOutputImage >
 /**
  *  Return Closest Points Map
  */
-template< class TInputImage, class TOutputImage >
+template< class TInputImage, class TOutputImage, class TVoronoiImage >
 typename
-SignedDanielssonDistanceMapImageFilter< TInputImage, TOutputImage >::OutputImageType *
-SignedDanielssonDistanceMapImageFilter< TInputImage, TOutputImage >
+SignedDanielssonDistanceMapImageFilter< TInputImage, TOutputImage, TVoronoiImage >::VoronoiImageType *
+SignedDanielssonDistanceMapImageFilter< TInputImage, TOutputImage, TVoronoiImage >
 ::GetVoronoiMap(void)
 {
-  return dynamic_cast< OutputImageType * >(
+  return dynamic_cast< VoronoiImageType * >(
            this->ProcessObject::GetOutput(1) );
 }
 
 /**
  *  Return the distance vectors
  */
-template< class TInputImage, class TOutputImage >
-typename SignedDanielssonDistanceMapImageFilter<
-  TInputImage, TOutputImage >::VectorImageType *
-SignedDanielssonDistanceMapImageFilter< TInputImage, TOutputImage >
+template< class TInputImage, class TOutputImage, class TVoronoiImage >
+typename
+SignedDanielssonDistanceMapImageFilter< TInputImage, TOutputImage, TVoronoiImage >::VectorImageType *
+SignedDanielssonDistanceMapImageFilter< TInputImage, TOutputImage, TVoronoiImage >
 ::GetVectorDistanceMap(void)
 {
   return dynamic_cast< VectorImageType * >(
@@ -105,8 +109,8 @@ SignedDanielssonDistanceMapImageFilter< TInputImage, TOutputImage >
  *  Compute Distance and Voronoi maps by calling
  * DanielssonDistanceMapImageFilter twice.
  */
-template< class TInputImage, class TOutputImage >
-void SignedDanielssonDistanceMapImageFilter< TInputImage, TOutputImage >
+template< class TInputImage, class TOutputImage, class TVoronoiImage >
+void SignedDanielssonDistanceMapImageFilter< TInputImage, TOutputImage, TVoronoiImage >
 ::GenerateData()
 {
   //Set up mini pipeline filter
@@ -114,7 +118,7 @@ void SignedDanielssonDistanceMapImageFilter< TInputImage, TOutputImage >
   progress->SetMiniPipelineFilter(this);
 
   typedef DanielssonDistanceMapImageFilter<
-    InputImageType, OutputImageType >  FilterType;
+    InputImageType, OutputImageType, VoronoiImageType >  FilterType;
   typename FilterType::Pointer filter1 = FilterType::New();
   typename FilterType::Pointer filter2 = FilterType::New();
 
@@ -198,8 +202,8 @@ void SignedDanielssonDistanceMapImageFilter< TInputImage, TOutputImage >
 /**
  *  Print Self
  */
-template< class TInputImage, class TOutputImage >
-void SignedDanielssonDistanceMapImageFilter< TInputImage, TOutputImage >
+template< class TInputImage, class TOutputImage, class TVoronoiImage >
+void SignedDanielssonDistanceMapImageFilter< TInputImage, TOutputImage, TVoronoiImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);

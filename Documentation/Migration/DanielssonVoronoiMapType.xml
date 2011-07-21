@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Change SYSTEM "http://ij.itk.org/itkfaq/ITKMigration.dtd">
+
+<!--**
+**
+** DanielssonVoronoiMapType.xml
+**
+** >>>>>>>>>>>>>>>>>>>>>>>>>>>>
+** THIS FILE HAS BEEN AUTOMATICALLY GENERATED. EDIT IT BEFORE COMMITING
+** <<<<<<<<<<<<<<<<<<<<<<<<<<<
+**
+** Please, make sure this file validates the following w3c test before committing it: http://validator.w3.org
+**-->
+<Change>
+    <!--**
+    ** Title for the online migration page
+    **-->
+    <Title>
+      Danielsson Voronoi Map Type
+    </Title>
+
+    <!--**
+    ** The author of the change
+    **-->
+    <Author>
+      Arnaud Gelas
+    </Author>
+
+    <!--**
+    ** Date of creation for the XML document
+    **-->
+    <Date>
+      2011-07-21
+    </Date>
+
+    <!--**
+    ** Plain text description of the change
+    ** Extracted from git commit messages
+    **-->
+    <Description>
+      <![CDATA[
+      BUG: Address HISTITK-965
+      Follow Hans's suggestion which consists in adding one extra template parameter
+      for the Voronoi Map.
+
+      see https://itk.icts.uiowa.edu/jira/browse/HISTITK-965
+      ]]>
+    </Description>
+
+    <!--**
+    ** Sample code snippets
+    ** Extracted from git diff of changed files in Examples and Testing
+    **-->
+    <SampleCode>
+      <Old>
+        <![CDATA[
+        InputImageType, OutputImageType &gt;  FilterType;
+
+        ]]>
+      </Old>
+
+      <New>
+        <![CDATA[
+        InputImageType, OutputImageType, OutputImageType &gt;  FilterType;
+        ]]>
+      </New>
+
+    </SampleCode>
+
+    <SampleCode>
+      <Old>
+        <![CDATA[
+        typedef  float  OutputPixelType;
+        OutputImageType &gt;  FilterType;
+
+        scaler-&gt;SetInput( filter-&gt;GetVoronoiMap() );
+        writer-&gt;SetFileName( voronoiMapFileName );
+        writer-&gt;Update();
+
+
+        ]]>
+      </Old>
+
+      <New>
+        <![CDATA[
+        typedef  float           OutputPixelType;
+        typedef  unsigned short  VoronoiPixelType;
+        typedef itk::Image&amp;lt; VoronoiPixelType, Dimension &gt;  VoronoiImageType;
+        OutputImageType,
+        VoronoiImageType &gt;  FilterType;
+        typedef itk::RescaleIntensityImageFilter&amp;lt;
+        VoronoiImageType, VoronoiImageType &gt; VoronoiRescalerType;
+
+        VoronoiRescalerType::Pointer voronoiScaler = VoronoiRescalerType::New();
+        typedef itk::ImageFileWriter&amp;lt; VoronoiImageType &gt; VoronoiWriterType;
+        voronoiScaler-&gt;SetInput( filter-&gt;GetVoronoiMap() );
+        voronoiScaler-&gt;Update();
+
+        VoronoiWriterType::Pointer voronoiWriter = VoronoiWriterType::New();
+        voronoiWriter-&gt;SetFileName( voronoiMapFileName );
+        voronoiWriter-&gt;SetInput( voronoiScaler-&gt;GetOutput() );
+        voronoiWriter-&gt;Update();
+        ]]>
+      </New>
+
+    </SampleCode>
+
+    <!--**
+    ** The change-ids for all commits in the topic branch
+    **-->
+    <Gerrit-ChangeId>
+      I8043661041ea427acf2a0e997c573c45212634b6
+    </Gerrit-ChangeId>
+
+    <!--**
+    ** List of all changed files from the topic branch
+    **-->
+    <FileList>
+      Examples/Filtering/DanielssonDistanceMapImageFilter.cxx
+      Examples/Filtering/SignedDanielssonDistanceMapImageFilter.cxx
+      Modules/Filtering/DistanceMap/include/itkDanielssonDistanceMapImageFilter.h
+      Modules/Filtering/DistanceMap/include/itkDanielssonDistanceMapImageFilter.hxx
+      Modules/Filtering/DistanceMap/include/itkSignedDanielssonDistanceMapImageFilter.h
+      Modules/Filtering/DistanceMap/include/itkSignedDanielssonDistanceMapImageFilter.hxx
+      Modules/Filtering/DistanceMap/test/itkDanielssonDistanceMapImageFilterTest.cxx
+      Modules/Filtering/DistanceMap/test/itkSignedDanielssonDistanceMapImageFilterTest.cxx
+    </FileList>
+
+    <!--**
+    ** If the migration can be accomplished by a simple string
+    ** substitution, then use the following construct to define
+    ** the substitution rule.
+    **
+    ** <MigrationFix-Automatic>
+    **   <Old>
+    **     <![CDATA[MipsleledName]]>
+    **   </Old>
+    **   <New>
+    **     <![CDATA[MisspelledName]]>
+    **   </New>
+    ** </MigrationFix-Automatic>
+    **-->
+
+    <!--**
+    ** If the migration can NOT be accomplished by a simple string
+    ** substitution, but potential problem spots can be identified,
+    ** use the following construct to define a migration flag rule.
+    **
+    ** <MigrationFix-Manual>
+    **   OldFunctionName
+    ** </MigrationFix-Manual>
+    **-->
+
+</Change>
