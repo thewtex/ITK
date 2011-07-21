@@ -268,7 +268,7 @@ itk_add_test(NAME itkImageSliceIteratorTest
       COMMAND ITKCommon1TestDriver itkImageSliceIteratorTest)
 itk_add_test(NAME itkImageTest COMMAND ITKCommon1TestDriver itkImageTest)
 itk_add_test(NAME itkLightObjectTest COMMAND ITKCommon1TestDriver itkLightObjectTest)
-itk_add_test(NAME itkLineIteratorTest COMMAND ITKCommon1TestDriver itkLineIteratorTest ${BASELINE}/itkLineIteratorTest.txt )
+itk_add_test(NAME itkLineIteratorTest COMMAND ITKCommon1TestDriver itkLineIteratorTest DATA{Baseline/outNoInv.mhd} )
 itk_add_test(NAME itkLoggerTest COMMAND ITKCommon1TestDriver itkLoggerTest ${TEMP}/test_logger.txt)
 itk_add_test(NAME itkLoggerOutputTest COMMAND ITKCommon2TestDriver itkLoggerOutputTest ${TEMP}/test_loggerOutput.txt)
 itk_add_test(NAME itkLoggerManagerTest COMMAND ITKCommon2TestDriver itkLoggerManagerTest ${TEMP}/test_LoggerManager.txt)
