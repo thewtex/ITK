@@ -27,6 +27,7 @@ namespace itk
  *
  * \tparam TInputImage Input Image Type
  * \tparam TOutputImage Output Image Type
+ * \tparam TVoronoiImage Voronoi Image Type. Note the default value is TInputImage.
  *
  * \brief This filter computes the distance map of the input image
  * as an approximation with pixel accuracy to the Euclidean distance.
@@ -52,11 +53,11 @@ namespace itk
  * Graphics and Image Processing 14, 227-248 (1980).
  *
  * \ingroup ImageFeatureExtraction
- *
  * \ingroup ITKDistanceMap
  */
-
-template< class TInputImage, class TOutputImage >
+template< class TInputImage,
+  class TOutputImage,
+  class TVoronoiImage = TInputImage >
 class ITK_EXPORT DanielssonDistanceMapImageFilter:
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
@@ -105,11 +106,13 @@ public:
   /** Type for output image pixel.*/
   typedef typename OutputImageType::PixelType OutputPixelType;
 
+  typedef TVoronoiImage                         VoronoiImageType;
+  typedef typename VoronoiImageType::Pointer    VoronoiImagePointer;
+  typedef typename VoronoiImageType::PixelType  VoronoiPixelType;
+
   /** The dimension of the input and output images. */
   itkStaticConstMacro(InputImageDimension, unsigned int,
                       InputImageType::ImageDimension);
-  itkStaticConstMacro(OutputImageDimension, unsigned int,
-                      TOutputImage::ImageDimension);
 
   /** Pointer Type for the vector distance image */
   typedef Image< OffsetType,
@@ -160,7 +163,7 @@ public:
    * Each object should be labeled by a number (larger than 0),
    * so the map has a value for each pixel corresponding to the label
    * of the closest object.  */
-  OutputImageType * GetVoronoiMap(void);
+  VoronoiImageType * GetVoronoiMap(void);
 
   /** Get Distance map image.  The distance map is shown as a gray
    * value image depending on the pixel type of the output image.
@@ -176,13 +179,16 @@ public:
   VectorImageType * GetVectorDistanceMap(void);
 
 #ifdef ITK_USE_CONCEPT_CHECKING
+  itkStaticConstMacro(OutputImageDimension, unsigned int,
+                      TOutputImage::ImageDimension);
+  itkStaticConstMacro(VoronoiImageDimension, unsigned int,
+                      TVoronoiImage::ImageDimension);
+
   /** Begin concept checking */
-  itkConceptMacro( SameDimensionCheck,
+  itkConceptMacro( InputOutputSameDimensionCheck,
                    ( Concept::SameDimension< InputImageDimension, OutputImageDimension > ) );
-  itkConceptMacro( IdentifierTypeConvertibleToOutputCheck,
-                   ( Concept::Convertible< IdentifierType, OutputPixelType > ) );
-  itkConceptMacro( IntConvertibleToOutputCheck,
-                   ( Concept::Convertible< int, OutputPixelType > ) );
+  itkConceptMacro( InputVoronoiSameDimensionCheck,
+                   ( Concept::SameDimension< InputImageDimension, VoronoiImageDimension > ) );
   itkConceptMacro( DoubleConvertibleToOutputCheck,
                    ( Concept::Convertible< double, OutputPixelType > ) );
   itkConceptMacro( InputConvertibleToOutputCheck,
