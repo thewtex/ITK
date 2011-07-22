@@ -751,7 +751,7 @@ macro(ADD_SIMPLE_TYPEDEF_PYTHON wrap_class swig_name)
   endif("${swig_name}" STREQUAL "itkProcessObject")
 
   if("${swig_name}" STREQUAL "itkDataObject")
-    set(WRAP_ITK_PYTHON_SWIG_EXT "${WRAP_ITK_PYTHON_SWIG_EXT}%template(vectoritkDataObject) std::vector< itkDataObject_Pointer >;\n")
+    set(WRAP_ITK_PYTHON_SWIG_EXT "${WRAP_ITK_PYTHON_SWIG_EXT}%template(vectoritkDataObject) std::vector< itkDataObject * >;\n")
     ADD_PYTHON_CONFIG_TEMPLATE("vector" "std::vector" "vectoritkDataObject" "itk::DataObject")
   endif("${swig_name}" STREQUAL "itkDataObject")
 

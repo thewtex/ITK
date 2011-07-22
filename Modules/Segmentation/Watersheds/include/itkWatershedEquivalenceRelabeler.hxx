@@ -96,7 +96,7 @@ void EquivalenceRelabeler< TScalarType, TImageDimension >
       {
       if ( this->GetOutputs()[idx] && this->GetOutputs()[idx] != output )
         {
-        op = dynamic_cast< ImageBase< ImageDimension > * >( this->GetOutputs()[idx].GetPointer() );
+        op = dynamic_cast< ImageBase< ImageDimension > * >( this->GetOutputs()[idx] );
         if ( op ) { this->GetOutputs()[idx]->SetRequestedRegion(output); }
         }
       }
