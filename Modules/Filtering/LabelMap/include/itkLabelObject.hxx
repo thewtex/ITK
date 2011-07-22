@@ -139,29 +139,6 @@ LabelObject< TLabel, VImageDimension >::AddLine(const LineType & line)
   m_LineContainer.push_back(line);
 }
 
-/** Return the line container of this object */
-template< class TLabel, unsigned int VImageDimension >
-const
-typename LabelObject< TLabel, VImageDimension >::LineContainerType &
-LabelObject< TLabel, VImageDimension >::GetLineContainer() const
-{
-  return m_LineContainer;
-}
-
-template< class TLabel, unsigned int VImageDimension >
-typename LabelObject< TLabel, VImageDimension >::LineContainerType &
-LabelObject< TLabel, VImageDimension >::GetLineContainer()
-{
-  return m_LineContainer;
-}
-
-template< class TLabel, unsigned int VImageDimension >
-void
-LabelObject< TLabel, VImageDimension >::SetLineContainer(const LineContainerType & lineContainer)
-{
-  m_LineContainer = lineContainer;
-}
-
 template< class TLabel, unsigned int VImageDimension >
 typename LabelObject< TLabel, VImageDimension >::SizeValueType
 LabelObject< TLabel, VImageDimension >::GetNumberOfLines() const
@@ -330,6 +307,14 @@ LabelObject< TLabel, VImageDimension >
     LineType & line = *it;
     line.SetIndex( line.GetIndex() + offset );
     }
+}
+
+template< class TLabel, unsigned int VImageDimension >
+void
+LabelObject< TLabel, VImageDimension >
+::Clear()
+{
+  m_LineContainer.clear();
 }
 
 template< class TLabel, unsigned int VImageDimension >
