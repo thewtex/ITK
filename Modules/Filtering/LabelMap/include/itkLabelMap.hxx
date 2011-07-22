@@ -239,7 +239,57 @@ LabelMap< TLabelObject >
 template< class TLabelObject >
 void
 LabelMap< TLabelObject >
-::SetPixel(const IndexType & idx, const LabelType & label)
+::SetPixel(const IndexType & idx, const LabelType & label )
+{
+  bool oldBackground = true;
+
+  for ( typename LabelObjectContainerType::const_iterator it = m_LabelObjectContainer.begin();
+        ( it != m_LabelObjectContainer.end() ) && background;
+        ++it )
+    {
+    if ( it->second->HasIndex(idx) )
+      {
+      oldBackground = false;
+
+      if( label != m_BackgroundValue )
+        {
+        if( it->first != label )
+          {
+          typename LabelObjectContainerType::iterator it = m_LabelObjectContainer.find( label );
+
+          if( it != m_LabelObjectContainer.end() )
+            {
+            it->second->AddIndex(idx);
+            this->Modified();
+            }
+          else
+            {
+            // the label does not exist yet - create a new one
+            LabelObjectPointerType labelObject = LabelObjectType::New();
+            labelObject->SetLabel(label);
+            labelObject->AddIndex(idx);
+            // Modified() is called in AddLabelObject()
+            this->AddLabelObject(labelObject);
+            }
+          }
+        }
+      else
+        {
+        this->RemovePixel( idx, it->first );
+        }
+      }
+    }
+
+  if( oldBackground )
+    {
+    this->AddPixel( idx, label );
+    }
+}
+
+template< class TLabelObject >
+void
+LabelMap< TLabelObject >
+::AddPixel(const IndexType & idx, const LabelType & label)
 {
   if ( label == m_BackgroundValue )
     {
@@ -263,6 +313,31 @@ LabelMap< TLabelObject >
     labelObject->AddIndex(idx);
     // Modified() is called in AddLabelObject()
     this->AddLabelObject(labelObject);
+    }
+}
+
+template< class TLabelObject >
+void
+LabelMap< TLabelObject >
+::RemovePixel(const IndexType & idx, const LabelType & label)
+{
+  if ( label == m_BackgroundValue )
+    {
+    // just do nothing
+    return;
+    }
+
+  typename LabelObjectContainerType::iterator it = m_LabelObjectContainer.find(label);
+
+  if ( it != m_LabelObjectContainer.end() )
+    {
+    // the label already exist - add the pixel to it
+    it->second->RemoveIndex(idx);
+    if( it->second->Empty() )
+      {
+      this->RemoveLabelObject(it->second);
+      }
+    this->Modified();
     }
 }
 

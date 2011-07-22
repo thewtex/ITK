@@ -200,6 +200,8 @@ public:
    * pixels are set in the image in raster mode.
    */
   void SetPixel(const IndexType & idx, const LabelType & label);
+  void AddPixel(const IndexType & idx, const LabelType & label);
+  void RemovePixel(const IndexType & idx, const LabelType & label);
 
   /**
    * Set a full line in the image. If no label object has this label in the image,
