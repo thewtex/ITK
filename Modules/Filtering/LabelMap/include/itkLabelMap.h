@@ -201,6 +201,8 @@ public:
    */
   void SetPixel(const IndexType & idx, const LabelType & label);
 
+  void ModifyPixel(const IndexType & idx, const LabelType & label );
+
   /**
    * Set a full line in the image. If no label object has this label in the image,
    * a new object is created. If a label object already exist with that label, the
