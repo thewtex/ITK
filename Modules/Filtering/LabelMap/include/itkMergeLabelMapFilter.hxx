@@ -80,7 +80,7 @@ MergeLabelMapFilter< TImage >
 
   ProgressReporter progress(this, 0, 1);
 
-  for ( unsigned int i = 1; i < this->GetNumberOfInputs(); i++ )
+  for ( unsigned int i = 1; i < this->GetNumberOfIndexedInputs(); i++ )
     {
     const LabelObjectContainerType & otherLabelObjects = this->GetInput(i)->GetLabelObjectContainer();
     typename LabelObjectContainerType::const_iterator it2 = otherLabelObjects.begin();
@@ -126,7 +126,7 @@ MergeLabelMapFilter< TImage >
 
   ProgressReporter progress(this, 0, 1);
 
-  for ( unsigned int i = 1; i < this->GetNumberOfInputs(); i++ )
+  for ( unsigned int i = 1; i < this->GetNumberOfIndexedInputs(); i++ )
     {
     const LabelObjectContainerType & otherLabelObjects = this->GetInput(i)->GetLabelObjectContainer();
     typename LabelObjectContainerType::const_iterator it2 = otherLabelObjects.begin();
@@ -166,7 +166,7 @@ MergeLabelMapFilter< TImage >
 
   ProgressReporter progress(this, 0, 1);
 
-  for ( unsigned int i = 1; i < this->GetNumberOfInputs(); i++ )
+  for ( unsigned int i = 1; i < this->GetNumberOfIndexedInputs(); i++ )
     {
     const LabelObjectContainerType & otherLabelObjects = this->GetInput(i)->GetLabelObjectContainer();
 
@@ -237,7 +237,7 @@ MergeLabelMapFilter< TImage >
     }
 
   // now, the next images
-  for ( unsigned int i = 1; i < this->GetNumberOfInputs(); i++ )
+  for ( unsigned int i = 1; i < this->GetNumberOfIndexedInputs(); i++ )
     {
     const LabelObjectContainerType & otherLabelObjects = this->GetInput(i)->GetLabelObjectContainer();
     typename LabelObjectContainerType::const_iterator it2 = otherLabelObjects.begin();

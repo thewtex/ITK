@@ -149,6 +149,7 @@ itkZeroFluxBoundaryConditionTest.cxx
 itkMemoryProbesCollecterBaseTest.cxx
 itkImageAlgorithmCopyTest.cxx
 itkConstantBoundaryConditionTest.cxx
+itkDataObjectAndProcessObjectTest.cxx
 )
 
 CreateTestDriver(ITKCommon1 "${ITKCommon_LIBRARIES}" "${ITKCommon1Tests}")
