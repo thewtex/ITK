@@ -192,14 +192,40 @@ public:
   const LabelType & GetPixel(const IndexType & idx) const;
 
   /**
-   * Set the pixel value at a given index in the image.
-   * If no label object has this pixel value, a new label object is created. If
-   * a label object already exist, the index is added to it.
+   * \brief Set the pixel value at a given index in the image.
+   *
+   * \li If \c idx belongs to no label object, and no label object has this pixel
+   * value, a new label object is created.
+   *
+   * \li If \c idx belongs to no label object, and one label object has the label
+   * \c label, the index \c idx is added to it.
+   *
+   * \li If \c idx belongs to one label object, and \c label is background, the
+   * index \c idx is removed to it.
+   *
+   * \li If \c idx belongs to one label object, and one label object has the label
+   * \c label, the index \c idx is added to it.
+   *
+   * \li If \c idx belongs to one label object, and no label object has the label
+   * \c label, a new label object is created.
+   *
    * The worst case complexity of this method is O(L) where L is the number of
    * lines in the image. However, the execution time will be quite low if the
    * pixels are set in the image in raster mode.
    */
   void SetPixel(const IndexType & idx, const LabelType & label);
+
+  /**
+   * Add index \c idx to the label object whose label is \c label. If no label object
+   * has the label \c label, the corresponding label object is created.
+   */
+  void AddPixel(const IndexType & idx, const LabelType & label);
+
+  /**
+   * Remove index \c idx from the label object which has the label \c label.
+   * If the label object gets empty, it is being removed from the container.
+   */
+  void RemovePixel(const IndexType & idx, const LabelType & label);
 
   /**
    * Set a full line in the image. If no label object has this label in the image,
