@@ -239,7 +239,41 @@ LabelMap< TLabelObject >
 template< class TLabelObject >
 void
 LabelMap< TLabelObject >
-::SetPixel(const IndexType & idx, const LabelType & label)
+::SetPixel(const IndexType & idx, const LabelType & label )
+{
+  // Is pixel value was previously background
+  bool oldBackground = true;
+
+  for ( typename LabelObjectContainerType::const_iterator it = m_LabelObjectContainer.begin();
+        ( it != m_LabelObjectContainer.end() ) && oldBackground;
+        ++it )
+    {
+    // look if the label object has the input index
+    if ( it->second->HasIndex(idx) )
+      {
+      oldBackground = false;
+
+      if( label != m_BackgroundValue )
+        {
+        this->AddPixel( idx, label );
+        }
+      else
+        {
+        this->RemovePixel( idx, it->first );
+        }
+      }
+    }
+
+  if( oldBackground )
+    {
+    this->AddPixel( idx, label );
+    }
+}
+
+template< class TLabelObject >
+void
+LabelMap< TLabelObject >
+::AddPixel(const IndexType & idx, const LabelType & label)
 {
   if ( label == m_BackgroundValue )
     {
@@ -263,6 +297,31 @@ LabelMap< TLabelObject >
     labelObject->AddIndex(idx);
     // Modified() is called in AddLabelObject()
     this->AddLabelObject(labelObject);
+    }
+}
+
+template< class TLabelObject >
+void
+LabelMap< TLabelObject >
+::RemovePixel(const IndexType & idx, const LabelType & label)
+{
+  if ( label == m_BackgroundValue )
+    {
+    // just do nothing
+    return;
+    }
+
+  typename LabelObjectContainerType::iterator it = m_LabelObjectContainer.find(label);
+
+  if ( it != m_LabelObjectContainer.end() )
+    {
+    // the label already exist - add the pixel to it
+    it->second->RemoveIndex(idx);
+    if( it->second->Empty() )
+      {
+      this->RemoveLabelObject(it->second);
+      }
+    this->Modified();
     }
 }
 
