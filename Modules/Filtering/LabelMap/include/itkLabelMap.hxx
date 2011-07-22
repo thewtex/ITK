@@ -239,6 +239,50 @@ LabelMap< TLabelObject >
 template< class TLabelObject >
 void
 LabelMap< TLabelObject >
+::ModifyPixel(const IndexType & idx, const LabelType & label )
+{
+  bool background = true;
+
+  for ( typename LabelObjectContainerType::const_iterator it = m_LabelObjectContainer.begin();
+        ( it != m_LabelObjectContainer.end() ) && background;
+        ++it )
+    {
+    if ( it->second->HasIndex(idx) )
+      {
+      background = false;
+
+      if( it->first != label )
+        {
+
+        typename LabelObjectContainerType::iterator it = m_LabelObjectContainer.find( label );
+
+        if( it != m_LabelObjectContainer.end() )
+          {
+          it->second->AddIndex(idx);
+          this->Modified();
+          }
+        else
+          {
+          // the label does not exist yet - create a new one
+          LabelObjectPointerType labelObject = LabelObjectType::New();
+          labelObject->SetLabel(label);
+          labelObject->AddIndex(idx);
+          // Modified() is called in AddLabelObject()
+          this->AddLabelObject(labelObject);
+          }
+        }
+      }
+    }
+
+  if( background )
+    {
+    this->SetPixel( idx, label );
+    }
+}
+
+template< class TLabelObject >
+void
+LabelMap< TLabelObject >
 ::SetPixel(const IndexType & idx, const LabelType & label)
 {
   if ( label == m_BackgroundValue )

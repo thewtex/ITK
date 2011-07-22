@@ -114,6 +114,8 @@ public:
    */
   void AddIndex(const IndexType & idx);
 
+  void RemoveIndex(const IndexType & idx );
+
   /**
    * Add a new line to the object, without any check.
    */
