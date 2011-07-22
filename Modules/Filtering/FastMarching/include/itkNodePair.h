@@ -29,7 +29,7 @@ namespace itk
 \ingroup ITKFastMarching
 */
 template<class NodeType, class OutputPixelType>
-class NodePair : public std::pair< NodeType, OutputPixelType >
+class NodePair : private std::pair< NodeType, OutputPixelType >
   {
 public:
   typedef NodePair                               Self;
@@ -50,7 +50,11 @@ public:
     {
     this->second = iValue;
     }
-  OutputPixelType GetValue() const
+  const OutputPixelType & GetValue() const
+    {
+    return this->second;
+    }
+  OutputPixelType & GetValue()
     {
     return this->second;
     }
@@ -58,7 +62,11 @@ public:
     {
     this->first = iNode;
     }
-  NodeType GetNode() const
+  const NodeType & GetNode() const
+    {
+    return this->first;
+    }
+  NodeType & GetNode()
     {
     return this->first;
     }

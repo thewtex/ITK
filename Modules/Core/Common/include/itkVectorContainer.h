@@ -50,7 +50,7 @@ template<
   >
 class ITK_EXPORT VectorContainer:
   public Object,
-  public std::vector< TElement >
+  private std::vector< TElement >
 {
 public:
   /** Standard class typedefs. */
@@ -109,6 +109,23 @@ public:
   {
     return dynamic_cast< const STLContainerType & >( *this );
   }
+
+  using STLContainerType::begin;
+  using STLContainerType::rbegin;
+  using STLContainerType::end;
+  using STLContainerType::rend;
+  using STLContainerType::operator[];
+  using STLContainerType::const_iterator;
+  using STLContainerType::iterator;
+  using STLContainerType::clear;
+  using STLContainerType::push_back;
+  using STLContainerType::pop_back;
+  using STLContainerType::size;
+  using STLContainerType::empty;
+  using STLContainerType::resize;
+  using STLContainerType::front;
+  using STLContainerType::back;
+  using STLContainerType::reserve;
 
   /** Friends to this class. */
   friend class Iterator;
