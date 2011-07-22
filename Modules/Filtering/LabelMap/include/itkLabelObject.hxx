@@ -334,6 +334,14 @@ LabelObject< TLabel, VImageDimension >
 
 template< class TLabel, unsigned int VImageDimension >
 void
+LabelObject< TLabel, VImageDimension >
+::Clear()
+{
+  m_LineContainer.clear();
+}
+
+template< class TLabel, unsigned int VImageDimension >
+void
 LabelObject< TLabel, VImageDimension >::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
