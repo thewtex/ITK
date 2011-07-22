@@ -85,7 +85,6 @@ public:
   typedef TLabel                             LabelType;
   typedef LabelObjectLine< VImageDimension > LineType;
   typedef typename LineType::LengthType      LengthType;
-  typedef typename std::deque< LineType >    LineContainerType;
   typedef unsigned int                       AttributeType;
   typedef itk::SizeValueType                 SizeValueType;
 
@@ -131,13 +130,6 @@ public:
    */
   void AddLine(const LineType & line);
 
-  /** Return the line container of this object */
-  const LineContainerType & GetLineContainer() const;
-
-  LineContainerType & GetLineContainer();
-
-  void SetLineContainer(const LineContainerType & lineContainer);
-
   SizeValueType GetNumberOfLines() const;
 
   const LineType & GetLine(SizeValueType i) const;
@@ -147,6 +139,8 @@ public:
   SizeValueType Size() const;
 
   bool Empty() const;
+
+  void Clear();
 
   /**
    * Get the index of the ith pixel associated with the object.
@@ -168,6 +162,228 @@ public:
   /** Shift the object position */
   void Shift( OffsetType offset );
 
+  /** \class ConstLineIterator
+   * \brief A forward iterator over the lines of a LabelObject
+   * \ingroup ITKLabelMap
+   */
+  class ConstLineIterator
+  {
+  public:
+
+    ConstLineIterator(const Self *lo)
+    {
+      m_Begin = lo->m_LineContainer.begin();
+      m_End = lo->m_LineContainer.end();
+      m_Iterator = m_Begin;
+    }
+
+    ConstLineIterator(const ConstLineIterator & iter)
+    {
+      m_Iterator = iter.m_Iterator;
+      m_Begin = iter.m_Begin;
+      m_End = iter.m_End;
+    }
+
+    ConstLineIterator & operator=(const ConstLineIterator & iter)
+    {
+      m_Iterator = iter.m_Iterator;
+      m_Begin = iter.m_Begin;
+      m_End = iter.m_End;
+      return *this;
+    }
+
+    const LineType & GetLine() const
+    {
+      return *m_Iterator;
+    }
+
+    ConstLineIterator operator++(int)
+    {
+      ConstLineIterator tmp = *this;
+      ++(*this);
+      return tmp;
+    }
+
+    ConstLineIterator & operator++()
+    {
+      ++m_Iterator;
+      return *this;
+    }
+
+  bool operator==(const ConstLineIterator & iter) const
+    {
+    return m_Iterator == iter.m_Iterator && m_Begin == iter.m_Begin && m_End == iter.m_End;
+    }
+
+  bool operator!=(const ConstLineIterator & iter) const
+    {
+    return !( *this == iter );
+    }
+
+  void GoToBegin()
+    {
+      m_Iterator = m_Begin;
+    }
+
+    bool IsAtEnd() const
+    {
+      return m_Iterator == m_End;
+    }
+
+  private:
+    typedef typename std::deque< LineType >            LineContainerType;
+    typedef typename LineContainerType::const_iterator InternalIteratorType;
+    ConstLineIterator(const Self *lo, const InternalIteratorType & pos )
+    {
+      m_Begin = lo->m_LineContainer.begin();
+      m_End = lo->m_LineContainer.end();
+      m_Iterator = pos;
+    }
+
+    InternalIteratorType m_Iterator;
+    InternalIteratorType m_Begin;
+    InternalIteratorType m_End;
+
+    friend class LabelObject;
+  };
+
+  /** Return an iterator at the begining of the lines of the LabelObject */
+  ConstLineIterator BeginLine() const
+  {
+    return ConstLineIterator( this );
+  }
+
+  /** Return an iterator at the end of the lines of the LabelObject */
+  ConstLineIterator EndLine() const
+  {
+    return ConstLineIterator( this, m_LineContainer.end() );
+  }
+
+  /** \class ConstLineIterator
+   * \brief A forward iterator over the indexes of a LabelObject
+   * \ingroup ITKLabelMap
+   */
+  class ConstIndexIterator
+  {
+  public:
+
+    ConstIndexIterator(const Self *lo)
+    {
+      m_Begin = lo->m_LineContainer.begin();
+      m_End = lo->m_LineContainer.end();
+      GoToBegin();
+    }
+
+    ConstIndexIterator(const ConstIndexIterator & iter)
+    {
+      m_Iterator = iter.m_Iterator;
+      m_Index = iter.m_Index;
+      m_Begin = iter.m_Begin;
+      m_End = iter.m_End;
+    }
+
+    ConstIndexIterator & operator=(const ConstIndexIterator & iter)
+    {
+      m_Iterator = iter.m_Iterator;
+      m_Index = iter.m_Index;
+      m_Begin = iter.m_Begin;
+      m_End = iter.m_End;
+      return *this;
+    }
+
+    const IndexType & GetIndex() const
+    {
+      return m_Index;
+    }
+
+    ConstIndexIterator & operator++()
+    {
+      m_Index[0]++;
+      if( m_Index[0] >= m_Iterator->GetIndex()[0] + (OffsetValueType)m_Iterator->GetLength() )
+        {
+        // we've reached the end of the line - go to the next one
+        ++m_Iterator;
+        InitIterator();
+        }
+      return *this;
+    }
+
+    ConstIndexIterator operator++(int)
+    {
+      ConstIndexIterator tmp = *this;
+      ++(*this);
+      return tmp;
+    }
+
+    bool operator==(const ConstLineIterator & iter) const
+    {
+      return m_Index == iter.m_Index && m_Iterator == iter.m_Iterator && m_Begin == iter.m_Begin && m_End == iter.m_End;
+    }
+
+    bool operator!=(const ConstLineIterator & iter) const
+    {
+      return !( *this == iter );
+    }
+
+    void GoToBegin()
+    {
+      m_Iterator = m_Begin;
+      InitIterator();
+    }
+
+    bool IsAtEnd() const
+    {
+      return m_Iterator == m_End;
+    }
+
+  private:
+    typedef typename std::deque< LineType >            LineContainerType;
+    typedef typename LineContainerType::const_iterator InternalIteratorType;
+
+    ConstIndexIterator(const Self *lo, const InternalIteratorType & pos )
+    {
+      m_Begin = lo->m_LineContainer.begin();
+      m_End = lo->m_LineContainer.end();
+      m_Iterator = pos;
+      if( pos != m_End )
+        {
+        m_Index = m_Iterator->GetIndex();
+        }
+    }
+
+    void InitIterator()
+    {
+      // search for the next valid position
+      while( m_Iterator != m_End && m_Iterator->GetLength() == 0 )
+        {
+        ++m_Iterator;
+        }
+      if( m_Iterator != m_End )
+        {
+        m_Index = m_Iterator->GetIndex();
+        }
+    }
+
+    InternalIteratorType m_Iterator;
+    InternalIteratorType m_Begin;
+    InternalIteratorType m_End;
+    IndexType            m_Index;
+
+    friend class LabelObject;
+  };
+
+  /** Return an iterator at the begining of the lines of the LabelObject */
+  ConstIndexIterator BeginIndex() const
+  {
+    return ConstIndexIterator( this );
+  }
+
+  /** Return an iterator at the end of the lines of the LabelObject */
+  ConstIndexIterator EndIndex() const
+  {
+    return ConstIndexIterator( this, m_LineContainer.end() );
+  }
+
 protected:
   LabelObject();
   void PrintSelf(std::ostream & os, Indent indent) const;
@@ -175,6 +391,8 @@ protected:
 private:
   LabelObject(const Self &);    //purposely not implemented
   void operator=(const Self &); //purposely not implemented
+
+  typedef typename std::deque< LineType >    LineContainerType;
 
   LineContainerType m_LineContainer;
   LabelType         m_Label;
