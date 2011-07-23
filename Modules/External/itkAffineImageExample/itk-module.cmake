@@ -1,0 +1,19 @@
+itk_module(ITKAffineImageExample
+ DEPENDS
+   ITKImageFeature
+   ITKLevelSets
+   ITKStatistics
+   ITKIOSpatialObjects
+   ITKRegionGrowing
+   ITKLabelVoting
+   ITKMathematicalMorphology
+   ITKIOGDCM
+   ITKIOMeta
+   ITKOptimizers
+   ITKRegistrationCommon
+   ITKPDEDeformableRegistration
+   ITKVTK
+   ITKTestKernel
+   DESCRIPTION
+     "${DOCUMENTATION}"
+)
