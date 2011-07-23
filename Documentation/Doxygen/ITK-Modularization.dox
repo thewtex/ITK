@@ -65,6 +65,10 @@
 \ingroup Group-Filtering
 */
 
+/** \defgroup ITKConvolution Module ITKConvolution
+\ingroup Group-Filering
+*/
+
 /** \defgroup ITKCurvatureFlow Module ITKCurvatureFlow
 \ingroup Group-Filtering
 */
