@@ -40,7 +40,6 @@
 #include "itkConformalFlatteningMeshFilter.hxx"
 #include "itkConstrainedRegionBasedLevelSetFunctionSharedData.h"
 #include "itkContourExtractor2DImageFilter.hxx"
-#include "itkConvolutionImageFilter.hxx"
 #include "itkCoolColormapFunction.hxx"
 #include "itkCopperColormapFunction.hxx"
 #include "itkCoxDeBoorBSplineKernelFunction.hxx"
