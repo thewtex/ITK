@@ -49,10 +49,22 @@ CSVArray2DFileReader <TData>
 {
   SizeValueType rows = 0;
   SizeValueType columns = 0;
-  this->m_InputStream.seekg(0);
+
+  this->PrepareForParsing();
+  this->m_InputStream.open(this->m_FileName.c_str());
+  if ( this->m_InputStream.fail() )
+    {
+    itkExceptionMacro(
+      "The file " << this->m_FileName <<" cannot be opened for reading!"
+      << std::endl
+      << "Reason: "
+      << itksys::SystemTools::GetLastSystemError() );
+    }
 
   // Get the data dimension and set the matrix size
   this->GetDataDimension(rows,columns);
+
+  std::cout << "Rows: " << rows << ", Columns: " << columns << std::endl;
   this->m_Array2DDataObject->SetMatrixSize(rows,columns);
 
   /** initialize the matrix to NaN so that missing data will automatically be
