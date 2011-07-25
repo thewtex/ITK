@@ -30,6 +30,7 @@
 
 #include "vcl_limits.h" // for vcl_numeric_limits
 #include <complex>
+#include <stddef.h>
 
 namespace itk
 {
