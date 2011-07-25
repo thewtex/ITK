@@ -140,3 +140,27 @@ and manually validate the xml files at "http://validator.w3.org/".'
     done
   fi
 fi || exit
+
+#-----------------------------------------------------------------------------
+# Do not allow adding of files with .txx extension.
+
+if git rev-parse --verify -q HEAD > /dev/null; then
+  against=HEAD
+else
+  # Initial commit: diff against an empty tree object
+  against=4b825dc642cb6eb9a060e54bf8d69288fbee4904
+fi
+
+diffs_added=$(git diff-index --diff-filter=A --cached $against -- |
+        sed -n '/^:[^:]/ {s/^://;p;}')
+diffs_normal_added=$(echo "$diffs_added" | grep -v '^...... 160000')
+bad=$(
+test -n "$diffs_normal_added" && echo "$diffs_normal_added" |
+while read src_mode dst_mode src_obj dst_obj status file; do
+  if echo "$file" | grep -q -E '\.txx$'; then
+    echo "Attempted to add file $file."
+    echo "Files with the .txx extension are deprecated -- please use .hxx instead."
+  fi
+done
+)
+test -z "$bad" || die "$bad"
