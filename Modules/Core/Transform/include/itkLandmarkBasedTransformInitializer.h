@@ -105,6 +105,8 @@ public:
   typedef typename LandmarkPointContainer::const_iterator         PointsContainerConstIterator;
   typedef typename TransformType::ParametersType                  ParametersType;
   typedef typename ParametersType::ValueType                      ParameterValueType;
+  typedef std::vector< double >                                   LandmarkWeightType;
+  typedef LandmarkWeightType::const_iterator                      LandmarkWeightConstIterator;
 
   /** Set the Fixed landmark point containers */
   void SetFixedLandmarks(const LandmarkPointContainer & fixedLandmarks)
@@ -116,6 +118,14 @@ public:
   void SetMovingLandmarks(const LandmarkPointContainer & movingLandmarks)
   {
     this->m_MovingLandmarks = movingLandmarks;
+  }
+
+  /** Set the landmark weight point containers
+   *  Weight includes diagonal elements of weight matrix
+   */
+  void SetLandmarkWeight(LandmarkWeightType & landmarkWeight)
+  {
+    this->m_LandmarkWeight= landmarkWeight;
   }
 
   /**  Supported Transform typedefs */
@@ -159,6 +169,9 @@ private:
   LandmarkPointContainer m_MovingLandmarks;
 
   TransformPointer m_Transform;
+  /** weights for affine landmarks */
+  LandmarkWeightType m_LandmarkWeight;
+
 }; //class LandmarkBasedTransformInitializer
 }  // namespace itk
 
