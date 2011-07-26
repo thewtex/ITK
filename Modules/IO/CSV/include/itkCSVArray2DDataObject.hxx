@@ -34,7 +34,7 @@ CSVArray2DDataObject<TData>
 }
 
 template <class TData>
-const typename CSVArray2DDataObject<TData>::StringVectorType
+typename CSVArray2DDataObject<TData>::StringVectorType
 CSVArray2DDataObject<TData>
 ::GetColumnHeaders()
 {
@@ -42,7 +42,7 @@ CSVArray2DDataObject<TData>
 }
 
 template <class TData>
-const typename CSVArray2DDataObject<TData>::StringVectorType
+typename CSVArray2DDataObject<TData>::StringVectorType
 CSVArray2DDataObject<TData>
 ::GetRowHeaders()
 {
@@ -50,7 +50,7 @@ CSVArray2DDataObject<TData>
 }
 
 template <class TData>
-const unsigned int
+unsigned int
 CSVArray2DDataObject<TData>
 ::GetRowIndexByName(const std::string & row_name)
 {
@@ -72,7 +72,7 @@ CSVArray2DDataObject<TData>
 }
 
 template <class TData>
-const unsigned int
+unsigned int
 CSVArray2DDataObject<TData>
 ::GetColumnIndexByName(const std::string & column_name)
 {
@@ -94,7 +94,7 @@ CSVArray2DDataObject<TData>
 }
 
 template <class TData>
-const typename CSVArray2DDataObject<TData>::NumericVectorType
+typename CSVArray2DDataObject<TData>::NumericVectorType
 CSVArray2DDataObject <TData>
 ::GetRow(const unsigned int & row_index)
 {
@@ -114,7 +114,7 @@ CSVArray2DDataObject <TData>
 }
 
 template <class TData>
-const typename CSVArray2DDataObject<TData>::NumericVectorType
+typename CSVArray2DDataObject<TData>::NumericVectorType
 CSVArray2DDataObject<TData>
 ::GetRow(const std::string & row_name)
 {
@@ -125,7 +125,7 @@ CSVArray2DDataObject<TData>
 }
 
 template <class TData>
-const typename CSVArray2DDataObject<TData>::NumericVectorType
+typename CSVArray2DDataObject<TData>::NumericVectorType
 CSVArray2DDataObject <TData>
 ::GetColumn(const unsigned int & column_index)
 {
@@ -145,7 +145,7 @@ CSVArray2DDataObject <TData>
 }
 
 template <class TData>
-const typename CSVArray2DDataObject<TData>::NumericVectorType
+typename CSVArray2DDataObject<TData>::NumericVectorType
 CSVArray2DDataObject <TData>
 ::GetColumn(const std::string & column_name)
 {
@@ -157,7 +157,7 @@ CSVArray2DDataObject <TData>
 
 
 template <class TData>
-const TData
+TData
 CSVArray2DDataObject <TData>
 ::GetData(const unsigned int & row, const unsigned int & column)
 {
@@ -175,7 +175,7 @@ CSVArray2DDataObject <TData>
 }
 
 template <class TData>
-const TData
+TData
 CSVArray2DDataObject <TData>
 ::GetData(const std::string & row_name, const std::string & column_name)
 {
@@ -186,7 +186,7 @@ CSVArray2DDataObject <TData>
 
 
 template <class TData>
-const TData
+TData
 CSVArray2DDataObject <TData>
 ::GetRowData(const std::string & row_name, const unsigned int & column_index)
 {
@@ -195,7 +195,7 @@ CSVArray2DDataObject <TData>
 }
 
 template <class TData>
-const TData
+TData
 CSVArray2DDataObject <TData>
 ::GetColumnData(const std::string & column_name, const unsigned int & row_index)
 {
@@ -204,7 +204,7 @@ CSVArray2DDataObject <TData>
 }
 
 template<class TData>
-const TData
+TData
 CSVArray2DDataObject <TData>
 ::operator()(const unsigned int & row_index, const unsigned int & column_index)
 {
@@ -212,7 +212,7 @@ CSVArray2DDataObject <TData>
 }
 
 template<class TData>
-const TData
+TData
 CSVArray2DDataObject <TData>
 ::operator()(const std::string & row_name, const std::string & column_name)
 {
