@@ -21,10 +21,12 @@
 
 #include <iostream>
 
+#include "itkPDEDeformableRegistrationFunction.h"
 #include "itkSymmetricForcesDemonsRegistrationFunction.h"
 #include "itkDemonsRegistrationFilter.h"
 #include "itkSymmetricForcesDemonsRegistrationFilter.hxx"
 #include "itkCurvatureRegistrationFilter.h"
+#include "itkMeanSquareRegistrationFunction.hxx"
 #include "itkMultiResolutionPDEDeformableRegistration.hxx"
 #include "itkCurvatureRegistrationFilter.hxx"
 #include "itkPDEDeformableRegistrationFilter.hxx"
@@ -34,7 +36,6 @@
 #include "itkLevelSetMotionRegistrationFunction.hxx"
 #include "itkDemonsRegistrationFilter.hxx"
 #include "itkFastSymmetricForcesDemonsRegistrationFunction.hxx"
-
 
 
 int itkPDEDeformableRegistrationHeaderTest ( int , char * [] )

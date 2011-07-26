@@ -22,7 +22,6 @@
 #include <iostream>
 
 #include "itkCommandVnlIterationUpdate.h"
-#include "itkPDEDeformableRegistrationFunction.h"
 #include "itkPointSetToPointSetMetric.h"
 #include "itkMeanSquaresPointSetToImageMetric.h"
 #include "itkMeanSquaresHistogramImageToImageMetric.hxx"
@@ -38,7 +37,6 @@
 #include "itkMeanSquaresPointSetToImageMetric.hxx"
 #include "itkSimpleMultiResolutionImageRegistrationUI.h"
 #include "itkMatchCardinalityImageToImageMetric.hxx"
-#include "itkMeanSquareRegistrationFunction.hxx"
 #include "itkGradientDifferenceImageToImageMetric.hxx"
 #include "itkPointSetToPointSetRegistrationMethod.hxx"
 #include "itkKappaStatisticImageToImageMetric.hxx"
@@ -66,7 +64,6 @@
 #include "itkImageToSpatialObjectMetric.hxx"
 #include "itkCorrelationCoefficientHistogramImageToImageMetric.hxx"
 #include "itkMeanReciprocalSquareDifferencePointSetToImageMetric.hxx"
-
 
 
 int itkRegistrationCommonHeaderTest ( int , char * [] )
