@@ -1,9 +1,10 @@
-include(itkCheckCXXAcceptsFlags)
+#include(itkCheckCXXAcceptsFlags)
+include(CheckCCompilerFlag)
+include(CheckCXXCompilerFlag)
 
 # On Visual Studio 8 MS deprecated C. This removes all 1.276E1265 security
 # warnings
 if(WIN32)
-   if(NOT CYGWIN)
      if(NOT MINGW)
        if(NOT ITK_ENABLE_VISUAL_STUDIO_DEPRECATED_C_WARNINGS)
          add_definitions(
@@ -20,7 +21,6 @@ if(WIN32)
            )
        endif(NOT ITK_ENABLE_VISUAL_STUDIO_DEPRECATED_C_WARNINGS)
      endif(NOT MINGW)
-   endif(NOT CYGWIN)
 endif(WIN32)
 
 if(WIN32)
@@ -40,9 +40,6 @@ if(WIN32)
         "-shared -Wl,--export-all-symbols -Wl,--enable-auto-import")
       set(CMAKE_EXE_LINKER_FLAGS "-Wl,--enable-auto-import")
     endif(MINGW)
-    if(CYGWIN)
-      set(CMAKE_EXE_LINKER_FLAGS "-Wl,--enable-auto-import")
-    endif(CYGWIN)
   else(CMAKE_COMPILER_IS_GNUCXX)
    if(BUILD_SHARED_LIBS)
      set(ITK_LIBRARY_BUILD_TYPE "SHARED")
@@ -54,33 +51,21 @@ if(WIN32)
 endif(WIN32)
 
 #-----------------------------------------------------------------------------
+#Check the set of warning flags the compiler supports
+include(CheckCompilerWarningFlags)
+check_compiler_warning_flags(C_WARNING_FLAGS CXX_WARNING_FLAGS)
+set(ITK_REQUIRED_C_FLAGS "${ITK_REQUIRED_C_FLAGS} ${C_WARNING_FLAGS}")
+set(ITK_REQUIRED_CXX_FLAGS "${ITK_REQUIRED_CXX_FLAGS} ${CXX_WARNING_FLAGS}")
+
+#-----------------------------------------------------------------------------
 #ITK requires special compiler flags on some platforms.
 if(CMAKE_COMPILER_IS_GNUCXX)
- set(ITK_REQUIRED_C_FLAGS "${ITK_REQUIRED_C_FLAGS} -Wall -Wno-uninitialized -Wno-unused-parameter")
- set(ITK_REQUIRED_CXX_FLAGS "${ITK_REQUIRED_CXX_FLAGS} -Wall")
- itkCHECK_CXX_ACCEPTS_FLAGS("-Wno-deprecated" CXX_HAS_DEPRECATED_FLAG)
- if(CXX_HAS_DEPRECATED_FLAG)
-   set(ITK_REQUIRED_CXX_FLAGS "${ITK_REQUIRED_CXX_FLAGS} -Wno-deprecated")
- endif(CXX_HAS_DEPRECATED_FLAG)
  if(APPLE)
-   # -no-cpp-precomp and -Wno-long-double were compiler flags present
-   # only in Apple's gcc and not in the FSF gcc. The flags are obsolete
-   # and totally removed in gcc 4.2 and later. I believe they are only
-   # needed with gcc 3.3 and earlier.
-   execute_process(COMMAND "${CMAKE_C_COMPILER}" --version
-     OUTPUT_VARIABLE _version ERROR_VARIABLE _version)
-   if("${_version}" MATCHES "gcc.*3\\.3.*Apple")
-     set(ITK_REQUIRED_C_FLAGS "${ITK_REQUIRED_C_FLAGS} -no-cpp-precomp")
-     set(ITK_REQUIRED_CXX_FLAGS "${ITK_REQUIRED_CXX_FLAGS} -no-cpp-precomp")
-   endif()
-   itkCHECK_CXX_ACCEPTS_FLAGS("-Wno-long-double" CXX_HAS_LONGDOUBLE_FLAG)
-   if(CXX_HAS_LONGDOUBLE_FLAG)
-     set(ITK_REQUIRED_C_FLAGS "${ITK_REQUIRED_C_FLAGS} -Wno-long-double")
-     set(ITK_REQUIRED_CXX_FLAGS "${ITK_REQUIRED_CXX_FLAGS} -Wno-long-double")
-   endif(CXX_HAS_LONGDOUBLE_FLAG)
-
    option(ITK_USE_64BITS_APPLE_TRUNCATION_WARNING "Turn on warnings on 64bits to 32bits truncations." OFF)
    mark_as_advanced(ITK_USE_64BITS_APPLE_TRUNCATION_WARNING)
+
+   execute_process(COMMAND "${CMAKE_C_COMPILER}" --version
+     OUTPUT_VARIABLE _version ERROR_VARIABLE _version)
 
    # -fopenmp breaks compiling the HDF5 library in shared library mode
    # on the OS X platform -- at least with gcc 4.2 from XCode.
@@ -118,6 +103,15 @@ if(CMAKE_SYSTEM MATCHES "SunOS.*")
     set(ITK_REQUIRED_CXX_FLAGS "${ITK_REQUIRED_CXX_FLAGS} -mt")
     set(ITK_REQUIRED_C_FLAGS "${ITK_REQUIRED_C_FLAGS} -mt")
   endif()
+  # Add flags for the SUN compiler to provide all the methods for std::allocator.
+  #
+  CHECK_CXX_SOURCE_COMPILES("-features=no%anachronisms" SUN_COMPILER)
+  if(SUN_COMPILER)
+    CHECK_CXX_SOURCE_COMPILES("-library=stlport4" SUN_COMPILER_HAS_STL_PORT_4)
+    if(SUN_COMPILER_HAS_STL_PORT_4)
+      set(ITK_REQUIRED_CXX_FLAGS "${ITK_REQUIRED_CXX_FLAGS} -library=stlport4")
+    endif(SUN_COMPILER_HAS_STL_PORT_4)
+   endif(SUN_COMPILER)
 endif()
 
 # mingw thread support
@@ -127,15 +121,6 @@ if(MINGW)
   set(ITK_REQUIRED_LINK_FLAGS "${ITK_REQUIRED_LINK_FLAGS} -mthreads")
 endif()
 
-# Add flags for the SUN compiler to provide all the methods for std::allocator.
-#
-itkCHECK_CXX_ACCEPTS_FLAGS("-features=no%anachronisms" SUN_COMPILER)
-if(SUN_COMPILER)
-  itkCHECK_CXX_ACCEPTS_FLAGS("-library=stlport4" SUN_COMPILER_HAS_STL_PORT_4)
-  if(SUN_COMPILER_HAS_STL_PORT_4)
-    set(ITK_REQUIRED_CXX_FLAGS "${ITK_REQUIRED_CXX_FLAGS} -library=stlport4")
-  endif(SUN_COMPILER_HAS_STL_PORT_4)
-endif(SUN_COMPILER)
 
 #-----------------------------------------------------------------------------
 # The frename-registers option does not work due to a bug in the gnu compiler.
@@ -148,9 +133,6 @@ if(CMAKE_COMPILER_IS_GNUCXX)
     if("${COMP_OPTION}" STREQUAL "-frename-registers")
       message(FATAL_ERROR "-frename-registers causes runtime bugs.  It must be removed from your compilation options.")
     endif("${COMP_OPTION}" STREQUAL "-frename-registers")
-    if("${COMP_OPTION}" STREQUAL "-ffloat-store")
-      message(FATAL_ERROR "-ffloat-store causes runtime bugs on gcc 3.2.3 (appearently not on gcc 3.4.3, but the exact criteria is not known).  It must be removed from your compilation options.")
-    endif("${COMP_OPTION}" STREQUAL "-ffloat-store")
   endforeach(COMP_OPTION)
 endif(CMAKE_COMPILER_IS_GNUCXX)
 
@@ -162,7 +144,7 @@ elseif("${CMAKE_CXX_COMPILER_ID}" MATCHES "^(GNU|Intel)$")
   set(ITK_CXX_DISABLE_OPTIMIZATION_FLAG "-O0")
 endif()
 if(DEFINED ITK_CXX_DISABLE_OPTIMIZATION_FLAG)
-  itkCHECK_CXX_ACCEPTS_FLAGS(${ITK_CXX_DISABLE_OPTIMIZATION_FLAG} CXX_HAS_DISABLE_OPTIMIZATION_FLAG)
+  CHECK_CXX_SOURCE_COMPILES(${ITK_CXX_DISABLE_OPTIMIZATION_FLAG} CXX_HAS_DISABLE_OPTIMIZATION_FLAG)
 endif()
 
 #---------------------------------------------------------------
