@@ -15,6 +15,8 @@
 # limitations under the License.
 #=============================================================================
 
+# Added a comment.
+
 # Prepare a copy of the message:
 #  - strip comment lines
 #  - stop at "diff --git" (git commit -v)
