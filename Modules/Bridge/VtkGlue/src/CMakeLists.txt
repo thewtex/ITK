@@ -7,7 +7,7 @@ add_library( ITKVtkGlue ${ITKVtkGlue_SRCS})
 target_link_libraries(ITKVtkGlue
     ${ITKCommon_LIBRARIES}
     ${ITKVTK_LIBRARIES}
-    ${VTK_LIBRARIES}
+    vtkRendering
 )
 
 itk_module_target(ITKVtkGlue)
