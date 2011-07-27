@@ -240,13 +240,13 @@ ObjectByObjectLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFil
           }
 
         // then push the other objects
-        outIt++;
+        ++outIt;
         while( outIt != outLabelObjectContainer.end() )
           {
           outLo = outIt->second;
           outLo->CopyAttributesFrom( inLo );
           output->PushLabelObject( outLo );
-          outIt++;
+          ++outIt;
           }
         }
       else
@@ -264,12 +264,12 @@ ObjectByObjectLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFil
         LabelObjectType * outLo = outIt->second;
         outLo->CopyAttributesFrom( inLo );
         output->PushLabelObject( outLo );
-        outIt++;
+        ++outIt;
         }
       }
 
     // and proceed the next object
-    inIt++;
+    ++inIt;
     progress.CompletedPixel();
 
     }

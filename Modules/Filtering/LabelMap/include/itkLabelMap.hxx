@@ -170,7 +170,7 @@ LabelMap< TLabelObject >
 {
   if ( label == m_BackgroundValue )
     {
-    return true;
+    return false;
     }
   return m_LabelObjectContainer.find(label) != m_LabelObjectContainer.end();
 }
