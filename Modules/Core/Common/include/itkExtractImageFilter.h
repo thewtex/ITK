@@ -18,7 +18,7 @@
 #ifndef __itkExtractImageFilter_h
 #define __itkExtractImageFilter_h
 
-#include "itkImageToImageFilter.h"
+#include "itkInPlaceImageFilter.h"
 #include "itkSmartPointer.h"
 #include "itkExtractImageFilterRegionCopier.h"
 
@@ -79,12 +79,12 @@ namespace itk
 
 template< class TInputImage, class TOutputImage >
 class ITK_EXPORT ExtractImageFilter:
-  public ImageToImageFilter< TInputImage, TOutputImage >
+  public InPlaceImageFilter< TInputImage, TOutputImage >
 {
 public:
   /** Standard class typedefs. */
   typedef ExtractImageFilter                              Self;
-  typedef ImageToImageFilter< TInputImage, TOutputImage > Superclass;
+  typedef InPlaceImageFilter< TInputImage, TOutputImage > Superclass;
   typedef SmartPointer< Self >                            Pointer;
   typedef SmartPointer< const Self >                      ConstPointer;
 
@@ -257,12 +257,22 @@ protected:
   void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
                             ThreadIdType threadId);
 
+  /** Overridden to check if there is no work to be done, before
+   * calling superclass' implementation.
+   */
+  void GenerateData();
+
+  /** Overridden to aid in in-place execution */
+  void AllocateOutputs();
+
   InputImageRegionType m_ExtractionRegion;
 
   OutputImageRegionType m_OutputImageRegion;
 private:
   ExtractImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);     //purposely not implemented
+
+  ThreadIdType m_StashedNumberOfThreads;
 
   DIRECTIONCOLLAPSESTRATEGY m_DirectionCollapseStrategy;
 };

@@ -149,6 +149,7 @@ int itkImageFileWriterPastingTest2(int argc, char* argv[])
   extractBaselineImage->SetDirectionCollapseToSubmatrix();
   extractBaselineImage->SetInput(reader->GetOutput());
   extractBaselineImage->SetExtractionRegion(pasteRegion);
+  extractBaselineImage->InPlaceOn();
 
   ReaderType::Pointer readerTestImage = ReaderType::New();
   readerTestImage->SetFileName( argv[2] );
@@ -156,6 +157,7 @@ int itkImageFileWriterPastingTest2(int argc, char* argv[])
   extractTestImage->SetDirectionCollapseToSubmatrix();
   extractTestImage->SetInput(readerTestImage->GetOutput());
   extractTestImage->SetExtractionRegion(pasteRegion);
+  extractTestImage->InPlaceOn();
 
   if (!SameImage(extractTestImage->GetOutput(), extractBaselineImage->GetOutput()))
     {

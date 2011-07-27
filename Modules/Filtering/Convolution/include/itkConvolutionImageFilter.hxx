@@ -46,8 +46,6 @@ void
 ConvolutionImageFilter< TInputImage, TKernelImage, TOutputImage >
 ::GenerateData()
 {
-  // Allocate the output
-  this->AllocateOutputs();
 
   // Create a process accumulator for tracking the progress of this minipipeline
   ProgressAccumulator::Pointer progress = ProgressAccumulator::New();
@@ -145,6 +143,9 @@ ConvolutionImageFilter< TInputImage, TKernelImage, TOutputImage >
 
   if ( m_OutputRegionMode == Self::SAME )
     {
+    // Allocate the output
+    this->AllocateOutputs();
+
     // Graft the output of the convolution filter onto this filter's
     // output.
     convolutionFilter->GraftOutput( this->GetOutput() );
@@ -171,13 +172,17 @@ ConvolutionImageFilter< TInputImage, TKernelImage, TOutputImage >
     cropFilter->SetLowerBoundaryCropSize( lowerCropSize );
     cropFilter->SetUpperBoundaryCropSize( upperCropSize );
     cropFilter->SetNumberOfThreads( this->GetNumberOfThreads() );
-    cropFilter->ReleaseDataFlagOn();
+    cropFilter->InPlaceOff();
     progress->RegisterInternalFilter( cropFilter, 0.1f );
     cropFilter->SetInput( convolutionFilter->GetOutput() );
 
     // Graft the minipipeline output to this filter.
     cropFilter->GetOutput()->SetRequestedRegion( this->GetOutput()->GetRequestedRegion() );
-    cropFilter->GraftOutput( this->GetOutput() );
+
+    // FIXME: THE TEST IS FAILING BECAUSE OF THIS
+    // Since the crop filter will always run in-place, we graft to the
+    // ouput of the convolution filter which is the input of the cropFilter.
+    convolution->GraftOutput( this->GetOutput() );
     cropFilter->Update();
 
     // Graft the output of the crop filter back onto this

@@ -36,7 +36,10 @@ ExtractImageFilter< TInputImage, TOutputImage >
 #else
   m_DirectionCollapseStrategy(DIRECTIONCOLLAPSETOUNKOWN)
 #endif
-{}
+{
+  Superclass::InPlaceOff();
+  m_StashedNumberOfThreads = 0;
+}
 
 /**
  *
@@ -257,6 +260,38 @@ ExtractImageFilter< TInputImage, TOutputImage >
     }
 }
 
+template< class TInputImage, class TOutputImage >
+void
+ExtractImageFilter< TInputImage, TOutputImage >
+::GenerateData()
+{
+  // call supercall implementation to call threaded method
+  Superclass::GenerateData();
+
+  // restore number of threads
+  if ( this->GetRunningInPlace() )
+    {
+    this->SetNumberOfThreads( this->m_StashedNumberOfThreads );
+    }
+}
+
+template< class TInputImage, class TOutputImage >
+void
+ExtractImageFilter< TInputImage, TOutputImage >
+::AllocateOutputs()
+{
+  // call super class implementation
+  // this will set "RunningInPlace"
+  Superclass::AllocateOutputs();
+
+  // stash the number of threads, only need one to run in place
+  if ( this->GetRunningInPlace() )
+    {
+    this->m_StashedNumberOfThreads = this->GetNumberOfThreads();
+    //this->SetNumberOfThreads(1);
+    }
+}
+
 /**
  * ExtractImageFilter can be implemented as a multithreaded filter.
  * Therefore, this implementation provides a ThreadedGenerateData()
@@ -275,6 +310,15 @@ ExtractImageFilter< TInputImage, TOutputImage >
 ::ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
                        ThreadIdType threadId)
 {
+
+  if ( threadId == 0 )
+    std::cout << "RunningInPlace: " << this->GetRunningInPlace() << std::endl;
+  // If we are running in place, there is no real work to do
+  // if (  this->GetRunningInPlace() )
+  //   {
+  //   this->SetProgress( 1.0 );
+  //   return;
+  //   }
 
   itkDebugMacro(<< "Actually executing");
 
