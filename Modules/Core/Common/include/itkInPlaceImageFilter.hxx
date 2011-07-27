@@ -38,7 +38,8 @@ namespace itk
 template< class TInputImage, class TOutputImage >
 InPlaceImageFilter< TInputImage, TOutputImage >
 ::InPlaceImageFilter():
-  m_InPlace(true)
+  m_InPlace(true),
+  m_RunningInPlace(false)
 {}
 
 /**
@@ -71,30 +72,27 @@ InPlaceImageFilter< TInputImage, TOutputImage >
 template< class TInputImage, class TOutputImage >
 void
 InPlaceImageFilter< TInputImage, TOutputImage >
-::AllocateOutputs()
+::InternalAllocateOutputs( const TrueType& )
 {
+  const InputImageType *inputPtr = this->GetInput();
+  OutputImageType      *outputPtr = this->GetOutput();
+
   // if told to run in place and the types support it,
-  if ( this->GetInPlace() && this->CanRunInPlace() )
+  // additionally the buffered and requested regions of the input and
+  // output must match.
+  if ( this->GetInPlace() &&
+       this->CanRunInPlace() &&
+       inputPtr &&
+       inputPtr->GetBufferedRegion() == inputPtr->GetRequestedRegion() &&
+       inputPtr->GetRequestedRegion() == outputPtr->GetRequestedRegion())
     {
     // Graft this first input to the output.  Later, we'll need to
     // remove the input's hold on the bulk data.
     //
-    OutputImagePointer inputAsOutput =
-      dynamic_cast< TOutputImage * >( const_cast< TInputImage * >( this->GetInput() ) );
-    if ( inputAsOutput )
-      {
-      this->GraftOutput(inputAsOutput);
-      }
-    else
-      {
-      // if we cannot cast the input to an output type, then allocate
-      // an output usual.
-      OutputImagePointer outputPtr;
+    OutputImagePointer inputAsOutput = const_cast< TInputImage * >( inputPtr );
 
-      outputPtr = this->GetOutput(0);
-      outputPtr->SetBufferedRegion( outputPtr->GetRequestedRegion() );
-      outputPtr->Allocate();
-      }
+    this->GraftOutput(inputAsOutput);
+    this->m_RunningInPlace = true;
 
     typedef ImageBase< OutputImageDimension > ImageBaseType;
     typename ImageBaseType::Pointer outputPtr;
@@ -121,6 +119,7 @@ InPlaceImageFilter< TInputImage, TOutputImage >
     }
   else
     {
+    this->m_RunningInPlace = false;
     Superclass::AllocateOutputs();
     }
 }
@@ -130,7 +129,7 @@ bool
 InPlaceImageFilter< TInputImage, TOutputImage >
 ::CanRunInPlace() const
 {
-  return Self::CanRunInPlace(is_same<TInputImage,TOutputImage>());
+  return IsSame<TInputImage,TOutputImage>();
 }
 
 template< class TInputImage, class TOutputImage >
@@ -139,7 +138,7 @@ InPlaceImageFilter< TInputImage, TOutputImage >
 ::ReleaseInputs()
 {
   // if told to run in place and the types support it,
-  if ( this->GetInPlace() && this->CanRunInPlace() )
+  if ( this->m_RunningInPlace )
     {
     // Release any input where the ReleaseData flag has been set
     ProcessObject::ReleaseInputs();
@@ -150,12 +149,15 @@ InPlaceImageFilter< TInputImage, TOutputImage >
       {
       ptr->ReleaseData();
       }
+
+     this->m_RunningInPlace = false;
     }
   else
     {
     Superclass::ReleaseInputs();
     }
 }
+
 } // end namespace itk
 
 #endif

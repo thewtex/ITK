@@ -53,6 +53,17 @@
     return EXIT_FAILURE;  \
     }
 
+#define TEST_EXPECT_TRUE( command )                                     \
+  {                                                                     \
+  bool _TEST_EXPECT_TRUE_command(command);                              \
+  if( !(_TEST_EXPECT_TRUE_command) )                                    \
+    {                                                                   \
+    std::cerr << "Error in " << #command << std::endl;                  \
+    std::cerr << "Expected true" << std::endl;                          \
+    std::cerr << "but got  " <<  _TEST_EXPECT_TRUE_command << std::endl; \
+    return EXIT_FAILURE;                                                \
+    }                                                                   \
+  }
 
 #define TEST_SET_GET( variable, command ) \
   if( variable.GetPointer() != command )   \
@@ -72,6 +83,7 @@
     std::cerr << "but got  " << command << std::endl; \
     return EXIT_FAILURE; \
     }
+
 
 
 #endif

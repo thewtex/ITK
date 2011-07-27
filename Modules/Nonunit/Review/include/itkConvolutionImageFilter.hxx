@@ -171,7 +171,7 @@ ConvolutionImageFilter< TInputImage, TKernelImage, TOutputImage >
     cropFilter->SetLowerBoundaryCropSize( lowerCropSize );
     cropFilter->SetUpperBoundaryCropSize( upperCropSize );
     cropFilter->SetNumberOfThreads( this->GetNumberOfThreads() );
-    cropFilter->ReleaseDataFlagOn();
+    cropFilter->InPlaceOn();
     progress->RegisterInternalFilter( cropFilter, 0.1f );
     cropFilter->SetInput( convolutionFilter->GetOutput() );
 
