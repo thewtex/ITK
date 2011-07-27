@@ -54,17 +54,18 @@ if(WIN32)
 endif(WIN32)
 
 #-----------------------------------------------------------------------------
+#Check the set of warning flags the compiler supports
+include(CheckCompilerWarningFlags)
+check_compiler_warning_flags(C_WARNING_FLAGS CXX_WARNING_FLAGS)
+set(ITK_REQUIRED_C_FLAGS "${ITK_REQUIRED_C_FLAGS} ${C_WARNING_FLAGS}")
+set(ITK_REQUIRED_CXX_FLAGS "${ITK_REQUIRED_CXX_FLAGS} ${CXX_WARNING_FLAGS}")
+
+#-----------------------------------------------------------------------------
 #ITK requires special compiler flags on some platforms.
 if(CMAKE_COMPILER_IS_GNUCXX)
- set(ITK_REQUIRED_C_FLAGS "${ITK_REQUIRED_C_FLAGS} -Wall -Wno-uninitialized -Wno-unused-parameter")
- set(ITK_REQUIRED_CXX_FLAGS "${ITK_REQUIRED_CXX_FLAGS} -Wall")
- itkCHECK_CXX_ACCEPTS_FLAGS("-Wno-deprecated" CXX_HAS_DEPRECATED_FLAG)
- if(CXX_HAS_DEPRECATED_FLAG)
-   set(ITK_REQUIRED_CXX_FLAGS "${ITK_REQUIRED_CXX_FLAGS} -Wno-deprecated")
- endif(CXX_HAS_DEPRECATED_FLAG)
  if(APPLE)
-   # -no-cpp-precomp and -Wno-long-double were compiler flags present
-   # only in Apple's gcc and not in the FSF gcc. The flags are obsolete
+   # -no-cpp-precomp was a compiler flag present
+   # only in Apple's gcc and not in the FSF gcc. The flag is obsolete
    # and totally removed in gcc 4.2 and later. I believe they are only
    # needed with gcc 3.3 and earlier.
    execute_process(COMMAND "${CMAKE_C_COMPILER}" --version
