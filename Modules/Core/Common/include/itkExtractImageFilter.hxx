@@ -36,7 +36,9 @@ ExtractImageFilter< TInputImage, TOutputImage >
 #else
   m_DirectionCollaspeStrategy(DIRECTIONCOLLAPSETOUNKOWN)
 #endif
-{}
+{
+  Superclass::InPlaceOff();
+}
 
 /**
  *
@@ -257,6 +259,22 @@ ExtractImageFilter< TInputImage, TOutputImage >
     }
 }
 
+template< class TInputImage, class TOutputImage >
+void
+ExtractImageFilter< TInputImage, TOutputImage >
+::GenerateData()
+{
+  // The input matched the output, nothing to do.
+  if ( this->GetRunningInPlace() )
+    {
+    this->SetProgress( 1.0 );
+    return;
+    }
+
+  // call supercall implementation to call threaded method
+  Superclass::GenerateData();
+}
+
 /**
  * ExtractImageFilter can be implemented as a multithreaded filter.
  * Therefore, this implementation provides a ThreadedGenerateData()
@@ -275,7 +293,6 @@ ExtractImageFilter< TInputImage, TOutputImage >
 ::ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
                        ThreadIdType threadId)
 {
-
   itkDebugMacro(<< "Actually executing");
 
   // Get the input and output pointers
