@@ -4,7 +4,6 @@ get_filename_component(ITK_TOP_DIR ${ITKFEM_SOURCE_DIR}/../../.. ABSOLUTE)
 include(${ITK_TOP_DIR}/CMake/ITKExternalData.cmake)
 
 set(ITKFEMTests
-itkFEMHeaderTest.cxx
 itkFEMExceptionTest.cxx
 itkFEMElement2DMembraneTest.cxx
 itkFEMElement3DMembraneTest.cxx
@@ -46,8 +45,6 @@ itkFEMElement3DTest.cxx
 
 CreateTestDriver(ITKFEM  "${ITKFEM-Test_LIBRARIES}" "${ITKFEMTests}")
 
-itk_add_test(NAME itkFEMHeaderTest
-      COMMAND ITKFEMTestDriver itkFEMHeaderTest)
 itk_add_test(NAME itkFEMElement2DMembraneTest
       COMMAND ITKFEMTestDriver itkFEMElement2DMembraneTest)
 itk_add_test(NAME itkFEMElement2DQuadraticTriangularTest

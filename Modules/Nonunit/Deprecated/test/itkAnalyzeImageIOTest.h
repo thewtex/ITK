@@ -31,8 +31,8 @@
 #include "itkIOTestHelper.h"
 #include <stdio.h>
 #include "itk_zlib.h"
-#include "itkNiftiImageIOTest.h"
 #include "itkRGBPixel.h"
+#include "itkSpatialOrientationAdapter.h"
 
 #if defined(_WIN32) && defined(_MSC_VER)
 #include <stdlib.h>
@@ -42,6 +42,32 @@
 #endif
 
 #define SPECIFIC_IMAGEIO_MODULE_TEST
+
+const unsigned char RPI=16;        /*Bit pattern 0 0 0  10000*/
+const unsigned char LEFT=128;      /*Bit pattern 1 0 0  00000*/
+const unsigned char ANTERIOR=64;   /*Bit pattern 0 1 0  00000*/
+const unsigned char SUPERIOR=32;   /*Bit pattern 0 0 1  00000*/
+
+template <class ImageType>
+typename ImageType::DirectionType
+CORDirCosines()
+{
+  typename itk::SpatialOrientationAdapter::DirectionType CORdir=
+    itk::SpatialOrientationAdapter().ToDirectionCosines(itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_RIP);
+  typename ImageType::DirectionType dir;
+  for(unsigned i = 0; i < ImageType::ImageDimension; i++)
+    {
+    for(unsigned j = 0; j < ImageType::ImageDimension; j++)
+      {
+      dir[i][j] = CORdir[i][j];
+      }
+    }
+  if(ImageType::ImageDimension == 2)
+    {
+    dir[1][1] = 1.0;
+    }
+  return dir;
+}
 
 template <typename T, unsigned VDimension>
 int
