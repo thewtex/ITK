@@ -31,7 +31,7 @@
 #include "itkIOTestHelper.h"
 #include <stdio.h>
 #include "itk_zlib.h"
-#include "itkNiftiImageIOTest.h"
+// #include "itkNiftiImageIOTest.h"
 #include "itkRGBPixel.h"
 
 #if defined(_WIN32) && defined(_MSC_VER)

@@ -46,7 +46,7 @@ set Header {/*==================================================================
 set Trailer "
 int main ( int , char* [] )
 {
-  
+
   return EXIT_SUCCESS;
 }
 "

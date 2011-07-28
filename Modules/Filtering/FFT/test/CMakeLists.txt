@@ -1,6 +1,5 @@
 itk_module_test()
 set(ITKFFTTests
-itkFFTHeaderTest.cxx
 itkVnlFFTTest.cxx
 )
 
@@ -14,9 +13,6 @@ endif()
 
 
 CreateTestDriver(ITKFFT  "${ITKFFT-Test_LIBRARIES}" "${ITKFFTTests}")
-
-itk_add_test(NAME itkFFTHeaderTest
-      COMMAND ITKFFTTestDriver itkFFTHeaderTest)
 
 itk_add_test(NAME itkVnlFFTTest
       COMMAND ITKFFTTestDriver itkVnlFFTTest)

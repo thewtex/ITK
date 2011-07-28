@@ -8,13 +8,10 @@ itkBinaryErodeImageFilterTest3.cxx
 itkBinaryMorphologicalClosingImageFilterTest.cxx
 itkBinaryMorphologicalOpeningImageFilterTest.cxx
 itkBinaryThinningImageFilterTest.cxx
-itkBinaryMathematicalMorphologyHeaderTest.cxx
 )
 
 CreateTestDriver(ITKBinaryMathematicalMorphology  "${ITKBinaryMathematicalMorphology-Test_LIBRARIES}" "${ITKBinaryMathematicalMorphologyTests}")
 
-itk_add_test(NAME itkBinaryMathematicalMorphologyHeaderTest
-      COMMAND ITKBinaryMathematicalMorphologyTestDriver itkBinaryMathematicalMorphologyHeaderTest)
 itk_add_test(NAME itkBinaryDilateImageFilterTest
       COMMAND ITKBinaryMathematicalMorphologyTestDriver itkBinaryDilateImageFilterTest)
 itk_add_test(NAME itkBinaryDilateImageFilterTest2
