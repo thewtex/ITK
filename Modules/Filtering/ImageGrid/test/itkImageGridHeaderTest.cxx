@@ -26,6 +26,7 @@
 #include "itkConstantPadImageFilter.hxx"
 #include "itkPasteImageFilter.hxx"
 #include "itkBSplineCenteredL2ResampleImageFilterBase.h"
+#include "itkBSplineInterpolateImageFunction.hxx"
 #include "itkShrinkImageFilter.hxx"
 #include "itkWarpImageFilter.hxx"
 #include "itkFlipImageFilter.hxx"

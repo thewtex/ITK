@@ -31,6 +31,7 @@
 #endif
 #include "itkVnlFFTComplexConjugateToRealImageFilter.hxx"
 #include "itkVnlFFTRealToComplexConjugateImageFilter.hxx"
+#include "vnl_fft_3d.h"
 
 int itkFFTHeaderTest ( int , char * [] )
 {

@@ -5,16 +5,19 @@ system supporting ITK.")
 
 itk_module(ITKTestKernel
   DEPENDS
-    ITKIOPNG
-    ITKIOMeta
-    ITKIOTIFF
+    ITKIOBioRad
     ITKIOBMP
-    ITKIOVTK
+    ITKIOLSM
     ITKIOJPEG
-    ITKIONRRD
+    ITKIOMeta
     ITKIOGDCM
     ITKIOGIPL
     ITKIONIFTI
+    ITKIONRRD
+    ITKIOPNG
+    ITKIOStimulate
+    ITKIOTIFF
+    ITKIOVTK
     ITKKWSys
   DESCRIPTION
     "${DOCUMENTATION}"

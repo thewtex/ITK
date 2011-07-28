@@ -35,6 +35,11 @@
 #include "itkVersor.hxx"
 #include "itkVertexCell.hxx"
 #include "itkWeakPointer.h"
+#ifdef _WIN32
+#include "itkWin32Header.h"
+#include "itkWin32OutputWindow.h"
+#include "itkWindows.h"
+#endif // _WIN32
 #include "itkXMLFileOutputWindow.h"
 #include "itkXMLFilterWatcher.h"
 #include "itkZeroFluxNeumannBoundaryCondition.hxx"

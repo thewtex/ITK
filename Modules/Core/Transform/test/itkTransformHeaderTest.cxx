@@ -24,6 +24,7 @@
 #include "itkAffineTransform.hxx"
 #include "itkAzimuthElevationToCartesianTransform.hxx"
 #include "itkBSplineDeformableTransform.hxx"
+#include "itkBSplineDeformableTransformInitializer.hxx"
 #include "itkCenteredAffineTransform.hxx"
 #include "itkCenteredEuler3DTransform.hxx"
 #include "itkCenteredRigid2DTransform.hxx"
@@ -36,6 +37,8 @@
 #include "itkEuler2DTransform.hxx"
 #include "itkEuler3DTransform.hxx"
 #include "itkFixedCenterOfRotationAffineTransform.hxx"
+#include "itkHDF5TransformIO.h"
+#include "itkHDF5TransformIOFactory.h"
 #include "itkIdentityTransform.h"
 #include "itkKernelTransform.hxx"
 #include "itkLandmarkBasedTransformInitializer.hxx"
@@ -70,7 +73,6 @@
 #include "itkVersorRigid3DTransform.hxx"
 #include "itkVersorTransform.hxx"
 #include "itkVolumeSplineKernelTransform.hxx"
-
 
 
 int itkTransformHeaderTest ( int , char * [] )

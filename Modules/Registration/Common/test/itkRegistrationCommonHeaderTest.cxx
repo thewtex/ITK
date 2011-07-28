@@ -21,6 +21,8 @@
 
 #include <iostream>
 
+#include "itkCenteredTransformInitializer.hxx"
+#include "itkCenteredVersorTransformInitializer.hxx"
 #include "itkCommandVnlIterationUpdate.h"
 #include "itkPDEDeformableRegistrationFunction.h"
 #include "itkPointSetToPointSetMetric.h"
@@ -66,7 +68,6 @@
 #include "itkImageToSpatialObjectMetric.hxx"
 #include "itkCorrelationCoefficientHistogramImageToImageMetric.hxx"
 #include "itkMeanReciprocalSquareDifferencePointSetToImageMetric.hxx"
-
 
 
 int itkRegistrationCommonHeaderTest ( int , char * [] )

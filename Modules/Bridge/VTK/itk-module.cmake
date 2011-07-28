@@ -13,6 +13,9 @@ into an itk::Image, all without having to duplicate their buffers.")
 itk_module(ITKVTK
   DEPENDS
     ITKCommon
+  TEST_DEPENDS
+    ITKTestKernel
+  EXCLUDE_FROM_ALL
   DESCRIPTION
     "${DOCUMENTATION}"
 )

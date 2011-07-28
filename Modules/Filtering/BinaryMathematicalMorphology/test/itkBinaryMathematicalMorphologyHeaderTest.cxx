@@ -30,6 +30,7 @@
 #include "itkBinaryThinningImageFilter.hxx"
 #include "itkDilateObjectMorphologyImageFilter.hxx"
 #include "itkErodeObjectMorphologyImageFilter.hxx"
+#include "itkFastIncrementalBinaryDilateImageFilter.h"
 #include "itkObjectMorphologyImageFilter.hxx"
 
 int itkBinaryMathematicalMorphologyHeaderTest ( int , char * [] )

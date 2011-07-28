@@ -21,15 +21,16 @@
 
 #include <iostream>
 
-#include "itkAtanImageFilter.h"
-#include "itkPolylineMaskImageFilter.hxx"
+#include "itkAdaptImageFilter.h"
 #include "itkAddImageFilter.h"
+#include "itkAtanImageFilter.h"
+#include "itkAtan2ImageFilter.h"
+#include "itkPolylineMaskImageFilter.hxx"
 #include "itkSymmetricEigenAnalysisImageFilter.h"
 #include "itkBinaryMagnitudeImageFilter.h"
 #include "itkVectorRescaleIntensityImageFilter.h"
 #include "itkMultiplyImageFilter.h"
 #include "itkLog10ImageFilter.h"
-#include "itkAtan2ImageFilter.h"
 #include "itkComplexToModulusImageFilter.h"
 #include "itkConstrainedValueAdditionImageFilter.h"
 #include "itkTernaryMagnitudeImageFilter.h"
@@ -46,11 +47,11 @@
 #include "itkComplexToImaginaryImageFilter.h"
 #include "itkSigmoidImageFilter.h"
 #include "itkDivideImageFilter.h"
-#include "itkNotImageFilter.h"
 #include "itkInvertIntensityImageFilter.hxx"
 #include "itkMinimumImageFilter.h"
+#include "itkNormalizeToConstantImageFilter.hxx"
+#include "itkNotImageFilter.h"
 #include "itkLogImageFilter.h"
-#include "itkAdaptImageFilter.h"
 #include "itkExpNegativeImageFilter.h"
 #include "itkMaskImageFilter.h"
 #include "itkSquareImageFilter.h"
@@ -60,6 +61,7 @@
 #include "itkAsinImageFilter.h"
 #include "itkTernaryMagnitudeSquaredImageFilter.h"
 #include "itkVectorIndexSelectionCastImageFilter.h"
+#include "itkVectorMagnitudeImageFilter.h"
 #include "itkAcosImageFilter.h"
 #include "itkComplexToPhaseImageFilter.h"
 #include "itkWeightedAddImageFilter.h"
@@ -81,7 +83,6 @@
 #include "itkBoundedReciprocalImageFilter.h"
 #include "itkShiftScaleImageFilter.hxx"
 #include "itkSqrtImageFilter.h"
-
 
 
 int itkImageIntensityHeaderTest ( int , char * [] )

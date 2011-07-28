@@ -45,6 +45,7 @@
 #include "itkMemoryProbe.h"
 #include "itkMemoryProbesCollectorBase.h"
 #include "itkMemoryUsageObserver.h"
+#include "itkMersenneTwisterRandomVariateGenerator.h"
 #include "itkMetaDataDictionary.h"
 #include "itkMetaDataObject.hxx"
 #include "itkMetaDataObjectBase.h"

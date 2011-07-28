@@ -24,12 +24,13 @@
 #include "itkBayesianClassifierInitializationImageFilter.h"
 #include "itkBayesianClassifierImageFilter.hxx"
 #include "itkBayesianClassifierInitializationImageFilter.hxx"
+#include "itkClassifierBase.hxx"
+#include "itkImageClassifierBase.hxx"
 #include "itkImageKmeansModelEstimator.hxx"
 #include "itkScalarImageKmeansImageFilter.h"
 #include "itkImageGaussianModelEstimator.hxx"
 #include "itkScalarImageKmeansImageFilter.hxx"
 #include "itkImageModelEstimatorBase.hxx"
-
 
 
 int itkClassifiersHeaderTest ( int , char * [] )

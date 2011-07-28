@@ -25,15 +25,20 @@
 #include "itkFastMarchingUpwindGradientImageFilter.hxx"
 #include "itkFastMarchingImageFilter.hxx"
 
-#include "itkFastMarchingBase.h"
-#include "itkFastMarchingExtensionImageFilterBase.h"
-#include "itkFastMarchingImageFilterBase.h"
-#include "itkFastMarchingQuadEdgeMeshFilterBase.h"
+#include "itkFastMarchingBase.hxx"
+#include "itkFastMarchingExtensionImageFilterBase.hxx"
+#include "itkFastMarchingImageFilterBase.hxx"
+#include "itkFastMarchingImageToNodePairContainerAdaptor.hxx"
+#include "itkFastMarchingQuadEdgeMeshFilterBase.hxx"
 #include "itkFastMarchingReachedTargetNodesStoppingCriterion.h"
 #include "itkFastMarchingStoppingCriterionBase.h"
 #include "itkFastMarchingTraits.h"
-#include "itkFastMarchingUpwindGradientImageFilterBase.h"
+#include "itkFastMarchingThresholdStoppingCriterion.h"
+#include "itkFastMarchingUpwindGradientImageFilterBase.hxx"
 #include "itkFastMarchingImageToNodePairContainerAdaptor.h"
+#include "itkLevelSet.h"
+#include "itkLevelSetNode.h"
+#include "itkNodePair.h"
 
 int itkFastMarchingHeaderTest ( int , char * [] )
 {

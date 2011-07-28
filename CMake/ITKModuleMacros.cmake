@@ -107,6 +107,10 @@ macro(itk_module_impl)
     if(ITK_CPPCHECK_TEST)
       itk_module_cppcheck_test( ${itk-module} )
     endif()
+    if( EXISTS "${${itk-module}_SOURCE_DIR}/include" )
+      itk_add_test( ${itk-module}HeaderTestCheck ${CMAKE_COMMAND} -P
+        ${ITK_SOURCE_DIR}/CMake/ITKModuleHeaderTest.cmake "${${itk-module}_SOURCE_DIR}" )
+    endif()
   endif()
 
   if(EXISTS ${${itk-module}_SOURCE_DIR}/src/CMakeLists.txt AND NOT ${itk-module}_NO_SRC)

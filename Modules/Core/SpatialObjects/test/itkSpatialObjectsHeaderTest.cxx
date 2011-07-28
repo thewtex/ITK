@@ -23,6 +23,7 @@
 
 #include "itkSpatialObjectFactory.h"
 #include "itkMetaMeshConverter.hxx"
+#include "itkMetaImageMaskConverter.h"
 #include "itkMetaImageConverter.hxx"
 #include "itkMetaBlobConverter.hxx"
 #include "itkMetaVesselTubeConverter.hxx"
@@ -33,6 +34,7 @@
 #include "itkPlaneSpatialObject.hxx"
 #include "itkLineSpatialObject.hxx"
 #include "itkMetaGaussianConverter.hxx"
+#include "itkMetaConverterBase.hxx"
 #include "itkPointBasedSpatialObject.hxx"
 #include "itkSpatialObjectToPointSetFilter.h"
 #include "itkSpatialObjectToImageFilter.hxx"
@@ -90,7 +92,6 @@
 #include "itkMetaLineConverter.hxx"
 #include "itkAffineGeometryFrame.hxx"
 #include "itkVesselTubeSpatialObjectPoint.hxx"
-
 
 
 int itkSpatialObjectsHeaderTest ( int , char * [] )

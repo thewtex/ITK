@@ -21,6 +21,7 @@
 
 #include <iostream>
 
+#include "itkAddConstantToImageFilter.h"
 #include "itkAnalyzeDbh.h"
 #include "itkAnalyzeImageIO.h"
 #include "itkAnalyzeImageIOFactory.h"
@@ -38,16 +39,19 @@
 #include "itkDICOMImageIO2.h"
 #include "itkDICOMImageIO2Factory.h"
 #include "itkDICOMSeriesFileNames.h"
+#include "itkDivideByConstantImageFilter.h"
 #include "itkGradientToMagnitudeImageFilter.h"
-#include "itkImageToVectorImageFilter.h"
+#include "itkImageToVectorImageFilter.hxx"
+#include "itkMultiplyByConstantImageFilter.h"
 #include "itkNonThreadedShrinkImageFilter.h"
 #include "itkNonUniformBSpline.hxx"
 #include "itkQuaternionOrientationAdapter.h"
 #include "itkReflectImageFilter.hxx"
-#include "itkScalarToArrayCastImageFilter.h"
+#include "itkScalarToArrayCastImageFilter.hxx"
 #include "itkScalarVector.h"
 #include "itkSemaphore.h"
 #include "itkShiftScaleInPlaceImageFilter.hxx"
+#include "itkSubtractConstantFromImageFilter.h"
 #include "itkTwoOutputExampleImageFilter.hxx"
 
 #include "itkTestDriverIncludeAnalyzeIOFactory.h"

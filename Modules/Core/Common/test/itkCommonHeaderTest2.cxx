@@ -22,6 +22,7 @@
 #include <iostream>
 
 #include "itkImage.hxx"
+#include "itkImageAlgorithm.hxx"
 #include "itkImageBase.hxx"
 #include "itkImageBoundaryCondition.h"
 #include "itkImageConstIterator.hxx"
@@ -57,6 +58,7 @@
 #include "itkImageSource.hxx"
 #include "itkImageToImageFilter.hxx"
 #include "itkImageToImageFilterDetail.h"
+#include "itkImageTransformer.hxx"
 #include "itkImageTransformHelper.h"
 #include "itkImportImageContainer.hxx"
 #include "itkImportImageFilter.hxx"

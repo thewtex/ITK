@@ -15,48 +15,28 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkRadialBasisFunctionBase_hxx
-#define __itkRadialBasisFunctionBase_hxx
-
-#include "itkRadialBasisFunctionBase.h"
-
-namespace itk
-{
-namespace Statistics
-{
-
-template<class ScalarType>
-void
-RadialBasisFunctionBase<ScalarType>
-::SetCenter(ArrayType c)
-{
-  m_Center=c;
-}
-
-template<class ScalarType>
-typename RadialBasisFunctionBase<ScalarType>::ArrayType
-RadialBasisFunctionBase<ScalarType>
-::GetCenter()
-{
-  return m_Center;
-}
-
-template<class ScalarType>
-void
-RadialBasisFunctionBase<ScalarType>
-::SetRadius(ScalarType r)
-{
-  m_Radius=r;
-}
-
-template<class ScalarType>
-ScalarType
-RadialBasisFunctionBase<ScalarType>
-::GetRadius()
-{
-  return m_Radius;
-}
-
-} // namespace itk
-}//namespace Statistics
+#if defined(_MSC_VER)
+#pragma warning ( disable : 4786 )
 #endif
+
+#include <iostream>
+
+#include "itkDifferenceImageFilter.hxx"
+#include "itkPipelineMonitorImageFilter.hxx"
+#include "itkRandomImageSource.hxx"
+// These need to be commented to prevent double definitions from
+// itkTestDriverInclude.h contents, but they still need to be here to pass the
+// HeaderTestCheck test.
+// #include "itkTestDriverIncludeBuiltInIOFactories.h"
+// #include "itkTestDriverInclude.h"
+// #include "itkTestDriverIncludeRequiredIOFactories.h"
+#include "itkTestingComparisonImageFilter.hxx"
+#include "itkTestingExtractSliceImageFilter.hxx"
+#include "itkTestingMacros.h"
+#include "itkTestingStretchIntensityImageFilter.hxx"
+
+int itkTestKernelHeaderTest ( int, char * [] )
+{
+
+  return EXIT_SUCCESS;
+}

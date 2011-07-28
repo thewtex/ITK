@@ -21,24 +21,11 @@
 
 #include <iostream>
 
-#include "itkArchetypeSeriesFileNames.h"
-#include "itkConvertPixelBuffer.hxx"
-#include "itkDefaultConvertPixelTraits.h"
-#include "itkImageFileReader.hxx"
-#include "itkImageFileWriter.hxx"
-#include "itkImageIOBase.h"
-#include "itkImageIOFactory.h"
-#include "itkImageIORegion.h"
-#include "itkImageSeriesReader.hxx"
-#include "itkImageSeriesWriter.hxx"
-#include "itkInternationalizationIOHelpers.h"
-#include "itkIOCommon.h"
-#include "itkIOTestHelper.h"
-#include "itkNumericSeriesFileNames.h"
-#include "itkRegularExpressionSeriesFileNames.h"
-#include "itkStreamingImageIOBase.h"
+#include "itkBioRadImageIOFactory.h"
+#include "itkBioRadImageIO.h"
 
-int itkIOBaseHeaderTest ( int , char * [] )
+
+int itkIOBioRadHeaderTest ( int , char * [] )
 {
 
   return EXIT_SUCCESS;

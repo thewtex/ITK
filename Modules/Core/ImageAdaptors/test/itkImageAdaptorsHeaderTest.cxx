@@ -29,7 +29,7 @@
 #include "itkPixelAccessor.h"
 #include "itkLog10ImageAdaptor.h"
 #include "itkRGBToLuminanceImageAdaptor.h"
-#include "itkImageAdaptor.h"
+#include "itkImageAdaptor.hxx"
 #include "itkComplexToModulusImageAdaptor.h"
 #include "itkAbsImageAdaptor.h"
 #include "itkAsinImageAdaptor.h"
@@ -52,7 +52,6 @@
 #include "itkExpNegativeImageAdaptor.h"
 #include "itkAddPixelAccessor.h"
 #include "itkNthElementImageAdaptor.h"
-
 
 
 int itkImageAdaptorsHeaderTest ( int , char * [] )
