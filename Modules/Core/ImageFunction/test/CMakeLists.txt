@@ -15,7 +15,6 @@ itkRayCastInterpolateImageFunctionTest.cxx
 itkNearestNeighborExtrapolateImageFunctionTest.cxx
 itkVectorMeanImageFunctionTest.cxx
 itkMahalanobisDistanceThresholdImageFunctionTest.cxx
-itkImageFunctionHeaderTest.cxx
 itkInterpolateTest.cxx
 itkRGBInterpolateImageFunctionTest.cxx
 itkWindowedSincInterpolateImageFunctionTest.cxx
@@ -26,8 +25,6 @@ itkNearestNeighborInterpolateImageFunctionTest.cxx
 
 CreateTestDriver(ITKImageFunction  "${ITKImageFunction-Test_LIBRARIES}" "${ITKImageFunctionTests}")
 
-itk_add_test(NAME itkImageFunctionHeaderTest
-      COMMAND ITKImageFunctionTestDriver itkImageFunctionHeaderTest)
 itk_add_test(NAME itkGaussianBlurImageFunctionTest
       COMMAND ITKImageFunctionTestDriver itkGaussianBlurImageFunctionTest)
 itk_add_test(NAME itkVectorInterpolateImageFunctionTest
