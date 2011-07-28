@@ -14,7 +14,6 @@ itkBSplineUpsampleImageFilterTest.cxx
 itkBSplineResampleImageFilterTest.cxx
 itkBSplineResampleImageFunctionTest.cxx
 itkBSplineInterpolateImageFunctionTest.cxx
-itkImageGridHeaderTest.cxx
 itkWarpImageFilterTest2.cxx
 itkBSplineDecompositionImageFilterTest.cxx
 itkBSplineDownsampleImageFilterTest.cxx
@@ -49,8 +48,6 @@ itkPadImageFilterTest.cxx
 
 CreateTestDriver(ITKImageGrid  "${ITKImageGrid-Test_LIBRARIES}" "${ITKImageGridTests}")
 
-itk_add_test(NAME itkImageGridHeaderTest
-      COMMAND ITKImageGridTestDriver itkImageGridHeaderTest)
 itk_add_test(NAME itkBasicArchitectureTest
       COMMAND ITKImageGridTestDriver itkBasicArchitectureTest)
 itk_add_test(NAME itkChangeInformationImageFilterTest
