@@ -172,7 +172,7 @@ UnaryFunctorImageFilter< TInputImage, TOutputImage, TFunction >
 
   while ( !inputIt.IsAtEnd() )
     {
-    outputIt.Set( m_Functor( inputIt.Get() ) );
+    outputIt.Set( static_cast<typename TOutputImage::PixelType>(m_Functor( inputIt.Get()) ) );
     ++inputIt;
     ++outputIt;
     progress.CompletedPixel();  // potential exception thrown here
