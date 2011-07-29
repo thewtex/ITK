@@ -40,6 +40,8 @@ PadImageFilter< TInputImage, TOutputImage >
     m_PadLowerBound[j] = 0;
     m_PadUpperBound[j] = 0;
     }
+
+  m_BoundaryCondition = NULL;
 }
 
 /**
