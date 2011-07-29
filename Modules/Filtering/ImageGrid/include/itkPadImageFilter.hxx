@@ -40,6 +40,8 @@ PadImageFilter< TInputImage, TOutputImage >
     m_PadLowerBound[j] = 0;
     m_PadUpperBound[j] = 0;
     }
+
+  m_BoundaryCondition = NULL;
 }
 
 /**
@@ -118,6 +120,15 @@ PadImageFilter< TInputImage, TOutputImage >
     outputPtr->GetRequestedRegion();
 
   // Ask the boundary condition for the input requested region.
+  if ( !m_BoundaryCondition )
+    {
+    InvalidRequestedRegionError e(__FILE__, __LINE__);
+    e.SetLocation(ITK_LOCATION);
+    e.SetDescription("Boundary condition is not set so no request region can be generated.");
+    e.SetDataObject( NULL );
+    throw e;
+    }
+
   InputImageRegionType inputRequestedRegion =
     m_BoundaryCondition->GetInputRequestedRegion( inputLargestPossibleRegion,
                                                   outputRequestedRegion );
