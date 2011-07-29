@@ -66,7 +66,6 @@ BSplineDeformableTransform<TScalarType, NDimensions, VSplineOrder>
   this->m_TransformDomainPhysicalDimensions.Fill( 1.0 );
   this->m_TransformDomainDirection.SetIdentity();
   this->m_TransformDomainDirectionInverse.SetIdentity();
-  this->m_TransformDomainMeshSize.Fill( 0 );
 
   SizeType meshSize;
   meshSize.Fill( 1 );
@@ -342,6 +341,9 @@ BSplineDeformableTransform<TScalarType, NDimensions, VSplineOrder>
   this->m_CoefficientImages[0]->SetDirection( direction );
   this->m_JacobianImages[0]->SetDirection( direction );
 
+  this->m_CoefficientImages[0]->Allocate();
+  this->m_JacobianImages[0]->Allocate();
+
   // Copy the information to the rest of the images
 
   for( unsigned int i = 1; i < SpaceDimension; i++ )
@@ -350,9 +352,11 @@ BSplineDeformableTransform<TScalarType, NDimensions, VSplineOrder>
       this->m_CoefficientImages[0] );
     this->m_CoefficientImages[i]->SetRegions(
       this->m_CoefficientImages[0]->GetLargestPossibleRegion() );
+    this->m_CoefficientImages[i]->Allocate();
     this->m_JacobianImages[i]->CopyInformation( this->m_JacobianImages[0] );
     this->m_JacobianImages[i]->SetRegions(
       this->m_JacobianImages[0]->GetLargestPossibleRegion() );
+    this->m_JacobianImages[i]->Allocate();
     }
 }
 
@@ -707,7 +711,7 @@ BSplineDeformableTransform<TScalarType, NDimensions, VSplineOrder>
 {
   inside = true;
 
-  if( this->m_CoefficientImages[0]->GetBufferPointer() )
+  if( this->m_CoefficientImages[0].IsNotNull() )
     {
     ContinuousIndexType index;
     this->m_CoefficientImages[0]->
@@ -722,7 +726,7 @@ BSplineDeformableTransform<TScalarType, NDimensions, VSplineOrder>
       return;
       }
 
-    IndexType    supportIndex;
+    IndexType supportIndex;
     // Compute interpolation weights
     this->m_WeightsFunction->Evaluate( index, weights, supportIndex );
 
