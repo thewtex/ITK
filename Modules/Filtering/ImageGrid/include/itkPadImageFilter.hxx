@@ -40,6 +40,8 @@ PadImageFilter< TInputImage, TOutputImage >
     m_PadLowerBound[j] = 0;
     m_PadUpperBound[j] = 0;
     }
+
+  m_BoundaryCondition = NULL;
 }
 
 /**
@@ -118,6 +120,11 @@ PadImageFilter< TInputImage, TOutputImage >
     outputPtr->GetRequestedRegion();
 
   // Ask the boundary condition for the input requested region.
+  if ( !m_BoundaryCondition )
+    {
+    itkExceptionMacro( << "Boundary condition is not set so no request region can be generated.");
+    }
+
   InputImageRegionType inputRequestedRegion =
     m_BoundaryCondition->GetInputRequestedRegion( inputLargestPossibleRegion,
                                                   outputRequestedRegion );
@@ -181,6 +188,11 @@ PadImageFilter< TInputImage, TOutputImage >
 ::ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
                        ThreadIdType threadId)
 {
+  if ( !m_BoundaryCondition )
+    {
+    itkExceptionMacro( << "Boundary condition is not in ThreadedGenerateData." );
+    }
+
   // Use the region copy method to copy the input image values to the
   // output image.
   OutputImageRegionType copyRegion( outputRegionForThread );

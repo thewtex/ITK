@@ -103,6 +103,7 @@ public:
   itkSetMacro(BoundaryCondition, BoundaryConditionPointerType);
   itkGetConstMacro(BoundaryCondition, BoundaryConditionPointerType);
 
+protected:
   /** PadImageFilter produces an image which is a different resolution
    * than its input image.  As such, PadImageFilter needs to
    * provide an implementation for GenerateOutputInformation() in order
@@ -118,7 +119,6 @@ public:
    * \sa ProcessObject::GenerateInputRequestedRegion()  */
   virtual void GenerateInputRequestedRegion();
 
-protected:
   PadImageFilter();
   ~PadImageFilter() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
