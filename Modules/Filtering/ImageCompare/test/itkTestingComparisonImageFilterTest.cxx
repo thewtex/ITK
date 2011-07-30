@@ -20,12 +20,12 @@
 #endif
 #include <iostream>
 #include "itkImage.h"
-#include "itkDifferenceImageFilter.h"
+#include "itkTestingComparisonImageFilter.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 #include "itkSimpleFilterWatcher.h"
 
-int itkDifferenceImageFilterTest(int argc, char *argv [] )
+int itkTestingComparisonImageFilterTest(int argc, char *argv [] )
 {
   if( argc < 6 )
     {
@@ -56,7 +56,7 @@ int itkDifferenceImageFilterTest(int argc, char *argv [] )
   reader2->SetFileName( argv[2] );
 
   // Define the filter
-  typedef itk::DifferenceImageFilter<
+  typedef itk::Testing::ComparisonImageFilter<
                              InputImageType,
                              OutputImageType >  FilterType;
 
