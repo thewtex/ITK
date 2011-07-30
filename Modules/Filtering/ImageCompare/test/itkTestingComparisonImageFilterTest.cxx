@@ -20,12 +20,16 @@
 #endif
 #include <iostream>
 #include "itkImage.h"
-#include "itkDifferenceImageFilter.h"
+#include "itkTestingComparisonImageFilter.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 #include "itkSimpleFilterWatcher.h"
 
-int itkDifferenceImageFilterTest(int argc, char *argv [] )
+#ifdef ITKV3_COMPATIBILITY
+#include "itkDifferenceImageFilter.h"
+#endif
+
+int itkTestingComparisonImageFilterTest(int argc, char *argv [] )
 {
   if( argc < 6 )
     {
@@ -55,8 +59,16 @@ int itkDifferenceImageFilterTest(int argc, char *argv [] )
   reader1->SetFileName( argv[1] );
   reader2->SetFileName( argv[2] );
 
-  // Define the filter
+#ifdef ITKV3_COMPATIBILITY
   typedef itk::DifferenceImageFilter<
+                             InputImageType,
+                             OutputImageType >  DiffFilterType;
+  DiffFilterType::Pointer testInit=DiffFilterType::New();
+#endif
+
+
+  // Define the filter
+  typedef itk::Testing::ComparisonImageFilter<
                              InputImageType,
                              OutputImageType >  FilterType;
 
