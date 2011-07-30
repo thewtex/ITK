@@ -259,8 +259,6 @@ public:
   {
   public:
 
-    ConstIndexIterator() {}
-
     ConstIndexIterator(const Self *lo)
     {
       m_Begin = lo->m_LineContainer.begin();
@@ -322,6 +320,7 @@ public:
     void GoToBegin()
     {
       m_Iterator = m_Begin;
+      m_Index.Fill(0);
       NextValidLine();
     }
 
@@ -331,6 +330,9 @@ public:
     }
 
   private:
+    //Explicitly prohibit this use, ConstIndexIterators MUST use an initializing iterator
+    ConstIndexIterator(); //purposefully not implemented
+
     typedef typename std::deque< LineType >            LineContainerType;
     typedef typename LineContainerType::const_iterator InternalIteratorType;
     void NextValidLine()
