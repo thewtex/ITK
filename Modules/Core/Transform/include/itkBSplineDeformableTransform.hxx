@@ -66,7 +66,6 @@ BSplineDeformableTransform<TScalarType, NDimensions, VSplineOrder>
   this->m_TransformDomainPhysicalDimensions.Fill( 1.0 );
   this->m_TransformDomainDirection.SetIdentity();
   this->m_TransformDomainDirectionInverse.SetIdentity();
-  this->m_TransformDomainMeshSize.Fill( 0 );
 
   SizeType meshSize;
   meshSize.Fill( 1 );
@@ -518,9 +517,7 @@ BSplineDeformableTransform<TScalarType, NDimensions, VSplineOrder>
       SetImportPointer( jacobianDataPointer + j * (
       this->GetNumberOfParameters() + numberOfPixels ), numberOfPixels );
     }
-
 }
-
 
 // Get the parameters
 template<class TScalarType, unsigned int NDimensions, unsigned int VSplineOrder>
@@ -682,7 +679,7 @@ BSplineDeformableTransform<TScalarType, NDimensions, VSplineOrder>
       static_cast<ScalarType>( SplineOrder - 1 ) - 1.0;
     if( index[j] == maxLimit  )
       {
-      index[j] -= 1e-6;
+      index[j] -= 2.0e-7;
       }
     else if( index[j] >= maxLimit )
       {
@@ -722,7 +719,7 @@ BSplineDeformableTransform<TScalarType, NDimensions, VSplineOrder>
       return;
       }
 
-    IndexType    supportIndex;
+    IndexType supportIndex;
     // Compute interpolation weights
     this->m_WeightsFunction->Evaluate( index, weights, supportIndex );
 
@@ -775,7 +772,7 @@ BSplineDeformableTransform<TScalarType, NDimensions, VSplineOrder>
     }
   else
     {
-    itkWarningMacro(<< "B-spline coefficients have not been set");
+    itkWarningMacro( "B-spline coefficients have not been set" );
     for( unsigned int j = 0; j < SpaceDimension; j++ )
       {
       outputPoint[j] = point[j];
