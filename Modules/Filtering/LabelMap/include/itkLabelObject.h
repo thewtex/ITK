@@ -322,6 +322,7 @@ public:
     void GoToBegin()
     {
       m_Iterator = m_Begin;
+      m_Index = m_Begin->GetIndex();
       NextValidLine();
     }
 
