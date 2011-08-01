@@ -44,6 +44,13 @@ bool
 HDF5TransformIO
 ::CanReadFile(const char *fileName)
 {
+  //HDF5 is overly verbose in complaining that
+  //     a file does not exist.
+  if ( !itksys::SystemTools::FileExists(FileNameToRead) )
+    {
+    return false;
+    }
+
   // call standard method to determine HDF-ness
   bool rval;
   // HDF5 is so exception happy, we have to worry about
