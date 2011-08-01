@@ -18,7 +18,7 @@
 #include "itkTransformFactory.h"
 #include "itkVersion.h"
 
-#include "itkBSplineDeformableTransform.h"
+#include "itkBSplineTransform.h"
 #include "itkCenteredAffineTransform.h"
 #include "itkCenteredEuler3DTransform.h"
 #include "itkCenteredEuler3DTransform.h"
@@ -83,8 +83,8 @@ void TransformFactoryBase::RegisterDefaultTransforms()
     TransformFactory< ScaleTransform< double, 3 > >::RegisterTransform ();
     TransformFactory< ScaleTransform< double, 4 > >::RegisterTransform ();
 
-    TransformFactory< BSplineDeformableTransform< double, 2, 2 > >::RegisterTransform ();
-    TransformFactory< BSplineDeformableTransform< double, 3, 3 > >::RegisterTransform ();
+    TransformFactory< BSplineTransform< double, 2, 2 > >::RegisterTransform ();
+    TransformFactory< BSplineTransform< double, 3, 3 > >::RegisterTransform ();
     TransformFactory< CenteredAffineTransform< double, 2 > >::RegisterTransform ();
     TransformFactory< CenteredAffineTransform< double, 3 > >::RegisterTransform ();
     TransformFactory< CenteredEuler3DTransform< double > >::RegisterTransform ();
@@ -131,8 +131,8 @@ void TransformFactoryBase::RegisterDefaultTransforms()
     TransformFactory< IdentityTransform< float, 8 > >::RegisterTransform ();
     TransformFactory< IdentityTransform< float, 9 > >::RegisterTransform ();
 
-    TransformFactory< BSplineDeformableTransform< float, 2, 2 > >::RegisterTransform ();
-    TransformFactory< BSplineDeformableTransform< float, 3, 3 > >::RegisterTransform ();
+    TransformFactory< BSplineTransform< float, 2, 2 > >::RegisterTransform ();
+    TransformFactory< BSplineTransform< float, 3, 3 > >::RegisterTransform ();
     TransformFactory< CenteredAffineTransform< float, 2 > >::RegisterTransform ();
     TransformFactory< CenteredAffineTransform< float, 3 > >::RegisterTransform ();
 
