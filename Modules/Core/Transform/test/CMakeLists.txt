@@ -128,17 +128,17 @@ itk_add_test(NAME itkBSplineTransformTest4
     itkBSplineTransformTest2 ${ITK_EXAMPLE_DATA_ROOT}/BSplineDisplacements1.txt ${ITK_EXAMPLE_DATA_ROOT}/DiagonalLines.png ${ITK_EXAMPLE_DATA_ROOT}/DiagonalLines.png ${ITK_TEST_OUTPUT_DIR}/itkBSplineTransformTest4PixelCentered.png ${ITK_TEST_OUTPUT_DIR}/itkBSplineTransformTest4DeformationFieldPixelCentered.mhd 3)
 itk_add_test(NAME itkBSplineTransformTest5
       COMMAND ITKTransformTestDriver
-    --compare DATA{Baseline/itkBSplineTransformTest5PixelCentered.png}
+    --compare DATA{Baseline/itkBSplineTransformTest4PixelCentered.png}
               ${ITK_TEST_OUTPUT_DIR}/itkBSplineTransformTest5PixelCentered.png
     itkBSplineTransformTest3 ${ITK_EXAMPLE_DATA_ROOT}/BSplineDisplacements1.txt ${ITK_EXAMPLE_DATA_ROOT}/DiagonalLines.png ${ITK_EXAMPLE_DATA_ROOT}/DiagonalLines.png ${ITK_TEST_OUTPUT_DIR}/itkBSplineTransformTest5PixelCentered.png ${ITK_TEST_OUTPUT_DIR}/itkBSplineTransformTest5DeformationFieldPixelCentered.mhd 0)
 itk_add_test(NAME itkBSplineTransformTest6
       COMMAND ITKTransformTestDriver
-    --compare DATA{Baseline/itkBSplineTransformTest5PixelCentered.png}
+    --compare DATA{Baseline/itkBSplineTransformTest4PixelCentered.png}
               ${ITK_TEST_OUTPUT_DIR}/itkBSplineTransformTest6PixelCentered.png
     itkBSplineTransformTest3 ${ITK_EXAMPLE_DATA_ROOT}/BSplineDisplacements1.txt ${ITK_EXAMPLE_DATA_ROOT}/DiagonalLines.png ${ITK_EXAMPLE_DATA_ROOT}/DiagonalLines.png ${ITK_TEST_OUTPUT_DIR}/itkBSplineTransformTest6PixelCentered.png ${ITK_TEST_OUTPUT_DIR}/itkBSplineTransformTest6DeformationFieldPixelCentered.mhd 1)
 itk_add_test(NAME itkBSplineTransformTest7
       COMMAND ITKTransformTestDriver
-    --compare DATA{Baseline/itkBSplineTransformTest5PixelCentered.png}
+    --compare DATA{Baseline/itkBSplineTransformTest4PixelCentered.png}
               ${ITK_TEST_OUTPUT_DIR}/itkBSplineTransformTest7PixelCentered.png
     itkBSplineTransformTest3 ${ITK_EXAMPLE_DATA_ROOT}/BSplineDisplacements1.txt ${ITK_EXAMPLE_DATA_ROOT}/DiagonalLines.png ${ITK_EXAMPLE_DATA_ROOT}/DiagonalLines.png ${ITK_TEST_OUTPUT_DIR}/itkBSplineTransformTest7PixelCentered.png ${ITK_TEST_OUTPUT_DIR}/itkBSplineTransformTest7DeformationFieldPixelCentered.mhd 2)
 itk_add_test(NAME itkBSplineTransformInitializerTest1
