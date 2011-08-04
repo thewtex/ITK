@@ -73,6 +73,19 @@ void
 FEMObject<VDimension>
 ::Clear()
 {
+  // Required because of circular references between nodes
+  // and elements
+  int numElements = this->m_ElementContainer->Size();
+  for( int e = 0; e < numElements; e++ )
+    {
+    Element::Pointer el = this->GetElement(e);
+    unsigned int     Npts = el->GetNumberOfNodes();
+    for( unsigned int pt = 0; pt < Npts; pt++ )
+      {
+      el->GetNode(pt)->m_elements.clear( );
+      }
+    }
+
   this->m_NodeContainer->Initialize();
   this->m_ElementContainer->Initialize();
   this->m_LoadContainer->Initialize();
