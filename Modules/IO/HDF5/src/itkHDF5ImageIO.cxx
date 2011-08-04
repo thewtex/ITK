@@ -101,11 +101,8 @@ GetH5TypeSpecialize(short,             H5::PredType::NATIVE_SHORT)
 GetH5TypeSpecialize(unsigned short,    H5::PredType::NATIVE_USHORT)
 GetH5TypeSpecialize(long,              H5::PredType::NATIVE_LONG)
 GetH5TypeSpecialize(unsigned long,     H5::PredType::NATIVE_ULONG)
-GetH5TypeSpecialize(long long,         H5::PredType::NATIVE_LLONG)
-GetH5TypeSpecialize(unsigned long long,H5::PredType::NATIVE_ULLONG)
 GetH5TypeSpecialize(unsigned char,     H5::PredType::NATIVE_UCHAR)
 GetH5TypeSpecialize(char,              H5::PredType::NATIVE_CHAR)
-GetH5TypeSpecialize(bool,              H5::PredType::NATIVE_HBOOL)
 
 #undef GetH5TypeSpecialize
 
@@ -237,7 +234,7 @@ ComponentToString(ImageIOBase::IOComponentType cType)
 }
 //--------------------------------------------------------------------------
 // Function:    H5Object::doesAttrExist
-///\brief       test for existence of attribut
+///\brief       test for existence of attribute
 ///\param       name - IN: Name of the attribute
 ///\return      true if attribute exists, false otherwise
 ///\exception   none
@@ -246,18 +243,6 @@ ComponentToString(ImageIOBase::IOComponentType cType)
 bool doesAttrExist(const H5::H5Object &object, const char* name )
 {
   return( H5Aexists(object.getId(), name) > 0 ? true : false );
-}
-
-//--------------------------------------------------------------------------
-// Function:    H5Object::doesAttrExist
-///\brief       This is an overloaded member function, provided for convenience.
-///             It differs from the above function in that it takes
-///             a reference to an \c H5std_string for \a name.
-// Programmer   Kent Williams 2011
-//--------------------------------------------------------------------------
-bool doesAttrExist(const H5::H5Object &object, const H5std_string &name )
-{
-  return( doesAttrExist(object, name.c_str()) );
 }
 
 }
