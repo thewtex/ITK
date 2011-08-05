@@ -15,11 +15,6 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#if defined(_MSC_VER)
-   //Warning about: identifier was truncated to '255' characters in the debug information (MVC6.0 Debug)
-#pragma warning( disable : 4786 )
-#endif
-#if ! defined(_MSC_VER) //NOTE: This class does not work under MSVS6
 
 #include "itkLoggerThreadWrapper.h"
 #include <iostream>
@@ -44,10 +39,10 @@ typedef std::vector<ThreadDataStruct> ThreadDataVec;
 class SimpleLogger : public itk::LoggerBase
 {
 public:
-    typedef SimpleLogger  Self;
-    typedef itk::LoggerBase  Superclass;
-    typedef itk::SmartPointer<Self>  Pointer;
-    typedef itk::SmartPointer<const Self>  ConstPointer;
+    typedef SimpleLogger                  Self;
+    typedef itk::LoggerBase               Superclass;
+    typedef itk::SmartPointer<Self>       Pointer;
+    typedef itk::SmartPointer<const Self> ConstPointer;
 
     /** Run-time type information (and related methods). */
     itkTypeMacro( SimpleLogger, Object );
@@ -92,7 +87,6 @@ public:
 private:
   itk::LoggerBase* m_Logger;
 };
-#endif// ! defined(_MSC_VER) //NOTE: This class does not work under MSVS6
 
 ITK_THREAD_RETURN_TYPE ThreadedGenerateLogMessages2(void* arg)
 {
@@ -132,7 +126,7 @@ ITK_THREAD_RETURN_TYPE ThreadedGenerateLogMessages2(void* arg)
     return ITK_THREAD_RETURN_VALUE;
   }
   return ITK_THREAD_RETURN_VALUE;
-};
+}
 
 ThreadDataVec create_threaded_data2(int num_threads, itk::LoggerBase* logger)
 {
@@ -143,11 +137,10 @@ ThreadDataVec create_threaded_data2(int num_threads, itk::LoggerBase* logger)
     threadData[ii].logger = logger;
   }
   return threadData;
-};
+}
 
 int itkLoggerThreadWrapperTest( int argc, char * argv[] )
 {
-#if ! defined(_MSC_VER) //NOTE: This class does not work under MSVS6
   try
     {
     if (argc < 2)
@@ -229,7 +222,6 @@ int itkLoggerThreadWrapperTest( int argc, char * argv[] )
     }
 
   std::cout << "[PASSED]" << std::endl;
-#endif //! defined(_MSC_VER) //NOTE: This class does not work under MSVS6
   return EXIT_SUCCESS;
 }
 
