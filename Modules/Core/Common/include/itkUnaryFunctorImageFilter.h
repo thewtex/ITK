@@ -20,6 +20,7 @@
 
 #include "itkInPlaceImageFilter.h"
 #include "itkImageRegionIteratorWithIndex.h"
+#include "itkConceptChecking.h"
 
 namespace itk
 {
@@ -61,7 +62,9 @@ public:
   itkTypeMacro(UnaryFunctorImageFilter, InPlaceImageFilter);
 
   /** Some typedefs. */
-  typedef TFunction FunctorType;
+  typedef TFunction                                FunctorType;
+  typedef typename    FunctorType::InputType       FunctorInputImagePixelType;
+  typedef typename    FunctorType::OutputType      FunctorOutputImagePixelType;
 
   typedef TInputImage                              InputImageType;
   typedef typename    InputImageType::ConstPointer InputImagePointer;
@@ -95,6 +98,14 @@ public:
       }
   }
 
+#ifdef ITK_USE_CONCEPT_CHECKING
+  itkConceptMacro( FilterInputAndFunctorInputSameType,
+                   ( Concept::SameType<FunctorInputImagePixelType,
+                     InputImagePixelType> ) );
+  itkConceptMacro( FilterOutputAndFunctorOutputSameType,
+                   ( Concept::SameType<FunctorOutputImagePixelType,
+                     InputImagePixelType> ) );
+#endif
 protected:
   UnaryFunctorImageFilter();
   virtual ~UnaryFunctorImageFilter() {}

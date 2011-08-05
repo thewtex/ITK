@@ -151,6 +151,7 @@ itkZeroFluxBoundaryConditionTest.cxx
 itkMemoryProbesCollecterBaseTest.cxx
 itkImageAlgorithmCopyTest.cxx
 itkConstantBoundaryConditionTest.cxx
+itkUnaryFunctorImageFilterTest.cxx
 )
 
 CreateTestDriver(ITKCommon1 "${ITKCommon_LIBRARIES}" "${ITKCommon1Tests}")
@@ -372,6 +373,7 @@ endif()
 
 itk_add_test(NAME itkImageAlgorithmCopyTest COMMAND ITKCommon2TestDriver itkImageAlgorithmCopyTest )
 
+itk_add_test(NAME itkUnaryFunctorImageFilterTest COMMAND ITKCommon2TestDriver itkUnaryFunctorImageFilterTest)
 
 
 #
