@@ -15,12 +15,6 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#if defined(_MSC_VER)
-   //Warning about: identifier was truncated to '255' characters in the debug information (MVC6.0 Debug)
-#pragma warning( disable : 4786 )
-#endif
-#if ! defined(_MSC_VER) //NOTE: This class does not work under MSVS6
-
 #include <iostream>
 #include <fstream>
 
@@ -94,7 +88,6 @@ public:
 private:
   itk::LoggerBase* m_Logger;
 };
-#endif// ! defined(_MSC_VER) //NOTE: This class does not work under MSVS6
 
 ITK_THREAD_RETURN_TYPE ThreadedGenerateLogMessages2(void* arg)
 {
@@ -149,7 +142,6 @@ ThreadDataVec create_threaded_data2(int num_threads, itk::LoggerBase* logger)
 
 int itkLoggerThreadWrapperTest( int argc, char * argv[] )
 {
-#if ! defined(_MSC_VER) //NOTE: This class does not work under MSVS6
   try
     {
     if (argc < 2)
@@ -231,6 +223,5 @@ int itkLoggerThreadWrapperTest( int argc, char * argv[] )
     }
 
   std::cout << "[PASSED]" << std::endl;
-#endif //! defined(_MSC_VER) //NOTE: This class does not work under MSVS6
   return EXIT_SUCCESS;
 }
