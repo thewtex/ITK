@@ -77,22 +77,10 @@ public:
   /** Get alpha */
   itkGetConstMacro(Alpha, TScalarType);
 
-  /** These (rather redundant) typedefs are needed because on SGI, typedefs
-   * are not inherited */
-  typedef typename Superclass::InputPointType            InputPointType;
-  typedef typename Superclass::OutputPointType           OutputPointType;
-  typedef typename Superclass::InputVectorType           InputVectorType;
-  typedef typename Superclass::OutputVectorType          OutputVectorType;
-  typedef typename Superclass::InputCovariantVectorType  InputCovariantVectorType;
-  typedef typename Superclass::OutputCovariantVectorType OutputCovariantVectorType;
 protected:
   ElasticBodyReciprocalSplineKernelTransform();
   virtual ~ElasticBodyReciprocalSplineKernelTransform();
   void PrintSelf(std::ostream & os, Indent indent) const;
-
-  /** These (rather redundant) typedefs are needed because on SGI, typedefs
-   * are not inherited */
-  typedef typename Superclass::GMatrixType GMatrixType;
 
   /** Compute G(x)
    * For the elastic body spline, this is:

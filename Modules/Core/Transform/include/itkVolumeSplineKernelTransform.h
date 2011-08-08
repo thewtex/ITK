@@ -64,22 +64,9 @@ public:
   itkStaticConstMacro(SpaceDimension, unsigned int,
                       Superclass::SpaceDimension);
 
-  /** These (rather redundant) typedefs are needed because on SGI, typedefs
-   * are not inherited */
-  typedef typename Superclass::InputPointType            InputPointType;
-  typedef typename Superclass::OutputPointType           OutputPointType;
-  typedef typename Superclass::InputVectorType           InputVectorType;
-  typedef typename Superclass::OutputVectorType          OutputVectorType;
-  typedef typename Superclass::InputCovariantVectorType  InputCovariantVectorType;
-  typedef typename Superclass::OutputCovariantVectorType OutputCovariantVectorType;
-  typedef typename Superclass::PointsIterator            PointsIterator;
 protected:
   VolumeSplineKernelTransform() {}
   virtual ~VolumeSplineKernelTransform() {}
-
-  /** These (rather redundant) typedefs are needed because on SGI,
-   * typedefs are not inherited. */
-  typedef typename Superclass::GMatrixType GMatrixType;
 
   /** Compute G(x)
    * For the volume plate spline, this is:
