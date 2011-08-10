@@ -142,7 +142,7 @@ VTKPolyDataToMesh <TMesh>
      {
      unsigned int numberOfTrianglesInStrip = numberOfCellPoints - 2;
 
-     unsigned long pointIds[3];
+     itk::IdentifierType pointIds[3];
      pointIds[0] = cellPoints[0];
      pointIds[1] = cellPoints[1];
      pointIds[2] = cellPoints[2];
@@ -172,7 +172,7 @@ VTKPolyDataToMesh <TMesh>
        }
      typename TriangleMeshType::CellAutoPointer c;
      TriangleCellType * t = new TriangleCellType;
-     t->SetPointIds( (unsigned long*)cellPoints );
+     t->SetPointIds( (IdentifierType*)cellPoints );
      c.TakeOwnership( t );
      m_ItkMesh->SetCell( cellId, c );
      cellId++;
