@@ -136,35 +136,36 @@ MetaDTITubeConverter< NDimensions >
       pnt.SetRadius( ( *it2 )->GetField("r") );
       }
 
-    if ( ( *it2 )->GetField("v1x") != -1 )
+    char dims[] = "xyz";
+    char v1d[]  = "v1x";
+    if ( ( *it2 )->GetField( v1d ) != -1 )
       {
-      v[0] = ( *it2 )->GetField("v1x");
-      v[1] = ( *it2 )->GetField("v1y");
-      if ( ndims == 3 )
+      for( unsigned int ii = 0; ii < ndims; ++ii )
         {
-        v[2] = ( *it2 )->GetField("v1z");
+        v1d[2] = dims[ii];
+        v[ii]  = ( *it2 )->GetField( v1d );
         }
       pnt.SetNormal1(v);
       }
 
-    if ( ( *it2 )->GetField("v2x") != -1 )
+    char v2d[]  = "v2x";
+    if ( ( *it2 )->GetField( v2d ) != -1 )
       {
-      v[0] = ( *it2 )->GetField("v2x");
-      v[1] = ( *it2 )->GetField("v2y");
-      if ( ndims == 3 )
+      for( unsigned int ii = 0; ii < ndims; ++ii )
         {
-        v[2] = ( *it2 )->GetField("v2z");
+        v2d[2] = dims[ii];
+        v[ii]  = ( *it2 )->GetField( v2d );
         }
       pnt.SetNormal1(v);
       }
 
-    if ( ( *it2 )->GetField("tx") != -1 )
+    char td[] = "tx";
+    if ( ( *it2 )->GetField( td ) != -1 )
       {
-      t[0] = ( *it2 )->GetField("tx");
-      t[1] = ( *it2 )->GetField("ty");
-      if ( ndims == 3 )
+      for( unsigned int ii = 0; ii < ndims; ++ii )
         {
-        t[2] = ( *it2 )->GetField("tz");
+        td[1] = dims[ii];
+        t[ii] = ( *it2 )->GetField( td );
         }
       pnt.SetTangent(t);
       }
