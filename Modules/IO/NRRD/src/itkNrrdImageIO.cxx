@@ -29,6 +29,19 @@ namespace itk
 {
 #define KEY_PREFIX "NRRD_"
 
+NrrdImageIO::NrrdImageIO()
+{
+
+  this->SetNumberOfDimensions(3);
+  this->AddSupportedWriteExtension(".nrrd");
+  this->AddSupportedReadExtension(".nrrd");
+
+}
+
+NrrdImageIO::~NrrdImageIO()
+{}
+
+
 bool NrrdImageIO::SupportsDimension(unsigned long dim)
 {
   if ( 1 == this->GetNumberOfComponents() )
