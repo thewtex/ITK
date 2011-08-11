@@ -44,6 +44,8 @@ bool GPUKernelManager::LoadProgramFromFile(const char* filename, const char* cPr
     return false;
     }
 #else           // Linux version
+  // printout OpenCL source Path
+  std::cout << "Loading source file: " << filename << std::endl;
   pFileStream = fopen(filename, "rb");
   if(pFileStream == 0)
     {

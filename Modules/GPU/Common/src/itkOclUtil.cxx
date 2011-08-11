@@ -184,7 +184,7 @@ cl_platform_id OclSelectPlatform(const char* name)
             {
             ciErrNum = clGetPlatformInfo (clPlatformIDs[i], CL_PLATFORM_NAME, 1024, &chBuffer, NULL);
 
-            //std::cout << "Platform " << i << " : " << chBuffer << std::endl;
+            std::cout << "Platform " << i << " : " << chBuffer << std::endl;
 
             if(ciErrNum == CL_SUCCESS)
               {

@@ -84,7 +84,7 @@ int itkGPUImageTest(int argc, char *argv[])
   // load program and compile
   //std::string oclSrcPath = itk_root_path;
   //oclSrcPath += "/Modules/GPU/Common/ImageOps.cl";
-  std::string oclSrcPath = "./../OpenCL/ImageOps.cl";
+  std::string oclSrcPath = "./OpenCL/ImageOps.cl";
   kernelManager->LoadProgramFromFile( oclSrcPath.c_str(), "#define PIXELTYPE float\n" );
 
   //
