@@ -104,6 +104,7 @@ ITKDeformableMesh
 ITKKLMRegionGrowing
 ITKLabelVoting
 ITKLevelSets
+ITKLevelSetsv4
 ITKMarkovRandomFieldsClassifier
 ITKRegionGrowing
 ITKSignedDistanceFunction
