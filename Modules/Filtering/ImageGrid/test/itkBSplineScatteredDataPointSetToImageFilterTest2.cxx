@@ -30,7 +30,7 @@
  * parametric curve described by B-Splines
  */
 int
-itkBSplineScatteredDataPointSetToImageFilterTest2( int argc , char * argv [] )
+itkBSplineScatteredDataPointSetToImageFilterTest2( int, char ** )
 {
   const unsigned int ParametricDimension = 1;
   const unsigned int DataDimension = 3;
