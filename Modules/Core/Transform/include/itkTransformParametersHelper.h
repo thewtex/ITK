@@ -83,8 +83,4 @@ public:
 
 }//namespace itk
 
-//#if ITK_TEMPLATE_TXX
-//#include "itkTransformParametersHelper.hxx"
-//#endif
-
 #endif

@@ -82,13 +82,8 @@ int itkGaussianSmoothingOnUpdateDisplacementFieldTransformTest(int ,char *[] )
   paramsFill( outlier + 1 ) = 99.0;
   displacementTransform->SetGaussianSmoothingSigma(3);
   displacementTransform->SetParameters( paramsFill );
-  //params = displacementTransform->GetParameters();
-  //std::cout << "params *before* SmoothDisplacementFieldGauss: " << std::endl
-  //          << params << std::endl;
   displacementTransform->GaussianSmoothDisplacementField();
   params = displacementTransform->GetParameters();
-  //std::cout << "field->GetPixelContainter *after* Smooth: "
-  //          << field->GetPixelContainer() << std::endl;
   /* We should see 0's on all boundaries from the smoothing routine */
   unsigned int linelength = dimLength * dimensions;
   for( unsigned int i=0; i < displacementTransform->GetNumberOfParameters();
@@ -138,8 +133,6 @@ int itkGaussianSmoothingOnUpdateDisplacementFieldTransformTest(int ,char *[] )
   update.Fill(1.2);
   displacementTransform->UpdateTransformParameters( update );
   params = displacementTransform->GetParameters();
-  //std::cout  << "params: " << std::endl << params << std::endl;
-             //<< "derivativeTruth: " << std::endl << derivative << std::endl
   /* We should see 0's on all boundaries from the smoothing routine */
   {
   unsigned int linelength = dimLength * dimensions;

@@ -50,7 +50,7 @@ public:
   typedef Image< Vector<TValueType, NVectorDimension>,
                  VImageDimension >
                                                 ParameterImageType;
-  typedef typename ParameterImageType::Pointer  ParameterImagePointer;
+  typedef ParameterImageType *                  ParameterImagePointer;
 
   /** Type of the common data object used in TransformParameters */
   typedef typename Superclass::CommonContainerType CommonContainerType;

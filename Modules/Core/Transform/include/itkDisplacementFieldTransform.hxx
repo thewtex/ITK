@@ -701,7 +701,7 @@ void DisplacementFieldTransform<TScalar, NDimensions>
 ::SetDisplacementField( DisplacementFieldType* field )
 {
   itkDebugMacro("setting DisplacementField to " << field);
-  if ( this->m_DisplacementField != field )
+  if ( this->m_DisplacementField.GetPointer() != field )
     {
     this->m_DisplacementField = field;
     this->Modified();

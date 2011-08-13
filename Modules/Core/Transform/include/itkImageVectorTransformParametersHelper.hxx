@@ -41,7 +41,7 @@ void
 ImageVectorTransformParametersHelper< TValueType, NVectorDimension, VImageDimension >
 ::MoveDataPointer( CommonContainerType* container, TValueType * pointer )
 {
-  if( m_ParameterImage.IsNull() )
+  if( m_ParameterImage == NULL )
     {
     itkGenericExceptionMacro("ImageVectorTransformParametersHelper::"
       "MoveDataPointer: m_ParameterImage must be defined.");
