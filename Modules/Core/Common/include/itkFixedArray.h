@@ -20,12 +20,6 @@
 
 #include "itkMacro.h"
 
-#ifdef _MSC_VER
-#pragma warning (push)
-#pragma warning (disable: 4284) // operator-> returning pointer to
-// non-aggregate
-#endif
-
 namespace itk
 {
 //HACK:  Need to remove this function.
