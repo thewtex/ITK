@@ -64,6 +64,14 @@ if test "$1" == "-h" -o "$1" == "--help"; then
   exit 1
 fi
 
+# Remove results from prior run.
+find . -name DynamicAnalysis.xml -delete
+find . -name '*.gcda*' -delete
+find . -name '*.gcno' -delete
+
+ctest --build-and-test --build-nocmake --build-noclean \
+  --build-generator 'Unix Makefiles' --build-makeprogram make $*
+
 ctest -D ExperimentalMemCheck $*
 
 memcheck_xml=$(find . -name DynamicAnalysis.xml | xargs ls -t1 | head -n 1)
