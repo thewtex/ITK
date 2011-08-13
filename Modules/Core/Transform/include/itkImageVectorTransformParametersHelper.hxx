@@ -23,14 +23,24 @@
 
 namespace itk
 {
-/** Default contstructor */
+/** Default constructor */
 template< typename TValueType,
           unsigned int NVectorDimension,
           unsigned int VImageDimension >
 ImageVectorTransformParametersHelper< TValueType, NVectorDimension, VImageDimension >
 ::ImageVectorTransformParametersHelper()
 {
-  m_ParameterImage = NULL;
+  this->m_ParameterImage = NULL;
+}
+
+/** Default destructor */
+template< typename TValueType,
+          unsigned int NVectorDimension,
+          unsigned int VImageDimension >
+ImageVectorTransformParametersHelper< TValueType, NVectorDimension, VImageDimension >
+::~ImageVectorTransformParametersHelper()
+{
+  this->m_ParameterImage = NULL;
 }
 
 /** Move the data pointer */
@@ -41,7 +51,7 @@ void
 ImageVectorTransformParametersHelper< TValueType, NVectorDimension, VImageDimension >
 ::MoveDataPointer( CommonContainerType* container, TValueType * pointer )
 {
-  if( m_ParameterImage.IsNull() )
+  if( this->m_ParameterImage == NULL )
     {
     itkGenericExceptionMacro("ImageVectorTransformParametersHelper::"
       "MoveDataPointer: m_ParameterImage must be defined.");
@@ -51,7 +61,7 @@ ImageVectorTransformParametersHelper< TValueType, NVectorDimension, VImageDimens
   typedef typename ParameterImageType::PixelContainer::Element vectorElement;
   vectorElement* vectorPointer = reinterpret_cast<vectorElement *>(pointer);
   // We're expecting the new memory buffer t be of same size.
-  unsigned int sizeInVectors = m_ParameterImage->GetPixelContainer()->Size();
+  unsigned int sizeInVectors = this->m_ParameterImage->GetPixelContainer()->Size();
   // After this call, PixelContainer will *not* manage its memory.
   this->m_ParameterImage->GetPixelContainer()->SetImportPointer( vectorPointer,
                                                               sizeInVectors );
@@ -68,7 +78,7 @@ ImageVectorTransformParametersHelper< TValueType, NVectorDimension, VImageDimens
 {
   if( object == NULL )
     {
-    m_ParameterImage = NULL;
+    this->m_ParameterImage = NULL;
     return;
     }
   else
@@ -82,7 +92,8 @@ ImageVectorTransformParametersHelper< TValueType, NVectorDimension, VImageDimens
         "not of proper image type. Expected VectorImage, received "
         << object->GetNameOfClass() )
       }
-    m_ParameterImage = image;
+    this->m_ParameterImage = image;
+
     //The PixelContainer for Image<Vector> points to type Vector, so we have
     // to determine the number of raw elements of type TValueType in the buffer
     // and cast a pointer to it for assignment to the Array data pointer.
@@ -91,7 +102,8 @@ ImageVectorTransformParametersHelper< TValueType, NVectorDimension, VImageDimens
                               ( image->GetPixelContainer()->GetBufferPointer() );
     //Set the Array's pointer to the image data buffer. By default it will
     // not manage the memory.
-    container->SetData( valuePointer, sz );
+    const bool letArrayManageMemory = false;
+    container->SetData( valuePointer, sz, letArrayManageMemory );
     }
 }
 

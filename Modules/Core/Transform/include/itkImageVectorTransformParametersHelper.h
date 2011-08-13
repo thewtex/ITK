@@ -47,10 +47,8 @@ public:
   typedef TransformParametersHelper< TValueType >   Superclass;
 
   /** Image type that this class expects. */
-  typedef Image< Vector<TValueType, NVectorDimension>,
-                 VImageDimension >
-                                                ParameterImageType;
-  typedef typename ParameterImageType::Pointer  ParameterImagePointer;
+  typedef Vector<TValueType, NVectorDimension>          ParameterPixelType;
+  typedef Image< ParameterPixelType, VImageDimension >  ParameterImageType;
 
   /** Type of the common data object used in TransformParameters */
   typedef typename Superclass::CommonContainerType CommonContainerType;
@@ -76,11 +74,11 @@ public:
   virtual void SetParametersObject(CommonContainerType * container,
                                    LightObject * );
 
-  ~ImageVectorTransformParametersHelper(){}
+  ~ImageVectorTransformParametersHelper();
 
 private:
   /** The parameter image used by the class */
-  ParameterImagePointer           m_ParameterImage;
+  ParameterImageType *           m_ParameterImage;
 
 };
 
