@@ -27,11 +27,29 @@ namespace itk
 {
 
 /** \class BSplineDisplacementFieldTransform
+ * \brief Representation of a smooth deformation field  with B-splines.
+ *
+ * Although there already exists a B-spline transform in ITK which can be used
+ * for processes such as image registration, if these processes involve a dense
+ * sampling of an image a significant computational speed-up can be achieved
+ * by densely sampling the B-spline transform prior to invoking transformations.
+ *
+ * This class takes as input a displacement field, smooths it using the
+ * specified B-spline parameters, and (optionally) calculates an approximate
+ * inverse field.  This represents an alternative approach to B-spline
+ * (FFD) registration and is explained more in detail in the reference given
+ * below.
+ *
+ * \author Nicholas J. Tustison
+ *
+ * \par REFERENCE
+ * NJ Tustison, BB Avants, JC Gee, "Directly Manipulated Free-Form Deformation
+ * Image Registration", IEEE Transactions on Image Processing, 18(3):624-635,
+ * 2009.
  *
  * \ingroup ITKTransform
  */
-template
-  <class TScalar, unsigned int NDimensions>
+template<class TScalar, unsigned int NDimensions>
 class ITK_EXPORT BSplineDisplacementFieldTransform :
   public DisplacementFieldTransform<TScalar, NDimensions>
 {
@@ -61,12 +79,12 @@ public:
   typedef typename DisplacementFieldType::PixelType DisplacementVectorType;
   typedef DisplacementFieldType                     ControlPointLatticeType;
   typedef PointSet<DisplacementVectorType,
-    itkGetStaticConstMacro( Dimension )>           PointSetType;
+    itkGetStaticConstMacro( Dimension )>            PointSetType;
   typedef BSplineScatteredDataPointSetToImageFilter
     <PointSetType, DisplacementFieldType>           BSplineFilterType;
-  typedef typename BSplineFilterType::PointDataImageType
-                                                   DisplacementFieldControlPointLatticeType;
-  typedef typename BSplineFilterType::ArrayType    ArrayType;
+  typedef typename BSplineFilterType::
+    PointDataImageType                              DisplacementFieldControlPointLatticeType;
+  typedef typename BSplineFilterType::ArrayType     ArrayType;
 
   /** Get/Set the displacement field. */
   virtual void SetDisplacementField( DisplacementFieldType * );
@@ -102,41 +120,24 @@ public:
   /**
    * Set the mesh size which is another way of specifying the control point
    * grid size.  The mesh size in each dimension is calculated as the
-   * difference
-   * between the control point grid size and the spline order, i.e.
+   * difference between the control point grid size and the spline order, i.e.
    * meshSize = controlPointGridSize - SplineOrder.
    */
-  void SetMeshSize( const ArrayType meshSize )
-    {
-    ArrayType numberOfControlPoints;
-    for( unsigned int d = 0; d < Dimension; d++ )
-      {
-      numberOfControlPoints[d] = meshSize[d] + this->m_SplineOrder;
-      }
-    this->SetNumberOfControlPoints( numberOfControlPoints );
-    }
+  void SetMeshSize( const ArrayType );
 
   /**
-   * Set the number of fitting levels.  One of the contributions of N4 is the
-   * introduction of a multi-scale approach to fitting. This allows one to
+   * Set the number of fitting levels.  This allows one to
    * specify a B-spline mesh size for initial fitting followed by a doubling of
-   * the mesh resolution for each subsequent fitting level.  Default = 3 levels.
+   * the mesh resolution for each subsequent fitting level.  Default = 1 levels.
    */
   itkSetMacro( NumberOfFittingLevels, ArrayType );
 
   /**
-   * Set the number of fitting levels.  One of the contributions of N4 is the
-   * introduction of a multi-scale approach to fitting. This allows one to
+   * Set the number of fitting levels.  This allows one to
    * specify a B-spline mesh size for initial fitting followed by a doubling of
    * the mesh resolution for each subsequent fitting level.  Default = 3 levels.
    */
-  void SetNumberOfFittingLevels( const unsigned int n )
-    {
-    ArrayType nlevels;
-
-    nlevels.Fill( n );
-    this->SetNumberOfFittingLevels( nlevels );
-    }
+  void SetNumberOfFittingLevels( const unsigned int );
 
   /**
    * Get the number of fitting levels.  One of the contributions is the
@@ -146,7 +147,6 @@ public:
    * Default = 3 levels.
    */
   itkGetConstMacro( NumberOfFittingLevels, ArrayType );
-
 
   /**
    * Boolean value to calculate an approximate inverse
@@ -175,6 +175,7 @@ protected:
 
   typename DisplacementFieldControlPointLatticeType::Pointer
                                         m_DisplacementFieldControlPointLattice;
+
   typename DisplacementFieldControlPointLatticeType::Pointer
                                  m_InverseDisplacementFieldControlPointLattice;
 
@@ -185,7 +186,6 @@ protected:
 private:
   BSplineDisplacementFieldTransform( const Self& ); //purposely not implemented
   void operator=( const Self& ); //purposely not implemented
-
 };
 
 } // end namespace itk

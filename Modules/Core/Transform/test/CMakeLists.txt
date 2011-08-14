@@ -27,6 +27,7 @@ itkCenteredEuler3DTransformTest.cxx
 itkTransformFileReaderWriterTest.cxx
 itkTransformIOTest.cxx
 itkTransformsSetParametersTest.cxx
+itkBSplineDisplacementFieldTransformTest.cxx
 itkBSplineTransformTest.cxx
 itkBSplineTransformTest2.cxx
 itkBSplineTransformTest3.cxx
@@ -109,6 +110,8 @@ itk_add_test(NAME itkTransformIOTest
               ${ITK_TEST_OUTPUT_DIR})
 itk_add_test(NAME itkTransformsSetParametersTest
       COMMAND ITKTransformTestDriver itkTransformsSetParametersTest)
+itk_add_test(NAME itkBSplineDisplacementFieldTransformTest
+      COMMAND ITKTransformTestDriver itkBSplineDisplacementFieldTransformTest)
 itk_add_test(NAME itkBSplineTransformTest
       COMMAND ITKTransformTestDriver itkBSplineTransformTest)
 itk_add_test(NAME itkBSplineTransformTest2

@@ -33,8 +33,7 @@ typedef DisplacementTransformType::ScalarType  ScalarType;
 
 const ScalarType epsilon = 1e-10;
 
-
-int itkBSplineDisplacementFieldTransformTest(int ,char *[] )
+int itkBSplineDisplacementFieldTransformTest( int ,char *[] )
 {
 
   /* NOTE
@@ -91,6 +90,17 @@ int itkBSplineDisplacementFieldTransformTest(int ,char *[] )
 
   std::cout << "displacementTransform: " << std::endl
             << displacementTransform << std::endl;
+  std::cout << "Spline order: " << displacementTransform->GetSplineOrder()
+    << std::endl;
+  std::cout << "Number of control points: "
+    << displacementTransform->GetNumberOfControlPoints() << std::endl;
+  std::cout << "Number of fitting levels: "
+    << displacementTransform->GetNumberOfFittingLevels() << std::endl;
+  std::cout << "Inverse?: " << ( displacementTransform->
+    GetCalculateApproximateInverseDisplacementField() ? '1' : '0' )
+    << std::endl;
+
+  displacementTransform->Print( std::cout, 4 );
 
   /* Test transforming some points. */
 
@@ -100,17 +110,8 @@ int itkBSplineDisplacementFieldTransformTest(int ,char *[] )
   /* Test a point with non-zero displacement */
   testPoint[0] = nonZeroFieldIndex[0];
   testPoint[1] = nonZeroFieldIndex[1];
-  deformTruth[0] = nonZeroFieldIndex[0] + nonZeroFieldVector[0];
-  deformTruth[1] = nonZeroFieldIndex[1] + nonZeroFieldVector[1];
   deformOutput = displacementTransform->TransformPoint( testPoint );
   std::cout << "point 1 transformed: " << deformOutput;
-  std::cout << "(compared with input:  " << deformTruth << ")" << std::endl;
-//  if( !samePoint( deformOutput, deformTruth ) )
-//      {
-//      std::cout << "Failed transforming point 1." << std::endl;
-//      return EXIT_FAILURE;
-//      }
-
 
   /* Test a non-integer point using the linear interpolator.
    * The default interpolator thus far is linear, but set it
@@ -127,14 +128,9 @@ int itkBSplineDisplacementFieldTransformTest(int ,char *[] )
   ScalarType xoffset = 0.4;
   testPoint[0] = nonZeroFieldIndex[0] + xoffset;
   testPoint[1] = nonZeroFieldIndex[1];
-  deformTruth[0] = (nonZeroFieldIndex[0] + 1) * xoffset +
-    ( nonZeroFieldIndex[0] + nonZeroFieldVector[0] ) * (1 - xoffset);
-  deformTruth[1] = nonZeroFieldIndex[1] * xoffset +
-    ( nonZeroFieldIndex[1] + nonZeroFieldVector[1] ) * (1 - xoffset);
   deformOutput = displacementTransform->TransformPoint( testPoint );
   std::cout << "Transform point with offset: " << std::endl
             << "  Test point: " << testPoint << std::endl
-            << "  Truth: " << deformTruth << std::endl
             << "  Output: " << deformOutput << std::endl;
 
   /* Test IsLinear()
@@ -166,20 +162,7 @@ int itkBSplineDisplacementFieldTransformTest(int ,char *[] )
   DisplacementTransformType::OutputPointType inverseTruth, inverseOutput;
   testPoint[0] = inverseFieldIndex[0];
   testPoint[1] = inverseFieldIndex[1];
-  inverseTruth[0] = testPoint[0] + inverseFieldVector[0];
-  inverseTruth[1] = testPoint[1] + inverseFieldVector[1];
   inverseOutput = inverseTransform->TransformPoint( testPoint );
-
-  /* Get inverse transform again, but using other accessor. */
-//  DisplacementTransformType::Pointer inverseTransform2;
-//  inverseTransform2 = dynamic_cast<DisplacementTransformType*>
-//    ( displacementTransform->GetInverseTransform().GetPointer() );
-//  if( ! inverseTransform2 )
-//    {
-//    std::cout << "Failed calling GetInverseTransform()." << std::endl;
-//    return EXIT_FAILURE;
-//    }
-//  inverseOutput = inverseTransform2->TransformPoint( testPoint );
 
   /* Test GetJacobian - Since there are no parameters for this transform,
    * the Jacobian shouldn't be requested and will throw an exception. */
@@ -187,23 +170,14 @@ int itkBSplineDisplacementFieldTransformTest(int ,char *[] )
   DisplacementTransformType::InputPointType inputPoint;
   inputPoint[0]=1;
   inputPoint[1]=2;
-  bool caughtException = false;
   try
     {
     jacobian = displacementTransform->GetJacobian( inputPoint );
     }
   catch( itk::ExceptionObject & e )
     {
-    std::string description(e.GetDescription());
-    caughtException =
-      description.find("DisplacementFieldTransform") != std::string::npos;
-    }
-  if( !caughtException )
-    {
-    std::cout << "Expected GetJacobian to throw exception." << std::endl;
+    std::cout << e.GetDescription() << std::endl;
     return EXIT_FAILURE;
     }
-  std::cout << "Passed Jacobian test." << std::endl;
-
   return EXIT_SUCCESS;
 }

@@ -18,18 +18,6 @@
 #ifndef __itkBSplineDisplacementFieldTransform_hxx
 #define __itkBSplineDisplacementFieldTransform_hxx
 
-/* ***
- * This class isn't ready yet. Include files need module dependencies upate
- * and itkBSplineScatteredDataPointSetToImageFilter.h, include from .h, is
- * still in Review.
- * The test for this class is not yet included in TransformTestDriver. But,
- * since new paradigm creates TransformHeaderTest files automatically, this
- * header gets included and causes compilation errors, so comment out.
- */
-#if 0
-
-/* *** */
-
 #include "itkBSplineDisplacementFieldTransform.h"
 
 #include "itkContinuousIndex.h"
@@ -46,7 +34,7 @@ BSplineDisplacementFieldTransform<TScalar, NDimensions>::
 BSplineDisplacementFieldTransform() : Superclass()
 {
   this->m_SplineOrder = 3;
-  this->m_NumberOfFittingLevels.Fill( 3 );
+  this->m_NumberOfFittingLevels.Fill( 1 );
   this->m_NumberOfControlPoints.Fill( 4 );
 
   this->m_CalculateApproximateInverseDisplacementField = false;
@@ -59,6 +47,36 @@ template<class TScalar, unsigned int NDimensions>
 BSplineDisplacementFieldTransform<TScalar, NDimensions>::
 ~BSplineDisplacementFieldTransform()
 {
+}
+
+/**
+ * set mesh size
+ */
+template<class TScalar, unsigned int NDimensions>
+void
+BSplineDisplacementFieldTransform<TScalar, NDimensions>
+::SetMeshSize( const ArrayType meshSize )
+{
+  ArrayType numberOfControlPoints;
+  for( unsigned int d = 0; d < Dimension; d++ )
+    {
+    numberOfControlPoints[d] = meshSize[d] + this->m_SplineOrder;
+    }
+  this->SetNumberOfControlPoints( numberOfControlPoints );
+}
+
+/**
+ * set number of fitting levels
+ */
+template<class TScalar, unsigned int NDimensions>
+void
+BSplineDisplacementFieldTransform<TScalar, NDimensions>
+::SetNumberOfFittingLevels( const unsigned int n )
+{
+  ArrayType nlevels;
+
+  nlevels.Fill( n );
+  this->SetNumberOfFittingLevels( nlevels );
 }
 
 /**
@@ -208,7 +226,5 @@ PrintSelf( std::ostream& os, Indent indent ) const
     << this->m_NumberOfFittingLevels << std::endl;
 }
 } // namespace itk
-
-#endif //#if 0
 
 #endif
