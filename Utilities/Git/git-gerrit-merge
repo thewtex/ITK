@@ -43,9 +43,17 @@ ssh $gerrit_url gerrit ls-projects >/dev/null || die "Could not connect to Gerri
 head_sha=$(git rev-parse HEAD)
 commit_count=$(ssh $gerrit_url gerrit query -- commit:$head_sha | awk '/rowCount/ { print $2 }')
 if test "$commit_count" -lt 1; then
-  die "Patch not found on Gerrit.
+  echo "Commit not found in Gerrit.
 
-Have you pushed your patch to Gerrit for review (git gerrit-push)?"
+Have you pushed your patch-set to Gerrit for review (git gerrit-push)?
+
+If you are not the original author, and you cherry-pick'd this patch set, you
+can ignore this warning.
+"
+  read -ep "Merge anyway? [N/y]: " merge_it
+  if test "$merge_it" != "y" -a "$merge_it" != "Y"; then
+    die "Patch not found on Gerrit."
+  fi
 fi
 
 git stage-push && git stage-merge
