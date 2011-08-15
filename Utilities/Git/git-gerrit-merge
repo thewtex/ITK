@@ -43,9 +43,25 @@ ssh $gerrit_url gerrit ls-projects >/dev/null || die "Could not connect to Gerri
 head_sha=$(git rev-parse HEAD)
 commit_count=$(ssh $gerrit_url gerrit query -- commit:$head_sha | awk '/rowCount/ { print $2 }')
 if test "$commit_count" -lt 1; then
-  die "Patch not found on Gerrit.
+  echo "Commit not found in Gerrit.
 
-Have you pushed your patch to Gerrit for review (git gerrit-push)?"
+Have you pushed your patch-set to Gerrit for review (git gerrit-push)?
+
+Attempting 'git gerrit-push'...
+"
+
+  git gerrit-push 2>&1 | tee push_output.txt
+  grep -q 'no changes made' push_output.txt
+  no_changes="$?"
+  rm push_output.txt
+  if test "$no_changes" -eq 0; then
+    echo "cherry-pick detected causing commit to not be found in Gerrit.
+
+Continuing with merge..."
+  else
+    die "Patch set was uploaded to gerrit.  If a merge is still desired, please
+run 'git gerrit-merge' again."
+  fi
 fi
 
 git stage-push && git stage-merge
