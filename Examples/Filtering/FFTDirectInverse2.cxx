@@ -40,8 +40,8 @@
 #include "itkImageFileWriter.h"
 #include "itkResampleImageFilter.h"
 #include "itkRescaleIntensityImageFilter.h"
-#include "itkFFTWRealToComplexConjugateImageFilter.h"
-#include "itkFFTWComplexConjugateToRealImageFilter.h"
+#include "itkFFTWForwardFFTImageFilter.h"
+#include "itkFFTWInverseFFTImageFilter.h"
 #include "itkFlipImageFilter.h"
 
 #if !defined(USE_FFTWF)
@@ -89,7 +89,7 @@ int main( int argc, char * argv[] )
   inputreader->Update();
 
 // Forward FFT filter
-  typedef itk::FFTWRealToComplexConjugateImageFilter < InputImageType > FFTFilterType;
+  typedef itk::FFTWForwardFFTImageFilter < InputImageType > FFTFilterType;
 
   FFTFilterType::Pointer fftinput = FFTFilterType::New();
   fftinput->SetInput( inputreader->GetOutput() );
@@ -99,7 +99,7 @@ int main( int argc, char * argv[] )
   typedef FFTFilterType::OutputImageType ComplexImageType;
 
 // Do the inverse transform = forward transform + flip all axes
-  typedef itk::FFTWComplexConjugateToRealImageFilter < ComplexImageType > invFFTFilterType;
+  typedef itk::FFTWInverseFFTImageFilter < ComplexImageType > invFFTFilterType;
 
   invFFTFilterType::Pointer fftoutput = invFFTFilterType::New();
   fftoutput->SetInput(fftinput->GetOutput()); // try to recover the input image
