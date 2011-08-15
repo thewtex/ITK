@@ -211,8 +211,8 @@ CompositeTransform<TScalar, NDimensions>
      * M rows = dimensionality of the transforms
      * N cols = total number of parameters in the selected sub transforms. */
     j.SetSize( NDimensions, this->GetNumberOfLocalParameters() );
-    unsigned int offset = 0, offsetLast = -1;
-
+    unsigned int offset = 0, offsetLast = NumericTraits<unsigned int>::max();
+    std::cout << "************************* offsetLast: " << offsetLast << std::endl;
     OutputPointType transformedPoint( p );
 
     bool finishFirstIter = false;
@@ -301,7 +301,7 @@ CompositeTransform<TScalar, NDimensions>
 
         // update every old term by left multiplying dTk / dT{k-1}
         // do this before computing the transformedPoint for the next iteration
-        if (offsetLast > 0) {
+        if (offsetLast < NumericTraits<unsigned int>::max()) {
 
             JacobianType old_j = j.extract(NDimensions, offsetLast, 0, 0);
 
