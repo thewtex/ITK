@@ -33,24 +33,21 @@ macro( itk_module_headertest _name )
         ${${_name}_BINARY_DIR}/test/${_name}HeaderTest${_test_num}.cxx )
     endwhile()
 
-    # Delete the outputs.  These should be regenerated when the header files
-    # move around, but adding the header files to the add_custom_command DEPENDS
-    # does not solve the problem.  So, they get nuked at CMake configuration
-    # time.
-    file( REMOVE ${_outputs} )
-
-    add_custom_command(
-      OUTPUT ${_outputs}
-      COMMAND ${PYTHON_EXECUTABLE} ${ITK_SOURCE_DIR}/Utilities/Maintenance/BuildHeaderTest.py
-      ${_name}
-      ${${_name}_SOURCE_DIR}
-      ${${_name}_BINARY_DIR}
-      ${MAXIMUM_NUMBER_OF_HEADERS}
-      )
+    set( _test_num 1 )
     foreach( _header_test_src ${_outputs} )
       get_filename_component( _test_name ${_header_test_src} NAME_WE )
       add_executable( ${_test_name} ${_header_test_src} )
       target_link_libraries( ${_test_name} ITKCommon )
+      add_custom_command(
+        TARGET ${_test_name} PRE_BUILD
+        COMMAND ${PYTHON_EXECUTABLE} ${ITK_SOURCE_DIR}/Utilities/Maintenance/BuildHeaderTest.py
+        ${_name}
+        ${${_name}_SOURCE_DIR}
+        ${${_name}_BINARY_DIR}
+        ${MAXIMUM_NUMBER_OF_HEADERS}
+        ${_test_num}
+        )
+      math( EXPR _test_num "${_test_num} + 1" )
     endforeach()
   endif()
 endmacro()
