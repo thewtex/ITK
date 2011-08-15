@@ -21,7 +21,7 @@
 //
 
 #ifdef DIM_1
-__kernel void NeighborOperatorFilter(__global const INTYPE* in,
+__kernel void NeighborOperatorFilter(const __global INTYPE* in,
                                      __global OUTTYPE* out,
                                      __constant OPTYPE* op,
                                      int radiusx, int width)
@@ -54,7 +54,7 @@ __kernel void NeighborOperatorFilter(__global const INTYPE* in,
 #endif
 
 #ifdef DIM_2
-__kernel void NeighborOperatorFilter(__global const INTYPE* in,
+__kernel void NeighborOperatorFilter(const __global INTYPE* in,
                                      __global OUTTYPE* out,
                                      __constant OPTYPE* op,
                                      int radiusx, int radiusy,
@@ -102,7 +102,7 @@ __kernel void NeighborOperatorFilter(__global const INTYPE* in,
 #endif
 
 #ifdef DIM_3
-__kernel void NeighborOperatorFilter(__global const INTYPE* in,
+__kernel void NeighborOperatorFilter(const __global INTYPE* in,
                                      __global OUTTYPE* out,
                                      __constant OPTYPE* op,
                                      int radiusx, int radiusy, int radiusz,
@@ -115,7 +115,13 @@ __kernel void NeighborOperatorFilter(__global const INTYPE* in,
   OPTYPE sum = 0;
   unsigned int opIdx = 0;
 
-  if(gix < width && giy < height && giz < depth)
+  bool isValid;
+  if(gix < width) isValid = true;
+  else if(giy < height) isValid = true;
+  else if(giz < depth) isValid = true;
+  else isValid = false;
+
+  if( isValid )
   {
     /*
     // Clamping boundary condition

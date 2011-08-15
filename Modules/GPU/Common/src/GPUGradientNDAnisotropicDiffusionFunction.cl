@@ -549,7 +549,7 @@ __kernel void ComputeUpdate(__global const INPIXELTYPE *in, __global BUFPIXELTYP
       delta += (Cx*dx_f - Cxd*dx_b);
     }
 
-		buf[gidx] = delta;
+    buf[gidx] = delta;
   }
 
 }

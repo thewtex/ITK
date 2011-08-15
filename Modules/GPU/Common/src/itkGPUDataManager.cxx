@@ -54,6 +54,9 @@ void GPUDataManager::Allocate()
 
   if( m_BufferSize > 0 )
     {
+#ifdef VERBOSE
+std::cout << "Create GPU buffer of size " << m_BufferSize << " Bytes" << std::endl;
+#endif
     m_GPUBuffer = clCreateBuffer(m_ContextManager->GetCurrentContext(), m_MemFlags, m_BufferSize, NULL, &errid);
     OclCheckError(errid);
     }

@@ -354,11 +354,33 @@ bool GPUKernelManager::LaunchKernel(int kernelIdx, int dim, size_t *globalWorkSi
     return false;
     }
 
+// debug
+//std::cout << "Dim : " << dim << std::endl;
+
+// debug - if devicetype is CPU
+//localWorkSize[0] = localWorkSize[1] = localWorkSize[2] = 1;
+//
+
   cl_int errid;
   errid = clEnqueueNDRangeKernel(m_Manager->GetCommandQueue(
-                                   m_CommandQueueId), m_KernelContainer[kernelIdx], dim, NULL, globalWorkSize,
+                                   m_CommandQueueId), m_KernelContainer[kernelIdx], (cl_uint)dim, NULL, globalWorkSize,
                                  localWorkSize, 0, NULL, NULL);
   OclCheckError(errid);
+
+/*
+std::cout << "Check point 1" << std::endl;
+
+// debug -- synchronize
+errid = clFlush(m_Manager->GetCommandQueue(m_CommandQueueId));
+OclCheckError(errid);
+
+std::cout << "Check point 2" << std::endl;
+
+errid = clFinish(m_Manager->GetCommandQueue(m_CommandQueueId));
+OclCheckError(errid);
+
+std::cout << "Wait for kernel execution ends" << std::endl;
+*/
 
   if(errid != CL_SUCCESS)
     {

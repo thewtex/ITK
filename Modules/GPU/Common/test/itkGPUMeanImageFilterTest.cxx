@@ -67,11 +67,9 @@ int itkGPUMeanImageFilterTest(int argc, char *argv[])
 
   if( argc <  3 )
   {
-
     std::cerr << "Error: missing arguments" << std::endl;
     std::cerr << "inputfile outputfile " << std::endl;
     return EXIT_FAILURE;
-
     //reader->SetFileName( "/Users/wkjeong/Proj/ITK/Examples/Data/BrainProtonDensitySlice.png" ); //"C:/Users/wkjeong/Proj/ITK/Modules/GPU/Common/data/input-testvolume.nrrd" );
   }
   else
@@ -94,7 +92,7 @@ int itkGPUMeanImageFilterTest(int argc, char *argv[])
   indexRadius[2] = 2; // radius along z
 
   // test 1~8 threads for CPU
-  for(int nThreads = 8 /*1*/; nThreads <= 8; nThreads++)
+  for(int nThreads = 1; nThreads <= 8; nThreads++)
   {
     MeanFilterType::Pointer CPUFilter = MeanFilterType::New();
 
@@ -121,12 +119,9 @@ int itkGPUMeanImageFilterTest(int argc, char *argv[])
       itk::TimeProbe gputimer;
       gputimer.Start();
 
-      std::cout << "t" << std::cout;
-
       GPUFilter->SetInput( reader->GetOutput() );
       GPUFilter->SetRadius( indexRadius );
       GPUFilter->Update();
-
       GPUFilter->GetOutput()->UpdateBuffers(); // synchronization point (GPU->CPU memcpy)
 
       gputimer.Stop();

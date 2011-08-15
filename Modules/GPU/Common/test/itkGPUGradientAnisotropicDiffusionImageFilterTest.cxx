@@ -58,12 +58,12 @@ int itkGPUGradientAnisotropicDiffusionImageFilterTest(int argc, char *argv[])
   ReaderType::Pointer reader = ReaderType::New();
   WriterType::Pointer writer = WriterType::New();
 
-   if( argc <  3 )
+  if( argc <  3 )
   {
-    /*std::cerr << "Error: missing arguments" << std::endl;
+    std::cerr << "Error: missing arguments" << std::endl;
     std::cerr << "inputfile outputfile " << std::endl;
-    return EXIT_FAILURE;*/
-    reader->SetFileName( "C:/Users/wkjeong/Proj/ITK/Modules/GPU/Common/data/input-testvolume.nrrd" );
+    return EXIT_FAILURE;
+    //reader->SetFileName( "C:/Users/wkjeong/Proj/ITK/Modules/GPU/Common/data/input-testvolume.nrrd" );
   }
   else
   {

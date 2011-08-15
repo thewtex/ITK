@@ -34,6 +34,7 @@ GPUContextManager* GPUContextManager::GetInstance()
 
 void GPUContextManager::DestroyInstance()
 {
+std::cout << "Context is destroyed" << std::endl;
   delete m_Instance;
   m_Instance = NULL;
 }
@@ -50,7 +51,7 @@ GPUContextManager::GPUContextManager()
   m_Platform = OclSelectPlatform("NVIDIA");
   assert(m_Platform != NULL);
 
-  cl_device_type devType = CL_DEVICE_TYPE_GPU;
+  cl_device_type devType = CL_DEVICE_TYPE_GPU;//CL_DEVICE_TYPE_CPU;//
 
   // Get the devices
   m_Devices = OclGetAvailableDevices(m_Platform, devType, &m_NumberOfDevices);
@@ -64,8 +65,11 @@ GPUContextManager::GPUContextManager()
   for(unsigned int i=0; i<m_NumberOfDevices; i++)
     {
     m_CommandQueue[i] = clCreateCommandQueue(m_Context, m_Devices[i], 0, &errid);
-    //OclPrintDeviceName(m_Devices[i]);
-    OclCheckError( errid );
+
+// Debug
+//OclPrintDeviceName(m_Devices[i]);
+    //
+OclCheckError( errid );
     }
 
   //m_current_command_queue_id = 0; // default command queue id
@@ -82,6 +86,9 @@ cl_command_queue GPUContextManager::GetCommandQueue(int i)
     printf("Error: requested queue id is not available. Default queue will be used (queue id = 0)\n");
     return m_CommandQueue[0];
     }
+
+//std::cout << "Command queue " << i << " is requested " << std::endl;
+
   return m_CommandQueue[i];
 }
 

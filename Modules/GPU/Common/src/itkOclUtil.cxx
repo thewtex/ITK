@@ -128,14 +128,24 @@ cl_device_id OclGetMaxFlopsDev(cl_context cxGPUContext)
 }
 
 //
-// Print device name
+// Print device name & info
 //
 void OclPrintDeviceName(cl_device_id device)
 {
+  cl_int err;
+
   char device_string[1024];
 
-  clGetDeviceInfo(device, CL_DEVICE_NAME, sizeof(device_string), &device_string, NULL);
+  err = clGetDeviceInfo(device, CL_DEVICE_NAME, sizeof(device_string), &device_string, NULL);
   printf("%s\n", device_string);
+
+  size_t worksize[3];
+  err = clGetDeviceInfo(device,CL_DEVICE_MAX_WORK_ITEM_SIZES,sizeof(worksize),&worksize,NULL);
+  std::cout << "Maximum Work Item Sizes : { " << worksize[0] << ", " << worksize[1] << ", " << worksize[2] << " }" << std::endl;
+
+  size_t maxWorkgroupSize;
+  err = clGetDeviceInfo(device,CL_DEVICE_MAX_WORK_GROUP_SIZE,sizeof(maxWorkgroupSize),&maxWorkgroupSize,NULL);
+  std::cout << "Maximum Work Group Size : " << maxWorkgroupSize << std::endl;
 }
 
 //
@@ -174,6 +184,11 @@ cl_platform_id OclSelectPlatform(const char* name)
         if(ciErrNum == CL_SUCCESS)
           {
           clSelectedPlatformID = clPlatformIDs[0];         // default
+
+  // debug
+  ciErrNum = clGetPlatformInfo (clPlatformIDs[0], CL_PLATFORM_NAME, 1024, &chBuffer, NULL);
+  std::cout << "Platform " << " : " << chBuffer << std::endl;
+  //
           }
 
         if(num_platforms > 1)
@@ -184,7 +199,9 @@ cl_platform_id OclSelectPlatform(const char* name)
             {
             ciErrNum = clGetPlatformInfo (clPlatformIDs[i], CL_PLATFORM_NAME, 1024, &chBuffer, NULL);
 
+// debug
             std::cout << "Platform " << i << " : " << chBuffer << std::endl;
+//
 
             if(ciErrNum == CL_SUCCESS)
               {

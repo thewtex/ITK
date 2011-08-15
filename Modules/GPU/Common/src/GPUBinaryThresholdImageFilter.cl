@@ -67,7 +67,14 @@ __kernel void BinaryThresholdFilter(InPixelType lowerThreshold, InPixelType uppe
   int gix = get_global_id(0);
   int giy = get_global_id(1);
   int giz = get_global_id(2);
-  if(gix < width && giy < height && giz < depth)
+
+  bool isValid;
+  if(gix < width) isValid = true;
+  else if(giy < height) isValid = true;
+  else if(giz < depth) isValid = true;
+  else isValid = false;
+
+  if( isValid )
   {
     unsigned int gidx = width*(giz*height + giy) + gix;
     out[gidx] = Functor(lowerThreshold, upperThreshold, insideValue, outsideValue, in[gidx]);

@@ -19,6 +19,10 @@
 //
 // Brute-force mean filter
 //
+// The current implementation does not use shared memory, so this could be
+// very slow on older GPUs (pre-Fermi) that do not have hardware cache.
+//
+
 #ifdef DIM_1
 __kernel void MeanFilter(__global const PIXELTYPE* in,__global PIXELTYPE* out, int radiusx, int width)
 {
@@ -59,6 +63,7 @@ __kernel void MeanFilter(__global const PIXELTYPE* in,
   unsigned int gidx = width*giy + gix;
   float sum = 0;
   unsigned int   num = 0;
+
   if(gix < width && giy < height)
   {
     /*
@@ -94,20 +99,35 @@ __kernel void MeanFilter(__global const PIXELTYPE* in,
 #endif
 
 #ifdef DIM_3
-__kernel void MeanFilter(__global const PIXELTYPE* in,
+__kernel void MeanFilter(const __global PIXELTYPE* in,
                          __global PIXELTYPE* out,
                          int radiusx, int radiusy, int radiusz,
                          int width, int height, int depth)
 {
-  int gix = get_global_id(0);
-  int giy = get_global_id(1);
-  int giz = get_global_id(2);
+
+  int gix = (int)get_global_id(0);
+  int giy = (int)get_global_id(1);
+  int giz = (int)get_global_id(2);
+
   unsigned int gidx = width*(giz*height + giy) + gix;
+
   float sum = 0;
-  unsigned int   num = 0;
-  if(gix < width && giy < height && giz < depth)
+  unsigned int num = 0;
+
+  /* NOTE: More than three-level nested conditional statement (e.g., (if A && B && C..)
+   * invalidates command queue during kernel execution on Apple OpenCL 1.0 (such as
+   * Macbook Pro with NVIDIA 9600M GT). Therefore, we should use flattened conditional
+   * statements as below. */
+  bool isValid;
+  if(gix < width) isValid = true;
+  else if(giy < height) isValid = true;
+  else if(giz < depth) isValid = true;
+  else isValid = false;
+
+  if( isValid )
   {
-    /*
+
+/*
     // Clamping boundary condition
     for(int z = max(0, (int)(giz-radiusz)); z <= min((int)(depth-1), (int)(giz+radiusz)); z++)
     {
@@ -122,7 +142,7 @@ __kernel void MeanFilter(__global const PIXELTYPE* in,
         }
       }
     }
-    */
+*/
 
     // Zero-flux boundary condition
     num = (2*radiusx + 1)*(2*radiusy + 1)*(2*radiusz + 1);
@@ -143,5 +163,6 @@ __kernel void MeanFilter(__global const PIXELTYPE* in,
 
     out[gidx] = (PIXELTYPE)(sum/(float)num);
   }
+
 }
 #endif

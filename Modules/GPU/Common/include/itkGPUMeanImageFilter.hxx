@@ -40,8 +40,7 @@ GPUMeanImageFilter< TInputImage, TOutputImage >::GPUMeanImageFilter()
   //std::string oclSrcPath = std::string ( itk_root_path ) +
   // "/Code/GPU/GPUMeanImageFilter.cl";
 
-  //std::string oclSrcPath = "./../OpenCL/GPUMeanImageFilter.cl";
-  std::string oclSrcPath = "./OpenCL/GPUMeanImageFilter.cl";
+  std::string oclSrcPath = "./../OpenCL/GPUMeanImageFilter.cl";
 
   std::cout << "Defines: " << defines.str() << "Source code path: " << oclSrcPath << std::endl;
 
@@ -93,12 +92,6 @@ GPUMeanImageFilter< TInputImage, TOutputImage >::GPUGenerateData()
     imgSize[i] = outSize[i];
     }
 
-  /*
-  size_t localSize[2], globalSize[2];
-  localSize[0] = localSize[1] = 16;
-  globalSize[0] = localSize[0]*(unsigned int)ceil((float)outSize[0]/(float)localSize[0]); // total # of threads
-  globalSize[1] = localSize[1]*(unsigned int)ceil((float)outSize[1]/(float)localSize[1]);
-*/
   size_t localSize[3], globalSize[3];
   localSize[0] = localSize[1] = localSize[2] = BLOCK_SIZE[ImageDim-1];
   for(int i=0; i<ImageDim; i++)
@@ -110,17 +103,18 @@ GPUMeanImageFilter< TInputImage, TOutputImage >::GPUGenerateData()
                                                                                              // threads
     }
 
+
   // arguments set up
   int argidx = 0;
   this->m_GPUKernelManager->SetKernelArgWithImage(m_MeanFilterGPUKernelHandle, argidx++, inPtr->GetGPUDataManager() );
   this->m_GPUKernelManager->SetKernelArgWithImage(m_MeanFilterGPUKernelHandle, argidx++, otPtr->GetGPUDataManager() );
 
-  for(int i=0; i<(int)TInputImage::ImageDimension; i++)
+  for(int i=0; i<ImageDim; i++)
     {
     this->m_GPUKernelManager->SetKernelArg(m_MeanFilterGPUKernelHandle, argidx++, sizeof(int), &(radius[i]) );
     }
 
-  for(int i=0; i<(int)TInputImage::ImageDimension; i++)
+  for(int i=0; i<ImageDim; i++)
     {
     this->m_GPUKernelManager->SetKernelArg(m_MeanFilterGPUKernelHandle, argidx++, sizeof(int), &(imgSize[i]) );
     }

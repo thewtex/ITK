@@ -69,10 +69,10 @@ int itkGPUNeighborhoodOperatorImageFilterTest(int argc, char *argv[])
 
   if( argc <  3 )
   {
-    /*std::cerr << "Error: missing arguments" << std::endl;
+    std::cerr << "Error: missing arguments" << std::endl;
     std::cerr << "inputfile outputfile " << std::endl;
-    return EXIT_FAILURE;*/
-    reader->SetFileName( "C:/Users/wkjeong/Proj/ITK/Modules/GPU/Common/data/input-testvolume.nrrd" );
+    return EXIT_FAILURE;
+    //reader->SetFileName( "C:/Users/wkjeong/Proj/ITK/Modules/GPU/Common/data/input-testvolume.nrrd" );
   }
   else
   {
@@ -80,10 +80,6 @@ int itkGPUNeighborhoodOperatorImageFilterTest(int argc, char *argv[])
     writer->SetFileName( argv[2] );
   }
 
-  //
-  // Note: We use regular itk filter type here but factory will automatically create
-  //       GPU filter for Median filter and CPU filter for threshold filter.
-  //
   typedef itk::NumericTraits< OutputPixelType >::RealType    RealOutputPixelType;
   typedef itk::Image< OutputPixelType, ImageDimension >      RealOutputImageType;
   typedef itk::NumericTraits<RealOutputPixelType>::ValueType RealOutputPixelValueType;

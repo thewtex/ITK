@@ -61,10 +61,10 @@ int itkGPUBinaryThresholdImageFilterTest(int argc, char *argv[])
 
   if( argc <  3 )
   {
-    /*std::cerr << "Error: missing arguments" << std::endl;
+    std::cerr << "Error: missing arguments" << std::endl;
     std::cerr << "inputfile outputfile " << std::endl;
-    return EXIT_FAILURE;*/
-    reader->SetFileName( "C:/Users/wkjeong/Proj/ITK/Modules/GPU/Common/data/input-testvolume.nrrd" );
+    return EXIT_FAILURE;
+    //reader->SetFileName( "../TestData/input-testvolume.nrrd" );
   }
   else
   {
