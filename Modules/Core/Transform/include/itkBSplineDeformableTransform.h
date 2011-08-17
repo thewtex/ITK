@@ -341,15 +341,11 @@ public:
                               ParameterIndexArrayType & indices,
                               bool & inside) const;
 
-  virtual void GetJacobian(const InputPointType & inputPoint,
-                           WeightsType & weights,
-                           ParameterIndexArrayType & indices
-                           ) const;
-
   /** Get number of weights. */
   unsigned long GetNumberOfWeights() const
   { return m_WeightsFunction->GetNumberOfWeights(); }
 
+  using Superclass::TransformVector;
   /** Method to transform a vector -
    *  not applicable for this type of transform. */
   virtual OutputVectorType TransformVector(const InputVectorType &) const
@@ -366,6 +362,7 @@ public:
     return OutputVnlVectorType();
   }
 
+  using Superclass::TransformCovariantVector;
   /** Method to transform a CovariantVector -
    *  not applicable for this type of transform */
   virtual OutputCovariantVectorType TransformCovariantVector(
@@ -375,18 +372,19 @@ public:
     return OutputCovariantVectorType();
   }
 
-  /** Compute the Jacobian Matrix of the transformation at one point */
-  virtual const JacobianType & GetJacobian(const InputPointType  & point) const;
+  /** Get Jacobian at a point. */
+  using Superclass::GetJacobian;
+  virtual void GetJacobian(const InputPointType & inputPoint,
+                           WeightsType & weights,
+                           ParameterIndexArrayType & indices
+                           ) const;
 
-  /** NOT IMPLEMENTED: */
   virtual void GetJacobianWithRespectToParameters(const InputPointType  &p,
-                                                  JacobianType &j) const
-  { itkExceptionMacro("GetJacobianWithRespectToParameters "
-                      "not yet implemented."); }
+                                                  JacobianType &jacobian) const;
 
   /** NOT IMPLEMENTED: */
   virtual void GetJacobianWithRespectToPosition(const InputPointType  &p,
-                                                  JacobianType &j) const
+                                                  JacobianType &jacobian) const
   { itkExceptionMacro("GetJacobianWithRespectToPosition "
                       "not yet implemented."); }
 
