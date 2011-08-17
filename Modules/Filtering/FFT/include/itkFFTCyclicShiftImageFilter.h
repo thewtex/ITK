@@ -15,14 +15,14 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkFFTShiftImageFilter_h
-#define __itkFFTShiftImageFilter_h
+#ifndef __itkFFTCyclicShiftImageFilter_h
+#define __itkFFTCyclicShiftImageFilter_h
 
 #include "itkCyclicShiftImageFilter.h"
 
 namespace itk
 {
-/** \class FFTShiftImageFilter
+/** \class FFTCyclicShiftImageFilter
  * \brief Shift the zero-frequency components of a Fourier transfrom
  * to the center of the image.
  *
@@ -45,12 +45,12 @@ namespace itk
  * \ingroup ITKFFT
  */
 template< class TInputImage, class TOutputImage >
-class ITK_EXPORT FFTShiftImageFilter :
+class ITK_EXPORT FFTCyclicShiftImageFilter :
   public CyclicShiftImageFilter< TInputImage, TOutputImage >
 {
 public:
   /** Standard class typedefs. */
-  typedef FFTShiftImageFilter                                 Self;
+  typedef FFTCyclicShiftImageFilter                           Self;
   typedef CyclicShiftImageFilter< TInputImage, TOutputImage > Superclass;
   typedef SmartPointer< Self >                                Pointer;
   typedef SmartPointer< const Self >                          ConstPointer;
@@ -76,7 +76,7 @@ public:
   itkNewMacro(Self);
 
   /** Runtime information support. */
-  itkTypeMacro(FFTShiftImageFilter, CyclicShiftImageFilter);
+  itkTypeMacro(FFTCyclicShiftImageFilter, CyclicShiftImageFilter);
 
   /** Set/Get whether the filter must invert the transform or not.
    * This option has no effect if none of the size of the input image is even,
@@ -87,8 +87,8 @@ public:
   itkBooleanMacro(Inverse);
 
 protected:
-  FFTShiftImageFilter();
-  ~FFTShiftImageFilter() {}
+  FFTCyclicShiftImageFilter();
+  ~FFTCyclicShiftImageFilter() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Override GenerateData method to set some parameters in the
@@ -96,7 +96,7 @@ protected:
   void  GenerateData();
 
 private:
-  FFTShiftImageFilter(const Self &); //purposely not implemented
+  FFTCyclicShiftImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);      //purposely not implemented
 
   bool m_Inverse;
@@ -105,7 +105,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkFFTShiftImageFilter.hxx"
+#include "itkFFTCyclicShiftImageFilter.hxx"
 #endif
 
 #endif

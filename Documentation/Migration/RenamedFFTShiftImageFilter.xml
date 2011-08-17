@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Change SYSTEM "http://ij.itk.org/itkfaq/ITKMigration.dtd">
+
+<!--**
+**
+** RenameFFTShiftImageFilter.xml
+**
+** >>>>>>>>>>>>>>>>>>>>>>>>>>>>
+** THIS FILE HAS BEEN AUTOMATICALLY GENERATED. EDIT IT BEFORE COMMITING
+** <<<<<<<<<<<<<<<<<<<<<<<<<<<
+**
+** Please, make sure this file validates the following w3c test before committing it: http://validator.w3.org
+**-->
+<Change>
+    <!--**
+    ** Title for the online migration page
+    **-->
+    <Title>
+      Rename FFT Shift Image Filter
+    </Title>
+
+    <!--**
+    ** The author of the change
+    **-->
+    <Author>
+      Cory Quammen
+    </Author>
+
+    <!--**
+    ** Date of creation for the XML document
+    **-->
+    <Date>
+      2011-08-16
+    </Date>
+
+    <!--**
+    ** Plain text description of the change
+    ** Extracted from git commit messages
+    **-->
+    <Description>
+      <![CDATA[
+      FFTShiftImageFilter has been renamed to FFTCyclicShiftImageFilter to
+      better follow ITK naming conventions.
+      ]]>
+    </Description>
+
+    <!--**
+    ** Sample code snippets
+    ** Extracted from git diff of changed files in Examples and Testing
+    **-->
+    <SampleCode>
+
+      <Old>
+        <![CDATA[
+          itk::FFTShiftImageFilter< InputImageType, OutputImageType >::Pointer fftShiftFilter;
+        ]]>
+      </Old>
+
+      <New>
+        <![CDATA[
+          itk::FFTCyclicShiftImageFilter< InputImageType, OutputImageType >::Pointer fftShiftFilter;
+        ]]>
+      </New>
+
+    </SampleCode>
+
+    <!--**
+    ** The change-ids for all commits in the topic branch
+    **-->
+    <Gerrit-ChangeId>
+      I32aebfe1d39c36abdd272f773f12a995413b41ed
+    </Gerrit-ChangeId>
+
+    <!--**
+    ** List of all changed files from the topic branch
+    **-->
+    <FileList>
+      Modules/Filtering/FFT/include/itkFFTCyclicShiftImageFilter.h
+      Modules/Filtering/FFT/include/itkFFTCyclicShiftImageFilter.hxx
+      Modules/Filtering/FFT/include/itkFFTShiftImageFilter.h
+      Modules/Filtering/FFT/include/itkFFTShiftImageFilter.hxx
+      Modules/Filtering/FFT/test/CMakeLists.txt
+      Modules/Filtering/FFT/test/itkFFTCyclicShiftImageFilterTest.cxx
+      Modules/Filtering/FFT/test/itkFFTShiftImageFilterTest.cxx
+      Wrapping/WrapITK/Libraries/ITKFFT/itkFFTCyclicShiftImageFilter.wrap
+      Wrapping/WrapITK/Libraries/ITKFFT/itkFFTShiftImageFilter.wrap
+    </FileList>
+
+    <!--**
+    ** If the migration can be accomplished by a simple string
+    ** substitution, then use the following construct to define
+    ** the substitution rule.
+    ** -->
+
+    <MigrationFix-Automatic>
+       <Old>
+         <![CDATA[FFTShiftImageFilter]]>
+       </Old>
+       <New>
+         <![CDATA[FFTCyclicShiftImageFilter]]>
+       </New>
+     </MigrationFix-Automatic>
+
+    <!--**
+    ** If the migration can NOT be accomplished by a simple string
+    ** substitution, but potential problem spots can be identified,
+    ** use the following construct to define a migration flag rule.
+    **
+    ** <MigrationFix-Manual>
+    **   OldFunctionName
+    ** </MigrationFix-Manual>
+    **-->
+
+</Change>

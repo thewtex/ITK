@@ -20,10 +20,10 @@
 #include "itkImageFileWriter.h"
 
 #include "itkSimpleFilterWatcher.h"
-#include "itkFFTShiftImageFilter.h"
+#include "itkFFTCyclicShiftImageFilter.h"
 #include "itkRGBPixel.h"
 
-int itkFFTShiftImageFilterTest(int argc, char * argv[])
+int itkFFTCyclicShiftImageFilterTest(int argc, char * argv[])
 {
 
   if( argc != 4 )
@@ -45,7 +45,7 @@ int itkFFTShiftImageFilterTest(int argc, char * argv[])
   ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( argv[1] );
 
-  typedef itk::FFTShiftImageFilter< IType, IType > FilterType;
+  typedef itk::FFTCyclicShiftImageFilter< IType, IType > FilterType;
   FilterType::Pointer filter = FilterType::New();
   // test default values
   if ( filter->GetInverse( ) != false )

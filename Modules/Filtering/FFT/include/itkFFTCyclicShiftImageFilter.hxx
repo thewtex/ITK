@@ -15,23 +15,23 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkFFTShiftImageFilter_hxx
-#define __itkFFTShiftImageFilter_hxx
+#ifndef __itkFFTCyclicShiftImageFilter_hxx
+#define __itkFFTCyclicShiftImageFilter_hxx
 
-#include "itkFFTShiftImageFilter.h"
+#include "itkFFTCyclicShiftImageFilter.h"
 
 namespace itk
 {
 template< class TInputImage, class TOutputImage >
-FFTShiftImageFilter< TInputImage, TOutputImage >
-::FFTShiftImageFilter()
+FFTCyclicShiftImageFilter< TInputImage, TOutputImage >
+::FFTCyclicShiftImageFilter()
 {
   m_Inverse = false;
 }
 
 template< class TInputImage, class TOutputImage >
 void
-FFTShiftImageFilter< TInputImage, TOutputImage >
+FFTCyclicShiftImageFilter< TInputImage, TOutputImage >
 ::GenerateData()
 {
   // The size of the image is needed to compute the shift.
@@ -55,7 +55,7 @@ FFTShiftImageFilter< TInputImage, TOutputImage >
 
 template< class TInputImage, class TOutputImage >
 void
-FFTShiftImageFilter< TInputImage, TOutputImage >
+FFTCyclicShiftImageFilter< TInputImage, TOutputImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
