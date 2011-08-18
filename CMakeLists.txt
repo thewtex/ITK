@@ -1,4 +1,9 @@
-cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
+if( WIN32 )
+  cmake_minimum_required(VERSION 2.8.5 FATAL_ERROR)
+else()
+  cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
+endif()
+
 project(ITK)
 
 if( WIN32 )
