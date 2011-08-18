@@ -32,7 +32,16 @@ set(CMAKE_MODULE_PATH ${ITK_SOURCE_DIR}/CMake ${CMAKE_MODULE_PATH})
 include(PreventInSourceBuilds)
 include(PreventInBuildInstalls)
 include(ITKModuleMacros)
+
+#-----------------------------------------------------------------------------
+# External data setup.
+set(ITK_EXTRA_ExternalData_URL_TEMPLATES "" CACHE STRING
+  "Additional URL templates for the ExternalData CMake script to look for testing data. E.g.
+file:///var/bigharddrive/%(algo)/%(hash)")
+mark_as_advanced(ITK_EXTRA_ExternalData_URL_TEMPLATES)
+set(ExternalData_URL_TEMPLATES ${ITK_EXTRA_ExternalData_URL_TEMPLATES})
 include(ITKExternalData)
+
 include(itkCheckSourceTree)
 
 set(main_project_name ${_ITKModuleMacros_DEFAULT_LABEL})
