@@ -35,6 +35,15 @@
 # include <tiffio.h>
 #else
 # include "itktiff/tiffio.h"
+# include "itktiff/tif_dir.h"
+#endif
+
+/* Use the jpeg library configured for ITK.  */
+#cmakedefine ITK_USE_SYSTEM_JPEG
+#ifdef ITK_USE_SYSTEM_JPEG
+# include <jpeg.h>
+#else
+# include "itkjpeg/itk_jpeg_mangle.h"
 #endif
 
 #endif
