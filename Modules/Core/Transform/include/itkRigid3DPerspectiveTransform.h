@@ -31,7 +31,6 @@ namespace itk
  * This transform applies a rotation and translation to the 3D space
  * followed by a projection to 2D space along the Z axis.
  *
- * \ingroup Transforms
  */
 
 template<

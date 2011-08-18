@@ -75,7 +75,6 @@ namespace itk
  *  using Superclass::TransformVector;
  *  using Superclass::TransformCovariantVector;
  *
- * \ingroup Transforms
  *
  * \ingroup ITKTransform
  */
