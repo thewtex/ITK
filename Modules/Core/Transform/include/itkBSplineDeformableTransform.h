@@ -373,18 +373,18 @@ public:
   }
 
   /** Get Jacobian at a point. A very specialized function just for BSplines */
-  virtual void GetJacobianFromBSplineWeightsAtPoint(const InputPointType & inputPoint,
+  virtual void ComputeJacobianFromBSplineWeightsWithRespectToPosition(const InputPointType & inputPoint,
                            WeightsType & weights,
                            ParameterIndexArrayType & indices
                            ) const;
 
-  virtual void GetJacobianWithRespectToParameters(const InputPointType  &p,
+  virtual void ComputeJacobianWithRespectToParameters(const InputPointType  &p,
                                                   JacobianType &jacobian) const;
 
   /** NOT IMPLEMENTED: */
-  virtual void GetJacobianWithRespectToPosition(const InputPointType  &p,
+  virtual void ComputeJacobianWithRespectToPosition(const InputPointType  &p,
                                                   JacobianType &jacobian) const
-  { itkExceptionMacro("GetJacobianWithRespectToPosition "
+  { itkExceptionMacro("ComputeJacobianWithRespectToPosition "
                       "not yet implemented."); }
 
   /** Return the number of parameters that completely define the Transfom */
