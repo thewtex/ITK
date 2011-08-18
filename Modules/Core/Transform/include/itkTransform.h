@@ -66,7 +66,7 @@ namespace itk
  *                                                             JacobianType &) const
  *   virtual void                      ComputeJacobianWithRespectToPosition(
  *                                                             const InputPointType & x,
- *                                                             JacobianType &j ) const;
+ *                                                             JacobianType &jacobian ) const;
  *
  * Since TranformVector and TransformCovariantVector have multiple
  * overloaded methods from the base class, subclasses must specify:
@@ -333,18 +333,15 @@ public:
   /**
    * This function is only here for ITKv3 backwards compatibility.
    *
-   * This is not a thread-safe version for GetJacobian(), because the internal
-   * class member variable m_Jacobian could be changed for different values
-   * in different threads.
-   *
    * All derived classes should move the computations of computing a jacobian
    * from GetJacobian to ComputeJacobianWithRespectToParameters and then
    * use this forwarding function for backwards compatibility.
    */
   virtual const JacobianType & GetJacobian(const InputPointType  &x) const
   {
-    this->ComputeJacobianWithRespectToParameters(x,this->m_Jacobian);
-    return this->m_Jacobian;
+    JacobianType jacobian;
+    this->ComputeJacobianWithRespectToParameters(x,jacobian);
+    return jacobian;
   }
 #endif
 
@@ -378,12 +375,12 @@ public:
    *
    *  This is also used for efficient computation of a point-local jacobian
    *  for dense transforms.
-   *  \c j is assumed to be thread-local variable, otherwise memory corruption
+   *  \c jacobian is assumed to be thread-local variable, otherwise memory corruption
    *  will most likely occur during multi-threading.
-   *  To avoid repeatitive memory allocation, pass in 'j' with its size
+   *  To avoid repeatitive memory allocation, pass in 'jacobian' with its size
    *  already set. */
   virtual void ComputeJacobianWithRespectToParameters(const InputPointType  &p,
-                                                  JacobianType &j) const = 0;
+                                                  JacobianType &jacobian) const = 0;
 
   /** This provides the ability to get a local jacobian value
    *  in a dense/local transform, e.g. DisplacementFieldTransform. For such
@@ -392,7 +389,7 @@ public:
    *  since there is no change with respect to position. */
   virtual void ComputeJacobianWithRespectToPosition(
                                        const InputPointType & x,
-                                       JacobianType &j ) const = 0;
+                                       JacobianType &jacobian ) const = 0;
 
   /** Update the transform's parameters by the adding values in \c update
    * to current parameter values.
@@ -476,8 +473,6 @@ protected:
 
   mutable ParametersType m_Parameters;
   mutable ParametersType m_FixedParameters;
-
-  mutable JacobianType m_Jacobian;
 
   mutable DirectionChangeMatrix m_DirectionChange;
 
