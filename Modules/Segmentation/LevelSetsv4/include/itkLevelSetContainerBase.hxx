@@ -37,6 +37,22 @@ LevelSetContainerBase< TIdentifier, TLevelSet >
 }
 
 template< class TIdentifier, class TLevelSet >
+const typename
+LevelSetContainerBase< TIdentifier, TLevelSet >::LevelSetContainerType&
+LevelSetContainerBase< TIdentifier, TLevelSet >::GetContainer() const
+{
+  return m_Container;
+}
+
+template< class TIdentifier, class TLevelSet >
+void
+LevelSetContainerBase< TIdentifier, TLevelSet >
+::SetContainer(const LevelSetContainerType &iContainer)
+{
+  m_Container = iContainer;
+}
+
+template< class TIdentifier, class TLevelSet >
 typename LevelSetContainerBase< TIdentifier, TLevelSet >::Iterator
 LevelSetContainerBase< TIdentifier, TLevelSet >::Begin()
 {
