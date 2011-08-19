@@ -15,7 +15,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
-
+#include <algorithm>
 #if defined (__BORLANDC__) && (__BORLANDC__ >= 0x0580)
 #include <mem.h>
 #endif
@@ -34,6 +34,7 @@ MetaObject(void)
   m_NDims = 0;
   this->ClearFields();
   this->ClearUserFields();
+  this->ClearAdditionalFields();
   MetaObject::Clear();
   m_ReadStream = NULL;
   m_WriteStream = NULL;
@@ -49,6 +50,7 @@ MetaObject(const char * _fileName)
   m_NDims = 0;
   this->ClearFields();
   this->ClearUserFields();
+  this->ClearAdditionalFields();
   MetaObject::Clear();
   m_ReadStream = NULL;
   m_WriteStream = NULL;
@@ -64,6 +66,7 @@ MetaObject(unsigned int dim)
   m_NDims = 0;
   this->ClearFields();
   this->ClearUserFields();
+  this->ClearAdditionalFields();
   MetaObject::Clear();
   m_ReadStream = NULL;
   m_WriteStream = NULL;
@@ -81,9 +84,10 @@ MetaObject::
   M_Destroy();
   delete m_ReadStream;
   delete m_WriteStream;
-  
+
   this->ClearFields();
   this->ClearUserFields();
+  this->ClearAdditionalFields();
   }
 
 
@@ -103,7 +107,7 @@ ClearFields()
     {
     MET_FieldRecordType* field = *it;
     it++;
-    
+
     // Check if the pointer is not in one of the user's list
     bool exists = false;
     FieldsContainerType::iterator  it2  = m_UserDefinedWriteFields.begin();
@@ -132,7 +136,7 @@ ClearFields()
         it2++;
       }
     }
-    
+
     if(!exists)
       {
       delete field;
@@ -155,7 +159,7 @@ void MetaObject
     it++;
     delete field;
     }
-   
+
 
   // Clear read field
   it  = m_UserDefinedReadFields.begin();
@@ -163,7 +167,7 @@ void MetaObject
   while( it != end )
     {
     MET_FieldRecordType* field = *it;
-    
+
     // check if the pointer has not been deleted yet
     bool deleted = false;
     FieldsContainerType::iterator  it2  = m_UserDefinedWriteFields.begin();
@@ -172,12 +176,12 @@ void MetaObject
       {
       if(*it2 == *it)
         {
-        deleted = true;  
+        deleted = true;
         break;
         }
-      it2++; 
+      it2++;
       }
-    
+
     it++;
 
     if(!deleted)
@@ -189,7 +193,27 @@ void MetaObject
   m_UserDefinedWriteFields.clear();
   m_UserDefinedReadFields.clear();
   }
- 
+
+// Clear AdditionalReadFields
+void MetaObject
+::ClearAdditionalFields()
+  {
+  // Clear read field
+  FieldsContainerType::iterator it  = m_AdditionalReadFields.begin();
+  FieldsContainerType::iterator end = m_AdditionalReadFields.end();
+  while( it != end )
+    {
+    MET_FieldRecordType* field = *it;
+    if( field )
+      {
+      delete field;
+      }
+    ++it;
+    }
+
+  m_AdditionalReadFields.clear();
+  }
+
 //
 //
 void MetaObject::
@@ -215,7 +239,7 @@ CopyInfo(const MetaObject * _object)
   {
   if(NDims() != _object->NDims())
     {
-    METAIO_STREAM::cout << "MetaObject: CopyInfo: Warning: NDims not same size" 
+    METAIO_STREAM::cout << "MetaObject: CopyInfo: Warning: NDims not same size"
                         << METAIO_STREAM::endl;
     }
 
@@ -240,7 +264,7 @@ CopyInfo(const MetaObject * _object)
 bool MetaObject::
 Read(const char *_fileName)
   {
-  if(META_DEBUG)  
+  if(META_DEBUG)
     {
     METAIO_STREAM::cout << "MetaObject: Read" << METAIO_STREAM::endl;
     }
@@ -289,20 +313,20 @@ ReadStream(int _nDims, METAIO_STREAM::ifstream * _stream)
     }
 
   M_Destroy();
-  
+
   fflush(NULL);
-  
+
   Clear();
-  
+
   M_SetupReadFields();
- 
+
   if(_nDims > 0)
     {
     MET_FieldRecordType * mF = MET_GetFieldRecord("NDims", &m_Fields);
     mF->value[0] = _nDims;
     mF->defined = true;
     }
- 
+
   if(m_ReadStream)
     {
     delete m_ReadStream;
@@ -331,12 +355,12 @@ Write(const char *_fileName)
   if(!m_WriteStream)
     {
     m_WriteStream = new METAIO_STREAM::ofstream;
-    }  
- 
+    }
+
 #ifdef __sgi
   // Create the file. This is required on some older sgi's
   METAIO_STREAM::ofstream tFile(m_FileName, METAIO_STREAM::ios::out);
-  tFile.close();                    
+  tFile.close();
   m_WriteStream->open(m_FileName, METAIO_STREAM::ios::out);
 #else
   m_WriteStream->open(m_FileName, METAIO_STREAM::ios::binary |
@@ -364,13 +388,13 @@ PrintInfo(void) const
   {
   int i, j;
 
-  METAIO_STREAM::cout << "FileName = _" << m_FileName << "_" 
+  METAIO_STREAM::cout << "FileName = _" << m_FileName << "_"
                       << METAIO_STREAM::endl;
-  METAIO_STREAM::cout << "Comment = _" << m_Comment << "_" 
+  METAIO_STREAM::cout << "Comment = _" << m_Comment << "_"
                       << METAIO_STREAM::endl;
-  METAIO_STREAM::cout << "ObjectType = _" << m_ObjectTypeName << "_" 
+  METAIO_STREAM::cout << "ObjectType = _" << m_ObjectTypeName << "_"
                       << METAIO_STREAM::endl;
-  METAIO_STREAM::cout << "ObjectSubType = _" << m_ObjectSubTypeName << "_" 
+  METAIO_STREAM::cout << "ObjectSubType = _" << m_ObjectSubTypeName << "_"
                       << METAIO_STREAM::endl;
   METAIO_STREAM::cout << "NDims = " << m_NDims << METAIO_STREAM::endl;
   METAIO_STREAM::cout << "Name = " << m_Name << METAIO_STREAM::endl;
@@ -385,7 +409,7 @@ PrintInfo(void) const
     {
     METAIO_STREAM::cout << "CompressedData = False" << METAIO_STREAM::endl;
     }
-  METAIO_STREAM::cout << "m_CompressedDataSize = " << m_CompressedDataSize 
+  METAIO_STREAM::cout << "m_CompressedDataSize = " << m_CompressedDataSize
                       << METAIO_STREAM::endl;
   if(m_BinaryData)
     {
@@ -397,12 +421,12 @@ PrintInfo(void) const
     }
   if(m_BinaryData && m_BinaryDataByteOrderMSB)
     {
-    METAIO_STREAM::cout << "BinaryDataByteOrderMSB = True" 
+    METAIO_STREAM::cout << "BinaryDataByteOrderMSB = True"
                         << METAIO_STREAM::endl;
     }
   else
     {
-    METAIO_STREAM::cout << "BinaryDataByteOrderMSB = False" 
+    METAIO_STREAM::cout << "BinaryDataByteOrderMSB = False"
                         << METAIO_STREAM::endl;
     }
   METAIO_STREAM::cout << "Color = " ;
@@ -418,13 +442,13 @@ PrintInfo(void) const
     METAIO_STREAM::cout << m_Offset[i] << " ";
     }
   METAIO_STREAM::cout << METAIO_STREAM::endl;
-  
+
   METAIO_STREAM::cout << "TransformMatrix = ";
   METAIO_STREAM::cout << METAIO_STREAM::endl;
   for(i=0; i<m_NDims; i++)
     {
     for(j=0; j<m_NDims; j++)
-      { 
+      {
       METAIO_STREAM::cout << m_TransformMatrix[i*m_NDims+j] << " ";
       }
     METAIO_STREAM::cout << METAIO_STREAM::endl;
@@ -445,25 +469,25 @@ PrintInfo(void) const
     }
   METAIO_STREAM::cout << METAIO_STREAM::endl;
 
-  METAIO_STREAM::cout << "DistanceUnits = " << this->DistanceUnitsName() 
+  METAIO_STREAM::cout << "DistanceUnits = " << this->DistanceUnitsName()
                       << METAIO_STREAM::endl;
 
-  // Print User's fields : 
+  // Print User's fields :
   FieldsContainerType::const_iterator  itw = m_UserDefinedWriteFields.begin();
   FieldsContainerType::const_iterator  itr  = m_UserDefinedReadFields.begin();
   FieldsContainerType::const_iterator  endw = m_UserDefinedWriteFields.end();
   FieldsContainerType::const_iterator it;
   while( itw != endw )
-    { 
+    {
     if((*itw)->defined)
       {
       it=itw;
       }
     else
       {
-      it=itr; 
+      it=itr;
       }
-     
+
     printf("%s: ",(*it)->name);
 
     if((*it)->type == MET_STRING)
@@ -484,7 +508,7 @@ PrintInfo(void) const
       {
       printf("%s : %f\n",(*it)->name,(*it)->value[0]);
       }
-    else if( (*it)->type ==MET_CHAR_ARRAY || 
+    else if( (*it)->type ==MET_CHAR_ARRAY ||
              (*it)->type ==MET_UCHAR_ARRAY ||
              (*it)->type ==MET_SHORT_ARRAY ||
              (*it)->type ==MET_USHORT_ARRAY ||
@@ -496,7 +520,7 @@ PrintInfo(void) const
       for(i=0; i<(*it)->length; i++)
         {
         printf("%f ",(*it)->value[i]);
-        }    
+        }
       }
     else if((*it)->type == MET_FLOAT_MATRIX)
       {
@@ -511,7 +535,7 @@ PrintInfo(void) const
         }
       }
     METAIO_STREAM::cout << METAIO_STREAM::endl;
-     
+
     itw++;
     itr++;
     }
@@ -920,14 +944,14 @@ Name(const char *_Name)
     strcpy(m_Name, _Name);
     }
   }
-      
+
 const char  * MetaObject::
 Name(void) const
   {
   return m_Name;
   }
 
-   
+
 const float * MetaObject::
 Color(void) const
   {
@@ -950,14 +974,14 @@ Color(const float * _color)
     m_Color[i] = _color[i];
     }
   }
-  
+
 
 void  MetaObject::
 ID(int _id)
   {
   m_ID = _id;
   }
-      
+
 int  MetaObject::
 ID(void) const
   {
@@ -969,7 +993,7 @@ ParentID(int _parentId)
   {
   m_ParentID = _parentId;
   }
-      
+
 int   MetaObject::ParentID(void) const
   {
   return m_ParentID;
@@ -984,7 +1008,7 @@ AcquisitionDate(const char * _acquisitionDate)
     }
   m_AcquisitionDate[strlen( _acquisitionDate )] = '\0';
   }
-      
+
 const char * MetaObject::AcquisitionDate(void) const
   {
   return m_AcquisitionDate;
@@ -994,7 +1018,7 @@ void MetaObject::CompressedData(bool _compressedData)
   {
   m_CompressedData = _compressedData;
   }
-      
+
 bool MetaObject::CompressedData(void) const
   {
   return m_CompressedData;
@@ -1004,7 +1028,7 @@ void  MetaObject::BinaryData(bool _binaryData)
   {
   m_BinaryData = _binaryData;
   }
-      
+
 bool   MetaObject::BinaryData(void) const
   {
   return m_BinaryData;
@@ -1054,9 +1078,9 @@ Clear(void)
 
   m_DistanceUnits = MET_DISTANCE_UNITS_UNKNOWN;
 
-  if(META_DEBUG) 
+  if(META_DEBUG)
     {
-    METAIO_STREAM::cout << "MetaObject: Clear: m_NDims=" << m_NDims 
+    METAIO_STREAM::cout << "MetaObject: Clear: m_NDims=" << m_NDims
                         << METAIO_STREAM::endl;
     }
   int i;
@@ -1091,8 +1115,8 @@ InitializeEssential(int _nDims)
 
   if(_nDims > 10)
     {
-    METAIO_STREAM::cout 
-      << "MetaObject: Initialize: Warning: Number of dimensions limited to 10" 
+    METAIO_STREAM::cout
+      << "MetaObject: Initialize: Warning: Number of dimensions limited to 10"
       << METAIO_STREAM::endl
       << "Resetting number of dimensions to 10"
       << METAIO_STREAM::endl;
@@ -1127,9 +1151,9 @@ void MetaObject::
 M_SetupReadFields(void)
   {
   this->ClearFields();
-  if(META_DEBUG) 
+  if(META_DEBUG)
     {
-    METAIO_STREAM::cout << "MetaObject: M_SetupReadFields" 
+    METAIO_STREAM::cout << "MetaObject: M_SetupReadFields"
                         << METAIO_STREAM::endl;
     }
 
@@ -1139,7 +1163,7 @@ M_SetupReadFields(void)
   MET_InitReadField(mF, "Comment", MET_STRING, false);
   m_Fields.push_back(mF);
 
-  mF = new MET_FieldRecordType; 
+  mF = new MET_FieldRecordType;
   MET_InitReadField(mF, "AcquisitionDate", MET_STRING, false);
   m_Fields.push_back(mF);
 
@@ -1169,8 +1193,8 @@ M_SetupReadFields(void)
   mF = new MET_FieldRecordType;
   MET_InitReadField(mF, "ParentID", MET_INT, false);
   m_Fields.push_back(mF);
- 
-  mF = new MET_FieldRecordType; 
+
+  mF = new MET_FieldRecordType;
   MET_InitReadField(mF, "AcquisitionDate", MET_STRING, false);
   m_Fields.push_back(mF);
 
@@ -1252,7 +1276,7 @@ M_SetupReadFields(void)
   FieldsContainerType::iterator  end = m_UserDefinedReadFields.end();
   while( it != end )
     {
-    m_Fields.push_back(*it); 
+    m_Fields.push_back(*it);
     it++;
     }
 
@@ -1265,7 +1289,7 @@ M_SetupWriteFields(void)
   {
   if(META_DEBUG)
     {
-    METAIO_STREAM::cout << "MetaObject: M_SetupWriteFields" 
+    METAIO_STREAM::cout << "MetaObject: M_SetupWriteFields"
                         << METAIO_STREAM::endl;
     }
 
@@ -1303,7 +1327,7 @@ M_SetupWriteFields(void)
   mF = new MET_FieldRecordType;
   MET_InitWriteField(mF, "NDims", MET_INT, m_NDims);
   m_Fields.push_back(mF);
-  
+
   if(strlen(m_Name)>0)
     {
     mF = new MET_FieldRecordType;
@@ -1376,7 +1400,7 @@ M_SetupWriteFields(void)
       MET_InitWriteField(mF, "CompressedData", MET_STRING, strlen("True"),
                          "True");
       m_Fields.push_back(mF);
-  
+
       if(m_WriteCompressedDataSize && m_CompressedDataSize>0)
         {
         mF = new MET_FieldRecordType;
@@ -1459,7 +1483,7 @@ M_SetupWriteFields(void)
   FieldsContainerType::iterator  end = m_UserDefinedWriteFields.end();
   while( it != end )
     {
-    m_Fields.push_back(*it); 
+    m_Fields.push_back(*it);
     it++;
     }
   }
@@ -1468,9 +1492,12 @@ bool MetaObject::
 M_Read(void)
   {
 
-  if(!MET_Read(*m_ReadStream, & m_Fields))
+  this->ClearAdditionalFields();
+
+  if(!MET_Read(*m_ReadStream, &m_Fields, '=', false, true,
+     &m_AdditionalReadFields))
     {
-    METAIO_STREAM::cerr << "MetaObject: Read: MET_Read Failed" 
+    METAIO_STREAM::cerr << "MetaObject: Read: MET_Read Failed"
                         << METAIO_STREAM::endl;
     return false;
     }
@@ -1505,7 +1532,7 @@ M_Read(void)
     {
     MetaObject::InitializeEssential(m_NDims);
     }
- 
+
   mF = MET_GetFieldRecord("Name", &m_Fields);
   if(mF && mF->defined)
     {
@@ -1537,7 +1564,7 @@ M_Read(void)
   mF = MET_GetFieldRecord("CompressedData",  &m_Fields);
   if(mF && mF->defined)
     {
-    if(((char *)(mF->value))[0] == 'T' || ((char *)(mF->value))[0] == 't' 
+    if(((char *)(mF->value))[0] == 'T' || ((char *)(mF->value))[0] == 't'
        || ((char *)(mF->value))[0] == '1')
       {
       m_CompressedData = true;
@@ -1557,7 +1584,7 @@ M_Read(void)
   mF = MET_GetFieldRecord("BinaryData",  &m_Fields);
   if(mF && mF->defined)
     {
-    if(((char *)(mF->value))[0] == 'T' || ((char *)(mF->value))[0] == 't' 
+    if(((char *)(mF->value))[0] == 'T' || ((char *)(mF->value))[0] == 't'
        || ((char *)(mF->value))[0] == '1')
       {
       m_BinaryData = true;
@@ -1571,7 +1598,7 @@ M_Read(void)
   mF = MET_GetFieldRecord("ElementByteOrderMSB",  &m_Fields);
   if(mF && mF->defined)
     {
-    if(((char *)(mF->value))[0] == 'T' || ((char *)(mF->value))[0] == 't' 
+    if(((char *)(mF->value))[0] == 'T' || ((char *)(mF->value))[0] == 't'
        || ((char *)(mF->value))[0] == '1')
       {
       m_BinaryDataByteOrderMSB = true;
@@ -1585,7 +1612,7 @@ M_Read(void)
   mF = MET_GetFieldRecord("BinaryDataByteOrderMSB",  &m_Fields);
   if(mF && mF->defined)
     {
-    if(((char *)(mF->value))[0] == 'T' || ((char *)(mF->value))[0] == 't' 
+    if(((char *)(mF->value))[0] == 'T' || ((char *)(mF->value))[0] == 't'
        || ((char *)(mF->value))[0] == '1')
       {
       m_BinaryDataByteOrderMSB = true;
@@ -1711,10 +1738,10 @@ M_Read(void)
     for(i=0; i<mF->length; i++)
       {
       m_ElementSpacing[i] = static_cast<float>( mF->value[i] );
-      if (META_DEBUG) 
+      if (META_DEBUG)
         {
-        METAIO_STREAM::cout << "metaObject: M_Read: elementSpacing[" 
-                            << i << "] = " 
+        METAIO_STREAM::cout << "metaObject: M_Read: elementSpacing["
+                            << i << "] = "
                             << m_ElementSpacing[i] << METAIO_STREAM::endl;
         }
       }
@@ -1724,10 +1751,10 @@ M_Read(void)
     for(i=0; i<mF->length; i++)
       {
       m_ElementSpacing[i] = 1;
-      if (META_DEBUG) 
+      if (META_DEBUG)
         {
-        METAIO_STREAM::cout << "metaObject: M_Read: elementSpacing[" 
-                            << i << "] = " 
+        METAIO_STREAM::cout << "metaObject: M_Read: elementSpacing["
+                            << i << "] = "
                             << m_ElementSpacing[i] << METAIO_STREAM::endl;
         }
       }
@@ -1739,10 +1766,27 @@ M_Read(void)
    while( it != end )
    {
      mF = MET_GetFieldRecord((*it)->name, &m_Fields);
-     m_UserDefinedWriteFields.push_back(mF);
+     //
+     // DON'T put the same cross-linked element from the UD readFields
+     // into the userDefined write fields more than once. That
+     // causes a double free, and an abort.
+     FieldsContainerType::iterator dup;
+     for(dup = m_UserDefinedWriteFields.begin();
+         dup != m_UserDefinedWriteFields.end();
+         dup++)
+       {
+       if( (*dup) == mF )
+         {
+         break;
+         }
+       }
+     if(dup == m_UserDefinedWriteFields.end())
+       {
+       m_UserDefinedWriteFields.push_back(mF);
+       }
      it++;
    }
-  
+
   return true;
   }
 
@@ -1753,7 +1797,7 @@ M_Write(void)
 
   if(!MET_Write(*m_WriteStream, & m_Fields))
     {
-    METAIO_STREAM::cerr << "MetaObject: Write: MET_Write Failed" 
+    METAIO_STREAM::cerr << "MetaObject: Write: MET_Write Failed"
                         << METAIO_STREAM::endl;
     return false;
     }
@@ -1765,7 +1809,7 @@ M_Write(void)
 bool MetaObject
 ::Append(const char *_headName)
 {
-  if(META_DEBUG) 
+  if(META_DEBUG)
     {
     METAIO_STREAM::cout << "MetaObject: Append" << METAIO_STREAM::endl;
     }
@@ -1783,7 +1827,7 @@ bool MetaObject
     }
 
 #ifdef __sgi
-  m_WriteStream->open(m_FileName, METAIO_STREAM::ios::out 
+  m_WriteStream->open(m_FileName, METAIO_STREAM::ios::out
                                   | METAIO_STREAM::ios::in);
   if(!m_WriteStream->rdbuf()->is_open())
     {
@@ -1793,8 +1837,8 @@ bool MetaObject
     }
   m_WriteStream->seekp(0,METAIO_STREAM::ios::end);
 #else
-  m_WriteStream->open(m_FileName, METAIO_STREAM::ios::binary 
-                                  | METAIO_STREAM::ios::out 
+  m_WriteStream->open(m_FileName, METAIO_STREAM::ios::binary
+                                  | METAIO_STREAM::ios::out
                                   | METAIO_STREAM::ios::app);
   if(!m_WriteStream->rdbuf()->is_open())
     {
@@ -1805,7 +1849,7 @@ bool MetaObject
 #endif
 
   M_Write();
-  
+
   m_WriteStream->close();
 
   delete m_WriteStream;
@@ -1819,14 +1863,14 @@ bool MetaObject
 // Get the user field
 void* MetaObject
 ::GetUserField(const char* _name)
-{ 
+{
   FieldsContainerType::iterator  it  = m_UserDefinedWriteFields.begin();
   FieldsContainerType::iterator  end = m_UserDefinedWriteFields.end();
   while( it != end )
   {
     int eSize;
     MET_SizeOfType((*it)->type, &eSize);
-    const unsigned int itLength = 
+    const unsigned int itLength =
                 static_cast<unsigned int>( (*it)->length );
     void * out;
     if(!strcmp((*it)->name,_name))
@@ -1861,6 +1905,29 @@ void* MetaObject
   return NULL;
 }
 
+int MetaObject
+::GetNumberOfAdditionalReadFields()
+{
+  return (int)(m_AdditionalReadFields.size());
+}
+
+char * MetaObject
+::GetAdditionalReadFieldName( int i )
+{
+  return m_AdditionalReadFields[i]->name;
+}
+
+char * MetaObject
+::GetAdditionalReadFieldValue( int i )
+{
+  return (char *)(m_AdditionalReadFields[i]->value);
+}
+
+int MetaObject
+::GetAdditionalReadFieldValueLength( int i )
+{
+  return m_AdditionalReadFields[i]->length;
+}
 
 bool MetaObject
 ::AddUserField(const char* _fieldName,MET_ValueEnumType _type,int _length,
@@ -1885,7 +1952,7 @@ void MetaObject::M_PrepareNewReadStream()
   else
     {
     m_ReadStream = new METAIO_STREAM::ifstream;
-    }  
+    }
 }
 
 #if (METAIO_USE_NAMESPACE)

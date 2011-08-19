@@ -9,8 +9,8 @@
   Copyright (c) Insight Software Consortium. All rights reserved.
   See ITKCopyright.txt or http://www.itk.org/HTML/Copyright.htm for details.
 
-     This software is distributed WITHOUT ANY WARRANTY; without even 
-     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+     This software is distributed WITHOUT ANY WARRANTY; without even
+     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
      PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
@@ -256,8 +256,8 @@ public:
   typedef size_t    BufferSizeType;
 
   /** Convenient method for accessing the number of bytes to get to
-   * the next pixel. Returns m_Strides[1]; 
-   * 
+   * the next pixel. Returns m_Strides[1];
+   *
    * Please note that this methods depends the private methods
    * ComputeStrides being called, otherwise this is the incorrect value.
    */
@@ -275,7 +275,7 @@ public:
 
 
   /** Compute the size (in bytes) of the components of a pixel. For
-   * example, and RGB pixel of unsigned char would have a 
+   * example, and RGB pixel of unsigned char would have a
    * component size of 1 byte. This method can be invoked only after
    * the component type is set. */
   virtual unsigned int GetComponentSize() const;
@@ -294,6 +294,24 @@ public:
     return false;
     }
 
+  /** Determine if the ImageIO method uses an internal buffer to read
+   *   the file, and if that buffer can be exported and used in
+   *   the pipeline. Default is false. */
+  virtual bool CanUseOwnBuffer()
+    {
+    return false;
+    }
+
+  virtual void ReadUsingOwnBuffer()
+    {
+    return;
+    }
+
+  virtual void * GetOwnBuffer()
+    {
+    return static_cast<void *>( 0 );
+    }
+
   /** Read the spacing and dimentions of the image.
    * Assumes SetFileName has been called with a valid file name. */
   virtual void ReadImageInformation() = 0;
@@ -308,10 +326,10 @@ public:
    * file specified. */
   virtual bool CanWriteFile(const char*)  = 0;
 
-  /** Determine if the ImageIO can stream writing to this file. Default is false. 
+  /** Determine if the ImageIO can stream writing to this file. Default is false.
    *
    * There are two types of non exclusive streaming: pasteing subregions, and iterative
-   * If true then 
+   * If true then
    */
   virtual bool CanStreamWrite()
     {
@@ -350,18 +368,18 @@ public:
    * the requested region. For example if the file has a size of [ 10,
    * 10, 10] but the requested region is [10, 10] the return may be 3 dimensions.
    */
-  virtual ImageIORegion 
+  virtual ImageIORegion
   GenerateStreamableReadRegionFromRequestedRegion( const ImageIORegion & requested ) const;
 
-  
-  
+
+
   /** Before this method is called all the configuration will be done,
    * that is Streaming/PasteRegion/Compression/Filename etc
-   * If pasting is being used the number of requested splits is for that 
-   * region not the largest. The derived ImageIO class should verify that 
+   * If pasting is being used the number of requested splits is for that
+   * region not the largest. The derived ImageIO class should verify that
    * the file is capable of being writen with this configuration.
-   * If pasted is enabled and is not support or does not work with the file, 
-   * then an excepetion should be thrown. 
+   * If pasted is enabled and is not support or does not work with the file,
+   * then an excepetion should be thrown.
    *
    * The default implementation depends on CanStreamWrite.
    * If false then 1 is returned (unless pasting is indicated), so that the whole file will be updated in one region.
@@ -372,14 +390,14 @@ public:
   virtual unsigned int GetActualNumberOfSplitsForWriting(unsigned int numberOfRequestedSplits,
                                                          const ImageIORegion &pasteRegion,
                                                          const ImageIORegion &largestPossibleRegion);
-             
-  /** returns the ith IORegion 
-   * 
+
+  /** returns the ith IORegion
+   *
    * numberOfActualSplits should be the value returned from GetActualNumberOfSplitsForWriting with the same parameters
    *
    * Derieved classes should overload this method to return a compatible region
    */
-  virtual ImageIORegion GetSplitRegionForWriting(unsigned int ithPiece, 
+  virtual ImageIORegion GetSplitRegionForWriting(unsigned int ithPiece,
                                                  unsigned int numberOfActualSplits,
                                                  const ImageIORegion &pasteRegion,
                                                  const ImageIORegion &largestPossibleRegion);
@@ -389,13 +407,13 @@ public:
 
   /** This method returns an array with the list of filename extensions
    * supported for reading by this ImageIO class. This is intended to
-   * facilitate GUI and application level integration. 
+   * facilitate GUI and application level integration.
    */
   const ArrayOfExtensionsType & GetSupportedReadExtensions() const;
 
   /** This method returns an array with the list of filename extensions
    * supported for writing by this ImageIO class. This is intended to
-   * facilitate GUI and application level integration. 
+   * facilitate GUI and application level integration.
    */
   const ArrayOfExtensionsType & GetSupportedWriteExtensions() const;
 
@@ -422,7 +440,7 @@ protected:
   /** Filename to read */
   std::string m_FileName;
 
-  /** Stores the number of components per pixel. This will be 1 for 
+  /** Stores the number of components per pixel. This will be 1 for
    * grayscale images, 3 for RGBPixel images, and 4 for RGBPixelA images. */
   unsigned int m_NumberOfComponents;
 
@@ -434,7 +452,7 @@ protected:
 
   /** Should we use streaming for reading */
   bool m_UseStreamedReading;
-  
+
   /** Should we use streaming for writing */
   bool m_UseStreamedWriting;
 
@@ -445,7 +463,7 @@ protected:
   /** The array which stores the number of pixels in the x, y, z directions. */
   std::vector< SizeValueType > m_Dimensions;
 
-  /** The array which stores the spacing of pixels in the 
+  /** The array which stores the spacing of pixels in the
    * x, y, z directions. */
   std::vector<double> m_Spacing;
 
@@ -463,7 +481,7 @@ protected:
   virtual void Reset(const bool freeDynamic = true);
 
   /** Resize the ImageIOBase object to new dimensions. */
-  void Resize(const unsigned int numDimensions, 
+  void Resize(const unsigned int numDimensions,
               const unsigned int* dimensions);
 
   /** Compute the size (in bytes) of the pixel. For
@@ -478,15 +496,15 @@ protected:
    * strides[3] = bytes to get to the next slice in z direction, etc. */
   void ComputeStrides();
 
-  /** Convenient method for accessing number of bytes to get to the next pixel 
+  /** Convenient method for accessing number of bytes to get to the next pixel
    * component. Returns m_Strides[0]. */
   SizeType GetComponentStride() const;
 
-  /** Convenient method for accessing the number of bytes to get to the 
+  /** Convenient method for accessing the number of bytes to get to the
    * next row. Returns m_Strides[2]. */
   SizeType GetRowStride () const;
 
-  /** Convenient method for accessing the number of bytes to get to the 
+  /** Convenient method for accessing the number of bytes to get to the
    * next slice. Returns m_Strides[3]. */
   SizeType GetSliceStride () const;
 
@@ -503,21 +521,21 @@ protected:
   /** Convenient method to read a buffer as binary. Return true on success. */
   bool ReadBufferAsBinary(std::istream& os, void *buffer, SizeType numberOfBytesToBeRead);
 
-  
+
   /** Insert an extension to the list of supported extensions for reading. */
   void AddSupportedReadExtension( const char * extension );
 
   /** Insert an extension to the list of supported extensions for writing. */
   void AddSupportedWriteExtension( const char * extension );
 
-  /** an implementation of ImageRegionSplitter:GetNumberOfSplits 
+  /** an implementation of ImageRegionSplitter:GetNumberOfSplits
    */
   virtual unsigned int GetActualNumberOfSplitsForWritingCanStreamWrite(unsigned int numberOfRequestedSplits,
                                                                        const ImageIORegion &pasteRegion) const;
 
   /** an implementation of  ImageRegionSplitter:GetSplit
    */
-  virtual ImageIORegion GetSplitRegionForWritingCanStreamWrite(unsigned int ithPiece, 
+  virtual ImageIORegion GetSplitRegionForWritingCanStreamWrite(unsigned int ithPiece,
                                                                unsigned int numberOfActualSplits,
                                                                const ImageIORegion &pasteRegion) const;
 
