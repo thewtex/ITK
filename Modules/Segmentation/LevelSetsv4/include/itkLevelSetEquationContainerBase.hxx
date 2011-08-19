@@ -54,7 +54,7 @@ LevelSetEquationContainerBase< TTermContainer >
 template< class TTermContainer >
 void
 LevelSetEquationContainerBase< TTermContainer >
-::AddEquation( LevelSetIdentifierType iId,
+::AddEquation( const LevelSetIdentifierType& iId,
                TermContainerType * iEquation )
 {
   if ( iEquation )
@@ -77,7 +77,7 @@ typename LevelSetEquationContainerBase< TTermContainer >::TermContainerType*
 LevelSetEquationContainerBase< TTermContainer >
 ::GetEquation( const LevelSetIdentifierType& iId ) const
 {
-  MapContainerIterator it = this->m_Container.find( iId );
+  MapContainerConstIterator it = this->m_Container.find( iId );
   if( it == this->m_Container.end() )
     {
     itkGenericExceptionMacro( <<"this equation " << iId << " does not exist" );
