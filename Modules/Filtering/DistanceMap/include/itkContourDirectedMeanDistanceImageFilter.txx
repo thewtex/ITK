@@ -128,6 +128,7 @@ ContourDirectedMeanDistanceImageFilter< TInputImage1, TInputImage2 >
   typename FilterType::Pointer filter = FilterType::New();
 
   filter->SetInput( this->GetInput2() );
+  filter->SetUseImageSpacing(m_UseImageSpacing);
   filter->Update();
 
   m_DistanceMap = filter->GetOutput();
@@ -244,6 +245,8 @@ ContourDirectedMeanDistanceImageFilter< TInputImage1, TInputImage2 >
 {
   Superclass::PrintSelf(os, indent);
 
+  os << indent << "UseImageSpacing: "
+     << m_UseImageSpacing << std::endl;
   os << indent << "ContourDirectedMeanDistance: "
      << m_ContourDirectedMeanDistance << std::endl;
 }

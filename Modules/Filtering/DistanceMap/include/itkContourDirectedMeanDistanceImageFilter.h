@@ -128,6 +128,10 @@ public:
                    ( Concept::HasNumericTraits< InputImage1PixelType > ) );
   /** End concept checking */
 #endif
+
+  /** Set if image spacing should be used in computing distances. */
+  itkSetMacro( UseImageSpacing, bool );
+
 protected:
   ContourDirectedMeanDistanceImageFilter();
   ~ContourDirectedMeanDistanceImageFilter(){}
@@ -169,6 +173,7 @@ private:
   Array< RealType > m_MeanDistance;
   Array< int >      m_Count;
   RealType          m_ContourDirectedMeanDistance;
+  bool              m_UseImageSpacing;
 }; // end of class
 } // end namespace itk
 

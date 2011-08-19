@@ -126,6 +126,9 @@ ContourMeanDistanceImageFilter< TInputImage1, TInputImage2 >
   progress->RegisterInternalFilter(filter12, .5f);
   progress->RegisterInternalFilter(filter21, .5f);
 
+  filter12->SetUseImageSpacing(m_UseImageSpacing);
+  filter21->SetUseImageSpacing(m_UseImageSpacing);
+
   filter12->Update();
   distance12 = filter12->GetContourDirectedMeanDistance();
   filter21->Update();
@@ -148,6 +151,8 @@ ContourMeanDistanceImageFilter< TInputImage1, TInputImage2 >
 {
   Superclass::PrintSelf(os, indent);
 
+  os << indent << "UseImageSpacing: "
+     << m_UseImageSpacing << std::endl;
   os << indent << "MeanDistance: "
      << m_MeanDistance << std::endl;
 }
