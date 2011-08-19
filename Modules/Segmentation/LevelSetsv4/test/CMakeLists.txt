@@ -11,6 +11,8 @@ itkBinaryImageToShiSparseLevelSetAdaptorTest.cxx
 # domain
 itkLevelSetDomainPartitionBaseTest.cxx
 itkLevelSetDomainMapImageFilterTest.cxx
+# level set container
+itkLevelSetContainerBaseTest.cxx
 )
 
 CreateTestDriver(ITKLevelSetsv4  "${ITKLevelSetsv4-Test_LIBRARIES}" "${ITKLevelSetsv4Tests}")
@@ -47,3 +49,6 @@ add_test(NAME itkLevelSetsv4DomainPartitionBaseTest
       COMMAND ITKLevelSetsv4TestDriver itkLevelSetDomainPartitionBaseTest)
 add_test(NAME itkLevelSetsv4DomainMapImageFilterTest
       COMMAND ITKLevelSetsv4TestDriver itkLevelSetDomainMapImageFilterTest)
+# level set container
+add_test(NAME itkLevelSetsv4ContainerBaseTest
+      COMMAND ITKLevelSetsv4TestDriver itkLevelSetContainerBaseTest)
