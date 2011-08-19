@@ -8,6 +8,9 @@ itkMalcolmSparseLevelSetBaseTest.cxx
 itkBinaryImageToWhitakerSparseLevelSetAdaptorTest.cxx
 itkBinaryImageToMalcolmSparseLevelSetAdaptorTest.cxx
 itkBinaryImageToShiSparseLevelSetAdaptorTest.cxx
+# domain
+itkLevelSetDomainPartitionBaseTest.cxx
+itkLevelSetDomainMapImageFilterTest.cxx
 )
 
 CreateTestDriver(ITKLevelSetsv4  "${ITKLevelSetsv4-Test_LIBRARIES}" "${ITKLevelSetsv4Tests}")
@@ -39,3 +42,8 @@ add_test(NAME itkBinaryImageToShiSparseLevelSetsv4AdaptorTest
       ${ITK_DATA_ROOT}/Input/circle.png
       ${ITK_TEST_OUTPUT_DIR}/output_binary_shi_adaptor.mha
       )
+# domain
+add_test(NAME itkLevelSetsv4DomainPartitionBaseTest
+      COMMAND ITKLevelSetsv4TestDriver itkLevelSetDomainPartitionBaseTest)
+add_test(NAME itkLevelSetsv4DomainMapImageFilterTest
+      COMMAND ITKLevelSetsv4TestDriver itkLevelSetDomainMapImageFilterTest)
