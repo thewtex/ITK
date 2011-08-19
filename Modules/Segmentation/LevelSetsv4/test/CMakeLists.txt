@@ -21,6 +21,22 @@ itkLevelSetDomainPartitionBaseTest.cxx
 itkLevelSetDomainMapImageFilterTest.cxx
 # level set container
 itkSparseLevelSetContainerTest.cxx
+# single level set
+itkSingleLevelSetDense2DTest.cxx
+itkSingleLevelSetSparse2DTest.cxx
+itkSingleLevelSetMalcolm2DTest.cxx
+itkSingleLevelSetShi2DTest.cxx
+# two level set
+itkTwoLevelSetDense2DTest.cxx
+itkTwoLevelSetSparse2DTest.cxx
+itkTwoLevelSetMalcolm2DTest.cxx
+itkTwoLevelSetShiSparse2DTest.cxx
+# multi level set
+itkMultiLevelSetImageTest.cxx
+itkMultiLevelSetChanAndVeseInternalTermTest.cxx
+itkMultiLevelSetEvolutionTest.cxx
+# stopping criterion
+itkLevelSetEvolutionNumberOfIterationsStoppingCriterionTest.cxx
 )
 
 CreateTestDriver(ITKLevelSetsv4  "${ITKLevelSetsv4-Test_LIBRARIES}" "${ITKLevelSetsv4Tests}")
@@ -59,5 +75,73 @@ itk_add_test(NAME itkLevelSetsv4DomainPartitionBaseTest
 itk_add_test(NAME itkLevelSetsv4DomainMapImageFilterTest
       COMMAND ITKLevelSetsv4TestDriver itkLevelSetDomainMapImageFilterTest)
 # level set container
-itk_add_test(NAME itkLevelSetsv4ContainerBaseTest
+itk_add_test(NAME itkLevelSetsv4SparseLevelSetContainerTest
       COMMAND ITKLevelSetsv4TestDriver itkSparseLevelSetContainerTest)
+# single level set
+itk_add_test(NAME itkSingleLevelSetsv4Dense2DTest
+      COMMAND ITKLevelSetsv4TestDriver itkSingleLevelSetDense2DTest
+      ${ITK_DATA_ROOT}/Input/whiteSpot.png 25 25 25)
+
+itk_add_test(NAME itkSingleLevelSetsv4Sparse2DTest
+      COMMAND ITKLevelSetsv4TestDriver itkSingleLevelSetSparse2DTest
+      ${ITK_DATA_ROOT}/Input/whiteSpot.png
+      50
+      ${ITK_TEST_OUTPUT_DIR}/whiteSpot_output_sparse_single.mha
+)
+itk_add_test(NAME itkSingleLevelSetsv4Malcolm2DTest
+      COMMAND ITKLevelSetsv4TestDriver itkSingleLevelSetMalcolm2DTest
+      ${ITK_DATA_ROOT}/Input/whiteSpot.png
+      15
+      ${ITK_TEST_OUTPUT_DIR}/whiteSpot_output_malcolm_single.mha
+ )
+itk_add_test(NAME itkSingleLevelSetsv4Shi2DTest
+      COMMAND ITKLevelSetsv4TestDriver itkSingleLevelSetShi2DTest
+      ${ITK_DATA_ROOT}/Input/whiteSpot.png
+      15
+      ${ITK_TEST_OUTPUT_DIR}/whiteSpot_output_shi_single.mha)
+
+itk_add_test(NAME itkSingleLevelSetsv4SparseWithCurvature2DTest
+      COMMAND ITKLevelSetsv4TestDriver itkSingleLevelSetSparseWithCurvature2DTest
+      ${ITK_DATA_ROOT}/Input/whiteSpot.png )
+
+itk_add_test(NAME itkSingleLevelSetsv4SparseWithPropagation2DTest
+      COMMAND ITKLevelSetsv4TestDriver itkSingleLevelSetSparseWithPropagation2DTest
+      ${ITK_DATA_ROOT}/Input/whiteSpot.png )
+
+itk_add_test(NAME itkSingleLevelSetsv4SparseWithLaplacian2DTest
+      COMMAND ITKLevelSetsv4TestDriver itkSingleLevelSetSparseWithLaplacian2DTest
+      ${ITK_DATA_ROOT}/Input/whiteSpot.png )
+# two level sets
+itk_add_test(NAME itkTwoLevelSetsv4Dense2DTest
+      COMMAND ITKLevelSetsv4TestDriver itkTwoLevelSetDense2DTest
+      ${ITK_DATA_ROOT}/Input/whiteSpot.png 25 25 10)
+
+itk_add_test(NAME itkTwoLevelSetsv4Sparse2DTest
+      COMMAND ITKLevelSetsv4TestDriver itkTwoLevelSetSparse2DTest
+      ${ITK_DATA_ROOT}/Input/whiteSpot.png
+     40
+     ${ITK_TEST_OUTPUT_DIR}/whiteSpot_output_sparse_two.mha
+)
+
+itk_add_test(NAME itkTwoLevelSetsv4Malcolm2DTest
+     COMMAND ITKLevelSetsv4TestDriver itkTwoLevelSetMalcolm2DTest
+     ${ITK_DATA_ROOT}/Input/whiteSpot.png
+     1
+     ${ITK_TEST_OUTPUT_DIR}/whiteSpot_output_malcolm_two.mha
+)
+
+itk_add_test(NAME itkTwoLevelSetsv4ShiSparse2DTest
+     COMMAND ITKLevelSetsv4TestDriver itkTwoLevelSetShiSparse2DTest
+     ${ITK_DATA_ROOT}/Input/whiteSpot.png
+     1
+     ${ITK_TEST_OUTPUT_DIR}/whiteSpot_output_shi_two.mha
+)
+
+itk_add_test(NAME itkLevelSetEvolutionNumberOfIterationsStoppingCriterionTest
+      COMMAND ITKLevelSetsv4TestDriver itkLevelSetEvolutionNumberOfIterationsStoppingCriterionTest)
+itk_add_test(NAME itkMultiLevelSetImageTest
+      COMMAND ITKLevelSetsv4TestDriver itkMultiLevelSetImageTest)
+itk_add_test(NAME itkMultiLevelSetsv4ChanAndVeseInternalTermTest
+      COMMAND ITKLevelSetsv4TestDriver itkMultiLevelSetChanAndVeseInternalTermTest)
+itk_add_test(NAME itkMultiLevelsv4SetEvolutionTest
+      COMMAND ITKLevelSetsv4TestDriver itkMultiLevelSetEvolutionTest)
