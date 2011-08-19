@@ -274,13 +274,14 @@ protected:
   /** \brief Default Destructor */
   ~LevelSetContainerBase();
 
+  LevelSetContainerType         m_Container;
+
 private:
   LevelSetContainerBase( const Self & ); // purposely not implemented
   void operator = ( const Self & ); // purposely not implemented
 
   HeavisidePointer              m_Heaviside;
   DomainMapImageFilterPointer   m_DomainMapFilter;
-  LevelSetContainerType         m_Container;
 };
 
 }
