@@ -390,9 +390,9 @@ the sizes can be different.*/
 /* Signed size type */
 #undef TIFF_SSIZE_T
 #if defined( HAVE_STDINT_H )
-#define TIFF_SSIZE_T  size_t
+#define TIFF_SSIZE_T  int64_t
 #else
-#define TIFF_SSIZE_T  size_t
+#define TIFF_SSIZE_T  int64_t
 #endif
 
 
