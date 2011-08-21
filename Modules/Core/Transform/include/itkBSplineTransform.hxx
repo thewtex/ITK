@@ -35,7 +35,6 @@ BSplineTransform<TScalarType, NDimensions, VSplineOrder>
   for( unsigned int j = 0; j < SpaceDimension; j++ )
     {
     this->m_CoefficientImages[j] = ImageType::New();
-    this->m_JacobianImages[j] = JacobianImageType::New();
     }
 
   this->m_InternalParametersBuffer = ParametersType( 0 );
@@ -76,8 +75,6 @@ BSplineTransform<TScalarType, NDimensions, VSplineOrder>
   this->SetFixedParametersFromTransformDomainInformation();
 
   this->SetCoefficientImageInformationFromFixedParameters();
-
-  this->m_LastJacobianIndex.Fill( 0 );
 }
 
 // Destructor
@@ -175,8 +172,6 @@ BSplineTransform<TScalarType, NDimensions, VSplineOrder>
     {
     this->m_TransformDomainMeshSize = meshSize;
 
-    this->m_SharedDataBSplineJacobian.SetSize( SpaceDimension, this->GetNumberOfParameters() );
-
     // Input parameters point to internal buffer => using default parameters.
     if( this->m_InputParametersPointer == &( this->m_InternalParametersBuffer ) )
       {
@@ -232,13 +227,13 @@ BSplineTransform<TScalarType, NDimensions, VSplineOrder>
   if( parameters.Size() != this->GetNumberOfParameters() )
     {
     itkExceptionMacro( "Mismatch between parameters size "
-                       << parameters.Size() << " and expected number of parameters "
-                       << this->GetNumberOfParameters()
-                       << ( this->m_CoefficientImages[0]->
-                            GetLargestPossibleRegion().GetNumberOfPixels() == 0 ?
-                            ". \nSince the size of the grid region is 0, perhaps you forgot to "
-                            "SetGridRegion or SetFixedParameters before setting the Parameters."
-                            : "" ) );
+      << parameters.Size() << " and expected number of parameters "
+      << this->GetNumberOfParameters()
+      << ( this->m_CoefficientImages[0]->
+           GetLargestPossibleRegion().GetNumberOfPixels() == 0 ?
+           ". \nSince the size of the grid region is 0, perhaps you forgot to "
+           "SetGridRegion or SetFixedParameters before setting the Parameters."
+           : "" ) );
     }
 
   if( &parameters != &( this->m_InternalParametersBuffer ) )
@@ -307,7 +302,6 @@ BSplineTransform<TScalarType, NDimensions, VSplineOrder>
     meshSize[i] = gridSize[i] - SplineOrder;
     }
   this->m_CoefficientImages[0]->SetRegions( gridSize );
-  this->m_JacobianImages[0]->SetRegions( gridSize );
 
   this->SetTransformDomainMeshSize( meshSize );
 
@@ -319,7 +313,6 @@ BSplineTransform<TScalarType, NDimensions, VSplineOrder>
     origin[i] = this->m_FixedParameters[NDimensions + i];
     }
   this->m_CoefficientImages[0]->SetOrigin( origin );
-  this->m_JacobianImages[0]->SetOrigin( origin );
 
   // Set the spacing parameters
 
@@ -329,7 +322,6 @@ BSplineTransform<TScalarType, NDimensions, VSplineOrder>
     spacing[i] = this->m_FixedParameters[2 * NDimensions + i];
     }
   this->m_CoefficientImages[0]->SetSpacing( spacing );
-  this->m_JacobianImages[0]->SetSpacing( spacing );
 
   // Set the direction parameters
 
@@ -343,7 +335,6 @@ BSplineTransform<TScalarType, NDimensions, VSplineOrder>
       }
     }
   this->m_CoefficientImages[0]->SetDirection( direction );
-  this->m_JacobianImages[0]->SetDirection( direction );
 
   // Copy the information to the rest of the images
   for( unsigned int i = 1; i < SpaceDimension; i++ )
@@ -352,9 +343,6 @@ BSplineTransform<TScalarType, NDimensions, VSplineOrder>
       this->m_CoefficientImages[0] );
     this->m_CoefficientImages[i]->SetRegions(
       this->m_CoefficientImages[0]->GetLargestPossibleRegion() );
-    this->m_JacobianImages[i]->CopyInformation( this->m_JacobianImages[0] );
-    this->m_JacobianImages[i]->SetRegions(
-      this->m_JacobianImages[0]->GetLargestPossibleRegion() );
     }
 }
 
@@ -498,21 +486,6 @@ BSplineTransform<TScalarType, NDimensions, VSplineOrder>
     this->m_CoefficientImages[j]->GetPixelContainer()->
     SetImportPointer( dataPointer + j * numberOfPixels, numberOfPixels );
     }
-
-  /**
-   * Allocate memory for Jacobian and wrap into SpaceDimension number
-   * of ITK images
-   */
-
-  this->m_SharedDataBSplineJacobian.set_size( SpaceDimension, this->GetNumberOfParameters() );
-  this->m_SharedDataBSplineJacobian.Fill(NumericTraits<JacobianPixelType>::Zero);
-  JacobianPixelType *jacobianDataPointer = this->m_SharedDataBSplineJacobian.data_block();
-  for( unsigned int j = 0; j < SpaceDimension; j++ )
-    {
-    this->m_JacobianImages[j]->GetPixelContainer()->
-    SetImportPointer( jacobianDataPointer + j * (
-                        this->GetNumberOfParameters() + numberOfPixels ), numberOfPixels );
-    }
 }
 
 // Get the parameters
@@ -590,10 +563,10 @@ BSplineTransform<TScalarType, NDimensions, VSplineOrder>
       if( numberOfPixels * SpaceDimension != totalParameters )
         {
         itkExceptionMacro( "SetCoefficientImage() has array of images that are "
-                           << "not the correct size. "
-                           << numberOfPixels * SpaceDimension << " != " << totalParameters
-                           << " for image at index " << j << "  \n" << images[j]
-                           );
+          << "not the correct size. "
+          << numberOfPixels * SpaceDimension << " != " << totalParameters
+          << " for image at index " << j << "  \n" << images[j]
+          );
         }
       const ParametersValueType * const baseImagePointer =
         images[j]->GetBufferPointer();
@@ -695,7 +668,7 @@ template <class TScalarType, unsigned int NDimensions, unsigned int VSplineOrder
 void
 BSplineTransform<TScalarType, NDimensions, VSplineOrder>
 ::TransformPoint( const InputPointType & point, OutputPointType & outputPoint,
-                  WeightsType & weights, ParameterIndexArrayType & indices, bool & inside ) const
+  WeightsType & weights, ParameterIndexArrayType & indices, bool & inside ) const
 {
   inside = true;
 
@@ -780,7 +753,7 @@ typename BSplineTransform<TScalarType, NDimensions, VSplineOrder>
 BSplineTransform<TScalarType, NDimensions, VSplineOrder>
 ::TransformPoint(const InputPointType & point) const
 {
-  WeightsType             weights( this->m_WeightsFunction->GetNumberOfWeights() );
+  WeightsType weights( this->m_WeightsFunction->GetNumberOfWeights() );
   ParameterIndexArrayType indices(
     this->m_WeightsFunction->GetNumberOfWeights() );
   OutputPointType outputPoint;
@@ -795,91 +768,74 @@ BSplineTransform<TScalarType, NDimensions, VSplineOrder>
 template <class TScalarType, unsigned int NDimensions, unsigned int VSplineOrder>
 void
 BSplineTransform<TScalarType, NDimensions, VSplineOrder>
-::ComputeJacobianWithRespectToParameters( const InputPointType & point, JacobianType & jacobian ) const
+::ComputeJacobianWithRespectToParameters( const InputPointType & point,
+  JacobianType & jacobian ) const
 {
   // Zero all components of jacobian
-  // NOTE: for efficiency, we only need to zero out the coefficients
-  // that got fill last time this method was called.
-  typedef ImageRegionIterator<JacobianImageType> IteratorType;
-  IteratorType jacobianIterators[SpaceDimension];
+  jacobian.SetSize( SpaceDimension, this->GetNumberOfParameters() );
+  jacobian.Fill( 0.0 );
+
   RegionType   supportRegion;
   SizeType     supportSize;
   supportSize.Fill( SplineOrder + 1 );
-
   supportRegion.SetSize( supportSize );
-    {
-    supportRegion.SetIndex( this->m_LastJacobianIndex );
-    // Make an array of jacobian image iterators
-    for( unsigned int j = 0; j < SpaceDimension; j++ )
-      {
-      jacobianIterators[j] = IteratorType(
-          this->m_JacobianImages[j], supportRegion );
-      while( !jacobianIterators[j].IsAtEnd() )
-        {
-        // zero out jacobian elements
-        jacobianIterators[j].Set( NumericTraits<JacobianPixelType>::Zero );
-        ++( jacobianIterators[j] );
-        }
-      }
-    }
 
   ContinuousIndexType index;
   this->m_CoefficientImages[0]->
-  TransformPhysicalPointToContinuousIndex( point, index );
+    TransformPhysicalPointToContinuousIndex( point, index );
 
-  // NOTE: if the support region does not lie totally within the grid we assume
-  // zero displacement and do no computations beyond zeroing out the value
-  // return the input point
   if( !this->InsideValidRegion( index ) )
     {
-    jacobian = this->m_SharedDataBSplineJacobian;
     return;
     }
 
   // Compute interpolation weights
   WeightsType weights( this->m_WeightsFunction->GetNumberOfWeights() );
+  IndexType supportIndex;
+  this->m_WeightsFunction->Evaluate( index, weights, supportIndex );
 
-    {
-    IndexType supportIndex;
-    this->m_WeightsFunction->Evaluate( index, weights, supportIndex );
-    this->m_LastJacobianIndex = supportIndex;
-    // For each dimension, copy the weight to the support region
-    supportRegion.SetIndex(supportIndex);
-    // Reset iterators now that the support region has changed
-    for( unsigned int j = 0; j < SpaceDimension; j++ )
-      {
-      jacobianIterators[j] = IteratorType( this->m_JacobianImages[j],
-                                           supportRegion );
-      }
-    }
+  supportRegion.SetIndex( supportIndex );
+
+  IndexType startIndex =
+    this->m_CoefficientImages[0]->GetLargestPossibleRegion().GetIndex();
 
   unsigned long counter = 0;
-  while( !jacobianIterators[0].IsAtEnd() )
+
+  SizeType cumulativeGridSizes;
+  cumulativeGridSizes[0] = ( this->m_TransformDomainMeshSize[0] + SplineOrder );
+  for( unsigned int d = 1; d < SpaceDimension; d++ )
     {
-    // copy weight to jacobian image
-    for( unsigned int j = 0; j < SpaceDimension; j++ )
-      {
-      jacobianIterators[j].Set( static_cast<JacobianPixelType>(
-                                  weights[counter] ) );
-      }
-    // go to next coefficient in the support region
-    ++counter;
-    for( unsigned int j = 0; j < SpaceDimension; j++ )
-      {
-      ++( jacobianIterators[j] );
-      }
+    cumulativeGridSizes[d] = cumulativeGridSizes[d-1] *
+      ( this->m_TransformDomainMeshSize[d] + SplineOrder );
     }
 
-  // Return the results
-  jacobian = this->m_SharedDataBSplineJacobian;
+  ImageRegionConstIteratorWithIndex<ImageType> It( this->m_CoefficientImages[0],
+    supportRegion );
+  for( It.GoToBegin(); !It.IsAtEnd(); ++It )
+    {
+    typename ImageType::OffsetType currentIndex = It.GetIndex() - startIndex;
+
+    unsigned long number = currentIndex[0];
+    for( unsigned int d = 1; d < SpaceDimension; d++ )
+      {
+      number += ( currentIndex[d] * cumulativeGridSizes[d-1] );
+      }
+
+    for( unsigned int d = 0; d < SpaceDimension; d++ )
+      {
+      jacobian( d, number ) = weights[counter];
+      }
+    counter++;
+    }
 }
 
 /** Get Jacobian at a point. A very specialized function just for BSplines */
 template <class TScalarType, unsigned int NDimensions, unsigned int VSplineOrder>
 void
 BSplineTransform<TScalarType, NDimensions, VSplineOrder>
-::ComputeJacobianFromBSplineWeightsWithRespectToPosition( const InputPointType & point, WeightsType & weights,
-                                                          ParameterIndexArrayType & indexes ) const
+::ComputeJacobianFromBSplineWeightsWithRespectToPosition(
+  const InputPointType & point, WeightsType & weights,
+  ParameterIndexArrayType & indexes ) const
 {
   ContinuousIndexType index;
 
@@ -907,7 +863,7 @@ BSplineTransform<TScalarType, NDimensions, VSplineOrder>
   supportRegion.SetIndex( supportIndex );
   unsigned long counter = 0;
 
-  typedef ImageRegionIterator<JacobianImageType> IteratorType;
+  typedef ImageRegionIterator<ImageType> IteratorType;
 
   IteratorType coeffIterator = IteratorType(
       this->m_CoefficientImages[0], supportRegion );

@@ -145,21 +145,21 @@ public:
 
   /** Standard covariant vector type for this class. */
   typedef CovariantVector<TScalarType,
-                          itkGetStaticConstMacro( SpaceDimension )> InputCovariantVectorType;
+    itkGetStaticConstMacro( SpaceDimension )> InputCovariantVectorType;
   typedef CovariantVector<TScalarType,
-                          itkGetStaticConstMacro( SpaceDimension )> OutputCovariantVectorType;
+    itkGetStaticConstMacro( SpaceDimension )> OutputCovariantVectorType;
 
   /** Standard vnl_vector type for this class. */
   typedef vnl_vector_fixed<TScalarType,
-                           itkGetStaticConstMacro( SpaceDimension )> InputVnlVectorType;
+    itkGetStaticConstMacro( SpaceDimension )> InputVnlVectorType;
   typedef vnl_vector_fixed<TScalarType,
-                           itkGetStaticConstMacro( SpaceDimension )> OutputVnlVectorType;
+    itkGetStaticConstMacro( SpaceDimension )> OutputVnlVectorType;
 
   /** Standard coordinate point type for this class. */
   typedef Point
-  <TScalarType, itkGetStaticConstMacro( SpaceDimension )> InputPointType;
+    <TScalarType, itkGetStaticConstMacro( SpaceDimension )> InputPointType;
   typedef Point
-  <TScalarType, itkGetStaticConstMacro( SpaceDimension )> OutputPointType;
+    <TScalarType, itkGetStaticConstMacro( SpaceDimension )> OutputPointType;
 
   /** This method sets the parameters of the transform.
    * For a BSpline deformation transform, the parameters are the BSpline
@@ -236,9 +236,9 @@ public:
   virtual const ParametersType & GetFixedParameters() const;
 
   /** Parameters as SpaceDimension number of images. */
-  typedef typename ParametersType::ValueType ParametersValueType;
+  typedef typename ParametersType::ValueType    ParametersValueType;
   typedef Image<ParametersValueType,
-                itkGetStaticConstMacro( SpaceDimension )>              ImageType;
+    itkGetStaticConstMacro( SpaceDimension )>   ImageType;
   typedef typename ImageType::Pointer           ImagePointer;
   typedef FixedArray<ImagePointer, NDimensions> CoefficientImageArray;
 
@@ -265,7 +265,7 @@ public:
    * Warning: use either the SetParameters() or SetCoefficientImage()
    * API. Mixing the two modes may results in unexpected results.
    */
-  virtual void SetCoefficientImages( const CoefficientImageArray & images );
+  virtual void SetCoefficientImages( const CoefficientImageArray & );
 
   /** Typedefs for specifying the extent of the grid. */
   typedef ImageRegion<itkGetStaticConstMacro( SpaceDimension )> RegionType;
@@ -287,7 +287,8 @@ public:
   itkGetConstMacro( TransformDomainOrigin, OriginType );
 
   /** Function to specify the transform domain physical dimensions. */
-  virtual void SetTransformDomainPhysicalDimensions(const PhysicalDimensionsType & );
+  virtual void SetTransformDomainPhysicalDimensions(
+    const PhysicalDimensionsType & );
 
   /** Function to retrieve the transform domain physical dimensions. */
   itkGetConstMacro( TransformDomainPhysicalDimensions, PhysicalDimensionsType );
@@ -309,11 +310,11 @@ public:
 
   /** Interpolation weights function type. */
   typedef BSplineInterpolationWeightFunction<ScalarType,
-                                             itkGetStaticConstMacro( SpaceDimension ),
-                                             itkGetStaticConstMacro( SplineOrder )>            WeightsFunctionType;
-  typedef typename WeightsFunctionType::WeightsType WeightsType;
+    itkGetStaticConstMacro( SpaceDimension ),
+     itkGetStaticConstMacro( SplineOrder )>            WeightsFunctionType;
+  typedef typename WeightsFunctionType::WeightsType    WeightsType;
   typedef typename WeightsFunctionType::
-  ContinuousIndexType                               ContinuousIndexType;
+    ContinuousIndexType                                ContinuousIndexType;
 
   /** Parameter index array type. */
   typedef Array<unsigned long> ParameterIndexArrayType;
@@ -326,8 +327,8 @@ public:
    * Parameter indices for the i-th dimension can be obtained by adding
    * ( i * this->GetNumberOfParametersPerDimension() ) to the indices array.
    */
-  virtual void TransformPoint( const InputPointType &, OutputPointType &, WeightsType &, ParameterIndexArrayType &,
-                               bool & ) const;
+  virtual void TransformPoint( const InputPointType &, OutputPointType &,
+    WeightsType &, ParameterIndexArrayType &, bool & ) const;
 
   /** Get number of weights. */
   unsigned long GetNumberOfWeights() const
@@ -363,13 +364,14 @@ public:
   }
 
   /** Get Jacobian at a point. A very specialized function just for BSplines */
-  virtual void ComputeJacobianFromBSplineWeightsWithRespectToPosition( const InputPointType &, WeightsType &,
-                                                                       ParameterIndexArrayType & ) const;
+  virtual void ComputeJacobianFromBSplineWeightsWithRespectToPosition(
+    const InputPointType &, WeightsType &, ParameterIndexArrayType & ) const;
 
-  virtual void ComputeJacobianWithRespectToParameters(const InputPointType & p, JacobianType & jacobian) const;
+  virtual void ComputeJacobianWithRespectToParameters( const InputPointType &,
+    JacobianType & ) const;
 
-  virtual void ComputeJacobianWithRespectToPosition(const InputPointType &,
-                                                    JacobianType &) const
+  virtual void ComputeJacobianWithRespectToPosition( const InputPointType &,
+    JacobianType & ) const
   {
     itkExceptionMacro( "ComputeJacobianWithRespectToPosition not yet implemented "
                        "for " << this->GetNameOfClass() );
@@ -465,21 +467,6 @@ private:
 
   /** Internal parameters buffer. */
   ParametersType m_InternalParametersBuffer;
-
-  /** Jacobian as SpaceDimension number of images. */
-  typedef typename JacobianType::ValueType JacobianPixelType;
-  typedef Image<JacobianPixelType,
-                itkGetStaticConstMacro( SpaceDimension )>             JacobianImageType;
-  typedef typename JacobianImageType::Pointer           JacobianImagePointer;
-  typedef FixedArray<JacobianImagePointer, NDimensions> JacobianImageArrayType;
-
-  JacobianImageArrayType m_JacobianImages;
-
-  /** Keep track of last support region used in computing the Jacobian
-   * for fast resetting of Jacobian to zero.
-   */
-  mutable IndexType    m_LastJacobianIndex;
-  mutable JacobianType m_SharedDataBSplineJacobian;
 
   /** Pointer to function used to compute Bspline interpolation weights. */
   typename WeightsFunctionType::Pointer m_WeightsFunction;
