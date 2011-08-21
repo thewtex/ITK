@@ -19,6 +19,7 @@
 #define __itkDisplacementFieldTransform_hxx
 
 #include "itkDisplacementFieldTransform.h"
+#include "itkVectorLinearInterpolateImageFunction.h"
 
 #include "itkImageRegionIteratorWithIndex.h"
 #include "vnl/algo/vnl_symmetric_eigensystem.h"

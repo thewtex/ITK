@@ -23,6 +23,7 @@
 #include "itkImage.h"
 #include "itkMatrixOffsetTransformBase.h"
 #include "itkImageVectorTransformParametersHelper.h"
+#include "itkVectorInterpolateImageFunction.h"
 
 namespace itk
 {
