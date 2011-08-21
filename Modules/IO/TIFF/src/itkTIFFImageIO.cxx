@@ -1015,7 +1015,7 @@ void TIFFImageIO::ReadTiles(void *buffer)
         new unsigned char[m_InternalImage->m_TileWidth * m_InternalImage->m_TileHeight
                           * m_InternalImage->m_SamplesPerPixel];
 
-      if ( TIFFReadTile(m_InternalImage->m_Image, tempImage, col, row, 0, 0) < 0 )
+      if ( TIFFReadTile(m_InternalImage->m_Image, tempImage, col, row, 0, 0) == NumericTraits<tmsize_t>::max() )
         {
         itkExceptionMacro(<< "Cannot read tile : " << row << "," << col << " from file");
         if ( tempImage != buffer )
