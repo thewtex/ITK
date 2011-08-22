@@ -19,6 +19,7 @@
 #include "itkTIFFImageIO.h"
 #include "itkRGBPixel.h"
 #include "itkRGBAPixel.h"
+#include "itkNumericTraits.h"
 #include "itksys/SystemTools.hxx"
 #include <stdio.h>
 #include <stdlib.h>
@@ -1667,10 +1668,16 @@ void TIFFImageIO::InternalWrite(const void *buffer)
   int predictor;
 
   const char *mode = "w";
-  // if the size of the image if greater then 2GB then use big tiff
-  if ( this->GetImageSizeInBytes() > SizeType( 1073741824u ) * 3 )
+
+  // If the size of the image if greater then ~2GB then use big tiff
+  //
+  // The "-1" is added to prevent the following if statement from
+  // always being true in the case where SizeType is only 32-bits.
+  const SizeType aproxTwoGigaBytes = itk::NumericTraits<itk::int32_t>::max()-1;
+
+  if ( this->GetImageSizeInBytes() > aproxTwoGigaBytes )
     {
-    // adding the 8 enable big tiff
+    // Adding the "8" option enables the use of big tiff
     mode = "w8";
     }
 
