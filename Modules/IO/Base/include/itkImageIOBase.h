@@ -269,8 +269,16 @@ public:
    * used for writing output files. */
   std::string GetByteOrderAsString(ByteOrder) const;
 
+#ifdef _WIN32
+  // In Windows 32 and 64, streamoff is only 32 bits,
+  // which can only address files smaller than 2Gb.
+  // Therefore here we use the OffsetValueType instead.
   /** Type for representing size of bytes, and or positions along a file */
-  typedef std::streamoff SizeType;
+  typedef ::itk::OffsetValueType    SizeType;
+#else
+  /** Type for representing size of bytes, and or positions along a file */
+  typedef std::streamoff            SizeType;
+#endif
 
   /** Type for representing size of bytes, and or positions along a memory
     buffer */
