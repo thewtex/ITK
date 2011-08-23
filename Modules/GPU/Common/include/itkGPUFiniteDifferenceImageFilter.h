@@ -273,7 +273,7 @@ private:
 } // end namespace itk
 
 #if ITK_TEMPLATE_TXX
-#include "itkGPUFiniteDifferenceImageFilter.txx"
+#include "itkGPUFiniteDifferenceImageFilter.hxx"
 #endif
 
 #endif

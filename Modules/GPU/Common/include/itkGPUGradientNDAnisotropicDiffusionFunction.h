@@ -127,7 +127,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkGPUGradientNDAnisotropicDiffusionFunction.txx"
+#include "itkGPUGradientNDAnisotropicDiffusionFunction.hxx"
 #endif
 
 #endif

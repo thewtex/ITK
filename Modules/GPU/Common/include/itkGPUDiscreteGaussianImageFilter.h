@@ -121,7 +121,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkGPUDiscreteGaussianImageFilter.txx"
+#include "itkGPUDiscreteGaussianImageFilter.hxx"
 #endif
 
 #endif

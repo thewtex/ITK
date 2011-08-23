@@ -77,7 +77,7 @@ private:
 } // end namspace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkGPUAnisotropicDiffusionImageFilter.txx"
+#include "itkGPUAnisotropicDiffusionImageFilter.hxx"
 #endif
 
 #endif

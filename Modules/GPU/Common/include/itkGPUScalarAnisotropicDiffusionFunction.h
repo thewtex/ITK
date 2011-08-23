@@ -72,7 +72,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkGPUScalarAnisotropicDiffusionFunction.txx"
+#include "itkGPUScalarAnisotropicDiffusionFunction.hxx"
 #endif
 
 #endif
