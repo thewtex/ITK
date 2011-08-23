@@ -140,7 +140,7 @@ int itkWarpImageFilterTest(int, char* [] )
 
   //=============================================================
 
-  std::cout << "Create the input deformation field." << std::endl;
+  std::cout << "Create the input displacement field." << std::endl;
 
   //Tested with { 2, 4 } and { 2, 5 } as well...
   unsigned int factors[ImageDimension] = { 2, 3 };
@@ -180,7 +180,7 @@ int itkWarpImageFilterTest(int, char* [] )
   WarperType::Pointer warper = WarperType::New();
 
   warper->SetInput( input );
-  warper->SetDeformationField( field );
+  warper->SetDisplacementField( field );
   warper->SetEdgePaddingValue( padValue );
 
   ShowProgressObject progressWatch(warper);
@@ -194,7 +194,7 @@ int itkWarpImageFilterTest(int, char* [] )
 
   // exercise Get methods
   std::cout << "Interpolator: " << warper->GetInterpolator() << std::endl;
-  std::cout << "DeformationField: " << warper->GetDeformationField() << std::endl;
+  std::cout << "DisplacementField: " << warper->GetDisplacementField() << std::endl;
   std::cout << "EdgePaddingValue: " << warper->GetEdgePaddingValue() << std::endl;
 
   // exercise Set methods
@@ -308,12 +308,12 @@ int itkWarpImageFilterTest(int, char* [] )
   typedef itk::VectorCastImageFilter<FieldType,FieldType> VectorCasterType;
   VectorCasterType::Pointer vcaster = VectorCasterType::New();
 
-  vcaster->SetInput( warper->GetDeformationField() );
+  vcaster->SetInput( warper->GetDisplacementField() );
 
   WarperType::Pointer warper2 = WarperType::New();
 
   warper2->SetInput( warper->GetInput() );
-  warper2->SetDeformationField( vcaster->GetOutput() );
+  warper2->SetDisplacementField( vcaster->GetOutput() );
   warper2->SetEdgePaddingValue( warper->GetEdgePaddingValue() );
 
   typedef itk::StreamingImageFilter<ImageType,ImageType> StreamerType;

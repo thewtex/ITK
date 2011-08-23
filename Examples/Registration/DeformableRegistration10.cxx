@@ -50,13 +50,13 @@ const unsigned int Dimension = 3;
 
     typedef itk::Image< float, Dimension > InternalImageType;
     typedef itk::Vector< float, Dimension >    VectorPixelType;
-    typedef itk::Image<  VectorPixelType, Dimension > DeformationFieldType;
+    typedef itk::Image<  VectorPixelType, Dimension > DisplacementFieldType;
 
     typedef itk::CurvatureRegistrationFilter<
                                 InternalImageType,
                                 InternalImageType,
-                                DeformationFieldType,
-                                itk::FastSymmetricForcesDemonsRegistrationFunction<InternalImageType,InternalImageType,DeformationFieldType> >   RegistrationFilterType;
+                                DisplacementFieldType,
+                                itk::FastSymmetricForcesDemonsRegistrationFunction<InternalImageType,InternalImageType,DisplacementFieldType> >   RegistrationFilterType;
 
   public:
 
@@ -133,12 +133,12 @@ int main( int argc, char *argv[] )
   matcher->ThresholdAtMeanIntensityOn();
 
   typedef itk::Vector< float, Dimension >    VectorPixelType;
-  typedef itk::Image<  VectorPixelType, Dimension > DeformationFieldType;
+  typedef itk::Image<  VectorPixelType, Dimension > DisplacementFieldType;
   typedef itk::CurvatureRegistrationFilter<
                                 InternalImageType,
                                 InternalImageType,
-                                DeformationFieldType,
-                                itk::FastSymmetricForcesDemonsRegistrationFunction<InternalImageType,InternalImageType,DeformationFieldType> >   RegistrationFilterType;
+                                DisplacementFieldType,
+                                itk::FastSymmetricForcesDemonsRegistrationFunction<InternalImageType,InternalImageType,DisplacementFieldType> >   RegistrationFilterType;
   RegistrationFilterType::Pointer filter = RegistrationFilterType::New();
   filter->SetTimeStep( 1 );
   filter->SetConstraintWeight( 0.1 );
@@ -149,7 +149,7 @@ int main( int argc, char *argv[] )
   typedef itk::MultiResolutionPDEDeformableRegistration<
                                 InternalImageType,
                                 InternalImageType,
-                                DeformationFieldType >   MultiResRegistrationFilterType;
+                                DisplacementFieldType >   MultiResRegistrationFilterType;
   MultiResRegistrationFilterType::Pointer multires = MultiResRegistrationFilterType::New();
   multires->SetRegistrationFilter( filter );
   multires->SetNumberOfLevels( 3 );
@@ -163,7 +163,7 @@ int main( int argc, char *argv[] )
   typedef itk::WarpImageFilter<
                           MovingImageType,
                           MovingImageType,
-                          DeformationFieldType  >     WarperType;
+                          DisplacementFieldType  >     WarperType;
   typedef itk::LinearInterpolateImageFunction<
                                    MovingImageType,
                                    double          >  InterpolatorType;
@@ -176,7 +176,7 @@ int main( int argc, char *argv[] )
   warper->SetOutputSpacing( fixedImage->GetSpacing() );
   warper->SetOutputOrigin( fixedImage->GetOrigin() );
   warper->SetOutputDirection( fixedImage->GetDirection() );
-  warper->SetDeformationField( multires->GetOutput() );
+  warper->SetDisplacementField( multires->GetOutput() );
 
   // Write warped image out to file
   typedef unsigned short  OutputPixelType;
@@ -198,7 +198,7 @@ int main( int argc, char *argv[] )
   if( argc > 4 ) // if a fourth line argument has been provided...
     {
 
-    typedef itk::ImageFileWriter< DeformationFieldType > FieldWriterType;
+    typedef itk::ImageFileWriter< DisplacementFieldType > FieldWriterType;
 
     FieldWriterType::Pointer fieldWriter = FieldWriterType::New();
     fieldWriter->SetFileName( argv[4] );
