@@ -58,8 +58,8 @@ int main( int argc, char * argv[] )
   typedef   itk::ImageFileWriter< InputImageType >  DeformedImageWriterType;
   typedef   itk::Point<  float, ImageDimension >  FieldPointType;
   typedef   itk::Vector< float, ImageDimension >  FieldVectorType;
-  typedef   itk::Image< FieldVectorType,  ImageDimension >   DeformationFieldType;
-  typedef   itk::ImageFileWriter< DeformationFieldType >  FieldWriterType;
+  typedef   itk::Image< FieldVectorType,  ImageDimension >   DisplacementFieldType;
+  typedef   itk::ImageFileWriter< DisplacementFieldType >  FieldWriterType;
   typedef   double CoordinateRepType;
   typedef   itk::ThinPlateSplineKernelTransform< CoordinateRepType,
         ImageDimension>     TransformType;
@@ -182,18 +182,18 @@ int main( int argc, char * argv[] )
 
   // Compute the deformation field
 
-  DeformationFieldType::Pointer field = DeformationFieldType::New();
+  DisplacementFieldType::Pointer field = DisplacementFieldType::New();
   field->SetRegions( region );
   field->SetOrigin( origin );
   field->SetSpacing( spacing );
   field->Allocate();
 
-  typedef itk::ImageRegionIterator< DeformationFieldType > FieldIterator;
+  typedef itk::ImageRegionIterator< DisplacementFieldType > FieldIterator;
   FieldIterator fi( field, region );
   fi.GoToBegin();
   TransformType::InputPointType  point1;
   TransformType::OutputPointType point2;
-  DeformationFieldType::IndexType index;
+  DisplacementFieldType::IndexType index;
 
   FieldVectorType displacement;
   while( ! fi.IsAtEnd() )

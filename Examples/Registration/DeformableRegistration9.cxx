@@ -51,13 +51,13 @@ const unsigned int Dimension = 2;
 
     typedef itk::Image< float, Dimension > InternalImageType;
     typedef itk::Vector< float, Dimension >    VectorPixelType;
-    typedef itk::Image<  VectorPixelType, Dimension > DeformationFieldType;
+    typedef itk::Image<  VectorPixelType, Dimension > DisplacementFieldType;
 
     typedef itk::CurvatureRegistrationFilter<
                                 InternalImageType,
                                 InternalImageType,
-                                DeformationFieldType,
-                                itk::FastSymmetricForcesDemonsRegistrationFunction<InternalImageType,InternalImageType,DeformationFieldType> >   RegistrationFilterType;
+                                DisplacementFieldType,
+                                itk::FastSymmetricForcesDemonsRegistrationFunction<InternalImageType,InternalImageType,DisplacementFieldType> >   RegistrationFilterType;
 
   public:
 
@@ -134,12 +134,12 @@ int main( int argc, char *argv[] )
   matcher->ThresholdAtMeanIntensityOn();
 
   typedef itk::Vector< float, Dimension >    VectorPixelType;
-  typedef itk::Image<  VectorPixelType, Dimension > DeformationFieldType;
+  typedef itk::Image<  VectorPixelType, Dimension > DisplacementFieldType;
   typedef itk::CurvatureRegistrationFilter<
                                 InternalImageType,
                                 InternalImageType,
-                                DeformationFieldType,
-                                itk::FastSymmetricForcesDemonsRegistrationFunction<InternalImageType,InternalImageType,DeformationFieldType> >   RegistrationFilterType;
+                                DisplacementFieldType,
+                                itk::FastSymmetricForcesDemonsRegistrationFunction<InternalImageType,InternalImageType,DisplacementFieldType> >   RegistrationFilterType;
   RegistrationFilterType::Pointer filter = RegistrationFilterType::New();
 
   CommandIterationUpdate::Pointer observer = CommandIterationUpdate::New();
@@ -155,7 +155,7 @@ int main( int argc, char *argv[] )
   typedef itk::WarpImageFilter<
                           MovingImageType,
                           MovingImageType,
-                          DeformationFieldType  >     WarperType;
+                          DisplacementFieldType  >     WarperType;
   typedef itk::LinearInterpolateImageFunction<
                                    MovingImageType,
                                    double          >  InterpolatorType;
@@ -168,7 +168,7 @@ int main( int argc, char *argv[] )
   warper->SetOutputSpacing( fixedImage->GetSpacing() );
   warper->SetOutputOrigin( fixedImage->GetOrigin() );
   warper->SetOutputDirection( fixedImage->GetDirection() );
-  warper->SetDeformationField( filter->GetOutput() );
+  warper->SetDisplacementField( filter->GetOutput() );
 
   // Write warped image out to file
   typedef unsigned short  OutputPixelType;
@@ -190,7 +190,7 @@ int main( int argc, char *argv[] )
   if( argc > 4 ) // if a fourth line argument has been provided...
     {
 
-    typedef itk::ImageFileWriter< DeformationFieldType > FieldWriterType;
+    typedef itk::ImageFileWriter< DisplacementFieldType > FieldWriterType;
 
     FieldWriterType::Pointer fieldWriter = FieldWriterType::New();
     fieldWriter->SetFileName( argv[4] );

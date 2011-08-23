@@ -17,11 +17,11 @@
  *=========================================================================*/
 
 #include <iostream>
-#include "itkImage.h"
-#include "itkDisplacementFieldJacobianDeterminantFilter.h"
+#include "itkDeformationFieldJacobianDeterminantFilter.h"
 #include "itkNullImageToImageFilterDriver.hxx"
+#include "itkVector.h"
 
-static bool TestDisplacementJacobianDeterminantValue(void)
+static bool TestDeformationJacobianDeterminantValue(void)
 {
   std::cout.precision(9);
   bool testPassed = true;
@@ -74,11 +74,11 @@ static bool TestDisplacementJacobianDeterminantValue(void)
   //|-------------------------------------------|
   //
   //J(1,1) = [ (.625-.125)/2 (.5-.25)/2; (.375-.125)/2 (.75-0.0)/2] =[ .25  .125; .125 .375]
-  //det((J+I)(1,1))=((.25+1.0)*(.375+1.0))-(.125*.125) = 1.703125;
-  const float KNOWN_ANSWER=(((.25+1.0)*(.375+1.0))-(.125*.125));
-  itk::DisplacementFieldJacobianDeterminantFilter<VectorImageType,float>::Pointer
+  //det(J(1,1))=(.25*.375)-(.125*.125) = .078125;
+  const float KNOWN_ANSWER=(.25*.375)-(.125*.125);
+  itk::DeformationFieldJacobianDeterminantFilter<VectorImageType,float>::Pointer
     filter =
-    itk::DisplacementFieldJacobianDeterminantFilter<VectorImageType,float>::New();
+    itk::DeformationFieldJacobianDeterminantFilter<VectorImageType,float>::New();
 
   filter->SetInput(dispacementfield);
   filter->Update();
@@ -101,9 +101,9 @@ static bool TestDisplacementJacobianDeterminantValue(void)
 }
 
 int
-itkDisplacementFieldJacobianDeterminantFilterTest(int , char * [] )
+itkDeformationFieldJacobianDeterminantFilterTest(int , char * [] )
 {
-  bool ValueTestPassed=TestDisplacementJacobianDeterminantValue();
+  bool ValueTestPassed=TestDeformationJacobianDeterminantValue();
   try
     {
     typedef itk::Vector<float, 3> VectorType;
@@ -111,10 +111,9 @@ itkDisplacementFieldJacobianDeterminantFilterTest(int , char * [] )
     typedef itk::Image< float, 3> ScalarVectorImageType;
 
     // Set up filter
-
-    typedef itk::DisplacementFieldJacobianDeterminantFilter<VectorImageType,float> FilterType;
-    FilterType::Pointer filter = FilterType::New();
-    filter->Print(std::cout);
+    itk::DeformationFieldJacobianDeterminantFilter<VectorImageType,float>::Pointer
+    filter =
+        itk::DeformationFieldJacobianDeterminantFilter<VectorImageType,float>::New();
 
     // Run Test
     itk::Size<3> sz;
@@ -125,19 +124,6 @@ itkDisplacementFieldJacobianDeterminantFilterTest(int , char * [] )
     test1.SetImageSize(sz);
     test1.SetFilter(filter.GetPointer());
     test1.Execute();
-    filter->Print(std::cout);
-
-    // Run the Test again with ImageSpacingOn
-    filter->SetUseImageSpacingOn();
-    test1.Execute();
-    filter->Print(std::cout);
-
-    // Run the Test again with specified weights
-    float weights[3] = {1.0,2.0,3.0};
-    filter->SetDerivativeWeights(weights);
-    test1.Execute();
-    filter->Print(std::cout);
-
     }
   catch(itk::ExceptionObject &err)
     {
@@ -150,4 +136,3 @@ itkDisplacementFieldJacobianDeterminantFilterTest(int , char * [] )
     }
   return EXIT_SUCCESS;
 }
-

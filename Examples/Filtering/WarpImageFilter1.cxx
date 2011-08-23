@@ -42,7 +42,7 @@ int main( int argc, char * argv[] )
   if( argc < 4 )
     {
     std::cerr << "Usage: " << std::endl;
-    std::cerr << argv[0] << "  inputImageFile  inputDeformationField  outputImageFile" << std::endl;
+    std::cerr << argv[0] << "  inputImageFile  inputDisplacementField  outputImageFile" << std::endl;
     return EXIT_FAILURE;
     }
 
@@ -60,7 +60,7 @@ int main( int argc, char * argv[] )
   // Software Guide : BeginCodeSnippet
   typedef   float VectorComponentType;
   typedef   itk::Vector< VectorComponentType, Dimension > VectorPixelType;
-  typedef   itk::Image< VectorPixelType,  Dimension >   DeformationFieldType;
+  typedef   itk::Image< VectorPixelType,  Dimension >   DisplacementFieldType;
 
   typedef   unsigned char  PixelType;
   typedef   itk::Image< PixelType,  Dimension >   ImageType;
@@ -75,7 +75,7 @@ int main( int argc, char * argv[] )
   // vector pixel types.
   // Software Guide : EndLatex
   // Software Guide : BeginCodeSnippet
-  typedef   itk::ImageFileReader< DeformationFieldType >  FieldReaderType;
+  typedef   itk::ImageFileReader< DisplacementFieldType >  FieldReaderType;
   // Software Guide : EndCodeSnippet
 
   ReaderType::Pointer reader = ReaderType::New();
@@ -89,7 +89,7 @@ int main( int argc, char * argv[] )
   fieldReader->SetFileName( argv[2] );
   fieldReader->Update();
 
-  DeformationFieldType::ConstPointer deformationField = fieldReader->GetOutput();
+  DisplacementFieldType::ConstPointer deformationField = fieldReader->GetOutput();
   // Software Guide : EndCodeSnippet
 
 
@@ -101,7 +101,7 @@ int main( int argc, char * argv[] )
   // Software Guide : BeginCodeSnippet
   typedef itk::WarpImageFilter< ImageType,
                                 ImageType,
-                                DeformationFieldType  >  FilterType;
+                                DisplacementFieldType  >  FilterType;
 
   FilterType::Pointer filter = FilterType::New();
   // Software Guide : EndCodeSnippet
@@ -131,7 +131,7 @@ int main( int argc, char * argv[] )
   filter->SetOutputOrigin(  deformationField->GetOrigin() );
   filter->SetOutputDirection(  deformationField->GetDirection() );
 
-  filter->SetDeformationField( deformationField );
+  filter->SetDisplacementField( deformationField );
   // Software Guide : EndCodeSnippet
 
   filter->SetInput( reader->GetOutput() );

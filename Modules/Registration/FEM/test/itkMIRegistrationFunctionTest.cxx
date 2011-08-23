@@ -48,7 +48,7 @@ int itkMIRegistrationFunctionTest(int, char* [] )
   typedef itk::Image<PixelType,ImageDimension>         MovingImageType;
   typedef itk::Image<PixelType,ImageDimension>         FixedImageType;
   typedef itk::Image<DeformationPixelType,
-                               ImageDimension>         DeformationFieldType;
+                               ImageDimension>         DisplacementFieldType;
 
   // Declare Gaussian Sources
   typedef itk::GaussianImageSource< MovingImageType >  MovingImageSourceType;
@@ -94,7 +94,7 @@ int itkMIRegistrationFunctionTest(int, char* [] )
   typedef itk::MIRegistrationFunction<
                                        FixedImageType,
                                        MovingImageType,
-                                       DeformationFieldType >
+                                       DisplacementFieldType >
                                                 MetricFunctionType;
 
   MetricFunctionType::Pointer  metricFunction = MetricFunctionType::New();

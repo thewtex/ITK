@@ -159,7 +159,7 @@ int itkSymmetricForcesDemonsRegistrationFilterTest(int, char* [] )
     RegistrationType;
   RegistrationType::Pointer registrator = RegistrationType::New();
 
-  registrator->SetInitialDeformationField( initField );
+  registrator->SetInitialDisplacementField( initField );
   registrator->SetMovingImage( moving );
   registrator->SetFixedImage( fixed );
   registrator->SetNumberOfIterations( 150 );
@@ -203,7 +203,7 @@ int itkSymmetricForcesDemonsRegistrationFilterTest(int, char* [] )
 
 
   warper->SetInput( moving );
-  warper->SetDeformationField( registrator->GetOutput() );
+  warper->SetDisplacementField( registrator->GetOutput() );
   warper->SetInterpolator( interpolator );
   warper->SetOutputSpacing( fixed->GetSpacing() );
   warper->SetOutputOrigin( fixed->GetOrigin() );

@@ -195,7 +195,7 @@ int itkLevelSetMotionRegistrationFilterTest(int argc, char * argv [] )
     RegistrationType;
   RegistrationType::Pointer registrator = RegistrationType::New();
 
-  registrator->SetInitialDeformationField( caster->GetOutput() );
+  registrator->SetInitialDisplacementField( caster->GetOutput() );
   registrator->SetMovingImage( moving );
   registrator->SetFixedImage( fixed );
   registrator->SetNumberOfIterations( 800 );
@@ -250,7 +250,7 @@ int itkLevelSetMotionRegistrationFilterTest(int argc, char * argv [] )
 
 
   warper->SetInput( moving );
-  warper->SetDeformationField( registrator->GetOutput() );
+  warper->SetDisplacementField( registrator->GetOutput() );
   warper->SetInterpolator( interpolator );
   warper->SetOutputSpacing( fixed->GetSpacing() );
   warper->SetOutputOrigin( fixed->GetOrigin() );
