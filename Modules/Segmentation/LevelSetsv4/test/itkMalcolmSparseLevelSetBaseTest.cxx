@@ -23,8 +23,6 @@ int itkMalcolmSparseLevelSetBaseTest( int , char* [] )
   const unsigned int Dimension = 2;
   typedef itk::MalcolmSparseLevelSetBase< Dimension > SparseLevelSetType;
 
-  SparseLevelSetType::Pointer phi = SparseLevelSetType::New();
-
   typedef SparseLevelSetType::LabelMapType LabelMapType;
   typedef LabelMapType::Pointer            LabelMapPointer;
   typedef LabelMapType::IndexType          IndexType;
@@ -41,13 +39,25 @@ int itkMalcolmSparseLevelSetBaseTest( int , char* [] )
     labelMap->SetPixel( index, -1 );
     }
 
-  index[1] = 2;
-  labelMap->SetPixel( index, 0 );
-
-  index[1] = 7;
-  labelMap->SetPixel( index, 0 );
-
+  SparseLevelSetType::Pointer phi = SparseLevelSetType::New();
   phi->SetLabelMap( labelMap );
+
+  index[0] = 3;
+  index[1] = 3;
+  if( phi->Evaluate( index ) != 1 )
+    {
+    std::cout << index << ' ' << phi->Evaluate( index ) << " != 1" << std::endl;
+    return EXIT_FAILURE;
+    }
+
+  index[0] = 3;
+  index[1] = 4;
+  if( phi->Evaluate( index ) != -1 )
+    {
+    std::cout << index << ' ' << phi->Evaluate( index ) << " != -1" << std::endl;
+    return EXIT_FAILURE;
+    }
+
 
   return EXIT_SUCCESS;
 }

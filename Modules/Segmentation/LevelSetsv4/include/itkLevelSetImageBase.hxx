@@ -64,31 +64,37 @@ template< class TImage >
 typename LevelSetImageBase< TImage >::GradientType
 LevelSetImageBase< TImage >::EvaluateGradient( const InputType& iP ) const
 {
-  OutputRealType center_value =
-      static_cast< OutputRealType >( this->Evaluate( iP ) );
-
   InputType pA, pB;
   pA = pB = iP;
 
-  GradientType dx_forward;
-  GradientType dx_backward;
+  GradientType dx;
 
   for( unsigned int dim = 0; dim < Dimension; dim++ )
     {
     pA[dim] += 1;
     pB[dim] -= 1;
 
-    OutputRealType valueA = static_cast< OutputRealType >( this->Evaluate( pA ) );
-    OutputRealType valueB = static_cast< OutputRealType >( this->Evaluate( pB ) );
-    OutputRealType scale = m_NeighborhoodScales[dim];
-
-    dx_forward[dim] = ( valueA - center_value ) * scale;
-    dx_backward[dim] = ( center_value - valueB ) * scale;
-
-    pA[dim] = pB[dim] = iP[dim];
+    if( !m_Image->GetLargestPossibleRegion().IsInside( pA ) )
+    {
+      pA[dim] = iP[dim];
     }
 
-  return dx_forward;
+    if( !m_Image->GetLargestPossibleRegion().IsInside( pB ) )
+    {
+      pB[dim] = iP[dim];
+    }
+
+    OutputRealType valueA = static_cast< OutputRealType >( this->Evaluate( pA ) );
+    OutputRealType valueB = static_cast< OutputRealType >( this->Evaluate( pB ) );
+    OutputRealType scale = m_NeighborhoodScales[dim] / (pA[dim] - pB[dim]);
+
+    dx[dim] = ( valueA - valueB ) * scale;
+
+    pA[dim] = pB[dim] = iP[dim];
+
+    }
+
+  return dx;
 }
 // ----------------------------------------------------------------------------
 
@@ -111,6 +117,16 @@ LevelSetImageBase< TImage >
     pA[dim1] += 1;
     pB[dim1] -= 1;
 
+    if( !m_Image->GetLargestPossibleRegion().IsInside( pA ) )
+    {
+      pA[dim1] = iP[dim1];
+    }
+
+    if( !m_Image->GetLargestPossibleRegion().IsInside( pB ) )
+    {
+      pB[dim1] = iP[dim1];
+    }
+
     OutputRealType valueA = static_cast< OutputRealType >( this->Evaluate( pA ) );
     OutputRealType valueB = static_cast< OutputRealType >( this->Evaluate( pB ) );
 
@@ -130,6 +146,26 @@ LevelSetImageBase< TImage >
 
       pCa[dim2] -= 1;
       pDa[dim2] += 1;
+
+      if( !m_Image->GetLargestPossibleRegion().IsInside( pAa ) )
+      {
+        pAa[dim2] = pB[dim2];
+      }
+
+      if( !m_Image->GetLargestPossibleRegion().IsInside( pBa ) )
+      {
+        pBa[dim2] = pB[dim2];
+      }
+
+      if( !m_Image->GetLargestPossibleRegion().IsInside( pCa ) )
+      {
+        pCa[dim2] = pA[dim2];
+      }
+
+      if( !m_Image->GetLargestPossibleRegion().IsInside( pDa ) )
+      {
+        pDa[dim2] = pA[dim2];
+      }
 
       OutputRealType valueAa = static_cast< OutputRealType >( this->Evaluate( pAa ) );
       OutputRealType valueBa = static_cast< OutputRealType >( this->Evaluate( pBa ) );
@@ -192,9 +228,19 @@ LevelSetImageBase< TImage >
       pA[dim] += 1;
       pB[dim] -= 1;
 
+      if( !m_Image->GetLargestPossibleRegion().IsInside( pA ) )
+      {
+        pA[dim] = iP[dim];
+      }
+
+      if( !m_Image->GetLargestPossibleRegion().IsInside( pB ) )
+      {
+        pB[dim] = iP[dim];
+      }
+
       OutputRealType valueA = static_cast< OutputRealType >( this->Evaluate( pA ) );
       OutputRealType valueB = static_cast< OutputRealType >( this->Evaluate( pB ) );
-      OutputRealType scale = m_NeighborhoodScales[dim];
+      OutputRealType scale = m_NeighborhoodScales[dim] / (pA[dim] - pB[dim]);
 
       ioData.Gradient.m_Value[dim] = ( valueA - valueB ) * scale;
 
@@ -235,6 +281,16 @@ LevelSetImageBase< TImage >
       pA[dim1] += 1;
       pB[dim1] -= 1;
 
+      if( !m_Image->GetLargestPossibleRegion().IsInside( pA ) )
+      {
+        pA[dim1] = iP[dim1];
+      }
+
+      if( !m_Image->GetLargestPossibleRegion().IsInside( pB ) )
+      {
+        pB[dim1] = iP[dim1];
+      }
+
       OutputRealType valueA = static_cast< OutputRealType >( this->Evaluate( pA ) );
       OutputRealType valueB = static_cast< OutputRealType >( this->Evaluate( pB ) );
 
@@ -267,6 +323,26 @@ LevelSetImageBase< TImage >
 
         pCa[dim2] -= 1;
         pDa[dim2] += 1;
+
+        if( !m_Image->GetLargestPossibleRegion().IsInside( pAa ) )
+        {
+          pAa[dim2] = pB[dim2];
+        }
+
+        if( !m_Image->GetLargestPossibleRegion().IsInside( pBa ) )
+        {
+          pBa[dim2] = pB[dim2];
+        }
+
+        if( !m_Image->GetLargestPossibleRegion().IsInside( pCa ) )
+        {
+          pCa[dim2] = pA[dim2];
+        }
+
+        if( !m_Image->GetLargestPossibleRegion().IsInside( pDa ) )
+        {
+          pDa[dim2] = pA[dim2];
+        }
 
         OutputRealType valueAa = static_cast< OutputRealType >( this->Evaluate( pAa ) );
         OutputRealType valueBa = static_cast< OutputRealType >( this->Evaluate( pBa ) );
@@ -318,6 +394,11 @@ LevelSetImageBase< TImage >
       {
       pA[dim] += 1;
 
+      if( !m_Image->GetLargestPossibleRegion().IsInside( pA ) )
+      {
+        pA[dim] = iP[dim];
+      }
+
       OutputRealType valueA = static_cast< OutputRealType >( this->Evaluate( pA ) );
       OutputRealType scale = m_NeighborhoodScales[dim];
 
@@ -357,6 +438,11 @@ LevelSetImageBase< TImage >
     for( unsigned int dim = 0; dim < Dimension; dim++ )
       {
       pA[dim] -= 1;
+
+      if( !m_Image->GetLargestPossibleRegion().IsInside( pA ) )
+      {
+        pA[dim] = iP[dim];
+      }
 
       OutputRealType valueA = static_cast< OutputRealType >( this->Evaluate( pA ) );
       OutputRealType scale = m_NeighborhoodScales[dim];

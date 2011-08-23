@@ -25,8 +25,6 @@ int itkWhitakerSparseLevelSetBaseTest( int , char* [] )
   typedef itk::WhitakerSparseLevelSetBase< OutputType, Dimension >
       SparseLevelSetType;
 
-  SparseLevelSetType::Pointer phi = SparseLevelSetType::New();
-
   typedef SparseLevelSetType::LabelMapType LabelMapType;
   typedef LabelMapType::Pointer            LabelMapPointer;
   typedef LabelMapType::IndexType          IndexType;
@@ -44,7 +42,25 @@ int itkWhitakerSparseLevelSetBaseTest( int , char* [] )
     labelMap->SetPixel( index, -3 );
     }
 
+  SparseLevelSetType::Pointer phi = SparseLevelSetType::New();
   phi->SetLabelMap( labelMap );
+
+  index[0] = 3;
+  index[1] = 3;
+
+  if( phi->Evaluate( index ) != 3 )
+    {
+    std::cout << index << ' ' << phi->Evaluate( index ) << " != 3" << std::endl;
+    return EXIT_FAILURE;
+    }
+
+  index[0] = 3;
+  index[1] = 4;
+  if( phi->Evaluate( index ) != -3 )
+    {
+    std::cout << index << ' ' << phi->Evaluate( index ) << " != -3" << std::endl;
+    return EXIT_FAILURE;
+    }
 
   return EXIT_SUCCESS;
 }

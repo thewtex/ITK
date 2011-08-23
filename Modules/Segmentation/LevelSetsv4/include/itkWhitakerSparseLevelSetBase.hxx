@@ -135,32 +135,36 @@ typename WhitakerSparseLevelSetBase< TOutput, VDimension >::GradientType
 WhitakerSparseLevelSetBase< TOutput, VDimension >
 ::EvaluateGradient( const InputType& iP ) const
 {
-  OutputRealType center_value =
-      static_cast< OutputRealType >( this->Evaluate( iP ) );
-
   InputType pA, pB;
   pA = pB = iP;
 
-  GradientType dx_forward;
-  GradientType dx_backward;
+  GradientType dx;
 
   for( unsigned int dim = 0; dim < Dimension; dim++ )
     {
     pA[dim] += 1;
     pB[dim] -= 1;
 
+    if( !m_LabelMap->GetLargestPossibleRegion().IsInside( pA ) )
+    {
+      pA[dim] = iP[dim];
+    }
+
+    if( !m_LabelMap->GetLargestPossibleRegion().IsInside( pB ) )
+    {
+      pB[dim] = iP[dim];
+    }
+
     OutputRealType valueA = static_cast< OutputRealType >( this->Evaluate( pA ) );
     OutputRealType valueB = static_cast< OutputRealType >( this->Evaluate( pB ) );
+    OutputRealType scale = m_NeighborhoodScales[dim] / (pA[dim] - pB[dim]);
 
-    dx_forward[dim] = ( valueA - center_value ) * m_NeighborhoodScales[dim];
-    dx_backward[dim] = ( center_value - valueB ) * m_NeighborhoodScales[dim];
+    dx[dim] = ( valueA - valueB ) * scale;
 
     pA[dim] = pB[dim] = iP[dim];
     }
 
-  //which one to be returned ?
-
-  return dx_forward;
+  return dx;
 }
 // ----------------------------------------------------------------------------
 
@@ -183,6 +187,16 @@ WhitakerSparseLevelSetBase< TOutput, VDimension >
     pA[dim1] += 1;
     pB[dim1] -= 1;
 
+    if( !m_LabelMap->GetLargestPossibleRegion().IsInside( pA ) )
+    {
+      pA[dim1] = iP[dim1];
+    }
+
+    if( !m_LabelMap->GetLargestPossibleRegion().IsInside( pB ) )
+    {
+      pB[dim1] = iP[dim1];
+    }
+
     OutputRealType valueA = static_cast< OutputRealType >( this->Evaluate( pA ) );
     OutputRealType valueB = static_cast< OutputRealType >( this->Evaluate( pB ) );
 
@@ -202,6 +216,26 @@ WhitakerSparseLevelSetBase< TOutput, VDimension >
 
       pCa[dim2] -= 1;
       pDa[dim2] += 1;
+
+      if( !m_LabelMap->GetLargestPossibleRegion().IsInside( pAa ) )
+      {
+        pAa[dim2] = pB[dim2];
+      }
+
+      if( !m_LabelMap->GetLargestPossibleRegion().IsInside( pBa ) )
+      {
+        pBa[dim2] = pB[dim2];
+      }
+
+      if( !m_LabelMap->GetLargestPossibleRegion().IsInside( pCa ) )
+      {
+        pCa[dim2] = pA[dim2];
+      }
+
+      if( !m_LabelMap->GetLargestPossibleRegion().IsInside( pDa ) )
+      {
+        pDa[dim2] = pA[dim2];
+      }
 
       OutputRealType valueAa = static_cast< OutputRealType >( this->Evaluate( pAa ) );
       OutputRealType valueBa = static_cast< OutputRealType >( this->Evaluate( pBa ) );
@@ -259,30 +293,35 @@ WhitakerSparseLevelSetBase< TOutput, VDimension >
       ioData.Value.m_Value = this->Evaluate( iP );
       }
 
-    OutputRealType center_value =
-        static_cast< OutputRealType >( ioData.Value.m_Value );
-
     InputType pA, pB;
     pA = pB = iP;
 
-    GradientType dx_forward;
-    GradientType dx_backward;
+    GradientType dx;
 
     for( unsigned int dim = 0; dim < Dimension; dim++ )
       {
       pA[dim] += 1;
       pB[dim] -= 1;
 
+      if( !m_LabelMap->GetLargestPossibleRegion().IsInside( pA ) )
+      {
+        pA[dim] = iP[dim];
+      }
+
+      if( !m_LabelMap->GetLargestPossibleRegion().IsInside( pB ) )
+      {
+        pB[dim] = iP[dim];
+      }
+
       OutputRealType valueA = static_cast< OutputRealType >( this->Evaluate( pA ) );
       OutputRealType valueB = static_cast< OutputRealType >( this->Evaluate( pB ) );
-      OutputRealType scale = m_NeighborhoodScales[dim];
+      OutputRealType scale = m_NeighborhoodScales[dim] / (pA[dim] - pB[dim]);
 
-      dx_forward[dim] = ( valueA - center_value ) * scale;
-      dx_backward[dim] = ( center_value - valueB ) * scale;
+      dx[dim] = ( valueA - valueB ) * scale;
 
       pA[dim] = pB[dim] = iP[dim];
       }
-    ioData.Gradient.m_Value = dx_forward;
+    ioData.Gradient.m_Value = dx;
     }
 }
 // ----------------------------------------------------------------------------
@@ -315,6 +354,16 @@ WhitakerSparseLevelSetBase< TOutput, VDimension >
       pA[dim1] += 1;
       pB[dim1] -= 1;
 
+      if( !m_LabelMap->GetLargestPossibleRegion().IsInside( pA ) )
+      {
+        pA[dim1] = iP[dim1];
+      }
+
+      if( !m_LabelMap->GetLargestPossibleRegion().IsInside( pB ) )
+      {
+        pB[dim1] = iP[dim1];
+      }
+
       OutputRealType valueA = static_cast< OutputRealType >( this->Evaluate( pA ) );
       OutputRealType valueB = static_cast< OutputRealType >( this->Evaluate( pB ) );
 
@@ -334,6 +383,26 @@ WhitakerSparseLevelSetBase< TOutput, VDimension >
 
         pCa[dim2] -= 1;
         pDa[dim2] += 1;
+
+        if( !m_LabelMap->GetLargestPossibleRegion().IsInside( pAa ) )
+        {
+          pAa[dim2] = pB[dim2];
+        }
+
+        if( !m_LabelMap->GetLargestPossibleRegion().IsInside( pBa ) )
+        {
+          pBa[dim2] = pB[dim2];
+        }
+
+        if( !m_LabelMap->GetLargestPossibleRegion().IsInside( pCa ) )
+        {
+          pCa[dim2] = pA[dim2];
+        }
+
+        if( !m_LabelMap->GetLargestPossibleRegion().IsInside( pDa ) )
+        {
+          pDa[dim2] = pA[dim2];
+        }
 
         OutputRealType valueAa = static_cast< OutputRealType >( this->Evaluate( pAa ) );
         OutputRealType valueBa = static_cast< OutputRealType >( this->Evaluate( pBa ) );
@@ -527,6 +596,11 @@ WhitakerSparseLevelSetBase< TOutput, VDimension >
       {
       pA[dim] += 1;
 
+      if( !m_LabelMap->GetLargestPossibleRegion().IsInside( pA ) )
+      {
+        pA[dim] = iP[dim];
+      }
+
       OutputRealType valueA = static_cast< OutputRealType >( this->Evaluate( pA ) );
       OutputRealType scale = m_NeighborhoodScales[dim];
 
@@ -567,6 +641,11 @@ WhitakerSparseLevelSetBase< TOutput, VDimension >
     for( unsigned int dim = 0; dim < Dimension; dim++ )
       {
       pA[dim] -= 1;
+
+      if( !m_LabelMap->GetLargestPossibleRegion().IsInside( pA ) )
+      {
+        pA[dim] = iP[dim];
+      }
 
       OutputRealType valueA = static_cast< OutputRealType >( this->Evaluate( pA ) );
       OutputRealType scale = m_NeighborhoodScales[dim];
