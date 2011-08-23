@@ -165,6 +165,10 @@ public:
   IndexValueType GetIndex(unsigned long i) const
   { return m_Index[i]; }
 
+  /** Get/Set index defining the upper corner of the region. */
+  IndexType GetUpperIndex() const;
+  void SetUpperIndex( const IndexType & idx );
+
   /** Compare two regions. */
   bool
   operator==(const Self & region) const
