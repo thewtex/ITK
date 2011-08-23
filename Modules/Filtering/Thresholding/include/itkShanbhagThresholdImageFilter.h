@@ -1,0 +1,88 @@
+
+#ifndef __itkShanbhagThresholdImageFilter_h
+#define __itkShanbhagThresholdImageFilter_h
+
+#include "itkAutomaticThresholdImageFilter.h"
+#include "itkShanbhagThresholdCalculator.h"
+
+namespace itk {
+
+/** \class ShanbhagThresholdImageFilter
+ * \brief Threshold an image using the Shanbhag Threshold
+ *
+ * This filter creates a binary thresholded image that separates an
+ * image into foreground and background components. The filter
+ * computes the threshold using the ShanbhagThresholdCalculator and
+ * applies that theshold to the input image using the
+ * BinaryThresholdImageFilter.
+ *
+ * \author Richard Beare
+ * \author Gaetan Lehmann. Biologie du Developpement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ *
+ * This implementation was taken from the Insight Journal paper:
+ * http://hdl.handle.net/10380/3279  or
+ * http://www.insight-journal.org/browse/publication/811
+ *
+ * \ingroup Multithreaded
+ * \ingroup ITKThresholding
+ */
+
+template<class TInputImage, class TOutputImage=double>
+class ITK_EXPORT ShanbhagThresholdImageFilter :
+    public AutomaticThresholdImageFilter<TInputImage, TOutputImage>
+{
+public:
+  /** Standard Self typedef */
+  typedef ShanbhagThresholdImageFilter                                Self;
+  typedef AutomaticThresholdImageFilter<TInputImage,TOutputImage>     Superclass;
+  typedef SmartPointer<Self>                                          Pointer;
+  typedef SmartPointer<const Self>                                    ConstPointer;
+
+  /** Method for creation through the object factory. */
+  itkNewMacro(Self);
+
+  /** Runtime information support. */
+  itkTypeMacro(ShanbhagThresholdImageFilter, ImageToImageFilter);
+
+  typedef TInputImage                       InputImageType;
+  typedef TOutputImage                      OutputImageType;
+
+  /** Image pixel value typedef. */
+  typedef typename InputImageType::PixelType   InputPixelType;
+  typedef typename OutputImageType::PixelType  OutputPixelType;
+
+  /** Image related typedefs. */
+  typedef typename InputImageType::Pointer  InputImagePointer;
+  typedef typename OutputImageType::Pointer OutputImagePointer;
+
+  typedef typename InputImageType::SizeType    InputSizeType;
+  typedef typename InputImageType::IndexType   InputIndexType;
+  typedef typename InputImageType::RegionType  InputImageRegionType;
+  typedef typename OutputImageType::SizeType   OutputSizeType;
+  typedef typename OutputImageType::IndexType  OutputIndexType;
+  typedef typename OutputImageType::RegionType OutputImageRegionType;
+
+  typedef typename Superclass::HistogramType                           HistogramType;
+  typedef ShanbhagThresholdCalculator< HistogramType, InputPixelType > CalculatorType;
+
+  /** Image related typedefs. */
+  itkStaticConstMacro(InputImageDimension, unsigned int,
+                      InputImageType::ImageDimension );
+  itkStaticConstMacro(OutputImageDimension, unsigned int,
+                      OutputImageType::ImageDimension );
+
+protected:
+  ShanbhagThresholdImageFilter()
+    {
+    this->SetCalculator( CalculatorType::New() );
+    }
+  ~ShanbhagThresholdImageFilter(){};
+
+private:
+  ShanbhagThresholdImageFilter(const Self&); //purposely not implemented
+  void operator=(const Self&); //purposely not implemented
+}; // end of class
+
+} // end namespace itk
+
+#endif
