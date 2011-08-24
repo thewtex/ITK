@@ -1,7 +1,8 @@
 itk_module_test()
 set(ITKFFTTests
-itkFFTShiftImageFilterTest.cxx
 itkVnlFFTTest.cxx
+itkFFTShiftImageFilterTest.cxx
+itkFFTNormalizedCrossCorrelationImageFilterTest.cxx
 )
 
 if (USE_FFTWF)
@@ -57,3 +58,19 @@ itk_add_test(NAME itkFFTShiftImageFilterTestEven1
     --compare ${ITK_DATA_ROOT}/Input/cthead1.png
               ${ITK_TEST_OUTPUT_DIR}/itkFFTShiftImageFilterTestEven1.png
     itkFFTShiftImageFilterTest DATA{Baseline/itkFFTShiftImageFilterTestEven0.png} ${ITK_TEST_OUTPUT_DIR}/itkFFTShiftImageFilterTestEven1.png 1)
+
+itk_add_test(NAME itkFFTNormalizedCrossCorrelationImageFilterTest1
+      COMMAND ITKFFTTestDriver
+    --compare DATA{Baseline/itkFFTNormalizedCrossCorrelationImageFilterTest1.mha}
+              ${ITK_TEST_OUTPUT_DIR}/itkFFTNormalizedCrossCorrelationImageFilterTest1.mha
+    itkFFTNormalizedCrossCorrelationImageFilterTest DATA{Input/MaskedRectangle1.png} DATA{Input/MovingRectangles.png} ${ITK_TEST_OUTPUT_DIR}/itkFFTNormalizedCrossCorrelationImageFilterTest1.mha)
+itk_add_test(NAME itkFFTNormalizedCrossCorrelationImageFilterTest2
+      COMMAND ITKFFTTestDriver
+    --compare DATA{Baseline/itkFFTNormalizedCrossCorrelationImageFilterTest2.mha}
+              ${ITK_TEST_OUTPUT_DIR}/itkFFTNormalizedCrossCorrelationImageFilterTest2.mha
+    itkFFTNormalizedCrossCorrelationImageFilterTest DATA{Input/MaskedRectangle2.png} DATA{Input/MovingRectangles.png} ${ITK_TEST_OUTPUT_DIR}/itkFFTNormalizedCrossCorrelationImageFilterTest2.mha)
+itk_add_test(NAME itkFFTNormalizedCrossCorrelationImageFilterTest3
+      COMMAND ITKFFTTestDriver
+    --compare DATA{Baseline/itkFFTNormalizedCrossCorrelationImageFilterTest3.mha}
+              ${ITK_TEST_OUTPUT_DIR}/itkFFTNormalizedCrossCorrelationImageFilterTest3.mha
+    itkFFTNormalizedCrossCorrelationImageFilterTest DATA{Input/MaskedRectangle3.png} DATA{Input/MovingRectangles.png} ${ITK_TEST_OUTPUT_DIR}/itkFFTNormalizedCrossCorrelationImageFilterTest3.mha)
