@@ -9,6 +9,7 @@ itk_module(ITKFFT
   DEPENDS
     ITKCommon
     ITKImageGrid
+    ITKVnlBridge
   TEST_DEPENDS
     ITKTestKernel
   DESCRIPTION
