@@ -272,7 +272,7 @@ typename WhitakerSparseLevelSetBase< TOutput, VDimension >::OutputRealType
 WhitakerSparseLevelSetBase< TOutput, VDimension >
 ::EvaluateLaplacian( const InputType& iP ) const
 {
-  OutputRealType oLaplacian;
+  OutputRealType oLaplacian = NumericTraits< OutputRealType >::Zero;
 
   OutputRealType center_value = static_cast< OutputRealType >( this->Evaluate( iP ) );
 

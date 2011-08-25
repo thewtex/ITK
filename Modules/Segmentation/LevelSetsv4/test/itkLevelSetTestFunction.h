@@ -30,7 +30,7 @@ namespace itk
  * \brief A simple function to compare the numerical methods of the level set classes
  * to the analytical values.
  *
- * \f$ f(x,y) = \sqrt{ (x-5)(x-5) + (y-4)(y-3) - 3  } \f$
+ * \f$ f(x,y) = \sqrt{ (x-5)(x-5) + (y-4)(y-4) } - 3 \f$
  */
 template< typename TPixel >
 class LevelSetTestFunction: public LightObject
@@ -58,6 +58,8 @@ public:
   typedef Matrix< OutputRealType, Dimension >           HessianType;
 
   OutputRealType Evaluate( const PointType & point ) const;
+
+  GradientType   EvaluateGradient( const PointType & point ) const;
 
 protected:
   LevelSetTestFunction() {}

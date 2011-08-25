@@ -20,7 +20,7 @@
 #define __itkLevelSetBase_h
 
 #include "itkIntTypes.h"
-#include "itkVector.h"
+#include "itkCovariantVector.h"
 #include "itkMatrix.h"
 #include "itkNumericTraits.h"
 #include "itkDataObject.h"
@@ -57,7 +57,7 @@ public:
   typedef TInput                                           InputType;
   typedef TOutput                                          OutputType;
   typedef typename NumericTraits< OutputType >::RealType   OutputRealType;
-  typedef Vector< OutputRealType, VDimension >             GradientType;
+  typedef CovariantVector< OutputRealType, VDimension >             GradientType;
   typedef Matrix< OutputRealType, VDimension, VDimension > HessianType;
 
   typedef TDomain DomainType;

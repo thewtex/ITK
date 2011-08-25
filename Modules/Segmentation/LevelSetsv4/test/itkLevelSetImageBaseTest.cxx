@@ -46,8 +46,8 @@ public:
 
   RealType GetFractionalError( const RealType & value, const RealType & theoreticalValue ) const
     {
-    RealType fractionalError = vnl_math_abs( theoreticalValue - value ) / theoreticalValue;
-    std::cout << "error is : " << fractionalError << std::endl;
+    RealType fractionalError = vnl_math_abs( theoreticalValue - value ) /
+      ( vnl_math_abs( theoreticalValue ) + 20* vnl_math::eps );
     return fractionalError;
     }
 
@@ -76,7 +76,7 @@ int itkLevelSetImageBaseTest( int , char* [] )
   index[1] = 0;
 
   ImageType::SizeType size;
-  size[0] = 20;
+  size[0] = 10;
   size[1] = 20;
 
   ImageType::RegionType region;
@@ -86,12 +86,17 @@ int itkLevelSetImageBaseTest( int , char* [] )
   PixelType zeroValue = 0.;
 
   ImageType::SpacingType spacing;
-  spacing[0] = 1.;
-  spacing[1] = 0.5;
+  spacing[0] = 0.02 / size[0];
+  spacing[1] = 0.02 / size[1];
+
+  ImageType::PointType origin;
+  origin[0] = 3.99;
+  origin[1] = 3.99;
 
   ImageType::Pointer input = ImageType::New();
   input->SetRegions( region );
   input->SetSpacing( spacing );
+  input->SetOrigin(  origin );
   input->Allocate();
   input->FillBuffer( zeroValue );
 
@@ -127,36 +132,61 @@ int itkLevelSetImageBaseTest( int , char* [] )
   ToleranceChecker< double > toleranceChecker;
 
   toleranceChecker.SetTolerance( 1e-8 );
-  if( toleranceChecker.IsOutsideTolerance( value, theoreticalValue ) )
+  it.GoToBegin();
+  while( !it.IsAtEnd() )
     {
-    std::cout << "Index:" << idx << " *EvaluateTestFail* " << value << " != "
-              << theoreticalValue << std::endl;
-    return EXIT_FAILURE;
+    idx = it.GetIndex();
+    input->TransformIndexToPhysicalPoint( idx, pt );
+
+    theoreticalValue = testFunction->Evaluate( pt );
+    value            = level_set->Evaluate( idx );
+    if( toleranceChecker.IsOutsideTolerance( value, theoreticalValue ) )
+      {
+      std::cout << "Index:" << idx << " *EvaluateTestFail* " << value << " != "
+                << theoreticalValue << std::endl;
+      return EXIT_FAILURE;
+      }
+
+    ++it;
     }
 
-  /** \todo use the LevelSetTestFunction
-  std::cout << "index = " << idx << std::endl;
-  std::cout << "point = " << pt << std::endl;
-  std::cout << "value = " << value << std::endl;
+  LevelSetType::GradientType gradient;
+  LevelSetType::GradientType theoreticalGradient;
 
-  LevelSetType::GradientType grad = level_set->EvaluateGradient( idx );
-  std::cout << "gradient = " << grad << std::endl;
-
-
-  if ( vnl_math_abs( vnl_math_abs( grad[0] ) - vnl_math_abs( grad[1] ) ) > 5e-2 )
+  toleranceChecker.SetTolerance( 0.1 );
+  it.GoToBegin();
+  while( !it.IsAtEnd() )
     {
-    std::cout << idx << " *GradientTestFail* " << vnl_math_abs( grad[0] ) << " != "
-              << vnl_math_abs( grad[1] ) << std::endl;
-    return EXIT_FAILURE;
+    idx = it.GetIndex();
+    input->TransformIndexToPhysicalPoint( idx, pt );
+
+    theoreticalGradient = testFunction->EvaluateGradient( pt );
+    gradient            = level_set->EvaluateGradient( idx );
+    if( toleranceChecker.IsOutsideTolerance( gradient[0], theoreticalGradient[0] ) ||
+        toleranceChecker.IsOutsideTolerance( gradient[1], theoreticalGradient[1] ) )
+      {
+      std::cout << "Index:" << idx << " Point: " << pt
+        << " Error: [" << toleranceChecker.GetFractionalError( gradient[0], theoreticalGradient[0] )
+        << ',' << toleranceChecker.GetFractionalError( gradient[1], theoreticalGradient[1] ) << "] "
+        <<" *EvaluateGradientTestFail* " << gradient << " != " << theoreticalGradient << std::endl;
+      return EXIT_FAILURE;
+      }
+
+    ++it;
     }
 
+  /** \todo more thorough testing as with the gradient above for hessian,
+   * laplacian, gradient norm. */
+  idx[0] = 9;
+  idx[1] = 18;
+  input->TransformIndexToPhysicalPoint( idx, pt );
   LevelSetType::HessianType hessian = level_set->EvaluateHessian( idx );
   std::cout << "hessian = " << std::endl << hessian << std::endl;
 
-  if ( vnl_math_abs( vnl_math_abs( hessian[0][0] ) - vnl_math_abs( hessian[0][1] ) ) > 5e-2 )
+  if ( vnl_math_abs( vnl_math_abs( hessian[0][0] ) - 499.998 ) / 499.998 > 5e-2 )
     {
     std::cout << idx << " *HessianTestFail* " << vnl_math_abs( hessian[0][0] ) << " != "
-              << vnl_math_abs( hessian[0][1] ) << std::endl;
+              << vnl_math_abs( hessian[1][1] ) << std::endl;
     return EXIT_FAILURE;
     }
 
@@ -175,7 +205,6 @@ int itkLevelSetImageBaseTest( int , char* [] )
 
   LevelSetType::OutputRealType meancurvature = level_set->EvaluateMeanCurvature( idx );
   std::cout <<"mean curvature = " << meancurvature << std::endl;
-  */
 
   return EXIT_SUCCESS;
 }

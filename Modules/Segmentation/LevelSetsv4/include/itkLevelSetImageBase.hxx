@@ -203,7 +203,7 @@ typename LevelSetImageBase< TImage >::OutputRealType
 LevelSetImageBase< TImage >
 ::EvaluateLaplacian( const InputType& iP ) const
 {
-  OutputRealType oLaplacian;
+  OutputRealType oLaplacian = NumericTraits< OutputRealType >::Zero;
 
   OutputRealType center_value = static_cast< OutputRealType >( this->Evaluate( iP ) );
 
