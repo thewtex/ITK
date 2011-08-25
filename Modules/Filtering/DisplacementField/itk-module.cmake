@@ -8,6 +8,7 @@ a deformation field.")
 itk_module(ITKDisplacementField
   DEPENDS
     ITKTransform
+    ITKImageFunction
     ITKImageGrid
     ITKImageIntensity
   TEST_DEPENDS
@@ -15,3 +16,5 @@ itk_module(ITKDisplacementField
   DESCRIPTION
     "${DOCUMENTATION}"
 )
+
+# ITKImageFunction added for DisplacementFieldTransform
