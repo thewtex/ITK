@@ -5,6 +5,8 @@ itkDeformationFieldJacobianDeterminantFilterTest.cxx
 itkIterativeInverseDisplacementFieldImageFilterTest.cxx
 itkLandmarkDisplacementFieldSourceTest.cxx
 itkInverseDisplacementFieldImageFilterTest.cxx
+itkDisplacementFieldTransformTest.cxx
+itkGaussianSmoothingOnUpdateDisplacementFieldTransformTest.cxx
 )
 
 CreateTestDriver(ITKDisplacementField  "${ITKDisplacementField-Test_LIBRARIES}" "${ITKDisplacementFieldTests}")
@@ -22,3 +24,8 @@ itk_add_test(NAME itkLandmarkDisplacementFieldSourceTest
 itk_add_test(NAME itkInverseDisplacementFieldImageFilterTest
       COMMAND ITKDisplacementFieldTestDriver itkInverseDisplacementFieldImageFilterTest
               ${ITK_TEST_OUTPUT_DIR}/itkInverseDisplacementFieldImageFilterTest.mha)
+itk_add_test(NAME itkDisplacementFieldTransformTest
+      COMMAND ITKTransformTestDriver itkDisplacementFieldTransformTest)
+itk_add_test(NAME itkGaussianSmoothingOnUpdateDisplacementFieldTransformTest
+      COMMAND ITKTransformTestDriver
+      itkGaussianSmoothingOnUpdateDisplacementFieldTransformTest)
