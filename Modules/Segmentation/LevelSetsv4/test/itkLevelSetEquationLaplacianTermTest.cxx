@@ -19,7 +19,7 @@
 #include "itkImage.h"
 #include "itkLevelSetEquationLaplacianTerm.h"
 
-int itkLevelSetEquationLaplacianTermTest( int argc, char* argv[] )
+int itkLevelSetEquationLaplacianTermTest( int itkNotUsed(argc), char* itkNotUsed(argv)[] )
 {
 
   return EXIT_SUCCESS;

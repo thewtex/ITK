@@ -21,7 +21,7 @@
 // #include "itkWhitakerSparseLevelSetBase.h"
 // #include "itkLevelSetContainerBase.h"
 
-int itkLevelSetEquationChanAndVeseExternalTermTest( int argc, char* argv[] )
+int itkLevelSetEquationChanAndVeseExternalTermTest( int itkNotUsed(argc), char* itkNotUsed(argv)[] )
 {
 
   /* JIRA Ticket number

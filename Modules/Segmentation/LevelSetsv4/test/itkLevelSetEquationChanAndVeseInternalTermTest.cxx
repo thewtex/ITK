@@ -19,7 +19,7 @@
 #include "itkImage.h"
 #include "itkLevelSetEquationChanAndVeseInternalTerm.h"
 
-int itkLevelSetEquationChanAndVeseInternalTermTest( int argc, char* argv[] )
+int itkLevelSetEquationChanAndVeseInternalTermTest( int itkNotUsed(argc), char* itkNotUsed(argv)[] )
 {
 
   return EXIT_SUCCESS;

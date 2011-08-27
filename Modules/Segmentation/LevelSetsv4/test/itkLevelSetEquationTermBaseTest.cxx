@@ -19,7 +19,7 @@
 #include "itkImage.h"
 #include "itkLevelSetEquationTermBase.h"
 
-int itkLevelSetEquationTermBaseTest( int argc, char* argv[] )
+int itkLevelSetEquationTermBaseTest( int itkNotUsed(argc), char* itkNotUsed(argv)[] )
 {
 
   return EXIT_SUCCESS;

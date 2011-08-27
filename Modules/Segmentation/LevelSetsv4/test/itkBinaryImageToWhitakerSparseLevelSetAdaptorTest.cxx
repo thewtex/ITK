@@ -23,6 +23,13 @@
 
 int itkBinaryImageToWhitakerSparseLevelSetAdaptorTest( int argc, char* argv[] )
 {
+  if( argc < 3 )
+    {
+    std::cout << "Usage: " << argv[0]
+      << " inputBinaryImage outputImage statusImage" << std::endl;
+    return EXIT_FAILURE;
+    }
+
   const unsigned int Dimension = 2;
 
   typedef unsigned char InputPixelType;
@@ -139,9 +146,12 @@ int itkBinaryImageToWhitakerSparseLevelSetAdaptorTest( int argc, char* argv[] )
     std::cout << std::endl;
     }
 
-  typedef itk::LabelObject< unsigned long, 2 > LabelObjectType;
-  LabelObjectType::Pointer labelObject = LabelObjectType::New();
-  labelObject->CopyAllFrom( sparseLevelSet->GetAsLabelObject<unsigned long>() );
+  typedef itk::LabelObject< unsigned long, 2 >  LabelObjectType;
+  typedef LabelObjectType::Pointer              LabelObjectPointer;
+
+  LabelObjectPointer labelObject = LabelObjectType::New();
+  LabelObjectPointer labelObjectSrc = sparseLevelSet->GetAsLabelObject<unsigned long>();
+  labelObject->CopyAllFrom( labelObjectSrc );
   labelObject->SetLabel( sparseLevelSet->PlusOneLayer() );
 
   labelObject->Optimize();

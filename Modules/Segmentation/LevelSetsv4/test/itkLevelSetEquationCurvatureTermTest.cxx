@@ -19,7 +19,7 @@
 #include "itkImage.h"
 #include "itkLevelSetEquationCurvatureTerm.h"
 
-int itkLevelSetEquationCurvatureTermTest( int argc, char* argv[] )
+int itkLevelSetEquationCurvatureTermTest( int itkNotUsed(argc), char* itkNotUsed(argv)[] )
 {
 
   return EXIT_SUCCESS;
