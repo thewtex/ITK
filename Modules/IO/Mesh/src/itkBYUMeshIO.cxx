@@ -295,14 +295,14 @@ BYUMeshIO
 
 void
 BYUMeshIO
-::ReadPointData(void *buffer)
+::ReadPointData(void * itkNotUsed( buffer) )
 {
   return;
 }
 
 void
 BYUMeshIO
-::ReadCellData(void *buffer)
+::ReadCellData(void * itkNotUsed( buffer) )
 {
   return;
 }
@@ -553,14 +553,14 @@ BYUMeshIO
 
 void
 BYUMeshIO
-::WritePointData(void *buffer)
+::WritePointData(void * itkNotUsed( buffer) )
 {
   return;
 }
 
 void
 BYUMeshIO
-::WriteCellData(void *buffer)
+::WriteCellData(void * itkNotUsed( buffer) )
 {
   return;
 }
