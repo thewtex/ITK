@@ -1,3 +1,5 @@
+
+
 /*=========================================================================
  *
  *  Copyright Insight Software Consortium
@@ -26,7 +28,7 @@ namespace itk
 namespace Functor
 {
 /** \class Abs
- * \brief Computes the absolute value of a pixel.
+ * \brief Computes the absolute value of a pixel.test test
  * \ingroup ITKImageIntensity
  */
 template< class TInput, class TOutput >
@@ -53,7 +55,7 @@ public:
 }
 
 /** \class AbsImageFilter
- * \brief Computes the absolute value of each pixel.
+ * \brief Computes the absolute value of each pixel. test
  *
  * vnl_math_abs() is used to perform the computation.
  *
