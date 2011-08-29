@@ -75,10 +75,13 @@ public:
   typedef typename LevelSetContainerType::LevelSetDataType
                                                           LevelSetDataType;
 
+  typedef typename LevelSetContainerType::DomainMapImageFilterType DomainMapImageFilterType;
+
   typedef HeavisideStepFunctionBase< LevelSetOutputRealType,
                                      LevelSetOutputRealType >
                                           HeavisideType;
-  typedef typename HeavisideType::Pointer HeavisidePointer;
+//  typedef typename HeavisideType::Pointer HeavisidePointer;
+  typedef typename HeavisideType::ConstPointer HeavisideConstPointer;
 
   /** Set/Get the image to be segmented */
   itkSetObjectMacro( Input, InputImageType );
@@ -147,9 +150,9 @@ protected:
   virtual ~LevelSetEquationTermBase() {}
 
   /** Set the default name for a given term (see m_TermName). */
-  virtual void SetDefaultTermName() = 0;
+  virtual void SetDefaultTermName(){}
 
-  virtual void SetRequiredData() = 0;
+  virtual void SetRequiredData(){}
 
   void SetUp();
 
@@ -184,7 +187,7 @@ protected:
   /** Heaviside function to be used. Depending on the term expression,
    *  this one may need to be provided
    */
-  HeavisidePointer         m_Heaviside;
+  HeavisideConstPointer         m_Heaviside;
 
   /** Name to be given to the term. Note by default, one name is provided,
    *  but end-users may rename differently each term.

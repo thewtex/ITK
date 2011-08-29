@@ -265,7 +265,8 @@ public:
 
   // set the domain map image filter
   itkSetObjectMacro( DomainMapFilter, DomainMapImageFilterType );
-  itkGetConstObjectMacro( DomainMapFilter, DomainMapImageFilterType );
+//  itkGetConstObjectMacro( DomainMapFilter, DomainMapImageFilterType );
+itkGetObjectMacro( DomainMapFilter, DomainMapImageFilterType );
 
 protected:
   /** \brief Default Constructor */

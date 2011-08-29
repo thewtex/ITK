@@ -53,7 +53,7 @@ void LevelSetEquationChanAndVeseExternalTerm< TInput, TLevelSetContainer >
 {
   prod = -1.;
   const LevelSetIdentifierType id = this->m_LevelSetContainer->GetDomainMapFilter()->GetOutput()->GetPixel( iP );
-  const IdListType lout = this->m_LevelSetContainer->GetDomainMapFilter()->m_LevelSetMap[id].m_List;
+  IdListType lout = this->m_LevelSetContainer->GetDomainMapFilter()->m_LevelSetMap[id].m_List;
 
   LevelSetPointer levelSet;
   LevelSetOutputRealType value;

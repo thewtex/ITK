@@ -67,11 +67,13 @@ public:
   typedef typename Superclass::LevelSetHessianType        LevelSetHessianType;
   typedef typename Superclass::LevelSetIdentifierType     LevelSetIdentifierType;
 
+  typedef typename Superclass::DomainMapImageFilterType   DomainMapImageFilterType;
+
   typedef std::list< LevelSetIdentifierType >            IdListType;
   typedef typename IdListType::iterator                  IdListIterator;
 
-  typedef typename Superclass::HeavisideType    HeavisideType;
-  typedef typename Superclass::HeavisidePointer HeavisidePointer;
+  typedef typename Superclass::HeavisideType         HeavisideType;
+  typedef typename Superclass::HeavisideConstPointer HeavisideConstPointer;
 
   /** Compute the product of Heaviside functions in the multi-levelset cases */
   virtual void ComputeProduct( const LevelSetInputIndexType& iP,
