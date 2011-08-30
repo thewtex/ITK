@@ -328,7 +328,7 @@ LevelSetBase< TInput, VDimension, TOutput, TDomain >
 template< class TInput, unsigned int VDimension, typename TOutput, class TDomain >
 void
 LevelSetBase< TInput, VDimension, TOutput, TDomain >
-::SetRequestedRegion(const DataObject *data)
+::SetRequestedRegion(DataObject *data)
 {
   const Self *levelSet = dynamic_cast< const Self * >( data );
 

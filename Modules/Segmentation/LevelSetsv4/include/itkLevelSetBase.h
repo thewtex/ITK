@@ -200,7 +200,7 @@ public:
    * region of the data object passed in as a parameter.  This method
    * implements the API from DataObject. The data object parameter must be
    * castable to a PointSet. */
-  virtual void SetRequestedRegion( const DataObject *data);
+  virtual void SetRequestedRegion( DataObject *data);
 
   /** Set/Get the Requested region */
   virtual void SetRequestedRegion(const RegionType & region);
