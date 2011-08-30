@@ -52,6 +52,9 @@ macro( itk_module_headertest _name )
         ${_test_num}
         )
       add_executable( ${_test_name} ${_header_test_src} )
+      ## Need to add ITKV3_COMPATIBILITY so that the the automatic inclusion of backwards
+      ## compatibility headers do not cause compiler failures.
+      set_target_properties( ${_test_name} PROPERTIES COMPILE_FLAGS -DITKV3_COMPATIBILITY=1 )
       target_link_libraries( ${_test_name} ITKCommon )
       math( EXPR _test_num "${_test_num} + 1" )
     endforeach()
