@@ -22,6 +22,7 @@
 
 #include "itkArray.h"
 #include "itkBSplineScatteredDataPointSetToImageFilter.h"
+#include "itkImportImageFilter.h"
 #include "itkPointSet.h"
 #include "itkVector.h"
 
