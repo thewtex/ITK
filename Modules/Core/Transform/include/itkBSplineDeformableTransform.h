@@ -378,9 +378,6 @@ public:
     itkExceptionMacro("GetNumberOfLocalParameters not yet implemented.");
   }
 
-  /** Return the region of the grid wholly within the support region */
-  itkGetConstReferenceMacro(ValidRegion, RegionType);
-
   /** Indicates that this transform is linear. That is, given two
    * points P and Q, and scalar coefficients a and b, then
    *
@@ -433,13 +430,6 @@ public:
 
   /** Return the region of the grid wholly within the support region */
   itkGetConstReferenceMacro(ValidRegion, RegionType);
-#if 0
-  /** Return the number of local parameters */
-  virtual unsigned int GetNumberOfLocalParameters(void) const
-  {
-    itkExceptionMacro("GetNumberOfLocalParameters not yet implemented.");
-  }
-#endif
 
 protected:
   /** Print contents of an BSplineDeformableTransform. */

@@ -95,8 +95,7 @@ BSplineDeformableTransform<TScalarType, NDimensions, VSplineOrder>
 {
   // The number of parameters equal SpaceDimension * number of
   // of pixels in the grid region.
-  return static_cast<unsigned int>( SpaceDimension )
-         * static_cast<unsigned int>( this->m_GridRegion.GetNumberOfPixels() );
+  return static_cast<NumberOfParametersType>( SpaceDimension * this->m_GridRegion.GetNumberOfPixels() );
 }
 
 // Get the number of parameters per dimension
@@ -107,7 +106,7 @@ BSplineDeformableTransform<TScalarType, NDimensions, VSplineOrder>
 {
   // The number of parameters per dimension equal number of
   // of pixels in the grid region.
-  return static_cast<unsigned int>( this->m_GridRegion.GetNumberOfPixels() );
+  return static_cast<NumberOfParametersType>( this->m_GridRegion.GetNumberOfPixels() );
 }
 
 // Set the grid region
