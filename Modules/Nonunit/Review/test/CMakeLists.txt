@@ -31,6 +31,7 @@ itkHessianToObjectnessMeasureImageFilterTest.cxx
 itkImageReadComplexWriteMagnitudeAndPhaseTest.cxx
 itkImageReadMagnitudeAndPhaseWriteComplexTest.cxx
 itkImageFunctionTest.cxx
+itkJaccardImageFilterTest.cxx
 itkJPEG2000ImageIOFactoryTest01.cxx
 itkJPEG2000ImageIORegionOfInterest.cxx
 itkJPEG2000ImageIOTest00.cxx
@@ -339,6 +340,10 @@ itk_add_test(NAME itkImageReadMagnitudeAndPhaseWriteComplexTest
               ${ITK_EXAMPLE_DATA_ROOT}/itkBrainSliceComplexMagnitude.mha ${ITK_EXAMPLE_DATA_ROOT}/itkBrainSliceComplexPhase.mha ${ITK_TEST_OUTPUT_DIR}/itkBrainSliceComplex.mha)
 itk_add_test(NAME itkImageFunctionTest
       COMMAND ITKReviewTestDriver itkImageFunctionTest)
+itk_add_test(NAME itkJaccardImageFilterTest01
+      COMMAND ITKReviewTestDriver itkJaccardImageFilterTest
+      DATA{Baseline/itkDiceImageFilterInputA.jpg}
+      DATA{Baseline/itkDiceImageFilterInputB.jpg})
 itk_add_test(NAME itkJPEG2000Test00
       COMMAND ITKReviewTestDriver itkJPEG2000ImageIORegionOfInterest
               ${ITK_DATA_ROOT}/Input/Bretagne1.j2k ${ITK_TEST_OUTPUT_DIR}/Bretagne1_RegionTest01.tif 160 120 320 240)
