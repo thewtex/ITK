@@ -5,6 +5,9 @@
 project(ImageSegmentation)
 include_regular_expression("^.*$")
 
+add_executable(itkConfocal itkConfocal.cxx )
+target_link_libraries(itkConfocal ${ITK_LIBRARIES})
+
 add_executable(ConfidenceConnected ConfidenceConnected.cxx )
 target_link_libraries(ConfidenceConnected ${ITK_LIBRARIES})
 
