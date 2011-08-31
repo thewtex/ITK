@@ -66,6 +66,16 @@ struct hash<const char*> {
 };
 
 @KWSYS_NAMESPACE@_CXX_DEFINE_SPECIALIZATION
+  struct hash<std::string> {
+  size_t operator()(const std::string & __s) const { return _stl_hash_string(__s.c_str()); }
+};
+
+@KWSYS_NAMESPACE@_CXX_DEFINE_SPECIALIZATION
+  struct hash<const std::string> {
+  size_t operator()(const std::string & __s) const { return _stl_hash_string(__s.c_str()); }
+};
+
+@KWSYS_NAMESPACE@_CXX_DEFINE_SPECIALIZATION
 struct hash<char> {
   size_t operator()(char __x) const { return __x; }
 };
