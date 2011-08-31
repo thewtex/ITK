@@ -150,7 +150,7 @@ BSplineDeformableTransform<TScalarType, NDimensions, VSplineOrder>
 
 // Get the number of parameters
 template <class TScalarType, unsigned int NDimensions, unsigned int VSplineOrder>
-unsigned int
+NumberOfParametersType
 BSplineDeformableTransform<TScalarType, NDimensions, VSplineOrder>
 ::GetNumberOfParameters(void) const
 {
