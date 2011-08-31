@@ -150,14 +150,14 @@ BSplineDeformableTransform<TScalarType, NDimensions, VSplineOrder>
 
 // Get the number of parameters
 template <class TScalarType, unsigned int NDimensions, unsigned int VSplineOrder>
-unsigned int
+NumberOfParametersType
 BSplineDeformableTransform<TScalarType, NDimensions, VSplineOrder>
 ::GetNumberOfParameters(void) const
 {
   // The number of parameters equal SpaceDimension * number of
   // of pixels in the grid region.
-  return static_cast<unsigned int>( SpaceDimension )
-         * static_cast<unsigned int>( this->m_GridRegion.GetNumberOfPixels() );
+  return static_cast<NumberOfParametersType>( SpaceDimension
+         * this->m_GridRegion.GetNumberOfPixels() );
 }
 
 // Get the number of parameters per dimension
