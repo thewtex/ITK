@@ -20,13 +20,16 @@
 
 #include "itkDirectFourierReconstructionImageToImageFilter.h"
 
+#include "itkFFTHalfToFullImageFilter.h"
+
 namespace itk
 {
 /**
  * Initialize member variables with meaningful values.
  */
 template< class TInputImage, class TOutputImage >
-DirectFourierReconstructionImageToImageFilter< TInputImage, TOutputImage >::DirectFourierReconstructionImageToImageFilter():
+DirectFourierReconstructionImageToImageFilter< TInputImage, TOutputImage >
+::DirectFourierReconstructionImageToImageFilter():
   Superclass()
 {
   const double RADIANS = 1.0;
@@ -49,7 +52,8 @@ DirectFourierReconstructionImageToImageFilter< TInputImage, TOutputImage >::Dire
  * Print out class state (member variables)
  */
 template< class TInputImage, class TOutputImage >
-void DirectFourierReconstructionImageToImageFilter< TInputImage, TOutputImage >::PrintSelf(std::ostream & os,
+void DirectFourierReconstructionImageToImageFilter< TInputImage, TOutputImage >
+::PrintSelf(std::ostream & os,
                                                                                                    Indent indent) const
 {
   // call the superclass' implementation of this method
@@ -79,7 +83,8 @@ void DirectFourierReconstructionImageToImageFilter< TInputImage, TOutputImage >:
 * Calculate image boundaries and define output regions, spacing, origin etc.
 */
 template< class TInputImage, class TOutputImage >
-void DirectFourierReconstructionImageToImageFilter< TInputImage, TOutputImage >::GenerateOutputInformation()
+void DirectFourierReconstructionImageToImageFilter< TInputImage, TOutputImage >
+::GenerateOutputInformation()
 {
   // call the superclass' implementation of this method
   Superclass::GenerateOutputInformation();
@@ -133,7 +138,8 @@ void DirectFourierReconstructionImageToImageFilter< TInputImage, TOutputImage >:
  * Calculate necessary input image boundaries
  */
 template< class TInputImage, class TOutputImage >
-void DirectFourierReconstructionImageToImageFilter< TInputImage, TOutputImage >::GenerateInputRequestedRegion()
+void DirectFourierReconstructionImageToImageFilter< TInputImage, TOutputImage >
+::GenerateInputRequestedRegion()
 {
   // call the superclass' implementation of this method
   Superclass::GenerateInputRequestedRegion();
@@ -165,7 +171,8 @@ void DirectFourierReconstructionImageToImageFilter< TInputImage, TOutputImage >:
  * Actual computation
  */
 template< class TInputImage, class TOutputImage >
-void DirectFourierReconstructionImageToImageFilter< TInputImage, TOutputImage >::GenerateData()
+void DirectFourierReconstructionImageToImageFilter< TInputImage, TOutputImage >
+::GenerateData()
 {
   OutputImagePointer     outputImage = this->GetOutput();
   ConstInputImagePointer inputImage = this->GetInput();
@@ -213,14 +220,21 @@ void DirectFourierReconstructionImageToImageFilter< TInputImage, TOutputImage >:
   projectionLine->FillBuffer(0);
 
   ProjectionLineType::IndexType pIdx;
-  const unsigned int            pLineHalfShift = pSize[0] - inputROISize[m_RDirection] / 2;
+  const unsigned int pLineHalfShift = pSize[0] - inputROISize[m_RDirection] / 2;
 
   // Setup 1D FFT Filter
   FFTLineFilterType::Pointer FFT = FFTLineFilterType::New();
-  FFT->SetInput(projectionLine);
+  FFT->SetInput( projectionLine );
+
+  // Setup 1D full complex image expansion filter
+  FFTHalfToFullFilterType::Pointer halfToFullFilter = FFTHalfToFullFilterType::New();
+  bool xDimensionIsOdd = projectionLine->GetLargestPossibleRegion().GetSize()[0] % 2 == 1;
+  halfToFullFilter->SetActualXDimensionIsOdd( xDimensionIsOdd );
+  halfToFullFilter->SetInput( FFT->GetOutput() );
 
   // Setup FFT Line interpolator stack
-  FFTLineInterpolatorType::Pointer *FFTLineInterpolator = new FFTLineInterpolatorType::Pointer[alpha_size];
+  FFTLineInterpolatorType::Pointer *FFTLineInterpolator =
+    new FFTLineInterpolatorType::Pointer[alpha_size];
   for ( unsigned int alpha = 0; alpha < alpha_size; alpha++ )
     {
     FFTLineInterpolator[alpha] = FFTLineInterpolatorType::New();
@@ -290,15 +304,20 @@ void DirectFourierReconstructionImageToImageFilter< TInputImage, TOutputImage >:
         ++inputIt;
         } // while ( !inputIt.IsAtEndOfLine() )
 
-      // Compute FFT
-      FFT->Update();
+      // Changing pixel values in the projectionLine doesn't cause the
+      // FFT filter to be marked as modified, so we do it hear.
+      FFT->Modified();
+
+      // Recompute FFT
+      halfToFullFilter->Update();
 
       // link fft line into interpolator stack ...
-      FFTLineInterpolator[inputIt.GetIndex()[m_AlphaDirection] - inputROIStart[m_AlphaDirection]]->SetInputImage(
-         FFT->GetOutput() );
+      int interpolatorIndex = inputIt.GetIndex()[m_AlphaDirection] -
+        inputROIStart[m_AlphaDirection];
+      FFTLineInterpolator[interpolatorIndex]->SetInputImage( halfToFullFilter->GetOutput() );
 
       // ... and unlink from upstream pipeline
-      FFT->GetOutput()->DisconnectPipeline();
+      halfToFullFilter->GetOutput()->DisconnectPipeline();
 
       inputIt.NextLine();
       } // while ( !inputIt.IsAtEndOfSlice() )
@@ -387,9 +406,15 @@ void DirectFourierReconstructionImageToImageFilter< TInputImage, TOutputImage >:
       FFTSliceIt.Set(out);
       } // for FFTSliceIt
 
+    // Setup non-redundant half image filter
+    typename FFTFullToHalfFilterType::Pointer fullToHalfFilter =
+      FFTFullToHalfFilterType::New();
+    fullToHalfFilter->SetInput( FFTSlice );
+    fullToHalfFilter->Update();
+
     // Setup inverse 2D FFT Filter
     IFFTSliceFilterType::Pointer IFFT = IFFTSliceFilterType::New();
-    IFFT->SetInput(FFTSlice);
+    IFFT->SetInput( fullToHalfFilter->GetOutput() );
 
     // Calculate the inverse 2D FFT of the slice
     IFFT->Update();

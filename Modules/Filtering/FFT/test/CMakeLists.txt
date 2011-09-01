@@ -1,6 +1,8 @@
 itk_module_test()
 set(ITKFFTTests
 itkFFTShiftImageFilterTest.cxx
+itkFFTHalfToFullImageFilterTest.cxx
+itkFFTFullToHalfImageFilterTest.cxx
 itkVnlFFTTest.cxx
 )
 
@@ -57,3 +59,27 @@ itk_add_test(NAME itkFFTShiftImageFilterTestEven1
     --compare ${ITK_DATA_ROOT}/Input/cthead1.png
               ${ITK_TEST_OUTPUT_DIR}/itkFFTShiftImageFilterTestEven1.png
     itkFFTShiftImageFilterTest DATA{Baseline/itkFFTShiftImageFilterTestEven0.png} ${ITK_TEST_OUTPUT_DIR}/itkFFTShiftImageFilterTestEven1.png 1)
+itk_add_test(NAME itkFFTHalfToFullImageFilterTestEvenEven
+  COMMAND ITKFFTTestDriver
+  itkFFTHalfToFullImageFilterTest 10 10)
+itk_add_test(NAME itkFFTHalfToFullImageFilterTestEvenOdd
+  COMMAND ITKFFTTestDriver
+  itkFFTHalfToFullImageFilterTest 10 15)
+itk_add_test(NAME itkFFTHalfToFullImageFilterTestOddEven
+  COMMAND ITKFFTTestDriver
+  itkFFTHalfToFullImageFilterTest 15 10)
+itk_add_test(NAME itkFFTHalfToFullImageFilterTestOddOdd
+  COMMAND ITKFFTTestDriver
+  itkFFTHalfToFullImageFilterTest 15 15)
+itk_add_test(NAME itkFFTFullToHalfImageFilterTestEvenEven
+  COMMAND ITKFFTTestDriver
+  itkFFTFullToHalfImageFilterTest 10 10)
+itk_add_test(NAME itkFFTFullToHalfImageFilterTestEvenOdd
+  COMMAND ITKFFTTestDriver
+  itkFFTFullToHalfImageFilterTest 10 15)
+itk_add_test(NAME itkFFTFullToHalfImageFilterTestOddEven
+  COMMAND ITKFFTTestDriver
+  itkFFTFullToHalfImageFilterTest 15 10)
+itk_add_test(NAME itkFFTFullToHalfImageFilterTestOddOdd
+  COMMAND ITKFFTTestDriver
+  itkFFTFullToHalfImageFilterTest 15 15)

@@ -219,10 +219,15 @@ itk_add_test(NAME itkDiffeomorphicDemonsRegistrationFilterTest10
 itk_add_test(NAME itkDiffeomorphicDemonsRegistrationFilterTest11
       COMMAND ITKReviewTestDriver itkDiffeomorphicDemonsRegistrationFilterTest2
               ${ITK_EXAMPLE_DATA_ROOT}/RatLungSlice1.mha ${ITK_EXAMPLE_DATA_ROOT}/RatLungSlice2.mha ${ITK_TEST_OUTPUT_DIR}/itkDiffeomorphicDemonsRegistrationFilterTest11.mha 0 1 0.001 0.1)
+
+# The tolerance for the itkDirectFourierReconstructionImageToImageFilterTest
+# represents 0.004X the full image intensity range and is needed because of
+# differences in numerical error in different FFT libraries used by the filter.
 itk_add_test(NAME itkDirectFourierReconstructionImageToImageFilterTest
       COMMAND ITKReviewTestDriver
     --compare ${ITK_DATA_ROOT}/Baseline/Review/reconstruct.mha
               ${ITK_TEST_OUTPUT_DIR}/reconstruct.mha
+              --compareIntensityTolerance 200
     itkDirectFourierReconstructionImageToImageFilterTest ${ITK_DATA_ROOT}/Input/sinogram-small.mha ${ITK_TEST_OUTPUT_DIR}/reconstruct.mha 1 2 0 2 2 1 3 180 0 0 0 64 64 2 0)
 itk_add_test(NAME itkDiscreteGaussianDerivativeImageFilterScaleSpaceTest
       COMMAND ITKReviewTestDriver itkDiscreteGaussianDerivativeImageFilterScaleSpaceTest)

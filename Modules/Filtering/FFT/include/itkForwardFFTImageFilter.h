@@ -31,13 +31,17 @@ namespace itk
  * provided by the best child class available on the system when the object is
  * created via the object factory system.
  *
- * This class transforms a real input image into its complex Fourier Transform.
- * The transform of a real input image has complex conjugate symmetry.  That is,
- * values in the second half of the transform are the complex conjugates of
- * values in the first half.  Some implementations, e.g. FFTW, may take
- * advantage of this property and reduce the size of the output in one direction
- * to N/2+1, where N is the size of the input.  If this occurs, FullMatrix()
- * returns 'false'.
+ * This class transforms a real input image into its complex Fourier
+ * transform.  The Fourier transform of a real input image has
+ * Hermitian symmetry: \f$ f(\mathbf{x}) = f^*(-\mathbf{x}) \f$. That
+ * is, when the result of the transform is split in half along the
+ * x-dimension, the values in the second half of the transform are the
+ * complex conjugates of values in the first half reflected about the
+ * center of the image in each dimension. The FFT filters in ITK take
+ * advantage of the Hermitian symmetry property and reduce the size of
+ * the output in the first dimention to N/2+1, where N is the size of
+ * the input image in that dimension and the division by 2 is rounded
+ * down.
  *
  * \ingroup FourierTransform
  *
@@ -87,13 +91,16 @@ protected:
   /** This class produces the entire output. */
   virtual void EnlargeOutputRequestedRegion(DataObject *output);
 
-  /** Returns true if the outputs size is the same size as the input, i.e.
-   * we do not take advantage of complex conjugate symmetry. */
+  /** Returns true if the outputs size is the same size as the input,
+   * i.e.  the filter does not take advantage of Hermitian symmetry
+   * for real inputs. All ITK forward FFT filters take advantage of
+   * the Hermitian symmetry, so this method always returns false and
+   * is for backwards compatibility only. */
   virtual bool FullMatrix() = 0; // must be implemented in child
 
 private:
-  ForwardFFTImageFilter(const Self &); //purposely not implemented
-  void operator=(const Self &);                       //purposely not implemented
+  ForwardFFTImageFilter(const Self &); // purposely not implemented
+  void operator=(const Self &);        // purposely not implemented
 };
 } // end namespace itk
 
