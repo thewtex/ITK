@@ -96,8 +96,9 @@ itkWarpJacobianDeterminantFilterTest.cxx
 itkCompositeTransformWriterTest.cxx
 itkCompositeTransformReaderTest.cxx
 itkCompositeTransformWriterAndReaderTest.cxx
+itk2PointCorrelationFunctionSegmentationInitializationTest.cxx
+itkSupervisedBayesianClassifierInitializationImageFilterTest.cxx
 )
-
 set(BASELINE ${ITK_DATA_ROOT}/Baseline/Review)
 set(INPUTDATA ${ITK_DATA_ROOT}/Input)
 set(BASELINE_ROOT ${ITK_DATA_ROOT}/Baseline)
@@ -856,3 +857,17 @@ itk_add_test(NAME itkCompositeTransformWriterTest
 itk_add_test(NAME itkCompositeTransformWriterAndReaderTest
       COMMAND ITKReviewTestDriver
       itkCompositeTransformWriterAndReaderTest ${TEMP})
+itk_add_test(NAME itk2PointCorrelationFunctionSegmentationInitializationTest
+      COMMAND ITKReviewTestDriver
+      itk2PointCorrelationFunctionSegmentationInitializationTest
+      DATA{Baseline/itkTPCFTestinput.png}
+      DATA{Baseline/itkTPCFTESToutput.mha}
+      5 8 40 )
+
+itk_add_test(NAME itkSupervisedBayesianClassifierInitializationImageFilterTest
+      COMMAND ITKReviewTestDriver
+      itkSupervisedBayesianClassifierInitializationImageFilterTest
+      DATA{Baseline/itkSupervisedBayesianClassifierInitializationImageFilterTestImage.png}
+      DATA{Baseline/itkSupervisedBayesianClassifierInitializationImageFilterTestImageOutput.mha}
+      6 42 207 135 21 36 249 406 460 606 300 708 146
+      )
