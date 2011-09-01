@@ -294,7 +294,7 @@ ITK_EXPORT std::istream & operator>>(std::istream & is,
  * \ingroup ITKCommon
  */
 template< class TPointContainer, class TWeightContainer >
-ITK_EXPORT class BarycentricCombination
+class ITK_EXPORT BarycentricCombination
 {
 public:
   /** Convenient typedefs. */

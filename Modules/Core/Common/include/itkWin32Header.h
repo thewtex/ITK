@@ -75,18 +75,35 @@
 
 // When a class definition has ITK_EXPORT, the class will be
 // checked automatically, by Utilities/Dart/PrintSelfCheck.tcl
-#define ITK_EXPORT
 
-#if ( defined( _WIN32 ) || defined( WIN32 ) ) && !defined( ITKSTATIC )
+#if defined( _WIN32 ) || defined ( WIN32 )
+  #define ITK_IMPORT __declspec(dllimport)
+  #define ITK_EXPORT __declspec(dllexport)
+  #define ITK_LOCAL
+#else
+  #if __GNUC__ >= 4
+    #define ITK_IMPORT __attribute__ ((visibility ("default")))
+    #define ITK_EXPORT __attribute__ ((visibility ("default")))
+    #define ITK_LOCAL  __attribute__ ((visibility ("hidden")))
+  #else
+    #define ITK_IMPORT
+    #define ITK_EXPORT
+    #define ITK_LOCAL
+  #endif
+#endif
+
+#if !defined( ITKSTATIC )
 #ifdef ITKCommon_EXPORTS
-#define ITKCommon_EXPORT __declspec(dllexport)
+#define ITKCommon_EXPORT ITK_EXPORT
 #else
-#define ITKCommon_EXPORT __declspec(dllimport)
+#define ITKCommon_EXPORT ITK_IMPORT
 #endif  /* ITKCommon_EXPORTS */
+#define ITKCommon_LOCAL ITK_LOCAL
 
 #else
-/* unix needs nothing */
+/* ITKCommon is build as a static lib */
 #define ITKCommon_EXPORT
+#define ITKCommon_LOCAL
 #endif
 
 #endif
