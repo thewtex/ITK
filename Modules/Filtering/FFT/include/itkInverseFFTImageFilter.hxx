@@ -131,7 +131,7 @@ InverseFFTImageFilter< TInputImage, TOutputImage >
   SizeScalarType x = 0;
 
   outputSize[0] = ( inputSize[0] - 1 ) * 2;
-  if ( this->ActualXDimensionIsOdd() )
+  if ( this->GetActualXDimensionIsOdd() )
     {
     outputSize[0]++;
     }

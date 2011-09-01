@@ -26,8 +26,8 @@ namespace itk
  *
  * \brief VNL based forward Fast Fourier Transform.
  *
- * The input image size must be a multiple of combinations of 2s, 3s,
- * and/or 5s in all dimensions.
+ * The input image size in all dimensions must have a prime
+ * factorization consisting of 2s, 3s, and 5s.
  *
  * \ingroup FourierTransform
  *
@@ -51,6 +51,7 @@ public:
   typedef typename InputImageType::SizeValueType InputSizeValueType;
   typedef TOutputImage                           OutputImageType;
   typedef typename OutputImageType::PixelType    OutputPixelType;
+  typedef typename OutputImageType::SizeType     OutputSizeType;
 
   typedef VnlForwardFFTImageFilter                           Self;
   typedef ForwardFFTImageFilter<  TInputImage, TOutputImage> Superclass;
@@ -73,9 +74,7 @@ public:
   itkStaticConstMacro(OutputImageDimension, unsigned int,
                       TOutputImage::ImageDimension);
 
-  /** These should be defined in every FFT filter class. */
-  virtual void GenerateData();
-
+  /** This should be defined in every FFT filter class. */
   virtual bool FullMatrix();
 
 #ifdef ITK_USE_CONCEPT_CHECKING
@@ -93,8 +92,10 @@ protected:
    * FFT algorithm. */
   bool IsDimensionSizeLegal(InputSizeValueType n);
 
+  void GenerateData();
+
 private:
-  // compile time choice of fft solver instead of runtime
+  // Compile time choice of FFT solver instead of runtime.
   template <unsigned VDim> struct DimDiscriminator { };
   typedef vnl_vector< vcl_complex< InputPixelType > > SignalVectorType;
   /** call proper vnl_fft transform function */
@@ -102,8 +103,8 @@ private:
   void FFTND_transform(SignalVectorType &signal, const InputSizeType &inputSize, DimDiscriminator<2> *);
   void FFTND_transform(SignalVectorType &signal, const InputSizeType &inputSize, DimDiscriminator<3> *);
 
-  VnlForwardFFTImageFilter(const Self &); //purposely not implemented
-  void operator=(const Self &);                          //purposely not implemented
+  VnlForwardFFTImageFilter(const Self &); // purposely not implemented
+  void operator=(const Self &);           // purposely not implemented
 };
 }
 
