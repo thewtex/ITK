@@ -31,16 +31,16 @@ namespace itk
  * provided by the best child available on the system when the object is
  * created via the object factory system.
  *
- * This class transforms a complex conjugate symmetric image into its real
- * spatial domain representation.  If the input is not complex conjugate symmetric, the
- * imaginary component is discarded.  The transform of a real input image has
- * complex conjugate symmetry.  That is, values in the second half of the
- * transform are the complex conjugates of values in the first half.  Some
- * implementations, e.g. FFTW, may take advantage of this property and reduce
- * the size of the output in one direction during the forward transform  to
- * N/2+1, where N is the size of the input.  If this occurs, FullMatrix()
- * returns 'false'.  If this was the case, the size of the inverse output image
- * will be larger than the input.
+ * This class transforms a complex image with Hermitian symmetry into
+ * its real spatial domain representation.  If the input does not have
+ * Hermitian symmetry, the imaginary component is discarded. Because
+ * this filter assumes that the input stores only one half of the
+ * non-redundant complex pixels, the output is larger in the
+ * x-dimension than it is in the input dimension. To determine the
+ * actual size of the output image, this filter needs additional
+ * information in the form of a flag indicating whether the output
+ * image has an odd size in the x-dimension. Use
+ * SetActualXDimensionIsOdd() to set this flag.
  *
  * \ingroup FourierTransform
  *
@@ -103,7 +103,7 @@ public:
     this->SetActualXDimensionIsOdd(false);
   }
 
-  bool ActualXDimensionIsOdd()
+  bool GetActualXDimensionIsOdd()
   {
     return m_ActualXDimensionIsOdd;
   }
@@ -117,9 +117,10 @@ protected:
   void EnlargeOutputRequestedRegion( DataObject *itkNotUsed(output) );
 
 private:
+  InverseFFTImageFilter(const Self &); // purposely not implemented
+  void operator=(const Self &);        // purposely not implemented
+
   bool m_ActualXDimensionIsOdd;
-  InverseFFTImageFilter(const Self &); //purposely not implemented
-  void operator=(const Self &);                       //purposely not implemented
 };
 } // end namespace itk
 

@@ -21,9 +21,11 @@
 #include "itkImageToImageFilter.h"
 #include "itkImage.h"
 
-#include "itkVnlForwardFFTImageFilter.h"
-#include "itkVnlInverseFFTImageFilter.h"
+#include "itkForwardFFTImageFilter.h"
+#include "itkInverseFFTImageFilter.h"
 
+#include "itkFFTHalfToFullImageFilter.h"
+#include "itkFFTFullToHalfImageFilter.h"
 #include "itkImageRegionIteratorWithIndex.h"
 #include "itkImageSliceConstIteratorWithIndex.h"
 
@@ -136,26 +138,30 @@ private:
   typedef ImageSliceConstIteratorWithIndex< InputImageType > InputSliceIteratorType;
 
   /** 1D FFT filter type */
-  typedef Image< double, 1 >                                       LineImageType;
-  typedef VnlForwardFFTImageFilter< LineImageType > FFTLineFilterType;
+  typedef Image< double, 1 >                             LineImageType;
+  typedef ForwardFFTImageFilter< LineImageType >         FFTLineFilterType;
   /** Derived 1D FFT image type */
-  typedef FFTLineFilterType::OutputImageType FFTLineType;
+  typedef FFTLineFilterType::OutputImageType             FFTLineType;
+  /** 1D FFT half to full complex image expander type */
+  typedef FFTHalfToFullImageFilter< FFTLineType >        FFTHalfToFullFilterType;
   /** Derived 1D input image type */
-  typedef FFTLineFilterType::InputImageType ProjectionLineType;
+  typedef FFTLineFilterType::InputImageType              ProjectionLineType;
   /** 1D FFT line iterator */
-  typedef ImageRegionIteratorWithIndex< FFTLineType > FFTLineIteratorType;
+  typedef ImageRegionIteratorWithIndex< FFTLineType >    FFTLineIteratorType;
   /** 1D FFT line B-Spline interpolator */
   typedef ComplexBSplineInterpolateImageFunction< FFTLineType, double, double > FFTLineInterpolatorType;
 
   /** 2D inverse FFT filter type */
-  typedef Image< std::complex<double>, 2>                          IFFTImageType;
-  typedef VnlInverseFFTImageFilter< IFFTImageType > IFFTSliceFilterType;
+  typedef Image< std::complex<double>, 2>                 IFFTImageType;
+  typedef InverseFFTImageFilter< IFFTImageType >          IFFTSliceFilterType;
   /** Derived 2D FFT image type */
-  typedef IFFTSliceFilterType::InputImageType FFTSliceType;
+  typedef IFFTSliceFilterType::InputImageType             FFTSliceType;
+  /** 1D FFT full to half complex image crop type */
+  typedef FFTFullToHalfImageFilter< FFTSliceType >        FFTFullToHalfFilterType;
   /** Derived 2D output slice type */
-  typedef IFFTSliceFilterType::OutputImageType OutputSliceType;
+  typedef IFFTSliceFilterType::OutputImageType            OutputSliceType;
   /** 2D FFT slice iterator */
-  typedef ImageRegionIteratorWithIndex< FFTSliceType > FFTSliceIteratorType;
+  typedef ImageRegionIteratorWithIndex< FFTSliceType >    FFTSliceIteratorType;
   /** 2D output slice iterator */
   typedef ImageRegionIteratorWithIndex< OutputSliceType > OutputSliceIteratorType;
 

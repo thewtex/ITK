@@ -20,6 +20,7 @@
 
 #include "itkVnlInverseFFTImageFilter.h"
 #include "itkInverseFFTImageFilter.hxx"
+#include "itkImageRegionIteratorWithIndex.h"
 #include "itkProgressReporter.h"
 
 #include "vnl/algo/vnl_fft_1d.h"
@@ -101,13 +102,12 @@ VnlInverseFFTImageFilter< TInputImage, TOutputImage >
   // reports the begining and the end of the process.
   ProgressReporter progress( this, 0, 1 );
 
+  const InputSizeType inputSize = inputPtr->GetLargestPossibleRegion().GetSize();
   const OutputSizeType outputSize = outputPtr->GetLargestPossibleRegion().GetSize();
 
   // Allocate output buffer memory
   outputPtr->SetBufferedRegion( outputPtr->GetRequestedRegion() );
   outputPtr->Allocate();
-
-  const InputPixelType *in = inputPtr->GetBufferPointer();
 
   unsigned int vectorSize = 1;
   for ( unsigned int i = 0; i < ImageDimension; i++ )
@@ -122,10 +122,32 @@ VnlInverseFFTImageFilter< TInputImage, TOutputImage >
     vectorSize *= outputSize[i];
     }
 
+  // VNL requires the full complex result of the transform, so we
+  // produce it here from the half complex image assumed when the output is real.
   SignalVectorType signal( vectorSize );
-  for (unsigned int i = 0; i < vectorSize; i++ )
+  ImageRegionIteratorWithIndex< OutputImageType > oIt( outputPtr,
+                                                       outputPtr->GetLargestPossibleRegion() );
+  unsigned int si = 0;
+  for (oIt.GoToBegin(); !oIt.IsAtEnd(); ++oIt)
     {
-    signal[i] = in[i];
+    typename OutputImageType::IndexType index = oIt.GetIndex();
+    if ( index[0] >= static_cast< typename OutputImageType::IndexValueType >( inputSize[0] ) )
+      {
+      // Flip the indices in each dimension
+      for (unsigned int i = 0; i < ImageDimension; ++i)
+        {
+        if ( index[i] != 0 )
+          {
+          index[i] = outputSize[i] - index[i];
+          }
+        }
+      signal[si] = std::conj( inputPtr->GetPixel( index ) );
+      }
+    else
+      {
+      signal[si] = inputPtr->GetPixel( index );
+      }
+    si++;
     }
 
   OutputPixelType *out = outputPtr->GetBufferPointer();
@@ -133,12 +155,11 @@ VnlInverseFFTImageFilter< TInputImage, TOutputImage >
   // call the proper transform, based on compile type template parameter
   this->FFTND_transform(signal, outputSize, static_cast<DimDiscriminator<ImageDimension> *>(0));
 
-  // Copy the VNL output back to the ITK image.
-  // Extract the real part of the signal.
-  // Ideally, the normalization by the number of elements
-  // should have been accounted for by the VNL inverse Fourier transform,
-  // but it is not.  So, we take care of it by dividing the signal by
-  // the vectorSize.
+  // Copy the VNL output back to the ITK image. Extract the real part
+  // of the signal. Ideally, the normalization by the number of
+  // elements should have been accounted for by the VNL inverse
+  // Fourier transform, but it is not. So, we take care of it by
+  // dividing the signal by the vectorSize.
   for ( unsigned int i = 0; i < vectorSize; i++ )
     {
     out[i] = signal[i].real() / vectorSize;
@@ -150,7 +171,7 @@ bool
 VnlInverseFFTImageFilter< TInputImage, TOutputImage >
 ::FullMatrix()
 {
-  return true;
+  return false;
 }
 }
 #endif
