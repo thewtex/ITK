@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Change SYSTEM "http://ij.itk.org/itkfaq/ITKMigration.dtd">
+
+<!--**
+**
+** FFTOutputForRealInput.xml
+**
+** >>>>>>>>>>>>>>>>>>>>>>>>>>>>
+** THIS FILE HAS BEEN AUTOMATICALLY GENERATED. EDIT IT BEFORE COMMITING
+** <<<<<<<<<<<<<<<<<<<<<<<<<<<
+**
+** Please, make sure this file validates the following w3c test before committing it: http://validator.w3.org
+**-->
+<Change>
+    <!--**
+    ** Title for the online migration page
+    **-->
+    <Title>
+      FFT Output For Real Input
+    </Title>
+
+    <!--**
+    ** The author of the change
+    **-->
+    <Author>
+      Cory Quammen
+    </Author>
+
+    <!--**
+    ** Date of creation for the XML document
+    **-->
+    <Date>
+      2011-09-01
+    </Date>
+
+    <!--**
+    ** Plain text description of the change
+    ** Extracted from git commit messages
+    **-->
+    <Description>
+      <![CDATA[
+      Made output and expected input of FFT filters consistent
+      The ForwardFFTImageFilter's output was different depending on whether
+      FFTW was enabled. If FFTW was enabled, the output consisted of only
+      non-redundant half of the full complex transformed image. If it was
+      not enabled, the output consisted of the full complex transformed
+      image. This change makes the output of ForwardFFTImageFilter always consist
+      of the non-redundant half image, and the InverseFFTImageFilter expects
+      its input to be the half image format produced by
+      ForwardFFTImageFilter.
+
+      In addition, there is a small API change in itkInverseFFTImageFilter.
+      The method itk::InverseFFTImageFilter::ActualXDimensionIsOdd() has been
+      changed to itk::InverseFFTImageFilter::GetActualXDimensionIsOdd().
+      ]]>
+    </Description>
+
+    <!--**
+    ** Sample code snippets
+    ** Extracted from git diff of changed files in Examples and Testing
+    **-->
+    <SampleCode>
+      <Old>
+        <![CDATA[
+        // This sample assumes that FFTW is not enabled.
+        typedef FFTFilterType::OutputImageType    ComplexImageType;
+        complexWriter->SetInput( fftFilter->GetOutput() );
+        realFilter->SetInput( fftFilter->GetOutput() );
+        imaginaryFilter->SetInput( fftFilter->GetOutput() );
+        ]]>
+      </Old>
+
+      <New>
+        <![CDATA[
+        // This sample assumes that FFTW is not enabled.
+        typedef FFTFilterType::OutputImageType                    ComplexImageType;
+        typedef itk::FFTHalfToFullImageFilter< ComplexImageType > HalfToFullFilterType;
+
+        HalfToFullFilterType::Pointer halfToFullFilter = HalfToFullFilterType::New();
+        halfToFullFilter->SetInput( fftFilter->GetOutput() );
+        bool xDimensionIsOdd = true;
+        halfToFullFilter->SetActualXDimensionIsOdd( xDimensionIsOdd );
+        complexWriter->SetInput( halfToFullFilter->GetOutput() );
+        realFilter->SetInput( halfToFullFilter->GetOutput() );
+        imaginaryFilter->SetInput( halfToFullFilter->GetOutput() );
+        ]]>
+      </New>
+
+    </SampleCode>
+
+    <SampleCode>
+      <Old>
+        <![CDATA[
+        typedef itk::InverseFFTImageFilter< InputImageType > IFFTFilterType;
+        IFFTFilterType::Pointer ifft = IFFTFilterType::New();
+        ifft->SetActualXDimensionIsOdd( true );
+        bool isOdd = ifft->ActualXDimensionIsOdd();
+        ]]>
+      </Old>
+
+      <New>
+        <![CDATA[
+        typedef itk::InverseFFTImageFilter< InputImageType > IFFTFilterType;
+        IFFTFilterType::Pointer ifft = IFFTFilterType::New();
+        ifft->SetActualXDimensionIsOdd( true );
+        bool isOdd = ifft->GetActualXDimensionIsOdd();
+        ]]>
+      </New>
+    </SampleCode>
+
+    <!--**
+    ** The change-ids for all commits in the topic branch
+    **-->
+    <Gerrit-ChangeId>
+      I645fe0fd39f5c2811e4a89987b589cf6d576e379
+    </Gerrit-ChangeId>
+
+    <!--**
+    ** List of all changed files from the topic branch
+    **-->
+    <FileList>
+      Examples/Filtering/FFTImageFilter.cxx
+      Modules/Filtering/FFT/include/itkFFTFullToHalfImageFilter.h
+      Modules/Filtering/FFT/include/itkFFTFullToHalfImageFilter.hxx
+      Modules/Filtering/FFT/include/itkFFTHalfToFullImageFilter.h
+      Modules/Filtering/FFT/include/itkFFTHalfToFullImageFilter.hxx
+      Modules/Filtering/FFT/include/itkFFTWForwardFFTImageFilter.h
+      Modules/Filtering/FFT/include/itkForwardFFTImageFilter.h
+      Modules/Filtering/FFT/include/itkInverseFFTImageFilter.h
+      Modules/Filtering/FFT/include/itkInverseFFTImageFilter.hxx
+      Modules/Filtering/FFT/include/itkVnlForwardFFTImageFilter.h
+      Modules/Filtering/FFT/include/itkVnlForwardFFTImageFilter.hxx
+      Modules/Filtering/FFT/include/itkVnlInverseFFTImageFilter.hxx
+      Modules/Filtering/FFT/test/CMakeLists.txt
+      Modules/Filtering/FFT/test/itkFFTFullToHalfImageFilterTest.cxx
+      Modules/Filtering/FFT/test/itkFFTHalfToFullImageFilterTest.cxx
+      Modules/Filtering/FFT/test/itkFFTTest.h
+      Modules/Nonunit/Review/include/itkDirectFourierReconstructionImageToImageFilter.h
+      Modules/Nonunit/Review/include/itkDirectFourierReconstructionImageToImageFilter.hxx
+      Modules/Nonunit/Review/test/CMakeLists.txt
+    </FileList>
+
+    <!--**
+    ** If the migration can be accomplished by a simple string
+    ** substitution, then use the following construct to define
+    ** the substitution rule.
+    **
+    ** <MigrationFix-Automatic>
+    **   <Old>
+    **     <![CDATA[MipsleledName]]>
+    **   </Old>
+    **   <New>
+    **     <![CDATA[MisspelledName]]>
+    **   </New>
+    ** </MigrationFix-Automatic>
+    **-->
+
+    <!--**
+    ** If the migration can NOT be accomplished by a simple string
+    ** substitution, but potential problem spots can be identified,
+    ** use the following construct to define a migration flag rule.
+    **
+    ** <MigrationFix-Manual>
+    **   OldFunctionName
+    ** </MigrationFix-Manual>
+    **-->
+
+</Change>

@@ -27,10 +27,10 @@
 //  This example illustrates how to use the Fast Fourier Transform filter (FFT)
 //  for processing an image in the spectral domain. Given that FFT computation
 //  can be CPU intensive, there are multiple hardware specific implementations
-//  of FFT. IT is convenient in many cases to delegate the actual computation
+//  of FFT. It is convenient in many cases to delegate the actual computation
 //  of the transform to local available libraries. Particular examples of those
-//  libraries are fftw\footnote{http://www.fftw.org} and the VXL implementation
-//  of FFT. For this reason ITK provides a base abstract class that factorizes
+//  libraries are fftw\footnote{http://www.fftw.org} and the VXL FFT implementation.
+//  For this reason ITK provides a base abstract class that factorizes
 //  the interface to multiple specific implementations of FFT. This base class
 //  is the \doxygen{ForwardFFTImageFilter}, and two of its
 //  derived classes are \doxygen{VnlForwardFFTImageFilter} and
@@ -54,6 +54,7 @@
 // Software Guide : BeginCodeSnippet
 #include "itkImage.h"
 #include "itkVnlForwardFFTImageFilter.h"
+#include "itkFFTHalfToFullImageFilter.h"
 #include "itkComplexToRealImageFilter.h"
 #include "itkComplexToImaginaryImageFilter.h"
 // Software Guide : EndCodeSnippet
@@ -118,7 +119,7 @@ int main( int argc, char * argv [] )
 // Software Guide : BeginLatex
 //
 // The execution of the filter can be triggered by invoking the \code{Update()}
-// method.  Since this invocation can eventually throw and exception, the call
+// method.  Since this invocation can eventually throw an exception, the call
 // must be placed inside a try/catch block.
 //
 // Software Guide : EndLatex
@@ -138,23 +139,56 @@ int main( int argc, char * argv [] )
 
 // Software Guide : BeginLatex
 //
-// In general the output of the FFT filter will be a complex image. We can
-// proceed to save this image in a file for further analysis. This can be done
-// by simply instantiating an \doxygen{ImageFileWriter} using the trait of the
-// output image from the FFT filter. We construct one instance of the writer
-// and pass the output of the FFT filter as the input of the writer.
+// In general the output of the FFT filter will be a complex
+// image. The output of the FFT filter run on real-valued images
+// consists only of approximately half the full complex image because
+// the full complex image has the Hermitian symmetry property. To
+// generate the full output image from the half image produced by the
+// FFT filter, the \doxygen{FFTHalfToFullImageFilter} can be used.
 //
 // Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-  typedef FFTFilterType::OutputImageType    ComplexImageType;
+  typedef FFTFilterType::OutputImageType                    ComplexImageType;
+  typedef itk::FFTHalfToFullImageFilter< ComplexImageType > HalfToFullFilterType;
 
+  HalfToFullFilterType::Pointer halfToFullFilter = HalfToFullFilterType::New();
+  halfToFullFilter->SetInput( fftFilter->GetOutput() );
+// Software Guide : EndCodeSnippet
+
+// Software Guide : BeginLatex
+//
+// The \doxygen{FFTHalfToFullImageFilter} needs some additional
+// information to reconstruct the full complex image. This information
+// is whether the size of the input to the FFT filter was even or odd
+// in the $x$-dimension.
+//
+// Software Guide : EndLatex
+
+// Software Guide : BeginCodeSnippet
+  ImageType::RegionType inputRegion = reader->GetOutput()->GetLargestPossibleRegion();
+  ImageType::SizeType inputSize = inputRegion.GetSize();
+  bool xDimensionIsOdd = inputSize[0] % 2 == 1;
+  halfToFullFilter->SetActualXDimensionIsOdd( xDimensionIsOdd );
+// Software Guide : EndCodeSnippet
+
+// Software Guide : BeginLatex
+//
+// We can proceed to save the full complex image in a file for further
+// analysis. This can be done by simply instantiating an
+// \doxygen{ImageFileWriter} using the trait of the output image from
+// the FFT filter. We construct one instance of the writer and pass
+// the output of the FFT filter as the input of the writer.
+//
+// Software Guide : EndLatex
+
+// Software Guide : BeginCodeSnippet
   typedef itk::ImageFileWriter< ComplexImageType > ComplexWriterType;
 
   ComplexWriterType::Pointer complexWriter = ComplexWriterType::New();
   complexWriter->SetFileName( argv[4] );
 
-  complexWriter->SetInput( fftFilter->GetOutput() );
+  complexWriter->SetInput( halfToFullFilter->GetOutput() );
 // Software Guide : EndCodeSnippet
 
 // Software Guide : BeginLatex
@@ -201,7 +235,7 @@ int main( int argc, char * argv [] )
 
   RealFilterType::Pointer realFilter = RealFilterType::New();
 
-  realFilter->SetInput( fftFilter->GetOutput() );
+  realFilter->SetInput( halfToFullFilter->GetOutput() );
 // Software Guide : EndCodeSnippet
 
 
@@ -272,7 +306,7 @@ int main( int argc, char * argv [] )
 
   ImaginaryFilterType::Pointer imaginaryFilter = ImaginaryFilterType::New();
 
-  imaginaryFilter->SetInput( fftFilter->GetOutput() );
+  imaginaryFilter->SetInput( halfToFullFilter->GetOutput() );
 // Software Guide : EndCodeSnippet
 
 

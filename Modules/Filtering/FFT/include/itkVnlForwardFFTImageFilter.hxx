@@ -20,6 +20,7 @@
 
 #include "itkVnlForwardFFTImageFilter.h"
 #include "itkForwardFFTImageFilter.hxx"
+#include "itkImageRegionIteratorWithIndex.h"
 #include "itkProgressReporter.h"
 
 #include "vnl/algo/vnl_fft_base.h"
@@ -97,14 +98,14 @@ VnlForwardFFTImageFilter< TInputImage, TOutputImage >
     }
 
   // We don't have a nice progress to report, but at least this simple line
-  // reports the begining and the end of the process.
+  // reports the beginning and the end of the process.
   ProgressReporter progress( this, 0, 1 );
 
   const InputSizeType inputSize = inputPtr->GetLargestPossibleRegion().GetSize();
+  const OutputSizeType outputSize = outputPtr->GetLargestPossibleRegion().GetSize();
 
   outputPtr->SetBufferedRegion( outputPtr->GetRequestedRegion() );
   outputPtr->Allocate();
-  OutputPixelType *out = outputPtr->GetBufferPointer();
 
   unsigned int vectorSize = 1;
   for ( unsigned int i = 0; i < ImageDimension; i++ )
@@ -113,8 +114,8 @@ VnlForwardFFTImageFilter< TInputImage, TOutputImage >
       {
       itkExceptionMacro(<< "Cannot compute FFT of image with size "
                         << inputSize << ". VnlForwardFFTImageFilter operates "
-                        << "only on images whose size in each dimension is a multiple of "
-                        << "2, 3, or 5." );
+                        << "only on images whose size in each dimension has a prime "
+                        << "factorization consisting of only 2s, 3s, or 5s." );
       }
     vectorSize *= inputSize[i];
     }
@@ -129,10 +130,27 @@ VnlForwardFFTImageFilter< TInputImage, TOutputImage >
   // call the proper transform, based on compile type template parameter
   this->FFTND_transform(signal, inputSize, static_cast<DimDiscriminator<ImageDimension> *>(0));
 
-  // Copy the VNL output back to the ITK image.
-  for ( unsigned int i = 0; i < vectorSize; i++ )
+  // Compute offset table for mapping an n-D index to a linear index
+  // in the input.
+  unsigned int offset[ImageDimension];
+  offset[0] = 1;
+  for (unsigned int i = 1; i < ImageDimension; ++i)
     {
-    out[i] = signal[i];
+    offset[i] = offset[i-1] * inputSize[i-1];
+    }
+
+  // Copy the VNL output back to the ITK image.
+  ImageRegionIteratorWithIndex< TOutputImage > oIt( outputPtr,
+                                                    outputPtr->GetLargestPossibleRegion() );
+  for (oIt.GoToBegin(); !oIt.IsAtEnd(); ++oIt)
+    {
+    typename OutputImageType::IndexType index = oIt.GetIndex();
+    unsigned int linearIndex = 0;
+    for (unsigned int i = 0; i < ImageDimension; ++i)
+      {
+      linearIndex += index[i]*offset[i];
+      }
+    oIt.Set( signal[linearIndex] );
     }
 }
 
@@ -141,7 +159,7 @@ bool
 VnlForwardFFTImageFilter< TInputImage, TOutputImage >
 ::FullMatrix()
 {
-  return true;
+  return false;
 }
 }
 
