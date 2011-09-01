@@ -491,6 +491,18 @@ macro(END_WRAP_MODULE_PYTHON group_name)
     set(doc_file "")
   endif(WRAP_ITK_DOC AND NOT WRAP_ITK_PYTHON_PROCCESS_SWIG_INPUTS)
 
+  # TODO: Why is this required?
+  # This is copied from pycontainer.swg in SWIG 2.0.4
+  set(WRAP_ITK_PYTHON_SWIG_EXT "
+%{
+#if PY_VERSION_HEX >= 0x03020000
+# define SWIGPY_SLICE_ARG(obj) ((PyObject*) (obj))
+#else
+# define SWIGPY_SLICE_ARG(obj) ((PySliceObject*) (obj))
+#endif
+%}
+${WRAP_ITK_PYTHON_SWIG_EXT}")
+
   # the default typemaps, exception handler, and includes
   set(WRAP_ITK_PYTHON_SWIG_EXT "%import pyBase.i\n\n${WRAP_ITK_PYTHON_SWIG_EXT}")
 
