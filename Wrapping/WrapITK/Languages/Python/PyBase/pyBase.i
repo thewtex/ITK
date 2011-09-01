@@ -8,6 +8,7 @@
 %include <std_map.i>
 %include <std_list.i>
 %include <std_set.i>
+%include <std_container.i>
 
 // must be included in the end to avoid wrong std::string typemaps
 %include std_iostream.i
