@@ -369,12 +369,14 @@ MeshFileReader< TOutputMesh, ConvertPointPixelTraits, ConvertCellPixelTraits >
       inputPointDataBuffer =
         new char[m_MeshIO->GetNumberOfPointPixelComponents() * m_MeshIO->GetComponentSize( m_MeshIO->GetPointPixelComponentType() )
                  * m_MeshIO->GetNumberOfPointPixels()];
+      std::cout << "Conversion required" << std::endl;
       m_MeshIO->ReadPointData( static_cast< void * >( inputPointDataBuffer ) );
 
       this->ConvertPointPixelBuffer( static_cast< void * >( inputPointDataBuffer ), outputPointDataBuffer, m_MeshIO->GetNumberOfPointPixels() );
       }
     else
       {
+      std::cout << "No conversion required" << std::endl;
       itkDebugMacro(<< "No buffer conversion required.");
       m_MeshIO->ReadPointData( static_cast< void * >( outputPointDataBuffer ) );
       }
@@ -410,6 +412,7 @@ MeshFileReader< TOutputMesh, ConvertPointPixelTraits, ConvertCellPixelTraits >
   for ( OutputPointIdentifier id = 0; id < m_MeshIO->GetNumberOfPointPixels(); id++ )
     {
     output->SetPointData(id, outputPointDataBuffer[id]);
+    std::cout << "outputPointDataBuffer[" << id << "]: " << outputPointDataBuffer[id] << std::endl;
     }
 
   if ( outputPointDataBuffer )

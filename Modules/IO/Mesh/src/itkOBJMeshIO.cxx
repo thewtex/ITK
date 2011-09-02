@@ -29,6 +29,7 @@ namespace itk
 OBJMeshIO
 ::OBJMeshIO()
 {
+  m_PointDimension = 3;
   this->AddSupportedWriteExtension(".obj");
 }
 
@@ -126,8 +127,12 @@ OBJMeshIO
       {
       if ( !std::isspace(line[ii], loc) )
         {
-        type = line[ii];
-        inputLine = line.substr(ii + 1);
+        std::string::size_type offset = line.find_first_of(" \n\t");
+        type = line.substr(ii, offset);
+        if (ii + offset < line.size())
+          {
+          inputLine = line.substr(ii + offset);
+          }
         break;
         }
       }
@@ -156,7 +161,10 @@ OBJMeshIO
         }
       }
     }
-
+  std::cout << " Points: " << this->m_NumberOfPoints
+            << " Cells: " << this->m_NumberOfCells
+            << " PointsPixels: " << this->m_NumberOfPointPixels
+            << std::endl;
   this->m_PointDimension = 3;
 
   // If number of points is not equal zero, update points
@@ -190,7 +198,6 @@ OBJMeshIO
   this->m_PointPixelComponentType = FLOAT;
   this->m_PointPixelType = VECTOR;
   this->m_NumberOfPointPixelComponents = 3;
-  this->m_NumberOfPointPixels = this->m_NumberOfPoints;
   // this->m_UpdatePointData = true;
 
   // Set default cell pixel component and point pixel type
@@ -225,8 +232,12 @@ OBJMeshIO
       {
       if ( !std::isspace(line[ii], loc) )
         {
-        type = line[ii];
-        inputLine = line.substr(ii + 1);
+        std::string::size_type offset = line.find_first_of(" \n");
+        type = line.substr(ii, offset);
+        if (ii + offset < line.size())
+          {
+          inputLine = line.substr(ii + offset);
+          }
         break;
         }
       }
@@ -235,6 +246,7 @@ OBJMeshIO
       {
       if ( type == "v" )
         {
+        std::cout << "inputLine: " << inputLine << std::endl;
         std::stringstream ss(inputLine);
         for ( unsigned int ii = 0; ii < this->m_PointDimension; ii++ )
           {
@@ -271,8 +283,12 @@ OBJMeshIO
       {
       if ( !std::isspace(line[ii], loc) )
         {
-        type = line[ii];
-        inputLine = line.substr(ii + 1);
+        std::string::size_type offset = line.find_first_of(" \n");
+        type = line.substr(ii, offset);
+        if (ii + offset < line.size())
+          {
+          inputLine = line.substr(ii + offset);
+          }
         break;
         }
       }
@@ -342,8 +358,13 @@ OBJMeshIO
       {
       if ( !std::isspace(line[ii], loc) )
         {
-        type = line[ii];
-        inputLine = line.substr(ii + 1);
+        std::string::size_type offset = line.find_first_of(" \n");
+        type = line.substr(ii, offset);
+        if (ii + offset < line.size())
+          {
+          inputLine = line.substr(ii + offset);
+          std::cout << "inputLine: " << inputLine << std::endl;
+          }
         break;
         }
       }
@@ -356,6 +377,7 @@ OBJMeshIO
         for ( unsigned int ii = 0; ii < this->m_PointDimension; ii++ )
           {
           ss >> data[index++];
+          std::cout << "data: " << data[index - 1] << std::endl;
           }
         }
       }
@@ -377,6 +399,11 @@ void
 OBJMeshIO
 ::WriteMeshInformation()
 {
+  if(this->m_NumberOfPointPixelComponents != 3)
+  {
+  itkExceptionMacro(<<"Invalid number of pixel components: "<<this->m_NumberOfPointPixelComponents);
+  }
+
   // Check file name
   if ( this->m_FileName == "" )
     {
@@ -625,6 +652,10 @@ OBJMeshIO
 ::WritePointData(void *buffer)
 {
   // Point data must be vector
+  std::cout << " m_UpdatePointData: " << m_UpdatePointData
+            << " m_NumberOfPointPixelComponents: " << m_NumberOfPointPixelComponents
+            << " m_PointDimension: " << m_PointDimension
+            << std::endl;
   if ( !m_UpdatePointData || m_NumberOfPointPixelComponents != m_PointDimension )
     {
     itkExceptionMacro(<< "MNI Mesh required point normals");
