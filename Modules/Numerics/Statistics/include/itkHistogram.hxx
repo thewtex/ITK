@@ -61,9 +61,9 @@ const typename
 Histogram< TMeasurement, TFrequencyContainer >::SizeType &
 Histogram< TMeasurement, TFrequencyContainer >
 ::GetSize() const
-  {
+{
   return m_Size;
-  }
+}
 
 template< class TMeasurement, class TFrequencyContainer >
 typename
@@ -79,7 +79,7 @@ const typename
 Histogram< TMeasurement, TFrequencyContainer >::MeasurementType &
 Histogram< TMeasurement, TFrequencyContainer >
 ::GetBinMin(unsigned int dimension, InstanceIdentifier nbin) const
-  {
+{
   return m_Min[dimension][nbin];
   }
 
@@ -89,9 +89,9 @@ const typename
 Histogram< TMeasurement, TFrequencyContainer >::MeasurementType &
 Histogram< TMeasurement, TFrequencyContainer >
 ::GetBinMax(unsigned int dimension, InstanceIdentifier nbin) const
-  {
+{
   return m_Max[dimension][nbin];
-  }
+}
 
 template< class TMeasurement, class TFrequencyContainer >
 void
@@ -116,36 +116,36 @@ const typename
 Histogram< TMeasurement, TFrequencyContainer >::BinMinVectorType &
 Histogram< TMeasurement, TFrequencyContainer >
 ::GetDimensionMins(unsigned int dimension) const
-  {
+{
   return m_Min[dimension];
-  }
+}
 
 template< class TMeasurement, class TFrequencyContainer >
 const typename
 Histogram< TMeasurement, TFrequencyContainer >::BinMaxVectorType &
 Histogram< TMeasurement, TFrequencyContainer >
 ::GetDimensionMaxs(unsigned int dimension) const
-  {
+{
   return m_Max[dimension];
-  }
+}
 
 template< class TMeasurement, class TFrequencyContainer >
 const typename
 Histogram< TMeasurement, TFrequencyContainer >::BinMinContainerType &
 Histogram< TMeasurement, TFrequencyContainer >
 ::GetMins() const
-  {
+{
   return m_Min;
-  }
+}
 
 template< class TMeasurement, class TFrequencyContainer >
 const typename
 Histogram< TMeasurement, TFrequencyContainer >::BinMaxContainerType &
 Histogram< TMeasurement, TFrequencyContainer >
 ::GetMaxs() const
-  {
+{
   return m_Max;
-  }
+}
 
 template< class TMeasurement, class TFrequencyContainer >
 typename
@@ -269,11 +269,11 @@ template< class TMeasurement, class TFrequencyContainer >
 inline const typename Histogram< TMeasurement, TFrequencyContainer >::IndexType &
 Histogram< TMeasurement, TFrequencyContainer >
 ::GetIndex(const MeasurementVectorType &measurement) const
-  {
+{
   // Have this deprecated method call the un-deprecated one..
   this->GetIndex(measurement, m_TempIndex);
   return m_TempIndex;
-  }
+}
 
 /** */
 template< class TMeasurement, class TFrequencyContainer >
@@ -333,15 +333,13 @@ bool Histogram< TMeasurement, TFrequencyContainer >
         return false;
         }
       }
-
-    // handle the situation when the measurement equals to
-    // the maximum of the whole histogram bins, i.e. m_Max[dim][end]
-    // the measurement will increase the frequency of the last bin
-    // at current dim.
-    if ( tempMeasurement == m_Max[dim][end] )
+    else if ( tempMeasurement == m_Max[dim][end] )
       {
+      // handle the situation when the measurement equals to
+      // the maximum of the whole histogram bins, i.e. m_Max[dim][end]
+      // the measurement will increase the frequency of the last bin
+      // at current dim.
       index[dim] = (IndexValueType)m_Size[dim] - 1;
-      // return false;
       continue;
       }
 
@@ -384,7 +382,7 @@ template< class TMeasurement, class TFrequencyContainer >
 inline const typename Histogram< TMeasurement, TFrequencyContainer >::IndexType &
 Histogram< TMeasurement, TFrequencyContainer >
 ::GetIndex(InstanceIdentifier id) const
-  {
+{
   InstanceIdentifier id2 = id;
 
   for ( int i = this->GetMeasurementVectorSize() - 1; i > 0; i-- )
@@ -395,7 +393,7 @@ Histogram< TMeasurement, TFrequencyContainer >
   m_TempIndex[0] = static_cast< IndexValueType >( id2 );
 
   return m_TempIndex;
-  }
+}
 
 template< class TMeasurement, class TFrequencyContainer >
 inline bool
@@ -433,7 +431,7 @@ template< class TMeasurement, class TFrequencyContainer >
 inline const typename Histogram< TMeasurement, TFrequencyContainer >::MeasurementType &
 Histogram< TMeasurement, TFrequencyContainer >
 ::GetBinMinFromValue(const unsigned int dimension, const float value) const
-  {
+{
   // If the value is lower than any of min value in the Histogram,
   // it returns the lowest min value
   if ( value <= this->m_Min[dimension][0] )
@@ -460,13 +458,13 @@ Histogram< TMeasurement, TFrequencyContainer >
     }
 
   return this->m_Min[dimension][binMinFromValue];
-  }
+}
 
 template< class TMeasurement, class TFrequencyContainer >
 inline const typename Histogram< TMeasurement, TFrequencyContainer >::MeasurementType &
 Histogram< TMeasurement, TFrequencyContainer >
 ::GetBinMaxFromValue(const unsigned int dimension, const float value) const
-  {
+{
   // If the value is lower than any of max value in the Histogram,
   // it returns the lowest max value
   if ( value <= this->m_Max[dimension][0] )
@@ -493,54 +491,54 @@ Histogram< TMeasurement, TFrequencyContainer >
     }
 
   return this->m_Max[dimension][binMaxFromValue];
-  }
+}
 
 template< class TMeasurement, class TFrequencyContainer >
 const typename
 Histogram< TMeasurement, TFrequencyContainer >::MeasurementVectorType &
 Histogram< TMeasurement, TFrequencyContainer >
 ::GetHistogramMinFromIndex(const IndexType &index) const
-  {
+{
   for ( unsigned int i = 0; i < this->GetMeasurementVectorSize(); i++ )
     {
     m_TempMeasurementVector[i] = this->GetBinMin(i, index[i]);
     }
   return m_TempMeasurementVector;
-  }
+}
 
 template< class TMeasurement, class TFrequencyContainer >
 const typename
 Histogram< TMeasurement, TFrequencyContainer >::MeasurementVectorType &
 Histogram< TMeasurement, TFrequencyContainer >
 ::GetHistogramMaxFromIndex(const IndexType &index) const
-  {
+{
   for ( unsigned int i = 0; i < this->GetMeasurementVectorSize(); i++ )
     {
     m_TempMeasurementVector[i] = this->GetBinMax(i, index[i]);
     }
   return m_TempMeasurementVector;
-  }
+}
 
 template< class TMeasurement, class TFrequencyContainer >
 inline const typename Histogram< TMeasurement, TFrequencyContainer >::MeasurementVectorType &
 Histogram< TMeasurement, TFrequencyContainer >
 ::GetMeasurementVector(const IndexType &index) const
-  {
+{
   for ( unsigned int i = 0; i < this->GetMeasurementVectorSize(); i++ )
     {
     MeasurementType value = ( m_Min[i][index[i]] + m_Max[i][index[i]] );
     m_TempMeasurementVector[i] =  static_cast< MeasurementType >( value / 2.0 );
     }
   return m_TempMeasurementVector;
-  }
+}
 
 template< class TMeasurement, class TFrequencyContainer >
 inline const typename Histogram< TMeasurement, TFrequencyContainer >::MeasurementVectorType &
 Histogram< TMeasurement, TFrequencyContainer >
 ::GetMeasurementVector(InstanceIdentifier id) const
-  {
+{
   return this->GetMeasurementVector( this->GetIndex(id) );
-  }
+}
 
 template< class TMeasurement, class TFrequencyContainer >
 inline void
