@@ -329,12 +329,6 @@ int main( int argc, char *argv[] )
   const double TranslationAlongX = finalParameters[4];
   const double TranslationAlongY = finalParameters[5];
 
-  //  The optimizer can be queried for the actual number of iterations
-  //  performed to reach convergence.
-  //
-  const unsigned int numberOfIterations
-    = optimizer->GetOptimizer()->get_num_evaluations();
-
   //  The value of the image metric corresponding to the last set of parameters
   //  can be obtained with the \code{GetValue()} method of the optimizer. Since
   //  the AmoebaOptimizer does not yet support a call to GetValue(), we will
@@ -347,7 +341,6 @@ int main( int argc, char *argv[] )
   std::cout << "Result = " << std::endl;
   std::cout << " Translation X = " << TranslationAlongX  << std::endl;
   std::cout << " Translation Y = " << TranslationAlongY  << std::endl;
-  std::cout << " Iterations    = " << numberOfIterations << std::endl;
   std::cout << " Metric value  = " << bestValue          << std::endl;
 
   //  It is common, as the last step of a registration task, to use the
