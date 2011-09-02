@@ -62,7 +62,7 @@ itk_add_test(NAME itkMeshFileReadWriteTest09
       ${ITK_TEST_OUTPUT_DIR}/octa.off
 )
 itk_add_test(NAME itkMeshFileReadWriteTest10
-      COMMAND ITKIOMeshTestDriver itkMeshFileReadWriteTest
+      COMMAND ITKIOMeshTestDriver itkMeshFileReadWriteVectorAttributeTest
       DATA{Baseline/box.obj}
       ${ITK_TEST_OUTPUT_DIR}/box.obj
 )
