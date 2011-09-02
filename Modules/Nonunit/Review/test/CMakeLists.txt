@@ -11,6 +11,7 @@ itkBSplineControlPointImageFunctionTest.cxx
 itkConformalFlatteningMeshFilterTest.cxx
 itkConformalFlatteningQuadEdgeMeshFilterTest.cxx
 itkContourExtractor2DImageFilterTest.cxx
+itkDiceImageFilterTest.cxx
 itkDiffeomorphicDemonsRegistrationFilterTest.cxx
 itkDiffeomorphicDemonsRegistrationFilterTest2.cxx
 itkDirectFourierReconstructionImageToImageFilterTest.cxx
@@ -186,6 +187,10 @@ itk_add_test(NAME itkConformalFlatteningQuadEdgeMeshFilterTest2
 itk_add_test(NAME itkContourExtractor2DImageFilterTest
       COMMAND ITKReviewTestDriver itkContourExtractor2DImageFilterTest
               ${ITK_DATA_ROOT}/Input/ContourExtractor2DTest.tif)
+itk_add_test(NAME itkDiceImageFilterTest01
+COMMAND ITKReviewTestDriver itkDiceImageFilterTest
+${ITK_DATA_ROOT}/Input/itkDiceImageFilterInputA.jpg
+${ITK_DATA_ROOT}/Input/itkDiceImageFilterInputB.jpg)
 itk_add_test(NAME itkDiffeomorphicDemonsRegistrationFilterTest01
       COMMAND ITKReviewTestDriver itkDiffeomorphicDemonsRegistrationFilterTest
               0 0 0.001 20.0 200 0.01 0.08 5 10)
