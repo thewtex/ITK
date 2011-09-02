@@ -37,6 +37,19 @@ ObjectToObjectOptimizerBase
 ::~ObjectToObjectOptimizerBase()
 {}
 
+void
+ObjectToObjectOptimizerBase
+::PrintSelf(std::ostream & os, Indent indent) const
+{
+
+  Superclass::PrintSelf(os, indent);
+
+  os << indent;
+  os << "Number of threads: " << this->m_NumberOfThreads << std::endl;
+  os << "Number of scales: " << this->m_Scales.Size() << std::endl;
+   os <<"Number of parameters in the metric: "<< this->m_Metric->GetNumberOfParameters() << std::endl;
+}
+
 //-------------------------------------------------------------------
 void
 ObjectToObjectOptimizerBase
