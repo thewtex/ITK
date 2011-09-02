@@ -48,7 +48,8 @@ BANNED_HEADERS = set(('itkExceptionObject.h', # There is a pre-processor check s
     'itkIterativeInverseDeformationFieldImageFilter.h', # Deprecated errors issued for ITKv3
     'itkVanHerkGilWermanErodeDilateImageFilter.h', # circular include's
     'itkBSplineDeformableTransform.h',   # deprecated
-    'itkBSplineDeformableTransformInitializer.h'))
+    'itkBSplineDeformableTransformInitializer.h'
+    'itkIncludeRequiredIOFactories.h')) # external modules
 
 HEADER = """/*=========================================================================
  *
