@@ -171,8 +171,7 @@ int itkHistogramTest(int, char* [] )
 
   if ( (lowerBound[0] + interval * 31         ) != histogram->GetBinMinFromValue(0, lowerBound[0] + interval * 31.5 )
        || (lowerBound[0]                         ) != histogram->GetBinMinFromValue(0, itk::NumericTraits< float >::min()   )
-       || (lowerBound[0] + interval * (size[0]-1) ) !=
-       histogram->GetBinMinFromValue(0, itk::NumericTraits< float >::max() ) )
+       || (lowerBound[0] + interval * (size[0]-1) ) != histogram->GetBinMinFromValue(0, itk::NumericTraits< float >::max() ) )
     {
     pass = false;
     whereFail = "GetBinMinFromValue(Dimension, A Value Within The Nth Bin)";
@@ -851,4 +850,3 @@ int itkHistogramTest(int, char* [] )
   return EXIT_SUCCESS;
 
 }
-

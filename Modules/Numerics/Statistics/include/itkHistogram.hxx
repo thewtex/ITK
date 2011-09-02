@@ -81,7 +81,7 @@ Histogram< TMeasurement, TFrequencyContainer >
 ::GetBinMin(unsigned int dimension, InstanceIdentifier nbin) const
 {
   return m_Min[dimension][nbin];
-  }
+}
 
 template< class TMeasurement,
           class TFrequencyContainer >
@@ -268,7 +268,7 @@ Histogram< TMeasurement, TFrequencyContainer >
 template< class TMeasurement, class TFrequencyContainer >
 inline const typename Histogram< TMeasurement, TFrequencyContainer >::IndexType &
 Histogram< TMeasurement, TFrequencyContainer >
-::GetIndex(const MeasurementVectorType &measurement) const
+::GetIndex(const MeasurementVectorType & measurement) const
 {
   // Have this deprecated method call the un-deprecated one..
   this->GetIndex(measurement, m_TempIndex);
@@ -497,7 +497,7 @@ template< class TMeasurement, class TFrequencyContainer >
 const typename
 Histogram< TMeasurement, TFrequencyContainer >::MeasurementVectorType &
 Histogram< TMeasurement, TFrequencyContainer >
-::GetHistogramMinFromIndex(const IndexType &index) const
+::GetHistogramMinFromIndex(const IndexType & index) const
 {
   for ( unsigned int i = 0; i < this->GetMeasurementVectorSize(); i++ )
     {
@@ -510,7 +510,7 @@ template< class TMeasurement, class TFrequencyContainer >
 const typename
 Histogram< TMeasurement, TFrequencyContainer >::MeasurementVectorType &
 Histogram< TMeasurement, TFrequencyContainer >
-::GetHistogramMaxFromIndex(const IndexType &index) const
+::GetHistogramMaxFromIndex(const IndexType & index) const
 {
   for ( unsigned int i = 0; i < this->GetMeasurementVectorSize(); i++ )
     {
@@ -522,7 +522,7 @@ Histogram< TMeasurement, TFrequencyContainer >
 template< class TMeasurement, class TFrequencyContainer >
 inline const typename Histogram< TMeasurement, TFrequencyContainer >::MeasurementVectorType &
 Histogram< TMeasurement, TFrequencyContainer >
-::GetMeasurementVector(const IndexType &index) const
+::GetMeasurementVector(const IndexType & index) const
 {
   for ( unsigned int i = 0; i < this->GetMeasurementVectorSize(); i++ )
     {
@@ -715,8 +715,7 @@ Histogram< TMeasurement, TFrequencyContainer >
 {
   Superclass::PrintSelf(os, indent);
 
-  // os << indent << "MeasurementVectorSize: " <<
-  // this->GetMeasurementVectorSize() << std::endl;
+  // os << indent << "MeasurementVectorSize: " << this->GetMeasurementVectorSize() << std::endl;
   os << indent << "TotalFrequency: " << this->GetTotalFrequency() << std::endl;
   os << indent << "Size: ";
   for ( unsigned int i = 0; i < m_Size.Size(); i++ )
@@ -770,7 +769,6 @@ Histogram< TMeasurement, TFrequencyContainer >
     this->m_ClipBinsAtEnds        = that->m_ClipBinsAtEnds;
     }
 }
-
 } // end of namespace Statistics
 } // end of namespace itk
 
