@@ -809,6 +809,48 @@ int itkHistogramTest(int, char* [] )
 
     }
 
+  // Test when samples equaling to the upper bound with only one bin [0,1]
+    {
+
+    HistogramType::Pointer histogram = HistogramType::New();
+    // allocate memory for the histogram
+    HistogramType::SizeType size(1);
+    MeasurementVectorType   lowerBound(1);
+    MeasurementVectorType   upperBound(1);
+
+    IndexType index;
+
+    histogram->SetMeasurementVectorSize(1);
+
+    size[0] = 1;
+    lowerBound.Fill(0.0);
+    upperBound.Fill(1.0);
+
+    //Initialize with equally spaced bins.
+    histogram->Initialize(size, lowerBound, upperBound);
+    histogram->SetToZero();
+
+    HistogramType::MeasurementVectorType measurement;
+    measurement.SetSize(1);
+    measurement[0] = 1.0;
+    bool b = histogram->GetIndex(measurement, index);
+    int  preSetFrequency = 213;
+    histogram->IncreaseFrequencyOfMeasurement(measurement, preSetFrequency);
+
+    pass = true;
+    if (histogram->GetTotalFrequency() != preSetFrequency)
+      {
+      pass = false;
+      whereFail = "IncreaseFrequencyOfMeasurement (samples of upper bound did "
+        "not increase frequency)";
+      }
+    else
+      {
+      std::cout << "Passed NaN!" << std::endl;
+      }
+
+    }
+
   // Exercise Print() method
   histogram->Print( std::cout );
 
