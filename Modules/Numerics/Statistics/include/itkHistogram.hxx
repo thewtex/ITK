@@ -317,7 +317,8 @@ bool Histogram< TMeasurement, TFrequencyContainer >
       }
 
     end = m_Min[dim].size() - 1;
-    if ( tempMeasurement >= m_Max[dim][end] )
+
+    if ( tempMeasurement > m_Max[dim][end] )
       {
       // one of measurement is above the maximum
       // its ok if we extend the bins to infinity.. not ok if we don't
@@ -331,6 +332,15 @@ bool Histogram< TMeasurement, TFrequencyContainer >
         index[dim] = (IndexValueType)m_Size[dim];
         return false;
         }
+      }
+    else if ( tempMeasurement == m_Max[dim][end] )
+      {
+      // handle the situation when the measurement equals to
+      // the maximum of the whole histogram bins, i.e. m_Max[dim][end]
+      // the measurement will increase the frequency of the last bin
+      // at current dim.
+      index[dim] = (IndexValueType)m_Size[dim] - 1;
+      continue;
       }
 
     // Binary search for the bin where this measurement could be
