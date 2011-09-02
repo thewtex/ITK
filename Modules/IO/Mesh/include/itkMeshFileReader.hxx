@@ -410,6 +410,7 @@ MeshFileReader< TOutputMesh, ConvertPointPixelTraits, ConvertCellPixelTraits >
   for ( OutputPointIdentifier id = 0; id < m_MeshIO->GetNumberOfPointPixels(); id++ )
     {
     output->SetPointData(id, outputPointDataBuffer[id]);
+    std::cout << "outputPointDataBuffer[" << id << "]: " << outputPointDataBuffer[id] << std::endl;
     }
 
   if ( outputPointDataBuffer )
