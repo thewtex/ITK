@@ -78,7 +78,7 @@ class ITK_EXPORT ComposeRGBImageFilter:
 {
 public:
   /** Standard class typedefs. */
-  typedef ComposeRGBImageFilter Self;
+  typedef ComposeRGBImageFilter           Self;
   typedef TernaryFunctorImageFilter<
     TInputImage, TInputImage,
     TInputImage, TOutputImage,

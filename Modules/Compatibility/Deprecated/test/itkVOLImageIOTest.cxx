@@ -37,7 +37,7 @@ int itkVOLImageIOTest(int ac, char* av[])
   // VOL image file readers
   itk::VOLImageIOFactory::RegisterOneFactory();
 
-  typedef unsigned char PixelType;
+  typedef unsigned char            PixelType;
   typedef itk::Image<PixelType, 4> myImage;
 
 

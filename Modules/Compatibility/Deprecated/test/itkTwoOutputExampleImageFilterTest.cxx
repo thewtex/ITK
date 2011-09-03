@@ -161,6 +161,3 @@ int itkTwoOutputExampleImageFilterTest(int, char* [] )
 
   return EXIT_SUCCESS;
 }
-
-
-

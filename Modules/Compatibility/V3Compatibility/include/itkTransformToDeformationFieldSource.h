@@ -51,7 +51,7 @@ namespace itk
  * http://hdl.handle.net/1926/1387
  *
  * \ingroup GeometricTransform
- * \ingroup ITKDeprecated
+ * \ingroup V3Compatibility
  */
 template< class TOutputImage,
           class TTransformPrecisionType = double >
