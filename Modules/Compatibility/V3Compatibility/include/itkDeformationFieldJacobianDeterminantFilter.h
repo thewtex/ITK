@@ -49,6 +49,7 @@ namespace itk
  * itkDisplacementFieldJacobianDeterminantFilter.h.
  *
  * \ingroup GradientFilters
+ * \ingroup ITKV3Compatibility
  *
  * \sa DisplacementFieldJacobianDeterminantFilter
  * \sa Image

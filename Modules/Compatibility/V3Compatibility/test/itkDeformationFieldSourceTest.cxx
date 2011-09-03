@@ -18,20 +18,21 @@
 
 #include "itkImage.h"
 #include "itkVector.h"
-#include "itkInverseDeformationFieldImageFilter.h"
-#include "itkImageRegionIteratorWithIndex.h"
+#include "itkDeformationFieldSource.h"
 #include "itkImageFileWriter.h"
 #include "itkFilterWatcher.h"
 
+#include <fstream>
 
-int itkInverseDeformationFieldImageFilterTest( int argc, char * argv[] )
+
+int itkDeformationFieldSourceTest( int argc, char * argv[] )
 {
 
-  if( argc < 2 )
+  if( argc < 3 )
     {
     std::cerr << "Missing Parameters " << std::endl;
     std::cerr << "Usage: " << argv[0];
-    std::cerr << " outputImage" << std::endl;
+    std::cerr << " landmarksFile outputImage" << std::endl;
     return EXIT_FAILURE;
     }
 
@@ -42,17 +43,13 @@ int itkInverseDeformationFieldImageFilterTest( int argc, char * argv[] )
 
   typedef itk::Image< VectorType,  Dimension >   DeformationFieldType;
 
-  typedef itk::InverseDeformationFieldImageFilter<
-                                    DeformationFieldType,
-                                    DeformationFieldType
+  typedef itk::DeformationFieldSource<
+                                DeformationFieldType
                                              >  FilterType;
 
   FilterType::Pointer filter = FilterType::New();
 
   FilterWatcher watcher(filter);
-
-  // Creating an input deformation field
-  DeformationFieldType::Pointer field = DeformationFieldType::New();
 
   DeformationFieldType::SpacingType spacing;
   spacing.Fill( 1.0 );
@@ -73,46 +70,53 @@ int itkInverseDeformationFieldImageFilterTest( int argc, char * argv[] )
   region.SetSize( size );
   region.SetIndex( start );
 
+  DeformationFieldType::DirectionType direction;
+  direction.SetIdentity();
 
-  field->SetOrigin( origin );
-  field->SetSpacing( spacing );
-  field->SetRegions( region );
-  field->Allocate();
 
-  VectorType pixelValue;
+  filter->SetOutputSpacing( spacing );
+  filter->SetOutputOrigin( origin );
+  filter->SetOutputRegion( region );
+  filter->SetOutputDirection( direction );
 
-  itk::ImageRegionIteratorWithIndex< DeformationFieldType > it( field, region );
+  //  Create source and target landmarks.
+  //
+  typedef FilterType::LandmarkContainerPointer   LandmarkContainerPointer;
+  typedef FilterType::LandmarkContainer          LandmarkContainerType;
+  typedef FilterType::LandmarkPointType          LandmarkPointType;
 
-  // Fill the field with some vectors
-  it.GoToBegin();
-  while( !it.IsAtEnd() )
+  LandmarkContainerType::Pointer sourceLandmarks = LandmarkContainerType::New();
+  LandmarkContainerType::Pointer targetLandmarks = LandmarkContainerType::New();
+
+  LandmarkPointType sourcePoint;
+  LandmarkPointType targetPoint;
+
+  std::ifstream pointsFile;
+  pointsFile.open( argv[1] );
+
+  unsigned int pointId = 0;
+
+  pointsFile >> sourcePoint;
+  pointsFile >> targetPoint;
+
+  while( !pointsFile.fail() )
     {
-    DeformationFieldType::IndexType index = it.GetIndex();
-    pixelValue[0] = index[0] * 2.0;
-    pixelValue[1] = index[1] * 2.0;
-    it.Set( pixelValue );
-    ++it;
+    sourceLandmarks->InsertElement( pointId, sourcePoint );
+    targetLandmarks->InsertElement( pointId, targetPoint );
+    pointId++;
+
+    std::cout << sourcePoint << "  -->> " << targetPoint << std::endl;
+
+    pointsFile >> sourcePoint;
+    pointsFile >> targetPoint;
+
     }
 
+  pointsFile.close();
 
 
-  // Use the same geometry for the inverse field.
-  // This is for simplicity here, in general a
-  // different geometry should be used.
-  filter->SetOutputSpacing( spacing );
-
-
-  // keep the origin
-  filter->SetOutputOrigin( origin );
-
-  // set the size
-  filter->SetSize( size );
-
-
-  filter->SetInput( field );
-
-
-  filter->SetSubsamplingFactor( 16 );
+  filter->SetSourceLandmarks( sourceLandmarks.GetPointer() );
+  filter->SetTargetLandmarks( targetLandmarks.GetPointer() );
 
   try
     {
@@ -130,7 +134,7 @@ int itkInverseDeformationFieldImageFilterTest( int argc, char * argv[] )
   WriterType::Pointer writer = WriterType::New();
 
   writer->SetInput (filter->GetOutput());
-  writer->SetFileName( argv[1] );
+  writer->SetFileName( argv[2] );
 
   try
     {

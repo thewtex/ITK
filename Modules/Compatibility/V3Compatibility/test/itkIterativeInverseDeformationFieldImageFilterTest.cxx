@@ -94,8 +94,6 @@ int itkIterativeInverseDeformationFieldImageFilterTest( int argc, char * argv[] 
     ++it;
     }
 
-
-
   // Use the same geometry for the inverse field.
   // This is for simplicity here, in general a
   // different geometry should be used.
@@ -110,8 +108,6 @@ int itkIterativeInverseDeformationFieldImageFilterTest( int argc, char * argv[] 
 
 
   filter->SetInput( field );
-
-
 
   try
     {

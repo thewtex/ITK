@@ -63,7 +63,7 @@ namespace itk
  * Vector.
  *
  * \ingroup ImageToImageFilter
- * \ingroup ITKDeprecated
+ * \ingroup ITKV3Compatibility
  */
 template< class TInputImage, class TOutputImage >
 class ITK_EXPORT InverseDeformationFieldImageFilter:
