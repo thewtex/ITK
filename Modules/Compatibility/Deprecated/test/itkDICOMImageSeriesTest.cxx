@@ -31,7 +31,7 @@ int itkDICOMImageSeriesTest(int ac, char* av[])
     return EXIT_FAILURE;
     }
 
-  typedef itk::Image<unsigned short,5> ImageNDType;
+  typedef itk::Image<unsigned short,5>        ImageNDType;
   typedef itk::ImageSeriesReader<ImageNDType> ReaderType;
 
   itk::DICOMImageIO2::Pointer io = itk::DICOMImageIO2::New();

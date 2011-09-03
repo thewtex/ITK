@@ -291,7 +291,3 @@ int itkDeformableTest(int , char *[])
   return EXIT_SUCCESS;
 
 }
-
-
-
-

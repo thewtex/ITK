@@ -47,7 +47,7 @@ namespace itk
  * This source object expects the image to be of pixel type Vector.
  *
  * \ingroup ImageSource
- * \ingroup ITKDeprecated
+ * \ingroup ITKV3Compatibility
  */
 template< class TOutputImage >
 class ITK_EXPORT DeformationFieldSource:
