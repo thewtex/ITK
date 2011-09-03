@@ -48,7 +48,7 @@ namespace itk
  *
  * \author  Corinne Mattmann
  *
- * \ingroup ITKDeprecated
+ * \ingroup ITKV3Compatibility
  */
 
 template< class TInputImage, class TOutputImage >

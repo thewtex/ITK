@@ -48,7 +48,6 @@ namespace itk
  *
  * \ingroup ImageFunctions ImageInterpolators
  *
- * \ingroup ITKDeprecated
  */
 template< class TInputImage, class TCoordRep = float >
 class ITK_EXPORT VectorLinearInterpolateNearestNeighborExtrapolateImageFunction:

@@ -145,6 +145,3 @@ int itkScalarTest(int, char* [] )
     return EXIT_FAILURE;
     }
 }
-
-
-
