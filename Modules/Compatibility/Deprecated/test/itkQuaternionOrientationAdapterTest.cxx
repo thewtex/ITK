@@ -20,14 +20,14 @@
 #include "itkSpatialOrientationAdapter.h"
 #include "itkQuaternionOrientationAdapter.h"
 
-typedef itk::SpatialOrientation::CoordinateTerms SO_CoordTermsType;
+typedef itk::SpatialOrientation::CoordinateTerms                 SO_CoordTermsType;
 typedef itk::SpatialOrientation::ValidCoordinateOrientationFlags SO_OrientationType;
 
 typedef itk::SpatialOrientationAdapter<3> SO_AdapterType;
-typedef SO_AdapterType::DirectionType DirectionType;
+typedef SO_AdapterType::DirectionType     DirectionType;
 
 typedef itk::QuaternionOrientationAdapter<3> Q_AdapterType;
-typedef Q_AdapterType::OrientationType Q_OrientationType;
+typedef Q_AdapterType::OrientationType       Q_OrientationType;
 
 
 std::string SO_OrientationToString(SO_OrientationType in)

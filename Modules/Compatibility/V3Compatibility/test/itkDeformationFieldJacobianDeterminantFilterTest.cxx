@@ -53,7 +53,8 @@ static bool TestDeformationJacobianDeterminantValue(void)
   values[0]=0;
   values[1]=0;
   typedef itk::ImageRegionIteratorWithIndex<VectorImageType> Iterator;
-  for( Iterator inIter( dispacementfield, region ); !inIter.IsAtEnd(); ++inIter )
+  Iterator inIter( dispacementfield, region );
+  for(; !inIter.IsAtEnd(); ++inIter )
     {
     const unsigned int i=inIter.GetIndex()[0];
     const unsigned int j=inIter.GetIndex()[1];

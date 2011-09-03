@@ -26,11 +26,8 @@
 #include <vector>
 #include "itksys/SystemTools.hxx"
 
-
-
 int itkImageReadDICOMSeriesWriteTest( int argc, char* argv[] )
 {
-
   if( argc < 3 )
     {
     std::cerr << "Usage: " << argv[0];
@@ -221,4 +218,3 @@ int itkImageReadDICOMSeriesWriteTest( int argc, char* argv[] )
 
   return EXIT_SUCCESS;
 }
-
