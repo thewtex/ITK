@@ -40,18 +40,22 @@ itk_add_test(NAME itkBinaryImageToWhitakerSparseLevelSetsv4AdaptorTest
       ${ITK_DATA_ROOT}/Input/circle.png
       ${ITK_TEST_OUTPUT_DIR}/output_binary_whitaker_adaptor.mha
       ${ITK_TEST_OUTPUT_DIR}/status_binary_whitaker_adaptor.mha
+      --compare DATA{Baseline/solution_binary_whitaker_adaptor.mha}
+      --compare DATA{Baseline/solution_status_binary_whitaker_adaptor.mha}
       )
 itk_add_test(NAME itkBinaryImageToMalcolmSparseLevelSetsv4AdaptorTest
       COMMAND ITKLevelSetsv4TestDriver
       itkBinaryImageToMalcolmSparseLevelSetAdaptorTest
       ${ITK_DATA_ROOT}/Input/circle.png
       ${ITK_TEST_OUTPUT_DIR}/output_binary_malcolm_adaptor.mha
+      --compare DATA{Baseline/solution_binary_malcolm_adaptor.mha}
       )
 itk_add_test(NAME itkBinaryImageToShiSparseLevelSetsv4AdaptorTest
       COMMAND ITKLevelSetsv4TestDriver
       itkBinaryImageToShiSparseLevelSetAdaptorTest
       ${ITK_DATA_ROOT}/Input/circle.png
       ${ITK_TEST_OUTPUT_DIR}/output_binary_shi_adaptor.mha
+      --compare DATA{Baseline/solution_binary_shi_adaptor.mha}
       )
 # domain partition classes
 itk_add_test(NAME itkLevelSetsv4DomainPartitionBaseTest
