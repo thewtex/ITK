@@ -20,6 +20,8 @@
 
 #include "itkDisplacementFieldTransform.h"
 #include "itkVectorLinearInterpolateImageFunction.h"
+#include "itkIdentityTransform.h"
+#include "itkVectorResampleImageFilter.h"
 
 #include "itkImageRegionIteratorWithIndex.h"
 #include "vnl/algo/vnl_symmetric_eigensystem.h"
@@ -681,6 +683,51 @@ DisplacementFieldTransform<TScalar, NDimensions>
   // This simply adds the values.
   // TODO: This should be multi-threaded probably, via image add filter.
   Superclass::UpdateTransformParameters( update, factor );
+}
+
+template <class TScalar, unsigned int NDimensions>
+void
+DisplacementFieldTransform<TScalar, NDimensions>
+::ResizeParameters( ParametersResizeFactorType factor )
+{
+  typedef typename DisplacementFieldType::RegionType   RegionType;
+  typedef typename DisplacementFieldType::SizeType     SizeType;
+  typedef typename DisplacementFieldType::SpacingType  SpacingType;
+
+  const RegionType & oldRegion = this->m_DisplacementField->GetLargestPossibleRegion();
+  const SizeType oldSize = oldRegion.GetSize();
+  const SpacingType oldSpacing = this->m_DisplacementField->GetSpacing();
+
+  SizeType newSize;
+  SpacingType newSpacing;
+  for( unsigned int d = 0; d < NDimensions; d++ )
+    {
+    ScalarType dimensionalExtent = oldSpacing[d] * static_cast<ScalarType>( oldSize[d] - 1 );
+
+    newSize[d] = static_cast<typename SizeType::SizeValueType>( factor * oldSize[d] );
+    newSpacing[d] = dimensionalExtent / static_cast<ScalarType>( newSize[d] - 1 );
+    }
+
+  typedef IdentityTransform<ScalarType, NDimensions> IdentityTransformType;
+  typename IdentityTransformType::Pointer identityTransform = IdentityTransformType::New();
+  identityTransform->SetIdentity();
+
+  typedef VectorLinearInterpolateImageFunction<DisplacementFieldType, ScalarType> LinearInterpolatorType;
+  typename LinearInterpolatorType::Pointer interpolator = LinearInterpolatorType::New();
+  interpolator->SetInputImage( this->m_DisplacementField );
+
+  typedef VectorResampleImageFilter<DisplacementFieldType, DisplacementFieldType, ScalarType> ResamplerType;
+  typename ResamplerType::Pointer resampler = ResamplerType::New();
+  resampler->SetInput( this->m_DisplacementField );
+  resampler->SetOutputDirection( this->m_DisplacementField->GetDirection() );
+  resampler->SetOutputOrigin( this->m_DisplacementField->GetOrigin() );
+  resampler->SetOutputSpacing( newSpacing );
+  resampler->SetSize( newSize );
+  resampler->SetTransform( identityTransform );
+  resampler->SetInterpolator( interpolator );
+  resampler->Update();
+
+  this->SetDisplacementField( resampler->GetOutput() );
 }
 
 template <class TScalar, unsigned int NDimensions>

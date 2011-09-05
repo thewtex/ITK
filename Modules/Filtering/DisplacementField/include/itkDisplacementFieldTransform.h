@@ -124,6 +124,9 @@ public:
   /** The number of parameters defininig this transform. */
   typedef typename Superclass::NumberOfParametersType NumberOfParametersType;
 
+  /** The resize parameters factor type */
+  typedef typename Superclass::ParametersResizeFactorType ParametersResizeFactorType;
+
   /** Standard coordinate point type for this class. */
   typedef typename Superclass::InputPointType  InputPointType;
   typedef typename Superclass::OutputPointType OutputPointType;
@@ -299,6 +302,14 @@ public:
   {
     itkExceptionMacro("GetFixedParameters unimplemented.");
   }
+
+  /** Resize the transform parameters.  Used in the multi-resolution registration.
+   *  For the displacement field transform
+   *  transforms and B-spline transforms will most likely use this to increase the
+   *  number of parameters at successive levels during multi-resolution image
+   *  registration.
+   */
+  virtual void ResizeParameters( const ParametersResizeFactorType );
 
   /**
    * Compute the jacobian with respect to the parameters at a point.

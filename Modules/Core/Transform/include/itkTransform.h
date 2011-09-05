@@ -111,9 +111,10 @@ public:
   typedef  TScalarType ScalarType;
 
   /** Type of the input parameters. */
-  typedef  typename Superclass::ParametersType      ParametersType;
-  typedef  typename Superclass::ParametersValueType ParametersValueType;
-  typedef  Array<ParametersValueType>               DerivativeType;
+  typedef  typename Superclass::ParametersType              ParametersType;
+  typedef  typename Superclass::ParametersValueType         ParametersValueType;
+  typedef  typename Superclass::ParametersResizeFactorType  ParametersResizeFactorType;
+  typedef  Array<ParametersValueType>                       DerivativeType;
 
   /** Type of the Jacobian matrix. */
   typedef  Array2D<ParametersValueType> JacobianType;
@@ -457,6 +458,15 @@ public:
   {
     return this->m_Parameters.Size();
   }
+
+  /** Resize the transform parameters.  Used in the multi-resolution registration.
+   *  For most transforms, this won't do anything. However, the displacement field
+   *  transforms and B-spline transforms will most likely use this to increase the
+   *  number of parameters at successive levels during multi-resolution image
+   *  registration.
+   */
+  virtual void ResizeParameters( const ParametersResizeFactorType )
+  {}
 
   /** Returns a boolean indicating whether it is possible or not to compute the
    * inverse of this current Transform. If it is possible, then the inverse of

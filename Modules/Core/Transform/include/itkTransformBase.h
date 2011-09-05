@@ -22,6 +22,7 @@
 #include "itkPoint.h"
 #include "itkCovariantVector.h"
 #include "vnl/vnl_vector_fixed.h"
+#include "itkArray.h"
 #include "itkArray2D.h"
 #include "itkTransformParameters.h"
 
@@ -46,8 +47,9 @@ public:
   typedef SmartPointer< const Self > ConstPointer;
 
   /** Type of the input parameters. */
-  typedef  double                                     ParametersValueType;
-  typedef  TransformParameters< ParametersValueType > ParametersType;
+  typedef double                                     ParametersValueType;
+  typedef TransformParameters< ParametersValueType > ParametersType;
+  typedef double                                     ParametersResizeFactorType;
 
   /** Run-time type information (and related methods). */
   itkTypeMacro(TransformBase, Object);
@@ -70,6 +72,9 @@ public:
 
   /** Set the transformation parameters and update internal transformation. */
   virtual void SetParameters(const ParametersType &) = 0;
+
+  /** Resize the transform parameters */
+  virtual void ResizeParameters( const ParametersResizeFactorType ) = 0;
 
   /** Set the transformation by copying parameters and update internal transformation.
    * This method forces the transform to copy the parameters.  The

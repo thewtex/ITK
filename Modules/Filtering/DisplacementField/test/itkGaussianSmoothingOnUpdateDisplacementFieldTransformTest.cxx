@@ -189,6 +189,14 @@ int itkGaussianSmoothingOnUpdateDisplacementFieldTransformTest(int ,char *[] )
     std::cout << std::endl;
     }
 
+  /* Exercise resizing */
+  std::cout << "Number of parameters before resizing: "
+    << displacementTransform->GetNumberOfParameters() << std::endl;
+  displacementTransform->ResizeParameters( 2 );
+  std::cout << "Number of parameters after resizing: "
+    << displacementTransform->GetNumberOfParameters() << std::endl;
+
+
   /* Exercise FreeGaussianSmoothingTempField */
   displacementTransform->FreeGaussianSmoothingTempField();
 
