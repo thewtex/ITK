@@ -44,8 +44,12 @@ LevelSetEquationCurvatureTerm< TInput, TLevelSetContainer >
 template< class TInput, class TLevelSetContainer >
 typename LevelSetEquationCurvatureTerm< TInput, TLevelSetContainer >::LevelSetOutputRealType
 LevelSetEquationCurvatureTerm< TInput, TLevelSetContainer >
-::Value( const LevelSetInputIndexType& itkNotUsed(iP), const LevelSetDataType& iData )
+::Value( const LevelSetInputIndexType& iP, const LevelSetDataType& iData )
 {
+  if( !iData.MeanCurvature.m_Computed )
+    {
+    this->m_CurrentLevelSetPointer->EvaluateMeanCurvature( iP, iData );
+    }
   return iData.MeanCurvature.m_Value;
 }
 
