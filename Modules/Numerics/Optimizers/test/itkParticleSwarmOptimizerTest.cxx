@@ -252,6 +252,9 @@ int PSOTest3()
   std::cout << "Particle Swarm Optimizer Test 3 [f(x,y) = (1-x)^2 + 100(y-x^2)^2]\n";
   std::cout << "----------------------------------\n";
 
+
+  const double tolerance = 1e-16;
+
   itk::Array<double> knownParameters( 2 );
   knownParameters[0] = 1.0;
   knownParameters[1] = 1.0;
@@ -270,15 +273,82 @@ int PSOTest3()
   unsigned int maxIterations = 200;
   double xTolerance = 0.1;
   double fTolerance = 0.01;
-  OptimizerType::ParametersType initialParameters( 2 ), finalParameters;
+  OptimizerType::ParametersType initialParameters( 2 );
+  OptimizerType::ParametersType finalParameters;
 
+  //Exercise Get/Set methods
+  itkOptimizer->PrintSwarmOn();
   itkOptimizer->SetParameterBounds( bounds );
+
   itkOptimizer->SetNumberOfParticles( numberOfParticles );
+  if( numberOfParticles != itkOptimizer->GetNumberOfParticles())
+    {
+    std::cerr << "Error in Set/Get methods for NumberOfParticles";
+    return EXIT_FAILURE;
+    }
+
   itkOptimizer->SetMaximalNumberOfIterations( maxIterations );
+  if( maxIterations != itkOptimizer->GetMaximalNumberOfIterations())
+    {
+    std::cerr << "Error in Set/Get methods for maxIterations";
+    return EXIT_FAILURE;
+    }
+
+  unsigned int  numberOfGenerationsWithMinimalImprovement = 1;
+  itkOptimizer->SetNumberOfGenerationsWithMinimalImprovement(
+          numberOfGenerationsWithMinimalImprovement );
+  if( itkOptimizer->GetNumberOfGenerationsWithMinimalImprovement() !=
+                      numberOfGenerationsWithMinimalImprovement )
+    {
+    std::cerr << "Error in Set/Get methods for number of generations allowed with minimal improvement ";
+    return EXIT_FAILURE;
+    }
+
   itkOptimizer->SetParametersConvergenceTolerance( xTolerance,
                                                    costFunction->GetNumberOfParameters() );
+
   itkOptimizer->SetFunctionConvergenceTolerance( fTolerance );
+  if( fabs(itkOptimizer->GetFunctionConvergenceTolerance() - fTolerance) > tolerance )
+    {
+    std::cerr << "Error in Set/Get method for FunctionConvergenceTolerance";
+    return EXIT_FAILURE;
+    }
   itkOptimizer->SetCostFunction( costFunction.GetPointer() );
+
+  double percentageParticlesConverged = 0.6;
+  itkOptimizer->SetPercentageParticlesConverged( percentageParticlesConverged );
+  if( fabs( itkOptimizer->GetPercentageParticlesConverged() - percentageParticlesConverged ) > tolerance )
+    {
+    std::cerr << "Error in Set/Get methods for percentage particles converged parameter";
+    return EXIT_FAILURE;
+    }
+
+  double inertiaCoefficient = 0.7298;
+  itkOptimizer->SetInertiaCoefficient( inertiaCoefficient );
+  if ( fabs( itkOptimizer->GetInertiaCoefficient() - inertiaCoefficient ) )
+    {
+    std::cerr << "Error in Set/Get method for inertia coefficent parameter";
+    return EXIT_FAILURE;
+    }
+
+  double personalCoefficient = 1.496;
+  itkOptimizer->SetPersonalCoefficient( personalCoefficient );
+  if ( fabs( itkOptimizer->GetPersonalCoefficient() - personalCoefficient ) )
+    {
+    std::cerr << "Error in Set/Get method for personal coefficent parameter";
+    return EXIT_FAILURE;
+    }
+
+  double gobalCoefficient = 1.496;
+  itkOptimizer->SetGlobalCoefficient( gobalCoefficient );
+  if ( fabs( itkOptimizer->GetGlobalCoefficient() - gobalCoefficient ) )
+    {
+    std::cerr << "Error in Set/Get method for gobal coefficent parameter";
+    return EXIT_FAILURE;
+    }
+
+  //Exercise the print self method
+  itkOptimizer->Print( std::cout );
 
 #if VERBOSE
           //observe the iterations
@@ -343,9 +413,15 @@ int PSOTest3()
     initialParameters[0] =  10;
     initialParameters[1] = 10;
     itkOptimizer->SetInitialPosition( initialParameters );
+
     itkOptimizer->InitializeNormalDistributionOn();
+    if( !itkOptimizer->GetInitializeNormalDistribution() )
+      {
+      std::cerr << " Error in Set/Get methods for initialize normal distribution ";
+      return EXIT_FAILURE;
+      }
 #if VERBOSE
-          //reset the iteration count done by the observer
+    //reset the iteration count done by the observer
     observer->Reset();
 #endif
     itkOptimizer->ClearSwarm();

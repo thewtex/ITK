@@ -41,8 +41,8 @@ public:
     return val;
     }
 
-  void GetDerivative( const ParametersType & parameters,
-                            DerivativeType & derivative ) const
+  void GetDerivative( const ParametersType & itkNotUsed(parameters),
+                            DerivativeType & itkNotUsed(derivative) ) const
     {
       throw itk::ExceptionObject( __FILE__, __LINE__,
                                   "no derivative available" );
@@ -153,8 +153,8 @@ public:
             (parameters[1]-parameters[0]*parameters[0]);
   }
 
-  void GetDerivative( const ParametersType & parameters,
-                            DerivativeType & derivative ) const
+  void GetDerivative( const ParametersType & itkNotUsed(parameters),
+                            DerivativeType & itkNotUsed(derivative)) const
     {
       throw itk::ExceptionObject( __FILE__, __LINE__,
                                   "no derivative available" );
