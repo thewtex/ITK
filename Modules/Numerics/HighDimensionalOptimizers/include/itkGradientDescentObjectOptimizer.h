@@ -103,6 +103,7 @@ protected:
   /** Destructor */
   virtual ~GradientDescentObjectOptimizer();
 
+  virtual void PrintSelf( std::osteam & os, Indent indent ) const;
 private:
 
   //purposely not implemented
