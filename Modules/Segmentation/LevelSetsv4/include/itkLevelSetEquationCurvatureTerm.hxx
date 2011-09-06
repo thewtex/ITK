@@ -46,6 +46,9 @@ typename LevelSetEquationCurvatureTerm< TInput, TLevelSetContainer >::LevelSetOu
 LevelSetEquationCurvatureTerm< TInput, TLevelSetContainer >
 ::Value( const LevelSetInputIndexType& itkNotUsed(iP), const LevelSetDataType& iData )
 {
+  itkAssertInDebugAndIgnoreInReleaseMacro( iData.MeanCurvature.m_Computed,
+    "MeanCurvature has not been computed yet" );
+
   return iData.MeanCurvature.m_Value;
 }
 
