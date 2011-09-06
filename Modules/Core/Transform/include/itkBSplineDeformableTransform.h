@@ -18,8 +18,6 @@
 #ifndef __itkBSplineDeformableTransform_h
 #define __itkBSplineDeformableTransform_h
 
-#include "itkConfigure.h" // Needed to determine value of ITKV3_COMPATIBILITY
-
 #include <iostream>
 #include "itkTransform.h"
 #include "itkImage.h"
