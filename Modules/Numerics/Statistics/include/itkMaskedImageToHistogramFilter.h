@@ -71,13 +71,13 @@ public:
   typedef typename MaskImageType::PixelType              MaskPixelType;
 
   /** Method to set/get the mask */
-  void SetMaskImage(const MaskImageType *image);
-  const MaskImageType * GetMaskImage() const;
+  itkSetNamedInputMacro(MaskImage, MaskImageType);
+  itkGetNamedInputMacro(MaskImage, MaskImageType);
 
   /** Set the pixel value treated as on in the mask.
    * Only pixels with this value will be added to the histogram.
    */
-  itkSetDecoratedInputMacro(MaskValue, MaskPixelType, 7);
+  itkSetDecoratedNamedInputMacro(MaskValue, MaskPixelType);
 
 protected:
   MaskedImageToHistogramFilter();
