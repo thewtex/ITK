@@ -46,10 +46,8 @@ int itkTransformFactoryBaseTest (int, char*[])
   defaultTransforms.push_back("IdentityTransform_double_9_9");
   defaultTransforms.push_back("BSplineTransform_double_2_2");
   defaultTransforms.push_back("BSplineTransform_double_3_3");
-#ifdef ITKV3_COMPATIBILITY
   defaultTransforms.push_back("BSplineDeformableTransform_double_2_2");
   defaultTransforms.push_back("BSplineDeformableTransform_double_3_3");
-#endif
   defaultTransforms.push_back("CenteredAffineTransform_double_2_2");
   defaultTransforms.push_back("CenteredAffineTransform_double_3_3");
   defaultTransforms.push_back("CenteredEuler3DTransform_double_3_3");
@@ -92,10 +90,8 @@ int itkTransformFactoryBaseTest (int, char*[])
   defaultTransforms.push_back("IdentityTransform_float_9_9");
   defaultTransforms.push_back("BSplineTransform_float_2_2");
   defaultTransforms.push_back("BSplineTransform_float_3_3");
-#ifdef ITKV3_COMPATIBILITY
   defaultTransforms.push_back("BSplineDeformableTransform_float_2_2");
   defaultTransforms.push_back("BSplineDeformableTransform_float_3_3");
-#endif
   defaultTransforms.push_back("CenteredAffineTransform_float_2_2");
   defaultTransforms.push_back("CenteredAffineTransform_float_3_3");
   defaultTransforms.push_back("CenteredEuler3DTransform_float_3_3");

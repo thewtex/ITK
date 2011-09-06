@@ -37,10 +37,7 @@
 #include "itkVersorTransform.h"
 
 #include "itkBSplineTransform.h"
-
-#if defined( ITKV3_COMPATIBILITY )
 #include "itkBSplineDeformableTransform.h"
-#endif
 
 namespace itk
 {
@@ -102,10 +99,8 @@ void TransformFactoryBase::RegisterDefaultTransforms()
 
     TransformFactory< BSplineTransform< double, 2, 2 > >::RegisterTransform ();
     TransformFactory< BSplineTransform< double, 3, 3 > >::RegisterTransform ();
-#ifdef ITKV3_COMPATIBILITY
     TransformFactory< BSplineDeformableTransform< double, 2, 2 > >::RegisterTransform ();
     TransformFactory< BSplineDeformableTransform< double, 3, 3 > >::RegisterTransform ();
-#endif
 
     // We cannot register both Rigid3DTransform and
     // itkv3::Rigid3DTransform because they both have the same name
@@ -160,10 +155,8 @@ void TransformFactoryBase::RegisterDefaultTransforms()
 
     TransformFactory< BSplineTransform< float, 2, 2 > >::RegisterTransform ();
     TransformFactory< BSplineTransform< float, 3, 3 > >::RegisterTransform ();
-#ifdef ITKV3_COMPATIBILITY
     TransformFactory< BSplineDeformableTransform< float, 2, 2 > >::RegisterTransform ();
     TransformFactory< BSplineDeformableTransform< float, 3, 3 > >::RegisterTransform ();
-#endif
     // We cannot register both Rigid3DTransform and
     // itkv3::Rigid3DTransform because they both have the same name
 #ifdef ITKV3_COMPATIBILITY
