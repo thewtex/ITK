@@ -1,0 +1,1 @@
+itk_module(VideoFiltersCommon DEPENDS ITKCommon VideoCoreCommon TEST_DEPENDS ITKTestKernel ITKSmoothing VideoIOFileList)

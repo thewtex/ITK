@@ -25,6 +25,7 @@
 #include "itkVariableLengthVector.h"
 #include "itkVector.h"
 #include "itkPoint.h"
+#include "itkMatrix.h"
 
 namespace itk
 {

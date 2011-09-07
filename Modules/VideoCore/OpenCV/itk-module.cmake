@@ -1,0 +1,1 @@
+itk_module(VideoCoreOpenCV DEPENDS ITKCommon VideoCoreCommon ITKIOBase TEST_DEPENDS ITKTestKernel VideoIOFileList VideoIOOpenCV)

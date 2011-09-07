@@ -1,5 +1,5 @@
 # Set a list of group names
-set(group_list Core IO Filtering Registration Segmentation Numerics ThirdParty Bridge Nonunit Compatibility)
+set(group_list Core IO Filtering Registration Segmentation Numerics ThirdParty Bridge Nonunit Compatibility VideoCommon VideoOpenCV VideoVXL)
 
 set(Core_documentation "This group of modules contain the toolkit framework used
 by other modules.  There are common base classes for data objects and process

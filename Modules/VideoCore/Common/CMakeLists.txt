@@ -1,0 +1,9 @@
+project(VideoCoreCommon)
+
+# For Midasstored testing data
+include(MIDAS.cmake)
+set( MIDAS_REST_URL "http://midas.kitware.com/api/rest" CACHE INTERNAL "")
+set( MIDAS_KEY_DIR "${CMAKE_CURRENT_SOURCE_DIR}/test_data_hashes" CACHE INTERNAL "")
+
+set( VideoCoreCommon_LIBRARIES VideoCoreCommon )
+itk_module_impl()

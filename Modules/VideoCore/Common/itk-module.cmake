@@ -1,0 +1,1 @@
+itk_module(VideoCoreCommon DEPENDS ITKCommon TEST_DEPENDS ITKTestKernel VideoIOFileList)

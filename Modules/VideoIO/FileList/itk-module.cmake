@@ -1,0 +1,1 @@
+itk_module(VideoIOFileList DEPENDS ITKIOBase VideoIOBase TEST_DEPENDS ITKTestKernel)

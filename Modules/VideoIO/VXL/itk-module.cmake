@@ -1,0 +1,1 @@
+itk_module(VideoIOVXL DEPENDS ITKIOBase VideoIOBase VideoCoreCommon TEST_DEPENDS ITKTestKernel)
