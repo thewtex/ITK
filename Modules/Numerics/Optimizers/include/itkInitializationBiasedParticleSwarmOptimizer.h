@@ -102,7 +102,8 @@ protected:
   void PrintSelf(std::ostream& os, Indent indent) const;
   virtual void UpdateSwarm();
 
-private:              //purposely not implemented
+private:
+              //purposely not implemented
   InitializationBiasedParticleSwarmOptimizer(const Self&);
   void operator=(const Self&);//purposely not implemented
 

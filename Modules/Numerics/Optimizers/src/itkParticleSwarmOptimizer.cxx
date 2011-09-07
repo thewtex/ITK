@@ -6,14 +6,11 @@ namespace itk
 
 
 ParticleSwarmOptimizer
-::ParticleSwarmOptimizer(void) :
-  DEFAULT_INERTIA_COEFFICIENT( 0.7298 ),
-  DEFAULT_PERSONAL_COEFFICIENT( 1.49609 ),
-  DEFAULT_GLOBAL_COEFFICIENT( 1.49609 )
+::ParticleSwarmOptimizer(void)
 {
-  m_InertiaCoefficient = DEFAULT_INERTIA_COEFFICIENT;
-  m_PersonalCoefficient = DEFAULT_PERSONAL_COEFFICIENT;
-  m_GlobalCoefficient = DEFAULT_GLOBAL_COEFFICIENT;
+  m_InertiaCoefficient = 0.7298;
+  m_PersonalCoefficient = 1.49609;
+  m_GlobalCoefficient = 1.49609;
 }
 
 

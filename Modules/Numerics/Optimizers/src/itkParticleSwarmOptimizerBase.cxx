@@ -7,25 +7,16 @@ namespace itk
 
 
 ParticleSwarmOptimizerBase
-::ParticleSwarmOptimizerBase(void) :
-  DEFAULT_NUMBER_OF_PARTICLES( 35 ),
-  DEFAULT_MAXIMAL_NUMBER_OF_ITERATIONS( 200 ),
-  DEFAULT_PARAMETERS_CONVERGENCE_TOLERANCE( 1e-8 ),
-  DEFAULT_PERCENTAGE_PARTICLES_CONVERGED( 0.6 ),
-  DEFAULT_FUNCTION_CONVERGENCE_TOLERANCE( 1e-4 ),
-  DEFAULT_NUMBER_GENERATIONS_MIN_IMPROVEMENT( 1 )
+::ParticleSwarmOptimizerBase(void)
 {
   m_PrintSwarm = false;
   m_InitializeNormalDistribution = false;
-  m_NumberOfParticles = DEFAULT_NUMBER_OF_PARTICLES;
-  m_MaximalNumberOfIterations = DEFAULT_MAXIMAL_NUMBER_OF_ITERATIONS;
-  m_NumberOfGenerationsWithMinimalImprovement =
-    DEFAULT_NUMBER_GENERATIONS_MIN_IMPROVEMENT;
-  m_ParametersConvergenceTolerance.Fill(
-    DEFAULT_PARAMETERS_CONVERGENCE_TOLERANCE );
-  m_PercentageParticlesConverged =
-    DEFAULT_PERCENTAGE_PARTICLES_CONVERGED;
-  m_FunctionConvergenceTolerance = DEFAULT_FUNCTION_CONVERGENCE_TOLERANCE;
+  m_NumberOfParticles = 35;
+  m_MaximalNumberOfIterations = 200;
+  m_NumberOfGenerationsWithMinimalImprovement = 1;
+  m_ParametersConvergenceTolerance.Fill( 1e-8 );
+  m_PercentageParticlesConverged = 0.6;
+  m_FunctionConvergenceTolerance = 1e-4;
 }
 
 

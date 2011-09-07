@@ -19,6 +19,7 @@
 #define __itkAmoebaOptimizer_h
 
 #include "itkSingleValuedNonLinearVnlOptimizer.h"
+#include "vnl/algo/vnl_amoeba.h"
 
 namespace itk
 {
@@ -127,10 +128,6 @@ public:
   /** Return Current Value */
   MeasureType GetValue() const;
 
-  const unsigned int DEFAULT_MAXIMAL_NUMBER_OF_ITERATIONS;
-  const ParametersType::ValueType DEFAULT_PARAMETERS_CONVERGENCE_TOLERANCE;
-  const CostFunctionType::MeasureType DEFAULT_FUNCTION_CONVERGENCE_TOLERANCE;
-
 protected:
   AmoebaOptimizer();
   virtual ~AmoebaOptimizer();
@@ -150,6 +147,7 @@ private:
   bool                            m_AutomaticInitialSimplex;
   ParametersType                  m_InitialSimplexDelta;
   bool                            m_OptimizeWithRestarts;
+  vnl_amoeba *                    m_VnlOptimizer;
 
   std::ostringstream m_StopConditionDescription;
 };

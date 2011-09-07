@@ -19,31 +19,29 @@
 #define _itkAmoebaOptimizer_txx
 
 #include "itkAmoebaOptimizer.h"
-#include "vnl/algo/vnl_amoeba.h"
 
 namespace itk
 {
 
 
 AmoebaOptimizer
-::AmoebaOptimizer():
-  m_InitialSimplexDelta( 1 ),
-  DEFAULT_MAXIMAL_NUMBER_OF_ITERATIONS( 500 ),
-  DEFAULT_PARAMETERS_CONVERGENCE_TOLERANCE( 1e-8 ),
-  DEFAULT_FUNCTION_CONVERGENCE_TOLERANCE( 1e-4 )
+::AmoebaOptimizer() :
+  m_InitialSimplexDelta(1)
 {
-  m_MaximumNumberOfIterations      = DEFAULT_MAXIMAL_NUMBER_OF_ITERATIONS;
-  m_ParametersConvergenceTolerance = DEFAULT_PARAMETERS_CONVERGENCE_TOLERANCE;
-  m_FunctionConvergenceTolerance   = DEFAULT_FUNCTION_CONVERGENCE_TOLERANCE;
+  m_MaximumNumberOfIterations      = 500;
+  m_ParametersConvergenceTolerance = 1e-8;
+  m_FunctionConvergenceTolerance   = 1e-4;
   m_AutomaticInitialSimplex        = true;
   m_InitialSimplexDelta.Fill( NumericTraits< ParametersType::ValueType >::One );
   m_OptimizeWithRestarts = false;
+  m_VnlOptimizer = NULL;
 }
 
 
 AmoebaOptimizer
 ::~AmoebaOptimizer()
 {
+  delete m_VnlOptimizer;
 }
 
 
@@ -139,7 +137,7 @@ AmoebaOptimizer
   adaptor->SetCostFunction( costFunction );
               //our ancestor, SingleValuedNonLinearVnlOptimizer, will release
               //the adaptor's memory in its destructor or if it is set again
-  SetCostFunctionAdaptor( adaptor );
+  this->SetCostFunctionAdaptor( adaptor );
   this->Modified();
 }
 
@@ -164,12 +162,14 @@ AmoebaOptimizer
   this->InvokeEvent( StartEvent() );
 
               //configure the vnl optimizer
-  vnl_amoeba * vnlOptimizer;
   CostFunctionAdaptorType *adaptor = GetNonConstCostFunctionAdaptor();
-  vnlOptimizer = new vnl_amoeba( *adaptor );
-  vnlOptimizer->set_max_iterations( static_cast< int >( m_MaximumNumberOfIterations ) );
-  vnlOptimizer->set_x_tolerance(m_ParametersConvergenceTolerance);
-  vnlOptimizer->set_f_tolerance(m_FunctionConvergenceTolerance);
+       //get rid of previous instance of the internal optimizer and create a
+       //new one
+  delete m_VnlOptimizer;
+  m_VnlOptimizer = new vnl_amoeba( *adaptor );
+  m_VnlOptimizer->set_max_iterations( static_cast< int >( m_MaximumNumberOfIterations ) );
+  m_VnlOptimizer->set_x_tolerance(m_ParametersConvergenceTolerance);
+  m_VnlOptimizer->set_f_tolerance(m_FunctionConvergenceTolerance);
 
   m_StopConditionDescription.str( "" );
   m_StopConditionDescription << this->GetNameOfClass() << ": Running";
@@ -179,7 +179,7 @@ AmoebaOptimizer
     adaptor->NegateCostFunctionOn();
     }
 
-  SetCurrentPosition( initialPosition );
+  this->SetCurrentPosition( initialPosition );
 
   ParametersType parameters( initialPosition ), bestPosition( initialPosition );
 
@@ -221,7 +221,7 @@ AmoebaOptimizer
     }
 
   double bestValue;
-  vnlOptimizer->minimize( parameters, delta );
+  m_VnlOptimizer->minimize( parameters, delta );
   bestPosition = parameters;
   bestValue = adaptor->f( bestPosition );
           //multiple restart heuristic
@@ -229,19 +229,19 @@ AmoebaOptimizer
     {
     double currentValue;
     unsigned int totalEvaluations = static_cast<unsigned int>
-      (vnlOptimizer->get_num_evaluations());
+      (m_VnlOptimizer->get_num_evaluations());
     bool converged = false;
     i=1;
     while( !converged && totalEvaluations < m_MaximumNumberOfIterations )
       {
-      vnlOptimizer->set_max_iterations(
+      m_VnlOptimizer->set_max_iterations(
         static_cast< int >( m_MaximumNumberOfIterations - totalEvaluations ) );
       parameters = bestPosition;
       delta = delta*( 1.0/pow( 2.0, static_cast<double>(i) ) *
                      (rand() > RAND_MAX/2 ? 1 : -1) );
-      vnlOptimizer->minimize( parameters, delta );
+      m_VnlOptimizer->minimize( parameters, delta );
       totalEvaluations += static_cast<unsigned int>
-                          (vnlOptimizer->get_num_evaluations());
+                          (m_VnlOptimizer->get_num_evaluations());
       currentValue = adaptor->f( parameters );
              // be consistent with the underlying vnl amoeba implementation
       double maxAbs = 0.0;
@@ -277,7 +277,7 @@ AmoebaOptimizer
 
   m_StopConditionDescription.str( "" );
   m_StopConditionDescription << this->GetNameOfClass() << ": ";
-  if ( static_cast< unsigned int >( vnlOptimizer->get_num_evaluations() )
+  if ( static_cast< unsigned int >( m_VnlOptimizer->get_num_evaluations() )
        < m_MaximumNumberOfIterations )
     {
     m_StopConditionDescription << "Both parameters convergence tolerance ("
@@ -285,7 +285,7 @@ AmoebaOptimizer
                                << ") and function convergence tolerance ("
                                << m_FunctionConvergenceTolerance
                                << ") have been met in "
-                               << vnlOptimizer->get_num_evaluations()
+                               << m_VnlOptimizer->get_num_evaluations()
                                << " iterations.";
     }
   else
@@ -294,8 +294,6 @@ AmoebaOptimizer
                                << " Number of iterations is "
                                << m_MaximumNumberOfIterations;
     }
-
-  delete vnlOptimizer;
   this->InvokeEvent( EndEvent() );
 }
 

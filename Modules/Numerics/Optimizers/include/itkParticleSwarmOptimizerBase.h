@@ -154,15 +154,6 @@ public:
    */
   void PrintSwarm( std::ostream& os, Indent indent ) const;
 
-  /**Expose the use of defualt values, possibly make class variables (static)?*/
-  const unsigned int DEFAULT_NUMBER_OF_PARTICLES;
-  const unsigned int DEFAULT_MAXIMAL_NUMBER_OF_ITERATIONS;
-  const ParametersType::ValueType DEFAULT_PARAMETERS_CONVERGENCE_TOLERANCE;
-  const double DEFAULT_PERCENTAGE_PARTICLES_CONVERGED;
-  const CostFunctionType::MeasureType DEFAULT_FUNCTION_CONVERGENCE_TOLERANCE;
-  const unsigned int DEFAULT_NUMBER_GENERATIONS_MIN_IMPROVEMENT;
-
-
 protected:
   ParticleSwarmOptimizerBase();
   virtual ~ParticleSwarmOptimizerBase() {};
@@ -201,7 +192,6 @@ protected:
   std::vector<CostFunctionType::MeasureType>   m_FunctionBestValueMemory;
   ParametersType                               m_ParametersBestValue;
   unsigned int                                 m_IterationIndex;
-  //std::string                                  m_InitialSwarmFileName;
 };
 
 } // end namespace itk

@@ -74,10 +74,6 @@ public:
   itkSetMacro( GlobalCoefficient, double )
   itkGetMacro( GlobalCoefficient, double )
 
-  const ParametersType::ValueType DEFAULT_INERTIA_COEFFICIENT;
-  const ParametersType::ValueType DEFAULT_PERSONAL_COEFFICIENT;
-  const ParametersType::ValueType DEFAULT_GLOBAL_COEFFICIENT;
-
 protected:
   ParticleSwarmOptimizer();
   virtual ~ParticleSwarmOptimizer() {};
