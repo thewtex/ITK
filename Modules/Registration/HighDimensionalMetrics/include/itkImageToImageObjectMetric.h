@@ -121,6 +121,9 @@ class ImageToData;
  *  handled by the derived class in its \c GetValueAndDerivative method, as
  *  described in \c ImageToImageObjectMetricTest.
  *
+
+  Test change.
+
  * \ingroup ITKHighDimensionalMetrics
  */
 template<class TFixedImage,class TMovingImage,class TVirtualImage = TFixedImage>
