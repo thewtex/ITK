@@ -105,6 +105,13 @@ AmoebaOptimizer
   return costFunction->f( parameters );
 }
 
+/** Get the Optimizer */
+vnl_amoeba *
+AmoebaOptimizer
+::GetOptimizer() const
+{
+  return m_VnlOptimizer;
+}
 
 void
 AmoebaOptimizer::

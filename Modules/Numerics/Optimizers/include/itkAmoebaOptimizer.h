@@ -128,6 +128,9 @@ public:
   /** Return Current Value */
   MeasureType GetValue() const;
 
+  /** Method for getting access to the internal optimizer. */
+  vnl_amoeba * GetOptimizer(void) const;
+
 protected:
   AmoebaOptimizer();
   virtual ~AmoebaOptimizer();
