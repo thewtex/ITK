@@ -42,10 +42,8 @@ namespace itk
  * automatically (by constructing a very small simplex around the
  * initial position) or uses a user supplied simplex size.
  *
- * AmoebaOptimizer can only minimize a function.
- *
  * \ingroup Numerics Optimizers
- * \ingroup ITKOptimizers
+ * \ingroup ITK-Optimizers
  */
 class ITK_EXPORT AmoebaOptimizer:
   public SingleValuedNonLinearVnlOptimizer
@@ -70,12 +68,6 @@ public:
   /** InternalParameters typedef. */
   typedef   vnl_vector< double > InternalParametersType;
 
-  /** Internal optimizer type. */
-  typedef   vnl_amoeba InternalOptimizerType;
-
-  /** Method for getting access to the internal optimizer. */
-  vnl_amoeba * GetOptimizer(void);
-
   /** Start optimization with an initial value. */
   void StartOptimization(void);
 
@@ -84,10 +76,9 @@ public:
 
   /** Set/Get the maximum number of iterations. The optimization algorithm will
    * terminate after the maximum number of iterations has been reached.
-   * The default value is 500. */
-  virtual void SetMaximumNumberOfIterations(unsigned int n);
-
-  itkGetConstMacro(MaximumNumberOfIterations, unsigned int);
+   * The default value is defined as DEFAULT_MAXIMAL_NUMBER_OF_ITERATIONS. */
+  itkSetMacro( MaximumNumberOfIterations, unsigned int );
+  itkGetConstMacro( MaximumNumberOfIterations, unsigned int );
 
   /** Set/Get the mode which determines how the amoeba algorithm
    * defines the initial simplex.  Default is
@@ -101,24 +92,34 @@ public:
   itkBooleanMacro(AutomaticInitialSimplex);
   itkGetConstMacro(AutomaticInitialSimplex, bool);
 
+  /** Set/Get the mode that determines if we want to use multiple runs of the
+   * Amoeba optimizer. If true, then the optimizer is rerun after it converges.
+   * The additional runs are performed using a simplex initialized with the
+   * best solution obtained by the previous runs. The edge length is half of
+   * that from the previous iteration.
+   */
+  itkSetMacro(OptimizeWithRestarts, bool);
+  itkBooleanMacro(OptimizeWithRestarts);
+  itkGetConstMacro(OptimizeWithRestarts, bool);
+
   /** Set/Get the deltas that are used to define the initial simplex
    * when AutomaticInitialSimplex is off. */
-  itkSetMacro(InitialSimplexDelta, ParametersType);
+  void SetInitialSimplexDelta(ParametersType initialSimplexDelta,
+                              bool automaticInitialSimplex = false);
   itkGetConstMacro(InitialSimplexDelta, ParametersType);
 
   /** The optimization algorithm will terminate when the simplex
-   * diameter and the difference in cost function at the corners of
+   * diameter and the difference in cost function values at the corners of
    * the simplex falls below user specified thresholds.  The simplex
-   * diameter threshold is set via method
-   * SetParametersConvergenceTolerance() with the default value being
-   * 1e-8.  The cost function convergence threshold is set via method
-   * SetFunctionConvergenceTolerance() with the default value being
-   * 1e-4. */
-  virtual void SetParametersConvergenceTolerance(double tol);
-
+   * diameter threshold is set via SetParametersConvergenceTolerance() with the
+   * default value defined as DEFAULT_PARAMETERS_CONVERGENCE_TOLERANCE.  The
+   * cost function convergence threshold is set via
+   * SetFunctionConvergenceTolerance() with the default value defined as
+   * DEFAULT_FUNCTION_CONVERGENCE_TOLERANCE. */
+  itkSetMacro(ParametersConvergenceTolerance, double);
   itkGetConstMacro(ParametersConvergenceTolerance, double);
-  virtual void SetFunctionConvergenceTolerance(double tol);
 
+  itkSetMacro(FunctionConvergenceTolerance, double);
   itkGetConstMacro(FunctionConvergenceTolerance, double);
 
   /** Report the reason for stopping. */
@@ -134,17 +135,19 @@ protected:
 
   typedef Superclass::CostFunctionAdaptorType CostFunctionAdaptorType;
 private:
+  /**Check that the settings are valid. If not throw an exception.*/
+  void ValidateSettings();
+
   AmoebaOptimizer(const Self &); //purposely not implemented
   void operator=(const Self &);  //purposely not implemented
 
-  bool                   m_OptimizerInitialized;
-  InternalOptimizerType *m_VnlOptimizer;
-  unsigned int           m_MaximumNumberOfIterations;
-  double                 m_ParametersConvergenceTolerance;
-  double                 m_FunctionConvergenceTolerance;
-
-  bool           m_AutomaticInitialSimplex;
-  ParametersType m_InitialSimplexDelta;
+  unsigned int                    m_MaximumNumberOfIterations;
+  ParametersType::ValueType       m_ParametersConvergenceTolerance;
+  CostFunctionType::MeasureType   m_FunctionConvergenceTolerance;
+  bool                            m_AutomaticInitialSimplex;
+  ParametersType                  m_InitialSimplexDelta;
+  bool                            m_OptimizeWithRestarts;
+  vnl_amoeba *                    m_VnlOptimizer;
 
   std::ostringstream m_StopConditionDescription;
 };
