@@ -210,9 +210,6 @@ ScalarImageToRunLengthMatrixFilter<TImageType, THistogramFrequencyContainer>
       PixelType pixelIntensity;
       IndexType index;
 
-if (1) {
-
-
       index = centerIndex + offset;
       IndexType lastGoodIndex = centerIndex;
       bool runLengthSegmentAlreadyVisited = false;
@@ -267,35 +264,7 @@ if (1) {
 
       run[0] = centerPixelIntensity;
       run[1] = centerPoint.EuclideanDistanceTo( point );
-} else {
 
-      index = centerIndex;
-      pixelIntensity = this->GetInput()->GetPixel( index );
-      while( pixelIntensity >= centerBinMin &&
-        pixelIntensity <= centerBinMax &&
-        !alreadyVisitedImage->GetPixel( index ) )
-        {
-        alreadyVisitedImage->SetPixel( index, true );
-        index += offset;
-        if( this->GetInput()->GetRequestedRegion().IsInside( index ) )
-          {
-          pixelIntensity = this->GetInput()->GetPixel( index );
-          }
-        else
-          {
-          break;
-          }
-        }
-
-      PointType centerPoint;
-      this->GetInput()->TransformIndexToPhysicalPoint(
-        centerIndex, centerPoint );
-      PointType point;
-      this->GetInput()->TransformIndexToPhysicalPoint( index, point );
-
-      run[0] = centerPixelIntensity;
-      run[1] = centerPoint.EuclideanDistanceTo( point );
-}
       if( run[1] >= this->m_MinDistance && run[1] <= this->m_MaxDistance )
         {
         output->IncreaseFrequencyOfMeasurement( run, 1 );
