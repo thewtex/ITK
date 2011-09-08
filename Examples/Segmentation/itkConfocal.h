@@ -17,28 +17,32 @@
 #include "itkConnectedComponentImageFilter.h"
 #include "itkBinaryThresholdImageFilter.h"
 
+#define DIM 3
+
 typedef   unsigned short InputPixelType;
 typedef   unsigned char OutputPixelType;
 typedef   float           InternalPixelType;
 
-typedef itk::Image< InputPixelType,  3 >   InputImageType3D;
-typedef itk::Image< OutputPixelType, 3 >   OutputImageType3D;
-typedef itk::Image< InternalPixelType, 3 >   InternalImageType3D;
-// Software Guide : EndCodeSnippet
+typedef itk::Image< InputPixelType,  DIM>   InputImageType3D;
+typedef itk::Image< OutputPixelType, DIM>   OutputImageType3D;
+typedef itk::Image< InternalPixelType, DIM>   InternalImageType3D;
 
 
 typedef itk::ImageFileReader< InputImageType3D  >  ReaderType;
 typedef itk::ImageFileWriter< OutputImageType3D >  WriterType;
+//typedef itk::ImageFileWriter< InternalImageType3D>  WriterType;
 typedef itk::MedianImageFilter<InputImageType3D,
         InternalImageType3D>  MedianFilterType;
 typedef itk::IntensityWindowingImageFilter< InternalImageType3D,
         InternalImageType3D >  IntensityFilterType;
+//typedef itk::IntensityWindowingImageFilter< InputImageType3D,
+        //InternalImageType3D >  IntensityFilterType;
 typedef itk::RecursiveGaussianImageFilter< InternalImageType3D,
         InternalImageType3D > GaussianFilterType;
 
 typedef itk::ResampleImageFilter< InternalImageType3D,
         InternalImageType3D>  ResampleFilterType;
-typedef itk::IdentityTransform< double, 3 >  TransformType;
+typedef itk::IdentityTransform< double, DIM>  TransformType;
 typedef itk::LinearInterpolateImageFunction<  InternalImageType3D,
         double >  InterpolatorType;
 typedef InputImageType3D::SizeType::SizeValueType SizeValueType;
@@ -49,7 +53,7 @@ typedef itk::RescaleIntensityImageFilter<InternalImageType3D,
 
 typedef unsigned char LabelPixelType;
 typedef itk::Image< LabelPixelType,
-      3>   LabelImageType;
+      DIM>   LabelImageType;
 typedef itk::BinaryThresholdImageFilter< InternalImageType3D,
       InternalImageType3D > ThresholdFilterType;
 typedef itk::ConnectedComponentImageFilter< InternalImageType3D,
