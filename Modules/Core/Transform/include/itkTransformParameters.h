@@ -40,6 +40,7 @@ public:
   typedef Array< TValueType >                 Superclass;
   typedef Superclass                          ArrayType;
   typedef typename Superclass::VnlVectorType  VnlVectorType;
+  typedef typename Superclass::SizeType       SizeType;
 
   /** Helper class for managing different types of parameter
    * data. */
