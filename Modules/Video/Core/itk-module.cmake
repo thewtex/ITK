@@ -1,0 +1,1 @@
+itk_module(ITKVideoCore DEPENDS ITKCommon TEST_DEPENDS ITKTestKernel ITKIOVideo)
