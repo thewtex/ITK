@@ -259,7 +259,6 @@ ScalarImageToRunLengthMatrixFilter<TImageType, THistogramFrequencyContainer>
       this->GetInput()->TransformIndexToPhysicalPoint(
         centerIndex, centerPoint );
       PointType point;
-      this->GetInput()->TransformIndexToPhysicalPoint( index, point );
       this->GetInput()->TransformIndexToPhysicalPoint( lastGoodIndex, point );
 
       run[0] = centerPixelIntensity;

@@ -228,7 +228,6 @@ int itkScalarImageToRunLengthFeaturesFilterTest(int, char* [] )
         std::cerr << "Error. Deviation for feature " << counter << " is " << sIt.Value() <<
         ", expected " << expectedDeviations[counter] << "." << std::endl;
         passed = false;
-        printf("%f\n", sIt.Value());
         }
       }
 
