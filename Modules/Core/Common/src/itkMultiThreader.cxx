@@ -118,12 +118,22 @@ ThreadIdType MultiThreader::GetGlobalDefaultNumberOfThreads()
     m_GlobalDefaultNumberOfThreads =
       atoi( itkGlobalDefaultNumberOfThreadsEnv.c_str() );
     }
+  // Respect the NSLOTS evnironmental variable set by the common open source
+  // batch processing systems (SGE and Oracle Grid Engine)
+  // If ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS is set to a positive
+  // non zero value, then the value of NSLOTS is ignored.
+  if ( m_GlobalDefaultNumberOfThreads <= 0
+       && itksys::SystemTools::GetEnv("NSLOTS",
+                                   itkGlobalDefaultNumberOfThreadsEnv) )
+    {
+    m_GlobalDefaultNumberOfThreads =
+      atoi( itkGlobalDefaultNumberOfThreadsEnv.c_str() );
+    }
 
   // otherwise, set number of threads based on system information
   if ( m_GlobalDefaultNumberOfThreads <= 0 )
     {
-    ThreadIdType num;
-    num = GetGlobalDefaultNumberOfThreadsByPlatform();
+    const ThreadIdType num = GetGlobalDefaultNumberOfThreadsByPlatform();
     m_GlobalDefaultNumberOfThreads = num;
     }
 
