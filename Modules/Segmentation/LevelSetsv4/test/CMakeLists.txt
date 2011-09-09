@@ -1,6 +1,6 @@
 itk_module_test()
 set(ITKLevelSetsv4Tests
-itkLevelSetImageBaseTest.cxx
+itkLevelSetDenseImageBaseTest.cxx
 itkWhitakerSparseLevelSetBaseTest.cxx
 itkShiSparseLevelSetBaseTest.cxx
 itkMalcolmSparseLevelSetBaseTest.cxx
@@ -32,7 +32,7 @@ itkTwoLevelSetSparse2DTest.cxx
 itkTwoLevelSetMalcolm2DTest.cxx
 itkTwoLevelSetShiSparse2DTest.cxx
 # multi level set
-itkMultiLevelSetImageTest.cxx
+itkMultiLevelSetDenseImageTest.cxx
 itkMultiLevelSetChanAndVeseInternalTermTest.cxx
 itkMultiLevelSetEvolutionTest.cxx
 # stopping criterion
@@ -41,8 +41,8 @@ itkLevelSetEvolutionNumberOfIterationsStoppingCriterionTest.cxx
 
 CreateTestDriver(ITKLevelSetsv4  "${ITKLevelSetsv4-Test_LIBRARIES}" "${ITKLevelSetsv4Tests}")
 
-itk_add_test(NAME itkLevelSetsv4ImageBaseTest
-      COMMAND ITKLevelSetsv4TestDriver itkLevelSetImageBaseTest)
+itk_add_test(NAME itkLevelSetDenseImageBaseTest
+      COMMAND ITKLevelSetsv4TestDriver itkLevelSetDenseImageBaseTest)
 itk_add_test(NAME itkWhitakerSparseLevelSetsv4BaseTest
       COMMAND ITKLevelSetsv4TestDriver itkWhitakerSparseLevelSetBaseTest)
 itk_add_test(NAME itkShiSparseLevelSetsv4BaseTest
@@ -166,8 +166,8 @@ itk_add_test(NAME itkTwoLevelSetsv4ShiSparse2DTest
 
 itk_add_test(NAME itkLevelSetEvolutionNumberOfIterationsStoppingCriterionTest
       COMMAND ITKLevelSetsv4TestDriver itkLevelSetEvolutionNumberOfIterationsStoppingCriterionTest)
-itk_add_test(NAME itkMultiLevelSetImageTest
-      COMMAND ITKLevelSetsv4TestDriver itkMultiLevelSetImageTest)
+itk_add_test(NAME itkMultiLevelSetDenseImageTest
+      COMMAND ITKLevelSetsv4TestDriver itkMultiLevelSetDenseImageTest)
 itk_add_test(NAME itkMultiLevelSetsv4ChanAndVeseInternalTermTest
       COMMAND ITKLevelSetsv4TestDriver itkMultiLevelSetChanAndVeseInternalTermTest)
 itk_add_test(NAME itkMultiLevelsv4SetEvolutionTest

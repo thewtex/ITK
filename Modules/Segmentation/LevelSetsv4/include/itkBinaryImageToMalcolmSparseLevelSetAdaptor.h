@@ -20,7 +20,7 @@
 #define __itkBinaryImageToMalcolmSparseLevelSetAdaptor_h
 
 #include "itkImage.h"
-#include "itkLevelSetImageBase.h"
+#include "itkDiscreteLevelSetImageBase.h"
 #include "itkMalcolmSparseLevelSetBase.h"
 #include "itkImageRegionIteratorWithIndex.h"
 #include "itkShapedNeighborhoodIterator.h"
