@@ -1,6 +1,6 @@
 itk_module_test()
 set(ITKLevelSetsv4Tests
-itkLevelSetImageBaseTest.cxx
+itkLevelSetDenseImageBaseTest.cxx
 itkWhitakerSparseLevelSetBaseTest.cxx
 itkShiSparseLevelSetBaseTest.cxx
 itkMalcolmSparseLevelSetBaseTest.cxx
@@ -42,7 +42,7 @@ itkLevelSetEvolutionNumberOfIterationsStoppingCriterionTest.cxx
 CreateTestDriver(ITKLevelSetsv4  "${ITKLevelSetsv4-Test_LIBRARIES}" "${ITKLevelSetsv4Tests}")
 
 itk_add_test(NAME itkLevelSetsv4ImageBaseTest
-      COMMAND ITKLevelSetsv4TestDriver itkLevelSetImageBaseTest)
+      COMMAND ITKLevelSetsv4TestDriver itkLevelSetDenseImageBaseTest)
 itk_add_test(NAME itkWhitakerSparseLevelSetsv4BaseTest
       COMMAND ITKLevelSetsv4TestDriver itkWhitakerSparseLevelSetBaseTest)
 itk_add_test(NAME itkShiSparseLevelSetsv4BaseTest

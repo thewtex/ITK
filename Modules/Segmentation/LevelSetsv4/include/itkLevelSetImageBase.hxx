@@ -24,68 +24,41 @@
 namespace itk
 {
 // ----------------------------------------------------------------------------
-template< class TImage >
-LevelSetImageBase< TImage >
-::LevelSetImageBase() : m_Image( NULL )
+template< typename TOutput, unsigned int VDimension >
+LevelSetImageBase< TOutput, VDimension >
+::LevelSetImageBase()
 {
   this->m_NeighborhoodScales.Fill( NumericTraits< OutputRealType >::One );
 }
 
 // ----------------------------------------------------------------------------
-template< class TImage >
-LevelSetImageBase< TImage >
+template< typename TOutput, unsigned int VDimension >
+LevelSetImageBase< TOutput, VDimension >
 ::~LevelSetImageBase()
 {
 }
 
 // ----------------------------------------------------------------------------
-template< class TImage >
-void
-LevelSetImageBase< TImage >
-::SetImage( ImageType* iImage )
-{
-  this->m_Image = iImage;
-  typename ImageType::SpacingType spacing = m_Image->GetSpacing();
-
-  for( unsigned int dim = 0; dim < Dimension; dim++ )
-    {
-    m_NeighborhoodScales[dim] =
-      NumericTraits< OutputRealType >::One / static_cast< OutputRealType >( spacing[dim ] );
-    }
-  this->Modified();
-}
-
-// ----------------------------------------------------------------------------
-template< class TImage >
-typename LevelSetImageBase< TImage >::OutputType
-LevelSetImageBase< TImage >::Evaluate( const InputType& iP ) const
-{
-  return this->m_Image->GetPixel( iP );
-}
-
-// ----------------------------------------------------------------------------
-template< class TImage >
-typename LevelSetImageBase< TImage >::GradientType
-LevelSetImageBase< TImage >::EvaluateGradient( const InputType& iP ) const
+template< typename TOutput, unsigned int VDimension >
+typename LevelSetImageBase< TOutput, VDimension >::GradientType
+LevelSetImageBase< TOutput, VDimension >::EvaluateGradient( const InputType& iP ) const
 {
   InputType pA = iP;
   InputType pB = iP;
 
   GradientType dx;
 
-  const RegionType largestRegion = this->m_Image->GetLargestPossibleRegion();
-
   for( unsigned int dim = 0; dim < Dimension; dim++ )
     {
     pA[dim] += 1;
     pB[dim] -= 1;
 
-    if( !largestRegion.IsInside( pA ) )
+    if( !this->IsInside( iP ) )
       {
       pA[dim] = iP[dim];
       }
 
-    if( !largestRegion.IsInside( pB ) )
+    if( !this->IsInside( iP ) )
       {
       pB[dim] = iP[dim];
       }
@@ -107,9 +80,9 @@ LevelSetImageBase< TImage >::EvaluateGradient( const InputType& iP ) const
 // ----------------------------------------------------------------------------
 
 // ----------------------------------------------------------------------------
-template< class TImage >
-typename LevelSetImageBase< TImage >::HessianType
-LevelSetImageBase< TImage >
+template< typename TOutput, unsigned int VDimension >
+typename LevelSetImageBase< TOutput, VDimension >::HessianType
+LevelSetImageBase< TOutput, VDimension >
 ::EvaluateHessian( const InputType& iP ) const
 {
   HessianType oHessian;
@@ -129,14 +102,12 @@ LevelSetImageBase< TImage >
     pA[dim1] += 1;
     pB[dim1] -= 1;
 
-    const RegionType largestRegion = this->m_Image->GetLargestPossibleRegion();
-
-    if( !largestRegion.IsInside( pA ) )
+    if( !this->IsInside( pA ) )
       {
       pA[dim1] = iP[dim1];
       }
 
-    if( !largestRegion.IsInside( pB ) )
+    if( !this->IsInside( pB ) )
       {
       pB[dim1] = iP[dim1];
       }
@@ -161,22 +132,22 @@ LevelSetImageBase< TImage >
       pCa[dim2] -= 1;
       pDa[dim2] += 1;
 
-      if( !largestRegion.IsInside( pAa ) )
+      if( !this->IsInside( pAa ) )
         {
         pAa[dim2] = pB[dim2];
         }
 
-      if( !largestRegion.IsInside( pBa ) )
+      if( !this->IsInside( pBa ) )
         {
         pBa[dim2] = pB[dim2];
         }
 
-      if( !largestRegion.IsInside( pCa ) )
+      if( !this->IsInside( pCa ) )
         {
         pCa[dim2] = pA[dim2];
         }
 
-      if( !largestRegion.IsInside( pDa ) )
+      if( !this->IsInside( pDa ) )
         {
         pDa[dim2] = pA[dim2];
         }
@@ -205,9 +176,9 @@ LevelSetImageBase< TImage >
 }
 
 // ----------------------------------------------------------------------------
-template< class TImage >
-typename LevelSetImageBase< TImage >::OutputRealType
-LevelSetImageBase< TImage >
+template< typename TOutput, unsigned int VDimension >
+typename LevelSetImageBase< TOutput, VDimension >::OutputRealType
+LevelSetImageBase< TOutput, VDimension >
 ::EvaluateLaplacian( const InputType& iP ) const
 {
   OutputRealType oLaplacian = NumericTraits< OutputRealType >::Zero;
@@ -217,19 +188,17 @@ LevelSetImageBase< TImage >
   InputType pA = iP;
   InputType pB = iP;
 
-  const RegionType largestRegion = this->m_Image->GetLargestPossibleRegion();
-
   for( unsigned int dim1 = 0; dim1 < Dimension; dim1++ )
     {
     pA[dim1] += 1;
     pB[dim1] -= 1;
 
-    if( !largestRegion.IsInside( pA ) )
+    if( !this->IsInside( pA ) )
       {
       pA[dim1] = iP[dim1];
       }
 
-    if( !largestRegion.IsInside( pB ) )
+    if( !this->IsInside( pB ) )
       {
       pB[dim1] = iP[dim1];
       }
@@ -248,9 +217,9 @@ LevelSetImageBase< TImage >
 }
 
 // ----------------------------------------------------------------------------
-template< class TImage >
+template< typename TOutput, unsigned int VDimension >
 void
-LevelSetImageBase< TImage >
+LevelSetImageBase< TOutput, VDimension >
 ::Evaluate( const InputType& iP, LevelSetDataType& ioData ) const
 {
   // If it has not already been computed before
@@ -259,14 +228,14 @@ LevelSetImageBase< TImage >
     return;
     }
 
-  ioData.Value.m_Value = m_Image->GetPixel( iP );
+  ioData.Value.m_Value = this->Evaluate( iP );
   ioData.Value.m_Computed = true;
 }
 
 // ----------------------------------------------------------------------------
-template< class TImage >
+template< typename TOutput, unsigned int VDimension >
 void
-LevelSetImageBase< TImage >
+LevelSetImageBase< TOutput, VDimension >
 ::EvaluateGradient( const InputType& iP, LevelSetDataType& ioData ) const
 {
   if( ioData.Gradient.m_Computed )
@@ -281,19 +250,17 @@ LevelSetImageBase< TImage >
   InputType pA = iP;
   InputType pB = iP;
 
-  const RegionType largestRegion = this->m_Image->GetLargestPossibleRegion();
-
   for( unsigned int dim = 0; dim < Dimension; dim++ )
     {
     pA[dim] += 1;
     pB[dim] -= 1;
 
-    if( !largestRegion.IsInside( pA ) )
+    if( !this->IsInside( pA ) )
       {
       pA[dim] = iP[dim];
       }
 
-    if( !largestRegion.IsInside( pB ) )
+    if( !this->IsInside( pB ) )
       {
       pB[dim] = iP[dim];
       }
@@ -311,9 +278,9 @@ LevelSetImageBase< TImage >
 }
 
 // ----------------------------------------------------------------------------
-template< class TImage >
+template< typename TOutput, unsigned int VDimension >
 void
-LevelSetImageBase< TImage >
+LevelSetImageBase< TOutput, VDimension >
 ::EvaluateHessian( const InputType& iP, LevelSetDataType& ioData ) const
 {
   if( ioData.Hessian.m_Computed )
@@ -341,19 +308,17 @@ LevelSetImageBase< TImage >
   bool backward = ioData.BackwardGradient.m_Computed;
   bool forward = ioData.ForwardGradient.m_Computed;
 
-  const RegionType largestRegion = this->m_Image->GetLargestPossibleRegion();
-
   for( unsigned int dim1 = 0; dim1 < Dimension; dim1++ )
     {
     pA[dim1] += 1;
     pB[dim1] -= 1;
 
-    if( !largestRegion.IsInside( pA ) )
+    if( !this->IsInside( pA ) )
       {
       pA[dim1] = iP[dim1];
       }
 
-    if( !largestRegion.IsInside( pB ) )
+    if( !this->IsInside( pB ) )
       {
       pB[dim1] = iP[dim1];
       }
@@ -392,22 +357,22 @@ LevelSetImageBase< TImage >
       pCa[dim2] -= 1;
       pDa[dim2] += 1;
 
-      if( !largestRegion.IsInside( pAa ) )
+      if( !this->IsInside( pAa ) )
         {
         pAa[dim2] = pB[dim2];
         }
 
-      if( !largestRegion.IsInside( pBa ) )
+      if( !this->IsInside( pBa ) )
         {
         pBa[dim2] = pB[dim2];
         }
 
-      if( !largestRegion.IsInside( pCa ) )
+      if( !this->IsInside( pCa ) )
         {
         pCa[dim2] = pA[dim2];
         }
 
-      if( !largestRegion.IsInside( pDa ) )
+      if( !this->IsInside( pDa ) )
         {
         pDa[dim2] = pA[dim2];
         }
@@ -437,9 +402,46 @@ LevelSetImageBase< TImage >
 }
 
 // ----------------------------------------------------------------------------
-template< class TImage >
+template< typename TOutput, unsigned int VDimension >
+typename LevelSetImageBase< TOutput, VDimension >::OutputRealType
+LevelSetImageBase< TOutput, VDimension >
+::EvaluateMeanCurvature( const InputType& iP ) const
+{
+  OutputRealType oValue = NumericTraits< OutputRealType >::Zero;
+
+  HessianType   hessian = this->EvaluateHessian( iP );
+  GradientType  grad = this->EvaluateGradient( iP );
+
+  for( unsigned int i = 0; i < Dimension; i++ )
+    {
+    for( unsigned int j = 0; j < Dimension; j++ )
+      {
+      if( j != i )
+        {
+        oValue -= grad[i] * grad[j] * hessian[i][j];
+        oValue += hessian[j][j] * grad[i] * grad[i];
+        }
+      }
+    }
+
+  OutputRealType gradNorm = grad.GetNorm();
+
+  if( gradNorm > vnl_math::eps )
+    {
+    oValue /= ( gradNorm * gradNorm * gradNorm );
+    }
+  else
+    {
+    oValue /= ( NumericTraits< OutputRealType >::One + gradNorm );
+    }
+
+  return oValue;
+}
+
+// ----------------------------------------------------------------------------
+template< typename TOutput, unsigned int VDimension >
 void
-LevelSetImageBase< TImage >
+LevelSetImageBase< TOutput, VDimension >
 ::EvaluateLaplacian( const InputType& iP, LevelSetDataType& ioData ) const
 {
   if( ioData.Laplacian.m_Computed )
@@ -453,25 +455,22 @@ LevelSetImageBase< TImage >
     ioData.Value.m_Computed = true;
     }
 
-  // compute the hessian
   const OutputRealType center_value = static_cast< OutputRealType >( ioData.Value.m_Value );
 
   InputType pA =iP;
   InputType pB = iP;
-
-  const RegionType largestRegion = this->m_Image->GetLargestPossibleRegion();
 
   for( unsigned int dim1 = 0; dim1 < Dimension; dim1++ )
     {
     pA[dim1] += 1;
     pB[dim1] -= 1;
 
-    if( !largestRegion.IsInside( pA ) )
+    if( !this->IsInside( pA ) )
       {
       pA[dim1] = iP[dim1];
       }
 
-    if( !largestRegion.IsInside( pB ) )
+    if( !this->IsInside( pB ) )
       {
       pB[dim1] = iP[dim1];
       }
@@ -490,9 +489,62 @@ LevelSetImageBase< TImage >
 }
 
 // ----------------------------------------------------------------------------
-template< class TImage >
+template< typename TOutput, unsigned int VDimension >
 void
-LevelSetImageBase< TImage >
+LevelSetImageBase< TOutput, VDimension >
+::EvaluateMeanCurvature( const InputType& iP, LevelSetDataType& ioData ) const
+{
+  if( !ioData.MeanCurvature.m_Computed )
+    {
+    if( !ioData.Hessian.m_Computed )
+      {
+      EvaluateHessian( iP, ioData );
+      }
+
+    if( !ioData.Gradient.m_Computed )
+      {
+      EvaluateGradient( iP, ioData );
+      }
+
+    if( !ioData.GradientNorm.m_Computed )
+      {
+      EvaluateGradientNorm( iP, ioData );
+      }
+
+    ioData.MeanCurvature.m_Computed = true;
+    ioData.MeanCurvature.m_Value = NumericTraits< OutputRealType >::Zero;
+
+    for( unsigned int i = 0; i < Dimension; i++ )
+      {
+      for( unsigned int j = 0; j < Dimension; j++ )
+        {
+        if( j != i )
+          {
+          ioData.MeanCurvature.m_Value -= ioData.Gradient.m_Value[i]
+              * ioData.Gradient.m_Value[j] * ioData.Hessian.m_Value[i][j];
+          ioData.MeanCurvature.m_Value += ioData.Hessian.m_Value[j][j]
+              * ioData.Gradient.m_Value[i] * ioData.Gradient.m_Value[i];
+          }
+        }
+      }
+
+    OutputRealType temp = ioData.GradientNorm.m_Value;
+
+    if( temp > vnl_math::eps )
+      {
+      ioData.MeanCurvature.m_Value /= ( temp * temp * temp );
+      }
+    else
+      {
+      ioData.MeanCurvature.m_Value /= ( NumericTraits< OutputRealType >::One + temp );
+      }
+    }
+}
+
+// ----------------------------------------------------------------------------
+template< typename TOutput, unsigned int VDimension >
+void
+LevelSetImageBase< TOutput, VDimension >
 ::EvaluateForwardGradient( const InputType& iP, LevelSetDataType& ioData ) const
 {
   if( ioData.ForwardGradient.m_Computed )
@@ -513,13 +565,11 @@ LevelSetImageBase< TImage >
 
   GradientType dx;
 
-  const RegionType largestRegion = this->m_Image->GetLargestPossibleRegion();
-
   for( unsigned int dim = 0; dim < Dimension; dim++ )
     {
     pA[dim] += 1;
 
-    if( !largestRegion.IsInside( pA ) )
+    if( !this->IsInside( pA ) )
       {
       pA[dim] = iP[dim];
       }
@@ -537,9 +587,9 @@ LevelSetImageBase< TImage >
 }
 
 // ----------------------------------------------------------------------------
-template< class TImage >
+template< typename TOutput, unsigned int VDimension >
 void
-LevelSetImageBase< TImage >
+LevelSetImageBase< TOutput, VDimension >
 ::EvaluateBackwardGradient( const InputType& iP, LevelSetDataType& ioData ) const
 {
   if( ioData.BackwardGradient.m_Computed )
@@ -560,13 +610,12 @@ LevelSetImageBase< TImage >
   InputType pA = iP;
 
   GradientType dx;
-  const RegionType largestRegion = this->m_Image->GetLargestPossibleRegion();
 
   for( unsigned int dim = 0; dim < Dimension; dim++ )
     {
     pA[dim] -= 1;
 
-    if( !largestRegion.IsInside( pA ) )
+    if( !this->IsInside( pA ) )
       {
       pA[dim] = iP[dim];
       }
@@ -584,20 +633,18 @@ LevelSetImageBase< TImage >
 }
 
 // ----------------------------------------------------------------------------
-template< class TImage >
+template< typename TOutput, unsigned int VDimension >
 void
-LevelSetImageBase< TImage >
+LevelSetImageBase< TOutput, VDimension >
 ::Initialize()
 {
   Superclass::Initialize();
-
-  this->m_Image = NULL;
 }
 
 // ----------------------------------------------------------------------------
-template< class TImage >
+template< typename TOutput, unsigned int VDimension >
 void
-LevelSetImageBase< TImage >
+LevelSetImageBase< TOutput, VDimension >
 ::CopyInformation(const DataObject *data)
 {
   Superclass::CopyInformation( data );
@@ -626,9 +673,9 @@ LevelSetImageBase< TImage >
 }
 
 // ----------------------------------------------------------------------------
-template< class TImage >
+template< typename TOutput, unsigned int VDimension >
 void
-LevelSetImageBase< TImage >
+LevelSetImageBase< TOutput, VDimension >
 ::Graft( const DataObject* data )
 {
   Superclass::Graft( data );
@@ -654,7 +701,7 @@ LevelSetImageBase< TImage >
                        << typeid( Self * ).name() );
     }
 
-  this->m_Image = LevelSet->m_Image;
+//  this->m_Image = LevelSet->m_Image;
   this->m_NeighborhoodScales = LevelSet->m_NeighborhoodScales;
 }
 
