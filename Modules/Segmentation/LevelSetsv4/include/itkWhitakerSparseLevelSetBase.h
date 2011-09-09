@@ -19,7 +19,7 @@
 #ifndef __itkWhitakerSparseLevelSetBase_h
 #define __itkWhitakerSparseLevelSetBase_h
 
-#include "itkLevelSetBase.h"
+#include "itkLevelSetSparseImageBase.h"
 #include "itkLabelObject.h"
 #include "itkLabelMap.h"
 
@@ -37,89 +37,53 @@ namespace itk
  *  \tparam VDimension Dimension of the input space
  *  \ingroup ITKLevelSetsv4
  */
-template< typename TOutput,
-          unsigned int VDimension >
+template< typename TOutput, unsigned int VDimension >
 class WhitakerSparseLevelSetBase :
-    public LevelSetBase< Index< VDimension >,
-                         VDimension,
-                         TOutput,
-                         ImageBase< VDimension > >
+    public LevelSetSparseImageBase< TOutput, VDimension >
 {
 public:
-  typedef Index< VDimension >                       IndexType;
-  typedef TOutput                                   OutputType;
-  typedef ImageBase< VDimension >                   ImageBaseType;
-
-  typedef WhitakerSparseLevelSetBase                Self;
-  typedef SmartPointer< Self >                      Pointer;
-  typedef SmartPointer< const Self >                ConstPointer;
-  typedef LevelSetBase< IndexType, VDimension, OutputType, ImageBaseType >
-                                                    Superclass;
+  typedef WhitakerSparseLevelSetBase                      Self;
+  typedef SmartPointer< Self >                            Pointer;
+  typedef SmartPointer< const Self >                      ConstPointer;
+  typedef LevelSetSparseImageBase< TOutput, VDimension >  Superclass;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
 
   /** Run-time type information (and related methods). */
-  itkTypeMacro(WhitakerSparseLevelSetBase, LevelSetBase);
+  itkTypeMacro(WhitakerSparseLevelSetBase, LevelSetSparseImageBase);
 
-  itkStaticConstMacro ( Dimension, unsigned int,
-                        VDimension );
+  itkStaticConstMacro ( Dimension, unsigned int, VDimension );
 
   typedef typename Superclass::InputType        InputType;
+  typedef typename Superclass::OutputType       OutputType;
   typedef typename Superclass::OutputRealType   OutputRealType;
   typedef typename Superclass::GradientType     GradientType;
   typedef typename Superclass::HessianType      HessianType;
   typedef typename Superclass::LevelSetDataType LevelSetDataType;
 
-  typedef int8_t                                 LayerIdType;
-  typedef LabelObject< LayerIdType, VDimension > LabelObjectType;
-  typedef typename LabelObjectType::Pointer      LabelObjectPointer;
-  typedef typename LabelObjectType::LengthType   LabelObjectLengthType;
-  typedef typename LabelObjectType::LineType     LabelObjectLineType;
+  typedef typename Superclass::LayerIdType            LayerIdType;
+  typedef typename Superclass::LabelObjectType        LabelObjectType;
+  typedef typename Superclass::LabelObjectPointer     LabelObjectPointer;
+  typedef typename Superclass::LabelObjectLengthType  LabelObjectLengthType;
+  typedef typename Superclass::LabelObjectLineType    LabelObjectLineType;
 
-  typedef LabelMap< LabelObjectType >         LabelMapType;
-  typedef typename LabelMapType::Pointer      LabelMapPointer;
-  typedef typename LabelMapType::RegionType   RegionType;
+  typedef typename Superclass::LabelMapType     LabelMapType;
+  typedef typename Superclass::LabelMapPointer  LabelMapPointer;
+  typedef typename Superclass::RegionType       RegionType;
 
-  typedef std::map< IndexType, OutputType,
-                    Functor::IndexLexicographicCompare< VDimension > >
-                                                  LayerType;
-  typedef typename LayerType::iterator            LayerIterator;
-  typedef typename LayerType::const_iterator      LayerConstIterator;
+  typedef typename Superclass::LayerType          LayerType;
+  typedef typename Superclass::LayerIterator      LayerIterator;
+  typedef typename Superclass::LayerConstIterator LayerConstIterator;
 
-  typedef std::map< LayerIdType, LayerType >      LayerMapType;
-  typedef typename LayerMapType::iterator         LayerMapIterator;
-  typedef typename LayerMapType::const_iterator   LayerMapConstIterator;
-
-  /** Returns the layer affiliation of a given location iP */
-  virtual LayerIdType Status( const InputType& iP ) const;
+  typedef typename Superclass::LayerMapType           LayerMapType;
+  typedef typename Superclass::LayerMapIterator       LayerMapIterator;
+  typedef typename Superclass::LayerMapConstIterator  LayerMapConstIterator;
 
   /** Returns the value of the level set function at a given location iP */
   virtual OutputType Evaluate( const InputType& iP ) const;
 
-  /** Returns the gradient of the level set function at a given location iP */
-  virtual GradientType EvaluateGradient( const InputType& iP ) const;
-
-  /** Returns the Hessian of the level set function at a given location iP */
-  virtual HessianType EvaluateHessian( const InputType& iP ) const;
-
-  /** Returns the Laplacian of the level set function at a given location iP */
-  virtual OutputRealType EvaluateLaplacian( const InputType& iP ) const;
-
   virtual void Evaluate( const InputType& iP, LevelSetDataType& ioData ) const;
-  virtual void EvaluateGradient( const InputType& iP, LevelSetDataType& ioData ) const;
-  virtual void EvaluateHessian( const InputType& iP, LevelSetDataType& ioData ) const;
-  virtual void EvaluateLaplacian( const InputType& iP, LevelSetDataType& ioData ) const;
-
-  /** Returns the gradient of the level set function at a given location iP
-   * as part of the LevelSetDataType
-   * \todo to be implemented */
-  virtual void EvaluateForwardGradient( const InputType& iP, LevelSetDataType& ioData ) const;
-
-  /** Returns the gradient of the level set function at a given location iP
-   * as part of the LevelSetDataType
-   * \todo to be implemented */
-  virtual void EvaluateBackwardGradient( const InputType& iP, LevelSetDataType& ioData ) const;
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   /** Begin concept checking */
@@ -130,22 +94,13 @@ public:
   /** End concept checking */
 #endif // ITK_USE_CONCEPT_CHECKING
 
-static inline LayerIdType MinusThreeLayer() { return -3; }
-static inline LayerIdType MinusTwoLayer() { return -2; }
-static inline LayerIdType MinusOneLayer() { return -1; }
-static inline LayerIdType ZeroLayer() { return 0; }
-static inline LayerIdType PlusOneLayer() { return 1; }
-static inline LayerIdType PlusTwoLayer() { return 2; }
-static inline LayerIdType PlusThreeLayer() { return 3; }
-
-  /** Return the const pointer to a layer map with given id  */
-  const LayerType& GetLayer( LayerIdType iVal ) const;
-
-  /** Return the pointer to a layer map with given id  */
-  LayerType& GetLayer( LayerIdType iVal );
-
-  /** Set a layer map with id to the given layer pointer */
-  void SetLayer( LayerIdType iVal, const LayerType& iLayer );
+  static inline LayerIdType MinusThreeLayer() { return -3; }
+  static inline LayerIdType MinusTwoLayer() { return -2; }
+  static inline LayerIdType MinusOneLayer() { return -1; }
+  static inline LayerIdType ZeroLayer() { return 0; }
+  static inline LayerIdType PlusOneLayer() { return 1; }
+  static inline LayerIdType PlusTwoLayer() { return 2; }
+  static inline LayerIdType PlusThreeLayer() { return 3; }
 
   /** Return the label object pointer with a given id */
   template< class TLabel >
@@ -155,9 +110,9 @@ static inline LayerIdType PlusThreeLayer() { return 3; }
     typedef LabelObject< TLabel, Dimension > OutputLabelObjectType;
     typename OutputLabelObjectType::Pointer object = OutputLabelObjectType::New();
 
-    for( LayerIdType status = MinusThreeLayer(); status < PlusOneLayer(); status++ )
+    for( LayerIdType status = this->MinusThreeLayer(); status < this->PlusOneLayer(); status++ )
       {
-      LabelObjectPointer labelObject = m_LabelMap->GetLabelObject( status );
+      LabelObjectPointer labelObject = this->m_LabelMap->GetLabelObject( status );
 
       for( SizeValueType i = 0; i < labelObject->GetNumberOfLines(); i++ )
         {
@@ -169,33 +124,15 @@ static inline LayerIdType PlusThreeLayer() { return 3; }
     return object;
     }
 
-  /** Set/Get the label map for computing the sparse representation */
-  virtual void SetLabelMap( LabelMapType* iLabelMap );
-  itkGetObjectMacro( LabelMap, LabelMapType );
-
-  /** Copy level set information from data object */
-  virtual void CopyInformation( const DataObject* data );
-
-  /** Graft data object as level set object */
-  virtual void Graft( const DataObject* data );
-
 protected:
 
   WhitakerSparseLevelSetBase();
   virtual ~WhitakerSparseLevelSetBase();
 
-  LayerMapType     m_Layers;
-  LabelMapPointer  m_LabelMap;
-
-  typedef GradientType ScalingType;
-  ScalingType m_NeighborhoodScales;
-
   /** Initialize the sparse field layers */
-  void InitializeLayers();
+  virtual void InitializeLayers();
 
 private:
-  /** Initialize the label map point and the sparse-field layers */
-  virtual void Initialize();
 
   WhitakerSparseLevelSetBase( const Self& ); // purposely not implemented
   void operator = ( const Self& ); // purposely not implemented
