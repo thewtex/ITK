@@ -26,10 +26,9 @@ namespace itk
 // ----------------------------------------------------------------------------
 template< unsigned int VDimension >
 ShiSparseLevelSetBase< VDimension >
-::ShiSparseLevelSetBase() : m_LabelMap( 0 )
+::ShiSparseLevelSetBase()
 {
-  InitializeLayers();
-  this->m_NeighborhoodScales.Fill( NumericTraits< OutputRealType >::One );
+  this->InitializeLayers();
 }
 
 // ----------------------------------------------------------------------------
@@ -41,42 +40,13 @@ ShiSparseLevelSetBase< VDimension >
 
 // ----------------------------------------------------------------------------
 template< unsigned int VDimension >
-void
-ShiSparseLevelSetBase< VDimension >
-::SetLabelMap( LabelMapType* iLabelMap )
-{
-  this->m_LabelMap = iLabelMap;
-
-  typedef typename LabelMapType::SpacingType  SpacingType;
-
-  SpacingType spacing = m_LabelMap->GetSpacing();
-
-  for( unsigned int dim = 0; dim < Dimension; dim++ )
-    {
-    this->m_NeighborhoodScales[dim] =
-      NumericTraits< OutputRealType >::One / static_cast< OutputRealType >( spacing[dim ] );
-    }
-  this->Modified();
-}
-
-// ----------------------------------------------------------------------------
-template< unsigned int VDimension >
-typename ShiSparseLevelSetBase< VDimension >::LayerIdType
-ShiSparseLevelSetBase< VDimension >
-::Status( const InputType& iP ) const
-{
-  return this->m_LabelMap->GetPixel( iP );
-}
-
-// ----------------------------------------------------------------------------
-template< unsigned int VDimension >
 typename ShiSparseLevelSetBase< VDimension >::OutputType
 ShiSparseLevelSetBase< VDimension >
 ::Evaluate( const InputType& iP ) const
 {
-  LayerMapConstIterator layerIt = m_Layers.begin();
+  LayerMapConstIterator layerIt = this->m_Layers.begin();
 
-  while( layerIt != m_Layers.end() )
+  while( layerIt != this->m_Layers.end() )
     {
     LayerConstIterator it = ( layerIt->second ).find( iP );
     if( it != ( layerIt->second ).end() )
@@ -87,24 +57,24 @@ ShiSparseLevelSetBase< VDimension >
     ++layerIt;
     }
 
-  if( m_LabelMap->GetLabelObject( MinusThreeLayer() )->HasIndex( iP ) )
+  if( this->m_LabelMap->GetLabelObject( this->MinusThreeLayer() )->HasIndex( iP ) )
     {
-    return static_cast<OutputType>( MinusThreeLayer() );
+    return static_cast<OutputType>( this->MinusThreeLayer() );
     }
   else
     {
-    const LayerIdType status = m_LabelMap->GetPixel( iP );
+    const LayerIdType status = this->m_LabelMap->GetPixel( iP );
 
-    if( status == PlusThreeLayer() )
+    if( status == this->PlusThreeLayer() )
       {
-      return static_cast<OutputType>( PlusThreeLayer() );
+      return static_cast<OutputType>( this->PlusThreeLayer() );
       }
     else
       {
       itkGenericExceptionMacro( <<"status "
                                 << static_cast< int >( status )
                                 << " should be 3 or -3" );
-      return static_cast<OutputType>( PlusThreeLayer() );
+      return static_cast<OutputType>( this->PlusThreeLayer() );
       }
     }
 }
@@ -115,37 +85,7 @@ typename ShiSparseLevelSetBase< VDimension >::GradientType
 ShiSparseLevelSetBase< VDimension >
 ::EvaluateGradient( const InputType& iP ) const
 {
-  InputType pA = iP;
-  InputType pB = iP;
-
-  GradientType dx;
-  const RegionType largestRegion = this->m_LabelMap->GetLargestPossibleRegion();
-
-  for( unsigned int dim = 0; dim < Dimension; dim++ )
-    {
-    pA[dim] += 1;
-    pB[dim] -= 1;
-
-    if( !largestRegion.IsInside( pA ) )
-      {
-      pA[dim] = iP[dim];
-      }
-
-    if( !largestRegion.IsInside( pB ) )
-      {
-      pB[dim] = iP[dim];
-      }
-
-    const OutputRealType valueA = static_cast< OutputRealType >( this->Evaluate( pA ) );
-    const OutputRealType valueB = static_cast< OutputRealType >( this->Evaluate( pB ) );
-    const OutputRealType scale = m_NeighborhoodScales[dim] / (pA[dim] - pB[dim]);
-
-    dx[dim] = ( valueA - valueB ) * scale;
-
-    pA[dim] = pB[dim] = iP[dim];
-    }
-
-  return dx;
+  return Superclass::EvaluateGradient( iP );
 }
 
 // ----------------------------------------------------------------------------
@@ -182,16 +122,27 @@ ShiSparseLevelSetBase< VDimension >
 
 // ----------------------------------------------------------------------------
 template< unsigned int VDimension >
+typename ShiSparseLevelSetBase< VDimension >::OutputRealType
+ShiSparseLevelSetBase< VDimension >
+::EvaluateMeanCurvature( const InputType& itkNotUsed( iP ) ) const
+{
+  itkGenericExceptionMacro( <<"The approximation of the hessian in the Shi's"
+                            <<" representation is poor, and far to be representative."
+                            <<" If it was required for regularization purpose, "
+                            <<" you better check recommended regularization methods"
+                            <<" for Shi's representation" );
+  OutputRealType oMeanCurvature;
+  oMeanCurvature = NumericTraits< OutputRealType >::Zero;
+  return oMeanCurvature;
+}
+
+// ----------------------------------------------------------------------------
+template< unsigned int VDimension >
 void
 ShiSparseLevelSetBase< VDimension >
 ::Evaluate( const InputType& iP, LevelSetDataType& ioData ) const
 {
-  // If it has not already been computed before
-  if( !ioData.Value.m_Computed )
-    {
-    ioData.Value.m_Value = this->Evaluate( iP );
-    ioData.Value.m_Computed = true;
-    }
+  Superclass::Evaluate( iP, ioData );
 }
 
 // ----------------------------------------------------------------------------
@@ -200,53 +151,7 @@ void
 ShiSparseLevelSetBase< VDimension >
 ::EvaluateGradient( const InputType& iP, LevelSetDataType& ioData ) const
 {
-  if( ioData.Gradient.m_Computed )
-    {
-    return;
-    }
-
-  // compute the gradient
-
-  if( !ioData.Value.m_Computed )
-    {
-    ioData.Value.m_Value = this->Evaluate( iP );
-    ioData.Value.m_Computed = true;
-    }
-
-  InputType pA = iP;
-  InputType pB = iP;
-
-  GradientType dx;
-
-  const RegionType largestRegion = this->m_LabelMap->GetLargestPossibleRegion();
-
-  for( unsigned int dim = 0; dim < Dimension; dim++ )
-    {
-    pA[dim] += 1;
-    pB[dim] -= 1;
-
-    if( !largestRegion.IsInside( pA ) )
-      {
-      pA[dim] = iP[dim];
-      }
-
-    if( !largestRegion.IsInside( pB ) )
-      {
-      pB[dim] = iP[dim];
-      }
-
-    const OutputRealType valueA = static_cast< OutputRealType >( this->Evaluate( pA ) );
-    const OutputRealType valueB = static_cast< OutputRealType >( this->Evaluate( pB ) );
-    const OutputRealType scale = m_NeighborhoodScales[dim] / (pA[dim] - pB[dim]);
-
-    dx[dim] = ( valueA - valueB ) * scale;
-
-    pA[dim] = pB[dim] = iP[dim];
-    }
-
-  ioData.Gradient.m_Value = dx;
-
-  ioData.Gradient.m_Computed = true;
+  Superclass::EvaluateGradient( iP, ioData );
 }
 
 // ----------------------------------------------------------------------------
@@ -255,104 +160,18 @@ void
 ShiSparseLevelSetBase< VDimension >
 ::EvaluateHessian( const InputType& iP, LevelSetDataType& ioData ) const
 {
+  (void) iP;
+
   if( ioData.Hessian.m_Computed )
     {
     return;
     }
 
-  if( !ioData.Value.m_Computed )
-    {
-    ioData.Value.m_Value = this->Evaluate( iP );
-    ioData.Value.m_Computed = true;
-    }
-
-  // compute the hessian
-  const OutputRealType center_value = static_cast< OutputRealType >( ioData.Value.m_Value );
-
-  InputType pA =iP;
-  InputType pB = iP;
-  InputType pAa;
-  InputType pBa;
-  InputType pCa;
-  InputType pDa;
-
-  const RegionType largestRegion = this->m_LabelMap->GetLargestPossibleRegion();
-
-  for( unsigned int dim1 = 0; dim1 < Dimension; dim1++ )
-    {
-    pA[dim1] += 1;
-    pB[dim1] -= 1;
-
-    if( !largestRegion.IsInside( pA ) )
-      {
-      pA[dim1] = iP[dim1];
-      }
-
-    if( !largestRegion.IsInside( pB ) )
-      {
-      pB[dim1] = iP[dim1];
-      }
-
-    const OutputRealType valueA = static_cast< OutputRealType >( this->Evaluate( pA ) );
-    const OutputRealType valueB = static_cast< OutputRealType >( this->Evaluate( pB ) );
-
-    ioData.Hessian.m_Value[dim1][dim1] =
-        ( valueA + valueB - 2.0 * center_value ) * vnl_math_sqr( m_NeighborhoodScales[dim1] );
-
-    pAa = pB;
-    pBa = pB;
-
-    pCa = pA;
-    pDa = pA;
-
-    for( unsigned int dim2 = dim1 + 1; dim2 < Dimension; dim2++ )
-      {
-      pAa[dim2] -= 1;
-      pBa[dim2] += 1;
-
-      pCa[dim2] -= 1;
-      pDa[dim2] += 1;
-
-      if( !largestRegion.IsInside( pAa ) )
-        {
-        pAa[dim2] = pB[dim2];
-        }
-
-      if( !largestRegion.IsInside( pBa ) )
-        {
-        pBa[dim2] = pB[dim2];
-        }
-
-      if( !largestRegion.IsInside( pCa ) )
-        {
-        pCa[dim2] = pA[dim2];
-        }
-
-      if( !largestRegion.IsInside( pDa ) )
-        {
-        pDa[dim2] = pA[dim2];
-        }
-
-      const OutputRealType valueAa = static_cast< OutputRealType >( this->Evaluate( pAa ) );
-      const OutputRealType valueBa = static_cast< OutputRealType >( this->Evaluate( pBa ) );
-      const OutputRealType valueCa = static_cast< OutputRealType >( this->Evaluate( pCa ) );
-      const OutputRealType valueDa = static_cast< OutputRealType >( this->Evaluate( pDa ) );
-
-      ioData.Hessian.m_Value[dim1][dim2] =
-          ioData.Hessian.m_Value[dim2][dim1] =
-          0.25 * ( valueAa - valueBa - valueCa + valueDa )
-          * m_NeighborhoodScales[dim1] * m_NeighborhoodScales[dim2];
-
-      pAa[dim2] = pB[dim2];
-      pBa[dim2] = pB[dim2];
-
-      pCa[dim2] = pA[dim2];
-      pDa[dim2] = pA[dim2];
-      }
-
-    pA[dim1] = iP[dim1];
-    pB[dim1] = iP[dim1];
-    }
+  itkGenericExceptionMacro( <<"The approximation of the hessian in the Shi's"
+                            <<" representation is poor, and far to be representative."
+                            <<" If it was required for regularization purpose, "
+                            <<" you better check recommended regularization methods"
+                            <<" for Shi's representation" );
 
   ioData.Hessian.m_Computed = true;
 }
@@ -363,49 +182,18 @@ void
 ShiSparseLevelSetBase< VDimension >
 ::EvaluateLaplacian( const InputType& iP, LevelSetDataType& ioData ) const
 {
+  (void) iP;
+
   if( ioData.Laplacian.m_Computed )
     {
     return;
     }
 
-  if( !ioData.Value.m_Computed )
-    {
-    ioData.Value.m_Value = this->Evaluate( iP );
-    ioData.Value.m_Computed = true;
-    }
-
-  // compute the hessian
-  const OutputRealType center_value = static_cast< OutputRealType >( ioData.Value.m_Value );
-
-  InputType pA = iP;
-  InputType pB = iP;
-
-  const RegionType largestRegion = this->m_LabelMap->GetLargestPossibleRegion();
-
-  for( unsigned int dim1 = 0; dim1 < Dimension; dim1++ )
-    {
-    pA[dim1] += 1;
-    pB[dim1] -= 1;
-
-    if( !largestRegion.IsInside( pA ) )
-      {
-      pA[dim1] = iP[dim1];
-      }
-
-    if( !largestRegion.IsInside( pB ) )
-      {
-      pB[dim1] = iP[dim1];
-      }
-
-    const OutputRealType valueA = static_cast< OutputRealType >( this->Evaluate( pA ) );
-    const OutputRealType valueB = static_cast< OutputRealType >( this->Evaluate( pB ) );
-
-    ioData.Laplacian.m_Value +=
-        ( valueA + valueB - 2.0 * center_value ) * vnl_math_sqr( m_NeighborhoodScales[dim1] );
-
-    pA[dim1] = iP[dim1];
-    pB[dim1] = iP[dim1];
-    }
+  itkGenericExceptionMacro( <<"The approximation of the hessian in the Shi's"
+                            <<" representation is poor, and far to be representative."
+                            <<" If it was required for regularization purpose, "
+                            <<" you better check recommended regularization methods"
+                            <<" for Shi's representation" );
 
   ioData.Laplacian.m_Computed = true;
 }
@@ -413,120 +201,25 @@ ShiSparseLevelSetBase< VDimension >
 // ----------------------------------------------------------------------------
 template< unsigned int VDimension >
 void
-ShiSparseLevelSetBase< VDimension >::Initialize()
+ShiSparseLevelSetBase< VDimension >
+::EvaluateMeanCurvature( const InputType& iP, LevelSetDataType& ioData ) const
 {
-  Superclass::Initialize();
+  (void) iP;
 
-  this->m_LabelMap = 0;
-  this->m_Layers.clear();
-  this->InitializeLayers();
+  if( ioData.MeanCurvature.m_Computed )
+    {
+    return;
+    }
+
+  itkGenericExceptionMacro( <<"The approximation of the hessian in the Shi's"
+                            <<" representation is poor, and far to be representative."
+                            <<" If it was required for regularization purpose, "
+                            <<" you better check recommended regularization methods"
+                            <<" for Shi's representation" );
+
+  ioData.MeanCurvature.m_Computed = true;
 }
 
-// ----------------------------------------------------------------------------
-template< unsigned int VDimension >
-void
-ShiSparseLevelSetBase< VDimension >::
-CopyInformation( const DataObject* data )
-{
-  Superclass::CopyInformation( data );
-
-  const Self *LevelSet = NULL;
-
-  try
-    {
-    LevelSet = dynamic_cast< const Self* >( data );
-    }
-  catch( ... )
-    {
-    // LevelSet could not be cast back down
-    itkExceptionMacro( << "itk::ShiSparseLevelSetBase::CopyInformation() cannot cast "
-                       << typeid( data ).name() << " to "
-                       << typeid( Self * ).name() );
-    }
-
-  if ( !LevelSet )
-    {
-    // pointer could not be cast back down
-    itkExceptionMacro( << "itk::ShiSparseLevelSetBase::CopyInformation() cannot cast "
-                       << typeid( data ).name() << " to "
-                       << typeid( Self * ).name() );
-    }
-}
-
-// ----------------------------------------------------------------------------
-template< unsigned int VDimension >
-void
-ShiSparseLevelSetBase< VDimension >::
-Graft( const DataObject* data )
-{
-  Superclass::Graft( data );
-  const Self *LevelSet = 0;
-
-  try
-    {
-    LevelSet = dynamic_cast< const Self* >( data );
-    }
-  catch( ... )
-    {
-    // mesh could not be cast back down
-    itkExceptionMacro( << "itk::ShiSparseLevelSetBase::CopyInformation() cannot cast "
-                       << typeid( data ).name() << " to "
-                       << typeid( Self * ).name() );
-    }
-
-  if ( !LevelSet )
-    {
-    // pointer could not be cast back down
-    itkExceptionMacro( << "itk::ShiSparseLevelSetBase::CopyInformation() cannot cast "
-                       << typeid( data ).name() << " to "
-                       << typeid( Self * ).name() );
-    }
-
-  this->m_LabelMap->Graft( LevelSet->m_LabelMap );
-  this->m_Layers = LevelSet->m_Layers;
-}
-
-// ----------------------------------------------------------------------------
-template< unsigned int VDimension >
-const typename ShiSparseLevelSetBase< VDimension >::LayerType&
-ShiSparseLevelSetBase< VDimension >::GetLayer( LayerIdType iVal ) const
-{
-  LayerMapConstIterator it = m_Layers.find( iVal );
-  if( it == m_Layers.end() )
-    {
-    itkGenericExceptionMacro( <<"This layer does not exist" );
-    }
-  return it->second;
-}
-
-// ----------------------------------------------------------------------------
-template< unsigned int VDimension >
-typename ShiSparseLevelSetBase< VDimension >::LayerType&
-ShiSparseLevelSetBase< VDimension >::GetLayer( LayerIdType iVal )
-{
-  LayerMapIterator it = m_Layers.find( iVal );
-  if( it == m_Layers.end() )
-    {
-    itkGenericExceptionMacro( <<"This layer does not exist" );
-    }
-  return it->second;
-}
-
-// ----------------------------------------------------------------------------
-template< unsigned int VDimension >
-void
-ShiSparseLevelSetBase< VDimension >::SetLayer( LayerIdType iVal, const LayerType& iLayer )
-{
-  LayerMapIterator it = m_Layers.find( iVal );
-  if( it != m_Layers.end() )
-    {
-    it->second = iLayer;
-    }
-  else
-    {
-    itkGenericExceptionMacro( <<iVal << "is out of bounds" );
-    }
-}
 
 // ----------------------------------------------------------------------------
 template< unsigned int VDimension >
@@ -570,7 +263,7 @@ ShiSparseLevelSetBase< VDimension >
     pA[dim] += 1;
 
     const OutputRealType valueA = static_cast< OutputRealType >( this->Evaluate( pA ) );
-    const OutputRealType scale = m_NeighborhoodScales[dim];
+    const OutputRealType scale = this->m_NeighborhoodScales[dim];
 
     dx[dim] = ( valueA - center_value ) * scale;
 
@@ -614,7 +307,7 @@ ShiSparseLevelSetBase< VDimension >
     pA[dim] -= 1;
 
     const OutputRealType valueA = static_cast< OutputRealType >( this->Evaluate( pA ) );
-    const OutputRealType scale = m_NeighborhoodScales[dim];
+    const OutputRealType scale = this->m_NeighborhoodScales[dim];
 
     dx[dim] = ( center_value - valueA ) * scale;
 
