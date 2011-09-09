@@ -229,8 +229,26 @@ ImageTransformer< TInputImage >
 
   // determine the actual number of pieces that will be generated
   typename TInputImage::SizeType::SizeValueType range = requestedRegionSize[splitAxis];
-  unsigned int valuesPerThread = Math::Ceil< unsigned int >(range / (double)num);
-  unsigned int maxThreadIdUsed = Math::Ceil< unsigned int >(range / (double)valuesPerThread) - 1;
+  if (num != 0)
+     {
+      unsigned int valuesPerThread = Math::Ceil< unsigned int >(range / (double)num);
+     }
+  else
+     {
+      itkDebugMacro("Division by zero: num = 0.");
+      return 1;
+     }
+
+  if (valuesPerThread !=0)
+     {
+     unsigned int maxThreadIdUsed = Math::Ceil< unsigned int >(range / (double)valuesPerThread) - 1;
+     }
+  else
+     {
+     itkDebugMacro("Division by zero: valuesPerThread = 0.");
+     return 1;
+     }
+
 
   // Split the region
   if ( i < maxThreadIdUsed )
