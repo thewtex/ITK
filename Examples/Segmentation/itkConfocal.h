@@ -30,13 +30,10 @@ typedef itk::Image< InternalPixelType, DIM>   InternalImageType3D;
 
 typedef itk::ImageFileReader< InputImageType3D  >  ReaderType;
 typedef itk::ImageFileWriter< OutputImageType3D >  WriterType;
-//typedef itk::ImageFileWriter< InternalImageType3D>  WriterType;
 typedef itk::MedianImageFilter<InputImageType3D,
         InternalImageType3D>  MedianFilterType;
 typedef itk::IntensityWindowingImageFilter< InternalImageType3D,
         InternalImageType3D >  IntensityFilterType;
-//typedef itk::IntensityWindowingImageFilter< InputImageType3D,
-        //InternalImageType3D >  IntensityFilterType;
 typedef itk::RecursiveGaussianImageFilter< InternalImageType3D,
         InternalImageType3D > GaussianFilterType;
 

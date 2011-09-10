@@ -29,6 +29,7 @@ int main(int argc, char* argv[])
       rx = ry = rz = atoi(argv[2]);
   else
   {
+    //Usage to be changed later.
     std::cerr << "Usage: " << std::endl;
     std::cerr << argv[0] << "  inputImageFile   outputImageFile" << std::endl;
     return EXIT_FAILURE;
