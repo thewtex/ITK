@@ -40,6 +40,7 @@ itkMultiLevelSetChanAndVeseInternalTermTest.cxx
 itkMultiLevelSetEvolutionTest.cxx
 # stopping criterion
 itkLevelSetEvolutionNumberOfIterationsStoppingCriterionTest.cxx
+itkAdaptorTraitsTest.cxx
 )
 
 CreateTestDriver(ITKLevelSetsv4  "${ITKLevelSetsv4-Test_LIBRARIES}" "${ITKLevelSetsv4Tests}")
