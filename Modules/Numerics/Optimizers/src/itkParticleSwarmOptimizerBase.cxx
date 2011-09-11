@@ -52,13 +52,19 @@ ParticleSwarmOptimizerBase
     {
     n = initialSwarm[0].m_CurrentParameters.GetSize();
     }
+  else
+    {
+    n = 0;
+    }
   //check that the dimensions of the swarm data are consistent
   for( it=initialSwarm.begin(); it != end; it++ )
     {
       if( (*it).m_CurrentParameters.GetSize() != n ||
           (*it).m_CurrentVelocity.GetSize() != n ||
           (*it).m_BestParameters.GetSize() != n )
+        {
         itkExceptionMacro(<<"inconsistent dimensions in swarm data")
+        }
     }
   this->m_Particles.clear();
   this->m_Particles.insert( m_Particles.begin(),
