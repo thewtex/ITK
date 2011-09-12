@@ -82,7 +82,6 @@ function(check_compiler_warning_flags c_warning_flags_var cxx_warning_flags_var)
     -Winvalid-pch
     -Wno-format-nonliteral
     -Wpointer-arith
-    -Wshadow
     -Wunused
     -Wwrite-strings
     -funit-at-a-time
@@ -90,6 +89,7 @@ function(check_compiler_warning_flags c_warning_flags_var cxx_warning_flags_var)
 
   # Check this list on C++ compiler only
   set(cxx_flags
+    -Wshadow
     -Wno-deprecated
     -Wno-invalid-offsetof
     -Woverloaded-virtual
