@@ -1,4 +1,16 @@
 itk_module_test()
+set(ITKLevelSetv4_VTKTests
+# visualization
+vtkVisualize2DLevelSetImageBaseTest
+vtkVisualize2DWhitakerLevelSetTest
+vtkVisualize2DShiLevelSetTest
+vtkVisualize2DMalcolmLevelSetTest
+itkImageToRGBVTKImageFilterTest
+vtkVisualize2DWhitakerLevelSetLayersTest
+vtkVisualize2DShiLevelSetLayersTest
+vtkVisualize2DMalcolmLevelSetLayersTest
+)
+
 set(ITKLevelSetsv4Tests
 itkLevelSetDenseImageBaseTest.cxx
 itkWhitakerSparseLevelSetImageTest.cxx
@@ -41,6 +53,13 @@ itkMultiLevelSetEvolutionTest.cxx
 # stopping criterion
 itkLevelSetEvolutionNumberOfIterationsStoppingCriterionTest.cxx
 )
+
+if(${LevelSetsv4_VIZ})
+  set(ITKLevelSetsv4Tests
+    ${ITKLevelSetsv4Tests}
+    ${ITKLevelSetv4_VTKTests}
+  )
+endif()
 
 CreateTestDriver(ITKLevelSetsv4  "${ITKLevelSetsv4-Test_LIBRARIES}" "${ITKLevelSetsv4Tests}")
 
