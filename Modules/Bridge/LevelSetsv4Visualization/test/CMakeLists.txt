@@ -1,0 +1,14 @@
+itk_module_test()
+set(ITKLevelSetsv4VisualizationTests
+# visualization
+vtkVisualize2DLevelSetImageBaseTest
+vtkVisualize2DWhitakerLevelSetTest
+#vtkVisualize2DShiLevelSetTest
+#vtkVisualize2DMalcolmLevelSetTest
+itkImageToRGBVTKImageFilterTest
+vtkVisualize2DWhitakerLevelSetLayersTest
+vtkVisualize2DShiLevelSetLayersTest
+vtkVisualize2DMalcolmLevelSetLayersTest
+)
+
+CreateTestDriver(ITKLevelSetsv4VisualizationTests  "${ITKLevelSetsv4Visualization-Test_LIBRARIES}" "${ITKLevelSetsv4VisualizationTests}")
