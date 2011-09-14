@@ -221,9 +221,6 @@ Similarity3DTransform<TScalarType>::ComputeJacobianWithRespectToParameters(const
   const ValueType vz = this->GetVersor().GetZ();
   const ValueType vw = this->GetVersor().GetW();
 
-  jacobian.SetSize( 3, this->GetNumberOfLocalParameters() );
-  jacobian.Fill(0.0);
-
   const InputVectorType pp = p - this->GetCenter();
 
   const double px = pp[0];
