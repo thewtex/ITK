@@ -395,8 +395,6 @@ void
 KernelTransform<TScalarType, NDimensions>
 ::ComputeJacobianWithRespectToParameters(const InputPointType &, JacobianType & jacobian) const
 {
-  jacobian.Fill(0.0);
-
   // FIXME: TODO
   // The Jacobian should be computable in terms of the matrices
   // used to Transform points...

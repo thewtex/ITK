@@ -623,11 +623,6 @@ void
 MatrixOffsetTransformBase<TScalarType, NInputDimensions, NOutputDimensions>
 ::ComputeJacobianWithRespectToParameters(const InputPointType & p, JacobianType & jacobian) const
 {
-  // This will not reallocate memory if the dimensions are equal
-  // to the matrix's current dimensions.
-  jacobian.SetSize( NOutputDimensions, this->GetNumberOfLocalParameters() );
-  jacobian.Fill(0.0);
-
   // The Jacobian of the affine transform is composed of
   // subblocks of diagonal matrices, each one of them having
   // a constant value in the diagonal.

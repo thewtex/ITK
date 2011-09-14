@@ -119,6 +119,12 @@ ImageToImageMetric< TFixedImage, TMovingImage >
     }
   m_ThreaderTransform = NULL;
 
+  if ( m_ThreaderJacobian != NULL )
+    {
+    delete[] m_ThreaderJacobian;
+    }
+  m_ThreaderJacobian = NULL;
+
   if ( this->m_ThreaderBSplineTransformWeights != NULL )
     {
     delete[] this->m_ThreaderBSplineTransformWeights;
@@ -414,6 +420,21 @@ throw ( ExceptionObject )
     transformCopy->SetParameters( this->m_Transform->GetParameters() );
     this->m_ThreaderTransform[ithread] = transformCopy;
     }
+
+  // Allocate the array of jacobians helpers to be used in every thread
+  if ( m_ThreaderJacobian != NULL )
+    {
+    delete[] m_ThreaderJacobian;
+    }
+  m_ThreaderJacobian = new TransformJacobianType[m_NumberOfThreads - 1];
+
+  m_Jacobian.SetSize( MovingImageDimension, m_Transform->GetNumberOfLocalParameters() );
+
+  for ( ThreadIdType ithread = 0; ithread < m_NumberOfThreads - 1; ++ithread )
+    {
+    m_ThreaderJacobian[ithread].SetSize( MovingImageDimension, m_Transform->GetNumberOfLocalParameters() );
+    }
+
 
   m_FixedImageSamples.resize(m_NumberOfFixedImageSamples);
   if ( m_UseSequentialSampling )

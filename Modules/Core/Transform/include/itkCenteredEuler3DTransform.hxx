@@ -146,9 +146,6 @@ CenteredEuler3DTransform<TScalarType>
   const double cz = vcl_cos( this->GetAngleZ() );
   const double sz = vcl_sin( this->GetAngleZ() );
 
-  jacobian.SetSize( 3, this->GetNumberOfLocalParameters() );
-  jacobian.Fill(0.0);
-
   const double px = p[0] - this->GetCenter()[0];
   const double py = p[1] - this->GetCenter()[1];
   const double pz = p[2] - this->GetCenter()[2];

@@ -389,6 +389,10 @@ public:
    * will do the work for thread=0. */
   TransformPointer *m_ThreaderTransform;
 
+  /** Helper cache variables used to hold Jacobians */
+  mutable TransformJacobianType   m_Jacobian;
+  mutable TransformJacobianType * m_ThreaderJacobian;
+
   InterpolatorPointer m_Interpolator;
 
   bool                 m_ComputeGradient;

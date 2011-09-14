@@ -122,9 +122,6 @@ CenteredSimilarity2DTransform<TScalarType>
   const double ca = vcl_cos(angle);
   const double sa = vcl_sin(angle);
 
-  jacobian.SetSize( 2, this->GetNumberOfLocalParameters() );
-  jacobian.Fill(0.0);
-
   const InputPointType center = this->GetCenter();
   const double         cx = center[0];
   const double         cy = center[1];
