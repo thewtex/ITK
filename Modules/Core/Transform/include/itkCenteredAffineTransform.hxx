@@ -135,8 +135,6 @@ CenteredAffineTransform<TScalarType, NDimensions>
   // a constant value in the diagonal.
   // The block corresponding to the center parameters is
   // composed by ( Identity matrix - Rotation Matrix).
-  jacobian.SetSize( NDimensions, this->GetNumberOfLocalParameters() );
-  jacobian.Fill(0.0);
 
   unsigned int blockOffset = 0;
   for( unsigned int block = 0; block < SpaceDimension; block++ )

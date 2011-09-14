@@ -149,9 +149,6 @@ QuaternionRigidTransform<TScalarType>
 ::ComputeJacobianWithRespectToParameters(const InputPointType & p, JacobianType & jacobian) const
 {
   // compute derivatives with respect to rotation
-  jacobian.SetSize( 3, this->GetNumberOfLocalParameters() );
-  jacobian.Fill(0.0);
-
   const TScalarType x = p[0] - this->GetCenter()[0];
   const TScalarType y = p[1] - this->GetCenter()[1];
   const TScalarType z = p[2] - this->GetCenter()[2];

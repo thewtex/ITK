@@ -190,25 +190,27 @@ MeanSquaresImageToImageMetric<TFixedImage, TMovingImage>
   // For instance, Register and UnRegister have mutex locks around
   // the reference counts.
   TransformType *transform;
+  TransformJacobianType *jacobian;
 
   if( threadID > 0 )
     {
     transform = this->m_ThreaderTransform[threadID - 1];
+    jacobian = &(this->m_ThreaderJacobian[threadID - 1]);
     }
   else
     {
     transform = this->m_Transform;
+    jacobian = &(this->m_Jacobian);
     }
 
   // Jacobian should be evaluated at the unmapped (fixed image) point.
-  TransformJacobianType jacobian;
-  transform->ComputeJacobianWithRespectToParameters(fixedImagePoint, jacobian);
+  transform->ComputeJacobianWithRespectToParameters(fixedImagePoint, *jacobian );
   for( unsigned int par = 0; par < this->m_NumberOfParameters; par++ )
     {
     double sum = 0.0;
     for( unsigned int dim = 0; dim < MovingImageDimension; dim++ )
       {
-      sum += 2.0 *diff *jacobian(dim, par) * movingImageGradientValue[dim];
+      sum += 2.0 *diff * (*jacobian)(dim, par) * movingImageGradientValue[dim];
       }
     m_ThreaderMSEDerivatives[threadID][par] += sum;
     }

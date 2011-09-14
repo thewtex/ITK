@@ -742,9 +742,6 @@ BSplineTransform<TScalarType, NDimensions, VSplineOrder>
 ::ComputeJacobianWithRespectToParameters( const InputPointType & point,
   JacobianType & jacobian ) const
 {
-  // Zero all components of jacobian
-  jacobian.SetSize( SpaceDimension, this->GetNumberOfParameters() );
-  jacobian.Fill( 0.0 );
   RegionType   supportRegion;
   SizeType     supportSize;
   supportSize.Fill( SplineOrder + 1 );
