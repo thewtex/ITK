@@ -465,8 +465,6 @@ void PNGImageIO::Write(const void *buffer)
 
 void PNGImageIO::WriteSlice(const std::string & fileName, const void *buffer)
 {
-  volatile const unsigned char *outPtr = ( (const unsigned char *)buffer );
-
   // use this class so return will call close
   PNGFileWrapper pngfp(fileName.c_str(), "wb");
   FILE *         fp = pngfp.m_FilePointer;
@@ -610,6 +608,7 @@ void PNGImageIO::WriteSlice(const std::string & fileName, const void *buffer)
     }
   png_byte **row_pointers = new png_byte *[height];
   int        rowInc = width * numComp * bitDepth / 8;
+  volatile const unsigned char *outPtr = ( (const unsigned char *)buffer );
   for ( unsigned int ui = 0; ui < height; ui++ )
     {
     row_pointers[ui] = const_cast< png_byte * >( outPtr );
