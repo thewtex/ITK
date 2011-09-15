@@ -28,6 +28,7 @@ itkGaussianDerivativeOperatorTest.cxx
 itkGridForwardWarpImageFilterTest.cxx
 itkGridImageSourceTest.cxx
 itkHessianToObjectnessMeasureImageFilterTest.cxx
+itkHighLevelFeatureMatchingTest.cxx
 itkImageReadComplexWriteMagnitudeAndPhaseTest.cxx
 itkImageReadMagnitudeAndPhaseWriteComplexTest.cxx
 itkImageFunctionTest.cxx
@@ -67,6 +68,7 @@ itkRegionalMinimaImageFilterTest.cxx
 itkRegionalMinimaImageFilterTest2.cxx
 itkRegionBasedLevelSetFunctionTest.cxx
 itkRobustAutomaticThresholdImageFilterTest.cxx
+itkRigidVotingTest.cxx
 itkScalarChanAndVeseDenseLevelSetImageFilterTest1.cxx
 itkScalarChanAndVeseDenseLevelSetImageFilterTest2.cxx
 itkScalarChanAndVeseDenseLevelSetImageFilterTest3.cxx
@@ -117,6 +119,14 @@ endif( USE_FFTWD OR USE_FFTWF )
 
 
 CreateTestDriver_SupportBuildInIOFactories(ITKReview  "${ITKReview-Test_LIBRARIES}" "${ITKReviewTests}")
+
+itk_add_test(NAME itkHighLevelFeatureMatchingTest
+    COMMAND ITKReviewTestDriver itkHighLevelFeatureMatchingTest
+    DATA{Baseline/itkHighLevelFeatureMatchingInput1.png}
+    DATA{Baseline/itkHighLevelFeatureMatchingInput2.png})
+
+itk_add_test(NAME itkRigidVotingTest
+    COMMAND ITKReviewTestDriver itkRigidVotingTest)
 
 itk_add_test(NAME itkAddConstantToImageFilterTest
       COMMAND ITKReviewTestDriver itkAddConstantToImageFilterTest)
