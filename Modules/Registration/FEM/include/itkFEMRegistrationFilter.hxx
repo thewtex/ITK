@@ -116,12 +116,12 @@ void FEMRegistrationFilter<TMovingImage, TFixedImage, TFemObject>::RunRegistrati
   // Solve the system in time
   if( !m_UseMultiResolution && m_Maxiters[m_CurrentLevel] > 0 )
     {
-    typedef typename itk::fem::FEMObject<3> TestFEMObjectType;
-    TestFEMObjectType::Pointer femObject = TestFEMObjectType::New();
+    typedef itk::fem::FEMObject<ImageDimension> TestFEMObjectType;
+    typename TestFEMObjectType::Pointer femObject = TestFEMObjectType::New();
 
-    typedef SolverCrankNicolson<3> TestSolverType;
+    typedef SolverCrankNicolson<ImageDimension> TestSolverType;
 
-    TestSolverType::Pointer mySolver = TestSolverType::New();
+    typename TestSolverType::Pointer mySolver = TestSolverType::New();
     mySolver->SetDeltaT(m_TimeStep);
     mySolver->SetRho(m_Rho[m_CurrentLevel]);
     mySolver->SetAlpha(m_Alpha);
@@ -1432,8 +1432,8 @@ void FEMRegistrationFilter<TMovingImage, TFixedImage, TFemObject>::MultiResSolve
     itkDebugMacro( << " beginning level " << m_CurrentLevel << std::endl );
 
     //   Setup a multi-resolution pyramid
-    typedef SolverCrankNicolson<3> TestSolverType;
-    TestSolverType::Pointer SSS = TestSolverType::New();
+    typedef SolverCrankNicolson<ImageDimension> TestSolverType;
+    typename TestSolverType::Pointer SSS = TestSolverType::New();
     typename FixedImageType::SizeType nextLevelSize;
     nextLevelSize.Fill( 0 );
     typename FixedImageType::SizeType lastLevelSize;
