@@ -140,6 +140,38 @@ public:
   FEMObjectType * GetInput(unsigned int idx);
 
   /**
+   * Initialize the interpolation grid. The interpolation grid is used to
+   * find elements that containg specific points in a mesh. The interpolation
+   * grid stores pointers to elements for each point on a grid thereby providing
+   * a fast way (lookup table) to perform interpolation of results.
+   *
+   * \note Interpolation grid must be reinitialized each time a mesh changes.
+   *
+   * \param size Vector that represents number of points on a grid in each dimension.
+   * \param bb1 Lower limit of a bounding box of a grid.
+   * \param bb2 Upper limit of a bounding box of a grid.
+   *
+   * \sa GetInterpolationGrid
+   */
+  void InitializeInterpolationGrid(const InterpolationGridSizeType & size, const InterpolationGridPointType & bb1,
+                                   const InterpolationGridPointType & bb2);
+
+  /** Same as InitializeInterpolationGrid(size, {0,0...}, size); */
+  void InitializeInterpolationGrid(const InterpolationGridSizeType & size)
+  {
+    InterpolationGridPointType bb1;
+
+    bb1.Fill(0.0);
+
+    InterpolationGridPointType bb2;
+    for( unsigned int i = 0; i < FEMDimension; i++ )
+      {
+      bb2[i] = size[i] - 1.0;
+      }
+    InitializeInterpolationGrid(size, bb1, bb2);
+  }
+
+  /**
    * Returns the pointer to the element which contains global point pt.
    *
    * \param pt Point in global coordinate system.
@@ -207,38 +239,6 @@ protected:
   /** Method invoked by the pipeline in order to trigger the computation of
    * the registration. */
   void  GenerateData();
-
-  /**
-   * Initialize the interpolation grid. The interpolation grid is used to
-   * find elements that containg specific points in a mesh. The interpolation
-   * grid stores pointers to elements for each point on a grid thereby providing
-   * a fast way (lookup table) to perform interpolation of results.
-   *
-   * \note Interpolation grid must be reinitialized each time a mesh changes.
-   *
-   * \param size Vector that represents number of points on a grid in each dimension.
-   * \param bb1 Lower limit of a bounding box of a grid.
-   * \param bb2 Upper limit of a bounding box of a grid.
-   *
-   * \sa GetInterpolationGrid
-   */
-  void InitializeInterpolationGrid(const InterpolationGridSizeType & size, const InterpolationGridPointType & bb1,
-                                   const InterpolationGridPointType & bb2);
-
-  /** Same as InitializeInterpolationGrid(size, {0,0...}, size); */
-  void InitializeInterpolationGrid(const InterpolationGridSizeType & size)
-  {
-    InterpolationGridPointType bb1;
-
-    bb1.Fill(0.0);
-
-    InterpolationGridPointType bb2;
-    for( unsigned int i = 0; i < FEMDimension; i++ )
-      {
-      bb2[i] = size[i] - 1.0;
-      }
-    InitializeInterpolationGrid(size, bb1, bb2);
-  }
 
   /**
    * Returns pointer to interpolation grid, which is an itk::Image of pointers

@@ -41,8 +41,7 @@ FillImage(
 
   typedef itk::ImageRegionIteratorWithIndex<TImage> Iterator;
   Iterator it( image, image->GetBufferedRegion() );
-  it.Begin();
-  for( ; !it.IsAtEnd(); ++it )
+  for( it.GoToBegin(); !it.IsAtEnd(); ++it )
     {
     it.Set( value );
     }
@@ -62,11 +61,10 @@ FillWithCircle(
 
   typedef itk::ImageRegionIteratorWithIndex<TImage> Iterator;
   Iterator it( image, image->GetBufferedRegion() );
-  it.Begin();
 
   typename TImage::IndexType index;
   double r2 = vnl_math_sqr( radius );
-  for( ; !it.IsAtEnd(); ++it )
+  for( it.GoToBegin(); !it.IsAtEnd(); ++it )
     {
     index = it.GetIndex();
     double distance = 0;
@@ -96,7 +94,7 @@ CopyImageBuffer(
   typedef itk::ImageRegionIteratorWithIndex<TImage> Iterator;
   Iterator inIt( input, output->GetBufferedRegion() );
   Iterator outIt( output, output->GetBufferedRegion() );
-  for( ; !inIt.IsAtEnd(); ++inIt, ++outIt )
+  for( inIt.GoToBegin(); !inIt.IsAtEnd(); ++inIt, ++outIt )
     {
     outIt.Set( inIt.Get() );
     }
@@ -249,43 +247,60 @@ int itkFEMRegistrationFilterTest(int, char * [] )
       //    std::cout << err << std::endl;
       // throw err;
       }
-    }
+    /*
+    // get warped reference image
+    // ---------------------------------------------------------
+    std::cout << "Compare warped moving and fixed." << std::endl;
 
-  /*
-  // get warped reference image
-  // ---------------------------------------------------------
-  std::cout << "Compare warped moving and fixed." << std::endl;
-
-  // compare the warp and fixed images
-  itk::ImageRegionIterator<ImageType> fixedIter( fixed,
-      fixed->GetBufferedRegion() );
-  itk::ImageRegionIterator<ImageType> warpedIter( registrator->GetWarpedImage(),
-      fixed->GetBufferedRegion() );
-
-  unsigned int numPixelsDifferent = 0;
-  while( !fixedIter.IsAtEnd() )
-    {
-    if( fixedIter.Get() != warpedIter.Get() )
+    itk::ImageRegionConstIterator<RegistrationType::FieldType> fieldIter(
+        registrator->GetDisplacementField(), fixed->GetBufferedRegion() );
+    unsigned int numNonzeroDisp = 0;
+    for (fieldIter.GoToBegin(); !fieldIter.IsAtEnd(); ++fieldIter)
       {
-      numPixelsDifferent++;
+        RegistrationType::FieldType::PixelType pixel = fieldIter.Get();
+        if (pixel[0] * pixel[1] * pixel[2] != 0.)
+          {
+          std::cout << pixel << std::endl;
+          numNonzeroDisp++;
+          }
       }
-    ++fixedIter;
-    ++warpedIter;
-    }
-
-  std::cout << "Number of pixels different: " << numPixelsDifferent;
-  std::cout << std::endl;
-
-  if( numPixelsDifferent > 400 )
+    if (numNonzeroDisp == 0)
     {
-    std::cout << "Test failed - too many pixels different." << std::endl;
-    return EXIT_FAILURE;
+      std::cout << "Test failed - displacements are all zero." << std::endl;
+      return EXIT_FAILURE;
     }
 
+    // compare the warp and fixed images
+    itk::ImageRegionIterator<testImageType> fixedIter( fixed,
+        fixed->GetBufferedRegion() );
+    itk::ImageRegionIterator<testImageType> warpedIter( registrator->GetWarpedImage(),
+        fixed->GetBufferedRegion() );
+
+    unsigned int numPixelsDifferent = 0;
+    while( !fixedIter.IsAtEnd() )
+      {
+      if( fixedIter.Get() != warpedIter.Get() )
+        {
+        numPixelsDifferent++;
+        }
+      ++fixedIter;
+      ++warpedIter;
+      }
+
+    std::cout << "Number of pixels different: " << numPixelsDifferent;
+    std::cout << std::endl;
+
+    if( numPixelsDifferent > 400 )
+      {
+      std::cout << "Test failed - too many pixels different." << std::endl;
+      return EXIT_FAILURE;
+      }
+    */
+    }
 
 
   std::cout << "Test passed" << std::endl;
-  */
+
 
   return EXIT_SUCCESS;
 

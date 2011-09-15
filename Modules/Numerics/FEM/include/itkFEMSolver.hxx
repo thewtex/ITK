@@ -858,7 +858,7 @@ Solver<VDimension>
 
   // Fill the interpolation grid with proper pointers to elements
   unsigned int numberOfElements = m_FEMObject->GetNumberOfElements();
-  for( unsigned int index = 0; index <= numberOfElements; index++ )
+  for( unsigned int index = 0; index < numberOfElements; index++ )
     {
     Element::Pointer e = m_FEMObject->GetElement( index );
     // Get square boundary box of an element
@@ -919,7 +919,7 @@ Solver<VDimension>
     //
     VectorType global_point(NumberOfDimensions); // Point in the image as a
                                                  // vector.
-    VectorType local_point;                      // Same point in local element
+    VectorType local_point(NumberOfDimensions);  // Same point in local element
                                                  // coordinate system
     // Step over all points within the region
     for( iter.GoToBegin(); !iter.IsAtEnd(); ++iter )
@@ -936,7 +936,7 @@ Solver<VDimension>
       // this point in the interpolation grid image.
       if( e->GetLocalFromGlobalCoordinates(global_point, local_point) )
         {
-        iter.Set(e);
+        iter.Set(e.GetPointer());
         }
       } // next point in region
     }   // next element

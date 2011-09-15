@@ -116,12 +116,7 @@ void FEMRegistrationFilter<TMovingImage, TFixedImage, TFemObject>::RunRegistrati
   // Solve the system in time
   if( !m_UseMultiResolution && m_Maxiters[m_CurrentLevel] > 0 )
     {
-    typedef typename itk::fem::FEMObject<3> TestFEMObjectType;
-    TestFEMObjectType::Pointer femObject = TestFEMObjectType::New();
-
-    typedef SolverCrankNicolson<3> TestSolverType;
-
-    TestSolverType::Pointer mySolver = TestSolverType::New();
+    typename SolverType::Pointer mySolver = SolverType::New();
     mySolver->SetDeltaT(m_TimeStep);
     mySolver->SetRho(m_Rho[m_CurrentLevel]);
     mySolver->SetAlpha(m_Alpha);
@@ -137,10 +132,11 @@ void FEMRegistrationFilter<TMovingImage, TFixedImage, TFemObject>::RunRegistrati
       }
 
     ApplyLoads(m_FullImageSize);
+    ApplyImageLoads(m_MovingImage, m_FixedImage);
 
     const unsigned int ndofpernode = (m_Element)->GetNumberOfDegreesOfFreedomPerNode();
     const unsigned int numnodesperelt = (m_Element)->GetNumberOfNodes() + 1;
-    const unsigned int ndof = femObject->GetNumberOfDegreesOfFreedom();
+    const unsigned int ndof = mySolver->GetInput()->GetNumberOfDegreesOfFreedom();
     unsigned int       nzelts;
 
     nzelts = numnodesperelt * ndofpernode * ndof;
@@ -767,7 +763,7 @@ FEMRegistrationFilter<TMovingImage, TFixedImage, TFemObject>::InterpolateVectorF
     this->InitializeField();
     }
   m_FieldSize = field->GetLargestPossibleRegion().GetSize();
-
+  mySolver->InitializeInterpolationGrid(m_FieldSize);
   itkDebugMacro( << " interpolating vector field of size " << m_FieldSize);
 
   Float rstep, sstep, tstep;
@@ -1432,8 +1428,7 @@ void FEMRegistrationFilter<TMovingImage, TFixedImage, TFemObject>::MultiResSolve
     itkDebugMacro( << " beginning level " << m_CurrentLevel << std::endl );
 
     //   Setup a multi-resolution pyramid
-    typedef SolverCrankNicolson<3> TestSolverType;
-    TestSolverType::Pointer SSS = TestSolverType::New();
+    typename SolverType::Pointer SSS = SolverType::New();
     typename FixedImageType::SizeType nextLevelSize;
     nextLevelSize.Fill( 0 );
     typename FixedImageType::SizeType lastLevelSize;
