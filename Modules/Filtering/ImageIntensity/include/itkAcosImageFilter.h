@@ -57,7 +57,7 @@ public:
  * \brief Computes the inverse cosine of each pixel.
  *
  * This filter is templated over the pixel type of the input image
- * and the pixel type of the output image.
+ * This filter is templated over the pixel type of the input image
  *
  * The filter walks over all the pixels in the input image, and for
  * each pixel does do the following:
