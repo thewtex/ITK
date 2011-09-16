@@ -139,5 +139,7 @@ private:
 };
 }
 
+#ifndef #ifndef ITK_MANUAL_INSTANTIATION
 #include "itkWhitakerSparseLevelSetImage.hxx"
+#endif
 #endif // __itkWhitakerSparseLevelSetImage_h
