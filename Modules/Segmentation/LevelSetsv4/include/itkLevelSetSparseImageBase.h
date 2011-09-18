@@ -58,11 +58,13 @@ public:
   typedef typename Superclass::HessianType      HessianType;
   typedef typename Superclass::LevelSetDataType LevelSetDataType;
 
-  typedef int8_t                                 LayerIdType;
-  typedef LabelObject< LayerIdType, VDimension > LabelObjectType;
-  typedef typename LabelObjectType::Pointer      LabelObjectPointer;
-  typedef typename LabelObjectType::LengthType   LabelObjectLengthType;
-  typedef typename LabelObjectType::LineType     LabelObjectLineType;
+  typedef int8_t                                  LayerIdType;
+  typedef std::list< LayerIdType >                LayerIdListType;
+
+  typedef LabelObject< LayerIdType, VDimension >  LabelObjectType;
+  typedef typename LabelObjectType::Pointer       LabelObjectPointer;
+  typedef typename LabelObjectType::LengthType    LabelObjectLengthType;
+  typedef typename LabelObjectType::LineType      LabelObjectLineType;
 
   typedef LabelMap< LabelObjectType >         LabelMapType;
   typedef typename LabelMapType::Pointer      LabelMapPointer;
@@ -97,16 +99,54 @@ public:
   /** Graft data object as level set object */
   virtual void Graft( const DataObject* data );
 
+  /** Return the label object pointer with a given id */
+  template< class TLabel >
+  typename LabelObject< TLabel, Dimension >::Pointer
+  GetAsLabelObject()
+    {
+    typedef LabelObject< TLabel, Dimension > OutputLabelObjectType;
+    typename OutputLabelObjectType::Pointer object = OutputLabelObjectType::New();
+
+    if( this->m_LabelList.empty() )
+      {
+      itkGenericExceptionMacro( << "this->m_LabelList empty" );
+      return object;
+      }
+
+    typename LayerIdListType::iterator lIt = this->m_LabelList.begin();
+    typename LayerIdListType::iterator lEnd = this->m_LabelList.end();
+    --lEnd;
+
+    while( lIt != lEnd )
+      {
+      LayerIdType id = *lIt;
+      LabelObjectPointer labelObject = this->m_LabelMap->GetLabelObject( id );
+      SizeValueType numberOfLines = labelObject->GetNumberOfLines();
+
+      for( SizeValueType i = 0; i < numberOfLines; ++i )
+        {
+        object->AddLine( labelObject->GetLine( i ) );
+        }
+      ++lIt;
+      }
+    object->Optimize();
+
+    return object;
+    }
+
 protected:
   LevelSetSparseImageBase();
 
   virtual ~LevelSetSparseImageBase();
 
-  LayerMapType     m_Layers;
-  LabelMapPointer  m_LabelMap;
+  LayerMapType      m_Layers;
+  LabelMapPointer   m_LabelMap;
+  LayerIdListType   m_LabelList;
 
   /** Initialize the sparse field layers */
   virtual void InitializeLayers() = 0;
+
+  virtual void InitializeLabelList() = 0;
 
   virtual bool IsInside( const InputType& iP ) const;
 

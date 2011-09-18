@@ -29,6 +29,7 @@ WhitakerSparseLevelSetImage< TOutput, VDimension >
 ::WhitakerSparseLevelSetImage()
 {
   this->InitializeLayers();
+  this->InitializeLabelList();
 }
 
 // ----------------------------------------------------------------------------
@@ -100,6 +101,21 @@ WhitakerSparseLevelSetImage< TOutput, VDimension >
   this->m_Layers[ PlusTwoLayer()  ] = LayerType();
 }
 
+// ----------------------------------------------------------------------------
+template< typename TOutput, unsigned int VDimension >
+void
+WhitakerSparseLevelSetImage< TOutput, VDimension >
+::InitializeLabelList()
+{
+  this->m_LabelList.clear();
+  this->m_LabelList.push_back( MinusThreeLayer() );
+  this->m_LabelList.push_back( MinusTwoLayer() );
+  this->m_LabelList.push_back( MinusOneLayer() );
+  this->m_LabelList.push_back( ZeroLayer() );
+  this->m_LabelList.push_back( PlusOneLayer() );
+  this->m_LabelList.push_back( PlusTwoLayer() );
+  this->m_LabelList.push_back( PlusThreeLayer() );
+}
 }
 
 #endif // __itkWhitakerSparseLevelSetImage_hxx

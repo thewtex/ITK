@@ -29,6 +29,7 @@ ShiSparseLevelSetImage< VDimension >
 ::ShiSparseLevelSetImage()
 {
   this->InitializeLayers();
+  this->InitializeLabelList();
 }
 
 // ----------------------------------------------------------------------------
@@ -184,6 +185,17 @@ ShiSparseLevelSetImage< VDimension >::InitializeLayers()
   this->m_Layers[ PlusOneLayer()  ] = LayerType();
 }
 
+// ----------------------------------------------------------------------------
+template< unsigned int VDimension >
+void
+ShiSparseLevelSetImage< VDimension >::InitializeLabelList()
+{
+  this->m_LabelList.clear();
+  this->m_LabelList.push_back( MinusThreeLayer() );
+  this->m_LabelList.push_back( MinusOneLayer() );
+  this->m_LabelList.push_back( PlusOneLayer() );
+  this->m_LabelList.push_back( PlusThreeLayer() );
+}
 }
 
 #endif // __itkShiSparseLevelSetImage_h

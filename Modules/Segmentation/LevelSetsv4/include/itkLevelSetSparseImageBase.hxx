@@ -156,6 +156,7 @@ LevelSetSparseImageBase< TOutput, VDimension >
 
   this->m_LabelMap = 0;
   this->InitializeLayers();
+  this->InitializeLabelList();
 }
 
 // ----------------------------------------------------------------------------

@@ -29,6 +29,7 @@ MalcolmSparseLevelSetImage< VDimension >
 ::MalcolmSparseLevelSetImage()
 {
   this->InitializeLayers();
+  this->InitializeLabelList();
 }
 
 // ----------------------------------------------------------------------------
@@ -189,6 +190,18 @@ MalcolmSparseLevelSetImage< VDimension >
 {
   this->m_Layers.clear();
   this->m_Layers[ ZeroLayer() ] = LayerType();
+}
+
+// ----------------------------------------------------------------------------
+template< unsigned int VDimension >
+void
+MalcolmSparseLevelSetImage< VDimension >
+::InitializeLabelList()
+{
+  this->m_LabelList.clear();
+  this->m_LabelList.push_back( MinusOneLayer() );
+  this->m_LabelList.push_back( ZeroLayer() );
+  this->m_LabelList.push_back( PlusOneLayer() );
 }
 
 }
