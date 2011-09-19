@@ -116,7 +116,8 @@ public:
   typedef typename Superclass::ScalarType ScalarType;
 
   /** Type of the input parameters. */
-  typedef  typename Superclass::ParametersType ParametersType;
+  typedef typename Superclass::ParametersType          ParametersType;
+  typedef typename Superclass::ParametersValueType     ParametersValueType;
 
   /** Jacobian type. */
   typedef typename Superclass::JacobianType JacobianType;
@@ -169,8 +170,14 @@ public:
   typedef VectorInterpolateImageFunction
     <DisplacementFieldType, ScalarType> InterpolatorType;
 
-  /** Standard Index type for Displacement Field */
-  typedef typename DisplacementFieldType::IndexType IndexType;
+  /** Standard types for the displacement Field */
+  typedef typename DisplacementFieldType::IndexType      IndexType;
+  typedef typename DisplacementFieldType::RegionType     RegionType;
+  typedef typename DisplacementFieldType::SizeType       SizeType;
+  typedef typename DisplacementFieldType::SpacingType    SpacingType;
+  typedef typename DisplacementFieldType::DirectionType  DirectionType;
+  typedef typename DisplacementFieldType::PointType      PointType;
+  typedef typename DisplacementFieldType::PixelType      PixelType;
 
   /** Define the internal parameter helper used to access the field */
   typedef ImageVectorTransformParametersHelper<
@@ -289,17 +296,16 @@ public:
       }
   }
 
-  /** Set the fixed parameters and update internal transformation. */
-  virtual void SetFixedParameters(const ParametersType &)
-  {
-    itkExceptionMacro("SetFixedParameters unimplemented.");
-  }
-
-  /** Get the Fixed Parameters. */
-  virtual const ParametersType & GetFixedParameters(void) const
-  {
-    itkExceptionMacro("GetFixedParameters unimplemented.");
-  }
+  /**
+   * This method sets the fixed parameters of the transform.
+   * For a displacement field transform, the fixed parameters are the
+   * following: field size, field origin, field spacing, and field direction.
+   *
+   * Note:  If a displacement field transform already exists, this function
+   * calls ResizeParameters().  Otherwise, a displacement field is created
+   * with zero displacement (identity transform).
+   */
+  virtual void SetFixedParameters( const ParametersType & );
 
   /**
    * Compute the jacobian with respect to the parameters at a point.
@@ -439,6 +445,12 @@ private:
    */
   virtual void ComputeJacobianWithRespectToPositionInternal(const IndexType & index, JacobianType & jacobian,
                                                             bool doInverseJacobian) const;
+
+  /**
+   * Convenience method which reads the information from the current
+   * displacement field into m_FixedParameters.
+   */
+  virtual void SetFixedParametersFromDisplacementField() const;
 
 };
 

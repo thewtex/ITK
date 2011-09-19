@@ -32,10 +32,14 @@ namespace itk
  * Constructor
  */
 template <class TScalar, unsigned int NDimensions>
-DisplacementFieldTransform<TScalar, NDimensions>::DisplacementFieldTransform() : Superclass( 0 )
+DisplacementFieldTransform<TScalar, NDimensions>::DisplacementFieldTransform()
+: Superclass( 0 )
 {
   this->m_DisplacementField = NULL;
   this->m_InverseDisplacementField = NULL;
+
+  this->m_FixedParameters.SetSize( NDimensions * ( NDimensions + 3 ) );
+  this->m_FixedParameters.Fill( 0.0 );
 
   // Setup and assign default interpolator
   typedef VectorLinearInterpolateImageFunction<
@@ -703,6 +707,8 @@ void DisplacementFieldTransform<TScalar, NDimensions>
     // Assign to parameters object
     this->m_Parameters.SetParametersObject( this->m_DisplacementField );
     }
+
+  this->SetFixedParametersFromDisplacementField();
 }
 
 template <class TScalar, unsigned int NDimensions>
@@ -723,7 +729,97 @@ void DisplacementFieldTransform<TScalar, NDimensions>
 
 template <class TScalar, unsigned int NDimensions>
 void
-DisplacementFieldTransform<TScalar, NDimensions>::PrintSelf( std::ostream& os, Indent indent ) const
+DisplacementFieldTransform<TScalar, NDimensions>
+::SetFixedParameters( const ParametersType & fixedParameters )
+{
+  SizeType size;
+  for( unsigned int d = 0; d < NDimensions; d++ )
+    {
+    size[d] = fixedParameters[d];
+    }
+
+  PointType origin;
+  for( unsigned int d = 0; d < NDimensions; d++ )
+    {
+    origin[d] = fixedParameters[d + NDimensions];
+    }
+
+  SpacingType spacing;
+  for( unsigned int d = 0; d < NDimensions; d++ )
+    {
+    spacing[d] = fixedParameters[d + 2 * NDimensions];
+    }
+
+  DirectionType direction;
+  for( unsigned int di = 0; di < NDimensions; di++ )
+    {
+    for( unsigned int dj = 0; dj < NDimensions; dj++ )
+      {
+      direction[di][dj] = fixedParameters[3 * NDimensions + ( di * NDimensions + dj )];
+      }
+    }
+
+  PixelType zeroDisplacement;
+  zeroDisplacement.Fill( 0.0 );
+
+  typename DisplacementFieldType::Pointer displacementField = DisplacementFieldType::New();
+  displacementField->SetSpacing( spacing );
+  displacementField->SetOrigin( origin );
+  displacementField->SetDirection( direction );
+  displacementField->SetRegions( size );
+  displacementField->Allocate();
+  displacementField->FillBuffer( zeroDisplacement );
+
+  this->SetDisplacementField( displacementField );
+}
+
+template <class TScalar, unsigned int NDimensions>
+void
+DisplacementFieldTransform<TScalar, NDimensions>
+::SetFixedParametersFromDisplacementField() const
+  {
+  this->m_FixedParameters.SetSize( NDimensions * ( NDimensions + 3 ) );
+
+  const typename DisplacementFieldType::RegionType & fieldRegion =
+    this->m_DisplacementField->GetLargestPossibleRegion();
+
+  // Set the field size parameters
+  SizeType fieldSize = fieldRegion.GetSize();
+  for( unsigned int i = 0; i < NDimensions; i++ )
+    {
+    this->m_FixedParameters[i] = static_cast<ParametersValueType>( fieldSize[i] );
+    }
+
+  // Set the origin parameters
+  PointType fieldOrigin = this->m_DisplacementField->GetOrigin();
+  for( unsigned int i = 0; i < NDimensions; i++ )
+    {
+    this->m_FixedParameters[NDimensions + i] = fieldOrigin[i];
+    }
+
+  // Set the spacing parameters
+  SpacingType fieldSpacing = this->m_DisplacementField->GetSpacing();
+  for( unsigned int i = 0; i < NDimensions; i++ )
+    {
+    this->m_FixedParameters[2 * NDimensions + i] = static_cast<ParametersValueType>( fieldSpacing[i] );
+    }
+
+  // Set the direction parameters
+  DirectionType fieldDirection = this->m_DisplacementField->GetDirection();
+  for( unsigned int di = 0; di < NDimensions; di++ )
+    {
+    for( unsigned int dj = 0; dj < NDimensions; dj++ )
+      {
+      this->m_FixedParameters[3 * NDimensions + ( di * NDimensions + dj )] =
+        static_cast<ParametersValueType>( fieldDirection[di][dj] );
+      }
+    }
+}
+
+template <class TScalar, unsigned int NDimensions>
+void
+DisplacementFieldTransform<TScalar, NDimensions>
+::PrintSelf( std::ostream& os, Indent indent ) const
 {
   Superclass::PrintSelf( os, indent );
 
