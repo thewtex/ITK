@@ -18,7 +18,7 @@
 #ifndef __itkImageRegionExclusionConstIteratorWithIndex_h
 #define __itkImageRegionExclusionConstIteratorWithIndex_h
 
-#include "itkImageConstIteratorWithIndex.h"
+#include "itkImageRegionConstIteratorWithIndex.h"
 
 namespace itk
 {
@@ -127,12 +127,13 @@ namespace itk
  * \endwiki
  */
 template< typename TImage >
-class ITK_EXPORT ImageRegionExclusionConstIteratorWithIndex:public ImageConstIteratorWithIndex< TImage >
+class ITK_EXPORT ImageRegionExclusionConstIteratorWithIndex:
+  public ImageRegionConstIteratorWithIndex< TImage >
 {
 public:
   /** Standard class typedefs. */
-  typedef ImageRegionExclusionConstIteratorWithIndex Self;
-  typedef ImageConstIteratorWithIndex< TImage >      Superclass;
+  typedef ImageRegionExclusionConstIteratorWithIndex  Self;
+  typedef ImageRegionConstIteratorWithIndex< TImage > Superclass;
 
   /** Types inherited from the Superclass */
   typedef typename Superclass::IndexType             IndexType;
@@ -147,13 +148,13 @@ public:
   typedef typename Superclass::AccessorType          AccessorType;
 
   /** Default constructor. Needed since we provide a cast constructor. */
-  ImageRegionExclusionConstIteratorWithIndex():ImageConstIteratorWithIndex< TImage >() {}
+  ImageRegionExclusionConstIteratorWithIndex():ImageRegionConstIteratorWithIndex< TImage >() {}
 
   /** Constructor establishes an iterator to walk a particular image and a
    * particular region of that image. */
   ImageRegionExclusionConstIteratorWithIndex(const TImage *ptr,
                                              const RegionType & region):
-    ImageConstIteratorWithIndex< TImage >(ptr, region) {}
+    ImageRegionConstIteratorWithIndex< TImage >(ptr, region) {}
 
   /** Constructor that can be used to cast from an ImageIterator to an
    * ImageRegionExclusionConstIteratorWithIndex. Many routines return an ImageIterator, but for a
@@ -161,8 +162,8 @@ public:
    * provide overloaded APIs that return different types of Iterators, itk
    * returns ImageIterators and uses constructors to cast from an
    * ImageIterator to a ImageRegionExclusionConstIteratorWithIndex. */
-  ImageRegionExclusionConstIteratorWithIndex(const ImageConstIteratorWithIndex< TImage > & it)
-  { this->ImageConstIteratorWithIndex< TImage >::operator=(it); }
+  ImageRegionExclusionConstIteratorWithIndex(const ImageRegionConstIteratorWithIndex< TImage > & it)
+  { this->ImageRegionConstIteratorWithIndex< TImage >::operator=(it); }
 
   /** Increment (prefix) the fastest moving dimension of the iterator's index.
    * This operator will constrain the iterator within the region (i.e. the
@@ -208,16 +209,6 @@ private:
 
   IndexType m_ExclusionBegin;
   IndexType m_ExclusionEnd;
-
-  /** Helper method that increments to the next index regardless of
-   * whether it is in the exclusion region. */
-  void Increment();
-
-  /** Helper method that increments to the previous index regardless of
-   * whether it is in the exclusion region. */
-  void Decrement();
-
-
 };
 } // end namespace itk
 
