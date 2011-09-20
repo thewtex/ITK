@@ -33,8 +33,8 @@ int itkIsoDataThresholdImageFilterTest(int argc, char* argv[] )
     return EXIT_FAILURE;
     }
 
-  typedef  short          InputPixelType;
-  typedef  unsigned char  OutputPixelType;
+  typedef  unsigned char          InputPixelType;
+  typedef  unsigned char          OutputPixelType;
 
   typedef itk::Image< InputPixelType,  2 >   InputImageType;
   typedef itk::Image< OutputPixelType, 2 >   OutputImageType;
@@ -64,7 +64,7 @@ int itkIsoDataThresholdImageFilterTest(int argc, char* argv[] )
   writer->SetInput( filter->GetOutput() );
 
   filter->Update();
-  std::cout << "Computed Threshold is: " << filter->GetThreshold() << std::endl;
+  std::cout << "Computed Threshold is: " <<  static_cast<itk::NumericTraits<InputPixelType>::PrintType>(filter->GetThreshold()) << std::endl;
   writer->SetFileName( argv[2] );
   writer->Update();
 

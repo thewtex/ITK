@@ -3,7 +3,7 @@
 #define __itkMaximumEntropyThresholdImageFilter_h
 
 #include "itkImageToImageFilter.h"
-#include "itkFixedArray.h"
+//#include "itkFixedArray.h"
 
 namespace itk {
 

@@ -76,10 +76,10 @@ HuangThresholdCalculator<THistogram, TOutput>
     {
     double entropy = 0;
     int mu = Math::Round<int>(W[threshold] / S[threshold]);
-    for (int i = first; i <= threshold; i++)
+    for (int i = first; i <= (int)threshold; i++)
       entropy += Smu[vcl_abs(i - mu)] * histogram->GetFrequency(i, 0);
     mu = (int)round((W[last] - W[threshold]) / (S[last] - S[threshold]));
-    for (int i = threshold + 1; i <= last; i++)
+    for (int i = threshold + 1; i <= (int)last; i++)
       entropy += Smu[vcl_abs(i - mu)] * histogram->GetFrequency(i, 0);
 
     if (bestEntropy > entropy)

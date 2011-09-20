@@ -64,7 +64,7 @@ int itkHuangThresholdImageFilterTest(int argc, char* argv[] )
   writer->SetInput( filter->GetOutput() );
 
   filter->Update();
-  std::cout << "Computed Threshold is: " << filter->GetThreshold() << std::endl;
+  std::cout << "Computed Threshold is: " <<  static_cast<itk::NumericTraits<InputPixelType>::PrintType>(filter->GetThreshold()) << std::endl;
   writer->SetFileName( argv[2] );
   writer->Update();
 

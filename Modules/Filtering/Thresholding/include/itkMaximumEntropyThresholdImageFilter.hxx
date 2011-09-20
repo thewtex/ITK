@@ -1,3 +1,4 @@
+
 #ifndef __itkMaximumEntropyThresholdImageFilter_hxx
 #define __itkMaximumEntropyThresholdImageFilter_hxx
 #include "itkMaximumEntropyThresholdImageFilter.h"

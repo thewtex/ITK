@@ -73,6 +73,7 @@ public:
 
   virtual typename DataObject::Pointer MakeOutput(unsigned int idx)
   {
+    if (idx){}  // get rid of the warning
     return DecoratedOutputType::New().GetPointer();
   }
 

@@ -15,20 +15,20 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-
-#include "itkShanbhagThresholdImageFilter.h"
+#include "itkNumericTraits.h"
+#include "itkHistogramThresholdingImageFilter.h"
 
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 #include "itkFilterWatcher.h"
 #include "itkTestingMacros.h"
 
-int itkShanbhagThresholdImageFilterTest(int argc, char* argv[] )
+int itkHistogramThresholdingImageFilterTest(int argc, char* argv[] )
 {
-  if( argc < 3 )
+  if( argc < 4 )
     {
     std::cerr << "Usage: " << argv[0];
-    std::cerr << " inputImageFile outputImageFile";
+    std::cerr << " inputImageFile outputImageFile method";
     std::cerr << std::endl;
     return EXIT_FAILURE;
     }
@@ -39,7 +39,7 @@ int itkShanbhagThresholdImageFilterTest(int argc, char* argv[] )
   typedef itk::Image< InputPixelType,  2 >   InputImageType;
   typedef itk::Image< OutputPixelType, 2 >   OutputImageType;
 
-  typedef itk::ShanbhagThresholdImageFilter<
+  typedef itk::HistogramThresholdingImageFilter<
                InputImageType, OutputImageType >  FilterType;
 
   typedef itk::ImageFileReader< InputImageType >  ReaderType;
@@ -63,8 +63,65 @@ int itkShanbhagThresholdImageFilterTest(int argc, char* argv[] )
   // filter->SetNumberOfHistogramBins (atoi(argv[3]));
   writer->SetInput( filter->GetOutput() );
 
+  std::string tmethod(argv[3]);
+
+  if (tmethod == "HUANG")
+    {
+      filter->SetThreshMethod(FilterType::HUANG);
+    }
+  else if (tmethod == "INTERMODES")
+    {
+      filter->SetThreshMethod(FilterType::INTERMODES);
+    }
+  else if (tmethod == "ISODATA")
+    {
+    filter->SetThreshMethod(FilterType::ISODATA);
+    }
+  else if (tmethod == "KITTLERILLINGWORTH")
+    {
+      filter->SetThreshMethod(FilterType::KITTLERILLINGWORTH);
+    }
+  else if (tmethod == "LI")
+    {
+      filter->SetThreshMethod(FilterType::LI);
+    }
+  else if (tmethod == "MAXIMUMENTROPY")
+    {
+      filter->SetThreshMethod(FilterType::MAXIMUMENTROPY);
+    }
+  else if (tmethod == "MOMENTS")
+    {
+      filter->SetThreshMethod(FilterType::MOMENTS);
+    }
+  else if (tmethod == "OTSU")
+    {
+      filter->SetThreshMethod(FilterType::OTSU);
+    }
+  else if (tmethod == "RENYIENTROPY")
+    {
+      filter->SetThreshMethod(FilterType::RENYIENTROPY);
+    }
+  else if (tmethod == "SHANBHAG")
+    {
+      filter->SetThreshMethod(FilterType::SHANBHAG);
+    }
+  else if (tmethod == "TRIANGLE")
+    {
+      filter->SetThreshMethod(FilterType::TRIANGLE);
+    }
+  else if (tmethod == "YEN")
+    {
+      filter->SetThreshMethod(FilterType::YEN);
+    }
+  else
+    {
+    std::cerr << "Unknown method" << std::endl;
+    return (EXIT_FAILURE);
+    }
+
+
   filter->Update();
-  std::cout << "Computed Threshold is: " <<  static_cast<itk::NumericTraits<InputPixelType>::PrintType>(filter->GetThreshold()) << std::endl;
+  std::cout << "Computed Threshold is: " << static_cast<itk::NumericTraits<InputPixelType>::PrintType>(filter->GetThreshold()) << std::endl;
   writer->SetFileName( argv[2] );
   writer->Update();
 
