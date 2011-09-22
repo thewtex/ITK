@@ -3,30 +3,13 @@
 #define __itkHistogramThresholdingBaseImageFilter_h
 
 #include "itkImageToImageFilter.h"
-#include "itkFixedArray.h"
-
 #include "itkImageToHistogramFilter.h"
-
-#include "itkHuangThresholdCalculator.h"
-#include "itkIntermodesThresholdCalculator.h"
-#include "itkIsoDataThresholdCalculator.h"
-#include "itkKittlerIllingworthThresholdCalculator.h"
-#include "itkLiThresholdCalculator.h"
-#include "itkMaximumEntropyThresholdCalculator.h"
-#include "itkMomentsThresholdCalculator.h"
-#include "itkOtsuThresholdCalculator.h"
-#include "itkRenyiEntropyThresholdCalculator.h"
-#include "itkShanbhagThresholdCalculator.h"
 #include "itkThresholdCalculator.h"
-#include "itkTriangleThresholdCalculator.h"
-#include "itkYenThresholdCalculator.h"
-
 
 namespace itk {
 
 /** \class HistogramThresholdingBaseImageFilter
- * \brief Threshold an image using any of the histogramming
- * methods. Default method is OTSU.
+ * \brief Base class for histogram based thresholding methods.
  *
  * This filter creates a binary thresholded image that separates an
  * image into foreground and background components. The filter

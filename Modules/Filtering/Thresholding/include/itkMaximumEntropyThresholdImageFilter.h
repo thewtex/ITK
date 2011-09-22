@@ -3,7 +3,7 @@
 #define __itkMaximumEntropyThresholdImageFilter_h
 
 #include "itkHistogramThresholdingBaseImageFilter.h"
-#include "itkLiThresholdCalculator.h"
+#include "itkMaximumEntropyThresholdCalculator.h"
 
 namespace itk {
 
@@ -83,7 +83,7 @@ public:
 #endif
 protected:
 
-  typedef LiThresholdCalculator<typename Superclass::HistogramType, InputPixelType> CalculatorType;
+  typedef MaximumEntropyThresholdCalculator<typename Superclass::HistogramType, InputPixelType> CalculatorType;
 
   MaximumEntropyThresholdImageFilter()
     {
