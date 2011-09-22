@@ -2,8 +2,8 @@
 #ifndef __itkShanbhagThresholdImageFilter_h
 #define __itkShanbhagThresholdImageFilter_h
 
-#include "itkImageToImageFilter.h"
-#include "itkFixedArray.h"
+#include "itkHistogramThresholdingBaseImageFilter.h"
+#include "itkShanbhagThresholdCalculator.h"
 
 namespace itk {
 
@@ -29,20 +29,22 @@ namespace itk {
 
 template<class TInputImage, class TOutputImage>
 class ITK_EXPORT ShanbhagThresholdImageFilter :
-    public ImageToImageFilter<TInputImage, TOutputImage>
+    public HistogramThresholdingBaseImageFilter<TInputImage, TOutputImage>
 {
 public:
   /** Standard Self typedef */
   typedef ShanbhagThresholdImageFilter                     Self;
-  typedef ImageToImageFilter<TInputImage,TOutputImage>     Superclass;
   typedef SmartPointer<Self>                               Pointer;
   typedef SmartPointer<const Self>                         ConstPointer;
+
+
+  typedef HistogramThresholdingBaseImageFilter<TInputImage,TOutputImage>     Superclass;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
 
   /** Runtime information support. */
-  itkTypeMacro(ShanbhagThresholdImageFilter, ImageToImageFilter);
+  itkTypeMacro(ShanbhagThresholdImageFilter, HistogramThresholdingBaseImageFilter);
 
   typedef TInputImage                       InputImageType;
   typedef TOutputImage                      OutputImageType;
@@ -69,24 +71,6 @@ public:
   itkStaticConstMacro(OutputImageDimension, unsigned int,
                       OutputImageType::ImageDimension );
 
-  /** Set the "outside" pixel value. The default value
-   * NumericTraits<OutputPixelType>::Zero. */
-  itkSetMacro(OutsideValue,OutputPixelType);
-
-  /** Get the "outside" pixel value. */
-  itkGetConstMacro(OutsideValue,OutputPixelType);
-
-  /** Set the "inside" pixel value. The default value
-   * NumericTraits<OutputPixelType>::max() */
-  itkSetMacro(InsideValue,OutputPixelType);
-
-  /** Get the "inside" pixel value. */
-  itkGetConstMacro(InsideValue,OutputPixelType);
-
-  /** Get the computed threshold. */
-  itkGetConstMacro(Threshold,InputPixelType);
-
-
 #ifdef ITK_USE_CONCEPT_CHECKING
   /** Begin concept checking */
   itkConceptMacro(OutputEqualityComparableCheck,
@@ -98,27 +82,28 @@ public:
   /** End concept checking */
 #endif
 protected:
-  ShanbhagThresholdImageFilter();
-  ~ShanbhagThresholdImageFilter(){};
-  void PrintSelf(std::ostream& os, Indent indent) const;
 
-  void GenerateInputRequestedRegion();
-  void GenerateData ();
+  typedef ShanbhagThresholdCalculator<typename Superclass::HistogramType, InputPixelType> CalculatorType;
+
+  ShanbhagThresholdImageFilter()
+    {
+    this->m_Calculator = CalculatorType::New();
+    }
+
+  ~ShanbhagThresholdImageFilter(){};
+
+  void PrintSelf(std::ostream& os, Indent indent) const
+  {
+  Superclass::PrintSelf(os,indent);
+  os << indent << "Shanbhag thresholding" << std::endl;
+  }
 
 private:
   ShanbhagThresholdImageFilter(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
 
-  InputPixelType      m_Threshold;
-  OutputPixelType     m_InsideValue;
-  OutputPixelType     m_OutsideValue;
-
 }; // end of class
 
 } // end namespace itk
-
-#ifndef ITK_MANUAL_INSTANTIATION
-#include "itkShanbhagThresholdImageFilter.hxx"
-#endif
 
 #endif

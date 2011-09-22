@@ -2,8 +2,8 @@
 #ifndef __itkYenThresholdImageFilter_h
 #define __itkYenThresholdImageFilter_h
 
-#include "itkImageToImageFilter.h"
-#include "itkFixedArray.h"
+#include "itkHistogramThresholdingBaseImageFilter.h"
+#include "itkYenThresholdCalculator.h"
 
 namespace itk {
 
@@ -29,20 +29,22 @@ namespace itk {
 
 template<class TInputImage, class TOutputImage>
 class ITK_EXPORT YenThresholdImageFilter :
-    public ImageToImageFilter<TInputImage, TOutputImage>
+    public HistogramThresholdingBaseImageFilter<TInputImage, TOutputImage>
 {
 public:
   /** Standard Self typedef */
   typedef YenThresholdImageFilter                          Self;
-  typedef ImageToImageFilter<TInputImage,TOutputImage>     Superclass;
   typedef SmartPointer<Self>                               Pointer;
   typedef SmartPointer<const Self>                         ConstPointer;
+
+
+  typedef HistogramThresholdingBaseImageFilter<TInputImage,TOutputImage>     Superclass;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
 
   /** Runtime information support. */
-  itkTypeMacro(YenThresholdImageFilter, ImageToImageFilter);
+  itkTypeMacro(YenThresholdImageFilter, HistogramThresholdingBaseImageFilter);
 
   typedef TInputImage                       InputImageType;
   typedef TOutputImage                      OutputImageType;
@@ -69,23 +71,6 @@ public:
   itkStaticConstMacro(OutputImageDimension, unsigned int,
                       OutputImageType::ImageDimension );
 
-  /** Set the "outside" pixel value. The default value
-   * NumericTraits<OutputPixelType>::Zero. */
-  itkSetMacro(OutsideValue,OutputPixelType);
-
-  /** Get the "outside" pixel value. */
-  itkGetConstMacro(OutsideValue,OutputPixelType);
-
-  /** Set the "inside" pixel value. The default value
-   * NumericTraits<OutputPixelType>::max() */
-  itkSetMacro(InsideValue,OutputPixelType);
-
-  /** Get the "inside" pixel value. */
-  itkGetConstMacro(InsideValue,OutputPixelType);
-
-  /** Get the computed threshold. */
-  itkGetConstMacro(Threshold,InputPixelType);
-
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   /** Begin concept checking */
@@ -98,27 +83,27 @@ public:
   /** End concept checking */
 #endif
 protected:
-  YenThresholdImageFilter();
-  ~YenThresholdImageFilter(){};
-  void PrintSelf(std::ostream& os, Indent indent) const;
+  typedef YenThresholdCalculator<typename Superclass::HistogramType, InputPixelType> CalculatorType;
 
-  void GenerateInputRequestedRegion();
-  void GenerateData ();
+  YenThresholdImageFilter()
+    {
+    this->m_Calculator = CalculatorType::New();
+    }
+
+  ~YenThresholdImageFilter(){};
+  void PrintSelf(std::ostream& os, Indent indent) const
+  {
+  Superclass::PrintSelf(os,indent);
+  os << indent << "Yen thresholding" << std::endl;
+  }
 
 private:
   YenThresholdImageFilter(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
 
-  InputPixelType      m_Threshold;
-  OutputPixelType     m_InsideValue;
-  OutputPixelType     m_OutsideValue;
 
 }; // end of class
 
 } // end namespace itk
-
-#ifndef ITK_MANUAL_INSTANTIATION
-#include "itkYenThresholdImageFilter.hxx"
-#endif
 
 #endif

@@ -2,8 +2,8 @@
 #ifndef __itkMaximumEntropyThresholdImageFilter_h
 #define __itkMaximumEntropyThresholdImageFilter_h
 
-#include "itkImageToImageFilter.h"
-//#include "itkFixedArray.h"
+#include "itkHistogramThresholdingBaseImageFilter.h"
+#include "itkLiThresholdCalculator.h"
 
 namespace itk {
 
@@ -29,20 +29,22 @@ namespace itk {
 
 template<class TInputImage, class TOutputImage>
 class ITK_EXPORT MaximumEntropyThresholdImageFilter :
-    public ImageToImageFilter<TInputImage, TOutputImage>
+    public HistogramThresholdingBaseImageFilter<TInputImage, TOutputImage>
 {
 public:
   /** Standard Self typedef */
   typedef MaximumEntropyThresholdImageFilter               Self;
-  typedef ImageToImageFilter<TInputImage,TOutputImage>     Superclass;
   typedef SmartPointer<Self>                               Pointer;
   typedef SmartPointer<const Self>                         ConstPointer;
+
+
+  typedef HistogramThresholdingBaseImageFilter<TInputImage,TOutputImage>     Superclass;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
 
   /** Runtime information support. */
-  itkTypeMacro(MaximumEntropyThresholdImageFilter, ImageToImageFilter);
+  itkTypeMacro(MaximumEntropyThresholdImageFilter, HistogramThresholdingBaseImageFilter);
 
   typedef TInputImage                       InputImageType;
   typedef TOutputImage                      OutputImageType;
@@ -69,24 +71,6 @@ public:
   itkStaticConstMacro(OutputImageDimension, unsigned int,
                       OutputImageType::ImageDimension );
 
-  /** Set the "outside" pixel value. The default value
-   * NumericTraits<OutputPixelType>::Zero. */
-  itkSetMacro(OutsideValue,OutputPixelType);
-
-  /** Get the "outside" pixel value. */
-  itkGetConstMacro(OutsideValue,OutputPixelType);
-
-  /** Set the "inside" pixel value. The default value
-   * NumericTraits<OutputPixelType>::max() */
-  itkSetMacro(InsideValue,OutputPixelType);
-
-  /** Get the "inside" pixel value. */
-  itkGetConstMacro(InsideValue,OutputPixelType);
-
-  /** Get the computed threshold. */
-  itkGetConstMacro(Threshold,InputPixelType);
-
-
 #ifdef ITK_USE_CONCEPT_CHECKING
   /** Begin concept checking */
   itkConceptMacro(OutputEqualityComparableCheck,
@@ -98,27 +82,27 @@ public:
   /** End concept checking */
 #endif
 protected:
-  MaximumEntropyThresholdImageFilter();
-  ~MaximumEntropyThresholdImageFilter(){};
-  void PrintSelf(std::ostream& os, Indent indent) const;
 
-  void GenerateInputRequestedRegion();
-  void GenerateData ();
+  typedef LiThresholdCalculator<typename Superclass::HistogramType, InputPixelType> CalculatorType;
+
+  MaximumEntropyThresholdImageFilter()
+    {
+    this->m_Calculator = CalculatorType::New();
+    }
+
+  ~MaximumEntropyThresholdImageFilter(){};
+  void PrintSelf(std::ostream& os, Indent indent) const
+  {
+    Superclass::PrintSelf(os,indent);
+    os << indent << "Li thresholding" << std::endl;
+  }
 
 private:
   MaximumEntropyThresholdImageFilter(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
 
-  InputPixelType      m_Threshold;
-  OutputPixelType     m_InsideValue;
-  OutputPixelType     m_OutsideValue;
-
 }; // end of class
 
 } // end namespace itk
-
-#ifndef ITK_MANUAL_INSTANTIATION
-#include "itkMaximumEntropyThresholdImageFilter.hxx"
-#endif
 
 #endif

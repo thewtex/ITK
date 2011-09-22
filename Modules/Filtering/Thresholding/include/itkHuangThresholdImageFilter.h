@@ -2,8 +2,8 @@
 #ifndef __itkHuangThresholdImageFilter_h
 #define __itkHuangThresholdImageFilter_h
 
-#include "itkImageToImageFilter.h"
-#include "itkFixedArray.h"
+#include "itkHistogramThresholdingBaseImageFilter.h"
+#include "itkHuangThresholdCalculator.h"
 
 namespace itk {
 
@@ -29,20 +29,22 @@ namespace itk {
 
 template<class TInputImage, class TOutputImage=double>
 class ITK_EXPORT HuangThresholdImageFilter :
-    public ImageToImageFilter<TInputImage, TOutputImage>
+    public HistogramThresholdingBaseImageFilter<TInputImage, TOutputImage>
 {
 public:
   /** Standard Self typedef */
   typedef HuangThresholdImageFilter                        Self;
-  typedef ImageToImageFilter<TInputImage,TOutputImage>     Superclass;
   typedef SmartPointer<Self>                               Pointer;
   typedef SmartPointer<const Self>                         ConstPointer;
+
+
+  typedef HistogramThresholdingBaseImageFilter<TInputImage,TOutputImage>     Superclass;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
 
   /** Runtime information support. */
-  itkTypeMacro(HuangThresholdImageFilter, ImageToImageFilter);
+  itkTypeMacro(HuangThresholdImageFilter, HistogramThresholdingBaseImageFilter);
 
   typedef TInputImage                       InputImageType;
   typedef TOutputImage                      OutputImageType;
@@ -69,23 +71,6 @@ public:
   itkStaticConstMacro(OutputImageDimension, unsigned int,
                       OutputImageType::ImageDimension );
 
-  /** Set the "outside" pixel value. The default value
-   * NumericTraits<OutputPixelType>::Zero. */
-  itkSetMacro(OutsideValue,OutputPixelType);
-
-  /** Get the "outside" pixel value. */
-  itkGetConstMacro(OutsideValue,OutputPixelType);
-
-  /** Set the "inside" pixel value. The default value
-   * NumericTraits<OutputPixelType>::max() */
-  itkSetMacro(InsideValue,OutputPixelType);
-
-  /** Get the "inside" pixel value. */
-  itkGetConstMacro(InsideValue,OutputPixelType);
-
-  /** Get the computed threshold. */
-  itkGetConstMacro(Threshold,InputPixelType);
-
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   /** Begin concept checking */
@@ -98,27 +83,28 @@ public:
   /** End concept checking */
 #endif
 protected:
-  HuangThresholdImageFilter();
-  ~HuangThresholdImageFilter(){};
-  void PrintSelf(std::ostream& os, Indent indent) const;
+  typedef HuangThresholdCalculator<typename Superclass::HistogramType, InputPixelType> CalculatorType;
 
-  void GenerateInputRequestedRegion();
-  void GenerateData ();
+  HuangThresholdImageFilter()
+    {
+    this->m_Calculator = CalculatorType::New();
+    }
+  ~HuangThresholdImageFilter(){};
+  void PrintSelf(std::ostream& os, Indent indent) const
+  {
+  Superclass::PrintSelf(os,indent);
+  os << indent << "Huang thresholding" << std::endl;
+
+  }
 
 private:
   HuangThresholdImageFilter(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
 
-  InputPixelType      m_Threshold;
-  OutputPixelType     m_InsideValue;
-  OutputPixelType     m_OutsideValue;
 
 }; // end of class
 
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
-#include "itkHuangThresholdImageFilter.hxx"
-#endif
 
 #endif

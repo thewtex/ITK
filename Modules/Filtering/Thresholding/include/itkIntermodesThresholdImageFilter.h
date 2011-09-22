@@ -2,8 +2,9 @@
 #ifndef __itkIntermodesThresholdImageFilter_h
 #define __itkIntermodesThresholdImageFilter_h
 
-#include "itkImageToImageFilter.h"
-#include "itkFixedArray.h"
+#include "itkHistogramThresholdingBaseImageFilter.h"
+#include "itkIntermodesThresholdCalculator.h"
+
 
 namespace itk {
 
@@ -29,20 +30,22 @@ namespace itk {
 
 template<class TInputImage, class TOutputImage=double>
 class ITK_EXPORT IntermodesThresholdImageFilter :
-    public ImageToImageFilter<TInputImage, TOutputImage>
+    public HistogramThresholdingBaseImageFilter<TInputImage, TOutputImage>
 {
 public:
   /** Standard Self typedef */
   typedef IntermodesThresholdImageFilter                   Self;
-  typedef ImageToImageFilter<TInputImage,TOutputImage>     Superclass;
   typedef SmartPointer<Self>                               Pointer;
   typedef SmartPointer<const Self>                         ConstPointer;
+
+
+  typedef HistogramThresholdingBaseImageFilter<TInputImage,TOutputImage>     Superclass;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
 
   /** Runtime information support. */
-  itkTypeMacro(IntermodesThresholdImageFilter, ImageToImageFilter);
+  itkTypeMacro(IntermodesThresholdImageFilter, HistogramThresholdingBaseImageFilter);
 
   typedef TInputImage                       InputImageType;
   typedef TOutputImage                      OutputImageType;
@@ -69,31 +72,27 @@ public:
   itkStaticConstMacro(OutputImageDimension, unsigned int,
                       OutputImageType::ImageDimension );
 
-  /** Set the "outside" pixel value. The default value
-   * NumericTraits<OutputPixelType>::Zero. */
-  itkSetMacro(OutsideValue,OutputPixelType);
+  void SetMaximumSmoothingIterations(unsigned long I)
+  {
+    this->m_MyCalc->SetMaximumSmoothingIterations(I);
+  }
 
-  /** Get the "outside" pixel value. */
-  itkGetConstMacro(OutsideValue,OutputPixelType);
-
-  /** Set the "inside" pixel value. The default value
-   * NumericTraits<OutputPixelType>::max() */
-  itkSetMacro(InsideValue,OutputPixelType);
-
-  /** Get the "inside" pixel value. */
-  itkGetConstMacro(InsideValue,OutputPixelType);
-
-  /** Get the computed threshold. */
-  itkGetConstMacro(Threshold,InputPixelType);
-
-  itkSetMacro( MaximumSmoothingIterations, unsigned long);
-  itkGetConstMacro( MaximumSmoothingIterations, unsigned long );
+  const unsigned long & GetMaximumSmoothingIterations()
+  {
+    return(this->m_MyCalc->GetMaximumSmoothingIterations());
+  }
 
   /** select whether midpoint (intermode=true) or minimum between
   peaks is used */
-  itkSetMacro( UseInterMode, bool);
-  itkGetConstMacro( UseInterMode, bool );
+  void SetUseInterMode(bool V)
+  {
+    this->m_MyCalc->SetUseInterMode(V);
+  }
 
+  bool GetUseInterMode()
+  {
+    return(this->m_MyCalc->GetUseInterMode());
+  }
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   /** Begin concept checking */
@@ -106,29 +105,33 @@ public:
   /** End concept checking */
 #endif
 protected:
-  IntermodesThresholdImageFilter();
-  ~IntermodesThresholdImageFilter(){};
-  void PrintSelf(std::ostream& os, Indent indent) const;
+  typedef IntermodesThresholdCalculator<typename Superclass::HistogramType, InputPixelType> CalculatorType;
 
-  void GenerateInputRequestedRegion();
-  void GenerateData ();
+  // this calculator has an extended interface, so keep this copy.
+  typename CalculatorType::Pointer m_MyCalc;
+
+  IntermodesThresholdImageFilter()
+    {
+    m_MyCalc = CalculatorType::New();
+    this->m_Calculator = m_MyCalc;
+    }
+
+  ~IntermodesThresholdImageFilter(){};
+
+  void PrintSelf(std::ostream& os, Indent indent) const
+  {
+    Superclass::PrintSelf(os,indent);
+    os << indent << "Intermodes thresholding" << std::endl;
+    os << indent << "Smoothing  " << m_MyCalc->GetMaximumSmoothingIterations() << std::endl;
+    os << indent << "Intermodes " << m_MyCalc->GetUseInterMode() << std::endl;
+  }
 
 private:
   IntermodesThresholdImageFilter(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
 
-  InputPixelType      m_Threshold;
-  OutputPixelType     m_InsideValue;
-  OutputPixelType     m_OutsideValue;
-  unsigned            m_MaximumSmoothingIterations;
-  bool                m_UseInterMode;
-
 }; // end of class
 
 } // end namespace itk
-
-#ifndef ITK_MANUAL_INSTANTIATION
-#include "itkIntermodesThresholdImageFilter.hxx"
-#endif
 
 #endif
