@@ -17,9 +17,9 @@
  *=========================================================================*/
 
 //  Software Guide : BeginCommandLineArgs
-//    INPUTS: {BrainProtonDensitySlice.png}
+//    INPUTS:  {BrainProtonDensitySlice.png}
 //    OUTPUTS: {GradientAnisotropicDiffusionImageFilterOutput.png}
-//    5 0.25 3
+//    ARGS:    5 0.25 3
 //  Software Guide : EndCommandLineArgs
 //  Software Guide : BeginLatex
 //  The \doxygen{GradientAnisotropicDiffusionImageFilter}  implements an

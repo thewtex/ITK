@@ -20,7 +20,7 @@
 //    INPUTS: {BrainProtonDensitySlice.png}
 //    OUTPUTS: {MathematicalMorphologyBinaryErosionOutput.png}
 //    OUTPUTS: {MathematicalMorphologyBinaryDilationOutput.png}
-//    150 180
+//    ARGS:    150 180
 //  Software Guide : EndCommandLineArgs
 
 //  Software Guide : BeginLatex

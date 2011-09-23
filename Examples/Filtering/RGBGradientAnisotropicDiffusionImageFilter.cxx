@@ -17,9 +17,9 @@
  *=========================================================================*/
 
 //  Software Guide : BeginCommandLineArgs
-//  INPUTS: {VisibleWomanHeadSlice.png}
+//  INPUTS:  {VisibleWomanHeadSlice.png}
 //  OUTPUTS: {RGBGradientAnisotropicDiffusionImageFilterOutput.png}
-//  20 0.125
+//  ARGS:    20 0.125
 //  Software Guide : EndCommandLineArgs
 
 //  Software Guide : BeginLatex

@@ -17,9 +17,9 @@
  *=========================================================================*/
 
 //  Software Guide : BeginCommandLineArgs
-//    INPUTS: {BrainProtonDensitySlice.png}
+//    INPUTS:  {BrainProtonDensitySlice.png}
 //    OUTPUTS: {DiscreteGaussianImageFilterOutput.png}
-//    4 9
+//    ARGS:    4 9
 //  Software Guide : EndCommandLineArgs
 //
 //  Software Guide : BeginLatex

@@ -17,21 +17,21 @@
  *=========================================================================*/
 
 // Software Guide : BeginCommandLineArgs
-// INPUTS: {BinaryThresholdImageFilterOutput.png}
-// OUTPUTS: {VotingBinaryHoleFillingImageFilterOutput1.png}
-// 1 1
+//   INPUTS:  {BinaryThresholdImageFilterOutput.png}
+//   OUTPUTS: {VotingBinaryHoleFillingImageFilterOutput1.png}
+//   ARGS:    1 1
 // Software Guide : EndCommandLineArgs
 
 // Software Guide : BeginCommandLineArgs
-// INPUTS: {BinaryThresholdImageFilterOutput.png}
-// OUTPUTS: {VotingBinaryHoleFillingImageFilterOutput2.png}
-// 2 2
+//   INPUTS:  {BinaryThresholdImageFilterOutput.png}
+//   OUTPUTS: {VotingBinaryHoleFillingImageFilterOutput2.png}
+//   ARGS:    2 2
 // Software Guide : EndCommandLineArgs
 
 // Software Guide : BeginCommandLineArgs
-// INPUTS: {BinaryThresholdImageFilterOutput.png}
-// OUTPUTS: {VotingBinaryHoleFillingImageFilterOutput3.png}
-// 3 3
+//   INPUTS:  {BinaryThresholdImageFilterOutput.png}
+//   OUTPUTS: {VotingBinaryHoleFillingImageFilterOutput3.png}
+//   ARGS:    3 3
 // Software Guide : EndCommandLineArgs
 
 

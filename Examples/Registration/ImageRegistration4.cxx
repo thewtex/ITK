@@ -17,13 +17,13 @@
  *=========================================================================*/
 
 //  Software Guide : BeginCommandLineArgs
-//    INPUTS: {BrainT1SliceBorder20.png}
-//    INPUTS: {BrainProtonDensitySliceShifted13x17y.png}
+//    INPUTS:  {BrainT1SliceBorder20.png}
+//    INPUTS:  {BrainProtonDensitySliceShifted13x17y.png}
 //    OUTPUTS: {ImageRegistration4Output.png}
-//    100
+//    ARGS:    100
 //    OUTPUTS: {ImageRegistration4CheckerboardBefore.png}
 //    OUTPUTS: {ImageRegistration4CheckerboardAfter.png}
-//    24
+//    ARGS:    24
 //  Software Guide : EndCommandLineArgs
 
 // Software Guide : BeginLatex

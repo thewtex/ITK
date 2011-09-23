@@ -17,9 +17,9 @@
  *=========================================================================*/
 
 //  Software Guide : BeginCommandLineArgs
-//     INPUTS: {FatMRISlice.png}
+//     INPUTS:  {FatMRISlice.png}
 //     OUTPUTS: {ImageRegionIteratorOutput.png}
-//     20 70 210 140
+//     ARGS:    20 70 210 140
 //  Software Guide : EndCommandLineArgs
 
 // Software Guide : BeginLatex

@@ -17,10 +17,10 @@
  *=========================================================================*/
 
 //  Software Guide : BeginCommandLineArgs
-//    INPUTS: {BrainProtonDensitySlice.png}
+//    INPUTS:  {BrainProtonDensitySlice.png}
 //    OUTPUTS: {MathematicalMorphologyGrayscaleErosionOutput.png}
 //    OUTPUTS: {MathematicalMorphologyGrayscaleDilationOutput.png}
-//    150 180
+//    ARGS:    150 180
 //  Software Guide : EndCommandLineArgs
 
 //  Software Guide : BeginLatex

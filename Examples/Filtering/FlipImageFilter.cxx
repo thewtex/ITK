@@ -17,9 +17,9 @@
  *=========================================================================*/
 
 //  Software Guide : BeginCommandLineArgs
-//    INPUTS: {BrainProtonDensitySlice.png}
+//    INPUTS:  {BrainProtonDensitySlice.png}
 //    OUTPUTS: {FlipImageFilterOutput.png}
-//    0 1
+//    ARGS:    0 1
 //  Software Guide : EndCommandLineArgs
 
 //  Software Guide : BeginLatex

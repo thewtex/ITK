@@ -17,24 +17,24 @@
  *=========================================================================*/
 
 //  Software Guide : BeginCommandLineArgs
-//    INPUTS: {BrainT1Slice.png}
+//    INPUTS:  {BrainT1Slice.png}
 //    OUTPUTS: {NeighborhoodIterators4a.png}
-//    0
+//    ARGS:    0
 //  Software Guide : EndCommandLineArgs
 //  Software Guide : BeginCommandLineArgs
-//    INPUTS: {BrainT1Slice.png}
+//    INPUTS:  {BrainT1Slice.png}
 //    OUTPUTS: {NeighborhoodIterators4b.png}
-//    1
+//    ARGS:    1
 //  Software Guide : EndCommandLineArgs
 //  Software Guide : BeginCommandLineArgs
-//    INPUTS: {BrainT1Slice.png}
+//    INPUTS:  {BrainT1Slice.png}
 //    OUTPUTS: {NeighborhoodIterators4c.png}
-//    2
+//    ARGS:    2
 //  Software Guide : EndCommandLineArgs
 //  Software Guide : BeginCommandLineArgs
-//    INPUTS: {BrainT1Slice.png}
+//    INPUTS:  {BrainT1Slice.png}
 //    OUTPUTS: {NeighborhoodIterators4d.png}
-//    5
+//    ARGS:    5
 //  Software Guide : EndCommandLineArgs
 
 #include "itkImageFileReader.h"

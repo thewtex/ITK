@@ -18,7 +18,7 @@
 
 //  Software Guide : BeginCommandLineArgs
 //    INPUTS: {BrainProtonDensitySlice.png}
-//    OtsuMultipleThresholdsOutput png 4
+//    ARGS:   OtsuMultipleThresholdsOutput png 4
 //  Software Guide : EndCommandLineArgs
 
 // Software Guide : BeginLatex

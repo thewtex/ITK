@@ -17,19 +17,19 @@
  *=========================================================================*/
 
 //  Software Guide : BeginCommandLineArgs
-//    INPUTS: {VisibleWomanEyeSlice.png}
+//    INPUTS:  {VisibleWomanEyeSlice.png}
 //    OUTPUTS: {VectorConfidenceConnectedOutput1.png}
-//    70 120 7 1
+//    ARGS:    70 120 7 1
 //  Software Guide : EndCommandLineArgs
 //  Software Guide : BeginCommandLineArgs
-//    INPUTS: {VisibleWomanEyeSlice.png}
+//    INPUTS:  {VisibleWomanEyeSlice.png}
 //    OUTPUTS: {VectorConfidenceConnectedOutput2.png}
-//    23 93 7 1
+//    ARGS:    23 93 7 1
 //  Software Guide : EndCommandLineArgs
 //  Software Guide : BeginCommandLineArgs
-//    INPUTS: {VisibleWomanEyeSlice.png}
+//    INPUTS:  {VisibleWomanEyeSlice.png}
 //    OUTPUTS: {VectorConfidenceConnectedOutput3.png}
-//    66 66 3 1
+//    ARGS:    66 66 3 1
 //  Software Guide : EndCommandLineArgs
 
 //  Software Guide : BeginLatex
