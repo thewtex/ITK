@@ -3,6 +3,7 @@ set(ITKConvolutionTests
   itkConvolutionImageFilterTest.cxx
   itkConvolutionImageFilterTestInt.cxx
   itkConvolutionImageFilterDeltaFunctionTest.cxx
+  itkMaskedFFTNormalizedCorrelationImageFilterTest.cxx
 )
 
 CreateTestDriver(ITKConvolution  "${ITKConvolution-Test_LIBRARIES}" "${ITKConvolutionTests}")
@@ -52,3 +53,20 @@ itk_add_test(NAME itkConvolutionImageFilterDeltaFunctionTest
    --compare ${ITK_DATA_ROOT}/Input/level.png
              ${ITK_TEST_OUTPUT_DIR}/itkConvolutionImageFilterDeltaFunctionTest.png
       itkConvolutionImageFilterDeltaFunctionTest ${ITK_DATA_ROOT}/Input/level.png ${ITK_TEST_OUTPUT_DIR}/itkConvolutionImageFilterDeltaFunctionTest.png)
+
+# Masked FFT NCC tests
+itk_add_test(NAME itkMaskedFFTNormalizedCorrelationImageFilterTest1
+      COMMAND ITKConvolutionTestDriver
+    --compare DATA{Baseline/itkMaskedFFTNormalizedCorrelationImageFilterTest1.png}
+              ${ITK_TEST_OUTPUT_DIR}/itkMaskedFFTNormalizedCorrelationImageFilterTest1.png
+    itkMaskedFFTNormalizedCorrelationImageFilterTest DATA{Input/FixedRectangles.png} DATA{Input/MovingRectangles.png} DATA{Input/FixedRectangleMask1.png} DATA{Input/MovingRectanglesMask.png} ${ITK_TEST_OUTPUT_DIR}/itkMaskedFFTNormalizedCorrelationImageFilterTest1.png)
+itk_add_test(NAME itkMaskedFFTNormalizedCorrelationImageFilterTest2
+      COMMAND ITKConvolutionTestDriver
+    --compare DATA{Baseline/itkMaskedFFTNormalizedCorrelationImageFilterTest2.png}
+              ${ITK_TEST_OUTPUT_DIR}/itkMaskedFFTNormalizedCorrelationImageFilterTest2.png
+    itkMaskedFFTNormalizedCorrelationImageFilterTest DATA{Input/FixedRectangles.png} DATA{Input/MovingRectangles.png} DATA{Input/FixedRectangleMask2.png} DATA{Input/MovingRectanglesMask.png} ${ITK_TEST_OUTPUT_DIR}/itkMaskedFFTNormalizedCorrelationImageFilterTest2.png)
+itk_add_test(NAME itkMaskedFFTNormalizedCorrelationImageFilterTest3
+      COMMAND ITKConvolutionTestDriver
+    --compare DATA{Baseline/itkMaskedFFTNormalizedCorrelationImageFilterTest3.png}
+              ${ITK_TEST_OUTPUT_DIR}/itkMaskedFFTNormalizedCorrelationImageFilterTest3.png
+    itkMaskedFFTNormalizedCorrelationImageFilterTest DATA{Input/FixedRectangles.png} DATA{Input/MovingRectangles.png} DATA{Input/FixedRectangleMask3.png} DATA{Input/MovingRectanglesMask.png} ${ITK_TEST_OUTPUT_DIR}/itkMaskedFFTNormalizedCorrelationImageFilterTest3.png)
