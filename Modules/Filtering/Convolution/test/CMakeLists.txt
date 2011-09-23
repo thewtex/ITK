@@ -3,6 +3,7 @@ set(ITKConvolutionTests
   itkConvolutionImageFilterTest.cxx
   itkConvolutionImageFilterTestInt.cxx
   itkConvolutionImageFilterDeltaFunctionTest.cxx
+  itkMaskedFFTNormalizedCorrelationImageFilterTest.cxx
 )
 
 CreateTestDriver(ITKConvolution  "${ITKConvolution-Test_LIBRARIES}" "${ITKConvolutionTests}")
@@ -52,3 +53,20 @@ itk_add_test(NAME itkConvolutionImageFilterDeltaFunctionTest
    --compare ${ITK_DATA_ROOT}/Input/level.png
              ${ITK_TEST_OUTPUT_DIR}/itkConvolutionImageFilterDeltaFunctionTest.png
       itkConvolutionImageFilterDeltaFunctionTest ${ITK_DATA_ROOT}/Input/level.png ${ITK_TEST_OUTPUT_DIR}/itkConvolutionImageFilterDeltaFunctionTest.png)
+
+# Masked FFT NCC tests
+itk_add_test(NAME itkMaskedFFTNormalizedCorrelationImageFilterTest1
+      COMMAND ITKConvolutionTestDriver
+    --compare DATA{Baseline/itkMaskedFFTNormalizedCorrelationImageFilterTest1.mha}
+              ${ITK_TEST_OUTPUT_DIR}/itkMaskedFFTNormalizedCorrelationImageFilterTest1.mha
+    itkMaskedFFTNormalizedCorrelationImageFilterTest DATA{Input/FixedRectangles.png} DATA{Input/MovingRectangles.png} DATA{Input/FixedRectangleMask1.png} DATA{Input/MovingRectanglesMask.png} ${ITK_TEST_OUTPUT_DIR}/itkMaskedFFTNormalizedCorrelationImageFilterTest1.mha ${ITK_TEST_OUTPUT_DIR}/itkMaskedFFTNormalizedCorrelationImageFilterNumberOfOverlapPixelsTest1.mha)
+itk_add_test(NAME itkMaskedFFTNormalizedCorrelationImageFilterTest2
+      COMMAND ITKConvolutionTestDriver
+    --compare DATA{Baseline/itkMaskedFFTNormalizedCorrelationImageFilterTest2.mha}
+              ${ITK_TEST_OUTPUT_DIR}/itkMaskedFFTNormalizedCorrelationImageFilterTest2.mha
+    itkMaskedFFTNormalizedCorrelationImageFilterTest DATA{Input/FixedRectangles.png} DATA{Input/MovingRectangles.png} DATA{Input/FixedRectangleMask2.png} DATA{Input/MovingRectanglesMask.png} ${ITK_TEST_OUTPUT_DIR}/itkMaskedFFTNormalizedCorrelationImageFilterTest2.mha)
+itk_add_test(NAME itkMaskedFFTNormalizedCorrelationImageFilterTest3
+      COMMAND ITKConvolutionTestDriver
+    --compare DATA{Baseline/itkMaskedFFTNormalizedCorrelationImageFilterTest3.mha}
+              ${ITK_TEST_OUTPUT_DIR}/itkMaskedFFTNormalizedCorrelationImageFilterTest3.mha
+    itkMaskedFFTNormalizedCorrelationImageFilterTest DATA{Input/FixedRectangles.png} DATA{Input/MovingRectangles.png} DATA{Input/FixedRectangleMask3.png} DATA{Input/MovingRectanglesMask.png} ${ITK_TEST_OUTPUT_DIR}/itkMaskedFFTNormalizedCorrelationImageFilterTest3.mha)
