@@ -18,6 +18,7 @@ itkZeroCrossingImageFilterTest.cxx
 itkCannyEdgeDetectionImageFilterTest2.cxx
 itkDerivativeImageFilterTest.cxx
 itkLaplacianRecursiveGaussianImageFilterTest.cxx
+itkMaskFeaturePointSelectionFilterTest.cxx
 )
 
 CreateTestDriver(ITKImageFeature  "${ITKImageFeature-Test_LIBRARIES}" "${ITKImageFeatureTests}")
@@ -94,3 +95,8 @@ itk_add_test(NAME itkLaplacianRecursiveGaussianImageFilterTest
     --compare ${ITK_DATA_ROOT}/Baseline/BasicFilters/LaplacianRecursiveGaussianImageFilterTest.png
               ${ITK_TEST_OUTPUT_DIR}/LaplacianRecursiveGaussianImageFilterTest.png
     itkLaplacianRecursiveGaussianImageFilterTest ${ITK_DATA_ROOT}/Input/cthead1.png ${ITK_TEST_OUTPUT_DIR}/LaplacianRecursiveGaussianImageFilterTest.png)
+itk_add_test(NAME itkMaskFeaturePointSelectionFilterTest
+      COMMAND ITKImageFeatureTestDriver
+    --compare ${ITK_DATA_ROOT}/Baseline/BasicFilters/itkMaskFeaturePointSelectionFilterTest.mha
+              ${ITK_TEST_OUTPUT_DIR}/itkMaskFeaturePointSelectionFilterTest.mha
+    itkMaskFeaturePointSelectionFilterTest ${ITK_DATA_ROOT}/Input/brainweb1e1a10f20.mha ${ITK_TEST_OUTPUT_DIR}/itkMaskFeaturePointSelectionFilterTest.mha)
