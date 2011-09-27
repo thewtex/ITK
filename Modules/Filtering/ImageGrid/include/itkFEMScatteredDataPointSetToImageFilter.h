@@ -104,7 +104,7 @@ namespace itk
  * O. Clatz, H. Delingette, I.-F. Talos, A. Golby, R. Kikinis, F. Jolesz,
  * N. Ayache, and S. Warfield, "Robust non-rigid registration to capture brain
  * shift from intra-operative MRI", IEEE Trans. Med. Imag., 
- * 24(11);1417–1427, 2005.
+ * 24(11);1417?427, 2005.
  *
  * \par REFERENCE
  * Yixun Liu, Andriy Fedorov, Ron Kikinis and Nikos Chrisochoides, 
@@ -235,8 +235,12 @@ protected:
   FEMScatteredDataPointSetToImageFilter();
   virtual ~FEMScatteredDataPointSetToImageFilter();
 
+  /** Initialize FEMObject from a mesh and feature points */
   void InitializeFEMObject(FEMObjectPointer fem);
 
+  /** Run the solver and call ProduceDeformationField to
+  *produce deformation field
+  */
   void GenerateData();
 
   void ProduceDeformationField();
@@ -262,6 +266,7 @@ private:
   TensorPointSetPointer m_TensorPointSet;
 
 };
+
 }// end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
