@@ -83,7 +83,7 @@ GradientDescentObjectOptimizerBase
   /* Perform the modification either with or without threading */
   if( this->m_Metric->HasLocalSupport() )
     {
-    this->m_ModifyGradientThreader->SetOverallIndexRange( fullrange );
+    this->m_ModifyGradientThreader->SetCompleteIndexRange( fullrange );
     /* This ends up calling ModifyGradientThreaded from each thread */
     this->m_ModifyGradientThreader->StartThreadedExecution();
     }
