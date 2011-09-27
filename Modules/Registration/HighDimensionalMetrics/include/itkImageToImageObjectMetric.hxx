@@ -506,7 +506,7 @@ template<class TFixedImage,class TMovingImage,class TVirtualImage>
 void
 ImageToImageObjectMetric<TFixedImage, TMovingImage, TVirtualImage >
 ::GetValueAndDerivativeThreadedCallback(
-                const ThreaderInputObjectType& virtualImageSubRegion,
+                const ThreaderDomainType& virtualImageSubRegion,
                 ThreadIdType threadID,
                 Self * self)
 {

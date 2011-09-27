@@ -24,18 +24,12 @@
 #include "itkInterpolateImageFunction.h"
 #include "itkSpatialObject.h"
 #include "itkResampleImageFilter.h"
+#include "itkThreadedImageRegionPartitioner.h"
 #include "itkImageToImageFilter.h"
 #include "itkGradientRecursiveGaussianImageFilter.h"
 
 namespace itk
 {
-
-//Forward-declare this because of module dependency conflict.
-//ImageToData will soon be moved to a different module, at which
-// time this can be removed.
-template <unsigned int VDimension, class TDataHolder>
-class ImageToData;
-
 /** \class ImageToImageObjectMetric
  *
  * Computes similarity between regions of two images, using two
@@ -761,14 +755,15 @@ protected:
   /** Type of the default threader used for GetValue and GetDerivative.
    * This splits an image region in per-thread sub-regions over the outermost
    * image dimension. */
-  typedef ImageToData<VirtualImageDimension, Self>
+  typedef ThreadedImageRegionPartitioner<VirtualImageDimension, Self>
                                              ValueAndDerivativeThreaderType;
-  typedef typename ValueAndDerivativeThreaderType::InputObjectType
-                                             ThreaderInputObjectType;
+  typedef typename ValueAndDerivativeThreaderType::DomainType
+                                             ThreaderDomainType;
 
-  /* Optinally set the threader type to use. This performs the splitting of the
+  /* Optionally set the threader type to use. This performs the splitting of the
    * virtual region over threads, and user may wish to provide a different
-   * one that does a different split. The default is ImageToData. */
+   * one that does a different split. The default is
+   * ThreadedImageRegionPartitioner. */
   itkSetObjectMacro(ValueAndDerivativeThreader,ValueAndDerivativeThreaderType);
 
   /** Threader used to evaluate value and deriviative. */
@@ -804,7 +799,7 @@ private:
    * threader in the class' constructor by calling
    * \c m_ValueAndDerivativeThreader->SetThreadedGenerateData( mycallback ) */
   static void GetValueAndDerivativeThreadedCallback(
-                          const ThreaderInputObjectType& virtualImageSubRegion,
+                          const ThreaderDomainType& virtualImageSubRegion,
                           ThreadIdType threadId,
                           Self * dataHolder);
 
