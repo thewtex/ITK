@@ -2,6 +2,8 @@ itk_module_test()
 set(ITKHighDimensionalMetricsTests
   itkObjectToObjectMetricTest.cxx
   itkImageToImageObjectMetricTest.cxx
+  itkJointHistogramMutualInformationImageToImageObjectMetricTest.cxx
+  itkJointHistogramMutualInformationImageToImageObjectRegistrationTest.cxx
 )
 
 set(INPUTDATA ${ITK_DATA_ROOT}/Input)
@@ -16,3 +18,12 @@ itk_add_test(NAME itkObjectToObjectMetricTest
 itk_add_test(NAME itkImageToImageObjectMetricTest
       COMMAND ITKHighDimensionalMetricsTestDriver
               itkImageToImageObjectMetricTest)
+
+itk_add_test(NAME itkJointHistogramMutualInformationImageToImageObjectMetricTest
+      COMMAND ITKHighDimensionalMetricsTestDriver
+              itkJointHistogramMutualInformationImageToImageObjectMetricTest)
+
+itk_add_test(NAME itkJointHistogramMutualInformationImageToImageObjectRegistrationTest
+      COMMAND ITKHighDimensionalMetricsTestDriver
+              itkJointHistogramMutualInformationImageToImageObjectRegistrationTest
+              ${ITK_DATA_ROOT}/Input/BrainProtonDensitySliceBorder20.png ${ITK_DATA_ROOT}/Input/BrainProtonDensitySliceBSplined10.png ${TEMP}/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest.nii.gz 10 1 1 )
