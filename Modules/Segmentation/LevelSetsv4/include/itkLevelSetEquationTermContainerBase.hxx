@@ -38,6 +38,46 @@ LevelSetEquationTermContainerBase< TInputImage, TLevelSetContainer >
 
 // ----------------------------------------------------------------------------
 template< class TInputImage, class TLevelSetContainer >
+typename LevelSetEquationTermContainerBase< TInputImage, TLevelSetContainer >
+::TermIterator
+LevelSetEquationTermContainerBase< TInputImage, TLevelSetContainer >
+::TermBegin()
+{
+  return TermIterator( this->m_Container.begin() );
+}
+
+// ----------------------------------------------------------------------------
+template< class TInputImage, class TLevelSetContainer >
+typename LevelSetEquationTermContainerBase< TInputImage, TLevelSetContainer >
+::TermIterator
+LevelSetEquationTermContainerBase< TInputImage, TLevelSetContainer >
+::TermEnd()
+{
+  return TermIterator( this->m_Container.end() );
+}
+
+// ----------------------------------------------------------------------------
+template< class TInputImage, class TLevelSetContainer >
+typename LevelSetEquationTermContainerBase< TInputImage, TLevelSetContainer >
+::ConstTermIterator
+LevelSetEquationTermContainerBase< TInputImage, TLevelSetContainer >
+::TermBegin() const
+{
+  return ConstTermIterator( this->m_Container.begin() );
+}
+
+// ----------------------------------------------------------------------------
+template< class TInputImage, class TLevelSetContainer >
+typename LevelSetEquationTermContainerBase< TInputImage, TLevelSetContainer >
+::ConstTermIterator
+LevelSetEquationTermContainerBase< TInputImage, TLevelSetContainer >
+::TermEnd() const
+{
+  return ConstTermIterator( this->m_Container.end() );
+}
+
+// ----------------------------------------------------------------------------
+template< class TInputImage, class TLevelSetContainer >
 void
 LevelSetEquationTermContainerBase< TInputImage, TLevelSetContainer >
 ::AddTerm( const TermIdType& iId, TermType* iTerm )
