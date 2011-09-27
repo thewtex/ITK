@@ -7,6 +7,7 @@ itk_module(ITKImageGrid
   DEPENDS
     ITKImageFunction
     ITKImageFilterBase
+    ITKIOBase
   TEST_DEPENDS
     ITKTestKernel
     ITKRegistrationCommon
@@ -17,3 +18,4 @@ itk_module(ITKImageGrid
 
 # Extra test dependency on ITKRegistrationCommon is introduced by itkShrinkImagePreserveObjectPhysicalLocations.
 # ITKSmoothing dependency introduced by itkSliceBySliceImageFilterTest.
+# ITKIOBase dependency introduced by itkResampleImageFilter
