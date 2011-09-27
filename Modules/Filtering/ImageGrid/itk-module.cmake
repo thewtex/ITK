@@ -11,9 +11,11 @@ itk_module(ITKImageGrid
     ITKTestKernel
     ITKRegistrationCommon
     ITKSmoothing
+    ITKIOBase
   DESCRIPTION
     "${DOCUMENTATION}"
 )
 
 # Extra test dependency on ITKRegistrationCommon is introduced by itkShrinkImagePreserveObjectPhysicalLocations.
+# Extra test dependency on ITKRegistrationCommon is introduced by itkShrinkImagePreserveObjectPhysicalLocations and ITKIOBase.
 # ITKSmoothing dependency introduced by itkSliceBySliceImageFilterTest.
