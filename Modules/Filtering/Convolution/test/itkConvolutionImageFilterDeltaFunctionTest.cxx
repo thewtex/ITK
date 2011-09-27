@@ -63,19 +63,10 @@ int itkConvolutionImageFilterDeltaFunctionTest(int argc, char * argv[])
   convolver->SetInput( deltaFunctionImage );
   convolver->SetImageKernel( reader->GetOutput() );
 
-  // Flip output of the convolver and save the file. We should get
-  // output identical to the input kernel image.
-  itk::FlipImageFilter< ImageType >::Pointer flipper =
-    itk::FlipImageFilter< ImageType >::New();
-  itk::FlipImageFilter< ImageType >::FlipAxesArrayType axesArray;
-  axesArray.Fill( true );
-  flipper->SetFlipAxes( axesArray );
-  flipper->SetInput( convolver->GetOutput() );
-
   typedef itk::ImageFileWriter<ImageType> WriterType;
   WriterType::Pointer writer = WriterType::New();
   writer->SetFileName( argv[2] );
-  writer->SetInput( flipper->GetOutput() );
+  writer->SetInput( convolver->GetOutput() );
 
   try
     {

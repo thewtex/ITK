@@ -23,6 +23,7 @@
 
 #include "itkConstantPadImageFilter.h"
 #include "itkCropImageFilter.h"
+#include "itkFlipImageFilter.h"
 #include "itkImageBase.h"
 #include "itkImageKernelOperator.h"
 #include "itkNeighborhoodOperatorImageFilter.h"
@@ -104,6 +105,14 @@ ConvolutionImageFilter< TInputImage, TKernelImage, TOutputImage >
     optionalFilterWeights += 0.1f;
     }
 
+  // Flip the kernel
+  typedef FlipImageFilter< TImage > FlipperType;
+  typename FlipperType::Pointer flipper = FlipperType::New();
+  typename FlipperType::FlipAxesArrayType axesArray;
+  axesArray.Fill( true );
+  flipper->SetFlipAxes( axesArray );
+  flipper->SetInput( kernelImage );
+
   if ( kernelNeedsPadding )
     {
     // Pad the kernel if necessary to an odd size in each dimension.
@@ -113,7 +122,7 @@ ConvolutionImageFilter< TInputImage, TKernelImage, TOutputImage >
     kernelPadImageFilter->SetPadLowerBound( this->GetKernelPadSize() );
     kernelPadImageFilter->SetNumberOfThreads( this->GetNumberOfThreads() );
     kernelPadImageFilter->ReleaseDataFlagOn();
-    kernelPadImageFilter->SetInput( kernelImage );
+    kernelPadImageFilter->SetInput( flipper->GetOutput() );
     progress->RegisterInternalFilter( kernelPadImageFilter, 0.1f );
     kernelPadImageFilter->UpdateLargestPossibleRegion();
 
@@ -121,7 +130,8 @@ ConvolutionImageFilter< TInputImage, TKernelImage, TOutputImage >
     }
   else
     {
-    kernelOperator.SetImageKernel( kernelImage );
+    flipper->UpdateLargestPossibleRegion();
+    kernelOperator.SetImageKernel( flipper->GetOutput() );
     }
 
   KernelSizeType radius = this->GetKernelRadius( kernelImage );
