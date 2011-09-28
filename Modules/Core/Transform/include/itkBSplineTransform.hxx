@@ -42,12 +42,10 @@ BSplineTransform<TScalarType, NDimensions, VSplineOrder>
   this->m_WeightsFunction = WeightsFunctionType::New();
 
   /** Fixed Parameters store the following information:
-   *     transform domain size
-   *     transform domain origin
-   *     transform domain spacing
-   *     transform domain direction
-   *     transform domain mesh size
-   *     spline order
+   *     grid size
+   *     gird origin
+   *     grid spacing
+   *     grid direction
    *  The size of these is equal to the  NInputDimensions
    */
   // For example 3D image has FixedParameters of:
@@ -286,16 +284,13 @@ BSplineTransform<TScalarType, NDimensions, VSplineOrder>
 
   // set the grid size parameters
   SizeType gridSize;
-  MeshSizeType meshSize;
   for( unsigned int i = 0; i < NDimensions; i++ )
     {
     gridSize[i] = static_cast<SizeValueType>( this->m_FixedParameters[i] );
-    meshSize[i] = gridSize[i] - SplineOrder;
     }
   this->m_CoefficientImages[0]->SetRegions( gridSize );
-  this->SetTransformDomainMeshSize( meshSize );
 
-  // Set the origin parameters
+//  // Set the origin parameters
   OriginType origin;
   for( unsigned int i = 0; i < NDimensions; i++ )
     {
@@ -303,7 +298,7 @@ BSplineTransform<TScalarType, NDimensions, VSplineOrder>
     }
   this->m_CoefficientImages[0]->SetOrigin( origin );
 
-  // Set the spacing parameters
+//  // Set the spacing parameters
   SpacingType spacing;
   for( unsigned int i = 0; i < NDimensions; i++ )
     {
@@ -311,7 +306,7 @@ BSplineTransform<TScalarType, NDimensions, VSplineOrder>
     }
   this->m_CoefficientImages[0]->SetSpacing( spacing );
 
-  // Set the direction parameters
+//  // Set the direction parameters
   DirectionType direction;
   for( unsigned int di = 0; di < NDimensions; di++ )
     {
@@ -322,6 +317,8 @@ BSplineTransform<TScalarType, NDimensions, VSplineOrder>
       }
     }
   this->m_CoefficientImages[0]->SetDirection( direction );
+  this->m_CoefficientImages[0]->Allocate();
+  this->m_CoefficientImages[0]->FillBuffer( 0 );
 
   // Copy the information to the rest of the images
   for( unsigned int i = 1; i < SpaceDimension; i++ )
@@ -329,6 +326,8 @@ BSplineTransform<TScalarType, NDimensions, VSplineOrder>
     this->m_CoefficientImages[i]->CopyInformation( this->m_CoefficientImages[0] );
     this->m_CoefficientImages[i]->SetRegions(
       this->m_CoefficientImages[0]->GetLargestPossibleRegion() );
+    this->m_CoefficientImages[i]->Allocate();
+    this->m_CoefficientImages[i]->FillBuffer( 0 );
     }
 }
 
@@ -437,6 +436,7 @@ BSplineTransform<TScalarType, NDimensions, VSplineOrder>
       {
       this->m_FixedParameters[i] = passedParameters[i];
       }
+    this->Modified();
     }
   else
     {
@@ -445,7 +445,53 @@ BSplineTransform<TScalarType, NDimensions, VSplineOrder>
                        << " and the required number of fixed parameters "
                        << this->m_FixedParameters.Size() );
     }
-  this->SetCoefficientImageInformationFromFixedParameters();
+
+  SizeType gridSize;
+  for( unsigned int i = 0; i < NDimensions; i++ )
+    {
+    gridSize[i] = static_cast<SizeValueType>( this->m_FixedParameters[i] );
+    }
+  this->m_CoefficientImages[0]->SetRegions( gridSize );
+
+//  // Set the origin parameters
+  OriginType origin;
+  for( unsigned int i = 0; i < NDimensions; i++ )
+    {
+    origin[i] = this->m_FixedParameters[NDimensions + i];
+    }
+  this->m_CoefficientImages[0]->SetOrigin( origin );
+
+//  // Set the spacing parameters
+  SpacingType spacing;
+  for( unsigned int i = 0; i < NDimensions; i++ )
+    {
+    spacing[i] = this->m_FixedParameters[2 * NDimensions + i];
+    }
+  this->m_CoefficientImages[0]->SetSpacing( spacing );
+
+//  // Set the direction parameters
+  DirectionType direction;
+  for( unsigned int di = 0; di < NDimensions; di++ )
+    {
+    for( unsigned int dj = 0; dj < NDimensions; dj++ )
+      {
+      direction[di][dj] =
+        this->m_FixedParameters[3 * NDimensions + ( di * NDimensions + dj )];
+      }
+    }
+  this->m_CoefficientImages[0]->SetDirection( direction );
+  this->m_CoefficientImages[0]->Allocate();
+  this->m_CoefficientImages[0]->FillBuffer( 0 );
+
+  // Copy the information to the rest of the images
+  for( unsigned int i = 1; i < SpaceDimension; i++ )
+    {
+    this->m_CoefficientImages[i]->CopyInformation( this->m_CoefficientImages[0] );
+    this->m_CoefficientImages[i]->SetRegions(
+      this->m_CoefficientImages[0]->GetLargestPossibleRegion() );
+    this->m_CoefficientImages[i]->Allocate();
+    this->m_CoefficientImages[i]->FillBuffer( 0 );
+    }
 }
 
 // Wrap flat parameters as images
