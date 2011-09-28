@@ -854,6 +854,14 @@ Solver<VDimension>
   // Initialize all pointers in interpolation grid image to 0
   m_InterpolationGrid->FillBuffer(0);
 
+  FillInterpolationGrid();
+}
+
+template <unsigned int VDimension>
+void
+Solver<VDimension>
+::FillInterpolationGrid( )
+{
   VectorType v1, v2;
 
   // Fill the interpolation grid with proper pointers to elements
@@ -940,6 +948,39 @@ Solver<VDimension>
         }
       } // next point in region
     }   // next element
+}
+
+/**
+ * Initialize the interpolation grid over the user defined region
+ */
+template <unsigned int VDimension>
+void
+Solver<VDimension>
+::InitializeInterpolationGrid(const InterpolationGridRegionType& region,
+                              const InterpolationGridPointType& origin,
+                              const InterpolationGridSpacingType& spacing,
+                              const InterpolationGridDirectionType& direction)
+{
+  InterpolationGridSizeType size = region.GetSize();
+  for( unsigned int i = 0; i < FEMDimension; i++ )
+    {
+    if( size[i] == 0 )
+      {
+      itkExceptionMacro("Size must be specified.");
+      }
+    }
+
+  m_InterpolationGrid = InterpolationGridType::New();
+  m_InterpolationGrid->SetOrigin( origin );
+  m_InterpolationGrid->SetSpacing( spacing );
+  m_InterpolationGrid->SetDirection( direction );
+  m_InterpolationGrid->SetRegions( region );
+  m_InterpolationGrid->Allocate();
+
+   // Initialize all pointers in interpolation grid image to 0
+  m_InterpolationGrid->FillBuffer(0);
+
+  FillInterpolationGrid();
 }
 
 template <unsigned int VDimension>
