@@ -8,6 +8,10 @@ set(ITKHighDimensionalMetricsTests
   itkJointHistogramMutualInformationImageToImageObjectMetricTest.cxx
   itkJointHistogramMutualInformationImageToImageObjectRegistrationTest.cxx
   itkDemonsImageToImageObjectMetricTest.cxx
+  itkANTSSparseNeighborhoodCorrelationImageToImageObjectMetricTest.cxx
+  itkANTSSparseNeighborhoodCorrelationImageToImageObjectRegistrationTest.cxx
+  itkANTSNeighborhoodCorrelationImageToImageObjectMetricTest.cxx
+  itkANTSNeighborhoodCorrelationImageToImageObjectRegistrationTest.cxx
 )
 
 set(INPUTDATA ${ITK_DATA_ROOT}/Input)
@@ -40,6 +44,31 @@ itk_add_test(NAME itkJointHistogramMutualInformationImageToImageObjectRegistrati
               ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceBSplined10.png
               ${TEMP}/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest.nii.gz
               10 1 0.25 )
+
 itk_add_test(NAME itkDemonsImageToImageObjectMetricTest
       COMMAND ITKHighDimensionalMetricsTestDriver
       itkDemonsImageToImageObjectMetricTest)
+
+itk_add_test(NAME itkANTSSparseNeighborhoodCorrelationImageToImageObjectMetricTest
+      COMMAND ITKHighDimensionalMetricsTestDriver
+              itkANTSSparseNeighborhoodCorrelationImageToImageObjectMetricTest)
+
+# itk_add_test(NAME itkANTSSparseNeighborhoodCorrelationImageToImageObjectRegistrationTest
+#      COMMAND ITKHighDimensionalMetricsTestDriver
+#              itkANTSSparseNeighborhoodCorrelationImageToImageObjectRegistrationTest
+#              ${ITK_DATA_ROOT}/BrainProtonDensitySliceBorder20.png
+#              ${ITK_DATA_ROOT}/BrainProtonDensitySliceBSplined10.png
+#              ${TEMP}/itkANTSSparseNeighborhoodCorrelationImageToImageObjectRegistrationTest.nii.gz
+#              10 1 0.25 )
+
+itk_add_test(NAME itkANTSNeighborhoodCorrelationImageToImageObjectMetricTest
+      COMMAND ITKHighDimensionalMetricsTestDriver
+              itkANTSNeighborhoodCorrelationImageToImageObjectMetricTest)
+
+itk_add_test(NAME itkANTSNeighborhoodCorrelationImageToImageObjectRegistrationTest
+      COMMAND ITKHighDimensionalMetricsTestDriver
+              itkANTSNeighborhoodCorrelationImageToImageObjectRegistrationTest
+              ${ITK_DATA_ROOT}/BrainProtonDensitySliceBorder20.png
+              ${ITK_DATA_ROOT}/BrainProtonDensitySliceBSplined10.png
+              ${TEMP}/itkANTSNeighborhoodCorrelationImageToImageObjectRegistrationTest.nii.gz
+              10 1 0.25 )
