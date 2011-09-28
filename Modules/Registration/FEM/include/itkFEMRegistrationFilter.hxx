@@ -122,7 +122,7 @@ void FEMRegistrationFilter<TMovingImage, TFixedImage, TFemObject>::RunRegistrati
     typedef SolverCrankNicolson<3> TestSolverType;
 
     TestSolverType::Pointer mySolver = TestSolverType::New();
-    mySolver->SetDeltaT(m_TimeStep);
+    mySolver->SetTimeStep(m_TimeStep);
     mySolver->SetRho(m_Rho[m_CurrentLevel]);
     mySolver->SetAlpha(m_Alpha);
 
@@ -1502,7 +1502,7 @@ void FEMRegistrationFilter<TMovingImage, TFixedImage, TFemObject>::MultiResSolve
           }
         double MeshResolution = (double)this->m_MeshPixelsPerElementAtEachResolution(m_CurrentLevel);
 
-        SSS->SetDeltaT(m_TimeStep);
+        SSS->SetTimeStep(m_TimeStep);
         SSS->SetRho(m_Rho[m_CurrentLevel]);
         SSS->SetAlpha(m_Alpha);
 
