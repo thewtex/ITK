@@ -27,10 +27,10 @@
 #include "vnl/vnl_math.h"
 
 // tyepdefs used for registration
-const unsigned int ImageDimension = 3;
 typedef unsigned char                                 PixelType;
+const unsigned int ImageDimension = 2;
 typedef itk::Image<PixelType, ImageDimension>         ImageType;
-typedef itk::fem::Element3DC0LinearHexahedronMembrane ElementType;
+typedef itk::fem::Element2DC0LinearQuadrilateralMembrane ElementType;
 
 // Template function to fill in an image with a value
 template <class TImage>
@@ -104,14 +104,14 @@ CopyImageBuffer(
 
 }
 
-int itkFEMRegistrationFilterTest(int, char * [] )
+int itkFEMRegistrationFilter2DTest(int, char * [] )
 {
   typedef itk::Vector<float, ImageDimension>                VectorType;
   typedef itk::Image<VectorType, ImageDimension>            FieldType;
   typedef itk::Image<VectorType::ValueType, ImageDimension> FloatImageType;
-  typedef ImageType::IndexType                              IndexType;
-  typedef ImageType::SizeType                               SizeType;
-  typedef ImageType::RegionType                             RegionType;
+  typedef ImageType::IndexType                          IndexType;
+  typedef ImageType::SizeType                           SizeType;
+  typedef ImageType::RegionType                         RegionType;
 
   // --------------------------------------------------------
   std::cout << "Generate input images and initial deformation field";
@@ -135,7 +135,7 @@ int itkFEMRegistrationFilterTest(int, char * [] )
 
   ImageType::Pointer moving = ImageType::New();
   ImageType::Pointer fixed = ImageType::New();
-  FieldType::Pointer initField = FieldType::New();
+  FieldType::Pointer     initField = FieldType::New();
 
   moving->SetLargestPossibleRegion( region );
   moving->SetBufferedRegion( region );
@@ -160,6 +160,7 @@ int itkFEMRegistrationFilterTest(int, char * [] )
     center[i] = 16;
     }
 
+  // fill moving with circle
   radius = 5;
   FillWithCircle<ImageType>( moving, center, radius, fgnd, bgnd );
 
@@ -176,7 +177,7 @@ int itkFEMRegistrationFilterTest(int, char * [] )
   std::cout << "Run registration and warp moving" << std::endl;
   for( int met = 0; met < 4; met++ )
     {
-    typedef itk::fem::FEMObject<ImageDimension>  FEMObjectType;
+    typedef itk::fem::FEMObject<ImageDimension>              FEMObjectType;
     typedef itk::fem::FEMRegistrationFilter<ImageType, ImageType, FEMObjectType> RegistrationType;
     RegistrationType::Pointer registrator = RegistrationType::New();
     registrator->SetFixedImage( fixed );
@@ -238,6 +239,7 @@ int itkFEMRegistrationFilterTest(int, char * [] )
     e1->SetMaterial(dynamic_cast<itk::fem::MaterialLinearElasticity *>( &*m ) );
     registrator->SetElement(&*e1);
     registrator->SetMaterial(m);
+
     registrator->Print( std::cout );
 
     try
