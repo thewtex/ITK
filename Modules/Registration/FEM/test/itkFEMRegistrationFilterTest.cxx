@@ -175,7 +175,6 @@ int itkFEMRegistrationFilterTest(int, char * [] )
     registrator->SetFixedImage( fixed );
     registrator->SetMovingImage( moving );
 
-    registrator->SetUseMultiResolution(true);
     registrator->SetMaxLevel(1);
     registrator->SetMovingImage( moving );
     registrator->SetFixedImage( fixed );
