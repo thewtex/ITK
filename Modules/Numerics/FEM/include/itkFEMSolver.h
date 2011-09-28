@@ -108,6 +108,31 @@ public:
   typedef typename InterpolationGridType::PointType              InterpolationGridPointType;
   typedef typename InterpolationGridType::SpacingType            InterpolationGridSpacingType;
   typedef typename InterpolationGridType::IndexType              InterpolationGridIndexType;
+  typedef typename InterpolationGridType::DirectionType          InterpolationGridDirectionType;
+
+  /*
+   * Get/Set the Interpolation Grid Origin
+   */
+  itkSetMacro(Origin, InterpolationGridPointType);
+  itkGetMacro(Origin, InterpolationGridPointType);
+
+  /*
+   * Get/Set the Interpolation Grid Spacing
+   */
+  itkSetMacro(Spacing, InterpolationGridSpacingType);
+  itkGetMacro(Spacing, InterpolationGridSpacingType);
+
+  /*
+   * Get/Set the Interpolation Grid Region
+   */
+  itkSetMacro(Region, InterpolationGridRegionType);
+  itkGetMacro(Region, InterpolationGridRegionType);
+
+  /*
+   * Get/Set the Interpolation Grid Direction
+   */
+  itkSetMacro(Direction, InterpolationGridDirectionType);
+  itkGetMacro(Direction, InterpolationGridDirectionType);
 
   /** Returns the time step used for dynamic problems. */
   virtual Float GetTimeStep(void) const
@@ -243,6 +268,14 @@ protected:
   }
 
   /**
+   * Initialize the interpolation grid, over the domain specified by the user
+   */
+  void InitializeInterpolationGrid(const InterpolationGridRegionType & region,
+                                   const InterpolationGridPointType & origin,
+                                   const InterpolationGridSpacingType & spacing,
+                                   const InterpolationGridDirectionType & direction);
+
+  /**
    * Returns pointer to interpolation grid, which is an itk::Image of pointers
    * to Element objects. Normally you would use physical coordinates to get
    * specific points (pointers to elements) from the image. You can then
@@ -349,6 +382,11 @@ protected:
   void UpdateDisplacements(void);
 
   /**
+   * Fill the interpolation grid based on the current deformed grid
+   */
+  void FillInterpolationGrid(void);
+
+  /**
    * Performs any initialization needed for LinearSystemWrapper
    * object i.e. sets the maximum number of matrices and vectors.
    */
@@ -385,16 +423,13 @@ private:
   Solver(const Self &);         // purposely not implemented
   void operator=(const Self &); // purposely not implemented
 
-  /**
-   * Default constructor sets Solver to use VNL linear system .
-   * \sa Solver::SetLinearSystemWrapper
+  /*
+   * Properties of the Interpolation Grid
    */
-  // Solver();
-
-  /**
-   * Virtual destructor
-   */
-  // virtual ~Solver() {}
+  InterpolationGridRegionType       m_Region;
+  InterpolationGridPointType        m_Origin;
+  InterpolationGridSpacingType      m_Spacing;
+  InterpolationGridDirectionType    m_Direction;
 
 };
 }  // end namespace fem
