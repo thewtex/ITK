@@ -286,30 +286,32 @@ FiniteDifferenceFunctionLoad<TMoving, TFixed>::Fe
 
   typedef typename TMoving::IndexType::IndexValueType OIndexValueType;
   typename TMoving::IndexType oindex;
+  typename TMoving::PointType physicalPoint;
 
   unsigned int k;
   bool         inimage = true;
   for( k = 0; k < ImageDimension; k++ )
     {
-
     if( vnl_math_isnan(Gpos[k])  || vnl_math_isinf(Gpos[k]) ||
         vnl_math_isnan(Gsol[k])  || vnl_math_isinf(Gsol[k]) ||
         vcl_fabs(Gpos[k]) > 1.e33  || vcl_fabs(Gsol[k]) > 1.e33  )
       {
       return femVec;
       }
-    else
-      {
-      oindex[k] = (long) (Gpos[k] + 0.5);
-      }
+
+      physicalPoint[k] = Gpos[k];
+    }
+
+  m_FixedImage->TransformPhysicalPointToIndex(physicalPoint, oindex);
+
+  for( k = 0; k < ImageDimension; k++ )
+    {
     if( oindex[k] > static_cast<OIndexValueType>(m_FixedSize[k] - 1) || oindex[k] < 0 )
       {
       inimage = false;
       }
-    // FIXME : resized images not same as vect field from expand image filter
-    //  expandimagefilter does only dyadic size!!!
-
     }
+
   if( !inimage )
     {
     return femVec;
@@ -328,7 +330,7 @@ FiniteDifferenceFunctionLoad<TMoving, TFixed>::Fe
       }
     else
       {
-      femVec[k] = OutVec[k];
+      femVec[k] = OutVec[k] * m_Sign;
       }
     }
   return femVec;
@@ -364,43 +366,39 @@ FiniteDifferenceFunctionLoad<TMoving, TFixed>::ApplyLoad
   for( unsigned int i = 0; i < NumIntegrationPoints; i++ )
     {
     element->GetIntegrationPointAndWeight(i, ip, w, order);
-    if( NumDegreesOfFreedom == 3 )
+
+    shapef = element->ShapeFunctions(ip);
+    float solval, posval;
+    detJ = element->JacobianDeterminant(ip);
+    for( unsigned int f = 0; f < NumDegreesOfFreedom; f++ )
       {
-      shapef = element->ShapeFunctions(ip);
-      float solval, posval;
-      detJ = element->JacobianDeterminant(ip);
-      for( unsigned int f = 0; f < NumDegreesOfFreedom; f++ )
-        {
-        solval = 0.0;
-        posval = 0.0;
-        for( unsigned int n = 0; n < NumNodes; n++ )
-          {
-          posval += shapef[n] * ( (element->GetNodeCoordinates(n) )[f]);
-          solval += shapef[n] * S->GetSolutionValue( element->GetNode(n)->GetDegreeOfFreedom(f), TotalSolutionIndex);
-          }
-        gsol[f] = solval;
-        gip[f] = posval;
-        }
-
-      // Adjust the size of a force vector returned from the load object so
-      // that it is equal to the number of DOFs per node. If the Fg returned
-      // a vector with less dimensions, we add zero elements. If the Fg
-      // returned a vector with more dimensions, we remove the extra dimensions.
-      force.fill(0.0);
-
-      force = this->Fe(gip, gsol);
-      // Calculate the equivalent nodal loads
+      solval = 0.0;
+      posval = 0.0;
       for( unsigned int n = 0; n < NumNodes; n++ )
         {
-        for( unsigned int d = 0; d < NumDegreesOfFreedom; d++ )
-          {
-          itk::fem::Element::Float temp = shapef[n] * force[d] * w * detJ;
-          F[n * NumDegreesOfFreedom + d] += temp;
-          }
+        posval += shapef[n] * ( (element->GetNodeCoordinates(n) )[f]);
+        solval += shapef[n] * S->GetSolutionValue( element->GetNode(n)->GetDegreeOfFreedom(f), TotalSolutionIndex);
         }
-
+      gsol[f] = solval;
+      gip[f] = posval;
       }
 
+    // Adjust the size of a force vector returned from the load object so
+    // that it is equal to the number of DOFs per node. If the Fg returned
+    // a vector with less dimensions, we add zero elements. If the Fg
+    // returned a vector with more dimensions, we remove the extra dimensions.
+    force.fill(0.0);
+
+    force = this->Fe(gip, gsol);
+    // Calculate the equivalent nodal loads
+    for( unsigned int n = 0; n < NumNodes; n++ )
+      {
+      for( unsigned int d = 0; d < NumDegreesOfFreedom; d++ )
+        {
+        itk::fem::Element::Float temp = shapef[n] * force[d] * w * detJ;
+        F[n * NumDegreesOfFreedom + d] += temp;
+        }
+      }
     }
 }
 
