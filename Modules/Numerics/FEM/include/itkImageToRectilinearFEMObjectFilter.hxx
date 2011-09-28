@@ -182,18 +182,23 @@ ImageToRectilinearFEMObjectFilter<TInputImage>
   femObject->GetElementContainer()->Initialize();
   femObject->GetNodeContainer()->Initialize();
 
+  if ( this->m_Material )
+    {
+    femObject->AddNextMaterial( this->m_Material );
+    }
+
   // Create nodes
   Element::Node::Pointer  n;
   ImageIndexType nodeIndex;
   ImagePointType nodePoint;
 
   int gn = 0; // number of node
-  for( typename ImageSizeType::SizeValueType j = 0; j <= m_NumberOfElements[1]; j++ )
+  for( double j = 0; j <= m_NumberOfElements[1]; j++ )
     {
-    nodeIndex[1] = static_cast<typename ImageIndexType::IndexValueType>(static_cast<double>(j * size[1]) / static_cast<double>(m_PixelsPerElement[1]) );
-    for( typename ImageSizeType::SizeValueType i = 0; i <= m_NumberOfElements[0]; i++ )
+    nodeIndex[1] = j * m_PixelsPerElement[1];
+    for( double i = 0; i <= m_NumberOfElements[0]; i++ )
       {
-      nodeIndex[0] = static_cast<typename ImageIndexType::IndexValueType>(static_cast<double>(i * size[0]) / static_cast<double>(m_PixelsPerElement[0]) );
+      nodeIndex[0] = i * m_PixelsPerElement[0];
       image->TransformIndexToPhysicalPoint(nodeIndex, nodePoint);
       Element::VectorType pt(2);
       pt[0] = nodePoint[0]; pt[1] = nodePoint[1];
@@ -219,6 +224,12 @@ ImageToRectilinearFEMObjectFilter<TInputImage>
       e->SetNode( 3, femObject->GetNode( (unsigned int)( i +  ( m_NumberOfElements[0] + 1 ) * ( j + 1 ) ) ) );
       e->SetGlobalNumber(gn);
       gn++;
+
+      if ( this->m_Material )
+        {
+          e->SetMaterial( dynamic_cast<itk::fem::MaterialLinearElasticity *>( femObject->GetMaterial(0).GetPointer() ) );
+        }
+
       femObject->AddNextElement(e.GetPointer());
       }
     }
@@ -245,20 +256,26 @@ ImageToRectilinearFEMObjectFilter<TInputImage>
   femObject->GetElementContainer()->Initialize();
   femObject->GetNodeContainer()->Initialize();
 
+  if ( this->m_Material )
+    {
+    femObject->AddNextMaterial( this->m_Material );
+    }
+
   // Create nodes
   Element::Node::Pointer  n;
   ImageIndexType nodeIndex;
   ImagePointType nodePoint;
   int            gn = 0; // number of node
+
   for( double k = 0; k <= m_NumberOfElements[2]; k++ )
     {
-    nodeIndex[2] = k * size[2] / m_PixelsPerElement[2];
+    nodeIndex[2] = k * m_PixelsPerElement[2];
     for( double j = 0; j <= m_NumberOfElements[1]; j++ )
       {
-      nodeIndex[1] = j * size[1] / m_PixelsPerElement[1];
+      nodeIndex[1] = j * m_PixelsPerElement[1];
       for( double i = 0; i <= m_NumberOfElements[0]; i++ )
         {
-        nodeIndex[0] = i * size[0] / m_PixelsPerElement[0];
+        nodeIndex[0] = i * m_PixelsPerElement[0];
         image->TransformIndexToPhysicalPoint(nodeIndex, nodePoint);
         Element::VectorType pt(3);
         pt[0] = nodePoint[0]; pt[1] = nodePoint[1]; pt[2] = nodePoint[2];
@@ -310,6 +327,12 @@ ImageToRectilinearFEMObjectFilter<TInputImage>
                                                             + 1 ) * ( j + 1 + ( m_NumberOfElements[1] + 1 ) * ( k + 1 ) ) ) ) );
         e->SetGlobalNumber(gn);
         gn++;
+
+        if ( this->m_Material )
+          {
+            e->SetMaterial( dynamic_cast<itk::fem::MaterialLinearElasticity *>( femObject->GetMaterial(0).GetPointer() ) );
+          }
+
         femObject->AddNextElement(e.GetPointer());
         }
       }
