@@ -129,7 +129,16 @@ __kernel void SmoothDeformationField(__global OUTPIXELTYPE *out,
 
   unsigned int gidx = DIM*(width*(giz*height + giy) + gix);
 
-  if(gix < width && giy < height && giz < depth)
+  /* NOTE: More than three-level nested conditional statements (e.g.,
+     if A && B && C..) invalidates command queue during kernel
+     execution on Apple OpenCL 1.0 (such Macbook Pro with NVIDIA 9600M
+     GT). Therefore, we flattened conditional statements. */
+  bool isValid = true;
+  if(gix < 0 || gix >= width) isValid = false;
+  if(giy < 0 || giy >= height) isValid = false;
+  if(giz < 0 || giz >= depth) isValid = false;
+
+  if(isValid)
   {
   //smoothing along x direction
   dotx = 0;

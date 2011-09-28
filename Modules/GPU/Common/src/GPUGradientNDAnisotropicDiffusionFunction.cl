@@ -154,10 +154,10 @@ __kernel void ComputeUpdate(__global const INPIXELTYPE *in, __global BUFPIXELTYP
 #define ImageDimension 3
 __kernel void ComputeUpdate(__global const INPIXELTYPE *in, __global BUFPIXELTYPE *buf, PIXELTYPE K, float scalex, float scaley, float scalez, int width, int height, int depth)
 {
-	int gix = get_global_id(0);
+  int gix = get_global_id(0);
   int giy = get_global_id(1);
-	int giz = get_global_id(2);
-	unsigned int gidx = (unsigned int)width*((unsigned int)(giz*height + giy)) + (unsigned int)gix;
+  int giz = get_global_id(2);
+  unsigned int gidx = (unsigned int)width*((unsigned int)(giz*height + giy)) + (unsigned int)gix;
 
   // local index for shared memory.. note 1-pixel boundary for shared memory
   int lix = get_local_id(0) + 1;
