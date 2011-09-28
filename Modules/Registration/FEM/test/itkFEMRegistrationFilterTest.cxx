@@ -27,8 +27,9 @@
 #include "vnl/vnl_math.h"
 
 // tyepdefs used for registration
+const unsigned int ImageDimension = 3;
 typedef unsigned char                                 PixelType;
-typedef itk::Image<PixelType, 3>                      testImageType;
+typedef itk::Image<PixelType, ImageDimension>         ImageType;
 typedef itk::fem::Element3DC0LinearHexahedronMembrane ElementType;
 
 // Template function to fill in an image with a value
@@ -41,8 +42,8 @@ FillImage(
 
   typedef itk::ImageRegionIteratorWithIndex<TImage> Iterator;
   Iterator it( image, image->GetBufferedRegion() );
-  it.Begin();
-  for( ; !it.IsAtEnd(); ++it )
+
+  for( it.Begin(); !it.IsAtEnd(); ++it )
     {
     it.Set( value );
     }
@@ -62,11 +63,10 @@ FillWithCircle(
 
   typedef itk::ImageRegionIteratorWithIndex<TImage> Iterator;
   Iterator it( image, image->GetBufferedRegion() );
-  it.Begin();
 
   typename TImage::IndexType index;
   double r2 = vnl_math_sqr( radius );
-  for( ; !it.IsAtEnd(); ++it )
+  for( it.Begin(); !it.IsAtEnd(); ++it )
     {
     index = it.GetIndex();
     double distance = 0;
@@ -96,7 +96,8 @@ CopyImageBuffer(
   typedef itk::ImageRegionIteratorWithIndex<TImage> Iterator;
   Iterator inIt( input, output->GetBufferedRegion() );
   Iterator outIt( output, output->GetBufferedRegion() );
-  for( ; !inIt.IsAtEnd(); ++inIt, ++outIt )
+
+  for( inIt.Begin(); !inIt.IsAtEnd(); ++inIt, ++outIt )
     {
     outIt.Set( inIt.Get() );
     }
@@ -105,21 +106,22 @@ CopyImageBuffer(
 
 int itkFEMRegistrationFilterTest(int, char * [] )
 {
-
-  const unsigned int ImageDimension = 3;
-
   typedef itk::Vector<float, ImageDimension>                VectorType;
   typedef itk::Image<VectorType, ImageDimension>            FieldType;
   typedef itk::Image<VectorType::ValueType, ImageDimension> FloatImageType;
-  typedef testImageType::IndexType                          IndexType;
-  typedef testImageType::SizeType                           SizeType;
-  typedef testImageType::RegionType                         RegionType;
+  typedef ImageType::IndexType                              IndexType;
+  typedef ImageType::SizeType                               SizeType;
+  typedef ImageType::RegionType                             RegionType;
 
   // --------------------------------------------------------
   std::cout << "Generate input images and initial deformation field";
   std::cout << std::endl;
 
-  FloatImageType::SizeValueType sizeArray[ImageDimension] = { 32, 32, 32 };
+  FloatImageType::SizeValueType sizeArray[ImageDimension];
+  for (unsigned int i=0;i<ImageDimension;i++)
+    {
+    sizeArray[i] = 32;
+    }
 
   SizeType size;
   size.SetSize( sizeArray );
@@ -131,9 +133,9 @@ int itkFEMRegistrationFilterTest(int, char * [] )
   region.SetSize( size );
   region.SetIndex( index );
 
-  testImageType::Pointer moving = testImageType::New();
-  testImageType::Pointer fixed = testImageType::New();
-  FieldType::Pointer     initField = FieldType::New();
+  ImageType::Pointer moving = ImageType::New();
+  ImageType::Pointer fixed = ImageType::New();
+  FieldType::Pointer initField = FieldType::New();
 
   moving->SetLargestPossibleRegion( region );
   moving->SetBufferedRegion( region );
@@ -152,13 +154,18 @@ int itkFEMRegistrationFilterTest(int, char * [] )
   PixelType fgnd = 250;
   PixelType bgnd = 15;
 
-  // fill moving with circle
-  center[0] = 16; center[1] = 16; center[2] = 16; radius = 5;
-  FillWithCircle<testImageType>( moving, center, radius, fgnd, bgnd );
+  // Set the Cricle Center
+  for (unsigned int i=0;i<ImageDimension;i++)
+    {
+    center[i] = 16;
+    }
+
+  radius = 5;
+  FillWithCircle<ImageType>( moving, center, radius, fgnd, bgnd );
 
   // fill fixed with circle
-  center[0] = 16; center[1] = 16; center[2] = 16; radius = 8;
-  FillWithCircle<testImageType>( fixed, center, radius, fgnd, bgnd );
+  radius = 8;
+  FillWithCircle<ImageType>( fixed, center, radius, fgnd, bgnd );
 
   // fill initial deformation with zero vectors
   VectorType zeroVec;
@@ -169,13 +176,11 @@ int itkFEMRegistrationFilterTest(int, char * [] )
   std::cout << "Run registration and warp moving" << std::endl;
   for( int met = 0; met < 4; met++ )
     {
-    typedef itk::fem::FEMObject<3>                                                       FEMObjectType;
-    typedef itk::fem::FEMRegistrationFilter<testImageType, testImageType, FEMObjectType> RegistrationType;
+    typedef itk::fem::FEMObject<ImageDimension>  FEMObjectType;
+    typedef itk::fem::FEMRegistrationFilter<ImageType, ImageType, FEMObjectType> RegistrationType;
     RegistrationType::Pointer registrator = RegistrationType::New();
     registrator->SetFixedImage( fixed );
     registrator->SetMovingImage( moving );
-
-    registrator->SetUseMultiResolution(true);
     registrator->SetMaxLevel(1);
     registrator->SetMovingImage( moving );
     registrator->SetFixedImage( fixed );
@@ -233,7 +238,6 @@ int itkFEMRegistrationFilterTest(int, char * [] )
     e1->SetMaterial(dynamic_cast<itk::fem::MaterialLinearElasticity *>( &*m ) );
     registrator->SetElement(&*e1);
     registrator->SetMaterial(m);
-
     registrator->Print( std::cout );
 
     try
