@@ -197,8 +197,6 @@ void ANTSNeighborhoodCorrelationImageToImageObjectMetric<TFixedImage,
   scan_mem.Qsumab = SumQueueType(nb_fill_zero, 0.0);
   scan_mem.Qcount = SumQueueType(nb_fill_zero, 0.0);
 
-  typename FixedImageType::IndexType oindex = scan_it.GetIndex();
-
   typedef InternalComputationValueType LocalRealType;
 
   // Now add the rest of the values from each hyperplane
@@ -504,11 +502,11 @@ bool ANTSNeighborhoodCorrelationImageToImageObjectMetric<TFixedImage,
     }
   catch (ExceptionObject & exc)
     {
-      //NOTE: there must be a cleaner way to do this:
-      std::string msg("Caught exception: \n");
-      msg += exc.what();
-      ExceptionObject err(__FILE__, __LINE__, msg);
-      throw err;
+    //NOTE: there must be a cleaner way to do this:
+    std::string msg("Caught exception: \n");
+    msg += exc.what();
+    ExceptionObject err(__FILE__, __LINE__, msg);
+    throw err;
     }
 
   if (pointIsValid)
@@ -551,7 +549,7 @@ void ANTSNeighborhoodCorrelationImageToImageObjectMetric<TFixedImage,
   LocalRealType Ji = scan_mem.Ja;
   LocalRealType Ii = scan_mem.Ia;
 
-  FixedImageGradientType gradI = scan_mem.gradI;
+  //  FixedImageGradientType gradI = scan_mem.gradI;
   MovingImageGradientType gradJ = scan_mem.gradJ;
 
   if (sff == 0.0 || smm == 0.0)
