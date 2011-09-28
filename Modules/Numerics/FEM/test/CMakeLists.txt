@@ -1,4 +1,7 @@
 itk_module_test()
+# Find the top of the main ITK source tree.
+get_filename_component(ITK_TOP_DIR ${ITKFEM_SOURCE_DIR}/../../.. ABSOLUTE)
+include(${ITK_TOP_DIR}/CMake/ITKExternalData.cmake)
 
 set(ITKFEMTests
 itkFEMExceptionTest.cxx
@@ -31,7 +34,6 @@ itkFEMLoadBCMFCTestUser.cxx
 itkFEMLoadEdgeTest.cxx
 itkFEMLoadGravConstTest.cxx
 itkFEMLandmarkLoadImplementationTest.cxx
-#itkFEMRegistrationFilterTest.cxx
 # itkFEMSolverTest2D.cxx
 itkFEMSolverTest3D.cxx
 itkImageToRectilinearFEMObjectFilter2DTest.cxx
@@ -273,10 +275,7 @@ itk_add_test(NAME itkFEMSpatialObjectTest ${FEM_TESTS3}
          COMMAND ITKFEMTestDriver itkFEMSpatialObjectTest
          DATA{Input/tri3-e.meta})
 
-#itk_add_test(NAME itkFEMRegistrationFilterTest ${FEM_TESTS3}
-#         COMMAND ITKFEMTestDriver itkFEMRegistrationFilterTest)
-
-#itk_add_test(NAME itkFEMSolverTest2D ${FEM_TESTS3}
+#add_test(NAME itkFEMSolverTest2D ${FEM_TESTS3}
 #        COMMAND ITKFEMTestDriver itkFEMSolverTest2D
 #        DATA{Input/2DC0LinearTriangleStressTest.meta}
 #        ${ITK_TEST_OUTPUT_DIR}/2DC0LinearTriangleStressTestWrite_NewSolver.meta)
