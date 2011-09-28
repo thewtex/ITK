@@ -116,13 +116,8 @@ void FEMRegistrationFilter<TMovingImage, TFixedImage, TFemObject>::RunRegistrati
   // Solve the system in time
   if( !m_UseMultiResolution && m_Maxiters[m_CurrentLevel] > 0 )
     {
-    typedef typename itk::fem::FEMObject<3> TestFEMObjectType;
-    TestFEMObjectType::Pointer femObject = TestFEMObjectType::New();
-
-    typedef SolverCrankNicolson<3> TestSolverType;
-
-    TestSolverType::Pointer mySolver = TestSolverType::New();
-    mySolver->SetDeltaT(m_TimeStep);
+    typename SolverType::Pointer mySolver = SolverType::New();
+    mySolver->SetTimeStep(m_TimeStep);
     mySolver->SetRho(m_Rho[m_CurrentLevel]);
     mySolver->SetAlpha(m_Alpha);
 
@@ -140,7 +135,7 @@ void FEMRegistrationFilter<TMovingImage, TFixedImage, TFemObject>::RunRegistrati
 
     const unsigned int ndofpernode = (m_Element)->GetNumberOfDegreesOfFreedomPerNode();
     const unsigned int numnodesperelt = (m_Element)->GetNumberOfNodes() + 1;
-    const unsigned int ndof = femObject->GetNumberOfDegreesOfFreedom();
+    const unsigned int ndof = m_FEMObject->GetNumberOfDegreesOfFreedom();
     unsigned int       nzelts;
 
     nzelts = numnodesperelt * ndofpernode * ndof;
@@ -1432,8 +1427,7 @@ void FEMRegistrationFilter<TMovingImage, TFixedImage, TFemObject>::MultiResSolve
     itkDebugMacro( << " beginning level " << m_CurrentLevel << std::endl );
 
     //   Setup a multi-resolution pyramid
-    typedef SolverCrankNicolson<3> TestSolverType;
-    TestSolverType::Pointer SSS = TestSolverType::New();
+    typename SolverType::Pointer SSS = SolverType::New();
     typename FixedImageType::SizeType nextLevelSize;
     nextLevelSize.Fill( 0 );
     typename FixedImageType::SizeType lastLevelSize;
@@ -1502,7 +1496,7 @@ void FEMRegistrationFilter<TMovingImage, TFixedImage, TFemObject>::MultiResSolve
           }
         double MeshResolution = (double)this->m_MeshPixelsPerElementAtEachResolution(m_CurrentLevel);
 
-        SSS->SetDeltaT(m_TimeStep);
+        SSS->SetTimeStep(m_TimeStep);
         SSS->SetRho(m_Rho[m_CurrentLevel]);
         SSS->SetAlpha(m_Alpha);
 
