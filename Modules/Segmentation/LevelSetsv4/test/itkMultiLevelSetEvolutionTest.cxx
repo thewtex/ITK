@@ -17,7 +17,7 @@
  *=========================================================================*/
 
 #include "itkImage.h"
-#include "itkLevelSetImageBase.h"
+#include "itkLevelSetDenseImageBase.h"
 #include "itkImageRegionIteratorWithIndex.h"
 #include "itkLevelSetDomainMapImageFilter.h"
 #include "itkDenseLevelSetContainer.h"
@@ -26,7 +26,7 @@
 #include "itkLevelSetEquationTermContainerBase.h"
 #include "itkLevelSetEquationContainerBase.h"
 #include "itkAtanRegularizedHeavisideStepFunction.h"
-#include "itkLevelSetEvolutionBase.h"
+#include "itkLevelSetEvolution.h"
 #include "itkLevelSetEvolutionNumberOfIterationsStoppingCriterion.h"
 
 int itkMultiLevelSetEvolutionTest( int , char* [] )
@@ -39,7 +39,7 @@ int itkMultiLevelSetEvolutionTest( int , char* [] )
 
   typedef float                                          PixelType;
   typedef itk::Image< PixelType, Dimension >             ImageType;
-  typedef itk::LevelSetImageBase< ImageType >            LevelSetType;
+  typedef itk::LevelSetDenseImageBase< ImageType >       LevelSetType;
   typedef LevelSetType::OutputRealType                   LevelSetOutputRealType;
   typedef itk::ImageRegionIteratorWithIndex< ImageType > IteratorType;
   typedef itk::IdentifierType                            IdentifierType;
@@ -60,7 +60,8 @@ int itkMultiLevelSetEvolutionTest( int , char* [] )
 
   typedef itk::LevelSetEquationContainerBase< TermContainerType >     EquationContainerType;
 
-  typedef itk::LevelSetEvolutionBase< EquationContainerType >             LevelSetEvolutionType;
+  typedef itk::LevelSetEvolution< EquationContainerType, LevelSetType > LevelSetEvolutionType;
+
   typedef itk::AtanRegularizedHeavisideStepFunction<
       LevelSetOutputRealType, LevelSetOutputRealType > HeavisideFunctionBaseType;
 
