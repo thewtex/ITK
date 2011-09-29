@@ -7,7 +7,7 @@ itk_module(ITKImageGrid
   DEPENDS
     ITKImageFunction
     ITKImageFilterBase
-    ITKIOBase
+    ITKIOImageBase
   TEST_DEPENDS
     ITKTestKernel
     ITKRegistrationCommon
