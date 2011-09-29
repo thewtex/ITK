@@ -191,7 +191,7 @@ int itkBSplineScatteredDataPointSetToImageFilterTest4( int, char * [] )
     {
     typedef itk::VectorIndexSelectionCastImageFilter<VectorImageType, CoefficientImageType> SelectorType;
     SelectorType::Pointer selector = SelectorType::New();
-    selector->SetInput( filter->GetOutput() );
+    selector->SetInput( filter->GetPhiLattice() );
     selector->SetIndex( j );
 
     coefficientImages[j] = selector->GetOutput();
@@ -223,7 +223,11 @@ int itkBSplineScatteredDataPointSetToImageFilterTest4( int, char * [] )
   RealType testDistance = vector.GetNorm();
   RealType approximateDistance = inputPoint.EuclideanDistanceTo( outputPoint );
 
-  if( vnl_math_abs( testDistance - approximateDistance ) > 1.0 )
+  std::cout << "Input point " << inputPoint << std::endl;
+  std::cout << "True output point " << outputPoint << std::endl;
+  std::cout << "Approximate output point " << testPoint + vector << std::endl;
+
+  if( vnl_math_abs( testDistance - approximateDistance ) > 0.0001 )
     {
     std::cerr << "Didn't return correct distance." << std::endl;
 
