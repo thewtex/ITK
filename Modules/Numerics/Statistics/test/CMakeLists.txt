@@ -6,6 +6,7 @@ itkExpectationMaximizationMixtureModelEstimatorTest.cxx
 itkGaussianDistributionTest.cxx
 itkGaussianMembershipFunctionTest.cxx
 itkGaussianMixtureModelComponentTest.cxx
+itkGaussianRandomSpatialNeighborSubsamplerTest.cxx
 itkKalmanLinearEstimatorTest.cxx
 itkKdTreeBasedKmeansEstimatorTest.cxx
 itkKdTreeGeneratorTest.cxx
@@ -107,6 +108,12 @@ itk_add_test(NAME itkGaussianMembershipFunctionTest
 itk_add_test(NAME itkGaussianMixtureModelComponentTest
       COMMAND ITKStatisticsTestDriver itkGaussianMixtureModelComponentTest
               DATA{${ITK_DATA_ROOT}/Input/Statistics/TwoDimensionTwoGaussian.dat})
+itk_add_test(NAME itkGaussianRandomSpatialNeighborSubsamplerTest
+      COMMAND ITKStatisticsTestDriver
+    --compare DATA{Baseline/itkGaussianRandomSubsamplingTest.mha}
+              ${ITK_TEST_OUTPUT_DIR}/itkGaussianRandomSubsamplingTest.mha
+    itkGaussianRandomSpatialNeighborSubsamplerTest
+     ${ITK_TEST_OUTPUT_DIR}/itkGaussianRandomSubsamplingTest.mha)
 itk_add_test(NAME itkKalmanLinearEstimatorTest
       COMMAND ITKStatisticsTestDriver itkKalmanLinearEstimatorTest)
 itk_add_test(NAME itkKdTreeBasedKmeansEstimatorTest
