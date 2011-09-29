@@ -20,7 +20,7 @@
 #define __itkLevelSetContainerBase_h
 
 #include <map>
-#include "itkObject.h"
+#include "itkDataObject.h"
 #include "itkObjectFactory.h"
 #include "itkHeavisideStepFunctionBase.h"
 #include "itkLevelSetDomainMapImageFilter.h"
@@ -39,16 +39,16 @@ namespace itk
  * \ingroup ITKLevelSetsv4
  */
 template< class TIdentifier, class TLevelSet >
-class LevelSetContainerBase : public Object
+class LevelSetContainerBase : public DataObject
 {
 public:
   typedef LevelSetContainerBase      Self;
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
-  typedef Object                     Superclass;
+  typedef DataObject                 Superclass;
 
   /** Run-time type information */
-  itkTypeMacro ( LevelSetContainerBase, Object );
+  itkTypeMacro ( LevelSetContainerBase, DataObject );
 
   /** typedefs related to the type of level set*/
   typedef TLevelSet                               LevelSetType;
@@ -81,7 +81,7 @@ public:
 
   typedef std::pair< LevelSetIdentifierType, LevelSetPointer > LevelSetPairType;
 
-  typedef typename DomainMapImageFilterType::Pointer          DomainMapImageFilterPointer;
+  typedef typename DomainMapImageFilterType::ConstPointer     DomainMapImageFilterConstPointer;
   typedef typename DomainMapImageFilterType::LevelSetDomain   LevelSetDomainType;
 
   typedef std::map< LevelSetIdentifierType, LevelSetDomainType >   DomainContainerType;
@@ -264,7 +264,7 @@ public:
 
   // set the domain map image filter
   itkSetObjectMacro( DomainMapFilter, DomainMapImageFilterType );
-  itkGetObjectMacro( DomainMapFilter, DomainMapImageFilterType );
+  itkGetConstObjectMacro( DomainMapFilter, DomainMapImageFilterType );
 
 protected:
   /** \brief Default Constructor */
@@ -280,9 +280,9 @@ private:
   LevelSetContainerBase( const Self & ); // purposely not implemented
   void operator = ( const Self & ); // purposely not implemented
 
-  HeavisideConstPointer         m_Heaviside;
-  DomainMapImageFilterPointer   m_DomainMapFilter;
-  LevelSetContainerType         m_Container;
+  HeavisideConstPointer             m_Heaviside;
+  DomainMapImageFilterConstPointer  m_DomainMapFilter;
+  LevelSetContainerType             m_Container;
 };
 }
 

@@ -92,9 +92,9 @@ public:
   typedef Image< short, ImageDimension >                 CacheImageType;
   typedef typename LevelSetContainerType::DomainMapImageFilterType
                                                          DomainMapImageFilterType;
-  typedef typename DomainMapImageFilterType::Pointer     DomainMapImageFilterPointer;
-  typedef typename DomainMapImageFilterType::DomainIteratorType
-                                                         DomainIteratorType;
+  typedef typename DomainMapImageFilterType::Pointer     DomainMapImageFilterConstPointer;
+  typedef typename DomainMapImageFilterType::DomainConstIteratorType
+                                                         DomainConstIteratorType;
 
   typedef LevelSetEvolutionStoppingCriterionBase< LevelSetContainerType >
                                                   StoppingCriterionType;

@@ -75,7 +75,8 @@ public:
   typedef typename Superclass::CacheImageType           CacheImageType;
   typedef typename Superclass::DomainMapImageFilterType DomainMapImageFilterType;
 
-  typedef typename Superclass::DomainMapImageFilterPointer  DomainMapImageFilterPointer;
+  typedef typename Superclass::DomainMapImageFilterConstPointer  DomainMapImageFilterConstPointer;
+
   typedef typename Superclass::LevelSetDomainType           LevelSetDomainType;
   typedef typename Superclass::DomainIteratorType           DomainIteratorType;
 
@@ -133,9 +134,9 @@ public:
   typedef typename Superclass::CacheImageType           CacheImageType;
   typedef typename Superclass::DomainMapImageFilterType DomainMapImageFilterType;
 
-  typedef typename Superclass::DomainMapImageFilterPointer  DomainMapImageFilterPointer;
-  typedef typename Superclass::LevelSetDomainType           LevelSetDomainType;
-  typedef typename Superclass::DomainIteratorType           DomainIteratorType;
+  typedef typename Superclass::DomainMapImageFilterConstPointer   DomainMapImageFilterConstPointer;
+  typedef typename Superclass::LevelSetDomainType                 LevelSetDomainType;
+  typedef typename Superclass::DomainIteratorType                 DomainIteratorType;
 
   typedef typename LevelSetType::ImageType    LevelSetImageType;
   typedef typename LevelSetImageType::Pointer LevelSetImagePointer;

@@ -110,10 +110,10 @@ LevelSetEvolution< TEquationContainer, LevelSetDenseImageBase< TImage > >
   // Get the image to be segmented
   InputImageConstPointer inputImage = this->m_EquationContainer->GetInput();
 
-  DomainMapImageFilterPointer domainMapFilter = this->m_LevelSetContainer->GetDomainMapFilter();
+  const DomainMapImageFilterType* domainMapFilter = this->m_LevelSetContainer->GetDomainMapFilter();
 
-  DomainIteratorType map_it   = domainMapFilter->m_LevelSetMap.begin();
-  DomainIteratorType map_end  = domainMapFilter->m_LevelSetMap.end();
+  DomainConstIteratorType map_it   = domainMapFilter->m_LevelSetMap.begin();
+  DomainConstIteratorType map_end  = domainMapFilter->m_LevelSetMap.end();
 
   // Initialize parameters here
   this->m_EquationContainer->InitializeParameters();
@@ -151,10 +151,10 @@ LevelSetEvolution< TEquationContainer, LevelSetDenseImageBase< TImage > >
 {
   InputImageConstPointer inputImage = this->m_EquationContainer->GetInput();
 
-  DomainMapImageFilterPointer domainMapFilter = this->m_LevelSetContainer->GetDomainMapFilter();
+  const DomainMapImageFilterType* domainMapFilter = this->m_LevelSetContainer->GetDomainMapFilter();
 
-  DomainIteratorType map_it   = domainMapFilter->m_LevelSetMap.begin();
-  DomainIteratorType map_end  = domainMapFilter->m_LevelSetMap.end();
+  DomainConstIteratorType map_it   = domainMapFilter->m_LevelSetMap.begin();
+  DomainConstIteratorType map_end  = domainMapFilter->m_LevelSetMap.end();
 
   while( map_it != map_end )
     {
@@ -446,10 +446,10 @@ LevelSetEvolution< TEquationContainer, WhitakerSparseLevelSetImage< TOutput, VDi
 {
   InputImageConstPointer inputImage = this->m_EquationContainer->GetInput();
 
-  DomainMapImageFilterPointer domainMapFilter = this->m_LevelSetContainer->GetDomainMapFilter();
+  const DomainMapImageFilterType* domainMapFilter = this->m_LevelSetContainer->GetDomainMapFilter();
 
-  DomainIteratorType map_it  = domainMapFilter->m_LevelSetMap.begin();
-  DomainIteratorType map_end = domainMapFilter->m_LevelSetMap.end();
+  DomainConstIteratorType map_it  = domainMapFilter->m_LevelSetMap.begin();
+  DomainConstIteratorType map_end = domainMapFilter->m_LevelSetMap.end();
 
   // Initialize parameters here
   this->m_EquationContainer->InitializeParameters();
@@ -699,10 +699,10 @@ void LevelSetEvolution< TEquationContainer, ShiSparseLevelSetImage< VDimension >
   // Get the image to be segmented
   InputImageConstPointer inputImage = this->m_EquationContainer->GetInput();
 
-  DomainMapImageFilterPointer domainMapFilter = this->m_LevelSetContainer->GetDomainMapFilter();
+  const DomainMapImageFilterType* domainMapFilter = this->m_LevelSetContainer->GetDomainMapFilter();
 
-  DomainIteratorType map_it   = domainMapFilter->m_LevelSetMap.begin();
-  DomainIteratorType map_end  = domainMapFilter->m_LevelSetMap.end();
+  DomainConstIteratorType map_it   = domainMapFilter->m_LevelSetMap.begin();
+  DomainConstIteratorType map_end  = domainMapFilter->m_LevelSetMap.end();
 
   // Initialize parameters here
   this->m_EquationContainer->InitializeParameters();
@@ -903,10 +903,10 @@ void LevelSetEvolution< TEquationContainer, MalcolmSparseLevelSetImage< VDimensi
   // Get the image to be segmented
   InputImageConstPointer inputImage = this->m_EquationContainer->GetInput();
 
-  DomainMapImageFilterPointer domainMapFilter = this->m_LevelSetContainer->GetDomainMapFilter();
+  const DomainMapImageFilterType* domainMapFilter = this->m_LevelSetContainer->GetDomainMapFilter();
 
-  DomainIteratorType map_it   = domainMapFilter->m_LevelSetMap.begin();
-  DomainIteratorType map_end  = domainMapFilter->m_LevelSetMap.end();
+  DomainConstIteratorType map_it   = domainMapFilter->m_LevelSetMap.begin();
+  DomainConstIteratorType map_end  = domainMapFilter->m_LevelSetMap.end();
 
   // Initialize parameters here
   this->m_EquationContainer->InitializeParameters();

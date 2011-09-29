@@ -54,10 +54,10 @@ void LevelSetEquationChanAndVeseExternalTerm< TInput, TLevelSetContainer >
 {
   prod = -1.;
 
-  DomainMapImageFilterType * domain = this->m_LevelSetContainer->GetDomainMapFilter();
-  CacheImageType * cacheImage = domain->GetOutput();
+  const DomainMapImageFilterType * domain = this->m_LevelSetContainer->GetDomainMapFilter();
+  const CacheImageType * cacheImage = domain->GetOutput();
   const LevelSetIdentifierType id = cacheImage->GetPixel( iP );
-  DomainIteratorType levelSetMapItr = domain->m_LevelSetMap.find(id);
+  DomainConstIteratorType levelSetMapItr = domain->m_LevelSetMap.find(id);
 
   if( levelSetMapItr != domain->m_LevelSetMap.end() )
     {
@@ -83,11 +83,11 @@ void LevelSetEquationChanAndVeseExternalTerm< TInput, TLevelSetContainer >
              const LevelSetOutputRealType & newValue )
 {
   // Compute the product factor
-  DomainMapImageFilterType * domain = this->m_LevelSetContainer->GetDomainMapFilter();
-  CacheImageType * cacheImage = domain->GetOutput();
+  const DomainMapImageFilterType * domain = this->m_LevelSetContainer->GetDomainMapFilter();
+  const CacheImageType * cacheImage = domain->GetOutput();
   const LevelSetIdentifierType id = cacheImage->GetPixel( iP );
 
-  DomainIteratorType levelSetMapItr = domain->m_LevelSetMap.find(id);
+  DomainConstIteratorType levelSetMapItr = domain->m_LevelSetMap.find(id);
 
   if( levelSetMapItr != domain->m_LevelSetMap.end() )
     {

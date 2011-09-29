@@ -70,7 +70,7 @@ public:
   typedef typename Superclass::DomainMapImageFilterType   DomainMapImageFilterType;
   typedef typename Superclass::CacheImageType             CacheImageType;
 
-  typedef typename DomainMapImageFilterType::DomainIteratorType  DomainIteratorType;
+  typedef typename DomainMapImageFilterType::DomainConstIteratorType  DomainConstIteratorType;
 
   typedef std::list< LevelSetIdentifierType >            IdListType;
   typedef typename IdListType::iterator                  IdListIterator;

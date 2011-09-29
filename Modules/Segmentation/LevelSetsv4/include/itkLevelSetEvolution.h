@@ -103,8 +103,9 @@ public:
   typedef typename Superclass::IdListImageType              IdListImageType;
   typedef typename Superclass::CacheImageType               CacheImageType;
   typedef typename Superclass::DomainMapImageFilterType     DomainMapImageFilterType;
-  typedef typename Superclass::DomainMapImageFilterPointer  DomainMapImageFilterPointer;
-  typedef typename Superclass::DomainIteratorType           DomainIteratorType;
+  typedef typename Superclass::DomainConstIteratorType      DomainConstIteratorType;
+
+  typedef typename Superclass::DomainMapImageFilterConstPointer  DomainMapImageFilterConstPointer;
 
   typedef typename Superclass::StoppingCriterionType    StoppingCriterionType;
   typedef typename Superclass::StoppingCriterionPointer StoppingCriterionPointer;
@@ -223,8 +224,9 @@ public:
   typedef typename Superclass::IdListImageType              IdListImageType;
   typedef typename Superclass::CacheImageType               CacheImageType;
   typedef typename Superclass::DomainMapImageFilterType     DomainMapImageFilterType;
-  typedef typename Superclass::DomainMapImageFilterPointer  DomainMapImageFilterPointer;
-  typedef typename Superclass::DomainIteratorType           DomainIteratorType;
+  typedef typename Superclass::DomainConstIteratorType      DomainConstIteratorType;
+
+  typedef typename Superclass::DomainMapImageFilterConstPointer  DomainMapImageFilterConstPointer;
 
   typedef typename Superclass::StoppingCriterionType    StoppingCriterionType;
   typedef typename Superclass::StoppingCriterionPointer StoppingCriterionPointer;
@@ -339,8 +341,9 @@ public:
   typedef typename Superclass::IdListImageType              IdListImageType;
   typedef typename Superclass::CacheImageType               CacheImageType;
   typedef typename Superclass::DomainMapImageFilterType     DomainMapImageFilterType;
-  typedef typename Superclass::DomainMapImageFilterPointer  DomainMapImageFilterPointer;
-  typedef typename Superclass::DomainIteratorType           DomainIteratorType;
+  typedef typename Superclass::DomainConstIteratorType      DomainConstIteratorType;
+
+  typedef typename Superclass::DomainMapImageFilterConstPointer  DomainMapImageFilterConstPointer;
 
   typedef typename Superclass::StoppingCriterionType    StoppingCriterionType;
   typedef typename Superclass::StoppingCriterionPointer StoppingCriterionPointer;
@@ -445,8 +448,9 @@ public:
   typedef typename Superclass::IdListImageType              IdListImageType;
   typedef typename Superclass::CacheImageType               CacheImageType;
   typedef typename Superclass::DomainMapImageFilterType     DomainMapImageFilterType;
-  typedef typename Superclass::DomainMapImageFilterPointer  DomainMapImageFilterPointer;
-  typedef typename Superclass::DomainIteratorType           DomainIteratorType;
+  typedef typename Superclass::DomainConstIteratorType           DomainConstIteratorType;
+
+  typedef typename Superclass::DomainMapImageFilterConstPointer  DomainMapImageFilterConstPointer;
 
   typedef typename Superclass::StoppingCriterionType    StoppingCriterionType;
   typedef typename Superclass::StoppingCriterionPointer StoppingCriterionPointer;
