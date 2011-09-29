@@ -1,4 +1,4 @@
-project(ITKIOBase)
+project(ITKIOImageBase)
 
 # check if the platform has c style IO functions that uses wchar_t * filenames
 try_compile(ITK_SUPPORTS_WCHAR_T_FILENAME_CSTYLEIO
@@ -19,17 +19,17 @@ endif()
 try_compile(ITK_SUPPORTS_FDSTREAM_HPP
   ${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/CMakeTmp
   ${CMAKE_CURRENT_SOURCE_DIR}/CMake/itkTestFDStream.cxx
-  CMAKE_FLAGS -DINCLUDE_DIRECTORIES:STRING=${ITKIOBase_SOURCE_DIR}/include
+  CMAKE_FLAGS -DINCLUDE_DIRECTORIES:STRING=${ITKIOImageBase_SOURCE_DIR}/include
   COMPILE_DEFINITIONS ${ITK_SUPPORTS_FDSTREAM_HPP_COMPILE_DEFINITIONS}
   OUTPUT_VARIABLE ITK_SUPPORTS_FDSTREAM_HPP_OUTPUT)
 
 configure_file(src/itkIOConfigure.h.in itkIOConfigure.h)
 
-set(ITKIOBase_INCLUDE_DIRS ${ITKIOBase_BINARY_DIR})
-set(ITKIOBase_LIBRARIES ITKIOBase)
+set(ITKIOImageBase_INCLUDE_DIRS ${ITKIOImageBase_BINARY_DIR})
+set(ITKIOImageBase_LIBRARIES ITKIOImageBase)
 itk_module_impl()
 
 install(FILES
-  ${ITKIOBase_BINARY_DIR}/itkIOConfigure.h
-  DESTINATION ${ITKIOBase_INSTALL_INCLUDE_DIR}
+  ${ITKIOImageBase_BINARY_DIR}/itkIOConfigure.h
+  DESTINATION ${ITKIOImageBase_INSTALL_INCLUDE_DIR}
   )

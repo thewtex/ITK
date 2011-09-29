@@ -7,7 +7,7 @@ ImageFileWriter, ImageSeriesReader, or ImageSeriesWriter.  Convenience classes
 for reading series of files include ArchetypeSeriesFileNames,
 NumericSeriesFileNames, and RegularExpressionSeriesFileNames.")
 
-itk_module(ITKIOBase
+itk_module(ITKIOImageBase
   DEPENDS
     ITKCommon
   TEST_DEPENDS
