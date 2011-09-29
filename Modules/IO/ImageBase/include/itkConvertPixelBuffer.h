@@ -34,7 +34,7 @@ namespace itk
  * OutputConvertTraits() is the traits class.  The default one used is
  * DefaultConvertPixelTraits.
  *
- * \ingroup ITKIOBase
+ * \ingroup ITKIOImageBase
  */
 template<
   typename InputPixelType,

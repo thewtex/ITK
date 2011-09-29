@@ -61,7 +61,7 @@ namespace itk
  *
  *  \ingroup IOFilters
  *
- * \ingroup ITKIOBase
+ * \ingroup ITKIOImageBase
  */
 
 class ITK_EXPORT ArchetypeSeriesFileNames:public Object

@@ -62,7 +62,7 @@ namespace itk
  *
  * \ingroup IOFilters
  *
- * \ingroup ITKIOBase
+ * \ingroup ITKIOImageBase
  */
 class ITK_EXPORT ImageIOBase:public LightProcessObject
 {
@@ -86,7 +86,7 @@ public:
   /**
    * \class UnknownType
    * Used to return information when types are unknown.
-   * \ingroup ITKIOBase
+   * \ingroup ITKIOImageBase
    */
   class UnknownType {};
 

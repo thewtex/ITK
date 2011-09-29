@@ -44,7 +44,7 @@ namespace itk
  *
  * \ingroup IOFilters
  *
- * \ingroup ITKIOBase
+ * \ingroup ITKIOImageBase
  *
  * \wiki
  * \wikiexample{Utilities/NumericSeriesFileNames,Create a list of file names}
