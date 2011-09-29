@@ -3,7 +3,7 @@
 #include "itkOpenCVImageBridge.h"
 #include "itkRGBPixel.h"
 #include "itkImageFileReader.h"
-#include "itkDifferenceImageFilter.h"
+#include "itkTestingComparisonImageFilter.h"
 #include "itkImageRegionConstIteratorWithIndex.h"
 
 //-----------------------------------------------------------------------------
@@ -15,8 +15,8 @@ RGBImageTotalAbsDifference(
   const itk::Image<itk::RGBPixel<TPixelValue>, VDimension>* valid,
   const itk::Image<itk::RGBPixel<TPixelValue>, VDimension>* test)
 {
-  typedef itk::RGBPixel<TPixelValue> PixelType;
-  typedef itk::Image<PixelType, VDimension> RGBImageType;
+  typedef itk::RGBPixel<TPixelValue>                           PixelType;
+  typedef itk::Image<PixelType, VDimension>                    RGBImageType;
   typedef itk::ImageRegionConstIteratorWithIndex<RGBImageType> IterType;
 
   IterType validIt(valid, valid->GetLargestPossibleRegion());
@@ -98,11 +98,12 @@ template<class TPixelType, unsigned int VDimension>
 int itkOpenCVImageBridgeTestTemplatedScalar(char** argv)
 {
   // typedefs
-  const unsigned int Dimension =                           VDimension;
-  typedef TPixelType                                       PixelType;
-  typedef itk::Image< PixelType, Dimension >               ImageType;
-  typedef itk::ImageFileReader<ImageType>                  ReaderType;
-  typedef itk::DifferenceImageFilter<ImageType, ImageType> DifferenceFilterType;
+  const unsigned int Dimension =                         VDimension;
+  typedef TPixelType                                     PixelType;
+  typedef itk::Image< PixelType, Dimension >             ImageType;
+  typedef itk::ImageFileReader<ImageType>                ReaderType;
+  typedef itk::Testing::ComparisonImageFilter<ImageType, ImageType>
+                                                         DifferenceFilterType;
 
   //
   // Read the image directly
@@ -221,12 +222,13 @@ template<class TValueType, unsigned int VDimension>
 int itkOpenCVImageBridgeTestTemplatedRGB(char** argv)
 {
   // typedefs
-  const unsigned int Dimension =                           VDimension;
-  typedef TValueType                                       ValueType;
-  typedef itk::RGBPixel< ValueType >                       PixelType;
-  typedef itk::Image< PixelType, Dimension >               ImageType;
-  typedef itk::ImageFileReader<ImageType>                  ReaderType;
-  typedef itk::DifferenceImageFilter<ImageType, ImageType> DifferenceFilterType;
+  const unsigned int Dimension =                         VDimension;
+  typedef TValueType                                     ValueType;
+  typedef itk::RGBPixel< ValueType >                     PixelType;
+  typedef itk::Image< PixelType, Dimension >             ImageType;
+  typedef itk::ImageFileReader<ImageType>                ReaderType;
+  typedef itk::Testing::ComparisonImageFilter<ImageType, ImageType>
+                                                         DifferenceFilterType;
 
   //
   // Read the image directly
