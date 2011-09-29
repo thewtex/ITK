@@ -86,7 +86,7 @@ int itkOpenCVVideoCaptureTest ( int argc, char *argv[] )
   cv::Mat outFrame;
   while (scalarCap->read(outFrame))
     {
-    scalarWriter.write(outFrame);
+    scalarWriter << outFrame;
     }
 
   // Clean up
@@ -131,7 +131,7 @@ int itkOpenCVVideoCaptureTest ( int argc, char *argv[] )
   // Loop through the frames and write
   while (rgbCap->read(outFrame))
     {
-    rgbWriter.write(outFrame);
+    rgbWriter << outFrame;
     }
 
   // Clean up
