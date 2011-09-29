@@ -18,7 +18,7 @@
 #ifndef __itkTransformParametersHelper_h
 #define __itkTransformParametersHelper_h
 
-#include "itkObject.h"
+#include "itkObjectFactory.h"
 #include "itkArray.h"
 
 namespace itk
@@ -31,19 +31,26 @@ namespace itk
  */
 
 template< typename TValueType >
-class TransformParametersHelper
+class TransformParametersHelper : public LightObject
 {
 public:
+  /** Standard class typedefs. */
+  typedef TransformParametersHelper   Self;
+  typedef LightObject                 Superclass;
+  typedef SmartPointer<Self>          Pointer;
+  typedef SmartPointer<const Self>    ConstPointer;
+
+  /** Run-time type information (and related methods). */
+  itkTypeMacro(TransformParametersHelper, LightObject);
+
+  /** Define the New() method. */
+  itkNewMacro(Self);
 
   /** The element type stored at each location in the Array. */
   typedef TValueType                          ValueType;
-  typedef TransformParametersHelper           Self;
 
   /** Type of common data object used by TransformParameters. */
   typedef Array< TValueType >                 CommonContainerType;
-
-  /** Default constructor. Nothing to do. */
-  TransformParametersHelper(){}
 
   /** Set a new data pointer for the parameter data, pointing it to a different
    * memory block. The size of the new memory block must equal the current
@@ -77,14 +84,22 @@ public:
       "Not implemented for base class.");
     }
 
+protected:
+  TransformParametersHelper(){}
   virtual ~TransformParametersHelper(){}
+
+  /** Print contents of an TranslationTransform. */
+  void PrintSelf(std::ostream & os, Indent indent) const
+    {
+    this->Superclass::PrintSelf( os, indent );
+    }
+
+private:
+  TransformParametersHelper(const Self &); // purposely not implemented
+  void operator=(const Self &);       // purposely not implemented
 
 };
 
 }//namespace itk
-
-//#if ITK_TEMPLATE_TXX
-//#include "itkTransformParametersHelper.hxx"
-//#endif
 
 #endif

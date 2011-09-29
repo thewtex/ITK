@@ -43,7 +43,7 @@ TimeVaryingVelocityFieldTransform<TScalar, NDimensions>
 
   // Setup and assign parameter helper. This will hold the time varying velocity
   // field for access through the common TransformParameters interface.
-  TransformParametersHelperType * helper = new TransformParametersHelperType;
+  TransformParametersHelperType::Pointer helper = TransformParametersHelperType::New();
 
   // After assigning this, parameters will manage this deleting when appropriate.
   this->m_Parameters.SetHelper( helper );

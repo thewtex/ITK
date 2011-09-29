@@ -65,8 +65,12 @@ TransformParameters< TValueType >
 ::Initialize()
 {
   this->m_Helper = NULL;
+
+  typedef TransformParametersHelperType::Pointer Toto;
+
   // Set the default TransformParametersHelper
-  TransformParametersHelperType* helper = new TransformParametersHelperType;
+  TransformParametersHelperType::Pointer helper = TransformParametersHelperType::New();
+
   // TransformParameters will manage this memory.
   this->SetHelper( helper );
 }
@@ -76,10 +80,6 @@ template< typename TValueType >
 TransformParameters< TValueType >
 ::~TransformParameters()
 {
-  if( this->m_Helper )
-    {
-    delete this->m_Helper;
-    }
 }
 
 template< typename TValueType >
@@ -87,10 +87,6 @@ void
 TransformParameters< TValueType >
 ::SetHelper( TransformParametersHelperType* helper )
 {
-  if( this->m_Helper )
-    {
-    delete this->m_Helper;
-    }
   this->m_Helper = helper;
 }
 

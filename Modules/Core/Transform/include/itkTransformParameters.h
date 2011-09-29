@@ -119,7 +119,7 @@ public:
 
   virtual ~TransformParameters();
 private:
-   TransformParametersHelperType*           m_Helper;
+  TransformParametersHelperType *   m_Helper; //FIXME
 };
 
 }//namespace itk
