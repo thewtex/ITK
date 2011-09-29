@@ -33,7 +33,7 @@ itk_module(ITKReview
     ITKImageIntensity
     ITKImageLabel
     ITKImageStatistics
-    ITKIOBase
+    ITKIOImageBase
     ITKIOBioRad
     ITKIOBMP
     ITKIOGDCM
