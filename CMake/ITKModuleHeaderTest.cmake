@@ -18,6 +18,13 @@ add_custom_target( ITKHeaderTests
   ${CMAKE_COMMAND} --build ${ITK_BINARY_DIR}
   COMMENT "Regenerating and building the header tests." )
 
+# Fix a warning on the Mac.  See also Modules/Core/Common/src/CMakeLists.txt
+include(CheckCXXCompilerFlag)
+if(NOT WIN32 AND CMAKE_COMPILER_IS_GNUCXX)
+  set(ITKCommon_CXX_FLAGS "-fvisibility=hidden -fvisibility-inlines-hidden")
+  CHECK_CXX_COMPILER_FLAG(${ITKCommon_CXX_FLAGS} ITKCommon_HAS_GCC_VISIBILITY_FLAGS)
+endif(NOT WIN32 AND CMAKE_COMPILER_IS_GNUCXX)
+
 macro( itk_module_headertest _name )
   if( NOT ${_name}_THIRD_PARTY AND
       EXISTS ${${_name}_SOURCE_DIR}/include
@@ -64,6 +71,14 @@ macro( itk_module_headertest _name )
         )
       add_executable( ${_test_name} ${_header_test_src} )
       target_link_libraries( ${_test_name} ITKCommon )
+      if(ITKCommon_HAS_GCC_VISIBILITY_FLAGS)
+        set_target_properties(${_test_name} PROPERTIES
+          COMPILE_FLAGS "${ITKCommon_CXX_FLAGS}"
+        )
+      endif(ITKCommon_HAS_GCC_VISIBILITY_FLAGS)
+      set_target_properties( ${_test_name} PROPERTIES
+        COMPILE_FLAGS "${ITKCommon_CXX_FLAGS}"
+      )
       math( EXPR _test_num "${_test_num} + 1" )
     endforeach()
   endif()
