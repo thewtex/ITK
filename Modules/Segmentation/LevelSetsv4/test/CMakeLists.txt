@@ -41,6 +41,7 @@ itkMultiLevelSetChanAndVeseInternalTermTest.cxx
 itkMultiLevelSetEvolutionTest.cxx
 # stopping criterion
 itkLevelSetEvolutionNumberOfIterationsStoppingCriterionTest.cxx
+itkLevelSetContainerToLevelSetContainerTest.cxx
 )
 
 CreateTestDriver(ITKLevelSetsv4  "${ITKLevelSetsv4-Test_LIBRARIES}" "${ITKLevelSetsv4Tests}")
@@ -192,3 +193,7 @@ itk_add_test(NAME itkMultiLevelSetsv4ChanAndVeseInternalTermTest
       COMMAND ITKLevelSetsv4TestDriver itkMultiLevelSetChanAndVeseInternalTermTest)
 itk_add_test(NAME itkMultiLevelsv4SetEvolutionTest
       COMMAND ITKLevelSetsv4TestDriver itkMultiLevelSetEvolutionTest)
+itk_add_test(NAME itkLevelSetContainerToLevelSetContainerTest
+      COMMAND ITKLevelSetsv4TestDriver itkLevelSetContainerToLevelSetContainerTest
+      ${ITK_DATA_ROOT}/Input/circle.png
+)

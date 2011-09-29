@@ -29,7 +29,7 @@ ShiSparseLevelSetImage< VDimension >
 ::ShiSparseLevelSetImage()
 {
   this->InitializeLayers();
-  this->InitializeInternalLabelList();
+  this->InitializeLabelList();
 }
 
 // ----------------------------------------------------------------------------
@@ -188,11 +188,13 @@ ShiSparseLevelSetImage< VDimension >::InitializeLayers()
 // ----------------------------------------------------------------------------
 template< unsigned int VDimension >
 void
-ShiSparseLevelSetImage< VDimension >::InitializeInternalLabelList()
+ShiSparseLevelSetImage< VDimension >::InitializeLabelList()
 {
-  this->m_InternalLabelList.clear();
-  this->m_InternalLabelList.push_back( MinusThreeLayer() );
-  this->m_InternalLabelList.push_back( MinusOneLayer() );
+  this->m_LabelList.clear();
+  this->m_LabelList.push_back( MinusThreeLayer() );
+  this->m_LabelList.push_back( MinusOneLayer() );
+  this->m_LabelList.push_back( PlusOneLayer() );
+  this->m_LabelList.push_back( PlusThreeLayer() );
 }
 }
 

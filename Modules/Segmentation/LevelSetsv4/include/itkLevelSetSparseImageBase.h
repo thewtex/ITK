@@ -99,6 +99,8 @@ public:
   /** Graft data object as level set object */
   virtual void Graft( const DataObject* data );
 
+  itkGetMacro( LabelList, LayerIdListType );
+
   /** Return the label object pointer with a given id */
   template< class TLabel >
   typename LabelObject< TLabel, VDimension >::Pointer GetAsLabelObject();
@@ -110,12 +112,12 @@ protected:
 
   LayerMapType      m_Layers;
   LabelMapPointer   m_LabelMap;
-  LayerIdListType   m_InternalLabelList;
+  LayerIdListType   m_LabelList;
 
   /** Initialize the sparse field layers */
   virtual void InitializeLayers() = 0;
 
-  virtual void InitializeInternalLabelList() = 0;
+  virtual void InitializeLabelList() = 0;
 
   virtual bool IsInside( const InputType& iP ) const;
 
