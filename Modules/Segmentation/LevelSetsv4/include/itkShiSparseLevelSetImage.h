@@ -108,7 +108,7 @@ protected:
   /** Initialize the sparse field layers */
   virtual void InitializeLayers();
 
-  virtual void InitializeInternalLabelList();
+  virtual void InitializeLabelList();
 
 private:
 

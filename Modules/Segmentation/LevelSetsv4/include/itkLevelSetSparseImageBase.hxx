@@ -156,7 +156,7 @@ LevelSetSparseImageBase< TOutput, VDimension >
 
   this->m_LabelMap = 0;
   this->InitializeLayers();
-  this->InitializeInternalLabelList();
+  this->InitializeLabelList();
 }
 
 // ----------------------------------------------------------------------------
@@ -198,24 +198,27 @@ LevelSetSparseImageBase< TOutput, VDimension >
   typedef LabelObject< TLabel, Dimension > OutputLabelObjectType;
   typename OutputLabelObjectType::Pointer object = OutputLabelObjectType::New();
 
-  if( this->m_InternalLabelList.empty() )
+  if( this->m_LabelList.empty() )
     {
-    itkGenericExceptionMacro( << "this->m_InternalLabelList empty" );
+    itkGenericExceptionMacro( << "this->m_LabelList empty" );
     return object;
     }
 
-  typename LayerIdListType::iterator lIt = this->m_InternalLabelList.begin();
-  typename LayerIdListType::iterator lEnd = this->m_InternalLabelList.end();
+  typename LayerIdListType::iterator lIt = this->m_LabelList.begin();
+  typename LayerIdListType::iterator lEnd = this->m_LabelList.end();
 
   while( lIt != lEnd )
     {
     LayerIdType id = *lIt;
-    LabelObjectPointer labelObject = this->m_LabelMap->GetLabelObject( id );
-    SizeValueType numberOfLines = labelObject->GetNumberOfLines();
-
-    for( SizeValueType i = 0; i < numberOfLines; ++i )
+    if( id <= NumericTraits< LayerIdType >::Zero )
       {
-      object->AddLine( labelObject->GetLine( i ) );
+      LabelObjectPointer labelObject = this->m_LabelMap->GetLabelObject( id );
+      SizeValueType numberOfLines = labelObject->GetNumberOfLines();
+
+      for( SizeValueType i = 0; i < numberOfLines; ++i )
+        {
+        object->AddLine( labelObject->GetLine( i ) );
+        }
       }
     ++lIt;
     }

@@ -20,7 +20,7 @@
 #define __itkLevelSetContainerBase_h
 
 #include <map>
-#include "itkObject.h"
+#include "itkDataObject.h"
 #include "itkObjectFactory.h"
 #include "itkHeavisideStepFunctionBase.h"
 #include "itkLevelSetDomainMapImageFilter.h"
@@ -39,16 +39,16 @@ namespace itk
  * \ingroup ITKLevelSetsv4
  */
 template< class TIdentifier, class TLevelSet >
-class LevelSetContainerBase : public Object
+class LevelSetContainerBase : public DataObject
 {
 public:
   typedef LevelSetContainerBase      Self;
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
-  typedef Object                     Superclass;
+  typedef DataObject                 Superclass;
 
   /** Run-time type information */
-  itkTypeMacro ( LevelSetContainerBase, Object );
+  itkTypeMacro ( LevelSetContainerBase, DataObject );
 
   /** typedefs related to the type of level set*/
   typedef TLevelSet                               LevelSetType;
