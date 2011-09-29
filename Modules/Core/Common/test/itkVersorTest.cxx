@@ -647,8 +647,8 @@ int itkVersorTest(int, char* [] )
     mm[0][1] =  1.0;
     mm[0][2] =  0.0;
 
-    mm[1][0] =  0.0;
-    mm[1][1] = -1.0;
+    mm[1][0] =  -1.0;
+    mm[1][1] =  0.0;
     mm[1][2] =  0.0;
 
     mm[2][0] =  0.0;
@@ -668,6 +668,17 @@ int itkVersorTest(int, char* [] )
       std::cout << "Error in Versor Set(Matrix) method ! " << std::endl;
       std::cout << "vv  = " << vv << std::endl;
       return EXIT_FAILURE;
+      }
+      //matrix no longer represents a rotation
+    mm[0][0] = 1.0;
+    try
+      {
+      vv.Set( mm );
+      return EXIT_FAILURE;
+      }    //should always get here, mm isn't a rotation
+    catch(itk::ExceptionObject &)
+      {
+        //nothing to do here
       }
     std::cout << " PASSED !" << std::endl;
   }
