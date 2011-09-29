@@ -7,7 +7,6 @@ itk_module(ITKVideoIO
     ITKIOBase
     ITKVideoCore
   TEST_DEPENDS
-    ITKVideoCore
     ITKTestKernel
   DESCRIPTION
     "${DOCUMENTATION}"
