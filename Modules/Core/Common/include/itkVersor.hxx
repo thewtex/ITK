@@ -21,6 +21,7 @@
 #include "itkVersor.h"
 #include "itkNumericTraits.h"
 #include "itkMath.h"
+#include <vnl/vnl_det.h>
 
 namespace itk
 {
@@ -395,6 +396,20 @@ Versor< T >
   // epsilon value
   //to a higher tolerance, the alternate stable methods for conversion are used.
   const T epsilon = vcl_numeric_limits< T >::epsilon();
+
+  vnl_matrix_fixed< T, 3, 3 > I;
+              //check for orthonormality and that it isn't a reflection
+  I = m*m.transpose();
+  if( fabs( I[0][1] ) > epsilon || fabs( I[0][2] ) > epsilon ||
+      fabs( I[1][0] ) > epsilon || fabs( I[1][2] ) > epsilon ||
+      fabs( I[2][0] ) > epsilon || fabs( I[2][1] ) > epsilon ||
+      fabs( I[0][0] - itk::NumericTraits<T>::One ) > epsilon ||
+      fabs( I[1][1] - itk::NumericTraits<T>::One ) > epsilon ||
+      fabs( I[2][2] - itk::NumericTraits<T>::One ) > epsilon ||
+      vnl_det( I ) < 0 )
+    {
+    itkGenericExceptionMacro(<< "Given matrix does not represent rotation.");
+    }
 
   double trace = m(0, 0) + m(1, 1) + m(2, 2) + 1.0;
 
