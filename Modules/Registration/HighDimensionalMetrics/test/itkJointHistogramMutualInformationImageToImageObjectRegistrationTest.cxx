@@ -180,13 +180,36 @@ int itkJointHistogramMutualInformationImageToImageObjectRegistrationTest(int arg
   // The metric
   typedef itk::JointHistogramMutualInformationImageToImageObjectMetric
     < FixedImageType, MovingImageType > MetricType;
+  typedef MetricType::FixedSampledPointSetType PointSetType;
   MetricType::Pointer metric = MetricType::New();
   metric->SetNumberOfHistogramBins(20);
+  typedef PointSetType::PointType     PointType;
+  PointSetType::Pointer               pset(PointSetType::New());
+  unsigned long ind=0;
+  itk::ImageRegionIteratorWithIndex<FixedImageType> It(fixedImage,
+    fixedImage->GetLargestPossibleRegion() );
+    for( It.GoToBegin(); !It.IsAtEnd(); ++It )
+    {
+    PointType pt;
+    fixedImage->TransformIndexToPhysicalPoint( It.GetIndex(), pt);
+    pset->SetPoint(ind, pt);
+    // take every N^th point
+    for ( unsigned int j=0; j < 100; j++)
+      {
+      ++It;
+      }
+    ind++;
+    }
+  std::cout << "Setting point set..." << std::endl;
+  metric->SetFixedSampledPointSet( pset );
+  metric->SetUseFixedSampledPointSet( true );
+  std::cout << "Testing metric with point set..." << std::endl;
+
 
   // Assign images and transforms.
   // By not setting a virtual domain image or virtual domain settings,
   // the metric will use the fixed image for the virtual domain.
-  metric->SetVirtualDomainImage( fixedImage );
+//  metric->SetVirtualDomainImage( fixedImage );
   metric->SetFixedImage( fixedImage );
   metric->SetMovingImage( movingImage );
   metric->SetFixedTransform( identityTransform );
@@ -226,6 +249,7 @@ int itkJointHistogramMutualInformationImageToImageObjectRegistrationTest(int arg
   compositeTransform->SetAllTransformsToOptimizeOn(); //Set back to optimize all.
   compositeTransform->SetOnlyMostRecentTransformToOptimizeOn(); //set to optimize the displacement field
   metric->SetMovingTransform( compositeTransform );
+  metric->SetUseFixedSampledPointSet( false );
   metric->Initialize();
 
   // Optimizer
@@ -235,7 +259,7 @@ int itkJointHistogramMutualInformationImageToImageObjectRegistrationTest(int arg
   optimizer->SetMetric( metric );
   optimizer->SetLearningRate( deformationLearningRate );
   optimizer->SetScales( displacementScales );
-  optimizer->SetNumberOfIterations( numberOfIterations );
+  optimizer->SetNumberOfIterations( 10 /*numberOfIterations*/ );
   try
     {
     optimizer->StartOptimization();
