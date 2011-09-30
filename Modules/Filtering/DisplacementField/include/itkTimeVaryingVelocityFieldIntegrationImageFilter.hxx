@@ -84,7 +84,51 @@ TimeVaryingVelocityFieldIntegrationImageFilter
     return;
     }
 
-  output->CopyInformation( input );
+
+  //
+  // The ImageBase::CopyInformation() method ca not be used here
+  // because these two images have different dimensions. Therefore
+  // the individual elements must be copied for the common dimensions.
+  //
+  typedef typename DisplacementFieldType::SizeType      SizeType;
+  typedef typename DisplacementFieldType::SpacingType   SpacingType;
+  typedef typename DisplacementFieldType::PointType     OriginType;
+  typedef typename DisplacementFieldType::DirectionType DirectionType;
+  typedef typename DisplacementFieldType::RegionType    RegionType;
+
+  SizeType size;
+  SpacingType spacing;
+  OriginType origin;
+  DirectionType direction;
+
+  typedef typename TimeVaryingVelocityFieldType::SizeType       InputSizeType;
+  typedef typename TimeVaryingVelocityFieldType::SpacingType    InputSpacingType;
+  typedef typename TimeVaryingVelocityFieldType::PointType      InputOriginType;
+  typedef typename TimeVaryingVelocityFieldType::DirectionType  InputDirectionType;
+  typedef typename TimeVaryingVelocityFieldType::RegionType     InputRegionType;
+
+  const InputSpacingType & inputSpacing = input->GetSpacing();
+  const InputOriginType & inputOrigin = input->GetOrigin();
+  const InputDirectionType & inputDirection = input->GetDirection();
+  const InputRegionType requestedRegion = input->GetRequestedRegion();
+  const InputSizeType requestedSize = requestedRegion.GetSize();
+
+  for( unsigned int i = 0; i < OutputImageDimension; i++ )
+    {
+    size[i] = requestedSize[i];
+    spacing[i] = inputSpacing[i];
+    origin[i] = inputOrigin[i];
+
+    for( unsigned int j = 0; j < OutputImageDimension; j++ )
+      {
+      direction[i][j] = inputDirection[i][j];
+      }
+    }
+
+  output->SetOrigin( origin );
+  output->SetSpacing( spacing );
+  output->SetDirection( direction );
+  output->SetRegions( size );
 }
 
 template<class TTimeVaryingVelocityField, class TDisplacementField>
