@@ -280,6 +280,53 @@ JointHistogramMutualInformationImageToImageObjectMetric<TFixedImage,TMovingImage
   bool                        pointIsValid = false;
 
   /* Iterate over the sub region */
+  if( this->m_UseFixedSampledPointSet )
+    {
+
+    for ( unsigned long pt_ind=0; pt_ind<this->m_VirtualSampledPointSet->GetNumberOfPoints(); pt_ind++)
+      {
+        typename TFixedImage::IndexType virtual_index;
+        virtualPoint=this->m_FixedSampledPointSet->GetPoint(pt_ind);
+        this->GetVirtualDomainImage()->TransformPhysicalPointToIndex( virtualPoint, virtual_index);
+        try
+        {
+        this->TransformAndEvaluateFixedPoint( virtual_index,
+                                              virtualPoint,
+                                              false /*compute gradient*/,
+                                              mappedFixedPoint,
+                                              fixedImageValue,
+                                              fixedImageGradients,
+                                              pointIsValid );
+        if( pointIsValid )
+          {
+          this->TransformAndEvaluateMovingPoint(virtual_index,
+                                                virtualPoint,
+                                                false /*compute gradient*/,
+                                                mappedMovingPoint,
+                                                movingImageValue,
+                                                movingImageGradients,
+                                                pointIsValid );
+          }
+        }
+      catch( ExceptionObject & exc )
+        {
+        //NOTE: there must be a cleaner way to do this:
+        std::string msg("Caught exception: \n");
+        msg += exc.what();
+        ExceptionObject err(__FILE__, __LINE__, msg);
+        throw err;
+        }
+      /** add the paired intensity points to the joint histogram */
+      JointPDFPointType jointPDFpoint;
+      this->ComputeJointPDFPoint(fixedImageValue,movingImageValue, jointPDFpoint,0);
+      JointPDFIndexType  jointPDFIndex;
+      jointPDFIndex.Fill(0);
+      this->m_JointPDF->TransformPhysicalPointToIndex(jointPDFpoint,jointPDFIndex);
+      this->m_JointPDF->SetPixel(jointPDFIndex,this->m_JointPDF->GetPixel(jointPDFIndex)+1);
+      }
+    }
+  else
+  {
   ItV.GoToBegin();
   while( !ItV.IsAtEnd() )
     {
@@ -324,7 +371,7 @@ JointHistogramMutualInformationImageToImageObjectMetric<TFixedImage,TMovingImage
     //next index
     ++ItV;
     }
-
+  }
   /**
    * Normalize the PDFs, compute moving image marginal PDF
    *
