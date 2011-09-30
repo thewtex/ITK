@@ -47,7 +47,7 @@ namespace itk
  * \author Nick Tustison
  * \author Brian Avants
  *
- * \ingroup Transforms
+ * \ingroup ITKDisplacementField
  *
  * \wiki
  * \wikiexample{}
