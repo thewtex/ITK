@@ -27,8 +27,6 @@ template< class TInput, class TLevelSetContainer >
 LevelSetEquationChanAndVeseExternalTerm< TInput, TLevelSetContainer >
 ::LevelSetEquationChanAndVeseExternalTerm()
 {
-  this->m_TermName = "External Chan And Vese term";
-  this->m_RequiredData.insert( "Value" );
 }
 
 template< class TInput, class TLevelSetContainer >
@@ -37,6 +35,19 @@ LevelSetEquationChanAndVeseExternalTerm< TInput, TLevelSetContainer >
 {
 }
 
+template< class TInput, class TLevelSetContainer >
+void LevelSetEquationChanAndVeseExternalTerm< TInput, TLevelSetContainer >
+::SetDefaultTermName()
+{
+  this->m_TermName = "External Chan And Vese term";
+}
+
+template< class TInput, class TLevelSetContainer >
+void LevelSetEquationChanAndVeseExternalTerm< TInput, TLevelSetContainer >
+::SetRequiredData()
+{
+  this->m_RequiredData.insert( "Value" );
+}
 
 template< class TInput, class TLevelSetContainer >
 void LevelSetEquationChanAndVeseExternalTerm< TInput, TLevelSetContainer >

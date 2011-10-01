@@ -27,9 +27,6 @@ template< class TInput, class TLevelSetContainer >
 LevelSetEquationPropagationTerm< TInput, TLevelSetContainer >
 ::LevelSetEquationPropagationTerm()
 {
-  this->m_TermName = "Propagation term";
-  this->m_RequiredData.insert( "BackwardGradient" );
-  this->m_RequiredData.insert( "ForwardGradient" );
 }
 
 template< class TInput, class TLevelSetContainer >
@@ -38,6 +35,22 @@ LevelSetEquationPropagationTerm< TInput, TLevelSetContainer >
 {
 }
 
+template< class TInput, class TLevelSetContainer >
+void
+LevelSetEquationPropagationTerm< TInput, TLevelSetContainer >
+::SetDefaultTermName()
+{
+  this->m_TermName = "Propagation term";
+}
+
+template< class TInput, class TLevelSetContainer >
+void
+LevelSetEquationPropagationTerm< TInput, TLevelSetContainer >
+::SetRequiredData()
+{
+  this->m_RequiredData.insert( "BackwardGradient" );
+  this->m_RequiredData.insert( "ForwardGradient" );
+}
 
 template< class TInput, class TLevelSetContainer >
 void

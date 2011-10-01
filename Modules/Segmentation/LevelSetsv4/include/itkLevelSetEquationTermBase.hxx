@@ -33,7 +33,8 @@ LevelSetEquationTermBase< TInputImage, TLevelSetContainer >
   this->m_CurrentLevelSetId =  NumericTraits< LevelSetIdentifierType >::Zero;
   this->m_Coefficient = NumericTraits< LevelSetOutputRealType >::One;
   this->m_CFLContribution = NumericTraits< LevelSetOutputRealType >::Zero;
-  this->m_TermName = "";
+
+  this->init();
 }
 
 // ----------------------------------------------------------------------------
@@ -41,6 +42,16 @@ template< class TInputImage, class TLevelSetContainer >
 LevelSetEquationTermBase< TInputImage, TLevelSetContainer >
 ::~LevelSetEquationTermBase()
 {
+}
+
+// ----------------------------------------------------------------------------
+template< class TInputImage, class TLevelSetContainer >
+void
+LevelSetEquationTermBase< TInputImage, TLevelSetContainer >
+::init()
+{
+  this->SetDefaultTermName();
+  this->SetRequiredData();
 }
 
 // ----------------------------------------------------------------------------
@@ -99,7 +110,7 @@ LevelSetEquationTermBase< TInputImage, TLevelSetContainer >
   if( this->m_CurrentLevelSetPointer.IsNull() )
     {
     this->m_CurrentLevelSetPointer =
-    this->m_LevelSetContainer->GetLevelSet( this->m_CurrentLevelSetId );
+      this->m_LevelSetContainer->GetLevelSet( this->m_CurrentLevelSetId );
 
     if( this->m_CurrentLevelSetPointer.IsNull() )
       {

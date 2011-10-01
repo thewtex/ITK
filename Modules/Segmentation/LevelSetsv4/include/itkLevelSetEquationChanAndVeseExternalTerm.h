@@ -97,6 +97,10 @@ protected:
   LevelSetEquationChanAndVeseExternalTerm();
   virtual ~LevelSetEquationChanAndVeseExternalTerm();
 
+  virtual void SetDefaultTermName();
+
+  virtual void SetRequiredData();
+
 private:
   LevelSetEquationChanAndVeseExternalTerm( const Self& ); // purposely not implemented
   void operator = ( const Self& ); // purposely not implemented

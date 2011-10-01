@@ -27,14 +27,28 @@ template< class TInput, class TLevelSetContainer >
 LevelSetEquationLaplacianTerm< TInput, TLevelSetContainer >
 ::LevelSetEquationLaplacianTerm()
 {
-  this->m_TermName = "Laplacian term";
-  this->m_RequiredData.insert( "Laplacian" );
 }
 
 template< class TInput, class TLevelSetContainer >
 LevelSetEquationLaplacianTerm< TInput, TLevelSetContainer >
 ::~LevelSetEquationLaplacianTerm()
 {
+}
+
+template< class TInput, class TLevelSetContainer >
+void
+LevelSetEquationLaplacianTerm< TInput, TLevelSetContainer >
+::SetDefaultTermName()
+{
+  this->m_TermName = "Laplacian term";
+}
+
+template< class TInput, class TLevelSetContainer >
+void
+LevelSetEquationLaplacianTerm< TInput, TLevelSetContainer >
+::SetRequiredData()
+{
+  this->m_RequiredData.insert( "Laplacian" );
 }
 
 
