@@ -31,14 +31,30 @@ LevelSetEquationChanAndVeseInternalTerm< TInput, TLevelSetContainer >
   m_TotalValue( NumericTraits< InputPixelRealType >::Zero ),
   m_TotalH( NumericTraits< LevelSetOutputRealType >::Zero )
 {
-  this->m_TermName = "Internal Chan And Vese term";
-  this->m_RequiredData.insert( "Value" );
+  this->SetDefaultTermName();
+  this->SetRequiredData();
 }
 
 template< class TInput, class TLevelSetContainer >
 LevelSetEquationChanAndVeseInternalTerm< TInput, TLevelSetContainer >
 ::~LevelSetEquationChanAndVeseInternalTerm()
 {
+}
+
+template< class TInput, class TLevelSetContainer >
+void
+LevelSetEquationChanAndVeseInternalTerm< TInput, TLevelSetContainer >
+::SetDefaultTermName()
+{
+  this->m_TermName = "Internal Chan And Vese term";
+}
+
+template< class TInput, class TLevelSetContainer >
+void
+LevelSetEquationChanAndVeseInternalTerm< TInput, TLevelSetContainer >
+::SetRequiredData()
+{
+  this->m_RequiredData.insert( "Value" );
 }
 
 template< class TInput, class TLevelSetContainer >

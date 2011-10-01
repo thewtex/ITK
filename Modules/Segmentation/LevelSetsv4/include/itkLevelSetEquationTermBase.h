@@ -141,6 +141,10 @@ protected:
 
   void SetUp();
 
+  virtual void SetDefaultTermName() = 0;
+
+  virtual void SetRequiredData() = 0;
+
   /** Returns the term contribution for a given location iP, i.e.
    *  \f$ \omega_i( p ) \f$. This method must be implemented in all
    *  class which inherits from this class.

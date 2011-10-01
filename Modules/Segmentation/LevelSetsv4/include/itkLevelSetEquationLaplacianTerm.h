@@ -70,8 +70,8 @@ public:
   typedef typename Superclass::LevelSetHessianType        LevelSetHessianType;
   typedef typename Superclass::LevelSetIdentifierType     LevelSetIdentifierType;
 
-  typedef typename Superclass::HeavisideType    HeavisideType;
-  typedef typename Superclass::HeavisideConstPointer HeavisideConstPointer;
+  typedef typename Superclass::HeavisideType          HeavisideType;
+  typedef typename Superclass::HeavisideConstPointer  HeavisideConstPointer;
 
   typedef typename Superclass::LevelSetDataType LevelSetDataType;
 
@@ -102,6 +102,10 @@ protected:
   LevelSetEquationLaplacianTerm();
 
   virtual ~LevelSetEquationLaplacianTerm();
+
+  virtual void SetDefaultTermName();
+
+  virtual void SetRequiredData();
 
   /** Return the spatial speed dependence a given pixel location
    * Usually, it is constant across the image domain */

@@ -106,6 +106,10 @@ protected:
 
   virtual ~LevelSetEquationChanAndVeseInternalTerm();
 
+  virtual void SetDefaultTermName();
+
+  virtual void SetRequiredData();
+
   /** Returns the term contribution for a given location iP, i.e.
    *  \f$ \omega_i( p ) \f$. */
   virtual LevelSetOutputRealType Value( const LevelSetInputIndexType& iP );

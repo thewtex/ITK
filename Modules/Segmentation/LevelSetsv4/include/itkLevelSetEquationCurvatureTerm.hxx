@@ -31,14 +31,30 @@ LevelSetEquationCurvatureTerm< TInput, TLevelSetContainer >
     {
     this->m_NeighborhoodScales[i] = 1.0;
     }
-  this->m_TermName = "Curvature term";
-  this->m_RequiredData.insert( "MeanCurvature" );
+  this->SetDefaultTermName();
+  this->SetRequiredData();
 }
 
 template< class TInput, class TLevelSetContainer >
 LevelSetEquationCurvatureTerm< TInput, TLevelSetContainer >
 ::~LevelSetEquationCurvatureTerm()
 {
+}
+
+template< class TInput, class TLevelSetContainer >
+void
+LevelSetEquationCurvatureTerm< TInput, TLevelSetContainer >
+::SetDefaultTermName()
+{
+  this->m_TermName = "Curvature term";
+}
+
+template< class TInput, class TLevelSetContainer >
+void
+LevelSetEquationCurvatureTerm< TInput, TLevelSetContainer >
+::SetRequiredData()
+{
+  this->m_RequiredData.insert( "MeanCurvature" );
 }
 
 template< class TInput, class TLevelSetContainer >

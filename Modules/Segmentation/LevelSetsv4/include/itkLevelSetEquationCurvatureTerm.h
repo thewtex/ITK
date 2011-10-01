@@ -70,8 +70,8 @@ public:
   typedef typename Superclass::LevelSetHessianType        LevelSetHessianType;
   typedef typename Superclass::LevelSetIdentifierType     LevelSetIdentifierType;
 
-  typedef typename Superclass::HeavisideType    HeavisideType;
-  typedef typename Superclass::HeavisideConstPointer HeavisideConstPointer;
+  typedef typename Superclass::HeavisideType          HeavisideType;
+  typedef typename Superclass::HeavisideConstPointer  HeavisideConstPointer;
 
   typedef typename Superclass::LevelSetDataType LevelSetDataType;
 
@@ -102,6 +102,10 @@ protected:
   LevelSetEquationCurvatureTerm();
 
   virtual ~LevelSetEquationCurvatureTerm();
+
+  virtual void SetDefaultTermName();
+
+  virtual void SetRequiredData();
 
   /** Returns the term contribution for a given location iP, i.e.
    *  \f$ \omega_i( p ) \f$. */

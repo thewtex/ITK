@@ -102,6 +102,10 @@ protected:
 
   virtual ~LevelSetEquationPropagationTerm();
 
+  virtual void SetDefaultTermName();
+
+  virtual void SetRequiredData();
+
   /** Return the spatial speed dependence a given pixel location
    * Usually, it is constant across the image domain */
   LevelSetOutputRealType PropagationSpeed( const LevelSetInputIndexType& iP ) const;
