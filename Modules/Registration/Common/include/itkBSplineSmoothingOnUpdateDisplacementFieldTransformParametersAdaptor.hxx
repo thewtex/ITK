@@ -31,7 +31,7 @@ BSplineSmoothingOnUpdateDisplacementFieldTransformParametersAdaptor<TTransform>
   this->m_NumberOfControlPointsForTheTotalField.Fill( 0 );
   this->m_NumberOfControlPointsForTheUpdateFieldSetTime = 0;
   this->m_NumberOfControlPointsForTheTotalFieldSetTime = 0;
-}
+  }
 
 template<class TTransform>
 BSplineSmoothingOnUpdateDisplacementFieldTransformParametersAdaptor<TTransform>
@@ -72,22 +72,6 @@ BSplineSmoothingOnUpdateDisplacementFieldTransformParametersAdaptor<TTransform>
 }
 
 /**
- * set number of control points for update field
- */
-template<class TTransform>
-void
-BSplineSmoothingOnUpdateDisplacementFieldTransformParametersAdaptor<TTransform>
-::SetNumberOfControlPointsForTheUpdateField( const ArrayType &controlPoints )
-{
-  this->m_NumberOfControlPointsForTheUpdateFieldSetTime = this->GetMTime();
-  if( controlPoints != this->m_NumberOfControlPointsForTheUpdateField )
-    {
-    this->m_NumberOfControlPointsForTheUpdateField = controlPoints;
-    this->Modified();
-    }
-}
-
-/**
  * set number of control points for total field
  */
 template<class TTransform>
@@ -99,6 +83,22 @@ BSplineSmoothingOnUpdateDisplacementFieldTransformParametersAdaptor<TTransform>
   if( controlPoints != this->m_NumberOfControlPointsForTheTotalField )
     {
     this->m_NumberOfControlPointsForTheTotalField = controlPoints;
+    this->Modified();
+    }
+}
+
+/**
+ * set number of control points for update field
+ */
+template<class TTransform>
+void
+BSplineSmoothingOnUpdateDisplacementFieldTransformParametersAdaptor<TTransform>
+::SetNumberOfControlPointsForTheUpdateField( const ArrayType &controlPoints )
+{
+  this->m_NumberOfControlPointsForTheUpdateFieldSetTime = this->GetMTime();
+  if( controlPoints != this->m_NumberOfControlPointsForTheUpdateField )
+    {
+    this->m_NumberOfControlPointsForTheUpdateField = controlPoints;
     this->Modified();
     }
 }
@@ -130,7 +130,6 @@ BSplineSmoothingOnUpdateDisplacementFieldTransformParametersAdaptor<TTransform>
   Superclass::PrintSelf( os,indent );
 
   os << indent << "B-spline parameters: " << std::endl;
-  os << indent << "  spline order = " << this->m_SplineOrder << std::endl;
   os << indent << "  number of control points for the update field = "
     << this->m_NumberOfControlPointsForTheUpdateField << std::endl;
   os << indent << "  number of control points for the total field = "
