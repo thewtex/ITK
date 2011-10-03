@@ -292,6 +292,240 @@ QuadrilateralCell< TCellInterface >
   edgePointer.TakeOwnership(edge);
   return true;
 }
+
+/** Evaluate the position inside the cell */
+template< typename TCellInterface >
+bool
+QuadrilateralCell< TCellInterface >
+::EvaluatePosition(CoordRepType *x,
+                   PointsContainer *points,
+                   CoordRepType *closestPoint,
+                   CoordRepType pcoord[3],
+                   double *dist2,
+                   InterpolationWeightType *weight)
+{
+  static const int    ITK_QUAD_MAX_ITERATION = 10;
+  static const double ITK_QUAD_CONVERGED = 1.e-03;
+  static const double ITK_DIVERGED = 1.e6;
+
+  int                     iteration, converged;
+  double                  params[2];
+  double                  fcol[2], rcol[2], scol[2];
+  double                  d;
+  PointType               pt;
+  CoordRepType            derivs[8];
+  InterpolationWeightType weights[4];
+
+  //  set initial position for Newton's method
+  int          subId = 0;
+  CoordRepType pcoords[3];
+
+  pcoords[0] = pcoords[1] = params[0] = params[1] = 0.5;
+
+  //  enter iteration loop
+  for ( iteration = converged = 0;
+        !converged && ( iteration < ITK_QUAD_MAX_ITERATION ); iteration++ )
+    {
+    //  calculate element interpolation functions and derivatives
+    this->InterpolationFunctions(pcoords, weights);
+    this->InterpolationDerivs(pcoords, derivs);
+
+    //  calculate newton functions
+    for ( unsigned int i = 0; i < 2; i++ )
+      {
+      fcol[i] = rcol[i] = scol[i] = 0.0;
+      }
+    for ( unsigned int i = 0; i < 4; i++ )
+      {
+      pt = points->GetElement(m_PointIds[i]);
+      for ( unsigned int j = 0; j < PointDimension; j++ )
+        {
+        fcol[j] += pt[j] * weights[i];
+        rcol[j] += pt[j] * derivs[i];
+        scol[j] += pt[j] * derivs[i + 4];
+        }
+      }
+
+    for ( unsigned int i = 0; i < 2; i++ )
+      {
+      fcol[i] -= x[i];
+      }
+
+    //  compute determinants and generate improvements
+    vnl_matrix_fixed< CoordRepType, 2, PointDimension > mat;
+    for ( unsigned int i = 0; i < PointDimension; i++ )
+      {
+      mat.put(0, i, rcol[i]);
+      mat.put(1, i, scol[i]);
+      }
+
+    d = vnl_determinant(mat);
+    //d=vtkMath::Determinant2x2(rcol,scol);
+    if ( vcl_abs(d) < 1.e-20 )
+      {
+      return false;
+      }
+
+    vnl_matrix_fixed< CoordRepType, 2, PointDimension > mat1;
+    for ( unsigned int i = 0; i < PointDimension; i++ )
+      {
+      mat1.put(0, i, fcol[i]);
+      mat1.put(1, i, scol[i]);
+      }
+
+    vnl_matrix_fixed< CoordRepType, 2, PointDimension > mat2;
+    for ( unsigned int i = 0; i < PointDimension; i++ )
+      {
+      mat2.put(0, i, rcol[i]);
+      mat2.put(1, i, fcol[i]);
+      }
+
+    pcoords[0] = params[0] - vnl_determinant(mat1) / d;
+    pcoords[1] = params[1] - vnl_determinant(mat2) / d;
+
+    if ( pcoord )
+      {
+      pcoord[0] = pcoords[0];
+      pcoord[1] = pcoords[1];
+      pcoord[2] = pcoords[2];
+      }
+
+    //  check for convergence
+    if ( ( ( vcl_abs(pcoords[0] - params[0]) ) < ITK_QUAD_CONVERGED )
+         && ( ( vcl_abs(pcoords[1] - params[1]) ) < ITK_QUAD_CONVERGED ) )
+      {
+      converged = 1;
+      }
+
+    // Test for bad divergence (S.Hirschberg 11.12.2001)
+    else if ( ( vcl_abs(pcoords[0]) > ITK_DIVERGED )
+              || ( vcl_abs(pcoords[1]) > ITK_DIVERGED ) )
+      {
+      return -1;
+      }
+
+    //  if not converged, repeat
+    else
+      {
+      params[0] = pcoords[0];
+      params[1] = pcoords[1];
+      }
+    }
+
+  //  if not converged, set the parametric coordinates to arbitrary values
+  //  outside of element
+  if ( !converged )
+    {
+    return false;
+    }
+
+  this->InterpolationFunctions(pcoords, weights);
+
+  if ( weight )
+    {
+    for ( unsigned int i = 0; i < 4; i++ )
+      {
+      weight[i] = weights[i];
+      }
+    }
+
+  if ( pcoords[0] >= -0.001 && pcoords[0] <= 1.001
+       && pcoords[1] >= -0.001 && pcoords[1] <= 1.001 )
+    {
+    if ( closestPoint )
+      {
+      closestPoint[0] = x[0]; closestPoint[1] = x[1];
+      *dist2 = 0.0; //inside hexahedron
+      }
+    return true;
+    }
+  else
+    {
+    CoordRepType pc[2], w[4];
+    if ( closestPoint )
+      {
+      for ( unsigned int i = 0; i < 2; i++ ) //only approximate ??
+        {
+        if ( pcoords[i] < 0.0 )
+          {
+          pc[i] = 0.0;
+          }
+        else if ( pcoords[i] > 1.0 )
+          {
+          pc[i] = 1.0;
+          }
+        else
+          {
+          pc[i] = pcoords[i];
+          }
+        }
+      this->EvaluateLocation(subId, points, pc, closestPoint, (InterpolationWeightType *)w);
+
+      *dist2 = 0;
+      for ( unsigned int i = 0; i < 2; i++ )
+        {
+        *dist2 += ( closestPoint[i] - x[i] ) * ( closestPoint[i] - x[i] );
+        }
+      }
+    return false;
+    }
+}
+
+/** Compute iso-parametric interpolation functions */
+template< typename TCellInterface >
+void
+QuadrilateralCell< TCellInterface >
+::InterpolationFunctions(CoordRepType pcoords[2], InterpolationWeightType sf[4])
+{
+  const double rm = 1. - pcoords[0];
+  const double sm = 1. - pcoords[1];
+
+  sf[0] = rm * sm;
+  sf[1] = pcoords[0] * sm;
+  sf[2] = pcoords[0] * pcoords[1];
+  sf[3] = rm * pcoords[1];
+}
+
+/** Compute iso-parametric interpolation functions */
+template< typename TCellInterface >
+void
+QuadrilateralCell< TCellInterface >
+::InterpolationDerivs(CoordRepType pcoords[2], CoordRepType derivs[8])
+{
+  const double rm = 1. - pcoords[0];
+  const double sm = 1. - pcoords[1];
+
+  // r-derivatives
+  derivs[0] = -sm;
+  derivs[1] = sm;
+  derivs[2] = pcoords[1];
+  derivs[3] = -pcoords[1];
+  // s-derivatives
+  derivs[4] = -rm;
+  derivs[5] = -pcoords[0];
+  derivs[6] = pcoords[0];
+  derivs[7] = rm;
+}
+
+/** Evaluate the location inside the cell */
+template< typename TCellInterface >
+void
+QuadrilateralCell< TCellInterface >
+::EvaluateLocation(int & itkNotUsed(subId), PointsContainer *points, CoordRepType pcoords[2],
+                   CoordRepType x[2], InterpolationWeightType *weights)
+{
+  this->InterpolationFunctions(pcoords, weights);
+  x[0] = x[1] = 0.0;
+  for ( unsigned int i = 0; i < 4; i++ )
+    {
+    PointType pt = points->GetElement(m_PointIds[i]);
+
+    for ( unsigned int j = 0; j < PointDimension; j++ )
+      {
+      x[j] += pt[j] * weights[i];
+      }
+    }
+}
 } // end namespace itk
 
 #endif
