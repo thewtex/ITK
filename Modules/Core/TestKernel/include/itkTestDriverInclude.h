@@ -143,6 +143,8 @@ void usage()
   std::cerr << std::endl;
   std::cerr << "  --no-process" << std::endl;
   std::cerr << "      The test driver will not invoke any process." << std::endl;
+  std::cerr << "  --full-output" << std::endl;
+  std::cerr << "      Causes the full output of the test to be passed to cdash." << std::endl;
   std::cerr << std::endl;
   std::cerr << "  --" << std::endl;
   std::cerr << "      The options after -- are not interpreted by this program and passed" << std::endl;
@@ -295,7 +297,14 @@ int ProcessArguments(int *ac, ArgumentStringType *av, ProcessedOutputType * proc
       (*av) += 4;
       *ac -= 4;
       }
-
+    else if ( !skip && strcmp((*av)[i], "--full-output") == 0 )
+      {
+      // emit the string to tell ctest that the full output should be
+      // passed to cdash.
+      std::cout << "CTEST_FULL_OUTPUT" << std::endl;
+      (*av) += 1;
+      *ac -= 1;
+      }
     else if ( !skip && strcmp((*av)[i], "--no-process") == 0 )
       {
       // The test driver needs to invoke another executable
