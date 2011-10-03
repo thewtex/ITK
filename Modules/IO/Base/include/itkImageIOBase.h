@@ -29,6 +29,7 @@
 #include "itkCovariantVector.h"
 #include "itkSymmetricSecondRankTensor.h"
 #include "itkDiffusionTensor3D.h"
+#include "itkIntTypes.h"
 
 #include "vnl/vnl_vector.h"
 
