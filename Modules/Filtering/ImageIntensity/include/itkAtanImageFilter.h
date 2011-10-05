@@ -56,9 +56,7 @@ public:
  * \brief Computes the one-argument inverse tangent of each pixel.
  *
  * This filter is templated over the pixel type of the input image
- * and the pixel type of the output image.
- *
- * The filter walks over all the pixels in the input image, and for
+ * and the pixel type of the output image. test
  * each pixel does the following:
  *
  * \li cast the pixel value to \c double,
