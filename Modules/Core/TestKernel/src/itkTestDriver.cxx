@@ -28,6 +28,8 @@
 
 #include "itkTestDriverIncludeRequiredIOFactories.h"
 
+#include "itkHashImageFilter.h"
+
 #include "itksys/Process.h"
 #include "itksys/SystemTools.hxx"
 

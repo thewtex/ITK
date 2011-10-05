@@ -1,0 +1,139 @@
+#ifndef __itkHashImageFilter_txx
+#define __itkHashImageFilter_txx
+
+#include "itkHashImageFilter.h"
+#include "itkByteSwapper.h"
+
+#include "itksys/MD5.h"
+
+namespace itk {
+
+//
+// Constructor
+//
+template<class TImageType>
+HashImageFilter<TImageType>::HashImageFilter()
+{
+
+  // create data object
+  this->ProcessObject::SetNthOutput( 1, this->MakeOutput(1).GetPointer() );
+
+  this->InPlaceOn();
+}
+
+//
+// MakeOutput
+//
+template<class TImageType>
+typename HashImageFilter<TImageType>::DataObjectPointer
+HashImageFilter<TImageType>::MakeOutput(unsigned int idx)
+{
+  if ( idx == 1 )
+    {
+    return static_cast< DataObject * >( HashObjectType::New().GetPointer() );
+    }
+  return Superclass::MakeOutput(idx);
+}
+
+//
+// AfterThreadedGenerateData
+//
+template<class TImageType>
+void
+HashImageFilter<TImageType>::AfterThreadedGenerateData()
+{
+  // NOTE: We have choose our super class to be the
+  // CastImageFilter. The filter is derived from the
+  // InPlaceFilter. The CastImageFilter will copy its input, in the
+  // best fashion based on the InPlace setting. We want the
+  // behavior. This methods is called after the caster has done it's
+  // work.
+
+  Superclass::AfterThreadedGenerateData();
+
+  typedef TImageType                                   ImageType;
+  typedef typename ImageType::PixelType                PixelType;
+  typedef typename NumericTraits<PixelType>::ValueType ValueType;
+  typedef itk::ByteSwapper<ValueType>                  Swapper;
+
+  itksysMD5 *md5 = itksysMD5_New();
+  itksysMD5_Initialize( md5 );
+
+  typename ImageType::ConstPointer input = this->GetInput();
+
+
+  // make a good guess about the number of components in each pixel
+  size_t numberOfComponent =   sizeof(PixelType) / sizeof(ValueType );
+
+  if ( strcmp(input->GetNameOfClass(), "VectorImage") == 0 )
+    {
+    // spacial case for VectorImages
+    numberOfComponent = ImageType::AccessorFunctorType::GetVectorLength(input);
+    }
+  else if ( sizeof(PixelType) % sizeof(ValueType) != 0 )
+    {
+    itkExceptionMacro("Unsupported data type for hashing!");
+    }
+
+  // we feel bad about accessing the data this way
+  ValueType *buffer = static_cast<ValueType*>( (void *)input->GetBufferPointer() );
+
+  typename ImageType::RegionType largestRegion = input->GetBufferedRegion();
+  const size_t numberOfValues = largestRegion.GetNumberOfPixels()*numberOfComponent;
+
+
+  // Possible byte swap so we always calculate on little endian data
+  if ( Swapper::SystemIsBigEndian() )
+    {
+    Swapper::SwapRangeFromSystemToLittleEndian ( buffer, numberOfValues );
+    }
+
+  itksysMD5_Append( md5, (unsigned char*)buffer, numberOfValues*sizeof(ValueType) );
+
+  if ( Swapper::SystemIsBigEndian() )
+    {
+    Swapper::SwapRangeFromSystemToLittleEndian ( buffer, numberOfValues );
+    }
+
+  ////////
+  // NOTE: THIS IS NOT A NULL TERMINATED STRING!!!
+  ////////
+  const size_t DigestSize = 32u;
+  char Digest[DigestSize];
+
+  itksysMD5_FinalizeHex( md5, Digest );
+
+  this->GetHashOutput()->Set( std::string(Digest, DigestSize) );
+}
+
+
+//
+// EnlargeOutputRequestedRegion
+//
+template<class TImageType>
+void
+HashImageFilter<TImageType>::EnlargeOutputRequestedRegion(DataObject *data)
+{
+  Superclass::EnlargeOutputRequestedRegion(data);
+
+  // set the output region to the largest and let the pipeline
+  // propagate the requested region to the input
+  data->SetRequestedRegionToLargestPossibleRegion();
+}
+
+
+//
+// PrintSelf
+//
+template<class TImageType>
+void
+HashImageFilter<TImageType>::PrintSelf(std::ostream & os, Indent indent) const
+{
+  Superclass::PrintSelf(os, indent);
+
+}
+
+
+} // end namespace itk
+
+#endif // __itkHashImageFilter_txx
