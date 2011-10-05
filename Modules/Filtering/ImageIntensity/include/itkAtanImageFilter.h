@@ -55,7 +55,7 @@ public:
 /** \class AtanImageFilter
  * \brief Computes the one-argument inverse tangent of each pixel.
  *
- * This filter is templated over the pixel type of the input image
+ * This filter is templated over the pixel type of the input image test
  * and the pixel type of the output image.
  *
  * The filter walks over all the pixels in the input image, and for
