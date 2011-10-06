@@ -24,14 +24,9 @@ namespace itk
 GradientDescentObjectOptimizerBase
 ::GradientDescentObjectOptimizerBase()
 {
-  this->m_ModifyGradientThreader = ModifyGradientThreaderType::New();
-  this->m_ModifyGradientThreader->SetThreadedGenerateData(
-                                                Self::ModifyGradientThreaded );
-  this->m_ModifyGradientThreader->SetHolder( this );
-
   this->m_NumberOfIterations = 100;
-  this->m_CurrentIteration = 0;
-  this->m_StopCondition = MAXIMUM_NUMBER_OF_ITERATIONS;
+  this->m_CurrentIteration   = 0;
+  this->m_StopCondition      = MAXIMUM_NUMBER_OF_ITERATIONS;
   this->m_StopConditionDescription << this->GetNameOfClass() << ": ";
 }
 
@@ -46,7 +41,7 @@ GradientDescentObjectOptimizerBase
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
-  os << indent << "Modify Gradient Threader: " << this->m_ModifyGradientThreader << std::endl;
+  os << indent << "Modify Gradient: " << this->m_ModifyGradientThreaderBase << std::endl;
   os << indent << "Number of iterations: " << this->m_NumberOfIterations  << std::endl;
   os << indent << "Current iteration: " << this->m_CurrentIteration << std::endl;
   os << indent << "Stop condition:"<< this->m_StopCondition << std::endl;
@@ -77,31 +72,27 @@ void
 GradientDescentObjectOptimizerBase
 ::ModifyGradient()
 {
-  IndexRangeType fullrange;
+  ModifyGradientThreaderBase::IndexRangeType fullrange;
   fullrange[0] = 0;
   fullrange[1] = this->m_Gradient.GetSize()-1; //range is inclusive
+
+  // Inheriting classes should instantiate and assign m_ModifyGradientThreader
+  // in their constructor.
+  itkAssertInDebugAndIgnoreInReleaseMacro( !m_ModifyGradientThreaderBase.IsNull() );
+
   /* Perform the modification either with or without threading */
   if( this->m_Metric->HasLocalSupport() )
     {
-    this->m_ModifyGradientThreader->SetCompleteIndexRange( fullrange );
-    /* This ends up calling ModifyGradientThreaded from each thread */
-    this->m_ModifyGradientThreader->StartThreadedExecution();
+    this->m_ModifyGradientThreaderBase->Execute( this, fullrange );
     }
-  else
+  else /* Global transforms are small, so update without threading. */
     {
-    /* Global transforms are small, so update without threading. */
-    this->ModifyGradientOverSubRange( fullrange );
+    const ThreadIdType numberOfThreadsPre = this->m_ModifyGradientThreaderBase->GetMaximumNumberOfThreads();
+    this->m_ModifyGradientThreaderBase->SetMaximumNumberOfThreads( 1 );
+    this->m_ModifyGradientThreaderBase->Execute( this, fullrange );
+    // Restore the number of threads.
+    this->m_ModifyGradientThreaderBase->SetMaximumNumberOfThreads( numberOfThreadsPre );
     }
-}
-
-//-------------------------------------------------------------------
-void
-GradientDescentObjectOptimizerBase
-::ModifyGradientThreaded( const IndexRangeType& rangeForThread,
-                          ThreadIdType,
-                          Self *holder )
-{
-  holder->ModifyGradientOverSubRange( rangeForThread );
 }
 
 }//namespace itk

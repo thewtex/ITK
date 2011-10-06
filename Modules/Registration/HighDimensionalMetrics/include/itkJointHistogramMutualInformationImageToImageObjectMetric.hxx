@@ -26,23 +26,21 @@
 
 namespace itk
 {
-/**
-  Constructor
- */
+
 template <class TFixedImage,class TMovingImage,class TVirtualImage>
 JointHistogramMutualInformationImageToImageObjectMetric<TFixedImage,TMovingImage,TVirtualImage>
 ::JointHistogramMutualInformationImageToImageObjectMetric()
 {
   // Initialize histogram properties
   this->m_NumberOfHistogramBins = 20;
-  this->m_FixedImageTrueMin = (0.0);
-  this->m_FixedImageTrueMax = (0.0);
-  this->m_MovingImageTrueMin = (0.0);
-  this->m_MovingImageTrueMax = (0.0);
-  this->m_FixedImageBinSize = (0.0);
-  this->m_MovingImageBinSize = (0.0);
+  this->m_FixedImageTrueMin     = NumericTraits< InternalComputationValueType >::Zero;
+  this->m_FixedImageTrueMax     = NumericTraits< InternalComputationValueType >::Zero;
+  this->m_MovingImageTrueMin    = NumericTraits< InternalComputationValueType >::Zero;
+  this->m_MovingImageTrueMax    = NumericTraits< InternalComputationValueType >::Zero;
+  this->m_FixedImageBinSize     = NumericTraits< InternalComputationValueType >::Zero;
+  this->m_MovingImageBinSize    = NumericTraits< InternalComputationValueType >::Zero;
   this->m_Padding = 2;
-  this->m_JointPDFSum = (0.0);
+  this->m_JointPDFSum = NumericTraits< InternalComputationValueType >::Zero;
   this->m_ThreaderJointPDFInterpolator = NULL;
   this->m_ThreaderMovingImageMarginalPDFInterpolator = NULL;
   this->m_ThreaderFixedImageMarginalPDFInterpolator = NULL;
@@ -50,9 +48,6 @@ JointHistogramMutualInformationImageToImageObjectMetric<TFixedImage,TMovingImage
   this->m_VarianceForJointPDFSmoothing = 1.5;
 }
 
-/**
- * Destructor
- */
 template <class TFixedImage, class TMovingImage, class TVirtualImage>
 JointHistogramMutualInformationImageToImageObjectMetric<TFixedImage, TMovingImage, TVirtualImage>
 ::~JointHistogramMutualInformationImageToImageObjectMetric()
@@ -79,6 +74,7 @@ JointHistogramMutualInformationImageToImageObjectMetric<TFixedImage,TMovingImage
 ::Initialize() throw (itk::ExceptionObject)
 {
   Superclass::Initialize();
+
   /** Get the fixed and moving image true max's and mins.
    *  Initialize them to the PixelType min and max. */
   this->m_FixedImageTrueMin =
@@ -248,14 +244,16 @@ JointHistogramMutualInformationImageToImageObjectMetric<TFixedImage,TMovingImage
 }
 
 
-/**
- * Prepare histograms for use in GetValueAndDerivative
- */
 template <class TFixedImage, class TMovingImage, class TVirtualImage>
 void
 JointHistogramMutualInformationImageToImageObjectMetric<TFixedImage,TMovingImage,TVirtualImage>
-::UpdateHistograms() const
+::InitializeForIteration()
 {
+  // \todo does this need to be called?
+  //Superclass::InitializeForIteration();
+
+  /* Prepare histograms for use in GetValueAndDerivative */
+
   // Initialize the joint pdf and the fixed and moving image marginal pdfs
   PDFValueType pdfzero = NumericTraits< PDFValueType >::Zero;
   this->m_JointPDF->FillBuffer(pdfzero);
@@ -422,32 +420,9 @@ JointHistogramMutualInformationImageToImageObjectMetric<TFixedImage,TMovingImage
     ++movingIndex;
     }
 
-}
-
-/** Get the value and derivative */
-template <class TFixedImage, class TMovingImage, class TVirtualImage>
-void
-JointHistogramMutualInformationImageToImageObjectMetric<TFixedImage,TMovingImage,TVirtualImage>
-::GetValueAndDerivative(MeasureType & value, DerivativeType & derivative) const
-{
-  // Prepare the histograms
-  this->UpdateHistograms();
-
   // Calculate value
   this->m_Value = this->GetValue();
-  itkDebugMacro(" Mutual information value " << this->m_Value );
-
-  // Multithreaded initiate and process sample.
-  // This will put results in 'derivative'.
-  this->GetValueAndDerivativeThreadedExecute( derivative );
-
-  // Post processing
-  this->GetValueAndDerivativeThreadedPostProcess( true /*doAverage*/ );
-
-  // Return value.
-  value = this->m_Value;
 }
-
 
 /** Process the sample point*/
 template <class TFixedImage,class TMovingImage,class TVirtualImage>

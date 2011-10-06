@@ -119,34 +119,6 @@ public:
     itkExceptionMacro("GetValue not yet implemented.");
   }
 
-  //This is of one two evaluation methods that the user may call.
-  void GetValueAndDerivative( MeasureType & valueReturn,
-                              DerivativeType & derivativeReturn) const
-  {
-    //1) Do any pre-processing required for your metric. To help with
-    // threading, you can use ImageToData or Array1DToData classes,
-    // or derive your own from ObjectToData.
-
-    //2) Call GetValueAndDerivativeThreadedExecute.
-    //This will iterate over virtual image region and call your
-    // GetValueAndDerivativeProcessPoint method, see definition in
-    // base. Results are written in 'derivativeReturn'.
-    this->GetValueAndDerivativeThreadedExecute( derivativeReturn );
-
-    //3) Optionally call GetValueAndDerivativeThreadedPostProcess for
-    // default post-processing, which sums up results from each thread,
-    // and optionally averages them. It then assigns the results to
-    // 'value' and 'derivative', without copying in the case of 'derivative'.
-    //Do your own post-processing as needed.
-    this->GetValueAndDerivativeThreadedPostProcess( true /*doAverage*/ );
-
-    //4) Return the value result. The derivative result has already been
-    // written to derivativeReturn.
-    valueReturn = this->GetValueResult();
-
-    //That's it. Easy as 1, 2, 3 (and 4).
-  }
-
 protected:
   ImageToImageObjectMetricTestMetric(){};
   virtual ~ImageToImageObjectMetricTestMetric() {}
@@ -354,7 +326,7 @@ int ImageToImageObjectMetricTestRunSingleTest(
 
   //Check number of threads and valid points
   std::cout << "--Number of threads used: "
-            << metric->GetNumberOfThreads() << std::endl;
+            << metric->GetNumberOfThreadsUsed() << std::endl;
   if( metric->GetNumberOfValidPoints() != ( expectedNumberOfPoints ) )
     {
     std::cout << "Expected number of valid points to be "
@@ -497,7 +469,7 @@ int itkImageToImageObjectMetricTest(int, char ** const)
   for( itk::ThreadIdType numberOfThreads = 1; numberOfThreads < 6;
                                                             numberOfThreads++ )
     {
-    metric->SetNumberOfThreads( numberOfThreads );
+    metric->SetMaximumNumberOfThreads( numberOfThreads );
     for( char useMovingFilter = 1;
             useMovingFilter >= 0; useMovingFilter-- )
       {

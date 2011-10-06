@@ -141,12 +141,14 @@ public:
    *  could be multi-threaded in the future.
    *  Results are returned in \c value and \c derivative.
    */
-  void GetValueAndDerivative(MeasureType & value, DerivativeType & derivative) const;
+  virtual void GetValueAndDerivative(MeasureType & value, DerivativeType & derivative);
 
   /** Get the value */
   MeasureType GetValue() const;
 
 protected:
+  /** Update the histograms for use in GetValueAndDerivative */
+  virtual void InitializeForIteration();
 
   JointHistogramMutualInformationImageToImageObjectMetric();
   virtual ~JointHistogramMutualInformationImageToImageObjectMetric();
@@ -181,9 +183,6 @@ protected:
                     MeasureType &,
                     DerivativeType &                   localDerivativeReturn,
                     const ThreadIdType                 threadID) const;
-
-  /** Update the histograms for use in GetValueAndDerivative */
-  void UpdateHistograms() const;
 
 private:
 

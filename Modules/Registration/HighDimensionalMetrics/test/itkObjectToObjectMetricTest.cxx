@@ -21,7 +21,7 @@
 
 /* Test basic operation of ObjectToObjectMetric.
  *
- * TODO Finsish exercising all methods.
+ * TODO Finish exercising all methods.
  */
 
 template< class TFixedObject,  class TMovingObject >
@@ -52,7 +52,7 @@ public:
     return 1.0;
     }
 
-  void GetValueAndDerivative( MeasureType & value, DerivativeType & derivative ) const
+  void GetValueAndDerivative( MeasureType & value, DerivativeType & derivative )
     {
     value = 1.0; derivative.Fill(0.0);
     }
