@@ -27,6 +27,7 @@ namespace itk
 GradientDescentObjectOptimizer
 ::GradientDescentObjectOptimizer()
 {
+  this->m_ModifyGradientThreaderBase = ModifyGradientThreader::New();
   this->m_LearningRate = 1.0;
 }
 
@@ -154,28 +155,28 @@ GradientDescentObjectOptimizer
   this->InvokeEvent( IterationEvent() );
 }
 
-/**
- * Modify the gradient over a given index range.
- */
 void
 GradientDescentObjectOptimizer
-::ModifyGradientOverSubRange( const IndexRangeType& subrange )
+::ModifyGradientThreader::ThreadedExecution( Superclass::EnclosingClassType * enclosingClass,
+                        const Superclass::DomainType& subrange,
+                        const ThreadIdType itkNotUsed(threadId) )
 {
-  const ScalesType& scales = this->GetScales();
+  GradientDescentObjectOptimizer * self = dynamic_cast< GradientDescentObjectOptimizer * >( enclosingClass );
+  const ScalesType& scales = self->GetScales();
 
   /* Loop over the range. It is inclusive. */
   for ( IndexValueType j = subrange[0]; j <= subrange[1]; j++ )
     {
     if( scales.GetSize() == 0 )
       {
-      this->m_Gradient[j] = this->m_Gradient[j] * this->m_LearningRate;
+      self->m_Gradient[j] = self->m_Gradient[j] * self->m_LearningRate;
       }
     else
       {
       // scales is checked during StartOptmization for values <=
       // machine epsilon.
-      this->m_Gradient[j] =
-                this->m_Gradient[j] / scales[j] * this->m_LearningRate;
+      self->m_Gradient[j] =
+                self->m_Gradient[j] / scales[j] * self->m_LearningRate;
       }
     }
 }

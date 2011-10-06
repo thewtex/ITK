@@ -45,10 +45,10 @@ class ITK_EXPORT JointHistogramMutualInformationImageToImageObjectMetric :
 public:
 
   /** Standard class typedefs. */
-  typedef JointHistogramMutualInformationImageToImageObjectMetric     Self;
-  typedef ImageToImageObjectMetric<TFixedImage, TMovingImage>         Superclass;
-  typedef SmartPointer<Self>                                          Pointer;
-  typedef SmartPointer<const Self>                                    ConstPointer;
+  typedef JointHistogramMutualInformationImageToImageObjectMetric            Self;
+  typedef ImageToImageObjectMetric<TFixedImage, TMovingImage, TVirtualImage> Superclass;
+  typedef SmartPointer<Self>                                                 Pointer;
+  typedef SmartPointer<const Self>                                           ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -64,13 +64,13 @@ public:
   typedef typename Superclass::InternalComputationValueType
                                                   InternalComputationValueType;
   /**  Type of the parameters. */
-  typedef typename Superclass::ParametersType       ParametersType;
-  typedef typename Superclass::ParametersValueType  ParametersValueType;
+  typedef typename Superclass::ParametersType         ParametersType;
+  typedef typename Superclass::ParametersValueType    ParametersValueType;
+  typedef typename Superclass::NumberOfParametersType NumberOfParametersType;
 
   /** Superclass typedefs */
   typedef typename Superclass::MeasureType              MeasureType;
   typedef typename Superclass::DerivativeType           DerivativeType;
-  typedef typename Superclass::VirtualPointType         VirtualPointType;
   typedef typename Superclass::FixedImagePointType      FixedImagePointType;
   typedef typename Superclass::FixedImagePixelType      FixedImagePixelType;
   typedef typename Superclass::FixedGradientPixelType
@@ -83,7 +83,17 @@ public:
                                                         FixedTransformJacobianType;
   typedef typename Superclass::MovingTransformType::JacobianType
                                                         MovingTransformJacobianType;
+  typedef typename Superclass::VirtualImageType         VirtualImageType;
+  typedef typename Superclass::VirtualIndexType         VirtualIndexType;
+  typedef typename Superclass::VirtualPointType         VirtualPointType;
+  typedef typename Superclass::VirtualSampledPointSetType
+                                                        VirtualSampledPointSetType;
 
+  /* Image dimension accessors */
+  itkStaticConstMacro(VirtualImageDimension, ImageDimensionType,
+      ::itk::GetImageDimension<TVirtualImage>::ImageDimension);
+  itkStaticConstMacro(MovingImageDimension, ImageDimensionType,
+      ::itk::GetImageDimension<TMovingImage>::ImageDimension);
 
   /** Value type of the PDF */
   typedef InternalComputationValueType                  PDFValueType;
@@ -135,55 +145,262 @@ public:
   /** Initialize the metric. Make sure all essential inputs are plugged in. */
   virtual void Initialize() throw (itk::ExceptionObject);
 
-  /** Get both the value and derivative intializes the processing.
-   *  For Mattes MI, we just compute the joint histogram / pdf here.
-   *  This implementation single-threads the JH computation but it
-   *  could be multi-threaded in the future.
-   *  Results are returned in \c value and \c derivative.
-   */
-  void GetValueAndDerivative(MeasureType & value, DerivativeType & derivative) const;
-
   /** Get the value */
   MeasureType GetValue() const;
 
 protected:
-
   JointHistogramMutualInformationImageToImageObjectMetric();
   virtual ~JointHistogramMutualInformationImageToImageObjectMetric();
+
+  /** Update the histograms for use in GetValueAndDerivative
+   *  This implementation single-threads the JH computation but it
+   *  could be multi-threaded in the future.
+   *  Results are returned in \c value and \c derivative.
+   */
+  virtual void InitializeForIteration() const;
+
+  /** Compute the point location with the JointPDF image.  Returns false if the
+   * point is not inside the image. */
+  inline bool  ComputeJointPDFPoint( const FixedImagePixelType fixedImageValue,
+                               const MovingImagePixelType movingImageValue,
+                               JointPDFPointType & jointPDFpoint ) const;
+
+  /** \class JointHistogramMutualInformationComputeJointPDFThreader
+   * \brief Compute the JointPDF image.
+   */
+  template< class TDomainPartitioner >
+  class JointHistogramMutualInformationComputeJointPDFThreader
+    : public DomainThreader< TDomainPartitioner,
+                             JointHistogramMutualInformationImageToImageObjectMetric< TFixedImage, TMovingImage, TVirtualImage > >
+  {
+  public:
+    /** Standard class typedef. */
+    typedef JointHistogramMutualInformationComputeJointPDFThreader  Self;
+    typedef DomainThreader< TDomainPartitioner,
+                            JointHistogramMutualInformationImageToImageObjectMetric< TFixedImage, TMovingImage, TVirtualImage > >
+                                                                    Superclass;
+    typedef SmartPointer< Self >                                    Pointer;
+    typedef SmartPointer< const Self >                              ConstPointer;
+
+    itkTypeMacro( JointHistogramMutualInformationImageToImageObjectMetric::JointHistogramMutualInformationComputeJointPDFThreader,
+      DomainThreader );
+
+    typedef typename Superclass::DomainType         DomainType;
+    typedef typename Superclass::EnclosingClassType EnclosingClassType;
+
+  protected:
+    JointHistogramMutualInformationComputeJointPDFThreader() {}
+
+    /** Create the \c m_JointPDFPerThread's. */
+    virtual void BeforeThreadedExecution();
+    /** Called by the \c ThreadedExecution of derived classes. */
+    virtual void ProcessPoint( const VirtualIndexType & virtualIndex,
+                       const VirtualPointType & virtualPoint,
+                       const ThreadIdType threadId );
+    /** Collect the results per and normalize. */
+    virtual void AfterThreadedExecution();
+
+    typedef Image< SizeValueType, 2 > JointHistogramType;
+    std::vector< typename JointHistogramType::Pointer > m_JointHistogramPerThread;
+    std::vector< SizeValueType > m_JointHistogramCountPerThread;
+
+  private:
+    JointHistogramMutualInformationComputeJointPDFThreader( const Self & ); // purposely not implemented
+    void operator=( const Self & ); // purposely not implemented
+  };
+
+  /** \class JointHistogramMutualInformationDenseComputeJointPDFThreader
+   * \brief Compute the joint histogram from the entire virtual domain.
+   */
+  class JointHistogramMutualInformationDenseComputeJointPDFThreader
+    : public JointHistogramMutualInformationComputeJointPDFThreader< ThreadedImageRegionPartitioner< VirtualImageDimension > >
+  {
+  public:
+    /** Standard class typedefs. */
+    typedef JointHistogramMutualInformationDenseComputeJointPDFThreader Self;
+    typedef JointHistogramMutualInformationComputeJointPDFThreader< ThreadedImageRegionPartitioner< VirtualImageDimension > >
+                                                                        Superclass;
+    typedef SmartPointer< Self >                                        Pointer;
+    typedef SmartPointer< const Self >                                  ConstPointer;
+
+    itkTypeMacro( JointHistogramMutualInformationImageToImageObjectMetric::JointHistogramMutualInformationDenseComputeJointPDFThreader,
+      JointHistogramMutualInformationImageToImageObjectMetric::JointHistogramMutualInformationComputeJointPDFThreader );
+
+    itkNewMacro( Self );
+
+    typedef typename Superclass::DomainType         DomainType;
+    typedef typename Superclass::EnclosingClassType EnclosingClassType;
+
+  protected:
+    JointHistogramMutualInformationDenseComputeJointPDFThreader() {}
+
+    virtual void ThreadedExecution( EnclosingClassType * enclosingClass,
+                                    const DomainType& domain,
+                                    const ThreadIdType threadId );
+
+  private:
+    JointHistogramMutualInformationDenseComputeJointPDFThreader( const Self & ); // purposely not implemented
+    void operator=( const Self & ); // purposely nrot implemented
+  };
+  typename JointHistogramMutualInformationDenseComputeJointPDFThreader::Pointer m_JointHistogramMutualInformationDenseComputeJointPDFThreader;
+
+  /** \class JointHistogramMutualInformationSparseComputeJointPDFThreader
+   * \brief Compute the joint histogram from the fixed image point set.
+   */
+  class JointHistogramMutualInformationSparseComputeJointPDFThreader
+    : public JointHistogramMutualInformationComputeJointPDFThreader< ThreadedIndexedContainerPartitioner >
+  {
+  public:
+    /** Standard class typedefs. */
+    typedef JointHistogramMutualInformationSparseComputeJointPDFThreader Self;
+    typedef JointHistogramMutualInformationComputeJointPDFThreader< ThreadedIndexedContainerPartitioner >
+                                                                        Superclass;
+    typedef SmartPointer< Self >                                        Pointer;
+    typedef SmartPointer< const Self >                                  ConstPointer;
+
+    itkTypeMacro( JointHistogramMutualInformationImageToImageObjectMetric::JointHistogramMutualInformationSparseComputeJointPDFThreader,
+      JointHistogramMutualInformationImageToImageObjectMetric::JointHistogramMutualInformationComputeJointPDFThreader );
+
+    itkNewMacro( Self );
+
+    typedef typename Superclass::DomainType         DomainType;
+    typedef typename Superclass::EnclosingClassType EnclosingClassType;
+
+  protected:
+    JointHistogramMutualInformationSparseComputeJointPDFThreader() {}
+
+    virtual void ThreadedExecution( EnclosingClassType * enclosingClass,
+                                    const DomainType& domain,
+                                    const ThreadIdType threadId );
+
+  private:
+    JointHistogramMutualInformationSparseComputeJointPDFThreader( const Self & ); // purposely not implemented
+    void operator=( const Self & ); // purposely not implemented
+  };
+  typename JointHistogramMutualInformationSparseComputeJointPDFThreader::Pointer m_JointHistogramMutualInformationSparseComputeJointPDFThreader;
+
+  /** \class JointHistogramMutualInformationGetValueAndDerivativeThreader
+   * \brief Processes points for JointHistogramMutualInformation calculation. */
+  template < class TDomainPartitioner >
+  class JointHistogramMutualInformationGetValueAndDerivativeThreader
+    : public ImageToImageObjectMetric< TFixedImage, TMovingImage, TVirtualImage >::template GetValueAndDerivativeThreader< TDomainPartitioner >
+  {
+  public:
+    /** Standard class typedefs. */
+    typedef JointHistogramMutualInformationGetValueAndDerivativeThreader    Self;
+    typedef typename ImageToImageObjectMetric< TFixedImage, TMovingImage, TVirtualImage >
+      ::template GetValueAndDerivativeThreader< TDomainPartitioner >                 Superclass;
+    typedef SmartPointer< Self >                                            Pointer;
+    typedef SmartPointer< const Self >                                      ConstPointer;
+
+    itkTypeMacro( JointHistogramMutualInformationImageToImageObjectMetric::JointHistogramMutualInformationGetValueAndDerivativeThreader,
+      ImageToImageObjectMetric::GetValueAndDerivativeThreader );
+
+    typedef typename Superclass::DomainType         DomainType;
+    typedef typename Superclass::EnclosingClassType EnclosingClassType;
+
+  protected:
+
+    virtual void BeforeThreadedExecution();
+
+    virtual bool ProcessPoint(
+          const VirtualPointType &          virtualPoint,
+          const FixedImagePointType &       mappedFixedPoint,
+          const FixedImagePixelType &       mappedFixedPixelValue,
+          const FixedImageGradientType &    mappedFixedImageGradient,
+          const MovingImagePointType &      mappedMovingPoint,
+          const MovingImagePixelType &      mappedMovingPixelValue,
+          const MovingImageGradientType &   mappedMovingImageGradient,
+          MeasureType &                     metricValueReturn,
+          DerivativeType &                  localDerivativeReturn,
+          const ThreadIdType                threadID ) const;
+
+    inline InternalComputationValueType ComputeFixedImageMarginalPDFDerivative(
+                                          const MarginalPDFPointType & margPDFpoint,
+                                          const ThreadIdType threadID ) const;
+
+    inline InternalComputationValueType ComputeMovingImageMarginalPDFDerivative(
+                                          const MarginalPDFPointType & margPDFpoint,
+                                          const ThreadIdType threadID ) const;
+
+    inline InternalComputationValueType ComputeJointPDFDerivative(
+                                            const JointPDFPointType & jointPDFpoint,
+                                            const ThreadIdType threadID,
+                                            const SizeValueType ind ) const;
+
+    std::vector< JointPDFInterpolatorPointer >    m_JointPDFInterpolatorPerThread;
+    std::vector< MarginalPDFInterpolatorPointer > m_FixedImageMarginalPDFInterpolatorPerThread;
+    std::vector< MarginalPDFInterpolatorPointer > m_MovingImageMarginalPDFInterpolatorPerThread;
+  };
+
+  /** \class JointHistogramMutualInformationDenseGetValueAndDerivativeThreader
+   * \brief Run ProcessPoint on the points defined by an ImageRegion.
+   * */
+  class JointHistogramMutualInformationDenseGetValueAndDerivativeThreader
+    : public JointHistogramMutualInformationGetValueAndDerivativeThreader< ThreadedImageRegionPartitioner< VirtualImageDimension > >
+  {
+  public:
+    /** Standard class typedef. */
+    typedef JointHistogramMutualInformationDenseGetValueAndDerivativeThreader                              Self;
+    typedef JointHistogramMutualInformationGetValueAndDerivativeThreader< ThreadedImageRegionPartitioner< VirtualImageDimension > >
+                                                                            Superclass;
+    typedef SmartPointer< Self >                                            Pointer;
+    typedef SmartPointer< const Self >                                      ConstPointer;
+
+    itkNewMacro( Self );
+
+    itkTypeMacro( JointHistogramMutualInformationImageToImageObjectMetric::JointHistogramMutualInformationDenseGetValueAndDerivativeThreader,
+      JointHistogramMutualInformationImageToImageObjectMetric::GetValueAndDerivativeThreader );
+
+    typedef typename Superclass::DomainType         DomainType;
+    typedef typename Superclass::EnclosingClassType EnclosingClassType;
+
+  protected:
+    JointHistogramMutualInformationDenseGetValueAndDerivativeThreader() {}
+
+    virtual void ThreadedExecution( EnclosingClassType * enclosingClass,
+                                    const DomainType& domain,
+                                    const ThreadIdType threadId );
+
+  private:
+    JointHistogramMutualInformationDenseGetValueAndDerivativeThreader( const Self & ); // purposely not implemented
+    void operator=( const Self & ); // purposely not implemented
+  };
+
+  /** \class JointHistogramMutualInformationSparseGetValueAndDerivativeThreader
+   * \brief Run \c ProcessPoint on the points defined by a PointSet.
+   * */
+  class JointHistogramMutualInformationSparseGetValueAndDerivativeThreader
+    : public JointHistogramMutualInformationGetValueAndDerivativeThreader< ThreadedIndexedContainerPartitioner >
+  {
+  public:
+    /** Standard class typedef. */
+    typedef JointHistogramMutualInformationSparseGetValueAndDerivativeThreader                                  Self;
+    typedef JointHistogramMutualInformationGetValueAndDerivativeThreader< ThreadedIndexedContainerPartitioner > Superclass;
+    typedef SmartPointer< Self >                                                                                Pointer;
+    typedef SmartPointer< const Self >                                                                          ConstPointer;
+
+    itkTypeMacro( JointHistogramMutualInformationImageToImageObjectMetric::JointHistogramMutualInformationSparseGetValueAndDerivativeThreader,
+      JointHistogramMutualInformationImageToImageObjectMetric::GetValueAndDerivativeThreader );
+
+    itkNewMacro( Self );
+
+    typedef typename Superclass::DomainType         DomainType;
+    typedef typename Superclass::EnclosingClassType EnclosingClassType;
+
+  protected:
+    JointHistogramMutualInformationSparseGetValueAndDerivativeThreader() {}
+
+    virtual void ThreadedExecution( EnclosingClassType * enclosingClass,
+                                    const DomainType& domain,
+                                    const ThreadIdType threadId );
+
+  private:
+    JointHistogramMutualInformationSparseGetValueAndDerivativeThreader( const Self & ); // purposely not implemented
+    void operator=( const Self & ); // purposely not implemented
+  };
+
   void PrintSelf(std::ostream & os, Indent indent) const;
-
-  bool ComputeJointPDFPoint( const FixedImagePixelType fixedImageValue,
-                             const MovingImagePixelType movingImageValue,
-                             JointPDFPointType& jointPDFpoint,
-                             const ThreadIdType threadID ) const;
-
-  inline InternalComputationValueType ComputeFixedImageMarginalPDFDerivative(
-                                        const MarginalPDFPointType & margPDFpoint,
-                                        const ThreadIdType threadID ) const;
-
-  inline InternalComputationValueType ComputeMovingImageMarginalPDFDerivative(
-                                        const MarginalPDFPointType & margPDFpoint,
-                                        const ThreadIdType threadID ) const;
-
-  inline InternalComputationValueType ComputeJointPDFDerivative(
-                                          const JointPDFPointType & jointPDFpoint,
-                                          const ThreadIdType threadID,
-                                          const SizeValueType ind ) const;
-
-  virtual bool GetValueAndDerivativeProcessPoint(
-                    const VirtualPointType &,
-                    const FixedImagePointType &,
-                    const FixedImagePixelType &        fixedImageValue,
-                    const FixedImageGradientType &,
-                    const MovingImagePointType &       mappedMovingPoint,
-                    const MovingImagePixelType &       movingImageValue,
-                    const MovingImageGradientType &   movingImageGradient,
-                    MeasureType &,
-                    DerivativeType &                   localDerivativeReturn,
-                    const ThreadIdType                 threadID) const;
-
-  /** Update the histograms for use in GetValueAndDerivative */
-  void UpdateHistograms() const;
 
 private:
 
@@ -200,6 +417,7 @@ private:
 
   /** The joint PDF and PDF derivatives. */
   mutable typename JointPDFType::Pointer            m_JointPDF;
+  JointPDFInterpolatorPointer                       m_JointPDFInterpolator;
 
   /** Flag to control smoothing of joint pdf */
   InternalComputationValueType        m_VarianceForJointPDFSmoothing;
@@ -219,16 +437,11 @@ private:
   InternalComputationValueType        m_FixedImageBinSize;
   InternalComputationValueType        m_MovingImageBinSize;
 
-  InternalComputationValueType              m_JointPDFSum;
-  JointPDFSpacingType                       m_JointPDFSpacing;
+  InternalComputationValueType        m_JointPDFSum;
+  JointPDFSpacingType                 m_JointPDFSpacing;
 
-  /** For threading */
-  JointPDFInterpolatorPointer*    m_ThreaderJointPDFInterpolator;
-  MarginalPDFInterpolatorPointer* m_ThreaderFixedImageMarginalPDFInterpolator;
-  MarginalPDFInterpolatorPointer* m_ThreaderMovingImageMarginalPDFInterpolator;
-
-  InternalComputationValueType    m_Log2;
-  JointPDFIndexValueType          m_Padding;
+  InternalComputationValueType        m_Log2;
+  JointPDFIndexValueType              m_Padding;
 
 };
 

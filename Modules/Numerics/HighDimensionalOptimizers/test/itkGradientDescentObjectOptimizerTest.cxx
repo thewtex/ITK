@@ -66,7 +66,7 @@ public:
   void Initialize(void) throw ( itk::ExceptionObject ) {}
 
   void GetValueAndDerivative( MeasureType & value,
-                              DerivativeType & derivative ) const
+                              DerivativeType & derivative )
   {
     if( derivative.Size() != 2 )
       derivative.SetSize(2);

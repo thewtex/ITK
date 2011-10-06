@@ -169,7 +169,7 @@ PointSetToPointSetMetric<TFixedPointSet, TMovingPointSet>
 template<class TFixedPointSet, class TMovingPointSet>
 void
 PointSetToPointSetMetric<TFixedPointSet, TMovingPointSet>
-::GetDerivative( DerivativeType & derivative ) const
+::GetDerivative( DerivativeType & derivative )
 {
   derivative.SetSize( this->GetNumberOfComponents() * PointDimension );
   derivative.Fill( 0 );
