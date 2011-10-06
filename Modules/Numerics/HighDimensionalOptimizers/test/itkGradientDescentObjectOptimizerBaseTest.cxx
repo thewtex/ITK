@@ -49,7 +49,7 @@ public:
     return itk::NumericTraits< MeasureType >::One;
     }
 
-  void GetValueAndDerivative( MeasureType & value, DerivativeType & derivative ) const
+  virtual void GetValueAndDerivative( MeasureType & value, DerivativeType & derivative ) const
     {
     value = itk::NumericTraits< MeasureType >::One;
     derivative.Fill( itk::NumericTraits< ParametersValueType >::Zero );
@@ -113,11 +113,6 @@ public:
     std::cout << "ResumeOptimization called." << std::endl;
     }
 
-  void ModifyGradient()
-    {
-    std::cout << "ModifyGradient called." << std::endl;
-    }
-
   void ModifyGradientByScalesOverSubRange (const IndexRangeType& index )
     {
     std::cout << "ModifyGradientByScalesOverSubRange called with index:"
@@ -135,17 +130,16 @@ protected:
     {
     std::cout << "EstimateLearningRate called" << std::endl;
     }
-
   GradientDescentObjectOptimizerBaseTestOptimizer(){}
   ~GradientDescentObjectOptimizerBaseTestOptimizer(){}
+
 private:
   GradientDescentObjectOptimizerBaseTestOptimizer(const Self& ); //purposely not implemented
   void operator = (const Self&); //purposely not implemented
 
 };
 
-/**
- */
+
 int itkGradientDescentObjectOptimizerBaseTest(int , char* [])
 {
   const int ImageDimension = 2;
