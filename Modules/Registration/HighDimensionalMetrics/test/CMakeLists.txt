@@ -10,6 +10,7 @@ set(ITKHighDimensionalMetricsTests
   itkDemonsImageToImageObjectMetricTest.cxx
   itkANTSNeighborhoodCorrelationImageToImageObjectMetricTest.cxx
   itkANTSNeighborhoodCorrelationImageToImageObjectRegistrationTest.cxx
+  itkAffineDemonsImageToImageObjectRegistrationTest.cxx
 )
 
 set(INPUTDATA ${ITK_DATA_ROOT}/Input)
@@ -66,3 +67,10 @@ itk_add_test(NAME itkANTSNeighborhoodCorrelationImageToImageObjectRegistrationTe
               ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceBSplined10.png
              ${TEMP}/itkANTSNeighborhoodCorrelationImageToImageObjectRegistrationTest.nii.gz
               10 1 0.25 )
+
+itk_add_test(NAME itkAffineDemonsImageToImageObjectRegistrationTest
+      COMMAND ITKHighDimensionalMetricsTestDriver
+              itkAffineDemonsImageToImageObjectRegistrationTest
+              ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceBorder20.png
+              ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceBSplined10.png
+              ${TEMP}/itkAffineDemonsImageToImageObjectRegistrationTest.nii.gz )
