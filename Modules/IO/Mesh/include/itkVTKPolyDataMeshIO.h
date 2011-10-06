@@ -174,11 +174,24 @@ protected:
 
       if ( line.find("POINTS") != std::string::npos )
         {
-        /**  Load the point coordinates into the itk::Mesh */
-        SizeValueType numberOfComponents = this->m_NumberOfPoints * this->m_PointDimension;
-        for ( SizeValueType ii = 0; ii < numberOfComponents; ii++ )
+        if(this->m_PointDimension > 3)
           {
-          inputFile >> buffer[ii];
+          itkExceptionMacro("Up to 3D point coordinates is supported");
+          }
+        SizeValueType kk = 0;
+        T discard;
+        /**  Load the point coordinates into the itk::Mesh */
+        for ( SizeValueType ii = 0; ii < this->m_NumberOfPoints; ii++ )
+          {
+          unsigned int dim = 0;
+          for(; dim < this->m_PointDimension; dim++ )
+            {
+            inputFile >> buffer[kk++];
+            }
+          while( dim++ < 3 )
+            {
+            inputFile >> discard;
+            }
           }
         }
       }
@@ -195,13 +208,26 @@ protected:
 
       if ( line.find("POINTS") != std::string::npos )
         {
+        if(this->m_PointDimension > 3)
+          {
+          itkExceptionMacro("Up to 3D point coordinates is supported");
+          }
         /**  Load the point coordinates into the itk::Mesh */
-        SizeValueType numberOfComponents = this->m_NumberOfPoints * this->m_PointDimension;
-        inputFile.read( reinterpret_cast< char * >( buffer ), numberOfComponents * sizeof( T ) );
+        SizeValueType numberOfComponents = this->m_NumberOfPoints * 3;
+        T *data = new T[numberOfComponents];
+        inputFile.read( reinterpret_cast< char * >( data ), numberOfComponents * sizeof( T ) );
         if ( itk::ByteSwapper< T >::SystemIsLittleEndian() )
           {
-          itk::ByteSwapper< T >::SwapRangeFromSystemToBigEndian(buffer, numberOfComponents);
+          itk::ByteSwapper< T >::SwapRangeFromSystemToBigEndian(data, numberOfComponents);
           }
+        for(SizeValueType ii = 0; ii < this->m_NumberOfPoints; ii++)
+          {
+          for(unsigned int jj = 0; jj < this->m_PointDimension; jj++)
+            {
+            buffer[ii * this->m_PointDimension + jj] = data[ii * 3 + jj];
+            }
+          }
+        delete []data;
         }
       }
   }
@@ -398,18 +424,29 @@ protected:
   template< typename T >
   void WritePointsBufferAsASCII(std::ofstream & outputFile, T *buffer, const StringType & pointComponentType)
   {
+    if (this->m_PointDimension > 3)
+      {
+      itkExceptionMacro("Up to 3D point coordinates is supported");
+      }
     /** 1. Write number of points */
     outputFile << "POINTS " << this->m_NumberOfPoints;
 
     outputFile << pointComponentType << '\n';
     for ( SizeValueType ii = 0; ii < this->m_NumberOfPoints; ii++ )
       {
-      for ( unsigned int jj = 0; jj < this->m_PointDimension - 1; jj++ )
+      outputFile << buffer[ii * this->m_PointDimension];
+      unsigned int jj = 1;
+      for ( ; jj < this->m_PointDimension; jj++ )
         {
-        outputFile << buffer[ii * this->m_PointDimension + jj] << " ";
+        outputFile << " " << buffer[ii * this->m_PointDimension + jj];
+        }
+      while ( jj++ < 3 )
+        {
+        // 3rd index is padded by 0 for 2D meshes
+        outputFile << " 0";
         }
 
-      outputFile << buffer[ii * this->m_PointDimension + this->m_PointDimension - 1] << '\n';
+      outputFile << '\n';
       }
 
     return;
@@ -418,10 +455,36 @@ protected:
   template< typename T >
   void WritePointsBufferAsBINARY(std::ofstream & outputFile, T *buffer, const StringType & pointComponentType)
   {
+    if ( this->m_PointDimension > 3 )
+      {
+      itkExceptionMacro("Up to 3D point coordinates is supported");
+      }
     /** 1. Write number of points */
     outputFile << "POINTS " << this->m_NumberOfPoints;
     outputFile << pointComponentType << "\n";
-    itk::ByteSwapper< T >::SwapWriteRangeFromSystemToBigEndian(buffer, this->m_NumberOfPoints * this->m_PointDimension, &outputFile);
+    SizeValueType numberOfComponents = this->m_NumberOfPoints * 3;
+    if ( this->m_PointDimension == 3 )
+      {
+      itk::ByteSwapper< T >::SwapWriteRangeFromSystemToBigEndian(buffer, numberOfComponents, &outputFile);
+      }
+    else
+      {
+      T *data = new T[this->m_NumberOfPoints * this->m_PointDimension];
+      for(SizeValueType ii = 0; ii < this->m_NumberOfPoints; ++ii)
+        {
+        unsigned int jj = 0;
+        for(; jj < this->m_PointDimension; jj++)
+          {
+          data[ii * 3 + jj] = buffer[ii * this->m_PointDimension + jj];
+          }
+        while ( jj++ < 3 )
+          {
+          data[jj] = itk::NumericTraits<T>::Zero;
+          }
+        }
+      itk::ByteSwapper< T >::SwapWriteRangeFromSystemToBigEndian(data, numberOfComponents, &outputFile);
+      delete []data;
+      }
     outputFile << "\n";
 
     return;

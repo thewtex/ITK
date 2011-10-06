@@ -168,7 +168,7 @@ VTKPolyDataMeshIO
 
       // Get number of Points
       ss >> this->m_NumberOfPoints;
-      this->m_PointDimension = 3; // vtk only support 3 dimensional points
+      this->m_PointDimension = 3; // vtk only support 3 dimensional points (but the input mesh can be 2D?)
 
       // Get point component type
       StringType pointType;
