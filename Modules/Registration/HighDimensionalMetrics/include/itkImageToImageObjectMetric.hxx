@@ -1527,8 +1527,8 @@ ImageToImageObjectMetric<TFixedImage, TMovingImage, TVirtualImage >
       }
 }
 
-/*
- * SamplingIteratorHelper class
+/**
+ * \class SamplingIteratorHelper
  */
 template<class TFixedImage,class TMovingImage,class TVirtualImage>
 class
