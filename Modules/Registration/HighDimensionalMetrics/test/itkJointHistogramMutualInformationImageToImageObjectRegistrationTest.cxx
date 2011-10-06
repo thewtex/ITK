@@ -175,6 +175,7 @@ int itkJointHistogramMutualInformationImageToImageObjectRegistrationTest(int arg
   typedef MetricType::FixedSampledPointSetType  PointSetType;
   MetricType::Pointer metric = MetricType::New();
   metric->SetNumberOfHistogramBins(20);
+  /*
   typedef PointSetType::PointType     PointType;
   PointSetType::Pointer               pset(PointSetType::New());
   unsigned long ind=0,ct=0;
@@ -201,7 +202,7 @@ int itkJointHistogramMutualInformationImageToImageObjectRegistrationTest(int arg
   metric->SetFixedSampledPointSet( pset );
   metric->SetUseFixedSampledPointSet( true );
   std::cout << "Testing metric with point set..." << std::endl;
-
+  */
 
   // Assign images and transforms.
   // By not setting a virtual domain image or virtual domain settings,
