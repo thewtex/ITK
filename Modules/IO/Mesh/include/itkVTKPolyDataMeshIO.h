@@ -174,11 +174,20 @@ protected:
 
       if ( line.find("POINTS") != std::string::npos )
         {
+        SizeValueType kk = 0;
         /**  Load the point coordinates into the itk::Mesh */
-        SizeValueType numberOfComponents = this->m_NumberOfPoints * this->m_PointDimension;
-        for ( SizeValueType ii = 0; ii < numberOfComponents; ii++ )
+        for ( SizeValueType ii = 0; ii < this->m_NumberOfPoints; ii++ )
           {
-          inputFile >> buffer[ii];
+          unsigned int dim = 0;
+          for(; dim < this->m_PointDimension; dim++ )
+            {
+            inputFile >> buffer[kk];
+            ++kk;
+            }
+          for(; dim < 3; dim++ )
+            {
+            ++kk;
+            }
           }
         }
       }
@@ -404,12 +413,19 @@ protected:
     outputFile << pointComponentType << '\n';
     for ( SizeValueType ii = 0; ii < this->m_NumberOfPoints; ii++ )
       {
-      for ( unsigned int jj = 0; jj < this->m_PointDimension - 1; jj++ )
+      outputFile << buffer[ii * this->m_PointDimension];
+      unsigned int jj;
+      for ( jj = 1; jj < this->m_PointDimension; jj++ )
         {
-        outputFile << buffer[ii * this->m_PointDimension + jj] << " ";
+        outputFile << " " << buffer[ii * this->m_PointDimension + jj];
+        }
+      while ( jj++ < 3 )
+        {
+        // 3rd index is padded by 0 for 2D meshes
+        outputFile << " 0";
         }
 
-      outputFile << buffer[ii * this->m_PointDimension + this->m_PointDimension - 1] << '\n';
+      outputFile << '\n';
       }
 
     return;

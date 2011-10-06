@@ -22,31 +22,56 @@
 
 #include "itkMeshFileTestHelper.h"
 
+template< class TPixel, unsigned int VDimension >
+int MeshFileReadWriteTest( char *INfilename, char *OUTfilename, bool IsBinary )
+{
+  typedef TPixel                                        PixelType;
+  typedef itk::Mesh<PixelType, VDimension >             MeshType;
+  typedef itk::QuadEdgeMesh<PixelType, VDimension >     QEMeshType;
+
+  if( test< MeshType   >( INfilename, OUTfilename, IsBinary ) )
+    {
+    return EXIT_FAILURE;
+    }
+  if( test< QEMeshType >( INfilename, OUTfilename, IsBinary ) )
+    {
+    return EXIT_FAILURE;
+    }
+  return EXIT_SUCCESS;
+}
+
 int itkMeshFileReadWriteTest(int argc, char * argv[])
 {
-  if(argc < 3)
+  if(argc < 4)
   {
-  std::cerr << "Invalid commands, You need input and output mesh file name " << std::endl;
+  std::cerr << "Invalid commands, You need input, output mesh file name and the dimension." << std::endl;
   return EXIT_FAILURE;
   }
 
-  bool IsBinary = ( argc > 3 );
+  int dim = atoi( argv[3] );
+  bool IsBinary = ( argc > 4 );
 
-  const unsigned int dimension = 3;
   typedef float PixelType;
 
-  typedef itk::Mesh<PixelType, dimension>            MeshType;
-  typedef itk::QuadEdgeMesh<PixelType, dimension>    QEMeshType;
-
-  if( test< MeshType   >( argv[1], argv[2], IsBinary ) )
+  switch( dim )
     {
-    return EXIT_FAILURE;
-    }
-  if( test< QEMeshType >( argv[1], argv[2], IsBinary ) )
-    {
-    return EXIT_FAILURE;
+    case 2:
+      {
+      const unsigned int dimension = 2;
+      return MeshFileReadWriteTest< PixelType, dimension >( argv[1], argv[2], IsBinary );
+      }
+    default:
+    case 3:
+      {
+      const unsigned int dimension = 3;
+      return MeshFileReadWriteTest< PixelType, dimension >( argv[1], argv[2], IsBinary );
+      }
+    case 4:
+      {
+      const unsigned int dimension = 4;
+      return MeshFileReadWriteTest< PixelType, dimension >( argv[1], argv[2], IsBinary );
+      }
     }
 
   return EXIT_SUCCESS;
-
 }
