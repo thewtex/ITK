@@ -109,21 +109,49 @@ public:
 
   void ResumeOptimization()
     {
-    std::cout << "StartOptimization called." << std::endl;
+    std::cout << "ResumeOptimization called." << std::endl;
     }
 
-  void ModifyGradient()
-    {
-    std::cout << "ModifyGradient called." << std::endl;
-    }
+  /** \class ModifyGradientThreader
+   * \brief Modify the gradient during the gradient update in \c ModifyGradient. */
+  class ModifyGradientThreader: public ModifyGradientThreaderBase
+  {
+  public:
+    /** Standard class typedefs. */
+    typedef ModifyGradientThreader          Self;
+    typedef ModifyGradientThreaderBase      Superclass;
+    typedef itk::SmartPointer< Self >       Pointer;
+    typedef itk::SmartPointer< const Self > ConstPointer;
 
-  void ModifyGradientOverSubRange (const IndexRangeType& )
-    {
-    std::cout << "ModifyGradientOverSubRange called." << std::endl;
-    }
+    itkTypeMacro( GradientDescentObjectBaseTestOptimizer::ModifyGradientThreader, GradientDescentObjectOptimizerBase::ModifyGradientThreaderBase );
+
+    itkNewMacro( Self );
+
+  protected:
+    ModifyGradientThreader(){}
+    virtual ~ModifyGradientThreader(){}
+
+    virtual void ThreadedExecution( Superclass::EnclosingClassType * itkNotUsed(enclosingClass),
+                                    const Superclass::DomainType& itkNotUsed(domain),
+                                    itk::ThreadIdType threadId )
+      {
+      if( threadId == 0 )
+        {
+        std::cout << "ModifyGradientOverSubRange called." << std::endl;
+        }
+      }
+
+  private:
+    ModifyGradientThreader( const Self & ); // purposely not implemented
+    void operator=( const Self & ); // purposely not implemented
+  };
+
 
 protected:
-   GradientDescentObjectOptimizerBaseTestOptimizer(){}
+   GradientDescentObjectOptimizerBaseTestOptimizer()
+     {
+     this->m_ModifyGradientThreaderBase = ModifyGradientThreader::New();
+     }
    ~GradientDescentObjectOptimizerBaseTestOptimizer(){}
 
 private:
