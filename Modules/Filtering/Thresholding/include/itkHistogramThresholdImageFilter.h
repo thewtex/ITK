@@ -112,6 +112,16 @@ public:
   /** Get the "inside" pixel value. */
   itkGetConstMacro(InsideValue,OutputPixelType);
 
+  /** Set the number of histogram bins */
+  itkSetMacro(NumberOfHistogramBins, unsigned int);
+  itkGetConstMacro(NumberOfHistogramBins, unsigned int);
+
+  /** Does histogram generator compute min and max from data?
+    * Default is false for all but char types */
+  itkSetMacro(AutoMinimumMaximum, bool);
+  itkGetConstMacro(AutoMinimumMaximum, bool);
+  itkBooleanMacro(AutoMinimumMaximum);
+
   /** Get the computed threshold. */
   itkGetConstMacro(Threshold,InputPixelType);
 
@@ -149,7 +159,8 @@ private:
   OutputPixelType     m_OutsideValue;
   InputPixelType      m_Threshold;
   CalculatorPointer   m_Calculator;
-
+  unsigned            m_NumberOfHistogramBins;
+  bool                m_AutoMinimumMaximum;
 }; // end of class
 
 } // end namespace itk

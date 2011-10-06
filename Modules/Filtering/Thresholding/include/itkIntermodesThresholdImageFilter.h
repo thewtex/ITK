@@ -59,7 +59,7 @@ public:
   itkNewMacro(Self);
 
   /** Runtime information support. */
-  itkTypeMacro(IntermodesThresholdImageFilter, ImageToImageFilter);
+  itkTypeMacro(IntermodesThresholdImageFilter, HistogramThresholdImageFilter);
 
   typedef TInputImage                       InputImageType;
   typedef TOutputImage                      OutputImageType;

@@ -21,7 +21,6 @@
 
 #include "itkImageToHistogramFilter.h"
 #include "itkBinaryThresholdImageFilter.h"
-#include "itkKittlerIllingworthThresholdCalculator.h"
 #include "itkProgressAccumulator.h"
 
 namespace itk {
@@ -30,11 +29,27 @@ template<class TInputImage, class TOutputImage>
 HistogramThresholdImageFilter<TInputImage, TOutputImage>
 ::HistogramThresholdImageFilter()
 {
+  this->SetNumberOfRequiredInputs(1);
+  this->SetNumberOfRequiredOutputs(1);
+
   m_OutsideValue   = NumericTraits<OutputPixelType>::Zero;
   m_InsideValue    = NumericTraits<OutputPixelType>::max();
   m_Threshold      = NumericTraits<InputPixelType>::Zero;
   m_Calculator     = NULL;
+
+  if( typeid(ValueType) == typeid(signed char) || typeid(ValueType) == typeid(unsigned char) )
+    {
+    this->SetAutoMinimumMaximum(false);
+    }
+  else
+    {
+    this->SetAutoMinimumMaximum(true);
+    }
+
+  m_NumberOfHistogramBins = 256;
+
 }
+
 
 template<class TInputImage, class TOutputImage>
 void
@@ -51,8 +66,12 @@ HistogramThresholdImageFilter<TInputImage, TOutputImage>
   typedef itk::Statistics::ImageToHistogramFilter<InputImageType> HistogramGeneratorType;
   typename HistogramGeneratorType::Pointer histogramGenerator = HistogramGeneratorType::New();
   histogramGenerator->SetInput( this->GetInput() );
-  // histogramGenerator->SetAutoMinimumMaximum( true );
+
   histogramGenerator->SetNumberOfThreads( this->GetNumberOfThreads() );
+  typename HistogramType::SizeType hsize(this->GetInput()->GetNumberOfComponentsPerPixel());
+  hsize.Fill(this->GetNumberOfHistogramBins());
+  histogramGenerator->SetHistogramSize(hsize);
+  histogramGenerator->SetAutoMinimumMaximum(this->GetAutoMinimumMaximum());
   progress->RegisterInternalFilter(histogramGenerator,.4f);
 
   m_Calculator->SetInput( histogramGenerator->GetOutput() );
