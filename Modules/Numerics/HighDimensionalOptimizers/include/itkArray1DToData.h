@@ -73,7 +73,8 @@ public:
   /** Run-time type information (and related methods). */
   itkTypeMacro(Array1DToData, ObjectToDataBase);
 
-  /** Type of the object being threaded over */
+  /** The array is split by a start and end index
+      to be processed per thread. */
   typedef Index<2>                              IndexRangeType;
 
   /** Type for convenience of base class methods */
