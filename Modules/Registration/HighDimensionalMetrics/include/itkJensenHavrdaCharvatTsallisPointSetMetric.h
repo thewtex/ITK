@@ -114,7 +114,7 @@ public:
    * This method returns the derivative based on the current
    * transformation(s).
    */
-  virtual void GetDerivative( DerivativeType & ) const;
+  virtual void GetDerivative( DerivativeType & );
 
   /**
    * This method returns the derivative and value based on the current
