@@ -64,6 +64,7 @@ itkTimeProbe.cxx
 itkNumericTraitsRGBPixel.cxx
 itkTimeStamp.cxx
 itkTetrahedronCellTopology.cxx
+itkThreadedIndexedContainerPartitioner.cxx
 itkObjectFactoryBase.cxx
 itkFloatingPointExceptions.cxx
 itkOutputWindow.cxx
