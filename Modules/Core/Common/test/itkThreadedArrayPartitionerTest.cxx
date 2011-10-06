@@ -15,111 +15,137 @@
  *  limitations under the License.
  *
  *=========================================================================*/
+#include "itkDomainThreader.h"
 #include "itkThreadedArrayPartitioner.h"
 
-class   ThreadedArrayPartitionerTest_UserDataClass;
-typedef itk::ThreadedArrayPartitioner<ThreadedArrayPartitionerTest_UserDataClass>
-                                            ThreadedArrayPartitionerTest_ThreadedArrayPartitionerType;
-typedef ThreadedArrayPartitionerTest_ThreadedArrayPartitionerType::IndexRangeType
-                                            ThreadedArrayPartitionerTest_IndexRangeType;
-
-/*
- * Helper class that holds callback and stores results from threads.
- */
-class ThreadedArrayPartitionerTest_UserDataClass
+class DomainThreaderEnclosingClass
 {
 public:
-  typedef ThreadedArrayPartitionerTest_UserDataClass Self;
+  typedef DomainThreaderEnclosingClass Self;
 
-  /* Callback used during threaded operation.
-   * An instance of this class is referenced through
-   * holder, which is passed in via the threader's user data. */
-  static void ThreadedCallback( const ThreadedArrayPartitionerTest_IndexRangeType&
-                                  rangeForThread,
-                                itk::ThreadIdType threadId,
-                                Self *holder )
+  class TestDomainThreader: public itk::DomainThreader< itk::ThreadedArrayPartitioner, Self >
   {
-    if( threadId >= holder->m_NumberOfThreads )
+  public:
+    typedef TestDomainThreader                                         Self;
+    typedef itk::DomainThreader< itk::ThreadedArrayPartitioner, Self > Superclass;
+    typedef itk::SmartPointer< Self >                                  Pointer;
+    typedef itk::SmartPointer< const Self >                            ConstPointer;
+
+    typedef typename Superclass::DomainPartitionerType     DomainPartitionerType;
+    typedef typename Superclass::DomainType                DomainType;
+
+    itkNewMacro( Self );
+
+    const std::vector< DomainType > & GetDomainInThreadedExecution() const
       {
-      holder->m_GotMoreThreadsThanExpected = true;
-      return;
+      return m_DomainInThreadedExecution;
       }
-    holder->m_RangeInCallback[threadId] = rangeForThread;
-  }
 
-  void Init(itk::ThreadIdType numberOfThreads)
-  {
-    m_GotMoreThreadsThanExpected = false;
-    m_RangeInCallback.resize(numberOfThreads);
-    ThreadedArrayPartitionerTest_IndexRangeType emptyRange;
-    emptyRange.Fill(-1);
-    for(itk::ThreadIdType i=0; i<m_RangeInCallback.size(); i++)
+  protected:
+    TestDomainThreader() {};
+
+  private:
+    virtual void BeforeThreadedExecution()
       {
-      m_RangeInCallback[i] = emptyRange;
+      this->m_DomainInThreadedExecution.resize( this->GetNumberOfThreadsUsed() );
+      DomainType unsetDomain;
+      unsetDomain.Fill( -1 );
+      for( itk::ThreadIdType i = 0; i < m_DomainInThreadedExecution.size(); ++i )
+        {
+        m_DomainInThreadedExecution[i] = unsetDomain;
+        }
       }
-  }
 
-  bool                                           m_GotMoreThreadsThanExpected;
-  std::vector<ThreadedArrayPartitionerTest_IndexRangeType>  m_RangeInCallback;
-  itk::ThreadIdType                              m_NumberOfThreads;
+    virtual void ThreadedExecution( EnclosingClassType * enclosingClass,
+                                    const DomainType& subdomain,
+                                    itk::ThreadIdType threadId )
+      {
+      if( threadId == 1 )
+        {
+        std::cout << "This is the : " << enclosingClass->m_ClassDescriptor << std::endl;
+        }
+      this->m_DomainInThreadedExecution[threadId] = subdomain;
+      }
 
+    virtual void AfterThreadedExecution()
+      {
+      std::cout << "\nDomain partition per thread:" << std::endl;
+      for( itk::ThreadIdType i = 0; i < m_DomainInThreadedExecution.size(); ++i )
+        {
+        std::cout << "ThreadId: " << i << "\t" << m_DomainInThreadedExecution[i] << std::endl;
+        }
+      std::cout << std::endl;
+      }
+
+    std::vector<DomainType> m_DomainInThreadedExecution;
+    TestDomainThreader( const Self & ); // purposely not implemented
+    void operator=( const Self & );     // purposely not implemented
+  }; // end TestDomainThreader class
+
+  DomainThreaderEnclosingClass()
+    {
+    m_TestDomainThreader = TestDomainThreader::New();
+    m_ClassDescriptor    = "enclosing class";
+    }
+
+  const TestDomainThreader * GetDomainThreader()
+    {
+    return m_TestDomainThreader.GetPointer();
+    }
+
+  void Execute( const TestDomainThreader::DomainType & completeDomain )
+    {
+    m_TestDomainThreader->Execute(this, completeDomain);
+    }
+
+  private:
+    TestDomainThreader::Pointer m_TestDomainThreader;
+
+    std::string m_ClassDescriptor;
 };
 
-/*
- * Run the actual test
- */
-int ThreadedArrayPartitionerTest_RunTest(
-             ThreadedArrayPartitionerTest_ThreadedArrayPartitionerType::Pointer& threader,
-             itk::ThreadIdType numberOfThreads,
-             ThreadedArrayPartitionerTest_IndexRangeType& fullRange,
-             ThreadedArrayPartitionerTest_UserDataClass& holder)
+
+int ThreadedArrayPartitionerRunTest(
+  DomainThreaderEnclosingClass & enclosingClass,
+  itk::ThreadIdType numberOfThreads,
+  const DomainThreaderEnclosingClass::TestDomainThreader::DomainType & fullRange )
 {
   std::cout << "Testing with " << numberOfThreads
-            << " threads and range " << fullRange << "..." << std::endl;
+            << " threads and complete domain " << fullRange << " ..." << std::endl;
 
-  /* Try to set the requested number of threads */
-  threader->SetNumberOfThreads( numberOfThreads );
-  if( threader->GetNumberOfThreads() != numberOfThreads )
+  DomainThreaderEnclosingClass::TestDomainThreader::ConstPointer domainThreader = enclosingClass.GetDomainThreader();
+
+  itk::MultiThreader * multiThreader = domainThreader->GetMultiThreader();
+  multiThreader->SetNumberOfThreads( numberOfThreads );
+  // Possible if numberOfThreads < GlobalMaximumNumberOfThreads
+  if( multiThreader->GetNumberOfThreads() != numberOfThreads )
     {
     std::cerr << "Failed setting requested number of threads: "
               << numberOfThreads << std::endl
-              << "threader->GetNumberOfThreads(): "
-              << threader->GetNumberOfThreads() << std::endl;
+              << "multiThreader->GetNumberOfThreads(): "
+              << multiThreader->GetNumberOfThreads() << std::endl;
     return EXIT_FAILURE;
     }
-  holder.m_NumberOfThreads = numberOfThreads;
 
-  /* Reset the holder */
-  holder.Init( numberOfThreads );
-
-  /* Tell the threader the whole range over which to split and thread */
-  threader->SetCompleteIndexRange( fullRange );
-
-  /* Run the threader */
-  threader->StartThreadedExecution();
-
-  /* Did we somehow get more threads than requested? */
-  if( holder.m_GotMoreThreadsThanExpected )
-    {
-    std::cerr << "Threader received more threads than requested." << std::endl;
-    return EXIT_FAILURE;
-    }
+  enclosingClass.Execute( fullRange );
 
   /* Did we use as many threads as requested? */
-  std::cout << "requested numberOfThreads: " << numberOfThreads << std::endl
+  std::cout << "Requested numberOfThreads: " << numberOfThreads << std::endl
             << "actual: threader->GetNumberOfThreadsUsed(): "
-            << threader->GetNumberOfThreadsUsed() << std::endl;
+            << domainThreader->GetNumberOfThreadsUsed() << "\n\n" << std::endl;
 
-  /* Check the results */
-  ThreadedArrayPartitionerTest_IndexRangeType::IndexValueType previousEndIndex = -1;
-  for( itk::ThreadIdType i=0; i < threader->GetNumberOfThreadsUsed(); i++ )
+  /* Check the results. */
+  typedef DomainThreaderEnclosingClass::TestDomainThreader::DomainType DomainType;
+  DomainType::IndexValueType previousEndIndex = -1;
+  const std::vector< DomainType > domainInThreadedExecution = domainThreader->GetDomainInThreadedExecution();
+  for( itk::ThreadIdType i = 0; i < domainThreader->GetNumberOfThreadsUsed(); ++i )
     {
-    ThreadedArrayPartitionerTest_IndexRangeType subRange = holder.m_RangeInCallback[i];
+    DomainType subRange = domainInThreadedExecution[i];
     /* Check that the sub range was assigned something at all */
     if( subRange[0] == -1 ||
         subRange[1] == -1 )
         {
-        std::cerr << "Error: subRange " << i << " is -1: "
+        std::cerr << "Error: subRange " << i << " is was not set: "
                   << subRange[i];
         return EXIT_FAILURE;
         }
@@ -155,83 +181,73 @@ int ThreadedArrayPartitionerTest_RunTest(
   return EXIT_SUCCESS;
 }
 
-/*
- * Main test entry function
- */
-int itkThreadedArrayPartitionerTest(int , char* [])
+int itkThreadedArrayPartitionerTest(int, char* [])
 {
-  ThreadedArrayPartitionerTest_ThreadedArrayPartitionerType::Pointer threader = ThreadedArrayPartitionerTest_ThreadedArrayPartitionerType::New();
-  ThreadedArrayPartitionerTest_UserDataClass   holder;
-
-  int result = EXIT_SUCCESS;
+  DomainThreaderEnclosingClass enclosingClass;
+  DomainThreaderEnclosingClass::TestDomainThreader::ConstPointer domainThreader = enclosingClass.GetDomainThreader();
 
   /* Check # of threads */
   std::cout << "GetGlobalMaximumNumberOfThreads: "
-            << threader->GetMultiThreader()->GetGlobalMaximumNumberOfThreads()
+            << domainThreader->GetMultiThreader()->GetGlobalMaximumNumberOfThreads()
             << std::endl;
   std::cout << "GetGlobalDefaultNumberOfThreads: "
-            << threader->GetMultiThreader()->GetGlobalDefaultNumberOfThreads()
+            << domainThreader->GetMultiThreader()->GetGlobalDefaultNumberOfThreads()
             << std::endl;
-  std::cout << "threader->NumberOfThreads(): " << threader->GetNumberOfThreads()
+  std::cout << "domainThreader->GetMultiThreader()->NumberOfThreads(): " << domainThreader->GetMultiThreader()->GetNumberOfThreads()
             << std::endl;
 
-  /* Set the callback for the threader to use */
-  threader->SetThreadedGenerateData( ThreadedArrayPartitionerTest_UserDataClass::ThreadedCallback );
-  /* Set the data/method holder that threader will pass to callback */
-  threader->SetHolder( &holder );
-
-  ThreadedArrayPartitionerTest_IndexRangeType fullRange;
+  typedef DomainThreaderEnclosingClass::TestDomainThreader::DomainType DomainType;
+  DomainType fullRange;
 
   /* Test with single thread */
   fullRange[0] = 0;
   fullRange[1] = 102; //set total range to prime to test uneven division
   itk::ThreadIdType numberOfThreads = 1;
-  if( ThreadedArrayPartitionerTest_RunTest( threader, numberOfThreads, fullRange, holder )
+  if( ThreadedArrayPartitionerRunTest( enclosingClass, numberOfThreads, fullRange )
         != EXIT_SUCCESS )
     {
-    result = EXIT_FAILURE;
+    return EXIT_FAILURE;
     }
 
   /* Test with range that doesn't start at 0 */
   fullRange[0] = 2;
   fullRange[1] = 104; //set total range to prime to test uneven division
   numberOfThreads = 1;
-  if( ThreadedArrayPartitionerTest_RunTest( threader, numberOfThreads, fullRange, holder )
+  if( ThreadedArrayPartitionerRunTest( enclosingClass, numberOfThreads, fullRange )
         != EXIT_SUCCESS )
     {
-    result = EXIT_FAILURE;
+    return EXIT_FAILURE;
     }
 
-
   /* Test with multiple threads */
-  if( threader->GetMultiThreader()->GetGlobalMaximumNumberOfThreads() > 1 )
+  if( domainThreader->GetMultiThreader()->GetGlobalMaximumNumberOfThreads() > 1 )
     {
     /* Test with default number of threads. */
     fullRange[0] = 6;
     fullRange[1] = 108; //set total range to prime to test uneven division
     numberOfThreads =
-      threader->GetMultiThreader()->GetGlobalDefaultNumberOfThreads();
-    if( ThreadedArrayPartitionerTest_RunTest( threader, numberOfThreads, fullRange, holder )
+      domainThreader->GetMultiThreader()->GetGlobalDefaultNumberOfThreads();
+    if( ThreadedArrayPartitionerRunTest( enclosingClass, numberOfThreads, fullRange )
           != EXIT_SUCCESS )
       {
-      result = EXIT_FAILURE;
+      return EXIT_FAILURE;
       }
 
     /* Test with max number of threads and check that we only used as
      * many as is reasonable. */
     itk::ThreadIdType maxNumberOfThreads =
-      threader->GetMultiThreader()->GetGlobalMaximumNumberOfThreads();
+      domainThreader->GetMultiThreader()->GetGlobalMaximumNumberOfThreads();
     fullRange[0] = 6;
     fullRange[1] = fullRange[0]+maxNumberOfThreads-2;
-    if( ThreadedArrayPartitionerTest_RunTest( threader, maxNumberOfThreads, fullRange, holder )
+    if( ThreadedArrayPartitionerRunTest( enclosingClass, maxNumberOfThreads, fullRange )
           != EXIT_SUCCESS )
       {
-      result = EXIT_FAILURE;
+      return EXIT_FAILURE;
       }
-    if( threader->GetNumberOfThreadsUsed() != maxNumberOfThreads-1 )
+    if( domainThreader->GetNumberOfThreadsUsed() != maxNumberOfThreads-1 )
       {
       std::cerr << "Error: Expected to use only " << maxNumberOfThreads-1
-                << "threads, but used " << threader->GetNumberOfThreadsUsed()
+                << "threads, but used " << domainThreader->GetNumberOfThreadsUsed()
                 << "." << std::endl;
       }
     }
@@ -240,28 +256,5 @@ int itkThreadedArrayPartitionerTest(int , char* [])
     std::cout << "No multi-threading available. " << std::endl;
     }
 
-  /* Test that malformed range is caught */
-  fullRange[0] = 6;
-  fullRange[1] = 2;
-  numberOfThreads = 1;
-  std::cout << "Test with BAD range. Expect to catch exception ... "
-            << std::endl;
-  bool caught = false;
-  try
-    {
-    ThreadedArrayPartitionerTest_RunTest( threader, numberOfThreads, fullRange, holder );
-    }
-  catch ( itk::ExceptionObject & err )
-    {
-    caught = true;
-    std::cout << err << std::endl << std::endl
-              << "...caught expected exception." << std::endl;
-    }
-  if( ! caught )
-    {
-    std::cerr << "Exception not caught for malformed range." << std::endl;
-    result = EXIT_FAILURE;
-    }
-
-  return result;
+  return EXIT_SUCCESS;
 }

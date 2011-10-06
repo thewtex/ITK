@@ -1,0 +1,128 @@
+/*=========================================================================
+ *
+ *  Copyright Insight Software Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
+#ifndef __itkDomainThreader_hxx
+#define __itkDomainThreader_hxx
+
+#include "itkDomainThreader.h"
+
+namespace itk
+{
+
+template< class TDomainPartitioner, class TEnclosingClass >
+DomainThreader< TDomainPartitioner, TEnclosingClass >
+::DomainThreader()
+{
+  this->m_DomainPartitioner = DomainPartitionerType::New();
+  this->m_MultiThreader = MultiThreader::New();
+  this->m_NumberOfThreadsUsed = 0;
+  this->m_EnclosingClass = NULL;
+}
+
+template< class TDomainPartitioner, class TEnclosingClass >
+DomainThreader< TDomainPartitioner, TEnclosingClass >
+::~DomainThreader()
+{
+}
+
+template< class TDomainPartitioner, class TEnclosingClass >
+void
+DomainThreader< TDomainPartitioner, TEnclosingClass >
+::Execute( TEnclosingClass * enclosingClass, const DomainType & completeDomain )
+{
+  this->m_EnclosingClass = enclosingClass;
+  this->m_CompleteDomain = completeDomain;
+
+  this->DetermineNumberOfThreadsUsed();
+
+  this->BeforeThreadedExecution();
+
+  // This calls ThreadedExecution in each thread.
+  this->StartThreadingSequence();
+
+  this->AfterThreadedExecution();
+}
+
+template< class TDomainPartitioner, class TEnclosingClass >
+void
+DomainThreader< TDomainPartitioner, TEnclosingClass >
+::StartThreadingSequence()
+{
+  // Set up the multithreaded processing
+  ThreadStruct str;
+  str.domainThreader = this;
+  str.enclosingClass = m_EnclosingClass;
+
+  MultiThreader* multiThreader = this->GetMultiThreader();
+  multiThreader->SetSingleMethod(this->ThreaderCallback, &str);
+
+  // multithread the execution
+  multiThreader->SingleMethodExecute();
+}
+
+template< class TDomainPartitioner, class TEnclosingClass >
+MultiThreader *
+DomainThreader< TDomainPartitioner, TEnclosingClass >
+::GetMultiThreader() const
+{
+  return m_MultiThreader;
+}
+
+template< class TDomainPartitioner, class TEnclosingClass >
+void
+DomainThreader< TDomainPartitioner, TEnclosingClass >
+::DetermineNumberOfThreadsUsed()
+{
+  DomainType subdomain;
+  this->m_NumberOfThreadsUsed = this->m_DomainPartitioner->PartitionDomain(0,
+                                            this->GetMultiThreader()->GetNumberOfThreads(),
+                                            this->m_CompleteDomain,
+                                            subdomain);
+}
+
+template< class TDomainPartitioner, class TEnclosingClass >
+ITK_THREAD_RETURN_TYPE
+DomainThreader< TDomainPartitioner, TEnclosingClass >
+::ThreaderCallback( void* arg )
+{
+  MultiThreader::ThreadInfoStruct* info = static_cast<MultiThreader::ThreadInfoStruct *>(arg);
+  ThreadStruct *str = static_cast<ThreadStruct *>(info->UserData);
+  ThreadIdType threadId = info->ThreadID;
+  ThreadIdType threadCount = info->NumberOfThreads;
+
+  // first find out how many pieces extent can be split into.
+  DomainType subdomain;
+  const ThreadIdType total = str->domainThreader->GetDomainPartitioner()->PartitionDomain(threadId,
+                                            threadCount,
+                                            str->domainThreader->m_CompleteDomain,
+                                            subdomain);
+
+  // execute the actual method with appropriate output region.
+  // If the threadID is greater than the total number of regions
+  // that PartitionDomain will create, don't use this thread.
+  // Sometimes the threads dont break up very well and it is just
+  // as efficient to leave a few threads idle.
+  if (threadId < total)
+    {
+    str->domainThreader->ThreadedExecution( str->enclosingClass, subdomain, threadId );
+    }
+
+  return ITK_THREAD_RETURN_VALUE;
+}
+}
+
+#endif

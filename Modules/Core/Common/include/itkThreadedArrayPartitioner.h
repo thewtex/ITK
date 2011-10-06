@@ -56,14 +56,13 @@
 namespace itk
 {
 
-template<class TDataHolder>
 class ITKCommon_EXPORT ThreadedArrayPartitioner
-  : public ThreadedDomainPartitioner< Index<2>, TDataHolder >
+  : public ThreadedDomainPartitioner< Index<2> >
 {
 public:
   /** Standard class typedefs. */
   typedef ThreadedArrayPartitioner                         Self;
-  typedef ThreadedDomainPartitioner<Index<2>, TDataHolder> Superclass;
+  typedef ThreadedDomainPartitioner<Index<2> >             Superclass;
   typedef SmartPointer<Self>                               Pointer;
   typedef SmartPointer<const Self>                         ConstPointer;
 
@@ -79,15 +78,6 @@ public:
   /** Type for convenience of base class methods */
   typedef typename Superclass::DomainType  DomainType;
 
-  /** Set the overall index range over which to operate.
-   * This performs some error checking and is named more intuitively
-   * for this derived class. */
-  virtual void SetCompleteIndexRange( const IndexRangeType & range  );
-
-protected:
-  ThreadedArrayPartitioner();
-  virtual ~ThreadedArrayPartitioner();
-
   /** Split the IndexRange \c overallIndexRange into
    * \c requestedTotal subranges, returning subrange \c i as \c splitIndex.
    * This method is called \c requestedTotal times. The
@@ -99,9 +89,11 @@ protected:
                            const ThreadIdType requestedTotal,
                            const DomainType& completeIndexRange,
                            DomainType& subdomain) const;
+protected:
+  ThreadedArrayPartitioner();
+  virtual ~ThreadedArrayPartitioner();
 
 private:
-
   ThreadedArrayPartitioner(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
 

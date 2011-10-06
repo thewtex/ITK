@@ -29,6 +29,7 @@
 #define __itkProcessObject_h
 
 #include "itkDataObject.h"
+#include "itkDomainThreader.h"
 #include "itkMultiThreader.h"
 #include "itkObjectFactory.h"
 #include <vector>
@@ -358,7 +359,7 @@ public:
   itkGetConstReferenceMacro(NumberOfThreads, ThreadIdType);
 
   /** Return the multithreader used by this class. */
-  MultiThreader * GetMultiThreader()
+  MultiThreader * GetMultiThreader() const
   { return m_Threader; }
 
   /** An opportunity to deallocate a ProcessObject's bulk data
@@ -372,6 +373,53 @@ public:
 protected:
   ProcessObject();
   ~ProcessObject();
+
+  /** \class ProcessObjectDomainThreader
+   *  \brief Multi-threaded processing on a domain by processing sub-domains per
+   *  thread.
+   *
+   *  This class uses a ThreadedDomainPartitioner as a helper to split the
+   *  domain into subdomains.  Each thread is then processed in the
+   *  \c ThreadedExecution method.
+   *
+   *  The data on which to perform the processing is assumed to be the members
+   *  of encapsulating class.
+   *
+   *  To use this class, at a minimum,
+   *  \li Inherit from it.
+   *  \li Implement ThreadedExecution.
+   *  \li Create a member instance.
+   *  \li Run with m_DomainThreader->Execute( this, domain );
+   *
+   */
+  template< class TDomainPartitioner, class TEnclosingClass >
+  class ProcessObjectDomainThreader: public DomainThreader< TDomainPartitioner, TEnclosingClass >
+  {
+  public:
+    /** Standard class typedefs. */
+    typedef ProcessObjectDomainThreader                               Self;
+    typedef DomainThreader< TDomainPartitioner, ProcessObject::Self > Superclass;
+    typedef SmartPointer< Self >                                      Pointer;
+    typedef SmartPointer< const Self >                                ConstPointer;
+
+    typedef typename Superclass::DomainPartitionerType            DomainPartitionerType;
+    typedef typename Superclass::DomainType                       DomainType;
+
+    /** Run-time type information (and related methods). */
+    itkTypeMacro( ProcessObjectDomainThreader, DomainThreader );
+
+  protected:
+    ProcessObjectDomainThreader();
+    virtual ~ProcessObjectDomainThreader();
+
+    /** This is overridden to set the MultiThreader and number of threads used
+     * the same as the ProcessObject. */
+    virtual void DetermineNumberOfThreadsUsed();
+
+  private:
+    ProcessObjectDomainThreader( const Self & ); // purposely not implemented
+    void operator=( const Self & ); // purposely not implemented
+   };
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 

@@ -24,44 +24,19 @@
 namespace itk
 {
 
-/**
- * Default constructor
- */
-template<class TDataHolder>
-ThreadedArrayPartitioner<TDataHolder>::ThreadedArrayPartitioner()
+ThreadedArrayPartitioner
+::ThreadedArrayPartitioner()
 {
-  this->m_Domain.Fill(0);
 }
 
-/**
- * Destructor
- */
-template<class TDataHolder>
-ThreadedArrayPartitioner<TDataHolder>::~ThreadedArrayPartitioner()
-{}
-
-/**
- * Set the overall range over which to thread.
- */
-template<class TDataHolder>
-void
-ThreadedArrayPartitioner<TDataHolder>
-::SetCompleteIndexRange(  const IndexRangeType & range )
+ThreadedArrayPartitioner
+::~ThreadedArrayPartitioner()
 {
-  if( range[0] > range[1] )
-    {
-    itkExceptionMacro("Error in range.  Begin is less than End: "
-                      << range << ".");
-    }
-  this->SetCompleteDomain( range );
 }
 
-/**
- * Split the requested range into a subrange.
- */
-template<class TDataHolder>
+
 ThreadIdType
-ThreadedArrayPartitioner<TDataHolder>
+ThreadedArrayPartitioner
 ::PartitionDomain( const ThreadIdType threadID,
                         const ThreadIdType requestedTotal,
                         const DomainType& completeIndexRange,
