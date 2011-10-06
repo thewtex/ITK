@@ -227,7 +227,6 @@ GradientDescentObjectOptimizer
       {
       this->m_LearningRate = this->m_TrustedStepScale / stepScale;
       }
-    //std::cout << "Estimated learning rate = " << this->m_LearningRate << std::endl;
     }
 }
 
