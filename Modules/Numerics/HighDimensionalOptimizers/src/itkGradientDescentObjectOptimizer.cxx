@@ -27,6 +27,7 @@ namespace itk
 GradientDescentObjectOptimizer
 ::GradientDescentObjectOptimizer()
 {
+  this->m_ModifyGradientThreaderBase = ModifyGradientThreader::New();
   this->m_LearningRate = 1.0;
 }
 
@@ -154,21 +155,20 @@ GradientDescentObjectOptimizer
   this->InvokeEvent( IterationEvent() );
 }
 
-/**
- * Modify the gradient over a given index range.
- */
 void
 GradientDescentObjectOptimizer
-::ModifyGradientOverSubRange( const IndexRangeType& subrange )
+::ModifyGradientThreader::ThreadedExecution( const Superclass::DomainType& subrange,
+                        const ThreadIdType itkNotUsed(threadId) )
 {
-  const ScalesType& scales = this->GetScales();
+  GradientDescentObjectOptimizer * self = dynamic_cast< GradientDescentObjectOptimizer * >( this->m_EnclosingClass );
+  const ScalesType& scales = self->GetScales();
 
   /* Loop over the range. It is inclusive. */
   for ( IndexValueType j = subrange[0]; j <= subrange[1]; j++ )
     {
-    if( this->m_ScalesAreIdentity )
+    if( self->m_ScalesAreIdentity )
       {
-      this->m_Gradient[j] = this->m_Gradient[j] * this->m_LearningRate;
+      self->m_Gradient[j] = self->m_Gradient[j] * self->m_LearningRate;
       }
     else
       {
@@ -178,8 +178,8 @@ GradientDescentObjectOptimizer
       // with local support. The gradient array stores the gradient of local
       // parameters at each local index with linear packing.
       IndexValueType scalesIndex = j % scales.Size();
-      this->m_Gradient[j] =
-                this->m_Gradient[j] / scales[scalesIndex] * this->m_LearningRate;
+      self->m_Gradient[j] =
+                self->m_Gradient[j] / scales[scalesIndex] * self->m_LearningRate;
       }
     }
 }
