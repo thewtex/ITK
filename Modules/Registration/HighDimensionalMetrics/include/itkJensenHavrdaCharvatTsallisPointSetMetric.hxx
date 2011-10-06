@@ -250,7 +250,7 @@ JensenHavrdaCharvatTsallisPointSetMetric<TPointSet>
 template<class TPointSet>
 void
 JensenHavrdaCharvatTsallisPointSetMetric<TPointSet>
-::GetDerivative( DerivativeType &derivative ) const
+::GetDerivative( DerivativeType &derivative )
 {
   MeasureType value;
   this->GetValueAndDerivative( value, derivative );
@@ -260,7 +260,7 @@ JensenHavrdaCharvatTsallisPointSetMetric<TPointSet>
 template<class TPointSet>
 void
 JensenHavrdaCharvatTsallisPointSetMetric<TPointSet>
-::GetValueAndDerivative( MeasureType &value, DerivativeType &derivative ) const
+::GetValueAndDerivative( MeasureType &value, DerivativeType &derivative )
 {
   DensityFunctionPointer densityFunctions[2];
   densityFunctions[0] = this->m_FixedDensityFunction;

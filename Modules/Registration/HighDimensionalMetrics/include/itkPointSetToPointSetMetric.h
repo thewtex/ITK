@@ -180,7 +180,7 @@ public:
    * those cases, the developer will have to redefine the GetDerivative()
    * function.
    */
-  virtual void GetDerivative( DerivativeType & ) const;
+  virtual void GetDerivative( DerivativeType & );
 
   /**
    * This method returns the derivative and value based on the current
@@ -192,7 +192,7 @@ public:
    * point set metrics.  For those cases, the developer will have to redefine
    * the GetValue() and GetDerivative() functions.
    */
-  virtual void GetValueAndDerivative( MeasureType &, DerivativeType & ) const;
+  virtual void GetValueAndDerivative( MeasureType &, DerivativeType & );
 
   /**
    * Function to be defined in the appropriate derived classes.  Calculates

@@ -57,60 +57,178 @@ public:
   itkTypeMacro(ImageToImageObjectMetricTestMetric, ImageToImageObjectMetric);
 
   /** superclass types */
-  typedef typename Superclass::MeasureType                MeasureType;
-  typedef typename Superclass::DerivativeType             DerivativeType;
-  typedef typename Superclass::VirtualPointType           VirtualPointType;
-  typedef typename Superclass::FixedImagePointType        FixedImagePointType;
-  typedef typename Superclass::FixedImagePixelType        FixedImagePixelType;
+  typedef typename Superclass::MeasureType            MeasureType;
+  typedef typename Superclass::DerivativeType         DerivativeType;
+  typedef typename Superclass::VirtualPointType       VirtualPointType;
+  typedef typename Superclass::FixedImagePointType    FixedImagePointType;
+  typedef typename Superclass::FixedImagePixelType    FixedImagePixelType;
   typedef typename Superclass::FixedImageGradientType
                                                       FixedImageGradientType;
   typedef typename Superclass::MovingImagePointType   MovingImagePointType;
   typedef typename Superclass::MovingImagePixelType   MovingImagePixelType;
   typedef typename Superclass::MovingImageGradientType
                                                       MovingImageGradientType;
+  typedef typename Superclass::VirtualImageType       VirtualImageType;
+  typedef typename Superclass::VirtualIndexType       VirtualIndexType;
+  typedef typename Superclass::VirtualSampledPointSetType
+                                                      VirtualSampledPointSetType;
 
-  /* Implement pure virtual methods */
-  void Initialize() throw ( itk::ExceptionObject )
+  itkStaticConstMacro(VirtualImageDimension, ImageDimensionType,
+      ::itk::GetImageDimension<TVirtualImage>::ImageDimension);
+  itkStaticConstMacro(MovingImageDimension, ImageDimensionType,
+      ::itk::GetImageDimension<TMovingImage>::ImageDimension);
+
+protected:
+  /** \class ImageToImageTestGetValueAndDerivativeThreader
+   * \brief Processes points for ImageToImageTest calculation. */
+  template < class TDomainPartitioner >
+  class ImageToImageTestGetValueAndDerivativeThreader
+    : public itk::ImageToImageObjectMetric< TFixedImage, TMovingImage, TVirtualImage >::template GetValueAndDerivativeThreader< TDomainPartitioner >
   {
-    //Be sure to call base class initialize
-    Superclass::Initialize();
+  public:
+    /** Standard class typedefs. */
+    typedef ImageToImageTestGetValueAndDerivativeThreader              Self;
+    typedef typename itk::ImageToImageObjectMetric< TFixedImage, TMovingImage, TVirtualImage >
+      ::template GetValueAndDerivativeThreader< TDomainPartitioner >   Superclass;
+    typedef itk::SmartPointer< Self >                                  Pointer;
+    typedef itk::SmartPointer< const Self >                            ConstPointer;
 
-    //Now do your own initialization here
-  }
+    itkTypeMacro( ImageToImageObjectMetricTestMetric::ImageToImageTestGetValueAndDerivativeThreader,
+      ImageToImageObjectMetric::GetValueAndDerivativeThreader );
 
-  /* Provide the worker routine to process each point */
-  bool GetValueAndDerivativeProcessPoint(
-                    const VirtualPointType &,
-                    const FixedImagePointType &,
-                    const FixedImagePixelType &        fixedImageValue,
-                    const FixedImageGradientType &  fixedImageGradient,
-                    const MovingImagePointType &,
-                    const MovingImagePixelType &       movingImageValue,
-                    const MovingImageGradientType & movingImageGradient,
-                    MeasureType &                      metricValueResult,
-                    DerivativeType &                   localDerivativeReturn,
-                    const itk::ThreadIdType ) const
-  {
-    /* Just return some test values that can verify proper mechanics */
-    metricValueResult = fixedImageValue + movingImageValue;
+    typedef typename Superclass::DomainType         DomainType;
+    typedef typename Superclass::EnclosingClassType EnclosingClassType;
 
-    for ( unsigned int par = 0;
-          par < this->GetNumberOfLocalParameters(); par++ )
+  protected:
+    ImageToImageTestGetValueAndDerivativeThreader() {}
+
+    /* Provide the worker routine to process each point */
+    virtual bool ProcessPoint(
+          const VirtualPointType &          itkNotUsed(virtualPoint),
+          const FixedImagePointType &       itkNotUsed(mappedFixedPoint),
+          const FixedImagePixelType &       mappedFixedPixelValue,
+          const FixedImageGradientType &    mappedFixedImageGradient,
+          const MovingImagePointType &      itkNotUsed(mappedMovingPoint),
+          const MovingImagePixelType &      mappedMovingPixelValue,
+          const MovingImageGradientType &   mappedMovingImageGradient,
+          MeasureType &                     metricValueResult,
+          DerivativeType &                  localDerivativeReturn,
+          const itk::ThreadIdType           itkNotUsed(threadID) ) const
       {
-      double sum = 0.0;
-      for ( unsigned int dim = 0;
-            dim < Superclass::MovingImageDimension; dim++ )
-        {
-        sum += movingImageGradient[dim] + fixedImageGradient[dim];
-        }
-      localDerivativeReturn[par] = sum;
-      }
-    //  std::cout << " localDerivativeReturn: " << localDerivativeReturn
-    //            << std::endl;
+      /* Just return some test values that can verify proper mechanics */
+      metricValueResult = mappedFixedPixelValue + mappedMovingPixelValue;
 
-    // Return true if the point was used in evaluation
-    return true;
-  }
+      for ( unsigned int par = 0; par < this->m_EnclosingClass->GetNumberOfLocalParameters(); par++ )
+        {
+        double sum = 0.0;
+        for ( unsigned int dim = 0; dim < MovingImageDimension; dim++ )
+          {
+          sum += mappedMovingImageGradient[dim] + mappedFixedImageGradient[dim];
+          }
+        localDerivativeReturn[par] = sum;
+        }
+      //  std::cout << " localDerivativeReturn: " << localDerivativeReturn
+      //            << std::endl;
+
+      // Return true if the point was used in evaluation
+      return true;
+      }
+  };
+
+  /** \class ImageToImageTestDenseGetValueAndDerivativeThreader
+   * \brief Run \c ProcessPoint on the points defined by an ImageRegion.
+   * */
+  class ImageToImageTestDenseGetValueAndDerivativeThreader
+    : public ImageToImageTestGetValueAndDerivativeThreader< itk::ThreadedImageRegionPartitioner< VirtualImageDimension > >
+  {
+  public:
+    /** Standard class typedef. */
+    typedef ImageToImageTestDenseGetValueAndDerivativeThreader                              Self;
+    typedef ImageToImageTestGetValueAndDerivativeThreader< itk::ThreadedImageRegionPartitioner< VirtualImageDimension > >
+                                                                            Superclass;
+    typedef itk::SmartPointer< Self >                                            Pointer;
+    typedef itk::SmartPointer< const Self >                                      ConstPointer;
+
+    itkTypeMacro( ImageToImageTestImageToImageObjectMetric::ImageToImageTestDenseGetValueAndDerivativeThreader,
+      ImageToImageTestImageToImageObjectMetric::GetValueAndDerivativeThreader );
+
+    itkNewMacro( Self );
+
+    typedef typename Superclass::DomainType         DomainType;
+    typedef typename Superclass::EnclosingClassType EnclosingClassType;
+
+  protected:
+    ImageToImageTestDenseGetValueAndDerivativeThreader() {}
+
+    virtual void ThreadedExecution( EnclosingClassType *    enclosingClass,
+                                    const DomainType &      imageSubRegion,
+                                    const itk::ThreadIdType threadId )
+      {
+      VirtualPointType virtualPoint;
+      VirtualIndexType virtualIndex;
+      typename VirtualImageType::ConstPointer virtualImage = enclosingClass->GetVirtualDomainImage();
+      typedef itk::ImageRegionConstIteratorWithIndex< VirtualImageType > IteratorType;
+      IteratorType it( virtualImage, imageSubRegion );
+      for( it.GoToBegin(); !it.IsAtEnd(); ++it )
+        {
+        virtualImage->TransformIndexToPhysicalPoint( virtualIndex, virtualPoint );
+        this->ProcessVirtualPoint( virtualIndex, virtualPoint, threadId );
+        }
+      }
+
+  private:
+    ImageToImageTestDenseGetValueAndDerivativeThreader( const Self & ); // purposely not implemented
+    void operator=( const Self & ); // purposely not implemented
+  };
+
+  /** \class ImageToImageTestSparseGetValueAndDerivativeThreader
+   * \brief Run \c ProcessPoint on the points defined by a PointSet.
+   * */
+  class ImageToImageTestSparseGetValueAndDerivativeThreader
+    : public ImageToImageTestGetValueAndDerivativeThreader< itk::ThreadedIndexedContainerPartitioner >
+  {
+  public:
+    /** Standard class typedef. */
+    typedef ImageToImageTestSparseGetValueAndDerivativeThreader   Self;
+    typedef ImageToImageTestGetValueAndDerivativeThreader< itk::ThreadedIndexedContainerPartitioner >
+                                                                  Superclass;
+    typedef itk::SmartPointer< Self >                             Pointer;
+    typedef itk::SmartPointer< const Self >                       ConstPointer;
+
+    itkTypeMacro( ImageToImageObjectMetricTestMetric::ImageToImageTestSparseGetValueAndDerivativeThreader,
+      ImageToImageObjectMetricTestMetric::GetValueAndDerivativeThreader );
+
+    itkNewMacro( Self );
+
+    typedef typename Superclass::DomainType         DomainType;
+    typedef typename Superclass::EnclosingClassType EnclosingClassType;
+
+  protected:
+    ImageToImageTestSparseGetValueAndDerivativeThreader() {}
+
+    virtual void ThreadedExecution( EnclosingClassType * enclosingClass,
+                                    const DomainType& indexSubRange,
+                                    const itk::ThreadIdType threadId )
+      {
+      VirtualPointType virtualPoint;
+      VirtualIndexType virtualIndex;
+      typename VirtualImageType::ConstPointer virtualImage                     = enclosingClass->GetVirtualDomainImage();
+      typename VirtualSampledPointSetType::ConstPointer virtualSampledPointSet = enclosingClass->GetVirtualSampledPointSet();
+      typedef typename VirtualSampledPointSetType::MeshTraits::PointIdentifier ElementIdentifierType;
+      const ElementIdentifierType begin = indexSubRange[0];
+      const ElementIdentifierType end   = indexSubRange[1];
+      for( ElementIdentifierType i = begin; i <= end; ++i )
+        {
+        virtualPoint = virtualSampledPointSet->GetPoint( i );
+        virtualImage->TransformPhysicalPointToIndex( virtualPoint, virtualIndex );
+        this->ProcessVirtualPoint( virtualIndex, virtualPoint, threadId );
+        }
+      }
+
+  private:
+    ImageToImageTestSparseGetValueAndDerivativeThreader( const Self & ); // purposely not implemented
+    void operator=( const Self & ); // purposely not implemented
+  };
 
   //This is of one two evaluation methods that the user may call.
   MeasureType GetValue() const
@@ -119,37 +237,14 @@ public:
     itkExceptionMacro("GetValue not yet implemented.");
   }
 
-  //This is of one two evaluation methods that the user may call.
-  void GetValueAndDerivative( MeasureType & valueReturn,
-                              DerivativeType & derivativeReturn) const
-  {
-    //1) Do any pre-processing required for your metric. To help with
-    // threading, you can use ImageToData or Array1DToData classes,
-    // or derive your own from ObjectToData.
-
-    //2) Call GetValueAndDerivativeThreadedExecute.
-    //This will iterate over virtual image region and call your
-    // GetValueAndDerivativeProcessPoint method, see definition in
-    // base. Results are written in 'derivativeReturn'.
-    this->GetValueAndDerivativeThreadedExecute( derivativeReturn );
-
-    //3) Optionally call GetValueAndDerivativeThreadedPostProcess for
-    // default post-processing, which sums up results from each thread,
-    // and optionally averages them. It then assigns the results to
-    // 'value' and 'derivative', without copying in the case of 'derivative'.
-    //Do your own post-processing as needed.
-    this->GetValueAndDerivativeThreadedPostProcess( true /*doAverage*/ );
-
-    //4) Return the value result. The derivative result has already been
-    // written to derivativeReturn.
-    valueReturn = this->GetValueResult();
-
-    //That's it. Easy as 1, 2, 3 (and 4).
-  }
-
-protected:
-  ImageToImageObjectMetricTestMetric(){};
+  ImageToImageObjectMetricTestMetric()
+    {
+    /* We need threader object instances. */
+    this->m_DenseGetValueAndDerivativeThreader   = ImageToImageTestDenseGetValueAndDerivativeThreader::New();
+    this->m_SparseGetValueAndDerivativeThreader  = ImageToImageTestSparseGetValueAndDerivativeThreader::New();
+    }
   virtual ~ImageToImageObjectMetricTestMetric() {}
+
   void PrintSelf(std::ostream& stream, itk::Indent indent) const
   {
     Superclass::PrintSelf( stream, indent );
@@ -354,7 +449,7 @@ int ImageToImageObjectMetricTestRunSingleTest(
 
   //Check number of threads and valid points
   std::cout << "--Number of threads used: "
-            << metric->GetNumberOfThreads() << std::endl;
+            << metric->GetNumberOfThreadsUsed() << std::endl;
   if( metric->GetNumberOfValidPoints() != ( expectedNumberOfPoints ) )
     {
     std::cout << "Expected number of valid points to be "
@@ -497,7 +592,7 @@ int itkImageToImageObjectMetricTest(int, char ** const)
   for( itk::ThreadIdType numberOfThreads = 1; numberOfThreads < 6;
                                                             numberOfThreads++ )
     {
-    metric->SetNumberOfThreads( numberOfThreads );
+    metric->SetMaximumNumberOfThreads( numberOfThreads );
     for( char useMovingFilter = 1;
             useMovingFilter >= 0; useMovingFilter-- )
       {

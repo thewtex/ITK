@@ -79,7 +79,7 @@ public:
    * \c derivative will be sized and allocated as needed by metric.
    * If it's already proper size, no new allocation is done. */
   virtual void GetValueAndDerivative(MeasureType & value,
-                                     DerivativeType & derivative) const = 0;
+                                     DerivativeType & derivative) = 0;
 
 protected:
   SingleValuedHighDimensionalCostFunction() {}

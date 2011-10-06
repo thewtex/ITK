@@ -114,13 +114,13 @@ public:
    * This method returns the derivative based on the current
    * transformation(s).
    */
-  virtual void GetDerivative( DerivativeType & ) const;
+  virtual void GetDerivative( DerivativeType & );
 
   /**
    * This method returns the derivative and value based on the current
    * transformation(s).
    */
-  virtual void GetValueAndDerivative( MeasureType &, DerivativeType & ) const;
+  virtual void GetValueAndDerivative( MeasureType &, DerivativeType & );
 
   /**
    * Set the alpha parameter used to tune the point-set metric from
