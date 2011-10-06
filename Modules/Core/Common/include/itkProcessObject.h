@@ -373,6 +373,44 @@ protected:
   ProcessObject();
   ~ProcessObject();
 
+  /** \class DomainThreader
+   *  \brief Multi-thread processing on a domain by processing sub-domains per
+   *  thread.
+   *
+   *  This class uses a ThreadedDomainPartitioner as a helper to split the
+   *  domain into subdomains.  Each thread is then processed in the
+   *  \c ThreadedExecution method.
+   *
+   *  To use this class, at a minimum,
+   *  \li Inherit from it.
+   *  \li Implement ThreadedExecution.
+   *  \li Create a member instance.
+   *  \li Run with m_DomainThreader->Execute( DomainType & domain );
+   *
+   */
+  class DomainThreader: public Object
+  {
+  public:
+    /** Standard class typedefs. */
+    typedef DomainThreader             Self;
+    typedef Object                     Superclass;
+    typedef SmartPointer< Self >       Pointer;
+    typedef SmartPointer< const Self > ConstPointer;
+
+    /** Run-time type information (and related methods). */
+    itkTypeMacro(DomainThreader, Object);
+
+    /** New macro for creation of through a Smart Pointer */
+    itkNewMacro(Self);
+
+  protected:
+    DomainThreader(){}
+
+  private:
+    DomainThreader( const Self & ); // purposely not implemented
+    void operator=( const Self & ); // purposely not implemented
+   }
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Return an input */

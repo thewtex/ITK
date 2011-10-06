@@ -58,11 +58,15 @@ namespace itk
  * See \c DetermineNumberOfThreadsToUse to get the number of threads
  * before running.
  *
- * \note There is no test for this class yet. See Array1DToDataTest.
+ * \note There is no test for this class yet. See ThreadedArrayPartitioner.
  * \todo Make test.
  *
  * \sa ThreadedImageRegionPartitioner
+ *
+ * \ingroup DataProcessing
+ *
  * \ingroup ITKCommon
+ *
  */
 
 template <class TDomain, class TDataHolder>
