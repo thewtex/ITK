@@ -45,7 +45,7 @@ namespace itk
  *
  * \note The assigned metric is assumed to return a parameter derivative
  * result that "improves" the optimization when *added* to the current
- * parameters via the metric::UpateTransformParameters method, after the
+ * parameters via the metric::UpdateTransformParameters method, after the
  * optimizer applies scales and a learning rate.
  *
  * \ingroup ITKHighDimensionalOptimizers
@@ -92,8 +92,33 @@ protected:
    * Includes transform update. */
   virtual void AdvanceOneStep(void);
 
-  /** Modify the gradient over a given index range. */
-  virtual void ModifyGradientOverSubRange( const IndexRangeType& subrange );
+  /** \class ModifyGradientThreader
+   * \brief Modify the gradient during the gradient update in \c ModifyGradient.
+   * \ingroup ITKHighDimensionalOptimizers */
+  class ModifyGradientThreader: public ModifyGradientThreaderBase
+  {
+  public:
+    /** Standard class typedefs. */
+    typedef ModifyGradientThreader     Self;
+    typedef ModifyGradientThreaderBase Superclass;
+    typedef SmartPointer< Self >       Pointer;
+    typedef SmartPointer< const Self > ConstPointer;
+
+    itkTypeMacro( GradientDescentObjectOptimizer::ModifyGradientThreader, GradientDescentObjectOptimizerBase::ModifyGradientThreaderBase );
+
+    itkNewMacro( Self );
+
+  protected:
+    ModifyGradientThreader(){}
+    virtual ~ModifyGradientThreader(){}
+
+    virtual void ThreadedExecution( const Superclass::DomainType& domain,
+                                    const ThreadIdType threadId );
+
+  private:
+    ModifyGradientThreader( const Self & ); // purposely not implemented
+    void operator=( const Self & ); // purposely not implemented
+  };
 
   InternalComputationValueType  m_LearningRate;
 

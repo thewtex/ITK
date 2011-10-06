@@ -18,8 +18,9 @@
 #ifndef __itkGradientDescentObjectOptimizerBase_h
 #define __itkGradientDescentObjectOptimizerBase_h
 
+#include "itkThreadedIndexedContainerPartitioner.h"
+#include "itkDomainThreader.h"
 #include "itkObjectToObjectOptimizerBase.h"
-#include "itkThreadedArrayPartitioner.h"
 
 namespace itk
 {
@@ -76,12 +77,6 @@ public:
   /** Internal computation type, for maintaining a desired precision */
   typedef Superclass::InternalComputationValueType InternalComputationValueType;
 
-  /** Threader for gradient update */
-  typedef ThreadedArrayPartitioner<Self>                        ModifyGradientThreaderType;
-
-  /** Type of index range for threading */
-  typedef ModifyGradientThreaderType::IndexRangeType IndexRangeType;
-
   /** Get the most recent gradient values. */
   itkGetConstReferenceMacro( Gradient, DerivativeType );
 
@@ -119,19 +114,39 @@ protected:
    * This call performs a threaded modification for transforms with
    * local support (assumed to be dense). Otherwise the modification
    * is performed w/out threading.
-   * The work is done in ModifyGradientOverSubRange in both cases.
+   * The work is done in ModifyGradientThreader::ThreadedExecution in both cases.
    * At completion, m_Gradient can be used to update the transform
    * parameters. Derived classes may hold additional results in
    * other member variables.
    */
   virtual void ModifyGradient();
 
-  /** Derived classes define this worker method to modify the gradient.
-   * Modifications must be performed over the index range defined in
-   * \c subrange.
-   * Called from ModifyGradient(), either directly or via threaded
-   * operation. */
-  virtual void ModifyGradientOverSubRange( const IndexRangeType& subrange ) = 0;
+  /** \class ModifyGradientThreaderBase
+   * \brief Modify the gradient during the gradient update in \c ModifyGradient.
+   * \ingroup ITKHighDimensionalOptimizers */
+  class ModifyGradientThreaderBase: public DomainThreader< ThreadedIndexedContainerPartitioner, GradientDescentObjectOptimizerBase >
+  {
+  public:
+    /** Standard class typedefs. */
+    typedef ModifyGradientThreaderBase                                                     Self;
+    typedef DomainThreader< ThreadedIndexedContainerPartitioner, GradientDescentObjectOptimizerBase > Superclass;
+    typedef SmartPointer< Self >                                                           Pointer;
+    typedef SmartPointer< const Self >                                                     ConstPointer;
+
+    itkTypeMacro( GradientDescentObjectOptimizerBase::ModifyGradientThreaderBase, DomainThreader );
+
+    typedef Superclass::DomainType    DomainType;
+    typedef Superclass::AssociateType AssociateType;
+    typedef DomainType                IndexRangeType;
+
+  protected:
+    ModifyGradientThreaderBase(){}
+    virtual ~ModifyGradientThreaderBase(){}
+
+  private:
+    ModifyGradientThreaderBase( const Self & ); // purposely not implemented
+    void operator=( const Self & ); // purposely not implemented
+  };
 
   /* Common variables for optimization control and reporting */
   bool                          m_Stop;
@@ -144,27 +159,12 @@ protected:
   DerivativeType     m_Gradient;
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
+  /** Multi-threaded for gradient modification operation. Sub-classes must
+   * instantiate a chile of this class. */
+  ModifyGradientThreaderBase::Pointer      m_ModifyGradientThreaderBase;
 private:
-
-  //purposely not implemented
-  GradientDescentObjectOptimizerBase( const Self & );
-  //purposely not implemented
-  void operator=( const Self& );
-
-  /** Callback used during threaded gradient modification.
-   * Gets assigned to the modify-gradient threader's
-   * ThreadedGenerateData. Must be static so it can be used as a callback.
-   * It simply calls ModifyGradientOverSubRange, which is where
-   * derived classes should put their class-specific modification code.
-   * An instance of this optimizer class is referenced through
-   * \c holder, which is passed in via the threader's user data. */
-  static void ModifyGradientThreaded(
-                                  const IndexRangeType& rangeForThread,
-                                  ThreadIdType threadId,
-                                  Self *holder );
-
-  /** Threader for grandient modification */
-  ModifyGradientThreaderType::Pointer      m_ModifyGradientThreader;
+  GradientDescentObjectOptimizerBase( const Self & ); //purposely not implemented
+  void operator=( const Self& ); //purposely not implemented
 
 };
 
