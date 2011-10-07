@@ -18,6 +18,7 @@
 #include "itkTransformFileReader.h"
 #include "itkTransformFactoryBase.h"
 #include "itkTransformIOFactory.h"
+#include "itkCompositeTransform.h"
 
 namespace itk
 {
@@ -27,8 +28,6 @@ TransformFileReader
 {
   m_FileName = "";
   TransformFactoryBase::RegisterDefaultTransforms();
-  /* to be removed soon. See .h */
-  m_ReadingCompositeTransform = false;
 }
 
 /** Destructor */
@@ -55,24 +54,37 @@ void TransformFileReader
   transformIO->SetFileName(m_FileName);
   transformIO->Read();
 
-  /* Check for a CompositeTransform. This check can be removed
-   * once the CompositeTransform IO is moved into this class and
-   * TranformFileWriter */
-  if( ! m_ReadingCompositeTransform )
-    {
-    std::string transformName =
-                   transformIO->GetTransformList().front()->GetNameOfClass();
-    if( transformName.find("CompositeTransform") != std::string::npos )
-      {
-      itkExceptionMacro("Cannot read a file of type CompositeTransform. Use "
-                        " CompositeTransformReader instead. ");
-      }
-    }
   for ( TransformListType::iterator it =
           transformIO->GetTransformList().begin();
         it != transformIO->GetTransformList().end(); ++it )
     {
     this->m_TransformList.push_back( TransformPointer(*it) );
+    }
+
+  std::string transformName =
+    transformIO->GetTransformList().front()->GetNameOfClass();
+
+  if(transformName.find("CompositeTransform") != std::string::npos)
+    {
+    typedef CompositeTransform<double, 3>         CompositeTransformType;
+    typedef CompositeTransformType::TransformType ComponentTransformType;
+
+    TransformListType::const_iterator tit = transformIO->GetTransformList().begin();
+    CompositeTransformType *composite = dynamic_cast<CompositeTransformType *>((*tit).GetPointer());
+    ++tit;
+    for(; tit != transformIO->GetTransformList().end(); ++tit)
+      {
+      ComponentTransformType *component =
+        dynamic_cast<ComponentTransformType *> ( (*tit).GetPointer() );
+      if( component == 0 )
+        {
+        itkExceptionMacro(
+          "Error converting component transform to proper type. Expected "
+          << component->GetTransformTypeAsString() << ", but have "
+          << (*tit)->GetTransformTypeAsString() << "." );
+        }
+      composite->AddTransform( component );
+      }
     }
 }
 
