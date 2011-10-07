@@ -20,6 +20,7 @@
 #include "vnl/vnl_matlab_read.h"
 #include "vnl/vnl_matlab_write.h"
 #include "itkTransformFileReader.h"
+#include "itkCompositeTransform.h"
 
 namespace itk
 {
@@ -267,28 +268,84 @@ TxtTransformIO::Read()
     }
 }
 
+template
+<class TCompositeTransform>
+void
+WriteCompositeTransform(const TCompositeTransform *composite,std::ofstream &out)
+{
+  const typename TCompositeTransform::TransformQueueType &transforms =
+    composite->GetTransformQueue();
+  out << "#Transform " << 0 << std::endl;
+  out << "Transform: " << composite->GetTransformTypeAsString() << std::endl;
+  int count = 1;
+  vnl_vector< double > TempArray;
+  for(typename TCompositeTransform::TransformQueueType::const_iterator it =
+        transforms.begin(); it != transforms.end(); ++it,++count)
+    {
+    const std::string TransformTypeName = ( *it )->GetTransformTypeAsString();
+    out << "#Transform " << count << std::endl;
+    out << "Transform: " << ( *it )->GetTransformTypeAsString() << std::endl;
+    TempArray = ( *it )->GetParameters();
+    out << "Parameters: " << TempArray << std::endl;
+    TempArray = ( *it )->GetFixedParameters();
+    out << "FixedParameters: " << TempArray << std::endl;
+    }
+}
+
 void
 TxtTransformIO::Write()
 {
   ConstTransformListType::iterator it = this->GetWriteTransformList().begin();
 
-  vnl_vector< double > TempArray;
   std::ofstream        out;
   this->OpenStream(out, false);
 
   out << "#Insight Transform File V1.0" << std::endl;
-  int count = 0;
-  while ( it != this->GetWriteTransformList().end() )
-    {
-    out << "#Transform " << count << std::endl;
-    out << "Transform: " << ( *it )->GetTransformTypeAsString() << std::endl;
 
-    TempArray = ( *it )->GetParameters();
-    out << "Parameters: " << TempArray << std::endl;
-    TempArray = ( *it )->GetFixedParameters();
-    out << "FixedParameters: " << TempArray << std::endl;
-    it++;
-    count++;
+  const std::string CompositeTransformTypeName = ( *it )->GetTransformTypeAsString();
+  if(CompositeTransformTypeName.find("CompositeTransform") != std::string::npos)
+    {
+    typedef CompositeTransform<double, 3> CompositeTransformDoubleType;
+
+    const CompositeTransformDoubleType *compositeTransformD =
+      dynamic_cast<const CompositeTransformDoubleType *>((*it).GetPointer());
+    if(compositeTransformD != 0)
+      {
+      WriteCompositeTransform<CompositeTransformDoubleType>(compositeTransformD,out);
+      }
+    else
+      {
+      typedef CompositeTransform<double, 3>         CompositeTransformFloatType;
+      const CompositeTransformFloatType *compositeTransformF =
+        dynamic_cast<const CompositeTransformFloatType *>((*it).GetPointer());
+      if(compositeTransformF == 0)
+        {
+        itkExceptionMacro(<< "Unsupported CompositeTransformType "
+                          << CompositeTransformTypeName);
+        }
+      WriteCompositeTransform<CompositeTransformFloatType>(compositeTransformF,out);
+      }
+    }
+  else
+    {
+    vnl_vector< double > TempArray;
+    int count = 0;
+    while ( it != this->GetWriteTransformList().end() )
+      {
+      const std::string TransformTypeName = ( *it )->GetTransformTypeAsString();
+      out << "#Transform " << count << std::endl;
+      out << "Transform: " << ( *it )->GetTransformTypeAsString() << std::endl;
+      if(TransformTypeName.find("CompositeTransform") != std::string::npos)
+        {
+        itkExceptionMacro(<< "Composite Transform can only be 1st transform in a file");
+        }
+      TempArray = ( *it )->GetParameters();
+      out << "Parameters: " << TempArray << std::endl;
+      TempArray = ( *it )->GetFixedParameters();
+      out << "FixedParameters: " << TempArray << std::endl;
+      it++;
+      count++;
+      }
     }
   out.close();
 }

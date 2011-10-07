@@ -87,6 +87,11 @@ private:
   /** write a string variable */
   void WriteString(const std::string &path, const std::string &value);
   void WriteString(const std::string &path, const char *value);
+  void WriteOneTransform(const int transformIndex,
+                         const TransformType *transform);
+  /** write out a composite transform */
+  template<class TCompositeTransform>
+  void WriteCompositeTransform(const TCompositeTransform *composit);
 
   H5::H5File *m_H5File;
 };
