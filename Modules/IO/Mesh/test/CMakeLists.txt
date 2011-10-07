@@ -4,6 +4,7 @@ set(ITKIOMeshTests
   itkMeshFileReadWriteTest.cxx
   itkMeshFileReadWriteVectorAttributeTest.cxx
   itkPolylineReadWriteTest.cxx
+  itkVtkUnstructuredGridReaderTest.cxx
 )
 
 CreateTestDriver(ITKIOMesh "${ITKIOMesh-Test_LIBRARIES}" "${ITKIOMeshTests}" )
@@ -83,6 +84,12 @@ itk_add_test(NAME itkPolylineReadWriteTest00
 )
 itk_add_test(NAME itkPolylineReadWriteTest01
       COMMAND ITKIOMeshTestDriver itkPolylineReadWriteTest
+      DATA{Baseline/fibers.vtk}
+      ${ITK_TEST_OUTPUT_DIR}/fibers_b.vtk
+      1
+)
+itk_add_test(NAME itkVtkUnstructuredGridReaderTest
+      COMMAND ITKIOMeshTestDriver itkVtkUnstructuredGridReaderTest
       DATA{Baseline/fibers.vtk}
       ${ITK_TEST_OUTPUT_DIR}/fibers_b.vtk
       1
