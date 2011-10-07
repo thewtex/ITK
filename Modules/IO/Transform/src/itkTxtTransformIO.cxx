@@ -20,6 +20,8 @@
 #include "vnl/vnl_matlab_read.h"
 #include "vnl/vnl_matlab_write.h"
 #include "itkTransformFileReader.h"
+#include "itkCompositeTransform.h"
+#include "itkCompositeTransformIOHelper.h"
 
 namespace itk
 {
@@ -270,25 +272,47 @@ TxtTransformIO::Read()
 void
 TxtTransformIO::Write()
 {
-  ConstTransformListType::iterator it = this->GetWriteTransformList().begin();
-
-  vnl_vector< double > TempArray;
+  ConstTransformListType::const_iterator it = this->GetWriteTransformList().begin();
+  ConstTransformListType::const_iterator end = this->GetWriteTransformList().end();
   std::ofstream        out;
   this->OpenStream(out, false);
 
   out << "#Insight Transform File V1.0" << std::endl;
-  int count = 0;
-  while ( it != this->GetWriteTransformList().end() )
+
+  const std::string CompositeTransformTypeName = ( *it )->GetTransformTypeAsString();
+  //
+  // if the first transform in the list is a
+  // composite transform, use its internal list
+  // instead of the IO
+  CompositeTransformIOHelper helper;
+  if(CompositeTransformTypeName.find("CompositeTransform") != std::string::npos)
     {
+    CompositeTransformIOHelper::ConstTransformListType &xfrmList =
+      helper.GetTransformList((*it).GetPointer());
+    it = xfrmList.begin();
+    end = xfrmList.end();
+    }
+  vnl_vector< double > TempArray;
+  int count = 0;
+  for (; it != end; ++it,++count )
+    {
+    const std::string TransformTypeName = ( *it )->GetTransformTypeAsString();
     out << "#Transform " << count << std::endl;
     out << "Transform: " << ( *it )->GetTransformTypeAsString() << std::endl;
-
-    TempArray = ( *it )->GetParameters();
-    out << "Parameters: " << TempArray << std::endl;
-    TempArray = ( *it )->GetFixedParameters();
-    out << "FixedParameters: " << TempArray << std::endl;
-    it++;
-    count++;
+    if(TransformTypeName.find("CompositeTransform") != std::string::npos)
+      {
+      if(count > 0)
+        {
+        itkExceptionMacro(<< "Composite Transform can only be 1st transform in a file");
+        }
+      }
+    else
+      {
+      TempArray = ( *it )->GetParameters();
+      out << "Parameters: " << TempArray << std::endl;
+      TempArray = ( *it )->GetFixedParameters();
+      out << "FixedParameters: " << TempArray << std::endl;
+      }
     }
   out.close();
 }
