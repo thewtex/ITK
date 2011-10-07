@@ -280,15 +280,22 @@ TxtTransformIO::Write()
   int count = 0;
   while ( it != this->GetWriteTransformList().end() )
     {
+    const std::string TransformTypeName = ( *it )->GetTransformTypeAsString();
     out << "#Transform " << count << std::endl;
     out << "Transform: " << ( *it )->GetTransformTypeAsString() << std::endl;
-
-    TempArray = ( *it )->GetParameters();
-    out << "Parameters: " << TempArray << std::endl;
-    TempArray = ( *it )->GetFixedParameters();
-    out << "FixedParameters: " << TempArray << std::endl;
-    it++;
-    count++;
+    if(TransformTypeName.find("CompositeTransform") != std::string::npos)
+      {
+      if(count > 0)
+        {
+        itkExceptionMacro(<< "Composite Transform can only be 1st transform in a file");
+        }
+      TempArray = ( *it )->GetParameters();
+      out << "Parameters: " << TempArray << std::endl;
+      TempArray = ( *it )->GetFixedParameters();
+      out << "FixedParameters: " << TempArray << std::endl;
+      }
+      it++;
+      count++;
     }
   out.close();
 }
