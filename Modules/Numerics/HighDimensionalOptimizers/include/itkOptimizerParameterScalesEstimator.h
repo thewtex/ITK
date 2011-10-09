@@ -56,6 +56,9 @@ public:
   /** Estimate parameter scales */
   virtual void EstimateScales(ScalesType &scales) = 0;
 
+  /** Estimate the scale of a step */
+  virtual FloatType EstimateStepScale(const ParametersType &step) = 0;
+
 protected:
   OptimizerParameterScalesEstimator(){};
   ~OptimizerParameterScalesEstimator(){};
