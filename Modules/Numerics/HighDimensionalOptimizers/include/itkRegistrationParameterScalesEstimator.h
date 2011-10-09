@@ -61,7 +61,7 @@ public:
   typedef typename Superclass::FloatType            FloatType;
 
   typedef TMetric                                   MetricType;
-  typedef typename MetricType::Pointer              MetricPointer;
+  typedef typename MetricType::ConstPointer         MetricPointer;
 
   /** Type of the transform to initialize */
   typedef typename MetricType::FixedTransformType   FixedTransformType;
@@ -111,9 +111,8 @@ public:
 
   typedef std::vector<VirtualPointType>             ImageSampleContainerType;
 
-  /** Type of Jacobian of transform */
-  typedef typename TMetric::FixedTransformJacobianType       FixedJacobianType;
-  typedef typename TMetric::MovingTransformJacobianType      MovingJacobianType;
+  /** Type of Jacobian of transform. */
+  typedef typename TMetric::JacobianType            JacobianType;
 
   /** Set the sampling strategy */
   itkSetMacro(SamplingStrategy, SamplingStrategyType);
@@ -136,6 +135,9 @@ public:
   /** Estimate parameter scales */
   virtual void EstimateScales(ScalesType &scales) = 0;
 
+  /** Estimate the step scale, the impact of a step on deformation. */
+  virtual FloatType EstimateStepScale(const ParametersType &step) = 0;
+
 protected:
   RegistrationParameterScalesEstimator();
   ~RegistrationParameterScalesEstimator(){};
@@ -145,15 +147,29 @@ protected:
   /** Check and set the images and transforms from the metric. */
   bool CheckAndSetInputs();
 
+  /** Transform a physical point to a new physical point. */
+  template< class TTargetPointType > void TransformPoint(
+                              const VirtualPointType &point,
+                              TTargetPointType &mappedPoint);
+
   /** Transform a point to its continous index. */
   template< class TContinuousIndexType > void TransformPointToContinuousIndex(
                               const VirtualPointType &point,
                               TContinuousIndexType &mappedIndex);
 
   /** Compute the transform Jacobian at a physical point. */
-  template< class TJacobianType > void ComputeSquaredJacobianNorms(
+  void ComputeSquaredJacobianNorms(
                               const VirtualPointType  & p,
                               ParametersType & squareNorms);
+
+  /** Check if the transform being optimized has local support. */
+  bool HasLocalSupport();
+
+  /** Get the number of scales. */
+  SizeValueType GetNumberOfScales();
+
+  /** Update the transform with a change in parameters. */
+  void UpdateTransformParameters(const ParametersType &deltaParameters);
 
   /** Sample the virtual image domain and store the physical points in m_ImageSamples. */
   virtual void SampleImageDomain();
@@ -185,8 +201,14 @@ protected:
   /** Get the moving transform. */
   itkGetConstObjectMacro(MovingTransform, MovingTransformType);
 
+  // the metric object
+  MetricPointer                 m_Metric;
+
   // the image samples in the virtual image domain
   ImageSampleContainerType      m_ImageSamples;
+
+  /** Keep track of the last sampling time. */
+  mutable TimeStamp             m_SamplingTime;
 
   // the number of image samples in the virtual image domain
   SizeValueType                 m_NumberOfRandomSamples;
@@ -196,9 +218,6 @@ protected:
 private:
   RegistrationParameterScalesEstimator(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
-
-  // the metric object
-  MetricPointer                 m_Metric;
 
   // the transform objects
   FixedTransformPointer         m_FixedTransform;
