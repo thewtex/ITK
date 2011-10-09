@@ -70,6 +70,9 @@ public:
   /** Estimate parameter scales */
   virtual void EstimateScales(ScalesType &scales);
 
+  /** Estimate the scale of a step */
+  virtual FloatType EstimateStepScale(const ParametersType &step);
+
 protected:
   RegistrationParameterScalesFromJacobian();
   ~RegistrationParameterScalesFromJacobian(){};

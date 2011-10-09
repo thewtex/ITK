@@ -114,6 +114,27 @@ RegistrationParameterScalesEstimator< TMetric >
     }
 }
 
+/** Transform a physical point to a new physical point.
+ *  We want to compute shift in physical space so that the scales is not
+ *  sensitive to spacings and directions of image voxel sampling.
+ */
+template< class TMetric >
+template< class TTargetPointType >
+void
+RegistrationParameterScalesEstimator< TMetric >
+::TransformPoint(const VirtualPointType &point,
+                 TTargetPointType &mappedPoint)
+{
+  if (this->GetTransformForward())
+    {
+    mappedPoint = this->GetMovingTransform()->TransformPoint(point);
+    }
+  else
+    {
+    mappedPoint = this->GetFixedTransform()->TransformPoint(point);
+    }
+}
+
 /** Transform a physical point to its continuous index */
 template< class TMetric >
 template< class TContinuousIndexType >

@@ -111,9 +111,9 @@ public:
 
   typedef std::vector<VirtualPointType>             ImageSampleContainerType;
 
-  /** Type of Jacobian of transform */
-  typedef typename TMetric::FixedTransformJacobianType       FixedJacobianType;
-  typedef typename TMetric::MovingTransformJacobianType      MovingJacobianType;
+  /** Type of Jacobian of transform. */
+  typedef typename TMetric::JacobianType            FixedJacobianType;
+  typedef typename TMetric::JacobianType            MovingJacobianType;
 
   /** Set the sampling strategy */
   itkSetMacro(SamplingStrategy, SamplingStrategyType);
@@ -136,6 +136,22 @@ public:
   /** Estimate parameter scales */
   virtual void EstimateScales(ScalesType &scales) = 0;
 
+  /**
+   *  Compute the scale for a STEP, the impact of a STEP on the transform.
+   *  Assume we have a transform
+   *        T(x, p) = T(x, p0 + t * STEP),
+   *  where x is the coordinates of a voxel, p = p0+t*STEP is the transform
+   *  parameters, STEP is the changes on the parameters, and t is the step size.
+   *
+   *  At a specific voxel at x, the scale w.r.t. STEP is defined as the absolute
+   *  value of the derivative of T(...) w.r.t. t at t = 0, which is
+   *
+   *        | d_T / d_t | = | ( dT / dp ) * STEP' | .
+   *
+   *  Then we average | d_T / d_t | over voxels to get the overall step scale.
+   */
+  virtual FloatType EstimateStepScale(const ParametersType &step) = 0;
+
 protected:
   RegistrationParameterScalesEstimator();
   ~RegistrationParameterScalesEstimator(){};
@@ -144,6 +160,11 @@ protected:
 
   /** Check and set the images and transforms from the metric. */
   bool CheckAndSetInputs();
+
+  /** Transform a physical point to a new physical point. */
+  template< class TTargetPointType > void TransformPoint(
+                              const VirtualPointType &point,
+                              TTargetPointType &mappedPoint);
 
   /** Transform a point to its continous index. */
   template< class TContinuousIndexType > void TransformPointToContinuousIndex(
