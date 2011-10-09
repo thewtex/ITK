@@ -21,6 +21,7 @@
 #include "itkImage.h"
 #include "itkAffineTransform.h"
 #include "itkTranslationTransform.h"
+#include "itkDisplacementFieldTransform.h"
 
 /**
  *  \class RegistrationParameterScalesFromShiftTestMetric for test.
@@ -83,6 +84,7 @@ public:
   typedef typename FixedImageType::ConstPointer   FixedImageConstPointer;
   typedef typename MovingImageType::ConstPointer  MovingImageConstPointer;
   typedef typename VirtualImageType::Pointer      VirtualImagePointer;
+  typedef typename VirtualImageType::RegionType   VirtualRegionType;
 
   /* Set/get images */
   /** Connect the Fixed Image.  */
@@ -96,7 +98,12 @@ public:
   /** Set all virtual domain image */
   itkSetObjectMacro(VirtualDomainImage, VirtualImageType);
   /** Get the virtual domain image */
-  itkGetObjectMacro(VirtualDomainImage, VirtualImageType);
+  itkGetConstObjectMacro(VirtualDomainImage, VirtualImageType);
+
+  const VirtualRegionType GetVirtualDomainRegion( void ) const
+  {
+    return this->m_VirtualDomainImage->GetBufferedRegion();
+  }
 
   /* Image dimension accessors */
   itkStaticConstMacro(FixedImageDimension, itk::SizeValueType,
@@ -118,8 +125,7 @@ public:
   typedef typename FixedTransformType::Pointer        FixedTransformPointer;
   typedef typename MovingTransformType::Pointer       MovingTransformPointer;
 
-  typedef typename FixedTransformType::JacobianType   FixedTransformJacobianType;
-  typedef typename MovingTransformType::JacobianType  MovingTransformJacobianType;
+  typedef typename FixedTransformType::JacobianType   JacobianType;
 
   /** Connect the fixed transform. */
   itkSetObjectMacro(FixedTransform, FixedTransformType);
@@ -151,7 +157,8 @@ int itkRegistrationParameterScalesFromShiftTest(int , char* [])
 
   // Image begins
   const itk::SizeValueType    ImageDimension = 2;
-  typedef double         PixelType;
+  typedef double              PixelType;
+  typedef double              FloatType;
 
   // Image Types
   typedef itk::Image<PixelType,ImageDimension>           FixedImageType;
@@ -203,13 +210,13 @@ int itkRegistrationParameterScalesFromShiftTest(int , char* [])
   shiftScaleEstimator->SetSamplingStrategy(
     RegistrationParameterScalesFromShiftType::CornerSampling);
   shiftScaleEstimator->Print( std::cout );
+  std::cout << std::endl;
 
   RegistrationParameterScalesFromShiftType::ScalesType movingScales(
     movingTransform->GetNumberOfParameters());
   shiftScaleEstimator->EstimateScales(movingScales);
   std::cout << "Shift scales for the affine transform = " << movingScales << std::endl;
 
-  // Check the correctness
   RegistrationParameterScalesFromShiftType::ScalesType theoreticalMovingScales(
     movingTransform->GetNumberOfParameters());
   VirtualImageType::PointType upperPoint;
@@ -239,6 +246,14 @@ int itkRegistrationParameterScalesFromShiftTest(int , char* [])
       break;
       }
     }
+  if (!affinePass)
+    {
+    std::cout << "Failed: the shift scales for the affine transform are not correct." << std::endl;
+    }
+  else
+    {
+    std::cout << "Passed: the shift scales for the affine transform are correct." << std::endl;
+    }
   bool nonUniformForAffine = false;
   for (itk::SizeValueType p = 1; p < movingScales.GetSize(); p++)
     {
@@ -248,12 +263,42 @@ int itkRegistrationParameterScalesFromShiftTest(int , char* [])
       break;
       }
     }
+  if (!nonUniformForAffine)
+    {
+    std::cout << "Error: the shift scales for an affine transform are equal for all parameters." << std::endl;
+    }
 
+  // Testing the step scale
+  MovingTransformType::ParametersType movingStep(movingTransform->GetNumberOfParameters());
+  movingStep = movingTransform->GetParameters(); //the step is a identity transform
+  FloatType stepScale = shiftScaleEstimator->EstimateStepScale(movingStep);
+  std::cout << "The step scale of shift for the affine transform = " << stepScale << std::endl;
+
+  FloatType theoreticalStepScale = 0.0;
+  for (itk::SizeValueType row = 0; row < ImageDimension; row++)
+    {
+    theoreticalStepScale += upperPoint[row] * upperPoint[row];
+    }
+  theoreticalStepScale = vcl_sqrt(theoreticalStepScale);
+
+  bool stepScalePass = false;
+  if (vcl_abs( (stepScale - theoreticalStepScale)/theoreticalStepScale ) < 0.1)
+    {
+    stepScalePass = true;
+    }
+  if (!stepScalePass)
+    {
+    std::cout << "Failed: the step scale for the affine transform is not correct." << std::endl;
+    }
+  else
+    {
+    std::cout << "Passed: the step scale for the affine transform is correct." << std::endl;
+    }
   // Check done
 
   // Scales for the fixed transform
   shiftScaleEstimator->SetTransformForward(false);
-
+  shiftScaleEstimator->SetUsePhysicalSpaceForShift(false);
   RegistrationParameterScalesFromShiftType::ScalesType fixedScales(
     fixedTransform->GetNumberOfParameters());
   shiftScaleEstimator->EstimateScales(fixedScales);
@@ -275,29 +320,6 @@ int itkRegistrationParameterScalesFromShiftTest(int , char* [])
       break;
       }
     }
-  bool uniformForTranslation = true;
-  for (itk::SizeValueType p = 1; p < fixedScales.GetSize(); p++)
-    {
-    if (fixedScales[p] != fixedScales[0])
-      {
-      uniformForTranslation = false;
-      break;
-      }
-    }
-  // Check done
-
-  // Testing RegistrationParameterScalesFromShift done
-  std::cout << std::endl;
-
-  if (!affinePass)
-    {
-    std::cout << "Failed: the shift scales for the affine transform are not correct." << std::endl;
-    }
-  else
-    {
-    std::cout << "Passed: the shift scales for the affine transform are correct." << std::endl;
-    }
-
   if (!translationPass)
     {
     std::cout << "Failed: the shift scales for the translation transform are not correct." << std::endl;
@@ -307,17 +329,80 @@ int itkRegistrationParameterScalesFromShiftTest(int , char* [])
     std::cout << "Passed: the shift scales for the translation transform are correct." << std::endl;
     }
 
+  bool uniformForTranslation = true;
+  for (itk::SizeValueType p = 1; p < fixedScales.GetSize(); p++)
+    {
+    if (fixedScales[p] != fixedScales[0])
+      {
+      uniformForTranslation = false;
+      break;
+      }
+    }
   if (!uniformForTranslation)
     {
     std::cout << "Error: the shift scales for a translation transform are not equal for all parameters." << std::endl;
     }
-  if (!nonUniformForAffine)
+  // Check done
+
+  // Testing local scales for a transform with local support, ex. DisplacementFieldTransform
+  typedef itk::DisplacementFieldTransform<double, ImageDimension>
+                                                            DisplacementTransformType;
+  typedef DisplacementTransformType::DisplacementFieldType  FieldType;
+  typedef itk::Vector<double, ImageDimension>               VectorType;
+
+  VectorType zero;
+  zero.Fill(0.0);
+
+  FieldType::Pointer field = FieldType::New();
+  field->SetRegions(virtualImage->GetLargestPossibleRegion());
+  field->SetSpacing(virtualImage->GetSpacing());
+  field->SetOrigin(virtualImage->GetOrigin());
+  field->SetDirection(virtualImage->GetDirection());
+  field->Allocate();
+  field->FillBuffer(zero);
+
+  DisplacementTransformType::Pointer displacementTransform = DisplacementTransformType::New();
+  displacementTransform->SetDisplacementField(field);
+
+  metric->SetMovingTransform( displacementTransform );
+  shiftScaleEstimator->SetTransformForward(true);
+  shiftScaleEstimator->SetUsePhysicalSpaceForShift(true);
+  RegistrationParameterScalesFromShiftType::ScalesType localScales;
+  shiftScaleEstimator->EstimateScales(localScales);
+  std::cout << "Shift scales for the displacement field transform = "
+    << localScales << std::endl;
+
+  // Check the correctness
+  RegistrationParameterScalesFromShiftType::ScalesType theoreticalLocalScales(
+    displacementTransform->GetNumberOfLocalParameters());
+  theoreticalLocalScales.Fill(1.0);
+
+  bool displacementPass = true;
+  for (itk::SizeValueType p = 0; p < theoreticalLocalScales.GetSize(); p++)
     {
-    std::cout << "Error: the shift scales for an affine transform are equal for all parameters." << std::endl;
+    if (vcl_abs((localScales[p] - theoreticalLocalScales[p])
+      / theoreticalLocalScales[p]) > 0.1 )
+      {
+      displacementPass = false;
+      break;
+      }
+    }
+  if (!displacementPass)
+    {
+    std::cout << "Failed: the shift scales for the displacement field transform are not correct." << std::endl;
+    }
+  else
+    {
+    std::cout << "Passed: the shift scales for the displacement field transform are correct." << std::endl;
     }
 
+  // Testing scales with local support done
+
+  // Check the correctness of all cases above
+  std::cout << std::endl;
   if (affinePass && translationPass
-    && nonUniformForAffine && uniformForTranslation)
+    && nonUniformForAffine && uniformForTranslation
+    && stepScalePass && displacementPass)
     {
     std::cout << "Test passed" << std::endl;
     return EXIT_SUCCESS;
