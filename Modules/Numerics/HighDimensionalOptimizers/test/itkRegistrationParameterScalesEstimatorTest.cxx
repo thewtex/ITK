@@ -121,8 +121,7 @@ public:
   typedef typename FixedTransformType::Pointer        FixedTransformPointer;
   typedef typename MovingTransformType::Pointer       MovingTransformPointer;
 
-  typedef typename FixedTransformType::JacobianType   FixedTransformJacobianType;
-  typedef typename MovingTransformType::JacobianType  MovingTransformJacobianType;
+  typedef typename FixedTransformType::JacobianType   JacobianType;
 
   /** Connect the fixed transform. */
   itkSetObjectMacro(FixedTransform, FixedTransformType);
@@ -225,6 +224,12 @@ public:
         parameterScales[p] = norms[p];
         }
       }
+    }
+
+  virtual double EstimateStepScale(const ParametersType &step)
+    {
+    double norm = step.two_norm();
+    return 1.0/norm;
     }
 
 protected:

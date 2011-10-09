@@ -48,7 +48,7 @@ RegistrationParameterScalesFromJacobian< TMetric >
 
   ParametersType norms(numPara);
 
-  SizeValueType numSamples = this->m_ImageSamples.size();
+  const SizeValueType numSamples = this->m_ImageSamples.size();
 
   norms.Fill( NumericTraits< typename ParametersType::ValueType >::Zero );
   parameterScales.Fill( NumericTraits< typename ScalesType::ValueType >::One );
@@ -77,6 +77,59 @@ RegistrationParameterScalesFromJacobian< TMetric >
       parameterScales[p] = norms[p] / numSamples;
       }
     }
+}
+
+/** Compute the scale for a step. Assume we have a transform
+ *        T(x, p) = T(x, p0 + t * STEP),
+ * where x is the coordinates of a voxel, p = p0+t*STEP is the transform
+ * parameters, STEP is the changes on the parameters, and t is the step size.
+ *
+ * At a specific voxel at x, the scale w.r.t. STEP is defined as the absolute
+ * value of the derivative of T(...) w.r.t. t at t = 0, which is
+ *
+ *        | d_T / d_t | = | ( dT / dp ) * STEP' | .
+ *
+ * Then we average | d_T / d_t | over voxels to get the overall step scale.
+ */
+template< class TMetric >
+typename RegistrationParameterScalesFromJacobian< TMetric >::FloatType
+RegistrationParameterScalesFromJacobian< TMetric >
+::EstimateStepScale(const ParametersType &step)
+{
+  this->CheckAndSetInputs();
+  this->SampleImageDomain();
+
+  const SizeValueType numSamples = this->m_ImageSamples.size();
+  const SizeValueType dim = this->GetImageDimension();
+
+  FloatType norm, normSum;
+  normSum = NumericTraits< FloatType >::Zero;
+
+  itk::Array<FloatType> dTdt(dim);
+
+  // checking each sample point
+  for (SizeValueType c=0; c<numSamples; c++)
+    {
+    const VirtualPointType point = this->m_ImageSamples[c];
+
+    if (this->GetTransformForward())
+      {
+      MovingJacobianType jacobian;
+      this->GetMovingTransform()->ComputeJacobianWithRespectToParameters(point, jacobian);
+      dTdt = jacobian * step;
+      }
+    else
+      {
+      FixedJacobianType jacobian;
+      this->GetFixedTransform()->ComputeJacobianWithRespectToParameters(point, jacobian);
+      dTdt = jacobian * step;
+      }
+    norm = dTdt.two_norm();
+    normSum += norm;
+    }
+
+  return normSum / numSamples;
+
 }
 
 /** Print the information about this class */

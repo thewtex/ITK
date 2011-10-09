@@ -111,9 +111,9 @@ public:
 
   typedef std::vector<VirtualPointType>             ImageSampleContainerType;
 
-  /** Type of Jacobian of transform */
-  typedef typename TMetric::FixedTransformJacobianType       FixedJacobianType;
-  typedef typename TMetric::MovingTransformJacobianType      MovingJacobianType;
+  /** Type of Jacobian of transform. */
+  typedef typename TMetric::JacobianType            FixedJacobianType;
+  typedef typename TMetric::JacobianType            MovingJacobianType;
 
   /** Set the sampling strategy */
   itkSetMacro(SamplingStrategy, SamplingStrategyType);
@@ -136,6 +136,9 @@ public:
   /** Estimate parameter scales */
   virtual void EstimateScales(ScalesType &scales) = 0;
 
+  /** Estimate the scale of a step */
+  virtual FloatType EstimateStepScale(const ParametersType &step) = 0;
+
 protected:
   RegistrationParameterScalesEstimator();
   ~RegistrationParameterScalesEstimator(){};
@@ -144,6 +147,11 @@ protected:
 
   /** Check and set the images and transforms from the metric. */
   bool CheckAndSetInputs();
+
+  /** Transform a physical point to a new physical point. */
+  template< class TTargetPointType > void TransformPoint(
+                              const VirtualPointType &point,
+                              TTargetPointType &mappedPoint);
 
   /** Transform a point to its continous index. */
   template< class TContinuousIndexType > void TransformPointToContinuousIndex(

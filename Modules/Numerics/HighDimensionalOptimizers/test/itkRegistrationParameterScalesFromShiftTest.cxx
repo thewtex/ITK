@@ -118,8 +118,7 @@ public:
   typedef typename FixedTransformType::Pointer        FixedTransformPointer;
   typedef typename MovingTransformType::Pointer       MovingTransformPointer;
 
-  typedef typename FixedTransformType::JacobianType   FixedTransformJacobianType;
-  typedef typename MovingTransformType::JacobianType  MovingTransformJacobianType;
+  typedef typename FixedTransformType::JacobianType   JacobianType;
 
   /** Connect the fixed transform. */
   itkSetObjectMacro(FixedTransform, FixedTransformType);
@@ -151,7 +150,8 @@ int itkRegistrationParameterScalesFromShiftTest(int , char* [])
 
   // Image begins
   const itk::SizeValueType    ImageDimension = 2;
-  typedef double         PixelType;
+  typedef double              PixelType;
+  typedef double              FloatType;
 
   // Image Types
   typedef itk::Image<PixelType,ImageDimension>           FixedImageType;
@@ -209,6 +209,11 @@ int itkRegistrationParameterScalesFromShiftTest(int , char* [])
   shiftScaleEstimator->EstimateScales(movingScales);
   std::cout << "Shift scales for the affine transform = " << movingScales << std::endl;
 
+  MovingTransformType::ParametersType movingStep(movingTransform->GetNumberOfParameters());
+  movingStep = movingTransform->GetParameters();
+  FloatType stepScale = shiftScaleEstimator->EstimateStepScale(movingStep);
+  std::cout << "The step scale of shift for the affine transform = " << stepScale << std::endl;
+
   // Check the correctness
   RegistrationParameterScalesFromShiftType::ScalesType theoreticalMovingScales(
     movingTransform->GetNumberOfParameters());
@@ -228,6 +233,13 @@ int itkRegistrationParameterScalesFromShiftTest(int , char* [])
     {
     theoreticalMovingScales[param++] = 1;
     }
+
+  FloatType theoreticalStepScale = 0.0;
+  for (itk::SizeValueType row = 0; row < ImageDimension; row++)
+    {
+    theoreticalStepScale += upperPoint[row] * upperPoint[row];
+    }
+  theoreticalStepScale = vcl_sqrt(theoreticalStepScale);
 
   bool affinePass = true;
   for (itk::SizeValueType p = 0; p < theoreticalMovingScales.GetSize(); p++)
@@ -249,11 +261,16 @@ int itkRegistrationParameterScalesFromShiftTest(int , char* [])
       }
     }
 
+  bool stepScalePass = false;
+  if (vcl_abs( (stepScale - theoreticalStepScale)/theoreticalStepScale ) < 0.1)
+    {
+    stepScalePass = true;
+    }
   // Check done
 
   // Scales for the fixed transform
   shiftScaleEstimator->SetTransformForward(false);
-
+  shiftScaleEstimator->SetUsePhysicalSpaceForShift(false);
   RegistrationParameterScalesFromShiftType::ScalesType fixedScales(
     fixedTransform->GetNumberOfParameters());
   shiftScaleEstimator->EstimateScales(fixedScales);
@@ -316,8 +333,18 @@ int itkRegistrationParameterScalesFromShiftTest(int , char* [])
     std::cout << "Error: the shift scales for an affine transform are equal for all parameters." << std::endl;
     }
 
+  if (!stepScalePass)
+    {
+    std::cout << "Failed: the step scale for the affine transform is not correct." << std::endl;
+    }
+  else
+    {
+    std::cout << "Passed: the step scale for the affine transform is correct." << std::endl;
+    }
+
   if (affinePass && translationPass
-    && nonUniformForAffine && uniformForTranslation)
+    && nonUniformForAffine && uniformForTranslation
+    && stepScalePass)
     {
     std::cout << "Test passed" << std::endl;
     return EXIT_SUCCESS;

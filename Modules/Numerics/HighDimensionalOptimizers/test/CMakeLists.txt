@@ -9,6 +9,7 @@ set(ITKHighDimensionalOptimizersTests
   itkRegistrationParameterScalesEstimatorTest.cxx
   itkRegistrationParameterScalesFromShiftTest.cxx
   itkRegistrationParameterScalesFromJacobianTest.cxx
+  itkAutoScaledGradientDescentRegistrationTest.cxx
 )
 
 set(INPUTDATA ${ITK_DATA_ROOT}/Input)
@@ -50,3 +51,7 @@ itk_add_test(NAME itkRegistrationParameterScalesFromShiftTest
 itk_add_test(NAME itkRegistrationParameterScalesFromJacobianTest
       COMMAND ITKHighDimensionalOptimizersTestDriver
       itkRegistrationParameterScalesFromJacobianTest)
+
+itk_add_test(NAME itkAutoScaledGradientDescentRegistrationTest
+      COMMAND ITKHighDimensionalOptimizersTestDriver
+      itkAutoScaledGradientDescentRegistrationTest)

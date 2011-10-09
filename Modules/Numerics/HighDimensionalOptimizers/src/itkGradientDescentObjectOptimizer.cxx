@@ -58,6 +58,9 @@ GradientDescentObjectOptimizer
 {
   itkDebugMacro("StartOptimization");
 
+  /* Estimate the parameter scales */
+  this->InvokeEvent( ScalesEvent() );
+
   /* Must call the superclass version for basic validation and setup */
   Superclass::StartOptimization();
 
@@ -162,6 +165,9 @@ GradientDescentObjectOptimizer
 ::ModifyGradientOverSubRange( const IndexRangeType& subrange )
 {
   const ScalesType& scales = this->GetScales();
+
+  /* Estimate the learning rate */
+  this->InvokeEvent( LearningRateEvent() );
 
   /* Loop over the range. It is inclusive. */
   for ( IndexValueType j = subrange[0]; j <= subrange[1]; j++ )
