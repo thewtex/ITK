@@ -70,6 +70,22 @@ public:
   /** Estimate parameter scales */
   virtual void EstimateScales(ScalesType &scales);
 
+  /**
+   *  Compute the scale for a STEP, the impact of a STEP on the transform.
+   *  Assume we have a transform
+   *        T(x, p) = T(x, p0 + t * STEP),
+   *  where x is the coordinates of a voxel, p = p0+t*STEP is the transform
+   *  parameters, STEP is the changes on the parameters, and t is the step size.
+   *
+   *  At a specific voxel at x, the scale w.r.t. STEP is defined as the absolute
+   *  value of the derivative of T(...) w.r.t. t at t = 0, which is
+   *
+   *        | d_T / d_t | = | ( dT / dp ) * STEP' | .
+   *
+   *  Then we average | d_T / d_t | over voxels to get the overall step scale.
+   */
+  virtual FloatType EstimateStepScale(const ParametersType &step);
+
 protected:
   RegistrationParameterScalesFromJacobian();
   ~RegistrationParameterScalesFromJacobian(){};

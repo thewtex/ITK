@@ -19,6 +19,7 @@
 #define __itkGradientDescentObjectOptimizer_h
 
 #include "itkGradientDescentObjectOptimizerBase.h"
+#include "itkOptimizerParameterScalesEstimator.h"
 
 namespace itk
 {
@@ -79,6 +80,9 @@ public:
   /** Get the learning rate. */
   itkGetConstReferenceMacro(LearningRate, InternalComputationValueType);
 
+  /** Set the scales estimator. */
+  itkSetObjectMacro(ScalesEstimator, OptimizerParameterScalesEstimator);
+
   /** Start and run the optimization */
   virtual void StartOptimization();
 
@@ -93,9 +97,13 @@ protected:
   virtual void AdvanceOneStep(void);
 
   /** Modify the gradient over a given index range. */
-  virtual void ModifyGradientOverSubRange( const IndexRangeType& subrange );
+  virtual void ModifyGradientByScalesOverSubRange( const IndexRangeType& subrange );
+  virtual void ModifyGradientByLearningRateOverSubRange( const IndexRangeType& subrange );
 
   InternalComputationValueType  m_LearningRate;
+
+  /** Estimate the learning rate */
+  virtual void EstimateLearningRate();
 
   /** Default constructor */
   GradientDescentObjectOptimizer();
@@ -104,6 +112,9 @@ protected:
   virtual ~GradientDescentObjectOptimizer();
 
   virtual void PrintSelf( std::ostream & os, Indent indent ) const;
+
+  OptimizerParameterScalesEstimator::Pointer m_ScalesEstimator;
+
 private:
 
   //purposely not implemented

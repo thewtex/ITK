@@ -114,6 +114,89 @@ RegistrationParameterScalesEstimator< TMetric >
     }
 }
 
+/** Check if the transform being optimized has local support. */
+template< class TMetric >
+bool
+RegistrationParameterScalesEstimator< TMetric >
+::HasLocalSupport()
+{
+  if (this->m_TransformForward)
+    {
+    return this->m_MovingTransform->HasLocalSupport();
+    }
+  else
+    {
+    return this->m_FixedTransform->HasLocalSupport();
+    }
+}
+
+/** Get the number of scales. */
+template< class TMetric >
+SizeValueType
+RegistrationParameterScalesEstimator< TMetric >
+::GetNumberOfScales()
+{
+  if (!this->HasLocalSupport())
+    {
+    return this->GetTransform()->GetNumberOfParameters();
+    }
+  else
+    {
+    if (this->GetTransformForward())
+      {
+      return this->GetMovingTransform()->GetNumberOfLocalParameters();
+      }
+    else
+      {
+      return this->GetFixedTransform()->GetNumberOfLocalParameters();
+      }
+    }
+}
+
+/** Update the transform with a change in parameters. */
+template< class TMetric >
+void
+RegistrationParameterScalesEstimator< TMetric >
+::UpdateTransformParameters(const ParametersType &deltaParameters)
+{
+  // Apply the delta parameters to the transform
+  if (this->m_TransformForward)
+    {
+    typename MovingTransformType::Pointer movingTransform =
+      const_cast<MovingTransformType *>(this->GetMovingTransform());
+    ParametersType &step = const_cast<ParametersType &>(deltaParameters);
+    movingTransform->UpdateTransformParameters(step);
+    }
+  else
+    {
+    typename FixedTransformType::Pointer fixedTransform =
+      const_cast<FixedTransformType *>(this->GetFixedTransform());
+    ParametersType &step = const_cast<ParametersType &>(deltaParameters);
+    fixedTransform->UpdateTransformParameters(step);
+    }
+}
+
+/** Transform a physical point to a new physical point.
+ *  We want to compute shift in physical space so that the scales is not
+ *  sensitive to spacings and directions of image voxel sampling.
+ */
+template< class TMetric >
+template< class TTargetPointType >
+void
+RegistrationParameterScalesEstimator< TMetric >
+::TransformPoint(const VirtualPointType &point,
+                 TTargetPointType &mappedPoint)
+{
+  if (this->GetTransformForward())
+    {
+    mappedPoint = this->GetMovingTransform()->TransformPoint(point);
+    }
+  else
+    {
+    mappedPoint = this->GetFixedTransform()->TransformPoint(point);
+    }
+}
+
 /** Transform a physical point to its continuous index */
 template< class TMetric >
 template< class TContinuousIndexType >
@@ -145,7 +228,7 @@ RegistrationParameterScalesEstimator< TMetric >
                                      ParametersType & squareNorms )
 {
   TJacobianType jacobian;
-  const SizeValueType numPara = this->GetTransform()->GetNumberOfParameters();
+  const SizeValueType numPara = this->GetNumberOfScales();
   const SizeValueType dim = this->GetImageDimension();
 
   if (this->GetTransformForward())
@@ -184,6 +267,18 @@ void
 RegistrationParameterScalesEstimator< TMetric >
 ::SampleImageDomain()
 {
+  if ( !(this->m_SamplingTime < this->GetMTime()) )
+    {
+    // No modification since last sampling
+    return;
+    }
+
+  if (this->HasLocalSupport())
+    {
+    // Have to use FullDomainSampling for a transform with local support
+    m_SamplingStrategy = FullDomainSampling;
+    }
+
   if (m_SamplingStrategy == CornerSampling)
     {
     this->SampleImageDomainWithCorners();
@@ -197,6 +292,8 @@ RegistrationParameterScalesEstimator< TMetric >
     this->SampleImageDomainFully();
     }
 
+  this->Modified();
+  this->m_SamplingTime = this->GetTimeStamp();
 }
 
 /**
@@ -295,7 +392,7 @@ RegistrationParameterScalesEstimator< TMetric >
   const SizeValueType total = image->GetLargestPossibleRegion().GetNumberOfPixels();
   m_ImageSamples.resize(total);
 
-  // Set up a random interator within the user specified fixed image region.
+  /* Set up a random interator within the user specified fixed image region. */
   typedef ImageRegionConstIteratorWithIndex<VirtualImageType> RegionIterator;
   RegionIterator regionIter( image, image->GetLargestPossibleRegion() );
 
@@ -313,7 +410,8 @@ RegistrationParameterScalesEstimator< TMetric >
     }
 }
 
-/** Print the information about this class */
+/**
+ * Print the information about this class */
 template< class TMetric >
 void
 RegistrationParameterScalesEstimator< TMetric >
