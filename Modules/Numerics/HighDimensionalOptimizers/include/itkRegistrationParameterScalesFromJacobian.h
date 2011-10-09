@@ -62,13 +62,33 @@ public:
   typedef typename Superclass::FloatType                 FloatType;
 
   typedef typename Superclass::VirtualPointType          VirtualPointType;
+  typedef typename Superclass::VirtualIndexType          VirtualIndexType;
   typedef typename Superclass::MovingTransformType       MovingTransformType;
   typedef typename Superclass::FixedTransformType        FixedTransformType;
-  typedef typename Superclass::MovingJacobianType        MovingJacobianType;
-  typedef typename Superclass::FixedJacobianType         FixedJacobianType;
+  typedef typename Superclass::JacobianType              JacobianType;
+  typedef typename Superclass::VirtualImageConstPointer  VirtualImageConstPointer;
 
-  /** Estimate parameter scales */
+  /** Estimate parameter scales. */
   virtual void EstimateScales(ScalesType &scales);
+
+  /**
+   *  Compute the scale for \f$\Delta p\f$, a step of change on parameters.
+   *  Roughly speacking, the scale describes the impact of \f$\Delta p\f$
+   *  on the transform.
+   *
+   *  Let us denote the transform by
+   *  \f[ T(x, p) = T(x, p_0 + t * \Delta p) \f]
+   *  where \f$x\f$ is the coordinates of a voxel, \f$p = p_0+t*\Delta p\f$ is
+   *  the transform parameters, and t is the step factor.
+   *
+   *  At a specific voxel at \f$x\f$, the scale w.r.t. \f$\Delta p\f$ is
+   *  defined here as
+   *
+   *  \f[ | \frac{d_T}{d_t} | = |\frac{partial T}{partial p} * \Delta p | \f].
+   *
+   *  Then we average it over voxels to get the overall step scale.
+   */
+  virtual FloatType EstimateStepScale(const ParametersType &step);
 
 protected:
   RegistrationParameterScalesFromJacobian();
