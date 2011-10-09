@@ -83,6 +83,7 @@ public:
   typedef typename FixedImageType::ConstPointer   FixedImageConstPointer;
   typedef typename MovingImageType::ConstPointer  MovingImageConstPointer;
   typedef typename VirtualImageType::Pointer      VirtualImagePointer;
+  typedef typename VirtualImageType::RegionType   VirtualRegionType;
 
   /* Set/get images */
   /** Connect the Fixed Image.  */
@@ -96,7 +97,12 @@ public:
   /** Set all virtual domain image */
   itkSetObjectMacro(VirtualDomainImage, VirtualImageType);
   /** Get the virtual domain image */
-  itkGetObjectMacro(VirtualDomainImage, VirtualImageType);
+  itkGetConstObjectMacro(VirtualDomainImage, VirtualImageType);
+
+  const VirtualRegionType GetVirtualDomainRegion( void ) const
+  {
+    return this->m_VirtualDomainImage->GetBufferedRegion();
+  }
 
   /* Image dimension accessors */
   itkStaticConstMacro(FixedImageDimension, itk::SizeValueType,
@@ -118,8 +124,7 @@ public:
   typedef typename FixedTransformType::Pointer        FixedTransformPointer;
   typedef typename MovingTransformType::Pointer       MovingTransformPointer;
 
-  typedef typename FixedTransformType::JacobianType   FixedTransformJacobianType;
-  typedef typename MovingTransformType::JacobianType  MovingTransformJacobianType;
+  typedef typename FixedTransformType::JacobianType   JacobianType;
 
   /** Connect the fixed transform. */
   itkSetObjectMacro(FixedTransform, FixedTransformType);
@@ -151,7 +156,8 @@ int itkRegistrationParameterScalesFromJacobianTest(int , char* [])
 
   // Image begins
   const itk::SizeValueType    ImageDimension = 2;
-  typedef double         PixelType;
+  typedef double              PixelType;
+  typedef double              FloatType;
 
   // Image Types
   typedef itk::Image<PixelType,ImageDimension>           FixedImageType;
@@ -208,6 +214,11 @@ int itkRegistrationParameterScalesFromJacobianTest(int , char* [])
   std::cout << "Jacobian scales for the affine transform = "
     << jacobianScales << std::endl;
 
+  MovingTransformType::ParametersType movingStep(movingTransform->GetNumberOfParameters());
+  movingStep = movingTransform->GetParameters();
+  FloatType stepScale = jacobianScaleEstimator->EstimateStepScale(movingStep);
+  std::cout << "The step scale of Jacobian for the affine transform = " << stepScale << std::endl;
+
   // Check the correctness
   RegistrationParameterScalesFromJacobianType::ScalesType theoreticalJacobianScales(
     movingTransform->GetNumberOfParameters());
@@ -231,6 +242,22 @@ int itkRegistrationParameterScalesFromJacobianTest(int , char* [])
     theoreticalJacobianScales[param++] = 1;
     }
 
+  FloatType theoreticalStepScale = 0.0;
+  itk::SizeValueType count = 0.0;
+  VirtualImageType::PointType lowerPoint;
+  virtualImage->TransformIndexToPhysicalPoint(virtualImage->
+    GetLargestPossibleRegion().GetIndex(), lowerPoint);
+
+  for (FloatType x=lowerPoint[0]; x<=upperPoint[0]; x+=1.0)
+    {
+    for (FloatType y=lowerPoint[1]; y<=upperPoint[1]; y+=1.0)
+      {
+      theoreticalStepScale += vcl_sqrt(x*x + y*y);
+      count++;
+      }
+    }
+  theoreticalStepScale /= count;
+
   bool jacobianPass = true;
   for (itk::SizeValueType p = 0; p < jacobianScales.GetSize(); p++)
     {
@@ -251,6 +278,11 @@ int itkRegistrationParameterScalesFromJacobianTest(int , char* [])
       break;
       }
     }
+  bool stepScalePass = false;
+  if (vcl_abs( (stepScale - theoreticalStepScale)/theoreticalStepScale ) < 0.1)
+    {
+    stepScalePass = true;
+    }
   // Check done
 
   std::cout << std::endl;
@@ -269,7 +301,16 @@ int itkRegistrationParameterScalesFromJacobianTest(int , char* [])
     std::cout << "Error: the jacobian scales for an affine transform are equal for all parameters." << std::endl;
     }
 
-  if (jacobianPass && nonUniformForJacobian)
+  if (!stepScalePass)
+    {
+    std::cout << "Failed: the step scale for the affine transform is not correct." << std::endl;
+    }
+  else
+    {
+    std::cout << "Passed: the step scale for the affine transform is correct." << std::endl;
+    }
+
+  if (jacobianPass && nonUniformForJacobian && stepScalePass)
     {
     std::cout << "Test passed" << std::endl;
     return EXIT_SUCCESS;

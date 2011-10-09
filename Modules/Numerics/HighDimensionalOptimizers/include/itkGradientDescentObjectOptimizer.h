@@ -19,6 +19,7 @@
 #define __itkGradientDescentObjectOptimizer_h
 
 #include "itkGradientDescentObjectOptimizerBase.h"
+#include "itkOptimizerParameterScalesEstimator.h"
 
 namespace itk
 {
@@ -42,6 +43,11 @@ namespace itk
  * \note Unlike the previous version of GradientDescentOptimizer, this version
  * does not have a "maximize/minimize" option to modify the effect of the metric
  * derivative.
+ *
+ * \note The scales and learning rates may be estimated with a helper object of
+ * OptimizerParameterScalesEstimator. A user may call SetScalesEstimator(...)
+ * to set m_ScalesEstimator. This class offers two methods, EstimateScales
+ * for parameter scales, and EstimateStepScale for learning rates.
  *
  * \note The assigned metric is assumed to return a parameter derivative
  * result that "improves" the optimization when *added* to the current
@@ -79,6 +85,12 @@ public:
   /** Get the learning rate. */
   itkGetConstReferenceMacro(LearningRate, InternalComputationValueType);
 
+  /** Set the maximum step scale. */
+  itkSetMacro(MaximumStepScale, InternalComputationValueType);
+
+  /** Set the scales estimator. */
+  itkSetObjectMacro(ScalesEstimator, OptimizerParameterScalesEstimator);
+
   /** Start and run the optimization */
   virtual void StartOptimization();
 
@@ -93,9 +105,16 @@ protected:
   virtual void AdvanceOneStep(void);
 
   /** Modify the gradient over a given index range. */
-  virtual void ModifyGradientOverSubRange( const IndexRangeType& subrange );
+  virtual void ModifyGradientByScalesOverSubRange( const IndexRangeType& subrange );
+  virtual void ModifyGradientByLearningRateOverSubRange( const IndexRangeType& subrange );
 
   InternalComputationValueType  m_LearningRate;
+
+  /** The maximum step scale to restrict learning rates. */
+  InternalComputationValueType  m_MaximumStepScale;
+
+  /** Estimate the learning rate */
+  virtual void EstimateLearningRate();
 
   /** Default constructor */
   GradientDescentObjectOptimizer();
@@ -104,6 +123,9 @@ protected:
   virtual ~GradientDescentObjectOptimizer();
 
   virtual void PrintSelf( std::ostream & os, Indent indent ) const;
+
+  OptimizerParameterScalesEstimator::Pointer m_ScalesEstimator;
+
 private:
 
   //purposely not implemented

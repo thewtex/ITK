@@ -42,6 +42,12 @@ public:
     scales.Fill(1.0);
     }
 
+  virtual double EstimateStepScale(const ParametersType &step)
+    {
+    double norm = step.two_norm();
+    return 1.0/norm;
+    }
+
 protected:
   OptimizerParameterScalesEstimatorTest(){};
   ~OptimizerParameterScalesEstimatorTest(){};
@@ -53,6 +59,7 @@ private:
 };
 
 /**
+ * The test program for OptimizerParameterScalesEstimator.
  */
 int itkOptimizerParameterScalesEstimatorTest(int , char* [])
 {
