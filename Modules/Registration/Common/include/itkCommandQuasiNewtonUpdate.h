@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkCommandScalesUpdate_h
-#define __itkCommandScalesUpdate_h
+#ifndef __itkCommandQuasiNewtonUpdate_h
+#define __itkCommandQuasiNewtonUpdate_h
 
 #include "itkCommand.h"
 #include "itkWeakPointer.h"
@@ -25,17 +25,17 @@ namespace itk {
 
 /**
  *  Implementation of the Command Pattern to be invoked every iteration
- * \class CommandScalesUpdate
+ * \class CommandQuasiNewtonUpdate
  * \ingroup ITKRegistrationCommon
  */
 template < class TOptimizer, class TScalesEstimator >
-class ITK_EXPORT CommandScalesUpdate : public Command
+class ITK_EXPORT CommandQuasiNewtonUpdate : public Command
 {
 public:
   /**
    * Standard "Self" typedef.
    */
-  typedef CommandScalesUpdate   Self;
+  typedef CommandQuasiNewtonUpdate   Self;
 
 
   /**
@@ -67,6 +67,9 @@ public:
    */
   itkSetMacro(StepSize, FloatType);
   itkGetConstMacro(StepSize, FloatType);
+
+  itkSetMacro(NewtonStepSize, FloatType);
+  itkGetConstMacro(NewtonStepSize, FloatType);
 
   /**
    * Execute method will print data at each iteration
@@ -107,14 +110,31 @@ public:
       m_Optimizer->SetLearningRate(learningRate);
       std::cout << "learningRate = " << learningRate << std::endl;
       }
+    else if( typeid( event ) == typeid( itk::NewtonStepLearningRateEvent ) )
+      {
+      const DerivativeType &step = m_Optimizer->GetNewtonStep();
+      FloatType stepScale = m_ScalesEstimator->EstimateStepScale(step);
+      FloatType learningRate = NumericTraits<FloatType>::One;
 
+      if (stepScale > NumericTraits<FloatType>::epsilon())
+        {
+        learningRate = m_NewtonStepSize / stepScale;
+        if (learningRate > NumericTraits<FloatType>::One)
+          {
+          learningRate = NumericTraits<FloatType>::One;
+          }
+        }
+
+      m_Optimizer->SetLearningRate(learningRate);
+      std::cout << "learningRate of Newton Step = " << learningRate << std::endl;
+      }
   }
 
 
   /**
    * Run-time type information (and related methods).
    */
-  itkTypeMacro( CommandScalesUpdate, ::itk::Command );
+  itkTypeMacro( CommandQuasiNewtonUpdate, ::itk::Command );
 
 
   /**
@@ -141,6 +161,7 @@ public:
     m_Optimizer = optimizer;
     m_Optimizer->AddObserver( itk::ScalesEvent(), this );
     m_Optimizer->AddObserver( itk::LearningRateEvent(), this );
+    m_Optimizer->AddObserver( itk::NewtonStepLearningRateEvent(), this );
     }
 
   /**
@@ -156,9 +177,10 @@ protected:
   /**
    * Constructor
    */
-  CommandScalesUpdate()
+  CommandQuasiNewtonUpdate()
     {
     this->m_StepSize = 0.5;
+    this->m_NewtonStepSize = 2.5;
     }
 
 private:
@@ -177,6 +199,7 @@ private:
    *  Step size for learning rate estimation
    */
   FloatType                           m_StepSize;
+  FloatType                           m_NewtonStepSize;
 
 };
 
