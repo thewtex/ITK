@@ -155,19 +155,17 @@ int itkLevelSetEquationTermContainerBaseTest( int argc, char* argv[] )
   LaplacianTermType::Pointer term0 = LaplacianTermType::New();
   term0->SetInput( binary );
   term0->SetCoefficient( 1.0 );
-  term0->SetCurrentLevelSetId( 0 );
-  term0->SetLevelSetContainer( lscontainer );
   std::cout << "Laplacian term created" << std::endl;
 
   ChanAndVeseInternalTermType::Pointer term1 = ChanAndVeseInternalTermType::New();
   term1->SetInput( binary );
   term1->SetCoefficient( 1.0 );
-  term1->SetCurrentLevelSetId( 0 );
-  term1->SetLevelSetContainer( lscontainer );
   std::cout << "CV internal term created" << std::endl;
 
   TermContainerType::Pointer termContainer0 = TermContainerType::New();
   termContainer0->SetInput( binary );
+  termContainer0->SetCurrentLevelSetId( 0 );
+  termContainer0->SetLevelSetContainer( lscontainer );
 
   TermContainerType::TermPointer temp;
   temp = dynamic_cast< TermContainerType::TermType* >( term0.GetPointer() );

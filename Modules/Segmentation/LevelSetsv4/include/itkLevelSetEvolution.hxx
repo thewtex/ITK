@@ -56,7 +56,15 @@ void
 LevelSetEvolution< TEquationContainer, LevelSetDenseImageBase< TImage > >
 ::RunOneIteration()
 {
+  this->m_LevelSetContainer = this->m_EquationContainer->GetLevelSetContainer();
+
   typename EquationContainerType::Iterator eqIt = this->m_EquationContainer->Begin();
+
+  if( eqIt == this->m_EquationContainer->End() )
+    {
+    itkGenericExceptionMacro( << "EquationContainer is empty" );
+    }
+
   TermContainerPointer termContainer = eqIt->GetEquation();
 
   typename TermContainerType::Iterator termIt = termContainer->Begin();
@@ -64,10 +72,23 @@ LevelSetEvolution< TEquationContainer, LevelSetDenseImageBase< TImage > >
     {
     itkGenericExceptionMacro( << "TermContainer is empty" );
     }
+
+  if( this->m_LevelSetContainer.IsNull() )
+    {
+    itkGenericExceptionMacro( << "m_LevelSetContainer is NULL" );
+    }
+
+  if( this->m_LevelSetContainer != termContainer->GetLevelSetContainer() )
+    {
+    itkGenericExceptionMacro( << "this->m_LevelSetContainer != termContainer->GetLevelSetContainer()" );
+    }
+
   TermPointer term = termIt->GetTerm();
 
-  // Get the LevelSetContainer from the EquationContainer
-  this->m_LevelSetContainer = term->GetLevelSetContainer();
+  if( this->m_LevelSetContainer != term->GetLevelSetContainer() )
+    {
+    itkGenericExceptionMacro( << "this->m_LevelSetContainer != term->GetLevelSetContainer()" );
+    }
 
   this->AllocateUpdateBuffer();
 

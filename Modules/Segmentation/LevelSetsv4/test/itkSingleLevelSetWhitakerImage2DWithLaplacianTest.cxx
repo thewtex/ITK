@@ -170,40 +170,30 @@ int itkSingleLevelSetWhitakerImage2DWithLaplacianTest( int argc, char* argv[] )
   ChanAndVeseInternalTermType::Pointer cvInternalTerm0 = ChanAndVeseInternalTermType::New();
   cvInternalTerm0->SetInput( input );
   cvInternalTerm0->SetCoefficient( 1.0 );
-  cvInternalTerm0->SetCurrentLevelSetId( 0 );
-  cvInternalTerm0->SetLevelSetContainer( lscontainer );
   std::cout << "LevelSet 1: CV internal term created" << std::endl;
 
   // Create ChanAndVese external term for phi_{1}
   ChanAndVeseExternalTermType::Pointer cvExternalTerm0 = ChanAndVeseExternalTermType::New();
   cvExternalTerm0->SetInput( input );
   cvExternalTerm0->SetCoefficient( 1.0 );
-  cvExternalTerm0->SetCurrentLevelSetId( 0 );
-  cvExternalTerm0->SetLevelSetContainer( lscontainer );
   std::cout << "LevelSet 1: CV external term created" << std::endl;
 
   // Create ChanAndVese curvature term for phi_{1}
   CurvatureTermType::Pointer curvatureTerm0 = CurvatureTermType::New();
   curvatureTerm0->SetInput( input );
   curvatureTerm0->SetCoefficient( 1.0 );
-  curvatureTerm0->SetCurrentLevelSetId( 0 );
-  curvatureTerm0->SetLevelSetContainer( lscontainer );
   std::cout << "LevelSet 1: Curvature term created" << std::endl;
 
   // Create ChanAndVese curvature term for phi_{1}
   PropagationTermType::Pointer propagationTerm0 = PropagationTermType::New();
   propagationTerm0->SetInput( input );
   propagationTerm0->SetCoefficient( 1.0 );
-  propagationTerm0->SetCurrentLevelSetId( 0 );
-  propagationTerm0->SetLevelSetContainer( lscontainer );
   std::cout << "LevelSet 1: Propagation term created" << std::endl;
 
     // Create ChanAndVese curvature term for phi_{1}
   LaplacianTermType::Pointer laplacianTerm0 = LaplacianTermType::New();
   laplacianTerm0->SetInput( input );
   laplacianTerm0->SetCoefficient( 1.0 );
-  laplacianTerm0->SetCurrentLevelSetId( 0 );
-  laplacianTerm0->SetLevelSetContainer( lscontainer );
   std::cout << "LevelSet 1: Laplacian term created" << std::endl;
 
   // **************** CREATE ALL EQUATIONS ****************
@@ -211,6 +201,8 @@ int itkSingleLevelSetWhitakerImage2DWithLaplacianTest( int argc, char* argv[] )
   // Create Term Container
   TermContainerType::Pointer termContainer0 = TermContainerType::New();
   termContainer0->SetInput( input );
+  termContainer0->SetCurrentLevelSetId( 0 );
+  termContainer0->SetLevelSetContainer( lscontainer );
 
   TermContainerType::TermPointer temp;
   temp = dynamic_cast< TermContainerType::TermType* >( cvInternalTerm0.GetPointer() );
