@@ -28,7 +28,9 @@ namespace itk
 template< class TInputImage, class TLevelSetContainer >
 LevelSetEquationTermContainerBase< TInputImage, TLevelSetContainer >
 ::LevelSetEquationTermContainerBase()
-{}
+{
+  m_LevelSetContainer = NULL;
+}
 
 // ----------------------------------------------------------------------------
 template< class TInputImage, class TLevelSetContainer >
@@ -95,14 +97,28 @@ LevelSetEquationTermContainerBase< TInputImage, TLevelSetContainer >
         itkGenericExceptionMacro( <<"m_Input and iTerm->GetInput are NULL" );
         }
       }
+    iTerm->SetCurrentLevelSetId( this->m_CurrentLevelSetId );
+
+    if( this->m_LevelSetContainer.IsNotNull() )
+      {
+      iTerm->SetLevelSetContainer( this->m_LevelSetContainer );
+      }
+    else
+      {
+      if( ! iTerm->GetLevelSetContainer() )
+        {
+        itkGenericExceptionMacro( <<"m_LevelSetContainer and iTerm->GetLevelSetContainer() are NULL" );
+        }
+      }
+
     m_Container[iId] = iTerm;
     m_TermContribution[iId] = NumericTraits< LevelSetOutputPixelType >::Zero;
     m_NameContainer[ iTerm->GetTermName() ] = iTerm;
 
     RequiredDataType termRequiredData = iTerm->GetRequiredData();
 
-    typename RequiredDataType::const_iterator dIt = termRequiredData.begin();
-    typename RequiredDataType::const_iterator dEnd = termRequiredData.end();
+    typename RequiredDataType::const_iterator dIt   = termRequiredData.begin();
+    typename RequiredDataType::const_iterator dEnd  = termRequiredData.end();
 
     while( dIt != dEnd )
       {
@@ -135,6 +151,20 @@ LevelSetEquationTermContainerBase< TInputImage, TLevelSetContainer >
       else
         {
         itkGenericExceptionMacro( <<"m_Input and iTerm->GetInput are NULL" );
+        }
+      }
+
+    iTerm->SetCurrentLevelSetId( this->m_CurrentLevelSetId );
+
+    if( this->m_LevelSetContainer.isNotNull() )
+      {
+      iTerm->SetLevelSetContainer( this->m_LevelSetContainer );
+      }
+    else
+      {
+      if( ! iTerm->GetLevelSetContainer() )
+        {
+        itkGenericExceptionMacro( <<"m_LevelSetContainer and iTerm->GetLevelSetContainer() are NULL" );
         }
       }
 
