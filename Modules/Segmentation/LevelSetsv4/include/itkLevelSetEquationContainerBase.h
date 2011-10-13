@@ -89,6 +89,9 @@ public:
   itkSetObjectMacro( Input, InputImageType );
   itkGetConstObjectMacro( Input, InputImageType );
 
+  itkSetObjectMacro( LevelSetContainer, LevelSetContainerType );
+  itkGetConstObjectMacro( LevelSetContainer, LevelSetContainerType );
+
 protected:
   typedef std::map< LevelSetIdentifierType, TermContainerPointer >  MapContainerType;
   typedef typename MapContainerType::iterator                       MapContainerIterator;
@@ -234,8 +237,9 @@ protected:
   LevelSetEquationContainerBase();
   virtual ~LevelSetEquationContainerBase();
 
-  MapContainerType  m_Container;
-  InputImagePointer m_Input;
+  LevelSetContainerPointer  m_LevelSetContainer;
+  MapContainerType          m_Container;
+  InputImagePointer         m_Input;
 
 
 private:

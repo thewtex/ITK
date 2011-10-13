@@ -35,6 +35,7 @@ namespace itk
  *
  *  \tparam TInputImage Input image or speed image or feature image for segmentation
  *  \tparam TLevelSetContainer Container holding the all the level set functions
+ *
  *  \ingroup ITKLevelSetsv4
  */
 template< class TInputImage,
@@ -81,6 +82,12 @@ public:
   /** Set/Get the input image to be segmented. */
   itkSetObjectMacro( Input, InputImageType );
   itkGetObjectMacro( Input, InputImageType );
+
+  itkSetMacro( CurrentLevelSetId, LevelSetIdentifierType );
+  itkGetMacro( CurrentLevelSetId, LevelSetIdentifierType );
+
+  itkSetObjectMacro( LevelSetContainer, LevelSetContainerType );
+  itkGetObjectMacro( LevelSetContainer, LevelSetContainerType );
 
   /** Add a term to the end of the container  */
   void PushTerm( TermType* iTerm );
@@ -266,7 +273,10 @@ protected:
 
   virtual ~LevelSetEquationTermContainerBase();
 
-  InputImagePointer     m_Input;
+  LevelSetIdentifierType    m_CurrentLevelSetId;
+  LevelSetContainerPointer  m_LevelSetContainer;
+
+  InputImagePointer         m_Input;
 
   typedef itksys::hash_map< std::string, TermPointer > HashMapStringTermContainerType;
 

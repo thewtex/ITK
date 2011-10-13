@@ -59,6 +59,7 @@ LevelSetEquationContainerBase< TTermContainer >
 {
   if ( iEquation )
     {
+    iEquation->SetLevelSetContainer( this->m_LevelSetContainer );
     this->m_Container[iId] = iEquation;
     if( iEquation->GetInput() )
       {
