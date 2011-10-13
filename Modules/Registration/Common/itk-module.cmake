@@ -13,6 +13,8 @@ required-- these can be found in \\\\ref ITKImageFunction.")
 itk_module(ITKRegistrationCommon
   DEPENDS
     ITKOptimizers
+    ITKHighDimensionalMetrics
+    ITKHighDimensionalOptimizers
     ITKImageIntensity
     ITKImageFunction
     ITKImageGrid

@@ -1,5 +1,6 @@
 itk_module_test()
 set(ITKRegistrationCommonTests
+itkSimpleImageRegistrationTest.cxx
 itkBSplineTransformParametersAdaptorTest.cxx
 itkDisplacementFieldTransformParametersAdaptorTest.cxx
 itkBSplineSmoothingOnUpdateDisplacementFieldTransformParametersAdaptorTest.cxx
@@ -57,6 +58,12 @@ CreateTestDriver(ITKRegistrationCommon  "${ITKRegistrationCommon-Test_LIBRARIES}
 
 set(TEMP ${ITK_TEST_OUTPUT_DIR})
 
+itk_add_test(NAME itkSimpleImageRegistrationTest
+      COMMAND ITKRegistrationCommonTestDriver itkSimpleImageRegistrationTest 2
+      DATA{Baseline/r16slice_rigid.nii.gz}
+      DATA{Baseline/r64slice.nii.gz}
+      ${TEMP}/itkSimpleImageRegistrationTest.nii.gz
+      )
 itk_add_test(NAME itkBSplineTransformParametersAdaptorTest
       COMMAND ITKRegistrationCommonTestDriver itkBSplineTransformParametersAdaptorTest)
 itk_add_test(NAME itkDisplacementFieldTransformParametersAdaptorTest
