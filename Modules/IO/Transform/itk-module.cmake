@@ -7,6 +7,7 @@ itk_module(ITKIOTransform
     ITKHDF5
   TEST_DEPENDS
     ITKTestKernel
+    ITKDisplacementField
   DESCRIPTION
     "${DOCUMENTATION}"
 )
