@@ -43,6 +43,7 @@ itkFEMElement3DTest.cxx
 itkFEMObjectTest.cxx
 itkFEMObjectTest2.cxx
 itkFEMSpatialObjectTest.cxx
+itkFEMSolverHyperbolicTest.cxx
 )
 
 CreateTestDriver(ITKFEM  "${ITKFEM-Test_LIBRARIES}" "${ITKFEMTests}")
@@ -164,9 +165,9 @@ itk_add_test(NAME itkFEMC0TriangularElement-Quadratic
 itk_add_test(NAME itkFEMTruss
       COMMAND ITKFEMTestDriver itkFEMElement2DTest
               DATA{Input/truss.meta})
-
-
-
+itk_add_test(NAME itkFEMSolverHyperbolicTest
+      COMMAND ITKFEMTestDriver itkFEMSolverHyperbolicTest
+              DATA{Input/quad2-small.meta} 5 0)
 
 itk_add_test(NAME itkFEMElement2DC0LinearQuadrilateralStrainTest ${FEM_TESTS3}
          COMMAND ITKFEMTestDriver itkFEMElement2DC0LinearQuadrilateralStrainTest
