@@ -46,6 +46,7 @@ template< class TMesh >
 typename LevelSetQuadEdgeMeshBase< TMesh >::GradientType
 LevelSetQuadEdgeMeshBase< TMesh >::EvaluateGradient( const InputType& iP ) const
 {
+  (void) iP;
   itkWarningMacro( <<"to be implemented" );
   return this->GradientType();
 }
@@ -54,6 +55,8 @@ template< class TMesh >
 typename LevelSetQuadEdgeMeshBase< TMesh >::HessianType
 LevelSetQuadEdgeMeshBase< TMesh >::EvaluateHessian( const InputType& iP ) const
 {
+  (void) iP;
+
   itkWarningMacro( <<"to be implemented" );
   return this->HessianType();
 }
@@ -74,6 +77,8 @@ template< class TMesh >
 void
 LevelSetQuadEdgeMeshBase< TMesh >::EvaluateGradient( const InputType& iP, LevelSetDataType& ioData ) const
 {
+  (void) iP;
+
   // if it has not already been computed before
   if( !ioData.Gradient.first )
     {
@@ -88,13 +93,14 @@ template< class TMesh >
 void
 LevelSetQuadEdgeMeshBase< TMesh >::EvaluateHessian( const InputType& iP, LevelSetDataType& ioData ) const
 {
-if( !ioData.Hessian.first )
-  {
-  ioData.Hessian.first = true;
+  (void) iP;
+  if( !ioData.Hessian.first )
+    {
+    ioData.Hessian.first = true;
 
-  // compute the hessian
-  ///\todo implement the computation of the hessian
-  }
+    // compute the hessian
+    ///\todo implement the computation of the hessian
+    }
 }
 
 template< class TMesh >
