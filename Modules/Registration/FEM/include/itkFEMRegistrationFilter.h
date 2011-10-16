@@ -175,9 +175,6 @@ public:
   typedef itk::VectorExpandImageFilter<FieldType, FieldType> ExpanderType;
   typedef typename ExpanderType::ExpandFactorsType           ExpandFactorsType;
 
-  typedef itk::RecursiveMultiResolutionPyramidImageFilter<FixedImageType, FixedImageType>
-  FixedPyramidType;
-
   typedef  typename FieldType::Pointer FieldPointer;
 
   /** Instantiate the load class with the correct image type. */
@@ -503,7 +500,7 @@ public:
   /**
    * Get/Set the maximum number of levels for multi resolution
    */
-  itkSetMacro(MaxLevel, unsigned int);
+  void SetMaxLevel(unsigned int level);
   itkGetMacro(MaxLevel, unsigned int);
 
   /**
@@ -535,15 +532,12 @@ public:
 protected:
 
   /** This function generates a regular mesh of ElementsPerSide^D size */
-  // void CreateMesh(double ElementsPerSide, FEMObjectType *femObject, SolverType *solver, ImageSizeType sz);
-  void CreateMesh(double ElementsPerSide, SolverType *solver, ImageSizeType sz);
+  void CreateMesh(unsigned int ElementsPerSide, SolverType *solver);
 
   /** The non-image loads are entered into the solver. */
-  // void ApplyLoads(FEMObjectType *femObject, ImageSizeType Isz, double* spacing=NULL);
   void ApplyLoads(ImageSizeType Isz, double* spacing = NULL);
 
   /** The image loads are entered into the solver. */
-  // void ApplyImageLoads(FEMObjectType *femObject, MovingImageType* i1, FixedImageType* i2);
   void ApplyImageLoads(MovingImageType* i1, FixedImageType* i2);
 
   // FIXME - Not implemented
