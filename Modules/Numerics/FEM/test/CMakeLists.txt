@@ -43,6 +43,7 @@ itkFEMElement3DTest.cxx
 itkFEMObjectTest.cxx
 itkFEMObjectTest2.cxx
 itkFEMSpatialObjectTest.cxx
+itkFEMScatteredDataPointSetToImageFilterTest.cxx
 )
 
 CreateTestDriver(ITKFEM  "${ITKFEM-Test_LIBRARIES}" "${ITKFEMTests}")
@@ -107,6 +108,8 @@ itk_add_test(NAME itkFEMLinearSystemWrapperVNLTest
       COMMAND ITKFEMTestDriver itkFEMLinearSystemWrapperVNLTest)
 itk_add_test(NAME itkFEMPArrayTest
       COMMAND ITKFEMTestDriver itkFEMPArrayTest)
+itk_add_test(NAME itkFEMScatteredDataPointSetToImageFilterTest
+      COMMAND ITKFEMTestDriver itkFEMScatteredDataPointSetToImageFilterTest)
 
 
 # 3D Element Tests
