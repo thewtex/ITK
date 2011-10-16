@@ -63,13 +63,14 @@ FEMRegistrationFilter<TMovingImage, TFixedImage, TFemObject>::FEMRegistrationFil
   m_Gamma.set_size(1);
   m_Gamma[m_CurrentLevel] = 1;
   m_Rho.set_size(1);
-  m_E[0] = 1.;
-  m_Rho[0] = 1.;
+  m_E[m_CurrentLevel] = 1.;
+  m_Rho[m_CurrentLevel] = 1.;
   m_Maxiters.set_size(1);
   m_Maxiters[m_CurrentLevel] = 1;
   m_TimeStep = 1;
   m_Alpha = 1.0;
   m_MeshPixelsPerElementAtEachResolution.set_size(1);
+  m_MeshPixelsPerElementAtEachResolution[m_CurrentLevel] = 1;
   m_NumberOfIntegrationPoints.set_size(1);
   m_NumberOfIntegrationPoints[m_CurrentLevel] = 4;
   m_MetricWidth.set_size(1);
@@ -105,6 +106,31 @@ FEMRegistrationFilter<TMovingImage, TFixedImage, TFemObject>::FEMRegistrationFil
   typename DefaultInterpolatorType::Pointer interp = DefaultInterpolatorType::New();
   m_Interpolator = static_cast<InterpolatorType *>( interp.GetPointer() );
   m_Interpolator->SetInputImage(m_Field);
+}
+
+template <class TMovingImage, class TFixedImage, class TFemObject>
+void FEMRegistrationFilter<TMovingImage, TFixedImage, TFemObject>::SetMaxLevel(unsigned int level)
+{
+  m_MaxLevel = level;
+
+  m_E.set_size(level);
+  m_Gamma.set_size(level);
+  m_Rho.set_size(level);
+  m_Maxiters.set_size(level);
+  m_MeshPixelsPerElementAtEachResolution.set_size(level);
+  m_NumberOfIntegrationPoints.set_size(level);
+  m_MetricWidth.set_size(level);
+
+  for (unsigned int i=0;i<level;i++)
+    {
+    m_Gamma[i] = 1;
+    m_E[i] = 1.0;
+    m_Rho[i] = 1.0;
+    m_Maxiters[i] = 1;
+    m_MeshPixelsPerElementAtEachResolution[i] = 1;
+    m_NumberOfIntegrationPoints[i] = 4;
+    m_MetricWidth[i] = 3;
+    }
 }
 
 template <class TMovingImage, class TFixedImage, class TFemObject>
@@ -353,68 +379,6 @@ void FEMRegistrationFilter<TMovingImage, TFixedImage, TFemObject>::ApplyLoads(
 
   vnl_vector<Float> pd; pd.set_size(ImageDimension);
   vnl_vector<Float> pu; pu.set_size(ImageDimension);
-
-  if( m_UseLandmarks )
-    {
-/**FIXME */
-/*    LoadArray::iterator loaditerator;
-    LoadLandmark::Pointer l3;
-
-    if ( this->m_LandmarkArray.empty() )
-      {
-      // Landmark loads
-      std::ifstream f;
-      std::cout << m_LandmarkFileName << std::endl;
-      f.open(m_LandmarkFileName.c_str());
-      if (f)
-        {
-
-        itkDebugMacro( << "Try loading landmarks..." );
-        try
-          {
-          // changes made - kiran
-          //mySolver.load.clear(); // NOTE: CLEARING ALL LOADS - LMS MUST BE APPLIED FIRST
-          // **mySolver.ClearLoadArray();
-          // changes made - kiran
-          // **mySolver.Read(f);
-          }
-        catch (itk::ExceptionObject &err)
-          {
-          std::cerr << "Exception: cannot read load landmark " << __FILE__ << err;
-          }
-        f.close();
-
-    // changes made - kiran
-       // m_LandmarkArray.resize(mySolver.load.size());
-       m_LandmarkArray.resize(mySolver.GetNumberOfLoads());
-        unsigned int ct = 0;
-        //for(loaditerator = mySolver.load.begin(); loaditerator != mySolver.load.end(); loaditerator++)
-        for(loaditerator = mySolver.GetLoadArray().begin(); loaditerator != mySolver.GetLoadArray().end(); loaditerator++)
-          // changes made - kiran
-          {
-          if ((l3 = dynamic_cast<LoadLandmark*>( &(*(*loaditerator)) )) != 0 )
-            {
-#ifdef USE_FEM_CLONE
-            LoadLandmark::Pointer l4 = dynamic_cast<LoadLandmark*>(l3->Clone());
-#else
-            LoadLandmark::Pointer l4 = dynamic_cast<LoadLandmark*>(l3->CreateAnother());
-#endif
-            m_LandmarkArray[ct] = l4;
-            ct++;
-            }
-          }
-
-    // changes made - kiran
-        //mySolver.load.clear(); // NOTE: CLEARING ALL LOADS - LMS MUST BE APPLIED FIRST
-        mySolver.ClearLoadArray();
-        // changes made - kiran
-        }
-      else
-        {
-        std::cout << "no landmark file specified." << std::endl;
-        }
-*/
-    }
 
   // now scale the landmarks
 

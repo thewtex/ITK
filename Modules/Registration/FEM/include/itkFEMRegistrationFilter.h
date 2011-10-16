@@ -503,7 +503,7 @@ public:
   /**
    * Get/Set the maximum number of levels for multi resolution
    */
-  itkSetMacro(MaxLevel, unsigned int);
+  void SetMaxLevel(unsigned int level);
   itkGetMacro(MaxLevel, unsigned int);
 
   /**
