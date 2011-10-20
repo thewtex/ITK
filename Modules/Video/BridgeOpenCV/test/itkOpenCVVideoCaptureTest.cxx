@@ -19,7 +19,9 @@
 #include <iostream>
 
 #include "itkOpenCVVideoCapture.h"
-#include "itkVideoFileReader.h"
+#include "itkRGBPixel.h"
+#include "itkVideoStream.h"
+#include "itkVideoReader.h"
 #include "itkOpenCVVideoIOFactory.h"
 
 
@@ -27,11 +29,11 @@
 typedef unsigned char                                 ScalarPixelType;
 typedef itk::Image<ScalarPixelType, 2>                ScalarFrameType;
 typedef itk::VideoStream< ScalarFrameType >           ScalarVideoStreamType;
-typedef itk::VideoFileReader< ScalarVideoStreamType > scalarReaderType;
+typedef itk::VideoReader< ScalarVideoStreamType >     scalarReaderType;
 typedef itk::RGBPixel<unsigned char>                  RGBPixelType;
 typedef itk::Image<RGBPixelType, 2>                   RGBFrameType;
 typedef itk::VideoStream< RGBFrameType >              RGBVideoStreamType;
-typedef itk::VideoFileReader< RGBVideoStreamType >    rgbReaderType;
+typedef itk::VideoReader< RGBVideoStreamType >        rgbReaderType;
 
 //
 // Main test

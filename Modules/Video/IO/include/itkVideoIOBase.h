@@ -32,16 +32,25 @@ namespace itk
  * VideoIOBase is a class that reads and/or writes video data
  * using a particular external technique or external library (OpenCV, vxl). The
  * VideoIOBase encapsulates both the reading and writing of data. The
- * VideoIOBase is used by the VideoFileReader class (to read data)
- * and the VideoFileWriter (to write data). Normally the user does not directly
+ * VideoIOBase is used by the VideoReader class (to read data)
+ * and the VideoWriter (to write data). Normally the user does not directly
  * manipulate this class directly.
  *
  * A Pluggable factory pattern is used. This allows different kinds of
  * readers to be registered (even at run time) without having to
  * modify the code in this class.
  *
- * \sa VideoFileWriter
- * \sa VideoFileReader
+ * Note that when instantiable children override CanReadFile() and/or
+ * CanWriteFile(), the children must handle the possible occurance of some
+ * device ID used in lieu of a file name.  (The only current form of valid
+ * device ID is a camera URL, e.g. camera://opencv/0 for the first OpenCV
+ * camera.)  VideoIOBase provides helper functions to assist with this, named
+ * FileNameIsDeviceID() and FileNameIsCamera(), which return true, respectively,
+ * if the given file name is actually a device ID or (more restrictively) a
+ * camera identifier.
+ *
+ * \sa VideoWriter
+ * \sa VideoReader
  *
  * \ingroup ITKVideoIO
  */
@@ -71,35 +80,46 @@ public:
 
   /*-------- This part of the interface deals with reading data. ------ */
 
-  /** Enum used to define weather to read from a file or a camera */
-  typedef enum {ReadFromFile, ReadFromCamera} ReadType;
-
-  /** Set to reading from file */
-  virtual void SetReadFromFile() = 0;
-
-  /** Set to reading from a camera */
-  virtual void SetReadFromCamera() = 0;
-
-  /** Get the current read type */
-  ReadType GetReadType() {
-    return this->m_ReadType;
+  /** Test whether or not a given file name is actually some sort of a device
+   * ID, such as a camera identifer or some other (future potential) sort of
+   * streaming device.  Currently this just calls this->FileNameIsCamera(). */
+  inline bool FileNameIsDeviceID(const std::string& strFileName)
+  {
+    return this->FileNameIsCamera(strFileName);
+   }
+  inline bool FileNameIsDeviceID(const char* FileName)
+  {
+    std::string strFileName = FileName;
+    return this->FileNameIsDeviceID(strFileName);
   }
 
-  /** Return whether or not the VideoIO can read from a camera. The cameraID
-   * can be a camera number for OpenCV or a guid for VXL */
-  virtual bool CanReadCamera( CameraIDType cameraID ) const = 0;
+  /** Test whether or not a given file name is actually a camera identifer.
+   * Currently, this just tests whether the first 9 characters of the name are
+   * camera:// as specified for camera URLs:
+   * camera://[interface name]/[camera identifer]?parm1=val1&...&parmn=valn */
+  inline bool FileNameIsCamera(const std::string& strFileName)
+  {
+    return 0 == strFileName.compare(0, 9, "camera://");
+  }
+  inline bool FileNameIsCamera(const char* FileName)
+  {
+    std::string strFileName = FileName;
+    return this->FileNameIsCamera(strFileName);
+  }
 
-  /** Set the next frame that should be read. Return true if you operation
-   * succesful */
+  /** Set the next frame that should be read. Return true if your operation
+   * was succesful */
   virtual bool SetNextFrameToRead( FrameOffsetType frameNumber ) = 0;
 
-  /** Virtual accessor functions to be implemented in each derived class */
-  virtual TemporalOffsetType GetPositionInMSec() const = 0;
-  virtual TemporalRatioType GetRatio() const = 0;
-  virtual FrameOffsetType GetFrameTotal() const = 0;
-  virtual TemporalRatioType GetFramesPerSecond() const = 0;
-  virtual FrameOffsetType GetCurrentFrame() const = 0;
-  virtual FrameOffsetType GetLastIFrame() const = 0;
+  /** Virtual accessor functions for video specific information (note:  some of
+   *  these may be moved in the future to a file-only subclass) */
+  itkGetConstMacro(FramesPerSecond,TemporalRatioType);
+  itkGetConstMacro(FrameTotal,FrameOffsetType);
+  itkGetConstMacro(CurrentFrame,FrameOffsetType);
+  itkGetConstMacro(IFrameInterval,FrameOffsetType);
+  itkGetConstMacro(LastIFrame,FrameOffsetType);
+  itkGetConstMacro(Ratio,TemporalRatioType);
+  itkGetConstMacro(PositionInMSec,TemporalOffsetType);
 
   /*-------- This part of the interfaces deals with writing data. ----- */
 
@@ -117,8 +137,16 @@ protected:
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
-  /** Member Variables */
-  ReadType           m_ReadType;
+  /** Reset member variables to empty state closed */
+  void ResetMembers();
+
+  // If necessary, increase the number of dimensions to be at least d.
+  // The never reduces the number of dimensions.
+  // WARNING:  Does NOT reallocate an image buffer, so use only inside the
+  // likes of ReadImageInformation().
+  virtual void EnsureDimensionCount(unsigned int d);
+
+  /** Member Variables -- should some of these move to a file-only subclass? */
   TemporalRatioType  m_FramesPerSecond;
   FrameOffsetType    m_FrameTotal;
   FrameOffsetType    m_CurrentFrame;
@@ -132,7 +160,6 @@ protected:
 private:
   VideoIOBase(const Self &);    //purposely not implemented
   void operator=(const Self &); //purposely not implemented
-
 };
 
 } // end namespace itk

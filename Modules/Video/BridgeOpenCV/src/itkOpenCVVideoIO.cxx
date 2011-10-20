@@ -20,7 +20,6 @@
 
 namespace itk
 {
-
 ///////////////////////////////////////////////////////////////////////////////
 // Constructor, Destructor, and Print
 //
@@ -705,6 +704,8 @@ void OpenCVVideoIO::OpenWriter()
 //
 void OpenCVVideoIO::ResetMembers()
 {
+  Superclass::ResetMembers();  // Initialize all the inherited member variables
+
   this->m_CVImage = 0;
   this->m_TempImage = 0;
   this->m_Capture = 0;
@@ -714,24 +715,11 @@ void OpenCVVideoIO::ResetMembers()
   this->m_FramesPerSecond = 0;
   this->m_Dimensions.clear();
   this->m_FourCC = 0;
-  this->m_FrameTotal = 0;
-  this->m_CurrentFrame = 0;
-  this->m_NumberOfComponents = 0;
-  this->m_IFrameInterval = 0;
-  this->m_LastIFrame = 0;
 
   // Default to reading from a file
-  this->m_ReadType = ReadFromFile;
+  //this->m_ReadType = ReadFromFile;  // this is not obsolete; handle this another way for OpenCV.
   this->m_CameraIndex = 0;
 
-  // Members from ImageIOBase
-  this->m_PixelType = SCALAR;
-  this->m_ComponentType = UCHAR;
-  this->SetNumberOfDimensions(2);
-  this->m_Spacing[0] = 1.0;
-  this->m_Spacing[1] = 1.0;
-  this->m_Origin[0] = 0.0;
-  this->m_Origin[1] = 0.0;
 }
 
 

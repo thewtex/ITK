@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkVideoFileReader_h
-#define __itkVideoFileReader_h
+#ifndef __itkVideoReader_h
+#define __itkVideoReader_h
 
 #include "itkVideoSource.h"
 #include "itkVideoIOFactory.h"
@@ -25,11 +25,14 @@
 namespace itk
 {
 
-/** \class VideoFileReader
+/** \class VideoReader
  * \brief Reader that creates a VideoStream
  *
- * This class is responsible for reading video information from files. It is a
- * subclass of VideoSource, giving it functionality to connect to other
+ * This class is responsible for reading video information from both files and
+ * devices (such as real-time cameras).
+ *
+ * This class is a subclass of VideoSource, giving it functionality to connect
+ * to other
  * TemporalProcessObject classes (specifically, VideoToVideoFilter classes). It
  * uses the temporal streaming implementation provided by TemporalProcessObject
  * to load a single frame at a time into the frame buffer of the output
@@ -38,12 +41,12 @@ namespace itk
  * \ingroup ITKVideoIO
  */
 template< class TOutputVideoStream >
-class ITK_EXPORT VideoFileReader : public VideoSource< TOutputVideoStream >
+class ITK_EXPORT VideoReader : public VideoSource< TOutputVideoStream >
 {
 public:
 
   /**-TYPEDEFS---------------------------------------------------------------*/
-  typedef VideoFileReader                          Self;
+  typedef VideoReader                              Self;
   typedef VideoSource< TOutputVideoStream >        Superclass;
   typedef SmartPointer<Self>                       Pointer;
   typedef TOutputVideoStream                       VideoStreamType;
@@ -71,7 +74,7 @@ public:
   itkNewMacro(Self);
 
   /** Run-time type information (and related methods). */
-  itkTypeMacro(VideoFileReader, VideoSource);
+  itkTypeMacro(VideoReader, VideoSource);
 
   /**-PUBLIC METHODS---------------------------------------------------------*/
 
@@ -88,7 +91,7 @@ public:
   virtual void UpdateOutputInformation();
 
   /** Set the internal VideoIOBase pointer. This will generally be called by
-   * the object that creates the RingBuffer (e.g. itk::VideoFileReader) */
+   * the object that creates the RingBuffer (e.g. itk::VideoReader) */
   void SetVideoIO(VideoIOBase* videoIO);
 
   /** Get the current position as frame, ratio, or MSec */
@@ -107,8 +110,8 @@ public:
 protected:
 
   /**-PROTECTED METHODS------------------------------------------------------*/
-  VideoFileReader();
-  virtual ~VideoFileReader();
+  VideoReader();
+  virtual ~VideoReader();
   void PrintSelf(std::ostream &os, Indent indent) const;
 
   /** Override TemporalStreamingGenerateData to generate output a single frame.
@@ -139,7 +142,7 @@ protected:
    * by default */
   bool m_IFrameSafe;
 private:
-  VideoFileReader(const Self &); // purposely not implemented
+  VideoReader(const Self &); // purposely not implemented
   void operator=(const Self &);  // purposely not implemented
 
 };
@@ -147,7 +150,7 @@ private:
 } // end namespace itk
 
 #if ITK_TEMPLATE_TXX
-#include "itkVideoFileReader.hxx"
+#include "itkVideoReader.hxx"
 #endif
 
 #endif

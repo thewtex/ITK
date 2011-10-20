@@ -123,35 +123,20 @@ FileListVideoIO
 //
 
 //
-// SetReadFromFile
-//
-void FileListVideoIO::SetReadFromFile()
-{
-  if (!m_ReaderOpen && !m_WriterOpen)
-    {
-    m_ReadType = ReadFromFile;
-    }
-  else
-    {
-    itkExceptionMacro("Cannot change read type while reader is open");
-    }
-}
-
-//
-// SetReadFromCamera
-//
-void FileListVideoIO::SetReadFromCamera()
-{
-  itkExceptionMacro("Read From Camera is not supported by this VideoIO");
-}
-
-//
 // CanReadFile
 //
 bool FileListVideoIO::CanReadFile(const char* filename)
 {
-  // Make sure file names have been specified
   std::string strFileName = filename;
+
+  // Make sure this isn't a device ID, such as a camera:// URL
+  if ( this->FileNameIsDeviceID(strFileName) )
+    {
+    return false;
+    }
+
+
+  // Make sure file names have been specified
   std::vector<std::string> fileList = SplitFileNames(strFileName);
   if (fileList.empty())
     {
@@ -175,75 +160,52 @@ bool FileListVideoIO::CanReadFile(const char* filename)
   return true;
 }
 
-//
-// CanReadCamera
-//
-bool FileListVideoIO::CanReadCamera( unsigned long itkNotUsed(cameraID) )const
-{
-  return false;
-}
-
-//
 // ReadImageInformation
 //
 void FileListVideoIO::ReadImageInformation()
 {
   // Open from a file
-  if (m_ReadType == ReadFromFile)
+  std::string filename = m_FileNames[0];
+
+  // Make sure file can be read
+  if (!this->CanReadFile(filename.c_str() ) )
     {
-
-    // Make sure file can be read
-    std::string filename = m_FileNames[0];
-    if (!this->CanReadFile(filename.c_str() ) )
-      {
-      itkExceptionMacro(<< "Cannot Read File: " << filename);
-      }
-
-    // Open the internal IO (don't use local so that spacing, origin, direction
-    // can be retrieved)
-    if (!m_ReaderOpen)
-      {
-      this->OpenReader();
-      }
-
-    m_ImageIO->SetFileName(m_FileNames[0].c_str() );
-    m_ImageIO->ReadImageInformation();
-
-    // No I-Frame issues to worry about
-    m_IFrameInterval = 1;
-    m_LastIFrame = m_FrameTotal-1;
-
-    // Fill Dimensions and Origin
-    unsigned int numberOfDimensions = m_ImageIO->GetNumberOfDimensions();
-    this->SetNumberOfDimensions( numberOfDimensions );
-
-    for (unsigned int i = 0; i < numberOfDimensions; ++i)
-      {
-      m_Dimensions[i] = m_ImageIO->GetDimensions(i);
-      m_Origin.push_back(m_ImageIO->GetOrigin(i) );
-      }
-
-    // Get other image info
-    m_NumberOfComponents = m_ImageIO->GetNumberOfComponents();
-    m_ComponentType = m_ImageIO->GetComponentType();
-    m_PixelType = m_ImageIO->GetPixelType();
-
-    // Make up an arbitrary FramesPerSecond of 1
-    m_FramesPerSecond = 1;
-
+    itkExceptionMacro(<< "Cannot Read File: " << filename);
     }
 
-  // Open capture from a camera
-  else if (m_ReadType == ReadFromCamera)
+  // Open the internal IO (don't use local so that spacing, origin, direction
+  // can be retrieved)
+  if (!m_ReaderOpen)
     {
-    itkExceptionMacro("FileListVideoIO cannot read from a camera");
+    this->OpenReader();
     }
 
-  // Should never get here
-  else
+  m_ImageIO->SetFileName(m_FileNames[0].c_str() );
+  m_ImageIO->ReadImageInformation();
+
+  // No I-Frame issues to worry about
+  m_IFrameInterval = 1;
+  m_LastIFrame = m_FrameTotal-1;
+
+  // Fill Dimensions and Origin
+  m_Dimensions.clear();
+  m_Origin.clear();
+  unsigned int numberOfDimensions = m_ImageIO->GetNumberOfDimensions();
+  this->SetNumberOfDimensions( numberOfDimensions );
+  for (unsigned int i = 0; i < numberOfDimensions; ++i)
     {
-    itkExceptionMacro("Invalid Read Type... How did we get here?");
+    m_Dimensions[i] = m_ImageIO->GetDimensions(i);
+    m_Origin.push_back(m_ImageIO->GetOrigin(i) );
     }
+
+  // Get other image info
+  m_NumberOfComponents = m_ImageIO->GetNumberOfComponents();
+  m_ComponentType = m_ImageIO->GetComponentType();
+  m_PixelType = m_ImageIO->GetPixelType();
+
+  // Make up an arbitrary FramesPerSecond of 1
+  m_FramesPerSecond = 1;
+
 }
 
 //
@@ -335,6 +297,12 @@ std::vector< double > FileListVideoIO::GetDirection(unsigned int i) const
 //
 bool FileListVideoIO::CanWriteFile(const char* filename)
 {
+
+  // Make sure this isn't a device ID, such as a camera:// URL or output device
+  if ( this->FileNameIsDeviceID(filename) )
+    {
+    return false;
+    }
 
   // Make sure file names have been specified
   std::vector<std::string> fileList = SplitFileNames(filename);
@@ -462,8 +430,6 @@ void FileListVideoIO::OpenReader()
     }
 
   // If neither reader nor writer is currently open, open the reader
-  if (m_ReadType == ReadFromFile)
-    {
     // Use the ImageIOFactory to instantiate a working ImageIO
     m_ImageIO = ImageIOFactory::CreateImageIO(
         m_FileNames[0].c_str(), ImageIOFactory::ReadMode);
@@ -475,16 +441,6 @@ void FileListVideoIO::OpenReader()
       {
       itkExceptionMacro("Video failed to open");
       }
-    }
-  else if (m_ReadType == ReadFromCamera)
-    {
-    itkExceptionMacro("FileListVideoIO doesn't support reading from camera");
-    }
-  else
-    {
-    itkExceptionMacro("FileListVideoIO doesn't support reading from unknown "
-                      "ReadType");
-    }
 }
 
 //
@@ -537,9 +493,6 @@ void FileListVideoIO::ResetMembers()
   m_NumberOfComponents = 0;
   m_IFrameInterval = 0;
   m_LastIFrame = 0;
-
-  // Default to reading from a file
-  m_ReadType = ReadFromFile;
 
   // Members from ImageIOBase
   m_PixelType = SCALAR;

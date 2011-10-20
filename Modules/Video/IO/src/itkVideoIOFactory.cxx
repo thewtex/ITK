@@ -21,6 +21,9 @@
 
 #include "itkVideoIOFactory.h"
 
+#include "itkFileListVideoIOFactory.h"
+#include "itkVideoDummyCameraFactory.h"
+
 
 namespace itk
 {
@@ -52,20 +55,10 @@ VideoIOBase::Pointer VideoIOFactory::CreateVideoIO( IOModeType mode, const char*
         j != possibleVideoIO.end(); ++j )
     {
 
-    // Check file readability if reading from file
-    if (mode == ReadFileMode)
+    // Check file (or device ID, such as a camera:// URL) readability if reading
+    if (mode == ReadMode)
       {
       if ((*j)->CanReadFile(arg))
-        {
-        return *j;
-        }
-      }
-
-    // Check camera readability if reading from camera
-    else if (mode == ReadCameraMode)
-      {
-      int cameraIndex = atoi(arg);
-      if ((*j)->CanReadCamera(cameraIndex))
         {
         return *j;
         }
@@ -84,7 +77,6 @@ VideoIOBase::Pointer VideoIOFactory::CreateVideoIO( IOModeType mode, const char*
 
   // Didn't find a usable VideoIO
   return NULL;
-
 }
 
 } // end namespace itk
