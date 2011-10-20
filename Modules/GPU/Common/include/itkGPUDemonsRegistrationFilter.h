@@ -62,6 +62,7 @@ namespace itk
  *
  * \sa GPUDemonsRegistrationFunction
  * \ingroup DeformableImageRegistration MultiThreaded
+ * \ingroup ITKGPUCommon
  */
 template< class TFixedImage, class TMovingImage, class TDeformationField,
           class TParentImageFilter = itk::DemonsRegistrationFilter< TFixedImage, TMovingImage, TDeformationField >
@@ -107,7 +108,7 @@ public:
   DeformationFieldPointer;
 
   /** FiniteDifferenceFunction type. */
-  typedef typename Superclass::FiniteDifferenceFunctionType
+  typedef typename GPUSuperclass::FiniteDifferenceFunctionType
   FiniteDifferenceFunctionType;
 
   /** GPUDemonsRegistrationFilterFunction type. */
@@ -157,6 +158,7 @@ private:
 /** \class GPUDemonsRegistrationFilterFactory
  *
  * \brief Object Factory implemenatation for GPUDemonsRegistrationFilter
+ * \ingroup ITKGPUCommon
  */
 class GPUDemonsRegistrationFilterFactory : public itk::ObjectFactoryBase
 {

@@ -33,6 +33,15 @@
 
 namespace itk
 {
+/** \class GPUKernelManager
+ * \brief GPU kernel manager implemented using OpenCL.
+ *
+ * This class is responsible for managing the GPU kernel and
+ * command queue.
+ *
+ * \ingroup ITKGPUCommon
+ */
+
 class ITK_EXPORT GPUKernelManager : public LightObject
 {
 public:

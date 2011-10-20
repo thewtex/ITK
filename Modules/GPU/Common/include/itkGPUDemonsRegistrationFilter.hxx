@@ -32,8 +32,7 @@ GPUDemonsRegistrationFilter< TFixedImage, TMovingImage, TDeformationField, TPare
 
   drfp = GPUDemonsRegistrationFunctionType::New();
 
-  this->SetDifferenceFunction( static_cast< FiniteDifferenceFunctionType * >(
-                                 drfp.GetPointer() ) );
+  this->SetDifferenceFunction( drfp );
 
   m_UseMovingImageGradient = false;
 }

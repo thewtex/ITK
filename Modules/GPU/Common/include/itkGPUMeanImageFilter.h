@@ -87,6 +87,7 @@ private:
 /** \class GPUMeanImageFilterFactory
  *
  * \brief Object Factory implemenatation for GPUMeanImageFilter
+ * \ingroup ITKGPUCommon
  */
 class GPUMeanImageFilterFactory : public ObjectFactoryBase
 {

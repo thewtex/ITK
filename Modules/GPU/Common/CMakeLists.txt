@@ -13,13 +13,15 @@ IF (ITK_USE_GPU)
 
   SOURCE_GROUP("OpenCL Source Files" FILES ${itkGPUSRC})
 
-  FILE(COPY ${itkGPUSRC} DESTINATION ${ITK_BINARY_DIR}/GPU/Common)
+  FILE(COPY ${itkGPUSRC} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/OpenCL)
   MESSAGE( "OpenCL files to copy " ${itkGPUSRC} )
 
 
   #configure_file(
   #  ${CMAKE_CURRENT_SOURCE_DIR}/src/pathToOpenCLSourceCode.h.in
   #  pathToOpenCLSourceCode.h)
-   itk_module_impl()
+
+  set(ITKGPUCommon_LIBRARIES ITKGPUCommon)
+  itk_module_impl()
 
 ENDIF(ITK_USE_GPU)

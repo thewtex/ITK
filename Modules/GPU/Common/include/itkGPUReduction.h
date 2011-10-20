@@ -31,7 +31,7 @@ namespace itk
  * This class encapsulate the parallel reduction algorithm. An example
  * of this algorithm is to compute the sum of a long array in parallel.
  *
- * \ingroup GPUCommon
+ * \ingroup ITKGPUCommon
  */
 template< class TElement >
 class ITK_EXPORT GPUReduction :
@@ -51,7 +51,7 @@ public:
   itkTypeMacro(GPUReduction,
                Object);
 
-  typedef typename GPUDataManager::Pointer GPUDataPointer;
+  typedef GPUDataManager::Pointer GPUDataPointer;
 
   itkGetMacro(GPUDataManager, GPUDataPointer);
   itkGetMacro(GPUResult, TElement);
@@ -96,8 +96,8 @@ protected:
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** GPU kernel manager for GPUFiniteDifferenceFunction class */
-  typename GPUKernelManager::Pointer m_GPUKernelManager;
-  typename GPUDataPointer m_GPUDataManager;
+  GPUKernelManager::Pointer m_GPUKernelManager;
+  GPUDataPointer            m_GPUDataManager;
 
   /* GPU kernel handle for GPUComputeUpdate */
   int m_ReduceGPUKernelHandle;

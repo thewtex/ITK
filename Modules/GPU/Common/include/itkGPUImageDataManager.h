@@ -22,7 +22,7 @@
  * DataManager for GPUImage. This class will take care of data synchronization
  * between CPU Image and GPU Image.
  *
- * \ingroup GPUCommon
+ * \ingroup ITKGPUCommon
  */
 
 #ifndef __itkGPUImageDataManager_h
@@ -67,7 +67,7 @@ public:
   virtual void MakeGPUBufferUpToDate();
 
   /** Grafting GPU Image Data */
-  virtual void Graft(const GPUImageDataManager* data);
+  virtual void Graft(const GPUDataManager* data);
 
 protected:
 

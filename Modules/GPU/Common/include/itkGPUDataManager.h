@@ -29,7 +29,7 @@
 namespace itk
 {
 /** \class GPUDataManager
- * \brief GPU memory manager implemented using OpenCL. Reguired by GPUImage class.
+ * \brief GPU memory manager implemented using OpenCL. Required by GPUImage class.
  *
  * This class serves as a base class for GPU data container for GPUImage class,
  * which is similar to ImageBase class for Image class. However, all the image-related
@@ -37,7 +37,7 @@ namespace itk
  * we did not name it GPUImageBase. Rather, this class is a GPU-specific data manager
  * that provides functionalties for CPU-GPU data synchronization and grafting GPU data.
  *
- * \ingroup GPUCommon
+ * \ingroup ITKGPUCommon
  */
 class ITK_EXPORT GPUDataManager : public Object   //DataObject//
 {

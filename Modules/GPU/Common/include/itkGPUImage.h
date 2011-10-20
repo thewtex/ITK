@@ -34,7 +34,7 @@ namespace itk
  * can be used with non-GPU itk filters as well. Memory transfer
  * between CPU and GPU is done automatically and implicitly.
  *
- * \ingroup GPUCommon
+ * \ingroup ITKGPUCommon
  */
 template <class TPixel, unsigned int VImageDimension = 2>
 class ITK_EXPORT GPUImage : public Image<TPixel,VImageDimension>

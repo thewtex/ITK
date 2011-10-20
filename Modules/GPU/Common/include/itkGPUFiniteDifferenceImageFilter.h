@@ -29,7 +29,7 @@ namespace itk
  *
  * \brief Base class for GPU Finite Difference Image Filters.
  *
- * \ingroup GPUCommon
+ * \ingroup ITKGPUCommon
  * \sa GPUDenseFiniteDifferenceImageFilter */
 template< class TInputImage, class TOutputImage, class TParentImageFilter =
             FiniteDifferenceImageFilter< TInputImage, TOutputImage > >

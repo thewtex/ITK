@@ -31,7 +31,7 @@ namespace itk
  * must be InPlaceImageFilter type so that the GPU superclass of this class can be correctly defined
  * (NOTE: TParentImageFilter::Superclass is used to define GPUImageToImageFilter class).
  *
- * \ingroup GPUCommon
+ * \ingroup ITKGPUCommon
  */
 template< class TInputImage, class TOutputImage = TInputImage, class TParentImageFilter =
             InPlaceImageFilter< TInputImage, TOutputImage > >

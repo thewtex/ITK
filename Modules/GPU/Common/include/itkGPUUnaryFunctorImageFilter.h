@@ -30,7 +30,7 @@ namespace itk
  * GPU version of unary functor image filter.
  * GPU Functor handles parameter setup for the GPU kernel.
  *
- * \ingroup   GPUCommon
+ * \ingroup   ITKGPUCommon
  */
 template< class TInputImage, class TOutputImage, class TFunction, class TParentImageFilter =
             InPlaceImageFilter< TInputImage, TOutputImage > >

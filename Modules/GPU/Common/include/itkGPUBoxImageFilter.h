@@ -33,7 +33,7 @@ namespace itk
  * It reuses the GenerateInputRequestedRegion() defined in BoxImageFilter class.
  *
  * \author Won-Ki Jeong
- * \ingroup ITK-GPUCommon
+ * \ingroup ITKGPUCommon
  */
 
 template< class TInputImage, class TOutputImage, class TParentImageFilter = BoxImageFilter< TInputImage, TOutputImage > >

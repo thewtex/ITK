@@ -21,6 +21,7 @@
 #include "itkGPUImage.h"
 #include "itkGPUImageToImageFilter.h"
 #include "itkGPUNeighborhoodOperatorImageFilter.h"
+#include "itkDiscreteGaussianImageFilter.h"
 
 namespace itk
 {
@@ -39,7 +40,7 @@ namespace itk
  * When the Gaussian kernel is small, this filter tends to run faster than
  * itk::RecursiveGaussianImageFilter.
  *
- * \ingroup ITK-GPUCommon
+ * \ingroup ITKGPUCommon
  */
 
 template< class TInputImage, class TOutputImage >

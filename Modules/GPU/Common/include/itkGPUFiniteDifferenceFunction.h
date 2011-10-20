@@ -41,7 +41,7 @@ namespace itk
  * GPUFiniteDifferenceFunction must be subclassed to add functionality for
  * GPUComputeUpdate.
  *
- * \ingroup GPUCommon
+ * \ingroup ITKGPUCommon
  **/
 template< class TImageType >
 class ITK_EXPORT GPUFiniteDifferenceFunction : public FiniteDifferenceFunction< TImageType >

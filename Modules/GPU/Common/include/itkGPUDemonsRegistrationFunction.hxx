@@ -205,7 +205,7 @@ GPUDemonsRegistrationFunction< TFixedImage, TMovingImage, TDeformationField >
     m_GPUPixelCounter->InitializeKernel(numPixel);
     m_GPUSquaredChange->InitializeKernel(numPixel);
     m_GPUSquaredDifference->InitializeKernel(numPixel);
-    gpuInitTime.Stop();
+//     gpuInitTime.Stop();
     }
 }
 
@@ -221,8 +221,8 @@ GPUDemonsRegistrationFunction< TFixedImage, TMovingImage, TDeformationField >
                     void *gd
                     )
 {
-  TFixedImage::ConstPointer               fixedImage  = dynamic_cast< const TFixedImage * >( this->GetFixedImage() );
-  TMovingImage::ConstPointer              movingImage = dynamic_cast< const TMovingImage * >( this->GetMovingImage() );
+  typename TFixedImage::ConstPointer      fixedImage  = dynamic_cast< const TFixedImage * >( this->GetFixedImage() );
+  typename TMovingImage::ConstPointer     movingImage = dynamic_cast< const TMovingImage * >( this->GetMovingImage() );
   typename DeformationFieldType::SizeType outSize = output->GetLargestPossibleRegion().GetSize();
 
   unsigned int numPixel = (unsigned int)(fixedImage->GetOffsetTable()[ImageDimension]);

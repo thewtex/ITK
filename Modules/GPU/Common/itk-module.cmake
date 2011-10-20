@@ -1,1 +1,17 @@
-itk_module(ITK-GPUCommon DEPENDS  ITK-Common ITK-PDEDeformableRegistration ITK-ImageIntensity ITK-Smoothing ITK-Thresholding ITK-FiniteDifference ITK-AnisotropicSmoothing TEST_DEPENDS ITK-TestKernel)
+set(DOCUMENTATION "This module contains the framework for processing images
+with the GPU.")
+
+itk_module(ITKGPUCommon
+  DEPENDS
+    ITKCommon
+    ITKPDEDeformableRegistration
+    ITKImageIntensity
+    ITKSmoothing
+    ITKThresholding
+    ITKFiniteDifference
+    ITKAnisotropicSmoothing
+  TEST_DEPENDS
+    ITKTestKernel
+  DESCRIPTION
+    "${DOCUMENTATION}"
+)

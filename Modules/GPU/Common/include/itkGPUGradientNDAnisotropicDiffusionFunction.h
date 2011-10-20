@@ -49,7 +49,7 @@ namespace itk
  * anisotropic diffusion,'' IEEE Transactions on Pattern Analysis Machine
  * Intelligence, vol. 12, pp. 629-639, 1990.
  *
- * \ingroup GPUCommon
+ * \ingroup ITKGPUCommon
  */
 template< class TImage >
 class ITK_EXPORT GPUGradientNDAnisotropicDiffusionFunction :

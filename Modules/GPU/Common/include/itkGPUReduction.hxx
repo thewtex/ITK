@@ -18,8 +18,8 @@
 #ifndef __itkGPUReduction_txx
 #define __itkGPUReduction_txx
 
-#include "itkGPUReduction.h"
 #include "itkMacro.h"
+#include "itkGPUReduction.h"
 
 //#define CPU_VERIFY
 

@@ -30,7 +30,7 @@ namespace itk
  *
  * \brief GPU version of binary threshold image filter.
  *
- * \ingroup GPUCommon
+ * \ingroup ITKGPUCommon
  */
 namespace Functor
 {

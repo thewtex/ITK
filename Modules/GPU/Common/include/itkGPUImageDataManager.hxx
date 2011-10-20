@@ -108,7 +108,7 @@ void GPUImageDataManager< ImageType >::MakeGPUBufferUpToDate()
 }
 
 template < class ImageType >
-void GPUImageDataManager< ImageType >::Graft(const GPUImageDataManager* data)
+void GPUImageDataManager< ImageType >::Graft(const GPUDataManager* data)
 {
   //std::cout << "GPU timestamp : " << this->GetMTime() << ", CPU timestamp : "
   // << m_Image->GetMTime() << std::endl;

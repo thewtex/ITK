@@ -41,7 +41,7 @@ namespace itk
  * Please see the description of parameters given in
  * itkAnisotropicDiffusionImageFilter.
  *
- * \ingroup GPUCommon
+ * \ingroup ITKGPUCommon
  */
 template< class TInputImage, class TOutputImage, class TParentImageFilter =
             GradientAnisotropicDiffusionImageFilter< TInputImage, TOutputImage > >

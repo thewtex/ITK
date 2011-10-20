@@ -27,7 +27,7 @@ namespace Functor
  *
  * \brief Base functor class for GPU functor image filters.
  *
- * \ingroup GPUCommon
+ * \ingroup ITKGPUCommon
  */
 class GPUFunctorBase
 {

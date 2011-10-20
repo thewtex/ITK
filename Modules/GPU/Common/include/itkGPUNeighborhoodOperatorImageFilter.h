@@ -36,10 +36,10 @@ namespace itk
  * across every pixel in an image region.
  *
  * \author Won-Ki Jeong (wkjeong@seas.harvard.edu)
- * \ingroup ITK-GPUCommon
+ * \ingroup ITKGPUCommon
  */
 template< class TInputImage, class TOutputImage,
-          class TOperatorValueType = ITK_TYPENAME TOutputImage::PixelType,
+          class TOperatorValueType = typename TOutputImage::PixelType,
           class TParentImageFilter = NeighborhoodOperatorImageFilter< TInputImage, TOutputImage, TOperatorValueType> >
 class ITK_EXPORT GPUNeighborhoodOperatorImageFilter :
   public GPUImageToImageFilter< TInputImage, TOutputImage, TParentImageFilter >
