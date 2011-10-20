@@ -54,12 +54,15 @@ class Array1DToData;
  *
  * This class uses a virtual reference space. This space defines the resolution
  * at which the registration is performed, as well as the physical coordinate
- * system.  Useful for unbiased registration.  If the user does not set this
- * explicitly then it is taken from the fixed image in \c Initialize method.
+ * system. This is useful for unbiased registration. The region over which
+ * registration is performed is taken from the virtual image buffered region.
+ * If the user does not set the virtual reference space explicitly,
+ * then it is taken from the fixed image in \c Initialize method.
  * The user can define a virtual domain by calling either
- * \c CreateVirtualDomainImage or \c SetVirtualDomainImage. The virtual
- * domain region can be changed via \c SetVirtualDomainRegion. See these
+ * \c CreateVirtualDomainImage or \c SetVirtualDomainImage. See these
  * methods for details.
+ * \note If TFixedImage is type VectorImage, then TVirtualImage must be set
+ * separately to a non-VectorImage type, e.g. Image<unsigned char, dim>.
  *
  * Both transforms are initialized to an IdentityTransform, and can be
  * set by the user using \c SetFixedTranform and \c SetMovingTransform.
@@ -188,7 +191,7 @@ public:
   typedef typename VirtualImageType::IndexType      VirtualIndexType;
 
   /* Image dimension accessors */
-  typedef unsigned int   ImageDimensionType;
+  typedef SizeValueType   ImageDimensionType;
   itkStaticConstMacro(FixedImageDimension, ImageDimensionType,
       ::itk::GetImageDimension<FixedImageType>::ImageDimension);
   itkStaticConstMacro(MovingImageDimension, ImageDimensionType,
@@ -553,6 +556,14 @@ public:
    * GetDerivative will be called repeatedly. It must be called again if
    * metric settings are changed before beginning a new registration. */
   virtual void Initialize(void) throw ( itk::ExceptionObject );
+
+  /* Computes an offset for accessing parameter data from a virtual domain
+   * index. Relevant for metrics with local-support transforms, to access
+   * parameter or derivative memory that is stored linearly in a 1D array.
+   * The result is the offset (1D array index) to the first of N parameters
+   * corresponding to the given virtual index, where N is the number of
+   * local parameters. */
+  OffsetValueType ComputeParameterOffsetFromVirtualDomainIndex( const VirtualIndexType & index, NumberOfParametersType numberOfLocalParameters ) const;
 
 protected:
 
