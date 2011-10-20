@@ -16,10 +16,10 @@
  *
  *=========================================================================*/
 
-#ifndef __itkVideoFileWriter_hxx
-#define __itkVideoFileWriter_hxx
+#ifndef __itkVideoWriter_hxx
+#define __itkVideoWriter_hxx
 
-#include "itkVideoFileWriter.h"
+#include "itkVideoWriter.h"
 
 #include "itkNumericTraits.h"
 #include "itkTemporalDataObject.h"
@@ -33,8 +33,8 @@ namespace itk
 // Constructor
 //
 template< class TInputVideoStream >
-VideoFileWriter< TInputVideoStream >
-::VideoFileWriter()
+VideoWriter< TInputVideoStream >
+::VideoWriter()
 {
   // Initialize members
   m_FileName = "";
@@ -54,8 +54,8 @@ VideoFileWriter< TInputVideoStream >
 // Destructor
 //
 template< class TInputVideoStream >
-VideoFileWriter< TInputVideoStream >
-::~VideoFileWriter()
+VideoWriter< TInputVideoStream >
+::~VideoWriter()
 {
   this->FinishWriting();
 }
@@ -66,7 +66,7 @@ VideoFileWriter< TInputVideoStream >
 //
 template< class TInputVideoStream >
 void
-VideoFileWriter< TInputVideoStream >
+VideoWriter< TInputVideoStream >
 ::PrintSelf(std::ostream &os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
@@ -86,7 +86,7 @@ VideoFileWriter< TInputVideoStream >
 //
 template< class TInputVideoStream >
 void
-VideoFileWriter< TInputVideoStream >
+VideoWriter< TInputVideoStream >
 ::SetInput( const VideoStreamType* input )
 {
   this->ProcessObject::SetNthInput(0, const_cast<VideoStreamType*>(input));
@@ -96,8 +96,8 @@ VideoFileWriter< TInputVideoStream >
 // GetInput
 //
 template< class TInputVideoStream >
-const typename VideoFileWriter< TInputVideoStream >::VideoStreamType*
-VideoFileWriter< TInputVideoStream >
+const typename VideoWriter< TInputVideoStream >::VideoStreamType*
+VideoWriter< TInputVideoStream >
 ::GetInput()
 {
   if (this->GetNumberOfInputs() < 1)
@@ -114,7 +114,7 @@ VideoFileWriter< TInputVideoStream >
 //
 template< class TInputVideoStream >
 void
-VideoFileWriter< TInputVideoStream >
+VideoWriter< TInputVideoStream >
 ::SetVideoIO(IOBasePointer videoIO)
 {
   m_VideoIO = videoIO;
@@ -126,7 +126,7 @@ VideoFileWriter< TInputVideoStream >
 //
 template< class TInputVideoStream >
 void
-VideoFileWriter< TInputVideoStream >
+VideoWriter< TInputVideoStream >
 ::Write()
 {
   //
@@ -243,7 +243,7 @@ VideoFileWriter< TInputVideoStream >
 //
 template< class TInputVideoStream >
 void
-VideoFileWriter< TInputVideoStream >
+VideoWriter< TInputVideoStream >
 ::FinishWriting()
 {
   if (!m_VideoIO.IsNull())
@@ -257,7 +257,7 @@ VideoFileWriter< TInputVideoStream >
 //
 template< class TInputVideoStream >
 void
-VideoFileWriter< TInputVideoStream >
+VideoWriter< TInputVideoStream >
 ::Update()
 {
   this->Write();
@@ -268,7 +268,7 @@ VideoFileWriter< TInputVideoStream >
 //
 template< class TInputVideoStream >
 void
-VideoFileWriter< TInputVideoStream >
+VideoWriter< TInputVideoStream >
 ::UpdateLargestPossibleRegion()
 {
   const VideoStreamType* input = this->GetInput();
@@ -288,7 +288,7 @@ VideoFileWriter< TInputVideoStream >
 //
 template< class TInputVideoStream >
 void
-VideoFileWriter< TInputVideoStream >
+VideoWriter< TInputVideoStream >
 ::TemporalStreamingGenerateData()
 {
   // Get a non-const pointer to the input and output
@@ -317,7 +317,7 @@ VideoFileWriter< TInputVideoStream >
 //
 template< class TInputVideoStream >
 bool
-VideoFileWriter< TInputVideoStream >
+VideoWriter< TInputVideoStream >
 ::InitializeOutputParameters()
 {
   // InputImage and VideoIO must be valid
@@ -355,7 +355,7 @@ VideoFileWriter< TInputVideoStream >
 //
 template< class TInputVideoStream >
 bool
-VideoFileWriter< TInputVideoStream >
+VideoWriter< TInputVideoStream >
 ::InitializeVideoIO()
 {
   if (m_FileName.length() != 0)

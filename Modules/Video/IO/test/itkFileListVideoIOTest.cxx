@@ -88,6 +88,14 @@ int test_FileListVideoIO ( const char* input,
     ret = EXIT_FAILURE;
     }
 
+  // Test CanReadFile on a camera:// URL
+  std::string cameraURL = "camera://dummy/blank";
+  if (fileListIO->CanReadFile(cameraURL.c_str()))
+    {
+    std::cerr << "Should have failed to open camera \"" << cameraURL << "\"" << std::endl;
+    ret = EXIT_FAILURE;
+    }
+
 
   //////
   // ReadImageInformation

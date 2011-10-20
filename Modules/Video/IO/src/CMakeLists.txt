@@ -1,6 +1,9 @@
 set(ITKVideoIO_SRC
 itkFileListVideoIO.cxx
 itkFileListVideoIOFactory.cxx
+itkVideoDummyCamera.cxx
+itkVideoDummyCameraFactory.cxx
+itkVideoCaptureBase.cxx
 itkVideoIOBase.cxx
 itkVideoIOFactory.cxx
 )

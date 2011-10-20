@@ -16,12 +16,12 @@
  *
  *=========================================================================*/
 
-#ifndef __itkVideoFileReader_hxx
-#define __itkVideoFileReader_hxx
+#ifndef __itkVideoReader_hxx
+#define __itkVideoReader_hxx
 
 #include "itkConvertPixelBuffer.h"
 
-#include "itkVideoFileReader.h"
+#include "itkVideoReader.h"
 
 namespace itk
 {
@@ -32,8 +32,8 @@ namespace itk
 // Constructor
 //
 template< class TOutputVideoStream >
-VideoFileReader< TOutputVideoStream >
-::VideoFileReader()
+VideoReader< TOutputVideoStream >
+::VideoReader()
 {
   // Initialize members
   m_FileName = "";
@@ -52,8 +52,8 @@ VideoFileReader< TOutputVideoStream >
 // Destructor
 //
 template< class TOutputVideoStream >
-VideoFileReader< TOutputVideoStream >
-::~VideoFileReader()
+VideoReader< TOutputVideoStream >
+::~VideoReader()
 {}
 
 
@@ -62,7 +62,7 @@ VideoFileReader< TOutputVideoStream >
 //
 template< class TOutputVideoStream >
 void
-VideoFileReader< TOutputVideoStream >
+VideoReader< TOutputVideoStream >
 ::PrintSelf(std::ostream &os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
@@ -82,7 +82,7 @@ VideoFileReader< TOutputVideoStream >
 //
 template< class TOutputVideoStream >
 void
-VideoFileReader< TOutputVideoStream >
+VideoReader< TOutputVideoStream >
 ::UpdateOutputInformation()
 {
   //
@@ -160,8 +160,8 @@ VideoFileReader< TOutputVideoStream >
 // GetCurrentPositionFrame
 //
 template< class TOutputVideoStream >
-typename VideoFileReader<TOutputVideoStream>::FrameOffsetType
-VideoFileReader< TOutputVideoStream >
+typename VideoReader<TOutputVideoStream>::FrameOffsetType
+VideoReader< TOutputVideoStream >
 ::GetCurrentPositionFrame()
 {
   if(m_VideoIO.IsNull())
@@ -176,8 +176,8 @@ VideoFileReader< TOutputVideoStream >
 // GetCurrentPositionRatio
 //
 template< class TOutputVideoStream >
-typename VideoFileReader<TOutputVideoStream>::TemporalRatioType
-VideoFileReader< TOutputVideoStream >
+typename VideoReader<TOutputVideoStream>::TemporalRatioType
+VideoReader< TOutputVideoStream >
 ::GetCurrentPositionRatio()
 {
   if(m_VideoIO.IsNull())
@@ -192,8 +192,8 @@ VideoFileReader< TOutputVideoStream >
 // GetCurrentPositionMSec
 //
 template< class TOutputVideoStream >
-typename VideoFileReader<TOutputVideoStream>::TemporalRatioType
-VideoFileReader< TOutputVideoStream >
+typename VideoReader<TOutputVideoStream>::TemporalRatioType
+VideoReader< TOutputVideoStream >
 ::GetCurrentPositionMSec()
 {
   if(m_VideoIO.IsNull())
@@ -208,8 +208,8 @@ VideoFileReader< TOutputVideoStream >
 // GetNumberOfFrames
 //
 template< class TOutputVideoStream >
-typename VideoFileReader<TOutputVideoStream>::FrameOffsetType
-VideoFileReader< TOutputVideoStream >
+typename VideoReader<TOutputVideoStream>::FrameOffsetType
+VideoReader< TOutputVideoStream >
 ::GetNumberOfFrames()
 {
   if(m_VideoIO.IsNull())
@@ -224,8 +224,8 @@ VideoFileReader< TOutputVideoStream >
 // GetFramesPerSecond
 //
 template< class TOutputVideoStream >
-typename VideoFileReader<TOutputVideoStream>::TemporalRatioType
-VideoFileReader< TOutputVideoStream >
+typename VideoReader<TOutputVideoStream>::TemporalRatioType
+VideoReader< TOutputVideoStream >
 ::GetFramesPerSecond()
 {
   if(m_VideoIO.IsNull())
@@ -243,11 +243,11 @@ VideoFileReader< TOutputVideoStream >
 //
 template< class TOutputVideoStream >
 void
-VideoFileReader< TOutputVideoStream >
+VideoReader< TOutputVideoStream >
 ::InitializeVideoIO()
 {
   m_VideoIO = itk::VideoIOFactory::CreateVideoIO(
-                                itk::VideoIOFactory::ReadFileMode,
+                                itk::VideoIOFactory::ReadMode,
                                 m_FileName.c_str());
   m_VideoIO->SetFileName(m_FileName.c_str());
   m_VideoIO->ReadImageInformation();
@@ -293,7 +293,7 @@ VideoFileReader< TOutputVideoStream >
 //
 template< class TOutputVideoStream >
 void
-VideoFileReader< TOutputVideoStream >
+VideoReader< TOutputVideoStream >
 ::TemporalStreamingGenerateData()
 {
   // Allocate the output frames
@@ -342,7 +342,7 @@ VideoFileReader< TOutputVideoStream >
 //
 template< class TOutputVideoStream >
 void
-VideoFileReader< TOutputVideoStream >::
+VideoReader< TOutputVideoStream >::
 DoConvertBuffer(void* inputData, FrameOffsetType frameNumber)
 {
   PixelType* outputData =
@@ -391,7 +391,7 @@ DoConvertBuffer(void* inputData, FrameOffsetType frameNumber)
   ITK_CONVERT_BUFFER_IF_BLOCK(ImageIOBase::DOUBLE,double)
   else
     {
-#define TYPENAME_VideoFileReader(x)                                     \
+#define TYPENAME_VideoReader(x)                                     \
     m_VideoIO->GetComponentTypeAsString                 \
       (ImageIOBase::MapPixelType<x>::CType)
 
@@ -401,16 +401,16 @@ DoConvertBuffer(void* inputData, FrameOffsetType frameNumber)
         << std::endl << "    "
         << m_VideoIO->GetComponentTypeAsString( m_VideoIO->GetComponentType() )
         << std::endl << "to one of: "
-        << std::endl << "    " << TYPENAME_VideoFileReader( unsigned char )
-        << std::endl << "    " << TYPENAME_VideoFileReader( char )
-        << std::endl << "    " << TYPENAME_VideoFileReader( unsigned short )
-        << std::endl << "    " << TYPENAME_VideoFileReader( short )
-        << std::endl << "    " << TYPENAME_VideoFileReader( unsigned int )
-        << std::endl << "    " << TYPENAME_VideoFileReader( int )
-        << std::endl << "    " << TYPENAME_VideoFileReader( unsigned long )
-        << std::endl << "    " << TYPENAME_VideoFileReader( long )
-        << std::endl << "    " << TYPENAME_VideoFileReader( float )
-        << std::endl << "    " << TYPENAME_VideoFileReader( double )
+        << std::endl << "    " << TYPENAME_VideoReader( unsigned char )
+        << std::endl << "    " << TYPENAME_VideoReader( char )
+        << std::endl << "    " << TYPENAME_VideoReader( unsigned short )
+        << std::endl << "    " << TYPENAME_VideoReader( short )
+        << std::endl << "    " << TYPENAME_VideoReader( unsigned int )
+        << std::endl << "    " << TYPENAME_VideoReader( int )
+        << std::endl << "    " << TYPENAME_VideoReader( unsigned long )
+        << std::endl << "    " << TYPENAME_VideoReader( long )
+        << std::endl << "    " << TYPENAME_VideoReader( float )
+        << std::endl << "    " << TYPENAME_VideoReader( double )
         << std::endl;
     e.SetDescription( msg.str().c_str() );
     e.SetLocation(ITK_LOCATION);

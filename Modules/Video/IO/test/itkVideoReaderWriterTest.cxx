@@ -18,12 +18,12 @@
 #include <iostream>
 #include <sstream>
 
-#include "itkVideoFileReader.h"
-#include "itkVideoFileWriter.h"
+#include "itkVideoReader.h"
+#include "itkVideoWriter.h"
 #include "itkRGBPixel.h"
 #include "itkFileListVideoIOFactory.h"
 
-int itkVideoFileReaderWriterTest( int argc, char *argv[] )
+int itkVideoReaderWriterTest( int argc, char *argv[] )
 {
   // Check parameters
   if (argc != 7)
@@ -37,8 +37,8 @@ int itkVideoFileReaderWriterTest( int argc, char *argv[] )
   const unsigned int NumberOfDimensions =             2;
   typedef itk::Image< PixelType, NumberOfDimensions > FrameType;
   typedef itk::VideoStream< FrameType >               VideoType;
-  typedef itk::VideoFileReader< VideoType >           VideoReaderType;
-  typedef itk::VideoFileWriter< VideoType >           VideoWriterType;
+  typedef itk::VideoReader< VideoType >               VideoReaderType;
+  typedef itk::VideoWriter< VideoType >               VideoWriterType;
 
   std::string inFile = "";
   for( int i = 1; i <= 5; ++i )
@@ -53,8 +53,9 @@ int itkVideoFileReaderWriterTest( int argc, char *argv[] )
   reader->SetFileName(inFile.c_str() );
 
   // I'm still not sure how to handle this right, but for now, just manually
-  // register an FileListVideoIO
-  itk::ObjectFactoryBase::RegisterFactory( itk::FileListVideoIOFactory::New() );
+  // register an FileListVideoIO --> This next line is now moved to
+  // VideoIOFactory::RegisterBuiltInFactories()
+  //itk::ObjectFactoryBase::RegisterFactory( itk::FileListVideoIOFactory::New() );
 
   // Set up the writer
   VideoWriterType::Pointer writer = VideoWriterType::New();

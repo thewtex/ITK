@@ -23,6 +23,9 @@
 #include "itkMutexLock.h"
 #include "itkMutexLockHolder.h"
 
+#include "itkFileListVideoIOFactory.h"
+#include "itkVideoDummyCameraFactory.h"
+
 #ifdef ITK_VIDEO_USE_OPENCV
 #include "itkOpenCVVideoIOFactory.h"
 #endif
@@ -62,20 +65,10 @@ VideoIOBase::Pointer VideoIOFactory::CreateVideoIO( IOModeType mode, const char*
         j != possibleVideoIO.end(); ++j )
     {
 
-    // Check file readability if reading from file
-    if (mode == ReadFileMode)
+    // Check file (or device ID, such as a camera:// URL) readability if reading
+    if (mode == ReadMode)
       {
       if ((*j)->CanReadFile(arg))
-        {
-        return *j;
-        }
-      }
-
-    // Check camera readability if reading from camera
-    else if (mode == ReadCameraMode)
-      {
-      int cameraIndex = atoi(arg);
-      if ((*j)->CanReadCamera(cameraIndex))
         {
         return *j;
         }
@@ -109,6 +102,9 @@ void VideoIOFactory::RegisterBuiltInFactories()
     MutexLockHolder< SimpleMutexLock > mutexHolder(mutex);
     if ( firstTime )
       {
+      ObjectFactoryBase::RegisterFactory( FileListVideoIOFactory::New() );
+      ObjectFactoryBase::RegisterFactory( VideoDummyCameraFactory::New() );
+
 #ifdef ITK_VIDEO_USE_OPENCV
       ObjectFactoryBase::RegisterFactory( OpenCVVideoIOFactory::New() );
 #endif
