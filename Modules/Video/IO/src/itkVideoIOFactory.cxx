@@ -62,20 +62,10 @@ VideoIOBase::Pointer VideoIOFactory::CreateVideoIO( IOModeType mode, const char*
         j != possibleVideoIO.end(); ++j )
     {
 
-    // Check file readability if reading from file
-    if (mode == ReadFileMode)
+    // Check file (or camera:// URL) readability if reading
+    if (mode == ReadFileMode || mode == ReadCameraMode)
       {
       if ((*j)->CanReadFile(arg))
-        {
-        return *j;
-        }
-      }
-
-    // Check camera readability if reading from camera
-    else if (mode == ReadCameraMode)
-      {
-      int cameraIndex = atoi(arg);
-      if ((*j)->CanReadCamera(cameraIndex))
         {
         return *j;
         }

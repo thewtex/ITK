@@ -32,7 +32,7 @@ namespace itk
  * VideoIOBase is a class that reads and/or writes video data
  * using a particular external technique or external library (OpenCV, vxl). The
  * VideoIOBase encapsulates both the reading and writing of data. The
- * VideoIOBase is used by the VideoFileReader class (to read data)
+ * VideoIOBase is used by the VideoReader class (to read data)
  * and the VideoFileWriter (to write data). Normally the user does not directly
  * manipulate this class directly.
  *
@@ -40,8 +40,12 @@ namespace itk
  * readers to be registered (even at run time) without having to
  * modify the code in this class.
  *
+ * Note that when children override CanReadFile() (an inherited virtual void
+ * method), they must handle the possible occurance of a camera URL used in lieu
+ * of a file name, such as camera://opencv/0 for the first OpenCV camera.
+ *
  * \sa VideoFileWriter
- * \sa VideoFileReader
+ * \sa VideoReader
  *
  * \ingroup ITKVideoIO
  */
@@ -71,26 +75,20 @@ public:
 
   /*-------- This part of the interface deals with reading data. ------ */
 
-  /** Enum used to define weather to read from a file or a camera */
-  typedef enum {ReadFromFile, ReadFromCamera} ReadType;
-
-  /** Set to reading from file */
-  virtual void SetReadFromFile() = 0;
-
-  /** Set to reading from a camera */
-  virtual void SetReadFromCamera() = 0;
-
-  /** Get the current read type */
-  ReadType GetReadType() {
-    return this->m_ReadType;
+  /** Test whether or not a given file name is actually a camera identifer.
+   * Currently, this just tests whether the first 9 characters of the name are
+   * camera:// as specified for camera URLs:
+   * camera://[interface name]/[camera identifer]?parm1=val1&...&parmn=valn */
+  inline bool FileNameIsCamera(const std::string strFileName){
+    return 0 == strFileName.compare(0, 9, "camera://");
+  }
+  inline bool FileNameIsCamera(const char* FileName){
+    std::string strFileName = FileName;
+    return FileNameIsCamera(strFileName);
   }
 
-  /** Return whether or not the VideoIO can read from a camera. The cameraID
-   * can be a camera number for OpenCV or a guid for VXL */
-  virtual bool CanReadCamera( CameraIDType cameraID ) = 0;
-
-  /** Set the next frame that should be read. Return true if you operation
-   * succesful */
+  /** Set the next frame that should be read. Return true if your operation
+   * was succesful */
   virtual bool SetNextFrameToRead( FrameOffsetType frameNumber ) = 0;
 
   /** Virtual accessor functions to be implemented in each derived class */
@@ -118,7 +116,6 @@ protected:
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Member Variables */
-  ReadType           m_ReadType;
   TemporalRatioType  m_FramesPerSecond;
   FrameOffsetType    m_FrameTotal;
   FrameOffsetType    m_CurrentFrame;

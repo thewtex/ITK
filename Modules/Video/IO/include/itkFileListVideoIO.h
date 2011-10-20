@@ -68,18 +68,9 @@ public:
 
   /*-------- This part of the interface deals with reading data. ------ */
 
-  /** Set to reading from file */
-  virtual void SetReadFromFile();
-
-  /** Set to reading from a camera */
-  virtual void SetReadFromCamera();
-
   /** Determine the file type. Returns true if this ImageIO can read the
-   * file specified. */
+   * file specified.  (Returns false for camera identifiers such as camera:// URLs.) */
   virtual bool CanReadFile(const char *);
-
-  /** Return whether or not the VideoIO can read from a camera */
-  virtual bool CanReadCamera( CameraIDType cameraID );
 
   /** Set the spacing and dimension information for the set filename. */
   virtual void ReadImageInformation();

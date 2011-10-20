@@ -88,6 +88,14 @@ int test_FileListVideoIO ( const char* input,
     ret = EXIT_FAILURE;
     }
 
+  // Test CanReadFile on a camera:// URL
+  std::string cameraURL = "camera://dummy/blank";
+  if (fileListIO->CanReadFile(cameraURL.c_str() ) )
+    {
+    std::cerr << "Should have failed to open camera \"" << cameraURL << "\"" << std::endl;
+    ret = EXIT_FAILURE;
+    }
+
 
   //////
   // ReadImageInformation
@@ -102,26 +110,26 @@ int test_FileListVideoIO ( const char* input,
     {
     infoSet = false;
     paramMessage << "Width mismatch: (expected) " << inWidth << " != (got) "
-      << fileListIO->GetDimensions(0) << std::endl;
+                 << fileListIO->GetDimensions(0) << std::endl;
     }
   if (fileListIO->GetDimensions(1) != inHeight)
     {
     infoSet = false;
     paramMessage << "Height mismatch: (expected) " << inHeight << " != (got) "
-      << fileListIO->GetDimensions(1) << std::endl;
+                 << fileListIO->GetDimensions(1) << std::endl;
     }
   double epsilon = 0.0001;
   if (fileListIO->GetFramesPerSecond() < inFpS - epsilon || fileListIO->GetFramesPerSecond() > inFpS + epsilon)
     {
     infoSet = false;
     paramMessage << "FpS mismatch: (expected) " << inFpS << " != (got) " << fileListIO->GetFramesPerSecond()
-      << std::endl;
+                 << std::endl;
     }
   if (fileListIO->GetFrameTotal() != inNumFrames)
     {
     infoSet = false;
     paramMessage << "FrameTotal mismatch: (expected) " << inNumFrames << " != (got) "
-      << fileListIO->GetFrameTotal() << std::endl;
+                 << fileListIO->GetFrameTotal() << std::endl;
     }
 
   if (!infoSet)
@@ -175,7 +183,7 @@ int test_FileListVideoIO ( const char* input,
 
     // Compare buffer contents
     if (memcmp(reinterpret_cast<void*>(buffer),
-        reinterpret_cast<void*>(reader->GetOutput()->GetBufferPointer()), bufferSize))
+               reinterpret_cast<void*>(reader->GetOutput()->GetBufferPointer() ), bufferSize) )
       {
       std::cerr << "Frame buffers don't match for frame " << i << std::endl;
       ret = false;
@@ -198,10 +206,10 @@ int test_FileListVideoIO ( const char* input,
     }
 
   // Save the current parameters
-  double fps = fileListIO->GetFramesPerSecond();
+  double       fps = fileListIO->GetFramesPerSecond();
   unsigned int width = fileListIO->GetDimensions(0);
   unsigned int height = fileListIO->GetDimensions(1);
-  const char* fourCC = "MP42";
+  const char*  fourCC = "MP42";
   unsigned int nChannels = fileListIO->GetNumberOfComponents();
 
   // Reset the VideoIO
@@ -279,7 +287,7 @@ int test_FileListVideoIO ( const char* input,
   for (unsigned int i = 0; i < inNumFrames; ++i)
     {
     // Set up a buffer to read to
-    size_t bufferSize = fileListIO2->GetImageSizeInBytes();
+    size_t     bufferSize = fileListIO2->GetImageSizeInBytes();
     PixelType* buffer = new PixelType[bufferSize];
 
     // Read into the buffer
