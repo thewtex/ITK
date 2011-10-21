@@ -131,8 +131,8 @@ bool FileListVideoIO::CanReadFile(const char* filename)
 {
   std::string strFileName = filename;
 
-  // Make sure this isn't a camera:// URL
-  if ( this->FileNameIsCamera(strFileName) )
+  // Make sure this isn't a device ID, such as a camera:// URL
+  if ( this->FileNameIsDeviceID(strFileName) )
     {
     return false;
     }
@@ -301,6 +301,12 @@ std::vector< double > FileListVideoIO::GetDirection(unsigned int i) const
 bool FileListVideoIO::CanWriteFile(const char* filename)
 {
 
+  // Make sure this isn't a device ID, such as a camera:// URL or output device
+  if ( this->FileNameIsDeviceID(filename) )
+    {
+    return false;
+    }
+
   // Make sure file names have been specified
   std::vector<std::string> fileList = SplitFileNames(filename);
   if (fileList.empty())
@@ -427,17 +433,17 @@ void FileListVideoIO::OpenReader()
     }
 
   // If neither reader nor writer is currently open, open the reader
-  // Use the ImageIOFactory to instantiate a working ImageIO
-  m_ImageIO = ImageIOFactory::CreateImageIO(
-      m_FileNames[0].c_str(), ImageIOFactory::ReadMode);
-  if (!m_ImageIO.IsNull() )
-    {
-    m_ReaderOpen = true;
-    }
-  else
-    {
-    itkExceptionMacro("Video failed to open");
-    }
+    // Use the ImageIOFactory to instantiate a working ImageIO
+    m_ImageIO = ImageIOFactory::CreateImageIO(
+        m_FileNames[0].c_str(), ImageIOFactory::ReadMode);
+    if (!m_ImageIO.IsNull() )
+      {
+      m_ReaderOpen = true;
+      }
+    else
+      {
+      itkExceptionMacro("Video failed to open");
+      }
 }
 
 //

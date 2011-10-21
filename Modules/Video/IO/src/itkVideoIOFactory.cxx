@@ -62,11 +62,20 @@ VideoIOBase::Pointer VideoIOFactory::CreateVideoIO( IOModeType mode, const char*
         j != possibleVideoIO.end(); ++j )
     {
 
-    // Check file (or camera:// URL) readability if reading
-    if (mode == ReadFileMode || mode == ReadCameraMode)
+    // Check file (or device ID, such as a camera:// URL) readability if reading
+    if (mode == ReadMode)
       {
       if ((*j)->CanReadFile(arg))
         {
+        // We found a way to read this!
+        // If this is a device ID, then process the URl to pass the parameters
+        // before returning.
+        if( (*j)->FileNameIsCamera(arg) )
+          {
+          // Generate a map from the parameter/value pairs passed at the end of the URL
+          itkGenericOutputMacro("WARNING:  Does not yet generate parameter maps when reading!");  // can't use itkWarningMacro because 'this' is unavailable for static member functions
+          }
+
         return *j;
         }
       }
@@ -76,6 +85,15 @@ VideoIOBase::Pointer VideoIOFactory::CreateVideoIO( IOModeType mode, const char*
       {
       if ((*j)->CanWriteFile(arg))
         {
+        // We found a way to read this!
+        // If this is a device ID, then process the URl to pass the parameters
+        // before returning.
+        if( (*j)->FileNameIsDeviceID(arg) )
+          {
+          // Generate a map from the parameter/value pairs passed at the end of the URL
+          itkGenericOutputMacro("WARNING:  Does not yet generate parameter maps when writing!");  // can't use itkWarningMacro because 'this' is unavailable for static member functions
+          }
+
         return *j;
         }
       }

@@ -41,8 +41,9 @@ public:
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
 
-  /** Mode in which the VideoIO is intended to be used */
-  typedef enum { ReadFileMode, ReadCameraMode, WriteMode } IOModeType;
+  /** Mode in which the VideoIO is intended to be used.
+   * Generally equivalent to ImageIOFactory::FileModeType. */
+  typedef enum { ReadMode, WriteMode } IOModeType;
 
   /** Runtime type information (and related methods). **/
   itkTypeMacro(VideoIOFactory, Object);

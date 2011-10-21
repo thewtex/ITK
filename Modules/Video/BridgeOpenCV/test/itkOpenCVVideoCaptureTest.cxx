@@ -1,9 +1,30 @@
+/*=========================================================================
+ *
+ *  Copyright Insight Software Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
+#ifdef _MSC_VER
+#pragma warning ( disable : 4786 )
+#endif
+
 #include <iostream>
 
 #include "itkOpenCVVideoCapture.h"
 #include "itkRGBPixel.h"
 #include "itkVideoStream.h"
-#include "itkVideoFileReader.h"
+#include "itkVideoReader.h"
 #include "itkOpenCVVideoIOFactory.h"
 
 
@@ -11,11 +32,11 @@
 typedef unsigned char                                 ScalarPixelType;
 typedef itk::Image<ScalarPixelType, 2>                ScalarFrameType;
 typedef itk::VideoStream< ScalarFrameType >           ScalarVideoStreamType;
-typedef itk::VideoFileReader< ScalarVideoStreamType > scalarReaderType;
+typedef itk::VideoReader< ScalarVideoStreamType >     scalarReaderType;
 typedef itk::RGBPixel<unsigned char>                  RGBPixelType;
 typedef itk::Image<RGBPixelType, 2>                   RGBFrameType;
 typedef itk::VideoStream< RGBFrameType >              RGBVideoStreamType;
-typedef itk::VideoFileReader< RGBVideoStreamType >    rgbReaderType;
+typedef itk::VideoReader< RGBVideoStreamType >        rgbReaderType;
 
 //
 // Main test

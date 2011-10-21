@@ -48,7 +48,7 @@ int test_FileListVideoIOFactory( const char* input,
   //////
   std::cout << "Trying to create IO for reading from file..." << std::endl;
   itk::VideoIOBase::Pointer ioReadFile = itk::VideoIOFactory::CreateVideoIO(
-      itk::VideoIOFactory::ReadFileMode, input);
+      itk::VideoIOFactory::ReadMode, input);
   if (!ioReadFile)
     {
     std::cerr << "Did not create valid VideoIO for reading from file " << std::endl;
@@ -59,9 +59,9 @@ int test_FileListVideoIOFactory( const char* input,
   // Create the VideoIOBase for writing to a file
   //////
   std::cout << "Trying to create IO for writing to file..." << std::endl;
-  itk::VideoIOBase::Pointer ioWrite = itk::VideoIOFactory::CreateVideoIO(
+  itk::VideoIOBase::Pointer ioWriteFile = itk::VideoIOFactory::CreateVideoIO(
       itk::VideoIOFactory::WriteMode, output);
-  if (!ioWrite)
+  if (!ioWriteFile)
     {
     std::cerr << "Did not create valid VideoIO for writing " << std::endl;
     ret = EXIT_FAILURE;

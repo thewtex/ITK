@@ -33,18 +33,23 @@ namespace itk
  * using a particular external technique or external library (OpenCV, vxl). The
  * VideoIOBase encapsulates both the reading and writing of data. The
  * VideoIOBase is used by the VideoReader class (to read data)
- * and the VideoFileWriter (to write data). Normally the user does not directly
+ * and the VideoWriter (to write data). Normally the user does not directly
  * manipulate this class directly.
  *
  * A Pluggable factory pattern is used. This allows different kinds of
  * readers to be registered (even at run time) without having to
  * modify the code in this class.
  *
- * Note that when children override CanReadFile() (an inherited virtual void
- * method), they must handle the possible occurance of a camera URL used in lieu
- * of a file name, such as camera://opencv/0 for the first OpenCV camera.
+ * Note that when instantiable children override CanReadFile() and/or
+ * CanWriteFile(), the children must handle the possible occurance of some
+ * device ID used in lieu of a file name.  (The only current form of valid
+ * device ID is a camera URL, e.g. camera://opencv/0 for the first OpenCV
+ * camera.)  VideoIOBase provides helper functions to assist with this, named
+ * FileNameIsDeviceID() and FileNameIsCamera(), which return true, respectively,
+ * if the given file name is actually a device ID or (more restrictively) a
+ * camera identifier.
  *
- * \sa VideoFileWriter
+ * \sa VideoWriter
  * \sa VideoReader
  *
  * \ingroup ITKVideoIO
@@ -75,17 +80,32 @@ public:
 
   /*-------- This part of the interface deals with reading data. ------ */
 
+  /** Test whether or not a given file name is actually some sort of a device
+   * ID, such as a camera identifer or some other (future potential) sort of
+   * streaming device.  Currently this just calls this->FileNameIsCamera(). */
+  inline bool FileNameIsDeviceID(const std::string strFileName)
+    {
+    return this->FileNameIsCamera(strFileName);
+    }
+  inline bool FileNameIsDeviceID(const char* FileName)
+    {
+    std::string strFileName = FileName;
+    return this->FileNameIsDeviceID(strFileName);
+    }
+
   /** Test whether or not a given file name is actually a camera identifer.
    * Currently, this just tests whether the first 9 characters of the name are
    * camera:// as specified for camera URLs:
    * camera://[interface name]/[camera identifer]?parm1=val1&...&parmn=valn */
-  inline bool FileNameIsCamera(const std::string strFileName){
+  inline bool FileNameIsCamera(const std::string strFileName)
+    {
     return 0 == strFileName.compare(0, 9, "camera://");
-  }
-  inline bool FileNameIsCamera(const char* FileName){
+    }
+  inline bool FileNameIsCamera(const char* FileName)
+    {
     std::string strFileName = FileName;
-    return FileNameIsCamera(strFileName);
-  }
+    return this->FileNameIsCamera(strFileName);
+    }
 
   /** Set the next frame that should be read. Return true if your operation
    * was succesful */

@@ -1,6 +1,6 @@
 itk_module_test()
 set(ITKVideoIOTests
-  itkVideoFileReaderWriterTest.cxx
+  itkVideoReaderWriterTest.cxx
   itkFileListVideoIOTest.cxx
   itkFileListVideoIOFactoryTest.cxx
 )
@@ -10,11 +10,11 @@ CreateTestDriver(ITKVideoIO
   "${ITKVideoIOTests}"
 )
 
-# VideoFileRederWriterTest:
+# VideoReaderWriterTest:
 itk_add_test(
-  NAME VideoFileReaderWriterTest
+  NAME VideoReaderWriterTest
   COMMAND ITKVideoIOTestDriver
-    itkVideoFileReaderWriterTest
+    itkVideoReaderWriterTest
       DATA{Input/frame0.jpg}
       DATA{Input/frame1.jpg}
       DATA{Input/frame2.jpg}

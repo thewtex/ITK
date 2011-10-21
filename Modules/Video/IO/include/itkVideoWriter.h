@@ -16,8 +16,8 @@
  *
  *=========================================================================*/
 
-#ifndef __itkVideoFileWriter_h
-#define __itkVideoFileWriter_h
+#ifndef __itkVideoWriter_h
+#define __itkVideoWriter_h
 
 #include "itkTemporalProcessObject.h"
 #include "itkVideoIOFactory.h"
@@ -25,8 +25,9 @@
 namespace itk
 {
 
-/** \class VideoFileWriter
- * \brief Writer that takes in a VideoStream and writes the frames to a file
+/** \class VideoWriter
+ * \brief Writer that takes in a VideoStream and writes the frames to files
+ * (or, potentially in a future ITK release, to devices as well).
  *
  * This class is a subclass of TemporalProcessObject which specifically takes a
  * single VideoStream as input and writes the frames out to a file in sequence.
@@ -36,12 +37,12 @@ namespace itk
  * \ingroup ITKVideoIO
  */
 template< class TInputVideoStream >
-class ITK_EXPORT VideoFileWriter : public TemporalProcessObject
+class ITK_EXPORT VideoWriter : public TemporalProcessObject
 {
 public:
 
   /**-TYPEDEFS---------------------------------------------------------------*/
-  typedef VideoFileWriter< TInputVideoStream>         Self;
+  typedef VideoWriter< TInputVideoStream>             Self;
   typedef TemporalProcessObject                       Superclass;
   typedef SmartPointer<Self>                          Pointer;
 
@@ -59,7 +60,7 @@ public:
   itkNewMacro(Self);
 
   /** Run-time type information (and related methods). */
-  itkTypeMacro(VideoFileWriter, TemporalProcessObject);
+  itkTypeMacro(VideoWriter, TemporalProcessObject);
 
   /**-PUBLIC METHODS---------------------------------------------------------*/
 
@@ -110,8 +111,8 @@ protected:
 
   /**-PROTECTED METHODS------------------------------------------------------*/
 
-  VideoFileWriter();
-  virtual ~VideoFileWriter();
+  VideoWriter();
+  virtual ~VideoWriter();
   void PrintSelf(std::ostream &os, Indent indent) const;
 
   /** Initialize output parameters */
@@ -143,7 +144,7 @@ protected:
   SizeValueType                m_NumberOfComponents;
   ImageIOBase::IOComponentType m_ComponentType;
 private:
-  VideoFileWriter(const Self &); // purposely not implemented
+  VideoWriter(const Self &); // purposely not implemented
   void operator=(const Self &);  // purposely not implemented
 
 };
@@ -151,7 +152,7 @@ private:
 } // end namespace itk
 
 #if ITK_TEMPLATE_TXX
-#include "itkVideoFileWriter.hxx"
+#include "itkVideoWriter.hxx"
 #endif
 
 #endif
