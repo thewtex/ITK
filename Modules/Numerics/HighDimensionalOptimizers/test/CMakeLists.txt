@@ -13,6 +13,8 @@ set(ITKHighDimensionalOptimizersTests
   itkRegistrationParameterScalesFromJacobianTest.cxx
   itkAutoScaledGradientDescentRegistrationTest.cxx
   itkWindowConvergenceMonitoringFunctionTest.cxx
+  itkQuasiNewtonObjectOptimizerTest.cxx
+  itkQuasiNewtonObjectOptimizerMultiMetricTest.cxx
 )
 
 set(INPUTDATA ${ITK_DATA_ROOT}/Input)
@@ -68,3 +70,31 @@ itk_add_test(NAME itkGradientDescentObjectOptimizerTest2
 itk_add_test(NAME itkAutoScaledGradientDescentRegistrationTest
       COMMAND ITKHighDimensionalOptimizersTestDriver
       itkAutoScaledGradientDescentRegistrationTest)
+
+itk_add_test(NAME itkQuasiNewtonObjectOptimizerTest
+      COMMAND ITKHighDimensionalOptimizersTestDriver
+      itkQuasiNewtonObjectOptimizerTest)
+
+itk_add_test(NAME itkQuasiNewtonObjectOptimizerMultiMetricTest1
+      COMMAND ITKHighDimensionalOptimizersTestDriver
+      itkQuasiNewtonObjectOptimizerMultiMetricTest dm
+      ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceBorder20.png
+      ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceBSplined10.png
+      ${TEMP}/itkQuasiNewtonObjectOptimizerMultiMetricTest1.nii.gz
+      10 5 )
+
+itk_add_test(NAME itkQuasiNewtonObjectOptimizerMultiMetricTest2
+      COMMAND ITKHighDimensionalOptimizersTestDriver
+      itkQuasiNewtonObjectOptimizerMultiMetricTest mi
+      ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceBorder20.png
+      ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceBSplined10.png
+      ${TEMP}/itkQuasiNewtonObjectOptimizerMultiMetricTest2.nii.gz
+      10 5 )
+
+itk_add_test(NAME itkQuasiNewtonObjectOptimizerMultiMetricTest3
+      COMMAND ITKHighDimensionalOptimizersTestDriver
+      itkQuasiNewtonObjectOptimizerMultiMetricTest anc
+      ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceBorder20.png
+      ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceBSplined10.png
+      ${TEMP}/itkQuasiNewtonObjectOptimizerMultiMetricTest3.nii.gz
+      10 5 )
