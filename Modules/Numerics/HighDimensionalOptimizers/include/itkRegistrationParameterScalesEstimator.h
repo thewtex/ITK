@@ -141,8 +141,12 @@ public:
   /** Estimate the step scale, the impact of a step on deformation. */
   virtual FloatType EstimateStepScale(const ParametersType &step) = 0;
 
+  /** Estimate the scales of local steps. */
+  virtual void EstimateLocalStepScales(const ParametersType &step,
+    ScalesType &localStepScales) = 0;
+
   /** Estimate the trusted scale for steps. It returns the voxel spacing. */
-  virtual FloatType EstimateTrustedStepScale();
+  virtual FloatType EstimateMaximumStepSize();
 
 protected:
   RegistrationParameterScalesEstimator();
@@ -197,7 +201,7 @@ protected:
   bool HasLocalSupport();
 
   /** Get the number of scales. */
-  SizeValueType GetNumberOfScales();
+  SizeValueType GetNumberOfLocalParameters();
 
   /** Update the transform with a change in parameters. */
   void UpdateTransformParameters(const ParametersType &deltaParameters);

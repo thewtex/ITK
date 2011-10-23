@@ -46,8 +46,10 @@ RegistrationParameterScalesEstimator< TMetric >
 template< class TMetric >
 typename RegistrationParameterScalesEstimator< TMetric >::FloatType
 RegistrationParameterScalesEstimator< TMetric >
-::EstimateTrustedStepScale()
+::EstimateMaximumStepSize()
 {
+  this->CheckAndSetInputs();
+
   const typename VirtualImageType::SpacingType & spacing
     = this->m_VirtualImage->GetSpacing();
 
@@ -95,16 +97,6 @@ if (m_Metric.IsNull())
     || this->m_FixedTransform.GetPointer() == NULL)
     {
     itkExceptionMacro("RegistrationParameterScalesEstimator: the transform(s) in the metric is NULL.");
-    }
-
-  const ParametersType &parameters = this->GetTransform()->GetParameters();
-  for (SizeValueType p = 0; p < parameters.size(); p++)
-    {
-    // check for NaN
-    if (parameters[p] != parameters[p])
-      {
-      itkExceptionMacro("RegistrationParameterScalesEstimator: a transform parameter is not a number.");
-      }
     }
 
   return true;
@@ -162,7 +154,7 @@ RegistrationParameterScalesEstimator< TMetric >
 template< class TMetric >
 SizeValueType
 RegistrationParameterScalesEstimator< TMetric >
-::GetNumberOfScales()
+::GetNumberOfLocalParameters()
 {
   if (this->GetTransformForward())
     {
@@ -248,7 +240,7 @@ RegistrationParameterScalesEstimator< TMetric >
                                      ParametersType & squareNorms )
 {
   JacobianType jacobian;
-  const SizeValueType numPara = this->GetNumberOfScales();
+  const SizeValueType numPara = this->GetNumberOfLocalParameters();
   const SizeValueType dim = this->GetImageDimension();
 
   if (this->GetTransformForward())
