@@ -43,7 +43,7 @@ RegistrationParameterScalesFromJacobian< TMetric >
   this->SetScalesSamplingStrategy();
   this->SampleImageDomain();
 
-  const SizeValueType numPara = this->GetNumberOfScales();
+  const SizeValueType numPara = this->GetNumberOfLocalParameters();
 
   parameterScales.SetSize(numPara);
 
@@ -86,11 +86,86 @@ RegistrationParameterScalesFromJacobian< TMetric >
   this->SetStepScaleSamplingStrategy();
   this->SampleImageDomain();
 
+  ScalesType sampleScales;
+  this->ComputeSampleStepScales(step, sampleScales);
+
+  const SizeValueType numSamples = this->m_ImageSamples.size();
+  FloatType scaleSum = NumericTraits< FloatType >::Zero;
+
+  // checking each sample point
+  for (SizeValueType c=0; c<numSamples; c++)
+    {
+    scaleSum += sampleScales[c];
+    }
+
+  return scaleSum / numSamples;
+}
+
+/**
+ * Estimate the scales of local steps. For each voxel, we compute the impact
+ * of a STEP on its location as in EstimateStepScale. Then we attribute this
+ * impact to the corresponding local parameters.
+ */
+template< class TMetric >
+void
+RegistrationParameterScalesFromJacobian< TMetric >
+::EstimateLocalStepScales(const ParametersType &step,
+    ScalesType &localStepScales)
+{
+  if (!this->HasLocalSupport())
+    {
+    itkExceptionMacro(<< "EstimateLocalStepScales: the transform doesn't have local support.");
+    }
+
+  this->CheckAndSetInputs();
+  this->SetStepScaleSamplingStrategy();
+  this->SampleImageDomain();
+
+  ScalesType sampleScales;
+  this->ComputeSampleStepScales(step, sampleScales);
+
+  const SizeValueType numSamples = this->m_ImageSamples.size();
+  const SizeValueType numPara = this->GetNumberOfLocalParameters();
+  const SizeValueType numAllPara = this->GetTransform()->GetNumberOfParameters();
+  const SizeValueType numLocals = numAllPara / numPara;
+
+  localStepScales.SetSize(numLocals);
+  localStepScales.Fill(NumericTraits<typename ScalesType::ValueType>::Zero);
+
+  VirtualIndexType index;
+  VirtualImageConstPointer image = this->GetVirtualImage();
+
+  // checking each sample point
+  for (SizeValueType c=0; c<numSamples; c++)
+    {
+    VirtualPointType &point = this->m_ImageSamples[c];
+    image->TransformPhysicalPointToIndex(point, index);
+    IndexValueType localId = this->m_Metric->
+      ComputeParameterOffsetFromVirtualDomainIndex(index, numPara) / numPara;
+
+    localStepScales[localId] = sampleScales[c];
+    }
+
+  return;
+
+}
+
+/**
+ *  Compute the step scales for samples, i.e. the impacts on each sampled
+ *  voxel from a change on the transform.
+ */
+template< class TMetric >
+void
+RegistrationParameterScalesFromJacobian< TMetric >
+::ComputeSampleStepScales(const ParametersType &step, ScalesType &sampleScales)
+{
   VirtualImageConstPointer image = this->GetVirtualImage();
 
   const SizeValueType numSamples = this->m_ImageSamples.size();
   const SizeValueType dim = this->GetImageDimension();
-  const SizeValueType numPara = this->GetNumberOfScales();
+  const SizeValueType numPara = this->GetNumberOfLocalParameters();
+
+  sampleScales.SetSize(numSamples);
 
   FloatType norm, normSum;
   normSum = NumericTraits< FloatType >::Zero;
@@ -100,7 +175,7 @@ RegistrationParameterScalesFromJacobian< TMetric >
   // checking each sample point
   for (SizeValueType c=0; c<numSamples; c++)
     {
-    const VirtualPointType point = this->m_ImageSamples[c];
+    const VirtualPointType &point = this->m_ImageSamples[c];
 
     JacobianType jacobian;
     if (this->GetTransformForward())
@@ -120,10 +195,8 @@ RegistrationParameterScalesFromJacobian< TMetric >
       {
       VirtualIndexType index;
       image->TransformPhysicalPointToIndex(point, index);
-      /* ImageBase::ComputeOffset returns the offset in linear continuous index
-       * regardless of the number of components in each voxel. The metric will
-       * offer a method to make sure the offset is consistent. */
-      SizeValueType offset = image->ComputeOffset(index) * numPara;
+      SizeValueType offset = this->m_Metric->
+        ComputeParameterOffsetFromVirtualDomainIndex(index, numPara);
 
       ParametersType localStep(numPara);
       for (SizeValueType p=0; p<numPara; p++)
@@ -134,10 +207,8 @@ RegistrationParameterScalesFromJacobian< TMetric >
       }
 
     norm = dTdt.two_norm();
-    normSum += norm;
+    sampleScales[c] = norm;
     }
-
-  return normSum / numSamples;
 
 }
 

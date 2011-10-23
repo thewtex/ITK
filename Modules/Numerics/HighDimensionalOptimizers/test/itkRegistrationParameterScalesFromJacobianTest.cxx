@@ -16,7 +16,9 @@
  *
  *=========================================================================*/
 #include "itkRegistrationParameterScalesFromJacobian.h"
-#include "itkObjectToObjectMetric.h"
+#include "itkImageToData.h"
+#include "itkArray1DToData.h"
+#include "itkImageToImageMetric.h"
 
 #include "itkImage.h"
 #include "itkAffineTransform.h"
@@ -29,12 +31,13 @@
  */
 template< class TFixedImage,class TMovingImage,class TVirtualImage = TFixedImage >
 class ITK_EXPORT RegistrationParameterScalesFromJacobianTestMetric:
-  public itk::ObjectToObjectMetric
+  public itk::ImageToImageObjectMetric<TFixedImage, TMovingImage, TVirtualImage>
 {
 public:
   /** Standard class typedefs. */
-  typedef RegistrationParameterScalesFromJacobianTestMetric                       Self;
-  typedef itk::ObjectToObjectMetric                               Superclass;
+  typedef RegistrationParameterScalesFromJacobianTestMetric       Self;
+  typedef itk::ImageToImageObjectMetric<TFixedImage, TMovingImage, TVirtualImage>
+                                                                  Superclass;
   typedef itk::SmartPointer< Self >                               Pointer;
   typedef itk::SmartPointer< const Self >                         ConstPointer;
 
@@ -43,7 +46,7 @@ public:
   typedef typename Superclass::ParametersType       ParametersType;
   typedef typename Superclass::ParametersValueType  ParametersValueType;
 
-  itkTypeMacro(RegistrationParameterScalesFromJacobianTestMetric, ObjectToObjectMetric);
+  itkTypeMacro(RegistrationParameterScalesFromJacobianTestMetric, ImageToImageObjectMetric);
 
   itkNewMacro(Self);
 
@@ -86,25 +89,6 @@ public:
   typedef typename VirtualImageType::Pointer      VirtualImagePointer;
   typedef typename VirtualImageType::RegionType   VirtualRegionType;
 
-  /* Set/get images */
-  /** Connect the Fixed Image.  */
-  itkSetConstObjectMacro(FixedImage, FixedImageType);
-  /** Get the Fixed Image. */
-  itkGetConstObjectMacro(FixedImage, FixedImageType);
-  /** Connect the Moving Image.  */
-  itkSetConstObjectMacro(MovingImage, MovingImageType);
-  /** Get the Moving Image. */
-  itkGetConstObjectMacro(MovingImage, MovingImageType);
-  /** Set all virtual domain image */
-  itkSetObjectMacro(VirtualDomainImage, VirtualImageType);
-  /** Get the virtual domain image */
-  itkGetConstObjectMacro(VirtualDomainImage, VirtualImageType);
-
-  const VirtualRegionType GetVirtualDomainRegion( void ) const
-  {
-    return this->m_VirtualDomainImage->GetBufferedRegion();
-  }
-
   /* Image dimension accessors */
   itkStaticConstMacro(FixedImageDimension, itk::SizeValueType,
       ::itk::GetImageDimension<FixedImageType>::ImageDimension);
@@ -113,37 +97,7 @@ public:
   itkStaticConstMacro(VirtualImageDimension, itk::SizeValueType,
       ::itk::GetImageDimension<VirtualImageType>::ImageDimension);
 
-  /**  Type of the Transform Base classes */
-  typedef ::itk::Transform<CoordinateRepresentationType,
-    itkGetStaticConstMacro( MovingImageDimension ),
-    itkGetStaticConstMacro( VirtualImageDimension )>  MovingTransformType;
-
-  typedef ::itk::Transform<CoordinateRepresentationType,
-    itkGetStaticConstMacro( FixedImageDimension ),
-    itkGetStaticConstMacro( VirtualImageDimension )>  FixedTransformType;
-
-  typedef typename FixedTransformType::Pointer        FixedTransformPointer;
-  typedef typename MovingTransformType::Pointer       MovingTransformPointer;
-
-  typedef typename FixedTransformType::JacobianType   JacobianType;
-
-  /** Connect the fixed transform. */
-  itkSetObjectMacro(FixedTransform, FixedTransformType);
-  /** Get a pointer to the fixed transform.  */
-  itkGetConstObjectMacro(FixedTransform, FixedTransformType);
-  /** Connect the moving transform. */
-  itkSetObjectMacro(MovingTransform, MovingTransformType);
-  /** Get a pointer to the moving transform.  */
-  itkGetConstObjectMacro(MovingTransform, MovingTransformType);
-
 private:
-
-  FixedImageConstPointer  m_FixedImage;
-  MovingImageConstPointer m_MovingImage;
-  VirtualImagePointer     m_VirtualDomainImage;
-
-  FixedTransformPointer   m_FixedTransform;
-  MovingTransformPointer  m_MovingTransform;
 
   RegistrationParameterScalesFromJacobianTestMetric() {}
   ~RegistrationParameterScalesFromJacobianTestMetric() {}
