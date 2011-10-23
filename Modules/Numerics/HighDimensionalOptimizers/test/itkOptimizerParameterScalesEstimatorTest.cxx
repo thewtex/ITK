@@ -48,8 +48,15 @@ public:
     return norm;
     }
 
+  /** Estimate the scales of local steps. */
+  virtual void EstimateLocalStepScales(const ParametersType &step,
+    ScalesType &localStepScales)
+    {
+    localStepScales.SetSize(0);
+    }
+
   /** Estimate the trusted scale for steps. */
-  virtual double EstimateTrustedStepScale()
+  virtual double EstimateMaximumStepSize()
     {
     return 1.0;
     }
