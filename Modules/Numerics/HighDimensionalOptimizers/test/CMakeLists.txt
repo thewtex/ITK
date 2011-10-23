@@ -13,6 +13,8 @@ set(ITKHighDimensionalOptimizersTests
   itkRegistrationParameterScalesFromJacobianTest.cxx
   itkAutoScaledGradientDescentRegistrationTest.cxx
   itkWindowConvergenceMonitoringFunctionTest.cxx
+  itkQuasiNewtonObjectOptimizerTest.cxx
+  itkQuasiNewtonObjectOptimizerTest2.cxx
 )
 
 set(INPUTDATA ${ITK_DATA_ROOT}/Input)
@@ -68,3 +70,15 @@ itk_add_test(NAME itkGradientDescentObjectOptimizerTest2
 itk_add_test(NAME itkAutoScaledGradientDescentRegistrationTest
       COMMAND ITKHighDimensionalOptimizersTestDriver
       itkAutoScaledGradientDescentRegistrationTest)
+
+itk_add_test(NAME itkQuasiNewtonObjectOptimizerTest
+      COMMAND ITKHighDimensionalOptimizersTestDriver
+      itkQuasiNewtonObjectOptimizerTest)
+
+itk_add_test(NAME itkQuasiNewtonObjectOptimizerTest2
+      COMMAND ITKHighDimensionalOptimizersTestDriver
+      itkQuasiNewtonObjectOptimizerTest2
+      ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceBorder20.png
+      ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceBSplined10.png
+      ${TEMP}/itkQuasiNewtonObjectOptimizerTest2.nii.gz
+      10 5 )
