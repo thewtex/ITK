@@ -141,8 +141,18 @@ public:
   /** Estimate the step scale, the impact of a step on deformation. */
   virtual FloatType EstimateStepScale(const ParametersType &step) = 0;
 
+  /** Estimate the scales of local steps. */
+  virtual void EstimateLocalStepScales(const ParametersType &step,
+    ScalesType &localStepScales) = 0;
+
   /** Estimate the trusted scale for steps. It returns the voxel spacing. */
-  virtual FloatType EstimateTrustedStepScale();
+  virtual FloatType EstimateMaximumStepSize();
+
+  /** Set the sampling strategy automatically for scales estimation. */
+  virtual void SetScalesSamplingStrategy();
+
+  /** Set the sampling strategy automatically for step scale estimation. */
+  virtual void SetStepScaleSamplingStrategy();
 
 protected:
   RegistrationParameterScalesEstimator();
@@ -158,12 +168,6 @@ protected:
 
   /** Set the sampling strategy. */
   itkSetMacro(SamplingStrategy, SamplingStrategyType);
-
-  /** Set the sampling strategy automatically for scales estimation. */
-  void SetScalesSamplingStrategy();
-
-  /** Set the sampling strategy automatically for step scale estimation. */
-  void SetStepScaleSamplingStrategy();
 
   /**
    * Check if the transform is a general affine transform that maps a line
@@ -197,7 +201,7 @@ protected:
   bool HasLocalSupport();
 
   /** Get the number of scales. */
-  SizeValueType GetNumberOfScales();
+  SizeValueType GetNumberOfLocalParameters();
 
   /** Update the transform with a change in parameters. */
   void UpdateTransformParameters(const ParametersType &deltaParameters);
