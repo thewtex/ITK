@@ -49,7 +49,6 @@ itkNormalizedCorrelationImageMetricTest.cxx
 itkMeanReciprocalSquareDifferenceImageMetricTest.cxx
 itkMeanSquaresImageMetricTest.cxx
 itkMutualInformationMetricTest.cxx
-itkPointSetToPointSetRegistrationTest.cxx
 itkSpatialObjectToImageRegistrationTest.cxx
 )
 
@@ -190,8 +189,6 @@ itk_add_test(NAME itkMeanSquaresImageMetricTest
       COMMAND ITKRegistrationCommonTestDriver itkMeanSquaresImageMetricTest)
 itk_add_test(NAME itkMutualInformationMetricTest
       COMMAND ITKRegistrationCommonTestDriver itkMutualInformationMetricTest)
-itk_add_test(NAME itkPointSetToPointSetRegistrationTest
-      COMMAND ITKRegistrationCommonTestDriver itkPointSetToPointSetRegistrationTest)
 itk_add_test(NAME itkSpatialObjectToImageRegistrationTest
       COMMAND ITKRegistrationCommonTestDriver --redirectOutput itkSpatialObjectToImageRegistrationTest.txt
           itkSpatialObjectToImageRegistrationTest)
