@@ -26,12 +26,12 @@
 #define ImageDimension 1
 __kernel void AverageGradientMagnitudeSquared(__global const INPIXELTYPE *in, __global BUFPIXELTYPE *buf, float scalex, int width)
 {
-	int gix = get_global_id(0);
+  int gix = get_global_id(0);
 
-	// NOTE! 1D version is not implemented
-	if(gix < width)
+  // NOTE! 1D version is not implemented
+  if(gix < width)
   {
-		buf[gix] = 0;
+    buf[gix] = 0;
   }
 }
 #endif
@@ -43,7 +43,7 @@ __kernel void AverageGradientMagnitudeSquared(__global const INPIXELTYPE *in, __
 #define ImageDimension 2
 __kernel void AverageGradientMagnitudeSquared(__global const INPIXELTYPE *in, __global BUFPIXELTYPE *buf, float scalex, float scaley, int width, int height)
 {
-	// global index
+  // global index
   int gix = get_global_id(0);
   int giy = get_global_id(1);
   unsigned int gidx = width*giy + gix;
@@ -112,7 +112,7 @@ __kernel void AverageGradientMagnitudeSquared(__global const INPIXELTYPE *in, __
     dx[0] = (sm[lix+1][liy] - sm[lix-1][liy])*0.5f*scalex;  // grad x
     dx[1] = (sm[lix][liy+1] - sm[lix][liy-1])*0.5f*scaley;  // grad y
 
-		//sm[lix][liy] = dx[0]*dx[0] + dx[1]*dx[1];
+    //sm[lix][liy] = dx[0]*dx[0] + dx[1]*dx[1];
     val = dx[0]*dx[0] + dx[1]*dx[1];
   }
 
@@ -182,10 +182,10 @@ __kernel void AverageGradientMagnitudeSquared(__global const INPIXELTYPE *in, __
 #define ImageDimension 3
 __kernel void AverageGradientMagnitudeSquared(__global const INPIXELTYPE *in, __global BUFPIXELTYPE *buf, float scalex, float scaley, float scalez, int width, int height, int depth)
 {
-	int gix = get_global_id(0);
+  int gix = get_global_id(0);
   int giy = get_global_id(1);
-	int giz = get_global_id(2);
-	unsigned int gidx = (unsigned int)width*((unsigned int)(giz*height + giy)) + (unsigned int)gix;
+  int giz = get_global_id(2);
+  unsigned int gidx = (unsigned int)width*((unsigned int)(giz*height + giy)) + (unsigned int)gix;
 
   // local index for shared memory.. note 1-pixel boundary for shared memory
   int lix = get_local_id(0);
@@ -212,12 +212,10 @@ __kernel void AverageGradientMagnitudeSquared(__global const INPIXELTYPE *in, __
   if(gix < width && giy < height && giz < depth)
   {
     sm[lix][liy][liz] = in[gidx];
-  }
-  else sm[lix][liy][liz] = 0;
+//   }
+//   else sm[lix][liy][liz] = 0;
 
-  // 6 top/bottom/left/right/up/down neighbor planes
-  if(gix < width && giy < height && giz < depth)
-  {
+    // 6 top/bottom/left/right/up/down neighbor planes
     if(lix == 0)
     {
       // y/z top plane
@@ -259,16 +257,13 @@ __kernel void AverageGradientMagnitudeSquared(__global const INPIXELTYPE *in, __
       else xy_r[lix][liy] = in[gidx];
     }
     else {}
-  }
 
-  // synchronize shared memory
-  barrier(CLK_LOCAL_MEM_FENCE);
+    // synchronize shared memory
+    barrier(CLK_LOCAL_MEM_FENCE);
 
-  float val = 0;
+    float val = 0;
 
-  // Compute Update
-  if(gix < width && giy < height && giz < depth)
-  {
+    // Compute Update
     // centralized derivatives
     float df, db;
 
@@ -284,41 +279,24 @@ __kernel void AverageGradientMagnitudeSquared(__global const INPIXELTYPE *in, __
     db = (liz == 0) ? xy_l[lix][liy] : sm[lix][liy][liz-1];
     dx[2] = (df - db)*0.5f*scalez;
 
-		val = dx[0]*dx[0] + dx[1]*dx[1] * dx[2]*dx[2];
-  }
-
-  barrier(CLK_LOCAL_MEM_FENCE);
-
-  sm[lix][liy][liz] = val;
-
-  barrier(CLK_LOCAL_MEM_FENCE);
-
-  //
-  // Reduction by Sum
-  //
-  int interval = BLOCK_SIZE/2;
-
-  while(interval > 0) // reduction along z axis
-  {
-    if(liz < interval)
-    {
-      sm[lix][liy][liz] += sm[lix][liy][liz + interval];
-    }
-
-    interval = interval >> 1; // divide by 2
+    val = dx[0]*dx[0] + dx[1]*dx[1] * dx[2]*dx[2];
 
     barrier(CLK_LOCAL_MEM_FENCE);
-  }
 
-  if(liz == 0) // x-y plane
-  {
-    interval = BLOCK_SIZE/2;
+    sm[lix][liy][liz] = val;
 
-    while(interval > 0)
+    barrier(CLK_LOCAL_MEM_FENCE);
+
+    //
+    // Reduction by Sum
+    //
+    int interval = BLOCK_SIZE/2;
+
+    while(interval > 0) // reduction along z axis
     {
-      if(liy < interval)
+      if(liz < interval)
       {
-        sm[lix][liy][liz] += sm[lix][liy + interval][liz];
+        sm[lix][liy][liz] += sm[lix][liy][liz + interval];
       }
 
       interval = interval >> 1; // divide by 2
@@ -326,37 +304,50 @@ __kernel void AverageGradientMagnitudeSquared(__global const INPIXELTYPE *in, __
       barrier(CLK_LOCAL_MEM_FENCE);
     }
 
-    // Reduction along x
-    if(liy == 0)
+    if(liz == 0) // x-y plane
     {
       interval = BLOCK_SIZE/2;
 
       while(interval > 0)
       {
-        if(lix < interval)
+        if(liy < interval)
         {
-          sm[lix][liy][liz] += sm[lix + interval][liy][liz];
+          sm[lix][liy][liz] += sm[lix][liy + interval][liz];
         }
 
-        //if(interval > 16) barrier(CLK_LOCAL_MEM_FENCE);  // don't need to synchronize if within a warp (only for NVIDIA)
+        interval = interval >> 1; // divide by 2
 
         barrier(CLK_LOCAL_MEM_FENCE);
-
-        interval = interval >> 1; // divide by 2
       }
 
-      // write the final value to global memory
-      if(lix == 0)
+      // Reduction along x
+      if(liy == 0)
       {
-        // Compute group index
-        gix = get_group_id(0);
-        giy = get_group_id(1);
-        giz = get_group_id(2);
+        interval = BLOCK_SIZE/2;
 
-        gidx = get_num_groups(0)*(get_num_groups(1)*giz + giy) + gix;
+        while(interval > 0)
+        {
+          if(lix < interval)
+          {
+            sm[lix][liy][liz] += sm[lix + interval][liy][liz];
+          }
 
-        // Write the final value to global memory
-        buf[gidx] = sm[lix][liy][liz];
+          //if(interval > 16) barrier(CLK_LOCAL_MEM_FENCE);  // don't need to synchronize if within a warp (only for NVIDIA)
+          interval = interval >> 1; // divide by 2
+
+          barrier(CLK_LOCAL_MEM_FENCE);
+
+        }
+
+        // write the final value to global memory
+        if(lix == 0)
+        {
+          // Compute group index
+          gidx = get_num_groups(0)*(get_num_groups(1)*giz + giy) + gix;
+
+          // Write the final value to global memory
+          buf[gidx] = sm[lix][liy][liz];
+        }
       }
     }
   }

@@ -64,7 +64,7 @@ void OclPrintDeviceName(cl_device_id device);
 cl_platform_id OclSelectPlatform(const char* name);
 
 /** Check OpenCL error */
-void OclCheckError(cl_int error);
+void OclCheckError(cl_int error, const char* filename="", int lineno=0, const char* location="");
 
 /** Check if OpenCL-enabled GPU is present. */
 bool IsGPUAvailable();

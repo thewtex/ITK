@@ -56,7 +56,7 @@ void GPUImageDataManager< ImageType >::MakeCPUBufferUpToDate()
       errid = clEnqueueReadBuffer(m_ContextManager->GetCommandQueue(
                                     m_CommandQueueId), m_GPUBuffer, CL_TRUE, 0, m_BufferSize, m_CPUBuffer, 0, NULL,
                                   NULL);
-      OclCheckError(errid);
+      OclCheckError(errid, __FILE__, __LINE__, ITK_LOCATION);
 
       m_Image->Modified();
       this->SetTimeStamp( m_Image->GetTimeStamp() );
@@ -95,7 +95,7 @@ void GPUImageDataManager< ImageType >::MakeGPUBufferUpToDate()
       errid = clEnqueueWriteBuffer(m_ContextManager->GetCommandQueue(
                                      m_CommandQueueId), m_GPUBuffer, CL_TRUE, 0, m_BufferSize, m_CPUBuffer, 0, NULL,
                                    NULL);
-      OclCheckError(errid);
+      OclCheckError(errid, __FILE__, __LINE__, ITK_LOCATION);
 
       this->SetTimeStamp( cpu_time_stamp );
 

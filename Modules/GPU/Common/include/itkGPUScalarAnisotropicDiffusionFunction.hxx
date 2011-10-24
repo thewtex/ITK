@@ -90,9 +90,15 @@ GPUScalarAnisotropicDiffusionFunction< TImage >
                                                                                              // #
                                                                                              // of
                                                                                              // threads
-    bufferSize *= globalSize[i]/localSize[i];
+// TODO which is correct?
+//     bufferSize *= globalSize[i]/localSize[i];
+    bufferSize *= globalSize[i];
     numPixel *= imgSize[i];
     }
+//   std::cout << "imgSize: [" << imgSize[0] << ", " << imgSize[1] << ", " << imgSize[2] << "]" << std::endl;
+//   std::cout << "globalSize: [" << globalSize[0] << ", " << globalSize[1] << ", " << globalSize[2] << "]" << std::endl;
+//   std::cout << "localSize: [" << localSize[0] << ", " << localSize[1] << ", " << localSize[2] << "]" << std::endl;
+//   std::cout << "bufferSize: " << bufferSize << std::endl;
 
   // Initialize & Allocate GPU Buffer
   if(bufferSize != this->m_AnisotropicDiffusionFunctionGPUBuffer->GetBufferSize() )

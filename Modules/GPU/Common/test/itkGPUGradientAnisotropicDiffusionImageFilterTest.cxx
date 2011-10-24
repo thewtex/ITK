@@ -114,9 +114,26 @@ int itkGPUGradientAnisotropicDiffusionImageFilterTest(int argc, char *argv[])
       GPUFilter->SetTimeStep( 0.0625 );//125 );
       GPUFilter->SetConductanceParameter( 3.0 );
       GPUFilter->UseImageSpacingOn();
-      GPUFilter->Update();
+      try
+      {
+        GPUFilter->Update();
+      }
+      catch (itk::ExceptionObject& excp)
+      {
+        std::cout << "Caught exception during GPUFilter->Update() " << excp << std::endl;
+        return EXIT_FAILURE;
+      }
 
-      GPUFilter->GetOutput()->UpdateBuffers(); // synchronization point
+      try
+      {
+        GPUFilter->GetOutput()->UpdateBuffers(); // synchronization point
+      }
+      catch (itk::ExceptionObject& excp)
+      {
+        std::cout << "Caught exception during GPUFilter->GetOutput()->UpdateBuffers() " << excp << std::endl;
+        return EXIT_FAILURE;
+      }
+
 
       gputimer.Stop();
       std::cout << "GPU Anisotropic diffusion took " << gputimer.GetMeanTime() << " seconds.\n" << std::endl;
@@ -136,8 +153,27 @@ int itkGPUGradientAnisotropicDiffusionImageFilterTest(int argc, char *argv[])
         diff += err*err;
         nPix++;
       }
+      writer->SetInput( GPUFilter->GetOutput() ); // copy GPU->CPU implicilty
 
-      std::cout << "RMS Error : " << sqrt( diff / (double)nPix ) << std::endl;
+      // execute pipeline filter and write output
+      writer->Update();
+
+      if (nPix > 0)
+      {
+        double RMSError = sqrt( diff / (double)nPix );
+        std::cout << "RMS Error : " << RMSError << std::endl;
+        double RMSThreshold = 0;
+        if (RMSError > RMSThreshold)
+        {
+          std::cout << "RMS Error exceeds threshold (" << RMSThreshold << ")" << std::endl;
+          return EXIT_FAILURE;
+        }
+      }
+      else
+      {
+        std::cout << "No pixels in output!" << std::endl;
+        return EXIT_FAILURE;
+      }
     }
 
   }

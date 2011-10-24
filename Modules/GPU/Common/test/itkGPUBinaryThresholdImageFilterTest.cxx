@@ -139,8 +139,22 @@ int itkGPUBinaryThresholdImageFilterTest(int argc, char *argv[])
         diff += err*err;
         nPix++;
       }
-
-      std::cout << "RMS Error : " << sqrt( diff / (double)nPix ) << std::endl;
+      if (nPix > 0)
+      {
+        double RMSError = sqrt( diff / (double)nPix );
+        std::cout << "RMS Error : " << RMSError << std::endl;
+        double RMSThreshold = 0;
+        if (RMSError > RMSThreshold)
+        {
+          std::cout << "RMS Error exceeds threshold (" << RMSThreshold << ")" << std::endl;
+          return EXIT_FAILURE;
+        }
+      }
+      else
+      {
+        std::cout << "No pixels in output!" << std::endl;
+        return EXIT_FAILURE;
+      }
     }
   }
 

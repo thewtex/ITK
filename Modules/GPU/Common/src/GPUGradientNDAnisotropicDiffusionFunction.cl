@@ -27,12 +27,12 @@
 #define ImageDimension 1
 __kernel void ComputeUpdate(__global const INPIXELTYPE *in, __global BUFPIXELTYPE *buf, PIXELTYPE K, float scalex, int width)
 {
-	int gix = get_global_id(0);
+  int gix = get_global_id(0);
 
-	// NOTE! 1D version is not implemented
-	if(gix < width)
+  // NOTE! 1D version is not implemented
+  if(gix < width)
   {
-		buf[gix] = 0;
+    buf[gix] = 0;
   }
 }
 #endif
@@ -44,7 +44,7 @@ __kernel void ComputeUpdate(__global const INPIXELTYPE *in, __global BUFPIXELTYP
 #define ImageDimension 2
 __kernel void ComputeUpdate(__global const INPIXELTYPE *in, __global BUFPIXELTYPE *buf, PIXELTYPE K, float scalex, float scaley, int width, int height)
 {
-	// global index
+  // global index
   int gix = get_global_id(0);
   int giy = get_global_id(1);
 
@@ -142,7 +142,7 @@ __kernel void ComputeUpdate(__global const INPIXELTYPE *in, __global BUFPIXELTYP
       delta += (Cx*dx_f - Cxd*dx_b);
     }
 
-		buf[gidx] = delta;
+    buf[gidx] = delta;
   }
 }
 #endif
@@ -174,334 +174,339 @@ __kernel void ComputeUpdate(__global const INPIXELTYPE *in, __global BUFPIXELTYP
   //
   // Read (BLOCK_SIZE+2)x(BLOCK_SIZE+2) data - 1 pixel boundary around block
   //
+  bool isValid = true;
+  if (gix >= width) isValid = false;
+  if (giy >= height) isValid = false;
+  if (giz >= depth) isValid = false;
 
-  // Center
-  sm[lix][liy][liz] = in[gidx];
-
-  // 6 top/bottom/left/right/up/down planes
-  if(lix == 1)
+  if (isValid)
   {
-    // y/z top plane
-    if(gix > 0) sm[lix-1][liy][liz] = in[gidx-1];
-    else sm[lix-1][liy][liz] = in[gidx];
-  }
-  else if(lix == BLOCK_SIZE)
-  {
-    // y/z bottom plane
-    if(gix < (width-1)) sm[lix+1][liy][liz] = in[gidx+1];
-    else sm[lix+1][liy][liz] = in[gidx];
-  }
-  else {}
 
-  if(liy == 1)
-  {
-    // x/z top plane
-    if(giy > 0) sm[lix][liy-1][liz] = in[gidx - width];
-    else sm[lix][liy-1][liz] = in[gidx];
-  }
-  else if(liy == BLOCK_SIZE)
-  {
-    // x/z bottom plane
-    if(giy < (height-1)) sm[lix][liy+1][liz] = in[gidx + width];
-    else sm[lix][liy+1][liz] = in[gidx];
-  }
-  else {}
+    // Center
+    sm[lix][liy][liz] = in[gidx];
 
-  if(liz == 1)
-  {
-    // x/y top plane
-    if(giz > 0) sm[lix][liy][liz-1] = in[gidx - width*height];
-    else sm[lix][liy][liz-1] = in[gidx];
-  }
-  else if(liz == BLOCK_SIZE)
-  {
-    // x/z bottom plane
-    if(giz < (depth-1)) sm[lix][liy][liz+1] = in[gidx + width*height];
-    else sm[lix][liy][liz+1] = in[gidx];
-  }
-  else {}
-
-  // 8 corners and 4 edges along z
-  if(lix == 1 && liy == 1)
-  {
-    tx = (unsigned int)max(0, gix-1);
-    ty = (unsigned int)max(0, giy-1);
-    tz = (unsigned int)giz;
-    tidx = width*(tz*height + ty) + tx;
-    sm[lix-1][liy-1][liz] = in[ tidx ];
-
-    if(liz == 1)
-    {
-      tz = (unsigned int)max(0, giz-1);
-      tidx = width*(tz*height + ty) + tx;
-      sm[lix-1][liy-1][liz-1] = in[ tidx ];
-    }
-    else if(liz == BLOCK_SIZE)
-    {
-      tz = (unsigned int)min(depth-1, giz+1);
-      tidx = width*(tz*height + ty) + tx;
-      sm[lix-1][liy-1][liz+1] = in[ tidx ];
-    }
-    else {}
-  }
-  else if(lix == 1 && liy == BLOCK_SIZE)
-  {
-    tx = (unsigned int)max(0, gix-1);
-    ty = (unsigned int)min(height-1, giy+1);
-    tz = (unsigned int)giz;
-    tidx = width*(tz*height + ty) + tx;
-    sm[lix-1][liy+1][liz] = in[ tidx ];
-
-    if(liz == 1)
-    {
-      tz = (unsigned int)max(0, giz-1);
-      tidx = width*(tz*height + ty) + tx;
-      sm[lix-1][liy+1][liz-1] = in[ tidx ];
-    }
-    else if(liz == BLOCK_SIZE)
-    {
-      tz = (unsigned int)min(depth-1, giz+1);
-      tidx = width*(tz*height + ty) + tx;
-      sm[lix-1][liy+1][liz+1] = in[ tidx ];
-    }
-  }
-  else if(lix == BLOCK_SIZE && liy == 1)
-  {
-    tx = (unsigned int)min(width-1, gix+1);
-    ty = (unsigned int)max(0, giy-1);
-    tz = (unsigned int)giz;
-    tidx = width*(tz*height + ty) + tx;
-    sm[lix+1][liy-1][liz] = in[ tidx ];
-
-    if(liz == 1)
-    {
-      tz = (unsigned int)max(0, giz-1);
-      tidx = width*(tz*height + ty) + tx;
-      sm[lix+1][liy-1][liz-1] = in[ tidx ];
-    }
-    else if(liz == BLOCK_SIZE)
-    {
-      tz = (unsigned int)min(depth-1, giz+1);
-      tidx = width*(tz*height + ty) + tx;
-      sm[lix+1][liy-1][liz+1] = in[ tidx ];
-    }
-    else {}
-  }
-  else if(lix == BLOCK_SIZE && liy == BLOCK_SIZE)
-  {
-    tx = (unsigned int)min(width-1, gix+1);
-    ty = (unsigned int)min(height-1, giy+1);
-    tz = (unsigned int)giz;
-    tidx = width*(tz*height + ty) + tx;
-    sm[lix+1][liy+1][liz] = in[ tidx ];
-
-    if(liz == 1)
-    {
-      tz = (unsigned int)max(0, giz-1);
-      tidx = width*(tz*height + ty) + tx;
-      sm[lix+1][liy+1][liz-1] = in[ tidx ];
-    }
-    else if(liz == BLOCK_SIZE)
-    {
-      tz = (unsigned int)min(depth-1, giz+1);
-      tidx = width*(tz*height + ty) + tx;
-      sm[lix+1][liy+1][liz+1] = in[ tidx ];
-    }
-    else {}
-  }
-  else
-  {}
-
-  // 4 edges along y
-  if(lix == 1 && liz == 1)
-  {
-    tx = (unsigned int)max(0, gix-1);
-    ty = (unsigned int)giy;
-    tz = (unsigned int)max(0, giz-1);
-    tidx = width*(tz*height + ty) + tx;
-    sm[lix-1][liy][liz-1] = in[ tidx ];
-
-    if(liy == 1)
-    {
-      ty = (unsigned int)max(0, giy-1);
-      tidx = width*(tz*height + ty) + tx;
-      sm[lix-1][liy-1][liz-1] = in[ tidx ];
-    }
-    else if(liy == BLOCK_SIZE)
-    {
-      ty = (unsigned int)min(height-1, giy+1);
-      tidx = width*(tz*height + ty) + tx;
-      sm[lix-1][liy+1][liz-1] = in[ tidx ];
-    }
-    else {}
-  }
-  else if(lix == 1 && liz == BLOCK_SIZE)
-  {
-    tx = (unsigned int)max(0, gix-1);
-    ty = (unsigned int)giy;
-    tz = (unsigned int)min(depth-1, giz+1);
-    tidx = width*(tz*height + ty) + tx;
-    sm[lix-1][liy][liz+1] = in[ tidx ];
-
-    if(liy == 1)
-    {
-      ty = (unsigned int)max(0, giy-1);
-      tidx = width*(tz*height + ty) + tx;
-      sm[lix-1][liy-1][liz+1] = in[ tidx ];
-    }
-    else if(liy == BLOCK_SIZE)
-    {
-      ty = (unsigned int)min(height-1, giy+1);
-      tidx = width*(tz*height + ty) + tx;
-      sm[lix-1][liy+1][liz+1] = in[ tidx ];
-    }
-    else {}
-  }
-  else if(lix == BLOCK_SIZE && liz == 1)
-  {
-    tx = (unsigned int)min(width-1, gix+1);
-    ty = (unsigned int)giy;
-    tz = (unsigned int)max(0, giz-1);
-    tidx = width*(tz*height + ty) + tx;
-    sm[lix+1][liy][liz-1] = in[ tidx ];
-
-    if(liy == 1)
-    {
-      ty = (unsigned int)max(0, giy-1);
-      tidx = width*(tz*height + ty) + tx;
-      sm[lix+1][liy-1][liz-1] = in[ tidx ];
-    }
-    else if(liy == BLOCK_SIZE)
-    {
-      ty = (unsigned int)min(height-1, giy+1);
-      tidx = width*(tz*height + ty) + tx;
-      sm[lix+1][liy+1][liz-1] = in[ tidx ];
-    }
-    else {}
-  }
-  else if(lix == BLOCK_SIZE && liz == BLOCK_SIZE)
-  {
-    tx = (unsigned int)min(width-1, gix+1);
-    ty = (unsigned int)giy;
-    tz = (unsigned int)min(depth-1, giz+1);
-    tidx = width*(tz*height + ty) + tx;
-    sm[lix+1][liy][liz+1] = in[ tidx ];
-
-    if(liy == 1)
-    {
-      ty = (unsigned int)max(0, giy-1);
-      tidx = width*(tz*height + ty) + tx;
-      sm[lix+1][liy-1][liz+1] = in[ tidx ];
-    }
-    else if(liy == BLOCK_SIZE)
-    {
-      ty = (unsigned int)min(height-1, giy+1);
-      tidx = width*(tz*height + ty) + tx;
-      sm[lix+1][liy+1][liz+1] = in[ tidx ];
-    }
-    else {}
-  }
-  else
-  {}
-
-
-  // 4 edges along x
-  if(liy == 1 && liz == 1)
-  {
-    tx = (unsigned int)gix;
-    ty = (unsigned int)max(0, giy-1);
-    tz = (unsigned int)max(0, giz-1);
-    tidx = width*(tz*height + ty) + tx;
-    sm[lix][liy-1][liz-1] = in[ tidx ];
-
+    // 6 top/bottom/left/right/up/down planes
     if(lix == 1)
     {
-      tx = (unsigned int)max(0, gix-1);
-      tidx = width*(tz*height + ty) + tx;
-      sm[lix-1][liy-1][liz-1] = in[ tidx ];
+      // y/z top plane
+      if(gix > 0) sm[lix-1][liy][liz] = in[gidx-1];
+      else sm[lix-1][liy][liz] = in[gidx];
     }
     else if(lix == BLOCK_SIZE)
     {
-      tx = (unsigned int)min(width-1, gix+1);
-      tidx = width*(tz*height + ty) + tx;
-      sm[lix+1][liy-1][liz-1] = in[ tidx ];
+      // y/z bottom plane
+      if(gix < (width-1)) sm[lix+1][liy][liz] = in[gidx+1];
+      else sm[lix+1][liy][liz] = in[gidx];
     }
     else {}
-  }
-  else if(liy == 1 && liz == BLOCK_SIZE)
-  {
-    tx = (unsigned int)gix;
-    ty = (unsigned int)max(0, giy-1);
-    tz = (unsigned int)min(depth-1, giz+1);
-    tidx = width*(tz*height + ty) + tx;
-    sm[lix][liy-1][liz-1] = in[ tidx ];
 
-    if(lix == 1)
+    if(liy == 1)
+    {
+      // x/z top plane
+      if(giy > 0) sm[lix][liy-1][liz] = in[gidx - width];
+      else sm[lix][liy-1][liz] = in[gidx];
+    }
+    else if(liy == BLOCK_SIZE)
+    {
+      // x/z bottom plane
+      if(giy < (height-1)) sm[lix][liy+1][liz] = in[gidx + width];
+      else sm[lix][liy+1][liz] = in[gidx];
+    }
+    else {}
+
+    if(liz == 1)
+    {
+      // x/y top plane
+      if(giz > 0) sm[lix][liy][liz-1] = in[gidx - width*height];
+      else sm[lix][liy][liz-1] = in[gidx];
+    }
+    else if(liz == BLOCK_SIZE)
+    {
+      // x/z bottom plane
+      if(giz < (depth-1)) sm[lix][liy][liz+1] = in[gidx + width*height];
+      else sm[lix][liy][liz+1] = in[gidx];
+    }
+    else {}
+
+    // 8 corners and 4 edges along z
+    if(lix == 1 && liy == 1)
     {
       tx = (unsigned int)max(0, gix-1);
+      ty = (unsigned int)max(0, giy-1);
+      tz = (unsigned int)giz;
       tidx = width*(tz*height + ty) + tx;
-      sm[lix-1][liy-1][liz+1] = in[ tidx ];
-    }
-    else if(lix == BLOCK_SIZE)
-    {
-      tx = (unsigned int)min(width-1, gix+1);
-      tidx = width*(tz*height + ty) + tx;
-      sm[lix+1][liy-1][liz+1] = in[ tidx ];
-    }
-    else {}
-  }
-  else if(liy == BLOCK_SIZE && liz == 1)
-  {
-    tx = (unsigned int)gix;
-    ty = (unsigned int)min(height-1, giy+1);
-    tz = (unsigned int)max(0, giz-1);
-    tidx = width*(tz*height + ty) + tx;
-    sm[lix][liy+1][liz-1] = in[ tidx ];
+      sm[lix-1][liy-1][liz] = in[ tidx ];
 
-    if(lix == 1)
+      if(liz == 1)
+      {
+        tz = (unsigned int)max(0, giz-1);
+        tidx = width*(tz*height + ty) + tx;
+        sm[lix-1][liy-1][liz-1] = in[ tidx ];
+      }
+      else if(liz == BLOCK_SIZE)
+      {
+        tz = (unsigned int)min(depth-1, giz+1);
+        tidx = width*(tz*height + ty) + tx;
+        sm[lix-1][liy-1][liz+1] = in[ tidx ];
+      }
+      else {}
+    }
+    else if(lix == 1 && liy == BLOCK_SIZE)
     {
       tx = (unsigned int)max(0, gix-1);
+      ty = (unsigned int)min(height-1, giy+1);
+      tz = (unsigned int)giz;
       tidx = width*(tz*height + ty) + tx;
-      sm[lix-1][liy+1][liz-1] = in[ tidx ];
+      sm[lix-1][liy+1][liz] = in[ tidx ];
+
+      if(liz == 1)
+      {
+        tz = (unsigned int)max(0, giz-1);
+        tidx = width*(tz*height + ty) + tx;
+        sm[lix-1][liy+1][liz-1] = in[ tidx ];
+      }
+      else if(liz == BLOCK_SIZE)
+      {
+        tz = (unsigned int)min(depth-1, giz+1);
+        tidx = width*(tz*height + ty) + tx;
+        sm[lix-1][liy+1][liz+1] = in[ tidx ];
+      }
     }
-    else if(lix == BLOCK_SIZE)
+    else if(lix == BLOCK_SIZE && liy == 1)
     {
       tx = (unsigned int)min(width-1, gix+1);
+      ty = (unsigned int)max(0, giy-1);
+      tz = (unsigned int)giz;
       tidx = width*(tz*height + ty) + tx;
-      sm[lix+1][liy+1][liz-1] = in[ tidx ];
-    }
-    else {}
-  }
-  else if(liy == BLOCK_SIZE && liz == BLOCK_SIZE)
-  {
-    tx = (unsigned int)gix;
-    ty = (unsigned int)min(height-1, giy+1);
-    tz = (unsigned int)min(depth-1, giz-1);
-    tidx = width*(tz*height + ty) + tx;
-    sm[lix][liy+1][liz+1] = in[ tidx ];
+      sm[lix+1][liy-1][liz] = in[ tidx ];
 
-    if(lix == 1)
+      if(liz == 1)
+      {
+        tz = (unsigned int)max(0, giz-1);
+        tidx = width*(tz*height + ty) + tx;
+        sm[lix+1][liy-1][liz-1] = in[ tidx ];
+      }
+      else if(liz == BLOCK_SIZE)
+      {
+        tz = (unsigned int)min(depth-1, giz+1);
+        tidx = width*(tz*height + ty) + tx;
+        sm[lix+1][liy-1][liz+1] = in[ tidx ];
+      }
+      else {}
+    }
+    else if(lix == BLOCK_SIZE && liy == BLOCK_SIZE)
+    {
+      tx = (unsigned int)min(width-1, gix+1);
+      ty = (unsigned int)min(height-1, giy+1);
+      tz = (unsigned int)giz;
+      tidx = width*(tz*height + ty) + tx;
+      sm[lix+1][liy+1][liz] = in[ tidx ];
+
+      if(liz == 1)
+      {
+        tz = (unsigned int)max(0, giz-1);
+        tidx = width*(tz*height + ty) + tx;
+        sm[lix+1][liy+1][liz-1] = in[ tidx ];
+      }
+      else if(liz == BLOCK_SIZE)
+      {
+        tz = (unsigned int)min(depth-1, giz+1);
+        tidx = width*(tz*height + ty) + tx;
+        sm[lix+1][liy+1][liz+1] = in[ tidx ];
+      }
+      else {}
+    }
+    else
+    {}
+
+    // 4 edges along y
+    if(lix == 1 && liz == 1)
     {
       tx = (unsigned int)max(0, gix-1);
+      ty = (unsigned int)giy;
+      tz = (unsigned int)max(0, giz-1);
       tidx = width*(tz*height + ty) + tx;
-      sm[lix-1][liy+1][liz+1] = in[ tidx ];
+      sm[lix-1][liy][liz-1] = in[ tidx ];
+
+      if(liy == 1)
+      {
+        ty = (unsigned int)max(0, giy-1);
+        tidx = width*(tz*height + ty) + tx;
+        sm[lix-1][liy-1][liz-1] = in[ tidx ];
+      }
+      else if(liy == BLOCK_SIZE)
+      {
+        ty = (unsigned int)min(height-1, giy+1);
+        tidx = width*(tz*height + ty) + tx;
+        sm[lix-1][liy+1][liz-1] = in[ tidx ];
+      }
+      else {}
     }
-    else if(lix == BLOCK_SIZE)
+    else if(lix == 1 && liz == BLOCK_SIZE)
+    {
+      tx = (unsigned int)max(0, gix-1);
+      ty = (unsigned int)giy;
+      tz = (unsigned int)min(depth-1, giz+1);
+      tidx = width*(tz*height + ty) + tx;
+      sm[lix-1][liy][liz+1] = in[ tidx ];
+
+      if(liy == 1)
+      {
+        ty = (unsigned int)max(0, giy-1);
+        tidx = width*(tz*height + ty) + tx;
+        sm[lix-1][liy-1][liz+1] = in[ tidx ];
+      }
+      else if(liy == BLOCK_SIZE)
+      {
+        ty = (unsigned int)min(height-1, giy+1);
+        tidx = width*(tz*height + ty) + tx;
+        sm[lix-1][liy+1][liz+1] = in[ tidx ];
+      }
+      else {}
+    }
+    else if(lix == BLOCK_SIZE && liz == 1)
     {
       tx = (unsigned int)min(width-1, gix+1);
+      ty = (unsigned int)giy;
+      tz = (unsigned int)max(0, giz-1);
       tidx = width*(tz*height + ty) + tx;
-      sm[lix+1][liy+1][liz+1] = in[ tidx ];
+      sm[lix+1][liy][liz-1] = in[ tidx ];
+
+      if(liy == 1)
+      {
+        ty = (unsigned int)max(0, giy-1);
+        tidx = width*(tz*height + ty) + tx;
+        sm[lix+1][liy-1][liz-1] = in[ tidx ];
+      }
+      else if(liy == BLOCK_SIZE)
+      {
+        ty = (unsigned int)min(height-1, giy+1);
+        tidx = width*(tz*height + ty) + tx;
+        sm[lix+1][liy+1][liz-1] = in[ tidx ];
+      }
+      else {}
+    }
+    else if(lix == BLOCK_SIZE && liz == BLOCK_SIZE)
+    {
+      tx = (unsigned int)min(width-1, gix+1);
+      ty = (unsigned int)giy;
+      tz = (unsigned int)min(depth-1, giz+1);
+      tidx = width*(tz*height + ty) + tx;
+      sm[lix+1][liy][liz+1] = in[ tidx ];
+
+      if(liy == 1)
+      {
+        ty = (unsigned int)max(0, giy-1);
+        tidx = width*(tz*height + ty) + tx;
+        sm[lix+1][liy-1][liz+1] = in[ tidx ];
+      }
+      else if(liy == BLOCK_SIZE)
+      {
+        ty = (unsigned int)min(height-1, giy+1);
+        tidx = width*(tz*height + ty) + tx;
+        sm[lix+1][liy+1][liz+1] = in[ tidx ];
+      }
+      else {}
+    }
+    else
+    {}
+
+
+    // 4 edges along x
+    if(liy == 1 && liz == 1)
+    {
+      tx = (unsigned int)gix;
+      ty = (unsigned int)max(0, giy-1);
+      tz = (unsigned int)max(0, giz-1);
+      tidx = width*(tz*height + ty) + tx;
+      sm[lix][liy-1][liz-1] = in[ tidx ];
+
+      if(lix == 1)
+      {
+        tx = (unsigned int)max(0, gix-1);
+        tidx = width*(tz*height + ty) + tx;
+        sm[lix-1][liy-1][liz-1] = in[ tidx ];
+      }
+      else if(lix == BLOCK_SIZE)
+      {
+        tx = (unsigned int)min(width-1, gix+1);
+        tidx = width*(tz*height + ty) + tx;
+        sm[lix+1][liy-1][liz-1] = in[ tidx ];
+      }
+      else {}
+    }
+    else if(liy == 1 && liz == BLOCK_SIZE)
+    {
+      tx = (unsigned int)gix;
+      ty = (unsigned int)max(0, giy-1);
+      tz = (unsigned int)min(depth-1, giz+1);
+      tidx = width*(tz*height + ty) + tx;
+      sm[lix][liy-1][liz-1] = in[ tidx ];
+
+      if(lix == 1)
+      {
+        tx = (unsigned int)max(0, gix-1);
+        tidx = width*(tz*height + ty) + tx;
+        sm[lix-1][liy-1][liz+1] = in[ tidx ];
+      }
+      else if(lix == BLOCK_SIZE)
+      {
+        tx = (unsigned int)min(width-1, gix+1);
+        tidx = width*(tz*height + ty) + tx;
+        sm[lix+1][liy-1][liz+1] = in[ tidx ];
+      }
+      else {}
+    }
+    else if(liy == BLOCK_SIZE && liz == 1)
+    {
+      tx = (unsigned int)gix;
+      ty = (unsigned int)min(height-1, giy+1);
+      tz = (unsigned int)max(0, giz-1);
+      tidx = width*(tz*height + ty) + tx;
+      sm[lix][liy+1][liz-1] = in[ tidx ];
+
+      if(lix == 1)
+      {
+        tx = (unsigned int)max(0, gix-1);
+        tidx = width*(tz*height + ty) + tx;
+        sm[lix-1][liy+1][liz-1] = in[ tidx ];
+      }
+      else if(lix == BLOCK_SIZE)
+      {
+        tx = (unsigned int)min(width-1, gix+1);
+        tidx = width*(tz*height + ty) + tx;
+        sm[lix+1][liy+1][liz-1] = in[ tidx ];
+      }
+      else {}
+    }
+    else if(liy == BLOCK_SIZE && liz == BLOCK_SIZE)
+    {
+      tx = (unsigned int)gix;
+      ty = (unsigned int)min(height-1, giy+1);
+      tz = (unsigned int)min(depth-1, giz-1);
+      tidx = width*(tz*height + ty) + tx;
+      sm[lix][liy+1][liz+1] = in[ tidx ];
+
+      if(lix == 1)
+      {
+        tx = (unsigned int)max(0, gix-1);
+        tidx = width*(tz*height + ty) + tx;
+        sm[lix-1][liy+1][liz+1] = in[ tidx ];
+      }
+      else if(lix == BLOCK_SIZE)
+      {
+        tx = (unsigned int)min(width-1, gix+1);
+        tidx = width*(tz*height + ty) + tx;
+        sm[lix+1][liy+1][liz+1] = in[ tidx ];
+      }
+      else {}
     }
     else {}
-  }
-  else {}
 
-  // synchronize shared memory
-  barrier(CLK_LOCAL_MEM_FENCE);
+    // synchronize shared memory
+    barrier(CLK_LOCAL_MEM_FENCE);
 
-  // Compute Update
-  if(gix < width && giy < height && giz < depth)
-  {
+    // Compute Update
     // delta
     delta = 0;
 

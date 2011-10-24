@@ -45,8 +45,8 @@ int itkGPUImageFilterTest(int argc, char *argv[])
   typedef   unsigned char  InputPixelType;
   typedef   unsigned char  OutputPixelType;
 
-  typedef itk::Image< InputPixelType,  2 >   InputImageType;
-  typedef itk::Image< OutputPixelType, 2 >   OutputImageType;
+  typedef itk::Image< InputPixelType,  3 >   InputImageType;
+  typedef itk::Image< OutputPixelType, 3 >   OutputImageType;
 
   typedef itk::ImageFileReader< InputImageType  >  ReaderType;
   typedef itk::ImageFileWriter< OutputImageType >  WriterType;
@@ -79,6 +79,7 @@ int itkGPUImageFilterTest(int argc, char *argv[])
   InputImageType::SizeType indexRadius;
   indexRadius[0] = 2; // radius along x
   indexRadius[1] = 2; // radius along y
+  indexRadius[2] = 2; // radius along z
 
   // threshold parameters
   const InputPixelType upperThreshold = 255;

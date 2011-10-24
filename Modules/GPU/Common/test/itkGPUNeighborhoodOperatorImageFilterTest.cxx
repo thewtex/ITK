@@ -144,12 +144,30 @@ int itkGPUNeighborhoodOperatorImageFilterTest(int argc, char *argv[])
       for(cit.GoToBegin(), git.GoToBegin(); !cit.IsAtEnd(); ++cit, ++git)
       {
         double err = (double)(cit.Get()) - (double)(git.Get());
-        if(err > 0.1 || (double)(cit.Get()) < 0.1)   std::cout << "CPU : " << (double)(cit.Get()) << ", GPU : " << (double)(git.Get()) << std::endl;
+//         if(err > 0.1 || (double)(cit.Get()) < 0.1)   std::cout << "CPU : " << (double)(cit.Get()) << ", GPU : " << (double)(git.Get()) << std::endl;
         diff += err*err;
         nPix++;
       }
 
-      std::cout << "RMS Error : " << sqrt( diff / (double)nPix ) << std::endl;
+      writer->SetInput( GPUFilter->GetOutput() );
+      writer->Update();
+
+      if (nPix > 0)
+      {
+        double RMSError = sqrt( diff / (double)nPix );
+        std::cout << "RMS Error : " << RMSError << std::endl;
+        double RMSThreshold = 0;
+        if (RMSError > RMSThreshold)
+        {
+          std::cout << "RMS Error exceeds threshold (" << RMSThreshold << ")" << std::endl;
+          return EXIT_FAILURE;
+        }
+      }
+      else
+      {
+        std::cout << "No pixels in output!" << std::endl;
+        return EXIT_FAILURE;
+      }
     }
 
   }

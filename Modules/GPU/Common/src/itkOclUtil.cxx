@@ -31,11 +31,11 @@ cl_device_id* OclGetAvailableDevices(cl_platform_id platform, cl_device_type dev
   cl_int errid;
 
   errid = clGetDeviceIDs(platform, devType, 0, NULL, &totalNumDevices);
-  OclCheckError( errid );
+  OclCheckError( errid, __FILE__, __LINE__, ITK_LOCATION );
 
   cl_device_id* totalDevices = (cl_device_id *)malloc(totalNumDevices * sizeof(cl_device_id) );
   errid = clGetDeviceIDs(platform, devType, totalNumDevices, totalDevices, NULL);
-  OclCheckError( errid );
+  OclCheckError( errid, __FILE__, __LINE__, ITK_LOCATION );
 
   (*numAvailableDevices) = 0;
 
@@ -220,7 +220,7 @@ cl_platform_id OclSelectPlatform(const char* name)
   return clSelectedPlatformID;
 }
 
-void OclCheckError(cl_int error)
+void OclCheckError(cl_int error, const char* filename, int lineno, const char* location)
 {
   static const char* errorString[] = {
     "CL_SUCCESS",
@@ -294,11 +294,18 @@ void OclCheckError(cl_int error)
     // print error message
     const int errorCount = sizeof(errorString) / sizeof(errorString[0]);
     const int index = -error;
+    std::ostringstream errorMsg;
 
-    if(index >= 0 && index < errorCount) printf("OpenCL Error : %s\n", errorString[index]);
-    else printf("OpenCL Error : Unspecified Error\n");
-
-    assert( false );
+    if(index >= 0 && index < errorCount)
+    {
+      errorMsg << "OpenCL Error : " << errorString[index] << std::endl;
+    }
+    else
+    {
+      errorMsg << "OpenCL Error : Unspecified Error" << std::endl;
+    }
+    ::itk::ExceptionObject e_(filename, lineno, errorMsg.str().c_str(), location);
+    throw e_;
     }
 }
 

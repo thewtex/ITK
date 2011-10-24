@@ -25,6 +25,7 @@
 #include "itkOclUtil.h"
 #include "itkGPUContextManager.h"
 #include "itkSimpleFastMutexLock.h"
+#include "itkMutexLockHolder.h"
 
 namespace itk
 {
@@ -52,6 +53,8 @@ public:
 
   itkNewMacro(Self);
   itkTypeMacro(GPUDataManager, Object);
+
+  typedef MutexLockHolder<SimpleFastMutexLock> MutexHolderType;
 
   /** total buffer size in bytes */
   void SetBufferSize( unsigned int num );
