@@ -37,13 +37,14 @@
 #else
 
 #include <CL/cl.h>
-#include <CL/opencl.h>
+//#include <CL/opencl.h>
 #include <CL/cl_gl.h>
-#include <CL/cl_ext.h>
-
-#include <itkMacro.h>
+//#include <CL/cl_ext.h>
+#include <CL/cl_platform.h>
 
 #endif
+
+#include <itkMacro.h>
 
 /** OpenCL workgroup (block) size for 1/2/3D - needs to be tuned based on the GPU architecture
  * 1D : 256

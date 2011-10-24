@@ -19,6 +19,7 @@
 #define __itkGPUNeighborhoodOperatorImageFilter_h
 
 #include "itkGPUImage.h"
+#include "itkGPUImageToImageFilter.h"
 #include "itkImageToImageFilter.h"
 #include "itkNeighborhoodOperator.h"
 #include "itkImage.h"

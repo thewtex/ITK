@@ -57,8 +57,8 @@ GPUContextManager::GPUContextManager()
   m_Devices = OclGetAvailableDevices(m_Platform, devType, &m_NumberOfDevices);
 
   // create context
-//   m_Context = clCreateContext(0, m_NumberOfDevices, m_Devices, NULL, NULL, &errid);
-  m_Context = clCreateContext(0, m_NumberOfDevices, m_Devices, clLogMessagesToStdoutAPPLE, NULL, &errid);
+  m_Context = clCreateContext(0, m_NumberOfDevices, m_Devices, NULL, NULL, &errid);
+
   OclCheckError( errid, __FILE__, __LINE__, ITK_LOCATION );
 
   // create command queues
