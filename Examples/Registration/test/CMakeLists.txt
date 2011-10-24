@@ -901,22 +901,3 @@ itk_add_test(NAME ModelToImageRegistration2Test COMMAND ${ITK_TEST_DRIVER}
   $<TARGET_FILE:ModelToImageRegistration2>
         DATA{${ITK_SOURCE_DIR}/Testing/Data/Input/cake_easy.png}  12 12
 )
-
-
-itk_add_test(NAME IterativeClosestPoint1Test COMMAND ${ITK_TEST_DRIVER}
-  $<TARGET_FILE:IterativeClosestPoint1>
-        ${ITK_SOURCE_DIR}/Examples/Data/IterativeClosestPointFixedPoints.txt
-        ${ITK_SOURCE_DIR}/Examples/Data/IterativeClosestPointMovingPoints.txt
-)
-
-itk_add_test(NAME IterativeClosestPoint2Test COMMAND ${ITK_TEST_DRIVER}
-  $<TARGET_FILE:IterativeClosestPoint2>
-        ${ITK_SOURCE_DIR}/Examples/Data/IterativeClosestPointFixedPoints2.txt
-        ${ITK_SOURCE_DIR}/Examples/Data/IterativeClosestPointMovingPoints2.txt
-)
-
-itk_add_test(NAME IterativeClosestPoint3Test COMMAND ${ITK_TEST_DRIVER}
-  $<TARGET_FILE:IterativeClosestPoint3>
-        ${ITK_SOURCE_DIR}/Examples/Data/IterativeClosestPointFixedPoints.txt
-        ${ITK_SOURCE_DIR}/Examples/Data/IterativeClosestPointMovingPoints.txt
-)
