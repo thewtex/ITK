@@ -299,8 +299,6 @@ int itkRegistrationParameterScalesEstimatorTest(int , char* [])
 
   jacobianScaleEstimator->SetMetric(metric);
   jacobianScaleEstimator->SetTransformForward(true);
-  jacobianScaleEstimator->SetSamplingStrategy(
-    RegistrationParameterScalesEstimatorTestType::CornerSampling);
   jacobianScaleEstimator->Print( std::cout );
 
   RegistrationParameterScalesEstimatorTestType::ScalesType jacobianScales(
@@ -350,9 +348,6 @@ int itkRegistrationParameterScalesEstimatorTest(int , char* [])
     }
   // Check done
 
-  // Testing different sampling strategies
-  jacobianScaleEstimator->SetSamplingStrategy(
-    RegistrationParameterScalesEstimatorTestType::RandomSampling);
   jacobianScaleEstimator->SetNumberOfRandomSamples( 1000 );
   jacobianScaleEstimator->EstimateScales(jacobianScales);
   bool randomPass = true;
@@ -365,8 +360,6 @@ int itkRegistrationParameterScalesEstimatorTest(int , char* [])
       break;
       }
     }
-  jacobianScaleEstimator->SetSamplingStrategy(
-    RegistrationParameterScalesEstimatorTestType::FullDomainSampling);
   jacobianScaleEstimator->EstimateScales(jacobianScales);
   bool fullDomainPass = true;
   for (itk::SizeValueType p = 0; p < jacobianScales.GetSize(); p++)
