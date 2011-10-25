@@ -163,6 +163,11 @@ int itkGPUGradientAnisotropicDiffusionImageFilterTest(int argc, char *argv[])
         double RMSError = sqrt( diff / (double)nPix );
         std::cout << "RMS Error : " << RMSError << std::endl;
         double RMSThreshold = 0;
+        if (vnl_math_isnan(RMSError))
+        {
+          std::cout << "RMS Error is NaN! nPix: " << nPix << std::endl;
+          return EXIT_FAILURE;
+        }
         if (RMSError > RMSThreshold)
         {
           std::cout << "RMS Error exceeds threshold (" << RMSThreshold << ")" << std::endl;

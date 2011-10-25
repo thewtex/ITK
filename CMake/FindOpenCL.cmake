@@ -16,6 +16,12 @@ SET (OPENCL_VERSION_MAJOR 0)
 SET (OPENCL_VERSION_MINOR 1)
 SET (OPENCL_VERSION_PATCH 0)
 
+SET(OPENCL_ROOT_DIR
+  "${OPENCL_ROOT_DIR}"
+  CACHE
+  PATH
+  "Path to search for opencl")
+
 IF (APPLE)
 
   FIND_LIBRARY(OPENCL_LIBRARIES OpenCL DOC "OpenCL lib for OSX")
@@ -69,11 +75,19 @@ ELSE (APPLE)
 
     # Unix style platforms
     FIND_LIBRARY(OPENCL_LIBRARIES OpenCL
+      PATHS ${OPENCL_ROOT_DIR}/lib ${OPENCL_ROOT_DIR}/common/lib
       ENV LD_LIBRARY_PATH
       )
 
     GET_FILENAME_COMPONENT(OPENCL_LIB_DIR ${OPENCL_LIBRARIES} PATH)
     GET_FILENAME_COMPONENT(_OPENCL_INC_CAND ${OPENCL_LIB_DIR}/../../include ABSOLUTE)
+
+    SET(_OPENCL_INC_CAND
+        ${_OPENCL_INC_CAND}
+        ${OPENCL_ROOT_DIR}/include
+        ${OPENCL_ROOT_DIR}/inc
+        ${OPENCL_ROOT_DIR}/common/inc
+       )
 
     # The AMD SDK currently does not place its headers
     # in /usr/include, therefore also search relative

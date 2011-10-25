@@ -29,18 +29,11 @@
 
 #ifdef __APPLE__
 
-#include <OpenCL/cl.h>
 #include <OpenCL/opencl.h>
-#include <OpenCL/cl_gl.h>
-#include <OpenCL/cl_ext.h>
 
 #else
 
-#include <CL/cl.h>
-//#include <CL/opencl.h>
-#include <CL/cl_gl.h>
-//#include <CL/cl_ext.h>
-#include <CL/cl_platform.h>
+#include <CL/opencl.h>
 
 #endif
 
