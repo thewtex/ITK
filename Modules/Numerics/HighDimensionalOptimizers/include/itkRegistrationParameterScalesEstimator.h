@@ -106,7 +106,8 @@ public:
           MovingImageType::ImageDimension >         MovingContinuousIndexType;
 
   /** The strategies to sample physical points in the virtual domain. */
-  typedef enum { FullDomainSampling, CornerSampling, RandomSampling}
+  typedef enum { FullDomainSampling, CornerSampling, RandomSampling,
+                 CentralRegionSampling }
           SamplingStrategyType;
 
   typedef std::vector<VirtualPointType>             ImageSampleContainerType;
@@ -186,6 +187,18 @@ protected:
   /** Sample the virutal domain randomly in a uniform distribution. */
   void SampleImageDomainRandomly();
 
+  /** Sample the virutal domain with voxel in the central region. */
+  void SampleImageDomainWithCentralRegion();
+
+  /** Sample the virtual domain with all voxels inside a region. */
+  void SampleImageDomainWithRegion(VirtualRegionType region);
+
+  /** Get the central index of the virtual domain. */
+  VirtualIndexType GetVirtualImageCentralIndex();
+
+  /** Get the central region of the virtual domain. */
+  VirtualRegionType GetVirtualImageCentralRegion();
+
   /** Get the transform in use. */
   const TransformBase *GetTransform();
 
@@ -216,6 +229,10 @@ protected:
   // the number of image samples in the virtual image domain
   SizeValueType                 m_NumberOfRandomSamples;
 
+  // the radius of the central region for sampling
+  IndexValueType                m_CentralRegionRadius;
+
+  // the threadhold to decide if the number of random samples uses logarithm
   static const SizeValueType    SizeOfSmallDomain = 1000;
 
 private:

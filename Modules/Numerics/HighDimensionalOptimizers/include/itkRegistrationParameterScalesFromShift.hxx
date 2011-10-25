@@ -39,6 +39,14 @@ RegistrationParameterScalesFromShift< TMetric >
 ::EstimateScales(ScalesType &parameterScales)
 {
   this->CheckAndSetInputs();
+  if( this->HasLocalSupport() )
+    {
+    this->SetSamplingStrategy(Superclass::CentralRegionSampling);
+    }
+  else
+    {
+    this->SetSamplingStrategy(Superclass::CornerSampling);
+    }
   this->SampleImageDomain();
 
   const SizeValueType numAllPara = this->GetTransform()->GetNumberOfParameters();
@@ -49,7 +57,6 @@ RegistrationParameterScalesFromShift< TMetric >
   FloatType maxShift;
 
   ParametersType deltaParameters(numAllPara);
-  deltaParameters.Fill(NumericTraits< typename ParametersType::ValueType >::Zero);
 
   // minNonZeroShift: the minimum non-zero shift.
   FloatType minNonZeroShift = NumericTraits<FloatType>::max();
@@ -57,16 +64,19 @@ RegistrationParameterScalesFromShift< TMetric >
   SizeValueType offset = 0;
   if( this->HasLocalSupport() )
     {
-    offset = numAllPara / 2;
-    offset -= offset % numPara;
+    VirtualIndexType centralIndex = this->GetVirtualImageCentralIndex();
+    VirtualImageConstPointer image = this->GetVirtualImage();
+    offset = image->ComputeOffset(centralIndex) * numPara;
     }
 
   // compute voxel shift generated from each transform parameter
   for (SizeValueType i=0; i<numPara; i++)
     {
+    // For local support, we need to refill deltaParameters with zeros at each loop
+    // since smoothing may change the values around the local voxel.
+    deltaParameters.Fill(NumericTraits< typename ParametersType::ValueType >::Zero);
     deltaParameters[offset + i] = m_SmallParameterVariation;
     maxShift = this->ComputeMaximumVoxelShift(deltaParameters);
-    deltaParameters[offset + i] = NumericTraits< typename ParametersType::ValueType >::Zero;
 
     parameterScales[i] = maxShift;
     if ( maxShift > NumericTraits<FloatType>::epsilon() && maxShift < minNonZeroShift )
@@ -113,6 +123,15 @@ RegistrationParameterScalesFromShift< TMetric >
 ::EstimateStepScale(const ParametersType &step)
 {
   this->CheckAndSetInputs();
+  if (this->HasLocalSupport())
+    {
+    // Have to use FullDomainSampling for a transform with local support
+    this->SetSamplingStrategy(Superclass::FullDomainSampling);
+    }
+  else
+    {
+    this->SetSamplingStrategy(Superclass::CornerSampling);
+    }
   this->SampleImageDomain();
   return this->ComputeMaximumVoxelShift(step);
 }
