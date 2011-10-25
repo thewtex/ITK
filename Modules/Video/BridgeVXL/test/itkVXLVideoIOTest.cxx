@@ -147,7 +147,7 @@ bool videosMatch(char* file1, char* file2)
     std::cerr << "  Width: " << io1->GetDimensions(0) << ", " << io2->GetDimensions(0) << std::endl;
     std::cerr << "  FpS: " << io1->GetFpS() << ", " << io2->GetFpS() << std::endl;
     std::cerr << "  NChannels: " << io1->GetNumberOfComponents() << ", " << io2->GetNumberOfComponents() << std::endl;
-    
+
     return false;
     }
 
@@ -211,14 +211,14 @@ int test_VXLVideoIO ( char* input, char* nonVideoInput, char* output, char* came
   if (vxlIO->CanReadFile(nonExistantFile.c_str()))
     {
     std::cerr << "Should have failed to open \"" << nonExistantFile << "\"" << std::endl;
-    ret = EXIT_FAILURE; 
+    ret = EXIT_FAILURE;
     }
 
   // Test CanReadFile on non-video file
   if (vxlIO->CanReadFile(nonVideoInput))
     {
     std::cerr << "Should have failed to open \"" << nonVideoInput << "\"" << std::endl;
-    ret = EXIT_FAILURE; 
+    ret = EXIT_FAILURE;
     }
 
 
@@ -518,4 +518,3 @@ int itkVXLVideoIOTest ( int argc, char *argv[] )
   return test_VXLVideoIO(argv[1], argv[2], argv[3], argv[4], atoi(argv[5]), atoi(argv[6]),
                             atoi(argv[7]), atof(argv[8]));
 }
-

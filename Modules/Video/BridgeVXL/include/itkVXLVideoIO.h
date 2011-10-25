@@ -172,8 +172,6 @@ private:
 
   /** device index for reading from a camera (may move to base class) */
   int                 m_CameraIndex;
-  
-
 };
 } // end namespace itk
 

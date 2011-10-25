@@ -138,7 +138,7 @@ protected:
 } // end namespace itk
 
 #if ITK_TEMPLATE_TXX
-#include "vidl_itk_istream.txx"
+#include "vidl_itk_istream.hxx"
 #endif
 
 #endif

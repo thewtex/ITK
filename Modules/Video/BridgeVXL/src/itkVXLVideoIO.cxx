@@ -229,7 +229,7 @@ bool VXLVideoIO::CanReadFile(const char* filename)
     itkDebugMacro(<< "Unrecognized file extension");
     return false;
     }
-  
+
 
   // Try opening to read
   vidl_ffmpeg_istream localStream(filename);
@@ -562,7 +562,7 @@ void VXLVideoIO::Write(const void *buffer)
     this->m_Dimensions[0], this->m_Dimensions[1], this->m_PixelFormat);
 
   // Write the frame out
-  this->m_Writer->write_frame(this->m_VIDLFrame);  
+  this->m_Writer->write_frame(this->m_VIDLFrame);
 }
 
 
@@ -612,7 +612,7 @@ bool VXLVideoIO::PixelFormatSupported(vidl_pixel_format fmt)
     {
     return true;
     }
-  
+
   return false;
 }
 
@@ -715,13 +715,13 @@ void VXLVideoIO::OpenWriter()
     {
     itkExceptionMacro("Can not open writer while video is already open for reading");
     }
-  
+
   vidl_ffmpeg_ostream_params parameters ;
   parameters.frame_rate_ = this->m_FpS;
   parameters.ni_ = this->m_Dimensions[0];
   parameters.nj_ = this->m_Dimensions[1];
   parameters.encoder_ = this->m_Encoder;
-  
+
   this->m_Writer = new vidl_ffmpeg_ostream(this->GetFileName(), parameters);
 
   this->m_WriterOpen = true;
