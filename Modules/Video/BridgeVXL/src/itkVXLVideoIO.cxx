@@ -88,7 +88,7 @@ void VXLVideoIO::FinishReadingOrWriting()
 //
 // GetPositionInMSec
 //
-double VXLVideoIO::GetPositionInMSec()
+VXLVideoIO::TemporalOffsetType VXLVideoIO::GetPositionInMSec() const
 {
   return this->m_PositionInMSec;
 }
@@ -96,7 +96,7 @@ double VXLVideoIO::GetPositionInMSec()
 //
 // GetRatio
 //
-double VXLVideoIO::GetRatio()
+VXLVideoIO::TemporalRatioType VXLVideoIO::GetRatio() const
 {
   return this->m_Ratio;
 }
@@ -104,23 +104,23 @@ double VXLVideoIO::GetRatio()
 //
 // GetFrameTotal
 //
-unsigned long VXLVideoIO::GetFrameTotal()
+VXLVideoIO::FrameOffsetType  VXLVideoIO::GetFrameTotal() const
 {
   return this->m_FrameTotal;
 }
 
 //
-// GetFpS
+// GetFramesPerSecond
 //
-double VXLVideoIO::GetFpS()
+VXLVideoIO::TemporalOffsetType VXLVideoIO::GetFramesPerSecond() const
 {
-  return this->m_FpS;
+  return this->m_FramesPerSecond;
 }
 
 //
 // GetCurrentFrame
 //
-unsigned long VXLVideoIO::GetCurrentFrame()
+VXLVideoIO::FrameOffsetType VXLVideoIO::GetCurrentFrame() const
 {
   return this->m_CurrentFrame;
 }
@@ -128,7 +128,7 @@ unsigned long VXLVideoIO::GetCurrentFrame()
 //
 // GetIFrameInterval
 //
-unsigned int VXLVideoIO::GetIFrameInterval()
+VXLVideoIO::FrameOffsetType VXLVideoIO::GetIFrameInterval() const
 {
   return this->m_IFrameInterval;
 }
@@ -136,7 +136,7 @@ unsigned int VXLVideoIO::GetIFrameInterval()
 //
 // GetLastIFrame
 //
-unsigned long VXLVideoIO::GetLastIFrame()
+VXLVideoIO::FrameOffsetType VXLVideoIO::GetLastIFrame() const
 {
   return this->m_LastIFrame;
 }
@@ -229,7 +229,7 @@ bool VXLVideoIO::CanReadFile(const char* filename)
     itkDebugMacro(<< "Unrecognized file extension");
     return false;
     }
-  
+
 
   // Try opening to read
   vidl_ffmpeg_istream localStream(filename);
@@ -245,7 +245,7 @@ bool VXLVideoIO::CanReadFile(const char* filename)
 //
 // CanReadCamera
 //
-bool VXLVideoIO::CanReadCamera( unsigned long cameraID )
+bool VXLVideoIO::CanReadCamera( CameraIDType  cameraID )
 {
   itkWarningMacro( << "For now, camera reading is not supported with VXL");
   return false;
@@ -276,7 +276,7 @@ void VXLVideoIO::ReadImageInformation()
     this->m_Dimensions.push_back( localStream.width() );
     this->m_Dimensions.push_back( localStream.height() );
     this->m_PixelFormat = localStream.format();
-    this->m_FpS = localStream.frame_rate();
+    this->m_FramesPerSecond = localStream.frame_rate();
     this->m_NumberOfComponents = this->GetNChannelsFromPixelFormat(this->m_PixelFormat);
 
     // Assing the component type
@@ -302,7 +302,7 @@ void VXLVideoIO::ReadImageInformation()
       localStream.advance();  // Try to advance to frame 1 and see what we get
       this->m_IFrameInterval = localStream.frame_number();
       this->m_LastIFrame =
-        (unsigned long)((float)this->m_FrameTotal / (float)this->m_IFrameInterval)
+        (FrameOffsetType)((float)this->m_FrameTotal / (float)this->m_IFrameInterval)
         * this->m_IFrameInterval;
 
       // If the I-Frame spacing is not 1, warn the user
@@ -392,7 +392,7 @@ void VXLVideoIO::Read(void *buffer)
 //
 // SetNextFrameToRead
 //
-bool VXLVideoIO::SetNextFrameToRead(unsigned long frameNumber)
+bool VXLVideoIO::SetNextFrameToRead( FrameOffsetType frameNumber)
 {
   // If the reader isn't open, open it
   if (!this->m_ReaderOpen)
@@ -482,7 +482,7 @@ void VXLVideoIO::WriteImageInformation()
 //
 // SetWriterParameters
 //
-void VXLVideoIO::SetWriterParameters(double fps, std::vector<SizeValueType> dim,
+void VXLVideoIO::SetWriterParameters(TemporalRatioType fps, const std::vector<SizeValueType>& dim,
                                      const char* fourCC, unsigned int nChannels,
                                      IOComponentType componentType)
 {
@@ -508,7 +508,7 @@ void VXLVideoIO::SetWriterParameters(double fps, std::vector<SizeValueType> dim,
   this->m_Dimensions.push_back(dim[0]);
   this->m_Dimensions.push_back(dim[1]);
 
-  this->m_FpS = fps;
+  this->m_FramesPerSecond = fps;
   this->m_Encoder = this->FourCCtoEncoderType(fourCC);
   this->m_NumberOfComponents = nChannels;
 
@@ -546,7 +546,7 @@ void VXLVideoIO::SetWriterParameters(double fps, std::vector<SizeValueType> dim,
 void VXLVideoIO::Write(const void *buffer)
 {
   // Make sure parameters are specified
-  if (this->m_FpS == 0 || this->m_Dimensions.size() != 2 || this->m_Encoder == 0)
+  if (this->m_FramesPerSecond == 0 || this->m_Dimensions.size() != 2 || this->m_Encoder == 0)
     {
     itkExceptionMacro("Can not write with empty parameters. You probably need to call SetWriterParameters");
     }
@@ -562,7 +562,7 @@ void VXLVideoIO::Write(const void *buffer)
     this->m_Dimensions[0], this->m_Dimensions[1], this->m_PixelFormat);
 
   // Write the frame out
-  this->m_Writer->write_frame(this->m_VIDLFrame);  
+  this->m_Writer->write_frame(this->m_VIDLFrame);
 }
 
 
@@ -612,7 +612,7 @@ bool VXLVideoIO::PixelFormatSupported(vidl_pixel_format fmt)
     {
     return true;
     }
-  
+
   return false;
 }
 
@@ -715,13 +715,13 @@ void VXLVideoIO::OpenWriter()
     {
     itkExceptionMacro("Can not open writer while video is already open for reading");
     }
-  
+
   vidl_ffmpeg_ostream_params parameters ;
-  parameters.frame_rate_ = this->m_FpS;
+  parameters.frame_rate_ = this->m_FramesPerSecond;
   parameters.ni_ = this->m_Dimensions[0];
   parameters.nj_ = this->m_Dimensions[1];
   parameters.encoder_ = this->m_Encoder;
-  
+
   this->m_Writer = new vidl_ffmpeg_ostream(this->GetFileName(), parameters);
 
   this->m_WriterOpen = true;
@@ -741,7 +741,7 @@ void VXLVideoIO::ResetMembers()
   this->m_Writer = 0;
   this->m_WriterOpen = false;
   this->m_ReaderOpen = false;
-  this->m_FpS = 0;
+  this->m_FramesPerSecond = 0;
   this->m_Dimensions.clear();
   this->m_FrameTotal = 0;
   this->m_CurrentFrame = 0;

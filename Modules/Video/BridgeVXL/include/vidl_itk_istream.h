@@ -122,7 +122,7 @@ public:
   virtual vidl_frame_sptr current_frame();
 
   /** Seek to the given frame */
-  virtual bool seek_frame(unsigned int frame_number);
+  virtual bool seek_frame(unsigned int frameNumber);
 
 protected:
 
@@ -137,8 +137,8 @@ protected:
 
 } // end namespace itk
 
-#if ITK_TEMPLATE_TXX
-#include "vidl_itk_istream.txx"
+#if ITK_MANUAL_INSTANTIATION
+#include "vidl_itk_istream.hxx"
 #endif
 
 #endif

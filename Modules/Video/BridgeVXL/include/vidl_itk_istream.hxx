@@ -15,10 +15,11 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itk_vidl_istream_txx
-#define __itk_vidl_istream_txx
+#ifndef __itk_vidl_istream_hxx
+#define __itk_vidl_istream_hxx
 
 #include "itkNumericTraits.h"
+#include "vidl_itk_istream.h"
 
 namespace itk
 {
@@ -303,8 +304,8 @@ vidl_itk_istream< TVideoStream >::advance()
 
   // we can't advance if we're at the end
   unsigned long firstFrame = m_VideoStream->GetLargestPossibleTemporalRegion().GetFrameStart();
-  unsigned long duration = m_VideoStream->GetLargestPossibleTemporalRegion().GetFrameDuration();
-  if (duration == 0 || currentFrame >= firstFrame + duration - 2)
+  unsigned long frameDuration = m_VideoStream->GetLargestPossibleTemporalRegion().GetFrameDuration();
+  if (frameDuration == 0 || currentFrame >= firstFrame + frameDuration - 2)
     {
     return false;
     }
@@ -376,19 +377,19 @@ vidl_itk_istream< TVideoStream >::current_frame()
 //
 template< class TVideoStream >
 bool
-vidl_itk_istream< TVideoStream >::seek_frame(unsigned int frame_number)
+vidl_itk_istream< TVideoStream >::seek_frame(unsigned int frameNumber)
 {
   // return false if not open, not seekable, or frame number out of bounds
   if (!this->is_open() || !this->is_seekable() ||
-      frame_number >= static_cast<unsigned int>(this->num_frames()))
+      frameNumber >= static_cast<unsigned int>(this->num_frames()))
     {
     return false;
     }
 
-  // set the start of the requested temporal region to frame_number and the
+  // set the start of the requested temporal region to frameNumber and the
   // duration to 1
   TemporalRegion request = m_VideoStream->GetRequestedTemporalRegion();
-  request.SetFrameStart(frame_number);
+  request.SetFrameStart(frameNumber);
   request.SetFrameDuration(1);
   m_VideoStream->SetRequestedTemporalRegion(request);
   return true;
