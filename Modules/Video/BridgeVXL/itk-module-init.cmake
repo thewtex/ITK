@@ -1,0 +1,2 @@
+find_package ( VXL REQUIRED )
+set(ITK_USE_SYSTEM_VXL ON CACHE BOOL "" FORCE)
