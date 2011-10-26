@@ -1,4 +1,5 @@
 project(ITKGPUCommon)
+itk_module_impl()
 
 
 IF (ITK_USE_GPU)
@@ -22,6 +23,5 @@ IF (ITK_USE_GPU)
   #  pathToOpenCLSourceCode.h)
 
   set(ITKGPUCommon_LIBRARIES ITKGPUCommon)
-  itk_module_impl()
 
 ENDIF(ITK_USE_GPU)
