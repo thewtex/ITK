@@ -20,6 +20,7 @@
 
 #include "itkGPUDenseFiniteDifferenceImageFilter.h"
 #include "itkGPUPDEDeformableRegistrationFunction.h"
+#include "itkPDEDeformableRegistrationFilter.h"
 
 namespace itk
 {
@@ -71,7 +72,7 @@ namespace itk
  * \ingroup ITKGPUCommon
  */
 template< class TFixedImage, class TMovingImage, class TDeformationField,
-          class TParentImageFilter = itk::PDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField >
+          class TParentImageFilter = PDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField >
           >
 class ITK_EXPORT GPUPDEDeformableRegistrationFilter :
   public GPUDenseFiniteDifferenceImageFilter< TDeformationField, TDeformationField, TParentImageFilter >
@@ -293,8 +294,8 @@ private:
   bool m_StopRegistrationFlag;
 
   /** Memery buffer for smoothing kernel. */
-  int    m_SmoothingKernelSize;
-  float* m_SmoothingKernel;
+  int                              m_SmoothingKernelSize;
+  float*                           m_SmoothingKernel;
   typename GPUDataManager::Pointer m_GPUSmoothingKernel;
 
   /* GPU kernel handle for GPUSmoothDeformationField */

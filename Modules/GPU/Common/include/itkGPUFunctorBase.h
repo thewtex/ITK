@@ -18,6 +18,8 @@
 #ifndef __itkGPUFunctorBase_h
 #define __itkGPUFunctorBase_h
 
+#include "itkGPUKernelManager.h"
+
 namespace itk
 {
 namespace Functor
