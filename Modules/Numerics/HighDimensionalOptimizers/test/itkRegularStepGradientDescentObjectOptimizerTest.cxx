@@ -16,13 +16,14 @@
  *
  *=========================================================================*/
 #include "itkObjectToObjectMetric.h"
-#include "itkGradientDescentObjectOptimizer.h"
+#include "itkRegularStepGradientDescentObjectOptimizer.h"
 #include "vnl/vnl_math.h"
+#include "itkTestingMacros.h"
 
 /* Cribbed from itkGradientDescentOptimizerTest */
 
 /**
- *  \class GradientDescentObjectOptimizerTestMetric for test
+ *  \class RegularStepGradientDescentObjectOptimizerTestMetric for test
  *
  *  The objectif function is the quadratic form:
  *
@@ -38,17 +39,17 @@
  *   the solution is the vector | 2 -2 |
  *
  */
-class GradientDescentObjectOptimizerTestMetric
+class RegularStepGradientDescentObjectOptimizerTestMetric
   : public itk::ObjectToObjectMetric
 {
 public:
 
-  typedef GradientDescentObjectOptimizerTestMetric  Self;
-  typedef itk::ObjectToObjectMetric                 Superclass;
-  typedef itk::SmartPointer<Self>                   Pointer;
-  typedef itk::SmartPointer<const Self>             ConstPointer;
+  typedef RegularStepGradientDescentObjectOptimizerTestMetric   Self;
+  typedef itk::ObjectToObjectMetric                             Superclass;
+  typedef itk::SmartPointer<Self>                               Pointer;
+  typedef itk::SmartPointer<const Self>                         ConstPointer;
   itkNewMacro( Self );
-  itkTypeMacro( GradientDescentObjectOptimizerTestMetric, ObjectToObjectMetric );
+  itkTypeMacro( RegularStepGradientDescentObjectOptimizerTestMetric, ObjectToObjectMetric );
 
   enum { SpaceDimension=2 };
 
@@ -57,7 +58,7 @@ public:
   typedef Superclass::DerivativeType        DerivativeType;
   typedef Superclass::MeasureType           MeasureType;
 
-  GradientDescentObjectOptimizerTestMetric()
+  RegularStepGradientDescentObjectOptimizerTestMetric()
   {
     m_Parameters.SetSize( SpaceDimension );
     m_Parameters.Fill( 0 );
@@ -135,8 +136,8 @@ private:
 };
 
 ///////////////////////////////////////////////////////////
-int GradientDescentObjectOptimizerRunTest(
-  itk::GradientDescentObjectOptimizer::Pointer & itkOptimizer )
+int RegularStepGradientDescentObjectOptimizerRunTest(
+  itk::RegularStepGradientDescentObjectOptimizer::Pointer & itkOptimizer )
 {
   try
     {
@@ -153,7 +154,7 @@ int GradientDescentObjectOptimizerRunTest(
     return EXIT_FAILURE;
     }
 
-  typedef GradientDescentObjectOptimizerTestMetric::ParametersType    ParametersType;
+  typedef RegularStepGradientDescentObjectOptimizerTestMetric::ParametersType    ParametersType;
   ParametersType finalPosition = itkOptimizer->GetMetric()->GetParameters();
   std::cout << "Solution        = (";
   std::cout << finalPosition[0] << ",";
@@ -177,12 +178,12 @@ int GradientDescentObjectOptimizerRunTest(
   return EXIT_SUCCESS;
 }
 ///////////////////////////////////////////////////////////
-int itkGradientDescentObjectOptimizerTest(int, char* [] )
+int itkRegularStepGradientDescentObjectOptimizerTest(int, char* [] )
 {
   std::cout << "Gradient Descent Object Optimizer Test ";
   std::cout << std::endl << std::endl;
 
-  typedef  itk::GradientDescentObjectOptimizer  OptimizerType;
+  typedef  itk::RegularStepGradientDescentObjectOptimizer  OptimizerType;
 
   typedef OptimizerType::ScalesType             ScalesType;
 
@@ -190,11 +191,11 @@ int itkGradientDescentObjectOptimizerTest(int, char* [] )
   OptimizerType::Pointer  itkOptimizer = OptimizerType::New();
 
   // Declaration of the Metric
-  GradientDescentObjectOptimizerTestMetric::Pointer metric = GradientDescentObjectOptimizerTestMetric::New();
+  RegularStepGradientDescentObjectOptimizerTestMetric::Pointer metric = RegularStepGradientDescentObjectOptimizerTestMetric::New();
 
   itkOptimizer->SetMetric( metric );
 
-  typedef GradientDescentObjectOptimizerTestMetric::ParametersType    ParametersType;
+  typedef RegularStepGradientDescentObjectOptimizerTestMetric::ParametersType    ParametersType;
 
   const unsigned int spaceDimension =
                       metric->GetNumberOfParameters();
@@ -206,15 +207,35 @@ int itkGradientDescentObjectOptimizerTest(int, char* [] )
   initialPosition[1] = -100;
   metric->SetParameters( initialPosition );
 
-  itkOptimizer->SetLearningRate( 0.1 );
-  itkOptimizer->SetNumberOfIterations( 50 );
+  ScalesType    parametersScale( spaceDimension );
+  parametersScale[0] = 1.0;
+  parametersScale[1] = 1.0;
+
+  itkOptimizer->SetScales( parametersScale );
+  itkOptimizer->SetGradientMagnitudeTolerance( 1e-6 );
+  itkOptimizer->SetMaximumStepLength( 30.0 );
+  itkOptimizer->SetMinimumStepLength( 1e-6 );
+  itkOptimizer->SetNumberOfIterations( 900 );
+  itkOptimizer->SetRelaxationFactor( 0.5 );
 
   // test the optimization
   std::cout << "*** Test optimization 1:" << std::endl;
-  if( GradientDescentObjectOptimizerRunTest( itkOptimizer ) == EXIT_FAILURE )
+  if( RegularStepGradientDescentObjectOptimizerRunTest( itkOptimizer ) == EXIT_FAILURE )
     {
     return EXIT_FAILURE;
     }
+
+  //
+  // test with different relaxation factor
+  //
+  std::cout << "*** Test optimization with different relaxation:" << std::endl;
+  itkOptimizer->SetRelaxationFactor( 0.8 );
+  metric->SetParameters( initialPosition );
+  if( RegularStepGradientDescentObjectOptimizerRunTest( itkOptimizer ) == EXIT_FAILURE )
+    {
+    return EXIT_FAILURE;
+    }
+  std::cout << " done ***. " << std::endl << std::endl;
 
   //
   // test with non-idenity scales
@@ -224,16 +245,72 @@ int itkGradientDescentObjectOptimizerTest(int, char* [] )
   scales.Fill(0.5);
   itkOptimizer->SetScales( scales );
   metric->SetParameters( initialPosition );
-  if( GradientDescentObjectOptimizerRunTest( itkOptimizer ) == EXIT_FAILURE )
+  if( RegularStepGradientDescentObjectOptimizerRunTest( itkOptimizer ) == EXIT_FAILURE )
     {
     return EXIT_FAILURE;
     }
   std::cout << " done ***. " << std::endl << std::endl;
 
+  //
+  // Verify that the optimizer doesn't run if the
+  // number of iterations is set to zero.
+  //
+  {
+  std::cout << "Test with number of iterations == 0" << std::endl;
+  itkOptimizer->SetNumberOfIterations( 0 );
+  metric->SetParameters( initialPosition );
+
+  try
+    {
+    itkOptimizer->StartOptimization();
+    }
+  catch( itk::ExceptionObject & excp )
+    {
+    std::cout << excp << std::endl;
+    return EXIT_FAILURE;
+    }
+
+  if( itkOptimizer->GetCurrentIteration() > 0 )
+    {
+    std::cout << "The optimizer is running iterations despite of ";
+    std::cout << "having a maximum number of iterations set to zero" << std::endl;
+    return EXIT_FAILURE;
+    }
+  }
+
+  //
+  // Test the Exception if the GradientMagnitudeTolerance is set to a negative value
+  //
+  std::cout << "Test with invalid gradient magnitude tolerance" << std::endl;
+  itkOptimizer->SetGradientMagnitudeTolerance( -1.0 );
+  TRY_EXPECT_EXCEPTION( itkOptimizer->StartOptimization() );
+
+  //
+  // Test for Exception with invalid relaxation factors
+  //
+  std::cout << "Test with invalid relaxation factor < 0" << std::endl;
+  itkOptimizer->SetGradientMagnitudeTolerance( 1.0 );
+  itkOptimizer->SetNumberOfIterations( 50 );
+  metric->SetParameters( initialPosition );
+  itkOptimizer->SetRelaxationFactor( -1.0 );
+  TRY_EXPECT_EXCEPTION( itkOptimizer->StartOptimization() );
+
+  std::cout << "Test with invalid relaxation factor > 1" << std::endl;
+  itkOptimizer->SetRelaxationFactor( 2.0 );
+  TRY_EXPECT_EXCEPTION( itkOptimizer->StartOptimization() );
+
   // Exercise various member functions.
-  std::cout << "LearningRate: " << itkOptimizer->GetLearningRate();
-  std::cout << std::endl;
-  std::cout <<  "Printing self.. " << std::endl;
+  std::cout << "MaximumStepLength: " << itkOptimizer->GetMaximumStepLength()
+            << std::endl;
+  std::cout << "MinimuStepLength: " << itkOptimizer->GetMinimumStepLength()
+            << std::endl;
+  std::cout << "RelaxationFactor: " << itkOptimizer->GetRelaxationFactor()
+            << std::endl;
+  std::cout << "GradientMagnitudeTolerance: "
+            << itkOptimizer->GetGradientMagnitudeTolerance() << std::endl;
+  std::cout << "CurrentStepLength: " << itkOptimizer->GetCurrentStepLength()
+            << std::endl;
+  std::cout << "Printing self.. " << std::endl;
   itkOptimizer->Print( std::cout );
 
   std::cout << "Test passed." << std::endl;

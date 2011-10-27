@@ -225,7 +225,7 @@ int itkAutoScaledGradientDescentRegistrationTest(int argc, char ** const argv)
     return EXIT_FAILURE;
     }
   unsigned int numberOfIterations = 50;
-  double shiftOfStep = 0.5;
+  double shiftOfStep = 0.0;
 
   if( argc >= 2 )
     {
@@ -254,7 +254,7 @@ int itkAutoScaledGradientDescentRegistrationTest(int argc, char ** const argv)
 
   std::cout << std::endl << "Optimizing translation transform with Jacobian scales" << std::endl;
   typedef itk::TranslationTransform<double, Dimension> TranslationTransformType;
-  ret2 = itkAutoScaledGradientDescentRegistrationTestTemplated<TranslationTransformType>(numberOfIterations, 0.0, "jacobian");
+  ret2 = itkAutoScaledGradientDescentRegistrationTestTemplated<TranslationTransformType>(numberOfIterations, shiftOfStep, "jacobian");
 
   if ( ret1 == EXIT_SUCCESS && ret2 == EXIT_SUCCESS
     && ret3 == EXIT_SUCCESS && ret4 == EXIT_SUCCESS )

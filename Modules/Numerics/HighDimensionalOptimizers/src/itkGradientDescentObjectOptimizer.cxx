@@ -27,8 +27,6 @@ namespace itk
 GradientDescentObjectOptimizer
 ::GradientDescentObjectOptimizer()
 {
-  this->m_LearningRate = NumericTraits<InternalComputationValueType>::One;
-
   // m_TrustedStepScale is used for automatic learning rate estimation.
   // it will be initialized later either by user or by m_ScalesEstimator.
   this->m_TrustedStepScale = NumericTraits<InternalComputationValueType>::Zero;
@@ -49,8 +47,7 @@ void
 GradientDescentObjectOptimizer
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
- Superclass::PrintSelf(os, indent);
- os << indent << "Learning rate:" << this->m_LearningRate << std::endl;
+  Superclass::PrintSelf(os, indent);
 }
 
 /**
@@ -62,12 +59,12 @@ GradientDescentObjectOptimizer
 {
   itkDebugMacro("StartOptimization");
 
-  /* Estimate the parameter scales */
+  /* Must call the superclass version for basic validation and setup */
+  Superclass::StartOptimization();
+
+  /* Get the default step size if user has not set one */
   if ( this->m_ScalesEstimator.IsNotNull() )
     {
-    this->m_ScalesEstimator->EstimateScales(this->m_Scales);
-    itkDebugMacro( "Estimated scales = " << this->m_Scales );
-
     if ( this->m_TrustedStepScale <=
       NumericTraits<InternalComputationValueType>::epsilon())
       {
@@ -75,69 +72,7 @@ GradientDescentObjectOptimizer
       }
     }
 
-  /* Must call the superclass version for basic validation and setup */
-  Superclass::StartOptimization();
-
-  this->m_CurrentIteration = 0;
-
   this->ResumeOptimization();
-}
-
-/**
- * Resume optimization.
- */
-void
-GradientDescentObjectOptimizer
-::ResumeOptimization()
-{
-  this->m_StopConditionDescription.str("");
-  this->m_StopConditionDescription << this->GetNameOfClass() << ": ";
-  this->InvokeEvent( StartEvent() );
-
-  this->m_Stop = false;
-  while( ! this->m_Stop )
-    {
-    /* Compute metric value/derivative. */
-    try
-      {
-      /* m_Gradient will be sized as needed by metric. If it's already
-       * proper size, no new allocation is done. */
-      this->m_Metric->GetValueAndDerivative( this->m_Value, this->m_Gradient );
-      }
-    catch ( ExceptionObject & err )
-      {
-      this->m_StopCondition = COSTFUNCTION_ERROR;
-      this->m_StopConditionDescription << "Metric error during optimization";
-      this->StopOptimization();
-
-      // Pass exception to caller
-      throw err;
-      }
-
-    /* Check if optimization has been stopped externally.
-     * (Presumably this could happen from a multi-threaded client app?) */
-    if ( this->m_Stop )
-      {
-      this->m_StopConditionDescription << "StopOptimization() called";
-      break;
-      }
-
-    /* Advance one step along the gradient.
-     * This will modify the gradient and update the transform. */
-    this->AdvanceOneStep();
-
-    /* Update and check iteration count */
-    this->m_CurrentIteration++;
-    if ( this->m_CurrentIteration >= this->m_NumberOfIterations )
-      {
-      this->m_StopConditionDescription << "Maximum number of iterations ("
-                                 << this->m_NumberOfIterations
-                                 << ") exceeded.";
-      this->m_StopCondition = MAXIMUM_NUMBER_OF_ITERATIONS;
-      this->StopOptimization();
-      break;
-      }
-    } //while (!m_Stop)
 }
 
 /**
@@ -150,34 +85,28 @@ GradientDescentObjectOptimizer
   itkDebugMacro("AdvanceOneStep");
 
   /* Begin threaded gradient modification. Work is done in
-   * ModifyGradientOverSubRange */
-  this->ModifyGradient();
+   * ProcessGradientOverSubRange */
+  this->ProcessGradient();
 
-  try
-    {
-    /* Pass graident to transform and let it do its own updating */
-    this->m_Metric->UpdateTransformParameters( this->m_Gradient );
-    }
-  catch ( ExceptionObject & err )
-    {
-    this->m_StopCondition = UPDATE_PARAMETERS_ERROR;
-    this->m_StopConditionDescription << "UpdateTransformParameters error";
-    this->StopOptimization();
-
-    // Pass exception to caller
-    throw err;
-    }
-
-  this->InvokeEvent( IterationEvent() );
+  /* Estimate the learning rate, if user has supplied a ScalesEstimator.
+   * Otherwise, it's left as-is. */
+  this->EstimateLearningRate();
 }
 
 /**
- * Modify the gradient by scales over a given index range.
+ * Modify the gradient over a given index range.
  */
 void
 GradientDescentObjectOptimizer
-::ModifyGradientByScalesOverSubRange( const IndexRangeType& subrange )
+::ProcessGradientOverSubRange( const IndexRangeType& subrange,
+  const ThreadIdType )
 {
+  /* If scales are identity, there's no work to do */
+  if (this->m_ScalesAreIdentity)
+    {
+    return;
+    }
+
   const ScalesType& scales = this->GetScales();
 
   /* Loop over the range. It is inclusive. */
@@ -190,20 +119,6 @@ GradientDescentObjectOptimizer
     // parameters at each local index with linear packing.
     IndexValueType scalesIndex = j % scales.Size();
     this->m_Gradient[j] = this->m_Gradient[j] / scales[scalesIndex];
-    }
-}
-
-/**
- * Modify the gradient by learning rate over a given index range.
- */
-void
-GradientDescentObjectOptimizer
-::ModifyGradientByLearningRateOverSubRange( const IndexRangeType& subrange )
-{
-  /* Loop over the range. It is inclusive. */
-  for ( IndexValueType j = subrange[0]; j <= subrange[1]; j++ )
-    {
-    this->m_Gradient[j] = this->m_Gradient[j] * this->m_LearningRate;
     }
 }
 
@@ -227,7 +142,6 @@ GradientDescentObjectOptimizer
       {
       this->m_LearningRate = this->m_TrustedStepScale / stepScale;
       }
-    //std::cout << "Estimated learning rate = " << this->m_LearningRate << std::endl;
     }
 }
 

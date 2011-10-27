@@ -20,16 +20,18 @@
 
 #include "itkObjectToObjectOptimizerBase.h"
 #include "itkArray1DToData.h"
+#include "itkOptimizerParameterScalesEstimator.h"
 
 namespace itk
 {
 /** \class GradientDescentObjectOptimizerBase
  *  \brief Abstract base class for gradient descent-style optimizers.
  *
- * Gradient modification is threaded in \c ModifyGradient.
+ * Gradient modification is threaded in \c ProcessGradient.
  *
- * Derived classes must override \c ModifyGradientOverSubRange
- * and \c ResumeOptimization.
+ * FIXME: Update
+ * Derived classes must override \c ProcessGradientOverSubRange ...
+ *
  *
  * \ingroup ITKHighDimensionalOptimizers
  */
@@ -54,6 +56,7 @@ public:
     UPDATE_PARAMETERS_ERROR,
     STEP_TOO_SMALL,
     QUASI_NEWTON_STEP_ERROR,
+    GRADIENT_MAGNITUDE_TOLERANCE,
     OTHER_ERROR
     } StopConditionType;
 
@@ -77,10 +80,10 @@ public:
   typedef Superclass::InternalComputationValueType InternalComputationValueType;
 
   /** Threader for gradient update */
-  typedef Array1DToData<Self>                        ModifyGradientThreaderType;
+  typedef Array1DToData<Self>                        ProcessGradientThreaderType;
 
   /** Type of index range for threading */
-  typedef ModifyGradientThreaderType::IndexRangeType IndexRangeType;
+  typedef ProcessGradientThreaderType::IndexRangeType IndexRangeType;
 
   /** Get the most recent gradient values. */
   itkGetConstReferenceMacro( Gradient, DerivativeType );
@@ -97,10 +100,16 @@ public:
   /** Get the current iteration number. */
   itkGetConstMacro(CurrentIteration, SizeValueType);
 
+  /** Set the scales estimator. */
+  itkSetObjectMacro(ScalesEstimator, OptimizerParameterScalesEstimator);
+
+  /** Start and run the optimization */
+  virtual void StartOptimization();
+
   /** Resume optimization.
    * This runs the optimization loop, and allows continuation
    * of stopped optimization */
-  virtual void ResumeOptimization() = 0;
+  virtual void ResumeOptimization(void);
 
   /** Stop optimization. The object is left in a state so the
    * optimization can be resumed by calling ResumeOptimization. */
@@ -115,40 +124,43 @@ protected:
   GradientDescentObjectOptimizerBase();
   virtual ~GradientDescentObjectOptimizerBase();
 
-  /** Estimate the learning rate */
-  virtual void EstimateLearningRate() = 0;
+  /** Advance one Step following the gradient direction.
+   * Includes transform update. */
+  virtual void AdvanceOneStep(void) = 0;
 
-  /** Modify the gradient in place, to advance the optimization.
+  /** Process the gradient and modify in place, to advance the optimization.
    * This call performs a threaded modification for transforms with
    * local support (assumed to be dense). Otherwise the modification
    * is performed w/out threading.
-   * The work is done in ModifyGradientOverSubRange in both cases.
+   * The work is done in ProcessGradientOverSubRange
+   * in both cases.
    * At completion, m_Gradient can be used to update the transform
    * parameters. Derived classes may hold additional results in
    * other member variables.
    */
-  virtual void ModifyGradient();
+  virtual void ProcessGradient(void);
 
-  /** Derived classes define this worker method to modify the gradient by scales.
+  /** Derived classes define this worker method to process the gradient.
    * Modifications must be performed over the index range defined in
    * \c subrange.
-   * Called from ModifyGradient(), either directly or via threaded
+   * Called from ProcessGradient(), either directly or via threaded
    * operation. */
-  virtual void ModifyGradientByScalesOverSubRange( const IndexRangeType& subrange ) = 0;
+  virtual void ProcessGradientOverSubRange( const IndexRangeType& subrange,
+    const ThreadIdType threadId ) = 0;
 
-  /** Derived classes define this worker method to modify the gradient by learning rates.
-   * Modifications must be performed over the index range defined in
-   * \c subrange.
-   * Called from ModifyGradient(), either directly or via threaded
-   * operation. */
-  virtual void ModifyGradientByLearningRateOverSubRange( const IndexRangeType& subrange ) = 0;
-
-  /* Common variables for optimization control and reporting */
+  /** Common variables for optimization control and reporting */
   bool                          m_Stop;
   StopConditionType             m_StopCondition;
   StopConditionDescriptionType  m_StopConditionDescription;
   SizeValueType                 m_NumberOfIterations;
   SizeValueType                 m_CurrentIteration;
+
+  /** LearningRate may not be set directing by user in derived classes,
+   * so leave it up to derived classes to provide accessors as needed. */
+  InternalComputationValueType  m_LearningRate;
+
+  /** Optional scales estimator */
+  OptimizerParameterScalesEstimator::Pointer m_ScalesEstimator;
 
   /** Current gradient */
   DerivativeType     m_Gradient;
@@ -161,25 +173,20 @@ private:
   //purposely not implemented
   void operator=( const Self& );
 
-  /** Callback used during threaded gradient modification.
-   * Gets assigned to the modify-gradient threader's
+  /** Callback used during threaded gradient processing.
+   * Gets assigned to m_ProcessGradientThreader's
    * ThreadedGenerateData. Must be static so it can be used as a callback.
-   * It simply calls ModifyGradientOverSubRange, which is where
+   * It simply calls ProcessGradientOverSubRange, which is where
    * derived classes should put their class-specific modification code.
    * An instance of this optimizer class is referenced through
    * \c holder, which is passed in via the threader's user data. */
-  static void ModifyGradientByScalesThreaded(
-                                  const IndexRangeType& rangeForThread,
-                                  ThreadIdType threadId,
-                                  Self *holder );
-  static void ModifyGradientByLearningRateThreaded(
+  static void ProcessGradientThreaded(
                                   const IndexRangeType& rangeForThread,
                                   ThreadIdType threadId,
                                   Self *holder );
 
   /** Threader for grandient modification */
-  ModifyGradientThreaderType::Pointer      m_ModifyGradientByScalesThreader;
-  ModifyGradientThreaderType::Pointer      m_ModifyGradientByLearningRateThreader;
+  ProcessGradientThreaderType::Pointer      m_ProcessGradientThreader;
 
 };
 
