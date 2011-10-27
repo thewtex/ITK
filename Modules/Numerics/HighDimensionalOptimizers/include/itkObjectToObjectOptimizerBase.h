@@ -104,8 +104,13 @@ public:
   /** Get whether scales are identity. Cannot be set */
   itkGetConstReferenceMacro( ScalesAreIdentity, bool );
 
-  /** Set the number of threads to use when threading. */
+  /** Set the number of threads to use when threading within the
+   * optimizer itself. Note that metrics set their number of
+   * threads independently. */
   virtual void SetNumberOfThreads( ThreadIdType number );
+
+  /** Get the number of threads. */
+  itkGetConstReferenceMacro( NumberOfThreads, ThreadIdType );
 
   /** Get a reference to the current position of the optimization.
    * This returns the parameters from the assigned metric, since the optimizer

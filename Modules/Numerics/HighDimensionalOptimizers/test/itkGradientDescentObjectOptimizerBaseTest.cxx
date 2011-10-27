@@ -19,6 +19,7 @@
 #include "itkObjectToObjectMetric.h"
 #include "itkImage.h"
 #include "itkTestingMacros.h"
+#include "itkIntTypes.h"
 
 /* Create a simple metric to use for testing here. */
 template< class TFixedObject,  class TMovingObject >
@@ -51,12 +52,14 @@ public:
 
   void GetValueAndDerivative( MeasureType & value, DerivativeType & derivative ) const
     {
+    std::cout << "GradientDescentObjectOptimizerBaseTestMetric::GetValueAndDerivative called." << std::endl;
     value = itk::NumericTraits< MeasureType >::One;
+    derivative.SetSize( this->GetNumberOfParameters() );
     derivative.Fill( itk::NumericTraits< ParametersValueType >::Zero );
     }
 
   unsigned int GetNumberOfLocalParameters() const
-  { return 3; }
+  { return this->GetNumberOfParameters(); }
 
   bool HasLocalSupport() const
   { return false; }
@@ -72,7 +75,11 @@ public:
   { Superclass::PrintSelf( os, indent ); }
 
 protected:
-  GradientDescentObjectOptimizerBaseTestMetric() {}
+  GradientDescentObjectOptimizerBaseTestMetric()
+  {
+    m_Parameters.SetSize( this->GetNumberOfParameters() );
+    m_Parameters.Fill( itk::NumericTraits< ParametersValueType >::Zero );
+  }
   ~GradientDescentObjectOptimizerBaseTestMetric() {}//purposely not implemented
 
 private:
@@ -105,39 +112,35 @@ public:
   void StartOptimization()
     {
     Superclass::StartOptimization();
-    std::cout << "StartOptimization called." << std::endl;
+    std::cout << "Test StartOptimization called." << std::endl;
+    this->m_ProcessGradientOverSubRangeCalled = false;
+    this->ResumeOptimization();
     }
 
-  void ResumeOptimization()
+  void ProcessGradientOverSubRange (const IndexRangeType& index,
+       const itk::ThreadIdType threadId )
     {
-    std::cout << "ResumeOptimization called." << std::endl;
+    std::cout << "Test ProcessGradientOverSubRange called with index:"
+              << index << " and threadId " << threadId << std::endl;
+    this->m_ProcessGradientOverSubRangeCalled = true;
     }
 
-  void ModifyGradient()
-    {
-    std::cout << "ModifyGradient called." << std::endl;
-    }
-
-  void ModifyGradientByScalesOverSubRange (const IndexRangeType& index )
-    {
-    std::cout << "ModifyGradientByScalesOverSubRange called with index:"
-              << index << std::endl;
-    }
-
-  void ModifyGradientByLearningRateOverSubRange (const IndexRangeType& index )
-    {
-    std::cout << "ModifyGradientByLearningRateOverSubRange called with index:"
-              << index << std::endl;
-    }
+  bool     m_ProcessGradientOverSubRangeCalled;
 
 protected:
-  void EstimateLearningRate()
+
+  void AdvanceOneStep(void)
     {
-    std::cout << "EstimateLearningRate called" << std::endl;
+    std::cout << "Test AdvanceOneStep called" << std::endl;
+    this->ProcessGradient();
     }
 
-  GradientDescentObjectOptimizerBaseTestOptimizer(){}
-  ~GradientDescentObjectOptimizerBaseTestOptimizer(){}
+  GradientDescentObjectOptimizerBaseTestOptimizer()
+    {
+    this->m_ProcessGradientOverSubRangeCalled = false;
+    }
+  virtual ~GradientDescentObjectOptimizerBaseTestOptimizer(){}
+
 private:
   GradientDescentObjectOptimizerBaseTestOptimizer(const Self& ); //purposely not implemented
   void operator = (const Self&); //purposely not implemented
@@ -156,7 +159,6 @@ int itkGradientDescentObjectOptimizerBaseTest(int , char* [])
   MetricType::Pointer metric = MetricType::New();
   GradientDescentObjectOptimizerBaseTestOptimizer::Pointer optimizer = GradientDescentObjectOptimizerBaseTestOptimizer::New();
 
-  /* exercise some methods */
   optimizer->SetMetric( metric );
   if( optimizer->GetMetric() != metric )
     {
@@ -167,9 +169,24 @@ int itkGradientDescentObjectOptimizerBaseTest(int , char* [])
   std::cout << "value: " << optimizer->GetValue() << std::endl;
 
   optimizer->SetNumberOfThreads( 2 );
-
+  optimizer->SetNumberOfIterations( 2 );
   TRY_EXPECT_NO_EXCEPTION( optimizer->StartOptimization() );
 
+  /* Check that control made it down to the gradient modification method */
+  if( ! optimizer->m_ProcessGradientOverSubRangeCalled )
+    {
+    std::cerr << "Call to StartOptimization failed to reach expected code. "
+              << "m_ProcessGradientOverSubRangeCalled is false" << std::endl;
+    return EXIT_FAILURE;
+    }
+  /* exercise some methods */
+  std::cout << "Number of iterations: " << optimizer->GetNumberOfIterations()
+            << std::endl
+            << "Current gradient: " << optimizer->GetGradient() << std::endl
+            << "StopCondition: " << optimizer->GetStopCondition() << std::endl
+            << "StopConditionDescription: " << optimizer->GetStopConditionDescription()
+            << std::endl
+            << "CurrentIteration: " << optimizer->GetCurrentIteration() << std::endl;
   std::cout << "Printing self.." << std::endl;
   std::cout << optimizer << std::endl;
 

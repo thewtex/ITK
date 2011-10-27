@@ -17,6 +17,7 @@ itkVersorRigid3DTransformOptimizerTest.cxx
 itkAmoebaOptimizerTest.cxx
 itkParticleSwarmOptimizerTest.cxx
 itkInitializationBiasedParticleSwarmOptimizerTest.cxx
+itkGradientDescentOptimizerTest.cxx
 )
 
 CreateTestDriver(ITKOptimizers  "${ITKOptimizers-Test_LIBRARIES}" "${ITKOptimizersTests}")

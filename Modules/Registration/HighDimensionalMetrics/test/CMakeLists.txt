@@ -10,6 +10,7 @@ set(ITKHighDimensionalMetricsTests
   itkDemonsImageToImageObjectMetricTest.cxx
   itkANTSNeighborhoodCorrelationImageToImageObjectMetricTest.cxx
   itkANTSNeighborhoodCorrelationImageToImageObjectRegistrationTest.cxx
+  itkRegularStepJointHistogramMutualInformationImageToImageObjectRegistrationTest.cxx
 )
 
 set(INPUTDATA ${ITK_DATA_ROOT}/Input)
@@ -216,3 +217,71 @@ itk_add_test(NAME itkANTSNeighborhoodCorrelationImageToImageObjectRegistrationTe
               ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceBSplined10.png
              ${TEMP}/itkANTSNeighborhoodCorrelationImageToImageObjectRegistrationTest.nii.gz
               10 1 0.25 )
+
+itk_add_test(NAME itkRegularStepJointHistogramMutualInformationImageToImageObjectRegistrationTest
+      COMMAND ITKHighDimensionalMetricsTestDriver
+      --compare
+      DATA{Baseline/itkRegularStepJointHistogramMutualInformationImageToImageObjectRegistrationTest_face_50_50_0.1_0.05_1_2.nii.gz}
+      ${TEMP}/itkRegularStepJointHistogramMutualInformationImageToImageObjectRegistrationTest.nii.gz
+       --compareIntensityTolerance 0.25
+      itkRegularStepJointHistogramMutualInformationImageToImageObjectRegistrationTest
+      DATA{Input/face_avg.jpg}
+      DATA{Input/face_b.jpg}
+      ${TEMP}/itkRegularStepJointHistogramMutualInformationImageToImageObjectRegistrationTest.nii.gz
+      50 50
+      0.1  #affineMaxStepLength
+      0.05 #displacementMaxStepLength
+      1    #sparseSamplingStep
+      2    #imageShrinkFactor
+      )
+
+itk_add_test(NAME itkRegularStepJointHistogramMutualInformationImageToImageObjectRegistrationTest2
+      COMMAND ITKHighDimensionalMetricsTestDriver
+      --compare
+      DATA{Baseline/itkRegularStepJointHistogramMutualInformationImageToImageObjectRegistrationTest_face_50_50_0.1_0.05_2_2.nii.gz}
+      ${TEMP}/itkRegularStepJointHistogramMutualInformationImageToImageObjectRegistrationTest2.nii.gz
+       --compareIntensityTolerance 0.25
+      itkRegularStepJointHistogramMutualInformationImageToImageObjectRegistrationTest
+      DATA{Input/face_avg.jpg}
+      DATA{Input/face_b.jpg}
+      ${TEMP}/itkRegularStepJointHistogramMutualInformationImageToImageObjectRegistrationTest2.nii.gz
+      50 50
+      0.1  #affineMaxStepLength
+      0.05 #displacementMaxStepLength
+      2    #sparseSamplingStep
+      2    #imageShrinkFactor
+      )
+
+itk_add_test(NAME itkRegularStepJointHistogramMutualInformationImageToImageObjectRegistrationTest3
+      COMMAND ITKHighDimensionalMetricsTestDriver
+      --compare
+      DATA{Baseline/itkRegularStepJointHistogramMutualInformationImageToImageObjectRegistrationTest_slice_50_50_0.1_0.05_1_2.nii.gz}
+      ${TEMP}/itkRegularStepJointHistogramMutualInformationImageToImageObjectRegistrationTest3.nii.gz
+       --compareIntensityTolerance 0.25
+      itkRegularStepJointHistogramMutualInformationImageToImageObjectRegistrationTest
+      DATA{Input/r16slice.nii.gz}
+      DATA{Input/r64slice.nii.gz}
+      ${TEMP}/itkRegularStepJointHistogramMutualInformationImageToImageObjectRegistrationTest3.nii.gz
+      50 50
+      0.1  #affineMaxStepLength
+      0.05 #displacementMaxStepLength
+      1    #sparseSamplingStep
+      2    #imageShrinkFactor
+      )
+
+itk_add_test(NAME itkRegularStepJointHistogramMutualInformationImageToImageObjectRegistrationTest4
+      COMMAND ITKHighDimensionalMetricsTestDriver
+      --compare
+      DATA{Baseline/itkRegularStepJointHistogramMutualInformationImageToImageObjectRegistrationTest_slice_50_50_0.1_0.05_2_2.nii.gz}
+      ${TEMP}/itkRegularStepJointHistogramMutualInformationImageToImageObjectRegistrationTest4.nii.gz
+       --compareIntensityTolerance 0.25
+      itkRegularStepJointHistogramMutualInformationImageToImageObjectRegistrationTest
+      DATA{Input/r16slice.nii.gz}
+      DATA{Input/r64slice.nii.gz}
+      ${TEMP}/itkRegularStepJointHistogramMutualInformationImageToImageObjectRegistrationTest4.nii.gz
+      50 50
+      0.1  #affineMaxStepLength
+      0.05 #displacementMaxStepLength
+      2    #sparseSamplingStep
+      2    #imageShrinkFactor
+      )

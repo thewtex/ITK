@@ -48,6 +48,8 @@ typename RegistrationParameterScalesEstimator< TMetric >::FloatType
 RegistrationParameterScalesEstimator< TMetric >
 ::EstimateTrustedStepScale()
 {
+  this->CheckAndSetInputs();
+
   const typename VirtualImageType::SpacingType & spacing
     = this->m_VirtualImage->GetSpacing();
 

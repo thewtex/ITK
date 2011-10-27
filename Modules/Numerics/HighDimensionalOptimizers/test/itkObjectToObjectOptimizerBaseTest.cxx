@@ -161,6 +161,12 @@ int itkObjectToObjectOptimizerBaseTest(int , char* [])
     return EXIT_FAILURE;
     }
 
+  /* Test that GetCurrentPosition fails when metric is not set */
+  std::cout << "Test calling GetCurrentPosition with bad optimizer: " << std::endl;
+  ObjectToObjectOptimizerBaseTestOptimizer::Pointer
+    badOptimizer = ObjectToObjectOptimizerBaseTestOptimizer::New();
+  TRY_EXPECT_EXCEPTION( badOptimizer->GetCurrentPosition() );
+
   std::cout << "Printing self.." << std::endl;
   std::cout << optimizer << std::endl;
 

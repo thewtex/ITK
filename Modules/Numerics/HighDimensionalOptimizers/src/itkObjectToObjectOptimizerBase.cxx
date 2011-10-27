@@ -124,7 +124,6 @@ ObjectToObjectOptimizerBase
     this->m_ScalesAreIdentity = true;
     }
 
-
 }
 
 //-------------------------------------------------------------------
