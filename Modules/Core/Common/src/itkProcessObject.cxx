@@ -814,10 +814,19 @@ ProcessObject
     {
     return "Primary";
     }
-  DataObjectIdentifierType baseName = "IndexedDataObject";
-  std::ostringstream oss;
-  oss << idx;
-  return baseName + oss.str();
+  if ( idx < 999 )
+    {
+    char buf[17+4];
+    sprintf(buf, "IndexedDataObject%i", idx);
+    return buf;
+    }
+  else
+    {
+    const char baseName[] = "IndexedDataObject";
+    std::ostringstream oss;
+    oss << baseName << idx;
+    return oss.str();
+    }
 }
 
 unsigned int
