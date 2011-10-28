@@ -80,20 +80,23 @@ MeshSpatialObject< TMesh >
         position[i] = transformedPoint[i];
         }
 
-      double minDist;
-
-      if ( it.Value()->EvaluatePosition(position, m_Mesh->GetPoints(),
-                                        NULL, NULL, &minDist, NULL) )
+      // If this is a triangle cell we need to check the distance
+      if ( it.Value()->GetNumberOfPoints() == 3 )
         {
-        // If this is a triangle cell we need to check the distance
-        if ( it.Value()->GetNumberOfPoints() == 3 )
+        typename MeshType::CoordRepType closestPoint[
+          itkGetStaticConstMacro(Dimension)];
+        double minDist;
+        if ( it.Value()->EvaluatePosition(position, m_Mesh->GetPoints(),
+                                          NULL, NULL, &minDist, NULL)  &&
+             minDist <= m_IsInsidePrecision )
           {
-          if ( minDist <= m_IsInsidePrecision )
-            {
-            return true;
-            }
+          return true;
           }
-        else
+        }
+      else
+        {
+        if ( it.Value()->EvaluatePosition(position, m_Mesh->GetPoints(),
+                                          NULL, NULL, NULL, NULL) )
           {
           return true;
           }
