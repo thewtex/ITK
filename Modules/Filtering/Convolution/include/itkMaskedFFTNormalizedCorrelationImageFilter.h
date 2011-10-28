@@ -155,44 +155,27 @@ public:
   typedef typename FFTImageType::Pointer                        FFTImagePointer;
 
   /** Set and get the fixed image */
-  void SetFixedImage(InputImageType *input)
-    {
-      this->SetNthInput(0, const_cast<InputImageType *>(input) );
-    }
-  InputImageType * GetFixedImage()
-    {
-      return static_cast<InputImageType*>(const_cast<DataObject *>(this->ProcessObject::GetInput(0)));
-    }
+  // The primary input must be explicitly set.
+  const InputImageType * GetFixedImage() const
+  {
+     return this->GetInput();
+  }
+  void SetFixedImage( const InputImageType * input )
+  {
+     this->SetInput( input );
+  }
 
   /** Set and get the moving image */
-  void SetMovingImage(InputImageType *input)
-    {
-      this->SetNthInput(1, const_cast<InputImageType *>(input) );
-    }
-  InputImageType * GetMovingImage()
-    {
-      return static_cast<InputImageType*>(const_cast<DataObject *>(this->ProcessObject::GetInput(1)));
-    }
+  itkSetInputMacro(MovingImage,InputImageType);
+  itkGetInputMacro(MovingImage,InputImageType);
 
   /** Set and get the fixed mask */
-  void SetFixedImageMask(InputImageType *input)
-    {
-      this->SetNthInput(2, const_cast<InputImageType *>(input) );
-    }
-  InputImageType * GetFixedImageMask()
-    {
-      return static_cast<InputImageType*>(const_cast<DataObject *>(this->ProcessObject::GetInput(2)));
-    }
+  itkSetInputMacro(FixedImageMask,InputImageType);
+  itkGetInputMacro(FixedImageMask,InputImageType);
 
   /** Set and get the moving mask */
-  void SetMovingImageMask(InputImageType *input)
-    {
-      this->SetNthInput(3, const_cast<InputImageType *>(input) );
-    }
-  InputImageType * GetMovingImageMask()
-    {
-      return static_cast<InputImageType*>(const_cast<DataObject *>(this->ProcessObject::GetInput(3)));
-    }
+  itkSetInputMacro(MovingImageMask,InputImageType);
+  itkGetInputMacro(MovingImageMask,InputImageType);
 
   /** Set and get the required percentage of overlapping pixels */
   itkSetMacro(RequiredNumberOfOverlappingVoxels,unsigned long);
@@ -208,8 +191,8 @@ public:
 protected:
   MaskedFFTNormalizedCorrelationImageFilter()
   {
-    this->SetNumberOfRequiredInputs(2);
     m_RequiredNumberOfOverlappingVoxels = 0;
+    this->AddRequiredInputName("MovingImage");
   }
   virtual ~MaskedFFTNormalizedCorrelationImageFilter() {}
   void PrintSelf(std::ostream& os, Indent indent) const;

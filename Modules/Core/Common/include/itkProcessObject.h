@@ -33,6 +33,7 @@
 #include "itkObjectFactory.h"
 #include <vector>
 #include <map>
+#include <set>
 
 namespace itk
 {
@@ -136,6 +137,9 @@ public:
    * data object produced by GetInputs()
    */
   NameArray GetInputNames() const;
+
+  /** Return an array with the names of the required inputs */
+  NameArray GetRequiredInputNames() const;
 
   /** Return a array with the named inputs of this process object.
    * The order of the inputs match the order of the input names produced
@@ -463,7 +467,7 @@ protected:
 
   virtual void AddInput(DataObject *input);
 
-  itkSetMacro(NumberOfRequiredInputs, unsigned int);
+  virtual void SetNumberOfRequiredInputs(unsigned int);
   itkGetConstReferenceMacro(NumberOfRequiredInputs, unsigned int);
 
   /** Push/Pop an indexed input of this process object. These methods allow a
@@ -494,6 +498,11 @@ protected:
 
   itkSetMacro(NumberOfRequiredOutputs, unsigned int);
   itkGetConstReferenceMacro(NumberOfRequiredOutputs, unsigned int);
+
+  bool AddRequiredInputName( const DataObjectIdentifierType & );
+  bool RemoveRequiredInputName( const DataObjectIdentifierType & );
+  bool IsRequiredInputName( const DataObjectIdentifierType & ) const;
+  void SetRequiredInputNames( const NameArray & );
 
   /** Called to allocate the output array.  Copies old outputs. */
   void SetNumberOfIndexedOutputs(unsigned int num);
@@ -621,6 +630,12 @@ private:
 
   unsigned int           m_NumberOfRequiredInputs;
   unsigned int           m_NumberOfRequiredOutputs;
+
+  /** STL map to store the named inputs and outputs */
+  typedef std::set< DataObjectIdentifierType, NameComparator > NameSet;
+
+  /** The required inputs */
+  NameSet m_RequiredInputNames;
 
   /** These support the progress method and aborting filter execution. */
   bool  m_AbortGenerateData;
