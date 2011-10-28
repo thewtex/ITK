@@ -371,17 +371,24 @@ bool SystemTools::GetEnv(const char* key, kwsys_stl::string& result)
     }
 }
 
-class kwsysDeletingCharVector : public kwsys_stl::vector<char*>
+//http://stackoverflow.com/questions/3601431/base-class-class-stdvector-has-a-non-virtual-destructor
+class kwsysDeletingCharVector
 {
 public:
   ~kwsysDeletingCharVector();
+  void push_back(char * i)
+    {
+    m_LocalVector.push_back(i);
+    }
+private:
+  kwsys_stl::vector<char*> m_LocalVector;
 };
 
 kwsysDeletingCharVector::~kwsysDeletingCharVector()
 {
 #ifndef KWSYS_DO_NOT_CLEAN_PUTENV
-  for(kwsys_stl::vector<char*>::iterator i = this->begin();
-      i != this->end(); ++i)
+  for(kwsys_stl::vector<char*>::iterator i = this->m_LocalVector.begin();
+      i != this->m_LocalVector.end(); ++i)
     {
     delete []*i;
     }

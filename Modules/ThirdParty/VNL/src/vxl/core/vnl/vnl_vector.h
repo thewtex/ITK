@@ -135,7 +135,7 @@ class vnl_vector
 #endif
 
   //: Destructor
-  ~vnl_vector();
+  virtual ~vnl_vector();
 
   //: Return the length, number of elements, dimension of this vector.
   unsigned size() const { return num_elmts; }

@@ -162,7 +162,7 @@ class vnl_matrix
 #endif
 
   //: Matrix destructor
-  ~vnl_matrix();
+  virtual ~vnl_matrix();
 
 // Basic 2D-Array functionality-------------------------------------------
 
