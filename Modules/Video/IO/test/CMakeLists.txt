@@ -3,6 +3,8 @@ set(ITKVideoIOTests
   itkVideoReaderWriterTest.cxx
   itkFileListVideoIOTest.cxx
   itkFileListVideoIOFactoryTest.cxx
+  itkVideoDummyCameraTest.cxx
+  itkVideoDummyCameraFactoryTest.cxx
 )
 
 CreateTestDriver(ITKVideoIO
@@ -51,3 +53,17 @@ itk_add_test(
     DATA{Input/frame4.jpg}
     "${ITK_TEST_OUTPUT_DIR}/filelistfactory_frame0.png,${ITK_TEST_OUTPUT_DIR}/filelistfactory_frame1.png,${ITK_TEST_OUTPUT_DIR}/filelistfactory_frame2.png,${ITK_TEST_OUTPUT_DIR}/filelistfactory_frame3.png,${ITK_TEST_OUTPUT_DIR}/filelistfactory_frame4.png"
     0)
+
+# VideoDummyCamera:
+itk_add_test(
+  NAME VideoDummyCameraTest
+  COMMAND ITKVideoIOTestDriver
+    itkVideoDummyCameraTest
+      640 480 10 1)
+
+# VideoDummyCameraFactory:
+itk_add_test(
+  NAME VideoDummyCameraFactoryTest
+  COMMAND ITKVideoIOTestDriver
+    itkVideoDummyCameraFactoryTest
+    camera://dummy/solidgray?color=3a4b5c&fps=15 )

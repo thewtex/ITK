@@ -41,7 +41,8 @@ int test_FileListVideoIOFactory( const char* input,
   // registered by default because of the order in which the includes happen.
   // The real strangeness seems to be in ITK's system with the modularized
   // framework since none of the factories get reigstered by default.
-  itk::ObjectFactoryBase::RegisterFactory( itk::FileListVideoIOFactory::New() );
+  // -->The next line is now moved to VideoIOFactory::RegisterBuiltInFactories()
+  //itk::ObjectFactoryBase::RegisterFactory( itk::FileListVideoIOFactory::New() );
 
   //////
   // Create the VideoIOBase for reading from a file

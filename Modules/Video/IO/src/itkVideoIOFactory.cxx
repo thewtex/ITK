@@ -23,6 +23,9 @@
 #include "itkMutexLock.h"
 #include "itkMutexLockHolder.h"
 
+#include "itkFileListVideoIOFactory.h"
+#include "itkVideoDummyCameraFactory.h"
+
 #ifdef ITK_VIDEO_USE_OPENCV
 #include "itkOpenCVVideoIOFactory.h"
 #endif
@@ -67,15 +70,6 @@ VideoIOBase::Pointer VideoIOFactory::CreateVideoIO( IOModeType mode, const char*
       {
       if ((*j)->CanReadFile(arg))
         {
-        // We found a way to read this!
-        // If this is a device ID, then process the URl to pass the parameters
-        // before returning.
-        if( (*j)->FileNameIsCamera(arg) )
-          {
-          // Generate a map from the parameter/value pairs passed at the end of the URL
-          itkGenericOutputMacro("WARNING:  Does not yet generate parameter maps when reading!");  // can't use itkWarningMacro because 'this' is unavailable for static member functions
-          }
-
         return *j;
         }
       }
@@ -85,15 +79,6 @@ VideoIOBase::Pointer VideoIOFactory::CreateVideoIO( IOModeType mode, const char*
       {
       if ((*j)->CanWriteFile(arg))
         {
-        // We found a way to read this!
-        // If this is a device ID, then process the URl to pass the parameters
-        // before returning.
-        if( (*j)->FileNameIsDeviceID(arg) )
-          {
-          // Generate a map from the parameter/value pairs passed at the end of the URL
-          itkGenericOutputMacro("WARNING:  Does not yet generate parameter maps when writing!");  // can't use itkWarningMacro because 'this' is unavailable for static member functions
-          }
-
         return *j;
         }
       }
@@ -117,6 +102,9 @@ void VideoIOFactory::RegisterBuiltInFactories()
     MutexLockHolder< SimpleMutexLock > mutexHolder(mutex);
     if ( firstTime )
       {
+      ObjectFactoryBase::RegisterFactory( FileListVideoIOFactory::New() );
+      ObjectFactoryBase::RegisterFactory( VideoDummyCameraFactory::New() );
+
 #ifdef ITK_VIDEO_USE_OPENCV
       ObjectFactoryBase::RegisterFactory( OpenCVVideoIOFactory::New() );
 #endif

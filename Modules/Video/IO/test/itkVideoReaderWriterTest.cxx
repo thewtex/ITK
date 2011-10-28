@@ -53,8 +53,9 @@ int itkVideoReaderWriterTest( int argc, char *argv[] )
   reader->SetFileName(inFile.c_str() );
 
   // I'm still not sure how to handle this right, but for now, just manually
-  // register an FileListVideoIO
-  itk::ObjectFactoryBase::RegisterFactory( itk::FileListVideoIOFactory::New() );
+  // register an FileListVideoIO --> This next line is now moved to
+  // VideoIOFactory::RegisterBuiltInFactories()
+  //itk::ObjectFactoryBase::RegisterFactory( itk::FileListVideoIOFactory::New() );
 
   // Set up the writer
   VideoWriterType::Pointer writer = VideoWriterType::New();
