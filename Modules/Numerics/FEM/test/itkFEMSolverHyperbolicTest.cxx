@@ -149,9 +149,7 @@ void PrintSolution(FEMSolverType *S )
     }
 }
 
-
-
-int itkFEMSolverHyperbolicTest(int ac, char** av)
+int itkFEMSolverHyperbolicTest(int ac, char* av[])
 {
 
   if (ac < 4)
