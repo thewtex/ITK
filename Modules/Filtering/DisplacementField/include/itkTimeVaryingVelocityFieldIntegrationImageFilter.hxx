@@ -36,7 +36,7 @@ TimeVaryingVelocityFieldIntegrationImageFilter
 {
   this->m_LowerTimeBound =  0.0,
   this->m_UpperTimeBound = 1.0,
-  this->m_NumberOfIntegrationSteps = 10;
+  this->m_NumberOfIntegrationSteps = 100;
 
   this->SetNumberOfRequiredInputs( 1 );
 
@@ -83,7 +83,6 @@ TimeVaryingVelocityFieldIntegrationImageFilter
     {
     return;
     }
-
 
   //
   // The ImageBase::CopyInformation() method ca not be used here

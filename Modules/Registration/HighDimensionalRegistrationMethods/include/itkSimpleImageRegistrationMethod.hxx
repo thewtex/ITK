@@ -72,7 +72,7 @@ SimpleImageRegistrationMethod<TFixedImage, TMovingImage, TTransform>
   typedef GradientDescentObjectOptimizer DefaultOptimizerType;
   typename DefaultOptimizerType::Pointer optimizer = DefaultOptimizerType::New();
   optimizer->SetLearningRate( 1.0 );
-  optimizer->SetNumberOfIterations( 200 );
+  optimizer->SetNumberOfIterations( 1000 );
   optimizer->SetScalesEstimator( scalesEstimator );
   this->m_Optimizer = optimizer;
 
@@ -164,7 +164,10 @@ SimpleImageRegistrationMethod<TFixedImage, TMovingImage, TTransform>
   fixedImageSmoothingFilter->SetVariance( vnl_math_sqr( this->m_SmoothingSigmasPerLevel[level] ) );
   fixedImageSmoothingFilter->SetMaximumError( 0.01 );
   fixedImageSmoothingFilter->SetInput( this->m_FixedImage );
-  fixedImageSmoothingFilter->Update();
+
+  this->m_FixedSmoothImage = fixedImageSmoothingFilter->GetOutput();
+  this->m_FixedSmoothImage->Update();
+  this->m_FixedSmoothImage->DisconnectPipeline();
 
   typedef DiscreteGaussianImageFilter<MovingImageType, MovingImageType> MovingImageSmoothingFilterType;
   typename MovingImageSmoothingFilterType::Pointer movingImageSmoothingFilter = MovingImageSmoothingFilterType::New();
@@ -172,7 +175,10 @@ SimpleImageRegistrationMethod<TFixedImage, TMovingImage, TTransform>
   movingImageSmoothingFilter->SetVariance( vnl_math_sqr( this->m_SmoothingSigmasPerLevel[level] ) );
   movingImageSmoothingFilter->SetMaximumError( 0.01 );
   movingImageSmoothingFilter->SetInput( this->m_MovingImage );
-  movingImageSmoothingFilter->Update();
+
+  this->m_MovingSmoothImage = movingImageSmoothingFilter->GetOutput();
+  this->m_MovingSmoothImage->Update();
+  this->m_MovingSmoothImage->DisconnectPipeline();
 
   typedef IdentityTransform<RealType, ImageDimension> IdentityTransformType;
   typename IdentityTransformType::Pointer identityTransform = IdentityTransformType::New();
@@ -184,7 +190,8 @@ SimpleImageRegistrationMethod<TFixedImage, TMovingImage, TTransform>
       {
       // Check for the case where the user added the transform before starting
       // the registration
-      if( this->m_Transform.GetPointer() != this->m_CompositeTransform->GetBackTransform() )
+      if( this->m_CompositeTransform->GetNumberOfTransforms() == 0 ||
+        this->m_Transform.GetPointer() != this->m_CompositeTransform->GetBackTransform() )
         {
         this->m_CompositeTransform->AddTransform( this->m_Transform );
         }
@@ -198,12 +205,13 @@ SimpleImageRegistrationMethod<TFixedImage, TMovingImage, TTransform>
     }
 
   // Update the image metric
+
   this->m_Metric->SetFixedTransform( identityTransform );
   this->m_Metric->SetMovingTransform( this->m_CompositeTransform );
   this->m_Metric->SetFixedInterpolator( this->m_FixedInterpolator );
   this->m_Metric->SetMovingInterpolator( this->m_MovingInterpolator );
-  this->m_Metric->SetFixedImage( fixedImageSmoothingFilter->GetOutput() );
-  this->m_Metric->SetMovingImage( movingImageSmoothingFilter->GetOutput() );
+  this->m_Metric->SetFixedImage( this->m_FixedSmoothImage );
+  this->m_Metric->SetMovingImage( this->m_MovingSmoothImage );
   this->m_Metric->SetVirtualDomainImage( shrinkFilter->GetOutput() );
   this->m_Metric->Initialize();
 
