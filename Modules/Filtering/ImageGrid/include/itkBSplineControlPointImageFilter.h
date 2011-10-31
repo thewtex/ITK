@@ -23,7 +23,6 @@
 #include "itkCoxDeBoorBSplineKernelFunction.h"
 #include "itkFixedArray.h"
 #include "itkPointSet.h"
-#include "itkSingleValuedCostFunction.h"
 #include "itkVariableSizeMatrix.h"
 #include "itkVector.h"
 #include "itkVectorContainer.h"
