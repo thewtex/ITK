@@ -27,6 +27,7 @@
 #include "itkGaussianSmoothingOnUpdateDisplacementFieldTransformParametersAdaptor.h"
 #include "itkGradientDescentObjectOptimizer.h"
 #include "itkIdentityTransform.h"
+#include "itkMacro.h"
 #include "itkRegistrationParameterScalesFromShift.h"
 #include "itkResampleImageFilter.h"
 #include "itkShrinkImageFilter.h"
@@ -70,8 +71,13 @@ public:
 };
 
 template <unsigned int VImageDimension>
-int PerformSimpleImageRegistration( int itkNotUsed( argc ), char *argv[] )
+int PerformSimpleImageRegistration( int argc, char *argv[] )
 {
+  if( argc < 5 )
+    {
+    std::cout << argv[0] << " imageDimension fixedImage movingImage outputImage numberOfDeformableIterations" << std::endl;
+    exit( 1 );
+    }
 
   typedef float                                  PixelType;
   typedef itk::Image<PixelType, VImageDimension> FixedImageType;
@@ -98,7 +104,14 @@ int PerformSimpleImageRegistration( int itkNotUsed( argc ), char *argv[] )
   typename AffineRegistrationType::Pointer affineSimple = AffineRegistrationType::New();
   affineSimple->SetFixedImage( fixedImage );
   affineSimple->SetMovingImage( movingImage );
-  GradientDescentObjectOptimizerType::Pointer affineOptimizer = dynamic_cast< GradientDescentObjectOptimizerType * >( affineSimple->GetOptimizer());
+
+  typedef itk::GradientDescentObjectOptimizer GradientDescentObjectOptimizerType;
+  typename GradientDescentObjectOptimizerType::Pointer affineOptimizer =
+    dynamic_cast<GradientDescentObjectOptimizerType * >( affineSimple->GetOptimizer() );
+  if( !affineOptimizer )
+    {
+    itkGenericExceptionMacro( "Error dynamic_cast failed" );
+    }
   affineOptimizer->SetNumberOfIterations( 1000 );
 
   typedef CommandIterationUpdate<AffineRegistrationType> AffineCommandType;
@@ -172,13 +185,17 @@ int PerformSimpleImageRegistration( int itkNotUsed( argc ), char *argv[] )
   displacementFieldSimple->SetMetric( correlationMetric );
   displacementFieldSimple->SetOptimizer( optimizer );
 
+  // Shrink the virtual domain by specified factors for each level.  See documentation
+  // for the itkShrinkImageFilter for more detailed behavior.
   typename DisplacementFieldRegistrationType::ShrinkFactorsArrayType shrinkFactorsPerLevel;
   shrinkFactorsPerLevel.SetSize( 3 );
-  shrinkFactorsPerLevel[0] = 2;
+  shrinkFactorsPerLevel[0] = 3;
   shrinkFactorsPerLevel[1] = 2;
   shrinkFactorsPerLevel[2] = 1;
   displacementFieldSimple->SetShrinkFactorsPerLevel( shrinkFactorsPerLevel );
 
+  // Smooth by specified gaussian sigmas for each level.  These values are specified in
+  // physical units.
   typename DisplacementFieldRegistrationType::SmoothingSigmasArrayType smoothingSigmasPerLevel;
   smoothingSigmasPerLevel.SetSize( 3 );
   smoothingSigmasPerLevel[0] = 2;
@@ -192,6 +209,10 @@ int PerformSimpleImageRegistration( int itkNotUsed( argc ), char *argv[] )
 
   for( unsigned int level = 0; level < shrinkFactorsPerLevel.Size(); level++ )
     {
+    // We use the shrink image filter to calculate the fixed parameters of the virtual
+    // domain at each level.  To speed up calculation and avoid unnecessary memory
+    // usage, we could calculate these fixed parameters directly.
+
     typedef itk::ShrinkImageFilter<DisplacementFieldType, DisplacementFieldType> ShrinkFilterType;
     typename ShrinkFilterType::Pointer shrinkFilter = ShrinkFilterType::New();
     shrinkFilter->SetShrinkFactors( shrinkFactorsPerLevel[level] );
@@ -245,7 +266,7 @@ int PerformSimpleImageRegistration( int itkNotUsed( argc ), char *argv[] )
 
 int itkSimpleImageRegistrationTest( int argc, char *argv[] )
 {
-  if ( argc < 5 )
+  if( argc < 5 )
     {
     std::cout << argv[0] << " imageDimension fixedImage movingImage outputImage numberOfDeformableIterations" << std::endl;
     exit( 1 );
