@@ -1,6 +1,7 @@
 itk_module_test()
 set(ITKHighDimensionalRegistrationMethodsTests
 itkSimpleImageRegistrationTest.cxx
+itkTimeVaryingVelocityFieldImageRegistrationTest.cxx
 )
 
 set(INPUTDATA ${ITK_DATA_ROOT}/Input)
@@ -20,4 +21,14 @@ itk_add_test(NAME itkSimpleImageRegistrationTest
               DATA{Input/r64slice.nii.gz}
               ${TEMP}/itkSimpleImageRegistrationTest.nii.gz
               10 # number of optimization iterations of the displacement field
+              )
+
+itk_add_test(NAME itkTimeVaryingVelocityFieldImageRegistrationTest
+      COMMAND ITKHighDimensionalRegistrationMethodsTestDriver
+              itkTimeVaryingVelocityFieldImageRegistrationTest
+              2 # number of dimensions
+              DATA{Input/r16slice_rigid.nii.gz}
+              DATA{INput/r64slice.nii.gz}
+              ${TEMP}/itkTimeVaryingVelocityFieldImageRegistrationTest.nii.gz
+              10  # number of optimization iterations of the displacement field
               )
