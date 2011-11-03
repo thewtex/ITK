@@ -81,14 +81,11 @@ public:
       std::cout << e << std::endl;
       return;
       }
-
-    //m_Count = 0;
     }
 
   void SetLevelSet( LevelSetType *f )
     {
     m_LevelSetConverter->SetInput( f );
-    // m_Count = 0;
     }
 
   void SetScreenCapture( const bool& iCapture )
@@ -189,12 +186,7 @@ public:
 
       vtkCaptureScreen< vtkPNGWriter > capture ( m_RenWin );
       // begin mouse interaction
-      //      m_Iren->Start();
       capture( filename );
-      }
-    else
-      {
-      m_Iren->Start();
       }
     }
   ++m_Count;
