@@ -18,6 +18,8 @@
 #ifndef __itkImageAlgorithm_h
 #define __itkImageAlgorithm_h
 
+#include "itkImageRegionIterator.h"
+
 namespace itk
 {
 
@@ -54,6 +56,28 @@ struct ImageAlgorithm
   static void Copy( const InputImageType *inImage, OutputImageType *outImage,
                     const typename InputImageType::RegionType &inRegion,
                     const typename OutputImageType::RegionType &outRegion );
+
+  template<typename ImageType >
+  static void Copy( const ImageType *inImage, ImageType *outImage,
+                    const typename ImageType::RegionType &inRegion,
+                    const typename ImageType::RegionType &outRegion )
+  {
+    if ( inRegion.GetSize(0) == outRegion.GetSize(0) )
+      {
+      ImageAlgorithm::MemCopy( inImage, outImage, inRegion, outRegion);
+      }
+    else
+      {
+      ImageAlgorithm::Copy< ImageType, ImageType>( inImage, outImage, inRegion, outRegion );
+      }
+  }
+
+private:
+
+  template<typename ImageType >
+  static void MemCopy( const ImageType *inImage, ImageType *outImage,
+                       const typename ImageType::RegionType &inRegion,
+                       const typename ImageType::RegionType &outRegion );
 };
 } // end namespace itk
 
