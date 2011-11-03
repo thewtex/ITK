@@ -59,8 +59,8 @@ public:
   typedef typename LevelSetType::Pointer    LevelSetPointer;
   typedef typename LevelSetType::ImageType  LevelSetImageType;
 
-  typedef ImageToImageFilter< InputImageType, LevelSetType >  InternalFilterType;
-  typedef typename InternalFilterType::Pointer                InternalFilterPointer;
+  typedef ImageToImageFilter< InputImageType, typename LevelSetType::ImageType >  InternalFilterType;
+  typedef typename InternalFilterType::Pointer                                    InternalFilterPointer;
 
   itkSetObjectMacro( SignedDistanceTransformFilter, InternalFilterType );
   itkGetObjectMacro( SignedDistanceTransformFilter, InternalFilterType );
