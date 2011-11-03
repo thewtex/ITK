@@ -31,7 +31,7 @@ template< class TInputImage, class TOutputImage >
 ConstantPadImageFilter< TInputImage, TOutputImage >
 ::ConstantPadImageFilter()
 {
-  m_InternalBoundaryCondition.SetConstant( NumericTraits< OutputImagePixelType >::Zero );
+  m_InternalBoundaryCondition.SetConstant( NumericTraits< InputImagePixelType >::Zero );
   this->InternalSetBoundaryCondition( &m_InternalBoundaryCondition );
 }
 

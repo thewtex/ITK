@@ -82,7 +82,7 @@ public:
                       TOutputImage::ImageDimension);
 
   /** Set/Get the pad value.  Default is Zero. */
-  void SetConstant( OutputImagePixelType constant )
+  void SetConstant( InputImagePixelType constant )
   {
     m_InternalBoundaryCondition.SetConstant( constant );
   }
