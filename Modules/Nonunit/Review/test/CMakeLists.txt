@@ -23,7 +23,6 @@ itkDivideByConstantImageFilterTest.cxx
 itkExponentialDisplacementFieldImageFilterTest.cxx
 itkFastApproximateRankImageFilterTest.cxx
 itkFastSymmetricForcesDemonsRegistrationFilterTest.cxx
-itkGaborImageSourceTest.cxx
 itkGaussianDerivativeOperatorTest.cxx
 itkGridForwardWarpImageFilterTest.cxx
 itkGridImageSourceTest.cxx
@@ -299,16 +298,6 @@ itk_add_test(NAME itkFastApproximateRankImageFilterTest10
     itkFastApproximateRankImageFilterTest DATA{${ITK_DATA_ROOT}/Input/cthead1.png} ${ITK_TEST_OUTPUT_DIR}/itkFastApproximateRankImageFilter10.png 10)
 itk_add_test(NAME itkFastSymmetricForcesDemonsRegistrationFilterTest
       COMMAND ITKReviewTestDriver itkFastSymmetricForcesDemonsRegistrationFilterTest)
-itk_add_test(NAME itkGaborImageSourceTest0
-      COMMAND ITKReviewTestDriver
-    --compare DATA{${ITK_DATA_ROOT}/Baseline/Review/GaborImageSourceTest0.mha}
-              ${ITK_TEST_OUTPUT_DIR}/GaborImageSourceTest0.mha
-    itkGaborImageSourceTest ${ITK_TEST_OUTPUT_DIR}/GaborImageSourceTest0.mha 0)
-itk_add_test(NAME itkGaborImageSourceTest1
-      COMMAND ITKReviewTestDriver
-    --compare DATA{${ITK_DATA_ROOT}/Baseline/Review/GaborImageSourceTest1.mha}
-              ${ITK_TEST_OUTPUT_DIR}/GaborImageSourceTest1.mha
-    itkGaborImageSourceTest ${ITK_TEST_OUTPUT_DIR}/GaborImageSourceTest1.mha 1)
 itk_add_test(NAME itkGaussianDerivativeOperatorTest
       COMMAND ITKReviewTestDriver itkGaussianDerivativeOperatorTest)
 itk_add_test(NAME itkGridForwardWarpImageFilterTest
