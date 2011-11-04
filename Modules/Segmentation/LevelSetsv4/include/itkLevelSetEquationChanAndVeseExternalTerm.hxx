@@ -57,9 +57,10 @@ void LevelSetEquationChanAndVeseExternalTerm< TInput, TLevelSetContainer >
   DomainMapImageFilterType * domain = this->m_LevelSetContainer->GetDomainMapFilter();
   CacheImageType * cacheImage = domain->GetOutput();
   const LevelSetIdentifierType id = cacheImage->GetPixel( iP );
-  DomainIteratorType levelSetMapItr = domain->m_LevelSetMap.find(id);
+  typedef typename DomainMapImageFilterType::DomainMapType DomainMapType;
+  typename DomainMapType::const_iterator levelSetMapItr = domain->GetDomainMap().find(id);
 
-  if( levelSetMapItr != domain->m_LevelSetMap.end() )
+  if( levelSetMapItr != domain->GetDomainMap().end() )
     {
     const IdListType lout = levelSetMapItr->second.m_List;
 
@@ -87,9 +88,10 @@ void LevelSetEquationChanAndVeseExternalTerm< TInput, TLevelSetContainer >
   CacheImageType * cacheImage = domain->GetOutput();
   const LevelSetIdentifierType id = cacheImage->GetPixel( iP );
 
-  DomainIteratorType levelSetMapItr = domain->m_LevelSetMap.find(id);
+  typedef typename DomainMapImageFilterType::DomainMapType DomainMapType;
+  typename DomainMapType::const_iterator levelSetMapItr = domain->GetDomainMap().find(id);
 
-  if( levelSetMapItr != domain->m_LevelSetMap.end() )
+  if( levelSetMapItr != domain->GetDomainMap().end() )
     {
     const IdListType lout = levelSetMapItr->second.m_List;
 

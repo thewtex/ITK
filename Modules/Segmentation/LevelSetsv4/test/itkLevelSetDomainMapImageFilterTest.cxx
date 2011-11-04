@@ -24,14 +24,15 @@ int itkLevelSetDomainMapImageFilterTest( int, char* [] )
 {
   const unsigned int Dimension = 2;
 
-  typedef std::list<int>            ListPixelType;
-  typedef std::list<int>::iterator  ListIteratorType;
+  typedef std::list<int>                 ListPixelType;
+  typedef std::list<int>::const_iterator ListIteratorType;
 
   typedef itk::Image< ListPixelType, Dimension >   InputImageType;
   typedef itk::Image< unsigned short, Dimension >  OutputImageType;
 
   typedef itk::LevelSetDomainMapImageFilter< InputImageType, OutputImageType >
-    DomainMapImageFilterType;
+                                                  DomainMapImageFilterType;
+  typedef DomainMapImageFilterType::DomainMapType DomainMapType;
 
   InputImageType::IndexType index;
   index[0] = 0;
@@ -76,6 +77,8 @@ int itkLevelSetDomainMapImageFilterTest( int, char* [] )
   OutputImageType::IndexType out_index;
   OutputImageType::PixelType out_id;
 
+  DomainMapType domainMap  = const_cast< DomainMapType & >( filter->GetDomainMap());
+
   while( !it.IsAtEnd() )
     {
     out_index = it.GetIndex();
@@ -85,9 +88,10 @@ int itkLevelSetDomainMapImageFilterTest( int, char* [] )
       {
       std::cout << "*** " <<std::endl;
       std::cout << out_index << " # " << out_id <<std::endl;
-      std::cout << filter->m_LevelSetMap[out_id].m_Region;
+      const InputImageType::RegionType domainMapRegion = domainMap[out_id].m_Region;
+      std::cout << domainMapRegion;
 
-      ListPixelType lout = filter->m_LevelSetMap[out_id].m_List;
+      const ListPixelType lout = domainMap[out_id].m_List;
       if( lout.empty() )
         {
         return EXIT_FAILURE;

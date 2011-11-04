@@ -180,9 +180,9 @@ int itkMultiLevelSetChanAndVeseInternalTermTest( int , char* [] )
   termContainer->AddTerm( 0, cvTerm );
   std::cout << "Term container created" << std::endl;
 
-  typedef DomainMapImageFilterType::DomainIteratorType DomainIteratorType;
-  DomainIteratorType map_it = domainMapFilter->m_LevelSetMap.begin();
-  DomainIteratorType map_end = domainMapFilter->m_LevelSetMap.end();
+  typedef DomainMapImageFilterType::DomainMapType::const_iterator DomainIteratorType;
+  DomainIteratorType map_it = domainMapFilter->GetDomainMap().begin();
+  DomainIteratorType map_end = domainMapFilter->GetDomainMap().end();
 
   LevelSetType::Pointer levelSet;
   ChanAndVeseTermType::Pointer eqTerm;

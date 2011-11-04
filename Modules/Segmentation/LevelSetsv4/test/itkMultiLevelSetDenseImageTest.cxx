@@ -120,6 +120,9 @@ int itkMultiLevelSetDenseImageTest( int , char* [] )
   CacheImageType::IndexType out_index;
   CacheImageType::PixelType out_id;
 
+  typedef DomainMapImageFilterType::DomainMapType DomainMapType;
+  DomainMapType domainMap  = const_cast< DomainMapType & >( filter->GetDomainMap());
+
   while( !it.IsAtEnd() )
     {
     out_index = it.GetIndex();
@@ -143,8 +146,8 @@ int itkMultiLevelSetDenseImageTest( int , char* [] )
 
     if( out_id != 0 )
       {
-      IdListType lout = filter->m_LevelSetMap[out_id].m_List;
-      std::cout << filter->m_LevelSetMap[out_id].m_Region;
+      IdListType lout = domainMap[out_id].m_List;
+      std::cout << domainMap[out_id].m_Region;
       if( lout.empty() )
         {
         return EXIT_FAILURE;
@@ -169,9 +172,9 @@ int itkMultiLevelSetDenseImageTest( int , char* [] )
     ++it;
     }
 
-  typedef DomainMapImageFilterType::DomainIteratorType DomainIteratorType;
-  DomainIteratorType map_it = filter->m_LevelSetMap.begin();
-  DomainIteratorType map_end = filter->m_LevelSetMap.end();
+  typedef DomainMapImageFilterType::DomainMapType::const_iterator DomainIteratorType;
+  DomainIteratorType map_it = domainMap.begin();
+  DomainIteratorType map_end = domainMap.end();
 
   while( map_it != map_end )
     {
