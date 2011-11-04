@@ -20,7 +20,8 @@ itk_add_test(NAME itkSimpleImageRegistrationTest
               DATA{Input/r16slice_rigid.nii.gz}
               DATA{Input/r64slice.nii.gz}
               ${TEMP}/itkSimpleImageRegistrationTest.nii.gz
-              10 # number of optimization iterations of the displacement field
+              100 # number of affine iterations
+              10 # number of deformable iterations
               )
 
 itk_add_test(NAME itkTimeVaryingVelocityFieldImageRegistrationTest
@@ -30,6 +31,7 @@ itk_add_test(NAME itkTimeVaryingVelocityFieldImageRegistrationTest
               DATA{Input/r16slice_rigid.nii.gz}
               DATA{INput/r64slice.nii.gz}
               ${TEMP}/itkTimeVaryingVelocityFieldImageRegistrationTest
+              100
               10  # number of optimization iterations of the displacement field
               0.5 # learning rate
               )

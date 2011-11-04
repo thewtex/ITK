@@ -73,9 +73,9 @@ public:
 template <unsigned int VImageDimension>
 int PerformSimpleImageRegistration( int argc, char *argv[] )
 {
-  if( argc < 5 )
+  if( argc < 6 )
     {
-    std::cout << argv[0] << " imageDimension fixedImage movingImage outputImage numberOfDeformableIterations" << std::endl;
+    std::cout << argv[0] << " imageDimension fixedImage movingImage outputImage numberOfAffineIterations numberOfDeformableIterations" << std::endl;
     exit( 1 );
     }
 
@@ -112,7 +112,7 @@ int PerformSimpleImageRegistration( int argc, char *argv[] )
     {
     itkGenericExceptionMacro( "Error dynamic_cast failed" );
     }
-  affineOptimizer->SetNumberOfIterations( 1000 );
+  affineOptimizer->SetNumberOfIterations( atoi( argv[5] ) );
 
   typedef CommandIterationUpdate<AffineRegistrationType> AffineCommandType;
   typename AffineCommandType::Pointer affineObserver = AffineCommandType::New();
@@ -172,7 +172,7 @@ int PerformSimpleImageRegistration( int argc, char *argv[] )
 
   typename GradientDescentObjectOptimizerType::Pointer optimizer = GradientDescentObjectOptimizerType::New();
   optimizer->SetLearningRate( 1.0 );
-  optimizer->SetNumberOfIterations( atoi( argv[5] ) );
+  optimizer->SetNumberOfIterations( atoi( argv[6] ) );
   optimizer->SetScalesEstimator( scalesEstimator );
 
   typedef itk::SimpleImageRegistrationMethod<FixedImageType, MovingImageType, DisplacementFieldTransformType> DisplacementFieldRegistrationType;
@@ -266,9 +266,9 @@ int PerformSimpleImageRegistration( int argc, char *argv[] )
 
 int itkSimpleImageRegistrationTest( int argc, char *argv[] )
 {
-  if( argc < 5 )
+  if( argc < 6 )
     {
-    std::cout << argv[0] << " imageDimension fixedImage movingImage outputImage numberOfDeformableIterations" << std::endl;
+    std::cout << argv[0] << " imageDimension fixedImage movingImage outputImage numberOfAffineIterations numberOfDeformableIterations" << std::endl;
     exit( 1 );
     }
 
