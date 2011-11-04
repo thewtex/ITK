@@ -12,6 +12,7 @@ itk_module(ITKImageFeature
   TEST_DEPENDS
     ITKTestKernel
     ITKThresholding
+    ITKImageSource
   DESCRIPTION
     "${DOCUMENTATION}"
   )
