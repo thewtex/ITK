@@ -23,7 +23,6 @@ itkDivideByConstantImageFilterTest.cxx
 itkExponentialDisplacementFieldImageFilterTest.cxx
 itkFastApproximateRankImageFilterTest.cxx
 itkFastSymmetricForcesDemonsRegistrationFilterTest.cxx
-itkGaborImageSourceTest.cxx
 itkGaussianDerivativeOperatorTest.cxx
 itkGridForwardWarpImageFilterTest.cxx
 itkGridImageSourceTest.cxx
