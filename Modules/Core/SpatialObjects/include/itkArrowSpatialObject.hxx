@@ -214,7 +214,7 @@ ArrowSpatialObject< TDimension >
       {
       anglez = PI / 2;
       }
-    else if ( m_Direction[1] < 0.0 )
+    else
       {
       anglez = -PI / 2;
       }
