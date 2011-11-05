@@ -626,8 +626,8 @@ M_Read(void)
                             << METAIO_STREAM::endl;
         METAIO_STREAM::cout << "   ideal = " << readSize << " : actual = " << gc
                             << METAIO_STREAM::endl;
-        return false;
         delete [] _data;
+        return false;
         }
 
       int i=0;
