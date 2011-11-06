@@ -28,38 +28,41 @@
 #include "itkGradientDescentObjectOptimizer.h"
 #include "itkRegistrationParameterScalesFromShift.h"
 
+#include "itkIdentityTransform.h"
+#include "itkTranslationTransform.h"
+#include "itkAffineTransform.h"
+#include "itkEuler2DTransform.h"
+#include "itkCompositeTransform.h"
 #include "itkGaussianSmoothingOnUpdateDisplacementFieldTransform.h"
 
 #include "itkCastImageFilter.h"
 
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
+#include "itkCommand.h"
+#include "itksys/SystemTools.hxx"
+#include "itkResampleImageFilter.h"
+#include "itkShrinkImageFilter.h"
+#include "itkMultiThreader.h"
 
 //FIXME We need these as long as we have to define ImageToData and
 // Array1DToData as a fwd-declare in itkImageToImageObjectMetric.h
 #include "itkImageToData.h"
+#include "itkArray1DToData.h"
 
-namespace{
-// The following class is used to support callbacks
-// on the filter in the pipeline that follows later
-template<typename TRegistration>
-class ShowProgressObject
+
+/* Helper method to shrink images for faster testing as needed. */
+template<class TImageType>
+void JointHistogramMutualInformationImageToImageObjectRegistrationTestShrink( typename TImageType::Pointer & image, unsigned int shrinkFactor)
 {
-public:
-  ShowProgressObject(TRegistration* o)
-    {m_Process = o;}
-  void ShowProgress()
-    {
-    std::cout << "Progress: " << m_Process->GetProgress() << "  ";
-    std::cout << "Iter: " << m_Process->GetElapsedIterations() << "  ";
-    std::cout << "Metric: "   << m_Process->GetMetric()   << "  ";
-    std::cout << "RMSChange: " << m_Process->GetRMSChange() << "  ";
-    std::cout << std::endl;
-    if ( m_Process->GetElapsedIterations() == 10 )
-      { m_Process->StopRegistration(); }
-    }
-  typename TRegistration::Pointer m_Process;
-};
+  typedef itk::ShrinkImageFilter<TImageType,TImageType> ShrinkFilterType;
+
+  typename ShrinkFilterType::Pointer filter = ShrinkFilterType::New();
+
+  filter->SetInput( image );
+  filter->SetShrinkFactors( shrinkFactor );
+  filter->Update();
+  image = filter->GetOutput();
 }
 
 int itkJointHistogramMutualInformationImageToImageObjectRegistrationTest(int argc, char *argv[])
@@ -72,6 +75,9 @@ int itkJointHistogramMutualInformationImageToImageObjectRegistrationTest(int arg
     std::cerr << " fixedImageFile movingImageFile ";
     std::cerr << " outputImageFile ";
     std::cerr << " [numberOfIterations numberOfDisplacementIterations] ";
+    std::cerr << " [sparseSamplingStep = 1 (== dense sampling)] ";
+    std::cerr << " [imageShrinkFactor = 1 ] ";
+    std::cerr << " [numberOfThreads = global default ] ";
     std::cerr << std::endl;
     return EXIT_FAILURE;
     }
@@ -79,6 +85,10 @@ int itkJointHistogramMutualInformationImageToImageObjectRegistrationTest(int arg
   std::cout << argc << std::endl;
   unsigned int numberOfIterations = 10;
   unsigned int numberOfDisplacementIterations = 10;
+  unsigned int sparseSamplingStep = 1; //dense sampling
+  unsigned int imageShrinkFactor = 1;
+  itk::ThreadIdType numberOfThreads =
+    itk::MultiThreader::GetGlobalDefaultNumberOfThreads();
   if( argc >= 5 )
     {
     numberOfIterations = atoi( argv[4] );
@@ -87,11 +97,36 @@ int itkJointHistogramMutualInformationImageToImageObjectRegistrationTest(int arg
     {
     numberOfDisplacementIterations = atof( argv[5] );
     }
-  std::cout << " iterations "<< numberOfIterations
-    << " displacementIterations " << numberOfDisplacementIterations << std::endl;
+  if( argc >= 7 )
+    {
+    sparseSamplingStep = atoi( argv[6] );
+    }
+  if( argc >= 8 )
+    {
+    imageShrinkFactor = atoi( argv[7] );
+    }
+  if( argc >= 9 )
+    {
+    numberOfThreads = atoi( argv[8] );
+    }
+
+  bool useSparseSampling = sparseSamplingStep > 1;
+  if( sparseSamplingStep < 1 )
+    {
+    std::cerr << "sparseSamplingStep must be >=1. It is " << sparseSamplingStep
+              << std::endl;
+    return EXIT_FAILURE;
+    }
+
+  std::cout << " affine iterations: "<< numberOfIterations
+    << " displacementIterations: " << numberOfDisplacementIterations << std::endl
+    << " sparseSamplingStep: " << sparseSamplingStep
+    << " useSparseSampling: " << useSparseSampling << std::endl
+    << " imageShrinkFactor: " << imageShrinkFactor << std::endl
+    << " numberOfThreads: " << numberOfThreads << std::endl;
 
   const unsigned int Dimension = 2;
-  typedef double PixelType; //I assume png is unsigned short
+  typedef double PixelType;
 
   typedef itk::Image< PixelType, Dimension >  FixedImageType;
   typedef itk::Image< PixelType, Dimension >  MovingImageType;
@@ -110,6 +145,12 @@ int itkJointHistogramMutualInformationImageToImageObjectRegistrationTest(int arg
   FixedImageType::Pointer  fixedImage = fixedImageReader->GetOutput();
   movingImageReader->Update();
   MovingImageType::Pointer movingImage = movingImageReader->GetOutput();
+
+  // resize the images for faster computation during default tests
+  JointHistogramMutualInformationImageToImageObjectRegistrationTestShrink<
+    FixedImageType>( fixedImage, imageShrinkFactor );
+  JointHistogramMutualInformationImageToImageObjectRegistrationTestShrink<
+    MovingImageType>( movingImage, imageShrinkFactor );
 
   /** define a resample filter that will ultimately be used to deform the image */
   typedef itk::ResampleImageFilter<
@@ -155,8 +196,14 @@ int itkJointHistogramMutualInformationImageToImageObjectRegistrationTest(int arg
   field->FillBuffer( zeroVector );
   // Assign to transform
   displacementTransform->SetDisplacementField( field );
-  displacementTransform->SetGaussianSmoothingVarianceForTheUpdateField( 5 );
+  displacementTransform->SetGaussianSmoothingVarianceForTheUpdateField( 6 );
+  std::cout << "GetGaussianSmoothingVarianceForTheUpdateField: "
+    << displacementTransform->GetGaussianSmoothingVarianceForTheUpdateField()
+    << std::endl;
   displacementTransform->SetGaussianSmoothingVarianceForTheTotalField( 6 );
+  std::cout << "GetGaussianSmoothingVarianceForTheTotalField: "
+    << displacementTransform->GetGaussianSmoothingVarianceForTheTotalField()
+    << std::endl;
 
   //identity transform for fixed image
   typedef itk::IdentityTransform<double, Dimension> IdentityTransformType;
@@ -169,33 +216,49 @@ int itkJointHistogramMutualInformationImageToImageObjectRegistrationTest(int arg
   typedef MetricType::FixedSampledPointSetType  PointSetType;
   MetricType::Pointer metric = MetricType::New();
   metric->SetNumberOfHistogramBins(20);
-  typedef PointSetType::PointType     PointType;
-  PointSetType::Pointer               pset(PointSetType::New());
-  unsigned long ind=0,ct=0;
-  itk::ImageRegionIteratorWithIndex<FixedImageType> It(fixedImage, fixedImage->GetLargestPossibleRegion() );
-  for( It.GoToBegin(); !It.IsAtEnd(); ++It )
-    {
-    // take every N^th point
-    if ( ct % 20 == 0  ) // about a factor of 5 speed-up over dense
-      {
-        PointType pt;
-        fixedImage->TransformIndexToPhysicalPoint( It.GetIndex(), pt);
-        pset->SetPoint(ind, pt);
-        ind++;
-      }
-      ct++;
-    }
-    // brief profiling notes on mutual information affine registration macbook air , mi using every 20th point for sparse
-    //  1 thread dense = 10 sec
-    //  2 thread dense = 7.5  sec
-    //  1 thread sparse = 2.2 sec
-    //  2 thread sparse = 1.8 sec
-    // this uses only 1500 points so it's probably not a great multi-thread test for the sparse case
-  std::cout << "Setting point set with " << ind << " points of " << fixedImage->GetLargestPossibleRegion().GetNumberOfPixels() << " total " << std::endl;
-  metric->SetFixedSampledPointSet( pset );
-  metric->SetUseFixedSampledPointSet( true );
-  std::cout << "Testing metric with point set..." << std::endl;
 
+  metric->SetNumberOfThreads( numberOfThreads );
+
+  if( useSparseSampling )
+    {
+    std::cout << "Affine: testing metric with sparse point set..." << std::endl;
+
+    // Create a point set for sparse sampling
+    typedef PointSetType::PointType     PointType;
+    PointSetType::Pointer               pset(PointSetType::New());
+    unsigned long ind=0,ct=0;
+    itk::ImageRegionIteratorWithIndex<FixedImageType>
+      It(fixedImage, fixedImage->GetLargestPossibleRegion() );
+    for( It.GoToBegin(); !It.IsAtEnd(); ++It )
+      {
+      // take every N^th point
+      if ( ct % sparseSamplingStep == 0  )
+        {
+          PointType pt;
+          fixedImage->TransformIndexToPhysicalPoint( It.GetIndex(), pt);
+          pset->SetPoint(ind, pt);
+          ind++;
+        }
+        ct++;
+      }
+      // brief profiling notes on mutual information affine registration macbook
+      // air , mi using every 20th point for sparse
+      //  1 thread dense = 10 sec
+      //  2 thread dense = 7.5  sec
+      //  1 thread sparse = 2.2 sec
+      //  2 thread sparse = 1.8 sec
+      // this uses only 1500 points so it's probably not a great multi-thread
+      // test for the sparse case
+    std::cout << "Setting point set with " << ind << " points of "
+              << fixedImage->GetLargestPossibleRegion().GetNumberOfPixels()
+              << " total " << std::endl;
+    metric->SetFixedSampledPointSet( pset );
+    }
+  else
+    {
+    std::cout << "Affine: testing metric with dense sampling..." << std::endl;
+    }
+  metric->SetUseFixedSampledPointSet( useSparseSampling );
 
   // Assign images and transforms.
   // By not setting a virtual domain image or virtual domain settings,
@@ -205,8 +268,8 @@ int itkJointHistogramMutualInformationImageToImageObjectRegistrationTest(int arg
   metric->SetMovingImage( movingImage );
   metric->SetFixedTransform( identityTransform );
   metric->SetMovingTransform( affineTransform );
-  metric->SetDoFixedImagePreWarp( true );
-  metric->SetDoMovingImagePreWarp( true );
+  metric->SetDoFixedImagePreWarp( ! useSparseSampling );
+  metric->SetDoMovingImagePreWarp( ! useSparseSampling );
   bool gaussian = false;
   metric->SetUseMovingImageGradientFilter( gaussian );
   metric->SetUseFixedImageGradientFilter( gaussian );
@@ -224,7 +287,10 @@ int itkJointHistogramMutualInformationImageToImageObjectRegistrationTest(int arg
   optimizer->SetMetric( metric );
   optimizer->SetNumberOfIterations( numberOfIterations );
   optimizer->SetScalesEstimator( shiftScaleEstimator );
+  optimizer->SetNumberOfThreads( numberOfThreads );
   optimizer->StartOptimization();
+
+  std::cout << "Finished. Scales: " << optimizer->GetScales() << std::endl;
 
   std::cout << "Follow affine with deformable registration " << std::endl;
   // now add the displacement field to the composite transform
@@ -233,7 +299,21 @@ int itkJointHistogramMutualInformationImageToImageObjectRegistrationTest(int arg
   compositeTransform->SetAllTransformsToOptimizeOn(); //Set back to optimize all.
   compositeTransform->SetOnlyMostRecentTransformToOptimizeOn(); //set to optimize the displacement field
   metric->SetMovingTransform( compositeTransform );
-  metric->SetUseFixedSampledPointSet( false );
+  metric->SetDoFixedImagePreWarp( ! useSparseSampling );
+  // CompositeTransform needs a fix for TransformCovariantVector before this
+  // can be set to false. ALSO, with very sparse point set, results are
+  // bad, so be ware. If a point set of 50% sparsity is used, you can double
+  // the number of iterations and get good result.
+  metric->SetDoMovingImagePreWarp( true );
+  metric->SetUseFixedSampledPointSet( useSparseSampling );
+  if( useSparseSampling )
+    {
+    std::cout << "DisplacementField: testing metric with sparse point set..." << std::endl;
+    }
+  else
+    {
+    std::cout << "DisplacementField: testing metric with dense sampling..." << std::endl;
+    }
   metric->Initialize();
 
   // Optimizer
@@ -257,8 +337,8 @@ int itkJointHistogramMutualInformationImageToImageObjectRegistrationTest(int arg
     std::cout << "Test FAILED." << std::endl;
     return EXIT_FAILURE;
     }
-  std::cout << "...finished. " << std::endl;
-
+  std::cout << "...finished. " << std::endl
+            << "Scales: " << optimizer->GetScales() << std::endl;
 
   //warp the image with the displacement field
   resample->SetTransform( compositeTransform );
