@@ -45,11 +45,18 @@ itk_add_test(NAME itkJointHistogramMutualInformationImageToImageObjectRegistrati
 
 itk_add_test(NAME itkJointHistogramMutualInformationImageToImageObjectRegistrationTest2
       COMMAND ITKHighDimensionalMetricsTestDriver
-              itkJointHistogramMutualInformationImageToImageObjectRegistrationTest
-              DATA{Input/face_b.jpg}
-              DATA{Baseline/face_avg.jpg}
-              ${TEMP}/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest2.nii.gz
-              10 5 )
+      --compare
+      DATA{Baseline/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest_face_50_50_1_2_1.nii.gz}
+      ${TEMP}/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest2.nii.gz
+      itkJointHistogramMutualInformationImageToImageObjectRegistrationTest
+      DATA{Input/face_avg.jpg}
+      DATA{Input/face_b.jpg}
+      ${TEMP}/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest2.nii.gz
+      50 50
+      1 #sparseSamplingStep
+      2 #shrinkFactor
+      1 #numberOfThreads
+      )
 
 itk_add_test(NAME itkDemonsImageToImageObjectMetricTest
       COMMAND ITKHighDimensionalMetricsTestDriver
