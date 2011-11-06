@@ -36,19 +36,69 @@ itk_add_test(NAME itkJointHistogramMutualInformationImageToImageObjectMetricTest
 
 itk_add_test(NAME itkJointHistogramMutualInformationImageToImageObjectRegistrationTest
       COMMAND ITKHighDimensionalMetricsTestDriver
-              itkJointHistogramMutualInformationImageToImageObjectRegistrationTest
-              ${ITK_EXAMPLE_DATA_ROOT}/BrainProtonDensitySliceBorder20.png
-              ${ITK_EXAMPLE_DATA_ROOT}/BrainProtonDensitySliceBSplined10.png
-              ${TEMP}/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest.nii.gz
-              10 5 )
+      --compare
+      DATA{Baseline/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest_face_50_50_1_2_1.nii.gz}
+      ${TEMP}/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest.nii.gz
+      itkJointHistogramMutualInformationImageToImageObjectRegistrationTest
+      DATA{Input/face_avg.jpg}
+      DATA{Input/face_b.jpg}
+      ${TEMP}/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest.nii.gz
+      50 50
+      1 #sparseSamplingStep
+      2 #shrinkFactor
+      1 #numberOfThreads
+      )
 
 itk_add_test(NAME itkJointHistogramMutualInformationImageToImageObjectRegistrationTest2
       COMMAND ITKHighDimensionalMetricsTestDriver
-              itkJointHistogramMutualInformationImageToImageObjectRegistrationTest
-              DATA{Input/face_b.jpg}
-              DATA{Baseline/face_avg.jpg}
-              ${TEMP}/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest2.nii.gz
-              10 5 )
+      --compare
+      DATA{Baseline/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest_face_50_50_2_2_1.nii.gz}
+      ${TEMP}/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest2.nii.gz
+      --compareIntensityTolerance 2.5
+      --compareNumberOfPixelsTolerance 400
+      --compareRadiusTolerance 2
+      itkJointHistogramMutualInformationImageToImageObjectRegistrationTest
+      DATA{Input/face_avg.jpg}
+      DATA{Input/face_b.jpg}
+      ${TEMP}/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest2.nii.gz
+      50 50
+      2 #sparseSamplingStep
+      2 #shrinkFactor
+      1 #numberOfThreads
+      )
+
+itk_add_test(NAME itkJointHistogramMutualInformationImageToImageObjectRegistrationTest3
+      COMMAND ITKHighDimensionalMetricsTestDriver
+      --compare
+      DATA{Baseline/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest_slice_50_50_2_2_1.nii.gz}
+      ${TEMP}/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest3.nii.gz
+      --compareIntensityTolerance 2.5
+      --compareNumberOfPixelsTolerance 600
+      --compareRadiusTolerance 2
+      itkJointHistogramMutualInformationImageToImageObjectRegistrationTest
+      DATA{Input/r16slice.nii.gz}
+      DATA{Input/r64slice.nii.gz}
+      ${TEMP}/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest3.nii.gz
+      50 50
+      2 #sparseSamplingStep
+      2 #shrinkFactor
+      1 #numberOfThreads
+      )
+
+itk_add_test(NAME itkJointHistogramMutualInformationImageToImageObjectRegistrationTest4
+      COMMAND ITKHighDimensionalMetricsTestDriver
+      --compare
+      DATA{Baseline/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest_slice_50_50_1_2_1.nii.gz}
+      ${TEMP}/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest4.nii.gz
+      itkJointHistogramMutualInformationImageToImageObjectRegistrationTest
+      DATA{Input/r16slice.nii.gz}
+      DATA{Input/r64slice.nii.gz}
+      ${TEMP}/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest4.nii.gz
+      50 50
+      1 #sparseSamplingStep
+      2 #shrinkFactor
+      1 #numberOfThreads
+      )
 
 itk_add_test(NAME itkDemonsImageToImageObjectMetricTest
       COMMAND ITKHighDimensionalMetricsTestDriver
