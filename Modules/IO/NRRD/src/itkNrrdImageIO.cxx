@@ -568,14 +568,14 @@ void NrrdImageIO::ReadImageInformation()
     naxis = nrrd->axis + axi;
     if ( AIR_EXISTS(naxis->thickness) )
       {
-      sprintf(key, "%s%s[%d]", KEY_PREFIX,
+      sprintf(key, "%s%s[%u]", KEY_PREFIX,
               airEnumStr(nrrdField, nrrdField_thicknesses), axii);
       EncapsulateMetaData< double >(thisDic, std::string(key),
                                     naxis->thickness);
       }
     if ( naxis->center )
       {
-      sprintf(key, "%s%s[%d]", KEY_PREFIX,
+      sprintf(key, "%s%s[%u]", KEY_PREFIX,
               airEnumStr(nrrdField, nrrdField_centers), axii);
       val = airEnumStr(nrrdCenter, naxis->center);
       EncapsulateMetaData< std::string >( thisDic, std::string(key),
@@ -583,7 +583,7 @@ void NrrdImageIO::ReadImageInformation()
       }
     if ( naxis->kind )
       {
-      sprintf(key, "%s%s[%d]", KEY_PREFIX,
+      sprintf(key, "%s%s[%u]", KEY_PREFIX,
               airEnumStr(nrrdField, nrrdField_kinds), axii);
       val = airEnumStr(nrrdKind, naxis->kind);
       EncapsulateMetaData< std::string >( thisDic, std::string(key),
@@ -591,7 +591,7 @@ void NrrdImageIO::ReadImageInformation()
       }
     if ( airStrlen(naxis->label) )
       {
-      sprintf(key, "%s%s[%d]", KEY_PREFIX,
+      sprintf(key, "%s%s[%u]", KEY_PREFIX,
               airEnumStr(nrrdField, nrrdField_labels), axii);
       EncapsulateMetaData< std::string >( thisDic, std::string(key),
                                           std::string(naxis->label) );
@@ -941,7 +941,7 @@ void NrrdImageIO::Write(const void *buffer)
       field = airEnumStr(nrrdField, nrrdField_thicknesses);
       if ( !strncmp( keyField, field, strlen(field) ) )
         {
-        if ( 1 == sscanf(keyField + strlen(field), "[%d]", &axi)
+        if ( 1 == sscanf(keyField + strlen(field), "[%u]", &axi)
              && axi + baseDim < nrrd->dim )
           {
           double thickness = 0.0;
@@ -952,7 +952,7 @@ void NrrdImageIO::Write(const void *buffer)
       field = airEnumStr(nrrdField, nrrdField_centers);
       if ( !strncmp( keyField, field, strlen(field) ) )
         {
-        if ( 1 == sscanf(keyField + strlen(field), "[%d]", &axi)
+        if ( 1 == sscanf(keyField + strlen(field), "[%u]", &axi)
              && axi + baseDim < nrrd->dim )
           {
           std::string value;
@@ -964,7 +964,7 @@ void NrrdImageIO::Write(const void *buffer)
       field = airEnumStr(nrrdField, nrrdField_kinds);
       if ( !strncmp( keyField, field, strlen(field) ) )
         {
-        if ( 1 == sscanf(keyField + strlen(field), "[%d]", &axi)
+        if ( 1 == sscanf(keyField + strlen(field), "[%u]", &axi)
              && axi + baseDim < nrrd->dim )
           {
           std::string value;
@@ -976,7 +976,7 @@ void NrrdImageIO::Write(const void *buffer)
       field = airEnumStr(nrrdField, nrrdField_labels);
       if ( !strncmp( keyField, field, strlen(field) ) )
         {
-        if ( 1 == sscanf(keyField + strlen(field), "[%d]", &axi)
+        if ( 1 == sscanf(keyField + strlen(field), "[%u]", &axi)
              && axi + baseDim < nrrd->dim )
           {
           std::string value;
