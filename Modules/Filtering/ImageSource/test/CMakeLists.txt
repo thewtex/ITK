@@ -3,6 +3,7 @@ set(ITKImageSourceTests
   itkGaborImageSourceTest.cxx
   itkGaussianImageSourceTest.cxx
   itkGridImageSourceTest.cxx
+  itkPhysicalPointImageSourceTest.cxx
 )
 
 CreateTestDriver(ITKImageSource "${ITKImageSource-Test_LIBRARIES}" "${ITKImageSourceTests}")
@@ -39,3 +40,12 @@ itk_add_test(NAME itkGridImageSourceTest4
     --compare DATA{${ITK_DATA_ROOT}/Baseline/Filtering/itkGridImageSourceTest4.nhdr,itkGridImageSourceTest4.raw.gz}
               ${ITK_TEST_OUTPUT_DIR}/itkGridImageSourceTest4.nhdr
     itkGridImageSourceTest ${ITK_TEST_OUTPUT_DIR}/itkGridImageSourceTest4.nhdr 3)
+itk_add_test(NAME itkPhysicalPointImageSourceTest1
+      COMMAND ITKImageSourceTestDriver
+      itkPhysicalPointImageSourceTest ${ITK_TEST_OUTPUT_DIR}/itkPhysicalPointImageSourceTest1.mha 1)
+itk_add_test(NAME itkPhysicalPointImageSourceTest2
+      COMMAND ITKImageSourceTestDriver
+      itkPhysicalPointImageSourceTest ${ITK_TEST_OUTPUT_DIR}/itkPhysicalPointImageSourceTest1.mha 2)
+itk_add_test(NAME itkPhysicalPointImageSourceTest3
+      COMMAND ITKImageSourceTestDriver
+      itkPhysicalPointImageSourceTest ${ITK_TEST_OUTPUT_DIR}/itkPhysicalPointImageSourceTest1.mha 3)
