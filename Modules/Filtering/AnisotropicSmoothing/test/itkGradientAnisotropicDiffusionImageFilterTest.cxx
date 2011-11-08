@@ -16,7 +16,6 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 #include "itkGradientAnisotropicDiffusionImageFilter.h"
 #include "itkNullImageToImageFilterDriver.hxx"
 

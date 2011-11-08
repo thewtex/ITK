@@ -16,13 +16,9 @@
  *
  *=========================================================================*/
 
-#include <iostream>
-#include <cstdlib>
 #include "vnl/vnl_math.h"
 
 #include "itkCompositeValleyFunction.h"
-#include "itkArray.h"
-#include "itkNumericTraits.h"
 
 int itkCompositeValleyFunctionTest(int , char* [] )
 {

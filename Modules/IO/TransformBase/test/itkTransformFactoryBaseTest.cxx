@@ -16,7 +16,6 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 #include <string.h>
 #include "itkVersion.h"
 #include "itkTransformFactoryBase.h"

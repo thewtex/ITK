@@ -16,7 +16,6 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 #include "itkLabelObjectLine.h"
 
 int itkLabelObjectLineTest(int, char* [] )

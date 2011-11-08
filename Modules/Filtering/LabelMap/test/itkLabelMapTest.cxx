@@ -16,7 +16,6 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 #include "itkLabelMap.h"
 #include "itkLabelObject.h"
 

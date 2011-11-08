@@ -16,10 +16,8 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 #include "itkDiscreteGaussianImageFilter.h"
 #include "itkNullImageToImageFilterDriver.hxx"
-#include "itkVector.h"
 #include "itkFilterWatcher.h"
 
 int itkDiscreteGaussianImageFilterTest(int , char * [] )

@@ -17,7 +17,6 @@
  *=========================================================================*/
 
 #include "itkSparseImage.h"
-#include <iostream>
 
 /* This test exercises the itkSparseImage class. */
 

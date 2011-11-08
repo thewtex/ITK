@@ -16,11 +16,9 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 #include "itkLabelMap.h"
 #include "itkLabelObject.h"
 #include "itkLabelMapToLabelImageFilter.h"
-#include "itkImage.h"
 
 int itkLabelMapToLabelImageFilterTest(int argc, char * argv[])
 {

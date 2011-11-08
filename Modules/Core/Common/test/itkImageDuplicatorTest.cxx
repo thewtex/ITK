@@ -16,8 +16,6 @@
  *
  *=========================================================================*/
 
-#include <iostream>
-#include "itkImageRegionIterator.h"
 #include "itkImageDuplicator.h"
 #include "itkRGBPixel.h"
 #include "itkVectorImage.h"

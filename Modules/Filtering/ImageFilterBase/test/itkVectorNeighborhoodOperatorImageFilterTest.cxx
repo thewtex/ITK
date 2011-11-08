@@ -16,7 +16,6 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 #include "itkVectorNeighborhoodOperatorImageFilter.h"
 #include "itkDerivativeOperator.h"
 #include "itkNullImageToImageFilterDriver.hxx"

@@ -16,8 +16,6 @@
  *
  *=========================================================================*/
 
-#include <iostream>
-#include <sstream>
 
 #include "itkVideoIOFactory.h"
 #include "itkOpenCVVideoIOFactory.h"

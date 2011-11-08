@@ -29,13 +29,8 @@
 
 #include <iostream>
 #include <fstream>
-#include <string>
 #include <cstdlib>
-#include <cstring>
-#include "itkConfigure.h"
 #include <sys/stat.h>
-#include <time.h>
-#include <string.h>
 
 void itkSystemInformationPrintFile(const char* name, std::ostream& os)
 {

@@ -16,11 +16,8 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 
-#include "itkImage.h"
 #include "itkBinaryMask3DMeshSource.h"
-#include "itkImageRegionIteratorWithIndex.h"
 
 // Define the dimension of the images
 const unsigned int Dimension = 3;

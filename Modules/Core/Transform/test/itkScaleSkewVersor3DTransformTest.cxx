@@ -25,7 +25,6 @@
  */
 
 #include "itkScaleSkewVersor3DTransform.h"
-#include <iostream>
 
 // -------------------------
 //

@@ -16,9 +16,7 @@
  *
  *=========================================================================*/
 
-#include "itkImageRegionIterator.h"
 #include "itkUnsharpMaskLevelSetImageFilter.h"
-#include <iostream>
 
 const unsigned int HEIGHT = (128);
 const unsigned int WIDTH  = (128);

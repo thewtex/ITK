@@ -19,8 +19,6 @@
 #pragma warning ( disable : 4786 )
 #endif
 
-#include <iostream>
-#include "itkDataObject.h"
 #include "itkProcessObject.h"
 #include "itkTestingMacros.h"
 #include "itkNumericTraits.h"

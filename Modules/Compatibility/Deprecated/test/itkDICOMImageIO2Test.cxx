@@ -16,11 +16,8 @@
  *
  *=========================================================================*/
 
-#include <list>
-#include <fstream>
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
-#include "itkImage.h"
 #include "itkRescaleIntensityImageFilter.h"
 #include "itkDICOMImageIO2Factory.h"
 

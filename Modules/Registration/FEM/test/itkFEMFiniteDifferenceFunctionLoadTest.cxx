@@ -17,7 +17,6 @@
  *=========================================================================*/
 
 
-#include <fstream>
 #include "itkFEMElement2DC0LinearQuadrilateralMembrane.h"
 #include "itkFEMElement3DC0LinearHexahedronMembrane.h"
 #include "itkFEMFiniteDifferenceFunctionLoad.h"
@@ -25,11 +24,6 @@
 #include "itkFEMSolver.h"
 
 #include "itkImageFileWriter.h"
-#include "itkIndex.h"
-#include "itkImageRegionIteratorWithIndex.h"
-#include "itkCommand.h"
-#include "itkFEMObject.h"
-#include "vnl/vnl_math.h"
 
 // tyepdefs used for registration
 const unsigned int ImageDimension = 3;

@@ -19,9 +19,7 @@
 #define __itkXMLFile_hxx
 
 #include "itkXMLFile.h"
-#include "itkMacro.h"
 #include "itksys/SystemTools.hxx"
-#include <fstream>
 
 namespace itk
 {

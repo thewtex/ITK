@@ -16,7 +16,6 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 #include "itkGaussianMembershipFunction.h"
 
 int itkGaussianMembershipFunctionTest(int, char* [] )

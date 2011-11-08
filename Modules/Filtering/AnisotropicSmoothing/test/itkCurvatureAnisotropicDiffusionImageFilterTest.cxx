@@ -16,7 +16,6 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 #include "itkCurvatureAnisotropicDiffusionImageFilter.h"
 #include "itkNullImageToImageFilterDriver.hxx"
 #include "itkFilterWatcher.h"

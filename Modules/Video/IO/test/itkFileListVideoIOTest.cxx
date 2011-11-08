@@ -15,12 +15,9 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#include <iostream>
-#include <fstream>
 
 #include "itkFileListVideoIO.h"
 #include "itkImportImageFilter.h"
-#include "itkRGBPixel.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 

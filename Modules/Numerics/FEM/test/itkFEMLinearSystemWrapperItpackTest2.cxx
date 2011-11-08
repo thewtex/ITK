@@ -17,8 +17,6 @@
  *=========================================================================*/
 
 #include "itkFEMLinearSystemWrapperItpack.h"
-#include <iostream>
-#include <stdlib.h>
 
 /* Testing for linear system wrappers */
 int itkFEMLinearSystemWrapperItpackTest2(int argc, char *argv[])

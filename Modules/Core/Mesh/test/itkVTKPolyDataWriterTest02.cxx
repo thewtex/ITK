@@ -17,10 +17,8 @@
  *=========================================================================*/
 
 #include "itkRegularSphereMeshSource.h"
-#include "itkDefaultStaticMeshTraits.h"
 #include "itkVTKPolyDataWriter.h"
 
-#include <iostream>
 
 int itkVTKPolyDataWriterTest02( int argc, char * argv [] )
 {

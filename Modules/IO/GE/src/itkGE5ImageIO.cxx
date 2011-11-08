@@ -16,11 +16,11 @@
  *
  *=========================================================================*/
 #include "itkGE5ImageIO.h"
-#include "itkMacro.h"
+
 #include "itkByteSwapper.h"
-#include "itkDirectory.h"
+
 #include "itksys/SystemTools.hxx"
-#include <iostream>
+
 #include <fstream>
 #include <string.h>
 #include <limits.h>

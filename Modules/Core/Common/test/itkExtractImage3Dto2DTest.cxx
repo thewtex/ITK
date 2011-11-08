@@ -16,13 +16,7 @@
  *
  *=========================================================================*/
 
-#include <iostream>
-#include "itkImage.h"
-#include "itkImage.h"
-#include "itkImageRegionIterator.h"
 #include "itkExtractImageFilter.h"
-#include "itkFileOutputWindow.h"
-#include "itkStreamingImageFilter.h"
 #include "itkRandomImageSource.h"
 
 int itkExtractImage3Dto2DTest(int, char* [] )

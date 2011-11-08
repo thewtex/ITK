@@ -16,8 +16,6 @@
  *
  *=========================================================================*/
 
-#include <iostream>
-#include "itkImage.h"
 #include "itkSpatialObjectToImageStatisticsCalculator.h"
 #include "itkSpatialObjectToImageFilter.h"
 #include "itkEllipseSpatialObject.h"

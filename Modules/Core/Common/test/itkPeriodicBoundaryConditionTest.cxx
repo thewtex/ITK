@@ -16,10 +16,8 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 
 #include "itkPeriodicBoundaryCondition.h"
-#include "itkConstNeighborhoodIterator.h"
 #include "itkVectorImage.h"
 
 typedef itk::Image< int, 2 >                        ImageType;

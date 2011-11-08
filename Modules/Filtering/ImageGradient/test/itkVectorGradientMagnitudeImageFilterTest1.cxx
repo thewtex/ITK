@@ -16,13 +16,10 @@
  *
  *=========================================================================*/
 
-#include <fstream>
 #include "itkVectorGradientMagnitudeImageFilter.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
-#include "itkImageRegionIterator.h"
 #include "itkRescaleIntensityImageFilter.h"
-#include "itkRGBPixel.h"
 
 int itkVectorGradientMagnitudeImageFilterTest1(int ac, char* av[] )
 {

@@ -16,13 +16,10 @@
  *
  *=========================================================================*/
 
-#include <fstream>
 #include "itkNoiseImageFilter.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
-#include "itkPNGImageIOFactory.h"
 #include "itkTextOutput.h"
-#include "itkImageRegionIterator.h"
 #include "itkRescaleIntensityImageFilter.h"
 #include "itkFilterWatcher.h"
 

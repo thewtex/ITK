@@ -16,10 +16,7 @@
  *
  *=========================================================================*/
 
-#include <fstream>
 #include "itkImageFileReader.h"
-#include "itkImage.h"
-#include "itkVector.h"
 #include "itkNrrdImageIO.h"
 
 #define SPECIFIC_IMAGEIO_MODULE_TEST

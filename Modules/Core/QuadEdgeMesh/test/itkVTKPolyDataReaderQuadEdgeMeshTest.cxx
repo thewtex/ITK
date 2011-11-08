@@ -18,9 +18,7 @@
 
 #include "itkQuadEdgeMesh.h"
 #include "itkVTKPolyDataReader.h"
-#include "itkDefaultStaticMeshTraits.h"
 
-#include <iostream>
 
 int itkVTKPolyDataReaderQuadEdgeMeshTest(int argc, char* argv[] )
 {

@@ -16,7 +16,6 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 #include "itkBilateralImageFilter.h"
 #include "itkNullImageToImageFilterDriver.hxx"
 

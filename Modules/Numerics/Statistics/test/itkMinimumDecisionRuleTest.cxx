@@ -16,8 +16,6 @@
  *
  *=========================================================================*/
 
-#include <iostream>
-#include <vector>
 
 #include "itkMinimumDecisionRule.h"
 

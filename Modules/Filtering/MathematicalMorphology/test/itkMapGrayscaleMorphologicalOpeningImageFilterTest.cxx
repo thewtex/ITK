@@ -16,13 +16,10 @@
  *
  *=========================================================================*/
 
-#include <fstream>
 #include "itkGrayscaleMorphologicalOpeningImageFilter.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 #include "itkTextOutput.h"
-#include "itkNumericTraits.h"
-#include "itkFilterWatcher.h"
 #include "itkSimpleFilterWatcher.h"
 
 int itkMapGrayscaleMorphologicalOpeningImageFilterTest(int ac, char* av[] )

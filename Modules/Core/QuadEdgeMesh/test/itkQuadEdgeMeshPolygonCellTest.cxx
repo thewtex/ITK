@@ -17,10 +17,7 @@
  *=========================================================================*/
 
 #include "itkQuadEdgeMesh.h"
-#include "itkPolygonCell.h"
 
-#include <iostream>
-#include <string>
 
 
 int itkQuadEdgeMeshPolygonCellTest(int, char* [] )

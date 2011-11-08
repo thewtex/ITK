@@ -16,10 +16,8 @@
  *
  *=========================================================================*/
 
-#include <fstream>
 #include "itkRawImageIO.h"
 #include "itkImageFileReader.h"
-#include "itkImage.h"
 #include "itkImageLinearIteratorWithIndex.h"
 
 

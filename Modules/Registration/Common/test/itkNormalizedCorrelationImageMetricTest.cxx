@@ -16,14 +16,11 @@
  *
  *=========================================================================*/
 
-#include "itkImage.h"
-#include "itkImageRegionIterator.h"
 #include "itkTranslationTransform.h"
 #include "itkLinearInterpolateImageFunction.h"
 #include "itkNormalizedCorrelationImageToImageMetric.h"
 #include "itkGaussianImageSource.h"
 
-#include <iostream>
 
 /**
  *  This test uses two 2D-Gaussians (standard deviation RegionSize/2)

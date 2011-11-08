@@ -16,12 +16,9 @@
  *
  *=========================================================================*/
 
-#include "itkImage.h"
-#include "itkNeighborhood.h"
 #include "itkConstSliceIterator.h"
 #include "itkImageRegionIterator.h"
 #include "itkNeighborhoodIterator.h"
-#include <iostream>
 
 template< class T, unsigned int N >
 void FillRegionSequential(itk::SmartPointer< itk::Image<T, N> > I)

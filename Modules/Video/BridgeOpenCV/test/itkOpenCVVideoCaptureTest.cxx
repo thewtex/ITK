@@ -16,11 +16,8 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 
 #include "itkOpenCVVideoCapture.h"
-#include "itkRGBPixel.h"
-#include "itkVideoStream.h"
 #include "itkVideoFileReader.h"
 #include "itkOpenCVVideoIOFactory.h"
 

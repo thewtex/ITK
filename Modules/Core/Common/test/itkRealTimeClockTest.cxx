@@ -16,7 +16,6 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 #include "itkRealTimeClock.h"
 #include "vcl_cmath.h"
 

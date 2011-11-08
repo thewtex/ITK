@@ -17,7 +17,6 @@
  *=========================================================================*/
 
 #include "itkEventObject.h"
-#include <iostream>
 
 namespace itk{
   itkEventMacro( TestEvent,        UserEvent );

@@ -15,7 +15,6 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#include <iostream>
 #include "itkRealTimeClock.h"
 
 #if defined( WIN32 ) || defined( _WIN32 )
@@ -24,7 +23,6 @@
 #include <sys/time.h>
 #endif  // defined(WIN32) || defined(_WIN32)
 
-#include "vnl/vnl_math.h"
 
 namespace itk
 {

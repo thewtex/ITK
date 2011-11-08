@@ -16,10 +16,7 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 
-#include "itkImage.h"
-#include "itkVector.h"
 #include "itkImageRegionIterator.h"
 
 

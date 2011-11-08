@@ -16,12 +16,10 @@
  *
  *=========================================================================*/
 
-#include <fstream>
 #include "itkRankImageFilter.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 #include "itkTextOutput.h"
-#include "itkNumericTraits.h"
 #include "itkFilterWatcher.h"
 
 int itkMapRankImageFilterTest(int ac, char* av[] )

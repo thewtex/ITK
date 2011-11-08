@@ -15,7 +15,6 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#include <fstream>
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 

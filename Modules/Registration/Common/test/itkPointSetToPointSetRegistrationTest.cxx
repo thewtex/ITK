@@ -22,7 +22,6 @@
 #include "itkPointSetToPointSetRegistrationMethod.h"
 #include "itkDanielssonDistanceMapImageFilter.h"
 #include "itkPointSetToImageFilter.h"
-#include <iostream>
 
 /**
  *

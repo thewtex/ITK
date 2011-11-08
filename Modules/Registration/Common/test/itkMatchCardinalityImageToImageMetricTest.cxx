@@ -17,13 +17,10 @@
  *=========================================================================*/
 
 #include "itkMatchCardinalityImageToImageMetric.h"
-#include "itkImage.h"
-#include "itkArray.h"
 #include "itkTranslationTransform.h"
 #include "itkNearestNeighborInterpolateImageFunction.h"
 #include "itkImageFileReader.h"
 
-#include <iostream>
 
 int itkMatchCardinalityImageToImageMetricTest(int argc, char* argv[] )
 {

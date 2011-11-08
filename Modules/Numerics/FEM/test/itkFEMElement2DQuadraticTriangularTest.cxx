@@ -17,9 +17,7 @@
  *=========================================================================*/
 
 #include "itkFEMElement2DC0QuadraticTriangularStrain.h"
-#include "itkFEMElementBase.h"
 
-#include <iostream>
 
 //
 int itkFEMElement2DQuadraticTriangularTest(int , char *[])

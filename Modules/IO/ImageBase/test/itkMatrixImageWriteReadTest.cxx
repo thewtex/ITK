@@ -16,11 +16,8 @@
  *
  *=========================================================================*/
 
-#include <fstream>
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
-#include "itkImage.h"
-#include "itkImageRegionIterator.h"
 
 
 int itkMatrixImageWriteReadTest( int ac, char* av[] )

@@ -15,12 +15,9 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#include <iostream>
-#include <sstream>
 
 #include "itkVideoFileReader.h"
 #include "itkVideoFileWriter.h"
-#include "itkRGBPixel.h"
 #include "itkFileListVideoIOFactory.h"
 
 int itkVideoFileReaderWriterTest( int argc, char *argv[] )

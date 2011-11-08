@@ -17,7 +17,6 @@
  *=========================================================================*/
 
 #include "itkSparseFieldLayer.h"
-#include <iostream>
 
 
 struct node_type

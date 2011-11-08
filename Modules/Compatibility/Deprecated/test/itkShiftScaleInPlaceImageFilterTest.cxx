@@ -16,11 +16,7 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 
-#include "itkIndex.h"
-#include "itkImage.h"
-#include "itkImageRegionIterator.h"
 
 #include "itkShiftScaleImageFilter.h"
 #include "itkShiftScaleInPlaceImageFilter.h"

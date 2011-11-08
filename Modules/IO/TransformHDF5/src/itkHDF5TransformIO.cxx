@@ -21,7 +21,6 @@
 #include "itkCompositeTransform.h"
 #include "itkCompositeTransformIOHelper.h"
 #include "itkVersion.h"
-#include <sstream>
 #include "itk_H5Cpp.h"
 
 namespace itk

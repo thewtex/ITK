@@ -19,10 +19,7 @@
 #include "itkChangeInformationImageFilter.h"
 #include "itkCyclicShiftImageFilter.h"
 #include "itkImageFileReader.h"
-#include "itkImageRegionConstIteratorWithIndex.h"
-#include "itkSimpleFilterWatcher.h"
 
-#include <iostream>
 
 int itkCyclicShiftImageFilterTest(int argc, char * argv[])
 {

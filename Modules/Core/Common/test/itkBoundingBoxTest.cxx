@@ -16,7 +16,6 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 #include "itkBoundingBox.h"
 
 int itkBoundingBoxTest (int, char*[])

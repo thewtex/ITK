@@ -25,7 +25,7 @@
  *  please refer to the NOTICE file at the top of the ITK source tree.
  *
  *=========================================================================*/
-#include "gdcmFile.h"
+
 
 #include "itkVersion.h"
 #include "itkGDCMImageIO.h"

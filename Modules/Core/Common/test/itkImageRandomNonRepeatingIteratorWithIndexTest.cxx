@@ -23,12 +23,8 @@
   ImageRandomIterator test program.
 */
 
-#include <iostream>
-#include <algorithm>
-#include "itkImage.h"
 #include "itkImageRegionIteratorWithIndex.h"
 #include "itkImageRandomNonRepeatingIteratorWithIndex.h"
-#include "itkImageRandomNonRepeatingConstIteratorWithIndex.h"
 int itkImageRandomNonRepeatingIteratorWithIndexTest(int, char* [] )
 {
   const unsigned int ImageDimension = 3;

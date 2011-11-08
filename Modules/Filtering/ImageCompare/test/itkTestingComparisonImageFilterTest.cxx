@@ -16,8 +16,6 @@
  *
  *=========================================================================*/
 
-#include <iostream>
-#include "itkImage.h"
 #include "itkTestingComparisonImageFilter.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"

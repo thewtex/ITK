@@ -16,9 +16,6 @@
  *
  *=========================================================================*/
 
-#include <stdio.h>
-#include <fstream>
-#include <ctype.h>
 #include <cstdlib>
 
 #include <metaGroup.h>

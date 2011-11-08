@@ -17,9 +17,7 @@
  *=========================================================================*/
 
 #include "itkFEMElement2DC0LinearQuadrilateralMembrane.h"
-#include "itkFEMElementBase.h"
 
-#include <iostream>
 
 //
 int itkFEMElement2DMembraneTest(int, char *[])

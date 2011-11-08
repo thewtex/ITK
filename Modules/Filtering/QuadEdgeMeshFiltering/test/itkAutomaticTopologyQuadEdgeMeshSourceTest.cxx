@@ -16,11 +16,7 @@
  *
  *=========================================================================*/
 
-#include <math.h>
-#include <time.h>
 
-#include <iostream>
-#include <set>
 
 #include "itkQuadEdgeMesh.h"
 #include "itkAutomaticTopologyMeshSource.h"

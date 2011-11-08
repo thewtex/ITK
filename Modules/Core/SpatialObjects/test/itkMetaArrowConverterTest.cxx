@@ -17,7 +17,6 @@
  *=========================================================================*/
 #include "itkMetaArrowConverter.h"
 #include "itkGroupSpatialObject.h"
-#include <iostream>
 
 /**
  * This is a test file for the itkMetaArrowConverter class.

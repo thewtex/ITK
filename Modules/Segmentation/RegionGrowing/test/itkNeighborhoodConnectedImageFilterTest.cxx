@@ -16,11 +16,9 @@
  *
  *=========================================================================*/
 
-#include <fstream>
 #include "itkNeighborhoodConnectedImageFilter.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
-#include "itkImageRegionIterator.h"
 #include "itkFilterWatcher.h"
 
 int itkNeighborhoodConnectedImageFilterTest(int ac, char* av[] )

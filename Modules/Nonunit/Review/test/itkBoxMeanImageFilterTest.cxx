@@ -16,12 +16,10 @@
  *
  *=========================================================================*/
 
-#include <fstream>
 #include "itkBoxMeanImageFilter.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 #include "itkTextOutput.h"
-#include "itkNumericTraits.h"
 #include "itkFilterWatcher.h"
 
 int itkBoxMeanImageFilterTest(int ac, char* av[] )

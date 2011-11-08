@@ -16,12 +16,9 @@
  *
  *=========================================================================*/
 
-#include "itkVector.h"
 #include "itkListSample.h"
 #include "itkKdTreeGenerator.h"
-#include "itkEuclideanDistanceMetric.h"
 
-#include <iostream>
 #include <fstream>
 
 

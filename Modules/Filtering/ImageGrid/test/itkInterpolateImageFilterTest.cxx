@@ -16,10 +16,7 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 
-#include "itkImage.h"
-#include "itkImageRegionIteratorWithIndex.h"
 #include "itkInterpolateImageFilter.h"
 
 int itkInterpolateImageFilterTest(int, char* [] )

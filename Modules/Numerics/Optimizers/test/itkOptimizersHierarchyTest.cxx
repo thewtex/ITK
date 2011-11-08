@@ -24,9 +24,7 @@
 #include "itkQuaternionRigidTransformGradientDescentOptimizer.h"
 #include "itkOnePlusOneEvolutionaryOptimizer.h"
 
-#include "vnl/vnl_math.h"
 
-#include <iostream>
 
 
 

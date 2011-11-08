@@ -17,12 +17,8 @@
  *=========================================================================*/
 
 #include "itkAmoebaOptimizer.h"
-#include "vnl/vnl_vector_fixed.h"
-#include "vnl/vnl_vector.h"
 #include "vnl/vnl_matrix.h"
 #include "vnl/vnl_math.h"
-#include <iostream>
-#include <cstdlib>
 
 
 

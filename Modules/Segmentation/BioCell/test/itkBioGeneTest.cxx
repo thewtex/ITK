@@ -16,8 +16,6 @@
  *
  *=========================================================================*/
 
-#include <iostream>
-#include <cstdlib>
 
 #include "itkBioGene.h"
 

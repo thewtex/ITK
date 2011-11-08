@@ -18,7 +18,6 @@
 
 #include "itkLBFGSOptimizer.h"
 #include "vnl/vnl_math.h"
-#include <iostream>
 
 /**
  *  The objectif function is the quadratic form:

@@ -16,14 +16,9 @@
  *
  *=========================================================================*/
 
-#include <fstream>
 #include "itkVectorThresholdSegmentationLevelSetImageFilter.h"
 #include "itkImageFileReader.h"
-#include "itkImageFileWriter.h"
 #include "itkTextOutput.h"
-#include "itkImageRegionIterator.h"
-#include "itkNumericTraits.h"
-#include "itkRGBPixel.h"
 #include "itkRescaleIntensityImageFilter.h"
 
 int itkVectorThresholdSegmentationLevelSetImageFilterTest(int ac, char* av[] )

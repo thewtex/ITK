@@ -17,8 +17,6 @@
  *=========================================================================*/
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
-#include "itkImage.h"
-#include <fstream>
 
 
 #define SPECIFIC_IMAGEIO_MODULE_TEST

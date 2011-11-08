@@ -16,11 +16,8 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 
 #include "itkQuaternionRigidTransform.h"
-#include "vnl/vnl_vector_fixed.h"
-#include "itkVector.h"
 
 int itkQuaternionRigidTransformTest(int, char * [] )
 {

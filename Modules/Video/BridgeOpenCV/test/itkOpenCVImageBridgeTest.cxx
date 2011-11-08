@@ -16,10 +16,8 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 
 #include "itkOpenCVImageBridge.h"
-#include "itkRGBPixel.h"
 #include "itkImageFileReader.h"
 #include "itkTestingComparisonImageFilter.h"
 #include "itkImageRegionConstIteratorWithIndex.h"

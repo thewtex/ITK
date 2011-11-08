@@ -16,7 +16,6 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 #include "itkListSample.h"
 #include "itkSampleToSubsampleFilter.h"
 

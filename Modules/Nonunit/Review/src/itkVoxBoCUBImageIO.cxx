@@ -16,16 +16,9 @@
  *
  *=========================================================================*/
 #include "itkVoxBoCUBImageIO.h"
-#include "itkIOCommon.h"
-#include "itkExceptionObject.h"
 #include "itkMetaDataObject.h"
 #include "itkByteSwapper.h"
 #include "itksys/SystemTools.hxx"
-#include <iostream>
-#include <list>
-#include <string>
-#include <math.h>
-#include <time.h>
 
 #include "itk_zlib.h"
 #include "itkSpatialOrientationAdapter.h"

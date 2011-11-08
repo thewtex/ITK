@@ -16,7 +16,6 @@
  *
  *=========================================================================*/
 #include "itkContourSpatialObject.h"
-#include <iostream>
 
 /**
  * This is a test for itkContourSpatialObject.  It runs all methods and checks

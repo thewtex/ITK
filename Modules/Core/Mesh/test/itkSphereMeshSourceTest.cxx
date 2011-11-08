@@ -17,9 +17,6 @@
  *=========================================================================*/
 
 #include "itkSphereMeshSource.h"
-#include <iostream>
-#include <string>
-#include <math.h>
 
 int itkSphereMeshSourceTest(int, char* [] ){
 

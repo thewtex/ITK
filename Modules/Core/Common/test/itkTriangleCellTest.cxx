@@ -19,8 +19,6 @@
 #include "itkMesh.h"
 #include "itkTriangleCell.h"
 
-#include <iostream>
-#include <string>
 
 
 int itkTriangleCellTest(int, char* [] )

@@ -16,13 +16,8 @@
  *
  *=========================================================================*/
 
-#include <iostream>
-#include "itkImage.h"
-#include "itkImage.h"
-#include "itkImageRegionIterator.h"
 #include "itkCropImageFilter.h"
 #include "itkFileOutputWindow.h"
-#include "itkStreamingImageFilter.h"
 #include "itkFilterWatcher.h"
 
 int itkCropImageFilterTest(int, char* [] )

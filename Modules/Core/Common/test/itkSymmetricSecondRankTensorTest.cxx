@@ -16,10 +16,8 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 
 #include "itkSymmetricSecondRankTensor.h"
-#include "itkImage.h"
 #include "itkImageRegionIterator.h"
 
 int itkSymmetricSecondRankTensorTest(int, char* [] )

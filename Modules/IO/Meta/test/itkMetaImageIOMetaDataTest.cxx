@@ -15,16 +15,10 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#include <iostream>
-#include <sstream>
-#include "itkImage.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
-#include "itkMetaDataDictionary.h"
 #include "itkRandomImageSource.h"
-#include "itkNumericTraits.h"
 #include "itkMetaDataObject.h"
-#include "itkMetaDataDictionary.h"
 #include "itkMetaImageIO.h"
 
 

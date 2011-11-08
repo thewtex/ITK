@@ -16,12 +16,9 @@
  *
  *=========================================================================*/
 
-#include "itkMacro.h"
 #include "itkFEMException.h"
 #include "itkFEMFactoryBase.h"
 
-#include <iostream>
-#include <exception>
 
 int itkFEMExceptionTest(int, char *[])
 {

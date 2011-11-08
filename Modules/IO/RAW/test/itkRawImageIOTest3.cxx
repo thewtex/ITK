@@ -17,11 +17,9 @@
  *=========================================================================*/
 
 //#include <iostream>
-#include <fstream>
 #include "itkImageFileWriter.h"
 #include "itkImageFileReader.h"
 #include "itkRawImageIO.h"
-#include "itkImageRegionIterator.h"
 
 
 #define SPECIFIC_IMAGEIO_MODULE_TEST

@@ -16,12 +16,9 @@
  *
  *=========================================================================*/
 
-#include <fstream>
 #include "itkVectorConnectedComponentImageFilter.h"
 #include "itkRelabelComponentImageFilter.h"
 #include "itkImageFileWriter.h"
-#include "itkImageRegionIterator.h"
-#include "itkVector.h"
 #include "itkTextOutput.h"
 
 int itkVectorConnectedComponentImageFilterTest(int argc, char* argv[] )

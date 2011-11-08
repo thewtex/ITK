@@ -15,7 +15,6 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#include "itkConditionVariable.h"
 
 #if defined(ITK_USE_PTHREADS)
 #include "itkConditionVariablePThreads.cxx"

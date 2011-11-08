@@ -16,7 +16,6 @@
  *
  *=========================================================================*/
 #include "itkGeometricalQuadEdge.h"
-#include <iostream>
 
 class itkGeometricalQuadEdgeTest1Helper
 {

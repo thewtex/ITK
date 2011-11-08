@@ -16,7 +16,6 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 
 #include "itkMesh.h"
 #include "itkHexahedronCell.h"

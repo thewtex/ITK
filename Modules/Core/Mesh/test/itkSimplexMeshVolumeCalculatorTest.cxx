@@ -16,8 +16,6 @@
  *
  *=========================================================================*/
 
-#include <math.h>
-#include <iostream>
 
 #include "itkSimplexMeshVolumeCalculator.h"
 #include "itkRegularSphereMeshSource.h"

@@ -16,7 +16,6 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 #include "itkImage.h"
 
 int itkImageTest(int, char* [] )

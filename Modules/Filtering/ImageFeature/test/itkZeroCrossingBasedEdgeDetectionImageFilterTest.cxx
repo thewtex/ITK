@@ -16,10 +16,8 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 #include "itkZeroCrossingBasedEdgeDetectionImageFilter.h"
 #include "itkNullImageToImageFilterDriver.hxx"
-#include "itkVector.h"
 #include "itkFilterWatcher.h"
 
 int itkZeroCrossingBasedEdgeDetectionImageFilterTest(int , char * [])

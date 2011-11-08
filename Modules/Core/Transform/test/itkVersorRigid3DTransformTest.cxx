@@ -27,7 +27,6 @@
  */
 
 #include "itkVersorRigid3DTransform.h"
-#include <iostream>
 
 // -------------------------
 //

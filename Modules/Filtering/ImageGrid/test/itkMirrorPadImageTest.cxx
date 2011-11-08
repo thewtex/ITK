@@ -16,12 +16,7 @@
  *
  *=========================================================================*/
 
-#include <fstream>
-#include "itkImage.h"
-#include "itkImageRegionIterator.h"
 #include "itkMirrorPadImageFilter.h"
-#include "itkFileOutputWindow.h"
-#include "itkMultiThreader.h"
 #include "itkStreamingImageFilter.h"
 #include "itkFilterWatcher.h"
 

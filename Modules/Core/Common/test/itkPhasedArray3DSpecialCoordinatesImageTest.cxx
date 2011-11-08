@@ -16,9 +16,7 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 #include "itkPhasedArray3DSpecialCoordinatesImage.h"
-#include "vnl/vnl_math.h"
 
 int itkPhasedArray3DSpecialCoordinatesImageTest(int, char* [] )
 {

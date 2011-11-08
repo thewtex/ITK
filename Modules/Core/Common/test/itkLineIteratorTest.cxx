@@ -18,9 +18,7 @@
 
 // Testcode for the itk::LineIterator.
 
-#include <iostream>
 #include <fstream>
-#include "itkImage.h"
 #include "itkLineIterator.h"
 #include "itkTimeProbe.h"
 

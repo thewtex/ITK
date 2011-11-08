@@ -16,8 +16,6 @@
  *
  *=========================================================================*/
 
-#include <iostream>
-#include "itkImage.h"
 #include "itkRandomImageSource.h"
 #include "itkShrinkImageFilter.h"
 #include "itkCommand.h"

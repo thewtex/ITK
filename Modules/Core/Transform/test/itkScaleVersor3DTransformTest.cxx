@@ -16,9 +16,7 @@
  *
  *=========================================================================*/
 
-#include "itkMacro.h"
 #include "itkScaleVersor3DTransform.h"
-#include <iostream>
 
 class TransformHelperType : public itk::ScaleVersor3DTransform<double>
 {

@@ -17,7 +17,6 @@
  *=========================================================================*/
 #include "itkNiftiImageIO.h"
 #include "itkIOCommon.h"
-#include "itkByteSwapper.h"
 #include "itkMetaDataObject.h"
 #include "itkSpatialOrientationAdapter.h"
 #include "itkNumericTraits.h"

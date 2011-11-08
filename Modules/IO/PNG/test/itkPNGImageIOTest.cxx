@@ -16,13 +16,9 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 #include "itkPNGImageIO.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
-#include "itkImage.h"
-#include "itkRGBAPixel.h"
-#include "itkImageRegionConstIterator.h"
 
 
 #define SPECIFIC_IMAGEIO_MODULE_TEST

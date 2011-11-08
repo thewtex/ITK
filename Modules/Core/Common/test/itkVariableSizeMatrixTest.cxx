@@ -16,7 +16,6 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 #include "itkVariableSizeMatrix.h"
 
 int itkVariableSizeMatrixTest(int, char*[])

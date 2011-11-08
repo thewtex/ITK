@@ -16,11 +16,8 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 
 #include "itkScaleTransform.h"
-#include "vnl/vnl_vector_fixed.h"
-#include "itkVector.h"
 
 
 

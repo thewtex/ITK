@@ -16,13 +16,9 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 
 #include "itkDisplacementFieldTransform.h"
-#include "itkVectorInterpolateImageFunction.h"
-#include "itkVectorLinearInterpolateImageFunction.h"
 #include "itkCenteredAffineTransform.h"
-#include "itkImageRegionIteratorWithIndex.h"
 
 const unsigned int dimensions = 2;
 typedef itk::DisplacementFieldTransform<double, dimensions>

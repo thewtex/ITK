@@ -16,9 +16,7 @@
  *
  *=========================================================================*/
 
-#include "itkImageRegionIterator.h"
 #include "itkSparseFieldFourthOrderLevelSetImageFilter.h"
-#include <iostream>
 
 /*
  * This test exercises the SparseFieldFourthOrderLevelSetImageFilter

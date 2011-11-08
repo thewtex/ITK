@@ -17,8 +17,6 @@
  *=========================================================================*/
 
 #include "itkIsotropicFourthOrderLevelSetImageFilter.h"
-#include "itkImage.h"
-#include <iostream>
 
 int itkIsotropicFourthOrderLevelSetImageFilterTest(int, char* [] )
 {

@@ -17,8 +17,6 @@
  *=========================================================================*/
 
 #include "itkLoggerThreadWrapper.h"
-#include <iostream>
-#include <fstream>
 #include "itkStdStreamLogOutput.h"
 #include "itkLoggerBase.h"
 

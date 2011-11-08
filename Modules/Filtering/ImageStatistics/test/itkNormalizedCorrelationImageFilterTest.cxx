@@ -16,7 +16,6 @@
  *
  *=========================================================================*/
 
-#include <fstream>
 #include "itkNormalizedCorrelationImageFilter.h"
 #include "itkAnnulusOperator.h"
 #include "itkBinaryThresholdImageFilter.h"

@@ -15,7 +15,6 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#include <iostream>
 
 #include "itkRingBuffer.h"
 

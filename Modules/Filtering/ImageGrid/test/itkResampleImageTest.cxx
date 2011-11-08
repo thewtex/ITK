@@ -16,12 +16,9 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 
 #include "itkAffineTransform.h"
-#include "itkImage.h"
 #include "itkResampleImageFilter.h"
-#include "itkImageRegionIteratorWithIndex.h"
 
 int itkResampleImageTest(int, char* [] )
 {

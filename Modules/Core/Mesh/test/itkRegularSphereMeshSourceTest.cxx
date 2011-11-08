@@ -17,9 +17,7 @@
  *=========================================================================*/
 
 #include "itkRegularSphereMeshSource.h"
-#include "itkDefaultStaticMeshTraits.h"
 
-#include <iostream>
 
 int itkRegularSphereMeshSourceTest(int, char* [] )
 {

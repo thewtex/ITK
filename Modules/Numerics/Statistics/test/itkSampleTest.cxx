@@ -16,7 +16,6 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 #include "itkSample.h"
 #include "itkObjectFactory.h"
 

@@ -15,13 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#include <iostream>
 
 #include "itkBSplineSmoothingOnUpdateDisplacementFieldTransform.h"
-#include "itkVectorInterpolateImageFunction.h"
-#include "itkVectorLinearInterpolateImageFunction.h"
-#include "itkCenteredAffineTransform.h"
-#include "itkImageRegionIteratorWithIndex.h"
 
 /**
  * Test the UpdateTransformParameters and related methods,

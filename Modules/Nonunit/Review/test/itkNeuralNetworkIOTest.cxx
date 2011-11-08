@@ -18,12 +18,9 @@
 
 #include "itkNeuralNetworkFileReader.h"
 #include "itkNeuralNetworkFileWriter.h"
-#include "itkRBFNetwork.h"
 #include "itkIterativeSupervisedTrainingFunction.h"
 #include "itkListSample.h"
-#include "itkVector.h"
 
-#include <iostream>
 
 int itkNeuralNetworkIOTest(int argc,char* argv[])
 {

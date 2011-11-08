@@ -16,7 +16,6 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 #include "itkImageAdaptor.h"
 #include "itkRGBPixel.h"
 #include "itkLinearInterpolateImageFunction.h"

@@ -16,11 +16,8 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 
 #include "itkCenteredSimilarity2DTransform.h"
-#include "vnl/vnl_vector_fixed.h"
-#include "itkVector.h"
 
 namespace
 {

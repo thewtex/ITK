@@ -18,7 +18,6 @@
 #include "itkVector.h"
 #include "itkCrossHelper.h"
 
-#include <iostream>
 
 
 int itkCrossHelperTest( int argc, char* argv[] )

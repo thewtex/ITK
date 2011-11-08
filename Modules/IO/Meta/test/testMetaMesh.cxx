@@ -16,13 +16,9 @@
  *
  *=========================================================================*/
 
-#include <stdio.h>
-#include <iostream>
-#include <ctype.h>
 #include <cstdlib>
 #include <metaMesh.h>
 #include <metaScene.h>
-#include <math.h>
 #include "vcl_cmath.h"
 #include "itksys/SystemTools.hxx"
 

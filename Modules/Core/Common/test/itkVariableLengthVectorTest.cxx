@@ -16,7 +16,6 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 #include "itkVariableLengthVector.h"
 
 int itkVariableLengthVectorTest(int, char*[])

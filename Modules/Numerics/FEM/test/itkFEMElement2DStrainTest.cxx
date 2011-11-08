@@ -17,9 +17,7 @@
  *=========================================================================*/
 
 #include "itkFEMElement2DC0LinearQuadrilateralStrain.h"
-#include "itkFEMElementBase.h"
 
-#include <iostream>
 
 //
 int itkFEMElement2DStrainTest(int, char *[])

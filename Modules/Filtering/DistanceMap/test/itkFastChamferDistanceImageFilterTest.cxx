@@ -17,10 +17,8 @@
  *=========================================================================*/
 
 #include "itkFastChamferDistanceImageFilter.h"
-#include "itkImage.h"
 //#include "itkImageFileReader.h"
 //#include "itkImageFileWriter.h"
-#include "itkCastImageFilter.h"
 // simple signed distance function
 
 namespace {

@@ -18,7 +18,6 @@
 
 #include "itkKalmanLinearEstimator.h"
 
-#include <iostream>
 
 /**
  *  This program test one instantiation of the itk::KalmanLinearEstimator class

@@ -16,7 +16,6 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 #include "itkFEMFactoryBase.h"
 #include "itkFEMElement2DC0LinearQuadrilateralMembrane.h"
 

@@ -16,9 +16,7 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 
-#include "itkImage.h"
 #include "itkImageLinearIteratorWithIndex.h"
 
 int itkImageLinearIteratorTest(int, char* [] )

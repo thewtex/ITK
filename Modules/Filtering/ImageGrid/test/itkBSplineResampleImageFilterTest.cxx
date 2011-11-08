@@ -26,17 +26,12 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 
-#include "itkImage.h"
-#include "itkSize.h"
 #include "itkBSplineDownsampleImageFilter.h"
 #include "itkBSplineUpsampleImageFilter.h"
-#include "itkImageLinearIteratorWithIndex.h"
 #include "itkFilterWatcher.h"
 
 
-#include "vnl/vnl_math.h"
 
 typedef double InputPixelType;
 typedef int    IntInputPixelType;

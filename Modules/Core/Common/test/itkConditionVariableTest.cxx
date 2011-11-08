@@ -16,7 +16,6 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 #include "itkConditionVariable.h"
 #include "itkMultiThreader.h"
 

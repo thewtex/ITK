@@ -16,11 +16,7 @@
  *
  *=========================================================================*/
 
-#include <fstream>
 #include "itkCommand.h"
-#include "itkMacro.h"
-#include <iostream>
-#include "itkSmartPointer.h"
 
 
 /**
@@ -29,7 +25,6 @@
 
 #include "itkTreeContainer.h"
 #include "itkChildTreeIterator.h"
-#include "itkLeafTreeIterator.h"
 #include "itkLevelOrderTreeIterator.h"
 #include "itkInOrderTreeIterator.h"
 #include "itkPostOrderTreeIterator.h"

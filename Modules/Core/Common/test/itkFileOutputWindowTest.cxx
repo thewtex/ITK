@@ -18,8 +18,6 @@
 
 #include "itkFileOutputWindow.h"
 
-#include <iostream>
-#include <string>
 
 
 int itkFileOutputWindowTest(int, char* [] )

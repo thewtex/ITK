@@ -16,12 +16,9 @@
  *
  *=========================================================================*/
 
-#include <fstream>
 #include "itkIsolatedConnectedImageFilter.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
-#include "itkImageRegionIterator.h"
-#include "itkNumericTraits.h"
 #include "itkFilterWatcher.h"
 
 int itkIsolatedConnectedImageFilterTest(int ac, char* av[] )

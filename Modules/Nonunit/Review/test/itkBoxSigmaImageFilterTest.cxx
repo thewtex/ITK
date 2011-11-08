@@ -16,12 +16,10 @@
  *
  *=========================================================================*/
 
-#include <fstream>
 #include "itkBoxSigmaImageFilter.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 #include "itkTextOutput.h"
-#include "itkNumericTraits.h"
 #include "itkFilterWatcher.h"
 
 int itkBoxSigmaImageFilterTest(int ac, char* av[] )

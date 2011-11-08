@@ -16,9 +16,6 @@
  *
  *=========================================================================*/
 
-#include "itkImage.h"
-#include <iostream>
-#include "itkImageRegionIterator.h"
 
 #include "itkNormalizeImageFilter.h"
 #include "itkRandomImageSource.h"

@@ -16,11 +16,8 @@
  *
  *=========================================================================*/
 
-#include <iostream>
-#include "itkImage.h"
 #include "itkRGBPixel.h"
 #include "itkComposeImageFilter.h"
-#include "itkImageRegionIterator.h"
 
 
 

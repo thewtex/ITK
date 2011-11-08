@@ -16,12 +16,9 @@
  *
  *=========================================================================*/
 
-#include <fstream>
 #include "itkIsolatedWatershedImageFilter.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
-#include "itkImageRegionIterator.h"
-#include "itkNumericTraits.h"
 
 int itkIsolatedWatershedImageFilterTest(int ac, char* av[] )
 {

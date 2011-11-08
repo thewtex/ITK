@@ -27,7 +27,6 @@
  */
 
 #include "itkVersorTransform.h"
-#include <iostream>
 
 // -------------------------
 //

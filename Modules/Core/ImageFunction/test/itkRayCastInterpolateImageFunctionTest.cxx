@@ -16,7 +16,6 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 
 #include "itkImage.h"
 #include "itkRayCastInterpolateImageFunction.h"

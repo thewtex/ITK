@@ -16,7 +16,6 @@
  *
  *=========================================================================*/
 #include "itkTimeProbesCollectorBase.h"
-#include <iostream>
 
 namespace itk
 {

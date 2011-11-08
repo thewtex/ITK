@@ -16,7 +16,6 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 
 #include "itkConstantBoundaryCondition.h"
 #include "itkConstNeighborhoodIterator.h"

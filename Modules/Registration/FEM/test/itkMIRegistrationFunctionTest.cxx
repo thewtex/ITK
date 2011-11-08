@@ -16,11 +16,9 @@
  *
  *=========================================================================*/
 
-#include "itkImage.h"
 #include "itkMIRegistrationFunction.h"
 #include "itkGaussianImageSource.h"
 
-#include <iostream>
 
 /**
  *  This test uses two 2D-Gaussians (standard deviation RegionSize/2)

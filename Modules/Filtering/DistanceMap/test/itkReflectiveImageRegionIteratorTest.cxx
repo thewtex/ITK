@@ -16,9 +16,6 @@
  *
  *=========================================================================*/
 
-#include "itkImage.h"
-#include <iostream>
-#include "itkNumericTraits.h"
 #include "itkReflectiveImageRegionIterator.h"
 #include "itkImageRegionIteratorWithIndex.h"
 

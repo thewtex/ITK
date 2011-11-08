@@ -19,8 +19,6 @@
 #include "itkPointSet.h"
 #include "vnl/vnl_sample.h"
 
-#include <iostream>
-#include <string>
 
 /**
  * Define a PointSet type that stores a PixelType of "int".  Use the defaults

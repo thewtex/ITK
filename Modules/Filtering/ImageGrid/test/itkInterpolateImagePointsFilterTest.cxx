@@ -26,15 +26,12 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 
-#include "itkImage.h"
 #include "itkInterpolateImagePointsFilter.h"
 
 #include "itkGaussianImageSource.h"
 
 
-#include "vnl/vnl_math.h"
 
   typedef double InputPixelType;
   typedef double CoordValueType;

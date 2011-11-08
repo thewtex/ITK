@@ -17,9 +17,7 @@
  *=========================================================================*/
 
 #include "itkVTKPolyDataReader.h"
-#include "itkDefaultStaticMeshTraits.h"
 
-#include <iostream>
 
 int itkVTKPolyDataReaderTest(int argc, char* argv[] )
 {

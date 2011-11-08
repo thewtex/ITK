@@ -18,10 +18,7 @@
 
 #include "itkTimeProbesCollectorBase.h"
 #include "itkImage.h"
-#include "itkImage.h"
-#include "itkIndex.h"
 
-#include <iostream>
 #include <fstream>
 
 template <class T>

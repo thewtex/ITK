@@ -16,7 +16,6 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 #include "itkImage.h"
 
 int itkImageFillBufferTest(int argc, char * argv[])

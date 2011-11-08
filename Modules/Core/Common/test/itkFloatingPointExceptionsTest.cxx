@@ -16,8 +16,6 @@
  *
  *=========================================================================*/
 #include "itkFloatingPointExceptions.h"
-#include "itkMacro.h"
-#include <iostream>
 #include <float.h>
 
 #if defined( _MSC_VER )

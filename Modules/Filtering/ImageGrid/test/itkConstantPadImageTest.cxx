@@ -16,10 +16,6 @@
  *
  *=========================================================================*/
 
-#include <iostream>
-#include "itkImage.h"
-#include "itkImage.h"
-#include "itkImageRegionIterator.h"
 #include "itkConstantPadImageFilter.h"
 #include "itkFileOutputWindow.h"
 #include "itkStreamingImageFilter.h"

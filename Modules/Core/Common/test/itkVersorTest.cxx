@@ -26,7 +26,6 @@
  */
 
 #include "itkVersor.h"
-#include <iostream>
 
 itk::Matrix<double,3,3> TestCreateRotationMatrixFromAngles(const double alpha, const double beta, const double gamma)
 {

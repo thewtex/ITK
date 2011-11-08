@@ -16,9 +16,7 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 #include "itkByteSwapper.h"
-#include "itkMacro.h"
 
 int itkByteSwapTest ( int, char*[] )
 {

@@ -24,7 +24,6 @@
 #include "itkBSplineTransform.h"
 #include "itkBSplineTransformInitializer.h"
 
-#include <fstream>
 
 int itkBSplineTransformInitializerTest1( int argc, char * argv[] )
 {

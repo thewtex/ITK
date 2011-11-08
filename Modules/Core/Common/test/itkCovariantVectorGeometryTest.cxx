@@ -23,8 +23,6 @@
 
 
 #include "itkCovariantVector.h"
-#include "vnl/vnl_vector_ref.h"
-#include <iostream>
 
   // Dimension & Type
   const     unsigned int    N = 3;

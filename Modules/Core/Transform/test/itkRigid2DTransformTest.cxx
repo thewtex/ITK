@@ -18,11 +18,8 @@
 // Disable warning for long symbol names in this file only
 
 
-#include <iostream>
 
 #include "itkRigid2DTransform.h"
-#include "vnl/vnl_vector_fixed.h"
-#include "itkVector.h"
 #include "itkTextOutput.h"
 
 namespace

@@ -17,7 +17,6 @@
  *=========================================================================*/
 
 #include "itkPolygonSpatialObject.h"
-#include <iostream>
 
 int itkPolygonSpatialObjectTest(int, char *[])
 {

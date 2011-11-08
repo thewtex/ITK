@@ -17,9 +17,6 @@
  *=========================================================================*/
 #include "itkTransformIOBase.h"
 #include "itkTransformFactoryBase.h"
-#include <iostream>
-#include <fstream>
-#include <string>
 
 namespace itk
 {

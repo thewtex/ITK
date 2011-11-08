@@ -16,9 +16,7 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 
-#include "itkImage.h"
 #include "itkImageRandomIteratorWithIndex.h"
 #include "itkImageFileWriter.h"
 #include "itkImageFileReader.h"

@@ -16,8 +16,6 @@
  *
  *=========================================================================*/
 
-#include <iostream>
-#include "itkImage.h"
 #include "itkWindowedSincInterpolateImageFunction.h"
 #include "itkImageRegionIteratorWithIndex.h"
 

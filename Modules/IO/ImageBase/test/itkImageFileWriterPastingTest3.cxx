@@ -16,12 +16,10 @@
  *
  *=========================================================================*/
 
-#include <fstream>
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 #include "itkTestingComparisonImageFilter.h"
 #include "itkExtractImageFilter.h"
-#include "itkPipelineMonitorImageFilter.h"
 
 typedef unsigned char            PixelType;
 typedef itk::Image<PixelType,3>  ImageType;

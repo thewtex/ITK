@@ -16,11 +16,9 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 
 #include "itkCenteredAffineTransform.h"
 #include "itkImage.h"
-#include "vnl/vnl_vector_fixed.h"
 
 typedef  itk::Matrix<double, 2, 2> MatrixType;
 typedef  itk::Vector<double, 2>    VectorType;

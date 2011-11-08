@@ -16,8 +16,6 @@
  *
  *=========================================================================*/
 
-#include <iostream>
-#include "itkTimeStamp.h"
 #include "itkMultiThreader.h"
 
 // A helper struct for the test, the idea is to have one timestamp per thread.

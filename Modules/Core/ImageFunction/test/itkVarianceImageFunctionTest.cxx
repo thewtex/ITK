@@ -16,10 +16,8 @@
  *
  *=========================================================================*/
 
-#include <stdio.h>
 
 #include "itkVarianceImageFunction.h"
-#include "itkImage.h"
 
 int itkVarianceImageFunctionTest(int, char* [] )
 {

@@ -16,7 +16,6 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 #include "itkLabelObject.h"
 
 int itkLabelObjectTest(int argc, char * argv[])

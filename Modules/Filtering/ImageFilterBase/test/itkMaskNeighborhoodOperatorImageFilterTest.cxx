@@ -16,13 +16,11 @@
  *
  *=========================================================================*/
 
-#include <fstream>
 #include "itkMaskNeighborhoodOperatorImageFilter.h"
 #include "itkRescaleIntensityImageFilter.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 #include "itkSobelOperator.h"
-#include "itkImageRegionIterator.h"
 
 int itkMaskNeighborhoodOperatorImageFilterTest(int ac, char* av[] )
 {

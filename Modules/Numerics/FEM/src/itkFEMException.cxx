@@ -18,8 +18,6 @@
 
 #include "itkFEMException.h"
 
-#include <iostream>
-#include <sstream>
 
 namespace itk
 {

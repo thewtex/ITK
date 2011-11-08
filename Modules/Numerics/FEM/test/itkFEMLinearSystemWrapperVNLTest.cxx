@@ -17,7 +17,6 @@
  *=========================================================================*/
 
 #include "itkFEMLinearSystemWrapperVNL.h"
-#include <iostream>
 
 /* Testing for linear system wrappers */
 int itkFEMLinearSystemWrapperVNLTest(int, char *[])

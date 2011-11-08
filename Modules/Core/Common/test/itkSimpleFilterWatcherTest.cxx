@@ -16,9 +16,7 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 #include "itkSimpleFilterWatcher.h"
-#include "itkImage.h"
 #include "itkUnaryFunctorImageFilter.h"
 
 namespace itk

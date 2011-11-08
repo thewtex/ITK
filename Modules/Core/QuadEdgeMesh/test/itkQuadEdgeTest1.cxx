@@ -17,7 +17,6 @@
  *=========================================================================*/
 
 #include "itkQuadEdge.h"
-#include <iostream>
 
 int itkQuadEdgeTest1( int , char* [] )
 {

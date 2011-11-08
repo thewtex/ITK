@@ -16,13 +16,10 @@
  *
  *=========================================================================*/
 
-#include <fstream>
 #include "itkGrayscaleErodeImageFilter.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 #include "itkTextOutput.h"
-#include "itkNumericTraits.h"
-#include "itkFilterWatcher.h"
 #include "itkSimpleFilterWatcher.h"
 
 int itkGrayscaleErodeImageFilterTest(int ac, char* av[] )

@@ -16,13 +16,7 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 #include "itkMesh.h"
-#include "itkCellInterfaceVisitor.h"
-#include "itkCreateObjectFunction.h"
-#include "itkPixelAccessor.h"
-#include "itkBackwardDifferenceOperator.h"
-#include "itkForwardDifferenceOperator.h"
 #include "itkAddImageFilter.h"
 
 // #include "itkDerivativeImageFilter.h"

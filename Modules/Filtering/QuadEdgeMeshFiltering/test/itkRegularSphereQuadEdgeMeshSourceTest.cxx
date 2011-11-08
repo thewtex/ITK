@@ -18,10 +18,8 @@
 
 #include "itkQuadEdgeMesh.h"
 #include "itkRegularSphereMeshSource.h"
-#include "itkDefaultStaticMeshTraits.h"
 #include "itkMeshFileWriter.h"
 
-#include <iostream>
 
 int itkRegularSphereQuadEdgeMeshSourceTest(int argc, char * argv [] )
 {

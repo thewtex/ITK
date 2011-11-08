@@ -17,7 +17,6 @@
  *=========================================================================*/
 
 #include "itkQuadEdgeMesh.h"
-#include <iostream>
 
 int itkQuadEdgeMeshIteratorTest( int , char* [] )
 {

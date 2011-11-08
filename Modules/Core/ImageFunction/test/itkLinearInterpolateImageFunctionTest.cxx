@@ -16,11 +16,9 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 
 #include "itkImage.h"
 #include "itkVectorImage.h"
-#include "itkTranslationTransform.h"
 #include "itkLinearInterpolateImageFunction.h"
 
 

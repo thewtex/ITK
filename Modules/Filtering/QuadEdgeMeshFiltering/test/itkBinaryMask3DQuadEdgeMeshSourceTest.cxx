@@ -16,9 +16,7 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 
-#include "itkImage.h"
 #include "itkQuadEdgeMesh.h"
 #include "itkBinaryMask3DMeshSource.h"
 #include "itkImageRegionIteratorWithIndex.h"

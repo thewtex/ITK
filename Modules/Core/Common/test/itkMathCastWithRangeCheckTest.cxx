@@ -17,11 +17,7 @@
  *=========================================================================*/
 
 #include "itkMath.h"
-#include <iostream>
-#include <cstdlib>
 
-#include <iostream>
-#include <cstdlib>
 
 
 namespace

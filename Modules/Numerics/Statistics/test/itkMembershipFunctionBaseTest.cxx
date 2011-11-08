@@ -16,9 +16,7 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 #include "itkMembershipFunctionBase.h"
-#include "itkObjectFactory.h"
 
 namespace itk {
 namespace Statistics {

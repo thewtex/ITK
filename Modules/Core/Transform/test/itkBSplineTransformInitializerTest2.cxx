@@ -17,14 +17,12 @@
  *=========================================================================*/
 
 #include "itkImageFileReader.h"
-#include "itkImageFileWriter.h"
 
 #include "itkBSplineTransform.h"
 #include "itkBSplineTransformInitializer.h"
 
 #include "itkPermuteAxesImageFilter.h"
 
-#include <fstream>
 
 // This test is meant to demonstrate the transform domain defining issues
 // associated with the current B-spline deformable transform initializer

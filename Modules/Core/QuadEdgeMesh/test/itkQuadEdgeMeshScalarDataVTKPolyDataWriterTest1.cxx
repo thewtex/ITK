@@ -18,10 +18,8 @@
 
 #include "itkQuadEdgeMesh.h"
 #include "itkRegularSphereMeshSource.h"
-#include "itkDefaultStaticMeshTraits.h"
 #include "itkQuadEdgeMeshScalarDataVTKPolyDataWriter.h"
 
-#include <iostream>
 
 int itkQuadEdgeMeshScalarDataVTKPolyDataWriterTest1( int argc, char * argv [] )
 {

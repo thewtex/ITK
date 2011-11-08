@@ -18,7 +18,6 @@
 #include "itkTimeProbe.h"
 #include "itkMemoryProbesCollectorBase.h"
 
-#include <iostream>
 
 int itkTimeAndMemoryProbeTest(int argc,char* argv[])
 {

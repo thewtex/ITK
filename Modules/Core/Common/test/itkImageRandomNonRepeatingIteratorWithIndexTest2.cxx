@@ -23,11 +23,6 @@
   ImageRandomIterator test program.
 */
 
-#include <iostream>
-#include <algorithm>
-#include "itkImage.h"
-#include "itkImageRegionIteratorWithIndex.h"
-#include "itkImageRandomNonRepeatingIteratorWithIndex.h"
 #include "itkImageRandomNonRepeatingConstIteratorWithIndex.h"
 
 int itkImageRandomNonRepeatingIteratorWithIndexTest2(int, char* [])

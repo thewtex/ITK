@@ -16,15 +16,10 @@
  *
  *=========================================================================*/
 #include "itkMRCImageIO.h"
-#include "itkByteSwapper.h"
 
 #include "itkMetaDataObject.h"
 #include "itkIOCommon.h"
-#include "itkGenericUtilities.h"
 
-#include <numeric>
-#include <algorithm>
-#include <fstream>
 
 #include "itksys/SystemTools.hxx"
 

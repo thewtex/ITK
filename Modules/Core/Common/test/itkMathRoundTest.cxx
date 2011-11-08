@@ -16,9 +16,6 @@
  *
  *=========================================================================*/
 
-#include <math.h>
-#include <string>
-#include <iostream>
 #include "itkIndex.h"
 
 bool math_test_helper(std::string str, bool test)

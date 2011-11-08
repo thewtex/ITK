@@ -16,10 +16,8 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 
 #include "itkImage.h"
-#include "itkVector.h"
 
 
 // This routine is used to make sure that we call the "const" version

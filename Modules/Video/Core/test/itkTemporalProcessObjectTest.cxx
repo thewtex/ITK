@@ -15,8 +15,6 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#include <iostream>
-#include <math.h>
 
 #include "itkTemporalProcessObject.h"
 #include "itkTemporalDataObject.h"

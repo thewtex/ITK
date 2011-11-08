@@ -18,7 +18,6 @@
 
 #include "itkPolygonGroupSpatialObject.h"
 
-#include <iostream>
 
 static float testPoints[11][2] =
   {

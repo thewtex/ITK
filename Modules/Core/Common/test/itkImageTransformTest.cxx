@@ -17,11 +17,7 @@
  *=========================================================================*/
 
 #include "itkImage.h"
-#include "itkIndex.h"
-#include "itkSize.h"
 
-#include <iostream>
-#include <fstream>
 
 template <unsigned int Dimension>
 void TestTransform()

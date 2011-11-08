@@ -16,7 +16,6 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 #include "itkVector.h"
 
 // Define floating point type to use for the test.

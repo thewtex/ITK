@@ -16,12 +16,9 @@
  *
  *=========================================================================*/
 
-#include <iostream>
 
 #include "itkImage.h"
 #include "itkImageFunction.h"
-#include "vcl_limits.h"
-#include "itkMath.h"
 #include "itkFloatingPointExceptions.h"
 
 namespace itk {
