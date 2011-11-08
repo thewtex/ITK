@@ -537,7 +537,6 @@ TubeSpatialObject< TDimension, TTubePointType >
     else
       {
       value = this->GetDefaultOutsideValue();
-      return false;
       }
     }
   return false;

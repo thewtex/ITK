@@ -1217,9 +1217,6 @@ CanRead(const char *_headerName) const
     {
     return false;
     }
-
-  METAIO_STL::string elementDataFileName = M_GetTagValue(header,"ElementDataFile");
-
   return true;
   }
 

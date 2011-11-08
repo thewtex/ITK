@@ -233,9 +233,9 @@ LandmarkSpatialObject< TDimension >
     else
       {
       value = this->GetDefaultOutsideValue();
-      return false;
       }
     }
+  return false;
 }
 } // end namespace itk
 

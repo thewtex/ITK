@@ -228,7 +228,6 @@ SurfaceSpatialObject< TDimension >
     else
       {
       value = this->GetDefaultOutsideValue();
-      return false;
       }
     }
   return false;

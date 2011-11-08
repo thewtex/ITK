@@ -151,7 +151,6 @@ MeshSpatialObject< TMesh >
     else
       {
       value = this->GetDefaultOutsideValue();
-      return false;
       }
     }
   return false;

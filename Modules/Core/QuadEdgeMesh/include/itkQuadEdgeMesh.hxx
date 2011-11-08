@@ -256,7 +256,7 @@ QuadEdgeMesh< TPixel, VDimension, TTraits >
      * are considered distinct.
      */
     PointType oldOrigin = this->GetPoint(oldOriginId);
-    PointType org = this->GetPoint(orgId);
+    //  PointType org = this->GetPoint(orgId);
 
     /////////////////////////////////////////////////////////////
     /* We are done with the vertices and we might need to consider the
