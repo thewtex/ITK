@@ -39,8 +39,7 @@
 
 void itkSystemInformationPrintFile(const char* name, std::ostream& os)
 {
-  const char* div =
-    "=======================================================================";
+  const char* div = "=======================================================================";
   // Preserve valuable output regardless of the limits set in
   // CMake/CTestCustom.cmake
   os << "CTEST_FULL_OUTPUT\n";
@@ -70,7 +69,7 @@ void itkSystemInformationPrintFile(const char* name, std::ostream& os)
     }
 }
 
-int main(int argc, const char* argv[])
+int main(int argc, char* argv[])
 {
   if(argc != 2)
     {

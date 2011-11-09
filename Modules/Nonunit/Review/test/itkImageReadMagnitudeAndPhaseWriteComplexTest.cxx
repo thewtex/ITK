@@ -31,7 +31,6 @@
  */
 
 
-#include "itkImage.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 #include "itkMagnitudeAndPhaseToComplexImageFilter.h"
