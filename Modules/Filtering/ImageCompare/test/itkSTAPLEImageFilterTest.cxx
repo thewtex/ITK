@@ -17,9 +17,7 @@
  *=========================================================================*/
 
 #include <iostream>
-#include <string>
 //#include <iomanip>
-#include <vector>
 #include "itkSTAPLEImageFilter.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
