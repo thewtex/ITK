@@ -16,13 +16,10 @@
  *
  *=========================================================================*/
 
-#include "itkImage.h"
-#include "itkLevelSetDomainMapImageFilter.h"
 #include "itkLevelSetContainer.h"
 #include "itkLevelSetEquationCurvatureTerm.h"
 #include "itkSinRegularizedHeavisideStepFunction.h"
-#include "itkBinaryImageToLevelSetImageAdaptor.h"
-#include "itkNumericTraits.h"
+#include "itkBinaryImageToSparseLevelSetImageAdaptor.h"
 
 int itkLevelSetEquationCurvatureTermTest( int argc, char* argv[] )
 {

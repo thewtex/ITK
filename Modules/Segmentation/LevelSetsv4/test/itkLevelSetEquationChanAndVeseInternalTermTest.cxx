@@ -16,13 +16,15 @@
  *
  *=========================================================================*/
 
-#include "itkImage.h"
-#include "itkLevelSetDomainMapImageFilter.h"
 #include "itkLevelSetContainer.h"
 #include "itkLevelSetEquationChanAndVeseInternalTerm.h"
 #include "itkSinRegularizedHeavisideStepFunction.h"
+<<<<<<< HEAD
 #include "itkBinaryImageToLevelSetImageAdaptor.h"
 #include "itkNumericTraits.h"
+=======
+#include "itkBinaryImageToSparseLevelSetImageAdaptor.h"
+>>>>>>> WIP: PERF: Remove unnecesssary header includes.
 
 int itkLevelSetEquationChanAndVeseInternalTermTest( int argc, char* argv[] )
 {
