@@ -22,7 +22,6 @@
 #include "itkImageFileWriter.h"
 #include "itkImageFileReader.h"
 #include "itkRawImageIO.h"
-#include "itkImageRegionConstIterator.h"
 
 
 #define SPECIFIC_IMAGEIO_MODULE_TEST

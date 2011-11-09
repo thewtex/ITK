@@ -26,8 +26,6 @@ extern "C" {
 
 /// DEBUG
 extern "C" {
-#include <stdio.h>
-#include <errno.h>
 }
 ///
 

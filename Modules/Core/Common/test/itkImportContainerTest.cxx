@@ -18,7 +18,6 @@
 
 #include <iostream>
 #include "itkImportImageContainer.h"
-#include "itkNumericTraits.h"
 #include "itkTextOutput.h"
 
 int itkImportContainerTest(int , char * [] )

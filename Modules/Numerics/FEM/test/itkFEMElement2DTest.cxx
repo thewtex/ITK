@@ -17,20 +17,11 @@
  *=========================================================================*/
 
 // #include "itkFEMElementTest.h"
-#include "itksys/SystemTools.hxx"
 
 #include "itkFEMSolver.h"
-#include "itkFEMObject.h"
-#include "itkFEMObjectSpatialObject.h"
-#include "itkGroupSpatialObject.h"
-#include "itkSpatialObject.h"
 #include "itkFEMSpatialObjectReader.h"
-#include "itkFEMSpatialObjectWriter.h"
-#include "itkFEMLinearSystemWrapper.h"
 #include "itkFEMLinearSystemWrapperDenseVNL.h"
 #include "itkFEMLinearSystemWrapperItpack.h"
-#include "itkFEMLinearSystemWrapperVNL.h"
-#include "itkFEMFactory.h"
 
 typedef itk::fem::Solver<2> Solver2DType;
 
