@@ -21,10 +21,6 @@
 #include "itkVnlHalfHermitianToRealInverseFFTImageFilter.h"
 
 #if defined(USE_FFTWF) || defined(USE_FFTWD)
-#include "itkFFTWForwardFFTImageFilter.h"
-#include "itkFFTWInverseFFTImageFilter.h"
-#include "itkFFTWRealToHalfHermitianForwardFFTImageFilter.h"
-#include "itkFFTWHalfHermitianToRealInverseFFTImageFilter.h"
 #endif
 
 #include "itkForwardInverseFFTTest.h"

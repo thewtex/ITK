@@ -18,11 +18,8 @@
 
 #include <iostream>
 
-#include "itkImage.h"
-#include "itkVector.h"
 #include "itkImageRegionIterator.h"
 #include "itkImageRegionIteratorWithIndex.h"
-#include <time.h>
 
 int itkIteratorTests(int, char* [] )
 {

@@ -15,7 +15,6 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#include "itkNumericTraitsArrayPixel.h"
 
 namespace itk
 {

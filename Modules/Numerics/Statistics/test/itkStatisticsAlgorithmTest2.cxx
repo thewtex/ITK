@@ -20,8 +20,6 @@
 #include "itkImageToListSampleAdaptor.h"
 #include "itkStatisticsAlgorithm.h"
 
-#include <vector>
-#include <algorithm>
 
 typedef itk::FixedArray< int, 3 >  PixelType;
 typedef itk::Image< PixelType, 3 > ImageType;

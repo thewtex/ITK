@@ -16,13 +16,10 @@
  *
  *=========================================================================*/
 
-#include "itkImage.h"
-#include "itkLevelSetDomainMapImageFilter.h"
 #include "itkLevelSetContainer.h"
 #include "itkLevelSetEquationChanAndVeseInternalTerm.h"
 #include "itkSinRegularizedHeavisideStepFunction.h"
 #include "itkBinaryImageToSparseLevelSetImageAdaptor.h"
-#include "itkNumericTraits.h"
 
 int itkLevelSetEquationChanAndVeseInternalTermTest( int argc, char* argv[] )
 {
