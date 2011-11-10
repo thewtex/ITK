@@ -512,6 +512,10 @@ public:
   {
     return false;
   }
+
+  /** Clone the current transform */
+  virtual typename Self::Pointer Clone();
+
 protected:
   Transform();
   Transform(NumberOfParametersType NumberOfParameters);
