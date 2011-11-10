@@ -15,17 +15,24 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkIterationUpdateCommand_hxx
-#define __itkIterationUpdateCommand_hxx
+#ifndef __itkLevelSetIterationUpdateCommand_hxx
+#define __itkLevelSetIterationUpdateCommand_hxx
 
-#include "itkIterationUpdateCommand.h"
+#include "itkLevelSetIterationUpdateCommand.h"
 
 namespace itk
 {
 
 template< class TIteratingFilter, class TFilterToUpdate >
+LevelSetIterationUpdateCommand< TIteratingFilter, TFilterToUpdate >
+::LevelSetIterationUpdateCommand():
+  m_Period( 1 )
+{
+}
+
+template< class TIteratingFilter, class TFilterToUpdate >
 void
-IterationUpdateCommand< TIteratingFilter, TFilterToUpdate >
+LevelSetIterationUpdateCommand< TIteratingFilter, TFilterToUpdate >
 ::Execute( const Object* caller, const EventObject& event )
 {
   this->Execute( const_cast< Object* >( caller ), event );
@@ -33,7 +40,7 @@ IterationUpdateCommand< TIteratingFilter, TFilterToUpdate >
 
 template< class TIteratingFilter, class TFilterToUpdate >
 void
-IterationUpdateCommand< TIteratingFilter, TFilterToUpdate >
+LevelSetIterationUpdateCommand< TIteratingFilter, TFilterToUpdate >
 ::Execute( Object* caller, const EventObject& event )
 {
   IteratingFilterType * filter = dynamic_cast< IteratingFilterType * >( caller );
@@ -42,7 +49,7 @@ IterationUpdateCommand< TIteratingFilter, TFilterToUpdate >
   itkAssertInDebugAndIgnoreInReleaseMacro( filter != NULL );
 
   // If we have the right event.
-  if( IterationEvent().CheckEvent( &event ) )
+  if( IterationEvent().CheckEvent( &event ) && filter->GetNumberOfIterations() % this->m_Period == 0 )
     {
     // Was the FilterToUpdate set?
     itkAssertInDebugAndIgnoreInReleaseMacro( this->m_FilterToUpdate );
