@@ -926,6 +926,29 @@ DisplacementFieldTransform<TScalar, NDimensions>
 }
 
 template <class TScalar, unsigned int NDimensions>
+typename DisplacementFieldTransform<TScalar, NDimensions>::Superclass::Pointer
+DisplacementFieldTransform<TScalar, NDimensions>
+::Clone()
+{
+  LightObject::Pointer loPtr =
+    this->CreateAnother();
+
+  typename Self::Pointer clone =
+    dynamic_cast<Self *>(loPtr.GetPointer());
+  if(clone.IsNull())
+    {
+    itkExceptionMacro(<< "downcast to type "
+                      << this->GetNameOfClass()
+                      << " failed.");
+    }
+  //
+  // Setting the displacement field has the side effect of setting the
+  // fixed parameters.
+  clone->SetDisplacementField(this->m_DisplacementField);
+  return clone.GetPointer();
+}
+
+template <class TScalar, unsigned int NDimensions>
 void
 DisplacementFieldTransform<TScalar, NDimensions>
 ::PrintSelf( std::ostream& os, Indent indent ) const
