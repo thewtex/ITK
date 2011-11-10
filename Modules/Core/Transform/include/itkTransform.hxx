@@ -77,6 +77,34 @@ std::string Transform<TScalarType, NInputDimensions, NOutputDimensions>
   return n.str();
 }
 
+/**
+ * Clone
+ */
+template <class TScalarType,
+          unsigned int NInputDimensions,
+          unsigned int NOutputDimensions>
+typename Transform<TScalarType, NInputDimensions, NOutputDimensions>::Pointer
+Transform<TScalarType, NInputDimensions, NOutputDimensions>
+::InternalClone() const
+{
+  // Default implementation just copies the parameters from
+  // this to new transform.
+  LightObject::Pointer loPtr =
+    this->CreateAnother();
+
+  typename Self::Pointer rval =
+    dynamic_cast<Self *>(loPtr.GetPointer());
+  if(rval.IsNull())
+    {
+    itkExceptionMacro(<< "downcast to type "
+                      << this->GetNameOfClass()
+                      << " failed.");
+    }
+  rval->SetFixedParameters(this->GetFixedParameters());
+  rval->SetParameters(this->GetParameters());
+  return rval;
+}
+
 #if 0
 /**
  * SetDirectionChange

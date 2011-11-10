@@ -58,7 +58,10 @@ public:
                                                 DisplacementFieldTransform );
 
   /** New macro for creation of through a Smart Pointer */
-  itkSimpleNewMacro( Self );
+  itkNewMacro( Self );
+
+  /** implement type-specific clone method*/
+  itkTransformCloneMacro();
 
   /** Types from superclass */
   typedef typename Superclass::ScalarType               ScalarType;
@@ -103,6 +106,9 @@ protected:
   GaussianSmoothingOnUpdateDisplacementFieldTransform();
   virtual ~GaussianSmoothingOnUpdateDisplacementFieldTransform();
   void PrintSelf( std::ostream& os, Indent indent ) const;
+
+  /** Clone the current transform */
+  virtual typename Transform<TScalar,NDimensions,NDimensions>::Pointer InternalClone() const;
 
   /** Track when the temporary displacement field used during smoothing
    * was last modified/initialized. We only want to change it if the

@@ -67,10 +67,10 @@ public:
   itkTypeMacro( TimeVaryingVelocityFieldTransform, DisplacementFieldTransform );
 
   /** New macro for creation of through a Smart Pointer */
-  itkSimpleNewMacro( Self );
+  itkNewMacro( Self );
 
-  /** Create another transform of the same type. */
-  virtual::itk::LightObject::Pointer CreateAnother(void) const;
+  /** implement type-specific clone method*/
+  itkTransformCloneMacro();
 
   /** InverseTransform type. */
   typedef typename Superclass:: InverseTransformBasePointer InverseTransformBasePointer;
@@ -254,6 +254,9 @@ protected:
   TimeVaryingVelocityFieldTransform();
   virtual ~TimeVaryingVelocityFieldTransform();
   void PrintSelf( std::ostream& os, Indent indent ) const;
+
+  /** Clone the current transform */
+  virtual typename Transform<TScalar,NDimensions,NDimensions>::Pointer InternalClone() const;
 
 private:
   TimeVaryingVelocityFieldTransform( const Self& ); //purposely not implemented

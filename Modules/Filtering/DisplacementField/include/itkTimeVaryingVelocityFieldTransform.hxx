@@ -63,18 +63,6 @@ TimeVaryingVelocityFieldTransform<TScalar, NDimensions>::
 {
 }
 
-/** Leave CreateAnother undefined. To fully implement here, it must be
- * sure to copy all members. It may be called from transform-cloning
- * that only copies parameters, so override here to prevent
- * its use without copying full members. */
-template<class TScalar, unsigned int NDimensions>
-::itk::LightObject::Pointer
-TimeVaryingVelocityFieldTransform<TScalar, NDimensions>
-::CreateAnother() const
-{
-  itkExceptionMacro( "CreateAnother unimplemented. See source comments." );
-}
-
 /**
  * return an inverse transformation
  */
@@ -220,6 +208,31 @@ void TimeVaryingVelocityFieldTransform<TScalar, NDimensions>
     }
 }
 
+template <class TScalar, unsigned int NDimensions>
+typename Transform<TScalar,NDimensions,NDimensions>::Pointer
+TimeVaryingVelocityFieldTransform<TScalar, NDimensions>
+::InternalClone() const
+{
+  itkExceptionMacro(<< "InternalClone not yet implemented");
+
+  // Default implementation just copies the parameters from
+  // this to new transform.
+  LightObject::Pointer loPtr =
+    this->CreateAnother();
+
+  typename Self::Pointer rval =
+    dynamic_cast<Self *>(loPtr.GetPointer());
+  if(rval.IsNull())
+    {
+    itkExceptionMacro(<< "downcast to type "
+                      << this->GetNameOfClass()
+                      << " failed.");
+    }
+  rval->SetFixedParameters(this->GetFixedParameters());
+  rval->SetParameters(this->GetParameters());
+
+  return rval.GetPointer();
+}
 template <class TScalar, unsigned int NDimensions>
 void
 TimeVaryingVelocityFieldTransform<TScalar, NDimensions>

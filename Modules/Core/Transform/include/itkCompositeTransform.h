@@ -113,16 +113,7 @@ public:
   itkTypeMacro( CompositeTransform, Transform );
 
   /** New macro for creation of through a Smart Pointer */
-  itkSimpleNewMacro( Self );
-
-  /** Leave CreateAnother undefined. To fully implement here, it must be
-   * sure to copy all members. It may be called from transform-cloning
-   * that only copies parameters, so override here to prevent
-   * its use without copying full members. */
-  virtual::itk::LightObject::Pointer CreateAnother(void) const
-  {
-    itkExceptionMacro("CreateAnother unimplemented. See source comments.");
-  }
+  itkNewMacro( Self );
 
   /** Component transform type **/
   typedef Superclass                   TransformType;
@@ -164,6 +155,9 @@ public:
   /** Dimension of the domain spaces. */
   itkStaticConstMacro( InputDimension, unsigned int, NDimensions );
   itkStaticConstMacro( OutputDimension, unsigned int, NDimensions );
+
+  /** implement type-specific clone method*/
+  itkTransformCloneMacro();
 
   /** Functionality for sub transforms */
 
@@ -397,6 +391,9 @@ protected:
   CompositeTransform();
   virtual ~CompositeTransform();
   void PrintSelf( std::ostream& os, Indent indent ) const;
+
+  /** Clone the current transform */
+  virtual typename Transform<TScalar,NDimensions,NDimensions>::Pointer InternalClone() const;
 
   void PushFrontTransform( TransformTypePointer t  )
   {
