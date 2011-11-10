@@ -25,6 +25,10 @@
 namespace itk
 {
 /** \class BinaryImageToDenseLevelSetImageAdaptor
+ * \brief Creates a signed distance image from a binary input to initialize a
+ * level set.
+ *
+ * The default uses a Maurer signed distance transform.
  *  \ingroup ITKLevelSetsv4
  */
 template< class TInput, class TLevelSet >
