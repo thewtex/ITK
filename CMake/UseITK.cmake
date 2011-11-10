@@ -16,6 +16,11 @@ if (ITK_USE_FFTWF OR ITK_USE_FFTWD)
   set(ITK_LIBRARY_DIRS ${ITK_LIBRARY_DIRS} "${ITK_FFTW_LIBDIR}")
 endif()
 
+# Add OpenCV
+if(Module_ITKVideoBridgeOpenCV AND ITK_VIDEO_USE_OPENCV)
+  find_package(OpenCV REQUIRED)
+endif()
+
 # Add include directories needed to use ITK.
 include_directories(BEFORE ${ITK_INCLUDE_DIRS})
 
