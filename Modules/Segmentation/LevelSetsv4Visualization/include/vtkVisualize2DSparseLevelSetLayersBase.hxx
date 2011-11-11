@@ -24,8 +24,8 @@
 template< class TInputImage, class TLevelSet >
 vtkVisualize2DSparseLevelSetLayersBase< TInputImage, TLevelSet >
 ::vtkVisualize2DSparseLevelSetLayersBase(): Superclass(),
-  m_Count( 0 ),
-  m_Period( 20 ),
+  m_CurrentIteration( 0 ),
+//  m_Period( 20 ),
   m_ScreenCapture( false )
   {
   m_ImageConverter = ConverterType::New();
@@ -34,6 +34,9 @@ vtkVisualize2DSparseLevelSetLayersBase< TInputImage, TLevelSet >
 
   m_Annotation = vtkSmartPointer< vtkCornerAnnotation >::New();
   m_Renderer->AddActor2D( m_Annotation );
+
+  m_VTKImageActor = vtkSmartPointer< vtkImageActor >::New();
+  m_VTKImageActor->InterpolateOff();
 
   m_Iren = vtkSmartPointer< vtkRenderWindowInteractor >::New();
 
@@ -82,12 +85,20 @@ vtkVisualize2DSparseLevelSetLayersBase< TInputImage, TLevelSet >
   m_ScreenCapture = iCapture;
   }
 
+//template< class TInputImage, class TLevelSet >
+//void
+//vtkVisualize2DSparseLevelSetLayersBase< TInputImage, TLevelSet >
+//::SetPeriod( const itk::IdentifierType& iPeriod )
+//  {
+//  m_Period = iPeriod;
+//  }
+
 template< class TInputImage, class TLevelSet >
 void
 vtkVisualize2DSparseLevelSetLayersBase< TInputImage, TLevelSet >
-::SetPeriod( const itk::IdentifierType& iPeriod )
+::SetCurrentIteration( const itk::IdentifierType& iIteration )
   {
-  m_Period = iPeriod;
+  m_CurrentIteration = iIteration;
   }
 
 template< class TInputImage, class TLevelSet >
@@ -95,8 +106,7 @@ void
 vtkVisualize2DSparseLevelSetLayersBase< TInputImage, TLevelSet >
 ::Update()
   {
-  if( m_Count % m_Period == 0 )
-    {
+    m_ImageConverter->Update();
     m_VTKImage = m_ImageConverter->GetOutput();
 
     this->AddLayers();
@@ -119,17 +129,15 @@ vtkVisualize2DSparseLevelSetLayersBase< TInputImage, TLevelSet >
     //      scalarbar->SetNumberOfLabels( 5 );
     //      scalarbar->SetLookupTable( lut );
 
-    vtkSmartPointer< vtkImageActor > input_Actor =
-        vtkSmartPointer< vtkImageActor >::New();
-    input_Actor->SetInput( this->m_VTKImage );
-    input_Actor->InterpolateOff();
+    m_Renderer->RemoveActor2D( m_VTKImageActor );
+    m_VTKImageActor->SetInput( this->m_VTKImage );
+    m_Renderer->AddActor2D( m_VTKImageActor );
 
     std::stringstream counter;
-    counter << m_Count;
+    counter << m_CurrentIteration;
 
     m_Annotation->SetText( 0, counter.str().c_str() );
 
-    m_Renderer->AddActor2D( input_Actor );
 //      m_Ren->AddActor2D( scalarbar );
 
     m_RenWin->Render();
@@ -139,7 +147,7 @@ vtkVisualize2DSparseLevelSetLayersBase< TInputImage, TLevelSet >
       std::string filename;
       std::stringstream yo;
       yo << "snapshot_" << this->GetLevelSetRepresentationName()
-         <<"_" << std::setfill( '0' ) << std::setw( 5 ) << m_Count;
+         <<"_" << std::setfill( '0' ) << std::setw( 5 ) << m_CurrentIteration;
       filename = yo.str();
       filename.append ( ".png" );
 
@@ -152,8 +160,7 @@ vtkVisualize2DSparseLevelSetLayersBase< TInputImage, TLevelSet >
       {
       m_Iren->Start();
       }
-    }
-  ++m_Count;
+  ++m_CurrentIteration;
   }
 
 #endif
