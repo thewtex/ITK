@@ -24,7 +24,7 @@
 template< class TInputImage, class TLevelSet >
 vtkVisualize2DSparseLevelSetLayersBase< TInputImage, TLevelSet >
 ::vtkVisualize2DSparseLevelSetLayersBase(): Superclass(),
-  m_Count( 0 ),
+  m_CurrentIteration( 0 ),
   m_Period( 20 ),
   m_ScreenCapture( false )
   {
@@ -93,9 +93,17 @@ vtkVisualize2DSparseLevelSetLayersBase< TInputImage, TLevelSet >
 template< class TInputImage, class TLevelSet >
 void
 vtkVisualize2DSparseLevelSetLayersBase< TInputImage, TLevelSet >
+::SetCurrentIteration( const itk::IdentifierType& iIteration )
+  {
+  m_CurrentIteration = iIteration;
+  }
+
+template< class TInputImage, class TLevelSet >
+void
+vtkVisualize2DSparseLevelSetLayersBase< TInputImage, TLevelSet >
 ::Update()
   {
-  if( m_Count % m_Period == 0 )
+  if( m_CurrentIteration % m_Period == 0 )
     {
     m_VTKImage = m_ImageConverter->GetOutput();
 
@@ -125,7 +133,7 @@ vtkVisualize2DSparseLevelSetLayersBase< TInputImage, TLevelSet >
     input_Actor->InterpolateOff();
 
     std::stringstream counter;
-    counter << m_Count;
+    counter << m_CurrentIteration;
 
     m_Annotation->SetText( 0, counter.str().c_str() );
 
@@ -139,7 +147,7 @@ vtkVisualize2DSparseLevelSetLayersBase< TInputImage, TLevelSet >
       std::string filename;
       std::stringstream yo;
       yo << "snapshot_" << this->GetLevelSetRepresentationName()
-         <<"_" << std::setfill( '0' ) << std::setw( 5 ) << m_Count;
+         <<"_" << std::setfill( '0' ) << std::setw( 5 ) << m_CurrentIteration;
       filename = yo.str();
       filename.append ( ".png" );
 
@@ -153,7 +161,7 @@ vtkVisualize2DSparseLevelSetLayersBase< TInputImage, TLevelSet >
       m_Iren->Start();
       }
     }
-  ++m_Count;
+  ++m_CurrentIteration;
   }
 
 #endif

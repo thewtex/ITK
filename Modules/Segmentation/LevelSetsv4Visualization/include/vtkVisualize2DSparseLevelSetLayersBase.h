@@ -75,6 +75,8 @@ public:
 
   void SetPeriod( const itk::IdentifierType& iPeriod );
 
+  void SetCurrentIteration( const itk::IdentifierType& iIteration );
+
   void Update();
 
 protected:
@@ -91,7 +93,7 @@ protected:
   vtkSmartPointer< vtkRenderWindow >            m_RenWin;
   vtkSmartPointer< vtkRenderWindowInteractor >  m_Iren;
 
-  itk::IdentifierType m_Count;
+  itk::IdentifierType m_CurrentIteration;
   itk::IdentifierType m_Period;
   bool                m_ScreenCapture;
 
