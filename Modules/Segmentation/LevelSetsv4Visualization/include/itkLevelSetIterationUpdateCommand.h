@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkIterationUpdateCommand_h
-#define __itkIterationUpdateCommand_h
+#ifndef __itkLevelSetIterationUpdateCommand_h
+#define __itkLevelSetIterationUpdateCommand_h
 
 #include "itkCommand.h"
 #include "itkWeakPointer.h"
@@ -24,7 +24,7 @@
 namespace itk
 {
 
-/** \class IterationUpdateCommand
+/** \class LevelSetIterationUpdateCommand
  * \brief Call update on one filter when another filter iterates.
  *
  * \tparam TIteratingFilter Filter that invokes iteration events.
@@ -34,19 +34,19 @@ namespace itk
  * \ingroup ITKLevelSetsv4Visualization
  */
 template< class TIteratingFilter, class TFilterToUpdate >
-class IterationUpdateCommand : public Command
+class LevelSetIterationUpdateCommand : public Command
 {
 public:
-  typedef IterationUpdateCommand      Self;
-  typedef Command                     Superclass;
-  typedef SmartPointer< Self >        Pointer;
-  typedef SmartPointer< const Self >  ConstPointer;
+  typedef LevelSetIterationUpdateCommand  Self;
+  typedef Command                         Superclass;
+  typedef SmartPointer< Self >            Pointer;
+  typedef SmartPointer< const Self >      ConstPointer;
 
   typedef TIteratingFilter  IteratingFilterType;
   typedef TFilterToUpdate   FilterToUpdateType;
 
   /** Run-time type information (and related methods). */
-  itkTypeMacro( IterationUpdateCommand, Command );
+  itkTypeMacro( LevelSetIterationUpdateCommand, Command );
 
   itkNewMacro( Self );
 
@@ -58,21 +58,27 @@ public:
   itkSetObjectMacro( FilterToUpdate, FilterToUpdateType );
   itkGetConstObjectMacro( FilterToUpdate, FilterToUpdateType );
 
+  /** Set the period to run Update().  This is given in units of
+   * level set iterations. */
+  itkSetMacro( Period, IdentifierType );
+  itkGetConstMacro( Period, IdentifierType );
+
 protected:
-  IterationUpdateCommand() {}
-  virtual ~IterationUpdateCommand() {}
+  LevelSetIterationUpdateCommand() {}
+  virtual ~LevelSetIterationUpdateCommand() {}
 
 private:
-  IterationUpdateCommand( const Self& ); // purposely not implemented
+  LevelSetIterationUpdateCommand( const Self& ); // purposely not implemented
   void operator= ( const Self& ); // purposely not implemented
 
   WeakPointer< FilterToUpdateType >  m_FilterToUpdate;
+  IdentifierType                     m_Period;
 };
 
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkIterationUpdateCommand.hxx"
+#include "itkLevelSetIterationUpdateCommand.hxx"
 #endif
 
 #endif

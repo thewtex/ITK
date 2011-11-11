@@ -46,3 +46,8 @@ itk_add_test(NAME vtkVisualize2DCellsDenseLevelSetTest
   DATA{Input/cells.png} 60 Dense
   ${TEMP}/vtkVisualize2DCellsDenseLevelSetTest.png
   )
+
+itk_add_test(NAME itkVTKVisualizeLevelSetsInteractivePauseTest
+  COMMAND ITKLevelSetsv4VisualizationTestDriver itkVTKVisualizeLevelSetsInteractivePauseTest
+  DATA{Input/cells.png} 60
+  )

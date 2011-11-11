@@ -15,13 +15,11 @@
  *  limitations under the License.
  *
  *=========================================================================*/
+#ifndef __itkVTKVisualizeDenseImageLevelSet_h
+#define __itkVTKVisualizeDenseImageLevelSet_h
 
-#ifndef __vtkVisualize2DLevelSetImageBase_h
-#define __vtkVisualize2DLevelSetImageBase_h
+#include "itkVTKVisualizeImageLevelSet.h"
 
-#include "itkLightObject.h"
-
-#include "itkLevelSetImageBase.h"
 #include "itkImageToVTKImageFilter.h"
 #include "itkLevelSetImageBaseTovtkImageData.h"
 
@@ -34,73 +32,44 @@
 #include "vtkImageActor.h"
 #include "vtkScalarBarActor.h"
 #include "vtkProperty.h"
-#include "vtkRenderer.h"
 #include "vtkRenderWindowInteractor.h"
-#include "vtkRenderWindow.h"
 #include "vtkImageShiftScale.h"
 
-#include "vtkCaptureScreen.h"
-#include "vtkPNGWriter.h"
+namespace itk
+{
 
-/** \class vtkVisualize2DLevelSetImageBase
- *
- *  \tparam TInputImage Input Image Type
- *  \tparam TLevelSetImage  Level Set type
- *
- *  \ingroup ITKLevelSetsv4Visualization
- */
+template< class TInputPixel, unsigned int VInputImageDimension, class TLevelSetImage >
+class VTKVisualizeDenseImageLevelSet
+{};
+
 template< class TInputImage, class TLevelSetImage >
-class vtkVisualize2DLevelSetImageBase : public itk::LightObject
+class VTKVisualizeDenseImageLevelSet< typename TInputImage::PixelType, 2, TLevelSetImage >
+  : public VTKVisualizeImageLevelSet< TInputImage, ImageToVTKImageFilter< TInputImage > >
 {
 public:
-  typedef vtkVisualize2DLevelSetImageBase Self;
-  typedef LightObject                     Superclass;
-  typedef itk::SmartPointer< Self >       Pointer;
-  typedef itk::SmartPointer< const Self > ConstPointer;
+  typedef VTKVisualizeDenseImageLevelSet                                                 Self;
+  typedef VTKVisualizeImageLevelSet< TInputImage, ImageToVTKImageFilter< TInputImage > > Superclass;
+  typedef SmartPointer< Self >                                                           Pointer;
+  typedef SmartPointer< const Self >                                                     ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
 
   /** Run-time type information (and related methods). */
-  itkTypeMacro(vtkVisualize2DLevelSetImageBase, LightObject);
+  itkTypeMacro(VTKVisualizeDenseImageLevelSet, VTKVisualizeImageLevelSet);
 
-  typedef TInputImage     InputImageType;
-  typedef TLevelSetImage  LevelSetImageType;
+  typedef Superclass::InputImageType     InputImageType;
 
-  typedef itk::LevelSetDenseImageBase< LevelSetImageType > LevelSetType;
+  typedef TLevelSetImage                 LevelSetImageType;
 
-  typedef itk::ImageToVTKImageFilter< InputImageType >  ImageConverterType;
-  typedef typename ImageConverterType::Pointer          ImageConverterPointer;
+  typedef LevelSetDenseImageBase< LevelSetImageType > LevelSetType;
 
-  typedef itk::LevelSetImageBaseTovtkImageData< LevelSetImageType > LevelSetConverterType;
-  typedef typename LevelSetConverterType::Pointer                   LevelSetConverterPointer;
+  typedef LevelSetImageBaseTovtkImageData< LevelSetImageType > LevelSetConverterType;
+  typedef typename LevelSetConverterType::Pointer              LevelSetConverterPointer;
 
+  void SetLevelSet( const LevelSetType * levelSet );
 
-  void SetInputImage( const InputImageType * iImage )
-    {
-    m_ImageConverter->SetInput( iImage );
-    try
-      {
-      m_ImageConverter->Update();
-      }
-    catch( itk::ExceptionObject& e )
-      {
-      std::cout << e << std::endl;
-      return;
-      }
-    }
-
-  void SetLevelSet( LevelSetType *f )
-    {
-    m_LevelSetConverter->SetInput( f );
-    }
-
-  void SetScreenCapture( const bool& iCapture )
-    {
-    m_ScreenCapture = iCapture;
-    }
-
-  void SetNumberOfLevels( const unsigned int& iLevel )
+  void SetNumberOfLevels( const iLevel )
     {
     if( iLevel > 0 )
       {
@@ -114,11 +83,6 @@ public:
       {
       m_LevelLimit = iLimit;
       }
-    }
-
-  void SetPeriod( const itk::IdentifierType& iPeriod )
-    {
-    m_Period = iPeriod;
     }
 
   void Update()
@@ -201,14 +165,7 @@ public:
 
 protected:
   vtkVisualize2DLevelSetImageBase() : Superclass(),
-    m_Count( 0 ),
-    m_Period( 20 ),
-    m_NumberOfLevels( 1 ),
-    m_LevelLimit( 0 ),
-    m_ScreenCapture( false )
     {
-    m_ImageConverter = ImageConverterType::New();
-    m_LevelSetConverter = LevelSetConverterType::New();
 
     m_Renderer = vtkSmartPointer< vtkRenderer >::New();
     m_Renderer->SetBackground( 0.5, 0.5, 0.5 );
@@ -224,12 +181,11 @@ protected:
     m_Iren->SetRenderWindow( m_RenWin );
     }
 
-  ~vtkVisualize2DLevelSetImageBase()
-    {}
+  virtual ~vtkVisualize2DLevelSetImageBase();
 
 private:
-  vtkVisualize2DLevelSetImageBase ( const Self& );
-  void operator = ( const Self& );
+  VTKVisualizeDenseImageLevelSet( const Self& ); // purposely not implemented
+  void operator = ( const Self& ); // purposely not implemented
 
   ImageConverterPointer     m_ImageConverter;
   LevelSetConverterPointer  m_LevelSetConverter;
@@ -246,4 +202,11 @@ private:
   bool                m_ScreenCapture;
 
 };
+
+} // end namespace itk
+
+#ifndef ITK_MANUAL_INSTANTIATION
+#include "itkVTKVisualizeDenseImageLevelSet.hxx"
+#endif
+
 #endif

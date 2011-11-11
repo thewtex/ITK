@@ -77,7 +77,6 @@ private:
   bool           m_ScreenCapture;
 
   vtkSmarPointer< vtkRenderer >  m_Renderer;
-    m_Renderer->SetBackground( 0.5, 0.5, 0.5 );
 };
 
 } // end namespace itk
