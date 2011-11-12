@@ -34,17 +34,9 @@
 #include "vtkImageActor.h"
 #include "vtkScalarBarActor.h"
 #include "vtkProperty.h"
-#include "vtkDoubleArray.h"
 #include "vtkTextProperty.h"
 #include "vtkRenderer.h"
-#include "vtkRenderWindowInteractor.h"
-#include "vtkRenderWindow.h"
 #include "vtkImageShiftScale.h"
-#include "vtkPointData.h"
-#include "vtkCellArray.h"
-
-#include "vtkCaptureScreen.h"
-#include "vtkPNGWriter.h"
 
 namespace itk
 {
@@ -70,6 +62,8 @@ public:
   typedef TLevelSet                         LevelSetType;
   typedef typename LevelSetType::Pointer    LevelSetPointer;
 
+  virtual void SetInputImage( const InputImageType * inputImage );
+
   void SetLevelSet( LevelSetType * levelSet );
 
 protected:
@@ -86,8 +80,12 @@ private:
 
   LevelSetPointer           m_LevelSet;
 
-  vtkSmartPointer< vtkPolyData >                m_Mesh;
-  vtkSmartPointer< vtkCornerAnnotation >        m_Annotation;
+  vtkSmartPointer< vtkPolyData >          m_Mesh;
+  vtkSmartPointer< vtkCornerAnnotation >  m_Annotation;
+  vtkSmartPointer< vtkImageShiftScale >   m_ImageShiftScale;
+  vtkSmartPointer< vtkImageActor >        m_ImageActor;
+  vtkSmartPointer< vtkPolyDataMapper >    m_MeshMapper;
+  vtkSmartPointer< vtkActor >             m_SurfaceActor;
 
   InputImageSizeType m_NumberOfSamples;
 
