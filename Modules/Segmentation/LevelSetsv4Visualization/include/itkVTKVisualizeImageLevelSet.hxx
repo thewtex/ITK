@@ -82,9 +82,9 @@ VTKVisualizeImageLevelSet< TInputImage, TInputImageConverter >
 template < class TInputImage, class TInputImageConverter >
 vtkRenderWindow *
 VTKVisualizeImageLevelSet< TInputImage, TInputImageConverter >
-::GetRenderWindow()
+::GetRenderWindow() const
 {
-  return this->m_RenderWindow;
+  return this->m_RenderWindow.GetPointer();
 }
 
 template < class TInputImage, class TInputImageConverter >

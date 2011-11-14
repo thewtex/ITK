@@ -70,7 +70,7 @@ public:
   vtkRenderer * GetRenderer();
 
   /** Set/Get the render window. */
-  vtkRenderWindow * GetRenderWindow();
+  vtkRenderWindow * GetRenderWindow() const;
 
   /** Set/Get the current iteration.  Used for the filename during screen
    * capture. */

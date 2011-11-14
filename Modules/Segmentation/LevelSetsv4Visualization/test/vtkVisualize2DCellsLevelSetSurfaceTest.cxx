@@ -18,6 +18,7 @@
 
 #include "itkBinaryImageToLevelSetImageAdaptor.h"
 #include "itkImageFileReader.h"
+#include "itkLevelSetInteractiveOnEndCommand.h"
 #include "itkLevelSetIterationUpdateCommand.h"
 #include "itkLevelSetContainer.h"
 #include "itkLevelSetEquationChanAndVeseInternalTerm.h"
@@ -29,6 +30,9 @@
 #include "itkLevelSetDenseImageBase.h"
 #include "itkVTKVisualize2DLevelSetAsElevationMap.h"
 #include "itkSinRegularizedHeavisideStepFunction.h"
+
+#include "vtkRenderWindow.h"
+#include "vtkRenderWindowInteractor.h"
 
 template< class TInputImage, class TLevelSetType >
 void
@@ -151,8 +155,17 @@ VisualizeLevelSetSurface( TInputImage * inputImage, const int numberOfIterations
   evolution->AddObserver( itk::IterationEvent(), iterationUpdateCommand );
   std::cout << "Visualization IterationUpdateCommand created" << std::endl;
 
+  typedef typename itk::LevelSetInteractiveOnEndCommand< VisualizationType > InteractiveOnEndType;
+  typename InteractiveOnEndType::Pointer interactiveOnEnd = InteractiveOnEndType::New();
+  interactiveOnEnd->SetVTKVisualizeLevelSetFilter( visualizer );
+  //evolution->AddObserver( itk::EndEvent(), interactiveOnEnd );
+
   std::cout << "Evolving the level set..." << std::endl;
   evolution->Update();
+
+  vtkRenderWindow * renWin = visualizer->GetRenderWindow();
+  vtkRenderWindowInteractor * iren = renWin->MakeRenderWindowInteractor();
+  iren->Start();
 
   //! \todo Write out the final visualization image.
 }
