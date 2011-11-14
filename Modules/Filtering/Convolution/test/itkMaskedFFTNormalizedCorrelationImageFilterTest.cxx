@@ -38,7 +38,7 @@ int itkMaskedFFTNormalizedCorrelationImageFilterTest(int argc, char * argv[] )
   typedef itk::Image<unsigned char, 2 > OutputImageType;
   // We need the internal type to be either float or double since
   // the correlation image contains values between -1 and 1.
-  typedef itk::Image<float, 2> RealImageType;
+  typedef itk::Image<double, 2> RealImageType;
 
   char * fixedImageFileName = argv[1];
   char * movingImageFileName = argv[2];

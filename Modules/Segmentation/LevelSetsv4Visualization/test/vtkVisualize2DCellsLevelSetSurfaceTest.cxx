@@ -16,9 +16,9 @@
  *
  *=========================================================================*/
 
-#include "itkBinaryImageToDenseLevelSetImageAdaptor.h"
+#include "itkBinaryImageToLevelSetImageAdaptor.h"
 #include "itkImageFileReader.h"
-#include "itkIterationUpdateCommand.h"
+#include "itkLevelSetIterationUpdateCommand.h"
 #include "itkLevelSetContainer.h"
 #include "itkLevelSetEquationChanAndVeseInternalTerm.h"
 #include "itkLevelSetEquationChanAndVeseExternalTerm.h"
@@ -27,7 +27,7 @@
 #include "itkLevelSetEvolution.h"
 #include "itkLevelSetEvolutionNumberOfIterationsStoppingCriterion.h"
 #include "itkLevelSetDenseImageBase.h"
-#include "vtkVisualize2DLevelSetAsElevationMap.h"
+#include "itkVTKVisualize2DLevelSetAsElevationMap.h"
 #include "itkSinRegularizedHeavisideStepFunction.h"
 
 template< class TInputImage, class TLevelSetType >
@@ -69,7 +69,7 @@ VisualizeLevelSetSurface( TInputImage * inputImage, const int numberOfIterations
     ++iIt;
     }
 
-  typedef itk::BinaryImageToDenseLevelSetImageAdaptor< BinaryImageType,
+  typedef itk::BinaryImageToLevelSetImageAdaptor< BinaryImageType,
     LevelSetType > BinaryImageToLevelSetType;
 
   typename BinaryImageToLevelSetType::Pointer adaptor = BinaryImageToLevelSetType::New();
@@ -81,7 +81,7 @@ VisualizeLevelSetSurface( TInputImage * inputImage, const int numberOfIterations
   // The Heaviside function
   typedef typename itk::SinRegularizedHeavisideStepFunction< LevelSetRealType, LevelSetRealType > HeavisideFunctionType;
   typename HeavisideFunctionType::Pointer heaviside = HeavisideFunctionType::New();
-  heaviside->SetEpsilon( 1.0 );
+  heaviside->SetEpsilon( 1.5 );
   std::cout << "Heaviside function created" << std::endl;
 
   // Create the level set container
@@ -129,12 +129,11 @@ VisualizeLevelSetSurface( TInputImage * inputImage, const int numberOfIterations
   std::cout << "Stopping criteria created" << std::endl;
 
   // Create the visualizer
-  typedef vtkVisualize2DLevelSetAsElevationMap< InputImageType, LevelSetType > VisualizationType;
+  typedef itk::VTKVisualize2DLevelSetAsElevationMap< InputImageType, LevelSetType > VisualizationType;
   typename VisualizationType::Pointer visualizer = VisualizationType::New();
   //! \todo the visualizer should get the input image from the level set
   visualizer->SetInputImage( inputImage );
   visualizer->SetLevelSet( levelSet );
-  visualizer->SetPeriod( 5 );
   std::cout << "Visualizer created" << std::endl;
 
   // Create evolution class
@@ -145,9 +144,10 @@ VisualizeLevelSetSurface( TInputImage * inputImage, const int numberOfIterations
   evolution->SetLevelSetContainer( levelSetContainer );
   std::cout << "Evolution class created" << std::endl;
 
-  typedef typename itk::IterationUpdateCommand< LevelSetEvolutionType, VisualizationType > IterationUpdateCommandType;
+  typedef typename itk::LevelSetIterationUpdateCommand< LevelSetEvolutionType, VisualizationType > IterationUpdateCommandType;
   typename IterationUpdateCommandType::Pointer iterationUpdateCommand = IterationUpdateCommandType::New();
   iterationUpdateCommand->SetFilterToUpdate( visualizer );
+  iterationUpdateCommand->SetUpdatePeriod( 5 );
   evolution->AddObserver( itk::IterationEvent(), iterationUpdateCommand );
   std::cout << "Visualization IterationUpdateCommand created" << std::endl;
 
@@ -214,48 +214,48 @@ int vtkVisualize2DCellsLevelSetSurfaceTest( int argc, char* argv[] )
     }
   else if( levelSetRepresentation.compare( "Whitaker" ) == 0 )
     {
-//    typedef itk::WhitakerSparseLevelSetImage< double, 2 > LevelSetType;
-//    try
-//      {
-//      VisualizeLevelSetSurface< InputImageType, LevelSetType >( input,
-//                                                                numberOfIterations,
-//                                                                argv[4] );
-//      }
-//    catch ( itk::ExceptionObject& err )
-//      {
-//      std::cerr << err << std::endl;
-//      return EXIT_FAILURE;
-//      }
+    typedef itk::WhitakerSparseLevelSetImage< double, 2 > LevelSetType;
+    try
+      {
+      VisualizeLevelSetSurface< InputImageType, LevelSetType >( input,
+                                                                numberOfIterations,
+                                                                argv[4] );
+      }
+    catch ( itk::ExceptionObject& err )
+      {
+      std::cerr << err << std::endl;
+      return EXIT_FAILURE;
+      }
     }
   else if( levelSetRepresentation.compare( "Shi" ) == 0 )
     {
-//    typedef itk::ShiSparseLevelSetImage< 2 > LevelSetType;
-//    try
-//      {
-//      VisualizeLevelSetSurface< InputImageType, LevelSetType >( input,
-//                                                                numberOfIterations,
-//                                                                argv[4] );
-//      }
-//    catch ( itk::ExceptionObject& err )
-//      {
-//      std::cerr << err << std::endl;
-//      return EXIT_FAILURE;
-//      }
+    typedef itk::ShiSparseLevelSetImage< 2 > LevelSetType;
+    try
+      {
+      VisualizeLevelSetSurface< InputImageType, LevelSetType >( input,
+                                                                numberOfIterations,
+                                                                argv[4] );
+      }
+    catch ( itk::ExceptionObject& err )
+      {
+      std::cerr << err << std::endl;
+      return EXIT_FAILURE;
+      }
     }
   else if( levelSetRepresentation.compare( "Malcolm" ) == 0 )
     {
-//    typedef itk::MalcolmSparseLevelSetImage< 2 > LevelSetType;
-//    try
-//      {
-//      VisualizeLevelSetSurface< InputImageType, LevelSetType >( input,
-//                                                                numberOfIterations,
-//                                                                argv[4] );
-//      }
-//    catch ( itk::ExceptionObject& err )
-//      {
-//      std::cerr << err << std::endl;
-//      return EXIT_FAILURE;
-//      }
+    typedef itk::MalcolmSparseLevelSetImage< 2 > LevelSetType;
+    try
+      {
+      VisualizeLevelSetSurface< InputImageType, LevelSetType >( input,
+                                                                numberOfIterations,
+                                                                argv[4] );
+      }
+    catch ( itk::ExceptionObject& err )
+      {
+      std::cerr << err << std::endl;
+      return EXIT_FAILURE;
+      }
     }
   else
     {
