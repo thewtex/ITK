@@ -368,7 +368,7 @@ public:
   FixedImageSampleContainer m_FixedImageSamples;
 
   SizeValueType          m_NumberOfParameters;
-  mutable ParametersType m_Parameters;
+  //mutable ParametersType m_Parameters;
 
   SizeValueType m_NumberOfFixedImageSamples;
   //m_NumberOfPixelsCounted must be mutable because the const
