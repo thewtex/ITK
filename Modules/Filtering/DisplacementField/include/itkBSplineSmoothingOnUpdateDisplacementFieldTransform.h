@@ -68,6 +68,9 @@ public:
   /** Dimension of the domain spaces. */
   itkStaticConstMacro( Dimension, unsigned int, NDimensions );
 
+  /** implement type-specific clone method*/
+  itkTransformCloneMacro();
+
   /** Types from superclass */
   typedef typename Superclass::ScalarType               ScalarType;
   typedef typename Superclass::DerivativeType           DerivativeType;
@@ -167,6 +170,9 @@ protected:
   virtual ~BSplineSmoothingOnUpdateDisplacementFieldTransform();
 
   void PrintSelf( std::ostream& os, Indent indent ) const;
+
+  /** Clone the current transform */
+  virtual typename Transform<TScalar,NDimensions,NDimensions>::Pointer InternalClone() const;
 
   /**
    * Smooth the displacement field using B-splines.

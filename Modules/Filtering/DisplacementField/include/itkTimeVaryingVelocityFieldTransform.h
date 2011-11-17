@@ -67,7 +67,10 @@ public:
   itkTypeMacro( TimeVaryingVelocityFieldTransform, DisplacementFieldTransform );
 
   /** New macro for creation of through a Smart Pointer */
-  itkSimpleNewMacro( Self );
+  itkNewMacro( Self );
+
+  /** implement type-specific clone method */
+  itkTransformCloneMacro();
 
   /** InverseTransform type. */
   typedef typename Superclass:: InverseTransformBasePointer InverseTransformBasePointer;
@@ -106,6 +109,9 @@ public:
    */
   typedef Image<OutputVectorType, TimeVaryingVelocityFieldDimension>  TimeVaryingVelocityFieldType;
   typedef typename TimeVaryingVelocityFieldType::Pointer              TimeVaryingVelocityFieldPointer;
+  typedef typename TimeVaryingVelocityFieldType::PointType            TimeVaryingVelocityFieldPointType;
+  typedef typename TimeVaryingVelocityFieldType::SpacingType          TimeVaryingVelocityFieldSpacingType;
+  typedef typename TimeVaryingVelocityFieldType::DirectionType        TimeVaryingVelocityFieldDirectionType;
 
   typedef VectorInterpolateImageFunction<TimeVaryingVelocityFieldType, ScalarType>  TimeVaryingVelocityFieldInterpolatorType;
   typedef typename TimeVaryingVelocityFieldInterpolatorType::Pointer                TimeVaryingVelocityFieldInterpolatorPointer;
@@ -248,9 +254,20 @@ protected:
   virtual ~TimeVaryingVelocityFieldTransform();
   void PrintSelf( std::ostream& os, Indent indent ) const;
 
+  /** Clone the current transform */
+  virtual typename Transform<TScalar,NDimensions,NDimensions>::Pointer InternalClone() const;
+
 private:
   TimeVaryingVelocityFieldTransform( const Self& ); //purposely not implemented
   void operator=( const Self& ); //purposely not implemented
+
+  typename DisplacementFieldType::Pointer
+    CopyDisplacementField(const DisplacementFieldType *toCopy) const;
+  /**
+   * Convenience method which reads the information from the current
+   * displacement field into m_FixedParameters.
+   */
+  virtual void SetFixedParametersFromTimeVaryingVelocityField();
 
   /** The deformation field and its inverse (if it exists). */
   typename TimeVaryingVelocityFieldType::Pointer    m_TimeVaryingVelocityField;
