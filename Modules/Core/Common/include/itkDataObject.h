@@ -35,8 +35,8 @@
 
 namespace itk
 {
-class ProcessObject;
 class DataObject;
+class ProcessObject;
 
 /*--------------------Data Object Exceptions---------------------------*/
 
@@ -310,7 +310,8 @@ public:
   const DataObjectIdentifierType & GetSourceOutputName() const;
 
   /** Which of the source's outputs corresponds to this data object? */
-  unsigned int GetSourceOutputIndex() const;
+  typedef std::vector< Pointer >::size_type DataObjectPointerArraySizeType;
+  DataObjectPointerArraySizeType GetSourceOutputIndex() const;
 
   /** Restore the data object to its initial state. This means releasing
    * memory. */
