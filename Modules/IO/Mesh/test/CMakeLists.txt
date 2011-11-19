@@ -90,6 +90,5 @@ itk_add_test(NAME itkPolylineReadWriteTest01
 )
 itk_add_test(NAME itkVtkUnstructuredGridReaderTest00
       COMMAND ITKIOMeshTestDriver itkVtkUnstructuredGridReaderTest
-      DATA{Baseline/brain.vtk}
-      ${ITK_TEST_OUTPUT_DIR}/brain.vtk
+      DATA{Baseline/deformedMesh0.vtk}
 )

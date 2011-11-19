@@ -17,10 +17,11 @@
 #ifndef __itkVTKUnstructuredGridReader_h
 #define __itkVTKUnstructuredGridReader_h
 
+#include "itkIntTypes.h"
 #include "itkMesh.h"
 #include "itkMeshSource.h"
 #include <itkTetrahedronCell.h>
-#include "itkMapContainer.h"
+
 
 namespace itk
 {

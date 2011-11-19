@@ -322,13 +322,7 @@ VTKUnstructuredGridReader<TOutputMesh>
 
     itkDebugMacro( "CELL_TYPES line" << line );
 
-    //std::cout << "Line: " << line << "\n";
-    //std::cout << "STRLEN: " << strlen("CELL_TYPES ") << "\n";
-    //std::cout << "lnegth: " << line.length() << "\n";
-
     std::string cellsTypesLine( line, strlen("CELL_TYPES "), line.length() );
-
-    std::cout << "cellsTypeLine: " << cellsTypesLine << "\n";
 
     itkDebugMacro( "cellsTypesLine " << cellsTypesLine);
 
