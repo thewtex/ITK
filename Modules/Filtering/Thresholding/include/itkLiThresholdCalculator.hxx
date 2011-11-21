@@ -48,11 +48,12 @@ LiThresholdCalculator<THistogram, TOutput>
 
   unsigned int size = histogram->GetSize(0);
 
-  int threshold;
+  //int threshold=0;
+  long int histthresh;
   int ih;
   int num_pixels;
-  int sum_back; /* sum of the background pixels at a given threshold */
-  int sum_obj;  /* sum of the object pixels at a given threshold */
+  double sum_back; /* sum of the background pixels at a given threshold */
+  double sum_obj;  /* sum of the object pixels at a given threshold */
   int num_back; /* number of background pixels at a given threshold */
   int num_obj;  /* number of object pixels at a given threshold */
   double old_thresh;
@@ -64,9 +65,9 @@ LiThresholdCalculator<THistogram, TOutput>
   double temp;
 
   tolerance=0.5;
-  num_pixels = 0;
-  for (ih = 0; (unsigned)ih < size; ih++ )
-    num_pixels += histogram->GetFrequency(ih, 0);
+  num_pixels = histogram->GetTotalFrequency();
+//  for (ih = 0; (unsigned)ih < size; ih++ )
+//    num_pixels += histogram->GetFrequency(ih, 0);
 
   /* Calculate the mean gray-level */
   mean = 0.0;
@@ -78,12 +79,15 @@ LiThresholdCalculator<THistogram, TOutput>
 
   do{
   old_thresh = new_thresh;
-  threshold = (int) (old_thresh + 0.5);        /* range */
+  //threshold = (int) (old_thresh + 0.5);        /* range */
+  typename HistogramType::MeasurementVectorType ot(1);
+  ot.Fill((int) (old_thresh+0.5));
+  histthresh = histogram->GetIndex(ot)[0];
   /* Calculate the means of background and object pixels */
   /* Background */
   sum_back = 0;
   num_back = 0;
-  for ( ih = 0; ih <= threshold; ih++ )
+  for ( ih = 0; ih <= histthresh; ih++ )
     {
     sum_back += histogram->GetMeasurement(ih, 0) * histogram->GetFrequency(ih, 0);
     num_back += histogram->GetFrequency(ih, 0);
@@ -92,13 +96,14 @@ LiThresholdCalculator<THistogram, TOutput>
   /* Object */
   sum_obj = 0;
   num_obj = 0;
-  for ( ih = threshold + 1; (unsigned)ih < size; ih++ )
+  for ( ih = histthresh + 1; (unsigned)ih < size; ih++ )
     {
     sum_obj += histogram->GetMeasurement(ih, 0) * histogram->GetFrequency(ih, 0);
     num_obj += histogram->GetFrequency(ih, 0);
     }
   mean_obj = ( num_obj == 0 ? 0.0 : ( sum_obj / ( double ) num_obj ) );
 
+  std::cout << mean_back << " " << mean_obj << std::endl;
   /* Calculate the new threshold: Equation (7) in Ref. 2 */
   //new_thresh = simple_round ( ( mean_back - mean_obj ) / ( Math.log ( mean_back ) - Math.log ( mean_obj ) ) );
   //simple_round ( double x ) {
@@ -108,6 +113,8 @@ LiThresholdCalculator<THistogram, TOutput>
   //#define IS_NEG( x ) ( ( x ) < -DBL_EPSILON )
   //DBL_EPSILON = 2.220446049250313E-16
   temp = ( mean_back - mean_obj ) / ( vcl_log ( mean_back ) - vcl_log ( mean_obj ) );
+  // typename HistogramType::MeasurementVectorType tempthresh(1);
+  // tempthresh.Fill(temp);
 
   if (temp < -2.220446049250313E-16)
     new_thresh = (int) (temp - 0.5);
@@ -118,7 +125,7 @@ LiThresholdCalculator<THistogram, TOutput>
   }
   while ( vcl_abs ( new_thresh - old_thresh ) > tolerance );
 
-  this->GetOutput()->Set( static_cast<OutputType>( histogram->GetMeasurement( threshold, 0 ) ) );
+  this->GetOutput()->Set( static_cast<OutputType>( histogram->GetMeasurement( histthresh, 0 ) ) );
 }
 
 } // end namespace itk
