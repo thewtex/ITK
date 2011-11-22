@@ -45,7 +45,7 @@ itk_add_test(NAME ImageRegistration4Test COMMAND ${ITK_TEST_DRIVER}
 )
 
 itk_add_test(NAME ImageRegistration4Test2 COMMAND ${ITK_TEST_DRIVER}
-  --compare DATA{${BASELINE}/ImageRegistration4Test.png}
+  --compare DATA{${BASELINE}/ImageRegistration4Test2.png}
             ${TEMP}/ImageRegistration4Test2.png
   $<TARGET_FILE:ImageRegistration4>
         ${ITK_SOURCE_DIR}/Examples/Data/BrainT1SliceBorder20.png
