@@ -43,6 +43,13 @@ check_include_files("sys/types.h" HAVE_SYS_TYPES_H)
 # Check if this platform support the sse2 rounding functions for 32 and 64 bits
 include(CheckSupportForSSERounding)
 
+# Watch out for optimizing out a floating point computation correction.
+if(CMAKE_CXX_COMPILER MATCHES "^icc")
+  set_source_files_properties( include/itkCompensatedSummation.hxx
+    PROPERTIES COMPILE_FLAGS -fp_port
+    )
+endif()
+
 configure_file(src/itkConfigure.h.in itkConfigure.h)
 
 set(ITKCommon_INCLUDE_DIRS
