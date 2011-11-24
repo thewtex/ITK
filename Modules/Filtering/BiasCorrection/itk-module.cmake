@@ -13,6 +13,9 @@ itk_module(ITKBiasCorrection
   TEST_DEPENDS
     ITKTestKernel
     ITKImageSource
+    ITKImageIntensity
+    ITKImageGrid
+    ITKThresholding
   DESCRIPTION
     "${DOCUMENTATION}"
 )
