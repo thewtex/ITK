@@ -1,8 +1,10 @@
 itk_module_test()
 set(ITKRegistrationMethodsv4Tests
 itkSimpleImageRegistrationTest.cxx
+itkTimeVaryingBSplineVelocityFieldImageRegistrationTest.cxx
 itkTimeVaryingVelocityFieldImageRegistrationTest.cxx
 itkQuasiNewtonOptimizerv4RegistrationTest.cxx
+itkTimeVaryingBSplineVelocityFieldImageRegistrationTest.cxx
 )
 
 set(INPUTDATA ${ITK_DATA_ROOT}/Input)
@@ -36,9 +38,20 @@ itk_add_test(NAME itkTimeVaryingVelocityFieldImageRegistrationTest
               0.5 # learning rate
               )
 
-itk_add_test(NAME itkQuasiNewtonOptimizerv4RegistrationTest1
+itk_add_test(NAME itkTimeVaryingBSplineVelocityFieldImageRegistrationTest
       COMMAND ITKRegistrationMethodsv4TestDriver
-              itkQuasiNewtonOptimizerv4RegistrationTest
+              itkTimeVaryingBSplineVelocityFieldImageRegistrationTest
+              2 # number of dimensions
+              DATA{Input/r16slice_rigid.nii.gz}
+              DATA{Input/r64slice.nii.gz}
+              ${TEMP}/itkTimeVaryingBSplineVelocityFieldImageRegistrationTest
+              10  # number of optimization iterations of the displacement field
+              0.5 # learning rate
+              )
+
+itk_add_test(NAME itkQuasiNewtonObjectOptimizerRegistrationTest1
+      COMMAND ITKRegistrationMethodsv4TestDriver
+              itkQuasiNewtonObjectOptimizerRegistrationTest
               2 # number of dimensions
               dm # Demons metric
               DATA{Input/r16slice_rigid.nii.gz}

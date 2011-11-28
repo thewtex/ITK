@@ -93,7 +93,6 @@ ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform>
   this->m_SmoothingSigmasPerLevel[0] = 2;
   this->m_SmoothingSigmasPerLevel[1] = 1;
   this->m_SmoothingSigmasPerLevel[2] = 0;
-
 }
 
 template<typename TFixedImage, typename TMovingImage, typename TTransform>
@@ -212,7 +211,6 @@ ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform>
   this->m_Metric->SetFixedImage( this->m_FixedSmoothImage );
   this->m_Metric->SetMovingImage( this->m_MovingSmoothImage );
   this->m_Metric->SetVirtualDomainImage( shrinkFilter->GetOutput() );
-  this->m_Metric->Initialize();
 
   // Update the optimizer
 
@@ -247,6 +245,7 @@ ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform>
 
     this->InitializeRegistrationAtEachLevel( this->m_CurrentLevel );
 
+    this->m_Metric->Initialize();
     this->m_Optimizer->StartOptimization();
     }
 
