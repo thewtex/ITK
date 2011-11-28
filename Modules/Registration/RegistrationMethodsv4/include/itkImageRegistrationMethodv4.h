@@ -92,7 +92,7 @@ class ITK_EXPORT ImageRegistrationMethodv4
 {
 public:
   /** Standard class typedefs. */
-  typedef ImageRegistrationMethodv4             Self;
+  typedef ImageRegistrationMethodv4                 Self;
   typedef ProcessObject                             Superclass;
   typedef SmartPointer<Self>                        Pointer;
   typedef SmartPointer<const Self>                  ConstPointer;
@@ -113,7 +113,7 @@ public:
   typedef typename MovingImageType::Pointer                           MovingImagePointer;
 
   /** Metric and transform typedefs */
-  typedef ImageToImageMetricv4<FixedImageType, MovingImageType>   MetricType;
+  typedef ImageToImageMetricv4<FixedImageType, MovingImageType>       MetricType;
   typedef typename MetricType::Pointer                                MetricPointer;
 
   typedef TTransform                                                  TransformType;
