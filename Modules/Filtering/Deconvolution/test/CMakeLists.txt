@@ -4,6 +4,7 @@ set(ITKDeconvolutionTests
   itkProjectedIterativeDeconvolutionImageFilterTest.cxx
   itkProjectedLandweberDeconvolutionImageFilterTest.cxx
   itkRichardsonLucyDeconvolutionImageFilterTest.cxx
+  itkWienerDeconvolutionImageFilterTest.cxx
 )
 
 CreateTestDriver(ITKDeconvolution "${ITKDeconvolution-Test_LIBRARIES}" "${ITKDeconvolutionTests}")
@@ -65,4 +66,24 @@ itk_add_test(NAME itkProjectedLandweberDeconvolutionImageFilterIrregularKernelTe
       DATA{Input/itkDeconvolutionImageFilterTestInput.png}
       DATA{Input/itkDeconvolutionImageFilterTestKernelIrregular.tif}
       ${ITK_TEST_OUTPUT_DIR}/itkProjectedLandweberDeconvolutionImageFilterIrregularKernelTest.nrrd 1 2.0
+)
+itk_add_test(NAME itkWienerDeconvolutionImageFilterTest
+      COMMAND ITKDeconvolutionTestDriver
+    --compare DATA{Baseline/itkWienerDeconvolutionImageFilterTest.nrrd}
+              ${ITK_TEST_OUTPUT_DIR}/itkWienerDeconvolutionImageFilterTest.nrrd
+    itkWienerDeconvolutionImageFilterTest
+      DATA{Input/itkDeconvolutionImageFilterTestInput.png}
+      DATA{Input/itkDeconvolutionImageFilterTestKernel.png}
+      ${ITK_TEST_OUTPUT_DIR}/itkWienerDeconvolutionImageFilterTest.nrrd
+      1
+)
+itk_add_test(NAME itkWienerDeconvolutionImageFilterIrregularKernelTest
+      COMMAND ITKDeconvolutionTestDriver
+    --compare DATA{Baseline/itkWienerDeconvolutionImageFilterIrregularKernelTest.nrrd}
+              ${ITK_TEST_OUTPUT_DIR}/itkWienerDeconvolutionImageFilterIrregularKernelTest.nrrd
+    itkWienerDeconvolutionImageFilterTest
+      DATA{Input/itkDeconvolutionImageFilterTestInput.png}
+      DATA{Input/itkDeconvolutionImageFilterTestKernelIrregular.tif}
+      ${ITK_TEST_OUTPUT_DIR}/itkWienerDeconvolutionImageFilterIrregularKernelTest.nrrd
+      1
 )
