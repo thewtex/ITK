@@ -17,6 +17,7 @@ itkFastMarchingQuadEdgeMeshFilterBaseTest4.cxx
 itkFastMarchingQuadEdgeMeshFilterBaseTest.cxx
 itkFastMarchingStoppingCriterionBaseTest.cxx
 itkFastMarchingThresholdStoppingCriterionTest.cxx
+itkFastMarchingSizeStoppingCriterionTest.cxx
 itkFastMarchingUpwindGradientBaseTest.cxx
 )
 
@@ -65,6 +66,9 @@ itk_add_test(NAME itkFastMarchingStoppingCriterionBaseTest
 
 itk_add_test(NAME itkFastMarchingThresholdStoppingCriterionTest
       COMMAND ITKFastMarchingTestDriver itkFastMarchingThresholdStoppingCriterionTest )
+
+itk_add_test(NAME itkFastMarchingSizeStoppingCriterionTest
+      COMMAND ITKFastMarchingTestDriver itkFastMarchingSizeStoppingCriterionTest )
 
 # -------------------------------------------------------------------------
 # Topology constrained front propagation
