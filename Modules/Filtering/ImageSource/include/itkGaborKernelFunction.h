@@ -47,13 +47,14 @@ namespace itk
  * \ingroup Functions
  * \ingroup ITKImageSource
  */
-class ITK_EXPORT GaborKernelFunction:public KernelFunction
+template< typename TValueType>
+class ITK_EXPORT GaborKernelFunction:public KernelFunction<TValueType>
 {
 public:
   /** Standard class typedefs. */
-  typedef GaborKernelFunction  Self;
-  typedef KernelFunction       Superclass;
-  typedef SmartPointer< Self > Pointer;
+  typedef GaborKernelFunction        Self;
+  typedef KernelFunction<TValueType> Superclass;
+  typedef SmartPointer< Self >       Pointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -62,11 +63,11 @@ public:
   itkTypeMacro(GaborKernelFunction, KernelFunction);
 
   /** Evaluate the function. */
-  inline double Evaluate(const double & u) const
+  inline TValueType Evaluate(const TValueType & u) const
   {
-    double parameter = vnl_math_sqr(u / this->m_Sigma);
-    double envelope = vcl_exp(-0.5 * parameter);
-    double phase = 2.0 * vnl_math::pi * this->m_Frequency * u
+    TValueType parameter = vnl_math_sqr(u / this->m_Sigma);
+    TValueType envelope = vcl_exp(-0.5 * parameter);
+    TValueType phase = 2.0 * vnl_math::pi * this->m_Frequency * u
                    + this->m_PhaseOffset;
 
     if ( this->m_CalculateImaginaryPart )
@@ -79,35 +80,49 @@ public:
       }
   }
 
-  itkSetMacro(Sigma, double);
-  itkGetConstMacro(Sigma, double);
+  itkSetMacro(Sigma, TValueType);
+  itkGetConstMacro(Sigma, TValueType);
 
-  itkSetMacro(Frequency, double);
-  itkGetConstMacro(Frequency, double);
+  itkSetMacro(Frequency, TValueType);
+  itkGetConstMacro(Frequency, TValueType);
 
-  itkSetMacro(PhaseOffset, double);
-  itkGetConstMacro(PhaseOffset, double);
+  itkSetMacro(PhaseOffset, TValueType);
+  itkGetConstMacro(PhaseOffset, TValueType);
 
   itkSetMacro(CalculateImaginaryPart, bool);
   itkGetConstMacro(CalculateImaginaryPart, bool);
   itkBooleanMacro(CalculateImaginaryPart);
 protected:
-  GaborKernelFunction();
-  ~GaborKernelFunction();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  GaborKernelFunction()
+    {
+    this->m_CalculateImaginaryPart = false;
+    this->m_Sigma = 1.0;
+    this->m_Frequency = 0.4;
+    this->m_PhaseOffset = 0.0;
+    }
+  ~GaborKernelFunction() {};
+  void PrintSelf(std::ostream & os, Indent indent) const
+    {
+    Superclass::PrintSelf(os, indent);
+
+    os << indent << "Sigma: " << this->GetSigma() << std::endl;
+    os << indent << "Frequency: " << this->GetFrequency() << std::endl;
+    os << indent << "PhaseOffset: " << this->GetPhaseOffset() << std::endl;
+    os << indent << "CalculateImaginaryPart: " << this->GetCalculateImaginaryPart() << std::endl;
+    }
 
 private:
   GaborKernelFunction(const Self &); //purposely not implemented
   void operator=(const Self &);      //purposely not implemented
 
   /** Standard deviation of the Gaussian envelope */
-  double m_Sigma;
+  TValueType m_Sigma;
 
   /** Modulation frequency of the sine or cosine component */
-  double m_Frequency;
+  TValueType m_Frequency;
 
   /** Phase offset of the sine or cosine component */
-  double m_PhaseOffset;
+  TValueType m_PhaseOffset;
 
   /** Evaluate using the complex part */
   bool m_CalculateImaginaryPart;

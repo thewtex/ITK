@@ -39,14 +39,14 @@ namespace itk
  * \ingroup Functions
  * \ingroup ITKCommon
  */
-template< unsigned int VSplineOrder = 3 >
-class ITK_EXPORT BSplineKernelFunction:public KernelFunction
+template< unsigned int VSplineOrder = 3, typename TValueType = double >
+class ITK_EXPORT BSplineKernelFunction:public KernelFunction<TValueType>
 {
 public:
   /** Standard class typedefs. */
-  typedef BSplineKernelFunction Self;
-  typedef KernelFunction        Superclass;
-  typedef SmartPointer< Self >  Pointer;
+  typedef BSplineKernelFunction      Self;
+  typedef KernelFunction<TValueType> Superclass;
+  typedef SmartPointer< Self >       Pointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -58,7 +58,7 @@ public:
   itkStaticConstMacro(SplineOrder, unsigned int, VSplineOrder);
 
   /** Evaluate the function. */
-  inline double Evaluate(const double & u) const
+  inline TValueType Evaluate(const TValueType & u) const
   {
     return this->Evaluate(Dispatch< VSplineOrder >(), u);
   }
@@ -82,10 +82,9 @@ private:
   struct Dispatch: public DispatchBase {};
 
   /** Zeroth order spline. */
-  inline double Evaluate(const Dispatch< 0 > &, const double & u) const
+  inline TValueType Evaluate(const Dispatch< 0 > &, const TValueType & u) const
   {
-    double absValue = vnl_math_abs(u);
-
+    const TValueType absValue = vnl_math_abs(u);
     if ( absValue  < 0.5 )
       {
       return 1.0;
@@ -101,10 +100,9 @@ private:
   }
 
   /** First order spline */
-  inline double Evaluate(const Dispatch< 1 > &, const double & u) const
+  inline TValueType Evaluate(const Dispatch< 1 > &, const TValueType & u) const
   {
-    double absValue = vnl_math_abs(u);
-
+    const TValueType absValue = vnl_math_abs(u);
     if ( absValue  < 1.0 )
       {
       return 1.0 - absValue;
@@ -116,17 +114,18 @@ private:
   }
 
   /** Second order spline. */
-  inline double Evaluate(const Dispatch< 2 > &, const double & u) const
+  inline TValueType Evaluate(const Dispatch< 2 > &, const TValueType & u) const
   {
-    double absValue = vnl_math_abs(u);
-
+    const TValueType absValue = vnl_math_abs(u);
     if ( absValue  < 0.5 )
       {
-      return 0.75 - vnl_math_sqr(absValue);
+      const TValueType sqrValue = vnl_math_sqr(absValue);
+      return 0.75 - sqrValue;
       }
     else if ( absValue < 1.5 )
       {
-      return ( 9.0 - 12.0 * absValue + 4.0 * vnl_math_sqr(absValue) ) / 8.0;
+      const TValueType sqrValue = vnl_math_sqr(absValue);
+      return ( 9.0 - 12.0 * absValue + 4.0 * sqrValue ) / 8.0;
       }
     else
       {
@@ -135,17 +134,17 @@ private:
   }
 
   /**  Third order spline. */
-  inline double Evaluate(const Dispatch< 3 > &, const double & u) const
+  inline TValueType Evaluate(const Dispatch< 3 > &, const TValueType & u) const
   {
-    double absValue = vnl_math_abs(u);
-    double sqrValue = vnl_math_sqr(u);
-
+    const TValueType absValue = vnl_math_abs(u);
     if ( absValue  < 1.0 )
       {
+      const TValueType sqrValue = vnl_math_sqr(absValue);
       return ( 4.0 - 6.0 * sqrValue + 3.0 * sqrValue * absValue ) / 6.0;
       }
     else if ( absValue < 2.0 )
       {
+      const TValueType sqrValue = vnl_math_sqr(absValue);
       return ( 8.0 - 12 * absValue + 6.0 * sqrValue
                - sqrValue * absValue ) / 6.0;
       }
@@ -156,11 +155,9 @@ private:
   }
 
   /** Unimplemented spline order */
-  inline double Evaluate(const DispatchBase &, const double &) const
+  inline TValueType Evaluate(const DispatchBase &, const TValueType &) const
   {
-    itkExceptionMacro(
-      "Evaluate not implemented for spline\
-                                                      order "
+    itkExceptionMacro( "Evaluate not implemented for spline order "
       << SplineOrder);
     return 0.0; // This is to avoid compiler warning about missing
                 // return statement.  It should never be evaluated.

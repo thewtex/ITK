@@ -38,13 +38,13 @@ namespace itk
  * \ingroup Functions
  * \ingroup ITKCommon
  */
-template< unsigned int VSplineOrder = 3 >
-class ITK_EXPORT BSplineDerivativeKernelFunction:public KernelFunction
+template< unsigned int VSplineOrder = 3, typename TValueType = double >
+class ITK_EXPORT BSplineDerivativeKernelFunction:public KernelFunction<TValueType>
 {
 public:
   /** Standard class typedefs. */
   typedef BSplineDerivativeKernelFunction Self;
-  typedef KernelFunction                  Superclass;
+  typedef KernelFunction<TValueType>      Superclass;
   typedef SmartPointer< Self >            Pointer;
 
   /** Method for creation through the object factory. */
@@ -57,7 +57,7 @@ public:
   itkStaticConstMacro(SplineOrder, unsigned int, VSplineOrder);
 
   /** Evaluate the function. */
-  inline double Evaluate( const double & u ) const
+  inline TValueType Evaluate( const TValueType & u ) const
     {
     return this->Evaluate( Dispatch< VSplineOrder >(), u );
     }
@@ -82,14 +82,14 @@ private:
   struct Dispatch: public DispatchBase {};
 
   /** Evaluate the function:  zeroth order spline. */
-  inline double Evaluate( const Dispatch<0>&, const double & itkNotUsed( u ) )
+  inline TValueType Evaluate( const Dispatch<0>&, const TValueType & itkNotUsed( u ) )
     const
     {
     return 0.0;
     }
 
   /** Evaluate the function:  first order spline */
-  inline double Evaluate( const Dispatch<1>&, const double& u ) const
+  inline TValueType Evaluate( const Dispatch<1>&, const TValueType& u ) const
     {
     if( u == -1.0 )
       {
@@ -118,7 +118,7 @@ private:
     }
 
   /** Evaluate the function:  second order spline. */
-  inline double Evaluate( const Dispatch<2>&, const double& u) const
+  inline TValueType Evaluate( const Dispatch<2>&, const TValueType& u) const
     {
     if( ( u > -0.5 ) && ( u < 0.5 ) )
       {
@@ -139,7 +139,7 @@ private:
     }
 
   /** Evaluate the function:  third order spline. */
-  inline double Evaluate( const Dispatch<3>&, const double& u ) const
+  inline TValueType Evaluate( const Dispatch<3>&, const TValueType& u ) const
     {
     if( ( u >= 0.0 ) && ( u < 1.0 ) )
       {
@@ -164,7 +164,7 @@ private:
     }
 
   /** Evaluate the function:  unimplemented spline order */
-  inline double Evaluate( const DispatchBase&, const double& ) const
+  inline TValueType Evaluate( const DispatchBase&, const TValueType& ) const
     {
     itkExceptionMacro( "Evaluate not implemented for spline order "
       << SplineOrder );

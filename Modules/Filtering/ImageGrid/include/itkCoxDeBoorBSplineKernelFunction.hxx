@@ -22,22 +22,22 @@
 
 namespace itk
 {
-template<unsigned int VSplineOrder>
-CoxDeBoorBSplineKernelFunction<VSplineOrder>
+template<unsigned int VSplineOrder, typename TValueType>
+CoxDeBoorBSplineKernelFunction<VSplineOrder,TValueType>
 ::CoxDeBoorBSplineKernelFunction()
 {
   this->m_SplineOrder = VSplineOrder;
   this->GenerateBSplineShapeFunctions( this->m_SplineOrder + 1 );
 }
 
-template<unsigned int VSplineOrder>
-CoxDeBoorBSplineKernelFunction<VSplineOrder>
+template<unsigned int VSplineOrder, typename TValueType>
+CoxDeBoorBSplineKernelFunction<VSplineOrder,TValueType>
 ::~CoxDeBoorBSplineKernelFunction()
 {}
 
-template<unsigned int VSplineOrder>
+template<unsigned int VSplineOrder, typename TValueType>
 void
-CoxDeBoorBSplineKernelFunction<VSplineOrder>
+CoxDeBoorBSplineKernelFunction<VSplineOrder,TValueType>
 ::SetSplineOrder( const unsigned int order )
 {
   if ( order != this->m_SplineOrder )
@@ -48,9 +48,9 @@ CoxDeBoorBSplineKernelFunction<VSplineOrder>
     }
 }
 
-template<unsigned int VSplineOrder>
+template<unsigned int VSplineOrder, typename TValueType>
 void
-CoxDeBoorBSplineKernelFunction<VSplineOrder>
+CoxDeBoorBSplineKernelFunction<VSplineOrder,TValueType>
 ::GenerateBSplineShapeFunctions( const unsigned int order )
 {
   unsigned int numberOfPieces =
@@ -73,9 +73,9 @@ CoxDeBoorBSplineKernelFunction<VSplineOrder>
     }
 }
 
-template<unsigned int VSplineOrder>
-typename CoxDeBoorBSplineKernelFunction<VSplineOrder>::PolynomialType
-CoxDeBoorBSplineKernelFunction<VSplineOrder>
+template<unsigned int VSplineOrder, typename TValueType>
+typename CoxDeBoorBSplineKernelFunction<VSplineOrder,TValueType>::PolynomialType
+CoxDeBoorBSplineKernelFunction<VSplineOrder,TValueType>
 ::CoxDeBoor( const unsigned short order, const VectorType knots,
   const unsigned int whichBasisFunction, const unsigned int whichPiece )
 {
@@ -125,9 +125,9 @@ CoxDeBoorBSplineKernelFunction<VSplineOrder>
   return ( poly1 + poly2 );
 }
 
-template<unsigned int VSplineOrder>
-typename CoxDeBoorBSplineKernelFunction<VSplineOrder>::MatrixType
-CoxDeBoorBSplineKernelFunction<VSplineOrder>
+template<unsigned int VSplineOrder, typename TValueType>
+typename CoxDeBoorBSplineKernelFunction<VSplineOrder,TValueType>::MatrixType
+CoxDeBoorBSplineKernelFunction<VSplineOrder,TValueType>
 ::GetShapeFunctionsInZeroToOneInterval()
 {
   int order = this->m_SplineOrder + 1;
@@ -150,18 +150,18 @@ CoxDeBoorBSplineKernelFunction<VSplineOrder>
   return shapeFunctions;
 }
 
-template<unsigned int VSplineOrder>
-typename CoxDeBoorBSplineKernelFunction<VSplineOrder>::MatrixType
-CoxDeBoorBSplineKernelFunction<VSplineOrder>
+template<unsigned int VSplineOrder, typename TValueType>
+typename CoxDeBoorBSplineKernelFunction<VSplineOrder,TValueType>::MatrixType
+CoxDeBoorBSplineKernelFunction<VSplineOrder,TValueType>
 ::GetShapeFunctions()
 {
   return this->m_BSplineShapeFunctions;
 }
 
-template<unsigned int VSplineOrder>
-typename CoxDeBoorBSplineKernelFunction<VSplineOrder>::RealType
-CoxDeBoorBSplineKernelFunction<VSplineOrder>
-::Evaluate( const double &u ) const
+template<unsigned int VSplineOrder, typename TValueType>
+typename CoxDeBoorBSplineKernelFunction<VSplineOrder,TValueType>::RealType
+CoxDeBoorBSplineKernelFunction<VSplineOrder,TValueType>
+::Evaluate( const TValueType &u ) const
 {
   RealType absValue = vnl_math_abs( u );
 
@@ -186,18 +186,18 @@ CoxDeBoorBSplineKernelFunction<VSplineOrder>
     }
 }
 
-template<unsigned int VSplineOrder>
-typename CoxDeBoorBSplineKernelFunction<VSplineOrder>::RealType
-CoxDeBoorBSplineKernelFunction<VSplineOrder>
-::EvaluateDerivative( const double &u ) const
+template<unsigned int VSplineOrder, typename TValueType>
+typename CoxDeBoorBSplineKernelFunction<VSplineOrder,TValueType>::RealType
+CoxDeBoorBSplineKernelFunction<VSplineOrder,TValueType>
+::EvaluateDerivative( const TValueType &u ) const
 {
   return this->EvaluateNthDerivative( u, 1 );
 }
 
-template<unsigned int VSplineOrder>
-typename CoxDeBoorBSplineKernelFunction<VSplineOrder>::RealType
-CoxDeBoorBSplineKernelFunction<VSplineOrder>
-::EvaluateNthDerivative( const double & u, const unsigned int n ) const
+template<unsigned int VSplineOrder, typename TValueType>
+typename CoxDeBoorBSplineKernelFunction<VSplineOrder,TValueType>::RealType
+CoxDeBoorBSplineKernelFunction<VSplineOrder,TValueType>
+::EvaluateNthDerivative( const TValueType & u, const unsigned int n ) const
 {
   RealType absValue = vnl_math_abs( u );
 
@@ -235,9 +235,9 @@ CoxDeBoorBSplineKernelFunction<VSplineOrder>
     }
 }
 
-template<unsigned int VSplineOrder>
+template<unsigned int VSplineOrder, typename TValueType>
 void
-CoxDeBoorBSplineKernelFunction<VSplineOrder>
+CoxDeBoorBSplineKernelFunction<VSplineOrder,TValueType>
 ::PrintSelf( std::ostream &os, Indent indent ) const
 {
   Superclass::PrintSelf(os, indent);
