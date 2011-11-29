@@ -10,6 +10,7 @@ itkFastMarchingBaseTest.cxx
 itkFastMarchingImageFilterBaseTest.cxx
 itkFastMarchingImageFilterRealTest1.cxx
 itkFastMarchingImageFilterRealTest2.cxx
+itkFastMarchingImageFilterRealWithSizeStoppingCriterionTest.cxx
 itkFastMarchingImageTopologicalTest.cxx
 itkFastMarchingQuadEdgeMeshFilterBaseTest2.cxx
 itkFastMarchingQuadEdgeMeshFilterBaseTest3.cxx
@@ -17,6 +18,7 @@ itkFastMarchingQuadEdgeMeshFilterBaseTest4.cxx
 itkFastMarchingQuadEdgeMeshFilterBaseTest.cxx
 itkFastMarchingStoppingCriterionBaseTest.cxx
 itkFastMarchingThresholdStoppingCriterionTest.cxx
+itkFastMarchingSizeStoppingCriterionTest.cxx
 itkFastMarchingUpwindGradientBaseTest.cxx
 )
 
@@ -45,6 +47,14 @@ itk_add_test(NAME itkFastMarchingImageFilterRealTest1
 itk_add_test(NAME itkFastMarchingImageFilterRealTest2
       COMMAND ITKFastMarchingTestDriver itkFastMarchingImageFilterRealTest2)
 
+itk_add_test(NAME itkFastMarchingImageFilterRealWithSizeStoppingCriterionTest
+      COMMAND ITKFastMarchingTestDriver
+    --compare ${ITK_TEST_OUTPUT_DIR}/test_itkFastMarchingSizeStoppingCriterionTest.mha
+              DATA{Baseline//test_itkFastMarchingSizeStoppingCriterionTest.mha}
+      itkFastMarchingImageFilterRealWithSizeStoppingCriterionTest
+      ${ITK_TEST_OUTPUT_DIR}/test_itkFastMarchingSizeStoppingCriterionTest.mha
+)
+
 itk_add_test(NAME itkFastMarchingUpwindGradientBaseTest
       COMMAND ITKFastMarchingTestDriver itkFastMarchingUpwindGradientBaseTest )
 
@@ -65,6 +75,9 @@ itk_add_test(NAME itkFastMarchingStoppingCriterionBaseTest
 
 itk_add_test(NAME itkFastMarchingThresholdStoppingCriterionTest
       COMMAND ITKFastMarchingTestDriver itkFastMarchingThresholdStoppingCriterionTest )
+
+itk_add_test(NAME itkFastMarchingSizeStoppingCriterionTest
+      COMMAND ITKFastMarchingTestDriver itkFastMarchingSizeStoppingCriterionTest )
 
 # -------------------------------------------------------------------------
 # Topology constrained front propagation
