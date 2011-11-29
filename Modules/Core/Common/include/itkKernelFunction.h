@@ -37,24 +37,32 @@ namespace itk
  * \ingroup Functions
  * \ingroup ITKCommon
  */
-class ITKCommon_EXPORT KernelFunction:public FunctionBase< double, double >
+template< typename TValueType = double >
+class ITKCommon_EXPORT KernelFunction:public FunctionBase< TValueType, TValueType >
 {
 public:
   /** Standard class typedefs. */
-  typedef KernelFunction                 Self;
-  typedef FunctionBase< double, double > Superclass;
-  typedef SmartPointer< Self >           Pointer;
-  typedef SmartPointer< const Self >     ConstPointer;
+  typedef KernelFunction                         Self;
+  typedef FunctionBase< TValueType, TValueType > Superclass;
+  typedef SmartPointer< Self >                   Pointer;
+  typedef SmartPointer< const Self >             ConstPointer;
 
   /** Run-time type information (and related methods). */
   itkTypeMacro(KernelFunction, FunctionBase);
 
   /** Evaluate the function. Subclasses must implement this. */
-  virtual double Evaluate(const double & u) const = 0;
+  virtual TValueType Evaluate(const TValueType & u) const = 0;
+
+#ifdef ITK_USE_STRICT_CONCEPT_CHECKING
+    /** Begin concept checking */
+    itkConceptMacro( TValueTypeIsFloatingPointCheck,
+                         ( Concept::IsFloatingPoint< TValueType > ) );
+      /** End concept checking */
+#endif
 
 protected:
-  KernelFunction();
-  ~KernelFunction();
+  KernelFunction() {};
+  virtual ~KernelFunction() {}; //KernelFunction has no meber variables, so it does not need to be virtual.
   void PrintSelf(std::ostream & os, Indent indent) const
   { Superclass::PrintSelf(os, indent); }
 };

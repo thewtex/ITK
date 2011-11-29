@@ -37,13 +37,14 @@ namespace itk
  * \ingroup Functions
  * \ingroup ITKCommon
  */
-class ITKCommon_EXPORT GaussianKernelFunction:public KernelFunction
+template< typename TValueType = double >
+class ITKCommon_EXPORT GaussianKernelFunction:public KernelFunction<TValueType>
 {
 public:
   /** Standard class typedefs. */
-  typedef GaussianKernelFunction Self;
-  typedef KernelFunction         Superclass;
-  typedef SmartPointer< Self >   Pointer;
+  typedef GaussianKernelFunction     Self;
+  typedef KernelFunction<TValueType> Superclass;
+  typedef SmartPointer< Self >       Pointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -52,18 +53,18 @@ public:
   itkTypeMacro(GaussianKernelFunction, KernelFunction);
 
   /** Evaluate the function. */
-  inline double Evaluate(const double & u) const
-  { return ( vcl_exp( -0.5 * vnl_math_sqr(u) ) * m_Factor ); }
+  inline TValueType Evaluate(const TValueType & u) const
+  { return ( vcl_exp( static_cast< TValueType >(-0.5) * vnl_math_sqr(u) ) * m_Factor ); }
 protected:
-  GaussianKernelFunction();
-  ~GaussianKernelFunction();
+  GaussianKernelFunction(): m_Factor(  NumericTraits< TValueType >::One / vcl_sqrt(static_cast< TValueType >(2.0 * vnl_math::pi )) ) {};
+  virtual ~GaussianKernelFunction() {};
   void PrintSelf(std::ostream & os, Indent indent) const
   { Superclass::PrintSelf(os, indent); }
 private:
   GaussianKernelFunction(const Self &); //purposely not implemented
   void operator=(const Self &);         //purposely not implemented
 
-  static const double m_Factor;
+  const TValueType m_Factor;
 };
 } // end namespace itk
 

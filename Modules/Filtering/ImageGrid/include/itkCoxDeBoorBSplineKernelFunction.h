@@ -55,14 +55,14 @@ namespace itk
  *
  * \ingroup ITKImageGrid
  */
-template<unsigned int VSplineOrder = 3>
+template<unsigned int VSplineOrder = 3, typename TValueType = double>
 class ITK_EXPORT CoxDeBoorBSplineKernelFunction:
-  public KernelFunction
+  public KernelFunction<TValueType>
 {
 public:
   /** Standard class typedefs. */
   typedef CoxDeBoorBSplineKernelFunction Self;
-  typedef KernelFunction                 Superclass;
+  typedef KernelFunction<TValueType>     Superclass;
   typedef SmartPointer<Self>             Pointer;
   typedef SmartPointer<const Self>       ConstPointer;
 
@@ -72,10 +72,9 @@ public:
   /** Run-time type information (and related methods). */
   itkTypeMacro( CoxDeBoorBSplineKernelFunction, KernelFunction );
 
-  typedef double                   RealType;
-  typedef vnl_vector<RealType>     VectorType;
-  typedef vnl_real_polynomial      PolynomialType;
-  typedef vnl_matrix<RealType>     MatrixType;
+  typedef vnl_vector<TValueType> VectorType;
+  typedef vnl_real_polynomial    PolynomialType;
+  typedef vnl_matrix<TValueType> MatrixType;
 
   /** Set the spline order. */
   void SetSplineOrder( const unsigned int );
@@ -84,13 +83,13 @@ public:
   itkGetConstMacro( SplineOrder, unsigned int );
 
   /** Evaluate the function. */
-  RealType Evaluate( const RealType & u ) const;
+  TValueType Evaluate( const TValueType & u ) const;
 
   /** Evaluate the first derivative. */
-  RealType EvaluateDerivative( const double & ) const;
+  TValueType EvaluateDerivative( const TValueType & ) const;
 
   /** Evaluate the Nth derivative. */
-  RealType EvaluateNthDerivative( const double &, const unsigned int ) const;
+  TValueType EvaluateNthDerivative( const TValueType &, const unsigned int ) const;
 
   /**
    * For a specific order, return the ceil( 0.5*(m_SplineOrder+1) )
@@ -107,7 +106,7 @@ public:
 
 protected:
   CoxDeBoorBSplineKernelFunction();
-  ~CoxDeBoorBSplineKernelFunction();
+  virtual ~CoxDeBoorBSplineKernelFunction();
   void PrintSelf( std::ostream & os, Indent indent ) const;
 
 private:

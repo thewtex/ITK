@@ -128,6 +128,8 @@ public:
   typedef typename TransformType::InputPointType       FixedImagePointType;
   typedef typename TransformType::OutputPointType      MovingImagePointType;
 
+  typedef KernelFunction<double>                       KernelFunctionType;
+
   /** Enum of the moving image dimension. */
   itkStaticConstMacro(MovingImageDimension, unsigned int,
                       MovingImageType::ImageDimension);
@@ -173,8 +175,8 @@ public:
 
   /** Set/Get the kernel function. This is used to calculate the joint
    * probability distribution. Default is the GaussianKernelFunction. */
-  itkSetObjectMacro(KernelFunction, KernelFunction);
-  itkGetObjectMacro(KernelFunction, KernelFunction);
+  itkSetObjectMacro(KernelFunction, KernelFunctionType);
+  itkGetObjectMacro(KernelFunction, KernelFunctionType);
 
   /** Reinitialize the seed of the random number generator that selects the
    * sample of pixels used for estimating the image histograms and the joint
@@ -231,7 +233,7 @@ public:
   double       m_FixedImageStandardDeviation;
   double       m_MinProbability;
 
-  typename KernelFunction::Pointer m_KernelFunction;
+  typename KernelFunctionType::Pointer m_KernelFunction;
 
   /** Uniformly select samples from the fixed image buffer.
    * \warning Note that this method has a different signature than the one in
