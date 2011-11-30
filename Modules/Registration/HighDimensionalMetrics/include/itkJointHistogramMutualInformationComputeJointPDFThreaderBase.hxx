@@ -116,7 +116,7 @@ JointHistogramMutualInformationComputeJointPDFThreaderBase< TDomainPartitioner, 
 {
   const ThreadIdType numberOfThreadsUsed = this->GetNumberOfThreadsUsed();
 
-  typedef typename JointHistogramType::pixelType JointHistogramPixelType;
+  typedef typename JointHistogramType::PixelType JointHistogramPixelType;
   JointHistogramPixelType totalHistogramCount = NumericTraits< JointHistogramPixelType >::Zero;
   for( ThreadIdType i = 0; i < numberOfThreadsUsed; ++i )
     {
