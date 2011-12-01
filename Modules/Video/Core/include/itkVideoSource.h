@@ -62,6 +62,7 @@ public:
   typedef typename OutputVideoStreamType::SpacingType       OutputFrameSpacingType;
   typedef typename OutputVideoStreamType::SizeType          OutputFrameSizeType;
   typedef typename OutputVideoStreamType::DirectionType     OutputFrameDirectionType;
+  typedef Superclass::SizeValueType                         SizeValueType;
 
   itkNewMacro(Self);
 
