@@ -70,6 +70,7 @@ public:
   typedef typename InputVideoStreamType::SpacingType       InputFrameSpacingType;
   typedef typename InputVideoStreamType::SizeType          InputFrameSizeType;
   typedef typename InputVideoStreamType::DirectionType     InputFrameDirectionType;
+  typedef itk::SizeValueType                               SizeValueType;
 
   itkNewMacro(Self);
 
