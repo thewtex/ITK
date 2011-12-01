@@ -227,7 +227,7 @@ public:
     }
   const typename JointPDFDerivativesType::Pointer GetJointPDFDerivatives () const
     {
-    if( this->m_m_ThreaderJointPDFDerivatives.size() == 0 )
+    if( this->m_ThreaderJointPDFDerivatives.size() == 0 )
       {
       return JointPDFDerivativesType::Pointer(NULL);
       }
