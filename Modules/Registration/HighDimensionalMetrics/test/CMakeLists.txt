@@ -47,7 +47,7 @@ itk_add_test(NAME itkJointHistogramMutualInformationImageToImageObjectRegistrati
       COMMAND ITKHighDimensionalMetricsTestDriver
       --with-threads 1
       --compare
-      DATA{Baseline/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest_face_50_50_1_2_1.nii.gz}
+      DATA{Baseline/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest_face_50_50_1_2.nii.gz}
       ${TEMP}/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest2.nii.gz
       itkJointHistogramMutualInformationImageToImageObjectRegistrationTest
       DATA{Input/face_avg.jpg}
@@ -62,7 +62,7 @@ itk_add_test(NAME itkJointHistogramMutualInformationImageToImageObjectRegistrati
       COMMAND ITKHighDimensionalMetricsTestDriver
       --with-threads 1
       --compare
-      DATA{Baseline/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest_face_50_50_1_2_1.nii.gz}
+      DATA{Baseline/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest_face_50_50_1_2.nii.gz}
       ${TEMP}/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest3.nii.gz
       --compareIntensityTolerance 2.5
       itkJointHistogramMutualInformationImageToImageObjectRegistrationTest
@@ -78,7 +78,7 @@ itk_add_test(NAME itkJointHistogramMutualInformationImageToImageObjectRegistrati
       COMMAND ITKHighDimensionalMetricsTestDriver
       --with-threads 1
       --compare
-      DATA{Baseline/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest_face_50_50_1_2_1.nii.gz}
+      DATA{Baseline/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest_face_50_50_1_2.nii.gz}
       ${TEMP}/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest4.nii.gz
       --compareIntensityTolerance 0.25
       itkJointHistogramMutualInformationImageToImageObjectRegistrationTest
@@ -94,7 +94,7 @@ itk_add_test(NAME itkJointHistogramMutualInformationImageToImageObjectRegistrati
       COMMAND ITKHighDimensionalMetricsTestDriver
       --with-threads 1
       --compare
-      DATA{Baseline/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest_face_50_50_1_2_1.nii.gz}
+      DATA{Baseline/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest_face_50_50_1_2.nii.gz}
       ${TEMP}/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest5.nii.gz
       --compareIntensityTolerance 0.025
       itkJointHistogramMutualInformationImageToImageObjectRegistrationTest
@@ -110,7 +110,7 @@ itk_add_test(NAME itkJointHistogramMutualInformationImageToImageObjectRegistrati
       COMMAND ITKHighDimensionalMetricsTestDriver
       --with-threads 1
       --compare
-      DATA{Baseline/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest_face_50_50_2_2_1.nii.gz}
+      DATA{Baseline/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest_face_50_50_2_2.nii.gz}
       ${TEMP}/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest6.nii.gz
       --compareNumberOfPixelsTolerance 100
       --compareRadiusTolerance 1
@@ -127,7 +127,7 @@ itk_add_test(NAME itkJointHistogramMutualInformationImageToImageObjectRegistrati
       COMMAND ITKHighDimensionalMetricsTestDriver
       --with-threads 1
       --compare
-      DATA{Baseline/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest_face_50_50_2_2_1.nii.gz}
+      DATA{Baseline/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest_face_50_50_2_2.nii.gz}
       ${TEMP}/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest7.nii.gz
       --compareIntensityTolerance 2.5
       --compareNumberOfPixelsTolerance 100
@@ -145,7 +145,7 @@ itk_add_test(NAME itkJointHistogramMutualInformationImageToImageObjectRegistrati
       COMMAND ITKHighDimensionalMetricsTestDriver
       --with-threads 1
       --compare
-      DATA{Baseline/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest_face_50_50_2_2_1.nii.gz}
+      DATA{Baseline/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest_face_50_50_2_2.nii.gz}
       ${TEMP}/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest8.nii.gz
       --compareIntensityTolerance 2.5
       --compareNumberOfPixelsTolerance 100
@@ -163,7 +163,7 @@ itk_add_test(NAME itkJointHistogramMutualInformationImageToImageObjectRegistrati
       COMMAND ITKHighDimensionalMetricsTestDriver
       --with-threads 1
       --compare
-      DATA{Baseline/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest_face_50_50_2_2_1.nii.gz}
+      DATA{Baseline/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest_face_50_50_2_2.nii.gz}
       ${TEMP}/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest9.nii.gz
       --compareIntensityTolerance 2.5
       --compareNumberOfPixelsTolerance 400
@@ -181,7 +181,7 @@ itk_add_test(NAME itkJointHistogramMutualInformationImageToImageObjectRegistrati
       COMMAND ITKHighDimensionalMetricsTestDriver
       --with-threads 1
       --compare
-      DATA{Baseline/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest_slice_50_50_2_2_1.nii.gz}
+      DATA{Baseline/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest_slice_50_50_2_2.nii.gz}
       ${TEMP}/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest10.nii.gz
       --compareIntensityTolerance 2.5
       --compareNumberOfPixelsTolerance 100
@@ -199,7 +199,7 @@ itk_add_test(NAME itkJointHistogramMutualInformationImageToImageObjectRegistrati
       COMMAND ITKHighDimensionalMetricsTestDriver
       --with-threads 1
       --compare
-      DATA{Baseline/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest_slice_50_50_2_2_1.nii.gz}
+      DATA{Baseline/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest_slice_50_50_2_2.nii.gz}
       ${TEMP}/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest11.nii.gz
       --compareIntensityTolerance 2.5
       --compareNumberOfPixelsTolerance 100
@@ -217,7 +217,7 @@ itk_add_test(NAME itkJointHistogramMutualInformationImageToImageObjectRegistrati
       COMMAND ITKHighDimensionalMetricsTestDriver
       --with-threads 1
       --compare
-      DATA{Baseline/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest_slice_50_50_2_2_1.nii.gz}
+      DATA{Baseline/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest_slice_50_50_2_2.nii.gz}
       ${TEMP}/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest12.nii.gz
       --compareIntensityTolerance 2.5
       --compareNumberOfPixelsTolerance 400
@@ -235,7 +235,7 @@ itk_add_test(NAME itkJointHistogramMutualInformationImageToImageObjectRegistrati
       COMMAND ITKHighDimensionalMetricsTestDriver
       --with-threads 1
       --compare
-      DATA{Baseline/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest_slice_50_50_1_2_1.nii.gz}
+      DATA{Baseline/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest_slice_50_50_1_2.nii.gz}
       ${TEMP}/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest13.nii.gz
       --compareIntensityTolerance 0.25
       itkJointHistogramMutualInformationImageToImageObjectRegistrationTest
@@ -251,7 +251,7 @@ itk_add_test(NAME itkJointHistogramMutualInformationImageToImageObjectRegistrati
       COMMAND ITKHighDimensionalMetricsTestDriver
       --with-threads 1
       --compare
-      DATA{Baseline/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest_slice_50_50_1_2_1.nii.gz}
+      DATA{Baseline/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest_slice_50_50_1_2.nii.gz}
       ${TEMP}/itkJointHistogramMutualInformationImageToImageObjectRegistrationTest14.nii.gz
       --compareIntensityTolerance 0.25
       --compareNumberOfPixelsTolerance 1

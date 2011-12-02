@@ -19,6 +19,7 @@
 #define __itkJointHistogramMutualInformationGetValueAndDerivativeThreader_hxx
 
 #include "itkJointHistogramMutualInformationGetValueAndDerivativeThreader.h"
+#include "itkCompensatedSummation.h"
 
 namespace itk
 {
@@ -140,20 +141,15 @@ JointHistogramMutualInformationGetValueAndDerivativeThreader< TDomainPartitioner
                                                             mappedMovingPoint,
                                                             jacobian);
 
-  // this correction is necessary for consistent derivatives across N threads
-  DerivativeValueType floatingPointCorrectionResolution = this->m_Associate->GetFloatingPointCorrectionResolution();
+  CompensatedSummation< DerivativeValueType > sum;
   for ( NumberOfParametersType par = 0; par < associate->GetNumberOfLocalParameters(); par++ )
     {
-    InternalComputationValueType sum = NumericTraits< InternalComputationValueType >::Zero;
+    sum.ResetToZero();
     for ( SizeValueType dim = 0; dim < TImageToImageMetric::MovingImageDimension; dim++ )
       {
       sum += scalingfactor * jacobian(dim, par) * movingImageGradient[dim];
       }
-    localDerivativeReturn[par] = sum;
-    intmax_t test = static_cast< intmax_t >
-             ( localDerivativeReturn[par] * floatingPointCorrectionResolution );
-    localDerivativeReturn[par] = static_cast< DerivativeValueType >
-                                   ( test / floatingPointCorrectionResolution );
+    localDerivativeReturn[par] = sum.GetSum();
     }
   return true;
 }
