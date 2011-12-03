@@ -20,6 +20,8 @@
 
 #include "itkImageToImageObjectMetricGetValueAndDerivativeThreaderBase.h"
 
+#include "itkNumericTraits.h"
+
 namespace itk
 {
 
