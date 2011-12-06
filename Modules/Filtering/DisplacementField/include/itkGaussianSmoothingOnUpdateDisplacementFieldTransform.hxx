@@ -31,9 +31,6 @@
 namespace itk
 {
 
-/**
- * Constructor
- */
 template<class TScalar, unsigned int NDimensions>
 GaussianSmoothingOnUpdateDisplacementFieldTransform<TScalar, NDimensions>
 ::GaussianSmoothingOnUpdateDisplacementFieldTransform()
@@ -41,11 +38,10 @@ GaussianSmoothingOnUpdateDisplacementFieldTransform<TScalar, NDimensions>
   this->m_GaussianSmoothingVarianceForTheUpdateField = 3.0;
   this->m_GaussianSmoothingVarianceForTheTotalField = 0.5;
   this->m_GaussianSmoothingTempFieldModifiedTime = 0;
+
+  this->m_GaussianSmoothingSmoother = GaussianSmoothingSmootherType::New();
 }
 
-/**
- * Destructor
- */
 template<class TScalar, unsigned int NDimensions>
 GaussianSmoothingOnUpdateDisplacementFieldTransform<TScalar, NDimensions>::
 ~GaussianSmoothingOnUpdateDisplacementFieldTransform()
@@ -139,10 +135,7 @@ typename GaussianSmoothingOnUpdateDisplacementFieldTransform<TScalar, NDimension
 GaussianSmoothingOnUpdateDisplacementFieldTransform<TScalar, NDimensions>
 ::GaussianSmoothDisplacementField( DisplacementFieldType *field, ScalarType variance )
 {
-  if( variance <= 0 )
-    {
-    return field;
-    }
+  itkAssertInDebugAndIgnoreInReleaseMacro( variance > 0.0 );
 
   /* Allocate temp field if new displacement field has been set.
    * We only want to allocate this field if this method is used */
@@ -161,20 +154,11 @@ GaussianSmoothingOnUpdateDisplacementFieldTransform<TScalar, NDimensions>
     m_GaussianSmoothingTempField->SetBufferedRegion(
                                                 field->GetBufferedRegion() );
     m_GaussianSmoothingTempField->Allocate();
-
-    //This should only be allocated once as well, for efficiency.
-    m_GaussianSmoothingSmoother = GaussianSmoothingSmootherType::New();
-    }
-
-  if( m_GaussianSmoothingTempField.IsNull() )
-    {
-    itkExceptionMacro("Expected m_GaussianSmoothingTempField to be allocated.");
     }
 
   typedef typename DisplacementFieldType::PixelType   VectorType;
 
-  typedef typename DisplacementFieldType::PixelContainerPointer
-                                                        PixelContainerPointer;
+  typedef typename DisplacementFieldType::PixelContainerPointer PixelContainerPointer;
   // I think we need to keep this as SmartPointer type, to preserve the
   // reference counting so we can assign the swapPtr to the main field and
   // not have to do a memory copy - this happens when image dimensions are odd.
