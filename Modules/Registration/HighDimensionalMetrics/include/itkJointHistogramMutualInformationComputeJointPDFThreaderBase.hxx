@@ -95,12 +95,12 @@ JointHistogramMutualInformationComputeJointPDFThreaderBase< TDomainPartitioner, 
     }
 
   /** Add the paired intensity points to the joint histogram */
-  JointPDFPointType jointPDFpoint;
-  this->m_Associate->ComputeJointPDFPoint( fixedImageValue, movingImageValue, jointPDFpoint );
-  JointPDFIndexType jointPDFIndex;
-  this->m_JointHistogramPerThread[threadId]->TransformPhysicalPointToIndex( jointPDFpoint, jointPDFIndex );
-  if( this->m_JointHistogramPerThread[threadId]->GetBufferedRegion().IsInside( jointPDFIndex ))
+  if( pointIsValid )
     {
+    JointPDFPointType jointPDFpoint;
+    this->m_Associate->ComputeJointPDFPoint( fixedImageValue, movingImageValue, jointPDFpoint );
+    JointPDFIndexType jointPDFIndex;
+    this->m_JointHistogramPerThread[threadId]->TransformPhysicalPointToIndex( jointPDFpoint, jointPDFIndex );
     typename JointHistogramType::PixelType jointHistogramPixel;
     jointHistogramPixel = this->m_JointHistogramPerThread[threadId]->GetPixel( jointPDFIndex );
     jointHistogramPixel++;
