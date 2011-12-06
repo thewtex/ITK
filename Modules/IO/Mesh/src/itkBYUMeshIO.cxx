@@ -494,7 +494,7 @@ BYUMeshIO
       }
     case ULONG:
       {
-      WriteCells(static_cast< long * >( buffer ), outputFile);
+      WriteCells(static_cast< unsigned  long * >( buffer ), outputFile);
       break;
       }
     case LONG:
