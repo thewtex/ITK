@@ -100,6 +100,7 @@ public:
   typedef TInputImage                      InputImageType;
   typedef typename TInputImage::RegionType RegionType;
   typedef typename TInputImage::SizeType   SizeType;
+  typedef typename TInputImage::SizeValueType SizeValueType;
   typedef typename TInputImage::IndexType  IndexType;
   typedef typename TInputImage::PixelType  PixelType;
   typedef typename TInputImage::OffsetType OffsetType;

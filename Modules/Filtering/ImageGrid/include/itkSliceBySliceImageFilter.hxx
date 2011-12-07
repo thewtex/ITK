@@ -21,6 +21,7 @@
 #include "itkSliceBySliceImageFilter.h"
 #include "itkImageRegionIterator.h"
 #include "itkProgressReporter.h"
+#include "itkImageAlgorithm.h"
 
 namespace itk
 {
@@ -46,17 +47,11 @@ SliceBySliceImageFilter< TInputImage, TOutputImage, TInputFilter, TOutputFilter,
   // call the superclass' implementation of this method
   Superclass::GenerateInputRequestedRegion();
 
-  for ( unsigned int i = 0; i < this->GetNumberOfIndexedInputs(); i++ )
-    {
-    InputImagePointer inputPtr = const_cast< InputImageType * >( this->GetInput(i) );
-
-    if ( !inputPtr )
-      {
-      return;
-      }
-
-    inputPtr->SetRequestedRegion( inputPtr->GetLargestPossibleRegion() );
-    }
+  // the superclases implementation is the correct one to use since it
+  // just copies the enlarged output requested region to the inputs
+  //
+  // UNLESS the dimensions are mixed and
+  // CallCopyOutputRegionToInputRegion will do the wrong thing
 }
 
 template< class TInputImage, class TOutputImage, class TInputFilter, class TOutputFilter, class TInternalInputImageType,
@@ -64,12 +59,35 @@ template< class TInputImage, class TOutputImage, class TInputFilter, class TOutp
 void
 SliceBySliceImageFilter< TInputImage, TOutputImage, TInputFilter, TOutputFilter, TInternalInputImageType,
                          TInternalOutputImageType >
-::EnlargeOutputRequestedRegion(DataObject *)
+::EnlargeOutputRequestedRegion(DataObject *output)
 {
-  for ( unsigned int i = 0; i < this->GetNumberOfIndexedOutputs(); i++ )
+
+  TOutputImage *out = dynamic_cast<TOutputImage*>(output);
+
+  if (out)
     {
-    this->GetOutput(i)->SetRequestedRegion( this->GetOutput(i)->GetLargestPossibleRegion() );
+    const RegionType &largestOutputRegion = out->GetLargestPossibleRegion();
+
+    // verify sane parameter
+    if ( this->m_Dimension >=  largestOutputRegion.GetImageDimension() )
+      {
+      itkExceptionMacro("Dimension selected for slicing is greater than ImageDimension");
+      }
+
+    // The requested region is the largest is all but the slice
+    // dimension. In that dimension we can stream the requested
+    // slices.
+    RegionType outputRegion =  out->GetLargestPossibleRegion();
+    outputRegion.SetIndex( m_Dimension, out->GetRequestedRegion().GetIndex(m_Dimension) );
+    outputRegion.SetSize( m_Dimension, out->GetRequestedRegion().GetSize(m_Dimension) );
+
+    out->SetRequestedRegion( outputRegion );
     }
+
+  // NOTE: we only set the requested region on this passed argummnt
+  // output, because the default
+  // ProcessObject::GenerateOutputRequestedRegion will propogate the
+  // same requested region to the other outputs ( if they exist )
 }
 
 template< class TInputImage, class TOutputImage, class TInputFilter, class TOutputFilter, class TInternalInputImageType,
@@ -140,9 +158,27 @@ SliceBySliceImageFilter< TInputImage, TOutputImage, TInputFilter, TOutputFilter,
     itkExceptionMacro("OutputFilter must be set.");
     }
 
-  for ( unsigned int i = 1; i < this->GetNumberOfIndexedInputs(); i++ )
+  // We store the pointers to avoid std::map lookup's in the internal loop
+  // with GetInput() and GetOutput().
+  const ProcessObject::DataObjectPointerArraySizeType numberOfIndexedInputs = this->GetNumberOfIndexedInputs();
+  std::vector< const InputImageType * > inputs( numberOfIndexedInputs );
+  for ( unsigned int i = 0; i < numberOfIndexedInputs; i++ )
     {
-    if ( this->GetInput()->GetRequestedRegion().GetSize() != this->GetInput(i)->GetRequestedRegion().GetSize() )
+    inputs[i] = this->GetInput( i );
+    }
+  const ProcessObject::DataObjectPointerArraySizeType numberOfIndexedOutputs = this->GetNumberOfIndexedOutputs();
+  std::vector< OutputImageType * > outputs( numberOfIndexedOutputs );
+  std::vector< InternalOutputImageType * > outputFilterOutputs( numberOfIndexedOutputs );
+  for ( unsigned int i = 0; i < numberOfIndexedOutputs; i++ )
+    {
+    outputs[i] = this->GetOutput( i );
+    outputFilterOutputs[i] = this->m_OutputFilter->GetOutput( i );
+    }
+
+  const SizeType firstInputSize = inputs[0]->GetRequestedRegion().GetSize();
+  for ( unsigned int i = 1; i < numberOfIndexedInputs; i++ )
+    {
+    if ( firstInputSize != inputs[i]->GetRequestedRegion().GetSize() )
       {
       itkExceptionMacro(<< "Inputs must have the same size.");
       }
@@ -150,134 +186,85 @@ SliceBySliceImageFilter< TInputImage, TOutputImage, TInputFilter, TOutputFilter,
 
   this->AllocateOutputs();
 
-  RegionType requestedRegion = this->GetOutput()->GetRequestedRegion();
-  IndexType  requestedIndex = requestedRegion.GetIndex();
-  SizeType   requestedSize = requestedRegion.GetSize();
+
+  const RegionType requestedRegion = outputs[0]->GetRequestedRegion();
+  const IndexType requestedIndex = requestedRegion.GetIndex();
+  const SizeType requestedSize = requestedRegion.GetSize();
 
   InternalRegionType internalRegion;
-  InternalSizeType   internalSize;
-  InternalIndexType  internalIndex;
 
-  for ( unsigned int i = 0; i < InternalImageDimension; i++ )
+  // copy the requested region to the internal slice region in
+  // dimension order
+  unsigned int requested_i = 0;
+  for ( unsigned int internal_i = 0; internal_i < InternalImageDimension; ++requested_i, ++internal_i )
     {
-    if ( i != this->m_Dimension )
+    if ( requested_i == this->m_Dimension )
       {
-      internalSize[i] = requestedSize[i];
-      internalIndex[i] = requestedIndex[i];
+      ++requested_i;
       }
-    else
-      {
-      internalSize[i] = requestedSize[ImageDimension - 1];
-      internalIndex[i] = requestedIndex[ImageDimension - 1];
-      }
+    internalRegion.SetSize( internal_i, requestedSize[requested_i] );
+    internalRegion.SetIndex( internal_i, requestedIndex[requested_i] );
     }
-  internalRegion.SetSize(internalSize);
-  internalRegion.SetIndex(internalIndex);
 
   ProgressReporter progress(this, 0, requestedSize[m_Dimension]);
 
-  const int sliceRange =
-    static_cast< int >( requestedSize[m_Dimension] ) + requestedIndex[m_Dimension];
+  // allocate a vector to store internal image
+  typedef typename InternalInputImageType::Pointer InternalInputImagePointer;
+  std::vector< InternalInputImagePointer > internalInputs( this->GetNumberOfIndexedInputs() );
 
-  for ( int slice = requestedIndex[m_Dimension]; slice < sliceRange; slice++ )
-    {
-    // say to the user that we are begining a new slice
-    m_SliceIndex = slice;
-    this->InvokeEvent( IterationEvent() );
-
-    // reallocate the internal input at each slice, so the slice by slice filter
-    // can work
-    // even if the pipeline is run in place
-    typedef typename InternalInputImageType::Pointer InternalInputImagePointer;
-    std::vector< InternalInputImagePointer > internalInputs;
-
-    internalInputs.resize( this->GetNumberOfIndexedInputs() );
-
-    for ( unsigned int i = 0; i < this->GetNumberOfIndexedInputs(); i++ )
+  // keep the internal input around each iteration, because if the
+  // fitlers are not run inplace, we don't need to reallocate each iteration
+  for ( unsigned int i = 0; i < numberOfIndexedInputs; i++ )
       {
       internalInputs[i] = InternalInputImageType::New();
-      internalInputs[i]->SetRegions(internalRegion);
+      }
+
+  const SizeValueType sliceRangeMax =
+    requestedSize[m_Dimension] + static_cast< SizeValueType >( requestedIndex[m_Dimension] );
+
+  for ( IndexValueType slice = requestedIndex[m_Dimension]; slice < sliceRangeMax; ++slice )
+    {
+    // say to the user that we are begining a new slice
+    this->m_SliceIndex = slice;
+    this->InvokeEvent( IterationEvent() );
+
+    // this region is the current region for the input and output we
+    // are iterating on
+    RegionType currentRegion = outputs[0]->GetRequestedRegion();
+    currentRegion.SetIndex( m_Dimension, slice );
+    currentRegion.SetSize( m_Dimension, 1 );
+
+    itkAssertOrThrowMacro( currentRegion.GetNumberOfPixels() == internalRegion.GetNumberOfPixels(), "currentRegion.GetNumberOfPixels() == internalRegion.GetNumberOfPixel()" );
+
+    itkDebugMacro( "currentRegion: " << currentRegion );
+    itkDebugMacro( "internalRegion: " << internalRegion );
+
+    // reallocate the internal input at each slice, so the slice by slice filter can work
+    // even if the internal pipeline is run in place
+    for ( unsigned int i = 0; i < numberOfIndexedInputs; i++ )
+      {
+      internalInputs[i]->SetRegions( internalRegion );
       internalInputs[i]->Allocate();
       m_InputFilter->SetInput(i, internalInputs[i]);
       }
 
-    // copy the current slice to the input image
-    typedef ImageRegionIterator< InternalInputImageType > InputIteratorType;
-    std::vector< InputIteratorType > inputIterators;
-    inputIterators.resize( this->GetNumberOfIndexedInputs() );
-
-    for ( unsigned int i = 0; i < this->GetNumberOfIndexedInputs(); i++ )
+    for ( unsigned int i = 0; i < numberOfIndexedInputs; i++ )
       {
-      inputIterators[i] = InputIteratorType(internalInputs[i], internalRegion);
-      inputIterators[i].GoToBegin();
-      }
-
-    while ( !inputIterators[0].IsAtEnd() )
-      {
-      IndexType               idx;
-      const InternalIndexType iidx = inputIterators[0].GetIndex();
-      for ( unsigned int i = 0; i < InternalImageDimension; i++ )
-        {
-        if ( i >= m_Dimension )
-          {
-          idx[i + 1] = iidx[i];
-          }
-        else
-          {
-          idx[i] = iidx[i];
-          }
-        }
-      idx[m_Dimension] = slice;
-
-      for ( unsigned int i = 0; i < this->GetNumberOfIndexedInputs(); i++ )
-        {
-        inputIterators[i].Set( this->GetInput(i)->GetPixel(idx) );
-        ++( inputIterators[i] );
-        }
+      // copy the current slices of the input to the internalInputs
+      ImageAlgorithm::Copy( inputs[i], internalInputs[i].GetPointer(),  currentRegion, internalRegion );
       }
 
     // run the filter on the current slice
-    m_InputFilter->Modified();
-    m_OutputFilter->Modified(); // should not be needed, but may help in some
-                                // cases
-    m_OutputFilter->UpdateLargestPossibleRegion();
+    this->m_InputFilter->Modified();
+    this->m_OutputFilter->Modified(); // should not be needed, but may
+                                      // help in some cases
+    this->m_OutputFilter->UpdateLargestPossibleRegion();
     progress.CompletedPixel();
 
-    // and copy the output slice to the output image
-    typedef ImageRegionConstIterator< InternalOutputImageType > OutputIteratorType;
-    std::vector< OutputIteratorType > outputIterators;
-
-    outputIterators.resize( this->GetNumberOfIndexedOutputs() );
-
-    for ( unsigned int i = 0; i < this->GetNumberOfIndexedOutputs(); i++ )
+    // and copy the output slice to a slices in output image
+    for ( unsigned int i = 0; i < numberOfIndexedOutputs; i++ )
       {
-      outputIterators[i] = OutputIteratorType(m_OutputFilter->GetOutput(i), internalRegion);
-      outputIterators[i].GoToBegin();
-      }
-
-    while ( !outputIterators[0].IsAtEnd() )
-      {
-      IndexType               idx;
-      const InternalIndexType iidx = outputIterators[0].GetIndex();
-      for ( unsigned int i = 0; i < InternalImageDimension; i++ )
-        {
-        if ( i >= m_Dimension )
-          {
-          idx[i + 1] = iidx[i];
-          }
-        else
-          {
-          idx[i] = iidx[i];
-          }
-        }
-
-      idx[m_Dimension] = slice;
-
-      for ( unsigned int i = 0; i < this->GetNumberOfIndexedOutputs(); i++ )
-        {
-        this->GetOutput(i)->SetPixel( idx, outputIterators[i].Get() );
-        ++( outputIterators[i] );
-        }
+      ImageAlgorithm::Copy( outputFilterOutputs[i], outputs[i], internalRegion, currentRegion );
       }
     }
 }
