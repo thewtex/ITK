@@ -278,6 +278,17 @@ ImageToImageObjectMetric<TFixedImage, TMovingImage, TVirtualImage >
 }
 
 template<class TFixedImage,class TMovingImage,class TVirtualImage>
+typename ImageToImageObjectMetric<TFixedImage, TMovingImage, TVirtualImage>::MeasureType
+ImageToImageObjectMetric<TFixedImage, TMovingImage, TVirtualImage>
+::GetValue() const
+{
+  DerivativeType derivative;
+  MeasureType value;
+  this->GetValueAndDerivative( value, derivative );
+  return value;
+}
+
+template<class TFixedImage,class TMovingImage,class TVirtualImage>
 void
 ImageToImageObjectMetric<TFixedImage, TMovingImage, TVirtualImage>
 ::GetValueAndDerivative( MeasureType & value,
