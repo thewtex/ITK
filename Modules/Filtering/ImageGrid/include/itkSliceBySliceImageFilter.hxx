@@ -179,8 +179,27 @@ SliceBySliceImageFilter< TInputImage, TOutputImage, TInputFilter, TOutputFilter,
   const int sliceRange =
     static_cast< int >( requestedSize[m_Dimension] ) + requestedIndex[m_Dimension];
 
-  for ( int slice = requestedIndex[m_Dimension]; slice < sliceRange; slice++ )
+  typedef ImageRegionConstIterator< InputImageType > InputImageIteratorType;
+  std::vector< InputImageIteratorType > inputImageIterators;
+  for (unsigned int i = 0; i < this->GetNumberOfIndexedInputs(); ++i)
     {
+    InputImageIteratorType iterator = InputImageIteratorType(this->GetInput(i), requestedRegion);
+    iterator.GoToBegin();
+    inputImageIterators.push_back(iterator);
+    }
+
+  typedef ImageRegionIterator< OutputImageType > OutputImageIteratorType;
+  std::vector< OutputImageIteratorType > outputImageIterators;
+  for (unsigned int i = 0; i < this->GetNumberOfIndexedOutputs(); ++i)
+    {
+    OutputImageIteratorType iterator = OutputImageIteratorType(this->GetOutput(i), requestedRegion);
+    iterator.GoToBegin();
+    outputImageIterators.push_back(iterator);
+    }
+
+  for( int slice = requestedIndex[m_Dimension]; slice < sliceRange; slice++ )
+    {
+
     // say to the user that we are begining a new slice
     m_SliceIndex = slice;
     this->InvokeEvent( IterationEvent() );
@@ -202,39 +221,18 @@ SliceBySliceImageFilter< TInputImage, TOutputImage, TInputFilter, TOutputFilter,
       }
 
     // copy the current slice to the input image
-    typedef ImageRegionIterator< InternalInputImageType > InputIteratorType;
-    std::vector< InputIteratorType > inputIterators;
-    inputIterators.resize( this->GetNumberOfIndexedInputs() );
+    typedef ImageRegionIterator< InternalInputImageType > InternalInputIteratorType;
+    for( unsigned int i = 0; i < this->GetNumberOfIndexedOutputs(); i++ )
+    {
+        InternalInputIteratorType filterInputIterator(internalInputs[i], internalRegion);
+        for (filterInputIterator.GoToBegin();
+             !filterInputIterator.IsAtEnd();
+             ++filterInputIterator, ++(inputImageIterators[i]))
 
-    for ( unsigned int i = 0; i < this->GetNumberOfIndexedInputs(); i++ )
-      {
-      inputIterators[i] = InputIteratorType(internalInputs[i], internalRegion);
-      inputIterators[i].GoToBegin();
-      }
-
-    while ( !inputIterators[0].IsAtEnd() )
-      {
-      IndexType               idx;
-      const InternalIndexType iidx = inputIterators[0].GetIndex();
-      for ( unsigned int i = 0; i < InternalImageDimension; i++ )
         {
-        if ( i >= m_Dimension )
-          {
-          idx[i + 1] = iidx[i];
-          }
-        else
-          {
-          idx[i] = iidx[i];
-          }
+            filterInputIterator.Set(inputImageIterators[i].Get());
         }
-      idx[m_Dimension] = slice;
-
-      for ( unsigned int i = 0; i < this->GetNumberOfIndexedInputs(); i++ )
-        {
-        inputIterators[i].Set( this->GetInput(i)->GetPixel(idx) );
-        ++( inputIterators[i] );
-        }
-      }
+    }
 
     // run the filter on the current slice
     m_InputFilter->Modified();
@@ -243,43 +241,20 @@ SliceBySliceImageFilter< TInputImage, TOutputImage, TInputFilter, TOutputFilter,
     m_OutputFilter->UpdateLargestPossibleRegion();
     progress.CompletedPixel();
 
-    // and copy the output slice to the output image
-    typedef ImageRegionConstIterator< InternalOutputImageType > OutputIteratorType;
-    std::vector< OutputIteratorType > outputIterators;
+    typedef itk::ImageRegionConstIterator< InternalOutputImageType > InternalOutputIteratorType;
+    for( unsigned int i = 0; i < this->GetNumberOfIndexedOutputs(); i++ )
+    {
+        InternalOutputIteratorType filterOutputIterator(m_OutputFilter->GetOutput(i), internalRegion);
+        for (filterOutputIterator.GoToBegin();
+             !filterOutputIterator.IsAtEnd();
+             ++filterOutputIterator, ++(outputImageIterators[i]))
 
-    outputIterators.resize( this->GetNumberOfIndexedOutputs() );
-
-    for ( unsigned int i = 0; i < this->GetNumberOfIndexedOutputs(); i++ )
-      {
-      outputIterators[i] = OutputIteratorType(m_OutputFilter->GetOutput(i), internalRegion);
-      outputIterators[i].GoToBegin();
-      }
-
-    while ( !outputIterators[0].IsAtEnd() )
-      {
-      IndexType               idx;
-      const InternalIndexType iidx = outputIterators[0].GetIndex();
-      for ( unsigned int i = 0; i < InternalImageDimension; i++ )
         {
-        if ( i >= m_Dimension )
-          {
-          idx[i + 1] = iidx[i];
-          }
-        else
-          {
-          idx[i] = iidx[i];
-          }
+            outputImageIterators[i].Set(filterOutputIterator.Get());
         }
-
-      idx[m_Dimension] = slice;
-
-      for ( unsigned int i = 0; i < this->GetNumberOfIndexedOutputs(); i++ )
-        {
-        this->GetOutput(i)->SetPixel( idx, outputIterators[i].Get() );
-        ++( outputIterators[i] );
-        }
-      }
     }
+
+  }
 }
 
 template< class TInputImage, class TOutputImage, class TInputFilter, class TOutputFilter, class TInternalInputImageType,
