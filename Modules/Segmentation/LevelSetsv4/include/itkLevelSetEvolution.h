@@ -32,6 +32,8 @@
 #include "itkMalcolmSparseLevelSetImage.h"
 #include "itkUpdateMalcolmSparseLevelSet.h"
 
+#include "itkLevelSetEvolutionComputeIterationThreader.h"
+
 namespace itk
 {
 /**
