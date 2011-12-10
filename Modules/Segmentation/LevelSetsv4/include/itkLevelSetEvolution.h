@@ -156,12 +156,8 @@ protected:
 
 
 template< class TEquationContainer, typename TOutput, unsigned int VDimension >
-class LevelSetEvolution<
-    TEquationContainer,
-    WhitakerSparseLevelSetImage< TOutput, VDimension > > :
-  public LevelSetEvolutionBase<
-    TEquationContainer,
-    WhitakerSparseLevelSetImage< TOutput, VDimension > >
+class LevelSetEvolution< TEquationContainer, WhitakerSparseLevelSetImage< TOutput, VDimension > > :
+  public LevelSetEvolutionBase< TEquationContainer, WhitakerSparseLevelSetImage< TOutput, VDimension > >
 {
 public:
   typedef WhitakerSparseLevelSetImage< TOutput, VDimension > LevelSetType;
@@ -200,14 +196,12 @@ public:
   typedef typename Superclass::LevelSetContainerConstIteratorType LevelSetContainerConstIteratorType;
   typedef typename Superclass::LevelSetContainerIteratorType      LevelSetContainerIteratorType;
 
-  typedef typename Superclass::LevelSetPointer        LevelSetPointer;
   typedef typename Superclass::LevelSetInputType      LevelSetInputType;
   typedef typename Superclass::LevelSetOutputType     LevelSetOutputType;
   typedef typename Superclass::LevelSetOutputRealType LevelSetOutputRealType;
   typedef typename Superclass::LevelSetDataType       LevelSetDataType;
 
   typedef typename LevelSetType::LayerType             LevelSetLayerType;
-  typedef typename LevelSetType::LayerIterator         LevelSetLayerIterator;
 
   typedef typename LevelSetType::LabelMapType          LevelSetLabelMapType;
   typedef typename LevelSetType::LabelMapPointer       LevelSetLabelMapPointer;
@@ -252,6 +246,11 @@ protected:
 
   /** Update the equations at the end of 1 iteration */
   virtual void UpdateEquations();
+
+  typedef ThreadedIteratorRangePartitioner< typename LevelSetType::LayerConstIterator > SingleLevelSetPartitionerType;
+  friend class LevelSetEvolutionComputeIterationThreader< LevelSetType, SingleLevelSetPartitionerType, Self >;
+  typedef LevelSetEvolutionComputeIterationThreader< LevelSetType, SingleLevelSetPartitionerType, Self > SingleLevelSetComputeIterationThreaderType;
+  typename SingleLevelSetComputeIterationThreaderType::Pointer m_SingleLevelSetComputeIterationThreader;
 
 private:
   LevelSetEvolution( const Self& );
@@ -303,14 +302,12 @@ public:
   typedef typename Superclass::LevelSetContainerConstIteratorType LevelSetContainerConstIteratorType;
   typedef typename Superclass::LevelSetContainerIteratorType      LevelSetContainerIteratorType;
 
-  typedef typename Superclass::LevelSetPointer        LevelSetPointer;
   typedef typename Superclass::LevelSetInputType      LevelSetInputType;
   typedef typename Superclass::LevelSetOutputType     LevelSetOutputType;
   typedef typename Superclass::LevelSetOutputRealType LevelSetOutputRealType;
   typedef typename Superclass::LevelSetDataType       LevelSetDataType;
 
   typedef typename LevelSetType::LayerType             LevelSetLayerType;
-  typedef typename LevelSetType::LayerIterator         LevelSetLayerIterator;
 
   typedef typename LevelSetType::LabelMapType          LevelSetLabelMapType;
   typedef typename LevelSetType::LabelMapPointer       LevelSetLabelMapPointer;
