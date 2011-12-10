@@ -66,6 +66,85 @@ LevelSetEvolutionComputeIterationThreader< LevelSetDenseImageBase< TImage >, Thr
     }
 }
 
+template< class TOutput, unsigned int VDimension, class TLevelSetEvolution >
+LevelSetEvolutionComputeIterationThreader<
+      WhitakerSparseLevelSetImage< TOutput, VDimension >,
+      ThreadedIteratorRangePartitioner< typename WhitakerSparseLevelSetImage< TOutput, VDimension >::LayerConstIterator >,
+      TLevelSetEvolution >
+::LevelSetEvolutionComputeIterationThreader()
+{
+}
+
+template< class TOutput, unsigned int VDimension, class TLevelSetEvolution >
+void
+LevelSetEvolutionComputeIterationThreader<
+      WhitakerSparseLevelSetImage< TOutput, VDimension >,
+      ThreadedIteratorRangePartitioner< typename WhitakerSparseLevelSetImage< TOutput, VDimension >::LayerConstIterator >,
+      TLevelSetEvolution >
+::BeforeThreadedExecution()
+{
+  this->m_NodePairsPerThread.resize( this->GetNumberOfThreadsUsed() );
+
+  for( ThreadIdType ii = 0; ii < this->GetNumberOfThreadsUsed(); ++ii )
+    {
+    this->m_NodePairsPerThread[ii].clear();
+    }
+}
+
+template< class TOutput, unsigned int VDimension, class TLevelSetEvolution >
+void
+LevelSetEvolutionComputeIterationThreader<
+      WhitakerSparseLevelSetImage< TOutput, VDimension >,
+      ThreadedIteratorRangePartitioner< typename WhitakerSparseLevelSetImage< TOutput, VDimension >::LayerConstIterator >,
+      TLevelSetEvolution >
+::ThreadedExecution( const DomainType & iteratorSubRange,
+                     const ThreadIdType threadId )
+{
+  typename LevelSetContainerType::Iterator it = this->m_Associate->m_LevelSetContainer->Begin();
+  typename LevelSetType::ConstPointer levelSet = it->GetLevelSet();
+
+  LevelSetIdentifierType levelSetId = it->GetIdentifier();
+  typename TermContainerType::Pointer termContainer = this->m_Associate->m_EquationContainer->GetEquation( levelSetId );
+
+  typename LevelSetType::LayerConstIterator listIt = iteratorSubRange.Begin();
+
+  while( listIt != iteratorSubRange.End() )
+    {
+    const LevelSetInputType idx = listIt->first;
+
+    LevelSetDataType characteristics;
+
+    termContainer->ComputeRequiredData( idx, characteristics );
+
+    const LevelSetOutputType temp_update =
+        static_cast< LevelSetOutputType >( termContainer->Evaluate( idx, characteristics ) );
+
+    this->m_NodePairsPerThread[threadId].push_back( NodePairType( idx, temp_update ) );
+
+    ++listIt;
+    }
+}
+
+template< class TOutput, unsigned int VDimension, class TLevelSetEvolution >
+void
+LevelSetEvolutionComputeIterationThreader<
+      WhitakerSparseLevelSetImage< TOutput, VDimension >,
+      ThreadedIteratorRangePartitioner< typename WhitakerSparseLevelSetImage< TOutput, VDimension >::LayerConstIterator >,
+      TLevelSetEvolution >
+::AfterThreadedExecution()
+{
+  typename LevelSetContainerType::Iterator it = this->m_Associate->m_LevelSetContainer->Begin();
+  LevelSetIdentifierType levelSetId = it->GetIdentifier();
+
+  for( ThreadIdType ii = 0; ii < this->GetNumberOfThreadsUsed(); ++ii )
+    {
+    for( typename std::vector< NodePairType >::const_iterator pairIt = this->m_NodePairsPerThread[ii].begin(); pairIt != this->m_NodePairsPerThread[ii].end(); ++pairIt )
+      {
+      this->m_Associate->m_UpdateBuffer[ levelSetId ]->insert( *pairIt );
+      }
+    }
+}
+
 } // end namespace itk
 
 #endif
