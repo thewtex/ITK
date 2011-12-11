@@ -263,6 +263,11 @@ protected:
   typedef LevelSetEvolutionComputeIterationThreader< LevelSetType, SingleLevelSetPartitionerType, Self > SingleLevelSetComputeIterationThreaderType;
   typename SingleLevelSetComputeIterationThreaderType::Pointer m_SingleLevelSetComputeIterationThreader;
 
+  typedef ThreadedIteratorRangePartitioner< typename LevelSetContainerType::Iterator > ThreadedLevelSetContainerPartitionerType;
+  friend class LevelSetEvolutionComputeIterationThreader< LevelSetType, ThreadedLevelSetContainerPartitionerType, Self >;
+  typedef LevelSetEvolutionComputeIterationThreader< LevelSetType, ThreadedLevelSetContainerPartitionerType, Self > MultipleLevelSetComputeIterationThreaderType;
+  typename MultipleLevelSetComputeIterationThreaderType::Pointer m_MultipleLevelSetComputeIterationThreader;
+
 private:
   LevelSetEvolution( const Self& );
   void operator = ( const Self& );

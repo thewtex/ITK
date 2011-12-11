@@ -96,6 +96,7 @@ class LevelSetEvolutionUpdateLevelSetsThreader< LevelSetDenseImageBase< TImage >
 public:
   typedef typename TLevelSetEvolution::LevelSetContainerType::ConstIterator LevelSetContainerIteratorType;
   typedef ThreadedIteratorRangePartitioner< LevelSetContainerIteratorType > ThreadedLevelSetContainerPartitionerType;
+
   /** Standard class typedefs. */
   typedef LevelSetEvolutionUpdateLevelSetsThreader                                       Self;
   typedef DomainThreader< ThreadedLevelSetContainerPartitionerType, TLevelSetEvolution > Superclass;
