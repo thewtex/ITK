@@ -158,6 +158,11 @@ protected:
   friend class LevelSetEvolutionUpdateLevelSetsThreader< LevelSetType, ThreadedImageRegionPartitioner< TImage::ImageDimension >, Self >;
   typedef LevelSetEvolutionUpdateLevelSetsThreader< LevelSetType, ThreadedImageRegionPartitioner< TImage::ImageDimension >, Self > SingleLevelSetUpdateLevelSetsThreaderType;
   typename SingleLevelSetUpdateLevelSetsThreaderType::Pointer m_SingleLevelSetUpdateLevelSetsThreader;
+
+  typedef ThreadedIteratorRangePartitioner< typename LevelSetContainerType::ConstIterator > ThreadedLevelSetContainerPartitionerType;
+  friend class LevelSetEvolutionUpdateLevelSetsThreader< LevelSetType, ThreadedLevelSetContainerPartitionerType, Self >;
+  typedef LevelSetEvolutionUpdateLevelSetsThreader< LevelSetType, ThreadedLevelSetContainerPartitionerType, Self > MultipleLevelSetUpdateLevelSetsThreaderType;
+  typename MultipleLevelSetUpdateLevelSetsThreaderType::Pointer m_MultipleLevelSetUpdateLevelSetsThreader;
 };
 
 
