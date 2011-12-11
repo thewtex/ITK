@@ -149,6 +149,12 @@ protected:
   typedef LevelSetEvolutionComputeIterationThreader< LevelSetType, ThreadedImageRegionPartitioner< TImage::ImageDimension >, Self > SingleLevelSetComputeIterationThreaderType;
   typename SingleLevelSetComputeIterationThreaderType::Pointer m_SingleLevelSetComputeIterationThreader;
 
+  typedef typename DomainMapImageFilterType::DomainMapType::const_iterator DomainMapConstIteratorType;
+  typedef ThreadedIteratorRangePartitioner< DomainMapConstIteratorType >   ThreadedDomainMapPartitionerType;
+  friend class LevelSetEvolutionComputeIterationThreader< LevelSetType, ThreadedDomainMapPartitionerType, Self >;
+  typedef LevelSetEvolutionComputeIterationThreader< LevelSetType, ThreadedDomainMapPartitionerType, Self > MultipleLevelSetComputeIterationThreaderType;
+  typename MultipleLevelSetComputeIterationThreaderType::Pointer m_MultipleLevelSetComputeIterationThreader;
+
   friend class LevelSetEvolutionUpdateLevelSetsThreader< LevelSetType, ThreadedImageRegionPartitioner< TImage::ImageDimension >, Self >;
   typedef LevelSetEvolutionUpdateLevelSetsThreader< LevelSetType, ThreadedImageRegionPartitioner< TImage::ImageDimension >, Self > SingleLevelSetUpdateLevelSetsThreaderType;
   typename SingleLevelSetUpdateLevelSetsThreaderType::Pointer m_SingleLevelSetUpdateLevelSetsThreader;

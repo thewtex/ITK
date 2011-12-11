@@ -81,7 +81,58 @@ private:
   void operator=( const Self & ); // purposely not implemented
 };
 
-// For dense image level set with a single evolving level set.
+// For dense image level set with multiple evolving level sets.
+template< class TImage, class TLevelSetEvolution >
+class LevelSetEvolutionComputeIterationThreader<
+  LevelSetDenseImageBase< TImage >,
+  ThreadedIteratorRangePartitioner< typename TLevelSetEvolution::DomainMapImageFilterType::DomainMapType::const_iterator >,
+  TLevelSetEvolution >
+    : public DomainThreader< ThreadedIteratorRangePartitioner< typename TLevelSetEvolution::DomainMapImageFilterType::DomainMapType::const_iterator >, TLevelSetEvolution >
+{
+public:
+  typedef typename TLevelSetEvolution::DomainMapImageFilterType::DomainMapType::const_iterator DomainMapConstIteratorType;
+  typedef ThreadedIteratorRangePartitioner< DomainMapConstIteratorType >                       ThreadedDomainMapPartitionerType;
+
+  /** Standard class typedefs. */
+  typedef LevelSetEvolutionComputeIterationThreader                              Self;
+  typedef DomainThreader< ThreadedDomainMapPartitionerType, TLevelSetEvolution > Superclass;
+  typedef SmartPointer< Self >                                                   Pointer;
+  typedef SmartPointer< const Self >                                             ConstPointer;
+
+  /** Run time type information. */
+  itkTypeMacro( LevelSetEvolutionComputeIterationThreader, DomainThreader );
+
+  /** Standard New macro. */
+  itkNewMacro( Self );
+
+  /** Superclass types. */
+  typedef typename Superclass::DomainType    DomainType;
+  typedef typename Superclass::AssociateType AssociateType;
+
+  /** Types of the associate class. */
+  typedef TLevelSetEvolution                                     LevelSetEvolutionType;
+  typedef typename LevelSetEvolutionType::LevelSetType           LevelSetType;
+  typedef typename LevelSetEvolutionType::LevelSetImageType      LevelSetImageType;
+  typedef typename LevelSetEvolutionType::LevelSetDataType       LevelSetDataType;
+  typedef typename LevelSetEvolutionType::LevelSetOutputRealType LevelSetOutputRealType;
+  typedef typename LevelSetEvolutionType::LevelSetContainerType  LevelSetContainerType;
+  typedef typename LevelSetEvolutionType::EquationContainerType  EquationContainerType;
+  typedef typename LevelSetEvolutionType::TermContainerType      TermContainerType;
+  typedef typename LevelSetEvolutionType::InputImageType         InputImageType;
+  typedef typename LevelSetEvolutionType::IdListType             IdListType;
+  typedef typename LevelSetEvolutionType::IdListIterator         IdListIterator;
+
+protected:
+  LevelSetEvolutionComputeIterationThreader();
+
+  virtual void ThreadedExecution( const DomainType & iteratorSubRegion, const ThreadIdType threadId );
+
+private:
+  LevelSetEvolutionComputeIterationThreader( const Self & ); // purposely not implemented
+  void operator=( const Self & ); // purposely not implemented
+};
+
+// For Whitaker level set with a single evolving level set.
 template< class TOutput, unsigned int VDimension, class TLevelSetEvolution >
 class LevelSetEvolutionComputeIterationThreader<
       WhitakerSparseLevelSetImage< TOutput, VDimension >,
