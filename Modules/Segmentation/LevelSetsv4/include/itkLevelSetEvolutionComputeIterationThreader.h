@@ -186,6 +186,56 @@ private:
   void operator=( const Self & ); // purposely not implemented
 };
 
+// For Whitaker level set with multiple evolving level sets.
+template< class TOutput, unsigned int VDimension, class TLevelSetEvolution >
+class LevelSetEvolutionComputeIterationThreader<
+  WhitakerSparseLevelSetImage< TOutput, VDimension >,
+  ThreadedIteratorRangePartitioner< typename TLevelSetEvolution::LevelSetContainerType::Iterator >,
+  TLevelSetEvolution >
+    : public DomainThreader< ThreadedIteratorRangePartitioner< typename TLevelSetEvolution::LevelSetContainerType::Iterator >, TLevelSetEvolution >
+{
+public:
+  typedef typename TLevelSetEvolution::LevelSetContainerType::Iterator LevelSetContainerIteratorType;
+  typedef ThreadedIteratorRangePartitioner< LevelSetContainerIteratorType > ThreadedLevelSetContainerPartitionerType;
+
+  /** Standard class typedefs. */
+  typedef LevelSetEvolutionComputeIterationThreader                                      Self;
+  typedef DomainThreader< ThreadedLevelSetContainerPartitionerType, TLevelSetEvolution > Superclass;
+  typedef SmartPointer< Self >                                                           Pointer;
+  typedef SmartPointer< const Self >                                                     ConstPointer;
+
+  /** Run time type information. */
+  itkTypeMacro( LevelSetEvolutionComputeIterationThreader, DomainThreader );
+
+  /** Standard New macro. */
+  itkNewMacro( Self );
+
+  /** Superclass types. */
+  typedef typename Superclass::DomainType    DomainType;
+  typedef typename Superclass::AssociateType AssociateType;
+
+  /** Types of the associate class. */
+  typedef TLevelSetEvolution                                     LevelSetEvolutionType;
+  typedef typename LevelSetEvolutionType::LevelSetType           LevelSetType;
+  typedef typename LevelSetEvolutionType::LevelSetContainerType  LevelSetContainerType;
+  typedef typename LevelSetEvolutionType::LevelSetIdentifierType LevelSetIdentifierType;
+  typedef typename LevelSetEvolutionType::LevelSetInputType      LevelSetInputType;
+  typedef typename LevelSetEvolutionType::LevelSetOutputType     LevelSetOutputType;
+  typedef typename LevelSetEvolutionType::LevelSetDataType       LevelSetDataType;
+  typedef typename LevelSetEvolutionType::LevelSetLayerType      LevelSetLayerType;
+  typedef typename LevelSetEvolutionType::TermContainerType      TermContainerType;
+  typedef typename LevelSetEvolutionType::NodePairType           NodePairType;
+
+protected:
+  LevelSetEvolutionComputeIterationThreader();
+
+  virtual void ThreadedExecution( const DomainType & iteratorSubRange, const ThreadIdType threadId );
+
+private:
+  LevelSetEvolutionComputeIterationThreader( const Self & ); // purposely not implemented
+  void operator=( const Self & ); // purposely not implemented
+};
+
 } // namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION

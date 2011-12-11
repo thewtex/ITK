@@ -32,6 +32,7 @@ LevelSetEvolution< TEquationContainer, LevelSetDenseImageBase< TImage > >
   this->m_SingleLevelSetComputeIterationThreader = SingleLevelSetComputeIterationThreaderType::New();
   this->m_MultipleLevelSetComputeIterationThreader = MultipleLevelSetComputeIterationThreaderType::New();
   this->m_SingleLevelSetUpdateLevelSetsThreader = SingleLevelSetUpdateLevelSetsThreaderType::New();
+  this->m_MultipleLevelSetUpdateLevelSetsThreader = MultipleLevelSetUpdateLevelSetsThreaderType::New();
 }
 
 template< class TEquationContainer, class TImage >
@@ -116,37 +117,11 @@ LevelSetEvolution< TEquationContainer, LevelSetDenseImageBase< TImage > >
   typename LevelSetContainerType::Iterator levelSetContainerIt = this->m_LevelSetContainer->Begin();
   typename LevelSetContainerType::ConstIterator levelSetUpdateContainerIt = this->m_UpdateBuffer->Begin();
 
-  LevelSetOutputRealType p;
-
   if( this->m_LevelSetContainer->Size() > 1 )
     {
-    while( levelSetContainerIt != this->m_LevelSetContainer->End() )
-      {
-      typename LevelSetType::Pointer levelSet = levelSetContainerIt->GetLevelSet();
-      typename LevelSetType::Pointer levelSetUpdate = levelSetUpdateContainerIt->GetLevelSet();
-
-      typename LevelSetImageType::Pointer levelSetImage = levelSet->GetImage();
-      typename LevelSetImageType::Pointer levelSetUpdateImage = levelSetUpdate->GetImage();
-
-      ImageRegionIterator< LevelSetImageType > levelSetImageIt( levelSetImage, levelSetImage->GetBufferedRegion() );
-      ImageRegionConstIterator< LevelSetImageType > levelSetUpdateImageIt( levelSetUpdateImage, levelSetUpdateImage->GetBufferedRegion() );
-      levelSetImageIt.GoToBegin();
-      levelSetUpdateImageIt.GoToBegin();
-
-      while( !levelSetImageIt.IsAtEnd() )
-        {
-        p = this->m_Dt * levelSetUpdateImageIt.Get();
-        levelSetImageIt.Set( levelSetImageIt.Get() + p );
-
-        this->m_RMSChangeAccumulator += p*p;
-
-        ++levelSetImageIt;
-        ++levelSetUpdateImageIt;
-        }
-
-      ++levelSetContainerIt;
-      ++levelSetUpdateContainerIt;
-      }
+    typename LevelSetContainerType::ConstIterator levelSetUpdateContainerEndIt = this->m_UpdateBuffer->End();
+    typename ThreadedLevelSetContainerPartitionerType::DomainType completeDomain( levelSetUpdateContainerIt, levelSetUpdateContainerEndIt );
+    this->m_MultipleLevelSetUpdateLevelSetsThreader->Execute( this, completeDomain );
     }
   else // assume there is one level set that covers the RequestedRegion of the InputImage
     {
@@ -206,6 +181,7 @@ LevelSetEvolution< TEquationContainer, WhitakerSparseLevelSetImage< TOutput, VDi
 ::LevelSetEvolution()
 {
   this->m_SingleLevelSetComputeIterationThreader = SingleLevelSetComputeIterationThreaderType::New();
+  this->m_MultipleLevelSetComputeIterationThreader = MultipleLevelSetComputeIterationThreaderType::New();
 }
 
 template< class TEquationContainer, typename TOutput, unsigned int VDimension >
@@ -254,42 +230,17 @@ void
 LevelSetEvolution< TEquationContainer, WhitakerSparseLevelSetImage< TOutput, VDimension > >
 ::ComputeIteration()
 {
-  typename LevelSetContainerType::Iterator it = this->m_LevelSetContainer->Begin();
+  typename LevelSetContainerType::Iterator levelSetContainerIt = this->m_LevelSetContainer->Begin();
 
   if( this->m_LevelSetContainer->Size() > 1 )
     {
-    while( it != this->m_LevelSetContainer->End() )
-      {
-      typename LevelSetType::ConstPointer levelSet = it->GetLevelSet();
-
-      LevelSetIdentifierType levelSetId = it->GetIdentifier();
-      TermContainerPointer termContainer = this->m_EquationContainer->GetEquation( levelSetId );
-
-      typename LevelSetType::LayerConstIterator list_it = levelSet->GetLayer( 0 ).begin();
-      typename LevelSetType::LayerConstIterator list_end = levelSet->GetLayer( 0 ).end();
-
-      while( list_it != list_end )
-        {
-        const LevelSetInputType idx = list_it->first;
-
-        LevelSetDataType characteristics;
-
-        termContainer->ComputeRequiredData( idx, characteristics );
-
-        const LevelSetOutputType temp_update =
-            static_cast< LevelSetOutputType >( termContainer->Evaluate( idx, characteristics ) );
-
-        this->m_UpdateBuffer[ levelSetId ]->insert(
-              NodePairType( idx, temp_update ) );
-
-        ++list_it;
-        }
-      ++it;
-      }
+    typename LevelSetContainerType::Iterator levelSetContainerEndIt = this->m_LevelSetContainer->End();
+    typename ThreadedLevelSetContainerPartitionerType::DomainType completeDomain( levelSetContainerIt, levelSetContainerEndIt );
+    this->m_MultipleLevelSetComputeIterationThreader->Execute( this, completeDomain );
     }
   else // assume there is one level set that covers the RequestedRegion of the InputImage
     {
-    typename LevelSetType::ConstPointer levelSet = it->GetLevelSet();
+    typename LevelSetType::ConstPointer levelSet = levelSetContainerIt->GetLevelSet();
     const LevelSetLayerType zeroLayer = levelSet->GetLayer( 0 );
     typename LevelSetType::LayerConstIterator layerBegin = zeroLayer.begin();
     typename LevelSetType::LayerConstIterator layerEnd = zeroLayer.end();

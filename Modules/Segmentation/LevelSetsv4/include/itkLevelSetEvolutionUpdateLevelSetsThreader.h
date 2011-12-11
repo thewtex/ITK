@@ -37,7 +37,7 @@ template< class TLevelSet, class TDomainPartitioner, class TLevelSetEvolution >
 class LevelSetEvolutionUpdateLevelSetsThreader
 {};
 
-// For dense image level set.
+// For single dense image level set.
 template< class TImage, class TLevelSetEvolution >
 class LevelSetEvolutionUpdateLevelSetsThreader< LevelSetDenseImageBase< TImage >, ThreadedImageRegionPartitioner< TImage::ImageDimension >, TLevelSetEvolution >
   : public DomainThreader< ThreadedImageRegionPartitioner< TImage::ImageDimension >, TLevelSetEvolution >
@@ -72,6 +72,59 @@ protected:
   virtual void BeforeThreadedExecution();
 
   virtual void ThreadedExecution( const DomainType & imageSubRegion, const ThreadIdType threadId );
+
+  virtual void AfterThreadedExecution();
+
+  typedef CompensatedSummation< LevelSetOutputRealType > RMSChangeAccumulatorType;
+  typedef std::vector< RMSChangeAccumulatorType > RMSChangeAccumulatorPerThreadType;
+
+  RMSChangeAccumulatorPerThreadType m_RMSChangeAccumulatorPerThread;
+
+private:
+  LevelSetEvolutionUpdateLevelSetsThreader( const Self & ); // purposely not implemented
+  void operator=( const Self & ); // purposely not implemented
+};
+
+// For multiple dense image level sets.
+template< class TImage, class TLevelSetEvolution >
+class LevelSetEvolutionUpdateLevelSetsThreader< LevelSetDenseImageBase< TImage >,
+      ThreadedIteratorRangePartitioner< typename TLevelSetEvolution::LevelSetContainerType::ConstIterator >,
+      TLevelSetEvolution >
+  : public DomainThreader< ThreadedIteratorRangePartitioner< typename TLevelSetEvolution::LevelSetContainerType::ConstIterator >, TLevelSetEvolution >
+{
+public:
+  typedef typename TLevelSetEvolution::LevelSetContainerType::ConstIterator LevelSetContainerIteratorType;
+  typedef ThreadedIteratorRangePartitioner< LevelSetContainerIteratorType > ThreadedLevelSetContainerPartitionerType;
+
+  /** Standard class typedefs. */
+  typedef LevelSetEvolutionUpdateLevelSetsThreader                                       Self;
+  typedef DomainThreader< ThreadedLevelSetContainerPartitionerType, TLevelSetEvolution > Superclass;
+  typedef SmartPointer< Self >                                                           Pointer;
+  typedef SmartPointer< const Self >                                                     ConstPointer;
+
+  /** Run time type information. */
+  itkTypeMacro( LevelSetEvolutionUpdateLevelSetsThreader, DomainThreader );
+
+  /** Standard New macro. */
+  itkNewMacro( Self );
+
+  /** Superclass types. */
+  typedef typename Superclass::DomainType    DomainType;
+  typedef typename Superclass::AssociateType AssociateType;
+
+  /** Types of the associate class. */
+  typedef TLevelSetEvolution                                     LevelSetEvolutionType;
+  typedef typename LevelSetEvolutionType::LevelSetContainerType  LevelSetContainerType;
+  typedef typename LevelSetEvolutionType::LevelSetType           LevelSetType;
+  typedef typename LevelSetEvolutionType::LevelSetImageType      LevelSetImageType;
+  typedef typename LevelSetEvolutionType::LevelSetOutputRealType LevelSetOutputRealType;
+
+protected:
+  LevelSetEvolutionUpdateLevelSetsThreader();
+
+  virtual void BeforeThreadedExecution();
+
+  virtual void ThreadedExecution( const DomainType & iteratorSubDomain, const ThreadIdType threadId );
 
   virtual void AfterThreadedExecution();
 

@@ -91,6 +91,90 @@ LevelSetEvolutionUpdateLevelSetsThreader< LevelSetDenseImageBase< TImage >, Thre
     }
 }
 
+template< class TImage, class TLevelSetEvolution >
+LevelSetEvolutionUpdateLevelSetsThreader< LevelSetDenseImageBase< TImage >,
+      ThreadedIteratorRangePartitioner< typename TLevelSetEvolution::LevelSetContainerType::ConstIterator >,
+      TLevelSetEvolution >
+::LevelSetEvolutionUpdateLevelSetsThreader()
+{
+}
+
+template< class TImage, class TLevelSetEvolution >
+void
+LevelSetEvolutionUpdateLevelSetsThreader< LevelSetDenseImageBase< TImage >,
+      ThreadedIteratorRangePartitioner< typename TLevelSetEvolution::LevelSetContainerType::ConstIterator >,
+      TLevelSetEvolution >
+::BeforeThreadedExecution()
+{
+  this->m_RMSChangeAccumulatorPerThread.resize( this->GetNumberOfThreadsUsed() );
+
+  for( ThreadIdType ii = 0; ii < this->GetNumberOfThreadsUsed(); ++ii )
+    {
+    this->m_RMSChangeAccumulatorPerThread[ii].ResetToZero();
+    }
+}
+
+template< class TImage, class TLevelSetEvolution >
+void
+LevelSetEvolutionUpdateLevelSetsThreader< LevelSetDenseImageBase< TImage >,
+      ThreadedIteratorRangePartitioner< typename TLevelSetEvolution::LevelSetContainerType::ConstIterator >,
+      TLevelSetEvolution >
+::ThreadedExecution( const DomainType & iteratorSubDomain,
+                     const ThreadIdType threadId )
+{
+  typename LevelSetContainerType::ConstIterator levelSetUpdateContainerIt = iteratorSubDomain.Begin();
+
+  // Get the corresponding levelSetUpdateContainer iterator
+  typename LevelSetContainerType::Iterator levelSetContainerIt = this->m_Associate->m_LevelSetContainer->Begin();
+  for( typename LevelSetContainerType::ConstIterator updateTempIt = this->m_Associate->m_UpdateBuffer->Begin();
+       updateTempIt != levelSetUpdateContainerIt;
+       ++updateTempIt, ++levelSetContainerIt )
+    {
+    }
+
+  LevelSetOutputRealType p;
+  while( levelSetUpdateContainerIt != iteratorSubDomain.End() )
+    {
+    typename LevelSetType::Pointer levelSet = levelSetContainerIt->GetLevelSet();
+    typename LevelSetType::Pointer levelSetUpdate = levelSetUpdateContainerIt->GetLevelSet();
+
+    typename LevelSetImageType::Pointer levelSetImage = levelSet->GetImage();
+    typename LevelSetImageType::Pointer levelSetUpdateImage = levelSetUpdate->GetImage();
+
+    ImageRegionIterator< LevelSetImageType > levelSetImageIt( levelSetImage, levelSetImage->GetBufferedRegion() );
+    ImageRegionConstIterator< LevelSetImageType > levelSetUpdateImageIt( levelSetUpdateImage, levelSetUpdateImage->GetBufferedRegion() );
+    levelSetImageIt.GoToBegin();
+    levelSetUpdateImageIt.GoToBegin();
+
+    while( !levelSetImageIt.IsAtEnd() )
+      {
+      p = this->m_Associate->m_Dt * levelSetUpdateImageIt.Get();
+      levelSetImageIt.Set( levelSetImageIt.Get() + p );
+
+      this->m_RMSChangeAccumulatorPerThread[threadId] += p*p;
+
+      ++levelSetImageIt;
+      ++levelSetUpdateImageIt;
+      }
+
+    ++levelSetContainerIt;
+    ++levelSetUpdateContainerIt;
+    }
+}
+
+template< class TImage, class TLevelSetEvolution >
+void
+LevelSetEvolutionUpdateLevelSetsThreader< LevelSetDenseImageBase< TImage >,
+      ThreadedIteratorRangePartitioner< typename TLevelSetEvolution::LevelSetContainerType::ConstIterator >,
+      TLevelSetEvolution >
+::AfterThreadedExecution()
+{
+  for( ThreadIdType ii = 0; ii < this->GetNumberOfThreadsUsed(); ++ii )
+    {
+    this->m_Associate->m_RMSChangeAccumulator += this->m_RMSChangeAccumulatorPerThread[ii].GetSum();
+    }
+}
+
 } // end namespace itk
 
 #endif
