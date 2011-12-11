@@ -197,6 +197,57 @@ LevelSetEvolutionComputeIterationThreader<
     }
 }
 
+template< class TOutput, unsigned int VDimension, class TLevelSetEvolution >
+LevelSetEvolutionComputeIterationThreader<
+  WhitakerSparseLevelSetImage< TOutput, VDimension >,
+  ThreadedIteratorRangePartitioner< typename TLevelSetEvolution::LevelSetContainerType::Iterator >,
+  TLevelSetEvolution >
+::LevelSetEvolutionComputeIterationThreader()
+{
+}
+
+template< class TOutput, unsigned int VDimension, class TLevelSetEvolution >
+void
+LevelSetEvolutionComputeIterationThreader<
+  WhitakerSparseLevelSetImage< TOutput, VDimension >,
+  ThreadedIteratorRangePartitioner< typename TLevelSetEvolution::LevelSetContainerType::Iterator >,
+  TLevelSetEvolution >
+::ThreadedExecution( const DomainType & iteratorSubRange,
+                     const ThreadIdType itkNotUsed(threadId) )
+{
+  typename LevelSetContainerType::Iterator levelSetContainerIt = iteratorSubRange.Begin();
+
+  while( levelSetContainerIt != iteratorSubRange.End() )
+    {
+    typename LevelSetType::ConstPointer levelSet = levelSetContainerIt->GetLevelSet();
+
+    LevelSetIdentifierType levelSetId = levelSetContainerIt->GetIdentifier();
+    typename TermContainerType::Pointer termContainer = this->m_Associate->m_EquationContainer->GetEquation( levelSetId );
+
+    const LevelSetLayerType zeroLayer = levelSet->GetLayer( 0 );
+    typename LevelSetType::LayerConstIterator layerIt = zeroLayer.begin();
+    typename LevelSetType::LayerConstIterator layerEnd = zeroLayer.end();
+
+    while( layerIt != layerEnd )
+      {
+      const LevelSetInputType idx = layerIt->first;
+
+      LevelSetDataType characteristics;
+
+      termContainer->ComputeRequiredData( idx, characteristics );
+
+      const LevelSetOutputType temp_update =
+          static_cast< LevelSetOutputType >( termContainer->Evaluate( idx, characteristics ) );
+
+      this->m_Associate->m_UpdateBuffer[ levelSetId ]->insert(
+            NodePairType( idx, temp_update ) );
+
+      ++layerIt;
+      }
+    ++levelSetContainerIt;
+    }
+}
+
 } // end namespace itk
 
 #endif
