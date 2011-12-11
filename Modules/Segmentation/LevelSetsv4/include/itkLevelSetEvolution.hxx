@@ -30,6 +30,7 @@ LevelSetEvolution< TEquationContainer, LevelSetDenseImageBase< TImage > >
 ::LevelSetEvolution()
 {
   this->m_SingleLevelSetComputeIterationThreader = SingleLevelSetComputeIterationThreaderType::New();
+  this->m_MultipleLevelSetComputeIterationThreader = MultipleLevelSetComputeIterationThreaderType::New();
   this->m_SingleLevelSetUpdateLevelSetsThreader = SingleLevelSetUpdateLevelSetsThreaderType::New();
 }
 
@@ -59,38 +60,11 @@ LevelSetEvolution< TEquationContainer, LevelSetDenseImageBase< TImage > >
     DomainMapImageFilterPointer domainMapFilter = this->m_LevelSetContainer->GetDomainMapFilter();
     typedef typename DomainMapImageFilterType::DomainMapType DomainMapType;
     const DomainMapType domainMap = domainMapFilter->GetDomainMap();
-    typename DomainMapType::const_iterator map_it   = domainMap.begin();
-    typename DomainMapType::const_iterator map_end  = domainMap.end();
+    typename DomainMapType::const_iterator mapBegin = domainMap.begin();
+    typename DomainMapType::const_iterator mapEnd   = domainMap.end();
+    typename MultipleLevelSetComputeIterationThreaderType::DomainType completeDomain( mapBegin, mapEnd );
+    this->m_MultipleLevelSetComputeIterationThreader->Execute( this, completeDomain );
 
-    while( map_it != map_end )
-      {
-      ImageRegionConstIteratorWithIndex< InputImageType > it( inputImage, map_it->second.m_Region );
-      it.GoToBegin();
-
-      while( !it.IsAtEnd() )
-        {
-        IdListType lout = map_it->second.m_List;
-
-        itkAssertInDebugAndIgnoreInReleaseMacro( !lout.empty() );
-
-        for( IdListIterator lIt = lout.begin(); lIt != lout.end(); ++lIt )
-          {
-          typename LevelSetType::Pointer levelSetUpdate = this->m_UpdateBuffer->GetLevelSet( *lIt - 1);
-
-          LevelSetDataType characteristics;
-
-          TermContainerPointer termContainer = this->m_EquationContainer->GetEquation( *lIt - 1 );
-          termContainer->ComputeRequiredData( it.GetIndex(), characteristics );
-
-          LevelSetOutputRealType temp_update = termContainer->Evaluate( it.GetIndex(), characteristics );
-
-          LevelSetImageType* levelSetImage = levelSetUpdate->GetImage();
-          levelSetImage->SetPixel( it.GetIndex(), temp_update );
-          }
-        ++it;
-        }
-        ++map_it;
-      }
     }
   else // assume there is one level set that covers the RequestedRegion of the InputImage
     {
