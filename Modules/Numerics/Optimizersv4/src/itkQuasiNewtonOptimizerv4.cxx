@@ -129,7 +129,9 @@ QuasiNewtonOptimizerv4
                                << " there is no progress in the last "
                                << m_MaximumIterationsWithoutProgress
                                << " steps." << std::endl
-                               << " The best value is from Iteration "
+                               << " The best value is "
+                               << this->m_BestValue
+                               << ", from Iteration "
                                << m_BestIteration << ".";
     this->StopOptimization();
     return;

@@ -90,6 +90,9 @@ public:
   /** Set the maximum step size. */
   itkSetMacro(MaximumNewtonStepSizeInPhysicalUnits, InternalComputationValueType);
 
+  /** Get the maximum step size. */
+  itkGetConstReferenceMacro(MaximumNewtonStepSizeInPhysicalUnits, InternalComputationValueType);
+
   /** Get the most recent Newton step. */
   itkGetConstReferenceMacro( NewtonStep, DerivativeType );
 

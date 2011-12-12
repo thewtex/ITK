@@ -9,7 +9,6 @@ set(ITKMetricsv4Tests
   itkDemonsImageToImageMetricv4Test.cxx
   itkANTSNeighborhoodCorrelationImageToImageMetricv4Test.cxx
   itkANTSNeighborhoodCorrelationImageToImageRegistrationTest.cxx
-  itkAffineDemonsImageToImageRegistrationTest.cxx
 )
 
 set(INPUTDATA ${ITK_DATA_ROOT}/Input)
@@ -66,11 +65,3 @@ itk_add_test(NAME itkANTSNeighborhoodCorrelationImageToImageRegistrationTest
               ${ITK_EXAMPLE_DATA_ROOT}/BrainProtonDensitySliceBSplined10.png
              ${TEMP}/itkANTSNeighborhoodCorrelationImageToImageRegistrationTest.nii.gz
               10 1 0.25 )
-
-itk_add_test(NAME itkAffineDemonsImageToImageRegistrationTest
-      COMMAND ITKMetricsv4TestDriver
-              itkAffineDemonsImageToImageRegistrationTest
-              DATA{Baseline/face_avg.jpg}
-              DATA{Input/face_b.jpg}
-              ${TEMP}/itkAffineDemonsImageToImageRegistrationTest.nii.gz
-              30 )

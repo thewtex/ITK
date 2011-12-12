@@ -80,7 +80,7 @@ public:
 
   typedef typename ImageToImageMetricv4Type::InternalComputationValueType InternalComputationValueType;
   typedef typename ImageToImageMetricv4Type::NumberOfParametersType       NumberOfParametersType;
-
+  typedef typename ImageToImageMetricv4Type::ImageDimensionType           ImageDimensionType;
 protected:
   /** Constructor. */
   ImageToImageMetricv4GetValueAndDerivativeThreaderBase();

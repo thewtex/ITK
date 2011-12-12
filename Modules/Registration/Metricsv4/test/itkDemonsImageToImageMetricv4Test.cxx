@@ -167,6 +167,33 @@ int itkDemonsImageToImageMetricv4Test(int, char ** const)
               << ", " << valueReturn2 << std::endl;
     }
 
+  /* Test with different image gradient source. The default is
+   * to have the fixed image used for image gradients.  */
+  metric->SetGradientSource( MetricType::GRADIENT_SOURCE_MOVING );
+  try
+    {
+    std::cout << "Calling Initialize..." << std::endl;
+    metric->Initialize();
+    }
+  catch( itk::ExceptionObject & exc )
+    {
+    std::cerr << "Caught unexpected exception during initialize with different "
+              << "image gradient source: " << exc << std::endl;
+    return EXIT_FAILURE;
+    }
+
+  /* Exercise accessor method */
+  MetricType::InternalComputationValueType testValue = static_cast<MetricType::InternalComputationValueType>(0.5);
+  metric->SetIntensityDifferenceThreshold( testValue );
+  if( metric->GetIntensityDifferenceThreshold() != testValue )
+    {
+    std::cerr << "Set/GetIntensityDifferenceThreshold failed." << std::endl;
+    return EXIT_FAILURE;
+    }
+
+  /* Print self */
+  metric->Print( std::cout );
+
   std::cout << "Test passed." << std::endl;
   return EXIT_SUCCESS;
 }

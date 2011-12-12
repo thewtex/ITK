@@ -1066,16 +1066,16 @@ ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage >
 {
   Superclass::PrintSelf(os, indent);
 
-  os << indent << "ImageToImageMetricv4: " << std::endl
-               << "GetUseFixedImageGradientFilter: "
+  os << indent << "ImageToImageObjectMetric: " << std::endl
+     << indent << "GetUseFixedImageGradientFilter: "
                << this->GetUseFixedImageGradientFilter()
                << std::endl
-               << "GetUseMovingImageGradientFilter: "
+     << indent << "GetUseMovingImageGradientFilter: "
                << this->GetUseMovingImageGradientFilter()
                << std::endl
-               << "DoFixedImagePreWarp: " << this->GetDoFixedImagePreWarp()
+     << indent << "DoFixedImagePreWarp: " << this->GetDoFixedImagePreWarp()
                << std::endl
-               << "DoMovingImagePreWarp: " << this->GetDoMovingImagePreWarp()
+     << indent << "DoMovingImagePreWarp: " << this->GetDoMovingImagePreWarp()
                << std::endl;
 
   if( this->GetVirtualDomainImage() != NULL )

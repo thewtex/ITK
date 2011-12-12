@@ -17,6 +17,8 @@
  *=========================================================================*/
 #include "itkQuasiNewtonOptimizerv4.h"
 #include "itkDemonsImageToImageMetricv4.h"
+#include "itkDemonsImageToImageMetricv4_OLD.h"
+#include "itkJointHistogramMutualInformationImageToImageMetricv4.h"
 #include "itkRegistrationParameterScalesFromShift.h"
 #include "itkRegistrationParameterScalesFromJacobian.h"
 
@@ -35,9 +37,9 @@
 
 template< class TMovingTransform >
 int itkQuasiNewtonOptimizerv4TestTemplated(int numberOfIterations,
-                                                          double shiftOfStep,
-                                                          std::string scalesOption,
-                                                          bool usePhysicalSpaceForShift = true)
+                                           double shiftOfStep,
+                                           std::string scalesOption,
+                                           bool usePhysicalSpaceForShift = true)
 {
   const unsigned int Dimension = TMovingTransform::SpaceDimension;
   typedef double PixelType;
@@ -87,6 +89,8 @@ int itkQuasiNewtonOptimizerv4TestTemplated(int numberOfIterations,
 
   // Metric
   typedef itk::DemonsImageToImageMetricv4
+  //typedef itk::DemonsImageToImageMetricv4_OLD
+  //typedef itk::JointHistogramMutualInformationImageToImageMetricv4
     < FixedImageType, MovingImageType, FixedImageType > MetricType;
   typename MetricType::Pointer metric = MetricType::New();
 
@@ -94,6 +98,7 @@ int itkQuasiNewtonOptimizerv4TestTemplated(int numberOfIterations,
   metric->SetFixedImage( fixedImage );
   metric->SetMovingImage( movingImage );
   metric->SetVirtualDomainImage( const_cast<FixedImageType *>(fixedImage.GetPointer()) );
+  metric->SetGradientSource( MetricType::GRADIENT_SOURCE_MOVING );
 
   metric->SetFixedTransform( fixedTransform );
   metric->SetMovingTransform( movingTransform );
@@ -125,6 +130,7 @@ int itkQuasiNewtonOptimizerv4TestTemplated(int numberOfIterations,
     typename ShiftScalesEstimatorType::Pointer shiftScalesEstimator
       = ShiftScalesEstimatorType::New();
     shiftScalesEstimator->SetMetric(metric);
+    shiftScalesEstimator->SetTransformForward(true); //default
     shiftScalesEstimator->SetUsePhysicalSpaceForShift(usePhysicalSpaceForShift); //true by default
     scalesEstimator = shiftScalesEstimator;
     }
@@ -134,6 +140,7 @@ int itkQuasiNewtonOptimizerv4TestTemplated(int numberOfIterations,
     typename JacobianScalesEstimatorType::Pointer jacobianScalesEstimator
       = JacobianScalesEstimatorType::New();
     jacobianScalesEstimator->SetMetric(metric);
+    jacobianScalesEstimator->SetTransformForward(true); //default
     scalesEstimator = jacobianScalesEstimator;
     }
 
@@ -143,8 +150,11 @@ int itkQuasiNewtonOptimizerv4TestTemplated(int numberOfIterations,
   optimizer->SetMaximumNewtonStepSizeInPhysicalUnits(shiftOfStep*3.0);
 
   std::cout << "Start optimization..." << std::endl
-            << "Number of iterations: " << numberOfIterations << std::endl;
-
+            << "Number of iterations: " << numberOfIterations << std::endl
+            << "GetMaximumStepSizeInPhysicalUnits: "
+            << optimizer->GetMaximumStepSizeInPhysicalUnits() << std::endl
+            << "GetMaximumNewtonStepSizeInPhysicalUnits: "
+            << optimizer->GetMaximumNewtonStepSizeInPhysicalUnits() << std::endl;
   try
     {
     optimizer->StartOptimization();
@@ -162,6 +172,8 @@ int itkQuasiNewtonOptimizerv4TestTemplated(int numberOfIterations,
   std::cout << "...finished. " << std::endl
             << "StopCondition: " << optimizer->GetStopConditionDescription()
             << std::endl
+            << "Scales: "
+            << optimizer->GetScales() << std::endl
             << "Metric: NumberOfValidPoints: "
             << metric->GetNumberOfValidPoints()
             << std::endl;
@@ -220,7 +232,7 @@ int itkQuasiNewtonOptimizerv4Test(int argc, char ** const argv)
     std::cerr << std::endl;
     return EXIT_FAILURE;
     }
-  unsigned int numberOfIterations = 50;
+  unsigned int numberOfIterations = 2;
   double shiftOfStep = 1.0;
 
   if( argc >= 2 )
@@ -233,17 +245,23 @@ int itkQuasiNewtonOptimizerv4Test(int argc, char ** const argv)
     }
 
   const unsigned int Dimension = 2;
-  int ret1 = EXIT_SUCCESS, ret2 = EXIT_SUCCESS;
+  int ret1 = EXIT_SUCCESS, ret2 = EXIT_SUCCESS, ret3 = EXIT_SUCCESS;
 
   std::cout << std::endl << "Optimizing translation transform with shift scales" << std::endl;
   typedef itk::TranslationTransform<double, Dimension> TranslationTransformType;
-  ret1 = itkQuasiNewtonOptimizerv4TestTemplated<TranslationTransformType>(numberOfIterations, shiftOfStep, "shift");
+  ret1 = itkQuasiNewtonOptimizerv4TestTemplated<TranslationTransformType>(numberOfIterations, shiftOfStep, "shift", true);
+
+  // the last param, usePhysicalSpaceForShift,
+  // is false in AutoScaledGradientDescentRegTest
+  std::cout << std::endl << "Optimizing translation transform with shift scales" << std::endl;
+  typedef itk::TranslationTransform<double, Dimension> TranslationTransformType;
+  ret2 = itkQuasiNewtonOptimizerv4TestTemplated<TranslationTransformType>(numberOfIterations, shiftOfStep, "shift", false);
 
   std::cout << std::endl << "Optimizing translation transform with Jacobian scales" << std::endl;
   typedef itk::TranslationTransform<double, Dimension> TranslationTransformType;
-  ret2 = itkQuasiNewtonOptimizerv4TestTemplated<TranslationTransformType>(numberOfIterations, shiftOfStep, "jacobian");
+  ret3 = itkQuasiNewtonOptimizerv4TestTemplated<TranslationTransformType>(numberOfIterations, shiftOfStep, "jacobian");
 
-  if ( ret1 == EXIT_SUCCESS && ret2 == EXIT_SUCCESS )
+  if ( ret1 == EXIT_SUCCESS && ret2 == EXIT_SUCCESS && ret3 == EXIT_SUCCESS )
     {
     std::cout << std::endl << "Tests PASSED." << std::endl;
     return EXIT_SUCCESS;

@@ -93,6 +93,7 @@ int itkAutoScaledGradientDescentRegistrationTestTemplated(int numberOfIterations
   metric->SetFixedImage( fixedImage );
   metric->SetMovingImage( movingImage );
   metric->SetVirtualDomainImage( const_cast<FixedImageType *>(fixedImage.GetPointer()) );
+  metric->SetGradientSource( MetricType::GRADIENT_SOURCE_MOVING );
 
   metric->SetFixedTransform( fixedTransform );
   metric->SetMovingTransform( movingTransform );

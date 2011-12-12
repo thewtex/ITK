@@ -39,6 +39,8 @@ namespace itk
  * but setting a scaling vector using method SetScales().
  *
  * The learning rate defaults to 1.0, and can be set via \c SetLearningRate.
+ * Note that if m_ScalesEstimator is set, learning rate is automatically
+ * restricted. See below.
  *
  * The user may set a member m_ScalesEstimator by calling SetScalesEstimator()
  * before optimization to estimate scales and learning rates automatically.
@@ -90,6 +92,9 @@ public:
 
   /** Set the maximum step size. */
   itkSetMacro(MaximumStepSizeInPhysicalUnits, InternalComputationValueType);
+
+  /** Get the maximum step size. */
+  itkGetConstReferenceMacro(MaximumStepSizeInPhysicalUnits, InternalComputationValueType);
 
   /** Set the scales estimator. */
   itkSetObjectMacro(ScalesEstimator, OptimizerParameterScalesEstimator);

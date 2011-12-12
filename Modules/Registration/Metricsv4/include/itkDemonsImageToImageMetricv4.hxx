@@ -31,6 +31,14 @@ DemonsImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage>
   // ImageToImageMetricv4 to use.
   this->m_DenseGetValueAndDerivativeThreader  = DemonsDenseGetValueAndDerivativeThreaderType::New();
   this->m_SparseGetValueAndDerivativeThreader = DemonsSparseGetValueAndDerivativeThreaderType::New();
+
+  // Unlike most other metrics, this defaults to using fixed image gradients
+  this->SetGradientSource( this->GRADIENT_SOURCE_FIXED );
+
+  this->m_Normalizer = NumericTraits<InternalComputationValueType>::One;
+  this->m_DenominatorThreshold = static_cast<InternalComputationValueType>(1e-9);
+  this->m_IntensityDifferenceThreshold = static_cast<InternalComputationValueType>(0.001);
+
 }
 
 template < class TFixedImage, class TMovingImage, class TVirtualImage >
@@ -39,12 +47,56 @@ DemonsImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage>
 {
 }
 
+template < class TFixedImage, class TMovingImage, class TVirtualImage >
+void
+DemonsImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage>
+::Initialize(void) throw ( itk::ExceptionObject )
+{
+  // Make sure user has not set to use both moving and fixed image
+  // gradients
+  if( this->GetGradientSource() == this->GRADIENT_SOURCE_BOTH )
+    {
+    itkExceptionMacro("GradientSource has been set to GRADIENT_SOURCE_BOTH. "
+                      "You must choose either GRADIENT_SOURCE_MOVING or "
+                      "GRADIENT_SOURCE_FIXED." );
+    }
+
+  // compute the normalizer
+  ImageDimensionType dimension;
+  typename TFixedImage::SpacingType imageSpacing;
+  if( this->GetGradientSource() == this->GRADIENT_SOURCE_FIXED )
+    {
+    imageSpacing = this->m_FixedImage->GetSpacing();
+    dimension = FixedImageDimension;
+    }
+  else
+    {
+    imageSpacing = this->m_MovingImage->GetSpacing();
+    dimension = MovingImageDimension;
+    }
+
+  m_Normalizer      = NumericTraits<InternalComputationValueType>::Zero;
+  for ( ImageDimensionType k = 0; k < dimension; k++ )
+    {
+    m_Normalizer += imageSpacing[k] * imageSpacing[k];
+    }
+  m_Normalizer /= static_cast<InternalComputationValueType>( dimension );
+
+  Superclass::Initialize();
+}
+
 template < class TFixedImage, class TMovingImage, class TVirtualImage  >
 void
 DemonsImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage>
 ::PrintSelf(std::ostream& os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+  os << indent << "IntensityDifferenceThreshold: "
+               << this->GetIntensityDifferenceThreshold() << std::endl
+     << indent << "DenominatorThreshold: " << this->GetDenominatorThreshold()
+               << std::endl
+     << indent << "Normalizer: " << this->GetNormalizer() << std::endl;
+
 }
 
 } // end namespace itk
