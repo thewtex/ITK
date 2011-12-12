@@ -146,14 +146,14 @@ protected:
   LevelSetContainerPointer    m_UpdateBuffer;
 
   friend class LevelSetEvolutionComputeIterationThreader< LevelSetType, ThreadedImageRegionPartitioner< TImage::ImageDimension >, Self >;
-  typedef LevelSetEvolutionComputeIterationThreader< LevelSetType, ThreadedImageRegionPartitioner< TImage::ImageDimension >, Self > SingleLevelSetComputeIterationThreaderType;
-  typename SingleLevelSetComputeIterationThreaderType::Pointer m_SingleLevelSetComputeIterationThreader;
+  typedef LevelSetEvolutionComputeIterationThreader< LevelSetType, ThreadedImageRegionPartitioner< TImage::ImageDimension >, Self > SplitLevelSetComputeIterationThreaderType;
+  typename SplitLevelSetComputeIterationThreaderType::Pointer m_SplitLevelSetComputeIterationThreader;
 
   typedef typename DomainMapImageFilterType::DomainMapType::const_iterator DomainMapConstIteratorType;
   typedef ThreadedIteratorRangePartitioner< DomainMapConstIteratorType >   ThreadedDomainMapPartitionerType;
   friend class LevelSetEvolutionComputeIterationThreader< LevelSetType, ThreadedDomainMapPartitionerType, Self >;
-  typedef LevelSetEvolutionComputeIterationThreader< LevelSetType, ThreadedDomainMapPartitionerType, Self > MultipleLevelSetComputeIterationThreaderType;
-  typename MultipleLevelSetComputeIterationThreaderType::Pointer m_MultipleLevelSetComputeIterationThreader;
+  typedef LevelSetEvolutionComputeIterationThreader< LevelSetType, ThreadedDomainMapPartitionerType, Self > LevelSetPerThreadComputeIterationThreaderType;
+  typename LevelSetPerThreadComputeIterationThreaderType::Pointer m_LevelSetPerThreadComputeIterationThreader;
 
   friend class LevelSetEvolutionUpdateLevelSetsThreader< LevelSetType, ThreadedImageRegionPartitioner< TImage::ImageDimension >, Self >;
   typedef LevelSetEvolutionUpdateLevelSetsThreader< LevelSetType, ThreadedImageRegionPartitioner< TImage::ImageDimension >, Self > SingleLevelSetUpdateLevelSetsThreaderType;
