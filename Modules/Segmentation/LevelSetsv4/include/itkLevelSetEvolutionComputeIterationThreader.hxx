@@ -37,9 +37,9 @@ LevelSetEvolutionComputeIterationThreader< LevelSetDenseImageBase< TImage >, Thr
 ::ThreadedExecution( const DomainType & imageSubRegion,
                      const ThreadIdType itkNotUsed(threadId) )
 {
-  typename LevelSetContainerType::Iterator levelSetContainerIt = this->m_Associate->m_LevelSetContainer->Begin();
-  typename LevelSetContainerType::ConstIterator levelSetUpdateContainerIt = this->m_Associate->m_UpdateBuffer->Begin();
-  typename EquationContainerType::Iterator equationContainerIt = this->m_Associate->m_EquationContainer->Begin();
+  typename LevelSetContainerType::Iterator levelSetContainerIt = this->m_Associate->m_LevelSetToProcessWhenThreading;
+  typename LevelSetContainerType::ConstIterator levelSetUpdateContainerIt = this->m_Associate->m_LevelSetUpdateToProcessWhenThreading;
+  typename EquationContainerType::Iterator equationContainerIt = this->m_Associate->m_EquationContainerToProcessWhenThreading;
 
   // This is for single level set analysis, so we only process the first level
   // set.

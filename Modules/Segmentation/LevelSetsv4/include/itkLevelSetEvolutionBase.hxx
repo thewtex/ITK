@@ -32,6 +32,7 @@ LevelSetEvolutionBase< TEquationContainer, TLevelSet >
   this->m_Dt = 1.;
   this->m_RMSChangeAccumulator = 0.;
   this->m_UserGloballyDefinedTimeStep = false;
+  this->m_NumberOfLevelSetsForThreadingMethodChange = MultiThreader::GetGlobalDefaultNumberOfThreads();
 }
 
 template< class TEquationContainer, class TLevelSet >
@@ -250,6 +251,19 @@ void
 LevelSetEvolutionBase< TEquationContainer, TLevelSet >
 ::ComputeTimeStepForNextIteration()
 {
+}
+
+template< class TEquationContainer, class TLevelSet >
+bool
+LevelSetEvolutionBase< TEquationContainer, TLevelSet >
+::MultiThreadWithLevelSetPerThread() const
+{
+  if( this->m_NumberOfLevelSetsForThreadingMethodChange >= this->m_LevelSetContainer->Size() )
+    {
+    return true;
+    }
+
+  return false;
 }
 
 }

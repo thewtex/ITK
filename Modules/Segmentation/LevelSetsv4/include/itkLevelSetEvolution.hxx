@@ -29,8 +29,8 @@ template< class TEquationContainer, class TImage >
 LevelSetEvolution< TEquationContainer, LevelSetDenseImageBase< TImage > >
 ::LevelSetEvolution()
 {
-  this->m_SingleLevelSetComputeIterationThreader = SingleLevelSetComputeIterationThreaderType::New();
-  this->m_MultipleLevelSetComputeIterationThreader = MultipleLevelSetComputeIterationThreaderType::New();
+  this->m_SplitLevelSetComputeIterationThreader = SplitLevelSetComputeIterationThreaderType::New();
+  this->m_LevelSetPerThreadComputeIterationThreader = LevelSetPerThreadComputeIterationThreaderType::New();
   this->m_SingleLevelSetUpdateLevelSetsThreader = SingleLevelSetUpdateLevelSetsThreaderType::New();
   this->m_MultipleLevelSetUpdateLevelSetsThreader = MultipleLevelSetUpdateLevelSetsThreaderType::New();
 }
@@ -56,20 +56,28 @@ LevelSetEvolution< TEquationContainer, LevelSetDenseImageBase< TImage > >
 {
   InputImageConstPointer inputImage = this->m_EquationContainer->GetInput();
 
-  if( this->m_LevelSetContainer->Size() > 1 )
+  if( this->MultiThreadWithLevelSetPerThread() )
     {
     DomainMapImageFilterPointer domainMapFilter = this->m_LevelSetContainer->GetDomainMapFilter();
     typedef typename DomainMapImageFilterType::DomainMapType DomainMapType;
     const DomainMapType domainMap = domainMapFilter->GetDomainMap();
     typename DomainMapType::const_iterator mapBegin = domainMap.begin();
     typename DomainMapType::const_iterator mapEnd   = domainMap.end();
-    typename MultipleLevelSetComputeIterationThreaderType::DomainType completeDomain( mapBegin, mapEnd );
-    this->m_MultipleLevelSetComputeIterationThreader->Execute( this, completeDomain );
-
+    typename LevelSetPerThreadComputeIterationThreaderType::DomainType completeDomain( mapBegin, mapEnd );
+    this->m_LevelSetPerThreadComputeIterationThreader->Execute( this, completeDomain );
     }
   else // assume there is one level set that covers the RequestedRegion of the InputImage
     {
-    this->m_SingleLevelSetComputeIterationThreader->Execute( this, inputImage->GetRequestedRegion() );
+    this->m_LevelSetToProcessWhenThreading = this->m_LevelSetContainer->Begin();
+    this->m_LevelSetUpdateToProcessWhenThreading = this->m_UpdateBuffer->Begin();
+    this->m_EquationContainerToProcessWhenThreading = this->m_EquationContainer->Begin();
+    while( this->m_LevelSetToProcessWhenThreading != this->m_LevelSetContainer->End() )
+      {
+      this->m_SplitLevelSetComputeIterationThreader->Execute( this, inputImage->GetRequestedRegion() );
+      ++this->m_LevelSetToProcessWhenThreading;
+      ++this->m_LevelSetUpdateToProcessWhenThreading;
+      ++this->m_EquationContainerToProcessWhenThreading;
+      }
     }
 }
 

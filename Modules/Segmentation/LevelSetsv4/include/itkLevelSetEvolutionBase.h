@@ -120,6 +120,15 @@ public:
   itkSetMacro( NumberOfIterations, IdentifierType );
   itkGetConstMacro( NumberOfIterations, IdentifierType );
 
+  /** Set/Get the number of level sets in a multi-level set analysis before the
+   * multi-threading approach changes.  If the number of level sets evolving
+   * meets or exceeds this number, threading occurs by processing each level set in a
+   * thread instead of dividing the analysis of an individual level set into
+   * multiple threads. Defaults to the GlobalDefaultNumberOfThreads return by
+   * the MultiThreader class. */
+  itkSetMacro( NumberOfLevelSetsForThreadingMethodChange, IdentifierType );
+  itkGetConstMacro( NumberOfLevelSetsForThreadingMethodChange, IdentifierType );
+
   /** Update the filter by computing the output level function
    * by calling Evolve() once the instantiation of necessary variables
    * is verified */
@@ -156,6 +165,11 @@ protected:
 
   virtual void UpdateEquations() = 0;
 
+  /** Should we do parallel processing by processing a level set in each thread?
+   * Yes, if this method returns true; otherwise, split level set across
+   * threads. */
+  bool MultiThreadWithLevelSetPerThread() const;
+
   StoppingCriterionPointer    m_StoppingCriterion;
 
   EquationContainerPointer    m_EquationContainer;
@@ -166,6 +180,13 @@ protected:
   LevelSetOutputRealType      m_RMSChangeAccumulator;
   bool                        m_UserGloballyDefinedTimeStep;
   IdentifierType              m_NumberOfIterations;
+  IdentifierType              m_NumberOfLevelSetsForThreadingMethodChange;
+
+  /** Helper variables to be used when parallel processing by processing parts
+   * of the level set in each thread. */
+  typename LevelSetContainerType::Iterator m_LevelSetToProcessWhenThreading;
+  typename LevelSetContainerType::Iterator m_LevelSetUpdateToProcessWhenThreading;
+  typename EquationContainerType::Iterator m_EquationContainerToProcessWhenThreading;
 
 private:
   LevelSetEvolutionBase( const Self& ); // purposely not implemented
