@@ -59,6 +59,9 @@ public:
   typedef typename Superclass::MeasureType                  MeasureType;
   typedef typename Superclass::DerivativeType               DerivativeType;
   typedef typename Superclass::DerivativeValueType          DerivativeValueType;
+  typedef typename Superclass::InternalComputationValueType InternalComputationValueType;
+  typedef typename Superclass::NumberOfParametersType       NumberOfParametersType;
+  typedef typename Superclass::ImageDimensionType           ImageDimensionType;
 
 protected:
   DemonsImageToImageObjectMetricGetValueAndDerivativeThreader() {}

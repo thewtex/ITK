@@ -29,43 +29,71 @@ DemonsImageToImageObjectMetricGetValueAndDerivativeThreader< TDomainPartitioner,
 ::ProcessPoint( const VirtualPointType &,
                 const FixedImagePointType &,
                 const FixedImagePixelType &        fixedImageValue,
-                const FixedImageGradientType &,
-                const MovingImagePointType &       mappedMovingPoint,
+                const FixedImageGradientType &     fixedImageGradient,
+                const MovingImagePointType &,
                 const MovingImagePixelType &       movingImageValue,
                 const MovingImageGradientType &    movingImageGradient,
                 MeasureType &                      metricValueReturn,
                 DerivativeType &                   localDerivativeReturn,
-                const ThreadIdType                 threadID) const
+                const ThreadIdType ) const
 {
-  /** Only the voxelwise contribution given the point pairs. */
-  FixedImagePixelType diff = fixedImageValue - movingImageValue;
-  metricValueReturn =
-    vcl_fabs( diff  ) / static_cast<MeasureType>( ImageToImageObjectMetricType::FixedImageDimension );
+   TDemonsMetric * associate = dynamic_cast< TDemonsMetric * >( this->m_Associate );
 
-  /* Use a pre-allocated jacobian object for efficiency */
-  typedef typename TImageToImageMetric::JacobianType & JacobianReferenceType;
-  JacobianReferenceType jacobian = this->m_MovingTransformJacobianPerThread[threadID];
+  /* Metric value */
+  const InternalComputationValueType speedValue = fixedImageValue - movingImageValue;
+  const InternalComputationValueType sqr_speedValue = vnl_math_sqr( speedValue );
+  metricValueReturn = sqr_speedValue;
 
-  /** For dense transforms, this returns identity */
-  this->m_Associate->GetMovingTransform()->ComputeJacobianWithRespectToParameters( mappedMovingPoint, jacobian );
-
-  DerivativeValueType floatingPointCorrectionResolution = this->m_Associate->GetFloatingPointCorrectionResolution();
-  for ( unsigned int par = 0; par < this->m_Associate->GetNumberOfLocalParameters(); par++ )
+  /* Derivative */
+  InternalComputationValueType gradientSquaredMagnitude = 0;
+  FixedImageGradientType gradient;
+  if( associate->GetGradientSourceIncludesFixed() )
     {
-    double sum = 0.0;
-    for ( SizeValueType dim = 0; dim < ImageToImageObjectMetricType::MovingImageDimension; dim++ )
-      {
-      sum += 2.0 * diff * jacobian(dim, par) * movingImageGradient[dim];
-      }
+    gradient = fixedImageGradient;
+    }
+    else
+    {
+    gradient = movingImageGradient;
+    }
 
-    localDerivativeReturn[par] = sum;
+  for ( ImageDimensionType j = 0; j < ImageToImageObjectMetricType::FixedImageDimension; j++ )
+    {
+    gradientSquaredMagnitude += vnl_math_sqr( gradient[j] );
+    }
+
+  /*
+   * In the original equation the denominator is defined as (g-f)^2 + grad_mag^2.
+   * However there is a mismatch in units between the two terms.
+   * The units for the second term is intensity^2/mm^2 while the
+   * units for the first term is intensity^2. This mismatch is particularly
+   * problematic when the fixed image does not have unit spacing.
+   * In this implemenation, we normalize the first term by a factor K,
+   * such that denominator = (g-f)^2/K + grad_mag^2
+   * where K = mean square spacing to compensate for the mismatch in units.
+   */
+  const InternalComputationValueType denominator =
+    sqr_speedValue / associate->m_Normalizer + gradientSquaredMagnitude;
+
+  if ( vnl_math_abs(speedValue) < associate->GetIntensityDifferenceThreshold() || denominator < associate->GetDenominatorThreshold() )
+    {
+    localDerivativeReturn.Fill( NumericTraits<DerivativeValueType>::Zero );
+    return true;
+    }
+
+  DerivativeValueType floatingPointCorrectionResolution = associate->GetFloatingPointCorrectionResolution();
+
+  for ( NumberOfParametersType j = 0;
+        j < associate->GetNumberOfLocalParameters(); j++ )
+    {
+    localDerivativeReturn[j] = speedValue * gradient[j] / denominator;
 
     intmax_t test = static_cast< intmax_t >
-            ( localDerivativeReturn[par] * floatingPointCorrectionResolution );
+            ( localDerivativeReturn[j] * floatingPointCorrectionResolution );
 
-    localDerivativeReturn[par] = static_cast<DerivativeValueType>
+    localDerivativeReturn[j] = static_cast<DerivativeValueType>
                                   ( test / floatingPointCorrectionResolution );
     }
+
   return true;
 }
 

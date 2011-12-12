@@ -27,11 +27,27 @@ namespace itk
 
 /** \class DemonsImageToImageObjectMetric
  *
- *  \brief Class implementing rudimentary demons metric.
+ *  \brief Class implementing demons metric.
+ *
+ *  The implementation is taken from itkDemonsRegistrationFunction.
+ *
+ *  The metric derivative can be calculated using image derivatives
+ *  either from the fixed or moving images. The default is to use fixed-image
+ *  gradients. See ImageToImageObjectMetric::SetGradientSource to change
+ *  this behavior.
+ *
+ *  An intensity threshold is used, below which image pixels are considered
+ *  equal for the purpose of derivative calculation. The threshold can be
+ *  changed by calling SetIntensityDifferenceThreshold.
+ *
+ *  This metric requires that the transform assigned to the image used as the
+ *  gradient source has local-support, i.e. is a dense transform. An exception
+ *  is thrown during initialization if not.
  *
  *  See
  *  DemonsImageToImageObjectMetricGetValueAndDerivativeThreader::ProcessPoint for algorithm implementation.
  *
+ * \sa itkImageToImageObjectMetric
  * \ingroup ITKHighDimensionalMetrics
  */
 template <class TFixedImage, class TMovingImage, class TVirtualImage = TFixedImage >
@@ -72,6 +88,11 @@ public:
   typedef typename Superclass::VirtualPointType        VirtualPointType;
   typedef typename Superclass::VirtualSampledPointSetType
                                                        VirtualSampledPointSetType;
+  typedef typename Superclass::NumberOfParametersType  NumberOfParametersType;
+
+  typedef typename Superclass::InternalComputationValueType InternalComputationValueType;
+
+  typedef typename Superclass::ImageDimensionType      ImageDimensionType;
 
   /* Image dimension accessors */
   itkStaticConstMacro(VirtualImageDimension, ImageDimensionType,
@@ -81,7 +102,19 @@ public:
   itkStaticConstMacro(MovingImageDimension, ImageDimensionType,
       ::itk::GetImageDimension<TMovingImage>::ImageDimension);
 
+  virtual void Initialize(void) throw ( itk::ExceptionObject );
+
+  /** Accessors for the image intensity difference threshold use
+   *  in derivative calculation */
+  itkGetConstMacro(IntensityDifferenceThreshold, InternalComputationValueType);
+  itkSetMacro(IntensityDifferenceThreshold, InternalComputationValueType);
+
+  /** Get the denominator threshold used in derivative calculation. */
+  itkGetConstMacro(DenominatorThreshold, InternalComputationValueType);
+
 protected:
+  itkGetConstMacro(Normalizer, InternalComputationValueType);
+
   DemonsImageToImageObjectMetric();
   virtual ~DemonsImageToImageObjectMetric();
 
@@ -95,6 +128,17 @@ protected:
   void PrintSelf(std::ostream& os, Indent indent) const;
 
 private:
+
+  /** Threshold below which the denominator term is considered zero.
+   *  Fixed programatically in constructor. */
+  InternalComputationValueType   m_DenominatorThreshold;
+
+  /** Threshold below which two intensity value are assumed to match. */
+  InternalComputationValueType   m_IntensityDifferenceThreshold;
+
+  /* Used to normalize derivative calculation. Automatically calculated */
+  InternalComputationValueType   m_Normalizer;
+
   DemonsImageToImageObjectMetric(const Self &); //purposely not implemented
   void operator = (const Self &); //purposely not implemented
 };

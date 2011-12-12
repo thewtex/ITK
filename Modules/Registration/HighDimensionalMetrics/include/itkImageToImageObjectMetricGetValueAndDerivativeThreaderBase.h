@@ -81,6 +81,7 @@ public:
 
   typedef typename ImageToImageObjectMetricType::InternalComputationValueType InternalComputationValueType;
   typedef typename ImageToImageObjectMetricType::NumberOfParametersType       NumberOfParametersType;
+  typedef typename ImageToImageObjectMetricType::ImageDimensionType           ImageDimensionType;
 
 protected:
   /** Constructor. */
@@ -159,7 +160,7 @@ protected:
   mutable std::vector< SizeValueType >                m_NumberOfValidPointsPerThread;
   /** Pre-allocated transform jacobian objects, for use as needed by dervied
    * classes for efficiency. */
-  mutable std::vector< JacobianType >                 m_MovingTransformJacobianPerThread;
+  mutable std::vector< JacobianType >        m_MovingTransformJacobianPerThread;
 
 private:
   ImageToImageObjectMetricGetValueAndDerivativeThreaderBase( const Self & ); // purposely not implemented

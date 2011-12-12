@@ -17,6 +17,8 @@
  *=========================================================================*/
 #include "itkDemonsImageToImageObjectMetric.h"
 #include "itkTranslationTransform.h"
+#include "itkGaussianSmoothingOnUpdateDisplacementFieldTransform.h"
+#include "itkTestingMacros.h"
 
 /* Simple test to verify that class builds and runs.
  * Results are not verified. See ImageToImageObjectMetricTest
@@ -85,14 +87,20 @@ int itkDemonsImageToImageObjectMetricTest(int, char ** const)
     }
 
   /* Transforms */
-  typedef itk::TranslationTransform<double,imageDimensionality> FixedTransformType;
-  typedef itk::TranslationTransform<double,imageDimensionality> MovingTransformType;
+  typedef itk::TranslationTransform<double,imageDimensionality> TranslationTransformType;
+  TranslationTransformType::Pointer translationTransform = TranslationTransformType::New();
+  translationTransform->SetIdentity();
 
-  FixedTransformType::Pointer fixedTransform = FixedTransformType::New();
-  MovingTransformType::Pointer movingTransform = MovingTransformType::New();
+  typedef itk::GaussianSmoothingOnUpdateDisplacementFieldTransform< double, imageDimensionality> DisplacementTransformType;
+  DisplacementTransformType::Pointer displacementTransform = DisplacementTransformType::New();
 
-  fixedTransform->SetIdentity();
-  movingTransform->SetIdentity();
+  typedef DisplacementTransformType::DisplacementFieldType DisplacementFieldType;
+  DisplacementFieldType::Pointer field = DisplacementFieldType::New();
+
+  field->SetRegions( fixedImage->GetLargestPossibleRegion() );
+  field->CopyInformation( fixedImage );
+  field->Allocate();
+  displacementTransform->SetDisplacementField( field );
 
   /* The metric */
   typedef itk::DemonsImageToImageObjectMetric< ImageType, ImageType, ImageType > MetricType;
@@ -104,8 +112,8 @@ int itkDemonsImageToImageObjectMetricTest(int, char ** const)
    * the metric will use the fixed image for the virtual domain. */
   metric->SetFixedImage( fixedImage );
   metric->SetMovingImage( movingImage );
-  metric->SetFixedTransform( fixedTransform );
-  metric->SetMovingTransform( movingTransform );
+  metric->SetFixedTransform( displacementTransform );
+  metric->SetMovingTransform( translationTransform );
 
   /* Initialize. */
   try
@@ -135,7 +143,7 @@ int itkDemonsImageToImageObjectMetricTest(int, char ** const)
     return EXIT_FAILURE;
     }
 
-  /* Re-initialize. */
+  /* Re-initialize to test GetValue separately. */
   try
     {
     std::cout << "Calling Initialize..." << std::endl;
@@ -159,13 +167,54 @@ int itkDemonsImageToImageObjectMetricTest(int, char ** const)
     return EXIT_FAILURE;
     }
 
-  // Test same value returned by different methods
+  /* Test that same value is returned by different methods */
   std::cout << "Check Value return values..." << std::endl;
   if( valueReturn1 != valueReturn2 )
     {
     std::cerr << "Results for Value don't match: " << valueReturn1
               << ", " << valueReturn2 << std::endl;
     }
+
+  /* Test with different image gradient source. The default is
+   * to have the fixed image used for image gradients.  */
+  metric->SetGradientSource( MetricType::GRADIENT_SOURCE_MOVING );
+  metric->SetFixedTransform( translationTransform );
+  metric->SetMovingTransform( displacementTransform );
+  try
+    {
+    std::cout << "Calling Initialize..." << std::endl;
+    metric->Initialize();
+    }
+  catch( itk::ExceptionObject & exc )
+    {
+    std::cerr << "Caught unexpected exception during initialize with different "
+              << "image gradient source: " << exc << std::endl;
+    return EXIT_FAILURE;
+    }
+
+  /* Test that initialization fails when assign a non-local-support
+   * transform for the image gradient source image. */
+  std::cout << "Expect exception with non-local-support fixed transform for gradient source:" << std::endl;
+  metric->SetGradientSource( MetricType::GRADIENT_SOURCE_FIXED );
+  metric->SetFixedTransform( translationTransform );
+  TRY_EXPECT_EXCEPTION( metric->Initialize() );
+
+  std::cout << "Expect exception with non-local-support moving transform for gradient source:" << std::endl;
+  metric->SetGradientSource( MetricType::GRADIENT_SOURCE_MOVING );
+  metric->SetMovingTransform( translationTransform );
+  TRY_EXPECT_EXCEPTION( metric->Initialize() );
+
+  /* Exercise accessor method */
+  MetricType::InternalComputationValueType testValue = static_cast<MetricType::InternalComputationValueType> (0.5);
+  metric->SetIntensityDifferenceThreshold( testValue );
+  if( metric->GetIntensityDifferenceThreshold() != testValue )
+    {
+    std::cerr << "Set/GetIntensityDifferenceThreshold failed." << std::endl;
+    return EXIT_FAILURE;
+    }
+
+  /* Print self */
+  metric->Print( std::cout );
 
   std::cout << "Test passed." << std::endl;
   return EXIT_SUCCESS;
