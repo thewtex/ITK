@@ -17,17 +17,17 @@
 *=========================================================================*/
 
 /**
- * Test program for DemonsImageToImageObjectMetric and
- * GradientDescentObjectOptimizer classes.
+ * Test program for DemonsImageToImageMetricv4 and
+ * GradientDescentOptimizerv4 classes.
  *
  * Perform a registration using user-supplied images.
  * No numerical verification is performed. Test passes as long
  * as no exception occurs.
  */
-#include "itkDemonsImageToImageObjectMetric.h"
-#include "itkGradientDescentObjectOptimizer.h"
+#include "itkDemonsImageToImageMetricv4.h"
+#include "itkGradientDescentOptimizerv4.h"
 #include "itkRegistrationParameterScalesFromShift.h"
-#include "itkJointHistogramMutualInformationImageToImageObjectMetric.h"
+#include "itkJointHistogramMutualInformationImageToImageMetricv4.h"
 
 #include "itkIdentityTransform.h"
 #include "itkAffineTransform.h"
@@ -159,7 +159,7 @@ int itkAffineDemonsImageToImageObjectRegistrationTest(int argc, char *argv[])
   identityTransform->SetIdentity();
 
   // The metric
-  typedef itk::DemonsImageToImageObjectMetric< FixedImageType, MovingImageType >
+  typedef itk::DemonsImageToImageMetricv4< FixedImageType, MovingImageType >
                                                                   MetricType;
   typedef MetricType::FixedSampledPointSetType                    PointSetType;
   MetricType::Pointer metric = MetricType::New();
@@ -220,7 +220,7 @@ int itkAffineDemonsImageToImageObjectRegistrationTest(int argc, char *argv[])
   shiftScaleEstimator->SetMetric(metric);
 
   // Create an optimzer and initialize
-  typedef itk::GradientDescentObjectOptimizer  OptimizerType;
+  typedef itk::GradientDescentOptimizerv4  OptimizerType;
   OptimizerType::Pointer  optimizer = OptimizerType::New();
   optimizer->SetMetric( metric );
   optimizer->SetNumberOfIterations( numberOfIterations );

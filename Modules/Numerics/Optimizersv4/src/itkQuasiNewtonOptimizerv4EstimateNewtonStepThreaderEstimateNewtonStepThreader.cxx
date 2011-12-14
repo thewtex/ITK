@@ -15,14 +15,14 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#include "itkQuasiNewtonObjectOptimizerEstimateNewtonStepThreader.h"
-#include "itkQuasiNewtonObjectOptimizer.h"
+#include "itkQuasiNewtonOptimizerv4EstimateNewtonStepThreaderEstimateNewtonStepThreader.h"
+#include "itkQuasiNewtonOptimizerv4EstimateNewtonStepThreader.h"
 
 namespace itk
 {
 
 void
-QuasiNewtonObjectOptimizerEstimateNewtonStepThreader
+QuasiNewtonOptimizerv4EstimateNewtonStepThreaderEstimateNewtonStepThreader
 ::ThreadedExecution( const IndexRangeType & subrange,
                      const ThreadIdType itkNotUsed(threadId) )
 {

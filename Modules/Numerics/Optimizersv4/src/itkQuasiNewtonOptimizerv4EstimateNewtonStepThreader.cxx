@@ -15,13 +15,13 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#include "itkQuasiNewtonObjectOptimizer.h"
+#include "itkQuasiNewtonOptimizerv4EstimateNewtonStepThreader.h"
 
 namespace itk
 {
 
-QuasiNewtonObjectOptimizer
-::QuasiNewtonObjectOptimizer()
+QuasiNewtonOptimizerv4EstimateNewtonStepThreader
+::QuasiNewtonOptimizerv4EstimateNewtonStepThreader()
 {
   this->m_MaximumIterationsWithoutProgress = 30;
   this->m_LearningRate = NumericTraits<InternalComputationValueType>::One;
@@ -33,23 +33,23 @@ QuasiNewtonObjectOptimizer
   this->m_MaximumNewtonStepSizeInPhysicalUnits = NumericTraits<InternalComputationValueType>::Zero;
 
   /** Threader for Quasi-Newton method */
-  this->m_EstimateNewtonStepThreader = QuasiNewtonObjectOptimizerEstimateNewtonStepThreader::New();
+  this->m_EstimateNewtonStepThreader = QuasiNewtonOptimizerv4EstimateNewtonStepThreaderEstimateNewtonStepThreader::New();
 }
 
-QuasiNewtonObjectOptimizer
-::~QuasiNewtonObjectOptimizer()
+QuasiNewtonOptimizerv4EstimateNewtonStepThreader
+::~QuasiNewtonOptimizerv4EstimateNewtonStepThreader()
 {
 }
 
 void
-QuasiNewtonObjectOptimizer
+QuasiNewtonOptimizerv4EstimateNewtonStepThreader
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
 }
 
 void
-QuasiNewtonObjectOptimizer
+QuasiNewtonOptimizerv4EstimateNewtonStepThreader
 ::StartOptimization()
 {
   itkDebugMacro("StartOptimization");
@@ -86,7 +86,7 @@ QuasiNewtonObjectOptimizer
 }
 
 void
-QuasiNewtonObjectOptimizer
+QuasiNewtonOptimizerv4EstimateNewtonStepThreader
 ::AdvanceOneStep(void)
 {
   itkDebugMacro("AdvanceOneStep");
@@ -181,7 +181,7 @@ QuasiNewtonObjectOptimizer
 }
 
 void
-QuasiNewtonObjectOptimizer
+QuasiNewtonOptimizerv4EstimateNewtonStepThreader
 ::CombineGradientNewtonStep()
 {
   const SizeValueType numLocalPara = this->m_Metric->GetNumberOfLocalParameters();
@@ -224,7 +224,7 @@ QuasiNewtonObjectOptimizer
     }
 }
 
-void QuasiNewtonObjectOptimizer
+void QuasiNewtonOptimizerv4EstimateNewtonStepThreader
 ::ModifyCombinedNewtonStep()
 {
   // If m_ScalesEstimator is not set, we will not change the Newton step.
@@ -257,7 +257,7 @@ void QuasiNewtonObjectOptimizer
     }
 }
 
-void QuasiNewtonObjectOptimizer
+void QuasiNewtonOptimizerv4EstimateNewtonStepThreader
 ::ResetNewtonStep(IndexValueType loc)
 {
   const SizeValueType numLocalPara = this->m_Metric->GetNumberOfLocalParameters();
@@ -280,7 +280,7 @@ void QuasiNewtonObjectOptimizer
 }
 
 void
-QuasiNewtonObjectOptimizer
+QuasiNewtonOptimizerv4EstimateNewtonStepThreader
 ::EstimateNewtonStep()
 {
   IndexRangeType fullrange;
@@ -298,7 +298,7 @@ QuasiNewtonObjectOptimizer
     }
 }
 
-void QuasiNewtonObjectOptimizer
+void QuasiNewtonOptimizerv4EstimateNewtonStepThreader
 ::EstimateNewtonStepOverSubRange( const IndexRangeType& subrange )
 {
   const SizeValueType numLocalPara = this->m_Metric->GetNumberOfLocalParameters();
@@ -336,7 +336,7 @@ void QuasiNewtonObjectOptimizer
     } // end for loc
 }
 
-bool QuasiNewtonObjectOptimizer
+bool QuasiNewtonOptimizerv4EstimateNewtonStepThreader
 ::ComputeHessianAndStepWithBFGS(IndexValueType loc)
 {
   if (this->GetCurrentIteration() == 0)
