@@ -15,15 +15,15 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkSingleValuedHighDimensionalCostFunction_h
-#define __itkSingleValuedHighDimensionalCostFunction_h
+#ifndef __itkSingleValuedCostFunctionv4_h
+#define __itkSingleValuedCostFunctionv4_h
 
 #include "itkCostFunction.h"
 #include "itkNumericTraits.h"
 
 namespace itk
 {
-/** \class SingleValuedHighDimensionalCostFunction
+/** \class SingleValuedCostFunctionv4
  * \brief This class is a base for the HighDimensionalCostFunctions returning a
  * single value
  *
@@ -43,20 +43,20 @@ namespace itk
  *  GetValueAndDerivative
  *
  * \ingroup Numerics Optimizers
- * \ingroup ITKHighDimensionalOptimizers
+ * \ingroup ITKOptimizersv4
  */
-class ITK_EXPORT SingleValuedHighDimensionalCostFunction:
+class ITK_EXPORT SingleValuedCostFunctionv4:
   public CostFunction
 {
 public:
   /** Standard class typedefs. */
-  typedef SingleValuedHighDimensionalCostFunction   Self;
-  typedef CostFunction                              Superclass;
-  typedef SmartPointer< Self >                      Pointer;
-  typedef SmartPointer< const Self >                ConstPointer;
+  typedef SingleValuedCostFunctionv4   Self;
+  typedef CostFunction                 Superclass;
+  typedef SmartPointer< Self >         Pointer;
+  typedef SmartPointer< const Self >   ConstPointer;
 
   /** Run-time type information (and related methods). */
-  itkTypeMacro(SingleValuedHighDimensionalCostFunction, CostFunction);
+  itkTypeMacro(SingleValuedCostFunctionv4, CostFunction);
 
   /**  MeasureType typedef.
    *  It defines a type used to return the cost function value. */
@@ -82,11 +82,11 @@ public:
                                      DerivativeType & derivative) const = 0;
 
 protected:
-  SingleValuedHighDimensionalCostFunction() {}
-  virtual ~SingleValuedHighDimensionalCostFunction() {}
+  SingleValuedCostFunctionv4() {}
+  virtual ~SingleValuedCostFunctionv4() {}
 
 private:
-  SingleValuedHighDimensionalCostFunction(const Self &); //purposely not implemented
+  SingleValuedCostFunctionv4(const Self &); //purposely not implemented
   void operator=(const Self &);           //purposely not implemented
 };
 } // end namespace itk
