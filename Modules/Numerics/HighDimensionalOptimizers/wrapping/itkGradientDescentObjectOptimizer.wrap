@@ -1,3 +1,0 @@
-WRAP_NON_TEMPLATE_CLASS("itk::ObjectToObjectOptimizerBase" POINTER)
-WRAP_NON_TEMPLATE_CLASS("itk::GradientDescentObjectOptimizerBase" POINTER)
-WRAP_NON_TEMPLATE_CLASS("itk::GradientDescentObjectOptimizer" POINTER)
