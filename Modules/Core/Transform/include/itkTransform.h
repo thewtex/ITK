@@ -552,6 +552,9 @@ public:
    *  since there is no change with respect to position. */
   virtual void ComputeInverseJacobianWithRespectToPosition(const InputPointType & x, JacobianType & jacobian ) const;
 
+  /** hacked-in member to test new implemetnation of TransformCovariantVector */
+  bool m_UseNewTxfCovVec;
+
 protected:
   Transform();
   Transform(NumberOfParametersType NumberOfParameters);

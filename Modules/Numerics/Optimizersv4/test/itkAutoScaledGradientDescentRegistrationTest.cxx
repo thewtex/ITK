@@ -97,6 +97,11 @@ int itkAutoScaledGradientDescentRegistrationTestTemplated(int numberOfIterations
   metric->SetFixedTransform( fixedTransform );
   metric->SetMovingTransform( movingTransform );
 
+  bool doPreWarp = false;
+  metric->SetDoFixedImagePreWarp( doPreWarp );
+  metric->SetDoMovingImagePreWarp( doPreWarp );
+  std::cout << "doPreWarp: " << doPreWarp << std::endl;
+
   // Initialize the metric to prepare for use
   metric->Initialize();
 

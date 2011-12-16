@@ -43,6 +43,7 @@ MatrixOffsetTransformBase<TScalarType, NInputDimensions, NOutputDimensions>
   m_InverseMatrixMTime = m_MatrixMTime;
   this->m_FixedParameters.SetSize(NInputDimensions);
   this->m_FixedParameters.Fill(0.0);
+  this->m_UseNewTxfCovVec = true;
 }
 
 // Constructor with default arguments
@@ -60,6 +61,7 @@ MatrixOffsetTransformBase<TScalarType, NInputDimensions, NOutputDimensions>
   m_Singular = false;
   m_InverseMatrix.SetIdentity();
   m_InverseMatrixMTime = m_MatrixMTime;
+  this->m_UseNewTxfCovVec = true;
 }
 
 // Constructor with explicit arguments
@@ -78,6 +80,7 @@ MatrixOffsetTransformBase<TScalarType, NInputDimensions, NOutputDimensions>
     m_Translation[i] = offset[i];
     }
   this->ComputeMatrixParameters();
+  this->m_UseNewTxfCovVec = true;
 }
 
 // Destructor
@@ -256,17 +259,48 @@ typename MatrixOffsetTransformBase<TScalarType,
                                    NInputDimensions,
                                    NOutputDimensions>::OutputCovariantVectorType
 MatrixOffsetTransformBase<TScalarType, NInputDimensions, NOutputDimensions>
+::TransformCovariantVector(
+    const InputCovariantVectorType & vector,
+    const InputPointType & ) const
+{
+  return this->TransformCovariantVector( vector );
+}
+
+// Transform a CovariantVector
+template <class TScalarType, unsigned int NInputDimensions,
+          unsigned int NOutputDimensions>
+typename MatrixOffsetTransformBase<TScalarType,
+                                   NInputDimensions,
+                                   NOutputDimensions>::OutputCovariantVectorType
+MatrixOffsetTransformBase<TScalarType, NInputDimensions, NOutputDimensions>
 ::TransformCovariantVector(const InputCovariantVectorType & vec) const
 {
   OutputCovariantVectorType result;     // Converted vector
-
+static bool done=0;
   for( unsigned int i = 0; i < NOutputDimensions; i++ )
     {
     result[i] = NumericTraits<ScalarType>::Zero;
     for( unsigned int j = 0; j < NInputDimensions; j++ )
       {
-      result[i] += this->GetInverseMatrix()[j][i] * vec[j]; // Inverse
+      if(! this->m_UseNewTxfCovVec)
+        {
+        result[i] += this->GetInverseMatrix()[j][i] * vec[j]; // Inverse
                                                             // transposed
+        if(!done)
+          {
+          std::cout << "****MOTB::TxfCovVec-Old\n";
+          done=true;
+          }
+        }
+      else
+        {
+        result[i] += this->GetInverseMatrix()[i][j] * vec[j]; // Inverse
+        if(!done)
+          {
+          std::cout << "****MOTB::TxfCovVec-New\n";
+          done=true;
+          }
+        }
       }
     }
   return result;
