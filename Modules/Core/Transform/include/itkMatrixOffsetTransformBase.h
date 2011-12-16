@@ -354,6 +354,10 @@ public:
 
   OutputCovariantVectorType TransformCovariantVector(const InputCovariantVectorType & vector) const;
 
+  OutputCovariantVectorType TransformCovariantVector(
+    const InputCovariantVectorType & vector,
+    const InputPointType & point ) const;
+
   OutputVectorPixelType TransformCovariantVector(const InputVectorPixelType & vector) const;
 
   using Superclass::TransformDiffusionTensor3D;
@@ -425,6 +429,7 @@ public:
   {
     return true;
   }
+
 protected:
   /** Construct an MatrixOffsetTransformBase object
    *

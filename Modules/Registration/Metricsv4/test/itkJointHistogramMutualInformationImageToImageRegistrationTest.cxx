@@ -136,7 +136,9 @@ int itkJointHistogramMutualInformationImageToImageRegistrationTest(int argc, cha
     std::cerr << "Usage: " << argv[0];
     std::cerr << " fixedImageFile movingImageFile ";
     std::cerr << " outputImageFile ";
-    std::cerr << " [numberOfIterations numberOfDisplacementIterations] ";
+    std::cerr << " [numberOfIterations] [numberOfDisplacementIterations] ";
+    std::cerr << " [doPreWarp = 0] ";
+    std::cerr << " [useNewTxfCovVector = 1] ";
     std::cerr << std::endl;
     return EXIT_FAILURE;
     }
@@ -144,6 +146,8 @@ int itkJointHistogramMutualInformationImageToImageRegistrationTest(int argc, cha
   std::cout << argc << std::endl;
   unsigned int numberOfIterations = 10;
   unsigned int numberOfDisplacementIterations = 10;
+  bool doPreWarp = false;
+  bool useNewTxfCovVector = true;
   if( argc >= 5 )
     {
     numberOfIterations = atoi( argv[4] );
@@ -152,8 +156,19 @@ int itkJointHistogramMutualInformationImageToImageRegistrationTest(int argc, cha
     {
     numberOfDisplacementIterations = atof( argv[5] );
     }
+  if( argc >= 7 )
+    {
+    doPreWarp = atoi( argv[6] );
+    }
+  if( argc >= 8 )
+    {
+    useNewTxfCovVector = atoi( argv[7] );
+    }
+
   std::cout << " iterations "<< numberOfIterations
-    << " displacementIterations " << numberOfDisplacementIterations << std::endl;
+    << " displacementIterations " << numberOfDisplacementIterations << std::endl
+    << " doPreWarp " << doPreWarp << std::endl
+    << " useNewTxfCovVector " << useNewTxfCovVector << std::endl;
 
   const unsigned int Dimension = 2;
   typedef double PixelType; //I assume png is unsigned short
@@ -195,9 +210,12 @@ int itkJointHistogramMutualInformationImageToImageRegistrationTest(int argc, cha
   AffineTransformType::Pointer affineTransform = AffineTransformType::New();
   affineTransform->SetIdentity();
   std::cout <<" affineTransform params prior to optimization " << affineTransform->GetParameters() << std::endl;
+  affineTransform->m_UseNewTxfCovVec = useNewTxfCovVector;
 
   typedef itk::GaussianSmoothingOnUpdateDisplacementFieldTransform< double, Dimension> DisplacementTransformType;
   DisplacementTransformType::Pointer displacementTransform = DisplacementTransformType::New();
+
+  displacementTransform->m_UseNewTxfCovVec = useNewTxfCovVector;
 
   typedef DisplacementTransformType::DisplacementFieldType DisplacementFieldType;
   DisplacementFieldType::Pointer field = DisplacementFieldType::New();
@@ -230,33 +248,39 @@ int itkJointHistogramMutualInformationImageToImageRegistrationTest(int argc, cha
   MetricType::Pointer metric = MetricType::New();
   metric->SetNumberOfHistogramBins(20);
 
-  typedef PointSetType::PointType     PointType;
-  PointSetType::Pointer               pset(PointSetType::New());
-  unsigned long ind=0,ct=0;
-  itk::ImageRegionIteratorWithIndex<FixedImageType> It(fixedImage, fixedImage->GetLargestPossibleRegion() );
-  for( It.GoToBegin(); !It.IsAtEnd(); ++It )
+  if( 0 )
     {
-    // take every N^th point
-    if ( ct % 20 == 0  ) // about a factor of 5 speed-up over dense
+    typedef PointSetType::PointType     PointType;
+    PointSetType::Pointer               pset(PointSetType::New());
+    unsigned long ind=0,ct=0;
+    itk::ImageRegionIteratorWithIndex<FixedImageType> It(fixedImage, fixedImage->GetLargestPossibleRegion() );
+    for( It.GoToBegin(); !It.IsAtEnd(); ++It )
       {
-        PointType pt;
-        fixedImage->TransformIndexToPhysicalPoint( It.GetIndex(), pt);
-        pset->SetPoint(ind, pt);
-        ind++;
+      // take every N^th point
+      if ( ct % 1 == 0  ) // about a factor of 5 speed-up over dense
+        {
+          PointType pt;
+          fixedImage->TransformIndexToPhysicalPoint( It.GetIndex(), pt);
+          pset->SetPoint(ind, pt);
+          ind++;
+        }
+        ct++;
       }
-      ct++;
+      // brief profiling notes on mutual information affine registration macbook air , mi using every 20th point for sparse
+      //  1 thread dense = 10 sec
+      //  2 thread dense = 7.5  sec
+      //  1 thread sparse = 2.2 sec
+      //  2 thread sparse = 1.8 sec
+      // this uses only 1500 points so it's probably not a great multi-thread test for the sparse case
+    std::cout << "Setting point set with " << ind << " points of " << fixedImage->GetLargestPossibleRegion().GetNumberOfPixels() << " total " << std::endl;
+    metric->SetFixedSampledPointSet( pset );
+    metric->SetUseFixedSampledPointSet( true );
+    std::cout << "Testing metric with point set..." << std::endl;
     }
-    // brief profiling notes on mutual information affine registration macbook air , mi using every 20th point for sparse
-    //  1 thread dense = 10 sec
-    //  2 thread dense = 7.5  sec
-    //  1 thread sparse = 2.2 sec
-    //  2 thread sparse = 1.8 sec
-    // this uses only 1500 points so it's probably not a great multi-thread test for the sparse case
-  std::cout << "Setting point set with " << ind << " points of " << fixedImage->GetLargestPossibleRegion().GetNumberOfPixels() << " total " << std::endl;
-  metric->SetFixedSampledPointSet( pset );
-  metric->SetUseFixedSampledPointSet( true );
-  std::cout << "Testing metric with point set..." << std::endl;
-
+  else
+    {
+    std::cout << "Dense evaluation." << std::endl;
+    }
 
   // Assign images and transforms.
   // By not setting a virtual domain image or virtual domain settings,
@@ -266,9 +290,9 @@ int itkJointHistogramMutualInformationImageToImageRegistrationTest(int argc, cha
   metric->SetMovingImage( movingImage );
   metric->SetFixedTransform( identityTransform );
   metric->SetMovingTransform( affineTransform );
-  metric->SetDoFixedImagePreWarp( true );
-  metric->SetDoMovingImagePreWarp( true );
-  const bool gaussian = false;
+  metric->SetDoFixedImagePreWarp( doPreWarp );
+  metric->SetDoMovingImagePreWarp( doPreWarp );
+  const bool gaussian = true;
   metric->SetUseMovingImageGradientFilter( gaussian );
   metric->SetUseFixedImageGradientFilter( gaussian );
   metric->Initialize();
@@ -286,13 +310,12 @@ int itkJointHistogramMutualInformationImageToImageRegistrationTest(int argc, cha
   JointPDFStatusType::Pointer jointPDFStatus = JointPDFStatusType::New();
   jointPDFStatus->SetOutputFileNameBase( argv[3] );
   jointPDFStatus->SetMIMetric( metric );
-  optimizer->AddObserver( itk::IterationEvent(), jointPDFStatus );
+  //optimizer->AddObserver( itk::IterationEvent(), jointPDFStatus );
   optimizer->SetMetric( metric );
   optimizer->SetNumberOfIterations( numberOfIterations );
   optimizer->SetScalesEstimator( shiftScaleEstimator );
   optimizer->StartOptimization();
 
-  std::cout << "Follow affine with deformable registration " << std::endl;
   // now add the displacement field to the composite transform
   compositeTransform->AddTransform( affineTransform );
   compositeTransform->AddTransform( displacementTransform );
@@ -303,28 +326,35 @@ int itkJointHistogramMutualInformationImageToImageRegistrationTest(int argc, cha
   metric->Initialize();
 
   // Optimizer
-  RegistrationParameterScalesFromShiftType::ScalesType
-    displacementScales( displacementTransform->GetNumberOfLocalParameters() );
-  displacementScales.Fill(1);
-  optimizer->SetMetric( metric );
-  optimizer->SetNumberOfIterations( numberOfDisplacementIterations );
-  optimizer->SetScalesEstimator( shiftScaleEstimator );
-  try
+  if( numberOfDisplacementIterations == 0 )
     {
-    optimizer->StartOptimization();
+    std::cout << "Skipping deformable registration." << std::endl;
     }
-  catch( itk::ExceptionObject & e )
+  else
     {
-    std::cout << "Exception thrown ! " << std::endl;
-    std::cout << "An error ocurred during deformation Optimization:" << std::endl;
-    std::cout << e.GetLocation() << std::endl;
-    std::cout << e.GetDescription() << std::endl;
-    std::cout << e.what()    << std::endl;
-    std::cout << "Test FAILED." << std::endl;
-    return EXIT_FAILURE;
+    std::cout << "Follow affine with deformable registration " << std::endl;
+    RegistrationParameterScalesFromShiftType::ScalesType
+      displacementScales( displacementTransform->GetNumberOfLocalParameters() );
+    displacementScales.Fill(1);
+    optimizer->SetMetric( metric );
+    optimizer->SetNumberOfIterations( numberOfDisplacementIterations );
+    optimizer->SetScalesEstimator( shiftScaleEstimator );
+    try
+      {
+      optimizer->StartOptimization();
+      }
+    catch( itk::ExceptionObject & e )
+      {
+      std::cout << "Exception thrown ! " << std::endl;
+      std::cout << "An error ocurred during deformation Optimization:" << std::endl;
+      std::cout << e.GetLocation() << std::endl;
+      std::cout << e.GetDescription() << std::endl;
+      std::cout << e.what()    << std::endl;
+      std::cout << "Test FAILED." << std::endl;
+      return EXIT_FAILURE;
+      }
+    std::cout << "...finished. " << std::endl;
     }
-  std::cout << "...finished. " << std::endl;
-
 
   //warp the image with the displacement field
   resample->SetTransform( compositeTransform );

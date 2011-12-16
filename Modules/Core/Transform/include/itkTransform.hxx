@@ -264,6 +264,7 @@ typename Transform<TScalarType, NInputDimensions, NOutputDimensions>::OutputCova
 Transform<TScalarType, NInputDimensions, NOutputDimensions>
 ::TransformCovariantVector( const InputCovariantVectorType& vector, const InputPointType & point ) const
 {
+static bool done=0;
   JacobianType jacobian;
   this->ComputeInverseJacobianWithRespectToPosition( point, jacobian );
   OutputCovariantVectorType result;
@@ -272,7 +273,24 @@ Transform<TScalarType, NInputDimensions, NOutputDimensions>
     result[i] = NumericTraits<ScalarType>::Zero;
     for( unsigned int j = 0; j < NInputDimensions; j++ )
       {
-      result[i] += jacobian[j][i] * vector[j];
+      if(! this->m_UseNewTxfCovVec)
+        {
+        result[i] += jacobian[j][i] * vector[j];
+        if(!done)
+          {
+          std::cout << "****Transform::TxfCovVec-Old\n";
+          done=true;
+          }
+        }
+      else
+        {
+        result[i] += jacobian[i][j] * vector[j]; //trying this
+        if(!done)
+          {
+          std::cout << "****Transform::TxfCovVec-New\n";
+          done=true;
+          }
+        }
       }
     }
 
