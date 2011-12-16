@@ -143,6 +143,8 @@ public:
   using Superclass::TransformCovariantVector;
   OutputCovariantVectorType TransformCovariantVector(const InputCovariantVectorType & vector) const;
 
+  OutputCovariantVectorType TransformCovariantVector(const InputCovariantVectorType & vect, const InputPointType &) const;
+
   /** This method finds the point or vector that maps to a given
    * point or vector under the affine transformation defined by
    * self.  If no such point exists, an exception is thrown. */

@@ -150,6 +150,13 @@ TranslationTransform<TScalarType, NDimensions>::TransformVector(const InputVnlVe
 // Transform a CovariantVector
 template <class TScalarType, unsigned int NDimensions>
 typename TranslationTransform<TScalarType, NDimensions>::OutputCovariantVectorType
+TranslationTransform<TScalarType, NDimensions>::TransformCovariantVector(const InputCovariantVectorType & vect, const InputPointType &) const
+{
+  return vect;
+}
+
+template <class TScalarType, unsigned int NDimensions>
+typename TranslationTransform<TScalarType, NDimensions>::OutputCovariantVectorType
 TranslationTransform<TScalarType, NDimensions>::TransformCovariantVector(const InputCovariantVectorType & vect) const
 {
   return vect;

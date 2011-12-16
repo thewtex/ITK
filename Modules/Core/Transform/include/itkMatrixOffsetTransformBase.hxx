@@ -256,20 +256,45 @@ typename MatrixOffsetTransformBase<TScalarType,
                                    NInputDimensions,
                                    NOutputDimensions>::OutputCovariantVectorType
 MatrixOffsetTransformBase<TScalarType, NInputDimensions, NOutputDimensions>
+::TransformCovariantVector(
+    const InputCovariantVectorType & vector,
+    const InputPointType & ) const
+{
+  return this->TransformCovariantVector( vector );
+}
+
+// Transform a CovariantVector
+template <class TScalarType, unsigned int NInputDimensions,
+          unsigned int NOutputDimensions>
+typename MatrixOffsetTransformBase<TScalarType,
+                                   NInputDimensions,
+                                   NOutputDimensions>::OutputCovariantVectorType
+MatrixOffsetTransformBase<TScalarType, NInputDimensions, NOutputDimensions>
 ::TransformCovariantVector(const InputCovariantVectorType & vec) const
 {
   OutputCovariantVectorType result;     // Converted vector
-
   for( unsigned int i = 0; i < NOutputDimensions; i++ )
     {
     result[i] = NumericTraits<ScalarType>::Zero;
     for( unsigned int j = 0; j < NInputDimensions; j++ )
       {
-      result[i] += this->GetInverseMatrix()[j][i] * vec[j]; // Inverse
-                                                            // transposed
+      result[i] += this->GetInverseMatrix()[i][j] * vec[j];
       }
     }
   return result;
+}
+
+// Transform a variable length vector
+template <class TScalarType, unsigned int NInputDimensions,
+          unsigned int NOutputDimensions>
+typename MatrixOffsetTransformBase<TScalarType,
+                                   NInputDimensions,
+                                   NOutputDimensions>::OutputVectorPixelType
+MatrixOffsetTransformBase<TScalarType, NInputDimensions, NOutputDimensions>
+::TransformCovariantVector(const InputVectorPixelType & vect,
+    const InputPointType &) const
+{
+  return this->TransformCovariantVector( vect );
 }
 
 // Transform a variable length vector
@@ -293,7 +318,7 @@ MatrixOffsetTransformBase<TScalarType, NInputDimensions, NOutputDimensions>
       {
       if( (i < NInputDimensions) && (j < NInputDimensions) )
         {
-        vnl_mat(i, j) = this->GetInverseMatrix() (j, i);
+        vnl_mat(i, j) = this->GetInverseMatrix() (i, j);
         }
       else if( i == j )
         {

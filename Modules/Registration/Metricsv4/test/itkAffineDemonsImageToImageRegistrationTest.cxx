@@ -70,6 +70,7 @@ int itkAffineDemonsImageToImageRegistrationTest(int argc, char *argv[])
     std::cerr << " [sparseSamplingStep = 1 (== dense sampling)] ";
     std::cerr << " [imageShrinkFactor = 1 ] ";
     std::cerr << " [numberOfThreads = global default ] ";
+    std::cerr << " [doPreWarpAlways = false ] ";
     std::cerr << std::endl;
     return EXIT_FAILURE;
     }
@@ -78,6 +79,7 @@ int itkAffineDemonsImageToImageRegistrationTest(int argc, char *argv[])
   unsigned int numberOfIterations = 10;
   unsigned int sparseSamplingStep = 1; //dense sampling
   unsigned int imageShrinkFactor = 1;
+  bool         doPreWarpAlways = false;
   itk::ThreadIdType numberOfThreads =
     itk::MultiThreader::GetGlobalDefaultNumberOfThreads();
   if( argc >= 5 )
@@ -96,6 +98,10 @@ int itkAffineDemonsImageToImageRegistrationTest(int argc, char *argv[])
     {
     numberOfThreads = atoi( argv[7] );
     }
+  if( argc >= 9 )
+    {
+    doPreWarpAlways = atoi( argv[8] );
+    }
 
   bool useSparseSampling = sparseSamplingStep > 1;
   if( sparseSamplingStep < 1 )
@@ -109,7 +115,8 @@ int itkAffineDemonsImageToImageRegistrationTest(int argc, char *argv[])
     << " sparseSamplingStep: " << sparseSamplingStep
     << " useSparseSampling: " << useSparseSampling << std::endl
     << " imageShrinkFactor: " << imageShrinkFactor << std::endl
-    << " numberOfThreads: " << numberOfThreads << std::endl;
+    << " numberOfThreads: " << numberOfThreads << std::endl
+    << " doPreWarpAlways: " << doPreWarpAlways << std::endl;
 
   const unsigned int Dimension = 2;
   typedef double PixelType;
@@ -205,9 +212,12 @@ int itkAffineDemonsImageToImageRegistrationTest(int argc, char *argv[])
   metric->SetMovingImage( movingImage );
   metric->SetFixedTransform( identityTransform );
   metric->SetMovingTransform( affineTransform );
-  metric->SetDoFixedImagePreWarp( ! useSparseSampling );
-  metric->SetDoMovingImagePreWarp( ! useSparseSampling );
+  bool preWarp = doPreWarpAlways;
+  std::cout << "Doing preWarp: " << preWarp << std::endl;
+  metric->SetDoFixedImagePreWarp( preWarp );
+  metric->SetDoMovingImagePreWarp( preWarp );
   bool gaussian = false;
+  std::cout << "Using gaussian gradient filter: " << gaussian << std::endl;
   metric->SetUseMovingImageGradientFilter( gaussian );
   metric->SetUseFixedImageGradientFilter( gaussian );
   metric->Initialize();

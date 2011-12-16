@@ -158,7 +158,15 @@ ScaleTransform<ScalarType, NDimensions>::TransformVector(const InputVnlVectorTyp
   return result;
 }
 
+
 // Transform a CovariantVector
+template <class ScalarType, unsigned int NDimensions>
+typename ScaleTransform<ScalarType, NDimensions>::OutputCovariantVectorType
+ScaleTransform<ScalarType, NDimensions>::TransformCovariantVector(const InputCovariantVectorType & vect, const InputPointType &) const
+{
+  return this->TransformCovariantVector( vect );
+}
+
 template <class ScalarType, unsigned int NDimensions>
 typename ScaleTransform<ScalarType, NDimensions>::OutputCovariantVectorType
 ScaleTransform<ScalarType, NDimensions>::TransformCovariantVector(const InputCovariantVectorType & vect) const

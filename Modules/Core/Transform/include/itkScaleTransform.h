@@ -168,6 +168,8 @@ public:
   using Superclass::TransformCovariantVector;
   OutputCovariantVectorType TransformCovariantVector(const InputCovariantVectorType & vector) const;
 
+  OutputCovariantVectorType TransformCovariantVector(const InputCovariantVectorType & vect, const InputPointType &) const;
+
   /** Back transform by a scale transformation
    * This method finds the point or vector that maps to a given
    * point or vector under the scale transformation defined by

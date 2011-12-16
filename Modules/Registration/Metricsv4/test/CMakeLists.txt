@@ -10,6 +10,7 @@ set(ITKMetricsv4Tests
   itkANTSNeighborhoodCorrelationImageToImageMetricv4Test.cxx
   itkANTSNeighborhoodCorrelationImageToImageRegistrationTest.cxx
   itkAffineDemonsImageToImageRegistrationTest.cxx
+  itkPreWarpTest.cxx
 )
 
 set(INPUTDATA ${ITK_DATA_ROOT}/Input)
@@ -74,3 +75,6 @@ itk_add_test(NAME itkAffineDemonsImageToImageRegistrationTest
               DATA{Input/face_b.jpg}
               ${TEMP}/itkAffineDemonsImageToImageRegistrationTest.nii.gz
               30 )
+
+itk_add_test(NAME itkPreWarpTest
+      COMMAND ITKMetricsv4TestDriver itkPreWarpTest )
