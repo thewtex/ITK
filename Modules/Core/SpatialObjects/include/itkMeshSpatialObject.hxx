@@ -83,7 +83,7 @@ MeshSpatialObject< TMesh >
       // If this is a triangle cell we need to check the distance
       if ( it.Value()->GetNumberOfPoints() == 3 )
         {
-        double minDist;
+        double minDist = NumericTraits< double >::Zero;
         if ( it.Value()->EvaluatePosition(position, m_Mesh->GetPoints(),
                                           NULL, NULL, &minDist, NULL)  &&
              minDist <= m_IsInsidePrecision )
