@@ -166,5 +166,20 @@ int itkLevelSetEquationPropagationTermTest( int argc, char* argv[] )
     return EXIT_FAILURE;
     }
 
+  it.GoToBegin();
+
+  itk::ImageRegionIteratorWithIndex< PropagationTermType::PropagationImageType > pIt(
+    term->GetPropagationImage(), term->GetPropagationImage()->GetLargestPosibleRegion() );
+  pIt.GoToBegin();
+
+  while( !it.IsAtEnd() )
+    {
+    if( static_cast< double >( it.Get() ) - static_cast< double >( pIt.Get() ) > 1e-2 )
+      {
+      return EXIT_FAILURE;
+      }
+    ++iIt;
+    ++pIt;
+    }
   return EXIT_SUCCESS;
 }
