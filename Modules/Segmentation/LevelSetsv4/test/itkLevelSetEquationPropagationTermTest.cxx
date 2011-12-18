@@ -166,5 +166,10 @@ int itkLevelSetEquationPropagationTermTest( int argc, char* argv[] )
     return EXIT_FAILURE;
     }
 
+  if( term->GetPropagationImage() != term->GetInput() )
+    {
+    return EXIT_FAILURE;
+    }
+
   return EXIT_SUCCESS;
 }
