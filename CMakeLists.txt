@@ -38,10 +38,13 @@ include(itkCheckSourceTree)
 set(main_project_name ${_ITKModuleMacros_DEFAULT_LABEL})
 
 #-----------------------------------------------------------------------------
-# ITK version number.  An even minor number corresponds to releases.
+# ITK version number.
 set(ITK_VERSION_MAJOR "4")
-set(ITK_VERSION_MINOR "0")
-set(ITK_VERSION_PATCH "0")
+set(ITK_VERSION_MINOR "1")
+include(${CMAKE_CURRENT_LIST_DIR}/Modules/ThirdParty/KWSys/src/KWSys/kwsysDateStamp.cmake)
+set(ITK_VERSION_PATCH "${KWSYS_DATE_STAMP_YEAR}${KWSYS_DATE_STAMP_MONTH}${KWSYS_DATE_STAMP_DAY}")
+# Change to zero for a release.
+#set(ITK_VERSION_PATCH "0")
 
 if(NOT ITK_INSTALL_RUNTIME_DIR)
   set(ITK_INSTALL_RUNTIME_DIR bin)
