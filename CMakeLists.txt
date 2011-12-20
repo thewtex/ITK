@@ -190,7 +190,12 @@ endif(ITK_USE_REVIEW)
 INCLUDE(${ITK_SOURCE_DIR}/Utilities/KWStyle/KWStyle.cmake)
 
 #-----------------------------------------------------------------------------
-# ITK build the Examples that are illustrated in the Software Guide
+# ITK build the Software Guide examples
+option(BUILD_SOFTWAREGUIDE "Build the SoftwareGuide directory."
+  ${BUILD_EXAMPLES_DEFAULT})
+
+#-----------------------------------------------------------------------------
+# ITK build the Examples
 option(BUILD_EXAMPLES "Build the Examples directory."
   ${BUILD_EXAMPLES_DEFAULT})
 
@@ -618,6 +623,10 @@ endif(ITK_WRAPPING)
 
 if(BUILD_EXAMPLES)
   add_subdirectory(Examples)
+endif()
+
+if(BUILD_SOFTWAREGUIDE)
+  add_subdirectory(SoftwareGuide)
 endif()
 
 #----------------------------------------------------------------------
