@@ -97,10 +97,12 @@ if("$ENV{DASHBOARD_TEST_FROM_CTEST}" STREQUAL "")
   # developer build
   set(ITK_BUILD_ALL_MODULES_DEFAULT ON)
   set(BUILD_EXAMPLES_DEFAULT ON)
+  set(BUILD_SOFTWARE_GUIDE_DEFAULT ON)
 else()
   # dashboard build
   set(ITK_BUILD_ALL_MODULES_DEFAULT ON)
   set(BUILD_EXAMPLES_DEFAULT ON)
+  set(BUILD_SOFTWARE_GUIDE_DEFAULT ON)
 endif()
 
 #-----------------------------------------------------------------------------
@@ -190,7 +192,12 @@ endif(ITK_USE_REVIEW)
 INCLUDE(${ITK_SOURCE_DIR}/Utilities/KWStyle/KWStyle.cmake)
 
 #-----------------------------------------------------------------------------
-# ITK build the Examples that are illustrated in the Software Guide
+# ITK build the Software Guide examples
+option(BUILD_SOFTWARE_GUIDE "Build the SoftwareGuide directory."
+  ${BUILD_SOFTWARE_GUIDE_DEFAULT})
+
+#-----------------------------------------------------------------------------
+# ITK build the Examples
 option(BUILD_EXAMPLES "Build the Examples directory."
   ${BUILD_EXAMPLES_DEFAULT})
 
@@ -240,6 +247,9 @@ set(ITK_DATA_ROOT ${ITK_SOURCE_DIR}/Testing/Data)
 
 # Location of ITK Example Data.
 set(ITK_EXAMPLE_DATA_ROOT "${ITK_SOURCE_DIR}/Examples/Data")
+
+# Location of ITK SoftwareGuide Data.
+set(ITK_SOFTWARE_GUIDE_DATA_ROOT "${ITK_SOURCE_DIR}/SoftwareGuide/Data")
 
 #This flag is used in particular, to enable some tests that require large memory to run.
 # This probably can be discovered at configuration time by CMake. (Check with CMake developers).
@@ -618,6 +628,10 @@ endif(ITK_WRAPPING)
 
 if(BUILD_EXAMPLES)
   add_subdirectory(Examples)
+endif()
+
+if(BUILD_SOFTWAREGUIDE)
+  add_subdirectory(SoftwareGuide)
 endif()
 
 #----------------------------------------------------------------------
