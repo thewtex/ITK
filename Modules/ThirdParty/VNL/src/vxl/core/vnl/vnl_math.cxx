@@ -306,3 +306,25 @@ double vnl_math::angle_0_to_2pi(double angle)
   }
   return a;
 }
+
+const double vnl_math::e                = 2.7182818284590452354;
+const double vnl_math::log2e            = 1.4426950408889634074;
+const double vnl_math::log10e           = 0.43429448190325182765;
+const double vnl_math::ln2              = 0.69314718055994530942;
+const double vnl_math::ln10             = 2.30258509299404568402;
+const double vnl_math::pi               = 3.14159265358979323846;
+const double vnl_math::pi_over_2        = 1.57079632679489661923;
+const double vnl_math::pi_over_4        = 0.78539816339744830962;
+const double vnl_math::one_over_pi      = 0.31830988618379067154;
+const double vnl_math::two_over_pi      = 0.63661977236758134308;
+const double vnl_math::two_over_sqrtpi  = 1.12837916709551257390;
+const double vnl_math::one_over_sqrt2pi = 0.39894228040143267794;
+const double vnl_math::sqrt2            = 1.41421356237309504880;
+const double vnl_math::sqrt1_2          = 0.70710678118654752440;
+const double vnl_math::euler            = 0.57721566490153286061;
+
+const double vnl_math::eps             = 2.2204460492503131e-16;
+const double vnl_math::sqrteps         = 1.490116119384766e-08;
+
+const float vnl_math::float_eps        = 1.192092896e-07f;
+const float vnl_math::float_sqrteps    = 3.4526698307e-4f;

@@ -363,11 +363,11 @@ class vnl_numeric_traits<float>
 {
  public:
   //: Additive identity
-  static const float zero VCL_STATIC_CONST_INIT_FLOAT_DECL(0.0F);
+  static const float zero;
   //: Multiplicative identity
-  static const float one VCL_STATIC_CONST_INIT_FLOAT_DECL(1.0F);
+  static const float one;
   //: Maximum value which this type can assume
-  static const float maxval VCL_STATIC_CONST_INIT_FLOAT_DECL(3.40282346638528860e+38F);
+  static const float maxval;
   //: Return value of abs()
   typedef float abs_t;
   //: Name of a type twice as long as this one for accumulators and products.
@@ -386,11 +386,11 @@ class vnl_numeric_traits<double>
 {
  public:
   //: Additive identity
-  static const double zero VCL_STATIC_CONST_INIT_FLOAT_DECL(0.0);
+  static const double zero;
   //: Multiplicative identity
-  static const double one VCL_STATIC_CONST_INIT_FLOAT_DECL(1.0);
+  static const double one;
   //: Maximum value which this type can assume
-  static const double maxval VCL_STATIC_CONST_INIT_FLOAT_DECL(1.7976931348623157E+308);
+  static const double maxval;
   //: Return value of abs()
   typedef double abs_t;
   //: Name of a type twice as long as this one for accumulators and products.
@@ -409,11 +409,11 @@ class vnl_numeric_traits<long double>
 {
  public:
   //: Additive identity
-  static const long double zero VCL_STATIC_CONST_INIT_FLOAT_DECL(0.0);
+  static const long double zero;
   //: Multiplicative identity
-  static const long double one VCL_STATIC_CONST_INIT_FLOAT_DECL(1.0);
+  static const long double one;
   //: Maximum value which this type can assume
-  static const long double maxval VCL_STATIC_CONST_INIT_FLOAT_DECL(1.7976931348623157E+308);
+  static const long double maxval;
   //: Return value of abs()
   typedef long double abs_t;
   //: Name of a type twice as long as this one for accumulators and products.

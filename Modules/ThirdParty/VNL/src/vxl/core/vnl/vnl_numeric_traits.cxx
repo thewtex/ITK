@@ -96,3 +96,22 @@ const vcl_complex<long double> vnl_numeric_traits<vcl_complex<long double> >::on
 //const vcl_complex<long double> vnl_numeric_traits<vcl_complex<long double> >::maxval;
 
 //--------------------------------------------------------------------------------
+
+
+const float vnl_numeric_traits<float>::zero = 0.0F;
+const float vnl_numeric_traits<float>::one = 1.0F;
+const float vnl_numeric_traits<float>::maxval = 3.40282346638528860e+38F;
+
+
+const double vnl_numeric_traits<double>::zero = 0.0;
+
+const double vnl_numeric_traits<double>::one = 1.0;
+
+const double vnl_numeric_traits<double>::maxval = 1.7976931348623157E+308;
+
+
+const long double vnl_numeric_traits<long double>::zero = 0.0;
+
+const long double vnl_numeric_traits<long double>::one = 1.0;
+
+const long double vnl_numeric_traits<long double>::maxval = 1.7976931348623157E+308;
