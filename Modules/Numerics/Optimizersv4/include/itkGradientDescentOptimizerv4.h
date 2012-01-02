@@ -20,6 +20,7 @@
 
 #include "itkGradientDescentOptimizerBasev4.h"
 #include "itkOptimizerParameterScalesEstimator.h"
+#include "itkWindowConvergenceMonitoringFunction.h"
 
 namespace itk
 {
@@ -82,6 +83,10 @@ public:
   typedef Superclass::MeasureType                  MeasureType;
   typedef Superclass::InternalComputationValueType InternalComputationValueType;
 
+  /** Type for the convergence checker */
+  typedef itk::Function::WindowConvergenceMonitoringFunction<double>
+    ConvergenceMonitoringType;
+
   /** Set the learning rate. */
   itkSetMacro(LearningRate, InternalComputationValueType);
 
@@ -93,6 +98,12 @@ public:
 
   /** Set the scales estimator. */
   itkSetObjectMacro(ScalesEstimator, OptimizerParameterScalesEstimator);
+
+  /** Set the minimum convergence value for convergence checking. */
+  itkSetMacro(MinimumConvergenceValue, InternalComputationValueType);
+
+  /** Set the window size for convergence checking. */
+  itkSetMacro(ConvergenceWindowSize, SizeValueType);
 
   /** Start and run the optimization */
   virtual void StartOptimization();
@@ -128,6 +139,15 @@ protected:
   virtual void PrintSelf( std::ostream & os, Indent indent ) const;
 
   OptimizerParameterScalesEstimator::Pointer m_ScalesEstimator;
+
+  /** Minimum convergence value for convergence checking. */
+  InternalComputationValueType m_MinimumConvergenceValue;
+
+  /** Window size for convergence checking. */
+  SizeValueType m_ConvergenceWindowSize;
+
+  /** The convergence checker. */
+  ConvergenceMonitoringType::Pointer m_ConvergenceMonitoring;
 
 private:
   GradientDescentOptimizerv4( const Self & ); //purposely not implemented
