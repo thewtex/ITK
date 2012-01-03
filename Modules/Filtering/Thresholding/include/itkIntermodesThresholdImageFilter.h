@@ -45,14 +45,14 @@ namespace itk {
  * \ingroup ITKThresholding
  */
 
-template<class TInputImage, class TOutputImage>
+template<class TInputImage, class TOutputImage, class TMaskImage=TOutputImage>
 class ITK_EXPORT IntermodesThresholdImageFilter :
-    public HistogramThresholdImageFilter<TInputImage, TOutputImage>
+    public HistogramThresholdImageFilter<TInputImage, TOutputImage, TMaskImage>
 {
 public:
   /** Standard Self typedef */
   typedef IntermodesThresholdImageFilter                              Self;
-  typedef HistogramThresholdImageFilter<TInputImage,TOutputImage>     Superclass;
+  typedef HistogramThresholdImageFilter<TInputImage,TOutputImage,TMaskImage>     Superclass;
   typedef SmartPointer<Self>                                          Pointer;
   typedef SmartPointer<const Self>                                    ConstPointer;
 
@@ -64,10 +64,12 @@ public:
 
   typedef TInputImage                       InputImageType;
   typedef TOutputImage                      OutputImageType;
+  typedef TMaskImage                        MaskImageType;
 
   /** Image pixel value typedef. */
   typedef typename InputImageType::PixelType   InputPixelType;
   typedef typename OutputImageType::PixelType  OutputPixelType;
+  typedef typename MaskImageType::PixelType    MaskPixelType;
 
   /** Image related typedefs. */
   typedef typename InputImageType::Pointer  InputImagePointer;
@@ -79,6 +81,9 @@ public:
   typedef typename OutputImageType::SizeType   OutputSizeType;
   typedef typename OutputImageType::IndexType  OutputIndexType;
   typedef typename OutputImageType::RegionType OutputImageRegionType;
+  typedef typename MaskImageType::SizeType     MaskSizeType;
+  typedef typename MaskImageType::IndexType    MaskIndexType;
+  typedef typename MaskImageType::RegionType   MaskImageRegionType;
 
   typedef typename Superclass::HistogramType                             HistogramType;
   typedef IntermodesThresholdCalculator< HistogramType, InputPixelType > CalculatorType;
