@@ -23,6 +23,7 @@
 #include "itkImage.h"
 #include "itkPixelTraits.h"
 #include "itkCommand.h"
+#include "itkImageTraits.h"
 
 namespace itk
 {
@@ -82,8 +83,7 @@ public:
       Here we prefer float in order to save memory.  */
 
   typedef typename NumericTraits< PixelType >::FloatType InternalRealType;
-  typedef Image< InternalRealType,
-                 itkGetStaticConstMacro(ImageDimension) >   RealImageType;
+  typedef typename ImageTraits< InputImageType >::template Rebind<RealType>::Type RealImageType;
 
   /**  The first in the pipeline  */
   typedef RecursiveGaussianImageFilter<
@@ -145,8 +145,9 @@ public:
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   /** Begin concept checking */
-  itkConceptMacro( InputHasNumericTraitsCheck,
-                   ( Concept::HasNumericTraits< PixelType > ) );
+  // This concept does not work with variable length vector images
+  //itkConceptMacro( InputHasNumericTraitsCheck,
+  //( Concept::HasNumericTraits< PixelType > ) );
   /** End concept checking */
 #endif
 protected:
