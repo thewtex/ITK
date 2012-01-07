@@ -15,10 +15,10 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkUnaryFunctorImageFilter_hxx
-#define __itkUnaryFunctorImageFilter_hxx
+#ifndef __itkUnaryFunctorWithIndexImageFilter_hxx
+#define __itkUnaryFunctorWithIndexImageFilter_hxx
 
-#include "itkUnaryFunctorImageFilter.h"
+#include "itkUnaryFunctorWithIndexImageFilter.h"
 #include "itkImageRegionIterator.h"
 #include "itkProgressReporter.h"
 
@@ -28,17 +28,17 @@ namespace itk
  * Constructor
  */
 template< class TInputImage, class TOutputImage, class TFunction  >
-UnaryFunctorImageFilter< TInputImage, TOutputImage, TFunction >
-::UnaryFunctorImageFilter()
+UnaryFunctorWithIndexImageFilter< TInputImage, TOutputImage, TFunction >
+::UnaryFunctorWithIndexImageFilter()
 {
 }
 
 /**
- * ThreadedGenerateData Performs the pixel-wise addition
+ * ThreadedGenerateData Performs the pixel-wise operation
  */
 template< class TInputImage, class TOutputImage, class TFunction  >
 void
-UnaryFunctorImageFilter< TInputImage, TOutputImage, TFunction >
+UnaryFunctorWithIndexImageFilter< TInputImage, TOutputImage, TFunction >
 ::ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
                        ThreadIdType threadId)
 {
@@ -53,7 +53,7 @@ UnaryFunctorImageFilter< TInputImage, TOutputImage, TFunction >
   this->CallCopyOutputRegionToInputRegion(inputRegionForThread, outputRegionForThread);
 
   // Define the iterators
-  ImageRegionConstIterator< TInputImage > inputIt(inputPtr, inputRegionForThread);
+  ImageRegionConstIteratorWithIndex< TInputImage > inputIt(inputPtr, inputRegionForThread);
   ImageRegionIterator< TOutputImage >     outputIt(outputPtr, outputRegionForThread);
 
   ProgressReporter progress( this, threadId, outputRegionForThread.GetNumberOfPixels() );
@@ -63,7 +63,8 @@ UnaryFunctorImageFilter< TInputImage, TOutputImage, TFunction >
 
   while ( !inputIt.IsAtEnd() )
     {
-    outputIt.Set( m_Functor( inputIt.Get() ) );
+    typename InputImageType::IndexType index = inputIt.GetIndex();
+    outputIt.Set( m_Functor( index, inputIt.Get() ) );
     ++inputIt;
     ++outputIt;
     progress.CompletedPixel();  // potential exception thrown here

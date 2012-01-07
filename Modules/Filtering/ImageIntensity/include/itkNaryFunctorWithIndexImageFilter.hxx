@@ -15,10 +15,10 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkNaryFunctorImageFilter_hxx
-#define __itkNaryFunctorImageFilter_hxx
+#ifndef __itkNaryFunctorWithIndexImageFilter_hxx
+#define __itkNaryFunctorWithIndexImageFilter_hxx
 
-#include "itkNaryFunctorImageFilter.h"
+#include "itkNaryFunctorWithIndexImageFilter.h"
 #include "itkImageRegionIterator.h"
 #include "itkProgressReporter.h"
 
@@ -28,8 +28,8 @@ namespace itk
  * Constructor
  */
 template< class TInputImage, class TOutputImage, class TFunction >
-NaryFunctorImageFilter< TInputImage, TOutputImage, TFunction >
-::NaryFunctorImageFilter()
+NaryFunctorWithIndexImageFilter< TInputImage, TOutputImage, TFunction >
+::NaryFunctorWithIndexImageFilter()
 {
 }
 
@@ -38,7 +38,7 @@ NaryFunctorImageFilter< TInputImage, TOutputImage, TFunction >
  */
 template< class TInputImage, class TOutputImage, class TFunction >
 void
-NaryFunctorImageFilter< TInputImage, TOutputImage, TFunction >
+NaryFunctorWithIndexImageFilter< TInputImage, TOutputImage, TFunction >
 ::ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
                        ThreadIdType threadId)
 {
@@ -86,6 +86,7 @@ NaryFunctorImageFilter< TInputImage, TOutputImage, TFunction >
 
   while ( !outputIt.IsAtEnd() )
     {
+    typename InputImageType::IndexType index = inputItrVector[0]->GetIndex();
     arrayIt = naryInputArray.begin();
     regionIterators = inputItrVector.begin();
     while ( regionIterators != regionItEnd )
@@ -94,7 +95,7 @@ NaryFunctorImageFilter< TInputImage, TOutputImage, TFunction >
       ++( *( *regionIterators ) );
       ++regionIterators;
       }
-    outputIt.Set( m_Functor(naryInputArray) );
+    outputIt.Set( m_Functor( index, naryInputArray ) );
     ++outputIt;
     progress.CompletedPixel();
     }

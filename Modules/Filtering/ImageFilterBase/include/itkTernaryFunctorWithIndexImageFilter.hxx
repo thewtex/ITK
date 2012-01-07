@@ -15,10 +15,10 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkTernaryFunctorImageFilter_hxx
-#define __itkTernaryFunctorImageFilter_hxx
+#ifndef __itkTernaryFunctorWithIndexImageFilter_hxx
+#define __itkTernaryFunctorWithIndexImageFilter_hxx
 
-#include "itkTernaryFunctorImageFilter.h"
+#include "itkTernaryFunctorWithIndexImageFilter.h"
 #include "itkImageRegionIterator.h"
 #include "itkProgressReporter.h"
 
@@ -29,8 +29,8 @@ namespace itk
  */
 template< class TInputImage1, class TInputImage2,
           class TInputImage3, class TOutputImage, class TFunction  >
-TernaryFunctorImageFilter< TInputImage1, TInputImage2, TInputImage3, TOutputImage, TFunction >
-::TernaryFunctorImageFilter()
+TernaryFunctorWithIndexImageFilter< TInputImage1, TInputImage2, TInputImage3, TOutputImage, TFunction >
+::TernaryFunctorWithIndexImageFilter()
 {
 }
 
@@ -40,7 +40,7 @@ TernaryFunctorImageFilter< TInputImage1, TInputImage2, TInputImage3, TOutputImag
 template< class TInputImage1, class TInputImage2,
           class TInputImage3, class TOutputImage, class TFunction  >
 void
-TernaryFunctorImageFilter< TInputImage1, TInputImage2, TInputImage3, TOutputImage, TFunction >
+TernaryFunctorWithIndexImageFilter< TInputImage1, TInputImage2, TInputImage3, TOutputImage, TFunction >
 ::ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
                        ThreadIdType threadId)
 {
@@ -55,7 +55,8 @@ TernaryFunctorImageFilter< TInputImage1, TInputImage2, TInputImage3, TOutputImag
     dynamic_cast< const TInputImage3 * >( ( ProcessObject::GetInput(2) ) );
   OutputImagePointer outputPtr = this->GetOutput(0);
 
-  ImageRegionConstIterator< TInputImage1 > inputIt1(inputPtr1, outputRegionForThread);
+  ImageRegionConstIteratorWithIndex< TInputImage1 > inputIt1(inputPtr1,
+                                                             outputRegionForThread);
   ImageRegionConstIterator< TInputImage2 > inputIt2(inputPtr2, outputRegionForThread);
   ImageRegionConstIterator< TInputImage3 > inputIt3(inputPtr3, outputRegionForThread);
   ImageRegionIterator< TOutputImage >      outputIt(outputPtr, outputRegionForThread);
@@ -69,7 +70,8 @@ TernaryFunctorImageFilter< TInputImage1, TInputImage2, TInputImage3, TOutputImag
 
   while ( !inputIt1.IsAtEnd() )
     {
-    outputIt.Set( m_Functor( inputIt1.Get(), inputIt2.Get(), inputIt3.Get() ) );
+    typename TInputImage1::IndexType index = inputIt1.GetIndex();
+    outputIt.Set( m_Functor( index, inputIt1.Get(), inputIt2.Get(), inputIt3.Get() ) );
     ++inputIt1;
     ++inputIt2;
     ++inputIt3;

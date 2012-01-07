@@ -15,11 +15,12 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkBinaryFunctorImageFilter_hxx
-#define __itkBinaryFunctorImageFilter_hxx
+#ifndef __itkBinaryFunctorWithIndexImageFilter_hxx
+#define __itkBinaryFunctorWithIndexImageFilter_hxx
 
-#include "itkBinaryFunctorImageFilter.h"
+#include "itkBinaryFunctorWithIndexImageFilter.h"
 #include "itkImageRegionIterator.h"
+#include "itkImageRegionConstIteratorWithIndex.h"
 #include "itkProgressReporter.h"
 
 namespace itk
@@ -29,8 +30,8 @@ namespace itk
  */
 template< class TInputImage1, class TInputImage2,
           class TOutputImage, class TFunction  >
-BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage, TFunction >
-::BinaryFunctorImageFilter()
+BinaryFunctorWithIndexImageFilter< TInputImage1, TInputImage2, TOutputImage, TFunction >
+::BinaryFunctorWithIndexImageFilter()
 {
 }
 
@@ -39,7 +40,7 @@ BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage, TFunction >
  */
 template< class TInputImage1, class TInputImage2, class TOutputImage, class TFunction  >
 void
-BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage, TFunction >
+BinaryFunctorWithIndexImageFilter< TInputImage1, TInputImage2, TOutputImage, TFunction >
 ::ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
                        ThreadIdType threadId)
 {
@@ -54,7 +55,8 @@ BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage, TFunction >
 
   if( inputPtr1 && inputPtr2 )
     {
-    ImageRegionConstIterator< TInputImage1 > inputIt1(inputPtr1, outputRegionForThread);
+    ImageRegionConstIteratorWithIndex< TInputImage1 > inputIt1(inputPtr1,
+                                                               outputRegionForThread);
     ImageRegionConstIterator< TInputImage2 > inputIt2(inputPtr2, outputRegionForThread);
 
     ImageRegionIterator< TOutputImage > outputIt(outputPtr, outputRegionForThread);
@@ -67,7 +69,8 @@ BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage, TFunction >
 
     while ( !inputIt1.IsAtEnd() )
       {
-      outputIt.Set( m_Functor( inputIt1.Get(), inputIt2.Get() ) );
+      typename TInputImage1::IndexType index = inputIt1.GetIndex();
+      outputIt.Set( m_Functor( index, inputIt1.Get(), inputIt2.Get() ) );
       ++inputIt2;
       ++inputIt1;
       ++outputIt;
@@ -76,7 +79,8 @@ BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage, TFunction >
     }
   else if( inputPtr1 )
     {
-    ImageRegionConstIterator< TInputImage1 > inputIt1(inputPtr1, outputRegionForThread);
+    ImageRegionConstIteratorWithIndex< TInputImage1 > inputIt1(inputPtr1,
+                                                               outputRegionForThread);
     ImageRegionIterator< TOutputImage > outputIt(outputPtr, outputRegionForThread);
     const Input2ImagePixelType & input2Value = this->GetConstant2();
     ProgressReporter progress( this, threadId, outputRegionForThread.GetNumberOfPixels() );
@@ -86,7 +90,8 @@ BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage, TFunction >
 
     while ( !inputIt1.IsAtEnd() )
       {
-      outputIt.Set( m_Functor( inputIt1.Get(), input2Value ) );
+      typename TInputImage1::IndexType index = inputIt1.GetIndex();
+      outputIt.Set( m_Functor( index, inputIt1.Get(), input2Value ) );
       ++inputIt1;
       ++outputIt;
       progress.CompletedPixel(); // potential exception thrown here
@@ -94,7 +99,8 @@ BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage, TFunction >
     }
   else if( inputPtr2 )
     {
-    ImageRegionConstIterator< TInputImage2 > inputIt2(inputPtr2, outputRegionForThread);
+    ImageRegionConstIteratorWithIndex< TInputImage2 > inputIt2(inputPtr2,
+                                                               outputRegionForThread);
     ImageRegionIterator< TOutputImage > outputIt(outputPtr, outputRegionForThread);
     const Input1ImagePixelType & input1Value = this->GetConstant1();
     ProgressReporter progress( this, threadId, outputRegionForThread.GetNumberOfPixels() );
@@ -104,7 +110,8 @@ BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage, TFunction >
 
     while ( !inputIt2.IsAtEnd() )
       {
-      outputIt.Set( m_Functor( input1Value, inputIt2.Get() ) );
+      typename TInputImage2::IndexType index = inputIt2.GetIndex();
+      outputIt.Set( m_Functor( index, input1Value, inputIt2.Get() ) );
       ++inputIt2;
       ++outputIt;
       progress.CompletedPixel(); // potential exception thrown here
