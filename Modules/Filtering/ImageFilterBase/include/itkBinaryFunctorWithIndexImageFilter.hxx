@@ -15,11 +15,12 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkBinaryFunctorImageFilter_hxx
-#define __itkBinaryFunctorImageFilter_hxx
+#ifndef __itkBinaryFunctorWithIndexImageFilter_hxx
+#define __itkBinaryFunctorWithIndexImageFilter_hxx
 
-#include "itkBinaryFunctorImageFilter.h"
+#include "itkBinaryFunctorWithIndexImageFilter.h"
 #include "itkImageRegionIterator.h"
+#include "itkImageRegionConstIteratorWithIndex.h"
 #include "itkProgressReporter.h"
 
 namespace itk
@@ -29,20 +30,20 @@ namespace itk
  */
 template< class TInputImage1, class TInputImage2,
           class TOutputImage, class TFunction  >
-BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage, TFunction >
-::BinaryFunctorImageFilter()
+BinaryFunctorWithIndexImageFilter< TInputImage1, TInputImage2, TOutputImage, TFunction >
+::BinaryFunctorWithIndexImageFilter()
 {
 }
 
 template< class TInputImage1, class TInputImage2,
           class TOutputImage, class TFunction  >
-typename BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage, TFunction >::OutputImagePixelType
-BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage, TFunction >
-::InvokeFunctor(const OutputImageIndexType &,
-              const Input1ImagePixelType & value1,
-              const Input2ImagePixelType & value2)
+typename BinaryFunctorWithIndexImageFilter< TInputImage1, TInputImage2, TOutputImage, TFunction >::OutputImagePixelType
+BinaryFunctorWithIndexImageFilter< TInputImage1, TInputImage2, TOutputImage, TFunction >
+::InvokeFunctor(const OutputImageIndexType & index,
+                const Input1ImagePixelType & value1,
+                const Input2ImagePixelType & value2)
 {
-  return this->GetFunctor()( value1, value2 );
+  return this->GetFunctor()( index, value1, value2 );
 }
 } // end namespace itk
 

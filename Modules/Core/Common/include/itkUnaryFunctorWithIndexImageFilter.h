@@ -15,39 +15,37 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkUnaryFunctorImageFilter_h
-#define __itkUnaryFunctorImageFilter_h
+#ifndef __itkUnaryFunctorWithIndexImageFilter_h
+#define __itkUnaryFunctorWithIndexImageFilter_h
 
 #include "itkUnaryFunctorImageFilterBase.h"
 #include "itkImageRegionIteratorWithIndex.h"
 
 namespace itk
 {
-/** \class UnaryFunctorImageFilter
+/** \class UnaryFunctorWithIndexImageFilter
  * \brief Implements a pixel-wise generic operation on one image.
  *
- * This filter provides the functor with pixel values from the input
- * image.
+ * This filter differs from the UnaryFunctorImageFilter in that it
+ * passes the index of the pixel to the functor in addition to the
+ * pixel values from the input image.
  *
- * \sa UnaryFunctorWithIndexImageFilter
- * \sa BinaryFunctorImageFilter
- * \sa TernaryFunctorImageFilter
- * \sa NaryFunctorImageFilter
+ * \sa UnaryFunctorImageFilter
+ * \sa BinaryFunctorWithIndexImageFilter
+ * \sa TernaryFunctorWithIndexImageFilter
+ * \sa NaryFunctorWithIndexImageFilter
  *
  * \ingroup   IntensityImageFilters     MultiThreaded
  * \ingroup ITKCommon
  *
- * \wiki
- * \wikiexample{ImageProcessing/UnaryFunctorImageFilter,Apply a custom operation to each pixel in an image}
- * \endwiki
  */
 template< class TInputImage, class TOutputImage, class TFunction >
-class ITK_EXPORT UnaryFunctorImageFilter :
+class ITK_EXPORT UnaryFunctorWithIndexImageFilter :
     public UnaryFunctorImageFilterBase< TInputImage, TOutputImage, TFunction >
 {
 public:
   /** Standard class typedefs. */
-  typedef UnaryFunctorImageFilter                                             Self;
+  typedef UnaryFunctorWithIndexImageFilter                                    Self;
   typedef UnaryFunctorImageFilterBase< TInputImage, TOutputImage, TFunction > Superclass;
   typedef SmartPointer< Self >                                                Pointer;
   typedef SmartPointer< const Self >                                          ConstPointer;
@@ -56,7 +54,7 @@ public:
   itkNewMacro(Self);
 
   /** Run-time type information (and related methods). */
-  itkTypeMacro(UnaryFunctorImageFilter, UnaryFunctorImageFilterBase);
+  itkTypeMacro(UnaryFunctorWithIndexImageFilter, UnaryFunctorImageFilterBase);
 
   /** Some typedefs. */
   typedef TFunction FunctorType;
@@ -74,20 +72,20 @@ public:
   typedef typename Superclass::OutputImagePixelType  OutputImagePixelType;
 
 protected:
-  UnaryFunctorImageFilter();
-  virtual ~UnaryFunctorImageFilter() {}
+  UnaryFunctorWithIndexImageFilter();
+  virtual ~UnaryFunctorWithIndexImageFilter() {}
 
   virtual OutputImagePixelType InvokeFunctor(const OutputImageIndexType & index,
                                              const InputImagePixelType & value);
 
 private:
-  UnaryFunctorImageFilter(const Self &); //purposely not implemented
+  UnaryFunctorWithIndexImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);          //purposely not implemented
 };
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkUnaryFunctorImageFilter.hxx"
+#include "itkUnaryFunctorWithIndexImageFilter.hxx"
 #endif
 
 #endif

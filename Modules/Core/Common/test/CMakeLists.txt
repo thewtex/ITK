@@ -156,6 +156,8 @@ itkOptimizerParametersTest.cxx
 itkImageVectorOptimizerParametersHelperTest.cxx
 itkCompensatedSummationTest.cxx
 itkCompensatedSummationTest2.cxx
+itkUnaryFunctorImageFilterTest.cxx
+itkUnaryFunctorWithIndexImageFilterTest.cxx
 )
 
 CreateTestDriver(ITKCommon1 "${ITKCommon_LIBRARIES}" "${ITKCommon1Tests}")
@@ -405,7 +407,8 @@ itk_add_test(NAME itkOptimizerParametersTest COMMAND ITKCommon2TestDriver itkOpt
 itk_add_test(NAME itkImageVectorOptimizerParametersHelperTest COMMAND ITKCommon2TestDriver itkImageVectorOptimizerParametersHelperTest)
 itk_add_test(NAME itkCompensatedSummationTest COMMAND ITKCommon2TestDriver itkCompensatedSummationTest)
 itk_add_test(NAME itkCompensatedSummationTest2 COMMAND ITKCommon2TestDriver itkCompensatedSummationTest2)
-
+itk_add_test(NAME itkUnaryFunctorImageFilterTest COMMAND ITKCommon2TestDriver itkUnaryFunctorImageFilterTest)
+itk_add_test(NAME itkUnaryFunctorWithIndexImageFilterTest COMMAND ITKCommon2TestDriver itkUnaryFunctorWithIndexImageFilterTest)
 
 
 #

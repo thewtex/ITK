@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkNaryFunctorImageFilter_h
-#define __itkNaryFunctorImageFilter_h
+#ifndef __itkNaryFunctorWithIndexImageFilter_h
+#define __itkNaryFunctorWithIndexImageFilter_h
 
 #include "itkNaryFunctorImageFilterBase.h"
 #include "itkImageIterator.h"
@@ -24,28 +24,30 @@
 
 namespace itk
 {
-/** \class NaryFunctorImageFilter
+/** \class NaryFunctorWithIndexImageFilter
  * \brief Perform a generic pixel-wise operation on N images.
  *
- * This filter provides the functor with pixel values from the input
- * images.
+ * This filter differs from the NaryFunctorImageFilter in that it
+ * passes the index of the pixel to the functor in addition to the
+ * pixel values.
  *
- * \sa NaryFunctorWithIndexImageFilter
- * \sa UnaryFunctorImageFilter
- * \sa BinaryFunctorImageFilter
- * \sa TernaryFunctorImageFilter
+ * \sa NaryFunctorImageFilter
+ * \sa UnaryFunctorWithIndexImageFilter
+ * \sa BinaryFunctorWithIndexImageFilter
+ * \sa TernaryFunctorWithIndexImageFilter
  *
  * \ingroup IntensityImageFilters MultiThreaded
  * \ingroup ITKImageIntensity
  */
 
 template< class TInputImage, class TOutputImage, class TFunction >
-class ITK_EXPORT NaryFunctorImageFilter :
+class ITK_EXPORT NaryFunctorWithIndexImageFilter :
     public NaryFunctorImageFilterBase< TInputImage, TOutputImage, TFunction >
+
 {
 public:
   /** Standard class typedefs. */
-  typedef NaryFunctorImageFilter                                             Self;
+  typedef NaryFunctorWithIndexImageFilter                                    Self;
   typedef NaryFunctorImageFilterBase< TInputImage, TOutputImage, TFunction > Superclass;
   typedef SmartPointer< Self >                                               Pointer;
   typedef SmartPointer< const Self >                                         ConstPointer;
@@ -54,7 +56,7 @@ public:
   itkNewMacro(Self);
 
   /** Run-time type information (and related methods). */
-  itkTypeMacro(NaryFunctorImageFilter, InPlaceImageFilter);
+  itkTypeMacro(NaryFunctorWithIndexImageFilter, NaryFunctorImageFilterBase);
 
   /** Some typedefs. */
   typedef typename Superclass::FunctorType           FunctorType;
@@ -88,20 +90,20 @@ public:
   /** End concept checking */
 #endif
 protected:
-  NaryFunctorImageFilter();
-  virtual ~NaryFunctorImageFilter() {}
+  NaryFunctorWithIndexImageFilter();
+  virtual ~NaryFunctorWithIndexImageFilter() {}
 
   virtual OutputImagePixelType InvokeFunctor(const OutputImageIndexType & index,
                                              const NaryArrayType & values);
 
 private:
-  NaryFunctorImageFilter(const Self &); //purposely not implemented
+  NaryFunctorWithIndexImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);         //purposely not implemented
 };
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkNaryFunctorImageFilter.hxx"
+#include "itkNaryFunctorWithIndexImageFilter.hxx"
 #endif
 
 #endif

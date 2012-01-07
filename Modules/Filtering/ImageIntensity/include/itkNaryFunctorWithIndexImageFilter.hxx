@@ -15,10 +15,10 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkUnaryFunctorImageFilter_hxx
-#define __itkUnaryFunctorImageFilter_hxx
+#ifndef __itkNaryFunctorWithIndexImageFilter_hxx
+#define __itkNaryFunctorWithIndexImageFilter_hxx
 
-#include "itkUnaryFunctorImageFilter.h"
+#include "itkNaryFunctorWithIndexImageFilter.h"
 #include "itkImageRegionIterator.h"
 #include "itkProgressReporter.h"
 
@@ -27,20 +27,19 @@ namespace itk
 /**
  * Constructor
  */
-template< class TInputImage, class TOutputImage, class TFunction  >
-UnaryFunctorImageFilter< TInputImage, TOutputImage, TFunction >
-::UnaryFunctorImageFilter()
+template< class TInputImage, class TOutputImage, class TFunction >
+NaryFunctorWithIndexImageFilter< TInputImage, TOutputImage, TFunction >
+::NaryFunctorWithIndexImageFilter()
 {
 }
 
-template< class TInputImage, class TOutputImage, class TFunction  >
-typename UnaryFunctorImageFilter< TInputImage, TOutputImage, TFunction >::OutputImagePixelType
-UnaryFunctorImageFilter< TInputImage, TOutputImage, TFunction >
-::InvokeFunctor(const OutputImageIndexType &, const InputImagePixelType & value)
+template< class TInputImage, class TOutputImage, class TFunction >
+typename NaryFunctorWithIndexImageFilter< TInputImage, TOutputImage, TFunction >::OutputImagePixelType
+NaryFunctorWithIndexImageFilter< TInputImage, TOutputImage, TFunction >
+::InvokeFunctor(const OutputImageIndexType & index, const NaryArrayType & values)
 {
-  return this->GetFunctor()( value );
+  return this->GetFunctor()( index, values );
 }
-
 } // end namespace itk
 
 #endif

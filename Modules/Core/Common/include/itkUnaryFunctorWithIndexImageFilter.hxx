@@ -15,10 +15,10 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkUnaryFunctorImageFilter_hxx
-#define __itkUnaryFunctorImageFilter_hxx
+#ifndef __itkUnaryFunctorWithIndexImageFilter_hxx
+#define __itkUnaryFunctorWithIndexImageFilter_hxx
 
-#include "itkUnaryFunctorImageFilter.h"
+#include "itkUnaryFunctorWithIndexImageFilter.h"
 #include "itkImageRegionIterator.h"
 #include "itkProgressReporter.h"
 
@@ -28,17 +28,17 @@ namespace itk
  * Constructor
  */
 template< class TInputImage, class TOutputImage, class TFunction  >
-UnaryFunctorImageFilter< TInputImage, TOutputImage, TFunction >
-::UnaryFunctorImageFilter()
+UnaryFunctorWithIndexImageFilter< TInputImage, TOutputImage, TFunction >
+::UnaryFunctorWithIndexImageFilter()
 {
 }
 
 template< class TInputImage, class TOutputImage, class TFunction  >
-typename UnaryFunctorImageFilter< TInputImage, TOutputImage, TFunction >::OutputImagePixelType
-UnaryFunctorImageFilter< TInputImage, TOutputImage, TFunction >
-::InvokeFunctor(const OutputImageIndexType &, const InputImagePixelType & value)
+typename UnaryFunctorWithIndexImageFilter< TInputImage, TOutputImage, TFunction >::OutputImagePixelType
+UnaryFunctorWithIndexImageFilter< TInputImage, TOutputImage, TFunction >
+::InvokeFunctor(const OutputImageIndexType & index, const InputImagePixelType & value)
 {
-  return this->GetFunctor()( value );
+  return this->GetFunctor()( index, value );
 }
 
 } // end namespace itk

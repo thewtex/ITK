@@ -6,6 +6,10 @@ itkVectorNeighborhoodOperatorImageFilterTest.cxx
 itkMaskNeighborhoodOperatorImageFilterTest.cxx
 itkCastImageFilterTest.cxx
 itkClampImageFilterTest.cxx
+itkBinaryFunctorImageFilterTest.cxx
+itkBinaryFunctorWithIndexImageFilterTest.cxx
+itkTernaryFunctorImageFilterTest.cxx
+itkTernaryFunctorWithIndexImageFilterTest.cxx
 )
 
 # Disable optimization on the tests below to avoid possible
@@ -39,3 +43,11 @@ itk_add_test(NAME itkCastImageFilterTest
       COMMAND ITKImageFilterBaseTestDriver itkCastImageFilterTest)
 itk_add_test(NAME itkClampImageFilterTest
       COMMAND ITKImageFilterBaseTestDriver itkClampImageFilterTest)
+itk_add_test(NAME itkBinaryFunctorImageFilterTest
+      COMMAND ITKImageFilterBaseTestDriver itkBinaryFunctorImageFilterTest)
+itk_add_test(NAME itkBinaryFunctorWithIndexImageFilterTest
+      COMMAND ITKImageFilterBaseTestDriver itkBinaryFunctorWithIndexImageFilterTest)
+itk_add_test(NAME itkTernaryFunctorImageFilterTest
+      COMMAND ITKImageFilterBaseTestDriver itkTernaryFunctorImageFilterTest)
+itk_add_test(NAME itkTernaryFunctorWithIndexImageFilterTest
+      COMMAND ITKImageFilterBaseTestDriver itkTernaryFunctorWithIndexImageFilterTest)

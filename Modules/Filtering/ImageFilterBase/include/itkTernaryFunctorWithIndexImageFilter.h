@@ -15,37 +15,38 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkTernaryFunctorImageFilter_h
-#define __itkTernaryFunctorImageFilter_h
+#ifndef __itkTernaryFunctorWithIndexImageFilter_h
+#define __itkTernaryFunctorWithIndexImageFilter_h
 
 #include "itkTernaryFunctorImageFilterBase.h"
 #include "itkImageRegionIteratorWithIndex.h"
 
 namespace itk
 {
-/** \class TernaryFunctorImageFilter
- * \brief Implements pixel-wise generic operations on three images.
+/** \class TernaryFunctorWithIndexImageFilter
+ * \brief Implements pixel-wise generic operation on three images.
  *
- * This filter provides the functor with pixel values from the input
- * images.
+ * This filter differs from the TernaryFunctorImageFilter in that it
+ * passes the index of the pixel to the functor in addition to the
+ * pixel values from the input images.
  *
- * \sa TernaryFunctorWithIndexImageFilter
- * \sa UnaryFunctorImageFilter
- * \sa BinaryFunctorImageFilter
- * \sa NaryFunctorImageFilter
+ * \sa TernaryFunctorImageFilter
+ * \sa UnaryFunctorWithIndexImageFilter
+ * \sa BinaryFunctorWithIndexImageFilter
+ * \sa NaryFunctorWithIndexImageFilter
  *
  * \ingroup IntensityImageFilters MultiThreaded
  * \ingroup ITKImageFilterBase
  */
 template< class TInputImage1, class TInputImage2,
           class TInputImage3, class TOutputImage, class TFunction    >
-class ITK_EXPORT TernaryFunctorImageFilter :
+class ITK_EXPORT TernaryFunctorWithIndexImageFilter:
     public TernaryFunctorImageFilterBase< TInputImage1, TInputImage2, TInputImage3,
                                           TOutputImage, TFunction >
 {
 public:
   /** Standard class typedefs. */
-  typedef TernaryFunctorImageFilter                                  Self;
+  typedef TernaryFunctorWithIndexImageFilter                         Self;
   typedef TernaryFunctorImageFilterBase< TInputImage1, TInputImage2,
                                          TInputImage3, TOutputImage,
                                          TFunction >                 Superclass;
@@ -56,7 +57,7 @@ public:
   itkNewMacro(Self);
 
   /** Run-time type information (and related methods). */
-  itkTypeMacro(TernaryFunctorImageFilter, TernaryFunctorImageFilterBase);
+  itkTypeMacro(TernaryFunctorWithIndexImageFilter, TernaryFunctorImageFilterBase);
 
   /** Some typedefs. */
   typedef typename Superclass::FunctorType           FunctorType;
@@ -105,8 +106,8 @@ public:
   /** End concept checking */
 #endif
 protected:
-  TernaryFunctorImageFilter();
-  virtual ~TernaryFunctorImageFilter() {}
+  TernaryFunctorWithIndexImageFilter();
+  virtual ~TernaryFunctorWithIndexImageFilter() {}
 
   virtual OutputImagePixelType InvokeFunctor(const OutputImageIndexType & index,
                                              const Input1ImagePixelType & value1,
@@ -114,13 +115,13 @@ protected:
                                              const Input3ImagePixelType & value3);
 
 private:
-  TernaryFunctorImageFilter(const Self &); //purposely not implemented
+  TernaryFunctorWithIndexImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);            //purposely not implemented
 };
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkTernaryFunctorImageFilter.hxx"
+#include "itkTernaryFunctorWithIndexImageFilter.hxx"
 #endif
 
 #endif
