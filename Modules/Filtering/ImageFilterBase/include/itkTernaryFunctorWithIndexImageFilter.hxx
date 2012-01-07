@@ -15,10 +15,10 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkBinaryFunctorImageFilter_hxx
-#define __itkBinaryFunctorImageFilter_hxx
+#ifndef __itkTernaryFunctorWithIndexImageFilter_hxx
+#define __itkTernaryFunctorWithIndexImageFilter_hxx
 
-#include "itkBinaryFunctorImageFilter.h"
+#include "itkTernaryFunctorWithIndexImageFilter.h"
 #include "itkImageRegionIterator.h"
 #include "itkProgressReporter.h"
 
@@ -28,21 +28,22 @@ namespace itk
  * Constructor
  */
 template< class TInputImage1, class TInputImage2,
-          class TOutputImage, class TFunction  >
-BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage, TFunction >
-::BinaryFunctorImageFilter()
+          class TInputImage3, class TOutputImage, class TFunction  >
+TernaryFunctorWithIndexImageFilter< TInputImage1, TInputImage2, TInputImage3, TOutputImage, TFunction >
+::TernaryFunctorWithIndexImageFilter()
 {
 }
 
 template< class TInputImage1, class TInputImage2,
-          class TOutputImage, class TFunction  >
-typename BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage, TFunction >::OutputImagePixelType
-BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage, TFunction >
-::InvokeFunctor(const OutputImageIndexType &,
-              const Input1ImagePixelType & value1,
-              const Input2ImagePixelType & value2)
+          class TInputImage3, class TOutputImage, class TFunction  >
+typename TernaryFunctorWithIndexImageFilter< TInputImage1, TInputImage2, TInputImage3, TOutputImage, TFunction >::OutputImagePixelType
+TernaryFunctorWithIndexImageFilter< TInputImage1, TInputImage2, TInputImage3, TOutputImage, TFunction >
+::InvokeFunctor(const OutputImageIndexType & index,
+                const Input1ImagePixelType & value1,
+                const Input2ImagePixelType & value2,
+                const Input3ImagePixelType & value3)
 {
-  return this->GetFunctor()( value1, value2 );
+  return this->GetFunctor()( index, value1, value2, value3 );
 }
 } // end namespace itk
 

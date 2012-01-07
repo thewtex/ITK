@@ -15,42 +15,43 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkBinaryFunctorImageFilter_h
-#define __itkBinaryFunctorImageFilter_h
+#ifndef __itkBinaryFunctorWithIndexImageFilter_h
+#define __itkBinaryFunctorWithIndexImageFilter_h
 
-#include "itkBinaryFunctorImageFilterBase.h"
+#include "itkBinaryFunctorImageFilter.h"
 #include "itkSimpleDataObjectDecorator.h"
 
 namespace itk
 {
-/** \class BinaryFunctorImageFilter
- * \brief Implements pixel-wise generic operation of two images,
+/** \class BinaryFunctorWithIndexImageFilter
+ * \brief Implements pixel-wise generic operation on two images,
  * or of an image and a constant.
  *
- * This filter provides the functor with pixel values from the input
- * images.
+ * This filter differs from the BinaryFunctorImageFilter in that it
+ * passes the index of the pixel to the functor in addition to the
+ * pixel values from the input images.
  *
- * \sa BinaryFunctorWithIndexImageFilter
- * \sa UnaryFunctorImageFilter
- * \sa TernaryFunctorImageFilter
- * \sa NaryFunctorImageFilter
+ * This filter was adapted from the Insight Journal article
+ * "Deconvolution: infrastructure and reference algorithms"
+ * by Gaetan Lehmann, Biologie du Developpement et de la Reproduction, INRA de Jouy-en-Josas, France.
+ *
+ * \sa BinaryFunctorImageFilter
+ * \sa UnaryFunctorWithIndexImageFilter
+ * \sa TernaryFunctorWithIndexImageFilter
+ * \sa NaryFunctorWithIndexImageFilter
  *
  * \ingroup IntensityImageFilters   MultiThreaded
  * \ingroup ITKImageFilterBase
  *
- * \wiki
- * \wikiexample{ImageProcessing/BinaryFunctorImageFilter,Apply a predefined operation to corresponding pixels in two images}
- * \wikiexample{ImageProcessing/BinaryFunctorImageFilterCustom,Apply a custom operation to corresponding pixels in two images}
- * \endwiki
  */
 template< class TInputImage1, class TInputImage2,
           class TOutputImage, class TFunction    >
-class ITK_EXPORT BinaryFunctorImageFilter :
+class ITK_EXPORT BinaryFunctorWithIndexImageFilter:
     public BinaryFunctorImageFilterBase< TInputImage1, TInputImage2, TOutputImage, TFunction >
 {
 public:
   /** Standard class typedefs. */
-  typedef BinaryFunctorImageFilter                                  Self;
+  typedef BinaryFunctorWithIndexImageFilter                         Self;
   typedef BinaryFunctorImageFilterBase< TInputImage1, TInputImage2,
                                         TOutputImage, TFunction >   Superclass;
   typedef SmartPointer< Self >                                      Pointer;
@@ -60,7 +61,7 @@ public:
   itkNewMacro(Self);
 
   /** Run-time type information (and related methods). */
-  itkTypeMacro(BinaryFunctorImageFilter, BinaryFunctorWithIndexImageFilter);
+  itkTypeMacro(BinaryFunctorWithIndexImageFilter, BinaryFunctorImageFilterBase);
 
   /** Some convenient typedefs. */
   typedef typename Superclass::FunctorType                   FunctorType;
@@ -103,21 +104,21 @@ public:
   /** End concept checking */
 #endif
 protected:
-  BinaryFunctorImageFilter();
-  virtual ~BinaryFunctorImageFilter() {}
+  BinaryFunctorWithIndexImageFilter();
+  virtual ~BinaryFunctorWithIndexImageFilter() {}
 
-  virtual OutputImagePixelType InvokeFunctor(const OutputImageIndexType &,
+  virtual OutputImagePixelType InvokeFunctor(const OutputImageIndexType & index,
                                              const Input1ImagePixelType & value1,
                                              const Input2ImagePixelType & value2);
 
 private:
-  BinaryFunctorImageFilter(const Self &); //purposely not implemented
+  BinaryFunctorWithIndexImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);           //purposely not implemented
 };
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkBinaryFunctorImageFilter.hxx"
+#include "itkBinaryFunctorWithIndexImageFilter.hxx"
 #endif
 
 #endif
