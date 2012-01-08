@@ -18,6 +18,7 @@
 #ifndef __itkTimeVaryingBSplineVelocityFieldTransformParametersAdaptor_h
 #define __itkTimeVaryingBSplineVelocityFieldTransformParametersAdaptor_h
 
+#include "itkIntTypes.h"
 #include "itkTransformParametersAdaptor.h"
 
 namespace itk
