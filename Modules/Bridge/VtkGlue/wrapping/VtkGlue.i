@@ -1,5 +1,9 @@
-%include exception.i
+/* This file declares various VTK datatype to SWIG so they can be refered as*/
+/* something else than SwigObject*/
+/* Python bindings have been tested successfully.*/
+/* TODO: Test TCL bindings*/
 
+%include exception.i
 
 %{
 #include "vtkImageImport.h"
@@ -32,46 +36,46 @@
                                                     cerror );
   if ( cerror ) { SWIG_fail; }
 }
-
 #endif
 
 #ifdef SWIGPYTHON
+%module VtkGluePython
+
 %{
 #include "vtkPythonUtil.h"
 %}
 
 %typemap(out) vtkImageExport* {
   PyImport_ImportModule("vtk");
-  $result = vtkPythonGetObjectFromPointer ( (vtkImageExport*)$1 );
+  $result = vtkPythonUtil::GetObjectFromPointer ( (vtkImageExport*)$1 );
 }
 
 %typemap(out) vtkImageImport* {
   PyImport_ImportModule("vtk");
-  $result = vtkPythonGetObjectFromPointer ( (vtkImageImport*)$1 );
+  $result = vtkPythonUtil::GetObjectFromPointer ( (vtkImageImport*)$1 );
 }
 
 %typemap(out) vtkImageData* {
   PyImport_ImportModule("vtk");
-  $result = vtkPythonGetObjectFromPointer ( (vtkImageData*)$1 );
+  $result = vtkPythonUtil::GetObjectFromPointer ( (vtkImageData*)$1 );
 }
 
 %typemap(in) vtkImageData* {
   $1 = NULL;
-  $1 = (vtkImageData*) vtkPythonGetPointerFromObject ( $input, "vtkImageData" );
+  $1 = (vtkImageData*) vtkPythonUtil::GetPointerFromObject ( $input, "vtkImageData" );
   if ( $1 == NULL ) { SWIG_fail; }
 }
 
 %typemap(out) vtkPolyData* {
   PyImport_ImportModule("vtk");
-  $result = vtkPythonGetObjectFromPointer ( (vtkPolyData*)$1 );
+  $result = vtkPythonUtil::GetObjectFromPointer ( (vtkPolyData*)$1 );
 }
 
 %typemap(in) vtkPolyData* {
   $1 = NULL;
-  $1 = (vtkPolyData*) vtkPythonGetPointerFromObject ( $input, "vtkPolyData" );
+  $1 = (vtkPolyData*) vtkPythonUtil::GetPointerFromObject ( $input, "vtkPolyData" );
   if ( $1 == NULL ) { SWIG_fail; }
 }
-
 #endif
 
 #ifdef SWIGJAVA
@@ -79,5 +83,5 @@
 #include "vtkJavaUtil.h"
 %}
 
-// TODO: The java typemaps seem to only work in java.i, they are harmless in that file but misplaces.
+/*// TODO: The java typemaps seem to only work in java.i, they are harmless in that file but misplaces.*/
 #endif
