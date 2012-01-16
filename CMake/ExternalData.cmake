@@ -111,6 +111,9 @@
 # to directories within a single source distribution (e.g. they come together
 # in one tarball).
 #
+# The variable ExternalData_BINARY_ROOT may be set to the directory to store the
+# fetched data.  If not set, it defaults to ${CMAKE_BINARY_DIR}/ExternalData.
+#
 # Variables ExternalData_TIMEOUT_INACTIVITY and ExternalData_TIMEOUT_ABSOLUTE
 # set the download inactivity and absolute timeouts, in seconds.  The defaults
 # are 60 seconds and 300 seconds, respectively.  Set either timeout to 0
@@ -330,7 +333,10 @@ function(_ExternalData_arg target arg options var_file)
       "does not lie under the top-level source directory\n"
       "  ${top_src}\n")
   endif()
-  set(top_bin "${CMAKE_BINARY_DIR}/ExternalData") # TODO: .../${target} ?
+  if(NOT ExternalData_BINARY_ROOT)
+    set(ExternalData_BINARY_ROOT "${CMAKE_BINARY_DIR}/ExternalData")
+  endif()
+  set(top_bin "${ExternalData_BINARY_ROOT}")
 
   set(external "") # Entries external to the source tree.
   set(internal "") # Entries internal to the source tree.
@@ -692,5 +698,5 @@ elseif("${ExternalData_ACTION}" STREQUAL "store")
   endif()
   _ExternalData_compute_hash(hash "${algo}" "${file}")
 else()
-  message(FATAL_ERROR "Unknnown ExternalData_ACTION=[${ExternalData_ACTION}]")
+  message(FATAL_ERROR "Unknown ExternalData_ACTION=[${ExternalData_ACTION}]")
 endif()
