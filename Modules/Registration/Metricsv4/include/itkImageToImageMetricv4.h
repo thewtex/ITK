@@ -491,7 +491,9 @@ public:
   itkSetConstObjectMacro(FixedImageMask, FixedImageMaskType);
   itkGetConstObjectMacro(FixedImageMask, FixedImageMaskType);
 
-  /** Set/Get the fixed image domain sampling point set */
+  /** Set/Get the fixed image domain sampling point set
+   * See main documentation regarding using fixed vs virtual domain
+   * for the point set. */
   itkSetObjectMacro(FixedSampledPointSet, FixedSampledPointSetType);
   itkSetConstObjectMacro(FixedSampledPointSet, FixedSampledPointSetType);
   itkGetConstObjectMacro(FixedSampledPointSet, FixedSampledPointSetType);

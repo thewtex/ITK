@@ -49,6 +49,7 @@ public:
 
   typedef typename Superclass::ImageToImageMetricv4Type ImageToImageMetricv4Type;
   typedef typename Superclass::VirtualPointType         VirtualPointType;
+  typedef typename Superclass::VirtualIndexType         VirtualIndexType;
   typedef typename Superclass::FixedImagePointType      FixedImagePointType;
   typedef typename Superclass::FixedImagePixelType      FixedImagePixelType;
   typedef typename Superclass::FixedImageGradientType   FixedImageGradientType;
@@ -66,6 +67,7 @@ protected:
    *  the metric to the global integral of the metric/derivative.
    */
   virtual bool ProcessPoint(
+        const VirtualIndexType &          virtualIndex,
         const VirtualPointType &          virtualPoint,
         const FixedImagePointType &       mappedFixedPoint,
         const FixedImagePixelType &       mappedFixedPixelValue,

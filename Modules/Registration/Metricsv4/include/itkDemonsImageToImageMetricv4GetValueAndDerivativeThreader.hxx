@@ -26,7 +26,8 @@ namespace itk
 template< class TDomainPartitioner, class TImageToImageMetric, class TDemonsMetric >
 bool
 DemonsImageToImageMetricv4GetValueAndDerivativeThreader< TDomainPartitioner, TImageToImageMetric, TDemonsMetric >
-::ProcessPoint( const VirtualPointType &,
+::ProcessPoint( const VirtualIndexType &,
+                const VirtualPointType &,
                 const FixedImagePointType &,
                 const FixedImagePixelType &        fixedImageValue,
                 const FixedImageGradientType &,

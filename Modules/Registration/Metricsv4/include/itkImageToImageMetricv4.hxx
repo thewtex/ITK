@@ -349,7 +349,6 @@ ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage >
   /* This size always comes from the moving image */
   const NumberOfParametersType globalDerivativeSize =
     this->m_MovingTransform->GetNumberOfParameters();
-  /* NOTE: this does *not* get init'ed to 0 here. */
   if( this->m_DerivativeResult->GetSize() != globalDerivativeSize )
     {
     this->m_DerivativeResult->SetSize( globalDerivativeSize );
