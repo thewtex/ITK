@@ -135,6 +135,8 @@ public:
   itkSetObjectMacro( LocalOptimizer, OptimizerType );
   itkGetObjectMacro( LocalOptimizer, OptimizerType );
 
+  inline ParameterListSizeType GetBestParametersIndex( ) { return this->m_BestParametersIndex; }
+
 protected:
 
   /** Default constructor */

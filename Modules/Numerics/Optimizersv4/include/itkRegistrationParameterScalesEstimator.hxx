@@ -37,7 +37,7 @@ RegistrationParameterScalesEstimator< TMetric >
   m_SamplingStrategy = FullDomainSampling;
 
   // the default radius of the central region for sampling
-  m_CentralRegionRadius = 2;
+  m_CentralRegionRadius = 5;
 
   // the metric object must be set before EstimateScales()
 }
@@ -330,7 +330,8 @@ RegistrationParameterScalesEstimator< TMetric >
     }
   else if (this->CheckGeneralAffineTransform())
     {
-    this->SetSamplingStrategy(CornerSampling);
+    //    this->SetSamplingStrategy(CornerSampling);
+    this->SetSamplingStrategy(CentralRegionSampling);
     }
   else
     {

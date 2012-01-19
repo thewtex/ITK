@@ -12,6 +12,7 @@ set(ITKMetricsv4Tests
   itkAffineDemonsImageToImageRegistrationTest.cxx
   itkMattesMutualInformationImageToImageMetricv4Test.cxx
   itkMattesMutualInformationImageToImageMetricv4RegistrationTest.cxx
+  itkMultiStartImageToImageMetricv4RegistrationTest.cxx
 )
 
 set(INPUTDATA ${ITK_DATA_ROOT}/Input)
@@ -92,3 +93,11 @@ itk_add_test(NAME itkMattesMutualInformationImageToImageMetricv4RegistrationTest
               DATA{Input/face_b.jpg}
               ${TEMP}/itkMattesMutualInformationImageToImageMetricv4RegistrationTest.nii.gz
               5 0 )
+
+itk_add_test(NAME itkMultiStartImageToImageMetricv4RegistrationTest
+      COMMAND ITKMetricsv4TestDriver
+              itkMultiStartImageToImageMetricv4RegistrationTest
+              DATA{Baseline/face_avg.jpg}
+              DATA{Input/face_b.jpg}
+              ${TEMP}/itkMultiStartImageToImageMetricv4RegistrationTest.nii.gz
+              5  0.1 )
