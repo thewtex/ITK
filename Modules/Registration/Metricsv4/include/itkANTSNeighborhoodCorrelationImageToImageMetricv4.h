@@ -193,6 +193,7 @@ protected:
     FixedImageGradientType  fixedImageGradient;
     MovingImageGradientType movingImageGradient;
 
+    FixedImagePointType     mappedFixedPoint;
     MovingImagePointType    mappedMovingPoint;
 
   } ScanMemType;

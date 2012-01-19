@@ -72,7 +72,8 @@ JointHistogramMutualInformationGetValueAndDerivativeThreader< TDomainPartitioner
 template< class TDomainPartitioner, class TImageToImageMetric, class TJointHistogramMetric >
 bool
 JointHistogramMutualInformationGetValueAndDerivativeThreader< TDomainPartitioner, TImageToImageMetric, TJointHistogramMetric >
-::ProcessPoint( const VirtualPointType &,
+::ProcessPoint( const VirtualIndexType &,
+                const VirtualPointType &,
                 const FixedImagePointType &,
                 const FixedImagePixelType &     fixedImageValue,
                 const FixedImageGradientType &,
