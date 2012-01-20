@@ -259,7 +259,7 @@ template <class TScalar, unsigned int NDimensions>
 typename BSplineSmoothingOnUpdateDisplacementFieldTransform<TScalar, NDimensions>
 ::TransformPointer
 BSplineSmoothingOnUpdateDisplacementFieldTransform<TScalar, NDimensions>
-::InternalClone() const
+::Clone() const
 {
   LightObject::Pointer loPtr =
     this->CreateAnother();

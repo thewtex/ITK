@@ -285,9 +285,6 @@ public:
   /** Function to retrieve the transform domain mesh size. */
   itkGetConstMacro( GridRegion, RegionType );
 
-  /** implement type-specific clone method*/
-  itkTransformCloneMacro();
-
   typedef Transform<ScalarType, itkGetStaticConstMacro(SpaceDimension),
                     itkGetStaticConstMacro(SpaceDimension)> BulkTransformType;
   typedef typename BulkTransformType::ConstPointer BulkTransformPointer;

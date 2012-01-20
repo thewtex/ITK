@@ -332,7 +332,7 @@ template <class TScalar, unsigned int NDimensions>
 typename TimeVaryingVelocityFieldTransform<TScalar, NDimensions>
 ::TransformPointer
 TimeVaryingVelocityFieldTransform<TScalar, NDimensions>
-::InternalClone() const
+::Clone() const
 {
   // create a new instance
   LightObject::Pointer loPtr =

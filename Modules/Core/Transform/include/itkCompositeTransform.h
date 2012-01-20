@@ -167,9 +167,6 @@ public:
   itkStaticConstMacro( InputDimension, unsigned int, NDimensions );
   itkStaticConstMacro( OutputDimension, unsigned int, NDimensions );
 
-  /** implement type-specific clone method*/
-  itkTransformCloneMacro();
-
   /** Functionality for sub transforms */
 
   /** Add transforms to the queue, as stack. Only allow one method for simplicity.
@@ -444,13 +441,13 @@ public:
                        "for " << this->GetNameOfClass() );
   }
 
+  /** Clone the current transform */
+  virtual TransformTypePointer Clone() const;
+
 protected:
   CompositeTransform();
   virtual ~CompositeTransform();
   void PrintSelf( std::ostream& os, Indent indent ) const;
-
-  /** Clone the current transform */
-  virtual TransformTypePointer InternalClone() const;
 
   void PushFrontTransform( TransformTypePointer t  )
   {

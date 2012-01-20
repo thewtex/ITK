@@ -67,7 +67,7 @@ int itkDisplacementFieldTransformCloneTest(int, char *[])
   displacementTransform->SetDisplacementField( field );
 
   DisplacementTransformType::Pointer displacementTransformClone =
-    displacementTransform->Clone();
+    dynamic_cast<DisplacementTransformType*>(displacementTransform->Clone().GetPointer());
   if(displacementTransformClone.IsNull())
     {
     std::cerr << "Failed down cast to displacement transform.";

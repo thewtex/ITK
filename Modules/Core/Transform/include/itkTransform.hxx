@@ -87,7 +87,7 @@ template <class TScalarType,
           unsigned int NOutputDimensions>
 typename Transform<TScalarType, NInputDimensions, NOutputDimensions>::Pointer
 Transform<TScalarType, NInputDimensions, NOutputDimensions>
-::InternalClone() const
+::Clone() const
 {
   // Default implementation just copies the parameters from
   // this to new transform.

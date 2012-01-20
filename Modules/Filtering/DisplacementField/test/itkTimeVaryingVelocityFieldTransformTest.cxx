@@ -103,7 +103,7 @@ int itkTimeVaryingVelocityFieldTransformTest( int, char* [] )
   transform->IntegrateVelocityField();
 
   // Now Clone the Transform and test transform again
-  TransformType::Pointer clone = transform->Clone();
+  TransformType::Pointer clone = dynamic_cast<TransformType*>(transform->Clone().GetPointer());
 
   TransformType::InputPointType point;
   point.Fill( 1.3 );

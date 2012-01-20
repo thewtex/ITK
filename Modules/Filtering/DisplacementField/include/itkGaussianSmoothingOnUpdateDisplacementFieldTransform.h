@@ -60,9 +60,6 @@ public:
   /** New macro for creation of through a Smart Pointer */
   itkNewMacro( Self );
 
-  /** implement type-specific clone method*/
-  itkTransformCloneMacro();
-
   /** Types from superclass */
   typedef typename Superclass::ScalarType               ScalarType;
   typedef typename Superclass::DerivativeType           DerivativeType;
@@ -104,13 +101,13 @@ public:
    */
   virtual DisplacementFieldPointer GaussianSmoothDisplacementField( DisplacementFieldType *, ScalarType );
 
+  /** Clone the current transform */
+  virtual TransformPointer Clone() const;
+
 protected:
   GaussianSmoothingOnUpdateDisplacementFieldTransform();
   virtual ~GaussianSmoothingOnUpdateDisplacementFieldTransform();
   void PrintSelf( std::ostream& os, Indent indent ) const;
-
-  /** Clone the current transform */
-  virtual TransformPointer InternalClone() const;
 
   /** Used in GaussianSmoothDisplacementField as variance for the
    * GaussianOperator */

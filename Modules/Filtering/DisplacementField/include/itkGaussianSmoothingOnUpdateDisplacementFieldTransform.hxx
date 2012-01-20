@@ -218,7 +218,7 @@ template <class TScalar, unsigned int NDimensions>
 typename GaussianSmoothingOnUpdateDisplacementFieldTransform<TScalar, NDimensions>
 ::TransformPointer
 GaussianSmoothingOnUpdateDisplacementFieldTransform<TScalar, NDimensions>
-::InternalClone() const
+::Clone() const
 {
   LightObject::Pointer loPtr =
     this->CreateAnother();

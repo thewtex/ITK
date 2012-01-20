@@ -1189,7 +1189,7 @@ template
 typename CompositeTransform<TScalarType, NDimensions>
 ::TransformTypePointer
 CompositeTransform<TScalarType, NDimensions>
-::InternalClone() const
+::Clone() const
 {
   LightObject::Pointer loPtr =
     this->CreateAnother();
