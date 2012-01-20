@@ -15,38 +15,50 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkGradientDescentOptimizerBasev4_h
-#define __itkGradientDescentOptimizerBasev4_h
-
+#ifndef __itkMultiStartOptimizerv4_h
+#define __itkMultiStartOptimizerv4_h
 #include "itkObjectToObjectOptimizerBase.h"
-#include "itkGradientDescentOptimizerBasev4ModifyGradientByScalesThreader.h"
-#include "itkGradientDescentOptimizerBasev4ModifyGradientByLearningRateThreader.h"
+#include "itkGradientDescentOptimizerv4.h"
 
 namespace itk
 {
-/** \class GradientDescentOptimizerBasev4
- *  \brief Abstract base class for gradient descent-style optimizers.
+/** \class MultiStartOptimizerv4
+ *  \brief Multi-start searches over input parameters and returns the best metric value
  *
- * Gradient modification is threaded in \c ModifyGradient.
- *
- * Derived classes must override \c ModifyGradientOverSubRange
- * and \c ResumeOptimization.
+ *   The multi-start algorithm performs gradient descent from N (large) number of starting points and
+ *   returns the best solution. Ideal start points would sample the solution space almost uniformly, thus,
+ *   in theory, this is a global optimizer.  In this implementation, the quality of the optimization
+ *   depends on the parameter space samples that the user inputs to the optimizer.  Multi-start can be
+ *   modified in numerous ways to improve robustness of standard approaches.  These improvements usually
+ *   focus modifying the parameter sample space.  This is why we place the burden on the user to provide
+ *   the parameter samples over which to optimize.
  *
  * \ingroup ITKOptimizersv4
  */
 
-class ITK_EXPORT GradientDescentOptimizerBasev4
+class ITK_EXPORT MultiStartOptimizerv4
   : public ObjectToObjectOptimizerBase
 {
 public:
   /** Standard class typedefs. */
-  typedef GradientDescentOptimizerBasev4 Self;
+  typedef MultiStartOptimizerv4          Self;
   typedef ObjectToObjectOptimizerBase    Superclass;
   typedef SmartPointer< Self >           Pointer;
   typedef SmartPointer< const Self >     ConstPointer;
 
   /** Run-time type information (and related methods). */
-  itkTypeMacro(GradientDescentOptimizerBasev4, ObjectToObjectOptimizerBase);
+  itkTypeMacro(MultiStartOptimizerv4, ObjectToObjectOptimizerBase);
+
+  /** Method for creation through the object factory. */
+  itkNewMacro(Self);
+
+  typedef Superclass::ParametersType                 ParametersType;
+  typedef std::vector< ParametersType >              ParametersListType;
+  typedef ParametersListType::size_type              ParameterListSizeType;
+  typedef ObjectToObjectOptimizerBase                OptimizerType;
+  typedef OptimizerType::Pointer                     OptimizerPointer;
+  typedef itk::GradientDescentOptimizerv4            LocalOptimizerType;
+  typedef itk::GradientDescentOptimizerv4::Pointer   LocalOptimizerPointer;
 
   /** Codes of stopping conditions. */
   typedef enum {
@@ -54,7 +66,6 @@ public:
     COSTFUNCTION_ERROR,
     UPDATE_PARAMETERS_ERROR,
     STEP_TOO_SMALL,
-    QUASI_NEWTON_STEP_ERROR,
     CONVERGENCE_CHECKER_PASSED,
     OTHER_ERROR
     } StopConditionType;
@@ -74,12 +85,10 @@ public:
 
   /** Measure type */
   typedef Superclass::MeasureType                   MeasureType;
+  typedef std::vector< MeasureType >                MetricValuesListType;
 
   /** Internal computation type, for maintaining a desired precision */
   typedef Superclass::InternalComputationValueType InternalComputationValueType;
-
-  /** Get the most recent gradient values. */
-  itkGetConstReferenceMacro( Gradient, DerivativeType );
 
   /** Get stop condition enum */
   itkGetConstReferenceMacro(StopCondition, StopConditionType);
@@ -93,60 +102,46 @@ public:
   /** Get the current iteration number. */
   itkGetConstMacro(CurrentIteration, SizeValueType);
 
-  /** Resume optimization.
-   * This runs the optimization loop, and allows continuation
-   * of stopped optimization */
-  virtual void ResumeOptimization() = 0;
+  /** Create an instance of the local optimizer */
+  void InstantiateLocalOptimizer(void);
+
+  /** Begin the optimization */
+  virtual void StartOptimization(void);
 
   /** Stop optimization. The object is left in a state so the
    * optimization can be resumed by calling ResumeOptimization. */
   virtual void StopOptimization(void);
 
+  /** Resume the optimization. Can be called after StopOptimization to
+   * resume. The bulk of the optimization work loop is here. */
+  virtual void ResumeOptimization();
+
   /** Get the reason for termination */
   virtual const StopConditionReturnStringType GetStopConditionDescription() const;
+
+  /** Get the list of parameters over which to search.  */
+  ParametersListType & GetParametersList();
+
+  /** Set the list of parameters over which to search */
+  void SetParametersList(ParametersListType & p);
+
+  /** Get the list of metric values that we produced after the multi-start search.  */
+  const MetricValuesListType & GetMetricValuesList() const;
+
+  /** Return the parameters from the best visited position */
+  ParametersType GetBestParameters( );
+
+  /** Set/Get the optimizer. */
+  itkSetObjectMacro( LocalOptimizer, OptimizerType );
+  itkGetObjectMacro( LocalOptimizer, OptimizerType );
 
 protected:
 
   /** Default constructor */
-  GradientDescentOptimizerBasev4();
-  virtual ~GradientDescentOptimizerBasev4();
+  MultiStartOptimizerv4();
+  virtual ~MultiStartOptimizerv4();
 
-  friend class GradientDescentOptimizerBasev4ModifyGradientByScalesThreader;
-  friend class GradientDescentOptimizerBasev4ModifyGradientByLearningRateThreader;
-
-  typedef GradientDescentOptimizerBasev4ModifyGradientByScalesThreader::IndexRangeType IndexRangeType;
-
-  GradientDescentOptimizerBasev4ModifyGradientByScalesThreader::Pointer       m_ModifyGradientByScalesThreader;
-  GradientDescentOptimizerBasev4ModifyGradientByLearningRateThreader::Pointer m_ModifyGradientByLearningRateThreader;
-
-  /** Estimate the learning rate. Derived classes can modify
-   * the learning rate in this method, or leave it unmodified.
-   * It is called during ModifyGradient(). */
-  virtual void EstimateLearningRate() = 0;
-
-  /** Modify the gradient in place, to advance the optimization.
-   * This call performs a threaded modification for transforms with
-   * local support (assumed to be dense). Otherwise the modification
-   * is performed w/out threading.
-   * At completion, m_Gradient can be used to update the transform
-   * parameters. Derived classes may hold additional results in
-   * other member variables.
-   */
-  virtual void ModifyGradient();
-
-  /** Derived classes define this worker method to modify the gradient by scales.
-   * Modifications must be performed over the index range defined in
-   * \c subrange.
-   * Called from ModifyGradient(), either directly or via threaded
-   * operation. */
-  virtual void ModifyGradientByScalesOverSubRange( const IndexRangeType& subrange ) = 0;
-
-  /** Derived classes define this worker method to modify the gradient by learning rates.
-   * Modifications must be performed over the index range defined in
-   * \c subrange.
-   * Called from ModifyGradient(), either directly or via threaded
-   * operation. */
-  virtual void ModifyGradientByLearningRateOverSubRange( const IndexRangeType& subrange ) = 0;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /* Common variables for optimization control and reporting */
   bool                          m_Stop;
@@ -154,13 +149,15 @@ protected:
   StopConditionDescriptionType  m_StopConditionDescription;
   SizeValueType                 m_NumberOfIterations;
   SizeValueType                 m_CurrentIteration;
-
-  /** Current gradient */
-  DerivativeType     m_Gradient;
-  virtual void PrintSelf(std::ostream & os, Indent indent) const;
+  ParametersListType            m_ParametersList;
+  MetricValuesListType          m_MetricValuesList;
+  MeasureType                   m_MinimumMetricValue;
+  MeasureType                   m_MaximumMetricValue;
+  ParameterListSizeType         m_BestParametersIndex;
+  OptimizerPointer              m_LocalOptimizer;
 
 private:
-  GradientDescentOptimizerBasev4( const Self & ); //purposely not implemented
+  MultiStartOptimizerv4( const Self & ); //purposely not implemented
   void operator=( const Self& ); //purposely not implemented
 
 };

@@ -20,11 +20,11 @@
 #    <outVar>   # Output variable
 #    [args...]  # Input arguments, DATA{} allowed
 #    )
-# It replaces each DATA{} reference argument with the full path of a real
-# data file on disk that will exist after the <target> builds.
+# It replaces each DATA{} reference in an argument with the full path of a
+# real data file on disk that will exist after the <target> builds.
 #
 # The 'ExternalData_Add_Test' function wraps around the CMake add_test()
-# command but supports DATA{} reference arguments:
+# command but supports DATA{} references in its arguments:
 #  ExternalData_Add_Test(
 #    <target>   # Name of data management target
 #    ...        # Arguments of add_test(), DATA{} allowed
@@ -110,6 +110,11 @@
 # CMAKE_SOURCE_DIR.  ExternalData_SOURCE_ROOT and CMAKE_SOURCE_DIR must refer
 # to directories within a single source distribution (e.g. they come together
 # in one tarball).
+#
+# The variable ExternalData_BINARY_ROOT may be set to the directory to hold
+# the real data files named by expanded DATA{} references.  The default is
+# CMAKE_BINARY_DIR.  The directory layout will mirror that of content links
+# under ExternalData_SOURCE_ROOT.
 #
 # Variables ExternalData_TIMEOUT_INACTIVITY and ExternalData_TIMEOUT_ABSOLUTE
 # set the download inactivity and absolute timeouts, in seconds.  The defaults
@@ -199,6 +204,7 @@ function(ExternalData_add_target target)
     list(GET tuple 0 file)
     list(GET tuple 1 name)
     list(GET tuple 2 ext)
+    set(stamp "${ext}-stamp")
     if(NOT DEFINED "_ExternalData_FILE_${file}")
       set("_ExternalData_FILE_${file}" 1)
       add_custom_command(
@@ -208,7 +214,7 @@ function(ExternalData_add_target target)
         # List the real file as a second output in case it is a broken link.
         # The files must be listed in this order so CMake can hide from the
         # make tool that a symlink target may not be newer than the input.
-        OUTPUT "${file}${ext}" "${file}"
+        OUTPUT "${file}${stamp}" "${file}"
         # Run the data fetch/update script.
         COMMAND ${CMAKE_COMMAND} -Drelative_top=${CMAKE_BINARY_DIR}
                                  -Dfile=${file} -Dname=${name} -Dext=${ext}
@@ -218,7 +224,7 @@ function(ExternalData_add_target target)
         # Update whenever the object hash changes.
         DEPENDS "${name}${ext}"
         )
-      list(APPEND files "${file}${ext}")
+      list(APPEND files "${file}${stamp}")
     endif()
   endforeach()
 
@@ -228,14 +234,29 @@ endfunction()
 
 function(ExternalData_expand_arguments target outArgsVar)
   # Replace DATA{} references with real arguments.
-  set(data_regex "^xDATA{([^{}\r\n]*)}$")
+  set(data_regex "DATA{([^{}\r\n]*)}")
+  set(other_regex "([^D]|D[^A]|DA[^T]|DAT[^A]|DATA[^{])+|.")
   set(outArgs "")
   foreach(arg IN LISTS ARGN)
     if("x${arg}" MATCHES "${data_regex}")
-      string(REGEX REPLACE "${data_regex}" "\\1" data "x${arg}")
-      _ExternalData_arg("${target}" "${arg}" "${data}" file)
-      list(APPEND outArgs "${file}")
+      # Split argument into DATA{}-pieces and other pieces.
+      string(REGEX MATCHALL "${data_regex}|${other_regex}" pieces "${arg}")
+      # Compose output argument with DATA{}-pieces replaced.
+      set(outArg "")
+      foreach(piece IN LISTS pieces)
+        if("x${piece}" MATCHES "^x${data_regex}$")
+          # Replace this DATA{}-piece with a file path.
+          string(REGEX REPLACE "${data_regex}" "\\1" data "${piece}")
+          _ExternalData_arg("${target}" "${piece}" "${data}" file)
+          set(outArg "${outArg}${file}")
+        else()
+          # No replacement needed for this piece.
+          set(outArg "${outArg}${piece}")
+        endif()
+      endforeach()
+      list(APPEND outArgs "${outArg}")
     else()
+      # No replacements needed in this argument.
       list(APPEND outArgs "${arg}")
     endif()
   endforeach()
@@ -330,7 +351,19 @@ function(_ExternalData_arg target arg options var_file)
       "does not lie under the top-level source directory\n"
       "  ${top_src}\n")
   endif()
-  set(top_bin "${CMAKE_BINARY_DIR}/ExternalData") # TODO: .../${target} ?
+  if(NOT ExternalData_BINARY_ROOT)
+    set(ExternalData_BINARY_ROOT "${CMAKE_BINARY_DIR}")
+  endif()
+  set(top_bin "${ExternalData_BINARY_ROOT}")
+
+  # Handle in-source builds gracefully.
+  if("${top_src}" STREQUAL "${top_bin}")
+    if(ExternalData_LINK_CONTENT)
+      message(WARNING "ExternalData_LINK_CONTENT cannot be used in-source")
+      set(ExternalData_LINK_CONTENT 0)
+    endif()
+    set(top_same 1)
+  endif()
 
   set(external "") # Entries external to the source tree.
   set(internal "") # Entries internal to the source tree.
@@ -474,7 +507,7 @@ function(_ExternalData_arg_find_files pattern regex)
       elseif(ExternalData_LINK_CONTENT)
         _ExternalData_link_content("${name}" alg)
         list(APPEND external "${file}|${name}|${alg}")
-      else()
+      elseif(NOT top_same)
         list(APPEND internal "${file}|${name}")
       endif()
       if("${relname}" STREQUAL "${reldata}")
@@ -655,9 +688,10 @@ if("${ExternalData_ACTION}" STREQUAL "fetch")
   _ExternalData_download_object("${name}" "${hash}" "${algo}" obj)
 
   # Check if file already corresponds to the object.
+  set(stamp "${ext}-stamp")
   set(file_up_to_date 0)
-  if(EXISTS "${file}" AND EXISTS "${file}${ext}")
-    file(READ "${file}${ext}" f_hash)
+  if(EXISTS "${file}" AND EXISTS "${file}${stamp}")
+    file(READ "${file}${stamp}" f_hash)
     string(STRIP "${f_hash}" f_hash)
     if("${f_hash}" STREQUAL "${hash}")
       #message(STATUS "File already corresponds to object")
@@ -673,7 +707,7 @@ if("${ExternalData_ACTION}" STREQUAL "fetch")
   endif()
 
   # Atomically update the hash/timestamp file to record the object referenced.
-  _ExternalData_atomic_write("${file}${ext}" "${hash}\n")
+  _ExternalData_atomic_write("${file}${stamp}" "${hash}\n")
 elseif("${ExternalData_ACTION}" STREQUAL "local")
   foreach(v file name)
     if(NOT DEFINED "${v}")
