@@ -182,12 +182,9 @@ MultiStartOptimizerv4
       }
     catch ( ExceptionObject & err )
       {
-      this->m_StopCondition = COSTFUNCTION_ERROR;
-      this->m_StopConditionDescription << "Metric error during optimization";
-      this->StopOptimization();
-
-      // Pass exception to caller
-      throw err;
+      /** We simply ignore this exception because it may just be a bad starting point.
+       *  We hope that other start points are better.
+       */
       }
 
     if ( this->m_Value <  this->m_MinimumMetricValue )
