@@ -349,7 +349,6 @@ ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage >
   /* This size always comes from the moving image */
   const NumberOfParametersType globalDerivativeSize =
     this->m_MovingTransform->GetNumberOfParameters();
-  /* NOTE: this does *not* get init'ed to 0 here. */
   if( this->m_DerivativeResult->GetSize() != globalDerivativeSize )
     {
     this->m_DerivativeResult->SetSize( globalDerivativeSize );
@@ -417,6 +416,7 @@ ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage >
     if( computeImageGradient )
       {
       ComputeFixedImageGradientAtIndex( index, mappedFixedImageGradient );
+      mappedFixedImageGradient=this->GetFixedTransform()->TransformCovariantVector(mappedFixedImageGradient, mappedFixedPoint );
       }
     }
   else
@@ -426,12 +426,6 @@ ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage >
       {
       this->ComputeFixedImageGradientAtPoint( mappedFixedPoint,
                                        mappedFixedImageGradient );
-      //Transform the gradient into the virtual domain. We compute gradient
-      // in the fixed and moving domains and then transform to virtual.
-      mappedFixedImageGradient =
-        this->m_FixedTransform->TransformCovariantVector(
-                                                      mappedFixedImageGradient,
-                                                      mappedFixedPoint );
       }
     }
 
@@ -478,10 +472,10 @@ ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage >
     {
    /* Get the pixel values at this index */
     mappedMovingPixelValue = this->m_MovingWarpedImage->GetPixel( index );
-
     if( computeImageGradient )
       {
       ComputeMovingImageGradientAtIndex( index, mappedMovingImageGradient );
+      mappedMovingImageGradient=this->GetMovingTransform()->TransformCovariantVector(mappedMovingImageGradient, mappedMovingPoint );
       }
     }
   else
@@ -492,10 +486,6 @@ ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage >
       {
       this->ComputeMovingImageGradientAtPoint( mappedMovingPoint,
                                         mappedMovingImageGradient );
-      mappedMovingImageGradient =
-        this->m_MovingTransform->TransformCovariantVector(
-                                                     mappedMovingImageGradient,
-                                                     mappedMovingPoint );
       }
     }
   return pointIsValid;
