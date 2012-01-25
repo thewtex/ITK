@@ -25,7 +25,7 @@ namespace itk
 
 /** \class VnlFFTCommon
  * \brief Common routines related to Vnl's FFT implementation.
- *
+ * jncvsdl
  * \ingroup ITKFFT
  */
 struct VnlFFTCommon
