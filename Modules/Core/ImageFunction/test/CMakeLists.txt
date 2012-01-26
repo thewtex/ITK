@@ -12,6 +12,7 @@ itkScatterMatrixImageFunctionTest.cxx
 itkMeanImageFunctionTest.cxx
 itkGaussianDerivativeImageFunctionTest.cxx
 itkCentralDifferenceImageFunctionTest.cxx
+itkCentralDifferenceImageFunctionOnVectorTest.cxx
 itkImageAdaptorInterpolateImageFunctionTest.cxx
 itkCovarianceImageFunctionTest.cxx
 itkRayCastInterpolateImageFunctionTest.cxx
@@ -55,6 +56,8 @@ itk_add_test(NAME itkGaussianDerivativeImageFunctionTest
       COMMAND ITKImageFunctionTestDriver itkGaussianDerivativeImageFunctionTest)
 itk_add_test(NAME itkCentralDifferenceImageFunctionTest
       COMMAND ITKImageFunctionTestDriver itkCentralDifferenceImageFunctionTest)
+itk_add_test(NAME itkCentralDifferenceImageFunctionOnVectorTest
+      COMMAND ITKImageFunctionTestDriver itkCentralDifferenceImageFunctionOnVectorTest)
 itk_add_test(NAME itkImageAdaptorInterpolateImageFunctionTest
       COMMAND ITKImageFunctionTestDriver itkImageAdaptorInterpolateImageFunctionTest)
 itk_add_test(NAME itkCovarianceImageFunctionTest

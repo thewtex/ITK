@@ -28,8 +28,9 @@
 #include "itkThreadedImageRegionPartitioner.h"
 #include "itkImageToImageFilter.h"
 #include "itkImageToImageMetricv4GetValueAndDerivativeThreader.h"
-#include "itkGradientRecursiveGaussianImageFilter.h"
 #include "itkPointSet.h"
+#include "itkDefaultConvertPixelTraits.h"
+#include "itkDefaultImageToImageMetricTraitsv4.h"
 
 namespace itk
 {
@@ -37,6 +38,9 @@ namespace itk
  *
  * Computes similarity between regions of two images, using two
  * user-supplied transforms, a 'fixed' transform and a 'moving' transform.
+ *
+ * \warning Integer-type images are not yet supported. See concept-checking
+ * in class declaration for details.
  *
  * \warning Integer-type images are not yet supported. See concept-checking
  * in class declaration for details.
@@ -185,7 +189,8 @@ namespace itk
  *
  * \ingroup ITKMetricsv4
  */
-template<class TFixedImage,class TMovingImage,class TVirtualImage = TFixedImage>
+template<class TFixedImage,class TMovingImage,class TVirtualImage = TFixedImage,
+         typename TMetricTraits = DefaultImageToImageMetricTraitsv4< TFixedImage, TMovingImage, TVirtualImage > >
 class ITK_EXPORT ImageToImageMetricv4 : public ObjectToObjectMetric
 {
 public:
@@ -240,6 +245,9 @@ public:
   typedef typename VirtualImageType::DirectionType  VirtualDirectionType;
   typedef typename VirtualImageType::SizeType       VirtualRadiusType;
   typedef typename VirtualImageType::IndexType      VirtualIndexType;
+
+  /** Typedef for traits class */
+  typedef TMetricTraits MetricTraits;
 
   /* Image dimension accessors */
   typedef unsigned int   ImageDimensionType;
@@ -316,70 +324,55 @@ public:
   typedef typename MovingInterpolatorType::Pointer    MovingInterpolatorPointer;
 
   /** Image derivatives types */
-  typedef   CovariantVector< CoordinateRepresentationType,
-                             itkGetStaticConstMacro(FixedImageDimension) >
-                                                      FixedImageGradientType;
-  typedef   CovariantVector< CoordinateRepresentationType,
-                             itkGetStaticConstMacro(MovingImageDimension) >
-                                                      MovingImageGradientType;
+  typedef typename MetricTraits::FixedImageGradientType    FixedImageGradientType;
+  typedef typename MetricTraits::MovingImageGradientType   MovingImageGradientType;
+  typedef typename MetricTraits::VirtualImageGradientType  VirtualImageGradientType;
 
-  typedef   CovariantVector< CoordinateRepresentationType,
-                             itkGetStaticConstMacro(VirtualImageDimension) >
-                                                      VirtualImageGradientType;
+  typedef CovariantVector<typename FixedImageGradientType::ValueType, FixedImageDimension>
+    FixedImageComponentGradientType;
+
+  typedef CovariantVector<typename MovingImageGradientType::ValueType, MovingImageDimension>
+    MovingImageComponentGradientType;
+
+  typedef CovariantVector<typename VirtualImageGradientType::ValueType, VirtualImageDimension>
+    VirtualImageComponentGradientType;
 
   /** Type of the filter used to calculate the gradients.
    * Note that RealType is always double (or long double for
    * long double pixel-type).*/
-  typedef typename NumericTraits< FixedImagePixelType >::RealType
-                                                    FixedRealType;
-  typedef CovariantVector< FixedRealType,
-                           itkGetStaticConstMacro(FixedImageDimension) >
-                                                    FixedGradientPixelType;
-  typedef Image< FixedGradientPixelType,
-                 itkGetStaticConstMacro(FixedImageDimension) >
-                                                FixedImageGradientImageType;
-  typedef typename FixedImageGradientImageType::Pointer
-                                                FixedImageGradientImagePointer;
+  typedef typename MetricTraits::FixedRealType  FixedRealType;
+  typedef typename MetricTraits::MovingRealType MovingRealType;
 
-  typedef ImageToImageFilter< FixedImageType, FixedImageGradientImageType >
-                                                 FixedImageGradientFilterType;
+  typedef typename NumericTraits<FixedRealType>::ScalarRealType  FixedScalarRealType;
+  typedef typename NumericTraits<MovingRealType>::ScalarRealType MovingScalarRealType;
 
-  typedef typename NumericTraits< MovingImagePixelType >::RealType
-                                                 MovingRealType;
-  typedef CovariantVector< MovingRealType,
-                           itkGetStaticConstMacro(MovingImageDimension) >
-                                                 MovingGradientPixelType;
-  typedef Image< MovingGradientPixelType,
-                 itkGetStaticConstMacro(MovingImageDimension) >
-                                                    MovingImageGradientImageType;
+  typedef typename MetricTraits::FixedGradientPixelType  FixedGradientPixelType;
+  typedef typename MetricTraits::MovingGradientPixelType MovingGradientPixelType;
+
+  typedef typename MetricTraits::FixedImageGradientImageType  FixedImageGradientImageType;
+  typedef typename MetricTraits::MovingImageGradientImageType MovingImageGradientImageType;
+
+  typedef typename FixedImageGradientImageType::Pointer  FixedImageGradientImagePointer;
   typedef typename MovingImageGradientImageType::Pointer MovingImageGradientImagePointer;
 
-  typedef ImageToImageFilter< MovingImageType, MovingImageGradientImageType >
-                                                 MovingImageGradientFilterType;
+  typedef typename MetricTraits::FixedImageGradientFilterType  FixedImageGradientFilterType;
+  typedef typename MetricTraits::MovingImageGradientFilterType MovingImageGradientFilterType;
+
   typedef typename FixedImageGradientFilterType::Pointer
                                               FixedImageGradientFilterPointer;
   typedef typename MovingImageGradientFilterType::Pointer
                                               MovingImageGradientFilterPointer;
 
+
   /** Default image gradient filter types */
-  typedef GradientRecursiveGaussianImageFilter< FixedImageType,
-                                                FixedImageGradientImageType >
-                                                  DefaultFixedImageGradientFilter;
-  typedef GradientRecursiveGaussianImageFilter< MovingImageType,
-                                                MovingImageGradientImageType >
-                                                  DefaultMovingImageGradientFilter;
+  typedef typename MetricTraits::DefaultFixedImageGradientFilter  DefaultFixedImageGradientFilter;
+  typedef typename MetricTraits::DefaultMovingImageGradientFilter DefaultMovingImageGradientFilter;
 
   /** Image gradient calculator types. The TOutput template parameter
    * is chosen to match that of CentralDiffererenceImageFunction. */
-  typedef ImageFunction<FixedImageType,
-                        CovariantVector<double,
-                                  itkGetStaticConstMacro( FixedImageDimension )>,
-                        CoordinateRepresentationType>
+  typedef typename MetricTraits::FixedImageGradientCalculatorType
                                             FixedImageGradientCalculatorType;
-  typedef ImageFunction<MovingImageType,
-                        CovariantVector<double,
-                                  itkGetStaticConstMacro( MovingImageDimension )>,
-                        CoordinateRepresentationType>
+  typedef typename MetricTraits::MovingImageGradientCalculatorType
                                             MovingImageGradientCalculatorType;
 
   typedef typename FixedImageGradientCalculatorType::Pointer
@@ -387,16 +380,20 @@ public:
   typedef typename MovingImageGradientCalculatorType::Pointer
                                             MovingImageGradientCalculatorPointer;
 
+  /** Default image gradient calculator types */
+  typedef typename MetricTraits::DefaultFixedImageGradientCalculator  DefaultFixedImageGradientCalculator;
+  typedef typename MetricTraits::DefaultMovingImageGradientCalculator DefaultMovingImageGradientCalculator;
+
   /** ResampleImageFilter types for image pre-warping */
   typedef ResampleImageFilter< MovingImageType,
                                VirtualImageType,
-                               MovingRealType >
+                               MovingScalarRealType >
                                              MovingWarpResampleImageFilterType;
   typedef typename MovingWarpResampleImageFilterType::Pointer
                                           MovingWarpResampleImageFilterPointer;
   typedef ResampleImageFilter< FixedImageType,
                                VirtualImageType,
-                               FixedRealType >
+                               FixedScalarRealType >
                                              FixedWarpResampleImageFilterType;
   typedef typename FixedWarpResampleImageFilterType::Pointer
                                           FixedWarpResampleImageFilterPointer;
@@ -790,6 +787,13 @@ protected:
   typename DefaultMovingImageGradientFilter::Pointer
                                              m_DefaultMovingImageGradientFilter;
 
+  /** Pointer to default gradient calculators. Used for easier
+   * initialization of the default filter. */
+  typename DefaultFixedImageGradientCalculator::Pointer
+                                             m_DefaultFixedImageGradientCalculator;
+  typename DefaultMovingImageGradientCalculator::Pointer
+                                             m_DefaultMovingImageGradientCalculator;
+
   /** Gradient images to store gradient filter output. */
   mutable FixedImageGradientImagePointer    m_FixedImageGradientImage;
   mutable MovingImageGradientImagePointer   m_MovingImageGradientImage;
@@ -883,16 +887,7 @@ private:
 
   DerivativeValueType m_FloatingPointCorrectionResolution;
 
-  /** Only floating-point images are currently supported. To support integer images,
-   * several small changes must be made, but a larger complication is handling
-   * pre-warping cleanly. */
-  #ifdef ITK_USE_CONCEPT_CHECKING
-  typedef typename PixelTraits<FixedImagePixelType>::ValueType  FixedImagePixelValueType;
-  typedef typename PixelTraits<MovingImagePixelType>::ValueType MovingImagePixelValueType;
-  itkConceptMacro( OnlyDefinedForFloatingPointTypes0, ( itk::Concept::IsFloatingPoint<FixedImagePixelValueType> ) );
-  itkConceptMacro( OnlyDefinedForFloatingPointTypes1, ( itk::Concept::IsFloatingPoint<MovingImagePixelValueType> ) );
-  #endif // ITK_USE_CONCEPT_CHECKING
-
+  MetricTraits m_MetricTraits;
 };
 }//namespace itk
 

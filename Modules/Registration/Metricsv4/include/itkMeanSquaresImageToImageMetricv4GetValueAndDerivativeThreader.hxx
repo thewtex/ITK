@@ -40,7 +40,17 @@ MeanSquaresImageToImageMetricv4GetValueAndDerivativeThreader< TDomainPartitioner
 {
   /** Only the voxelwise contribution given the point pairs. */
   FixedImagePixelType diff = fixedImageValue - movingImageValue;
-  metricValueReturn = diff * diff;
+  const unsigned int nComponents = NumericTraits<FixedImagePixelType>::GetLength( diff );
+  MeasureType diffSum = NumericTraits<MeasureType>::ZeroValue( diffSum );
+
+  for ( unsigned int nc = 0; nc < nComponents; nc++ )
+    {
+	MeasureType diffC = DefaultConvertPixelTraits<FixedImagePixelType>::GetNthComponent(nc, diff);
+    diffSum += diffC*diffC;
+    }
+
+  metricValueReturn =
+    vcl_fabs( diffSum  ) / static_cast<MeasureType>( ImageToImageMetricv4Type::FixedImageDimension );
 
   /* Use a pre-allocated jacobian object for efficiency */
   typedef typename TImageToImageMetric::JacobianType & JacobianReferenceType;
@@ -52,10 +62,17 @@ MeanSquaresImageToImageMetricv4GetValueAndDerivativeThreader< TDomainPartitioner
   DerivativeValueType floatingPointCorrectionResolution = this->m_Associate->GetFloatingPointCorrectionResolution();
   for ( unsigned int par = 0; par < this->m_Associate->GetNumberOfLocalParameters(); par++ )
     {
-    double sum = 0.0;
-    for ( SizeValueType dim = 0; dim < ImageToImageMetricv4Type::MovingImageDimension; dim++ )
+    typename NumericTraits<DerivativeType>::ValueType sum = 0.0;
+
+    for ( unsigned int nc = 0; nc < nComponents; nc++ )
       {
-      sum += 2.0 * diff * jacobian(dim, par) * movingImageGradient[dim];
+      MeasureType diffValue = DefaultConvertPixelTraits<FixedImagePixelType>::GetNthComponent(nc,diff);
+      for ( SizeValueType dim = 0; dim < ImageToImageMetricv4Type::MovingImageDimension; dim++ )
+        {
+        sum += 2.0 * diffValue * jacobian(dim, par) *
+          DefaultConvertPixelTraits<MovingImageGradientType>::GetNthComponent(
+            ImageToImageMetricv4Type::FixedImageDimension * nc + dim, movingImageGradient );
+        }
       }
 
     localDerivativeReturn[par] = sum;
