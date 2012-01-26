@@ -8,6 +8,8 @@ itkVectorGradientMagnitudeImageFilterTest3.cxx
 itkGradientMagnitudeRecursiveGaussianFilterTest.cxx
 itkGradientRecursiveGaussianFilterTest.cxx
 itkGradientRecursiveGaussianFilterTest2.cxx
+itkGradientRecursiveGaussianFilterTest3.cxx
+itkGradientRecursiveGaussianFilterTest4.cxx
 itkDifferenceOfGaussiansGradientTest.cxx
 )
 
@@ -45,6 +47,10 @@ itk_add_test(NAME itkGradientMagnitudeRecursiveGaussianFilterTest
 itk_add_test(NAME itkGradientRecursiveGaussianFilterTest
       COMMAND ITKImageGradientTestDriver itkGradientRecursiveGaussianFilterTest)
 itk_add_test(NAME itkGradientRecursiveGaussianFilterTest2
-      COMMAND ITKImageGradientTestDriver itkGradientRecursiveGaussianFilterTest2)
+      COMMAND ITKImageGradientTestDriver  itkGradientRecursiveGaussianFilterTest2)
+itk_add_test(NAME itkGradientRecursiveGaussianFilterTest3
+      COMMAND ITKImageGradientTestDriver  itkGradientRecursiveGaussianFilterTest3)
+itk_add_test(NAME itkGradientRecursiveGaussianFilterTest4
+      COMMAND ITKImageGradientTestDriver  itkGradientRecursiveGaussianFilterTest4)
 itk_add_test(NAME itkDifferenceOfGaussiansGradientTest
       COMMAND ITKImageGradientTestDriver itkDifferenceOfGaussiansGradientTest)
