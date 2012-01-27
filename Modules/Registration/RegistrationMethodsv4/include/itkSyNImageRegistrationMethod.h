@@ -81,7 +81,7 @@ public:
   typedef typename Superclass::MetricType                             MetricType;
   typedef typename MetricType::Pointer                                MetricPointer;
   typedef typename MetricType::VirtualImageType                       VirtualImageType;
-
+  typedef typename MetricType::MeasureType                            MeasureType;
   typedef TTransform                                                  TransformType;
   typedef typename TransformType::Pointer                             TransformPointer;
   typedef typename TransformType::ScalarType                          RealType;
@@ -142,7 +142,7 @@ protected:
    */
   virtual void InitializeRegistrationAtEachLevel( const SizeValueType );
 
-  virtual DisplacementFieldPointer ComputeUpdateField( const TFixedImage *, const TransformBaseType *, const TMovingImage *, const TransformBaseType * );
+  virtual DisplacementFieldPointer ComputeUpdateField( const TFixedImage *, const TransformBaseType *, const TMovingImage *, const TransformBaseType * , MeasureType & );
   virtual DisplacementFieldPointer GaussianSmoothDisplacementField( const DisplacementFieldType *, const RealType );
 
 private:
