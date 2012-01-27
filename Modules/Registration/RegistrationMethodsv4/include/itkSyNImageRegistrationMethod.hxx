@@ -120,21 +120,6 @@ SyNImageRegistrationMethod<TFixedImage, TMovingImage, TTransform>
 {
   // Warp the moving image based on the composite transform (not including the current
   // transform to be optimized).
-
-  typedef ResampleImageFilter<MovingImageType, MovingImageType> MovingResamplerType;
-  typename MovingResamplerType::Pointer movingResampler = MovingResamplerType::New();
-  movingResampler->SetTransform( this->m_CompositeTransform );
-  movingResampler->SetInput( this->m_MovingSmoothImage );
-  movingResampler->SetSize( this->m_FixedSmoothImage->GetLargestPossibleRegion().GetSize() );
-  movingResampler->SetOutputOrigin( this->m_FixedSmoothImage->GetOrigin() );
-  movingResampler->SetOutputSpacing( this->m_FixedSmoothImage->GetSpacing() );
-  movingResampler->SetOutputDirection( this->m_FixedSmoothImage->GetDirection() );
-  movingResampler->SetDefaultPixelValue( 0 );
-
-  typename MovingImageType::Pointer movingSmoothWarpedImage = movingResampler->GetOutput();
-  movingSmoothWarpedImage->Update();
-  movingSmoothWarpedImage->DisconnectPipeline();
-
   // Monitor the convergence
   typedef itk::Function::WindowConvergenceMonitoringFunction<double> ConvergenceMonitoringType;
   ConvergenceMonitoringType::Pointer convergenceMonitoring = ConvergenceMonitoringType::New();
@@ -142,20 +127,33 @@ SyNImageRegistrationMethod<TFixedImage, TMovingImage, TTransform>
 
   SizeValueType iteration = 0;
   bool isConverged = false;
+  MeasureType value;
   while( iteration++ < this->m_NumberOfIterationsPerLevel[this->m_CurrentLevel] && !isConverged )
     {
     std::cout << "    Iteration " << iteration << std::flush;
 
     // Compute the update fields (to both moving and fixed images) and smooth
-
+    typename CompositeTransformType::Pointer fixedComposite = CompositeTransformType::New();
+    typename CompositeTransformType::Pointer movingComposite = CompositeTransformType::New();
+    //    fixedComposite->AddTransform( this->GetFixedTransform() );//FIXME need fixed composite transform
+    fixedComposite->AddTransform( this->m_MiddleToFixedTransform->GetInverseTransform() );
+    fixedComposite->SetOnlyMostRecentTransformToOptimizeOn();
+    //    movingComposite->AddTransform( this->GetMovingTransform() );//FIXME need fixed composite transform
+    if ( this->m_CompositeTransform->GetNumberOfTransforms() > 2 )
+      {
+      itkWarningMacro("The composite transform has" << this->m_CompositeTransform->GetNumberOfTransforms() << "transforms. This is a FIXME case for SyN: currently we only allow one transform in the initial moving transform.  This should be fixed in a future revision.  This issue is in part related to another FIXME for the composite transform which indicates that the composite transform did not yet implement ComputeJacobianWithRespectToPosition.");
+      }
+    movingComposite->AddTransform( this->m_CompositeTransform->GetBackTransform() );//FIXME should be moving composite transform
+    movingComposite->AddTransform( this->m_MiddleToMovingTransform->GetInverseTransform() );
+    movingComposite->SetOnlyMostRecentTransformToOptimizeOn();
     DisplacementFieldPointer middleToFixedUpdateField = this->ComputeUpdateField(
-      this->m_FixedSmoothImage, this->m_MiddleToFixedTransform->GetInverseTransform(),
-      movingSmoothWarpedImage, this->m_MiddleToMovingTransform->GetInverseTransform() );
+      this->m_FixedSmoothImage, fixedComposite ,
+      this->m_MovingSmoothImage, movingComposite , value );
     DisplacementFieldPointer middleToMovingUpdateField = this->ComputeUpdateField(
-      movingSmoothWarpedImage, this->m_MiddleToMovingTransform->GetInverseTransform(),
-      this->m_FixedSmoothImage, this->m_MiddleToFixedTransform->GetInverseTransform() );
+      this->m_MovingSmoothImage, movingComposite,
+      this->m_FixedSmoothImage, fixedComposite , value);
 
-    DisplacementFieldPointer middleToFixedSmoothUpdateField = this->GaussianSmoothDisplacementField( middleToFixedUpdateField, this->m_GaussianSmoothingVarianceForTheUpdateField );
+    DisplacementFieldPointer  middleToFixedSmoothUpdateField = this->GaussianSmoothDisplacementField( middleToFixedUpdateField, this->m_GaussianSmoothingVarianceForTheUpdateField );
     DisplacementFieldPointer middleToMovingSmoothUpdateField = this->GaussianSmoothDisplacementField( middleToMovingUpdateField, this->m_GaussianSmoothingVarianceForTheUpdateField );
 
     // Add the update field to both displacement fields (from fixed/moving to middle image) and then smooth
@@ -228,19 +226,6 @@ SyNImageRegistrationMethod<TFixedImage, TMovingImage, TTransform>
     this->m_MiddleToMovingTransform->SetDisplacementField( middleToMovingSmoothTotalField );
     this->m_MiddleToMovingTransform->SetInverseDisplacementField( middleToMovingSmoothTotalFieldInverse );
 
-    // Get the metric value
-
-    this->m_Metric->SetFixedImage( this->m_FixedSmoothImage );
-    this->m_Metric->SetFixedTransform( this->m_MiddleToFixedTransform->GetInverseTransform() );
-    this->m_Metric->SetMovingImage( movingSmoothWarpedImage );
-    this->m_Metric->SetMovingTransform( this->m_MiddleToMovingTransform->GetInverseTransform() );
-    this->m_Metric->Initialize();
-
-    typename MetricType::MeasureType value;
-    typename MetricType::DerivativeType metricDerivative;
-
-    this->m_Metric->GetValueAndDerivative( value, metricDerivative );
-
     convergenceMonitoring->AddEnergyValue( value );
     RealType convergenceValue = convergenceMonitoring->GetConvergenceValue();
     std::cout << ": (metric value = " << value << ", convergence value = " << convergenceValue << ")" << std::endl;
@@ -254,7 +239,7 @@ SyNImageRegistrationMethod<TFixedImage, TMovingImage, TTransform>
 template<typename TFixedImage, typename TMovingImage, typename TTransform>
 typename SyNImageRegistrationMethod<TFixedImage, TMovingImage, TTransform>::DisplacementFieldPointer
 SyNImageRegistrationMethod<TFixedImage, TMovingImage, TTransform>
-::ComputeUpdateField( const FixedImageType * fixedImage, const TransformBaseType * fixedTransform, const MovingImageType * movingImage, const TransformBaseType * movingTransform )
+::ComputeUpdateField( const FixedImageType * fixedImage, const TransformBaseType * fixedTransform, const MovingImageType * movingImage, const TransformBaseType * movingTransform , MeasureType & value )
 {
   typename VirtualImageType::ConstPointer virtualDomainImage = this->m_Metric->GetVirtualDomainImage();
 
@@ -272,7 +257,6 @@ SyNImageRegistrationMethod<TFixedImage, TMovingImage, TTransform>
   this->m_Metric->SetMovingTransform( const_cast<TransformBaseType *>( movingTransform ) );
   this->m_Metric->Initialize();
 
-  typename MetricType::MeasureType value;
   typename MetricType::DerivativeType metricDerivative;
   this->m_Metric->GetValueAndDerivative( value, metricDerivative );
 
@@ -312,9 +296,8 @@ SyNImageRegistrationMethod<TFixedImage, TMovingImage, TTransform>
   RealType maxNorm = stats->GetMaximum();
   if( maxNorm > 0.0 )
     {
-    metricDerivative *= ( voxelDistance / maxNorm );
+    metricDerivative *= ( this->m_LearningRate *  voxelDistance / maxNorm );
     }
-
   typedef ImageDuplicator<DisplacementFieldType> DuplicatorType;
   typename DuplicatorType::Pointer duplicator = DuplicatorType::New();
   duplicator->SetInputImage( importer->GetOutput() );
