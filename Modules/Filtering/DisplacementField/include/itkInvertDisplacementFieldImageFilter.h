@@ -153,9 +153,10 @@ private:
   // internal ivars necessary for multithreading basic operations
 
   typename DisplacementFieldType::Pointer           m_ComposedField;
+  typename RealImageType::Pointer                   m_ScaledNormImage;
+
   RealType                                          m_MaxErrorNorm;
   RealType                                          m_MeanErrorNorm;
-  RealType                                          m_NormalizationFactor;
   RealType                                          m_Epsilon;
   SpacingType                                       m_DisplacementFieldSpacing;
   bool                                              m_DoThreadedEstimateInverse;
