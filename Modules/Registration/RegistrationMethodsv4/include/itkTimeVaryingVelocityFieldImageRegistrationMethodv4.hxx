@@ -75,17 +75,6 @@ TimeVaryingVelocityFieldImageRegistrationMethodv4<TFixedImage, TMovingImage, TTr
 
   // Warp the moving image based on the composite transform (not including the current
   // time varying velocity field transform to be optimized).
-
-  typedef ResampleImageFilter<MovingImageType, MovingImageType> MovingResamplerType;
-  typename MovingResamplerType::Pointer movingResampler = MovingResamplerType::New();
-  movingResampler->SetTransform( this->m_CompositeTransform );
-  movingResampler->SetInput( this->m_MovingSmoothImage );
-  movingResampler->SetSize( this->m_FixedSmoothImage->GetLargestPossibleRegion().GetSize() );
-  movingResampler->SetOutputOrigin( this->m_FixedSmoothImage->GetOrigin() );
-  movingResampler->SetOutputSpacing( this->m_FixedSmoothImage->GetSpacing() );
-  movingResampler->SetOutputDirection( this->m_FixedSmoothImage->GetDirection() );
-  movingResampler->SetDefaultPixelValue( 0 );
-
   // pre calculate the voxel distance to be used in properly scaling the gradient.
   RealType voxelDistance = 0.0;
   for( unsigned int d = 0; d < ImageDimension; d++ )
@@ -103,11 +92,12 @@ TimeVaryingVelocityFieldImageRegistrationMethodv4<TFixedImage, TMovingImage, TTr
   convergenceMonitoring->SetWindowSize( 10 );
 
   SizeValueType iteration = 0;
+  typename MetricType::MeasureType value;
   bool isConverged = false;
+  /** m_Transform is the velocity field */
   while( iteration++ < this->m_NumberOfIterationsPerLevel[this->m_CurrentLevel] && !isConverged )
     {
-    std::cout << "    Iteration " << iteration << std::flush;
-
+    /** Time index zero brings the moving image closest to the fixed image */
     for( IndexValueType timePoint = 0; timePoint < numberOfTimePoints; timePoint++ )
       {
       RealType t = static_cast<RealType>( timePoint ) / static_cast<RealType>( numberOfTimePoints - 1 );
@@ -152,17 +142,78 @@ TimeVaryingVelocityFieldImageRegistrationMethodv4<TFixedImage, TMovingImage, TTr
 
       typename DisplacementFieldTransformType::Pointer movingDisplacementFieldTransform = DisplacementFieldTransformType::New();
       movingDisplacementFieldTransform->SetDisplacementField( this->m_Transform->GetDisplacementField() );
+      this->m_CompositeTransform->AddTransform(movingDisplacementFieldTransform);
+      bool useIdField=false;
+      if ( useIdField )
+        {
+        typename DisplacementFieldTransformType::Pointer identityDisplacementFieldTransform = DisplacementFieldTransformType::New();
+        typename DisplacementFieldDuplicatorType::Pointer fieldDuplicatorId = DisplacementFieldDuplicatorType::New();
+        fieldDuplicatorId->SetInputImage( movingDisplacementFieldTransform->GetDisplacementField() );
+        fieldDuplicatorId->Update();
+        typename DisplacementFieldType::PixelType zerovec;
+        zerovec.Fill(0);
+        fieldDuplicatorId->GetOutput()->FillBuffer(zerovec);
+        identityDisplacementFieldTransform->SetDisplacementField( fieldDuplicatorId->GetOutput() );
+        this->m_CompositeTransform->AddTransform(identityDisplacementFieldTransform);// yes or no?
+        }
+      this->m_CompositeTransform->SetOnlyMostRecentTransformToOptimizeOn();
 
       this->m_Metric->SetFixedImage( this->m_FixedSmoothImage );
       this->m_Metric->SetFixedTransform( fixedDisplacementFieldTransform );
-      this->m_Metric->SetMovingImage( movingResampler->GetOutput() );
-      this->m_Metric->SetMovingTransform( movingDisplacementFieldTransform );
+      this->m_Metric->SetMovingImage(  this->m_MovingSmoothImage);
+      this->m_Metric->SetMovingTransform( this->m_CompositeTransform );
       this->m_Metric->Initialize();
 
-      typename MetricType::MeasureType value;
       typename MetricType::DerivativeType metricDerivative;
-
       this->m_Metric->GetValueAndDerivative( value, metricDerivative );
+
+      //      std::cout <<" value  at time " << timePoint << " is " << value <<  std::endl;
+      bool debug = true;
+if ( timePoint == 0 && debug)
+{
+  typedef ResampleImageFilter<MovingImageType, MovingImageType> MovingResamplerType;
+  typename MovingResamplerType::Pointer movingResampler = MovingResamplerType::New();
+  movingResampler->SetTransform( this->m_CompositeTransform );
+  movingResampler->SetInput( this->m_MovingSmoothImage );
+  movingResampler->SetSize( this->m_FixedSmoothImage->GetLargestPossibleRegion().GetSize() );
+  movingResampler->SetOutputOrigin( this->m_FixedSmoothImage->GetOrigin() );
+  movingResampler->SetOutputSpacing( this->m_FixedSmoothImage->GetSpacing() );
+  movingResampler->SetOutputDirection( this->m_FixedSmoothImage->GetDirection() );
+  movingResampler->SetDefaultPixelValue( 0 );
+  movingResampler->Update();
+      typedef itk::ImageFileWriter<MovingImageType> WriterType;
+      typename WriterType::Pointer writer = WriterType::New();
+      writer->SetInput(movingResampler->GetOutput() );
+      writer->SetFileName("tv_test_mdef.nii.gz" );
+      writer->Update();
+
+  typedef ResampleImageFilter<FixedImageType, FixedImageType> FixedResamplerType;
+  typename FixedResamplerType::Pointer fixedResampler = FixedResamplerType::New();
+  fixedResampler->SetTransform( fixedDisplacementFieldTransform );
+  fixedResampler->SetInput( this->m_FixedSmoothImage );
+  fixedResampler->SetSize( this->m_FixedSmoothImage->GetLargestPossibleRegion().GetSize() );
+  fixedResampler->SetOutputOrigin( this->m_FixedSmoothImage->GetOrigin() );
+  fixedResampler->SetOutputSpacing( this->m_FixedSmoothImage->GetSpacing() );
+  fixedResampler->SetOutputDirection( this->m_FixedSmoothImage->GetDirection() );
+  fixedResampler->SetDefaultPixelValue( 0 );
+  fixedResampler->Update();
+      typedef itk::ImageFileWriter<FixedImageType> fWriterType;
+      typename WriterType::Pointer fwriter = fWriterType::New();
+      fwriter->SetInput(fixedResampler->GetOutput() );
+      fwriter->SetFileName("tv_test_fdef.nii.gz" );
+      fwriter->Update();
+      {
+      typedef itk::ImageFileWriter<FixedImageType> fWriterType;
+      typename WriterType::Pointer fwriter = fWriterType::New();
+      fwriter->SetInput( this->m_FixedSmoothImage );
+      fwriter->SetFileName("tv_test_f_smooth.nii.gz" );
+      fwriter->Update();
+      }
+ }
+
+
+      this->m_CompositeTransform->RemoveTransform();
+      if ( useIdField ) this->m_CompositeTransform->RemoveTransform();
 
       // we rescale the update velocity field at each time point.
       // we first need to convert to a displacement field to look
@@ -200,19 +251,16 @@ TimeVaryingVelocityFieldImageRegistrationMethodv4<TFixedImage, TMovingImage, TTr
         metricDerivative *= ( voxelDistance / maxNorm );
         }
       updateDerivative.update( metricDerivative, timePoint * numberOfPixelsPerTimePoint * ImageDimension );
-      }
+      }// end loop over time points
 
     // update the transform
-
     this->m_Transform->UpdateTransformParameters( updateDerivative, this->m_LearningRate );
-
-    // Calculate the current metric value to track convergence
 
     this->m_Transform->SetLowerTimeBound( 0 );
     this->m_Transform->SetUpperTimeBound( 1.0 );
     this->m_Transform->SetNumberOfIntegrationSteps( numberOfIntegrationSteps );
     this->m_Transform->IntegrateVelocityField();
-
+    /* just use the value from the last update iteration --- or average the value over all time points
     typedef IdentityTransform<RealType, ImageDimension> IdentityTransformType;
     typename IdentityTransformType::Pointer identityTransform = IdentityTransformType::New();
 
@@ -224,9 +272,8 @@ TimeVaryingVelocityFieldImageRegistrationMethodv4<TFixedImage, TMovingImage, TTr
 
     typename MetricType::MeasureType value;
     typename MetricType::DerivativeType metricDerivative;
-
     this->m_Metric->GetValueAndDerivative( value, metricDerivative );
-
+    */
     convergenceMonitoring->AddEnergyValue( value );
     RealType convergenceValue = convergenceMonitoring->GetConvergenceValue();
     std::cout << ": (metric value = " << value << ", convergence value = " << convergenceValue << ")" << std::endl;
