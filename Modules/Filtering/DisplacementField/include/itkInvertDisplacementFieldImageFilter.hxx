@@ -77,81 +77,103 @@ InvertDisplacementFieldImageFilter<TInputImage, TOutputImage>
 ::GenerateData()
 {
   this->AllocateOutputs();
-
   VectorType zeroVector( 0.0 );
-
   typename DisplacementFieldType::ConstPointer displacementField = this->GetInput();
   typename InverseDisplacementFieldType::Pointer inverseDisplacementField = this->GetOutput();
   inverseDisplacementField->FillBuffer( zeroVector );
-
   this->m_NormalizationFactor = 1.0;
   for( unsigned int d = 0; d < ImageDimension; d++ )
     {
     this->m_DisplacementFieldSpacing[d] = displacementField->GetSpacing()[d];
     this->m_NormalizationFactor /= this->m_DisplacementFieldSpacing[d];
     }
-
   this->m_MaxErrorNorm = NumericTraits<RealType>::max();
   this->m_MeanErrorNorm = NumericTraits<RealType>::max();
   unsigned int iteration = 0;
+  unsigned int mymaxiter = 20;
+  typedef Image<RealType,ImageDimension>  ImageType;
+  typename ImageType::Pointer magImage = ImageType::New();
+  magImage->SetLargestPossibleRegion( displacementField->GetLargestPossibleRegion() );
+  magImage->SetBufferedRegion( displacementField->GetLargestPossibleRegion().GetSize() );
+  magImage->SetSpacing( displacementField->GetSpacing() );
+  magImage->SetOrigin( displacementField->GetOrigin() );
+  magImage->SetDirection( displacementField->GetDirection() );
+  magImage->Allocate();
 
-  while( iteration++ < this->m_MaximumNumberOfIterations &&
-    this->m_MaxErrorNorm > this->m_MaxErrorToleranceThreshold &&
-    this->m_MeanErrorNorm > m_MeanErrorToleranceThreshold )
+  typedef typename DisplacementFieldType::Pointer DisplacementFieldPointer;
+  typedef typename DisplacementFieldType::PixelType VectorType;
+  typedef typename DisplacementFieldType::IndexType IndexType;
+  typedef typename VectorType::ValueType           ScalarType;
+  typedef ImageRegionConstIteratorWithIndex<DisplacementFieldType> CIterator;
+  typedef ImageRegionIteratorWithIndex<DisplacementFieldType> Iterator;
+
+  typedef typename DisplacementFieldType::SizeType SizeType;
+  SizeType size = displacementField->GetLargestPossibleRegion().GetSize();
+
+  typename ImageType::SpacingType spacing = displacementField->GetSpacing();
+  RealType subpix = 0.0;
+  unsigned long npix = 1;
+  for (int j = 0; j < ImageDimension; j++)
+  {
+    npix *= displacementField->GetLargestPossibleRegion().GetSize()[j];
+  }
+  subpix = pow((RealType)ImageDimension,(RealType)ImageDimension) * 0.5;
+
+  RealType max = NumericTraits<RealType>::Zero;
+  CIterator iter( displacementField, displacementField->GetLargestPossibleRegion() );
+  RealType scale = (1.)/max;
+  if (scale > 1.) scale = 1.0;
+  Iterator vfIter( inverseDisplacementField, inverseDisplacementField->GetLargestPossibleRegion() );
+
+  unsigned int ct = 0;
+  RealType stepl;
+  RealType epsilon = 1;
+  while ( this->m_MaxErrorNorm > this->m_MaxErrorToleranceThreshold &&
+          ct < this->m_MaximumNumberOfIterations &&
+          this->m_MeanErrorNorm > m_MeanErrorToleranceThreshold )
     {
-    itkDebugMacro( "Iteration " << iteration << ": mean error norm = " << this->m_MeanErrorNorm
-      << ", max error norm = " << this->m_MaxErrorNorm );
-
-    this->m_MeanErrorNorm = 0.0;
-    this->m_MaxErrorNorm = 0.0;
-
+    this->m_MeanErrorNorm = NumericTraits<RealType>::Zero;
+    //this field says what position the eulerian field should contain in the E domain
     typedef ComposeDisplacementFieldsImageFilter<DisplacementFieldType> ComposerType;
     typename ComposerType::Pointer composer = ComposerType::New();
     composer->SetDisplacementField( displacementField );
     composer->SetWarpingField( inverseDisplacementField );
-
     this->m_ComposedField = composer->GetOutput();
     this->m_ComposedField->Update();
     this->m_ComposedField->DisconnectPipeline();
-
-    /**
-     * Multithread processing to multiply each element of the composed field by 1 / spacing
-     */
-    this->m_DoThreadedEstimateInverse = false;
-    typename ImageSource<TOutputImage>::ThreadStruct str0;
-    str0.Filter = this;
-    this->GetMultiThreader()->SetNumberOfThreads( this->GetNumberOfThreads() );
-    this->GetMultiThreader()->SetSingleMethod( this->ThreaderCallback, &str0 );
-    this->GetMultiThreader()->SingleMethodExecute();
-
-    typedef VectorMagnitudeImageFilter<DisplacementFieldType, RealImageType> NormFilterType;
-    typename NormFilterType::Pointer normFilter = NormFilterType::New();
-    normFilter->SetInput( this->m_ComposedField );
-
-    typedef StatisticsImageFilter<RealImageType> StatisticsType;
-    typename StatisticsType::Pointer statistics = StatisticsType::New();
-    statistics->SetInput( normFilter->GetOutput() );
-    statistics->Update();
-
-    this->m_MeanErrorNorm = statistics->GetMean();
-    this->m_MaxErrorNorm = statistics->GetMaximum();
-
-    this->m_Epsilon = 0.5;
-    if( iteration == 1 )
+    this->m_MaxErrorNorm = NumericTraits<RealType>::Zero;
+    for(  vfIter.GoToBegin(); !vfIter.IsAtEnd(); ++vfIter )
       {
-      this->m_Epsilon = 0.75;
+      IndexType  index = vfIter.GetIndex();
+      VectorType  update = this->m_ComposedField->GetPixel(index);
+      RealType mag = NumericTraits<RealType>::Zero;
+      for ( int j = 0; j < ImageDimension; j++ )
+        {
+        update[j] *= (-1.0);
+        mag += ( update[j]/spacing[j] ) * ( update[j]/spacing[j] );
+        }
+      mag = sqrt( mag );
+      this->m_MeanErrorNorm += mag;
+      if ( mag > this->m_MaxErrorNorm ) this->m_MaxErrorNorm = mag;
+      this->m_ComposedField->SetPixel( index, update );
+      magImage->SetPixel( index ,mag );
       }
+    this->m_MeanErrorNorm /= (RealType) npix;
+    if (ct == 0) epsilon = 0.75;
+    else epsilon = 0.5;
+    stepl = this->m_MaxErrorNorm*epsilon;
+    for(  vfIter.GoToBegin(); !vfIter.IsAtEnd(); ++vfIter )
+      {
+      RealType val = magImage->GetPixel(vfIter.GetIndex() );
+      VectorType update = this->m_ComposedField->GetPixel(vfIter.GetIndex() );
+      if (val > stepl) update = update * ( stepl/val );
+      VectorType upd = vfIter.Get() + update * epsilon;
+      vfIter.Set(upd);
+      }
+    ct++;
+    }//end-while
 
-    /**
-     * Multithread processing to estimate inverse field
-     */
-    this->m_DoThreadedEstimateInverse = true;
-    typename ImageSource<TOutputImage>::ThreadStruct str1;
-    str1.Filter = this;
-    this->GetMultiThreader()->SetNumberOfThreads( this->GetNumberOfThreads() );
-    this->GetMultiThreader()->SetSingleMethod( this->ThreaderCallback, &str1 );
-    this->GetMultiThreader()->SingleMethodExecute();
-    }
+  return;
 }
 
 template<class TInputImage, class TOutputImage>
@@ -160,19 +182,20 @@ InvertDisplacementFieldImageFilter<TInputImage, TOutputImage>
 ::ThreadedGenerateData( const RegionType & region, ThreadIdType itkNotUsed( threadId ) )
 {
   ImageRegionIterator<DisplacementFieldType> ItE( this->m_ComposedField, region );
-
+  typename DisplacementFieldType::SpacingType spacing = this->m_ComposedField->GetSpacing();
   if( this->m_DoThreadedEstimateInverse )
     {
     ImageRegionIterator<DisplacementFieldType> ItI( this->GetOutput(), region );
-
     for( ItI.GoToBegin(), ItE.GoToBegin(); !ItI.IsAtEnd(); ++ItI, ++ItE )
       {
       VectorType update = -ItE.Get();
-      RealType updateNorm = update.GetNorm();
-
-      if( updateNorm > this->m_Epsilon * this->m_MaxErrorNorm / this->m_NormalizationFactor )
+      RealType updateNorm = NumericTraits<RealType>::Zero;
+      for ( unsigned int i = 0; i < ImageDimension; i++ )
+        updateNorm += ( (update[i]/spacing[i])*(update[i]/spacing[i]) );
+      updateNorm = sqrt(updateNorm);
+      if( updateNorm > this->m_Epsilon * this->m_MaxErrorNorm )
         {
-        update *= ( this->m_Epsilon * this->m_MaxErrorNorm / ( updateNorm * this->m_NormalizationFactor ) );
+        update *= ( this->m_Epsilon * this->m_MaxErrorNorm / updateNorm   );
         }
       ItI.Set( ItI.Get() + update * this->m_Epsilon );
       }
