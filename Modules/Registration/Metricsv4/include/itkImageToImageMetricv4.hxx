@@ -60,6 +60,10 @@ ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage >
   this->m_FixedImageGradientFilter         = this->m_DefaultFixedImageGradientFilter;
   this->m_MovingImageGradientFilter        = this->m_DefaultMovingImageGradientFilter;
 
+  /* Interpolators for image gradient filters */
+  this->m_FixedImageGradientInterpolator  = FixedImageGradientInterpolatorType::New();
+  this->m_MovingImageGradientInterpolator = MovingImageGradientInterpolatorType::New();
+
   /* Setup default gradient image function */
   typedef CentralDifferenceImageFunction<FixedImageType,
                                          CoordinateRepresentationType>
@@ -88,6 +92,8 @@ ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage >
   this->m_FloatingPointCorrectionResolution = 1e4;
 
   this->m_HaveMadeGetValueWarning = false;
+
+  this->m_Value = NumericTraits<MeasureType>::max();
 }
 
 template<class TFixedImage,class TMovingImage,class TVirtualImage>
@@ -349,7 +355,6 @@ ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage >
   /* This size always comes from the moving image */
   const NumberOfParametersType globalDerivativeSize =
     this->m_MovingTransform->GetNumberOfParameters();
-  /* NOTE: this does *not* get init'ed to 0 here. */
   if( this->m_DerivativeResult->GetSize() != globalDerivativeSize )
     {
     this->m_DerivativeResult->SetSize( globalDerivativeSize );
@@ -416,7 +421,16 @@ ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage >
     mappedFixedPixelValue = this->m_FixedWarpedImage->GetPixel( index );
     if( computeImageGradient )
       {
-      ComputeFixedImageGradientAtIndex( index, mappedFixedImageGradient );
+      if( this->m_UseFixedSampledPointSet )
+        {
+        /* We assume sampled points will include non-integer points */
+        this->ComputeFixedImageGradientAtPoint( virtualPoint, mappedFixedImageGradient );
+        }
+      else
+        {
+        this->ComputeFixedImageGradientAtIndex( index, mappedFixedImageGradient );
+        }
+      mappedFixedImageGradient=this->GetFixedTransform()->TransformCovariantVector(mappedFixedImageGradient, virtualPoint );
       }
     }
   else
@@ -426,12 +440,6 @@ ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage >
       {
       this->ComputeFixedImageGradientAtPoint( mappedFixedPoint,
                                        mappedFixedImageGradient );
-      //Transform the gradient into the virtual domain. We compute gradient
-      // in the fixed and moving domains and then transform to virtual.
-      mappedFixedImageGradient =
-        this->m_FixedTransform->TransformCovariantVector(
-                                                      mappedFixedImageGradient,
-                                                      mappedFixedPoint );
       }
     }
 
@@ -478,24 +486,26 @@ ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage >
     {
    /* Get the pixel values at this index */
     mappedMovingPixelValue = this->m_MovingWarpedImage->GetPixel( index );
-
     if( computeImageGradient )
       {
-      ComputeMovingImageGradientAtIndex( index, mappedMovingImageGradient );
+      if( this->m_UseFixedSampledPointSet )
+        {
+        /* We assume sampled points will include non-integer points */
+        this->ComputeMovingImageGradientAtPoint( virtualPoint, mappedMovingImageGradient );
+        }
+      else
+        {
+        ComputeMovingImageGradientAtIndex( index, mappedMovingImageGradient );
+        }
+      mappedMovingImageGradient = this->GetMovingTransform()->TransformCovariantVector(mappedMovingImageGradient, virtualPoint );
       }
     }
   else
     {
-    mappedMovingPixelValue =
-                      this->m_MovingInterpolator->Evaluate(mappedMovingPoint);
+    mappedMovingPixelValue = this->m_MovingInterpolator->Evaluate( mappedMovingPoint );
     if( computeImageGradient )
       {
-      this->ComputeMovingImageGradientAtPoint( mappedMovingPoint,
-                                        mappedMovingImageGradient );
-      mappedMovingImageGradient =
-        this->m_MovingTransform->TransformCovariantVector(
-                                                     mappedMovingImageGradient,
-                                                     mappedMovingPoint );
+      this->ComputeMovingImageGradientAtPoint( mappedMovingPoint, mappedMovingImageGradient );
       }
     }
   return pointIsValid;
@@ -509,17 +519,12 @@ ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage >
 {
   if ( this->m_UseFixedImageGradientFilter )
     {
-    ContinuousIndex< double, FixedImageDimension > tempIndex;
-    this->m_FixedImage->TransformPhysicalPointToContinuousIndex(mappedPoint,
-                                                           tempIndex);
-    FixedImageIndexType mappedIndex;
-    mappedIndex.CopyWithRound(tempIndex);
-    gradient = this->m_FixedImageGradientImage->GetPixel(mappedIndex);
+    gradient = m_FixedImageGradientInterpolator->Evaluate( mappedPoint );
     }
   else
     {
     // if not using the gradient image
-    gradient = this->m_FixedImageGradientCalculator->Evaluate(mappedPoint);
+    gradient = this->m_FixedImageGradientCalculator->Evaluate( mappedPoint );
     }
 }
 
@@ -532,12 +537,7 @@ ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage >
 {
   if ( this->m_UseMovingImageGradientFilter )
     {
-    ContinuousIndex< double, MovingImageDimension > tempIndex;
-    this->m_MovingImage->TransformPhysicalPointToContinuousIndex(mappedPoint,
-                                                           tempIndex);
-    MovingImageIndexType mappedIndex;
-    mappedIndex.CopyWithRound(tempIndex);
-    gradient = this->m_MovingImageGradientImage->GetPixel(mappedIndex);
+    gradient = m_MovingImageGradientInterpolator->Evaluate( mappedPoint );
     }
   else
     {
@@ -645,6 +645,7 @@ ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage >
   this->m_FixedImageGradientFilter->SetInput( image );
   this->m_FixedImageGradientFilter->Update();
   this->m_FixedImageGradientImage = this->m_FixedImageGradientFilter->GetOutput();
+  this->m_FixedImageGradientInterpolator->SetInputImage( this->m_FixedImageGradientImage );
 }
 
 template<class TFixedImage,class TMovingImage,class TVirtualImage>
@@ -665,6 +666,7 @@ ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage >
   this->m_MovingImageGradientFilter->SetInput( image );
   this->m_MovingImageGradientFilter->Update();
   this->m_MovingImageGradientImage = this->m_MovingImageGradientFilter->GetOutput();
+  this->m_MovingImageGradientInterpolator->SetInputImage( this->m_MovingImageGradientImage );
 }
 
 template<class TFixedImage,class TMovingImage,class TVirtualImage>
@@ -996,6 +998,15 @@ ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage >
 }
 
 template<class TFixedImage,class TMovingImage,class TVirtualImage>
+typename
+ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage >::MeasureType
+ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage >
+::GetCurrentValue()
+{
+  return m_Value;
+}
+
+template<class TFixedImage,class TMovingImage,class TVirtualImage>
 void
 ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage >
 ::VerifyDisplacementFieldSizeAndPhysicalSpace()
@@ -1095,6 +1106,23 @@ ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage >
                         << originString.str() << spacingString.str()
                         << directionString.str() );
       }
+}
+
+template<class TFixedImage,class TMovingImage,class TVirtualImage>
+bool
+ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage >
+::VerifyNumberOfValidPoints( MeasureType & value, DerivativeType & derivative) const
+{
+  if( this->m_NumberOfValidPoints == 0 )
+    {
+    value = NumericTraits<MeasureType>::max();
+    derivative.Fill( NumericTraits<DerivativeValueType>::Zero );
+    itkWarningMacro("No valid points were found during metric evaluation. "
+                    "Verify that the images overlap appropriately. "
+                    "For instance, you can align the image centers by translation.");
+    return false;
+    }
+  return true;
 }
 
 template<class TFixedImage,class TMovingImage,class TVirtualImage>

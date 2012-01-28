@@ -7,11 +7,14 @@ set(ITKMetricsv4Tests
   itkJointHistogramMutualInformationImageToImageMetricv4Test.cxx
   itkJointHistogramMutualInformationImageToImageRegistrationTest.cxx
   itkDemonsImageToImageMetricv4Test.cxx
+  itkCorrelationImageToImageMetricv4Test.cxx
   itkANTSNeighborhoodCorrelationImageToImageMetricv4Test.cxx
   itkANTSNeighborhoodCorrelationImageToImageRegistrationTest.cxx
   itkAffineDemonsImageToImageRegistrationTest.cxx
   itkMattesMutualInformationImageToImageMetricv4Test.cxx
   itkMattesMutualInformationImageToImageMetricv4RegistrationTest.cxx
+  itkMultiStartImageToImageMetricv4RegistrationTest.cxx
+  itkMultiGradientImageToImageMetricv4RegistrationTest.cxx
 )
 
 set(INPUTDATA ${ITK_DATA_ROOT}/Input)
@@ -57,6 +60,11 @@ itk_add_test(NAME itkDemonsImageToImageMetricv4Test
       COMMAND ITKMetricsv4TestDriver
       itkDemonsImageToImageMetricv4Test)
 
+itk_add_test(NAME itkCorrelationImageToImageMetricv4Test
+      COMMAND ITKMetricsv4TestDriver
+      itkCorrelationImageToImageMetricv4Test)
+
+
 itk_add_test(NAME itkANTSNeighborhoodCorrelationImageToImageMetricv4Test
       COMMAND ITKMetricsv4TestDriver
               itkANTSNeighborhoodCorrelationImageToImageMetricv4Test)
@@ -92,3 +100,19 @@ itk_add_test(NAME itkMattesMutualInformationImageToImageMetricv4RegistrationTest
               DATA{Input/face_b.jpg}
               ${TEMP}/itkMattesMutualInformationImageToImageMetricv4RegistrationTest.nii.gz
               5 0 )
+
+itk_add_test(NAME itkMultiStartImageToImageMetricv4RegistrationTest
+      COMMAND ITKMetricsv4TestDriver
+              itkMultiStartImageToImageMetricv4RegistrationTest
+              DATA{Baseline/face_avg.jpg}
+              DATA{Input/face_b.jpg}
+              ${TEMP}/itkMultiStartImageToImageMetricv4RegistrationTest.nii.gz
+              5 1 )
+
+itk_add_test(NAME itkMultiGradientImageToImageMetricv4RegistrationTest
+      COMMAND ITKMetricsv4TestDriver
+              itkMultiGradientImageToImageMetricv4RegistrationTest
+              DATA{Baseline/face_avg.jpg}
+              DATA{Input/face_b.jpg}
+              ${TEMP}/itkMultiGradientImageToImageMetricv4RegistrationTest.nii.gz
+              5  )

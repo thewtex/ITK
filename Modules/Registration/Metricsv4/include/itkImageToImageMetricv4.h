@@ -491,7 +491,9 @@ public:
   itkSetConstObjectMacro(FixedImageMask, FixedImageMaskType);
   itkGetConstObjectMacro(FixedImageMask, FixedImageMaskType);
 
-  /** Set/Get the fixed image domain sampling point set */
+  /** Set/Get the fixed image domain sampling point set
+   * See main documentation regarding using fixed vs virtual domain
+   * for the point set. */
   itkSetObjectMacro(FixedSampledPointSet, FixedSampledPointSetType);
   itkSetConstObjectMacro(FixedSampledPointSet, FixedSampledPointSetType);
   itkGetConstObjectMacro(FixedSampledPointSet, FixedSampledPointSetType);
@@ -630,17 +632,23 @@ public:
   virtual void GetValueAndDerivative( MeasureType & value,
                                       DerivativeType & derivative ) const;
 
-  /* Get the number of sampled fixed sampled points that are
-   * deemed invalid during conversion to virtual domain in Initialize.
+  /** Get the number of sampled fixed sampled points that are
+   * deemed invalid during conversion to virtual domain in Initialize().
    * For informational purposes. */
   itkGetConstReferenceMacro(NumberOfSkippedFixedSampledPoints, SizeValueType);
 
+  /** Get the current metric value stored in m_Value. This is only
+   * meaningful after a call to GetValue() or GetValueAndDerivative() */
+  MeasureType GetCurrentValue();
+
 protected:
-  /** Perform any initialization required before each evaluation of
-   * \c GetValueAndDerivative. This is distinct from Initialize, which
-   * is called only once before a number of iterations, e.g. before
-   * a registration loop. */
-  virtual void InitializeForIteration() const;
+  /* Interpolators for image gradient filters. */
+  typedef LinearInterpolateImageFunction< FixedImageGradientImageType,
+                                          CoordinateRepresentationType >
+                                                  FixedImageGradientInterpolatorType;
+  typedef LinearInterpolateImageFunction< MovingImageGradientImageType,
+                                          CoordinateRepresentationType >
+                                                  MovingImageGradientInterpolatorType;
 
   friend class ImageToImageMetricv4GetValueAndDerivativeThreaderBase< ThreadedImageRegionPartitioner< VirtualImageDimension >, Self >;
   friend class ImageToImageMetricv4GetValueAndDerivativeThreaderBase< ThreadedIndexedContainerPartitioner, Self >;
@@ -655,6 +663,12 @@ protected:
    * Derived classes must define this class and assign it in their constructor
    * if threaded processing in GetValueAndDerivative is performed. */
   typename ImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedIndexedContainerPartitioner, Self >::Pointer m_SparseGetValueAndDerivativeThreader;
+
+  /** Perform any initialization required before each evaluation of
+   * \c GetValueAndDerivative. This is distinct from Initialize, which
+   * is called only once before a number of iterations, e.g. before
+   * a registration loop. */
+  virtual void InitializeForIteration() const;
 
   /**
    * Transform a point from VirtualImage domain to FixedImage domain.
@@ -743,8 +757,10 @@ protected:
   VirtualImagePointer     m_VirtualDomainImage;
 
   /** Pointers to interpolators */
-  FixedInterpolatorPointer                        m_FixedInterpolator;
-  MovingInterpolatorPointer                       m_MovingInterpolator;
+  FixedInterpolatorPointer                                m_FixedInterpolator;
+  MovingInterpolatorPointer                               m_MovingInterpolator;
+  typename FixedImageGradientInterpolatorType::Pointer    m_FixedImageGradientInterpolator;
+  typename MovingImageGradientInterpolatorType::Pointer   m_MovingImageGradientInterpolator;
 
   /** Flag to control use of precomputed gradient filter image or gradient
    * calculator for image gradient calculations. */
@@ -817,9 +833,17 @@ protected:
 
   void PrintSelf(std::ostream& os, Indent indent) const;
 
-  /* Verify that virtual domain and displacement field are the same size
+  /** Verify that virtual domain and displacement field are the same size
    * and in the same physical space. */
   virtual void VerifyDisplacementFieldSizeAndPhysicalSpace();
+
+  /** Check that the number of valid points is above a default
+   * minimum (zero). If not, then return false, and assign to 'value' a value
+   * indicating insufficient valid points were found during evaluation, and set
+   * the derivative to zero. A warning is also output.
+   * This functionality is provided as a separate method so derived classes
+   * can use it without hardcoding the details. */
+  bool VerifyNumberOfValidPoints( MeasureType & value, DerivativeType & derivative ) const;
 
 private:
   /** Map the fixed point set samples to the virtual domain */
