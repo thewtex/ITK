@@ -18,7 +18,7 @@ itk_add_test(NAME
   COMMAND ITKVideoBridgeOpenCVTestDriver
     itkOpenCVVideoCaptureTest
       # Video Input:
-      DATA{Input/inde-circulation_short.avi}
+      DATA{Input/inde-circulation.avi}
       # Scalar Output:
       ${ITK_TEST_OUTPUT_DIR}/OpenCVVideoCaptureTest_ScalarOut.avi
       # RGB Output:
@@ -48,7 +48,7 @@ itk_add_test(
   COMMAND ITKVideoBridgeOpenCVTestDriver
     itkOpenCVVideoIOTest
       # Video Input:
-      DATA{Input/inde-circulation_short.avi}
+      DATA{Input/inde-circulation.avi}
       # Non-Video Input:
       foo.txt
       # Output:
@@ -56,7 +56,7 @@ itk_add_test(
       # Webcam Output:
       ${ITK_TEST_OUTPUT_DIR}/OpenCVVideoIOTest_CameraOut.mha
       # Width Height NumFrames FpS
-      320 240 30 14.985
+      320 240 1396 14.985
     )
 
 # OpenCVVideoIOFactory:
