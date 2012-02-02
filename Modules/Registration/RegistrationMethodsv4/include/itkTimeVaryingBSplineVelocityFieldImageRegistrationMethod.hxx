@@ -343,7 +343,7 @@ TimeVaryingBSplineVelocityFieldImageRegistrationMethod<TFixedImage, TMovingImage
       typename WeightsContainerType::Element weight = 1.0;
 
       bool isOnBoundary = false;
-      for( unsigned int d = 0; d < ImageDimension + 1; d++ )
+      for( unsigned int d = 0; d < ImageDimension; d++ )
         {
         if( index[d] == virtualDomainIndex[d] || index[d] == virtualDomainIndex[d] + static_cast<int>( virtualDomainSize[d] ) - 1 )
           {
@@ -361,7 +361,7 @@ TimeVaryingBSplineVelocityFieldImageRegistrationMethod<TFixedImage, TMovingImage
       velocityFieldImporter->GetOutput()->TransformIndexToPhysicalPoint( index, point );
 
       typename PointSetType::PointType spatioTemporalPoint;
-      for( unsigned int d = 0; d < ImageDimension + 1; d++ )
+      for( unsigned int d = 0; d < ImageDimension1; d++ )
         {
         spatioTemporalPoint[d] = point[d];
         }
