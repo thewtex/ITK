@@ -31,7 +31,6 @@
 #include "itkBSplineInterpolateImageFunction.h"
 
 
-
   typedef double InputPixelType;
   typedef double CoordRepType;
 
@@ -94,7 +93,6 @@ void set3DInterpData(typename TImage::Pointer imgPtr)
   imgPtr->SetLargestPossibleRegion( region );
   imgPtr->SetBufferedRegion( region );
   imgPtr->Allocate();
-
 
   /* Set origin and spacing of physical coordinates */
 
@@ -242,7 +240,6 @@ double * trueValue )
 
 }
 
-
 // Run a series of tests to validate the 1D
 // cubic spline implementation.
 int test1DCubicSpline()
@@ -300,7 +297,6 @@ int test1DCubicSpline()
 
   return (flag);
 }
-
 
 int test2DSpline()
 {
@@ -560,11 +556,11 @@ int testInteger3DSpline()
         { 73.280126903, 73.280816965, 73.282780615, 73.285315943},
         { 42.0, 42.0, 42.0, 42.0},
         {0,0,0,0}};
-    bool b_Inside[NPOINTS3] = {true, true, true, false};
+    bool b_Inside[NPOINTS5] = {true, true, true, false};
    // double darray1[2];
 
     // an integer position inside the image
-    for (int ii=0; ii < NPOINTS3; ii++)
+    for (int ii=0; ii < NPOINTS5; ii++)
       {
      // darray1[0] = darray[ii][0];
      // darray1[1] = darray[ii][1];
@@ -601,7 +597,6 @@ itkBSplineInterpolateImageFunctionTest(
   flag += test3DSplineDerivative();
 
   flag += testInteger3DSpline();
-
 
   /* Return results of test */
   if (flag != 0) {
@@ -641,7 +636,6 @@ void set1DInterpData(ImageType1D::Pointer imgPtr)
     ++j;
     }
 
-
 }
 
 void set2DInterpData(ImageType2D::Pointer imgPtr)
@@ -677,9 +671,7 @@ void set2DInterpData(ImageType2D::Pointer imgPtr)
     ++j;
     }
 
-
 }
-
 
 void set3DDerivativeData(ImageType3D::Pointer imgPtr)
 {
@@ -692,7 +684,6 @@ void set3DDerivativeData(ImageType3D::Pointer imgPtr)
   imgPtr->SetLargestPossibleRegion( region );
   imgPtr->SetBufferedRegion( region );
   imgPtr->Allocate();
-
 
   /* Set origin and spacing of physical coordinates */
 
