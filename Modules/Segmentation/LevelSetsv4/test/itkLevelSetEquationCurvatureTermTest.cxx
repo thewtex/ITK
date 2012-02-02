@@ -161,7 +161,32 @@ int itkLevelSetEquationCurvatureTermTest( int argc, char* argv[] )
 
   index[0] = 10;
   index[1] = 20;
-  if( vnl_math_abs( term->Evaluate( index ) ) >  5e-2 )
+
+  CurvatureTermType::LevelSetOutputRealType value = term->Evaluate( index );
+  if( vnl_math_abs( value ) >  5e-2 )
+    {
+    return EXIT_FAILURE;
+    }
+
+  term->SetCurvatureImage( binary );
+
+  if( term->GetCurvatureImage() != binary )
+    {
+    std::cerr << "term->GetCurvatureImage != binary" << std::endl;
+    return EXIT_FAILURE;
+    }
+
+  term->InitializeParameters();
+  term->Update();
+
+  if( term->Evaluate( index ) != value * binary->GetPixel( index ) )
+    {
+    return EXIT_FAILURE;
+    }
+
+  term->SetUseCurvatureImage( false );
+
+  if( term->Evaluate( index ) != value )
     {
     return EXIT_FAILURE;
     }
