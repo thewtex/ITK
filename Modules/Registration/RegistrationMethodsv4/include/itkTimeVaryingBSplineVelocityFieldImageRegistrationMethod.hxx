@@ -361,7 +361,7 @@ TimeVaryingBSplineVelocityFieldImageRegistrationMethod<TFixedImage, TMovingImage
       velocityFieldImporter->GetOutput()->TransformIndexToPhysicalPoint( index, point );
 
       typename PointSetType::PointType spatioTemporalPoint;
-      for( unsigned int d = 0; d < ImageDimension1; d++ )
+      for( unsigned int d = 0; d < ImageDimension + 1; d++ )
         {
         spatioTemporalPoint[d] = point[d];
         }
