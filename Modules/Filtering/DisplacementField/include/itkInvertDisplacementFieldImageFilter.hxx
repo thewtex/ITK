@@ -154,10 +154,11 @@ void
 InvertDisplacementFieldImageFilter<TInputImage, TOutputImage>
 ::ThreadedGenerateData( const RegionType & region, ThreadIdType itkNotUsed( threadId ) )
 {
-  const typename DisplacementFieldType::RegionType fullregion = this->m_ComposedField->GetRequestedRegion();
-  const typename DisplacementFieldType::SizeType size = fullregion.GetSize();
-  const typename DisplacementFieldType::IndexType startIndex = fullregion.GetIndex();
+  const typename DisplacementFieldType::RegionType fullRegion = this->m_ComposedField->GetRequestedRegion();
+  const typename DisplacementFieldType::SizeType size = fullRegion.GetSize();
+  const typename DisplacementFieldType::IndexType startIndex = fullRegion.GetIndex();
   const typename DisplacementFieldType::PixelType zeroVector( 0.0 );
+
   ImageRegionIterator<DisplacementFieldType> ItE( this->m_ComposedField, region );
   ImageRegionIterator<RealImageType> ItS( this->m_ScaledNormImage, region );
 
@@ -177,11 +178,11 @@ InvertDisplacementFieldImageFilter<TInputImage, TOutputImage>
       update = ItI.Get() + update * this->m_Epsilon;
       ItI.Set( update );
       typename DisplacementFieldType::IndexType index = ItI.GetIndex();
-      if ( this->m_EnforceBoundaryCondition )
+      if( this->m_EnforceBoundaryCondition )
         {
-        for ( unsigned int dimension = 0; dimension < ImageDimension; ++dimension )
+        for( unsigned int d = 0; d < ImageDimension; d++ )
           {
-          if ( index[dimension] == startIndex[dimension] || index[dimension] == static_cast<IndexValueType>( size[dimension] ) - startIndex[dimension] - 1 )
+          if( index[d] == startIndex[d] || index[d] == static_cast<IndexValueType>( size[d] ) - startIndex[d] - 1 )
             {
             ItI.Set( zeroVector );
             break;
