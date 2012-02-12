@@ -84,34 +84,37 @@ void
 ComposeDisplacementFieldsImageFilter<InputImage, TOutputImage>
 ::ThreadedGenerateData( const RegionType & region, ThreadIdType itkNotUsed( threadId ) )
 {
-  VectorType zeroVector( 0.0 );
-
   typename OutputFieldType::Pointer output = this->GetOutput();
+  typename InputFieldType::ConstPointer warpingField = this->GetWarpingField();
 
-  ImageRegionConstIterator<InputFieldType> ItW( this->GetWarpingField(), region );
-  ImageRegionIteratorWithIndex<OutputFieldType> ItF( output, region );
+  ImageRegionConstIteratorWithIndex<InputFieldType> ItW( warpingField, region );
+  ImageRegionIterator<OutputFieldType> ItF( output, region );
+
+  PointType pointIn1;
+  PointType pointIn2;
+  PointType pointIn3;
+
+  typename OutputFieldType::PixelType outDisplacement;
 
   for( ItW.GoToBegin(), ItF.GoToBegin(); !ItW.IsAtEnd(); ++ItW, ++ItF )
     {
-    PointType point1;
-    output->TransformIndexToPhysicalPoint( ItF.GetIndex(), point1 );
+    warpingField->TransformIndexToPhysicalPoint( ItW.GetIndex(), pointIn1 );
+    pointIn2 = pointIn1 + ItW.Get();
 
-    typename InputFieldType::PixelType tmpDisplacement = ItW.Get();
-    PointType point2 = point1;
+    typename InterpolatorType::OutputType displacement( 0.0 );
+    if( this->m_Interpolator->IsInsideBuffer( pointIn2 ) )
+      {
+      displacement = this->m_Interpolator->Evaluate( pointIn2 );
+      }
+
     for( unsigned int d = 0; d < ImageDimension; d++ )
       {
-      point2[d] += tmpDisplacement[d];
+      pointIn3[d] = pointIn2[d] + displacement[d];
       }
 
-    typename InterpolatorType::OutputType displacement;
-    typename OutputFieldType::PixelType outDisplacement;
+    outDisplacement = pointIn3 - pointIn1;
 
-    if( this->m_Interpolator->IsInsideBuffer( point2 ) )
-      {
-      displacement = this->m_Interpolator->Evaluate( point2 );
-      outDisplacement = ( point2 + displacement ) - point1;
-      ItF.Set( outDisplacement );
-      }
+    ItF.Set( outDisplacement );
     }
 }
 
