@@ -20,6 +20,7 @@
 
 #include "itkAffineTransform.h"
 #include "itkCompositeTransform.h"
+#include "itkIdentityTransform.h"
 
 namespace
 {
@@ -778,6 +779,68 @@ int itkCompositeTransformTest(int, char *[] )
                 << " result: " << updateResult << std::endl;
       return EXIT_FAILURE;
       }
+    }
+
+
+  /*
+   * Test flattening transform queue in the case of nested composite
+   * transforms
+   */
+
+  CompositeType::Pointer nestedCompositeTransform = CompositeType::New();
+  CompositeType::Pointer compositeTransform1 = CompositeType::New();
+  CompositeType::Pointer compositeTransform2 = CompositeType::New();
+  CompositeType::Pointer compositeTransform3 = CompositeType::New();
+  CompositeType::Pointer compositeTransform4 = CompositeType::New();
+
+  typedef itk::IdentityTransform<double, NDimensions> IdentityTransformType;
+  IdentityTransformType::Pointer identityTransformA = IdentityTransformType::New();
+  IdentityTransformType::Pointer identityTransformB = IdentityTransformType::New();
+  IdentityTransformType::Pointer identityTransformC = IdentityTransformType::New();
+  IdentityTransformType::Pointer identityTransformD = IdentityTransformType::New();
+  IdentityTransformType::Pointer identityTransformE = IdentityTransformType::New();
+  IdentityTransformType::Pointer identityTransformF = IdentityTransformType::New();
+  IdentityTransformType::Pointer identityTransformG = IdentityTransformType::New();
+  IdentityTransformType::Pointer identityTransformH = IdentityTransformType::New();
+  IdentityTransformType::Pointer identityTransformI = IdentityTransformType::New();
+  IdentityTransformType::Pointer identityTransformJ = IdentityTransformType::New();
+  IdentityTransformType::Pointer identityTransformK = IdentityTransformType::New();
+  IdentityTransformType::Pointer identityTransformL = IdentityTransformType::New();
+
+  compositeTransform1->AddTransform( identityTransformA );
+  compositeTransform1->AddTransform( identityTransformB );
+  compositeTransform1->AddTransform( identityTransformC );
+
+  compositeTransform2->AddTransform( identityTransformD );
+  compositeTransform2->AddTransform( identityTransformE );
+
+  compositeTransform3->AddTransform( identityTransformF );
+  compositeTransform3->AddTransform( identityTransformG );
+
+  compositeTransform4->AddTransform( identityTransformH );
+  compositeTransform4->AddTransform( identityTransformI );
+  compositeTransform4->AddTransform( identityTransformJ );
+  compositeTransform4->AddTransform( compositeTransform3 );
+
+  nestedCompositeTransform->AddTransform( compositeTransform1 );
+  nestedCompositeTransform->AddTransform( identityTransformK );
+  nestedCompositeTransform->AddTransform( compositeTransform2 );
+  nestedCompositeTransform->AddTransform( compositeTransform4 );
+  nestedCompositeTransform->AddTransform( identityTransformL );
+
+  std::cout << "Number of transforms before flattening = " << nestedCompositeTransform->GetNumberOfTransforms() << std::endl;
+  if( nestedCompositeTransform->GetNumberOfTransforms() != 5 )
+    {
+    std::cerr << "Error.  Should be 5." << std::endl;
+    return EXIT_FAILURE;
+    }
+
+  nestedCompositeTransform->FlattenTransformQueue();
+  std::cout << "Number of transforms after flattening = " << nestedCompositeTransform->GetNumberOfTransforms() << std::endl;
+  if( nestedCompositeTransform->GetNumberOfTransforms() != 12 )
+    {
+    std::cerr << "Error.  Should be 12." << std::endl;
+    return EXIT_FAILURE;
     }
 
   /* Add a displacement field transform */
