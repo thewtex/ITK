@@ -204,6 +204,12 @@ public:
     return this->m_TransformQueue[n];
   }
 
+  /** Get a raw pointer for efficiency in tight loops */
+  TransformType * GetNthTransformRaw( size_t n ) const
+  {
+    return this->m_TransformQueue[n].GetPointer();
+  }
+
   /** Active Transform state manipulation */
 
   void SetNthTransformToOptimize( size_t i, bool state )
