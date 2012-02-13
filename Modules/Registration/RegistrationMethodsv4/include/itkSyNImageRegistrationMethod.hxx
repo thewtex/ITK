@@ -25,6 +25,7 @@
 #include "itkImportImageFilter.h"
 #include "itkInvertDisplacementFieldImageFilter.h"
 #include "itkIterationReporter.h"
+#include "itkMultiplyImageFilter.h"
 #include "itkVectorNeighborhoodOperatorImageFilter.h"
 #include "itkWindowConvergenceMonitoringFunction.h"
 
@@ -35,8 +36,8 @@ namespace itk
 /**
  * Constructor
  */
-template<typename TFixedImage, typename TMovingImage, typename TTransform>
-SyNImageRegistrationMethod<TFixedImage, TMovingImage, TTransform>
+template<typename TFixedImage, typename TMovingImage, typename TOutputTransform>
+SyNImageRegistrationMethod<TFixedImage, TMovingImage, TOutputTransform>
 ::SyNImageRegistrationMethod() :
   m_LearningRate( 0.25 ),
   m_GaussianSmoothingVarianceForTheUpdateField( 3.0 ),
@@ -49,19 +50,19 @@ SyNImageRegistrationMethod<TFixedImage, TMovingImage, TTransform>
   this->m_NumberOfIterationsPerLevel[2] = 40;
   this->m_DownsampleImagesForMetricDerivatives = true;
   this->m_AverageMidPointGradients = false;
-  this->m_MiddleToFixedTransform = TransformType::New();
-  this->m_MiddleToMovingTransform = TransformType::New();
+  this->m_MiddleToFixedTransform = OutputTransformType::New();
+  this->m_MiddleToMovingTransform = OutputTransformType::New();
 }
 
-template<typename TFixedImage, typename TMovingImage, typename TTransform>
-SyNImageRegistrationMethod<TFixedImage, TMovingImage, TTransform>
+template<typename TFixedImage, typename TMovingImage, typename TOutputTransform>
+SyNImageRegistrationMethod<TFixedImage, TMovingImage, TOutputTransform>
 ::~SyNImageRegistrationMethod()
 {
 }
 
-template<typename TFixedImage, typename TMovingImage, typename TTransform>
+template<typename TFixedImage, typename TMovingImage, typename TOutputTransform>
 void
-SyNImageRegistrationMethod<TFixedImage, TMovingImage, TTransform>
+SyNImageRegistrationMethod<TFixedImage, TMovingImage, TOutputTransform>
 ::InitializeRegistrationAtEachLevel( const SizeValueType level )
 {
   Superclass::InitializeRegistrationAtEachLevel( level );
@@ -114,26 +115,26 @@ SyNImageRegistrationMethod<TFixedImage, TMovingImage, TTransform>
 /*
  * Start the optimization at each level.  We just do a basic gradient descent operation.
  */
-template<typename TFixedImage, typename TMovingImage, typename TTransform>
+template<typename TFixedImage, typename TMovingImage, typename TOutputTransform>
 void
-SyNImageRegistrationMethod<TFixedImage, TMovingImage, TTransform>
+SyNImageRegistrationMethod<TFixedImage, TMovingImage, TOutputTransform>
 ::StartOptimization()
 {
   typedef DisplacementFieldTransform<RealType, ImageDimension> DisplacementFieldTransformType;
   const DisplacementVectorType zeroVector( 0.0 );
-  typedef IdentityTransform<RealType, ImageDimension> IdentityTransformType;
   typedef ImageDuplicator<DisplacementFieldType> DisplacementFieldDuplicatorType;
   typename VirtualImageType::ConstPointer virtualDomainImage = this->m_Metric->GetVirtualDomainImage();
-  // Warp the moving image based on the composite transform (not including the current
-  // transform to be optimized).
+
   // Monitor the convergence
   typedef itk::Function::WindowConvergenceMonitoringFunction<double> ConvergenceMonitoringType;
   ConvergenceMonitoringType::Pointer convergenceMonitoring = ConvergenceMonitoringType::New();
   convergenceMonitoring->SetWindowSize( 15 );
-  this->SetConvergenceThreshold( 0 );
+
+  typedef IdentityTransform<RealType, ImageDimension> IdentityTransformType;
   typename IdentityTransformType::Pointer identityTransform;
   identityTransform = IdentityTransformType::New();
-  typename DisplacementFieldTransformType::Pointer identityDispTransform;
+
+  typename DisplacementFieldTransformType::Pointer identityDisplacementFieldTransform;
   SizeValueType iteration = 0;
   bool isConverged = false;
   MeasureType value;
@@ -142,16 +143,25 @@ SyNImageRegistrationMethod<TFixedImage, TMovingImage, TTransform>
     {
     std::cout << "    Iteration " << iteration << std::flush;
     // Compute the update fields (to both moving and fixed images) and smooth
+
     typename CompositeTransformType::Pointer fixedComposite = CompositeTransformType::New();
-    typename CompositeTransformType::Pointer movingComposite = CompositeTransformType::New();
     //    fixedComposite->AddTransform( this->GetFixedTransform() );//FIXME need fixed composite transform
     fixedComposite->AddTransform( this->m_MiddleToFixedTransform->GetInverseTransform() );
     fixedComposite->SetOnlyMostRecentTransformToOptimizeOn();
+
+    typename CompositeTransformType::Pointer movingComposite = CompositeTransformType::New();
     //    movingComposite->AddTransform( this->GetMovingTransform() );//FIXME need fixed composite transform
-    if ( !this->m_DownsampleImagesForMetricDerivatives ) movingComposite->AddTransform( this->m_CompositeTransform->GetBackTransform() );//FIXME should be moving composite transform
-    else movingComposite->AddTransform( this->m_CompositeTransform );//FIXME should be moving composite transform
+    if( !this->m_DownsampleImagesForMetricDerivatives )
+      {
+      movingComposite->AddTransform( this->m_CompositeTransform->GetBackTransform() );//FIXME should be moving composite transform
+      }
+    else
+      {
+      movingComposite->AddTransform( this->m_CompositeTransform );//FIXME should be moving composite transform
+      }
     movingComposite->AddTransform( this->m_MiddleToMovingTransform->GetInverseTransform() );
     movingComposite->SetOnlyMostRecentTransformToOptimizeOn();
+
     DisplacementFieldPointer middleToFixedUpdateField;
     DisplacementFieldPointer middleToMovingUpdateField;
     if ( this->m_DownsampleImagesForMetricDerivatives )
@@ -178,28 +188,24 @@ SyNImageRegistrationMethod<TFixedImage, TMovingImage, TTransform>
       fixedResampler->SetDefaultPixelValue( 0 );
       fixedResampler->Update();
 
-      identityDispTransform = DisplacementFieldTransformType::New();
+      identityDisplacementFieldTransform = DisplacementFieldTransformType::New();
       typename DisplacementFieldDuplicatorType::Pointer fieldDuplicator = DisplacementFieldDuplicatorType::New();
       fieldDuplicator->SetInputImage( this->m_MiddleToMovingTransform->GetDisplacementField() );
       fieldDuplicator->Update();
       fieldDuplicator->GetOutput()->FillBuffer(zeroVector);
-      identityDispTransform->SetDisplacementField( fieldDuplicator->GetOutput() );
+      identityDisplacementFieldTransform->SetDisplacementField( fieldDuplicator->GetOutput() );
 
-      middleToFixedUpdateField = this->ComputeUpdateField(
-        fixedResampler->GetOutput() , identityTransform ,
-        movingResampler->GetOutput(), identityDispTransform  , value );
-      middleToMovingUpdateField = this->ComputeUpdateField(
-        movingResampler->GetOutput() , identityTransform  ,
-        fixedResampler->GetOutput(),   identityDispTransform  ,   value2 );
+      middleToFixedUpdateField = this->ComputeUpdateField( fixedResampler->GetOutput(), identityTransform,
+        movingResampler->GetOutput(), identityDisplacementFieldTransform, value );
+      middleToMovingUpdateField = this->ComputeUpdateField( movingResampler->GetOutput(), identityTransform,
+        fixedResampler->GetOutput(), identityDisplacementFieldTransform, value2 );
       }
     else
       {
-      middleToFixedUpdateField = this->ComputeUpdateField(
-        this->m_FixedSmoothImage, fixedComposite ,
-        this->m_MovingSmoothImage, movingComposite , value );
-      middleToMovingUpdateField = this->ComputeUpdateField(
-        this->m_MovingSmoothImage, movingComposite,
-        this->m_FixedSmoothImage, fixedComposite , value2);
+      middleToFixedUpdateField = this->ComputeUpdateField( this->m_FixedSmoothImage, fixedComposite,
+        this->m_MovingSmoothImage, movingComposite, value );
+      middleToMovingUpdateField = this->ComputeUpdateField( this->m_MovingSmoothImage, movingComposite,
+        this->m_FixedSmoothImage, fixedComposite, value2 );
       }
     if ( this->m_AverageMidPointGradients )
       {
@@ -210,7 +216,7 @@ SyNImageRegistrationMethod<TFixedImage, TMovingImage, TTransform>
         middleToMovingUpdateField->SetPixel( ItF.GetIndex(), ItF.Get()*(-1) );
         }
       }
-    value=(value+value2)*0.5;
+    value = ( value + value2 ) * 0.5;
     DisplacementFieldPointer  middleToFixedSmoothUpdateField = this->GaussianSmoothDisplacementField( middleToFixedUpdateField, this->m_GaussianSmoothingVarianceForTheUpdateField );
     DisplacementFieldPointer middleToMovingSmoothUpdateField = this->GaussianSmoothDisplacementField( middleToMovingUpdateField, this->m_GaussianSmoothingVarianceForTheUpdateField );
 
@@ -281,10 +287,10 @@ SyNImageRegistrationMethod<TFixedImage, TMovingImage, TTransform>
     }
 }
 
-template<typename TFixedImage, typename TMovingImage, typename TTransform>
-typename SyNImageRegistrationMethod<TFixedImage, TMovingImage, TTransform>::DisplacementFieldPointer
-SyNImageRegistrationMethod<TFixedImage, TMovingImage, TTransform>
-::ComputeUpdateField( const FixedImageType * fixedImage, const TransformBaseType * fixedTransform, const MovingImageType * movingImage, const TransformBaseType * movingTransform , MeasureType & value )
+template<typename TFixedImage, typename TMovingImage, typename TOutputTransform>
+typename SyNImageRegistrationMethod<TFixedImage, TMovingImage, TOutputTransform>::DisplacementFieldPointer
+SyNImageRegistrationMethod<TFixedImage, TMovingImage, TOutputTransform>
+::ComputeUpdateField( const FixedImageType * fixedImage, const TransformBaseType * fixedTransform, const MovingImageType * movingImage, const TransformBaseType * movingTransform, MeasureType & value )
 {
   typename VirtualImageType::ConstPointer virtualDomainImage = this->m_Metric->GetVirtualDomainImage();
 
@@ -333,31 +339,44 @@ SyNImageRegistrationMethod<TFixedImage, TMovingImage, TTransform>
   DisplacementFieldPointer updateField = duplicator->GetOutput();
   updateField->DisconnectPipeline();
 
-  typename DisplacementFieldType::SpacingType spacing=importer->GetOutput()->GetSpacing();
+  typename DisplacementFieldType::SpacingType spacing = importer->GetOutput()->GetSpacing();
   ImageRegionIteratorWithIndex<DisplacementFieldType> ItF( updateField, updateField->GetLargestPossibleRegion() );
-  RealType maxnorm = (-1.e9);
+
+  RealType maxNorm = NumericTraits<RealType>::NonpositiveMin();
   for( ItF.GoToBegin(); !ItF.IsAtEnd(); ++ItF )
     {
-    RealType localnorm = 0;
-    for (unsigned int i=0; i<ImageDimension; i++)
+    DisplacementVectorType vector = ItF.Get();
+
+    RealType localNorm = 0;
+    for( unsigned int i = 0; i < ImageDimension; i++ )
       {
-      RealType temp=ItF.Get()[i]/spacing[i];
-      localnorm+=(temp*temp);
+      RealType temp = vector[i] / spacing[i];
+      localNorm += vnl_math_sqr( temp );
       }
-    localnorm=sqrt(localnorm);
-    if ( localnorm > maxnorm ) maxnorm=localnorm;
+    localNorm = vcl_sqrt( localNorm );
+
+    if( localNorm > maxNorm )
+      {
+      maxNorm = localNorm;
+      }
     }
-  RealType scale = this->m_LearningRate / maxnorm;
-  for( ItF.GoToBegin(); !ItF.IsAtEnd(); ++ItF )
-    {
-    ItF.Set(ItF.Get()*scale);
-    }
-  return updateField;
+  RealType scale = this->m_LearningRate / maxNorm;
+
+  typedef MultiplyImageFilter<DisplacementFieldType, DisplacementFieldType, DisplacementFieldType> MultiplierType;
+  typename MultiplierType::Pointer multiplier = MultiplierType::New();
+  multiplier->SetInput( updateField );
+  multiplier->SetConstant( scale );
+
+  typename DisplacementFieldType::Pointer scaledUpdateField = multiplier->GetOutput();
+  scaledUpdateField->Update();
+  scaledUpdateField->DisconnectPipeline();
+
+  return scaledUpdateField;
 }
 
-template<typename TFixedImage, typename TMovingImage, typename TTransform>
-typename SyNImageRegistrationMethod<TFixedImage, TMovingImage, TTransform>::DisplacementFieldPointer
-SyNImageRegistrationMethod<TFixedImage, TMovingImage, TTransform>
+template<typename TFixedImage, typename TMovingImage, typename TOutputTransform>
+typename SyNImageRegistrationMethod<TFixedImage, TMovingImage, TOutputTransform>::DisplacementFieldPointer
+SyNImageRegistrationMethod<TFixedImage, TMovingImage, TOutputTransform>
 ::GaussianSmoothDisplacementField( const DisplacementFieldType * field, const RealType variance )
 {
   typedef ImageDuplicator<DisplacementFieldType> DuplicatorType;
@@ -450,15 +469,11 @@ SyNImageRegistrationMethod<TFixedImage, TMovingImage, TTransform>
 /*
  * Start the registration
  */
-template<typename TFixedImage, typename TMovingImage, typename TTransform>
+template<typename TFixedImage, typename TMovingImage, typename TOutputTransform>
 void
-SyNImageRegistrationMethod<TFixedImage, TMovingImage, TTransform>
+SyNImageRegistrationMethod<TFixedImage, TMovingImage, TOutputTransform>
 ::GenerateData()
 {
-  TransformOutputType *transformOutput = static_cast<TransformOutputType *>( this->ProcessObject::GetOutput( 0 ) );
-
-  transformOutput->Set( this->m_Transform.GetPointer() );
-
   for( this->m_CurrentLevel = 0; this->m_CurrentLevel < this->m_NumberOfLevels; this->m_CurrentLevel++ )
     {
     IterationReporter reporter( this, 0, 1 );
@@ -473,7 +488,7 @@ SyNImageRegistrationMethod<TFixedImage, TMovingImage, TTransform>
 
     this->StartOptimization();
 
-    this->m_CompositeTransform->AddTransform( this->m_Transform );
+    this->m_CompositeTransform->AddTransform( this->m_OutputTransform );
 
     reporter.CompletedStep();
     }
@@ -490,20 +505,20 @@ SyNImageRegistrationMethod<TFixedImage, TMovingImage, TTransform>
   inverseComposer->SetWarpingField( this->m_MiddleToMovingTransform->GetDisplacementField() );
   inverseComposer->Update();
 
-  this->m_Transform->SetDisplacementField( composer->GetOutput() );
-  this->m_Transform->SetInverseDisplacementField( inverseComposer->GetOutput() );
+  this->m_OutputTransform->SetDisplacementField( composer->GetOutput() );
+  this->m_OutputTransform->SetInverseDisplacementField( inverseComposer->GetOutput() );
 
-  TransformOutputPointer transformDecorator = TransformOutputType::New().GetPointer();
-  transformDecorator->Set( this->m_Transform );
+  DecoratedOutputTransformPointer transformDecorator = DecoratedOutputTransformType::New().GetPointer();
+  transformDecorator->Set( this->m_OutputTransform );
   this->ProcessObject::SetNthOutput( 0, transformDecorator );
 }
 
 /*
  * PrintSelf
  */
-template<typename TFixedImage, typename TMovingImage, typename TTransform>
+template<typename TFixedImage, typename TMovingImage, typename TOutputTransform>
 void
-SyNImageRegistrationMethod<TFixedImage, TMovingImage, TTransform>
+SyNImageRegistrationMethod<TFixedImage, TMovingImage, TOutputTransform>
 ::PrintSelf( std::ostream & os, Indent indent ) const
 {
   Superclass::PrintSelf( os, indent );
