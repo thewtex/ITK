@@ -72,8 +72,10 @@ public:
   typedef THistogram  HistogramType;
   typedef TOutput     OutputType;
 
-  itkSetMacro( MaximumSmoothingIterations, unsigned long);
-  itkGetConstMacro( MaximumSmoothingIterations, unsigned long );
+  typedef typename HistogramType::InstanceIdentifier          InstanceIdentifier;
+
+  itkSetMacro( MaximumSmoothingIterations, InstanceIdentifier );
+  itkGetConstMacro( MaximumSmoothingIterations, InstanceIdentifier );
 
   /** select whether midpoint (intermode=true) or minimum between
   peaks is used */
@@ -86,17 +88,23 @@ protected:
     m_MaximumSmoothingIterations = 10000;
     m_UseInterMode = true;
   }
-  virtual ~IntermodesThresholdCalculator() {};
+
+  virtual ~IntermodesThresholdCalculator() {}
+
   void GenerateData(void);
   void PrintSelf(std::ostream& os, Indent indent) const;
+
+  typedef typename HistogramType::TotalAbsoluteFrequencyType  TotalAbsoluteFrequencyType;
+  typedef typename HistogramType::AbsoluteFrequencyType       AbsoluteFrequencyType;
+  typedef typename HistogramType::SizeValueType               SizeValueType;
 
 private:
   IntermodesThresholdCalculator(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
   bool BimodalTest(const std::vector<double> & h);
 
-  unsigned             m_MaximumSmoothingIterations;
-  bool                 m_UseInterMode;
+  InstanceIdentifier    m_MaximumSmoothingIterations;
+  bool                  m_UseInterMode;
 };
 
 } // end namespace itk
