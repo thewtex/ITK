@@ -45,7 +45,7 @@ KittlerIllingworthThresholdCalculator<THistogram, TOutput>
 
   typename HistogramType::IndexType idx;
   bool status = data->GetIndex(v, idx);
-  assert(status);
+  itkAssertInDebugAndIgnoreInReleaseMacro(status);
   if (!status)
     {
     itkExceptionMacro("Failed histogram lookup");
@@ -163,7 +163,7 @@ KittlerIllingworthThresholdCalculator<THistogram, TOutput>
       typename HistogramType::IndexType idx;
       v[0] = temp;
       bool status = histogram->GetIndex(v, idx);
-      assert(status);
+      itkAssertInDebugAndIgnoreInReleaseMacro(status);
       if (status)
         {
         threshold = Math::Floor<int>((double)idx[0]);
