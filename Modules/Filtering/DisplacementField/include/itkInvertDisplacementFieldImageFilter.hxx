@@ -177,11 +177,11 @@ InvertDisplacementFieldImageFilter<TInputImage, TOutputImage>
       update = ItI.Get() + update * this->m_Epsilon;
       ItI.Set( update );
       typename DisplacementFieldType::IndexType index = ItI.GetIndex();
-      if ( this->m_EnforceBoundaryCondition )
+      if( this->m_EnforceBoundaryCondition )
         {
-        for ( unsigned int dimension = 0; dimension < ImageDimension; ++dimension )
+        for( unsigned int d = 0; d < ImageDimension; d++ )
           {
-          if ( index[dimension] == startIndex[dimension] || index[dimension] == static_cast<IndexValueType>( size[dimension] ) - startIndex[dimension] - 1 )
+          if( index[d] == startIndex[d] || index[d] == static_cast<IndexValueType>( size[d] ) - startIndex[d] - 1 )
             {
             ItI.Set( zeroVector );
             break;

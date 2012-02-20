@@ -29,8 +29,6 @@
 #include "itkVectorNeighborhoodOperatorImageFilter.h"
 #include "itkWindowConvergenceMonitoringFunction.h"
 
-#include "itkImageFileWriter.h"
-
 namespace itk
 {
 /**
@@ -71,7 +69,7 @@ SyNImageRegistrationMethod<TFixedImage, TMovingImage, TOutputTransform>
     {
     typename VirtualImageType::ConstPointer virtualDomainImage = this->m_Metric->GetVirtualDomainImage();
 
-    DisplacementVectorType zeroVector( 0.0 );
+    const DisplacementVectorType zeroVector( 0.0 );
 
     typename DisplacementFieldType::Pointer fixedDisplacementField = DisplacementFieldType::New();
     fixedDisplacementField->CopyInformation( virtualDomainImage );
@@ -128,43 +126,38 @@ SyNImageRegistrationMethod<TFixedImage, TMovingImage, TOutputTransform>
   // Monitor the convergence
   typedef itk::Function::WindowConvergenceMonitoringFunction<double> ConvergenceMonitoringType;
   ConvergenceMonitoringType::Pointer convergenceMonitoring = ConvergenceMonitoringType::New();
-  convergenceMonitoring->SetWindowSize( 15 );
+  convergenceMonitoring->SetWindowSize( 10 );
 
   typedef IdentityTransform<RealType, ImageDimension> IdentityTransformType;
   typename IdentityTransformType::Pointer identityTransform;
   identityTransform = IdentityTransformType::New();
 
-  typename DisplacementFieldTransformType::Pointer identityDisplacementFieldTransform;
+  typename CompositeTransformType::Pointer fixedComposite = CompositeTransformType::New();
+  fixedComposite->AddTransform( this->m_FixedInitialTransform );
+  fixedComposite->AddTransform( this->m_MiddleToFixedTransform->GetInverseTransform() );
+  fixedComposite->FlattenTransformQueue();
+  fixedComposite->SetOnlyMostRecentTransformToOptimizeOn();
+
+  typename CompositeTransformType::Pointer movingComposite = CompositeTransformType::New();
+  movingComposite->AddTransform( this->m_CompositeTransform );
+  movingComposite->AddTransform( this->m_MiddleToMovingTransform->GetInverseTransform() );
+  movingComposite->FlattenTransformQueue();
+  movingComposite->SetOnlyMostRecentTransformToOptimizeOn();
+
   SizeValueType iteration = 0;
   bool isConverged = false;
-  MeasureType value;
-  MeasureType value2;
   while( iteration++ < this->m_NumberOfIterationsPerLevel[this->m_CurrentLevel] && !isConverged )
     {
     std::cout << "    Iteration " << iteration << std::flush;
+
     // Compute the update fields (to both moving and fixed images) and smooth
 
-    typename CompositeTransformType::Pointer fixedComposite = CompositeTransformType::New();
-    //    fixedComposite->AddTransform( this->GetFixedTransform() );//FIXME need fixed composite transform
-    fixedComposite->AddTransform( this->m_MiddleToFixedTransform->GetInverseTransform() );
-    fixedComposite->SetOnlyMostRecentTransformToOptimizeOn();
+    MeasureType fixedMetricValue = 0.0;
+    MeasureType movingMetricValue = 0.0;
 
-    typename CompositeTransformType::Pointer movingComposite = CompositeTransformType::New();
-    //    movingComposite->AddTransform( this->GetMovingTransform() );//FIXME need fixed composite transform
-    if( !this->m_DownsampleImagesForMetricDerivatives )
-      {
-      movingComposite->AddTransform( this->m_CompositeTransform->GetBackTransform() );//FIXME should be moving composite transform
-      }
-    else
-      {
-      movingComposite->AddTransform( this->m_CompositeTransform );//FIXME should be moving composite transform
-      }
-    movingComposite->AddTransform( this->m_MiddleToMovingTransform->GetInverseTransform() );
-    movingComposite->SetOnlyMostRecentTransformToOptimizeOn();
-
-    DisplacementFieldPointer middleToFixedUpdateField;
-    DisplacementFieldPointer middleToMovingUpdateField;
-    if ( this->m_DownsampleImagesForMetricDerivatives )
+    DisplacementFieldPointer middleToFixedSmoothUpdateField;
+    DisplacementFieldPointer middleToMovingSmoothUpdateField;
+    if( this->m_DownsampleImagesForMetricDerivatives )
       {
       typedef ResampleImageFilter<MovingImageType, MovingImageType> MovingResamplerType;
       typename MovingResamplerType::Pointer movingResampler = MovingResamplerType::New();
@@ -188,37 +181,36 @@ SyNImageRegistrationMethod<TFixedImage, TMovingImage, TOutputTransform>
       fixedResampler->SetDefaultPixelValue( 0 );
       fixedResampler->Update();
 
-      identityDisplacementFieldTransform = DisplacementFieldTransformType::New();
-      typename DisplacementFieldDuplicatorType::Pointer fieldDuplicator = DisplacementFieldDuplicatorType::New();
-      fieldDuplicator->SetInputImage( this->m_MiddleToMovingTransform->GetDisplacementField() );
-      fieldDuplicator->Update();
-      fieldDuplicator->GetOutput()->FillBuffer(zeroVector);
-      identityDisplacementFieldTransform->SetDisplacementField( fieldDuplicator->GetOutput() );
+      typename DisplacementFieldType::Pointer identityField = DisplacementFieldType::New();
+      identityField->CopyInformation( virtualDomainImage );
+      identityField->SetRegions( virtualDomainImage->GetRequestedRegion() );
+      identityField->Allocate();
+      identityField->FillBuffer( zeroVector );
 
-      middleToFixedUpdateField = this->ComputeUpdateField( fixedResampler->GetOutput(), identityTransform,
-        movingResampler->GetOutput(), identityDisplacementFieldTransform, value );
-      middleToMovingUpdateField = this->ComputeUpdateField( movingResampler->GetOutput(), identityTransform,
-        fixedResampler->GetOutput(), identityDisplacementFieldTransform, value2 );
+      typename DisplacementFieldTransformType::Pointer identityDisplacementFieldTransform = DisplacementFieldTransformType::New();
+      identityDisplacementFieldTransform->SetDisplacementField( identityField );
+
+      middleToMovingSmoothUpdateField = this->ComputeUpdateField( fixedResampler->GetOutput(), identityTransform,
+        movingResampler->GetOutput(), identityDisplacementFieldTransform, movingMetricValue );
+      middleToFixedSmoothUpdateField = this->ComputeUpdateField( movingResampler->GetOutput(), identityTransform,
+        fixedResampler->GetOutput(), identityDisplacementFieldTransform, fixedMetricValue );
       }
     else
       {
-      middleToFixedUpdateField = this->ComputeUpdateField( this->m_FixedSmoothImage, fixedComposite,
-        this->m_MovingSmoothImage, movingComposite, value );
-      middleToMovingUpdateField = this->ComputeUpdateField( this->m_MovingSmoothImage, movingComposite,
-        this->m_FixedSmoothImage, fixedComposite, value2 );
+      middleToMovingSmoothUpdateField = this->ComputeUpdateField( this->m_FixedSmoothImage, fixedComposite,
+        this->m_MovingSmoothImage, movingComposite, movingMetricValue );
+      middleToFixedSmoothUpdateField = this->ComputeUpdateField( this->m_MovingSmoothImage, movingComposite,
+        this->m_FixedSmoothImage, fixedComposite, fixedMetricValue );
       }
     if ( this->m_AverageMidPointGradients )
       {
-      ImageRegionIteratorWithIndex<DisplacementFieldType> ItF( middleToFixedUpdateField, middleToFixedUpdateField->GetLargestPossibleRegion() );
+      ImageRegionIteratorWithIndex<DisplacementFieldType> ItF( middleToFixedSmoothUpdateField, middleToFixedSmoothUpdateField->GetLargestPossibleRegion() );
       for( ItF.GoToBegin(); !ItF.IsAtEnd(); ++ItF )
         {
-        ItF.Set( ItF.Get() - middleToMovingUpdateField->GetPixel( ItF.GetIndex() ) );
-        middleToMovingUpdateField->SetPixel( ItF.GetIndex(), ItF.Get()*(-1) );
+        ItF.Set( ItF.Get() - middleToMovingSmoothUpdateField->GetPixel( ItF.GetIndex() ) );
+        middleToMovingSmoothUpdateField->SetPixel( ItF.GetIndex(), -ItF.Get() );
         }
       }
-    value = ( value + value2 ) * 0.5;
-    DisplacementFieldPointer  middleToFixedSmoothUpdateField = this->GaussianSmoothDisplacementField( middleToFixedUpdateField, this->m_GaussianSmoothingVarianceForTheUpdateField );
-    DisplacementFieldPointer middleToMovingSmoothUpdateField = this->GaussianSmoothDisplacementField( middleToMovingUpdateField, this->m_GaussianSmoothingVarianceForTheUpdateField );
 
     // Add the update field to both displacement fields (from fixed/moving to middle image) and then smooth
 
@@ -238,7 +230,7 @@ SyNImageRegistrationMethod<TFixedImage, TMovingImage, TOutputTransform>
 
     DisplacementFieldPointer middleToMovingSmoothTotalField = this->GaussianSmoothDisplacementField( movingComposer->GetOutput(), this->m_GaussianSmoothingVarianceForTheTotalField );
 
-    // Invert both total fields and iteratively estimate the inverse.
+    // Iteratively estimate the inverse fields.
     typedef InvertDisplacementFieldImageFilter<DisplacementFieldType> InverterType;
 
     typename InverterType::Pointer fixedInverter1 = InverterType::New();
@@ -259,14 +251,22 @@ SyNImageRegistrationMethod<TFixedImage, TMovingImage, TOutputTransform>
     middleToMovingSmoothTotalFieldInverse->Update();
     middleToMovingSmoothTotalFieldInverse->DisconnectPipeline();
 
-    // We estimate the inverse of the inverse and set the total fields.
-    fixedInverter1->SetInput( middleToFixedSmoothTotalFieldInverse );
-    middleToFixedSmoothTotalField = fixedInverter1->GetOutput();
+    // Iteratively estimate the inverse fields the other way.
+    typename InverterType::Pointer fixedInverter2 = InverterType::New();
+    fixedInverter2->SetInput( middleToFixedSmoothTotalFieldInverse );
+    fixedInverter2->SetMaximumNumberOfIterations( 20 );
+    fixedInverter2->SetMeanErrorToleranceThreshold( 0.001 );
+    fixedInverter2->SetMaxErrorToleranceThreshold( 0.1 );
+    middleToFixedSmoothTotalField = fixedInverter2->GetOutput();
     middleToFixedSmoothTotalField->Update();
     middleToFixedSmoothTotalField->DisconnectPipeline();
 
-    movingInverter1->SetInput( middleToMovingSmoothTotalFieldInverse );
-    middleToMovingSmoothTotalField = movingInverter1->GetOutput();
+    typename InverterType::Pointer movingInverter2 = InverterType::New();
+    movingInverter2->SetInput( middleToMovingSmoothTotalFieldInverse );
+    movingInverter2->SetMaximumNumberOfIterations( 20 );
+    movingInverter2->SetMeanErrorToleranceThreshold( 0.001 );
+    movingInverter2->SetMaxErrorToleranceThreshold( 0.1 );
+    middleToMovingSmoothTotalField = movingInverter2->GetOutput();
     middleToMovingSmoothTotalField->Update();
     middleToMovingSmoothTotalField->DisconnectPipeline();
 
@@ -277,9 +277,11 @@ SyNImageRegistrationMethod<TFixedImage, TMovingImage, TOutputTransform>
     this->m_MiddleToMovingTransform->SetDisplacementField( middleToMovingSmoothTotalField );
     this->m_MiddleToMovingTransform->SetInverseDisplacementField( middleToMovingSmoothTotalFieldInverse );
 
-    convergenceMonitoring->AddEnergyValue( value );
+    RealType metricValue = 0.5 * ( movingMetricValue + fixedMetricValue );
+
+    convergenceMonitoring->AddEnergyValue( metricValue );
     RealType convergenceValue = convergenceMonitoring->GetConvergenceValue();
-    std::cout << ": (metric value = " << value << ", convergence value = " << convergenceValue << ")" << std::endl;
+    std::cout << ": metric value = " << metricValue << ", convergence value = " << convergenceValue << std::endl;
     if( convergenceValue < this->m_ConvergenceThreshold )
       {
       isConverged = true;
@@ -318,8 +320,7 @@ SyNImageRegistrationMethod<TFixedImage, TMovingImage, TOutputTransform>
   const SizeValueType numberOfPixels = static_cast<SizeValueType>( metricDerivative.Size() / ImageDimension );
   const bool importFilterWillReleaseMemory = false;
 
-  // Brad L. says I should feel bad about using a reinterpret_cast.
-  // I do feel bad.
+  // Brad L. says I should feel bad about using a reinterpret_cast.  I do feel bad.
 
   DisplacementVectorType *metricDerivativeFieldPointer = reinterpret_cast<DisplacementVectorType *>( metricDerivative.data_block() );
 
@@ -332,15 +333,10 @@ SyNImageRegistrationMethod<TFixedImage, TMovingImage, TOutputTransform>
   importer->SetDirection( virtualDomainImage->GetDirection() );
   importer->Update();
 
-  typedef ImageDuplicator<DisplacementFieldType> DuplicatorType;
-  typename DuplicatorType::Pointer duplicator = DuplicatorType::New();
-  duplicator->SetInputImage( importer->GetOutput() );
-  duplicator->Update();
-  DisplacementFieldPointer updateField = duplicator->GetOutput();
-  updateField->DisconnectPipeline();
+  DisplacementFieldPointer updateField = this->GaussianSmoothDisplacementField( importer->GetOutput(), this->m_GaussianSmoothingVarianceForTheUpdateField );
 
-  typename DisplacementFieldType::SpacingType spacing = importer->GetOutput()->GetSpacing();
-  ImageRegionIteratorWithIndex<DisplacementFieldType> ItF( updateField, updateField->GetLargestPossibleRegion() );
+  typename DisplacementFieldType::SpacingType spacing = updateField->GetSpacing();
+  ImageRegionConstIterator<DisplacementFieldType> ItF( updateField, updateField->GetLargestPossibleRegion() );
 
   RealType maxNorm = NumericTraits<RealType>::NonpositiveMin();
   for( ItF.GoToBegin(); !ItF.IsAtEnd(); ++ItF )
@@ -348,10 +344,9 @@ SyNImageRegistrationMethod<TFixedImage, TMovingImage, TOutputTransform>
     DisplacementVectorType vector = ItF.Get();
 
     RealType localNorm = 0;
-    for( unsigned int i = 0; i < ImageDimension; i++ )
+    for( unsigned int d = 0; d < ImageDimension; d++ )
       {
-      RealType temp = vector[i] / spacing[i];
-      localNorm += vnl_math_sqr( temp );
+      localNorm += vnl_math_sqr( vector[d] / spacing[d] );
       }
     localNorm = vcl_sqrt( localNorm );
 
@@ -360,9 +355,12 @@ SyNImageRegistrationMethod<TFixedImage, TMovingImage, TOutputTransform>
       maxNorm = localNorm;
       }
     }
-  RealType scale = this->m_LearningRate / maxNorm;
 
-  typedef MultiplyImageFilter<DisplacementFieldType, DisplacementFieldType, DisplacementFieldType> MultiplierType;
+  RealType scale = this->m_LearningRate * voxelDistance / maxNorm;
+
+  typedef Image<RealType, ImageDimension> RealImageType;
+
+  typedef MultiplyImageFilter<DisplacementFieldType, RealImageType, DisplacementFieldType> MultiplierType;
   typename MultiplierType::Pointer multiplier = MultiplierType::New();
   multiplier->SetInput( updateField );
   multiplier->SetConstant( scale );
@@ -397,13 +395,13 @@ SyNImageRegistrationMethod<TFixedImage, TMovingImage, TOutputTransform>
   typedef VectorNeighborhoodOperatorImageFilter<DisplacementFieldType, DisplacementFieldType> GaussianSmoothingSmootherType;
   typename GaussianSmoothingSmootherType::Pointer smoother = GaussianSmoothingSmootherType::New();
 
-  for( unsigned int dimension = 0; dimension < ImageDimension; ++dimension )
+  for( unsigned int d = 0; d < ImageDimension; d++ )
     {
     // smooth along this dimension
-    gaussianSmoothingOperator.SetDirection( dimension );
+    gaussianSmoothingOperator.SetDirection( d );
     gaussianSmoothingOperator.SetVariance( variance );
     gaussianSmoothingOperator.SetMaximumError( 0.001 );
-    gaussianSmoothingOperator.SetMaximumKernelWidth( smoothField->GetRequestedRegion().GetSize()[dimension] );
+    gaussianSmoothingOperator.SetMaximumKernelWidth( smoothField->GetRequestedRegion().GetSize()[d] );
     gaussianSmoothingOperator.CreateDirectional();
 
     // todo: make sure we only smooth within the buffered region
@@ -445,9 +443,9 @@ SyNImageRegistrationMethod<TFixedImage, TMovingImage, TOutputTransform>
     {
     typename DisplacementFieldType::IndexType index = ItF.GetIndex();
     bool isOnBoundary = false;
-    for ( unsigned int dimension = 0; dimension < ImageDimension; ++dimension )
+    for ( unsigned int d = 0; d < ImageDimension; d++ )
       {
-      if( index[dimension] == startIndex[dimension] || index[dimension] == static_cast<IndexValueType>( size[dimension] ) - startIndex[dimension] - 1 )
+      if( index[d] == startIndex[d] || index[d] == static_cast<IndexValueType>( size[d] ) - startIndex[d] - 1 )
         {
         isOnBoundary = true;
         break;
@@ -496,13 +494,13 @@ SyNImageRegistrationMethod<TFixedImage, TMovingImage, TOutputTransform>
   typedef ComposeDisplacementFieldsImageFilter<DisplacementFieldType, DisplacementFieldType> ComposerType;
 
   typename ComposerType::Pointer composer = ComposerType::New();
-  composer->SetDisplacementField( this->m_MiddleToMovingTransform->GetInverseDisplacementField() );
-  composer->SetWarpingField( this->m_MiddleToFixedTransform->GetDisplacementField() );
+  composer->SetDisplacementField( this->m_MiddleToMovingTransform->GetDisplacementField() );
+  composer->SetWarpingField( this->m_MiddleToFixedTransform->GetInverseDisplacementField() );
   composer->Update();
 
   typename ComposerType::Pointer inverseComposer = ComposerType::New();
-  inverseComposer->SetDisplacementField( this->m_MiddleToFixedTransform->GetInverseDisplacementField() );
-  inverseComposer->SetWarpingField( this->m_MiddleToMovingTransform->GetDisplacementField() );
+  inverseComposer->SetDisplacementField( this->m_MiddleToFixedTransform->GetDisplacementField() );
+  inverseComposer->SetWarpingField( this->m_MiddleToMovingTransform->GetInverseDisplacementField() );
   inverseComposer->Update();
 
   this->m_OutputTransform->SetDisplacementField( composer->GetOutput() );

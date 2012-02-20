@@ -145,14 +145,14 @@ public:
   itkGetConstMacro( AverageMidPointGradients, bool );
 
   /**
-   * Get/Set the Gaussian smoothing standard deviation for the update field.
+   * Get/Set the Gaussian smoothing variance for the update field.
    * Default = 1.75.
    */
   itkSetMacro( GaussianSmoothingVarianceForTheUpdateField, RealType );
   itkGetConstReferenceMacro( GaussianSmoothingVarianceForTheUpdateField, RealType );
 
   /**
-   * Get/Set the Gaussian smoothing standard deviation for the total field.
+   * Get/Set the Gaussian smoothing variance for the total field.
    * Default = 0.5.
    */
   itkSetMacro( GaussianSmoothingVarianceForTheTotalField, RealType );
