@@ -5,6 +5,7 @@ itkFEMRegistrationFilterTest.cxx
 itkFEMRegistrationFilter2DTest.cxx
 itkMIRegistrationFunctionTest.cxx
 itkFEMRegistrationFilterTest2.cxx
+itkPhysicsBasedNonRigidRegistrationFilterTest.cxx
 )
 
 CreateTestDriver(ITKFEMRegistration  "${ITKFEMRegistration-Test_LIBRARIES}" "${ITKFEMRegistrationTests}")
@@ -23,3 +24,6 @@ itk_add_test(NAME itkMIRegistrationFunctionTest
 itk_add_test(NAME itkFEMRegistrationFilterTest2
       COMMAND ITKFEMRegistrationTestDriver itkFEMRegistrationFilterTest2
       ${ITK_TEST_OUTPUT_DIR}/FEMDeformationField3DMultiRes ${ITK_TEST_OUTPUT_DIR}/FEMDeformedMovingImage3DMultiRes)
+itk_add_test(NAME itkPhysicsBasedNonRigidRegistrationFilterTest
+      COMMAND ITKFEMRegistrationTestDriver itkPhysicsBasedNonRigidRegistrationFilterTest
+      ${ITK_TEST_OUTPUT_DIR}/PBNRRDeformationField ${ITK_TEST_OUTPUT_DIR}/PBNRRDeformedMovingImage)
