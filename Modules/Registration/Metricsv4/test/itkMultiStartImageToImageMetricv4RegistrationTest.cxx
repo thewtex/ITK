@@ -69,11 +69,11 @@ int itkMultiStartImageToImageMetricv4RegistrationTest(int argc, char *argv[])
   typedef unsigned short PixelType; //I assume png is unsigned short
   typedef double InternalPixelType;
 
-  typedef itk::Image< PixelType, Dimension >  InputImageType;
+  typedef itk::Image< PixelType, Dimension >          InputImageType;
   typedef itk::Image< InternalPixelType, Dimension >  InternalImageType;
 
   typedef itk::ImageFileReader< InputImageType  > FixedImageReaderType;
-  typedef itk::ImageFileReader< InputImageType > MovingImageReaderType;
+  typedef itk::ImageFileReader< InputImageType >  MovingImageReaderType;
 
   FixedImageReaderType::Pointer fixedImageReader   = FixedImageReaderType::New();
   fixedImageReader->SetFileName( argv[1] );
@@ -178,9 +178,7 @@ int itkMultiStartImageToImageMetricv4RegistrationTest(int argc, char *argv[])
   if( rotateinput ) metric->SetMovingImage( resample->GetOutput() );
   metric->SetFixedTransform( identityTransform );
   metric->SetMovingTransform( affineTransform );
-  bool pw=false, gaussian=false;
-  metric->SetDoFixedImagePreWarp( pw );
-  metric->SetDoMovingImagePreWarp( pw );
+  bool gaussian=false;
   metric->SetUseMovingImageGradientFilter( gaussian );
   metric->SetUseFixedImageGradientFilter( gaussian );
   metric->Initialize();

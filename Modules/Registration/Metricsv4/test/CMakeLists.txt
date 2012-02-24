@@ -10,12 +10,11 @@ set(ITKMetricsv4Tests
   itkCorrelationImageToImageMetricv4Test.cxx
   itkANTSNeighborhoodCorrelationImageToImageMetricv4Test.cxx
   itkANTSNeighborhoodCorrelationImageToImageRegistrationTest.cxx
-  itkAffineDemonsImageToImageRegistrationTest.cxx
   itkMattesMutualInformationImageToImageMetricv4Test.cxx
   itkMattesMutualInformationImageToImageMetricv4RegistrationTest.cxx
   itkMultiStartImageToImageMetricv4RegistrationTest.cxx
   itkMultiGradientImageToImageMetricv4RegistrationTest.cxx
-  itkPreWarpTest.cxx
+  itkMetricImageGradientTest.cxx
 )
 
 set(INPUTDATA ${ITK_DATA_ROOT}/Input)
@@ -78,21 +77,9 @@ itk_add_test(NAME itkANTSNeighborhoodCorrelationImageToImageRegistrationTest
              ${TEMP}/itkANTSNeighborhoodCorrelationImageToImageRegistrationTest.nii.gz
               10 1 0.25 )
 
-itk_add_test(NAME itkAffineDemonsImageToImageRegistrationTest
-      COMMAND ITKMetricsv4TestDriver
-              itkAffineDemonsImageToImageRegistrationTest
-              DATA{Baseline/face_avg.jpg}
-              DATA{Input/face_b.jpg}
-              ${TEMP}/itkAffineDemonsImageToImageRegistrationTest.nii.gz
-              30 )
-
 itk_add_test(NAME itkMattesMutualInformationImageToImageMetricv4Test
       COMMAND ITKMetricsv4TestDriver
-      itkMattesMutualInformationImageToImageMetricv4Test 0)
-
-itk_add_test(NAME itkMattesMutualInformationImageToImageMetricv4Test2
-      COMMAND ITKMetricsv4TestDriver
-      itkMattesMutualInformationImageToImageMetricv4Test 1)
+      itkMattesMutualInformationImageToImageMetricv4Test)
 
 itk_add_test(NAME itkMattesMutualInformationImageToImageMetricv4RegistrationTest
       COMMAND ITKMetricsv4TestDriver
@@ -117,6 +104,6 @@ itk_add_test(NAME itkMultiGradientImageToImageMetricv4RegistrationTest
               DATA{Input/face_b.jpg}
               ${TEMP}/itkMultiGradientImageToImageMetricv4RegistrationTest.nii.gz
               5  )
-itk_add_test(NAME itkPreWarpTest
+itk_add_test(NAME itkMetricImageGradientTest
       COMMAND ITKMetricsv4TestDriver
-              itkPreWarpTest)
+              itkMetricImageGradientTest)
