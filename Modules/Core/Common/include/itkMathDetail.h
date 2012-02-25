@@ -371,7 +371,130 @@ inline int64_t Ceil_64(double x) { return Ceil_base< int64_t, double >(x); }
 inline int64_t Ceil_64(float x) { return Ceil_base< int64_t, float >(x); }
 
 #endif // USE_SSE2_64IMPL || GCC_USE_ASM_64IMPL || VC_USE_ASM_64IMPL
+
+union SingleFloatRepresentation
+{
+  float   asFloat;
+  int32_t asInt;
+
+  // Portable sign-extraction
+  bool Sign() const
+    {
+    return (asInt >> 31) != 0;
+    }
+};
+
+union DoubleFloatRepresentation
+{
+  double  asFloat;
+  int64_t asInt;
+
+  // Portable sign-extraction
+  bool Sign() const
+    {
+    return (asInt >> 63) != 0;
+    }
+};
 } // end namespace Detail
+
+inline int32_t
+FloatDistance( float x1, float x2 )
+{
+  Detail::SingleFloatRepresentation x1Representation;
+  x1Representation.asFloat = x1;
+  Detail::SingleFloatRepresentation x2Representation;
+  x2Representation.asFloat = x2;
+
+  // Deal with twos-complement representation.
+  if( x1Representation.Sign() )
+    {
+    x1Representation.asInt = 0x80000000 - x1Representation.asInt;
+    }
+  if( x2Representation.Sign() )
+    {
+    x2Representation.asInt = 0x80000000 - x2Representation.asInt;
+    }
+
+  return vcl_abs( static_cast< int32_t >( x1Representation.asInt - x2Representation.asInt ));
+}
+
+inline int32_t
+FloatDistance( double x1, double x2 )
+{
+  Detail::DoubleFloatRepresentation x1Representation;
+  x1Representation.asFloat = x1;
+  Detail::DoubleFloatRepresentation x2Representation;
+  x2Representation.asFloat = x2;
+
+
+  return vcl_abs( static_cast< int32_t >( x1Representation.asInt - x2Representation.asInt ));
+}
+
+inline bool
+FloatAlmostEqual( float x1, float x2,
+  int32_t maxUlps,
+  float maxAbsoluteDifference )
+{
+  // Check if the numbers are really close -- needed
+  // when comparing numbers near zero.
+  const float absDifference = vcl_abs(x1 - x2);
+  if ( absDifference <= maxAbsoluteDifference )
+    {
+    return true;
+    }
+
+  Detail::SingleFloatRepresentation x1Representation;
+  x1Representation.asFloat = x1;
+  Detail::SingleFloatRepresentation x2Representation;
+  x2Representation.asFloat = x2;
+
+  // Different signs means they do not match.
+  if ( x1Representation.Sign() != x2Representation.Sign() )
+    {
+    return false;
+    }
+
+  const int32_t intDifference = vcl_abs( static_cast< int32_t >( x1Representation.asInt - x2Representation.asInt ));
+  if ( intDifference <= maxUlps )
+    {
+    return true;
+    }
+  return false;
+}
+
+inline bool
+FloatAlmostEqual( double x1, double x2,
+  int32_t maxUlps,
+  double maxAbsoluteDifference )
+{
+  // Check if the numbers are really close -- needed
+  // when comparing numbers near zero.
+  const double absDifference = vcl_abs(x1 - x2);
+  if ( absDifference <= maxAbsoluteDifference )
+    {
+    return true;
+    }
+
+  Detail::DoubleFloatRepresentation x1Representation;
+  x1Representation.asFloat = x1;
+  Detail::DoubleFloatRepresentation x2Representation;
+  x2Representation.asFloat = x2;
+
+  // Different signs means they do not match.
+  if ( x1Representation.Sign() != x2Representation.Sign() )
+    {
+    return false;
+    }
+
+  const int32_t intDiff = vcl_abs( static_cast< int32_t >( x1Representation.asInt - x2Representation.asInt ));
+  if ( intDiff <= maxUlps )
+    {
+    return true;
+    }
+
+  return false;
+}
+
 } // end namespace Math
 
 // move to itkConceptChecking?
