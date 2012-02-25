@@ -371,7 +371,73 @@ inline int64_t Ceil_64(double x) { return Ceil_base< int64_t, double >(x); }
 inline int64_t Ceil_64(float x) { return Ceil_base< int64_t, float >(x); }
 
 #endif // USE_SSE2_64IMPL || GCC_USE_ASM_64IMPL || VC_USE_ASM_64IMPL
+
+template <typename T> struct FloatIEEETraits;
+template <> struct FloatIEEETraits<float>
+{
+  typedef int32_t IntType;
+  typedef uint32_t UIntType;
+};
+template <> struct FloatIEEETraits<double>
+{
+  typedef int64_t IntType;
+  typedef uint64_t UIntType;
+};
+template <typename T> union FloatIEEE
+{
+  typedef T FloatType;
+  typedef typename FloatIEEETraits<T>::IntType IntType;
+  typedef typename FloatIEEETraits<T>::UIntType UIntType;
+
+  FloatType asFloat;
+  IntType asInt;
+  UIntType asUInt;
+
+  FloatIEEE(FloatType f): asFloat(f) {}
+  bool Sign() const
+    {
+    return (asUInt >> (sizeof(asUInt)*8-1)) != 0;
+    }
+  IntType AsULP() const
+    {
+    return this->Sign()? IntType(~(~UIntType(0) >> 1) - asUInt) : asInt;
+    }
+};
+
 } // end namespace Detail
+
+template <typename T>
+inline typename Detail::FloatIEEE<T>::IntType
+FloatDifferenceULP( T x1, T x2 )
+{
+  Detail::FloatIEEE<T> x1f(x1);
+  Detail::FloatIEEE<T> x2f(x2);
+  return x1f.AsULP() - x2f.AsULP();
+}
+
+template <typename T>
+inline bool
+FloatAlmostEqual( T x1, T x2,
+  typename Detail::FloatIEEE<T>::IntType maxUlps = 4,
+  typename Detail::FloatIEEE<T>::FloatType maxAbsoluteDifference = 0.1*NumericTraits<T>::epsilon() )
+{
+  // Check if the numbers are really close -- needed
+  // when comparing numbers near zero.
+  const T absDifference = vcl_abs(x1 - x2);
+  if ( absDifference <= maxAbsoluteDifference )
+    {
+    return true;
+    }
+
+  typename Detail::FloatIEEE<T>::IntType
+    ulps = FloatDifferenceULP(x1, x2);
+  if(ulps < 0)
+    {
+    ulps = -ulps;
+    }
+  return ulps <= maxUlps;
+}
+
 } // end namespace Math
 
 // move to itkConceptChecking?
