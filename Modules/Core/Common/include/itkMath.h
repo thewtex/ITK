@@ -207,6 +207,115 @@ inline TReturn CastWithRangeCheck(TInput x)
     }
   return ret;
 }
+
+/** \brief Compare two floats and return if they are effectively equal.
+ *
+ * Determining when floats are almost equal is difficult because of their
+ * IEEE bit representation.  This function uses the integer representation of
+ * the float to determine if they are almost equal.
+ *
+ * The implementation is based off the explanation in the white paper here:
+ *
+ * http://randomascii.wordpress.com/2012/02/25/comparing-floating-point-numbers-2012-edition/
+ *
+ * The tolerance is specified in ULPS (units in the last place), i.e. how many
+ * floats there are in between the numbers.  Therefore, the tolerance depends on
+ * the magnitude of the values that are being compared.  A second tolerance is
+ * a maximum difference allowed, which is important when comparing numbers close to
+ * zero.
+ *
+ * A Nan compares as not equal to a number, but two Nan's may compare as equal
+ * to each other.
+ */
+inline bool
+FloatAlmostEqual( float x1, float x2,
+  float maxDiff = 0.1*NumericTraits< float >::epsilon(),
+  long maxUlps = 4 )
+{
+  union FloatRepresentation
+    {
+    float asFloat;
+    int32_t asInt;
+
+    // Portable sign-extraction
+    bool Sign() const
+      {
+      return (asInt >> 31) != 0;
+      }
+    };
+
+  // Check if the numbers are really close -- needed
+  // when comparing numbers near zero.
+  const float absDiff = vcl_abs(x1 - x2);
+  if ( absDiff <= maxDiff )
+    {
+    return true;
+    }
+
+  FloatRepresentation x1Representation;
+  x1Representation.asFloat = x1;
+  FloatRepresentation x2Representation;
+  x2Representation.asFloat = x2;
+
+  // Different signs means they do not match.
+  if ( x1Representation.Sign() != x2Representation.Sign())
+    {
+    return false;
+    }
+
+  const long intDiff = vcl_abs( static_cast< long >( x1Representation.asInt - x2Representation.asInt ));
+  if ( intDiff <= maxUlps )
+    {
+    return true;
+    }
+  return false;
+}
+
+inline bool
+FloatAlmostEqual( double x1, double x2,
+  double maxDiff = 0.1*NumericTraits< double >::epsilon(),
+  long maxUlps = 4 )
+{
+  union FloatRepresentation
+    {
+    double asFloat;
+    int64_t asInt;
+
+    // Portable sign-extraction
+    bool Sign() const
+      {
+      return (asInt >> 63) != 0;
+      }
+    };
+
+  // Check if the numbers are really close -- needed
+  // when comparing numbers near zero.
+  const double absDiff = vcl_abs(x1 - x2);
+  if ( absDiff <= maxDiff )
+    {
+    return true;
+    }
+
+  FloatRepresentation x1Representation;
+  x1Representation.asFloat = x1;
+  FloatRepresentation x2Representation;
+  x2Representation.asFloat = x2;
+
+  // Different signs means they do not match.
+  if ( x1Representation.Sign() != x2Representation.Sign())
+    {
+    return false;
+    }
+
+  const long intDiff = vcl_abs(static_cast< long >( x1Representation.asInt - x2Representation.asInt ));
+  if ( intDiff <= maxUlps )
+    {
+    return true;
+    }
+
+  return false;
+}
+
 } // end namespace Math
 } // end namespace itk
 #endif // end of itkMath.h
