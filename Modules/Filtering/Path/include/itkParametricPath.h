@@ -105,7 +105,7 @@ public:
 
   /** Evaluate the first derivative of the ND output with respect to the 1D
     * input.  This is a very simple and naive numerical derivative, and it
-    * sould be overloaded with a proper closed-form derivative function in
+    * should be overloaded with a proper closed-form derivative function in
     * all children.  Nevertheless, users who need to create their own parametric
     * classes for their private research need not reimplement this function if
     * their work does not need the derivative operator. */
@@ -113,6 +113,7 @@ public:
 
   itkSetMacro(DefaultInputStepSize, InputType)
   itkGetConstReferenceMacro(DefaultInputStepSize, InputType)
+
 protected:
   ParametricPath();
   ~ParametricPath(){}
@@ -129,6 +130,7 @@ protected:
    * constructor of all instantiable children.  Values set in child constructors
    * overwrite values set in parent constructors. */
   InputType m_DefaultInputStepSize;
+
 private:
   ParametricPath(const Self &); //purposely not implemented
   void operator=(const Self &); //purposely not implemented
