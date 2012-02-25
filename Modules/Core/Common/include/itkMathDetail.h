@@ -371,7 +371,142 @@ inline int64_t Ceil_64(double x) { return Ceil_base< int64_t, double >(x); }
 inline int64_t Ceil_64(float x) { return Ceil_base< int64_t, float >(x); }
 
 #endif // USE_SSE2_64IMPL || GCC_USE_ASM_64IMPL || VC_USE_ASM_64IMPL
+
+template< class T >
+union FloatRepresentation;
+
+template<>
+union FloatRepresentation< float >
+{
+  typedef uint32_t IntType;
+
+  float   asFloat;
+  IntType asInt;
+
+  // Portable sign-extraction
+  bool Sign() const
+    {
+    return (asInt >> 31) != 0;
+    }
+};
+
+template<>
+union FloatRepresentation< double >
+{
+  typedef uint64_t IntType;
+
+  double  asFloat;
+  IntType asInt;
+
+  // Portable sign-extraction
+  bool Sign() const
+    {
+    return (asInt >> 63) != 0;
+    }
+};
+
 } // end namespace Detail
+
+inline int32_t
+FloatDistance( float x1, float x2 )
+{
+  typedef Detail::FloatRepresentation< float > FloatRepresentationType;
+
+  FloatRepresentationType x1Representation;
+  x1Representation.asFloat = x1;
+  FloatRepresentationType x2Representation;
+  x2Representation.asFloat = x2;
+
+  if( x1Representation.Sign() && x2Representation.Sign()  )
+    {
+    return FloatDistance( - x1, - x2 );
+    }
+
+  // Deal with twos-complement representation.
+  if( x1Representation.Sign() )
+    {
+    x1Representation.asInt = 0x80000000 - x1Representation.asInt;
+    }
+  if( x2Representation.Sign() )
+    {
+    x2Representation.asInt = 0x80000000 - x2Representation.asInt;
+    }
+
+  return x1Representation.asInt - x2Representation.asInt;
+}
+
+inline int64_t
+FloatDistance( double x1, double x2 )
+{
+  typedef Detail::FloatRepresentation< double > FloatRepresentationType;
+
+  FloatRepresentationType x1Representation;
+  x1Representation.asFloat = x1;
+  FloatRepresentationType x2Representation;
+  x2Representation.asFloat = x2;
+
+  if( x1Representation.Sign() && x2Representation.Sign()  )
+    {
+    return FloatDistance( - x1, - x2 );
+    }
+
+  // Deal with twos-complement representation.
+  if( x1Representation.Sign() )
+    {
+    x1Representation.asInt = 0x8000000000000000ll - x1Representation.asInt;
+    }
+  if( x2Representation.Sign() )
+    {
+    x1Representation.asInt = 0x8000000000000000ll - x1Representation.asInt;
+    }
+
+  return x1Representation.asInt - x2Representation.asInt;
+}
+
+inline bool
+FloatAlmostEqual( float x1, float x2,
+  uint32_t maxUlps,
+  float maxAbsoluteDifference )
+{
+  // Check if the numbers are really close -- needed
+  // when comparing numbers near zero.
+  const float absDifference = vcl_abs(x1 - x2);
+  if ( absDifference <= maxAbsoluteDifference )
+    {
+    return true;
+    }
+
+  const double intDifference = vcl_abs( static_cast< double >( FloatDistance( x1, x2 )));
+  if ( intDifference <= maxUlps )
+    {
+    return true;
+    }
+  return false;
+}
+
+inline bool
+FloatAlmostEqual( double x1, double x2,
+  uint64_t maxUlps,
+  double maxAbsoluteDifference )
+{
+  // Check if the numbers are really close -- needed
+  // when comparing numbers near zero.
+  const double absDifference = vcl_abs(x1 - x2);
+  if ( absDifference <= maxAbsoluteDifference )
+    {
+    return true;
+    }
+
+  // Cast to double because abs is implemented for int and long, but not
+  // necessarily int64_t.
+  const double intDifference = vcl_abs( static_cast< double >( FloatDistance( x1, x2 )));
+  if ( intDifference <= maxUlps )
+    {
+    return true;
+    }
+  return false;
+}
+
 } // end namespace Math
 
 // move to itkConceptChecking?
