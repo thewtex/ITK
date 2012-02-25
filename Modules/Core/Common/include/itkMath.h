@@ -207,6 +207,87 @@ inline TReturn CastWithRangeCheck(TInput x)
     }
   return ret;
 }
+
+/** \brief Compare two floats and return if they are effectively equal.
+ *
+ * Determining when floats are almost equal is difficult because of their
+ * IEEE bit representation.  This function uses the integer representation of
+ * the float to determine if they are almost equal.
+ *
+ * The implementation is based off the explanation in the white paper here:
+ *
+ * \todo update me
+ *   http://www.cygnus-software.com/papers/comparingfloats/Comparing%20floating%20point%20numbers.htm
+ *
+ * The tolerance is specified in ULPS (units of least precision), i.e. how many
+ * floats there are in between the numbers.  Therefore, the tolerance depends on
+ * the magnitude of the values that are being compared.
+ *
+ * A Nan compares as not equal to a number, but two Nan's may compare as equal
+ * to each other.
+ */
+inline bool
+FloatAlmostEqual( float x1, float x2, int32_t maxUlps = 4 )
+{
+  union FloatRepresentation
+    {
+    float asFloat;
+    int32_t asInt;
+    };
+
+  FloatRepresentation x1Representation;
+  x1Representation.asFloat = x1;
+  FloatRepresentation x2Representation;
+  x2Representation.asFloat = x2;
+
+  // Make lexicographically ordered as a twos-complement int
+  if (x1Representation.asInt < 0)
+    {
+    x1Representation.asInt = 0x80000000 - x1Representation.asInt;
+    }
+  if (x2Representation.asInt < 0)
+    {
+    x2Representation.asInt = 0x80000000 - x2Representation.asInt;
+    }
+  const int32_t intDiff = abs(x1Representation.asInt - x2Representation.asInt);
+  if ( intDiff <= maxUlps )
+    {
+    return true;
+    }
+  return false;
+}
+
+inline bool
+FloatAlmostEqual( double x1, double x2, int64_t maxUlps = 4 )
+{
+  union FloatRepresentation
+    {
+    double asFloat;
+    int64_t asInt;
+    };
+
+  FloatRepresentation x1Representation;
+  x1Representation.asFloat = x1;
+  FloatRepresentation x2Representation;
+  x2Representation.asFloat = x2;
+
+  // Make lexicographically ordered as a twos-complement int
+  if (x1Representation.asInt < 0)
+    {
+    x1Representation.asInt = 0x8000000000000000 - x1Representation.asInt;
+    }
+  if (x2Representation.asInt < 0)
+    {
+    x2Representation.asInt = 0x8000000000000000 - x2Representation.asInt;
+    }
+  const int64_t intDiff = vcl_abs(x1Representation.asInt - x2Representation.asInt);
+  if ( intDiff <= maxUlps )
+    {
+    return true;
+    }
+  return false;
+}
+
 } // end namespace Math
 } // end namespace itk
 #endif // end of itkMath.h
