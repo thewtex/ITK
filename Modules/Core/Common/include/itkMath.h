@@ -254,7 +254,7 @@ FloatAlmostEqual( float x1, float x2,
 inline bool
 FloatAlmostEqual( double x1, double x2,
   int32_t maxUlps = 4,
-  double maxDiff = 0.1*NumericTraits< double >::epsilon() );
+  double maxAbsoluteDifference = 0.1*NumericTraits< double >::epsilon() );
 
 } // end namespace Math
 } // end namespace itk
