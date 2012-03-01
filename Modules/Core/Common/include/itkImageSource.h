@@ -207,7 +207,7 @@ public:
    * multiple outputs of different types, then that class must provide
    * an implementation of MakeOutput(). */
   using Superclass::MakeOutput;
-  virtual DataObjectPointer MakeOutput(DataObjectPointerArraySizeType idx);
+  virtual Superclass::DataObjectPointer MakeOutput(Superclass::DataObjectPointerArraySizeType idx);
 
 protected:
   ImageSource();
