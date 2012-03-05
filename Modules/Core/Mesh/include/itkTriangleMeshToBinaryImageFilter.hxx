@@ -470,7 +470,7 @@ TriangleMeshToBinaryImageFilter< TInputMesh, TOutputImage >
         }
         break;
       default:
-        itkExceptionMacro(<< "Need Triangle or Polygon cells ONLY");
+        itkWarningMacro(<< "Need Triangle or Polygon cells ONLY");
       }
     cellIt++;
     }
