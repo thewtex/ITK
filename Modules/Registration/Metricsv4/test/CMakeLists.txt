@@ -15,6 +15,7 @@ set(ITKMetricsv4Tests
   itkMultiStartImageToImageMetricv4RegistrationTest.cxx
   itkMultiGradientImageToImageMetricv4RegistrationTest.cxx
   itkPreWarpTest.cxx
+  itkImageToImageMetricv4RegistrationTest.cxx
 )
 
 set(INPUTDATA ${ITK_DATA_ROOT}/Input)
@@ -108,6 +109,11 @@ itk_add_test(NAME itkMultiGradientImageToImageMetricv4RegistrationTest
               DATA{Input/face_b.jpg}
               ${TEMP}/itkMultiGradientImageToImageMetricv4RegistrationTest.nii.gz
               5  )
+
 itk_add_test(NAME itkPreWarpTest
       COMMAND ITKMetricsv4TestDriver
               itkPreWarpTest)
+
+itk_add_test(NAME itkImageToImageMetricv4RegistrationTest
+      COMMAND ITKMetricsv4TestDriver
+              itkImageToImageMetricv4RegistrationTest)
