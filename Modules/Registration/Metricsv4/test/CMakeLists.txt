@@ -15,6 +15,8 @@ set(ITKMetricsv4Tests
   itkMultiStartImageToImageMetricv4RegistrationTest.cxx
   itkMultiGradientImageToImageMetricv4RegistrationTest.cxx
   itkMetricImageGradientTest.cxx
+  itkDemonsImageToImageMetricv4Test.cxx
+  itkDemonsImageToImageMetricv4RegistrationTest.cxx
 )
 
 set(INPUTDATA ${ITK_DATA_ROOT}/Input)
@@ -104,6 +106,35 @@ itk_add_test(NAME itkMultiGradientImageToImageMetricv4RegistrationTest
               DATA{Input/face_b.jpg}
               ${TEMP}/itkMultiGradientImageToImageMetricv4RegistrationTest.nii.gz
               5  )
+
 itk_add_test(NAME itkMetricImageGradientTest
       COMMAND ITKMetricsv4TestDriver
               itkMetricImageGradientTest)
+
+itk_add_test(NAME itkDemonsImageToImageMetricv4Test
+      COMMAND ITKMetricsv4TestDriver
+              itkDemonsImageToImageMetricv4Test)
+
+itk_add_test(NAME itkDemonsImageToImageMetricv4RegistrationTest
+      COMMAND ITKMetricsv4TestDriver
+      --with-threads 2
+      --compare DATA{Baseline/itkDemonsImageToImageMetricv4RegistrationTest_I35_S0_T2.nii.gz}
+                ${TEMP}/itkDemonsImageToImageMetricv4RegistrationTest.nii.gz
+              itkDemonsImageToImageMetricv4RegistrationTest
+              DATA{${INPUTDATA}/r16slice.nii.gz}
+              DATA{${INPUTDATA}/r64slice.nii.gz}
+              ${TEMP}/itkDemonsImageToImageMetricv4RegistrationTest.nii.gz
+              35 #iterations
+              0 ) #sampling
+
+itk_add_test(NAME itkDemonsImageToImageMetricv4RegistrationTest2
+      COMMAND ITKMetricsv4TestDriver
+      --with-threads 2
+      --compare DATA{Baseline/itkDemonsImageToImageMetricv4RegistrationTest_I35_S1_T2.nii.gz}
+                ${TEMP}/itkDemonsImageToImageMetricv4RegistrationTest2.nii.gz
+              itkDemonsImageToImageMetricv4RegistrationTest
+              DATA{${INPUTDATA}/r16slice.nii.gz}
+              DATA{${INPUTDATA}/r64slice.nii.gz}
+              ${TEMP}/itkDemonsImageToImageMetricv4RegistrationTest2.nii.gz
+              35 #iterations
+              1 ) #sampling
