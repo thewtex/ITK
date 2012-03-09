@@ -15,6 +15,7 @@ set(ITKMetricsv4Tests
   itkMultiStartImageToImageMetricv4RegistrationTest.cxx
   itkMultiGradientImageToImageMetricv4RegistrationTest.cxx
   itkMetricImageGradientTest.cxx
+  itkImageToImageMetricv4RegistrationTest.cxx
 )
 
 set(INPUTDATA ${ITK_DATA_ROOT}/Input)
@@ -104,6 +105,40 @@ itk_add_test(NAME itkMultiGradientImageToImageMetricv4RegistrationTest
               DATA{Input/face_b.jpg}
               ${TEMP}/itkMultiGradientImageToImageMetricv4RegistrationTest.nii.gz
               5  )
-itk_add_test(NAME itkMetricImageGradientTest
+
+itk_add_test(NAME itkPreWarpTest
       COMMAND ITKMetricsv4TestDriver
-              itkMetricImageGradientTest)
+              itkPreWarpTest)
+
+itk_add_test(NAME itkImageToImageMetricv4RegistrationTest
+      COMMAND ITKMetricsv4TestDriver
+              itkImageToImageMetricv4RegistrationTest
+              75  #iterations1
+              0.8 #maxStepSize1
+              120 #iterations2
+              0.1 #maxStepSize2
+              0 #doSampling
+              0 #useGradientFilter
+              )
+
+itk_add_test(NAME itkImageToImageMetricv4RegistrationTest2
+      COMMAND ITKMetricsv4TestDriver
+              itkImageToImageMetricv4RegistrationTest
+              50  #iterations1
+              1.0 #maxStepSize1
+              120 #iterations2
+              0.1 #maxStepSize2
+              1 #doSampling
+              0 #useGradientFilter
+              )
+
+itk_add_test(NAME itkImageToImageMetricv4RegistrationTest3
+      COMMAND ITKMetricsv4TestDriver
+              itkImageToImageMetricv4RegistrationTest
+              50  #iterations1
+              1.0 #maxStepSize1
+              120 #iterations2
+              0.1 #maxStepSize2
+              0 #doSampling
+              1 #useGradientFilter
+              )
