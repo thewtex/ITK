@@ -399,7 +399,7 @@ ANTSNeighborhoodCorrelationImageToImageMetricv4DenseGetValueAndDerivativeThreade
     {
     pointIsValid = associate->TransformAndEvaluateFixedPoint( oindex,
             virtualPoint,
-            associate->GetGradientSourceIncludesFixed() /*compute gradient*/,
+            true, //associate->GetGradientSourceIncludesFixed() /*compute gradient*/,
             mappedFixedPoint,
             fixedImageValue,
             fixedImageGradient );
@@ -461,6 +461,7 @@ ANTSNeighborhoodCorrelationImageToImageMetricv4DenseGetValueAndDerivativeThreade
   LocalRealType movingI       = scanMem.movingA;
 
   const MovingImageGradientType movingImageGradient = scanMem.movingImageGradient;
+  const MovingImageGradientType fixedImageGradient = scanMem.fixedImageGradient;
 
   if (sFixedFixed == NumericTraits< LocalRealType >::Zero || sMovingMoving == NumericTraits< LocalRealType >::Zero )
     {
@@ -468,10 +469,12 @@ ANTSNeighborhoodCorrelationImageToImageMetricv4DenseGetValueAndDerivativeThreade
     return;
     }
 
+  derivWRTImage.Fill( NumericTraits< DerivativeValueType >::Zero );
+
   for (ImageDimensionType qq = 0; qq < TImageToImageMetric::VirtualImageDimension; qq++)
     {
-    derivWRTImage[qq] = 2.0 * sFixedMoving / (sFixedFixed * sMovingMoving) * (fixedI - sFixedMoving / sMovingMoving * movingI)
-      * movingImageGradient[qq];
+    derivWRTImage[qq] -= 2.0 * sFixedMoving / (sFixedFixed * sMovingMoving) * (movingI - sFixedMoving / sFixedFixed * fixedI)
+      * fixedImageGradient[qq];
     }
 
   if ( fabs(sFixedFixed * sMovingMoving) > NumericTraits< LocalRealType >::Zero )
@@ -498,9 +501,9 @@ ANTSNeighborhoodCorrelationImageToImageMetricv4DenseGetValueAndDerivativeThreade
       {
       sum += derivWRTImage[dim] * jacobian(dim, par);
       }
-    intmax_t floatingPointCorrection_int = static_cast< intmax_t >( sum * floatingPointCorrectionResolution );
-    deriv[par] = static_cast< DerivativeValueType >( floatingPointCorrection_int / floatingPointCorrectionResolution );
+    deriv[par] = sum;
     }
+
   return;
 }
 
