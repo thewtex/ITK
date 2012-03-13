@@ -58,6 +58,7 @@ namespace itk
  * IsoContourDistanceImageFilter inernally to perform the distance calculations.
  *
  * \sa DanielssonDistanceMapImageFilter, SignedDanielssonDistanceMapImageFilter
+ * \sa SignedMaurerDistanceMapImageFilter
  * \sa FastChamferDistanceImageFilter, IsoContourDistanceImageFilter
  *
  * \author Zach Pincus

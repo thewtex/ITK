@@ -20,7 +20,7 @@
 
 #include "itkDirectedHausdorffDistanceImageFilter.h"
 #include "itkImageRegionIterator.h"
-#include "itkDanielssonDistanceMapImageFilter.h"
+#include "itkSignedMaurerDistanceMapImageFilter.h"
 #include "itkProgressReporter.h"
 
 namespace itk
@@ -137,8 +137,8 @@ DirectedHausdorffDistanceImageFilter< TInputImage1, TInputImage2 >
   m_PixelCount.Fill(0);
   m_Sum.Fill(NumericTraits< RealType >::Zero);
 
-  // Compute Danielsson distance from non-zero pixels in the second image
-  typedef itk::DanielssonDistanceMapImageFilter< InputImage2Type, DistanceMapType >
+  // Compute distance from non-zero pixels in the second image
+  typedef itk::SignedMaurerDistanceMapImageFilter< InputImage2Type, DistanceMapType >
   FilterType;
 
   typename FilterType::Pointer filter = FilterType::New();
