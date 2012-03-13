@@ -37,7 +37,7 @@ namespace itk
  * to the nearest neighbor in \f$B\f$. Note that this function is not
  * is not symmetric and hence is not a true distance.
  *
- * In particular, this filter uses the DanielssonDistanceMapImageFilter inside to
+ * In particular, this filter uses the MaurerDistanceMapImageFilter inside to
  * compute distance map from all non-zero pixels in the second image. It then
  * find the largest distance (in pixels) within the set of all non-zero pixels in the first
  * image.
@@ -53,7 +53,7 @@ namespace itk
  * This filter is templated over the two input image type. It assume
  * both image have the same number of dimensions.
  *
- * \sa DanielssonDistanceMapImageFilter
+ * \sa MaurerDistanceMapImageFilter
  * \sa HausdorffDistanceImageFilter
  *
  * \ingroup MultiThreaded
