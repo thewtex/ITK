@@ -4,6 +4,7 @@ itkComplexConjugateImageAdaptorTest.cxx
 itkImageAdaptorTest.cxx
 itkRGBToVectorImageAdaptorTest.cxx
 itkVectorImageTest.cxx
+itkRGBToHSVColorSpaceAdaptorTest.cxx
 )
 
 CreateTestDriver(ITKImageAdaptors  "${ITKImageAdaptors-Test_LIBRARIES}" "${ITKImageAdaptorsTests}")
@@ -17,3 +18,5 @@ itk_add_test(NAME itkVectorImageTest
               ${ITK_TEST_OUTPUT_DIR}/VectorImage.nrrd ${ITK_TEST_OUTPUT_DIR}/VectorImage.mhd)
 itk_add_test(NAME itkComplexConjugateImageAdaptorTest
       COMMAND ITKImageAdaptorsTestDriver itkComplexConjugateImageAdaptorTest)
+itk_add_test(NAME itkRGBToHSVColorSpaceAdaptorTest
+      COMMAND ITKImageAdaptorsTestDriver itkRGBToHSVColorSpaceAdaptorTest)

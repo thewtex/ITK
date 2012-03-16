@@ -67,6 +67,7 @@ itkPromoteDimensionImageTest.cxx
 itkModulusImageFilterTest.cxx
 itkVectorMagnitudeImageFilterTest.cxx
 itkNormalizeToConstantImageFilterTest.cxx
+itkRGBToOtherColorSpaceTransformationTest.cxx
 )
 
 CreateTestDriver(ITKImageIntensity  "${ITKImageIntensity-Test_LIBRARIES}" "${ITKImageIntensityTests}")
@@ -237,3 +238,43 @@ itk_add_test(NAME itkVectorMagnitudeImageFilterTest
       COMMAND ITKImageIntensityTestDriver itkVectorMagnitudeImageFilterTest)
 itk_add_test(NAME itkNormalizeToConstantImageFilterTest
       COMMAND ITKImageIntensityTestDriver itkNormalizeToConstantImageFilterTest)
+itk_add_test(NAME itkRGBToHSIColorSpaceTransformationTest
+      COMMAND ITKImageIntensityTestDriver itkRGBToOtherColorSpaceTransformationTest
+              DATA{${ITK_DATA_ROOT}/Input/peppers.png}
+              HSI )
+itk_add_test(NAME itkRGBToXYZColorSpaceTransformationTest
+      COMMAND ITKImageIntensityTestDriver itkRGBToOtherColorSpaceTransformationTest
+              DATA{${ITK_DATA_ROOT}/Input/peppers.png}
+              XYZ )
+itk_add_test(NAME itkRGBToxYuxColorSpaceTransformationTest
+      COMMAND ITKImageIntensityTestDriver itkRGBToOtherColorSpaceTransformationTest
+              DATA{${ITK_DATA_ROOT}/Input/peppers.png}
+              Yuv )
+itk_add_test(NAME itkRGBToYUVColorSpaceTransformationTest
+      COMMAND ITKImageIntensityTestDriver itkRGBToOtherColorSpaceTransformationTest
+              DATA{${ITK_DATA_ROOT}/Input/peppers.png}
+              YUV )
+itk_add_test(NAME itkRGBToHSVColorSpaceTransformationTest
+      COMMAND ITKImageIntensityTestDriver itkRGBToOtherColorSpaceTransformationTest
+              DATA{${ITK_DATA_ROOT}/Input/peppers.png}
+              HSV )
+itk_add_test(NAME itkRGBToLabColorSpaceTransformationTest
+      COMMAND ITKImageIntensityTestDriver itkRGBToOtherColorSpaceTransformationTest
+              DATA{${ITK_DATA_ROOT}/Input/peppers.png}
+              Lab )
+itk_add_test(NAME itkRGBToLuvColorSpaceTransformationTest
+      COMMAND ITKImageIntensityTestDriver itkRGBToOtherColorSpaceTransformationTest
+              DATA{${ITK_DATA_ROOT}/Input/peppers.png}
+              Luv )
+itk_add_test(NAME itkRGBToHSLColorSpaceTransformationTest
+      COMMAND ITKImageIntensityTestDriver itkRGBToOtherColorSpaceTransformationTest
+              DATA{${ITK_DATA_ROOT}/Input/peppers.png}
+              HSL )
+itk_add_test(NAME itkRGBToCMYColorSpaceTransformationTest
+      COMMAND ITKImageIntensityTestDriver itkRGBToOtherColorSpaceTransformationTest
+              DATA{${ITK_DATA_ROOT}/Input/peppers.png}
+              CMY )
+itk_add_test(NAME itkRGBToCMYKColorSpaceTransformationTest
+      COMMAND ITKImageIntensityTestDriver itkRGBToOtherColorSpaceTransformationTest
+              DATA{${ITK_DATA_ROOT}/Input/peppers.png}
+              CMYK )
