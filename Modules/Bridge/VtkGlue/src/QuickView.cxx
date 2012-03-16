@@ -219,7 +219,7 @@ void QuickView::Visualize(bool interact)
     viewports.push_back(viewport);
     vtkSmartPointer<vtkImageActor> actor =
       vtkSmartPointer<vtkImageActor>::New();
-    actor->SetInput(connector->GetOutput());
+    actor->SetInputData(connector->GetOutput());
 
     // Setup renderer
     vtkSmartPointer<vtkRenderer> renderer =
@@ -276,7 +276,7 @@ void QuickView::Visualize(bool interact)
     viewports.push_back(viewport);
     vtkSmartPointer<vtkImageActor> actor =
       vtkSmartPointer<vtkImageActor>::New();
-    actor->SetInput(connector->GetOutput());
+    actor->SetInputData(connector->GetOutput());
 
     // Setup renderer
     vtkSmartPointer<vtkRenderer> renderer =
