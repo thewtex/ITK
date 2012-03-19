@@ -144,6 +144,13 @@ int PerformSimpleImageRegistration( int argc, char *argv[] )
   typename AffineCommandType::Pointer affineObserver = AffineCommandType::New();
   affineSimple->AddObserver( itk::IterationEvent(), affineObserver );
 
+  {
+  typedef itk::ImageToImageMetricv4<FixedImageType, MovingImageType> ImageMetricType;
+  typename ImageMetricType::Pointer imageMetric = dynamic_cast<ImageMetricType*>( affineSimple->GetMetric() );
+  //imageMetric->SetUseFloatingPointCorrection(true);
+  imageMetric->SetFloatingPointCorrectionResolution(1e4);
+  }
+
   try
     {
     std::cout << "Affine txf:" << std::endl;
@@ -155,14 +162,17 @@ int PerformSimpleImageRegistration( int argc, char *argv[] )
     return EXIT_FAILURE;
     }
 
+  {
   typedef itk::ImageToImageMetricv4<FixedImageType, MovingImageType> ImageMetricType;
   typename ImageMetricType::Pointer imageMetric = dynamic_cast<ImageMetricType*>( affineOptimizer->GetMetric() );
   std::cout << "Affine parameters after registration: " << std::endl
             << affineOptimizer->GetCurrentPosition() << std::endl
             << "Last LearningRate: " << affineOptimizer->GetLearningRate() << std::endl
+            << "Use FltPtCorrex: " << imageMetric->GetUseFloatingPointCorrection() << std::endl
+            << "FltPtCorrexRes: " << imageMetric->GetFloatingPointCorrectionResolution() << std::endl
             << "Number of threads used: metric: " << imageMetric->GetNumberOfThreadsUsed()
             << std::endl << " optimizer: " << affineOptimizer->GetNumberOfThreads() << std::endl;
-
+  }
   //
   // Now do the displacement field transform with gaussian smoothing using
   // the composite transform.
@@ -200,6 +210,9 @@ int PerformSimpleImageRegistration( int argc, char *argv[] )
   correlationMetric->SetRadius( radius );
   correlationMetric->SetUseMovingImageGradientFilter( false );
   correlationMetric->SetUseFixedImageGradientFilter( false );
+
+  //correlationMetric->SetUseFloatingPointCorrection(true);
+  //correlationMetric->SetFloatingPointCorrectionResolution(1e4);
 
   typedef itk::RegistrationParameterScalesFromShift<CorrelationMetricType> ScalesEstimatorType;
   typename ScalesEstimatorType::Pointer scalesEstimator = ScalesEstimatorType::New();
@@ -283,6 +296,9 @@ int PerformSimpleImageRegistration( int argc, char *argv[] )
 
   std::cout << "After displacement registration: " << std::endl
             << "Last LearningRate: " << optimizer->GetLearningRate() << std::endl
+            << "Use FltPtCorrex: " << correlationMetric->GetUseFloatingPointCorrection() << std::endl
+            << "FltPtCorrexRes: " << correlationMetric->GetFloatingPointCorrectionResolution() << std::endl
+            << "Number of threads used: metric: " << correlationMetric->GetNumberOfThreadsUsed()
             << "Number of threads used: metric: " << correlationMetric->GetNumberOfThreadsUsed()
             << " optimizer: " << displacementFieldSimple->GetOptimizer()->GetNumberOfThreads() << std::endl;
 
