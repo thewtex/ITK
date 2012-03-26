@@ -259,8 +259,6 @@ TimeVaryingBSplineVelocityFieldImageRegistrationMethod<TFixedImage, TMovingImage
       // Remove the temporary mapping along the geodesic
       this->m_CompositeTransform->RemoveTransform();
 
-      this->m_Metric->GetValueAndDerivative( value, metricDerivative );
-
       // we rescale the update velocity field at each time point.
       // we first need to convert to a displacement field to look
       // at the max norm of the field.
