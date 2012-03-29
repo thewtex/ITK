@@ -17,7 +17,7 @@
  *=========================================================================*/
 
 #include "itkExpectationBasedPointSetToPointSetMetricv4.h"
-
+#include "itkTranslationTransform.h"
 
 #include <fstream>
 
@@ -53,15 +53,19 @@ int itkExpectationBasedPointSetMetricTest( int, char* [] )
     count++;
     }
 
+  // Simple translation transform for moving point set
+  typedef itk::TranslationTransform<double, Dimension> TranslationTransformType;
+  TranslationTransformType::Pointer translationTransform = TranslationTransformType::New();
+  translationTransform->SetIdentity();
+
   // Instantiate the metric
 
-  typedef itk::ExpectationBasedPointSetToPointSetMetricv4<PointSetType>
-    PointSetMetricType;
+  typedef itk::ExpectationBasedPointSetToPointSetMetricv4<PointSetType> PointSetMetricType;
   PointSetMetricType::Pointer metric = PointSetMetricType::New();
   metric->SetFixedPointSet( fixedPoints );
   metric->SetMovingPointSet( movingPoints );
+  metric->SetMovingTransform( translationTransform );
   metric->Initialize();
-
 
   // Test derivative source using moving point set
   metric->SetGradientSource( PointSetMetricType::GRADIENT_SOURCE_MOVING );
@@ -78,19 +82,20 @@ int itkExpectationBasedPointSetMetricTest( int, char* [] )
   moving_str1 << "0 0 0 0" << std::endl;
   moving_str2 << "0 0 0 0" << std::endl;
 
+  PointType::VectorType vector;
+  for( unsigned int d = 0; d < metric->GetNumberOfParameters(); d++ )
+    {
+    vector[d] = derivative[count++];
+    }
+
   PointSetType::PointsContainer::ConstIterator ItM =
     movingPoints->GetPoints()->Begin();
   while( ItM != movingPoints->GetPoints()->End() )
     {
     PointType sourcePoint = ItM.Value();
-    PointType::VectorType vector;
-    for( unsigned int d = 0; d < Dimension; d++ )
-      {
-      vector[d] = derivative[count++];
-      }
     PointType targetPoint = sourcePoint + vector;
 
-    for( unsigned int d = 0; d < Dimension; d++ )
+    for( unsigned int d = 0; d < metric->GetNumberOfParameters(); d++ )
       {
       moving_str1 << sourcePoint[d] << " ";
       moving_str2 << targetPoint[d] << " ";
@@ -123,19 +128,18 @@ int itkExpectationBasedPointSetMetricTest( int, char* [] )
   fixed_str1 << "0 0 0 0" << std::endl;
   fixed_str2 << "0 0 0 0" << std::endl;
 
-  PointSetType::PointsContainer::ConstIterator ItF =
-    fixedPoints->GetPoints()->Begin();
+  for( unsigned int d = 0; d < metric->GetNumberOfParameters(); d++ )
+    {
+    vector[d] = derivative[count++];
+    }
+
+  PointSetType::PointsContainer::ConstIterator ItF = fixedPoints->GetPoints()->Begin();
   while( ItF != fixedPoints->GetPoints()->End() )
     {
     PointType sourcePoint = ItF.Value();
-    PointType::VectorType vector;
-    for( unsigned int d = 0; d < Dimension; d++ )
-      {
-      vector[d] = derivative[count++];
-      }
     PointType targetPoint = sourcePoint + vector;
 
-    for( unsigned int d = 0; d < Dimension; d++ )
+    for( unsigned int d = 0; d < metric->GetNumberOfParameters(); d++ )
       {
       fixed_str1 << sourcePoint[d] << " ";
       fixed_str2 << targetPoint[d] << " ";

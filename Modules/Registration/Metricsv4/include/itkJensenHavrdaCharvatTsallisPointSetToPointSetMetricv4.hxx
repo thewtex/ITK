@@ -49,39 +49,7 @@ void
 JensenHavrdaCharvatTsallisPointSetToPointSetMetricv4<TPointSet>
 ::Initialize( void ) throw ( ExceptionObject )
 {
-  if ( !this->m_FixedTransform )
-    {
-    itkExceptionMacro( "Fixed transform is not present" );
-    }
-
-  if ( !this->m_MovingTransform )
-    {
-    itkExceptionMacro( "Moving transform is not present" );
-    }
-
-  if ( !this->m_FixedPointSet )
-    {
-    itkExceptionMacro( "Fixed point set is not present" );
-    }
-
-  if ( !this->m_MovingPointSet )
-    {
-    itkExceptionMacro( "Moving point set is not present" );
-    }
-
-  // If the PointSet is provided by a source, update the source.
-  if( this->m_MovingPointSet->GetSource() )
-    {
-    this->m_MovingPointSet->GetSource()->Update();
-    }
-  this->TransformMovingPointSet();
-
-  // If the point set is provided by a source, update the source.
-  if( this->m_FixedPointSet->GetSource() )
-    {
-    this->m_FixedPointSet->GetSource()->Update();
-    }
-  this->TransformFixedPointSet();
+  Superclass::Initialize();
 
   // Initialize the fixed density function
   this->m_FixedDensityFunction = DensityFunctionType::New();
@@ -104,17 +72,13 @@ JensenHavrdaCharvatTsallisPointSetToPointSetMetricv4<TPointSet>
 
   this->m_MovingDensityFunction->SetNormalize( true );
 
-  this->m_MovingDensityFunction->SetUseAnisotropicCovariances(
-    this->m_UseAnisotropicCovariances );
+  this->m_MovingDensityFunction->SetUseAnisotropicCovariances( this->m_UseAnisotropicCovariances );
 
-  this->m_MovingDensityFunction->SetCovarianceKNeighborhood(
-    this->m_CovarianceKNeighborhood );
+  this->m_MovingDensityFunction->SetCovarianceKNeighborhood( this->m_CovarianceKNeighborhood );
 
-  this->m_MovingDensityFunction->SetEvaluationKNeighborhood(
-    this->m_EvaluationKNeighborhood );
+  this->m_MovingDensityFunction->SetEvaluationKNeighborhood( this->m_EvaluationKNeighborhood );
 
-  this->m_MovingDensityFunction->SetInputPointSet(
-    this->m_MovingTransformedPointSet );
+  this->m_MovingDensityFunction->SetInputPointSet( this->m_MovingTransformedPointSet );
 }
 
 /** Get the match Measure */
@@ -242,6 +206,8 @@ JensenHavrdaCharvatTsallisPointSetToPointSetMetricv4<TPointSet>
     }
 
   measure = energyTerm1 - energyTerm2;
+
+  this->m_Value = measure;
 
   return measure;
 }
@@ -498,6 +464,7 @@ JensenHavrdaCharvatTsallisPointSetToPointSetMetricv4<TPointSet>
 
   derivative *= -1.0;
   value = energyTerm1 - energyTerm2;
+  this->m_Value = value;
 }
 
 
