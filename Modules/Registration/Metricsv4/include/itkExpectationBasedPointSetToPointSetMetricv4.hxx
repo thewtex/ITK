@@ -66,6 +66,7 @@ ExpectationBasedPointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>
   else
     {
     NeighborsIdentifierType neighborhood;
+    // FIXME Should this be Fixed locator ???
     this->m_MovingTransformedPointsLocator->FindClosestNPoints( point,
       this->m_EvaluationKNeighborhood, neighborhood );
 
