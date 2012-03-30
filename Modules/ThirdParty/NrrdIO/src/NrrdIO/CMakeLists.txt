@@ -18,7 +18,11 @@ formatPNM.c formatText.c formatVTK.c )
 
 # Turn on TEEM_BUILD so that the proper dll export def's are 
 # used on windows builds.
-ADD_DEFINITIONS(-DTEEM_BUILD=1)
+ADD_DEFINITIONS(-DTEEM_BUILD)
+
+if( NOT BUILD_SHARED_LIBS )
+ set( TEEM_STATIC )
+endif()
 
 # Configure files with settings for use by the build.
 CONFIGURE_FILE(${ITK3P_NrrdIO_SOURCE_DIR}/NrrdConfigure.h.in
