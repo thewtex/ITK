@@ -194,9 +194,9 @@ endmacro()
 macro(itk_module_target_install _name)
   install(TARGETS ${_name}
     EXPORT  ${${itk-module}-targets}
-    RUNTIME DESTINATION ${${itk-module}_INSTALL_RUNTIME_DIR}
-    LIBRARY DESTINATION ${${itk-module}_INSTALL_LIBRARY_DIR}
-    ARCHIVE DESTINATION ${${itk-module}_INSTALL_ARCHIVE_DIR}
+    RUNTIME DESTINATION ${${itk-module}_INSTALL_RUNTIME_DIR} COMPONENT RuntimeLibraries
+    LIBRARY DESTINATION ${${itk-module}_INSTALL_LIBRARY_DIR} COMPONENT RuntimeLibraries
+    ARCHIVE DESTINATION ${${itk-module}_INSTALL_ARCHIVE_DIR} COMPONENT Development
     )
 endmacro()
 
