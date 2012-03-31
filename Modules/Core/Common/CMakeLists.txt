@@ -44,6 +44,7 @@ check_include_files("sys/types.h" HAVE_SYS_TYPES_H)
 # Check if this platform support the sse2 rounding functions for 32 and 64 bits
 include(CheckSupportForSSERounding)
 
+include(CheckIncludeFileCXX)
 
 # check of the optional TR1 type_traits, alternative boost
 # implementation could also be searched for
