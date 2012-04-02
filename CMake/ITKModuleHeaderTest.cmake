@@ -14,6 +14,9 @@ set( MAXIMUM_NUMBER_OF_HEADERS 35
   CACHE STRING "The number of headers in a HeaderTest code." )
 mark_as_advanced( MAXIMUM_NUMBER_OF_HEADERS )
 
+add_custom_target( ITKHeaderTestsClean
+  COMMENT "HeaderTests have been cleaned." )
+
 add_custom_target( ITKHeaderTests
   ${CMAKE_COMMAND} --build ${ITK_BINARY_DIR}
   COMMENT "Regenerating and building the header tests." )
@@ -46,9 +49,10 @@ macro( itk_module_headertest _name )
     # should be removed once the the toolkit stabilizes following the 4.0 release.
     file( REMOVE ${_outputs} )
 
-    add_custom_target( ${_name}HeaderTestClean
-      ${CMAKE_COMMAND} -E remove ${_outputs} )
-    add_dependencies( ITKHeaderTests ${_name}HeaderTestClean )
+    add_custom_command( TARGET ITKHeaderTestsClean
+      PRE_BUILD
+      COMMAND ${CMAKE_COMMAND} -E remove ${_outputs}
+      COMMENT "Cleaning ${_outputs}" )
 
     set( _test_num 1 )
     foreach( _header_test_src ${_outputs} )
