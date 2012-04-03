@@ -16,6 +16,8 @@ set(ITKMetricsv4Tests
   itkMultiGradientImageToImageMetricv4RegistrationTest.cxx
   itkMetricImageGradientTest.cxx
   itkMeanSquaresImageToImageMetricv4RegistrationTest.cxx
+  itkEuclideanDistancePointSetMetricRegistrationTest.cxx
+  itkExpectationBasedPointSetMetricRegistrationTest.cxx
 )
 
 set(INPUTDATA ${ITK_DATA_ROOT}/Input)
@@ -116,3 +118,11 @@ itk_add_test(NAME itkMeanSquaresImageToImageMetricv4RegistrationTest
               DATA{Input/face_b.jpg}
               ${TEMP}/itkMeanSquaresImageToImageMetricv4RegistrationTest.nii.gz
               2 1 )
+
+itk_add_test(NAME itkEuclideanDistancePointSetMetricRegistrationTest
+      COMMAND ITKMetricsv4TestDriver
+              itkEuclideanDistancePointSetMetricRegistrationTest)
+
+itk_add_test(NAME itkExpectationBasedPointSetMetricRegistrationTest
+      COMMAND ITKMetricsv4TestDriver
+              itkExpectationBasedPointSetMetricRegistrationTest)
