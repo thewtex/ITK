@@ -509,18 +509,58 @@ class vnl_sse<double>
     return ret;
   }
 
+  static VNL_SSE_FORCE_INLINE unsigned arg_max(const double* x, unsigned n)
+  {
+    unsigned ret;
+    // decision logic for odd sized vectors
+    __m128d max = n%2 ? _mm_load_sd(x+--n) : _mm_setzero_pd();
+    //__m128i idx = n%2
+
+    //// handle two elements at a time, max will contain two max values
+    //for (int i=n-2; i>=0; i-=2)
+      //max = _mm_max_pd(VNL_SSE_HEAP_LOAD(pd)(x+i), max);
+
+    //// need to store max's two values
+    //max = _mm_max_sd(max,_mm_unpackhi_pd(max,_mm_setzero_pd()));
+    //_mm_store_sd(&ret,max);
+    return ret;
+  }
+
+  static VNL_SSE_FORCE_INLINE unsigned arg_min(const double* x, unsigned n)
+  {
+    unsigned ret;
+    //__m128d min = _mm_set1_pd(DBL_MAX);
+
+    //// hand last element if odd sized vector
+    //if (n%2)
+      //min = _mm_min_sd(min,_mm_load_sd(x+--n));
+
+    //// handle two elements at a time, min will contain two min values
+    //for (int i=n-2; i>=0; i-=2)
+      //min = _mm_min_pd(VNL_SSE_HEAP_LOAD(pd)(x+i), min);
+
+    //// need to store min's two values
+    //min = _mm_min_sd(min,_mm_unpackhi_pd(min,_mm_setzero_pd()));
+    //_mm_store_sd(&ret,min);
+    return ret;
+  }
+
   static VNL_SSE_FORCE_INLINE double max(const double* x, unsigned n)
   {
     double ret;
+    __m128d min_double = _mm_set1_pd(- DBL_MAX);
+    __m128d max = min_double;
+
     // decision logic for odd sized vectors
-    __m128d max = n%2 ? _mm_load_sd(x+--n) : _mm_setzero_pd();
+    if (n%2)
+      max = _mm_max_sd(max,_mm_load_sd(x+--n));
 
     // handle two elements at a time, max will contain two max values
     for (int i=n-2; i>=0; i-=2)
       max = _mm_max_pd(VNL_SSE_HEAP_LOAD(pd)(x+i), max);
 
     // need to store max's two values
-    max = _mm_max_sd(max,_mm_unpackhi_pd(max,_mm_setzero_pd()));
+    max = _mm_max_sd(max,_mm_unpackhi_pd(max,min_double));
     _mm_store_sd(&ret,max);
     return ret;
   }
@@ -528,7 +568,8 @@ class vnl_sse<double>
   static VNL_SSE_FORCE_INLINE double min(const double* x, unsigned n)
   {
     double ret;
-    __m128d min = _mm_set1_pd(DBL_MAX);
+    __m128d max_double = _mm_set1_pd(DBL_MAX);
+    __m128d min = max_double;
 
     // hand last element if odd sized vector
     if (n%2)
@@ -539,7 +580,7 @@ class vnl_sse<double>
       min = _mm_min_pd(VNL_SSE_HEAP_LOAD(pd)(x+i), min);
 
     // need to store min's two values
-    min = _mm_min_sd(min,_mm_unpackhi_pd(min,_mm_setzero_pd()));
+    min = _mm_min_sd(min,_mm_unpackhi_pd(min,max_double));
     _mm_store_sd(&ret,min);
     return ret;
   }
@@ -834,6 +875,58 @@ class vnl_sse<float>
   static VNL_SSE_FORCE_INLINE float max(const float* x, unsigned n)
   {
     float ret;
+    __m128 min_float = _mm_set1_ps(- FLT_MAX);
+    __m128 max = min_float;
+    switch (n%4)
+    { // handle vector sizes which aren't divisible by 4
+      case 3: max = _mm_load_ss(x+--n);
+      case 2: max = _mm_shuffle_ps(_mm_load_ss(x+--n), max ,_MM_SHUFFLE(1,0,0,1));
+      case 1: max = _mm_move_ss(max,_mm_load_ss(x+--n));
+      case 0: ;
+    }
+
+    // handle four elements at a time, max will contain four max values
+    for (int i = n-4; i >= 0; i-=4)
+      max = _mm_max_ps(VNL_SSE_HEAP_LOAD(ps)(x+i), max);
+
+    // need compare max's four values
+    max = _mm_max_ps(max,_mm_movehl_ps(min_float,max));
+    max = _mm_max_ss(max,_mm_shuffle_ps(max,max,_MM_SHUFFLE(3,2,1,1)));
+    _mm_store_ss(&ret,max);
+
+    return ret;
+  }
+
+  static VNL_SSE_FORCE_INLINE float min(const float* x, unsigned n)
+  {
+    float ret;
+    __m128 max_float = _mm_set1_ps(FLT_MAX);
+    __m128 min = max_float;
+
+    switch (n%4)
+    { // handle vector sizes which aren't divisible by 4
+      case 3: min = _mm_min_ss(min,_mm_load_ss(x+--n));
+      case 2: min = _mm_min_ss(min,_mm_load_ss(x+--n));
+      case 1: min = _mm_min_ss(min,_mm_load_ss(x+--n));
+      case 0: ;
+    }
+
+    // handle four elements at a time, min will contain four min values
+    for (int i = n-4; i >= 0; i-=4)
+      min = _mm_min_ps(VNL_SSE_HEAP_LOAD(ps)(x+i), min);
+
+
+    // need compare min's four values
+    min = _mm_min_ps(min,_mm_movehl_ps(max_float,min));
+    min = _mm_min_ss(min,_mm_shuffle_ps(min,min,_MM_SHUFFLE(3,2,1,1)));
+    _mm_store_ss(&ret,min);
+
+    return ret;
+  }
+
+  static VNL_SSE_FORCE_INLINE unsigned arg_max(const float* x, unsigned n)
+  {
+    unsigned ret;
     __m128 max = _mm_setzero_ps();
     switch (n%4)
     { // handle vector sizes which aren't divisible by 4
@@ -850,14 +943,14 @@ class vnl_sse<float>
     // need compare max's four values
     max = _mm_max_ps(max,_mm_movehl_ps(_mm_setzero_ps(),max));
     max = _mm_max_ss(max,_mm_shuffle_ps(max,max,_MM_SHUFFLE(3,2,1,1)));
-    _mm_store_ss(&ret,max);
+    //_mm_store_ss(&ret,max);
 
     return ret;
   }
 
-  static VNL_SSE_FORCE_INLINE float min(const float* x, unsigned n)
+  static VNL_SSE_FORCE_INLINE unsigned arg_min(const float* x, unsigned n)
   {
-    float ret;
+    unsigned ret;
     __m128 min = _mm_set1_ps(FLT_MAX);
 
     switch (n%4)
@@ -876,7 +969,7 @@ class vnl_sse<float>
     // need compare min's four values
     min = _mm_min_ps(min,_mm_movehl_ps(_mm_setzero_ps(),min));
     min = _mm_min_ss(min,_mm_shuffle_ps(min,min,_MM_SHUFFLE(3,2,1,1)));
-    _mm_store_ss(&ret,min);
+    //_mm_store_ss(&ret,min);
 
     return ret;
   }
