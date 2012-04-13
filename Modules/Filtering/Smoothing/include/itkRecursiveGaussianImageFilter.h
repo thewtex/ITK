@@ -79,7 +79,8 @@ public:
   itkTypeMacro(RecursiveGaussianImageFilter, RecursiveSeparableImageFilter);
 
   /** Set/Get the Sigma, measured in world coordinates, of the Gaussian
-   * kernel.  The default is 1.0.  */
+   * kernel.  The default is 1.0. An exception will be generated it
+   * not positive. */
   itkGetConstMacro(Sigma, ScalarRealType);
   itkSetMacro(Sigma, ScalarRealType);
 
@@ -161,6 +162,11 @@ protected:
    * derivatives. Parameter is the spacing along the dimension to
    * filter. */
   virtual void SetUp(ScalarRealType spacing);
+
+  /* See superclass for doxygen. This method adds the addition check
+  that sigma is positive. */
+  virtual void VerifyPreconditions();
+
 
 private:
   RecursiveGaussianImageFilter(const Self &); //purposely not implemented
