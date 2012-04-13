@@ -19,6 +19,7 @@
 #define __itkJointHistogramMutualInformationGetValueAndDerivativeThreader_hxx
 
 #include "itkJointHistogramMutualInformationGetValueAndDerivativeThreader.h"
+#include "itkCompensatedSummation.h"
 
 namespace itk
 {
@@ -143,14 +144,15 @@ JointHistogramMutualInformationGetValueAndDerivativeThreader< TDomainPartitioner
   /** For dense transforms, this returns identity */
   associate->m_MovingTransform->ComputeJacobianWithRespectToParameters( virtualPoint, jacobian );
 
+  CompensatedSummation< InternalComputationValueType > sum;
   for ( NumberOfParametersType par = 0; par < associate->GetNumberOfLocalParameters(); par++ )
     {
-    InternalComputationValueType sum = NumericTraits< InternalComputationValueType >::Zero;
+    sum.ResetToZero();
     for ( SizeValueType dim = 0; dim < TImageToImageMetric::MovingImageDimension; dim++ )
       {
       sum += scalingfactor * jacobian(dim, par) * movingImageGradient[dim];
       }
-    localDerivativeReturn[par] = sum;
+    localDerivativeReturn[par] = sum.GetSum();
     }
   return true;
 }
