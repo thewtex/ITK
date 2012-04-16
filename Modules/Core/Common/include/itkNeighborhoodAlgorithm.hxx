@@ -39,14 +39,18 @@ ImageBoundaryFacesCalculator< TImage >
   // boundary region that will be processed. For instance, given a 2D image
   // and regionTOProcess (size = 5x5),
 
+  FaceListType faceList;
+  if( !regionToProcess.Crop( img->GetBufferedRegion() ) )
+    {
+    return faceList;
+    }
 
   const IndexType bStart = img->GetBufferedRegion().GetIndex();
   const SizeType  bSize  = img->GetBufferedRegion().GetSize();
   const IndexType rStart = regionToProcess.GetIndex();
   const SizeType  rSize  = regionToProcess.GetSize();
 
-  long         overlapLow, overlapHigh;
-  FaceListType faceList;
+  IndexValueType overlapLow, overlapHigh;
   IndexType    fStart;       // Boundary, "face"
   SizeType     fSize;        // region data.
   RegionType   fRegion;
@@ -59,8 +63,8 @@ ImageBoundaryFacesCalculator< TImage >
 
   for ( i = 0; i < ImageDimension; ++i )
     {
-    overlapLow = static_cast< long >( ( rStart[i] - radius[i] ) - bStart[i] );
-    overlapHigh = static_cast< long >( ( bStart[i] + bSize[i] ) - ( rStart[i] + rSize[i] + radius[i] ) );
+    overlapLow = static_cast< IndexValueType >( ( rStart[i] - radius[i] ) - bStart[i] );
+    overlapHigh = static_cast< IndexValueType >( ( bStart[i] + bSize[i] ) - ( rStart[i] + rSize[i] + radius[i] ) );
 
     if ( overlapLow < 0 )                    // out of bounds condition, define
                                              // a region of
@@ -70,6 +74,10 @@ ImageBoundaryFacesCalculator< TImage >
         fStart[j] = vrStart[j];
         if ( j == i )
           {
+          if( -overlapLow > static_cast< IndexValueType >( rSize[i] ) )
+            {
+            overlapLow = - static_cast< IndexValueType >( rSize[i] );
+            }
           fSize[j] = -overlapLow;
           vrSize[j] += overlapLow; //change start and size in this direction
           vrStart[j] -= overlapLow;//to ensure no duplicate pixels at corners
@@ -100,23 +108,29 @@ ImageBoundaryFacesCalculator< TImage >
       fRegion.SetSize(fSize);
       faceList.push_back(fRegion);
       }
-    if ( overlapHigh < 0 )
+    if ( overlapHigh < 0 && bSize[i] >= 2 * radius[i])
       {
       for ( j = 0; j < ImageDimension; ++j )
         {
         if ( j == i )
           {
+          if( -overlapHigh > static_cast< IndexValueType >( rSize[i] ) )
+            {
+            overlapHigh = - static_cast< IndexValueType >( rSize[i] );
+            }
           fStart[j] = rStart[j] + static_cast< IndexValueType >( rSize[j] ) + overlapHigh;
           fSize[j] = -overlapHigh;
           vrSize[j] += overlapHigh; //change size in this direction
 
           // Start of the boundary condition region cannot be to the
           // left of the region to process
+/*
           if ( fStart[j] < rStart[j] )
             {
             fStart[j] = rStart[j];
             fSize[j] = rSize[j];     // is this the right size?
             }
+*/
           }
         else
           {
