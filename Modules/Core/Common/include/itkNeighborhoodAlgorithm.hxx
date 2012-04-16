@@ -100,7 +100,7 @@ ImageBoundaryFacesCalculator< TImage >
       fRegion.SetSize(fSize);
       faceList.push_back(fRegion);
       }
-    if ( overlapHigh < 0 )
+    if ( overlapHigh < 0 && bSize[i] >= 2 * radius[i])
       {
       for ( j = 0; j < ImageDimension; ++j )
         {
