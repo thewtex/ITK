@@ -17,8 +17,20 @@
  *=========================================================================*/
 
 #include "itkMesh.h"
-
+#include "itkQuadEdgeMesh.h"
 #include "itkMeshFileTestHelper.h"
+
+template< class TMesh >
+int
+itkPolylineReadWriteTemplateTest( char* iFileName, char* oFileName, bool IsBinary )
+{
+  if( test< TMesh >( iFileName, oFileName, IsBinary ) )
+    {
+    return EXIT_FAILURE;
+    }
+
+  return EXIT_SUCCESS;
+}
 
 int itkPolylineReadWriteTest(int argc, char * argv[])
 {
@@ -32,12 +44,22 @@ int itkPolylineReadWriteTest(int argc, char * argv[])
 
   const unsigned int dimension = 3;
   typedef itk::VariableLengthVector< float >        PixelType;
+
   typedef itk::Mesh< PixelType, dimension >         MeshType;
 
-  if( test< MeshType >( argv[1], argv[2], IsBinary ) )
+  if( itkPolylineReadWriteTemplateTest< MeshType >( argv[1], argv[2], IsBinary ) )
     {
+    std::cerr << "Using itk::Mesh" << std::endl;
+    return EXIT_FAILURE;
+    }
+
+  typedef itk::QuadEdgeMesh< PixelType, dimension >         QuadEdgeMeshType;
+
+  if( itkPolylineReadWriteTemplateTest< QuadEdgeMeshType >( argv[1], argv[2], IsBinary ) )
+    {
+    std::cerr << "Using itk::QuadEdgeMesh" << std::endl;
     return EXIT_FAILURE;
     }
 
   return EXIT_SUCCESS;
-  }
+}

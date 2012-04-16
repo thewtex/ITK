@@ -257,7 +257,7 @@ QuadEdgeMesh< TPixel, VDimension, TTraits >
      * PointType org = this->GetPoint(orgId);
      */
     PointType oldOrigin = this->GetPoint(oldOriginId);
-    
+
 
     /////////////////////////////////////////////////////////////
     /* We are done with the vertices and we might need to consider the
@@ -409,6 +409,15 @@ void QuadEdgeMesh< TPixel, VDimension, TTraits >
         // NOTE ALEX: here
         this->AddEdge(*pointId, *temp);
         }
+/*
+      typedef LineCell< CellType > MeshLineCellType;
+      MeshLineCellType* line;
+      if( ( line = dynamic_cast< MeshLineCellType * >( cell.GetPointer() ) ) )
+        {
+        Superclass::SetCell( cId, cell );
+        return;
+        }
+*/
       }
     // polygons
     else if ( cell->GetDimension() == 2 )
