@@ -34,7 +34,8 @@ PointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>
 
   this->m_FixedTransformedPointSet = NULL;
   this->m_MovingTransformedPointSet = NULL;
-
+  this->m_VirtualTransformedPointSet = NULL;
+  
   this->m_FixedTransformedPointsLocator = NULL;
   this->m_MovingTransformedPointsLocator = NULL;
 
@@ -96,7 +97,7 @@ PointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>
 ::InitializeForIteration() const
 {
   this->TransformMovingPointSet();
-  this->TransformFixedPointSet();
+  this->TransformFixedAndCreateVirtualPointSet();
   this->InitializePointsLocators();
 }
 
@@ -105,7 +106,8 @@ SizeValueType
 PointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>
 ::GetNumberOfComponents() const
 {
-  return this->m_MovingTransformedPointSet->GetNumberOfPoints();
+//-  return this->m_MovingTransformedPointSet->GetNumberOfPoints();
+  return this->m_FixedTransformedPointSet->GetNumberOfPoints();
 }
 
 template<class TFixedPointSet, class TMovingPointSet>
@@ -117,10 +119,12 @@ PointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>
 
   MeasureType measure = 0.0;
 
-  PointsConstIterator It = this->m_MovingTransformedPointSet->GetPoints()->Begin();
+//-  PointsConstIterator It = this->m_MovingTransformedPointSet->GetPoints()->Begin();
+  PointsConstIterator It = this->m_FixedTransformedPointSet->GetPoints()->Begin();
 
-  while( It != this->m_MovingTransformedPointSet->GetPoints()->End() )
-    {
+//-  while( It != this->m_MovingTransformedPointSet->GetPoints()->End() )
+  while( It != this->m_FixedTransformedPointSet->GetPoints()->End() )
+  {
     measure += this->GetLocalNeighborhoodValue( It.Value() );
     ++It;
     }
@@ -164,8 +168,11 @@ PointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>
   DerivativeType localTransformDerivative( this->GetNumberOfLocalParameters() );
   localTransformDerivative.Fill( NumericTraits<DerivativeValueType>::Zero );
 
-  PointsConstIterator It = this->m_MovingTransformedPointSet->GetPoints()->Begin();
-  PointsConstIterator end = this->m_MovingTransformedPointSet->GetPoints()->End();
+//-  PointsConstIterator It = this->m_MovingTransformedPointSet->GetPoints()->Begin();
+//-  PointsConstIterator end = this->m_MovingTransformedPointSet->GetPoints()->End();
+  PointsConstIterator It = this->m_FixedTransformedPointSet->GetPoints()->Begin();
+  PointsConstIterator end = this->m_FixedTransformedPointSet->GetPoints()->End();
+  PointsConstIterator virtualIt = this->m_VirtualTransformedPointSet->GetPoints()->Begin();
   while( It != end )
     {
     MeasureType pointValue = NumericTraits<MeasureType>::Zero;
@@ -181,7 +188,7 @@ PointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>
       pointDerivative = this->GetLocalNeighborhoodDerivative( It.Value() );
       }
 
-    this->GetMovingTransform()->ComputeJacobianWithRespectToParameters( It.Value(), jacobian );
+    this->GetMovingTransform()->ComputeJacobianWithRespectToParameters( virtualIt.Value(), jacobian );
     // Map into parameter space
     for ( NumberOfParametersType par = 0; par < this->GetNumberOfLocalParameters(); par++ )
       {
@@ -200,6 +207,7 @@ PointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>
       itkExceptionMacro("Local Support: TODO");
       }
     ++It;
+    ++virtualIt;
     }
 
   // For global-support transforms, average the accumulated derivative result
@@ -207,7 +215,7 @@ PointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>
     {
     derivative = localTransformDerivative / this->GetNumberOfComponents();
     }
-  derivative *= -1.0;
+//-  derivative *= -1.0;
   value /= static_cast<MeasureType>( this->GetNumberOfComponents() );
   this->m_Value = value;
 }
@@ -256,11 +264,13 @@ PointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>
 template<class TFixedPointSet, class TMovingPointSet>
 void
 PointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>
-::TransformFixedPointSet() const
+::TransformFixedAndCreateVirtualPointSet() const
 {
-  // Transform the fixed point set into the moving domain
-  if( ( this->m_FixedTransform->GetMTime() > this->GetMTime() ) || ! this->m_FixedTransformedPointSet
-        || ( this->m_MovingTransform->GetMTime() > this->GetMTime() ) )
+  // Transform the fixed point set through the virtual domain, and into the moving domain
+  if( ( this->m_FixedTransform->GetMTime() > this->GetMTime() )
+      || ! this->m_FixedTransformedPointSet
+      || ! this->m_VirtualTransformedPointSet
+      || ( this->m_MovingTransform->GetMTime() > this->GetMTime() ) )
     {
     this->m_FixedTransformPointLocatorsNeedInitialization = true;
     if( !this->m_FixedTransformedPointSet )
@@ -268,20 +278,37 @@ PointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>
       this->m_FixedTransformedPointSet = FixedTransformedPointSetType::New();
       this->m_FixedTransformedPointSet->Initialize();
       }
-
+    if( !this->m_VirtualTransformedPointSet )
+      {
+      this->m_VirtualTransformedPointSet = VirtualPointSetType::New();
+      this->m_VirtualTransformedPointSet->Initialize();
+      }
+      
     typename FixedTransformType::InverseTransformBasePointer inverseTransform = this->m_FixedTransform->GetInverseTransform();
 
     typename FixedPointsContainer::ConstIterator It = this->m_FixedPointSet->GetPoints()->Begin();
 
     while( It != this->m_FixedPointSet->GetPoints()->End() )
       {
+      // txf into virtual space
       PointType point = inverseTransform->TransformPoint( It.Value() );
+      this->m_VirtualTransformedPointSet->SetPoint( It.Index(), point );
       // txf into moving space
       point = this->m_MovingTransform->TransformPoint( point );
       this->m_FixedTransformedPointSet->SetPoint( It.Index(), point );
       ++It;
       }
     }
+}
+
+template<class TFixedPointSet, class TMovingPointSet>
+const typename PointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>::VirtualPointSetType *
+PointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>
+::GetVirtualTransformedPointSet()
+{
+  // First make sure the virtual point set is current.
+  this->TransformFixedAndCreateVirtualPointSet();
+  return this->m_VirtualTransformedPointSet.GetPointer();
 }
 
 template<class TFixedPointSet, class TMovingPointSet>

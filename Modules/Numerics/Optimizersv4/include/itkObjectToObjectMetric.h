@@ -20,6 +20,7 @@
 
 #include "itkTransform.h"
 #include "itkObjectToObjectMetricBase.h"
+#include "itkImage.h"
 
 namespace itk
 {
@@ -46,7 +47,7 @@ namespace itk
  *
  * \ingroup ITKOptimizersv4
  */
-template<unsigned int TFixedDimension, unsigned int TMovingDimension, unsigned int TVirtualDimension = TFixedDimension>
+template<unsigned int TFixedDimension, unsigned int TMovingDimension, class TVirtualImage = Image<typename ObjectToObjectMetricBase::ParametersValueType, TFixedDimension> >
 class ITK_EXPORT ObjectToObjectMetric:
   public ObjectToObjectMetricBase
 {
@@ -61,10 +62,10 @@ public:
   itkTypeMacro(ObjectToObjectMetric, ObjectToObjectMetricBase);
 
   /** Type used for representing object components  */
-  typedef typename Superclass::ParametersValueType CoordinateRepresentationType;
+  typedef typename Superclass::ParametersValueType            CoordinateRepresentationType;
 
   /** Type for internal computations */
-  typedef typename Superclass::InternalComputationValueType    InternalComputationValueType;
+  typedef typename Superclass::InternalComputationValueType   InternalComputationValueType;
 
   /**  Type of the measure. */
   typedef typename Superclass::MeasureType            MeasureType;
@@ -84,11 +85,29 @@ public:
   /** Object dimension accessors */
   itkStaticConstMacro(FixedDimension, DimensionType, TFixedDimension);
   itkStaticConstMacro(MovingDimension, DimensionType, TMovingDimension);
-  itkStaticConstMacro(VirtualDimension, DimensionType, TVirtualDimension);
+  itkStaticConstMacro(VirtualDimension, DimensionType, TVirtualImage::ImageDimension);
+
+  /** Types for the virtual domain */
+  typedef TVirtualImage                             VirtualImageType;
+  typedef typename VirtualImageType::Pointer        VirtualImagePointer;
+  typedef typename VirtualImageType::ConstPointer   VirtualImageConstPointer;
+  typedef typename VirtualImageType::PixelType      VirtualPixelType;
+  typedef typename VirtualImageType::RegionType     VirtualRegionType;
+  typedef typename VirtualRegionType::SizeType      VirtualSizeType;
+  typedef typename VirtualImageType::SpacingType    VirtualSpacingType;
+  typedef typename VirtualImageType::PointType      VirtualOriginType;
+  typedef typename VirtualImageType::PointType      VirtualPointType;
+  typedef typename VirtualImageType::DirectionType  VirtualDirectionType;
+  typedef typename VirtualImageType::SizeType       VirtualRadiusType;
+  typedef typename VirtualImageType::IndexType      VirtualIndexType;
+  
+  /** Point set in the virtual domain */
+  typedef PointSet<VirtualPixelType, itkGetStaticConstMacro(VirtualDimension)>  VirtualPointSetType;
+  typedef typename VirtualPointSetType::Pointer                                 VirtualPointSetPointer;
 
   /**  Type of the Transform Base classes */
-  typedef Transform<ParametersValueType, TMovingDimension, TVirtualDimension> MovingTransformType;
-  typedef Transform<ParametersValueType, TFixedDimension, TVirtualDimension>  FixedTransformType;
+  typedef Transform<ParametersValueType, TVirtualImage::ImageDimension, TMovingDimension> MovingTransformType;
+  typedef Transform<ParametersValueType, TVirtualImage::ImageDimension, TFixedDimension>  FixedTransformType;
 
   typedef typename FixedTransformType::Pointer         FixedTransformPointer;
   typedef typename FixedTransformType::InputPointType  FixedInputPointType;
@@ -104,6 +123,7 @@ public:
   typedef typename FixedTransformType::JacobianType     JacobianType;
   typedef typename FixedTransformType::JacobianType     FixedTransformJacobianType;
   typedef typename MovingTransformType::JacobianType    MovingTransformJacobianType;
+  
 
   virtual void Initialize(void) throw ( ExceptionObject );
 
@@ -133,15 +153,72 @@ public:
   /** Get the moving transform using a backwards-compatible name */
   const MovingTransformType * GetTransform();
 
+  /** Define the virtual reference space. This space defines the resolution
+   * at which the registration is performed as well as the physical coordinate
+   * system.  Useful for unbiased registration.
+   * This method will allocate \c m_VirtualImage with the passed
+   * information, with the pixel buffer left unallocated.
+   * Metric evaluation will be performed within the constraints of the virtual
+   * domain depending on implementation in derived classes.
+   * A default domain is created during initializaiton in derived
+   * classes according to their need.
+   * \param spacing   spacing
+   * \param origin    origin
+   * \param direction direction
+   * \param region    region is used to set all image regions.
+   *
+   * \sa SetVirtualDomainFromImage
+   */
+  void SetVirtualDomain( const VirtualSpacingType & spacing, const VirtualOriginType & origin,
+                         const VirtualDirectionType & direction, const VirtualRegionType & region );
+
+  /** Use a virtual domain image to define the virtual reference space.
+   * \sa SetVirtualDomain */
+  void SetVirtualDomainFromImage( VirtualImageType * virtualImage);
+
+  /** Accessors for the virtual domain information. */
+  const VirtualSpacingType &   GetVirtualSpacing( void ) const;
+  const VirtualOriginType  &   GetVirtualOrigin( void ) const;
+  const VirtualDirectionType & GetVirtualDirection( void ) const;
+  /** Return the virtual domain region, which is retrieved from
+   *  the m_VirtualImage buffered region. */
+  const VirtualRegionType   &  GetVirtualRegion( void ) const;
+
+  itkGetConstObjectMacro( VirtualImage, VirtualImageType );
+
+  /** Computes an offset for accessing parameter data from a virtual domain
+   * index. Relevant for metrics with local-support transforms, to access
+   * parameter or derivative memory that is stored linearly in a 1D array.
+   * The result is the offset (1D array index) to the first of N parameters
+   * corresponding to the given virtual index, where N is the number of
+   * local parameters.
+   * \param index the index to convert
+   * \param numberOfLocalParameters corresponding to the
+   **/
+  OffsetValueType ComputeParameterOffsetFromVirtualIndex( const VirtualIndexType & index, const NumberOfParametersType numberOfLocalParameters ) const;
+
 protected:
   ObjectToObjectMetric();
   virtual ~ObjectToObjectMetric();
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
+  /** Verify that virtual domain and displacement field are the same size
+   * and in the same physical space. */
+  virtual void VerifyDisplacementFieldSizeAndPhysicalSpace();
+
+  bool TransformPhysicalPointToVirtualIndex( const VirtualPointType &, VirtualIndexType & ) const;
+  void TransformVirtualIndexToPhysicalPoint( const VirtualIndexType &, VirtualPointType & ) const;
+
   /** Transforms */
   FixedTransformPointer   m_FixedTransform;
   MovingTransformPointer  m_MovingTransform;
+
+  VirtualImagePointer     m_VirtualImage;
+
+  /** Flag that is set when user provides a virtual domain, either via
+   * SetVirtualDomain() or SetVirtualDomainFromImage(). */
+  bool                    m_UserHasSetVirtualDomain;
 
 private:
   ObjectToObjectMetric(const Self &); //purposely not implemented

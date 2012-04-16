@@ -55,30 +55,24 @@ ImageToImageMetricv4GetValueAndDerivativeThreaderBase< TDomainPartitioner, TImag
   this->m_DerivativesPerThread.resize( this->GetNumberOfThreadsUsed() );
 
   /* This size always comes from the moving image */
-  const NumberOfParametersType globalDerivativeSize =
-    this->m_Associate->m_MovingTransform->GetNumberOfParameters();
+  const NumberOfParametersType globalDerivativeSize = this->m_Associate->m_MovingTransform->GetNumberOfParameters();
 
   for (ThreadIdType i=0; i<this->GetNumberOfThreadsUsed(); i++)
     {
     /* Allocate intermediary per-thread storage used to get results from
      * derived classes */
-    this->m_LocalDerivativesPerThread[i].SetSize(
-                                          this->m_Associate->GetNumberOfLocalParameters() );
-    this->m_MovingTransformJacobianPerThread[i].SetSize(
-                                          this->m_Associate->VirtualImageDimension,
-                                          this->m_Associate->GetNumberOfLocalParameters() );
+    this->m_LocalDerivativesPerThread[i].SetSize( this->m_Associate->GetNumberOfLocalParameters() );
+    this->m_MovingTransformJacobianPerThread[i].SetSize( this->m_Associate->VirtualImageDimension, this->m_Associate->GetNumberOfLocalParameters() );
     if ( this->m_Associate->m_MovingTransform->HasLocalSupport() )
       {
       /* For transforms with local support, e.g. displacement field,
        * use a single derivative container that's updated by region
        * in multiple threads.
        * Initialization to zero is done in main class. */
-      itkDebugMacro("ImageToImageMetricv4::Initialize: transform HAS local support\n");
+      itkDebugMacro( "ImageToImageMetricv4::Initialize: transform HAS local support\n" );
         /* Set each per-thread object to point to m_DerivativeResult for efficiency. */
-        this->m_DerivativesPerThread[i].SetData(
-                                      this->m_Associate->m_DerivativeResult->data_block(),
-                                      this->m_Associate->m_DerivativeResult->Size(),
-                                      false );
+        this->m_DerivativesPerThread[i].SetData( this->m_Associate->m_DerivativeResult->data_block(),
+                                                 this->m_Associate->m_DerivativeResult->Size(), false );
       }
     else
       {
@@ -288,7 +282,7 @@ ImageToImageMetricv4GetValueAndDerivativeThreaderBase< TDomainPartitioner, TImag
     try
       {
       OffsetValueType offset =
-        this->m_Associate->ComputeParameterOffsetFromVirtualDomainIndex( virtualIndex, this->m_Associate->m_MovingTransform->GetNumberOfLocalParameters() );
+        this->m_Associate->ComputeParameterOffsetFromVirtualIndex( virtualIndex, this->m_Associate->m_MovingTransform->GetNumberOfLocalParameters() );
       for (NumberOfParametersType i=0;
             i < this->m_Associate->m_MovingTransform->GetNumberOfLocalParameters(); i++)
         {
