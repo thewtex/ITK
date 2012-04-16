@@ -163,11 +163,17 @@ GradientDescentOptimizerv4
 
     /* Check the convergence by WindowConvergenceMonitoringFunction.
      */
-    m_ConvergenceMonitoring->AddEnergyValue( this->m_Value );
+    this->m_ConvergenceMonitoring->AddEnergyValue( this->m_Value );
     try
       {
-      InternalComputationValueType convergenceValue = m_ConvergenceMonitoring->GetConvergenceValue();
-      if (convergenceValue <= m_MinimumConvergenceValue)
+      InternalComputationValueType convergenceValue = this->m_ConvergenceMonitoring->GetConvergenceValue();
+
+      std::cout << "    Iteration " << this->m_CurrentIteration + 1
+        << ": metric value = " << this->m_Value
+        << ", convergence value = " << convergenceValue
+        << std::endl;
+
+      if (convergenceValue <= this->m_MinimumConvergenceValue)
         {
         this->m_StopConditionDescription << "Convergence checker passed.";
         this->m_StopCondition = CONVERGENCE_CHECKER_PASSED;
