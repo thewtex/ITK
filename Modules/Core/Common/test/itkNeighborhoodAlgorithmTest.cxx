@@ -49,7 +49,7 @@ bool ImageBoundaryFaceCalculatorTest(TImage * image, const typename TImage::Regi
     {
     if(iter1.Get() != 1)
       {
-      std::cerr<<"pixel at Duplication or empty region found"<<std::endl;
+        std::cerr<<"pixel at Duplication or empty region found, pixel = "<<iter1.Get()<<std::endl;
       return false;
       }
     }
@@ -86,6 +86,20 @@ bool NeighborhoodAlgorithmTest()
   size.Fill(4);
   region.SetIndex(ind);
   region.SetSize(size);
+
+  if ( !ImageBoundaryFaceCalculatorTest( image.GetPointer(), region, radius ))
+    return false;
+
+  ind.Fill(0);
+  region.SetIndex(ind);
+
+  size.Fill(5);
+  if (VDimension > 1)
+  {
+    size[VDimension-1] = 1;
+  }
+  region.SetSize(size);
+  image->SetRegions(region);
 
   if ( !ImageBoundaryFaceCalculatorTest( image.GetPointer(), region, radius ))
     return false;
