@@ -73,9 +73,8 @@ AutomaticTopologyMeshSource< TOutputMesh >
 ::AddPoint(const CoordinateType *p0)
 {
   PointType    newPoint;
-  unsigned int i;
 
-  for ( i = 0; i < PointDimension; i++ )
+  for (  unsigned int i = 0; i < PointDimension; i++ )
     {
     newPoint[i] = p0[i];
     }
