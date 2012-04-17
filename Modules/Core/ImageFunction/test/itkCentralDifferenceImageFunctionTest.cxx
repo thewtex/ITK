@@ -78,8 +78,7 @@ int itkCentralDifferenceImageFunctionTest(int, char* [] )
 
   if( indexOutput != continuousIndexOutput )
     {
-    std::cerr << "ERROR: Output of EvaluateAtIndex and EvaluateAtContinuousIndex "
-              << "do not match." << std::endl;
+    std::cerr << "ERROR: Output of EvaluateAtIndex and EvaluateAtContinuousIndex do not match." << std::endl;
     result = EXIT_FAILURE;
     }
 
@@ -93,8 +92,8 @@ int itkCentralDifferenceImageFunctionTest(int, char* [] )
   // image is setup with default spatial information.
   if( indexOutput != pointOutput )
     {
-    std::cerr << "ERROR: Output of EvaluateAtIndex and EvaluateAtContinuousIndex "
-              << "do not match." << std::endl;
+    std::cerr << "ERROR: Output of EvaluateAtIndex and Evaluate do not match." << std::endl;
+    std::cerr << "indexOutput: " << indexOutput << " pointOutput: " << pointOutput << std::endl;
     result = EXIT_FAILURE;
     }
 
@@ -118,21 +117,22 @@ int itkCentralDifferenceImageFunctionTest(int, char* [] )
 
   if( indexOutput != continuousIndexOutput )
     {
-    std::cerr << "ERROR: Output of EvaluateAtIndex and EvaluateAtContinuousIndex "
-              << "do not match at boundary." << std::endl;
+    std::cerr << "ERROR: Output of EvaluateAtIndex and EvaluateAtContinuousIndex do not match at boundary." << std::endl;
+    std::cerr << "indexOutput: " << indexOutput << " continuousIndexOutput: " << continuousIndexOutput << std::endl;
     result = EXIT_FAILURE;
     }
 
   point.Fill( 8.0 );
   point[0] = 15.0;
+//  point[0] = 14.99999999;
   pointOutput = function->Evaluate( point );
   std::cout << "Point: " << point << " Derivative: ";
   std::cout << pointOutput << std::endl;
 
   if( indexOutput != pointOutput )
     {
-    std::cerr << "ERROR: Output of EvaluateAtIndex and EvaluateAtContinuousIndex "
-              << "do not match at boundary." << std::endl;
+    std::cerr << "ERROR: Output of EvaluateAtIndex and Evaluate do not match at boundary." << std::endl;
+    std::cerr << "indexOutput: " << indexOutput << " pointOutput: " << pointOutput << std::endl;
     result = EXIT_FAILURE;
     }
 
