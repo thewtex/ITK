@@ -389,14 +389,6 @@ PointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>
   return this->m_MovingTransform->GetNumberOfLocalParameters();
 }
 
-template<class TFixedPointSet, class TMovingPointSet>
-bool
-PointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>
-::HasLocalSupport() const
-{
-  return this->m_MovingTransform->HasLocalSupport();
-}
-
 /*
  * UpdateParameters
  */
