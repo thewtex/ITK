@@ -159,6 +159,31 @@ ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage >
     this->MapFixedSampledPointSetToVirtual();
     }
 
+<<<<<<< HEAD
+=======
+  /* Special checks for when the moving transform is dense/high-dimensional */
+  if( this->m_MovingTransform->GetTransformCategory() == MovingTransformType::DisplacementField )
+    {
+    /* Verify that virtual domain and displacement field are the same size
+    * and in the same physical space. Handles CompositeTransform by checking
+    * if first applied transform is DisplacementFieldTransform */
+    this->VerifyDisplacementFieldSizeAndPhysicalSpace();
+
+    /* Verify virtual image pixel type is scalar. Effects calc of offset
+    in StoreDerivativeResult.
+    NOTE:  Can this be checked at compile time? ConceptChecking has a
+    HasPixelTraits class, but looks like it just verifies that type T
+    has PixelTraits associated with it, and not a particular value. */
+    if( PixelTraits< VirtualImagePixelType >::Dimension != 1 )
+      {
+      itkExceptionMacro("VirtualImagePixelType must be scalar for use "
+                        "with high-dimensional transform. "
+                        "Dimensionality is " <<
+                        PixelTraits< VirtualImagePixelType >::Dimension );
+      }
+    }
+
+>>>>>>> ENH: Expanding HasLocalSupport to transform categories.
   /* Inititialize interpolators. */
   itkDebugMacro("Initialize Interpolators");
   this->m_FixedInterpolator->SetInputImage( this->m_FixedImage );
