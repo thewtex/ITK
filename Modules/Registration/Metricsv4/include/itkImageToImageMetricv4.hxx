@@ -166,7 +166,7 @@ ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage >
     }
 
   /* Special checks for when the moving transform is dense/high-dimensional */
-  if( this->m_MovingTransform->HasLocalSupport() )
+  if( this->m_MovingTransform->GetTransformCategory() == MovingTransformType::DisplacementField )
     {
     /* Verify that virtual domain and displacement field are the same size
     * and in the same physical space. Handles CompositeTransform by checking
@@ -821,14 +821,6 @@ ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage >
 ::GetNumberOfLocalParameters() const
 {
   return this->m_MovingTransform->GetNumberOfLocalParameters();
-}
-
-template<class TFixedImage,class TMovingImage,class TVirtualImage>
-bool
-ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage >
-::HasLocalSupport() const
-{
-  return this->m_MovingTransform->HasLocalSupport();
 }
 
 template<class TFixedImage,class TMovingImage,class TVirtualImage>

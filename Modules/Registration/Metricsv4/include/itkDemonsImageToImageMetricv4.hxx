@@ -68,12 +68,9 @@ DemonsImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage>
     {
     numberOfDimensions = MovingImageDimension;
     }
-  if( ! this->HasLocalSupport() || this->GetNumberOfLocalParameters() != numberOfDimensions )
+  if( this->m_MovingTransform->GetTransformCategory() != MovingTransformType::DisplacementField )
     {
-    itkExceptionMacro("The transform must have local support, and its number of local parameters "
-                      "must match the dimensionality of the image gradient source. "
-                      "HasLocalSupport: " << this->HasLocalSupport() <<
-                      " GetNumberOfLocalParameters(): " << this->GetNumberOfLocalParameters() );
+    itkExceptionMacro( "The moving transform must be a displacement field transform" );
     }
 
   // compute the normalizer
