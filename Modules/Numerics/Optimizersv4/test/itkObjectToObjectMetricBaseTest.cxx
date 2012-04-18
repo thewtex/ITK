@@ -66,9 +66,6 @@ public:
   unsigned int GetNumberOfLocalParameters() const
   { return 0; }
 
-  bool HasLocalSupport() const
-  { return false; }
-
   void UpdateTransformParameters( DerivativeType &, ParametersValueType ) {}
 
   const ParametersType & GetParameters() const
