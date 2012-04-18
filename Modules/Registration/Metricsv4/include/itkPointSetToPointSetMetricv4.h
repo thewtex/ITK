@@ -127,6 +127,21 @@ public:
   typedef typename DerivativeType::ValueType                                          DerivativeValueType;
   typedef FixedArray<DerivativeValueType, itkGetStaticConstMacro( PointDimension )>   LocalDerivativeType;
 
+  /** Types for the virtual domain */
+  typedef typename Superclass::VirtualImageType       VirtualImageType;
+  typedef typename Superclass::VirtualImagePointer    VirtualImagePointer;
+  typedef typename Superclass::VirtualPixelType       VirtualPixelType;
+  typedef typename Superclass::VirtualRegionType      VirtualRegionType;
+  typedef typename Superclass::VirtualSizeType        VirtualSizeType;
+  typedef typename Superclass::VirtualSpacingType     VirtualSpacingType;
+  typedef typename Superclass::VirtualPointType       VirtualOriginType;
+  typedef typename Superclass::VirtualPointType       VirtualPointType;
+  typedef typename Superclass::VirtualDirectionType   VirtualDirectionType;
+  typedef typename Superclass::VirtualSizeType        VirtualRadiusType;
+  typedef typename Superclass::VirtualIndexType       VirtualIndexType;
+  typedef typename Superclass::VirtualPointSetType    VirtualPointSetType;
+  typedef typename Superclass::VirtualPointSetPointer VirtualPointSetPointer;
+    
   /** Connect the fixed pointset.  */
   itkSetConstObjectMacro( FixedPointSet, FixedPointSetType );
 
@@ -204,8 +219,14 @@ public:
     MeasureType &, LocalDerivativeType & ) const = 0;
 
   /**
+   * Get the virtual point set, derived from the fixed point set.
+   * If the virtual point set has not yet been derived, it will be
+   * in this call. */
+  const VirtualPointSetType * GetVirtualTransformedPointSet();
+
+  /**
    * Initialize the metric by making sure that all the components
-   *  are present and plugged together correctly     .
+   *  are present and plugged together correctly.
    */
   virtual void Initialize( void ) throw ( ExceptionObject );
 
@@ -224,6 +245,9 @@ protected:
 
   mutable typename PointsLocatorType::Pointer             m_MovingTransformedPointsLocator;
 
+  /** Holds the fixed points after transformation into virtual domain. */
+  mutable VirtualPointSetPointer                          m_VirtualTransformedPointSet;
+
   /**
    * Initialize to prepare for a particular iteration, generally
    * an iteration of optimization. Distinct from Initialize()
@@ -235,16 +259,18 @@ protected:
   void CalculateValueAndDerivative( MeasureType & value, DerivativeType & derivative, bool calculateValue ) const;
 
   /**
-   * Warp the fixed point set based on the fixed transform.  Note that the
-   * warped moving point set is of type FixedPointSetType since the transform
+   * Warp the fixed point set into the moving domain based on the fixed transform,
+   * passing through the virtual domain and storing a virtual domain set.
+   * Note that the warped moving point set is of type FixedPointSetType since the transform
    * takes the points from the fixed to the moving domain.
    */
-  void TransformFixedPointSet() const;
+  void TransformFixedAndCreateVirtualPointSet() const;
 
   /**
    * Warp the moving point set based on the moving transform.  Note that the
    * warped moving point set is of type FixedPointSetType since the transform
    * takes the points from the moving to the fixed domain.
+   * FIXME: needs update.
    */
   void TransformMovingPointSet() const;
 

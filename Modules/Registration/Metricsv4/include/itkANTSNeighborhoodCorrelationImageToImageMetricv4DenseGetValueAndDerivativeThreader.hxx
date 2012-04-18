@@ -49,8 +49,7 @@ ANTSNeighborhoodCorrelationImageToImageMetricv4DenseGetValueAndDerivativeThreade
   while (!scanIt.IsAtEnd())
     {
     /* Get the virtual point */
-    associate->m_VirtualDomainImage->TransformIndexToPhysicalPoint(
-        scanIt.GetIndex(), virtualPoint);
+    associate->TransformVirtualIndexToPhysicalPoint( scanIt.GetIndex(), virtualPoint );
 
     /* Call the user method in derived classes to do the specific
      * calculations for value and derivative. */
@@ -154,8 +153,7 @@ ANTSNeighborhoodCorrelationImageToImageMetricv4DenseGetValueAndDerivativeThreade
       MovingImageGradientType movingImageGradient;
       bool pointIsValid;
 
-      associate->m_VirtualDomainImage->TransformIndexToPhysicalPoint(index,
-          virtualPoint);
+      associate->TransformVirtualIndexToPhysicalPoint(index, virtualPoint);
 
       try
         {
@@ -251,7 +249,7 @@ ANTSNeighborhoodCorrelationImageToImageMetricv4DenseGetValueAndDerivativeThreade
     MovingImageGradientType movingImageGradient;
     bool pointIsValid;
 
-    associate->m_VirtualDomainImage->TransformIndexToPhysicalPoint(index, virtualPoint);
+    associate->TransformVirtualIndexToPhysicalPoint(index, virtualPoint);
     try
       {
       pointIsValid = associate->TransformAndEvaluateFixedPoint( index,
@@ -393,7 +391,7 @@ ANTSNeighborhoodCorrelationImageToImageMetricv4DenseGetValueAndDerivativeThreade
   MovingImageGradientType movingImageGradient;
   bool pointIsValid;
 
-  associate->m_VirtualDomainImage->TransformIndexToPhysicalPoint(oindex, virtualPoint);
+  associate->TransformVirtualIndexToPhysicalPoint(oindex, virtualPoint);
 
   try
     {

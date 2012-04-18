@@ -18,7 +18,7 @@
 
 #include "itkEuclideanDistancePointSetToPointSetMetricv4.h"
 #include "itkGradientDescentOptimizerv4.h"
-#include "itkRegistrationParameterScalesFromShift.h"
+#include "itkRegistrationParameterScalesFromPhysicalShift.h"
 #include "itkAffineTransform.h"
 
 #include <fstream>
@@ -84,25 +84,28 @@ int itkEuclideanDistancePointSetMetricRegistrationTest( int argc, char *argv[] )
   metric->Initialize();
 
   // scales estimator
-  // needs updating to handle point sets
-  //typedef itk::RegistrationParameterScalesFromShift< PointSetMetricType > RegistrationParameterScalesFromShiftType;
-  //RegistrationParameterScalesFromShiftType::Pointer shiftScaleEstimator = RegistrationParameterScalesFromShiftType::New();
-  //shiftScaleEstimator->SetMetric( metric );
-
+  typedef itk::RegistrationParameterScalesFromPhysicalShift< PointSetMetricType > RegistrationParameterScalesFromShiftType;
+  RegistrationParameterScalesFromShiftType::Pointer shiftScaleEstimator = RegistrationParameterScalesFromShiftType::New();
+  shiftScaleEstimator->SetMetric( metric );
+  // needed with pointset metrics
+***********************
+4/13/12 I AM HERE - TRYING THIS
+***********************
+  shiftScaleEstimator->SetVirtualDomainPointSet( metric->GetVirtualTransformedPointSet() );
+  
   // optimizer
   typedef itk::GradientDescentOptimizerv4  OptimizerType;
   OptimizerType::Pointer  optimizer = OptimizerType::New();
   optimizer->SetMetric( metric );
   optimizer->SetNumberOfIterations( numberOfIterations );
-  //optimizer->SetScalesEstimator( shiftScaleEstimator );
+  optimizer->SetScalesEstimator( shiftScaleEstimator );
 
-  OptimizerType::ScalesType scales( metric->GetNumberOfParameters() );
-  scales.Fill(1.0);
-  scales[4] = 100;
-  scales[5] = 100;
-
-  optimizer->SetScales( scales );
-  optimizer->SetLearningRate( 0.0001 );
+//  OptimizerType::ScalesType scales( metric->GetNumberOfParameters() );
+//  scales.Fill(1.0);
+//  scales[4] = 100;
+//  scales[5] = 100;
+//  optimizer->SetScales( scales );
+//  optimizer->SetLearningRate( 0.0001 );
 
   //if( maximumStepSize > 0 )
   //  {
@@ -114,7 +117,9 @@ int itkEuclideanDistancePointSetMetricRegistrationTest( int argc, char *argv[] )
   std::cout << "numberOfIterations: " << numberOfIterations << std::endl;
   std::cout << "Moving-source final value: " << optimizer->GetValue() << std::endl;
   std::cout << "Moving-source final position: " << optimizer->GetCurrentPosition() << std::endl;
-
+  std::cout << "Optimizer scales: " << optimizer->GetScales() << std::endl;
+  std::cout << "Optimizer learning rate: " << optimizer->GetLearningRate() << std::endl;
+  
   // applying the resultant transform to moving points and verify result
   std::cout << "Fixed\tMoving\tTransformed Moving\tTransformed Fixed\tDiff" << std::endl;
   bool passed = true;

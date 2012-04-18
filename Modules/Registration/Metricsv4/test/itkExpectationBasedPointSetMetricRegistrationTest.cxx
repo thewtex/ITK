@@ -18,7 +18,7 @@
 
 #include "itkExpectationBasedPointSetToPointSetMetricv4.h"
 #include "itkGradientDescentOptimizerv4.h"
-#include "itkRegistrationParameterScalesFromShift.h"
+#include "itkRegistrationParameterScalesFromPhysicalShift.h"
 #include "itkAffineTransform.h"
 #include "itkTranslationTransform.h"
 

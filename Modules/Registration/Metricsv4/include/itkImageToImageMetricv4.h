@@ -55,7 +55,7 @@ namespace itk
  * system. This is useful for unbiased registration. The region over which
  * registration is performed is taken from the virtual image buffered region.
  * The user can define a virtual domain by calling either
- * \c CreateVirtualDomainImage or \c SetVirtualDomainImage. See these
+ * SetVirtualDomain() or SetVirtualDomainFromImage(). See these
  * methods for details.
  * If the user does not set the virtual image explicitly,
  * then it is created during the call to \c Initialize by allocating a new
@@ -174,7 +174,7 @@ namespace itk
  */
 template<class TFixedImage,class TMovingImage,class TVirtualImage = TFixedImage>
 class ITK_EXPORT ImageToImageMetricv4 :
-  public ObjectToObjectMetric<TFixedImage::ImageDimension, TMovingImage::ImageDimension>
+  public ObjectToObjectMetric<TFixedImage::ImageDimension, TMovingImage::ImageDimension, TVirtualImage>
 {
 public:
 
@@ -224,29 +224,34 @@ public:
   /** Image-accessor typedefs */
   typedef TFixedImage                             FixedImageType;
   typedef typename FixedImageType::PixelType      FixedImagePixelType;
+  typedef FixedImagePixelType                     FixedPixelType;
   typedef typename FixedImageType::Pointer        FixedImagePointer;
   typedef typename FixedImageType::ConstPointer   FixedImageConstPointer;
   typedef typename FixedImageType::PointType      FixedImagePointType;
   typedef typename FixedImageType::IndexType      FixedImageIndexType;
   typedef TMovingImage                            MovingImageType;
   typedef typename MovingImageType::PixelType     MovingImagePixelType;
+  typedef MovingImagePixelType                    MovingPixelType;
   typedef typename MovingImageType::Pointer       MovingImagePointer;
   typedef typename MovingImageType::ConstPointer  MovingImageConstPointer;
   typedef typename MovingImageType::PointType     MovingImagePointType;
   typedef typename MovingImageType::RegionType    MovingImageRegionType;
   typedef typename MovingImageType::IndexType     MovingImageIndexType;
+
   /** Types for the virtual domain */
-  typedef TVirtualImage                             VirtualImageType;
-  typedef typename VirtualImageType::PixelType      VirtualImagePixelType;
-  typedef typename VirtualImageType::Pointer        VirtualImagePointer;
-  typedef typename VirtualImageType::RegionType     VirtualRegionType;
-  typedef typename VirtualRegionType::SizeType      VirtualSizeType;
-  typedef typename VirtualImageType::SpacingType    VirtualSpacingType;
-  typedef typename VirtualImageType::PointType      VirtualOriginType;
-  typedef typename VirtualImageType::PointType      VirtualPointType;
-  typedef typename VirtualImageType::DirectionType  VirtualDirectionType;
-  typedef typename VirtualImageType::SizeType       VirtualRadiusType;
-  typedef typename VirtualImageType::IndexType      VirtualIndexType;
+  typedef typename Superclass::VirtualImageType       VirtualImageType;
+  typedef typename Superclass::VirtualImagePointer    VirtualImagePointer;
+  typedef typename Superclass::VirtualPixelType       VirtualPixelType;
+  typedef typename Superclass::VirtualRegionType      VirtualRegionType;
+  typedef typename Superclass::VirtualSizeType        VirtualSizeType;
+  typedef typename Superclass::VirtualSpacingType     VirtualSpacingType;
+  typedef typename Superclass::VirtualPointType       VirtualOriginType;
+  typedef typename Superclass::VirtualPointType       VirtualPointType;
+  typedef typename Superclass::VirtualDirectionType   VirtualDirectionType;
+  typedef typename Superclass::VirtualSizeType        VirtualRadiusType;
+  typedef typename Superclass::VirtualIndexType       VirtualIndexType;
+  typedef typename Superclass::VirtualPointSetType    VirtualPointSetType;
+  typedef typename Superclass::VirtualPointSetPointer VirtualPointSetPointer;
 
   /* Image dimension accessors */
   itkStaticConstMacro(FixedImageDimension, DimensionType, Superclass::FixedDimension);
@@ -270,11 +275,6 @@ public:
                                                                         FixedSampledPointSetType;
   typedef typename FixedSampledPointSetType::Pointer                    FixedSampledPointSetPointer;
   typedef typename FixedSampledPointSetType::ConstPointer               FixedSampledPointSetConstPointer;
-
-  typedef PointSet<typename VirtualImageType::PixelType, itkGetStaticConstMacro(VirtualImageDimension)>
-                                                                                  VirtualSampledPointSetType;
-
-  typedef typename VirtualSampledPointSetType::Pointer VirtualSampledPointSetPointer;
 
   /**  Type of the Interpolator Base class */
   typedef InterpolateImageFunction< FixedImageType,
@@ -379,43 +379,6 @@ public:
   /** Get the Moving Image. */
   itkGetConstObjectMacro(MovingImage, MovingImageType);
 
-  /** Define the virtual reference space. This space defines the resolution
-   * at which the registration is performed as well as the physical coordinate
-   * system.  Useful for unbiased registration.
-   * This method will allocate \c m_VirtualDomainImage with the passed
-   * information. Metric evaluation will be performed over
-   * the image's buffered region.
-   * \param spacing   spacing
-   * \param origin    origin
-   * \param direction direction
-   * \param region    region is used to set all image regions.
-   * If the user does not set this explicitly then it is taken from the fixed
-   * image in \c Initialize method.
-   * To define the virtual domain from an existing image,
-   * use \c SetVirtualDomainImage.
-   */
-  void CreateVirtualDomainImage( VirtualSpacingType & spacing,
-                                    VirtualOriginType & origin,
-                                    VirtualDirectionType & direction,
-                                    VirtualRegionType & region );
-
-  /** Set a virtual domain image to define the virtual reference space.
-   * Metric evaluation will be performed over the image's buffered region.
-   * The image is expected to be allocated.
-   * If the user does not set this explicitly then it is taken from the fixed
-   * image in \c Initialize method. */
-  void SetVirtualDomainImage( VirtualImageType * virtualImage);
-
-  /** Get the virtual domain image */
-  itkGetConstObjectMacro(VirtualDomainImage, VirtualImageType);
-
-  /** Convenience get-accessors for the virtual domain information.
-   * These are returned from the VirtualDomainImage */
-  const VirtualSpacingType    GetVirtualDomainSpacing( void ) const;
-  const VirtualOriginType     GetVirtualDomainOrigin( void ) const;
-  const VirtualDirectionType  GetVirtualDomainDirection( void ) const;
-  const VirtualRegionType     GetVirtualDomainRegion( void ) const;
-
   /** Connect the fixed interpolator. */
   itkSetObjectMacro(FixedInterpolator, FixedInterpolatorType);
   /** Get a pointer to the fixed interpolator.  */
@@ -449,7 +412,7 @@ public:
   itkBooleanMacro(UseFixedSampledPointSet);
 
   /** Get the virtual domain sampling point set */
-  itkGetConstObjectMacro(VirtualSampledPointSet, VirtualSampledPointSetType);
+  itkGetConstObjectMacro(VirtualSampledPointSet, VirtualPointSetType);
 
   /** Set/Get the gradient filter */
   itkSetObjectMacro( FixedImageGradientFilter, FixedImageGradientFilterType );
@@ -531,14 +494,6 @@ public:
    * GetDerivative will be called repeatedly. It must be called again if
    * metric settings are changed before beginning a new registration. */
   virtual void Initialize(void) throw ( itk::ExceptionObject );
-
-  /* Computes an offset for accessing parameter data from a virtual domain
-   * index. Relevant for metrics with local-support transforms, to access
-   * parameter or derivative memory that is stored linearly in a 1D array.
-   * The result is the offset (1D array index) to the first of N parameters
-   * corresponding to the given virtual index, where N is the number of
-   * local parameters. */
-  OffsetValueType ComputeParameterOffsetFromVirtualDomainIndex( const VirtualIndexType & index, const NumberOfParametersType numberOfLocalParameters ) const;
 
   virtual MeasureType GetValue() const;
 
@@ -663,7 +618,6 @@ protected:
 
   FixedImageConstPointer  m_FixedImage;
   MovingImageConstPointer m_MovingImage;
-  VirtualImagePointer     m_VirtualDomainImage;
 
   /** Pointers to interpolators */
   FixedInterpolatorPointer                                m_FixedInterpolator;
@@ -705,17 +659,13 @@ protected:
    * calculation. */
   mutable SizeValueType                   m_NumberOfValidPoints;
 
-  /** Flag that is set when user provides a virtual domain, either via
-   * CreateVirtualDomainImage or SetVirtualDomainImage. */
-  bool                                    m_UserHasProvidedVirtualDomainImage;
-
   /** Masks */
   FixedImageMaskConstPointer              m_FixedImageMask;
   MovingImageMaskConstPointer             m_MovingImageMask;
 
   /** Sampled point sets */
   FixedSampledPointSetConstPointer        m_FixedSampledPointSet;
-  VirtualSampledPointSetPointer           m_VirtualSampledPointSet;
+  VirtualPointSetPointer                  m_VirtualSampledPointSet;
 
   /** Flag to use FixedSampledPointSet, i.e. Sparse sampling. */
   bool                                    m_UseFixedSampledPointSet;
@@ -724,10 +674,6 @@ protected:
   virtual ~ImageToImageMetricv4();
 
   void PrintSelf(std::ostream& os, Indent indent) const;
-
-  /** Verify that virtual domain and displacement field are the same size
-   * and in the same physical space. */
-  virtual void VerifyDisplacementFieldSizeAndPhysicalSpace();
 
   /** Check that the number of valid points is above a default
    * minimum (zero). If not, then return false, and assign to 'value' a value
@@ -747,9 +693,6 @@ private:
 
   ImageToImageMetricv4(const Self &); //purposely not implemented
   void operator=(const Self &); //purposely not implemented
-
-  //Sample point coordinates from the virtual image domain
-  std::vector<VirtualPointType> m_VirtualImageCornerPoints;
 
   /* Keep track of the number of sampled fixed points that are
    * deemed invalid during conversion to virtual domain.

@@ -92,13 +92,13 @@ JensenHavrdaCharvatTsallisPointSetToPointSetMetricv4<TPointSet>
   densityFunctions[0] = this->m_MovingDensityFunction;
   densityFunctions[1] = this->m_FixedDensityFunction;
 
-  RealType totalNumberOfPoints = 0.0;
+  IdentifierType totalNumberOfPoints = 0;
   for( unsigned int d = 0; d < 2; d++ )
     {
     const PointSetType * pointSet = densityFunctions[d]->GetInputPointSet();
     totalNumberOfPoints += static_cast<RealType>( pointSet->GetNumberOfPoints() );
     }
-  RealType totalNumberOfSamples = totalNumberOfPoints;
+  IdentifierType totalNumberOfSamples = totalNumberOfPoints;
 
   MeasureType measure = NumericTraits< MeasureType >::Zero;
 
@@ -234,6 +234,8 @@ JensenHavrdaCharvatTsallisPointSetToPointSetMetricv4<TPointSet>
 
   unsigned int start = 0;
   unsigned int end = 0;
+  /* Trying now with fixed source, so start == end == 0
+  
   if( this->GetGradientSource() == Superclass::GRADIENT_SOURCE_MOVING )
     {
     start = 1;
@@ -252,8 +254,8 @@ JensenHavrdaCharvatTsallisPointSetToPointSetMetricv4<TPointSet>
     start = 0;
     end = 1;
     }
-
-  RealType totalNumberOfPoints = NumericTraits<RealType>::Zero;
+  */
+  IdentifierType totalNumberOfPoints = NumericTraits< IdentifierType >::Zero;
   for( unsigned int d = 0; d < 2; d++ )
     {
     const PointSetType * pointSet = densityFunctions[d]->GetInputPointSet();
@@ -292,6 +294,9 @@ JensenHavrdaCharvatTsallisPointSetToPointSetMetricv4<TPointSet>
     {
     const PointSetType * pointSet = densityFunctions[d]->GetInputPointSet();
     PointsContainerConstIterator It = pointSet->GetPoints()->Begin();
+    /* As long as we're iterating only over fixed points, the virtual point set is the same size */
+    PointsContainerConstIterator virtualIt = this->m_VirtualTransformedPointSet->GetPoints()->Begin();
+    
     while( It != pointSet->GetPoints()->End() )
       {
       PointType samplePoint = It.Value();
@@ -306,6 +311,7 @@ JensenHavrdaCharvatTsallisPointSetToPointSetMetricv4<TPointSet>
       if( probabilityStar == 0 )
         {
         ++It;
+        ++virtualIt;
         continue;
         }
 
@@ -323,7 +329,7 @@ JensenHavrdaCharvatTsallisPointSetToPointSetMetricv4<TPointSet>
       typename DensityFunctionType::NeighborsIdentifierType neighbors;
       densityFunctions[1-d]->GetPointsLocator()->FindClosestNPoints( samplePoint, this->m_EvaluationKNeighborhood, neighbors );
 
-      this->GetMovingTransform()->ComputeJacobianWithRespectToParameters( samplePoint, jacobian );
+      this->GetMovingTransform()->ComputeJacobianWithRespectToParameters( virtualIt.Value(), jacobian );
 
       for( unsigned int n = 0; n < neighbors.size(); n++ )
         {
@@ -379,6 +385,7 @@ JensenHavrdaCharvatTsallisPointSetToPointSetMetricv4<TPointSet>
         derivativeReturn += pointDerivative;
         }
       ++It;
+      ++virtualIt;
       }
     }
 
@@ -397,10 +404,11 @@ JensenHavrdaCharvatTsallisPointSetToPointSetMetricv4<TPointSet>
       {
       const PointSetType * pointSetB = densityFunctions[1-d]->GetInputPointSet();
 
-      const RealType prefactor2 = -1.0 /
-        ( static_cast<RealType>( pointSetB->GetNumberOfPoints() ) * totalNumberOfPoints );
+      const RealType prefactor2 = -1.0 / ( static_cast<RealType>( pointSetB->GetNumberOfPoints() ) * totalNumberOfPoints );
 
-      typename PointSetType::PointsContainerConstIterator It = pointSetB->GetPoints()->Begin();
+      PointsContainerConstIterator It = pointSetB->GetPoints()->Begin();
+      PointsContainerConstIterator virtualIt = this->m_VirtualTransformedPointSet->GetPoints()->Begin();
+      
       while( It != pointSetB->GetPoints()->End() )
         {
         PointType samplePoint = It.Value();
@@ -410,6 +418,7 @@ JensenHavrdaCharvatTsallisPointSetToPointSetMetricv4<TPointSet>
         if( probability == 0 )
           {
           ++It;
+          ++virtualIt;
           continue;
           }
 
@@ -432,7 +441,7 @@ JensenHavrdaCharvatTsallisPointSetToPointSetMetricv4<TPointSet>
 
         densityFunctions[1-d]->GetPointsLocator()->FindClosestNPoints( samplePoint, this->m_EvaluationKNeighborhood, neighbors );
 
-        this->GetMovingTransform()->ComputeJacobianWithRespectToParameters( samplePoint, jacobian );
+        this->GetMovingTransform()->ComputeJacobianWithRespectToParameters( virtualIt.Value(), jacobian );
 
         for( unsigned int n = 0; n < neighbors.size(); n++ )
           {
@@ -485,6 +494,7 @@ JensenHavrdaCharvatTsallisPointSetToPointSetMetricv4<TPointSet>
           derivativeReturn += pointDerivative;
           }
         ++It;
+        ++virtualIt;
         }
       }
     if( this->m_Alpha != 1.0 )
@@ -494,7 +504,7 @@ JensenHavrdaCharvatTsallisPointSetToPointSetMetricv4<TPointSet>
     energyTerm2 *= prefactor[1];
     }
 
-  derivativeReturn *= -1.0;
+//-  derivativeReturn *= -1.0;
   value = energyTerm1 - energyTerm2;
   this->m_Value = value;
 }
