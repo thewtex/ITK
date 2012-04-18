@@ -88,7 +88,8 @@ GradientDescentOptimizerBasev4
   fullrange[0] = 0;
   fullrange[1] = this->m_Gradient.GetSize()-1; //range is inclusive
   /* Perform the modification either with or without threading */
-  if( this->m_Metric->HasLocalSupport() )
+
+  if( this->m_Gradient.GetSize() > 10000 )
     {
     // Inheriting classes should instantiate and assign m_ModifyGradientByScalesThreader
     // in their constructor.
