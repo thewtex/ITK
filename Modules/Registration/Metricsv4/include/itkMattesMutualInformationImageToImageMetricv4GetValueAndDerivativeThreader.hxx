@@ -101,7 +101,7 @@ MattesMutualInformationImageToImageMetricv4GetValueAndDerivativeThreader< TDomai
   //
   // Now allocate memory according to transform type
   //
-  if( associate->HasLocalSupport() )
+  if(associate->m_MovingTransform->GetTransformCategory() == MovingTransformType::DisplacementField)
     {
     associate->m_PRatioArray.assign(associate->m_NumberOfHistogramBins * associate->m_NumberOfHistogramBins, 0.0);
     associate->m_JointPdfIndex1DArray.assign( associate->GetNumberOfParameters(), 0 );
@@ -167,7 +167,7 @@ MattesMutualInformationImageToImageMetricv4GetValueAndDerivativeThreader< TDomai
       associate->m_ThreaderFixedImageMarginalPDF[threadID].begin(),
       associate->m_ThreaderFixedImageMarginalPDF[threadID].end(), 0.0F);
     associate->m_ThreaderJointPDF[threadID]->FillBuffer(0.0F);
-    if( ! associate->HasLocalSupport() )
+    if( associate->m_MovingTransform->GetTransformCategory() != MovingTransformType::DisplacementField )
       {
       associate->m_ThreaderJointPDFDerivatives[threadID]->FillBuffer(0.0F);
       }
@@ -258,7 +258,7 @@ MattesMutualInformationImageToImageMetricv4GetValueAndDerivativeThreader< TDomai
   // Store the pdf indecies for this point.
   // Just store the starting pdfMovingIndex and we'll iterate later
   // over the next four to collect results.
-  if( associate->HasLocalSupport() )
+  if( associate->m_MovingTransform->GetTransformCategory() == MovingTransformType::DisplacementField )
     {
     OffsetValueType jointPdfIndex1D = pdfMovingIndex + (fixedImageParzenWindowIndex * associate->m_NumberOfHistogramBins);
     localDerivativeOffset = associate->ComputeParameterOffsetFromVirtualDomainIndex( virtualIndex, associate->GetNumberOfLocalParameters() );
@@ -287,7 +287,7 @@ MattesMutualInformationImageToImageMetricv4GetValueAndDerivativeThreader< TDomai
     // Not used with global support transforms.
     DerivativeValueType * localSupportDerivativeResultPtr = NULL;
 
-    if( associate->HasLocalSupport() )
+    if( associate->m_MovingTransform->GetTransformCategory() == MovingTransformType::DisplacementField )
       {
       // ptr to where the derivative result should go, for efficiency
       localSupportDerivativeResultPtr = &( associate->m_LocalDerivativeByParzenBin[movingParzenBin][localDerivativeOffset] );
@@ -336,7 +336,7 @@ MattesMutualInformationImageToImageMetricv4GetValueAndDerivativeThreader< TDomai
   const OffsetValueType pdfFixedIndex = fixedImageParzenWindowIndex;
 
   JointPDFDerivativesValueType *derivPtr=0;
-  if( ! associate->HasLocalSupport() )
+  if( associate->m_MovingTransform->GetTransformCategory() != MovingTransformType::DisplacementField )
     {
     derivPtr = associate->m_ThreaderJointPDFDerivatives[threadID]->GetBufferPointer()
       + ( pdfFixedIndex  * associate->m_ThreaderJointPDFDerivatives[threadID]->GetOffsetTable()[2] )
@@ -352,7 +352,7 @@ MattesMutualInformationImageToImageMetricv4GetValueAndDerivativeThreader< TDomai
       }
 
     const PDFValueType derivativeContribution = innerProduct * cubicBSplineDerivativeValue;
-    if( associate->HasLocalSupport() )
+    if( associate->m_MovingTransform->GetTransformCategory() == MovingTransformType::DisplacementField )
       {
       *( localSupportDerivativeResultPtr ) += derivativeContribution;
       localSupportDerivativeResultPtr++;
@@ -397,7 +397,7 @@ MattesMutualInformationImageToImageMetricv4GetValueAndDerivativeThreader< TDomai
 
   /* This should be done via its own threader class. Previously it was threaded using
    * old ImageToImageMetric threaded post-processing. */
-  if( ! associate->HasLocalSupport() )
+  if( associate->m_MovingTransform->GetTransformCategory() != MovingTransformType::DisplacementField )
     {
     for( ThreadIdType threadID = 0; threadID < this->GetNumberOfThreadsUsed(); threadID++ )
       {

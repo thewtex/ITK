@@ -436,7 +436,7 @@ public:
   /** Generate a platform independent name */
   virtual std::string GetTransformTypeAsString() const;
 
-  /** Indicates if this transform is linear. A transform is defined to be
+  /** For linear transforms---A transform is defined to be
    * linear if the transform of a linear combination of points is equal to the
    * linear combination (with the same coefficients) of the individual
    * transforms of each point. The transform T will be linear if given two
@@ -451,18 +451,23 @@ public:
    * \warning This method must be thread-safe. See, e.g., its use
    * in ResampleImageFilter.
    */
-  virtual bool IsLinear() const
-  {
-    return false;
-  }
 
-  /** Indicates if this transform is a "global" transform
+  typedef enum { Linear, BSpline, Spline, DisplacementField, Composite, None } TransformCategoryType;
+
+  /** Indicates the category transform.
    *  e.g. an affine transform, or a local one, e.g. a deformation field.
    */
-  virtual bool HasLocalSupport() const
+  virtual TransformCategoryType GetTransformCategory() const
   {
-    return false;
+    return None;
   }
+
+  virtual bool IsLinear() const
+  {
+    return ( this->GetTransformCategory() == Linear );
+  }
+
+
 #ifdef ITKV3_COMPATIBILITY
   /**
    * This function is only here for ITKv3 backwards compatibility.
