@@ -93,6 +93,9 @@ public:
   itkStaticConstMacro(VirtualImageDimension, SizeValueType,
       ::itk::GetImageDimension<VirtualImageType>::ImageDimension);
 
+
+  typedef Transform<FloatType, FixedImageDimension, MovingImageDimension>  TransformBaseType;
+
   typedef typename VirtualImageType::RegionType     VirtualRegionType;
   typedef typename VirtualImageType::SizeType       VirtualSizeType;
   typedef typename VirtualImageType::PointType      VirtualPointType;
@@ -198,7 +201,7 @@ protected:
                               ParametersType & squareNorms);
 
   /** Check if the transform being optimized has local support. */
-  bool HasLocalSupport();
+  bool IsDisplacementFieldTransform();
 
   /** Get the number of local parameters. */
   SizeValueType GetNumberOfLocalParameters();
