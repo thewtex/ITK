@@ -237,11 +237,6 @@ public:
    */
   virtual const ParametersType & GetParameters() const;
 
-  /** Return whether the metric's active transform has local support,
-   * e.g. whether it is dense/high-dimensional.
-   */
-  virtual bool HasLocalSupport() const;
-
   /** Update the parameters of the metric's active transform.
    * Typically this call is passed through directly to the transform.
    * \c factor is a scalar multiplier for each value in update, and

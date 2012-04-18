@@ -220,6 +220,7 @@ void ImageToImageMetricv4TestComputeIdentityTruthValues(
   truthDerivative.SetSize( metric->GetNumberOfParameters() );
   truthDerivative.Fill( 0 );
 
+  typedef ImageToImageMetricv4TestMetricType::MovingTransformType MovingTransformType;
 
   itk::ImageRegionIterator<ImageToImageMetricv4TestImageType>
                      itFixed( fixedImage, fixedImage->GetRequestedRegion() );
@@ -290,7 +291,7 @@ void ImageToImageMetricv4TestComputeIdentityTruthValues(
         sum += movingImageDerivative[dim] + fixedImageDerivative[dim];
         }
 
-      if( metric->HasLocalSupport() )
+      if( metric->GetMovingTransform()->GetTransformCategory() == MovingTransformType::DisplacementField )
         {
         truthDerivative[ count * metric->GetNumberOfLocalParameters() + par ]
                                                                         = sum;
@@ -307,7 +308,7 @@ void ImageToImageMetricv4TestComputeIdentityTruthValues(
 
   // Take the averages
   truthValue /= metric->GetNumberOfValidPoints();
-  if( ! metric->HasLocalSupport() )
+  if( metric->GetMovingTransform()->GetTransformCategory() != MovingTransformType::DisplacementField )
     {
     truthDerivative /= metric->GetNumberOfValidPoints();
     }

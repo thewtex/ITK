@@ -282,7 +282,7 @@ MattesMutualInformationImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualI
         sum += jointPDFValue * ( pRatio - vcl_log(fixedImagePDFValue) );
         }
 
-      if( ! this->HasLocalSupport() )
+      if( this->m_MovingTransform->GetTransformCategory() != MovingTransformType::DisplacementField )
         {
         // Collect global derivative contributions
 
@@ -309,7 +309,7 @@ MattesMutualInformationImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualI
 
   // Apply the pRatio and sum the per-window derivative
   // contributions, in the local-support case.
-  if( this->HasLocalSupport() )
+  if( this->m_MovingTransform->GetTransformCategory() == MovingTransformType::DisplacementField )
     {
     for( SizeValueType i = 0; i < derivative.Size(); i++ )
       {

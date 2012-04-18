@@ -40,7 +40,6 @@ namespace itk
  *  GetNumberOfLocalParameters
  *  GetParameters
  *  SetParameters
- *  HasLocalSupport
  *  UpdateTransformParameters
  *
  * \note Transform Optimization
@@ -130,10 +129,6 @@ public:
 
   /** Get a const reference to the active transform's parameters */
   virtual const ParametersType & GetParameters() const = 0;
-
-  /** Return whether the metric's active transform has local support,
-   * e.g. whether it is dense/high-dimensional. */
-  virtual bool HasLocalSupport() const = 0;
 
   /** Update the parameters of the metric's active transform.
    * Typically this call is passed through directly to the transform.
