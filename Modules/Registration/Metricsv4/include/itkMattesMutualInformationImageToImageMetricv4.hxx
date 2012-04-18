@@ -313,7 +313,7 @@ MattesMutualInformationImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualI
         sum += jointPDFValue * ( pRatio - vcl_log(fixedImagePDFValue) );
         }
 
-      if( this->m_ComputeDerivative )
+      if( this->m_MovingTransform->GetTransformCategory() != MovingTransformType::DisplacementField )
         {
         if( ! this->HasLocalSupport() )
           {
