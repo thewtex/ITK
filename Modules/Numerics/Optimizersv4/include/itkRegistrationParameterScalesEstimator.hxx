@@ -147,16 +147,19 @@ RegistrationParameterScalesEstimator< TMetric >
 template< class TMetric >
 bool
 RegistrationParameterScalesEstimator< TMetric >
-::HasLocalSupport()
+::IsDisplacementFieldTransform()
 {
-  if (this->m_TransformForward)
+  bool isDisplacementFieldTransform = false;
+  if( this->m_TransformForward && !this->m_MovingTransform->GetTransformCategory() == MovingTransformType::DisplacementField )
     {
-    return this->m_MovingTransform->HasLocalSupport();
+    isDisplacementFieldTransform = true;
     }
-  else
+  if( !this->m_TransformForward && !this->m_FixedTransform->GetTransformCategory() == FixedTransformType::DisplacementField )
     {
-    return this->m_FixedTransform->HasLocalSupport();
+    isDisplacementFieldTransform = true;
     }
+
+  return isDisplacementFieldTransform;
 }
 
 /** Get the number of scales. */
@@ -324,7 +327,7 @@ void
 RegistrationParameterScalesEstimator< TMetric >
 ::SetScalesSamplingStrategy()
 {
-  if( this->HasLocalSupport() )
+  if( this->IsDisplacementFieldTransform() )
     {
     this->SetSamplingStrategy(CentralRegionSampling);
     }
@@ -347,7 +350,7 @@ void
 RegistrationParameterScalesEstimator< TMetric >
 ::SetStepScaleSamplingStrategy()
 {
-  if (this->HasLocalSupport())
+  if (this->IsDisplacementFieldTransform())
     {
     // Have to use FullDomainSampling for a transform with local support
     this->SetSamplingStrategy(FullDomainSampling);

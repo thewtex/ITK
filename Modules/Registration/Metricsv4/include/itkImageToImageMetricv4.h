@@ -584,9 +584,6 @@ public:
   /** Get the number of local parameters from the moving transform. */
   virtual NumberOfParametersType GetNumberOfLocalParameters() const;
 
-  /** Get if the moving transform has local support. */
-  virtual bool HasLocalSupport() const;
-
   /* Initialize the metric before calling GetValue or GetDerivative.
    * Derived classes must call this Superclass version if they override
    * this to perform their own initialization.
