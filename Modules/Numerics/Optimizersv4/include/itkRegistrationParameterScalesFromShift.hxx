@@ -54,7 +54,7 @@ RegistrationParameterScalesFromShift< TMetric >
   FloatType minNonZeroShift = NumericTraits<FloatType>::max();
 
   SizeValueType offset = 0;
-  if( this->HasLocalSupport() )
+  if( this->IsDisplacementFieldTransform() )
     {
     VirtualIndexType centralIndex = this->GetVirtualImageCentralIndex();
     VirtualImageConstPointer image = this->GetVirtualImage();
@@ -92,7 +92,7 @@ RegistrationParameterScalesFromShift< TMetric >
       if (parameterScales[i] <= NumericTraits<FloatType>::epsilon())
         {
         // To avoid division-by-zero in optimizers, assign a small value for a zero scale.
-        parameterScales[i] = minNonZeroShift * minNonZeroShift;
+        parameterScales[i] = minNonZeroShift;
         }
       else
         {
@@ -103,7 +103,6 @@ RegistrationParameterScalesFromShift< TMetric >
         / m_SmallParameterVariation / m_SmallParameterVariation;
       }
     }
-
 }
 
 /** Compute the scale for a step. For transform T(x + t * step), the scale
@@ -118,7 +117,7 @@ RegistrationParameterScalesFromShift< TMetric >
   this->SetStepScaleSamplingStrategy();
   this->SampleImageDomain();
 
-  if (this->HasLocalSupport())
+  if( this->IsDisplacementFieldTransform() )
     {
     return this->ComputeMaximumVoxelShift(step);
     }
@@ -156,7 +155,7 @@ void
 RegistrationParameterScalesFromShift< TMetric >
 ::EstimateLocalStepScales(const ParametersType &step, ScalesType &localStepScales)
 {
-  if (!this->HasLocalSupport())
+  if ( !this->IsDisplacementFieldTransform() )
     {
     itkExceptionMacro("EstimateLocalStepScales: the transform doesn't have local support.");
     }
@@ -347,6 +346,7 @@ RegistrationParameterScalesFromShift< TMetric >
     } // end for numSamples
 
   // Apply the delta parameters to the transform
+
   this->UpdateTransformParameters(deltaParameters);
 
   // compute the indices mapped by the new transform

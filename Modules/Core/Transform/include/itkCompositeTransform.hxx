@@ -49,19 +49,37 @@ CompositeTransform<TScalar, NDimensions>::
 
 template
 <class TScalar, unsigned int NDimensions>
-bool CompositeTransform<TScalar, NDimensions>
-::IsLinear() const
+typename CompositeTransform<TScalar, NDimensions>::TransformCategoryType
+CompositeTransform<TScalar, NDimensions>
+::GetTransformCategory() const
 {
+  if( this->GetNumberOfTransforms() == 0 )
+    {
+    return Self::None;
+    }
+
+  // Check if linear
+
+  bool isLinearTransform = true;
   typename TransformQueueType::const_iterator it;
   for( it = this->m_TransformQueue.begin();
        it != this->m_TransformQueue.end(); ++it )
     {
-    if( !(*it)->IsLinear() )
+    if( !(*it)->GetTransformCategory() == Self::Linear )
       {
-      return false;
+      isLinearTransform = false;
+      break;
       }
     }
-  return true;
+
+  if( isLinearTransform )
+    {
+    return Self::Linear;
+    }
+  else
+    {
+    return Self::Composite;
+    }
 }
 
 /**
@@ -1084,31 +1102,6 @@ CompositeTransform<TScalar, NDimensions>
   this->Modified();
 }
 
-/* Get local support flag */
-template
-<class TScalar, unsigned int NDimensions>
-bool
-CompositeTransform<TScalar, NDimensions>
-::HasLocalSupport() const
-{
-  /* We only return true if all subtransforms return true for
-   * HasLocalSupport. */
-  bool result = true;
-
-  for( signed long tind = (signed long) this->GetNumberOfTransforms() - 1;
-       tind >= 0; tind-- )
-    {
-    if( this->GetNthTransformToOptimize( tind ) )
-      {
-      if( !this->GetNthTransform( tind ).GetPointer()->HasLocalSupport() )
-        {
-        result = false;
-        }
-      }
-    }
-  return result;
-}
-
 template
 <class TScalar, unsigned int NDimensions>
 typename CompositeTransform<TScalar, NDimensions>::TransformQueueType
@@ -1182,7 +1175,6 @@ CompositeTransform<TScalar, NDimensions>
   this->m_TransformsToOptimizeQueue = transformsToOptimizeQueue;
   this->m_TransformsToOptimizeFlags = transformsToOptimizeFlags;
 }
-
 
 template <class TScalarType, unsigned int NDimensions>
 void
