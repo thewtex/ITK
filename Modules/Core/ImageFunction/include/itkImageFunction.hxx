@@ -34,6 +34,9 @@ ImageFunction< TInputImage, TOutput, TCoordRep >
   m_EndIndex.Fill(0);
   m_StartContinuousIndex.Fill(0.0f);
   m_EndContinuousIndex.Fill(0.0f);
+  m_StartPoint.Fill(0.0f);
+  m_EndPoint.Fill(0.0f);
+  m_IsNegativeDimension.Fill(false);
 }
 
 /**
@@ -76,6 +79,13 @@ ImageFunction< TInputImage, TOutput, TCoordRep >
       m_EndIndex[j] = m_StartIndex[j] + static_cast< IndexValueType >( size[j] ) - 1;
       m_StartContinuousIndex[j] = static_cast< CoordRepType >( m_StartIndex[j] - 0.5 );
       m_EndContinuousIndex[j]   = static_cast< CoordRepType >( m_EndIndex[j] + 0.5 );
+      }
+
+    ptr->TransformContinuousIndexToPhysicalPoint( m_StartContinuousIndex, m_StartPoint );
+    ptr->TransformContinuousIndexToPhysicalPoint( m_EndContinuousIndex, m_EndPoint );
+    for ( unsigned int j = 0; j < ImageDimension; j++ )
+      {
+      m_IsNegativeDimension[j] = m_EndPoint[j] < m_StartPoint[j];
       }
     }
 }

@@ -167,13 +167,25 @@ public:
    * the input image pointer is done. */
   virtual bool IsInsideBuffer(const PointType & point) const
   {
-    ContinuousIndexType index;
-    m_Image->TransformPhysicalPointToContinuousIndex(point, index);
-    /* Call IsInsideBuffer to test against BufferedRegion bounds.
-     * TransformPhysicalPointToContinuousIndex tests against
-     * LargestPossibleRegion */
-    bool isInside = IsInsideBuffer( index );
-    return isInside;
+    for ( unsigned int j = 0; j < ImageDimension; j++ )
+      {
+      /* Test for negative of a positive so we can catch NaN's. */
+     if ( m_IsNegativeDimension[j] )
+        {
+        if ( ! (point[j] <= m_StartPoint[j] && point[j] > m_EndPoint[j] ) )
+          {
+          return false;
+          }
+        }
+      else
+        {
+        if ( ! (point[j] >= m_StartPoint[j] && point[j] < m_EndPoint[j] ) )
+          {
+          return false;
+          }
+        }
+      }
+    return true;
   }
 
   /** Convert point to nearest index. */
@@ -220,6 +232,15 @@ protected:
 
   ContinuousIndexType m_StartContinuousIndex;
   ContinuousIndexType m_EndContinuousIndex;
+
+  /** Cache boundaries for testing if points are inside buffered region. */
+  PointType m_StartPoint;
+  PointType m_EndPoint;
+
+  /** Array of flags indicating for each dimension whether it's negative.
+   *  Used in IsInsiderBuffer(PointType) */
+  FixedArray<bool, ImageDimension> m_IsNegativeDimension;
+
 private:
   ImageFunction(const Self &);  //purposely not implemented
   void operator=(const Self &); //purposely not implemented
