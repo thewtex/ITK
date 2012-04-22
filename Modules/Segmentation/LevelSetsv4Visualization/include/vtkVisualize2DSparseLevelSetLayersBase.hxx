@@ -19,6 +19,10 @@
 #ifndef __vtkVisualize2DSparseLevelSetLayersBase_hxx
 #define __vtkVisualize2DSparseLevelSetLayersBase_hxx
 
+#ifndef VTK_MAJOR_VERSION
+#include "vtkVersionMacros.h"
+#endif
+
 #include "vtkVisualize2DSparseLevelSetLayersBase.h"
 #include "vtkImageMapper3D.h"
 

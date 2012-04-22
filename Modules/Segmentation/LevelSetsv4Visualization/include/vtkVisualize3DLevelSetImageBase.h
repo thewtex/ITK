@@ -25,6 +25,10 @@
 #include "itkImageToVTKImageFilter.h"
 #include "itkLevelSetTovtkImageData.h"
 
+#ifndef VTK_MAJOR_VERSION
+#include "vtkVersionMacros.h"
+#endif
+
 #include "vtkImageData.h"
 #include "vtkMarchingCubes.h"
 #include "vtkPolyDataMapper.h"

@@ -22,6 +22,10 @@
 #include "itkRGBToVectorImageAdaptor.h"
 #include "itkFlipImageFilter.h"
 
+#ifndef VTK_MAJOR_VERSION
+#include "vtkVersionMacros.h"
+#endif
+
 #include "vtkRenderWindowInteractor.h"
 #include "vtkImageMapper3D.h"
 #include "vtkImageActor.h"

@@ -21,6 +21,10 @@
 
 #include "itkVTKImageToImageFilter.h"
 
+#ifndef VTK_MAJOR_VERSION
+#include "vtkVersionMacros.h"
+#endif
+
 namespace itk
 {
 

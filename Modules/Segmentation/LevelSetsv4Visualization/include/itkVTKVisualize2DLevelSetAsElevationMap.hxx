@@ -20,6 +20,10 @@
 
 #include "itkVTKVisualize2DLevelSetAsElevationMap.h"
 
+#ifndef VTK_MAJOR_VERSION
+#include "vtkVersionMacros.h"
+#endif
+
 #include "vtkScalarsToColors.h"
 #include "vtkDoubleArray.h"
 #include "vtkPointData.h"

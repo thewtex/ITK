@@ -18,6 +18,10 @@
 #ifndef __itkVTKVisualizeImageLevelSetIsoValues_hxx
 #define __itkVTKVisualizeImageLevelSetIsoValues_hxx
 
+#ifndef VTK_MAJOR_VERSION
+#include "vtkVersionMacros.h"
+#endif
+
 #include "itkVTKVisualizeImageLevelSetIsoValues.h"
 
 namespace itk

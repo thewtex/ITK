@@ -18,6 +18,10 @@
 #ifndef __itkImageToRGBVTKImageFilter_hxx
 #define __itkImageToRGBVTKImageFilter_hxx
 
+#ifndef VTK_MAJOR_VERSION
+#include "vtkVersionMacros.h"
+#endif
+
 #include "itkImageToRGBVTKImageFilter.h"
 
 namespace itk
