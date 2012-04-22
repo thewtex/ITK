@@ -29,8 +29,8 @@
 int itkJointHistogramMutualInformationImageToImageMetricv4Test( int , char * [] )
 {
 
-  const unsigned int imageSize = 10;
-  const unsigned int imageDimensionality = 3;
+  const unsigned int         imageSize = 10;
+  const itk::DimensionType   imageDimensionality = 3;
   typedef itk::Image< double, imageDimensionality >              ImageType;
 
   ImageType::SizeType       size;
