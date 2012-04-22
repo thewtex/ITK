@@ -75,7 +75,7 @@ int itkDemonsImageToImageMetricv4RegistrationTest(int argc, char *argv[])
   std::cout << " iterations "<< numberOfIterations << std::endl;
   std::cout << " useImageGradientFilter " << useImageGradientFilter << std::endl;
 
-  const unsigned int Dimension = 2;
+  const itk::DimensionType Dimension = 2;
   typedef double PixelType; //I assume png is unsigned short
 
   typedef itk::Image< PixelType, Dimension >  FixedImageType;

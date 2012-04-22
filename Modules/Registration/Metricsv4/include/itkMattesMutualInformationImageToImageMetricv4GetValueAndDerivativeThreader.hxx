@@ -346,7 +346,7 @@ MattesMutualInformationImageToImageMetricv4GetValueAndDerivativeThreader< TDomai
   for( NumberOfParametersType mu = 0; mu < associate->GetNumberOfLocalParameters(); mu++ )
     {
     PDFValueType innerProduct = 0.0;
-    for( SizeValueType dim = 0; dim < associate->MovingImageDimension; dim++ )
+    for( DimensionType dim = 0; dim < associate->MovingImageDimension; dim++ )
       {
       innerProduct += jacobian[dim][mu] * movingImageGradient[dim];
       }

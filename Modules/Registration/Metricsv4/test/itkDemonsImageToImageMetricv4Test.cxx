@@ -31,7 +31,7 @@ int itkDemonsImageToImageMetricv4Test(int, char ** const)
 {
 
   const unsigned int imageSize = 5;
-  const unsigned int imageDimensionality = 3;
+  const itk::DimensionType imageDimensionality = 3;
   typedef itk::Image< double, imageDimensionality >              ImageType;
 
   ImageType::SizeType       size;

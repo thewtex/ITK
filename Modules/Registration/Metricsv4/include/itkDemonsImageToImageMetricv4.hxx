@@ -63,7 +63,7 @@ DemonsImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage>
 
   // Verify that the transform has local support, and its number of local
   // parameters equals the dimensionality of the image gradient source.
-  SizeValueType numberOfDimensions = FixedImageDimension;
+  DimensionType numberOfDimensions = FixedImageDimension;
   if( this->GetGradientSourceIncludesMoving() )
     {
     numberOfDimensions = MovingImageDimension;
