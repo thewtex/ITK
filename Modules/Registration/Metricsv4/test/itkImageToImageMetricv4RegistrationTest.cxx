@@ -38,7 +38,7 @@
  * New metrics must be added manually to this test.
  */
 
-template<unsigned int Dimension, typename TImage, typename TMetric>
+template<itk::DimensionType Dimension, typename TImage, typename TMetric>
 int ImageToImageMetricv4RegistrationTestRun( typename TMetric::Pointer metric, int numberOfIterations, typename TImage::PixelType maximumStepSize, bool doSampling, bool doGradientFilter )
 {
   typedef typename TImage::PixelType  PixelType;
@@ -83,7 +83,7 @@ int ImageToImageMetricv4RegistrationTestRun( typename TMetric::Pointer metric, i
   itk::ImageRegionIteratorWithIndex<TImage> it( fixedImage, fixedImage->GetLargestPossibleRegion() );
   for( it.GoToBegin(); ! it.IsAtEnd(); ++it )
     {
-    for( itk::SizeValueType n=0; n < Dimension; n++ )
+    for( itk::DimensionType n=0; n < Dimension; n++ )
       {
       if( it.GetIndex()[n] < boundary || (static_cast<itk::OffsetValueType>(size[n]) - it.GetIndex()[n]) <= boundary )
         {
@@ -190,7 +190,7 @@ int ImageToImageMetricv4RegistrationTestRun( typename TMetric::Pointer metric, i
 
   // test that the final position is close to the truth
   double tolerance = static_cast<double>(0.11);
-  for( itk::SizeValueType n=0; n < Dimension; n++ )
+  for( itk::DimensionType n=0; n < Dimension; n++ )
     {
     if( vcl_fabs( 1.0 - ( static_cast<double>(imageShift[n]) / translationTransform->GetParameters()[n] ) ) > tolerance )
       {
@@ -209,7 +209,7 @@ int ImageToImageMetricv4RegistrationTestRun( typename TMetric::Pointer metric, i
 }
 
 //////////////////////////////////////////////////////////////
-template<unsigned int Dimension>
+template<itk::DimensionType Dimension>
 int itkImageToImageMetricv4RegistrationTestRunAll (int argc, char *argv[])
 {
   typedef itk::Image< double, Dimension > ImageType;

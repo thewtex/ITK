@@ -88,7 +88,7 @@ protected:
     for ( unsigned int par = 0; par < this->m_Associate->GetNumberOfLocalParameters(); par++ )
       {
       double sum = 0.0;
-      for ( unsigned int dim = 0; dim < TImageToImageMetricv4::MovingImageDimension; dim++ )
+      for ( itk::DimensionType dim = 0; dim < TImageToImageMetricv4::MovingImageDimension; dim++ )
         {
         sum += mappedMovingImageGradient[dim] + mappedFixedImageGradient[dim];
         }
@@ -184,7 +184,7 @@ bool ImageToImageMetricv4TestTestArray(
 
 
 //Global types
-const unsigned int ImageToImageMetricv4TestImageDimensionality = 2;
+const itk::DimensionType ImageToImageMetricv4TestImageDimensionality = 2;
 typedef itk::Image< double, ImageToImageMetricv4TestImageDimensionality >
                                       ImageToImageMetricv4TestImageType;
 typedef ImageToImageMetricv4TestMetric<
@@ -273,7 +273,7 @@ void ImageToImageMetricv4TestComputeIdentityTruthValues(
           par < metric->GetNumberOfLocalParameters(); par++ )
       {
       double sum = 0.0;
-      for ( unsigned int dim = 0;
+      for ( itk::DimensionType dim = 0;
               dim < ImageToImageMetricv4TestImageDimensionality; dim++ )
         {
         sum += movingImageDerivative[dim] + fixedImageDerivative[dim];
@@ -425,8 +425,7 @@ int itkImageToImageMetricv4Test(int, char ** const)
   bool origGlobalWarningValue = itk::Object::GetGlobalWarningDisplay();
   itk::Object::SetGlobalWarningDisplay( true );
 
-  typedef unsigned int    DimensionSizeType;
-  const DimensionSizeType imageSize = 4;
+  const itk::DimensionType imageSize = 4;
 
   ImageToImageMetricv4TestImageType::SizeType       size = {{imageSize, imageSize}};
   ImageToImageMetricv4TestImageType::IndexType      index = {{0,0}};
@@ -660,10 +659,10 @@ int itkImageToImageMetricv4Test(int, char ** const)
   PointSetType::Pointer               pset(PointSetType::New());
 
   std::cout << "Creating point set..." << std::endl;
-  DimensionSizeType ind = 0;
-  for( DimensionSizeType i=0; i < imageSize; i++ )
+  itk::SizeValueType ind = 0;
+  for( itk::SizeValueType i=0; i < imageSize; i++ )
     {
-    for( DimensionSizeType j=0; j < imageSize; j++ )
+    for( itk::SizeValueType j=0; j < imageSize; j++ )
       {
       testPointCoords[0] = i;
       testPointCoords[1] = j;

@@ -49,7 +49,7 @@
  *  TransformAndEvaluateMovingPoint
  *
  */
-template<unsigned int ImageDimensionality, typename TTransform>
+template<itk::DimensionType ImageDimensionality, typename TTransform>
 double itkMetricImageGradientTestRunTest( unsigned int imageSize, typename TTransform::Pointer transform, double rotation,
                               bool verbose,
                               std::string & outputPath );
@@ -197,7 +197,7 @@ private:
 
 }
 
-template<unsigned int ImageDimensionality, typename TTransform>
+template<itk::DimensionType ImageDimensionality, typename TTransform>
 double itkMetricImageGradientTestRunTest( unsigned int imageSize, typename TTransform::Pointer transform, double rotation,
                               bool verbose,
                               std::string & outputPath )
@@ -236,7 +236,7 @@ double itkMetricImageGradientTestRunTest( unsigned int imageSize, typename TTran
     {
     it.Set( 0 );
     bool awayfromborder = true;
-    for ( unsigned int j = 0; j < ImageDimensionality; j++ )
+    for ( itk::DimensionType j = 0; j < ImageDimensionality; j++ )
      {
       if ( it.GetIndex()[j] < static_cast<typename ImageType::IndexValueType>(imageBorder)
            || static_cast<unsigned int> (vcl_abs( static_cast<float> (it.GetIndex()[j]) - static_cast<float>(size[j]) ) ) < imageBorder )
@@ -370,9 +370,8 @@ double itkMetricImageGradientTestRunTest( unsigned int imageSize, typename TTran
 //////////////////////////////////////////////////////
 int itkMetricImageGradientTest( int argc, char *argv[] )
 {
-  typedef unsigned int DimensionSizeType;
-  DimensionSizeType imageSize = 60;
-  unsigned int dimensionality = 3;
+  const itk::SizeValueType imageSize = 60;
+  itk::DimensionType dimensionality = 3;
   double minimumAverage = itk::NumericTraits<double>::max();
   double rotationDegrees = static_cast<double>( 0.0 ); // (3.0);
   double maxDegrees = static_cast<double>( 359.0 );

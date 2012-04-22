@@ -155,7 +155,7 @@ int itkJointHistogramMutualInformationImageToImageRegistrationTest(int argc, cha
   std::cout << " iterations "<< numberOfIterations
     << " displacementIterations " << numberOfDisplacementIterations << std::endl;
 
-  const unsigned int Dimension = 2;
+  const itk::DimensionType Dimension = 2;
   typedef double PixelType; //I assume png is unsigned short
 
   typedef itk::Image< PixelType, Dimension >  FixedImageType;

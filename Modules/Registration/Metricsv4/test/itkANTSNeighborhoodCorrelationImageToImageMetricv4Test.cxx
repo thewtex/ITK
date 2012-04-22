@@ -119,7 +119,7 @@ int itkANTSNeighborhoodCorrelationImageToImageMetricv4Test( int, char ** const )
 
 //    MultiThreader::SetGlobalMaximumNumberOfThreads(1);
 
-    const itk::SizeValueType ImageDimension = 2;
+    const itk::DimensionType ImageDimension = 2;
 
     typedef itk::Image<double, ImageDimension>  ImageType;
     typedef ImageType::Pointer                  ImagePointerType;
