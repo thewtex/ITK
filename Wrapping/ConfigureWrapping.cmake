@@ -159,6 +159,3 @@ include("${WRAP_ITK_CMAKE_DIR}/WrapITKTypes.cmake")
 # Lets the target generators do their job
 ###############################################################################
 add_subdirectory("${WRAP_ITK_CMAKE_DIR}/Generators" "${CMAKE_CURRENT_BINARY_DIR}/Generators")
-# get the porperties from the generators dirs - there should be others than this one
-get_directory_property(inc DIRECTORY "${WRAP_ITK_CMAKE_DIR}/Generators" INCLUDE_DIRECTORIES)
-include_directories(${inc})
