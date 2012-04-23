@@ -55,6 +55,7 @@ else()
     CONFIGURE_COMMAND ../swig/configure --prefix=${CMAKE_CURRENT_BINARY_DIR}/swig
     --with-pcre-prefix=${CMAKE_CURRENT_BINARY_DIR}/PCRE
     DEPENDS PCRE
+    STEP_TARGETS install
     )
     set(SWIG_DIR ${CMAKE_CURRENT_BINARY_DIR}/swig/share/swig/${swig_version} CACHE FILEPATH "swig directory." FORCE)
   endif()
