@@ -49,39 +49,7 @@ void
 JensenHavrdaCharvatTsallisPointSetToPointSetMetricv4<TPointSet>
 ::Initialize( void ) throw ( ExceptionObject )
 {
-  if ( !this->m_FixedTransform )
-    {
-    itkExceptionMacro( "Fixed transform is not present" );
-    }
-
-  if ( !this->m_MovingTransform )
-    {
-    itkExceptionMacro( "Moving transform is not present" );
-    }
-
-  if ( !this->m_FixedPointSet )
-    {
-    itkExceptionMacro( "Fixed point set is not present" );
-    }
-
-  if ( !this->m_MovingPointSet )
-    {
-    itkExceptionMacro( "Moving point set is not present" );
-    }
-
-  // If the PointSet is provided by a source, update the source.
-  if( this->m_MovingPointSet->GetSource() )
-    {
-    this->m_MovingPointSet->GetSource()->Update();
-    }
-  this->TransformMovingPointSet();
-
-  // If the point set is provided by a source, update the source.
-  if( this->m_FixedPointSet->GetSource() )
-    {
-    this->m_FixedPointSet->GetSource()->Update();
-    }
-  this->TransformFixedPointSet();
+  Superclass::Initialize();
 
   // Initialize the fixed density function
   this->m_FixedDensityFunction = DensityFunctionType::New();
@@ -104,17 +72,13 @@ JensenHavrdaCharvatTsallisPointSetToPointSetMetricv4<TPointSet>
 
   this->m_MovingDensityFunction->SetNormalize( true );
 
-  this->m_MovingDensityFunction->SetUseAnisotropicCovariances(
-    this->m_UseAnisotropicCovariances );
+  this->m_MovingDensityFunction->SetUseAnisotropicCovariances( this->m_UseAnisotropicCovariances );
 
-  this->m_MovingDensityFunction->SetCovarianceKNeighborhood(
-    this->m_CovarianceKNeighborhood );
+  this->m_MovingDensityFunction->SetCovarianceKNeighborhood( this->m_CovarianceKNeighborhood );
 
-  this->m_MovingDensityFunction->SetEvaluationKNeighborhood(
-    this->m_EvaluationKNeighborhood );
+  this->m_MovingDensityFunction->SetEvaluationKNeighborhood( this->m_EvaluationKNeighborhood );
 
-  this->m_MovingDensityFunction->SetInputPointSet(
-    this->m_MovingTransformedPointSet );
+  this->m_MovingDensityFunction->SetInputPointSet( this->m_MovingTransformedPointSet );
 }
 
 /** Get the match Measure */
@@ -243,6 +207,8 @@ JensenHavrdaCharvatTsallisPointSetToPointSetMetricv4<TPointSet>
 
   measure = energyTerm1 - energyTerm2;
 
+  this->m_Value = measure;
+
   return measure;
 }
 
@@ -260,7 +226,7 @@ JensenHavrdaCharvatTsallisPointSetToPointSetMetricv4<TPointSet>
 template<class TPointSet>
 void
 JensenHavrdaCharvatTsallisPointSetToPointSetMetricv4<TPointSet>
-::GetValueAndDerivative( MeasureType &value, DerivativeType &derivative ) const
+::GetValueAndDerivative( MeasureType &value, DerivativeType &derivativeReturn ) const
 {
   DensityFunctionPointer densityFunctions[2];
   densityFunctions[0] = this->m_FixedDensityFunction;
@@ -275,11 +241,14 @@ JensenHavrdaCharvatTsallisPointSetToPointSetMetricv4<TPointSet>
     }
   else if( this->GetGradientSource() == Superclass::GRADIENT_SOURCE_FIXED )
     {
+    //FIXME - remove this code altogether since base class prevents fixed gradient source anyway
+    itkExceptionMacro("Fixed gradient source not supported.");
     start = 0;
     end = 0;
     }
   else
     {
+    itkExceptionMacro("Fixed gradient source not supported.");
     start = 0;
     end = 1;
     }
@@ -293,10 +262,17 @@ JensenHavrdaCharvatTsallisPointSetToPointSetMetricv4<TPointSet>
 
   const RealType totalNumberOfSamples = totalNumberOfPoints;
 
-  derivative.SetSize( this->GetNumberOfComponents() * PointDimension );
-  derivative.Fill( 0 );
+  // size the output deriviative
+  derivativeReturn.SetSize( this->GetNumberOfParameters() );
+  derivativeReturn.Fill( 0 );
+
+  // allocate a per-point derivative
+  DerivativeType pointDerivative;
+  pointDerivative.SetSize( this->GetNumberOfLocalParameters() );
 
   value = 0;
+
+  MovingTransformJacobianType  jacobian( PointDimension, this->GetNumberOfLocalParameters() );
 
   /**
    * first term
@@ -319,12 +295,11 @@ JensenHavrdaCharvatTsallisPointSetToPointSetMetricv4<TPointSet>
     while( It != pointSet->GetPoints()->End() )
       {
       PointType samplePoint = It.Value();
+      pointDerivative.Fill( 0 );
 
       const PointSetType * pointSetB = densityFunctions[1-d]->GetInputPointSet();
 
-      RealType probabilityStar =
-          densityFunctions[1-d]->Evaluate( samplePoint ) *
-          static_cast<RealType>( pointSetB->GetNumberOfPoints() );
+      RealType probabilityStar = densityFunctions[1-d]->Evaluate( samplePoint ) * static_cast<RealType>( pointSetB->GetNumberOfPoints() );
 
       probabilityStar /= totalNumberOfPoints;
 
@@ -340,30 +315,26 @@ JensenHavrdaCharvatTsallisPointSetToPointSetMetricv4<TPointSet>
         }
       else
         {
-        energyTerm1 += ( prefactor[0] * vcl_pow( probabilityStar,
-          static_cast<RealType>( this->m_Alpha - 1.0 ) ) );
+        energyTerm1 += ( prefactor[0] * vcl_pow( probabilityStar, static_cast<RealType>( this->m_Alpha - 1.0 ) ) );
         }
 
-      RealType probabilityStarFactor = vcl_pow( probabilityStar,
-        static_cast<RealType>( 2.0 - this->m_Alpha ) );
+      RealType probabilityStarFactor = vcl_pow( probabilityStar, static_cast<RealType>( 2.0 - this->m_Alpha ) );
 
       typename DensityFunctionType::NeighborsIdentifierType neighbors;
-      densityFunctions[1-d]->GetPointsLocator()->FindClosestNPoints(
-        samplePoint, this->m_EvaluationKNeighborhood, neighbors );
+      densityFunctions[1-d]->GetPointsLocator()->FindClosestNPoints( samplePoint, this->m_EvaluationKNeighborhood, neighbors );
+
+      this->GetMovingTransform()->ComputeJacobianWithRespectToParameters( samplePoint, jacobian );
 
       for( unsigned int n = 0; n < neighbors.size(); n++ )
         {
-        RealType gaussian = densityFunctions[1-d]->
-          GetGaussian( neighbors[n] )->Evaluate( samplePoint );
+        RealType gaussian = densityFunctions[1-d]->GetGaussian( neighbors[n] )->Evaluate( samplePoint );
 
         if( gaussian == 0 )
           {
           continue;
           }
 
-        typename GaussianType::MeanVectorType mean =
-          densityFunctions[1-d]->GetGaussian( neighbors[n] )->GetMean();
-
+        typename GaussianType::MeanVectorType mean = densityFunctions[1-d]->GetGaussian( neighbors[n] )->GetMean();
 
         Array<CoordRepType> diffMean( PointDimension );
         for( unsigned int i = 0; i < PointDimension; i++ )
@@ -373,24 +344,39 @@ JensenHavrdaCharvatTsallisPointSetToPointSetMetricv4<TPointSet>
 
         if( this->m_UseAnisotropicCovariances )
           {
-          typename GaussianType::CovarianceMatrixType Ci =
-            densityFunctions[1-d]->GetGaussian( neighbors[n] )->
-            GetInverseCovariance();
+          typename GaussianType::CovarianceMatrixType Ci = densityFunctions[1-d]->GetGaussian( neighbors[n] )->GetInverseCovariance();
           diffMean = Ci * diffMean;
           }
         else
           {
-          diffMean /= densityFunctions[1-d]->GetGaussian( neighbors[n] )->
-            GetCovariance()(0, 0);
+          diffMean /= densityFunctions[1-d]->GetGaussian( neighbors[n] )->GetCovariance()(0, 0);
           }
 
+        DerivativeValueType factor = prefactor[1] * gaussian / probabilityStarFactor;
         for( unsigned int i = 0; i < PointDimension; i++ )
           {
-          derivative( ( end - start ) * densityFunctions[0]->GetInputPointSet()->
+          /* orig:
+            derivative( ( end - start ) * densityFunctions[0]->GetInputPointSet()->
             GetNumberOfPoints() * PointDimension +
             It.Index() * PointDimension + i ) -=
             diffMean[i] * ( prefactor[1] * gaussian / probabilityStarFactor );
+          */
+          for ( NumberOfParametersType par = 0; par < this->GetNumberOfLocalParameters(); par++ )
+            {
+            pointDerivative[par] -= jacobian(d, par) * diffMean[i] * factor;
+            }
           }
+        }
+
+      //Store result
+      if( this->HasLocalSupport() )
+        {
+        // Put result into derivative holder
+        itkExceptionMacro("TODO");
+        }
+      else
+        {
+        derivativeReturn += pointDerivative;
         }
       ++It;
       }
@@ -444,20 +430,19 @@ JensenHavrdaCharvatTsallisPointSetToPointSetMetricv4<TPointSet>
 
         typename DensityFunctionType::NeighborsIdentifierType neighbors;
 
-        densityFunctions[1-d]->GetPointsLocator()->FindClosestNPoints(
-          samplePoint, this->m_EvaluationKNeighborhood, neighbors );
+        densityFunctions[1-d]->GetPointsLocator()->FindClosestNPoints( samplePoint, this->m_EvaluationKNeighborhood, neighbors );
+
+        this->GetMovingTransform()->ComputeJacobianWithRespectToParameters( samplePoint, jacobian );
 
         for( unsigned int n = 0; n < neighbors.size(); n++ )
           {
-          RealType gaussian = densityFunctions[1-d]->
-            GetGaussian( neighbors[n] )->Evaluate( samplePoint );
+          RealType gaussian = densityFunctions[1-d]->GetGaussian( neighbors[n] )->Evaluate( samplePoint );
           if( gaussian == 0 )
             {
             continue;
             }
 
-          typename GaussianType::MeanVectorType mean
-            = densityFunctions[1-d]->GetGaussian( neighbors[n] )->GetMean();
+          typename GaussianType::MeanVectorType mean = densityFunctions[1-d]->GetGaussian( neighbors[n] )->GetMean();
 
           Array<CoordRepType> diffMean( PointDimension );
           for( unsigned int i = 0; i < PointDimension; i++ )
@@ -467,24 +452,37 @@ JensenHavrdaCharvatTsallisPointSetToPointSetMetricv4<TPointSet>
 
           if( this->m_UseAnisotropicCovariances )
             {
-            typename GaussianType::CovarianceMatrixType Ci =
-              densityFunctions[1-d]->GetGaussian( neighbors[n] )->
-              GetInverseCovariance();
+            typename GaussianType::CovarianceMatrixType Ci = densityFunctions[1-d]->GetGaussian( neighbors[n] )->GetInverseCovariance();
             diffMean = Ci * diffMean;
             }
           else
             {
-            diffMean /= densityFunctions[1-d]->GetGaussian( neighbors[n] )->
-              GetCovariance()(0, 0);
+            diffMean /= densityFunctions[1-d]->GetGaussian( neighbors[n] )->GetCovariance()(0, 0);
             }
 
+          DerivativeValueType factor = prefactor2 * gaussian / probabilityFactor;
           for( unsigned int i = 0; i < PointDimension; i++ )
             {
-            derivative( ( end - start ) * densityFunctions[0]->
+            /*derivative( ( end - start ) * densityFunctions[0]->
               GetInputPointSet()->GetNumberOfPoints() * PointDimension +
               It.Index() * PointDimension + i ) +=
               diffMean[i] * ( prefactor2 * gaussian / probabilityFactor );
+            */
+            for ( NumberOfParametersType par = 0; par < this->GetNumberOfLocalParameters(); par++ )
+              {
+              pointDerivative[par] += jacobian(d, par) * diffMean[i] * factor;
+              }
             }
+          }
+        //Store result
+        if( this->HasLocalSupport() )
+          {
+          // Put result into derivative holder
+          itkExceptionMacro("TODO");
+          }
+        else
+          {
+          derivativeReturn += pointDerivative;
           }
         ++It;
         }
@@ -496,8 +494,9 @@ JensenHavrdaCharvatTsallisPointSetToPointSetMetricv4<TPointSet>
     energyTerm2 *= prefactor[1];
     }
 
-  derivative *= -1.0;
+  derivativeReturn *= -1.0;
   value = energyTerm1 - energyTerm2;
+  this->m_Value = value;
 }
 
 template<class TPointSet>
