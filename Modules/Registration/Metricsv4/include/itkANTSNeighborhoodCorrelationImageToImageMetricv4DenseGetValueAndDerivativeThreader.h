@@ -68,8 +68,8 @@ public:
   typedef typename NeighborhoodCorrelationMetricType::ImageRegionType    ImageRegionType;
   typedef typename NeighborhoodCorrelationMetricType::InternalComputationValueType InternalComputationValueType;
   typedef typename NeighborhoodCorrelationMetricType::SumQueueType       SumQueueType;
-  typedef typename NeighborhoodCorrelationMetricType::ImageDimensionType ImageDimensionType;
   typedef typename NeighborhoodCorrelationMetricType::JacobianType       JacobianType;
+
   typedef typename NeighborhoodCorrelationMetricType::NumberOfParametersType       NumberOfParametersType;
 
 protected:

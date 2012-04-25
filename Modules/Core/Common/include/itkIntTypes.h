@@ -158,6 +158,10 @@ typedef signed long   OffsetValueType;
 /** Type to count and reference number of threads */
 typedef unsigned int  ThreadIdType;
 
+/** Type to use for Image and spatial dimensions */
+typedef unsigned int DimensionType;
+
 }
+
 
 #endif  /* __itkIntTypes_h */

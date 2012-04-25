@@ -52,7 +52,7 @@ MeanSquaresImageToImageMetricv4GetValueAndDerivativeThreader< TDomainPartitioner
   for ( unsigned int par = 0; par < this->m_Associate->GetNumberOfLocalParameters(); par++ )
     {
     localDerivativeReturn[par] = NumericTraits<DerivativeValueType>::Zero;
-    for ( SizeValueType dim = 0; dim < ImageToImageMetricv4Type::MovingImageDimension; dim++ )
+    for ( DimensionType dim = 0; dim < ImageToImageMetricv4Type::MovingImageDimension; dim++ )
       {
       localDerivativeReturn[par] += 2.0 * diff * jacobian(dim, par) * movingImageGradient[dim];
       }

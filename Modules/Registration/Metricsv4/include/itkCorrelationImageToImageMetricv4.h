@@ -106,11 +106,11 @@ public:
   typedef typename Superclass::VirtualSampledPointSetType VirtualSampledPointSetType;
 
   /* Image dimension accessors */
-  itkStaticConstMacro(VirtualImageDimension, ImageDimensionType,
+  itkStaticConstMacro(VirtualImageDimension, itk::DimensionType,
       ::itk::GetImageDimension<TVirtualImage>::ImageDimension);
-  itkStaticConstMacro(FixedImageDimension, ImageDimensionType,
+  itkStaticConstMacro(FixedImageDimension, itk::DimensionType,
       ::itk::GetImageDimension<TFixedImage>::ImageDimension);
-  itkStaticConstMacro(MovingImageDimension, ImageDimensionType,
+  itkStaticConstMacro(MovingImageDimension, itk::DimensionType,
       ::itk::GetImageDimension<TMovingImage>::ImageDimension);
 
 

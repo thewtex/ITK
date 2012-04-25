@@ -22,7 +22,7 @@
 
 int itkEuclideanDistancePointSetMetricTest( int, char* [] )
 {
-  const unsigned int Dimension = 2;
+  const itk::DimensionType Dimension = 2;
 
   typedef itk::PointSet<unsigned char, Dimension> PointSetType;
 
@@ -81,13 +81,13 @@ int itkEuclideanDistancePointSetMetricTest( int, char* [] )
     {
     PointType sourcePoint = ItM.Value();
     PointType::VectorType vector;
-    for( unsigned int d = 0; d < Dimension; d++ )
+    for( itk::DimensionType d = 0; d < Dimension; d++ )
       {
       vector[d] = derivative[count++];
       }
     PointType targetPoint = sourcePoint + vector;
 
-    for( unsigned int d = 0; d < Dimension; d++ )
+    for( itk::DimensionType d = 0; d < Dimension; d++ )
       {
       moving_str1 << sourcePoint[d] << " ";
       moving_str2 << targetPoint[d] << " ";
@@ -126,13 +126,13 @@ int itkEuclideanDistancePointSetMetricTest( int, char* [] )
     {
     PointType sourcePoint = ItF.Value();
     PointType::VectorType vector;
-    for( unsigned int d = 0; d < Dimension; d++ )
+    for( itk::DimensionType d = 0; d < Dimension; d++ )
       {
       vector[d] = derivative[count++];
       }
     PointType targetPoint = sourcePoint + vector;
 
-    for( unsigned int d = 0; d < Dimension; d++ )
+    for( itk::DimensionType d = 0; d < Dimension; d++ )
       {
       fixed_str1 << sourcePoint[d] << " ";
       fixed_str2 << targetPoint[d] << " ";

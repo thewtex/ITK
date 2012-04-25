@@ -91,14 +91,12 @@ public:
 
   typedef typename Superclass::InternalComputationValueType InternalComputationValueType;
 
-  typedef typename Superclass::ImageDimensionType      ImageDimensionType;
-
   /* Image dimension accessors */
-  itkStaticConstMacro(VirtualImageDimension, ImageDimensionType,
+  itkStaticConstMacro(VirtualImageDimension, itk::DimensionType,
       ::itk::GetImageDimension<TVirtualImage>::ImageDimension);
-  itkStaticConstMacro(FixedImageDimension, ImageDimensionType,
+  itkStaticConstMacro(FixedImageDimension, itk::DimensionType,
       ::itk::GetImageDimension<TFixedImage>::ImageDimension);
-  itkStaticConstMacro(MovingImageDimension, ImageDimensionType,
+  itkStaticConstMacro(MovingImageDimension, itk::DimensionType,
       ::itk::GetImageDimension<TMovingImage>::ImageDimension);
 
   virtual void Initialize(void) throw ( itk::ExceptionObject );

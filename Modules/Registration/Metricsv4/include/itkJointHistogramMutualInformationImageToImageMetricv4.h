@@ -93,9 +93,9 @@ public:
                                                         VirtualSampledPointSetType;
 
   /* Image dimension accessors */
-  itkStaticConstMacro(VirtualImageDimension, ImageDimensionType,
+  itkStaticConstMacro(VirtualImageDimension, itk::DimensionType,
       ::itk::GetImageDimension<TVirtualImage>::ImageDimension);
-  itkStaticConstMacro(MovingImageDimension, ImageDimensionType,
+  itkStaticConstMacro(MovingImageDimension, itk::DimensionType,
       ::itk::GetImageDimension<TMovingImage>::ImageDimension);
 
   /** Value type of the PDF */

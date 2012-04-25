@@ -63,7 +63,7 @@ DemonsImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage>
 
   // Verify that the transform has local support, and its number of local
   // parameters equals the dimensionality of the image gradient source.
-  SizeValueType numberOfDimensions = FixedImageDimension;
+  DimensionType numberOfDimensions = FixedImageDimension;
   if( this->GetGradientSourceIncludesMoving() )
     {
     numberOfDimensions = MovingImageDimension;
@@ -77,7 +77,7 @@ DemonsImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage>
     }
 
   // compute the normalizer
-  ImageDimensionType dimension;
+  itk::DimensionType dimension;
   typename TFixedImage::SpacingType imageSpacing;
   if( this->GetGradientSource() == this->GRADIENT_SOURCE_FIXED )
     {
@@ -91,7 +91,7 @@ DemonsImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage>
     }
 
   this->m_Normalizer = NumericTraits<InternalComputationValueType>::Zero;
-  for ( ImageDimensionType k = 0; k < dimension; k++ )
+  for ( itk::DimensionType k = 0; k < dimension; k++ )
     {
     this->m_Normalizer += imageSpacing[k] * imageSpacing[k];
     }

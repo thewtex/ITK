@@ -468,7 +468,7 @@ ANTSNeighborhoodCorrelationImageToImageMetricv4DenseGetValueAndDerivativeThreade
     return;
     }
 
-  for (ImageDimensionType qq = 0; qq < TImageToImageMetric::VirtualImageDimension; qq++)
+  for (itk::DimensionType qq = 0; qq < TImageToImageMetric::VirtualImageDimension; qq++)
     {
     derivWRTImage[qq] = 2.0 * sFixedMoving / (sFixedFixed * sMovingMoving) * (fixedI - sFixedMoving / sMovingMoving * movingI) * movingImageGradient[qq];
     }
@@ -491,7 +491,7 @@ ANTSNeighborhoodCorrelationImageToImageMetricv4DenseGetValueAndDerivativeThreade
   for (NumberOfParametersType par = 0; par < numberOfLocalParameters; par++)
     {
     deriv[par] = NumericTraits<DerivativeValueType>::Zero;
-    for (ImageDimensionType dim = 0; dim < TImageToImageMetric::MovingImageDimension; dim++)
+    for (itk::DimensionType dim = 0; dim < TImageToImageMetric::MovingImageDimension; dim++)
       {
       deriv[par] += derivWRTImage[dim] * jacobian(dim, par);
       }

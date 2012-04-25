@@ -274,7 +274,7 @@ CorrelationImageToImageMetricv4GetValueAndDerivativeThreader<TDomainPartitioner,
   for (unsigned int par = 0; par < associate->GetNumberOfLocalParameters(); par++)
     {
     InternalComputationValueType sum = NumericTraits< InternalComputationValueType >::Zero;
-    for (SizeValueType dim = 0; dim < ImageToImageMetricv4Type::MovingImageDimension; dim++)
+    for (DimensionType dim = 0; dim < ImageToImageMetricv4Type::MovingImageDimension; dim++)
       {
       sum += movingImageGradient[dim] * jacobian(dim, par);
       }
