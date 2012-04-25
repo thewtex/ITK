@@ -146,7 +146,7 @@ JointHistogramMutualInformationGetValueAndDerivativeThreader< TDomainPartitioner
   for ( NumberOfParametersType par = 0; par < associate->GetNumberOfLocalParameters(); par++ )
     {
     InternalComputationValueType sum = NumericTraits< InternalComputationValueType >::Zero;
-    for ( SizeValueType dim = 0; dim < TImageToImageMetric::MovingImageDimension; dim++ )
+    for ( DimensionType dim = 0; dim < TImageToImageMetric::MovingImageDimension; dim++ )
       {
       sum += scalingfactor * jacobian(dim, par) * movingImageGradient[dim];
       }

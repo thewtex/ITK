@@ -25,10 +25,10 @@
  * TODO Numerical verification.
  */
 template<class TIndexType, class TPointType>
-double itkCorrelationImageToImageMetricv4Test_GetToyImagePixelValue(TIndexType index, TPointType offset, const unsigned int Dim, double c)
+double itkCorrelationImageToImageMetricv4Test_GetToyImagePixelValue(TIndexType index, TPointType offset, const itk::DimensionType Dim, double c)
 {
   double v = 0.0;
-  for(unsigned int i=0; i<Dim; i++)
+  for(itk::DimensionType i=0; i<Dim; i++)
     {
       v += (index[i]+offset[i])*(index[i]+offset[i]);
     }
@@ -120,7 +120,7 @@ int itkCorrelationImageToImageMetricv4Test(int, char ** const)
 {
 
   const unsigned int imageSize = 20;
-  const unsigned int imageDimensionality = 3;
+  const itk::DimensionType imageDimensionality = 3;
   typedef itk::Image< double, imageDimensionality >              ImageType;
 
   ImageType::SizeType       size;
@@ -158,7 +158,7 @@ int itkCorrelationImageToImageMetricv4Test(int, char ** const)
 
   typedef ImageType::PointType PointType;
   PointType p0;
-  for(unsigned int i=0; i<imageDimensionality; i++) p0[i]=0;
+  for(itk::DimensionType i=0; i<imageDimensionality; i++) p0[i]=0;
 
   itFixed.GoToBegin();
   unsigned int count = 1;

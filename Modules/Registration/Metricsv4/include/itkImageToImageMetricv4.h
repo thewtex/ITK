@@ -229,12 +229,11 @@ public:
   typedef typename VirtualImageType::IndexType      VirtualIndexType;
 
   /* Image dimension accessors */
-  typedef unsigned int   ImageDimensionType;
-  itkStaticConstMacro(FixedImageDimension, ImageDimensionType,
+  itkStaticConstMacro(FixedImageDimension, itk::DimensionType,
       ::itk::GetImageDimension<FixedImageType>::ImageDimension);
-  itkStaticConstMacro(MovingImageDimension, ImageDimensionType,
+  itkStaticConstMacro(MovingImageDimension, itk::DimensionType,
       ::itk::GetImageDimension<MovingImageType>::ImageDimension);
-  itkStaticConstMacro(VirtualImageDimension, ImageDimensionType,
+  itkStaticConstMacro(VirtualImageDimension, itk::DimensionType,
       ::itk::GetImageDimension<VirtualImageType>::ImageDimension);
 
   /**  Type of the Transform Base classes */

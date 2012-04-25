@@ -90,7 +90,6 @@ public:
 
   typedef typename Superclass::InternalComputationValueType InternalComputationValueType;
   typedef typename Superclass::NumberOfParametersType       NumberOfParametersType;
-  typedef typename Superclass::ImageDimensionType           ImageDimensionType;
 
 protected:
   /** Constructor. */

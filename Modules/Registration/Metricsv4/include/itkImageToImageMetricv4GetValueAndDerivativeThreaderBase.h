@@ -79,7 +79,6 @@ public:
   typedef typename ImageToImageMetricv4Type::DerivativeType          DerivativeType;
   typedef typename ImageToImageMetricv4Type::DerivativeValueType     DerivativeValueType;
   typedef typename ImageToImageMetricv4Type::JacobianType            JacobianType;
-  typedef typename ImageToImageMetricv4Type::ImageDimensionType      ImageDimensionType;
 
   typedef typename ImageToImageMetricv4Type::InternalComputationValueType InternalComputationValueType;
   typedef typename ImageToImageMetricv4Type::NumberOfParametersType       NumberOfParametersType;

@@ -146,20 +146,19 @@ public:
                             MovingTransformJacobianType;
 
   typedef typename Superclass::NumberOfParametersType         NumberOfParametersType;
-  typedef typename Superclass::ImageDimensionType             ImageDimensionType;
 
   typedef typename VirtualImageType::RegionType               ImageRegionType;
   typedef typename VirtualImageType::SizeType                 RadiusType;
   typedef typename VirtualImageType::IndexType                IndexType;
 
   /* Image dimension accessors */
-  itkStaticConstMacro(FixedImageDimension, ImageDimensionType,
+  itkStaticConstMacro(FixedImageDimension, itk::DimensionType,
       ::itk::GetImageDimension<FixedImageType>::ImageDimension);
 
-  itkStaticConstMacro(MovingImageDimension, ImageDimensionType,
+  itkStaticConstMacro(MovingImageDimension, itk::DimensionType,
         ::itk::GetImageDimension<MovingImageType>::ImageDimension);
 
-  itkStaticConstMacro(VirtualImageDimension, ImageDimensionType,
+  itkStaticConstMacro(VirtualImageDimension, itk::DimensionType,
         ::itk::GetImageDimension<VirtualImageType>::ImageDimension);
 
   // Set the radius of the neighborhood window centered at each pixel.
