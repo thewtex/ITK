@@ -46,6 +46,7 @@ vtkVisualize2DSparseLevelSetLayersBase< TInputImage, TLevelSet >
 
   m_RenWin->AddRenderer( m_Renderer );
   m_Iren->SetRenderWindow( m_RenWin );
+  m_Iren->Render();
   }
 
 template< class TInputImage, class TLevelSet >
@@ -150,13 +151,11 @@ vtkVisualize2DSparseLevelSetLayersBase< TInputImage, TLevelSet >
       filename.append ( ".png" );
 
       vtkCaptureScreen< vtkPNGWriter > capture ( m_RenWin );
-      // begin mouse interaction
-  //    m_Iren->Start();
       capture( filename );
       }
     else
       {
-      m_Iren->Start();
+      m_Iren->Render();
       }
   ++m_CurrentIteration;
   }
