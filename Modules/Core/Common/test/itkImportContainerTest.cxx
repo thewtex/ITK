@@ -23,7 +23,7 @@
 
 int itkImportContainerTest(int , char * [] )
 {
-  typedef float PixelType;
+  typedef float                                               PixelType;
   typedef itk::ImportImageContainer<unsigned long, PixelType> ContainerType;
 
   itk::OutputWindow::SetInstance(itk::TextOutput::New());
@@ -226,6 +226,17 @@ int itkImportContainerTest(int , char * [] )
             << " and import pointer is "
             << container1->GetImportPointer()
             << std::endl;
+  }
+
+
+  // Check the ability to deobligate the containers memory management
+  {
+  ContainerType::Pointer container = ContainerType::New();
+
+  container->Reserve(1000);
+  PixelType *buffer = container->GetBufferPointer();
+  container->SetImportPointer( container->GetBufferPointer(), container->Size(), false );
+  delete [] buffer;
   }
 
   // valgrind has problems with exceptions after a failed memory

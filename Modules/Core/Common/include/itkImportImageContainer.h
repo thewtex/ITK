@@ -69,7 +69,12 @@ public:
    * "LetContainerManageMemory" is false, then the application retains
    * the responsibility of freeing the memory for this image data.  If
    * "LetContainerManageMemory" is true, then this class will free the
-   * memory when this object is destroyed. */
+   * memory when this object is destroyed.
+   *
+   * If ptr is equal to the current buffer pointer, then only the Size
+   * and the LetContrainerManageMemory IVARs are updated. This is
+   * useful the deobligate this container from managing the memory.
+   */
   void SetImportPointer(TElement *ptr, TElementIdentifier num,
                         bool LetContainerManageMemory = false);
 

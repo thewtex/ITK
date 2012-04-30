@@ -158,7 +158,10 @@ ImportImageContainer< TElementIdentifier, TElement >
 ::SetImportPointer(TElement *ptr, TElementIdentifier num,
                    bool LetContainerManageMemory)
 {
-  DeallocateManagedMemory();
+  if( m_ImportPointer != ptr )
+    {
+    DeallocateManagedMemory();
+    }
   m_ImportPointer = ptr;
   m_ContainerManageMemory = LetContainerManageMemory;
   m_Capacity = num;
