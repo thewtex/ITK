@@ -18,6 +18,7 @@
 #ifndef __itkMaskFeaturePointSelectionFilter_hxx
 #define __itkMaskFeaturePointSelectionFilter_hxx
 
+
 #include <map>
 #include "vnl/vnl_trace.h"
 #include "itkMaskFeaturePointSelectionFilter.h"
@@ -162,7 +163,7 @@ MaskFeaturePointSelectionFilter<
 
   // fill inputs / outputs / misc
   ImageConstPointer image = this->GetInput();
-  RegionType region = image->GetRequestedRegion();
+  RegionType region = image->GetLargestPossibleRegion();
   typename ImageType::SpacingType voxelSpacing = image->GetSpacing();
 
   MaskConstPointer mask = this->GetMaskImage();
