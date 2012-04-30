@@ -1,4 +1,4 @@
-itk_module_test()
+1itk_module_test()
 set(ITKFEMRegistrationTests
 itkFEMFiniteDifferenceFunctionLoadTest.cxx
 itkFEMRegistrationFilterTest.cxx
