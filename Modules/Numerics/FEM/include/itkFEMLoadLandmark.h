@@ -184,7 +184,7 @@ public:
    */
   void SetContainedElement(Element::Pointer e)
   {
-      this->m_Element[0] = e;
+      this->m_Element[0] = e.GetPointer();
   }
 
   /**
