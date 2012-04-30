@@ -634,6 +634,18 @@ public:
 
   virtual void  MultiplyMatrixVector(unsigned int resultVectorIndex, unsigned int matrixIndex, unsigned int vectorIndex);
 
+  /**
+   * Perform a matrix*solution operation and store the result in the linear system
+   * \param matrixIndex index of matrix to multiply
+   * \param solutionIndex index of solution to multiply
+   * \param resultVectorIndex index of vector where result is store
+   */
+  virtual void MultiplyMatrixSolution(unsigned int resultVectorIndex, unsigned int matrixIndex, unsigned int solutionIndex);
+
+  virtual void  CopyMatrixFast(unsigned int matrixIndex1, unsigned int matrixIndex2);
+  virtual void  AddMatrixMatrixFast(unsigned int matrixIndex1, unsigned int matrixIndex2);
+
+
 private:
 
   /** pointer to vector of matrices */

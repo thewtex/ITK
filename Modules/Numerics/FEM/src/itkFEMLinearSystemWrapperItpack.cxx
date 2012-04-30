@@ -935,7 +935,28 @@ void LinearSystemWrapperItpack::SwapSolutions(unsigned int solutionIndex1, unsig
   ( *m_Solutions )[solutionIndex2] = temp;
 }
 
-void LinearSystemWrapperItpack::CopySolution2Vector(unsigned solutionIndex, unsigned int vectorIndex)
+
+void LinearSystemWrapperItpack::CopyMatrixFast(unsigned int matrixIndex1,
+                                               unsigned int matrixIndex2)
+{
+  //this->InitializeMatrix(matrixIndex2);
+  // Adds two matrices storing the result in the first matrix.
+  //this->AddMatrixMatrix(matrixIndex2,matrixIndex1);
+  //MatrixRepresentation Matrix =  ((*m_Matrices )[matrixIndex1]) +
+  //((*m_Matrices )[matrixIndex2]);
+  //( *m_Matrices )[matrixIndex2] = Matrix;
+}
+
+void LinearSystemWrapperItpack::AddMatrixMatrixFast(unsigned int matrixIndex1,
+                                                    unsigned int matrixIndex2)
+{
+  //atrixRepresentation Matrix =  *( ( *m_Matrices )[matrixIndex1]) +
+  //*( ( *m_Matrices )[matrixIndex2]);
+  //*( ( *m_Matrices )[matrixIndex1] )  = Matrix;
+}
+
+void LinearSystemWrapperItpack::CopySolution2Vector(unsigned solutionIndex,
+                                                    unsigned int vectorIndex)
 {
   /* error checking */
   if( !m_Vectors )
@@ -1106,6 +1127,62 @@ void LinearSystemWrapperItpack::MultiplyMatrixVector(unsigned int resultVectorIn
   /* perform mult */
   ( *m_Matrices )[matrixIndex].mult( ( *m_Vectors )[vectorIndex], ( *m_Vectors )[resultVectorIndex] );
 }
+
+
+void LinearSystemWrapperItpack::MultiplyMatrixSolution(unsigned int resultVectorIndex, unsigned int matrixIndex, unsigned int solutionIndex)
+{
+    /* error checking */
+    if( !m_Matrices )
+    {
+        throw FEMExceptionLinearSystem(__FILE__,
+              __LINE__,
+              "LinearSystemWrapperItpack::MultiplyMatrixVector",
+              "No matrices allocated");
+    }
+    if( !m_Vectors )
+    {
+         throw FEMExceptionLinearSystem(__FILE__,
+                __LINE__,
+                "LinearSystemWrapperItpack::MultiplyMatrixVector",
+                "No vectors allocated");
+    }
+    if( !m_Solutions)
+    {
+          throw FEMExceptionLinearSystem(__FILE__,
+                __LINE__,
+                "LinearSystemWrapperItpack::MultiplyMatrixVector",
+                "No solutions allocated");
+    }
+
+    if( resultVectorIndex >= m_NumberOfVectors )
+    {
+         throw FEMExceptionLinearSystemBounds(__FILE__,
+                __LINE__,
+                "LinearSystemWrapperItpack::MultiplyMatrixVector",
+                "m_Vectors",
+                resultVectorIndex);
+    }
+    if( matrixIndex >= m_NumberOfMatrices )
+    {
+         throw FEMExceptionLinearSystemBounds(__FILE__,
+                __LINE__,
+                "LinearSystemWrapperItpack::MultiplyMatrixVector",
+                "m_Matrices",
+                matrixIndex);
+    }
+    if( solutionIndex >= m_NumberOfSolutions )
+    {
+          throw FEMExceptionLinearSystemBounds(__FILE__,
+                __LINE__,
+                "LinearSystemWrapperItpack::MultiplyMatrixVector",
+                "m_Solutions",
+                solutionIndex);
+    }
+
+    /* perform mult */
+    ( *m_Matrices )[matrixIndex].mult( ( *m_Solutions )[solutionIndex], ( *m_Vectors )[resultVectorIndex] );
+}
+
 
 LinearSystemWrapperItpack::~LinearSystemWrapperItpack(void)
 {
