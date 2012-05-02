@@ -569,11 +569,7 @@ BSplineDeformableTransform<TScalarType, NDimensions, VSplineOrder>
     }
   else
     {
-    itkWarningMacro( "B-spline coefficients have not been set" );
-    for( unsigned int j = 0; j < SpaceDimension; j++ )
-      {
-      outputPoint[j] = point[j];
-      }
+    itkExceptionMacro( "B-spline coefficients have not been set" );
     }
 }
 
