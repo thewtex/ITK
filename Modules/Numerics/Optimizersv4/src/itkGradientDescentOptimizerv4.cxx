@@ -180,13 +180,13 @@ GradientDescentOptimizerv4
       std::cout << "GetConvergenceValue() failed." << std::endl;
       }
 
+    this->m_CurrentIteration++;
+
     /* Advance one step along the gradient.
      * This will modify the gradient and update the transform. */
     this->AdvanceOneStep();
 
-    /* Update and check iteration count */
-    this->m_CurrentIteration++;
-
+    /* Check iteration count */
     if ( this->m_CurrentIteration >= this->m_NumberOfIterations )
       {
       this->m_StopConditionDescription << "Maximum number of iterations ("
