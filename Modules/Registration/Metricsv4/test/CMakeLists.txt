@@ -21,6 +21,8 @@ set(ITKMetricsv4Tests
   itkDemonsImageToImageMetricv4RegistrationTest.cxx
   itkEuclideanDistancePointSetMetricRegistrationTest.cxx
   itkExpectationBasedPointSetMetricRegistrationTest.cxx
+  itkMultiVariateObjectToObjectMetricv4Test.cxx
+  itkMultiVariateObjectToObjectMetricv4RegistrationTest.cxx
 )
 
 set(INPUTDATA ${ITK_DATA_ROOT}/Input)
@@ -209,3 +211,11 @@ itk_add_test(NAME itkEuclideanDistancePointSetMetricRegistrationTest
 itk_add_test(NAME itkExpectationBasedPointSetMetricRegistrationTest
       COMMAND ITKMetricsv4TestDriver
               itkExpectationBasedPointSetMetricRegistrationTest)
+
+itk_add_test(NAME itkMultiVariateObjectToObjectMetricv4Test
+      COMMAND ITKMetricsv4TestDriver
+              itkMultiVariateObjectToObjectMetricv4Test)
+
+itk_add_test(NAME itkMultiVariateObjectToObjectMetricv4RegistrationTest
+      COMMAND ITKMetricsv4TestDriver
+              itkMultiVariateObjectToObjectMetricv4RegistrationTest )
