@@ -22,6 +22,8 @@
 
 namespace itk
 {
+
+
 /**
  * \class ImageAdaptor
  * \brief Give access to partial aspects of voxels from an Image
@@ -90,7 +92,7 @@ public:
 
   /** typedef of the functor that chooses the appropriate accessor
    * Image or VectorImage. */
-  typedef DefaultPixelAccessorFunctor< Self > AccessorFunctorType;
+  typedef typename InternalImageType::AccessorFunctorType::template Rebind< Self >::Type AccessorFunctorType;
 
   /** Index typedef support. An index is used to access pixel values. */
   typedef typename Superclass::IndexType     IndexType;

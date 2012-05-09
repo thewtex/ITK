@@ -42,6 +42,7 @@ namespace Accessor
  */
 template< class TType >
 class ITK_EXPORT VectorImageToImagePixelAccessor
+  : private DefaultVectorPixelAccessor< TType >
 {
 public:
 
@@ -51,24 +52,36 @@ public:
    * that this class will exhibit. */
   typedef  TType ExternalType;
 
-  /** Internal typedef. It defines the internal real
-   * representation of data. */
-  typedef VariableLengthVector< TType > InternalType;
+  /** Internal typedef used by the ImageAdaptor for the buffer pointer */
+  typedef TType InternalType;
+
+  typedef VariableLengthVector< TType > ActualPixelType;
 
   /** The pixel type that TInternalContainerType holds */
   typedef TType PixelType;
 
-  inline void Set(InternalType output, const ExternalType & input) const
+  inline void Set(ActualPixelType output, const ExternalType & input) const
   {
     output[m_ComponentIdx] = input;
   }
 
-  inline ExternalType Get(const InternalType & input) const
+  inline ExternalType Get(const ActualPixelType & input) const
   {
     ExternalType output;
 
     output = input[m_ComponentIdx];
     return output;
+  }
+
+  inline ExternalType Get(const InternalType & input, const SizeValueType offset) const
+  {
+    return Get( Superclass::Get(input, offset) );
+  }
+
+  inline void Set(InternalType & output, const ExternalType & input,
+                  const unsigned long offset) const
+  {
+    return Set( Superclass::Get( input, offset ) );
   }
 
   void SetExtractComponentIdx(VectorLengthType idx)
@@ -83,6 +96,10 @@ public:
 
   VectorImageToImagePixelAccessor():m_ComponentIdx(0) {}
   virtual ~VectorImageToImagePixelAccessor() {}
+
+protected:
+  typedef DefaultVectorPixelAccessor< TType > Superclass;
+
 private:
   VectorLengthType m_ComponentIdx;
 };
