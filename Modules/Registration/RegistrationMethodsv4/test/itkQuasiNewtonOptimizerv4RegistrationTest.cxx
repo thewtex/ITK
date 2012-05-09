@@ -28,7 +28,7 @@
 #include "itkJointHistogramMutualInformationImageToImageMetricv4.h"
 #include "itkANTSNeighborhoodCorrelationImageToImageMetricv4.h"
 #include "itkQuasiNewtonOptimizerv4.h"
-#include "itkRegistrationParameterScalesFromShift.h"
+#include "itkRegistrationParameterScalesFromPhysicalShift.h"
 
 #include "itkIdentityTransform.h"
 #include "itkTranslationTransform.h"
@@ -205,7 +205,7 @@ int itkQuasiNewtonOptimizerv4RegistrationTestMain(int argc, char *argv[])
   // Assign images and transforms.
   // By not setting a virtual domain image or virtual domain settings,
   // the metric will use the fixed image for the virtual domain.
-//  metric->SetVirtualDomainImage( fixedImage );
+//  metric->SetVirtualDomainFromImage( fixedImage );
   metric->SetFixedImage( fixedImage );
   metric->SetMovingImage( movingImage );
   metric->SetVirtualDomainImage( const_cast<FixedImageType *>(fixedImage.GetPointer()) );
@@ -216,14 +216,12 @@ int itkQuasiNewtonOptimizerv4RegistrationTestMain(int argc, char *argv[])
   metric->SetUseFixedImageGradientFilter( gaussian );
   metric->Initialize();
 
-  typedef itk::RegistrationParameterScalesFromShift< MetricBaseType >
-    RegistrationParameterScalesFromShiftType;
-  typename RegistrationParameterScalesFromShiftType::Pointer shiftScaleEstimator
-    = RegistrationParameterScalesFromShiftType::New();
+  typedef itk::RegistrationParameterScalesFromPhysicalShift< MetricBaseType > RegistrationParameterScalesFromShiftType;
+  typename RegistrationParameterScalesFromShiftType::Pointer shiftScaleEstimator = RegistrationParameterScalesFromShiftType::New();
   shiftScaleEstimator->SetMetric(metric);
 
   std::cout << "First do an affine registration " << std::endl;
-  //typedef itk::GradientDescentOptimizerv4  OptimizerType;
+
   typedef itk::QuasiNewtonOptimizerv4  OptimizerType;
   typename OptimizerType::Pointer  optimizer = OptimizerType::New();
   optimizer->SetMetric( metric );

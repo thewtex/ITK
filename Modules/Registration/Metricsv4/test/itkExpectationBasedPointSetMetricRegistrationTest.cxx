@@ -18,7 +18,6 @@
 
 #include "itkExpectationBasedPointSetToPointSetMetricv4.h"
 #include "itkGradientDescentOptimizerv4.h"
-#include "itkRegistrationParameterScalesFromShift.h"
 #include "itkTranslationTransform.h"
 
 #include <fstream>
@@ -141,7 +140,7 @@ int itkExpectationBasedPointSetMetricRegistrationTest( int argc, char *argv[] )
   optimizer->SetNumberOfIterations( numberOfIterations );
   //optimizer->SetScalesEstimator( shiftScaleEstimator );
 
-  // create scales to normalize between translation and rotation components
+  // create scales to normalize
   OptimizerType::ScalesType scales( metric->GetNumberOfParameters() );
   scales.Fill(0.1);
 
@@ -181,6 +180,7 @@ int itkExpectationBasedPointSetMetricRegistrationTest( int argc, char *argv[] )
     std::cerr << "Results do not match truth within tolerance." << std::endl;
     return EXIT_FAILURE;
     }
+
 
   return EXIT_SUCCESS;
 }

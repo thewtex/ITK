@@ -51,11 +51,13 @@ ExpectationBasedPointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>
   const MeasureType denominator = 2.0 * vnl_math_sqr( this->m_PointSetSigma );
 
   NeighborsIdentifierType neighborhood;
-  this->m_FixedTransformedPointsLocator->FindClosestNPoints( point, this->m_EvaluationKNeighborhood, neighborhood );
-
+//-  this->m_FixedTransformedPointsLocator->FindClosestNPoints( point, this->m_EvaluationKNeighborhood, neighborhood );
+  this->m_MovingTransformedPointsLocator->FindClosestNPoints( point, this->m_EvaluationKNeighborhood, neighborhood );
+  
   for( NeighborsIterator it = neighborhood.begin(); it != neighborhood.end(); ++it )
     {
-    PointType neighbor = this->m_FixedTransformedPointSet->GetPoint( *it );
+//-    PointType neighbor = this->m_FixedTransformedPointSet->GetPoint( *it );
+    PointType neighbor = this->m_MovingTransformedPointSet->GetPoint( *it );
     const MeasureType distance = point.SquaredEuclideanDistanceTo( neighbor );
     localValue += preFactor * vcl_exp( -distance / denominator );
     }
@@ -83,11 +85,13 @@ ExpectationBasedPointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>
 
   NeighborsIdentifierType neighborhood;
 
-  this->m_FixedTransformedPointsLocator->FindClosestNPoints( point, this->m_EvaluationKNeighborhood, neighborhood );
-
+//  this->m_FixedTransformedPointsLocator->FindClosestNPoints( point, this->m_EvaluationKNeighborhood, neighborhood );
+  this->m_MovingTransformedPointsLocator->FindClosestNPoints( point, this->m_EvaluationKNeighborhood, neighborhood );
+  
   for( NeighborsIterator it = neighborhood.begin(); it != neighborhood.end(); ++it )
     {
-    PointType neighbor = this->m_FixedTransformedPointSet->GetPoint( *it );
+//    PointType neighbor = this->m_FixedTransformedPointSet->GetPoint( *it );
+    PointType neighbor = this->m_MovingTransformedPointSet->GetPoint( *it );
     const MeasureType distance = point.SquaredEuclideanDistanceTo( neighbor );
     measureValues[it - neighborhood.begin()] = preFactor * vcl_exp( -distance / denominator );
     measure += measureValues[it - neighborhood.begin()];
@@ -95,7 +99,8 @@ ExpectationBasedPointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>
 
   for( NeighborsIterator it = neighborhood.begin(); it != neighborhood.end(); ++it )
     {
-    PointType neighbor = this->m_FixedTransformedPointSet->GetPoint( *it );
+//    PointType neighbor = this->m_FixedTransformedPointSet->GetPoint( *it );
+    PointType neighbor = this->m_MovingTransformedPointSet->GetPoint( *it );
     VectorType neighborVector = neighbor.GetVectorFromOrigin();
     weightedPoint += ( neighborVector * measureValues[it - neighborhood.begin()] / measure );
     }

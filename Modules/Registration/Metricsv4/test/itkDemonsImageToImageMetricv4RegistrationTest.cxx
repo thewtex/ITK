@@ -26,7 +26,7 @@
  */
 #include "itkDemonsImageToImageMetricv4.h"
 #include "itkGradientDescentOptimizerv4.h"
-#include "itkRegistrationParameterScalesFromShift.h"
+#include "itkRegistrationParameterScalesFromPhysicalShift.h"
 
 #include "itkGaussianSmoothingOnUpdateDisplacementFieldTransform.h"
 
@@ -194,7 +194,7 @@ int itkDemonsImageToImageMetricv4RegistrationTest(int argc, char *argv[])
   metric->Initialize();
 
   // scales & step estimator
-  typedef itk::RegistrationParameterScalesFromShift< MetricType > RegistrationParameterScalesFromShiftType;
+  typedef itk::RegistrationParameterScalesFromPhysicalShift< MetricType > RegistrationParameterScalesFromShiftType;
   RegistrationParameterScalesFromShiftType::Pointer shiftScaleEstimator = RegistrationParameterScalesFromShiftType::New();
   shiftScaleEstimator->SetMetric(metric);
 
