@@ -129,7 +129,7 @@ public:
   typedef typename Superclass::VirtualImageType           VirtualImageType;
   typedef typename Superclass::VirtualIndexType           VirtualIndexType;
   typedef typename Superclass::VirtualPointType           VirtualPointType;
-  typedef typename Superclass::VirtualSampledPointSetType VirtualSampledPointSetType;
+  typedef typename Superclass::VirtualPointSetType VirtualPointSetType;
 
   /** Types inherited from Superclass. */
   typedef typename Superclass::FixedSampledPointSetPointer    FixedSampledPointSetPointer;
