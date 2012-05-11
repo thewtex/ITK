@@ -472,7 +472,7 @@ itk_add_test(NAME  OtsuMultipleThresholdImageFilterTest COMMAND ${ITK_TEST_DRIVE
         png 3
 )
 itk_add_test(NAME  DigitallyReconstructedRadiograph1Test COMMAND ${ITK_TEST_DRIVER}
-  --compare DATA{${BASELINE}/DigitallyReconstructedRadiograph1.png}
+  --compare DATA{Baseline/DigitallyReconstructedRadiograph1.png}
             ${TEMP}/DigitallyReconstructedRadiograph1.png
   $<TARGET_FILE:DigitallyReconstructedRadiograph1>
         -o ${TEMP}/DigitallyReconstructedRadiograph1.png
