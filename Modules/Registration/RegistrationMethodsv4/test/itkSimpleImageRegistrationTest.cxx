@@ -225,7 +225,7 @@ int PerformSimpleImageRegistration( int argc, char *argv[] )
   //correlationMetric->SetUseFloatingPointCorrection(true);
   //correlationMetric->SetFloatingPointCorrectionResolution(1e4);
 
-  typedef itk::RegistrationParameterScalesFromShift<CorrelationMetricType> ScalesEstimatorType;
+  typedef itk::RegistrationParameterScalesFromPhysicalShift<CorrelationMetricType> ScalesEstimatorType;
   typename ScalesEstimatorType::Pointer scalesEstimator = ScalesEstimatorType::New();
   scalesEstimator->SetMetric( correlationMetric );
   scalesEstimator->SetTransformForward( true );

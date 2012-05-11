@@ -18,7 +18,7 @@
 
 #include "itkEuclideanDistancePointSetToPointSetMetricv4.h"
 #include "itkGradientDescentOptimizerv4.h"
-#include "itkRegistrationParameterScalesFromShift.h"
+#include "itkRegistrationParameterScalesFromPhysicalShift.h"
 #include "itkAffineTransform.h"
 
 #include <fstream>
@@ -44,8 +44,8 @@ int itkEuclideanDistancePointSetMetricRegistrationTest( int argc, char *argv[] )
   movingPoints->Initialize();
 
   // Create a few points and apply a small rotation to make the moving point set
-  float size = 100.0;
-  float theta = vnl_math::pi / 180.0 * 10.0;
+  float size = static_cast<float>(100.0);
+  float theta = vnl_math::pi / static_cast<float>(180.0) * static_cast<float>(1.0);
   unsigned int numberOfPoints = 4;
   PointType fixedPoint;
   fixedPoint[0] = 0;
@@ -60,6 +60,7 @@ int itkEuclideanDistancePointSetMetricRegistrationTest( int argc, char *argv[] )
   fixedPoint[0] = 0;
   fixedPoint[1] = size;
   fixedPoints->SetPoint( 3, fixedPoint );
+
   PointType movingPoint;
   for( unsigned int n=0; n < numberOfPoints; n ++ )
     {
@@ -84,36 +85,35 @@ int itkEuclideanDistancePointSetMetricRegistrationTest( int argc, char *argv[] )
   metric->Initialize();
 
   // scales estimator
-  // needs updating to handle point sets
-  //typedef itk::RegistrationParameterScalesFromShift< PointSetMetricType > RegistrationParameterScalesFromShiftType;
-  //RegistrationParameterScalesFromShiftType::Pointer shiftScaleEstimator = RegistrationParameterScalesFromShiftType::New();
-  //shiftScaleEstimator->SetMetric( metric );
+  typedef itk::RegistrationParameterScalesFromPhysicalShift< PointSetMetricType > RegistrationParameterScalesFromShiftType;
+  RegistrationParameterScalesFromShiftType::Pointer shiftScaleEstimator = RegistrationParameterScalesFromShiftType::New();
+  shiftScaleEstimator->SetMetric( metric );
+  // needed with pointset metrics
+  shiftScaleEstimator->SetVirtualDomainPointSet( metric->GetVirtualTransformedPointSet() );
 
   // optimizer
   typedef itk::GradientDescentOptimizerv4  OptimizerType;
   OptimizerType::Pointer  optimizer = OptimizerType::New();
   optimizer->SetMetric( metric );
   optimizer->SetNumberOfIterations( numberOfIterations );
-  //optimizer->SetScalesEstimator( shiftScaleEstimator );
+  optimizer->SetScalesEstimator( shiftScaleEstimator );
 
-  OptimizerType::ScalesType scales( metric->GetNumberOfParameters() );
-  scales.Fill(1.0);
-  scales[4] = 100;
-  scales[5] = 100;
-
-  optimizer->SetScales( scales );
-  optimizer->SetLearningRate( 0.0001 );
-
-  //if( maximumStepSize > 0 )
-  //  {
-  //  optimizer->SetMaximumStepSizeInPhysicalUnits( maximumStepSize );
-  //  }
+// reverting to see if this still works:
+/*OptimizerType::ScalesType scales( metric->GetNumberOfParameters() );
+scales.Fill(1.0);
+scales[4] = 100;
+scales[5] = 100;
+optimizer->SetScales( scales );
+optimizer->SetLearningRate( 0.0001 );
+*/
 
   optimizer->StartOptimization();
 
   std::cout << "numberOfIterations: " << numberOfIterations << std::endl;
   std::cout << "Moving-source final value: " << optimizer->GetValue() << std::endl;
   std::cout << "Moving-source final position: " << optimizer->GetCurrentPosition() << std::endl;
+  std::cout << "Optimizer scales: " << optimizer->GetScales() << std::endl;
+  std::cout << "Optimizer learning rate: " << optimizer->GetLearningRate() << std::endl;
 
   // applying the resultant transform to moving points and verify result
   std::cout << "Fixed\tMoving\tTransformed Moving\tTransformed Fixed\tDiff" << std::endl;
