@@ -177,7 +177,7 @@ GradientDescentOptimizerv4
       }
     catch(...)
       {
-      std::cout << "GetConvergenceValue() failed." << std::endl;
+      std::cerr << "GetConvergenceValue() failed." << std::endl;
       }
 
     /* Advance one step along the gradient.
