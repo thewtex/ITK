@@ -15,34 +15,33 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#include "itkRegistrationParameterScalesFromJacobian.h"
+#include "itkRegistrationParameterScalesFromPhysicalShift.h"
 #include "itkImageToImageMetricv4.h"
 
 #include "itkAffineTransform.h"
 #include "itkDisplacementFieldTransform.h"
 
 /**
- *  \class RegistrationParameterScalesFromJacobianTestMetric for test.
+ *  \class RegistrationParameterScalesFromPhysicalShiftTestMetric for test.
  *  Create a simple metric to use for testing here.
  */
 template< class TFixedImage,class TMovingImage,class TVirtualImage = TFixedImage >
-class ITK_EXPORT RegistrationParameterScalesFromJacobianTestMetric:
+class ITK_EXPORT RegistrationParameterScalesFromPhysicalShiftTestMetric:
   public itk::ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage>
 {
 public:
   /** Standard class typedefs. */
-  typedef RegistrationParameterScalesFromJacobianTestMetric       Self;
-  typedef itk::ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage>
-                                                                  Superclass;
-  typedef itk::SmartPointer< Self >                               Pointer;
-  typedef itk::SmartPointer< const Self >                         ConstPointer;
+  typedef RegistrationParameterScalesFromPhysicalShiftTestMetric              Self;
+  typedef itk::ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage> Superclass;
+  typedef itk::SmartPointer< Self >                                           Pointer;
+  typedef itk::SmartPointer< const Self >                                     ConstPointer;
 
   typedef typename Superclass::MeasureType          MeasureType;
   typedef typename Superclass::DerivativeType       DerivativeType;
   typedef typename Superclass::ParametersType       ParametersType;
   typedef typename Superclass::ParametersValueType  ParametersValueType;
 
-  itkTypeMacro(RegistrationParameterScalesFromJacobianTestMetric, ImageToImageMetricv4);
+  itkTypeMacro(RegistrationParameterScalesFromPhysicalShiftTestMetric, ImageToImageMetricv4);
 
   itkNewMacro(Self);
 
@@ -95,14 +94,14 @@ public:
 
 private:
 
-  RegistrationParameterScalesFromJacobianTestMetric() {}
-  ~RegistrationParameterScalesFromJacobianTestMetric() {}
+  RegistrationParameterScalesFromPhysicalShiftTestMetric() {}
+  ~RegistrationParameterScalesFromPhysicalShiftTestMetric() {}
 
 };
 
 /**
  */
-int itkRegistrationParameterScalesFromJacobianTest(int , char* [])
+int itkRegistrationParameterScalesFromPhysicalShiftTest(int , char* [])
 {
 
   // Image begins
@@ -124,9 +123,8 @@ int itkRegistrationParameterScalesFromJacobianTest(int , char* [])
 
   movingImage->SetRegions( size );
   fixedImage->SetRegions( size );
-  // Image done
 
-  // Transform begins
+  // Transforms
   typedef itk::AffineTransform<double, ImageDimension>      MovingTransformType;
   MovingTransformType::Pointer movingTransform =  MovingTransformType::New();
   movingTransform->SetIdentity();
@@ -134,10 +132,9 @@ int itkRegistrationParameterScalesFromJacobianTest(int , char* [])
   typedef itk::TranslationTransform<double, ImageDimension> FixedTransformType;
   FixedTransformType::Pointer fixedTransform =    FixedTransformType::New();
   fixedTransform->SetIdentity();
-  // Transform done
 
-  // Metric begins
-  typedef RegistrationParameterScalesFromJacobianTestMetric
+  // Metric
+  typedef RegistrationParameterScalesFromPhysicalShiftTestMetric
     <FixedImageType, MovingImageType>   MetricType;
   MetricType::Pointer metric = MetricType::New();
 
@@ -147,28 +144,24 @@ int itkRegistrationParameterScalesFromJacobianTest(int , char* [])
 
   metric->SetFixedTransform( fixedTransform );
   metric->SetMovingTransform( movingTransform );
-  // Metric done
 
-  // Scales for the affine transform from transform jacobians
-  typedef itk::RegistrationParameterScalesFromJacobian< MetricType >
-    RegistrationParameterScalesFromJacobianType;
-  RegistrationParameterScalesFromJacobianType::Pointer jacobianScaleEstimator
-    = RegistrationParameterScalesFromJacobianType::New();
+  //
+  // Testing RegistrationParameterScalesFromPhysicalShift
+  //
+  typedef itk::RegistrationParameterScalesFromPhysicalShift< MetricType >  RegistrationParameterScalesFromPhysicalShiftType;
+  RegistrationParameterScalesFromPhysicalShiftType::Pointer shiftScaleEstimator = RegistrationParameterScalesFromPhysicalShiftType::New();
 
-  jacobianScaleEstimator->SetMetric(metric);
-  jacobianScaleEstimator->SetTransformForward(true); //by default
-  jacobianScaleEstimator->Print( std::cout );
+  shiftScaleEstimator->SetMetric(metric);
+  shiftScaleEstimator->SetTransformForward(true); //by default, scales for the moving transform
+  shiftScaleEstimator->Print( std::cout );
   std::cout << std::endl;
 
-  RegistrationParameterScalesFromJacobianType::ScalesType jacobianScales(
-    movingTransform->GetNumberOfParameters());
-  jacobianScaleEstimator->EstimateScales(jacobianScales);
-  std::cout << "Jacobian scales for the affine transform = "
-    << jacobianScales << std::endl;
+  RegistrationParameterScalesFromPhysicalShiftType::ScalesType movingScales(movingTransform->GetNumberOfParameters());
+  shiftScaleEstimator->EstimateScales(movingScales);
+  std::cout << "Shift scales for the affine transform = " << movingScales << std::endl;
 
-  // Check the correctness
-  RegistrationParameterScalesFromJacobianType::ScalesType theoreticalJacobianScales(
-    movingTransform->GetNumberOfParameters());
+  // determine truth
+  RegistrationParameterScalesFromPhysicalShiftType::ScalesType theoreticalMovingScales(movingTransform->GetNumberOfParameters());
   VirtualImageType::PointType upperPoint;
   virtualImage->TransformIndexToPhysicalPoint(virtualImage->
     GetLargestPossibleRegion().GetUpperIndex(), upperPoint);
@@ -178,79 +171,66 @@ int itkRegistrationParameterScalesFromJacobianTest(int , char* [])
     {
     for (itk::SizeValueType col = 0; col < ImageDimension; col++)
       {
-      //previously uses random sampling
-      //average of squares of consecutive integers [0,1,...,n]
-      // = n*(n+1)*(2n+1)/6 / (n+1) = n*(2n+1)/6
-      //theoreticalJacobianScales[param++] = (upperPoint[col] *
-      //  (2*upperPoint[col]+1)) / 6.0;
-
-      //now uses the corners for affine transform
-      // = (0 + 0 + n*n + n*n)/4 = n*n/2
-      theoreticalJacobianScales[param++] = upperPoint[col] * upperPoint[col] / 2.0;
+      theoreticalMovingScales[param++] = upperPoint[col] * upperPoint[col];
       }
     }
   for (itk::SizeValueType row = 0; row < ImageDimension; row++)
     {
-    theoreticalJacobianScales[param++] = 1;
+    theoreticalMovingScales[param++] = 1;
     }
 
-  bool jacobianPass = true;
-  for (itk::SizeValueType p = 0; p < jacobianScales.GetSize(); p++)
+  // compare test to truth
+  bool affinePass = true;
+  for (itk::SizeValueType p = 0; p < theoreticalMovingScales.GetSize(); p++)
     {
-    if (vcl_abs((jacobianScales[p] - theoreticalJacobianScales[p])
-      / theoreticalJacobianScales[p]) > 0.01 )
+    if (vcl_abs((movingScales[p] - theoreticalMovingScales[p]) / theoreticalMovingScales[p]) > 0.01 )
       {
-      jacobianPass = false;
+      affinePass = false;
       break;
       }
     }
-  if (!jacobianPass)
+  if (!affinePass)
     {
-    std::cout << "Failed: the jacobian scales for the affine transform are not correct." << std::endl;
+    std::cout << "Failed: the shift scales for the affine transform are not correct." << std::endl;
     }
   else
     {
-    std::cout << "Passed: the jacobian scales for the affine transform are correct." << std::endl;
+    std::cout << "Passed: the shift scales for the affine transform are correct." << std::endl;
     }
 
-  bool nonUniformForJacobian = false;
-  for (itk::SizeValueType p = 1; p < jacobianScales.GetSize(); p++)
+  bool nonUniformForAffine = false;
+  for (itk::SizeValueType p = 1; p < movingScales.GetSize(); p++)
     {
-    if (jacobianScales[p] != jacobianScales[0])
+    if (movingScales[p] != movingScales[0])
       {
-      nonUniformForJacobian = true;
+      nonUniformForAffine = true;
       break;
       }
     }
-  if (!nonUniformForJacobian)
+  if (!nonUniformForAffine)
     {
-    std::cout << "Error: the jacobian scales for an affine transform are equal for all parameters." << std::endl;
+    std::cout << "Error: the shift scales for an affine transform are equal for all parameters." << std::endl;
     }
 
-  // Testing the step scale for the affine transform
+  //
+  // Testing the step scale
+  //
   MovingTransformType::ParametersType movingStep(movingTransform->GetNumberOfParameters());
-  movingStep = movingTransform->GetParameters();
-  FloatType stepScale = jacobianScaleEstimator->EstimateStepScale(movingStep);
-  std::cout << "The step scale of Jacobian for the affine transform = " << stepScale << std::endl;
+  movingStep = movingTransform->GetParameters(); //the step is an identity transform
+  FloatType stepScale = shiftScaleEstimator->EstimateStepScale(movingStep);
+  std::cout << "The step scale of shift for the affine transform = " << stepScale << std::endl;
   FloatType learningRate = 1.0 / stepScale;
-  std::cout << "The learning rate of Jacobian for the affine transform = " << learningRate << std::endl;
+  std::cout << "The learning rate of shift for the affine transform = " << learningRate << std::endl;
 
+  // compute truth
   FloatType theoreticalStepScale = 0.0;
-  FloatType count = 0.0;
-  VirtualImageType::PointType lowerPoint;
-  virtualImage->TransformIndexToPhysicalPoint(virtualImage->
-    GetLargestPossibleRegion().GetIndex(), lowerPoint);
-
-  for (FloatType x=lowerPoint[0]; x<=upperPoint[0]; x+=upperPoint[0]-lowerPoint[0])
+  for (itk::SizeValueType row = 0; row < ImageDimension; row++)
     {
-    for (FloatType y=lowerPoint[1]; y<=upperPoint[1]; y+=upperPoint[1]-lowerPoint[1])
-      {
-      theoreticalStepScale += vcl_sqrt(x*x + y*y);
-      count++;
-      }
+    theoreticalStepScale += upperPoint[row] * upperPoint[row];
     }
-  theoreticalStepScale /= count;
+  theoreticalStepScale = vcl_sqrt(theoreticalStepScale);
 
+  // compare truth and test
   bool stepScalePass = false;
   if (vcl_abs( (stepScale - theoreticalStepScale)/theoreticalStepScale ) < 0.01)
     {
@@ -265,7 +245,53 @@ int itkRegistrationParameterScalesFromJacobianTest(int , char* [])
     std::cout << "Passed: the step scale for the affine transform is correct." << std::endl;
     }
 
+  //
+  // Scales for the fixed transform
+  //
+  shiftScaleEstimator->SetTransformForward(false);
+  RegistrationParameterScalesFromPhysicalShiftType::ScalesType fixedScales( fixedTransform->GetNumberOfParameters() );
+  shiftScaleEstimator->EstimateScales(fixedScales);
+  std::cout << "Shift scales for the translation transform = " << fixedScales << std::endl;
+
+  // Check the correctness
+  RegistrationParameterScalesFromPhysicalShiftType::ScalesType theoreticalFixedScales( fixedTransform->GetNumberOfParameters() );
+  theoreticalFixedScales.Fill(1.0);
+
+  bool translationPass = true;
+  for (itk::SizeValueType p = 0; p < theoreticalFixedScales.GetSize(); p++)
+    {
+    if (vcl_abs((fixedScales[p] - theoreticalFixedScales[p]) / theoreticalFixedScales[p]) > 0.01 )
+      {
+      translationPass = false;
+      break;
+      }
+    }
+  if (!translationPass)
+    {
+    std::cout << "Failed: the shift scales for the translation transform are not correct." << std::endl;
+    }
+  else
+    {
+    std::cout << "Passed: the shift scales for the translation transform are correct." << std::endl;
+    }
+
+  bool uniformForTranslation = true;
+  for (itk::SizeValueType p = 1; p < fixedScales.GetSize(); p++)
+    {
+    if (fixedScales[p] != fixedScales[0])
+      {
+      uniformForTranslation = false;
+      break;
+      }
+    }
+  if (!uniformForTranslation)
+    {
+    std::cout << "Error: the shift scales for a translation transform are not equal for all parameters." << std::endl;
+    }
+
+  //
   // Testing local scales for a transform with local support, ex. DisplacementFieldTransform
+  //
   typedef itk::DisplacementFieldTransform<double, ImageDimension>
                                                             DisplacementTransformType;
   typedef DisplacementTransformType::DisplacementFieldType  FieldType;
@@ -286,22 +312,20 @@ int itkRegistrationParameterScalesFromJacobianTest(int , char* [])
   displacementTransform->SetDisplacementField(field);
 
   metric->SetMovingTransform( displacementTransform );
-  jacobianScaleEstimator->SetTransformForward(true);
-  RegistrationParameterScalesFromJacobianType::ScalesType localScales;
-  jacobianScaleEstimator->EstimateScales(localScales);
-  std::cout << "Shift scales for the displacement field transform = "
-    << localScales << std::endl;
+  shiftScaleEstimator->SetTransformForward(true);
+  RegistrationParameterScalesFromPhysicalShiftType::ScalesType localScales;
+  shiftScaleEstimator->EstimateScales(localScales);
+  std::cout << "Shift scales for the displacement field transform = " << localScales << std::endl;
 
   // Check the correctness
-  RegistrationParameterScalesFromJacobianType::ScalesType theoreticalLocalScales(
+  RegistrationParameterScalesFromPhysicalShiftType::ScalesType theoreticalLocalScales(
     displacementTransform->GetNumberOfLocalParameters());
   theoreticalLocalScales.Fill(1.0);
 
   bool displacementPass = true;
   for (itk::SizeValueType p = 0; p < theoreticalLocalScales.GetSize(); p++)
     {
-    if (vcl_abs((localScales[p] - theoreticalLocalScales[p])
-      / theoreticalLocalScales[p]) > 0.01 )
+    if (vcl_abs((localScales[p] - theoreticalLocalScales[p]) / theoreticalLocalScales[p]) > 0.01 )
       {
       displacementPass = false;
       break;
@@ -315,20 +339,20 @@ int itkRegistrationParameterScalesFromJacobianTest(int , char* [])
     {
     std::cout << "Passed: the shift scales for the displacement field transform are correct." << std::endl;
     }
-  // Testing scales with local support done
 
+  //
   // Testing the step scale for the displacement field transform
+  //
   DisplacementTransformType::ParametersType displacementStep(displacementTransform->GetNumberOfParameters());
   displacementStep.Fill(1.0);
-  FloatType localStepScale = jacobianScaleEstimator->EstimateStepScale(displacementStep);
-  std::cout << "The step scale of Jacobian for the displacement field transform = " << localStepScale << std::endl;
+  FloatType localStepScale = shiftScaleEstimator->EstimateStepScale(displacementStep);
+  std::cout << "The step scale of shift for the displacement field transform = " << localStepScale << std::endl;
   FloatType localLearningRate = 1.0 / localStepScale;
-  std::cout << "The learning rate of Jacobian for the displacement field transform = " << localLearningRate << std::endl;
+  std::cout << "The learning rate of shift for the displacement field transform = " << localLearningRate << std::endl;
 
   bool localStepScalePass = false;
   FloatType theoreticalLocalStepScale = vcl_sqrt(2.0);
-  if (vcl_abs( (localStepScale - theoreticalLocalStepScale)
-    /theoreticalLocalStepScale ) < 0.01)
+  if (vcl_abs( (localStepScale - theoreticalLocalStepScale) /theoreticalLocalStepScale ) < 0.01)
     {
     localStepScalePass = true;
     }
@@ -340,12 +364,13 @@ int itkRegistrationParameterScalesFromJacobianTest(int , char* [])
     {
     std::cout << "Passed: the step scale for the displacement field transform is correct." << std::endl;
     }
-  // Testing the step scale with local support done
 
+  //
   // Check the correctness of all cases above
+  //
   std::cout << std::endl;
-  if (jacobianPass && nonUniformForJacobian
-    && stepScalePass && displacementPass && localStepScalePass)
+  if (affinePass && nonUniformForAffine && stepScalePass && displacementPass && localStepScalePass
+      && translationPass && uniformForTranslation )
     {
     std::cout << "Test passed" << std::endl;
     return EXIT_SUCCESS;
