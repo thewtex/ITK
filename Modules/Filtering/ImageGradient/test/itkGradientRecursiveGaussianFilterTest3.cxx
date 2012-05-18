@@ -17,16 +17,21 @@
  *=========================================================================*/
 
 #include "itkGradientRecursiveGaussianImageFilter.h"
+#include "itkVector.h"
+#include "itkVariableLengthVector.h"
+#include "itkVectorImage.h"
+#include "itkImageFileWriter.h"
 
-
-int itkGradientRecursiveGaussianFilterTest(int, char* [] )
+template< class TImageType, class TGradImageType, unsigned int TComponents >
+int itkGradientRecursiveGaussianFilterTest3Run( typename TImageType::PixelType & myPixel, char * outputFilename )
 {
+  typedef TImageType      myImageType;
+  typedef TGradImageType  myGradImageType;
+
+  const unsigned int myComponents = TComponents;
 
   // Define the dimension of the images
-  const unsigned int myDimension = 3;
-
-  // Declare the types of the images
-  typedef itk::Image<float, myDimension>           myImageType;
+  const unsigned int myDimension = myImageType::ImageDimension;
 
   // Declare the type of the index to access images
   typedef itk::Index<myDimension>             myIndexType;
@@ -38,8 +43,7 @@ int itkGradientRecursiveGaussianFilterTest(int, char* [] )
   typedef itk::ImageRegion<myDimension>        myRegionType;
 
   // Create the image
-  myImageType::Pointer inputImage  = myImageType::New();
-
+  typename myImageType::Pointer inputImage  = myImageType::New();
 
   // Define their size, and start index
   mySizeType size;
@@ -58,6 +62,7 @@ int itkGradientRecursiveGaussianFilterTest(int, char* [] )
   inputImage->SetLargestPossibleRegion( region );
   inputImage->SetBufferedRegion( region );
   inputImage->SetRequestedRegion( region );
+  inputImage->SetNumberOfComponentsPerPixel( myComponents );
   inputImage->Allocate();
 
   // Declare Iterator type for the input image
@@ -67,9 +72,10 @@ int itkGradientRecursiveGaussianFilterTest(int, char* [] )
   myIteratorType it( inputImage, inputImage->GetRequestedRegion() );
 
   // Initialize the content of Image A
+  myPixel.Fill( 0.0 );
   while( !it.IsAtEnd() )
     {
-    it.Set( 0.0 );
+    it.Set( myPixel );
     ++it;
     }
 
@@ -82,34 +88,30 @@ int itkGradientRecursiveGaussianFilterTest(int, char* [] )
   start[2] = 2;
 
   // Create one iterator for an internal region
-  myRegionType innerRegion;
-  innerRegion.SetSize( size );
-  innerRegion.SetIndex( start );
-  myIteratorType itb( inputImage, innerRegion );
+  region.SetSize( size );
+  region.SetIndex( start );
+  myIteratorType itb( inputImage, region );
 
   // Initialize the content the internal region
+  myPixel.Fill( 100.0 );
   while( !itb.IsAtEnd() )
     {
-    itb.Set( 100.0 );
+    itb.Set( myPixel );
     ++itb;
     }
 
   // Declare the type for the
-  typedef itk::GradientRecursiveGaussianImageFilter< myImageType >  myFilterType;
-
-  typedef myFilterType::OutputImageType myGradientImageType;
-
+  typedef itk::GradientRecursiveGaussianImageFilter<myImageType, myGradImageType >  myFilterType;
+  typedef typename myFilterType::OutputImageType                                    myGradientImageType;
 
   // Create a  Filter
-  myFilterType::Pointer filter = myFilterType::New();
-
+  typename myFilterType::Pointer filter = myFilterType::New();
 
   // Connect the input images
   filter->SetInput( inputImage );
 
   // Select the value of Sigma
   filter->SetSigma( 2.5 );
-
 
   // Execute the filter
   filter->Update();
@@ -118,7 +120,7 @@ int itkGradientRecursiveGaussianFilterTest(int, char* [] )
   // It is important to do it AFTER the filter is Updated
   // Because the object connected to the output may be changed
   // by another during GenerateData() call
-  myGradientImageType::Pointer outputImage = filter->GetOutput();
+  typename myGradientImageType::Pointer outputImage = filter->GetOutput();
 
   // Declare Iterator type for the output image
   typedef itk::ImageRegionIteratorWithIndex<myGradientImageType>  myOutputIteratorType;
@@ -127,6 +129,7 @@ int itkGradientRecursiveGaussianFilterTest(int, char* [] )
   myOutputIteratorType itg( outputImage, outputImage->GetRequestedRegion() );
 
   //  Print the content of the result image
+  /* dbg
   std::cout << " Result " << std::endl;
   itg.GoToBegin();
   while( !itg.IsAtEnd() )
@@ -134,51 +137,55 @@ int itkGradientRecursiveGaussianFilterTest(int, char* [] )
     std::cout << itg.Get();
     ++itg;
     }
-  std::cout << std::endl;
+  */
 
-  //
-  // Test with a change in image direction
-  //
-  myImageType::DirectionType direction;
-  direction.Fill( 0.0 );
-  direction[0][0] = -1.0;
-  direction[1][1] = -1.0;
-  direction[2][2] = -1.0;
-  inputImage->SetDirection( direction );
+  typedef itk::ImageFileWriter< myGradientImageType >   WriterType;
 
-  // Create a  Filter
-  myFilterType::Pointer filter2 = myFilterType::New();
-  filter2->SetInput( inputImage );
-  filter2->SetSigma( 2.5 );
-  filter2->Update();
-  myGradientImageType::Pointer outputFlippedImage = filter2->GetOutput();
-
-  // compare the output between identity direction and flipped direction
-  std::cout << " Result of flipped image " << std::endl;
-  myOutputIteratorType itf( outputFlippedImage, outputFlippedImage->GetRequestedRegion() );
-  itf.GoToBegin();
-  bool passed = true;
-  while( !itf.IsAtEnd() )
-    {
-    std::cout << itf.Get();
-    myImageType::IndexType index;
-    for( unsigned int d = 0; d < myDimension; d++ )
-      {
-      index[d] = region.GetSize()[d] - 1 - itf.GetIndex()[d];
-      }
-    if( itf.Value() != outputImage->GetPixel( index ) )
-      {
-      passed = false;
-      }
-    ++itf;
-    }
-  std::cout << std::endl;
-  if( ! passed )
-    {
-    std::cerr << "Flipped image gradient does not match regular image as expected." << std::endl;
-    return EXIT_FAILURE;
-    }
+  typename WriterType::Pointer      writer =  WriterType::New();
+  writer->SetFileName( outputFilename );
+  writer->SetInput( outputImage );
+  writer->Update();
 
   // All objects should be automatically destroyed at this point
   return EXIT_SUCCESS;
+}
+
+int itkGradientRecursiveGaussianFilterTest3(int argc, char *argv[] )
+{
+  if( argc < 3 )
+    {
+    std::cerr << "Missing Parameters " << std::endl;
+    std::cerr << "Usage: " << argv[0];
+    std::cerr << " outputImageFile1 outputImageFile2 ";
+    return EXIT_FAILURE;
+    }
+
+  int result = EXIT_SUCCESS;
+
+  const unsigned int myDimension = 3;
+  const unsigned int myComponents = 2;
+  typedef itk::Vector<float, myComponents>            myVectorType;
+  typedef itk::Image<myVectorType, myDimension>       myImageType;
+  typedef itk::Vector<float,myDimension*myComponents> myGradType;
+  typedef itk::Image<myGradType, myDimension>         myGradImageType;
+
+  myVectorType pixel;
+  int runResult = itkGradientRecursiveGaussianFilterTest3Run<myImageType, myGradImageType, myComponents>( pixel, argv[1] );
+  if( runResult == EXIT_FAILURE )
+    {
+    result = runResult;
+    }
+
+  typedef itk::VariableLengthVector<float>             myVector2Type;
+  typedef itk::Image<myVector2Type, myDimension>       myImage2Type;
+
+  myVector2Type pixel2;
+  pixel2.SetSize( myComponents );
+  runResult = itkGradientRecursiveGaussianFilterTest3Run<myImage2Type, myGradImageType, myComponents>( pixel2, argv[2] );
+  if( runResult == EXIT_FAILURE )
+    {
+    result = runResult;
+    }
+
+  return result;
 }

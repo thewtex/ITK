@@ -61,7 +61,7 @@ public:
   itkTypeMacro(ObjectToObjectMetric, ObjectToObjectMetricBase);
 
   /** Type used for representing object components  */
-  typedef typename Superclass::ParametersValueType CoordinateRepresentationType;
+  typedef typename Superclass::CoordinateRepresentationType    CoordinateRepresentationType;
 
   /** Type for internal computations */
   typedef typename Superclass::InternalComputationValueType    InternalComputationValueType;

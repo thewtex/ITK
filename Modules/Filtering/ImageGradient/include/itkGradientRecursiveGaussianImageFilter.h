@@ -22,7 +22,7 @@
 #include "itkNthElementImageAdaptor.h"
 #include "itkImage.h"
 #include "itkCovariantVector.h"
-#include "itkPixelTraits.h"
+#include "itkDefaultConvertPixelTraits.h"
 #include "itkProgressAccumulator.h"
 #include <vector>
 
@@ -62,19 +62,27 @@ public:
   typedef SmartPointer< const Self >                      ConstPointer;
 
   /** Pixel Type of the input image */
-  typedef TInputImage                                   InputImageType;
-  typedef typename TInputImage::PixelType               PixelType;
-  typedef typename NumericTraits< PixelType >::RealType RealType;
+  typedef TInputImage                                           InputImageType;
+  typedef typename TInputImage::PixelType                       PixelType;
+  typedef typename NumericTraits< PixelType >::RealType         RealType;
+  typedef typename NumericTraits< PixelType >::ScalarRealType   ScalarRealType;
+
+  /** Define the image type for internal computations
+      RealType is usually 'double' in NumericTraits.
+      Here we prefer float in order to save memory.  */
+  typedef typename NumericTraits< RealType >::FloatType         InternalRealType;
+  typedef typename NumericTraits< InternalRealType >::ValueType InternalScalarRealType;
 
   /** Image dimension. */
   itkStaticConstMacro(ImageDimension, unsigned int,
                       TInputImage::ImageDimension);
 
+  /** Gradient vector typedef */
+  typedef CovariantVector<ScalarRealType, ImageDimension > GradientVectorType;
+
   /** Define the image type for internal computations
       RealType is usually 'double' in NumericTraits.
       Here we prefer float in order to save memory.  */
-
-  typedef float InternalRealType;
   typedef Image< InternalRealType,
                  itkGetStaticConstMacro(ImageDimension) >   RealImageType;
 
@@ -83,7 +91,7 @@ public:
    *  smoothing filters to compute each one of the
    *  components of the gradient image pixels. */
   typedef NthElementImageAdaptor< TOutputImage,
-                                  InternalRealType >  OutputImageAdaptorType;
+                                  InternalScalarRealType >  OutputImageAdaptorType;
 
   typedef typename OutputImageAdaptorType::Pointer OutputImageAdaptorPointer;
 
@@ -111,7 +119,8 @@ public:
   /** Type of the output Image */
   typedef TOutputImage                                       OutputImageType;
   typedef typename          OutputImageType::PixelType       OutputPixelType;
-  typedef typename PixelTraits< OutputPixelType >::ValueType OutputComponentType;
+
+  typedef typename DefaultConvertPixelTraits< OutputPixelType >::ComponentType OutputComponentType;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -121,7 +130,7 @@ public:
                ImageToImageFilter);
 
   /** Set Sigma value. Sigma is measured in the units of image spacing.  */
-  void SetSigma(RealType sigma);
+  void SetSigma(ScalarRealType sigma);
 
   /** Define which normalization factor will be used for the Gaussian
    *  \sa  RecursiveGaussianImageFilter::SetNormalizeAcrossScale
@@ -153,10 +162,8 @@ public:
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   /** Begin concept checking */
-  itkConceptMacro( InputHasNumericTraitsCheck,
-                   ( Concept::HasNumericTraits< PixelType > ) );
-  itkConceptMacro( OutputHasPixelTraitsCheck,
-                   ( Concept::HasPixelTraits< OutputPixelType > ) );
+  itkConceptMacro( InputHasNumericTraitsCheck, ( Concept::HasNumericTraits< PixelType > ) );
+  itkConceptMacro( OutputHasPixelTraitsCheck, ( Concept::HasPixelTraits< OutputPixelType > ) );
   /** End concept checking */
 #endif
 protected:
