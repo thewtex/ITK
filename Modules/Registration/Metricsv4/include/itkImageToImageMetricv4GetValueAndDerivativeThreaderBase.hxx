@@ -104,7 +104,8 @@ ImageToImageMetricv4GetValueAndDerivativeThreaderBase< TDomainPartitioner, TImag
        * subregions. */
       for( NumberOfParametersType p = 0; p < this->m_Associate->GetNumberOfParameters(); p++ )
         {
-        this->m_CompensatedDerivativesPerThread[thread][p].ResetToZero();
+        //this->m_CompensatedDerivativesPerThread[thread][p].ResetToZero();
+        this->m_CompensatedDerivativesPerThread[thread][p] = 0.0;
         }
       }
     }
@@ -131,13 +132,16 @@ ImageToImageMetricv4GetValueAndDerivativeThreaderBase< TDomainPartitioner, TImag
     for (NumberOfParametersType p = 0; p < this->m_Associate->GetNumberOfParameters(); p++ )
       {
       /* Use a compensated sum to be ready for when there is a very large number of threads */
-      CompensatedDerivativeValueType sum;
-      sum.ResetToZero();
+//      CompensatedDerivativeValueType sum;
+//      sum.ResetToZero();
+      DerivativeValueType sum = 0.0;
       for (ThreadIdType i=0; i<this->GetNumberOfThreadsUsed(); i++)
         {
-        sum += this->m_CompensatedDerivativesPerThread[i][p].GetSum();
+//        sum += this->m_CompensatedDerivativesPerThread[i][p].GetSum();
+        sum += this->m_CompensatedDerivativesPerThread[i][p];
         }
-      (*(this->m_Associate->m_DerivativeResult))[p] += sum.GetSum();
+//      (*(this->m_Associate->m_DerivativeResult))[p] += sum.GetSum();
+      (*(this->m_Associate->m_DerivativeResult))[p] += sum;
       }
     }
 

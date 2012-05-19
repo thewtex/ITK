@@ -84,8 +84,9 @@ public:
   typedef typename ImageToImageMetricv4Type::InternalComputationValueType InternalComputationValueType;
   typedef typename ImageToImageMetricv4Type::NumberOfParametersType       NumberOfParametersType;
 
-  typedef CompensatedSummation<DerivativeValueType>                   CompensatedDerivativeValueType;
-  typedef std::vector<CompensatedDerivativeValueType>                 CompensatedDerivativeType;
+//  typedef CompensatedSummation<DerivativeValueType>                   CompensatedDerivativeValueType;
+//  typedef std::vector<CompensatedDerivativeValueType>                 CompensatedDerivativeType;
+  typedef std::vector<DerivativeValueType>                              CompensatedDerivativeType;
 
 protected:
   /** Constructor. */
