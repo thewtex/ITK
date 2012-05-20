@@ -41,7 +41,6 @@ GradientDescentOptimizerv4
 
   this->m_DoEstimateScales = true;
   this->m_DoEstimateLearningRateAtEachIteration = false;
-  this->m_DoEstimateLearningRateOnce = true;
 }
 
 /**
@@ -75,8 +74,6 @@ GradientDescentOptimizerv4
   os << indent << "DoEstimateScales: " << this->m_DoEstimateScales << std::endl;
   os << indent << "DoEstimateLearningRateAtEachIteration: "
                << this->m_DoEstimateLearningRateAtEachIteration << std::endl;
-  os << indent << "DoEstimateLearningRateOnce: "
-               << this->m_DoEstimateLearningRateOnce << std::endl;
 }
 
 /**
@@ -87,14 +84,6 @@ GradientDescentOptimizerv4
 ::StartOptimization()
 {
   itkDebugMacro("StartOptimization");
-
-  /* Validate some settings */
-  if ( this->m_ScalesEstimator.IsNotNull() &&
-       this->m_DoEstimateLearningRateOnce &&
-       this->m_DoEstimateLearningRateAtEachIteration )
-    {
-    itkExceptionMacro("Both m_DoEstimateLearningRateOnce and m_DoEstimateLearningRateAtEachIteration are enabled. Not allowed. ");
-    }
 
   /* Estimate the parameter scales if requested. */
   if ( this->m_DoEstimateScales && this->m_ScalesEstimator.IsNotNull() )
@@ -277,13 +266,12 @@ GradientDescentOptimizerv4
     {
     return;
     }
-  if ( this->m_DoEstimateLearningRateAtEachIteration ||
-      (this->m_DoEstimateLearningRateOnce && this->m_CurrentIteration == 0) )
+  if ( this->m_DoEstimateLearningRateAtEachIteration || this->m_CurrentIteration == 0 )
     {
     InternalComputationValueType stepScale
       = this->m_ScalesEstimator->EstimateStepScale(this->m_Gradient);
 
-    if (stepScale <= NumericTraits<InternalComputationValueType>::epsilon())
+    if ( stepScale <= NumericTraits<InternalComputationValueType>::epsilon() )
       {
       this->m_LearningRate = NumericTraits<InternalComputationValueType>::One;
       }

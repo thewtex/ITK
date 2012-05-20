@@ -52,10 +52,9 @@ namespace itk
  * by assigning a ScalesEstimator via SetScalesEstimator(). When a
  * ScalesEstimator is assigned, the optimizer is enabled by default to estimate
  * learning rate only once, during the first iteration. This behavior can be changed via
- * SetDoEstimateLearningRateAtEveryIteration() and
- * SetDoEstimateLearningRateOnce(). For learning rate to be estimated at each iteration,
- * the user must call SetDoEstimateLearningRateAtEveryIteration(true) and
- * SetDoEstimateLearningRateOnce(false). When enabled, the optimizer computes learning
+ * SetDoEstimateLearningRateAtEveryIteration(). For learning rate to be estimated at each iteration,
+ * the user must call SetDoEstimateLearningRateAtEveryIteration(true).
+ * When enabled, the optimizer computes learning
  * rate(s) such that at each step, each voxel's change in physical space will be less
  * than m_MaximumStepSizeInPhysicalUnits.
  *      m_LearningRate =
@@ -64,7 +63,7 @@ namespace itk
  * where m_MaximumStepSizeInPhysicalUnits defaults to the voxel spacing returned by
  * m_ScalesEstimator->EstimateMaximumStepSize() (which is typically 1 voxel),
  * and can be set by the user via SetMaximumStepSizeInPhysicalUnits().
- * When SetDoEstimateLearningRateOnce is enabled, the voxel change may become
+ * When SetDoEstimateLearningRateAtEachIteration is false, the voxel change may become
  * being greater than m_MaximumStepSizeInPhysicalUnits in later iterations.
  *
  * \note Unlike the previous version of GradientDescentOptimizer, this version
@@ -127,7 +126,6 @@ public:
    *
    * \sa SetDoEstimateScales()
    * \sa SetDoEstimateLearningRateAtEachIteration()
-   * \sa SetDoEstimateLearningOnce()
    */
   itkSetObjectMacro(ScalesEstimator, OptimizerParameterScalesEstimator);
 
@@ -143,23 +141,11 @@ public:
    * *each* iteration. The estimation overrides the learning rate
    * set by SetLearningRate(). Default is false.
    *
-   * \sa SetDoEstimateLearningRateOnce()
    * \sa SetScalesEstimator()
    */
   itkSetMacro(DoEstimateLearningRateAtEachIteration, bool);
   itkGetConstReferenceMacro(DoEstimateLearningRateAtEachIteration, bool);
   itkBooleanMacro(DoEstimateLearningRateAtEachIteration);
-
-  /** Option to use ScalesEstimator for learning rate estimation
-   * only *once*, during first iteration. The estimation overrides the
-   * learning rate set by SetLearningRate(). Default is true.
-   *
-   * \sa SetDoEstimateLearningRateAtEachIteration()
-   * \sa SetScalesEstimator()
-   */
-  itkSetMacro(DoEstimateLearningRateOnce, bool);
-  itkGetConstReferenceMacro(DoEstimateLearningRateOnce, bool);
-  itkBooleanMacro(DoEstimateLearningRateOnce);
 
   /** Minimum convergence value for convergence checking.
    *  The convergence checker calculates convergence value by fitting to
@@ -254,11 +240,6 @@ private:
    * automatic learning step estimation at *each* iteration.
    */
   bool m_DoEstimateLearningRateAtEachIteration;
-
-  /** Flag to control use of the ScalesEstimator (if set) for
-   * automatic learning step estimation only *once*, during first iteration.
-   */
-  bool m_DoEstimateLearningRateOnce;
 
   GradientDescentOptimizerv4( const Self & ); //purposely not implemented
   void operator=( const Self& ); //purposely not implemented

@@ -66,19 +66,15 @@ itk_add_test(NAME itkGradientDescentOptimizerv4Test2
 
 itk_add_test(NAME itkAutoScaledGradientDescentRegistrationTest
       COMMAND ITKOptimizersv4TestDriver
-      itkAutoScaledGradientDescentRegistrationTest 30 1.0 1 0 1)
+      itkAutoScaledGradientDescentRegistrationTest 30 1.0 1 1)
 
 itk_add_test(NAME itkAutoScaledGradientDescentRegistrationTest2
       COMMAND ITKOptimizersv4TestDriver
-      itkAutoScaledGradientDescentRegistrationTest 30 1.0 0 1 1)
+      itkAutoScaledGradientDescentRegistrationTest 30 1.0 0 1)
 
 itk_add_test(NAME itkAutoScaledGradientDescentRegistrationTest3
       COMMAND ITKOptimizersv4TestDriver
-      itkAutoScaledGradientDescentRegistrationTest 30 1.0 0 0 1)
-
-itk_add_test(NAME itkAutoScaledGradientDescentRegistrationTest4
-      COMMAND ITKOptimizersv4TestDriver
-      itkAutoScaledGradientDescentRegistrationTest 30 1.0 0 1 0)
+      itkAutoScaledGradientDescentRegistrationTest 30 1.0 0 0)
 
 itk_add_test(NAME itkQuasiNewtonOptimizerv4Test
       COMMAND ITKOptimizersv4TestDriver
