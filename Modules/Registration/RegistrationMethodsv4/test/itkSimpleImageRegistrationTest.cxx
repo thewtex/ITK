@@ -148,7 +148,6 @@ int PerformSimpleImageRegistration( int argc, char *argv[] )
     itkGenericExceptionMacro( "Error dynamic_cast failed" );
     }
   affineOptimizer->SetNumberOfIterations( atoi( argv[5] ) );
-  affineOptimizer->SetDoEstimateLearningRateOnce( false ); //true by default
   affineOptimizer->SetDoEstimateLearningRateAtEachIteration( true );
 
   typedef CommandIterationUpdate<AffineRegistrationType> AffineCommandType;
@@ -234,7 +233,6 @@ int PerformSimpleImageRegistration( int argc, char *argv[] )
   optimizer->SetLearningRate( 1.0 );
   optimizer->SetNumberOfIterations( atoi( argv[6] ) );
   optimizer->SetScalesEstimator( scalesEstimator );
-  optimizer->SetDoEstimateLearningRateOnce( false ); //true by default
   optimizer->SetDoEstimateLearningRateAtEachIteration( true );
 
   displacementFieldSimple->SetFixedImage( fixedImage );

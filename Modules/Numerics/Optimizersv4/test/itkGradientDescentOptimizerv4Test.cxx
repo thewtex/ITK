@@ -243,8 +243,6 @@ int itkGradientDescentOptimizerv4Test(int, char* [] )
   // For test of learning rate and scales estimation options
   // in an actual registration, see
   // itkAutoScaledGradientDescentRegistrationTest.
-  itkOptimizer->SetDoEstimateLearningRateOnce( false );
-  std::cout << "GetDoEstimateLearningRateOnce: " << itkOptimizer->GetDoEstimateLearningRateOnce() << std::endl;
   itkOptimizer->SetDoEstimateLearningRateAtEachIteration( true );
   std::cout << "GetDoEstimateLearningRateAtEachIteration: " << itkOptimizer->GetDoEstimateLearningRateAtEachIteration() << std::endl;
   itkOptimizer->SetDoEstimateScales( false );
