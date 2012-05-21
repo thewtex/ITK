@@ -16,20 +16,19 @@
  *
  *=========================================================================*/
 
-// Test the filter with 1-D images.
-
-
 #include "itkGradientRecursiveGaussianImageFilter.h"
 
 
-int itkGradientRecursiveGaussianFilterTest2(int, char* [] )
+int itkGradientRecursiveGaussianFilterTest3(int, char* [] )
 {
 
   // Define the dimension of the images
-  const unsigned int myDimension = 1;
+  const unsigned int myDimension = 3;
 
   // Declare the types of the images
   typedef itk::Image<float, myDimension>           myImageType;
+
+  typedef itk::VectorImage<float, myDimension> OutputImageType;
 
   // Declare the type of the index to access images
   typedef itk::Index<myDimension>             myIndexType;
@@ -46,7 +45,9 @@ int itkGradientRecursiveGaussianFilterTest2(int, char* [] )
 
   // Define their size, and start index
   mySizeType size;
-  size[0] = 64;
+  size[0] = 8;
+  size[1] = 8;
+  size[2] = 8;
 
   myIndexType start;
   start.Fill(0);
@@ -74,9 +75,13 @@ int itkGradientRecursiveGaussianFilterTest2(int, char* [] )
     ++it;
     }
 
-  size[0] = 32;
+  size[0] = 4;
+  size[1] = 4;
+  size[2] = 4;
 
-  start[0] = 16;
+  start[0] = 2;
+  start[1] = 2;
+  start[2] = 2;
 
   // Create one iterator for an internal region
   region.SetSize( size );
@@ -91,8 +96,7 @@ int itkGradientRecursiveGaussianFilterTest2(int, char* [] )
     }
 
   // Declare the type for the
-  typedef itk::GradientRecursiveGaussianImageFilter<
-                                            myImageType >  myFilterType;
+  typedef itk::GradientRecursiveGaussianImageFilter< myImageType, OutputImageType >  myFilterType;
 
   typedef myFilterType::OutputImageType myGradientImageType;
 
@@ -124,6 +128,7 @@ int itkGradientRecursiveGaussianFilterTest2(int, char* [] )
   // Create an iterator for going through the output image
   myOutputIteratorType itg( outputImage,
                             outputImage->GetRequestedRegion() );
+
 
   // All objects should be automatically destroyed at this point
   return EXIT_SUCCESS;
