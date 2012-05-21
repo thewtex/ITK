@@ -274,18 +274,14 @@ GradientRecursiveGaussianImageFilter< TInputImage, TOutputImage >
   // of the output gradient image.
   if ( this->m_UseImageDirection )
     {
+
     OutputImageType *gradientImage = this->GetOutput();
-    typedef typename InputImageType::DirectionType DirectionType;
     ImageRegionIterator< OutputImageType > itr( gradientImage,
                                                 gradientImage->GetRequestedRegion() );
 
-    OutputPixelType correctedGradient;
     while ( !itr.IsAtEnd() )
       {
-      const OutputPixelType & gradient = itr.Get();
-      inputImage->TransformLocalVectorToPhysicalVector(gradient, correctedGradient);
-      itr.Set(correctedGradient);
-      ++itr;
+      TransformOutputPixel( itr );
       }
     }
 }

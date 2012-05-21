@@ -24,6 +24,8 @@
 #include "itkCovariantVector.h"
 #include "itkPixelTraits.h"
 #include "itkProgressAccumulator.h"
+#include "itkImageRegionIterator.h"
+#include "itkVectorImage.h"
 #include <vector>
 
 namespace itk
@@ -109,9 +111,11 @@ public:
   typedef typename TOutputImage::Pointer OutputImagePointer;
 
   /** Type of the output Image */
-  typedef TOutputImage                                       OutputImageType;
-  typedef typename          OutputImageType::PixelType       OutputPixelType;
-  typedef typename PixelTraits< OutputPixelType >::ValueType OutputComponentType;
+  typedef TOutputImage                                         OutputImageType;
+  typedef typename          OutputImageType::PixelType         OutputPixelType;
+  typedef typename NumericTraits< OutputPixelType >::ValueType OutputComponentType;
+  typedef CovariantVector< OutputComponentType, ImageDimension >
+    CovariantVectorType;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -155,8 +159,6 @@ public:
   /** Begin concept checking */
   itkConceptMacro( InputHasNumericTraitsCheck,
                    ( Concept::HasNumericTraits< PixelType > ) );
-  itkConceptMacro( OutputHasPixelTraitsCheck,
-                   ( Concept::HasPixelTraits< OutputPixelType > ) );
   /** End concept checking */
 #endif
 protected:
@@ -171,6 +173,26 @@ protected:
   void EnlargeOutputRequestedRegion(DataObject *output);
 
 private:
+
+  template <class TValueType>
+  void TransformOutputPixel( ImageRegionIterator< VectorImage<TValueType, ImageDimension> > &it )
+  {
+    // To transform Variable length vector we need to convert to and
+    // fro the CovariantVectorType
+    const CovariantVectorType gradient( it.Get().GetDataPointer() );
+    CovariantVectorType physicalGradient;
+    it.GetImage()->TransformLocalVectorToPhysicalVector(gradient, physicalGradient );
+    it.Set( OutputPixelType( physicalGradient.GetDataPointer(), ImageDimension, false ) );
+  }
+
+  template <class T >
+  void TransformOutputPixel( ImageRegionIterator< T > &it )
+  {
+      const OutputPixelType gradient = it.Get();
+      it.GetImage()->TransformLocalVectorToPhysicalVector(gradient, it.Value() );
+  }
+
+
   GradientRecursiveGaussianImageFilter(const Self &); //purposely not
                                                       // implemented
   void operator=(const Self &);                       //purposely not
