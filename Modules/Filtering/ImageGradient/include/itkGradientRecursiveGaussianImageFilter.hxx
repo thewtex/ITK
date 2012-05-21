@@ -180,11 +180,10 @@ GradientRecursiveGaussianImageFilter< TInputImage, TOutputImage >
   const typename TInputImage::ConstPointer inputImage( this->GetInput() );
 
   unsigned int nComponents = inputImage->GetNumberOfComponentsPerPixel();
-  /* An image of VariableLengthVectors will return 0 */
+  /* An Image of VariableLengthVectors will return 0 */
   if (nComponents == 0 )
     {
-    typename InputImageType::IndexType idx;
-    idx.Fill( 0 );
+    const typename InputImageType::IndexType idx = inputImage->GetLargestPossibleRegion().GetIndex();
     nComponents = NumericTraits<typename InputImageType::PixelType>::GetLength( inputImage->GetPixel(idx) );
     }
 
@@ -208,7 +207,7 @@ GradientRecursiveGaussianImageFilter< TInputImage, TOutputImage >
   ImageRegionIteratorWithIndex<OutputImageType> initGradIt(
     this->GetOutput(), this->m_ImageAdaptor->GetRequestedRegion() );
 
-  if ( NumericTraits<OutputPixelType>::GetLength( initGradIt.Value() ) == 0 )
+  if ( NumericTraits<OutputPixelType>::GetLength( initGradIt.Get() ) == 0 )
     {
     while ( ! initGradIt.IsAtEnd() )
       {
@@ -306,31 +305,13 @@ GradientRecursiveGaussianImageFilter< TInputImage, TOutputImage >
     {
 
     OutputImageType *gradientImage = this->GetOutput();
-    typedef typename InputImageType::DirectionType DirectionType;
     ImageRegionIterator< OutputImageType > itr( gradientImage,
                                                 gradientImage->GetRequestedRegion() );
 
-    OutputPixelType correctedGradient;
     while ( !itr.IsAtEnd() )
       {
-      const OutputPixelType & gradient = itr.Get();
 
-      for (unsigned int nc = 0; nc < nComponents; nc++ )
-        {
-        GradientVectorType componentGradient;
-        GradientVectorType correctedComponentGradient;
-        for (unsigned int dim = 0; dim < ImageDimension; dim++ )
-          {
-          componentGradient[dim] = DefaultConvertPixelTraits<OutputPixelType>::GetNthComponent( nc*ImageDimension+dim, gradient );
-          }
-        inputImage->TransformLocalVectorToPhysicalVector(componentGradient, correctedComponentGradient );
-        for (unsigned int dim = 0; dim < ImageDimension; dim++ )
-          {
-          DefaultConvertPixelTraits<OutputPixelType>::SetNthComponent( nc*ImageDimension+dim, correctedGradient,
-            correctedComponentGradient[dim] );
-          }
-        }
-      itr.Set(correctedGradient);
+      TransformOutputPixel( itr );
       ++itr;
       }
 
