@@ -55,7 +55,6 @@ OpenCVImageBridge::IplImageToITKImage(const IplImage* in)
   unsigned int inChannels = in->nChannels;
   unsigned int outChannels = itk::NumericTraits<OutputPixelType>::MeasurementVectorType::Dimension;
   void* unpaddedBuffer;
-  unsigned int rowPadding = 0;
 
 
   // We only change current if it no longer points at in, so this is safe
@@ -107,7 +106,6 @@ OpenCVImageBridge::IplImageToITKImage(const IplImage* in)
   out->SetRegions(region);\
   out->SetSpacing(spacing);\
   out->Allocate();\
-  rowPadding = current->widthStep % current->width*outChannels;\
   unpaddedBuffer = reinterpret_cast< void* >(\
     new inType[current->height*current->width*current->nChannels]);\
   unsigned int paddedBufPos = 0;\
@@ -258,9 +256,11 @@ OpenCVImageBridge::ITKImageToIplImage(const TInputImageType* in, bool force3Chan
   //
   // set the depth correctly based on input pixel type
   //
+  unsigned int typeSize = 1;
   if (typeid(ValueType) == typeid(unsigned char))
     {
     out = cvCreateImage(cvSize(w,h), IPL_DEPTH_8U, outChannels);
+    typeSize = IPL_DEPTH_8U/8;
     }
   else if (typeid(ValueType) == typeid(char))
     {
@@ -269,10 +269,12 @@ OpenCVImageBridge::ITKImageToIplImage(const TInputImageType* in, bool force3Chan
       itkGenericExceptionMacro("OpenCV does not support color images with pixels of type char");
       }
     out = cvCreateImage(cvSize(w,h), IPL_DEPTH_8S, outChannels);
+    typeSize = IPL_DEPTH_8U/8;
     }
   else if (typeid(ValueType) == typeid(unsigned short))
     {
     out = cvCreateImage(cvSize(w,h), IPL_DEPTH_16U, outChannels);
+    typeSize = IPL_DEPTH_16U/8;
     }
   else if (typeid(ValueType) == typeid(short))
     {
@@ -281,10 +283,12 @@ OpenCVImageBridge::ITKImageToIplImage(const TInputImageType* in, bool force3Chan
       itkGenericExceptionMacro("OpenCV does not support color images with pixels of type short");
       }
     out = cvCreateImage(cvSize(w,h), IPL_DEPTH_16S, outChannels);
+    typeSize = IPL_DEPTH_16U/8;
     }
   else if (typeid(ValueType) == typeid(float))
     {
     out = cvCreateImage(cvSize(w,h), IPL_DEPTH_32F, outChannels);
+    typeSize = IPL_DEPTH_32F/8;
     }
   else if (typeid(ValueType) == typeid(double))
     {
@@ -293,6 +297,7 @@ OpenCVImageBridge::ITKImageToIplImage(const TInputImageType* in, bool force3Chan
       itkGenericExceptionMacro("OpenCV does not support color images with pixels of type double");
       }
     out = cvCreateImage(cvSize(w,h), IPL_DEPTH_64F, outChannels);
+    typeSize = IPL_DEPTH_64F/8;
     }
   else
     {
@@ -302,13 +307,27 @@ OpenCVImageBridge::ITKImageToIplImage(const TInputImageType* in, bool force3Chan
   // Scalar output
   if (outChannels == 1)
     {
-    memcpy(out->imageData, in->GetBufferPointer(), out->imageSize);
+    unsigned int widthStep = out->widthStep;
+
+    if (widthStep/typeSize == out->width)
+      {//no padding, directly copying
+      memcpy(out->imageData, in->GetBufferPointer(), out->imageSize);
+      }
+    else
+      {//with some padding
+      for (int i=0;i<out->height;i++)
+         {//not suer memcpy is the right way
+          memcpy(out->imageData + i*out->widthStep,
+               in->GetBufferPointer() + i*out->widthStep,
+               out->widthStep);
+         }
+      }
     }
 
   // BGR output
   else
     {
-    // Set up an IplImage pointing at the input's buffer. It's ok to do the
+    // Set up an IplImage ponting at the input's buffer. It's ok to do the
     // const cast because it will only get used to copy pixels
     IplImage* temp = cvCreateImageHeader(cvSize(w,h), out->depth, inChannels);
     temp->imageData = reinterpret_cast<char*>(
