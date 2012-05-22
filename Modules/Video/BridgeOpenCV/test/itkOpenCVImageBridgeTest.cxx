@@ -47,9 +47,19 @@ RGBImageTotalAbsDifference(
     PixelType validPx = validIt.Get();
     PixelType testPx = testIt.Get();
 
-    totalDiff += std::abs(validPx[0] - testPx[0]);
-    totalDiff += std::abs(validPx[1] - testPx[1]);
-    totalDiff += std::abs(validPx[2] - testPx[2]);
+    TPixelValue localDiff = 0;
+
+    for( unsigned int i = 0; i < 3; i++ )
+      {
+      localDiff += vnl_math_abs(validPx[i] - testPx[i]);
+      }
+
+    if( localDiff != 0 )
+      {
+      std::cerr << testIt.GetIndex() << " " << validPx << " != " << testPx << std::endl;
+      }
+
+    totalDiff += localDiff;
 
     ++validIt;
     ++testIt;
@@ -113,7 +123,7 @@ IplImage* ConvertIplImageDataType(IplImage* in)
 // Templated test function to do the heavy lifting for scalar case
 //
 template<class TPixelType, unsigned int VDimension>
-int itkOpenCVImageBridgeTestTemplatedScalar(char** argv)
+int itkOpenCVImageBridgeTestTemplatedScalar(char* argv)
 {
   // typedefs
   const unsigned int Dimension =                         VDimension;
@@ -129,7 +139,7 @@ int itkOpenCVImageBridgeTestTemplatedScalar(char** argv)
   // Read the image directly
   //
   typename ReaderType::Pointer reader = ReaderType::New();
-  reader->SetFileName(argv[1]);
+  reader->SetFileName(argv);
 
   reader->Update();
   typename ImageType::Pointer baselineImage = reader->GetOutput();
@@ -138,7 +148,7 @@ int itkOpenCVImageBridgeTestTemplatedScalar(char** argv)
   // Test IplImage -> itk::Image
   //
   IplImage* inIpl;
-  inIpl = cvLoadImage(argv[1], CV_LOAD_IMAGE_GRAYSCALE);
+  inIpl = cvLoadImage(argv, CV_LOAD_IMAGE_GRAYSCALE);
   if (!inIpl)
     {
     std::cerr << "Could not load input as IplImage" << std::endl;
@@ -165,7 +175,7 @@ int itkOpenCVImageBridgeTestTemplatedScalar(char** argv)
   // Test cv::Mat -> itk::Image
   //
   cv::Mat inMat;
-  inMat = cv::imread(argv[1]);
+  inMat = cv::imread(argv);
   typename ImageType::Pointer outMatITK =
     itk::OpenCVImageBridge::CVMatToITKImage< ImageType >(inMat);
 
@@ -192,7 +202,7 @@ int itkOpenCVImageBridgeTestTemplatedScalar(char** argv)
   if (itkIplDiff != 0.0)
     {
     std::cerr << "Images didn't match for pixel type " << typeid(PixelType).name()
-      << " for ITK -> IplImage (scalar)" << std::endl;
+      << " for ITK -> IplImage (scalar)" <<";  itkIplDiff = "<<itkIplDiff<< std::endl;
     return EXIT_FAILURE;
     }
 
@@ -239,41 +249,53 @@ int itkOpenCVImageBridgeTestTemplatedScalar(char** argv)
 // Templated test function to do the heavy lifting for RGB case
 //
 template<class TValueType, unsigned int VDimension>
-int itkOpenCVImageBridgeTestTemplatedRGB(char** argv)
+int itkOpenCVImageBridgeTestTemplatedRGB(char* argv0, char* argv1)
 {
   // typedefs
-  const unsigned int Dimension =                         VDimension;
-  typedef TValueType                                     ValueType;
-  typedef itk::RGBPixel< ValueType >                     PixelType;
-  typedef itk::Image< PixelType, Dimension >             ImageType;
-  typedef itk::ImageFileReader<ImageType>                ReaderType;
+  const unsigned int Dimension =                          VDimension;
+  typedef TValueType                                      ValueType;
+  typedef itk::RGBPixel< ValueType >                      PixelType;
+  typedef typename PixelType::ComponentType               ComponentType;
+  typedef itk::Image< PixelType, Dimension >              ImageType;
+  typedef itk::ImageFileReader<ImageType>                 ReaderType;
   typedef itk::Testing::ComparisonImageFilter<ImageType, ImageType>
-                                                         DifferenceFilterType;
+                                                          DifferenceFilterType;
 
   //
   // Read the image directly
   //
   typename ReaderType::Pointer reader = ReaderType::New();
-  reader->SetFileName(argv[3]);
-  reader->Update();
+  reader->SetFileName(argv1);
+  try
+    {
+    reader->Update();
+    }
+  catch( itk::ExceptionObject& e )
+    {
+    std::cerr << e.what() << std::endl;
+    return EXIT_FAILURE;
+    }
+
   typename ImageType::Pointer baselineImage = reader->GetOutput();
 
   //
   // Test IplImage -> itk::Image
   //
   IplImage* inIpl;
-  inIpl = cvLoadImage(argv[2], CV_LOAD_IMAGE_COLOR);
+  inIpl = cvLoadImage(argv0, CV_LOAD_IMAGE_COLOR);
   if (!inIpl)
     {
-    std::cerr << "Could not load input as IplImage" << std::endl;
+    std::cerr << "Could not load input as IplImage " << argv0 << std::endl;
     return EXIT_FAILURE;
     }
   typename ImageType::Pointer outIplITK =
     itk::OpenCVImageBridge::IplImageToITKImage< ImageType >(inIpl);
 
+  ComponentType itkIplDiff1 = RGBImageTotalAbsDifference<ComponentType, Dimension>(
+          baselineImage, outIplITK);
+
   // Check results of IplImage -> itk::Image
-  if (RGBImageTotalAbsDifference<typename PixelType::ComponentType, Dimension>(
-        baselineImage, outIplITK) != 0)
+  if ( itkIplDiff1 != itk::NumericTraits< ComponentType >::Zero )
     {
     std::cerr << "Images didn't match for pixel type " << typeid(PixelType).name()
       << " for IplImage -> ITK (RGB)" << std::endl;
@@ -284,13 +306,15 @@ int itkOpenCVImageBridgeTestTemplatedRGB(char** argv)
   // Test cv::Mat -> itk::Image
   //
   cv::Mat inMat;
-  inMat = cv::imread(argv[2]);
+  inMat = cv::imread(argv0);
   typename ImageType::Pointer outMatITK =
     itk::OpenCVImageBridge::CVMatToITKImage< ImageType >(inMat);
 
+  ComponentType itkCvMatDiff = RGBImageTotalAbsDifference<ComponentType, Dimension>(
+          baselineImage, outIplITK);
+
   // Check results of cv::Mat -> itk::Image
-  if (RGBImageTotalAbsDifference<typename PixelType::ComponentType, Dimension>(
-        baselineImage, outIplITK) != 0)
+  if ( itkCvMatDiff != itk::NumericTraits< ComponentType >::Zero )
     {
     std::cerr << "Images didn't match for pixel type " << typeid(PixelType).name()
       << " for cv::Mat -> ITK (RGB)" << std::endl;
@@ -337,6 +361,35 @@ int itkOpenCVImageBridgeTestTemplatedRGB(char** argv)
   return EXIT_SUCCESS;
 }
 
+template< class TPixel >
+int itkRunScalarTest( char* argv )
+{
+  if (itkOpenCVImageBridgeTestTemplatedScalar< TPixel, 2 >(argv) == EXIT_FAILURE)
+    {
+    return EXIT_FAILURE;
+    }
+  if (itkOpenCVImageBridgeTestTemplatedScalar< TPixel, 3 >(argv) == EXIT_FAILURE)
+    {
+    return EXIT_FAILURE;
+    }
+
+  return EXIT_SUCCESS;
+}
+
+template< class TValue >
+int itkRunRGBTest( char* argv0, char* argv1 )
+{
+  if (itkOpenCVImageBridgeTestTemplatedRGB< TValue, 2 >(argv0, argv1) == EXIT_FAILURE)
+    {
+    return EXIT_FAILURE;
+    }
+  if (itkOpenCVImageBridgeTestTemplatedRGB< TValue, 3 >(argv0, argv1) == EXIT_FAILURE)
+    {
+    return EXIT_FAILURE;
+    }
+
+  return EXIT_SUCCESS;
+}
 
 //-----------------------------------------------------------------------------
 // Main test
@@ -346,30 +399,10 @@ int itkOpenCVImageBridgeTest ( int argc, char *argv[] )
   //
   // Check arguments
   //
-  if (argc < 4)
+  if (argc != 7)
     {
-    std::cerr << "Usage: " << argv[0] << "scalar_image rgb_jpg_image rgb_mha_image" << std::endl;
+    std::cerr << "Usage: " << argv[0] << "scalar_image1 scalar_image2 rgb_jpg_image rgb_mha_image rgb_image2" << std::endl;
     return EXIT_FAILURE;
-    }
-
-#define RUN_SCALAR_TEST(_PixelType)\
-  if (itkOpenCVImageBridgeTestTemplatedScalar< _PixelType, 2 >(argv) == EXIT_FAILURE)\
-    {\
-    return EXIT_FAILURE;\
-    }\
-  if (itkOpenCVImageBridgeTestTemplatedScalar< _PixelType, 3 >(argv) == EXIT_FAILURE)\
-    {\
-    return EXIT_FAILURE;\
-    }
-
-#define RUN_RGB_TEST(_ValueType)\
-  if (itkOpenCVImageBridgeTestTemplatedRGB< _ValueType, 2 >(argv) == EXIT_FAILURE)\
-    {\
-    return EXIT_FAILURE;\
-    }\
-  if (itkOpenCVImageBridgeTestTemplatedRGB< _ValueType, 3 >(argv) == EXIT_FAILURE)\
-    {\
-    return EXIT_FAILURE;\
     }
 
   //
@@ -378,12 +411,49 @@ int itkOpenCVImageBridgeTest ( int argc, char *argv[] )
   // Note: We don't test signed char because ITK seems to have trouble reading
   //       images with char pixels.
   //
-  RUN_SCALAR_TEST(unsigned char);
-  RUN_SCALAR_TEST(short);
-  RUN_SCALAR_TEST(unsigned short);
-  RUN_SCALAR_TEST(float);
-  RUN_SCALAR_TEST(double);
+  std::cout << "scalar" << std::endl;
+  if( itkRunScalarTest< unsigned char >( argv[1] ) == EXIT_FAILURE )
+    {
+    return EXIT_FAILURE;
+    }
+  if( itkRunScalarTest< short >( argv[1] ) == EXIT_FAILURE )
+    {
+    return EXIT_FAILURE;
+    }
+  if( itkRunScalarTest< unsigned short >( argv[1] ) == EXIT_FAILURE )
+    {
+    return EXIT_FAILURE;
+    }
+  if( itkRunScalarTest< float >( argv[1] ) == EXIT_FAILURE )
+    {
+    return EXIT_FAILURE;
+    }
+  if( itkRunScalarTest< double >( argv[1] ) == EXIT_FAILURE )
+    {
+    return EXIT_FAILURE;
+    }
 
+  std::cout << "scalar 513x512" << std::endl;
+  if( itkRunScalarTest< unsigned char >( argv[2] ) == EXIT_FAILURE )
+    {
+    return EXIT_FAILURE;
+    }
+  if( itkRunScalarTest< short >( argv[2] ) == EXIT_FAILURE )
+    {
+    return EXIT_FAILURE;
+    }
+  if( itkRunScalarTest< unsigned short >( argv[2] ) == EXIT_FAILURE )
+    {
+    return EXIT_FAILURE;
+    }
+  if( itkRunScalarTest< float >( argv[2] ) == EXIT_FAILURE )
+    {
+    return EXIT_FAILURE;
+    }
+  if( itkRunScalarTest< double >( argv[2] ) == EXIT_FAILURE )
+    {
+    return EXIT_FAILURE;
+    }
 
   //
   // Test for RGB types
@@ -391,9 +461,41 @@ int itkOpenCVImageBridgeTest ( int argc, char *argv[] )
   // Note: OpenCV only supports unsigned char, unsigned short, and float for
   // color conversion
   //
-  RUN_RGB_TEST(unsigned char);
-  RUN_RGB_TEST(unsigned short);
-  RUN_RGB_TEST(float);
+  std::cout << "rgb" << std::endl;
+
+  if( itkRunRGBTest< unsigned char >( argv[3], argv[4] ) == EXIT_FAILURE )
+    {
+    return EXIT_FAILURE;
+    }
+  if( itkRunRGBTest< unsigned short >( argv[3], argv[4] ) == EXIT_FAILURE )
+    {
+    return EXIT_FAILURE;
+    }
+  if( itkRunRGBTest< float >( argv[3], argv[4] ) == EXIT_FAILURE )
+    {
+    return EXIT_FAILURE;
+    }
+
+  //
+  // Test for RGB types
+  //
+  // Note: OpenCV only supports unsigned char, unsigned short, and float for
+  // color conversion
+  //
+  std::cout << "rgb 513x512" << std::endl;
+
+  if( itkRunRGBTest< unsigned char >( argv[5], argv[6] ) == EXIT_FAILURE )
+    {
+    return EXIT_FAILURE;
+    }
+  if( itkRunRGBTest< unsigned short >( argv[5], argv[6] ) == EXIT_FAILURE )
+    {
+    return EXIT_FAILURE;
+    }
+  if( itkRunRGBTest< float >( argv[5], argv[6] ) == EXIT_FAILURE )
+    {
+    return EXIT_FAILURE;
+    }
 
   return EXIT_SUCCESS;
 }
