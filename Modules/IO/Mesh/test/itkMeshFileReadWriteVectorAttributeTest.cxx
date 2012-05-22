@@ -36,12 +36,12 @@ int itkMeshFileReadWriteVectorAttributeTest(int argc, char * argv[])
   typedef itk::Mesh< PixelType, dimension >            MeshType;
   typedef itk::QuadEdgeMesh< PixelType, dimension >    QEMeshType;
 
-  if( test< MeshType >( argv[1], argv[2], IsBinary ) )
+  if( MeshFilterReaderTest< MeshType >( argv[1], argv[2], IsBinary ) )
     {
     return EXIT_FAILURE;
     }
 
-  if( test< QEMeshType >( argv[1], argv[2], IsBinary ) )
+  if( MeshFilterReaderTest< QEMeshType >( argv[1], argv[2], IsBinary ) )
     {
     return EXIT_FAILURE;
     }
