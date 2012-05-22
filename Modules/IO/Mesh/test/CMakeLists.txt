@@ -4,6 +4,7 @@ set(ITKIOMeshTests
   itkMeshFileReadWriteTest.cxx
   itkMeshFileReadWriteVectorAttributeTest.cxx
   itkPolylineReadWriteTest.cxx
+  itkVTKTetrahedralMeshReaderTest.cxx
 )
 
 CreateTestDriver(ITKIOMesh "${ITKIOMesh-Test_LIBRARIES}" "${ITKIOMeshTests}" )
@@ -86,4 +87,8 @@ itk_add_test(NAME itkPolylineReadWriteTest01
       DATA{Baseline/fibers.vtk}
       ${ITK_TEST_OUTPUT_DIR}/fibers_b.vtk
       1
+)
+itk_add_test(NAME itkVTKTetrahedralMeshReaderTest00
+      COMMAND ITKIOMeshTestDriver itkVTKTetrahedralMeshReaderTest
+      DATA{Baseline/deformedMesh0.vtk}
 )

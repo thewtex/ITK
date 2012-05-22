@@ -34,7 +34,7 @@ int itkPolylineReadWriteTest(int argc, char * argv[])
   typedef itk::VariableLengthVector< float >        PixelType;
   typedef itk::Mesh< PixelType, dimension >         MeshType;
 
-  if( test< MeshType >( argv[1], argv[2], IsBinary ) )
+  if( MeshFilterReaderTest< MeshType >( argv[1], argv[2], IsBinary ) )
     {
     return EXIT_FAILURE;
     }

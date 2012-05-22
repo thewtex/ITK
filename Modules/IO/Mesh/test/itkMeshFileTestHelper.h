@@ -24,8 +24,8 @@
 
 template< class TMesh >
 int
-TestPointsContainer( typename TMesh::PointsContainerPointer points0,
-                     typename TMesh::PointsContainerPointer points1 )
+TestPointsContainer( const typename TMesh::PointsContainer * points0,
+                     const typename TMesh::PointsContainer * points1 )
 {
   const double tol = 1e-6;
 
@@ -58,11 +58,11 @@ TestPointsContainer( typename TMesh::PointsContainerPointer points0,
     }
   else
     {
-    if ( points0.GetPointer() != points1.GetPointer() )
+    if ( points0 != points1 )
       {
       std::cerr << "Input mesh and output mesh are different in points!" << std::endl;
-      std::cerr << "points0 = "  << points0.GetPointer() << std::endl;
-      std::cerr << "points1 = " << points1.GetPointer() << std::endl;
+      std::cerr << "points0 = " << points0 << std::endl;
+      std::cerr << "points1 = " << points1 << std::endl;
       return EXIT_FAILURE;
       }
     }
@@ -72,8 +72,8 @@ TestPointsContainer( typename TMesh::PointsContainerPointer points0,
 
 template< class TMesh >
 int
-TestCellsContainer( typename TMesh::CellsContainerPointer cells0,
-                    typename TMesh::CellsContainerPointer cells1 )
+TestCellsContainer( const typename TMesh::CellsContainer * cells0,
+                    const typename TMesh::CellsContainer * cells1 )
 {
   typedef TMesh                                           MeshType;
   typedef typename MeshType::CellsContainerConstIterator  CellsContainerConstIterator;
@@ -115,11 +115,11 @@ TestCellsContainer( typename TMesh::CellsContainerPointer cells0,
     }
   else
     {
-    if ( cells0.GetPointer() != cells1.GetPointer() )
+    if ( cells0 != cells1 )
       {
       std::cerr << "Input mesh and output mesh are different in cells!" << std::endl;
-      std::cerr << "cells0 = "  << cells0.GetPointer() << std::endl;
-      std::cerr << "cells1 = " << cells1.GetPointer() << std::endl;
+      std::cerr << "cells0 = " << cells0 << std::endl;
+      std::cerr << "cells1 = " << cells1 << std::endl;
       return EXIT_FAILURE;
       }
     }
@@ -129,8 +129,8 @@ TestCellsContainer( typename TMesh::CellsContainerPointer cells0,
 
 template< class TMesh >
 int
-TestPointDataContainer( typename TMesh::PointDataContainerPointer pointData0,
-                       typename TMesh::PointDataContainerPointer pointData1 )
+TestPointDataContainer( const typename TMesh::PointDataContainer * pointData0,
+                        const typename TMesh::PointDataContainer * pointData1 )
 {
   typedef TMesh                                         MeshType;
   typedef typename MeshType::PointDataContainerIterator PointDataContainerIterator;
@@ -160,11 +160,11 @@ TestPointDataContainer( typename TMesh::PointDataContainerPointer pointData0,
     }
   else
     {
-    if ( pointData0.GetPointer() != pointData1.GetPointer() )
+    if ( pointData0 != pointData1 )
       {
       std::cerr << "Input mesh and output mesh are different in point data!" << std::endl;
-      std::cerr << "pointData0 = "  << pointData0.GetPointer() << std::endl;
-      std::cerr << "pointData1 = " << pointData1.GetPointer() << std::endl;
+      std::cerr << "pointData0 = " << pointData0 << std::endl;
+      std::cerr << "pointData1 = " << pointData1 << std::endl;
       return EXIT_FAILURE;
       }
     }
@@ -173,8 +173,8 @@ TestPointDataContainer( typename TMesh::PointDataContainerPointer pointData0,
 
 template< class TMesh >
 int
-TestCellDataContainer( typename TMesh::CellDataContainerPointer cellData0,
-                      typename TMesh::CellDataContainerPointer cellData1 )
+TestCellDataContainer( const typename TMesh::CellDataContainer * cellData0,
+                       const typename TMesh::CellDataContainer * cellData1 )
 {
   typedef TMesh                                        MeshType;
   typedef typename MeshType::CellDataContainerIterator CellDataContainerIterator;
@@ -204,11 +204,11 @@ TestCellDataContainer( typename TMesh::CellDataContainerPointer cellData0,
     }
   else
     {
-    if ( cellData0.GetPointer() != cellData1.GetPointer() )
+    if ( cellData0 != cellData1 )
       {
       std::cerr << "Input mesh and output mesh are different in cell data!" << std::endl;
-      std::cerr << "pointData0 = "  << cellData0.GetPointer() << std::endl;
-      std::cerr << "pointData1 = " << cellData1.GetPointer() << std::endl;
+      std::cerr << "pointData0 = " << cellData0 << std::endl;
+      std::cerr << "pointData1 = " << cellData1 << std::endl;
       return EXIT_FAILURE;
       }
     }
@@ -217,7 +217,7 @@ TestCellDataContainer( typename TMesh::CellDataContainerPointer cellData0,
 
 template< class TMesh >
 int
-test(char *INfilename, char *OUTfilename, bool IsBinary)
+MeshFilterReaderTest(const char *INfilename, const char *OUTfilename, bool IsBinary)
 {
   typedef TMesh MeshType;
 
