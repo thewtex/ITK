@@ -21,6 +21,9 @@
 #include <string>
 
 #include "itkImage.h"
+#include "itkDefaultConvertPixelTraits.h"
+#include "itkConvertPixelBuffer.h"
+
 #include "cv.h"
 #include "highgui.h"
 
@@ -68,6 +71,106 @@ public:
 private:
   OpenCVImageBridge(const Self &); //purposely not implemented
   void operator=(const Self &);    //purposely not implemented
+
+  /** Steps involved in this method are:
+    1) Handle converting between colorspaces
+    2) Allocate the output image
+    3) Create a copy of the current IplImage's buffer without any padding
+    (slow but necessary)
+    4) Copy the buffer and convert the pixels if necessary */
+  template< class TOutputImageType, class TPixel >
+  static void ITKConvertIplImageBuffer( const IplImage* in,
+                                        TOutputImageType* out,
+                                        int iDepth )
+  {
+    // Typedefs
+    typedef TOutputImageType                            ImageType;
+    typedef typename ImageType::PixelType               OutputPixelType;
+    typedef DefaultConvertPixelTraits<OutputPixelType>  ConvertPixelTraits;
+
+    unsigned int inChannels = in->nChannels;
+    unsigned int outChannels = itk::NumericTraits<OutputPixelType>::MeasurementVectorType::Dimension;
+
+    // We only change current if it no longer points at in, so this is safe
+    IplImage* current = const_cast<IplImage*>(in);
+
+    bool isVectorImage(strcmp(out->GetNameOfClass(), "VectorImage") == 0);
+
+    bool freeCurrent = false;
+    if (inChannels == 3 && outChannels == 1)
+      {
+      current = cvCreateImage(cvSize(in->width, in->height), iDepth, 1);
+      cvCvtColor(in, current, CV_BGR2GRAY);
+      freeCurrent = true;
+      }
+    else if (inChannels == 1 && outChannels == 3)
+      {
+      current = cvCreateImage(cvSize(in->width, in->height), iDepth, 3);
+      cvCvtColor(in, current, CV_GRAY2RGB);
+      freeCurrent = true;
+      }
+    else if (inChannels == 3 && outChannels == 3)
+      {
+      current = cvCreateImage(cvSize(in->width, in->height), iDepth, 3);
+      cvCvtColor(in, current, CV_BGR2RGB);
+      freeCurrent = true;
+      }
+    else if (inChannels != 1 || outChannels != 1)
+      {
+      itkGenericExceptionMacro("Conversion from " << inChannels << " channels to "
+                               << outChannels << " channels is not supported");
+      }
+    typename ImageType::RegionType region;
+    typename ImageType::RegionType::SizeType size;
+    typename ImageType::RegionType::IndexType start;
+    typename ImageType::SpacingType spacing;
+    size.Fill( 1 );
+    size[0] = current->width;
+    size[1] = current->height;
+    start.Fill(0);
+    spacing.Fill(1);
+    region.SetSize(size);
+    region.SetIndex(start);
+    out->SetRegions(region);
+    out->SetSpacing(spacing);
+    out->Allocate();
+    void* unpaddedBuffer = reinterpret_cast< void* >(
+      new TPixel[current->height*current->width*current->nChannels]);
+    unsigned int paddedBufPos = 0;
+    unsigned int unpaddedBufPos = 0;
+    for (int i = 0; i < current->height; ++i)
+      {
+      memcpy(&(reinterpret_cast<TPixel*>(unpaddedBuffer)[unpaddedBufPos]),
+             &(reinterpret_cast<TPixel*>(current->imageData)[paddedBufPos]),
+             current->width*current->nChannels);
+      paddedBufPos += current->widthStep;
+      unpaddedBufPos += current->width*current->nChannels;
+      }
+    if (isVectorImage)
+      {
+      ConvertPixelBuffer<TPixel, OutputPixelType, ConvertPixelTraits>
+        ::ConvertVectorImage(static_cast< TPixel* >(unpaddedBuffer),
+                             current->nChannels,
+                             out->GetPixelContainer()->GetBufferPointer(),
+                             out->GetPixelContainer()->Size());
+      }
+    else
+      {
+      ConvertPixelBuffer<TPixel, OutputPixelType, ConvertPixelTraits>
+        ::Convert(static_cast< TPixel* >(unpaddedBuffer),
+                  current->nChannels,
+                  out->GetPixelContainer()->GetBufferPointer(),
+                  out->GetPixelContainer()->Size());
+      }
+    delete[] reinterpret_cast<TPixel*>(unpaddedBuffer);
+    if (freeCurrent)
+      {
+      cvReleaseImage(&current);
+      }
+  }
+
+
+
 
 };  // end class OpenCVImageBridge
 
