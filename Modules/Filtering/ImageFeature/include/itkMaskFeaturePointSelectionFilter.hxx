@@ -18,6 +18,7 @@
 #ifndef __itkMaskFeaturePointSelectionFilter_hxx
 #define __itkMaskFeaturePointSelectionFilter_hxx
 
+
 #include <map>
 #include "vnl/vnl_trace.h"
 #include "itkMaskFeaturePointSelectionFilter.h"
@@ -116,7 +117,7 @@ MaskFeaturePointSelectionFilter<
       // use Neighbourhood to compute all offsets in radius 1
       Neighborhood< unsigned, VImageDimension> neighborhood;
       neighborhood.SetRadius( NumericTraits< SizeValueType >::One );
-      for ( unsigned i = 0, n = neighborhood.Size(); i < n; i++ )
+      for ( SizeValueType i = 0, n = neighborhood.Size(); i < n; i++ )
         {
           OffsetType off = neighborhood.GetOffset( i );
 
@@ -162,7 +163,7 @@ MaskFeaturePointSelectionFilter<
 
   // fill inputs / outputs / misc
   ImageConstPointer image = this->GetInput();
-  RegionType region = image->GetRequestedRegion();
+  RegionType region = image->GetLargestPossibleRegion();
   typename ImageType::SpacingType voxelSpacing = image->GetSpacing();
 
   MaskConstPointer mask = this->GetMaskImage();
@@ -174,15 +175,15 @@ MaskFeaturePointSelectionFilter<
     = FeaturePointsType::PointDataContainer::New();
 
   // initialize selectionMap
-  typedef Image<unsigned char, 3>  SelectionMapType;
-  SelectionMapType::Pointer selectionMap = SelectionMapType::New();
+  typedef Image<unsigned char, ImageDimension>  SelectionMapType;
+  typename SelectionMapType::Pointer selectionMap = SelectionMapType::New();
   selectionMap->SetRegions( region );
   selectionMap->Allocate();
 
   if ( mask.IsNull() )
     {
       // create all 1s selectionMap
-      selectionMap->FillBuffer( NumericTraits< SelectionMapType::PixelType >::One );
+      selectionMap->FillBuffer( NumericTraits< typename SelectionMapType::PixelType >::One );
     }
   else
     {
@@ -191,7 +192,7 @@ MaskFeaturePointSelectionFilter<
       ImageRegionIterator< SelectionMapType > itMap( selectionMap, region );
       for ( itMask.GoToBegin(), itMap.GoToBegin(); !itMask.IsAtEnd(); ++itMask, ++itMap )
         {
-          itMap.Set( static_cast< SelectionMapType::PixelType >( itMask.Get() ) );
+          itMap.Set( static_cast< typename SelectionMapType::PixelType >( itMask.Get() ) );
         }
     }
 
@@ -281,7 +282,7 @@ MaskFeaturePointSelectionFilter<
               ConstNeighborhoodIterator< ImageType > itGrad( radius, image, center );
 
               itGrad.GoToBegin();
-              for ( unsigned i = 0; i < itGrad.Size(); i++ ) // iterate over voxels in the neighbourhood
+              for ( SizeValueType i = 0; i < itGrad.Size(); i++ ) // iterate over voxels in the neighbourhood
                 {
                   OffsetType off = itGrad.GetOffset( i );
                   for ( unsigned j = 0; j < VImageDimension; j++ )
@@ -305,16 +306,12 @@ MaskFeaturePointSelectionFilter<
             }
 
           // mark off connected points
-          for ( int j = 0, n = m_NonConnectivityOffsets.size(); j < n; j++ )
-          {
-            IndexType idx = ( *rit ).second;
-            idx += m_NonConnectivityOffsets[ j ];
-            selectionMap->SetPixel( idx, 0 );
-            //if ( region.IsInside( idx ) ) // is this check necessary?
-            //  {
-            //    selectionMap->SetPixel( idx, 0 );
-            //  }
-          }
+          for ( SizeValueType j = 0, n = m_NonConnectivityOffsets.size(); j < n; j++ )
+            {
+              IndexType &idx = ( *rit ).second;
+              idx += m_NonConnectivityOffsets[ j ];
+              selectionMap->SetPixel( idx, 0 );
+            }
         }
     }
 
