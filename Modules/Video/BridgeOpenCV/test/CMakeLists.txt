@@ -36,6 +36,8 @@ itk_add_test(
     itkOpenCVImageBridgeTest
       # Input Grayscale Image jpg
       DATA{Input/frame0_gray.jpg}
+      # Input Grayscale Image jpg 2, with odd pixel dimension
+      DATA{Input/peppers_513x512.jpg}
       # Input RGB Image jpg:
       DATA{Input/frame0.jpg}
       # Input RGB Image mha:
