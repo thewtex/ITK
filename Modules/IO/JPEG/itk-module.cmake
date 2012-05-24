@@ -7,6 +7,8 @@ itk_module(ITKIOJPEG
     ITKIOImageBase
   TEST_DEPENDS
     ITKTestKernel
+  IMAGE_IO
+    JPEG
   DESCRIPTION
     "${DOCUMENTATION}"
 )

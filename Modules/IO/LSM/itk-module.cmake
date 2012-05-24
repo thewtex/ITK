@@ -8,6 +8,8 @@ itk_module(ITKIOLSM
     ITKIOTIFF
   TEST_DEPENDS
     ITKTestKernel
+  IMAGE_IO
+    LSM
   DESCRIPTION
     "${DOCUMENTATION}"
 )

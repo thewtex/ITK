@@ -11,6 +11,8 @@ itk_module(ITKIOMeta
   TEST_DEPENDS
     ITKTestKernel
     ITKSmoothing
+  IMAGE_IO
+    Meta
   DESCRIPTION
     "${DOCUMENTATION}"
 )

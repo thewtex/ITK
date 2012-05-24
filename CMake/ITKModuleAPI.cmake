@@ -38,11 +38,13 @@ endmacro()
 # itk_module_load(<module>)
 #
 # Loads variables describing the given module:
-#  <module>_LOADED         = True if the module has been loaded
-#  <module>_DEPENDS        = List of dependencies on other modules
-#  <module>_LIBRARIES      = Libraries to link
-#  <module>_INCLUDE_DIRS   = Header search path
-#  <module>_LIBRARY_DIRS   = Library search path (for outside dependencies)
+#  <module>_LOADED       = True if the module has been loaded
+#  <module>_DEPENDS      = List of dependencies on other modules
+#  <module>_LIBRARIES    = Libraries to link
+#  <module>_INCLUDE_DIRS = Header search path
+#  <module>_LIBRARY_DIRS = Library search path (for outside dependencies)
+#  <module>_IMAGE_IO     = Formats to be auto-registered in the Image IO factory
+#  <module>_TRANSFORM_IO = Formats to be auto-registered in the Transform IO factory
 macro(itk_module_load mod)
   if(NOT ${mod}_LOADED)
     include("${ITK_MODULES_DIR}/${mod}.cmake" OPTIONAL)

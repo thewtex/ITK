@@ -8,6 +8,8 @@ itk_module(ITKIONIFTI
   TEST_DEPENDS
     ITKTestKernel
     ITKTransform
+  IMAGE_IO
+    Nifti
   DESCRIPTION
     "${DOCUMENTATION}"
 )

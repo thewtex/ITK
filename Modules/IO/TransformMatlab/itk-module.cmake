@@ -6,6 +6,8 @@ itk_module(ITKIOTransformMatlab
     ITKIOTransformBase
   TEST_DEPENDS
     ITKTestKernel
+  TRANSFORM_IO
+    Matlab
   DESCRIPTION
     "${DOCUMENTATION}"
 )

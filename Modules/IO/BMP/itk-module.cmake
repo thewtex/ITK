@@ -6,6 +6,8 @@ itk_module(ITKIOBMP
     ITKIOImageBase
   TEST_DEPENDS
     ITKTestKernel
+  IMAGE_IO
+    BMP
   DESCRIPTION
     "${DOCUMENTATION}"
 )

@@ -7,6 +7,8 @@ itk_module(ITKIOBioRad
     ITKIOImageBase
   TEST_DEPENDS
     ITKTestKernel
+  IMAGE_IO
+    BioRad
   DESCRIPTION
     "${DOCUMENTATION}"
 )

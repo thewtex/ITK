@@ -7,6 +7,8 @@ itk_module(ITKIOTIFF
     ITKIOImageBase
   TEST_DEPENDS
     ITKTestKernel
+  IMAGE_IO
+    TIFF
   DESCRIPTION
     "${DOCUMENTATION}"
 )

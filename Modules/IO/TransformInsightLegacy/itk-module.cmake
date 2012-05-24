@@ -6,6 +6,8 @@ itk_module(ITKIOTransformInsightLegacy
     ITKIOTransformBase
   TEST_DEPENDS
     ITKTestKernel
+  TRANSFORM_IO
+    Txt
   DESCRIPTION
     "${DOCUMENTATION}"
 )

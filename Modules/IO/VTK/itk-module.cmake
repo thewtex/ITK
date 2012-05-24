@@ -6,6 +6,8 @@ itk_module(ITKIOVTK
     ITKIOImageBase
   TEST_DEPENDS
     ITKTestKernel
+  IMAGE_IO
+    VTK
   DESCRIPTION
     "${DOCUMENTATION}"
 )

@@ -7,6 +7,8 @@ itk_module(ITKIOTransformHDF5
     ITKHDF5
   TEST_DEPENDS
     ITKTestKernel
+  TRANSFORM_IO
+    HDF5
   DESCRIPTION
     "${DOCUMENTATION}"
 )

@@ -9,6 +9,8 @@ itk_module(ITKIOGDCM
   TEST_DEPENDS
     ITKTestKernel
     ITKImageIntensity
+  IMAGE_IO
+    GDCM
   DESCRIPTION
     "${DOCUMENTATION}"
 )

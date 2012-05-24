@@ -7,6 +7,8 @@ itk_module(ITKIOGIPL
     ITKZLIB
   TEST_DEPENDS
     ITKTestKernel
+  IMAGE_IO
+    Gipl
   DESCRIPTION
     "${DOCUMENTATION}"
 )

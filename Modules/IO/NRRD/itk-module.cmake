@@ -8,6 +8,8 @@ itk_module(ITKIONRRD
     ITKIOImageBase
   TEST_DEPENDS
     ITKTestKernel
+  IMAGE_IO
+    Nrrd
   DESCRIPTION
     "${DOCUMENTATION}"
 )

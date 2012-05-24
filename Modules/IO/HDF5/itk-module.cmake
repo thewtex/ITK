@@ -9,6 +9,8 @@ itk_module(ITKIOHDF5
     ITKHDF5
   TEST_DEPENDS
     ITKTestKernel
+  IMAGE_IO
+    HDF5
   DESCRIPTION
     "${DOCUMENTATION}"
 )

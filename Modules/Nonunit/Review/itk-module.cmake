@@ -88,6 +88,8 @@ itk_module(ITKReview
   TEST_DEPENDS
     ITKTestKernel
     ITKIOMesh
+  IMAGE_IO
+    MRC
   DESCRIPTION
     "${DOCUMENTATION}"
 )

@@ -7,6 +7,8 @@ itk_module(ITKIOStimulate
     ITKIOImageBase
   TEST_DEPENDS
     ITKTestKernel
+  IMAGE_IO
+    Stimulate
   DESCRIPTION
     "${DOCUMENTATION}"
 )
