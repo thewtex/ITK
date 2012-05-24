@@ -4,6 +4,7 @@ set(ITKOptimizersv4Tests
   itkGradientDescentOptimizerBasev4Test.cxx
   itkGradientDescentOptimizerv4Test.cxx
   itkGradientDescentOptimizerv4Test2.cxx
+  itkGradientDescentLineSearchOptimizerv4Test.cxx
   itkMultiStartOptimizerv4Test.cxx
   itkMultiGradientOptimizerv4Test.cxx
   itkOptimizerParameterScalesEstimatorTest.cxx
@@ -35,6 +36,10 @@ itk_add_test(NAME itkGradientDescentOptimizerBasev4Test
 itk_add_test(NAME itkGradientDescentOptimizerv4Test
       COMMAND ITKOptimizersv4TestDriver
       itkGradientDescentOptimizerv4Test)
+
+itk_add_test(NAME itkGradientDescentLineSearchOptimizerv4Test
+      COMMAND ITKOptimizersv4TestDriver
+      itkGradientDescentLineSearchOptimizerv4Test)
 
 itk_add_test(NAME itkMultiStartOptimizerv4Test
       COMMAND ITKOptimizersv4TestDriver
