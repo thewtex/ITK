@@ -197,6 +197,7 @@ public:
   /** Use a virtual domain image to define the virtual reference space.
    * \sa SetVirtualDomain */
   void SetVirtualDomainFromImage( VirtualImageType * virtualImage);
+  void SetVirtualDomainFromImage( const VirtualImageType * virtualImage);
 
   /** Return a timestamp relating to the virtual domain.
    * This returns the greater of the metric timestamp and the
