@@ -1,0 +1,56 @@
+# CMakeFiles.txt for the minc4itk module
+#
+# Vladimir S. FONOV - vladimir.fonov@gmail.com
+PROJECT( ITKIOMINC )
+
+FIND_PACKAGE( MINC2 REQUIRED )
+INCLUDE_DIRECTORIES(${MINC2_INCLUDE_DIRS})
+LINK_DIRECTORIES(${MINC2_LIBRARY_DIRS})
+
+SET(MINC4ITK_HEADERS
+  include/itkMincImageIOFactory.h
+  include/itkMincImageIO.h
+  include/itkMincGeneralTransform.h
+  include/itkMincHelpers.h
+  include/itkMincTransformIOFactory.h
+  include/itkMincTransformIO.h
+)
+
+SET(ITKIOMINC_LIBRARIES ITKIOMINC ${VOLUME_IO_LIBRARIES} ${EZMINC_LIBRARIES})
+
+itk_module_impl()
+
+SET(MINC4ITK_LIBRARY ITKIOMINC)
+
+set(MINC4ITK_INCLUDE_DIRS_CONFIG
+    ${MINC2_INCLUDE_DIRS}
+)
+
+set(MINC4ITK_LIBRARY_DIRS_CONFIG   ${CMAKE_CURRENT_BINARY_DIR} ${MINC2_LIBRARY_DIRS} )
+
+set(MINC4ITK_LIBRARIES_CONFIG
+  ITKIOMINC
+  ${EZMINC_LIBRARIES}
+  ${VOLUME_IO_LIBRARIES}
+  ${ITK_LIBRARIES}
+  ${MINC2_LIBRARIES} )
+
+configure_file(src/MINC4ITKConfig.cmake.in
+  ${CMAKE_CURRENT_BINARY_DIR}/MINC4ITKConfig.cmake @ONLY )
+
+# config for install dir
+set(MINC4ITK_LIBRARY_DIRS_CONFIG  ${CMAKE_INSTALL_PREFIX}/lib ${MINC2_LIBRARY_DIRS})
+set(MINC4ITK_LIBRARIES_CONFIG
+    ITKIOMINC
+    ${EZMINC_LIBRARIES}
+    ${VOLUME_IO_LIBRARIES}
+    ${ITK_LIBRARIES}
+    ${MINC2_LIBRARIES} )
+
+configure_file(src/MINC4ITKConfig.cmake.in
+  ${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/MINC4ITKConfig.cmake @ONLY )
+
+INSTALL(FILES
+    ${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/MINC4ITKConfig.cmake
+  DESTINATION lib
+  COMPONENT Development)
