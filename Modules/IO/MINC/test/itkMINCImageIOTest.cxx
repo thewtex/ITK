@@ -197,7 +197,7 @@ template <typename TPixel,int NDIM> int MINCReadWriteTest(const char *fileName,n
   }
 
   // set minc file storage type
-  minc::set_minc_storage_type(im,minc_storage_type,minc_storage_type!=NC_BYTE);
+  itk::set_minc_storage_type(im,minc_storage_type,minc_storage_type!=NC_BYTE);
 
   typename ImageType::Pointer im2;
   try
@@ -392,7 +392,7 @@ template <typename TPixel,int NDIM> int MINCReadWriteTestVector(const char *file
   }
 
   // set minc file storage type
-  minc::set_minc_storage_type(im,minc_storage_type,minc_storage_type!=NC_BYTE);
+  itk::set_minc_storage_type(im,minc_storage_type,minc_storage_type!=NC_BYTE);
 
   typename ImageType::Pointer im2;
 

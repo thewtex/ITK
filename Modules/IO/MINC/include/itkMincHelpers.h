@@ -222,9 +222,9 @@ namespace itk
   //! \param spacing - volume spacing (mm)
   //! \param origin  - volume origin (mm)
   template<class T> void allocate_MINC_IMAGE3D(typename T::Pointer &image,
-        const fixed_vec<3, unsigned int>&dims,
-        const fixed_vec<3, double>& spacing=fixed_vec<3, double>(1.0),
-        const fixed_vec<3, double>& origin=fixed_vec<3, double>(0.0))
+        const minc::fixed_vec<3, unsigned int>&dims,
+        const minc::fixed_vec<3, double>& spacing=minc::fixed_vec<3, double>(1.0),
+        const minc::fixed_vec<3, double>& origin=minc::fixed_vec<3, double>(0.0))
   {
     typename T::SizeType  imageSize3D = {{ dims[0], dims[1], dims[2]}};
     typename T::IndexType startIndex3D = { {0, 0, 0}};
@@ -368,7 +368,7 @@ namespace itk
     img=load_minc<T>(file);
   }
 
-  template<class T> void setup_itk_image(const minc_1_base& minc_rw, typename T::Pointer& img)
+  template<class T> void setup_itk_image(const minc::minc_1_base& minc_rw, typename T::Pointer& img)
   {
     itk::Vector< unsigned int,3> dims;
     itk::Vector< double,3> spacing;
@@ -397,7 +397,7 @@ namespace itk
 
   template<class T> void imitate_minc (const char *path, typename T::Pointer &img)
   {
-    minc_1_reader rdr;
+    minc::minc_1_reader rdr;
     rdr.open(path,true,true);
     setup_itk_image<T>(rdr,img);
   }

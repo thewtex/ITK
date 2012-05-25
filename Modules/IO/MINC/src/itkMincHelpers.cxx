@@ -23,12 +23,12 @@
 
 using namespace std;
 
-namespace minc
+namespace itk
 {
   int get_image_limits (MINC_IMAGE3D::Pointer img, MINC_VOXEL_TYPE &min,MINC_VOXEL_TYPE &max)
   {
     //1. get min, max
-    minc::MINC_IMAGE3D_iterator it (img, img->GetLargestPossibleRegion ());
+    MINC_IMAGE3D_iterator it (img, img->GetLargestPossibleRegion ());
     int count = 0;
 
     min = std::numeric_limits < MINC_VOXEL_TYPE >::max ();
@@ -51,7 +51,7 @@ namespace minc
   int get_image_limits (MINC_MASK3D::Pointer img, MINC_VOXEL_TYPE &min,MINC_VOXEL_TYPE &max)
   {
     //1. get min, max
-    minc::MINC_MASK3D_iterator it (img, img->GetLargestPossibleRegion ());
+    MINC_MASK3D_iterator it (img, img->GetLargestPossibleRegion ());
     int count = 0;
 
     min = std::numeric_limits < MINC_VOXEL_TYPE >::max ();
@@ -73,7 +73,7 @@ namespace minc
   int get_image_limits (MINC_DEF3D::Pointer img, MINC_VOXEL_TYPE &min, MINC_VOXEL_TYPE &max)
   {
     //1. get min, max
-    minc::MINC_DEF3D_iterator it (img, img->GetLargestPossibleRegion ());
+    MINC_DEF3D_iterator it (img, img->GetLargestPossibleRegion ());
     int count = 0;
     min = std::numeric_limits < MINC_VOXEL_TYPE >::max ();
     max = -std::numeric_limits < MINC_VOXEL_TYPE >::max ();
@@ -94,7 +94,7 @@ namespace minc
 
   void normalize_mask(MINC_MASK3D::Pointer img)
   {
-    minc::MINC_MASK3D_iterator it (img, img->GetLargestPossibleRegion ());
+    MINC_MASK3D_iterator it (img, img->GetLargestPossibleRegion ());
     for (it.GoToBegin (); !it.IsAtEnd (); ++it)
     {
       if(it.Value ()) it.Value ()=1;
@@ -234,7 +234,7 @@ namespace minc
         }
       } else {
         std::istringstream str (std::string((const char *)tmp));
-        tag_point tag;
+        MINC_TAG_POINT tag;
         double dummy;
         if(_vol>1 && vol>1) //skip extra values
           str >> dummy >> dummy >> dummy;
@@ -275,7 +275,7 @@ namespace minc
         }
       } else {
         std::vector<std::string> lst;
-        tag_point tag;
+        MINC_TAG_POINT tag;
 
         split_string(tmp,lst," ");
         int skip=0;
@@ -335,7 +335,7 @@ namespace minc
         }
       } else {
         std::vector<std::string> lst;
-        tag_point tag;
+        MINC_TAG_POINT tag;
 
         split_string(tmp,lst," ");
         int skip=0;
@@ -398,7 +398,7 @@ namespace minc
         }
       } else {
         std::vector<std::string> lst;
-        tag_point tag;
+        MINC_TAG_POINT tag;
 
         split_string(tmp,lst," ");
         int skip=0;
@@ -460,7 +460,7 @@ namespace minc
         }
       } else {
         std::vector<std::string> lst;
-        tag_point tag;
+        MINC_TAG_POINT tag;
 
         split_string(tmp,lst," ");
 
