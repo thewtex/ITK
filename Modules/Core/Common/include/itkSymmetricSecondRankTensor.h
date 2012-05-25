@@ -183,11 +183,11 @@ public:
   void ComputeEigenAnalysis(EigenValuesArrayType & eigenValues,
                             EigenVectorsMatrixType & eigenVectors) const;
 
-  /** Pre-Multiply by a Matrix as ResultingTensor = Matrix * ThisTensor. */
-  Self PreMultiply(const MatrixType & m) const;
+  /** Pre-Multiply by a Matrix as ResultingMatrix = Matrix * ThisTensor. */
+  MatrixType PreMultiply(const MatrixType & m) const;
 
-  /** Post-Multiply by a Matrix as ResultingTensor = ThisTensor * Matrix. */
-  Self PostMultiply(const MatrixType & m) const;
+  /** Post-Multiply by a Matrix as ResultingMatrix = ThisTensor * Matrix. */
+  MatrixType PostMultiply(const MatrixType & m) const;
 
 private:
 };
