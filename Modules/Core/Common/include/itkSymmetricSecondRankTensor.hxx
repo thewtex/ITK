@@ -316,11 +316,11 @@ SymmetricSecondRankTensor< T, NDimension >
  * Pre-multiply the Tensor by a Matrix
  */
 template< class T, unsigned int NDimension >
-SymmetricSecondRankTensor< T, NDimension >
+typename SymmetricSecondRankTensor< T, NDimension >::MatrixType
 SymmetricSecondRankTensor< T, NDimension >
 ::PreMultiply(const MatrixType & m) const
 {
-  Self result;
+  MatrixType result;
 
   typedef typename NumericTraits< T >::AccumulateType AccumulateType;
   for ( unsigned int r = 0; r < NDimension; r++ )
@@ -342,11 +342,11 @@ SymmetricSecondRankTensor< T, NDimension >
  * Post-multiply the Tensor by a Matrix
  */
 template< class T, unsigned int NDimension >
-SymmetricSecondRankTensor< T, NDimension >
+typename SymmetricSecondRankTensor< T, NDimension >::MatrixType
 SymmetricSecondRankTensor< T, NDimension >
 ::PostMultiply(const MatrixType & m) const
 {
-  Self result;
+  MatrixType result;
 
   typedef typename NumericTraits< T >::AccumulateType AccumulateType;
   for ( unsigned int r = 0; r < NDimension; r++ )
