@@ -16,26 +16,17 @@
  *
  *=========================================================================*/
 
-#ifndef __itkLevelSetEvolutionStoppingCriterionBase_hxx
-#define __itkLevelSetEvolutionStoppingCriterionBase_hxx
+#include "itkLevelSetEquationTerm.h"
 
-#include "itkLevelSetEvolutionStoppingCriterionBase.h"
-
-namespace itk
+int itkLevelSetEquationTermTest( int argc, char* argv[] )
 {
-template< class TLevelSetContainer >
-LevelSetEvolutionStoppingCriterionBase< TLevelSetContainer >
-::LevelSetEvolutionStoppingCriterionBase()
-{
-  this->m_RMSChangeAccumulator = NumericTraits< OutputRealType >::Zero;
-  this->m_NumberOfIterations = NumericTraits< IterationIdType >::Zero;
-  this->m_CurrentIteration = NumericTraits< IterationIdType >::Zero;
-}
 
-template< class TLevelSetContainer >
-LevelSetEvolutionStoppingCriterionBase< TLevelSetContainer >
-::~LevelSetEvolutionStoppingCriterionBase()
-{}
+  if( argc < 2 )
+    {
+    std::cerr << "Missing Arguments" << std::endl;
+    std::cerr << "Program " << argv[0] << std::endl;
+    return EXIT_FAILURE;
+    }
 
+  return EXIT_SUCCESS;
 }
-#endif

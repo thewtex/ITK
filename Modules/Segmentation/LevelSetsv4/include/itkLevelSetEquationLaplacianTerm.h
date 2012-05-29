@@ -19,7 +19,7 @@
 #ifndef __itkLevelSetEquationLaplacianTerm_h
 #define __itkLevelSetEquationLaplacianTerm_h
 
-#include "itkLevelSetEquationTermBase.h"
+#include "itkLevelSetEquationTerm.h"
 #include "itkZeroFluxNeumannBoundaryCondition.h"
 #include "itkConstNeighborhoodIterator.h"
 #include "itkVector.h"
@@ -45,13 +45,13 @@ namespace itk
 template< class TInput, // Input image or mesh
           class TLevelSetContainer >
 class LevelSetEquationLaplacianTerm :
-    public LevelSetEquationTermBase< TInput, TLevelSetContainer >
+    public LevelSetEquationTerm< TInput, TLevelSetContainer >
 {
 public:
   typedef LevelSetEquationLaplacianTerm         Self;
   typedef SmartPointer< Self >                  Pointer;
   typedef SmartPointer< const Self >            ConstPointer;
-  typedef LevelSetEquationTermBase< TInput, TLevelSetContainer >
+  typedef LevelSetEquationTerm< TInput, TLevelSetContainer >
                                                 Superclass;
 
   /** Method for creation through object factory */
@@ -59,7 +59,7 @@ public:
 
   /** Run-time type information */
   itkTypeMacro( LevelSetEquationLaplacianTerm,
-                LevelSetEquationTermBase );
+                LevelSetEquationTerm );
 
   typedef typename Superclass::InputImageType     InputImageType;
   typedef typename Superclass::InputImagePointer  InputImagePointer;

@@ -16,8 +16,8 @@
  *
  *=========================================================================*/
 
-#ifndef __itkLevelSetEquationTermBase_h
-#define __itkLevelSetEquationTermBase_h
+#ifndef __itkLevelSetEquationTerm_h
+#define __itkLevelSetEquationTerm_h
 
 #include "itkObject.h"
 #include "itkHeavisideStepFunctionBase.h"
@@ -26,7 +26,7 @@
 namespace itk
 {
 /**
- *  \class LevelSetEquationTermBase
+ *  \class LevelSetEquationTerm
  *  \brief Abstract class to represents a term in the level-set evolution PDE
  *
  *  \tparam TInput Input Image Type
@@ -40,22 +40,22 @@ namespace itk
  *  the input image; and \f$\alpha_i\f$ is a weight to balance the contribution of
  *  each term in the PDE.
  *
- *  \sa LevelSetEquationContainerBase
+ *  \sa LevelSetEquationContainer
  *
  *  \ingroup ITKLevelSetsv4
  */
 template< class TInputImage, // Input image
           class TLevelSetContainer >
-class LevelSetEquationTermBase : public Object
+class LevelSetEquationTerm : public Object
 {
 public:
-  typedef LevelSetEquationTermBase   Self;
+  typedef LevelSetEquationTerm       Self;
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
   typedef Object                     Superclass;
 
   /** Run-time type information */
-  itkTypeMacro( LevelSetEquationTermBase, Object );
+  itkTypeMacro( LevelSetEquationTerm, Object );
 
   typedef TInputImage                                     InputImageType;
   typedef typename InputImageType::Pointer                InputImagePointer;
@@ -137,10 +137,10 @@ public:
 
 protected:
   /** Default Constructor */
-  LevelSetEquationTermBase();
+  LevelSetEquationTerm();
 
   /** Destructor */
-  virtual ~LevelSetEquationTermBase();
+  virtual ~LevelSetEquationTerm();
 
   void SetUp();
 
@@ -185,13 +185,13 @@ protected:
   RequiredDataType          m_RequiredData;
 
 private:
-  LevelSetEquationTermBase( const Self& ); // purposely not implemented
+  LevelSetEquationTerm( const Self& ); // purposely not implemented
   void operator = ( const Self& ); // purposely not implemented
 };
 }
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkLevelSetEquationTermBase.hxx"
+#include "itkLevelSetEquationTerm.hxx"
 #endif
 
 #endif

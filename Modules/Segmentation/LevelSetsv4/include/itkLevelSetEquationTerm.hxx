@@ -16,10 +16,10 @@
  *
  *=========================================================================*/
 
-#ifndef __itkLevelSetEquationTermBase_hxx
-#define __itkLevelSetEquationTermBase_hxx
+#ifndef __itkLevelSetEquationTerm_hxx
+#define __itkLevelSetEquationTerm_hxx
 
-#include "itkLevelSetEquationTermBase.h"
+#include "itkLevelSetEquationTerm.h"
 
 #include "itkNumericTraits.h"
 
@@ -27,8 +27,8 @@ namespace itk
 {
 // ----------------------------------------------------------------------------
 template< class TInputImage, class TLevelSetContainer >
-LevelSetEquationTermBase< TInputImage, TLevelSetContainer >
-::LevelSetEquationTermBase()
+LevelSetEquationTerm< TInputImage, TLevelSetContainer >
+::LevelSetEquationTerm()
 {
   this->m_CurrentLevelSetId = LevelSetIdentifierType();
 
@@ -39,15 +39,15 @@ LevelSetEquationTermBase< TInputImage, TLevelSetContainer >
 
 // ----------------------------------------------------------------------------
 template< class TInputImage, class TLevelSetContainer >
-LevelSetEquationTermBase< TInputImage, TLevelSetContainer >
-::~LevelSetEquationTermBase()
+LevelSetEquationTerm< TInputImage, TLevelSetContainer >
+::~LevelSetEquationTerm()
 {
 }
 
 // ----------------------------------------------------------------------------
 template< class TInputImage, class TLevelSetContainer >
-const typename LevelSetEquationTermBase< TInputImage, TLevelSetContainer >::RequiredDataType &
-LevelSetEquationTermBase< TInputImage, TLevelSetContainer >
+const typename LevelSetEquationTerm< TInputImage, TLevelSetContainer >::RequiredDataType &
+LevelSetEquationTerm< TInputImage, TLevelSetContainer >
 ::GetRequiredData() const
 {
   return this->m_RequiredData;
@@ -56,7 +56,7 @@ LevelSetEquationTermBase< TInputImage, TLevelSetContainer >
 // ----------------------------------------------------------------------------
 template< class TInputImage, class TLevelSetContainer >
 void
-LevelSetEquationTermBase< TInputImage, TLevelSetContainer >
+LevelSetEquationTerm< TInputImage, TLevelSetContainer >
 ::SetLevelSetContainer( LevelSetContainerType* iContainer )
 {
   if( iContainer )
@@ -74,9 +74,9 @@ LevelSetEquationTermBase< TInputImage, TLevelSetContainer >
 // ----------------------------------------------------------------------------
 template< class TInputImage, class TLevelSetContainer >
 typename
-LevelSetEquationTermBase< TInputImage, TLevelSetContainer >
+LevelSetEquationTerm< TInputImage, TLevelSetContainer >
 ::LevelSetOutputRealType
-LevelSetEquationTermBase< TInputImage, TLevelSetContainer >
+LevelSetEquationTerm< TInputImage, TLevelSetContainer >
 ::Evaluate( const LevelSetInputIndexType& iP )
 {
   if( vnl_math_abs( this->m_Coefficient ) > NumericTraits< LevelSetOutputRealType >::epsilon() )
@@ -93,9 +93,9 @@ LevelSetEquationTermBase< TInputImage, TLevelSetContainer >
 // ----------------------------------------------------------------------------
 template< class TInputImage, class TLevelSetContainer >
 typename
-LevelSetEquationTermBase< TInputImage, TLevelSetContainer >
+LevelSetEquationTerm< TInputImage, TLevelSetContainer >
 ::LevelSetOutputRealType
-LevelSetEquationTermBase< TInputImage, TLevelSetContainer >
+LevelSetEquationTerm< TInputImage, TLevelSetContainer >
 ::Evaluate( const LevelSetInputIndexType& iP,
             const LevelSetDataType& iData )
 {
@@ -113,7 +113,7 @@ LevelSetEquationTermBase< TInputImage, TLevelSetContainer >
 // ----------------------------------------------------------------------------
 template< class TInputImage, class TLevelSetContainer >
 void
-LevelSetEquationTermBase< TInputImage, TLevelSetContainer >
+LevelSetEquationTerm< TInputImage, TLevelSetContainer >
 ::SetUp()
 {
   this->m_CFLContribution = NumericTraits< LevelSetOutputRealType >::Zero;
@@ -142,4 +142,4 @@ LevelSetEquationTermBase< TInputImage, TLevelSetContainer >
 
 }
 
-#endif // __itkLevelSetEquationTermBase_hxx
+#endif // __itkLevelSetEquationTerm_hxx
