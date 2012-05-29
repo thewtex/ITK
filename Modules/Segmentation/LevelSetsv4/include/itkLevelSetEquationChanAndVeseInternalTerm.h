@@ -19,7 +19,7 @@
 #ifndef __itkLevelSetEquationChanAndVeseInternalTerm_h
 #define __itkLevelSetEquationChanAndVeseInternalTerm_h
 
-#include "itkLevelSetEquationTermBase.h"
+#include "itkLevelSetEquationTerm.h"
 
 namespace itk
 {
@@ -46,13 +46,13 @@ namespace itk
 template< class TInput, // Input image or mesh
           class TLevelSetContainer >
 class LevelSetEquationChanAndVeseInternalTerm :
-    public LevelSetEquationTermBase< TInput, TLevelSetContainer >
+    public LevelSetEquationTerm< TInput, TLevelSetContainer >
 {
 public:
   typedef LevelSetEquationChanAndVeseInternalTerm         Self;
   typedef SmartPointer< Self >                            Pointer;
   typedef SmartPointer< const Self >                      ConstPointer;
-  typedef LevelSetEquationTermBase< TInput,
+  typedef LevelSetEquationTerm< TInput,
                                     TLevelSetContainer >  Superclass;
 
   /** Method for creation through object factory */
@@ -60,7 +60,7 @@ public:
 
   /** Run-time type information */
   itkTypeMacro( LevelSetEquationChanAndVeseInternalTerm,
-                LevelSetEquationTermBase );
+                LevelSetEquationTerm );
 
   typedef typename Superclass::InputImageType     InputImageType;
   typedef typename Superclass::InputImagePointer  InputImagePointer;

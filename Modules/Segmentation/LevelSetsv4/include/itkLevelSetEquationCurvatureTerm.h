@@ -19,7 +19,7 @@
 #ifndef __itkLevelSetEquationCurvatureTerm_h
 #define __itkLevelSetEquationCurvatureTerm_h
 
-#include "itkLevelSetEquationTermBase.h"
+#include "itkLevelSetEquationTerm.h"
 #include "itkZeroFluxNeumannBoundaryCondition.h"
 #include "itkConstNeighborhoodIterator.h"
 #include "itkVector.h"
@@ -47,13 +47,13 @@ template< class TInput, // Input image or mesh
           class TLevelSetContainer,
           class TCurvatureImage = TInput >
 class LevelSetEquationCurvatureTerm :
-    public LevelSetEquationTermBase< TInput, TLevelSetContainer >
+    public LevelSetEquationTerm< TInput, TLevelSetContainer >
 {
 public:
   typedef LevelSetEquationCurvatureTerm         Self;
   typedef SmartPointer< Self >                  Pointer;
   typedef SmartPointer< const Self >            ConstPointer;
-  typedef LevelSetEquationTermBase< TInput, TLevelSetContainer >
+  typedef LevelSetEquationTerm< TInput, TLevelSetContainer >
                                                 Superclass;
 
   /** Method for creation through object factory */
@@ -61,7 +61,7 @@ public:
 
   /** Run-time type information */
   itkTypeMacro( LevelSetEquationCurvatureTerm,
-                LevelSetEquationTermBase );
+                LevelSetEquationTerm );
 
   typedef typename Superclass::InputImageType     InputImageType;
   typedef typename Superclass::InputImagePointer  InputImagePointer;

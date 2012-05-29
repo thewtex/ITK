@@ -15,23 +15,23 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkLevelSetEquationRegionTermBase_h
-#define __itkLevelSetEquationRegionTermBase_h
+#ifndef __itkLevelSetEquationRegionTerm_h
+#define __itkLevelSetEquationRegionTerm_h
 
-#include "itkLevelSetEquationTermBase.h"
+#include "itkLevelSetEquationTerm.h"
 
 namespace itk
 {
 template< class TInput,
           class TLevelSetContainer >
-class LevelSetEquationRegionTermBase :
-    public LevelSetEquationTermBase< TInput, TLevelSetContainer >
+class LevelSetEquationRegionTerm :
+    public LevelSetEquationTerm< TInput, TLevelSetContainer >
 {
 public:
-  typedef LevelSetEquationRegionTermBase                         Self;
-  typedef SmartPointer< Self >                                   Pointer;
-  typedef SmartPointer< const Self >                             ConstPointer;
-  typedef LevelSetEquationTermBase< TInput, TLevelSetContainer > Superclass;
+  typedef LevelSetEquationRegionTerm                         Self;
+  typedef SmartPointer< Self >                               Pointer;
+  typedef SmartPointer< const Self >                         ConstPointer;
+  typedef LevelSetEquationTerm< TInput, TLevelSetContainer > Superclass;
 
   typedef TInput                      InputType;
   typedef typename InputType::Pointer InputPointer;
@@ -44,14 +44,14 @@ public:
   typedef typename LevelSetContainerType::HessianType  HessianType;
 
 protected:
-  LevelSetEquationRegionTermBase() : Superclass()
+  LevelSetEquationRegionTerm() : Superclass()
   {}
 
-  virtual ~LevelSetEquationRegionTermBase() {}
+  virtual ~LevelSetEquationRegionTerm() {}
 
 private:
-  LevelSetEquationRegionTermBase( const Self& );
+  LevelSetEquationRegionTerm( const Self& );
   void operator = ( const Self& );
 };
 }
-#endif // __itkLevelSetEquationRegionTermBase_h
+#endif // __itkLevelSetEquationRegionTerm_h
