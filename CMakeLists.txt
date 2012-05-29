@@ -1,4 +1,8 @@
 cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
+include(CMakeDependentOption)
+#
+# use ExternalProject
+include(ExternalProject)
 
 if(WIN32 OR NOT EXISTS /dev/urandom)
   cmake_minimum_required(VERSION 2.8.5)
@@ -218,11 +222,8 @@ mark_as_advanced(USE_FFTWF)
 option(USE_SYSTEM_FFTW "Use an installed version of fftw" OFF)
 mark_as_advanced(USE_SYSTEM_FFTW)
 
-if( USE_FFTWD OR USE_FFTWF )
-  #
-  # use ExternalProject
-  include(ExternalProject)
 
+if( USE_FFTWD OR USE_FFTWF )
   include(itkExternal_FFTW)
 endif( USE_FFTWD OR USE_FFTWF )
 
@@ -230,6 +231,9 @@ if(NOT ITKV3_COMPATIBILITY)
   option(ITK_USE_64BITS_IDS "When ON, ITK will use 64 bits integers to index pixels. This is needed for managing images larger than 4Gb in some platforms." OFF)
   mark_as_advanced(ITK_USE_64BITS_IDS)
 endif()
+
+option(ITK_USE_SYSTEM_DCMTK "Use an installed version of DCMTK" OFF)
+include(itkExternal_DCMTK)
 
 # ITK turn on concept checking
 option(ITK_USE_CONCEPT_CHECKING "Turn on concept checking to give helpful errors at compile time if a type cannot be used as a template parameter." ON)
