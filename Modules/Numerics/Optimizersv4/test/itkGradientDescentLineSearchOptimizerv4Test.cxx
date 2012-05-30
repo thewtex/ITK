@@ -247,20 +247,20 @@ int itkGradientDescentLineSearchOptimizerv4Test(int, char* [] )
 
   // Test of search method option
   OptimizerType::InternalComputationValueType learningRate1 = itkOptimizer->GetLearningRate();
-  std::cout << "Learning rate with SearchNearBaselineLearningRate method: " << learningRate1 << std::endl;
-  if( itkOptimizer->GetSearchMethod() != OptimizerType::SearchNearBaselineLearningRate )
+  std::cout << "Learning rate with SearchNearPreviousLearningRate method: " << learningRate1 << std::endl;
+  if( itkOptimizer->GetSearchMethod() != OptimizerType::SearchNearPreviousLearningRate )
     {
-    std::cerr << "Error. Expected SearchNearBaselineLearningRate method returned as default." << std::endl;
+    std::cerr << "Error. Expected SearchNearPreviousLearningRate method returned as default." << std::endl;
     return EXIT_FAILURE;
     }
 
-  itkOptimizer->SetSearchMethod( OptimizerType::SearchNearPreviousLearningRate );
-  if( itkOptimizer->GetSearchMethod() != OptimizerType::SearchNearPreviousLearningRate )
+  itkOptimizer->SetSearchMethod( OptimizerType::SearchNearBaselineLearningRate );
+  if( itkOptimizer->GetSearchMethod() != OptimizerType::SearchNearBaselineLearningRate )
     {
-    std::cerr << "Error. Expected SearchNearPreviousLearningRate to be returned." << std::endl;
+    std::cerr << "Error. Expected SearchNearBaselineLearningRate to be returned." << std::endl;
     return EXIT_FAILURE;
     }
-  std::cout << "Test optimization with SearchNearPreviousLearningRate option:" << std::endl;
+  std::cout << "Test optimization with SearchNearBaslineLearningRate option:" << std::endl;
   scales.Fill(0.5);
   itkOptimizer->SetScales( scales );
   itkOptimizer->SetLowerLimit( 1.e-9 );
@@ -271,14 +271,8 @@ int itkGradientDescentLineSearchOptimizerv4Test(int, char* [] )
     {
     return EXIT_FAILURE;
     }
-  // Check for different final learning rates
   OptimizerType::InternalComputationValueType learningRate2 = itkOptimizer->GetLearningRate();
-  std::cout << "Learning rate with SearchNearPreviousLearningRate method: " << learningRate2 << std::endl;
-  if( learningRate1 == learningRate2 )
-    {
-    std::cerr << "Expected different final learning rates with different search methods." << std::endl;
-    return EXIT_FAILURE;
-    }
+  std::cout << "Learning rate with SearchNearBaselineLearningRate method: " << learningRate2 << std::endl;
 
   // Exercise various member functions.
   std::cout << "LearningRate: " << itkOptimizer->GetLearningRate();
