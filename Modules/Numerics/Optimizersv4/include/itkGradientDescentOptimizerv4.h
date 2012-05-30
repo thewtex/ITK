@@ -36,6 +36,9 @@ namespace itk
                   \, \frac{\partial f(p_n) }{\partial p_n}
  * \f]
  *
+ * At the end of optimization, the best metric value and matching parameters
+ * are stored, and can be retried via GetValue() and GetCurrentPosition().
+ *
  * The user can scale each component of the df / dp in two ways:
  * 1) manually, by setting a scaling vector using method SetScales().
  * Or,
@@ -188,8 +191,8 @@ public:
   /** Start and run the optimization */
   virtual void StartOptimization();
 
-  /** Resume the optimization. Can be called after StopOptimization to
-   * resume. The bulk of the optimization work loop is here. */
+  virtual void StopOptimization(void);
+
   virtual void ResumeOptimization();
 
   /** Estimate the learning rate based on the current gradient. */
@@ -243,6 +246,10 @@ protected:
 
   /** The convergence checker. */
   ConvergenceMonitoringType::Pointer m_ConvergenceMonitoring;
+
+  /** Store the best value and related paramters */
+  MeasureType                  m_CurrentBestValue;
+  ParametersType               m_BestParameters;
 
 private:
   /** Flag to control use of the ScalesEstimator (if set) for
