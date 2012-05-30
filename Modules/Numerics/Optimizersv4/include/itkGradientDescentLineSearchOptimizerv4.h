@@ -82,18 +82,25 @@ public:
   typedef itk::Function::WindowConvergenceMonitoringFunction<double> ConvergenceMonitoringType;
 
   /** Enum's for golden section search method. Set via SetSearchMethod.
-   *  SearchNearBaselineLearningRate - the search will always
-   *    be performed around the baseline learning rate, which is the
-   *    initial learning rate either from user assignment or estimation
-   *    in the first iteration.
-   *  SearchNearPreviousLearningRate - the search will be performed
-   *    around the learning rate calculated from the golden section
+   *
+   *  SearchNearBaselineLearningRate - when the metric value increases,
+   *    the search will always be performed
+   *    around the baseline learning rate, which is the
+   *    initial learning rate either from user assignment
+   *    or estimation in the first iteration.
+   *
+   *  SearchNearPreviousLearningRate - when the metric value increases,
+   *    search around the learning rate calculated from the golden section
    *    search in the previous iteration. The first iteration uses
    *    either the user-assigned learning rate or an estimated one.
+   *
+   *  SearchAtEveryIteration - always search around the learning rate
+   *  calculated in the previous iteration, even if metric value decreases.
    */
   typedef enum {
     SearchNearBaselineLearningRate = 0,
-    SearchNearPreviousLearningRate
+    SearchNearPreviousLearningRate,
+    SearchAtEveryIteration
     } SearchMethodType;
 
   /** Set/Get the golden section search method.
@@ -126,6 +133,10 @@ protected:
   /** Advance one Step following the gradient direction.
    * Includes transform update. */
   virtual void AdvanceOneStep(void);
+
+  /** Derived classes may define this as needed.
+   *  Called during AdvanceOneStep() */
+  virtual void ComputeSearchDirection(void){}
 
   /** Default constructor */
   GradientDescentLineSearchOptimizerv4();
