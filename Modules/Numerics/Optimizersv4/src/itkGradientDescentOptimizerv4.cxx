@@ -117,9 +117,24 @@ GradientDescentOptimizerv4
   /* Must call the superclass version for basic validation and setup */
   Superclass::StartOptimization();
 
+  this->m_BestParameters = this->GetCurrentPosition( );
+  this->m_CurrentBestValue = NumericTraits< MeasureType >::max();
+
   this->m_CurrentIteration = 0;
 
   this->ResumeOptimization();
+}
+
+/**
+ * StopOptimization
+ */
+void
+GradientDescentOptimizerv4
+::StopOptimization(void)
+{
+  this->GetMetric()->SetParameters( this->m_BestParameters );
+  this->m_Value = this->m_CurrentBestValue;
+  Superclass::StopOptimization();
 }
 
 /**
@@ -183,6 +198,13 @@ GradientDescentOptimizerv4
     /* Advance one step along the gradient.
      * This will modify the gradient and update the transform. */
     this->AdvanceOneStep();
+
+    /* Store best value and position */
+    if ( this->m_Value < this->m_CurrentBestValue )
+      {
+      this->m_CurrentBestValue = this->m_Value;
+      this->m_BestParameters = this->GetCurrentPosition( );
+      }
 
     /* Update and check iteration count */
     this->m_CurrentIteration++;

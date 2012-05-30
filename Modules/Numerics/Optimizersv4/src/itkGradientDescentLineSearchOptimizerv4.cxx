@@ -27,12 +27,14 @@ namespace itk
 GradientDescentLineSearchOptimizerv4
 ::GradientDescentLineSearchOptimizerv4()
 {
+  this->m_MaximumLineSearchIterations = 20;
+  this->m_LineSearchIterations = NumericTraits<unsigned int>::Zero;
   this->m_LowerLimit = itk::NumericTraits< InternalComputationValueType >::Zero;
   this->m_UpperLimit = 5.0;
   this->m_Phi = 1.618034;
   this->m_Resphi = 2 - this->m_Phi;
   this->m_Epsilon = 0.01;
-  this->SetSearchMethod( SearchNearBaselineLearningRate );
+  this->m_SearchMethod = SearchNearPreviousLearningRate;
 }
 
 /**
@@ -62,24 +64,30 @@ GradientDescentLineSearchOptimizerv4
 {
   itkDebugMacro("AdvanceOneStep");
 
+  /* Modify the gradient by scales once at the begin */
+  this->ModifyGradientByScales();
+
   /* This will estimate the learning rate (m_LearningRate)
    * if the options are set to do so. We only ever want to
    * estimate at the first step for this class. */
   if ( this->m_CurrentIteration == 0 )
     {
-    DerivativeType baseGradient( this->m_Gradient );
-    this->ModifyGradientByScales();
     this->EstimateLearningRate();
-    this->m_Gradient = baseGradient;
     }
+
+  this->ComputeSearchDirection();
 
   /* Cache the learning rate so we can optionally restore it later */
   InternalComputationValueType baseLearningRate = this->m_LearningRate;
-  this->ModifyGradientByScales();
 
   /* Estimate a learning rate for this step */
-  this->m_LearningRate = this->GoldenSectionSearch( this->m_LearningRate * this->m_LowerLimit ,
-    this->m_LearningRate , this->m_LearningRate * this->m_UpperLimit  );
+  if ( ( this->m_Value - this->m_CurrentBestValue ) > itk::NumericTraits< InternalComputationValueType >::epsilon() ||
+         this->m_SearchMethod == SearchAtEveryIteration )
+    {
+    this->m_LineSearchIterations = 0;
+    this->m_LearningRate = this->GoldenSectionSearch( this->m_LearningRate * this->m_LowerLimit ,
+      this->m_LearningRate , this->m_LearningRate * this->m_UpperLimit );
+    }
 
   /* Begin threaded gradient modification of m_Gradient variable. */
   this->ModifyGradientByLearningRate();
@@ -98,7 +106,7 @@ GradientDescentLineSearchOptimizerv4
     throw err;
     }
 
-  /** reset to base learning rate if set to do so */
+  /* reset to base learning rate if set to do so */
   if( this->m_SearchMethod == SearchNearBaselineLearningRate )
     {
     this->m_LearningRate = baseLearningRate;
@@ -117,6 +125,12 @@ GradientDescentLineSearchOptimizerv4::InternalComputationValueType
 GradientDescentLineSearchOptimizerv4
 ::GoldenSectionSearch( InternalComputationValueType a, InternalComputationValueType b, InternalComputationValueType c )
 {
+  if ( this->m_LineSearchIterations > this->m_MaximumLineSearchIterations )
+    {
+    return ( c + a ) / 2;
+    }
+  this->m_LineSearchIterations++;
+
   InternalComputationValueType x;
   if ( c - b > b - a )
     {
@@ -133,6 +147,7 @@ GradientDescentLineSearchOptimizerv4
 
   InternalComputationValueType metricx, metricb;
 
+  {
   // Cache the learning rate , parameters , gradient
   // Contain this in a block so these variables go out of
   // scope before we call recursively below. With dense transforms
@@ -159,6 +174,7 @@ GradientDescentLineSearchOptimizerv4
   this->m_Metric->SetParameters( baseParameters );
   this->m_Gradient = baseGradient;
   this->m_LearningRate = baseLearningRate;
+  }
 
   /** golden section */
   if (  metricx < metricb )
