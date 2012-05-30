@@ -93,7 +93,8 @@ public:
    */
   typedef enum {
     SearchNearBaselineLearningRate = 0,
-    SearchNearPreviousLearningRate
+    SearchNearPreviousLearningRate,
+    SearchAtEveryIteration
     } SearchMethodType;
 
   /** Set/Get the golden section search method.

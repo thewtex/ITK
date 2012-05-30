@@ -17,8 +17,6 @@
  *=========================================================================*/
 #include "itkConjugateGradientLineSearchOptimizerv4.h"
 #include "itkTestingMacros.h"
-#include "itkRegistrationParameterScalesFromShift.h"
-
 
 /**
  *  \class ConjugateGradientLineSearchOptimizerv4TestMetric for test
@@ -43,9 +41,9 @@ class ConjugateGradientLineSearchOptimizerv4TestMetric
 public:
 
   typedef ConjugateGradientLineSearchOptimizerv4TestMetric  Self;
-  typedef itk::ObjectToObjectMetricBase                   Superclass;
-  typedef itk::SmartPointer<Self>                         Pointer;
-  typedef itk::SmartPointer<const Self>                   ConstPointer;
+  typedef itk::ObjectToObjectMetricBase                     Superclass;
+  typedef itk::SmartPointer<Self>                           Pointer;
+  typedef itk::SmartPointer<const Self>                     ConstPointer;
   itkNewMacro( Self );
   itkTypeMacro( ConjugateGradientLineSearchOptimizerv4TestMetric, ObjectToObjectMetricBase );
 
@@ -263,29 +261,12 @@ int itkConjugateGradientLineSearchOptimizerv4Test(int, char* [] )
     {
     return EXIT_FAILURE;
     }
-  // Check for different final learning rates
-  OptimizerType::InternalComputationValueType learningRate2 = itkOptimizer->GetLearningRate();
-  std::cout << "Learning rate with SearchNearPreviousLearningRate method: " << learningRate2 << std::endl;
-  if( learningRate1 == learningRate2 )
-    {
-    std::cerr << "Expected different final learning rates with different search methods." << std::endl;
-    return EXIT_FAILURE;
-    }
 
   // Exercise various member functions.
   std::cout << "LearningRate: " << itkOptimizer->GetLearningRate();
   std::cout << std::endl;
   std::cout << "NumberOfIterations: " << itkOptimizer->GetNumberOfIterations();
   std::cout << std::endl;
-  // For test of learning rate and scales estimation options
-  // in an actual registration, see
-  // itkAutoScaledConjugateGradientRegistrationTest.
-  itkOptimizer->SetDoEstimateLearningRateOnce( false );
-  std::cout << "GetDoEstimateLearningRateOnce: " << itkOptimizer->GetDoEstimateLearningRateOnce() << std::endl;
-  itkOptimizer->SetDoEstimateLearningRateAtEachIteration( true );
-  std::cout << "GetDoEstimateLearningRateAtEachIteration: " << itkOptimizer->GetDoEstimateLearningRateAtEachIteration() << std::endl;
-  itkOptimizer->SetDoEstimateScales( false );
-  std::cout << "GetDoEstimateScales: " << itkOptimizer->GetDoEstimateScales() << std::endl;
 
   itkOptimizer->Print( std::cout );
   std::cout << "Stop description   = " << itkOptimizer->GetStopConditionDescription() << std::endl;
