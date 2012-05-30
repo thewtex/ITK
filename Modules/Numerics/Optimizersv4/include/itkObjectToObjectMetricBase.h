@@ -154,12 +154,6 @@ public:
   virtual void UpdateTransformParameters( DerivativeType & derivative,
                                           ParametersValueType factor = NumericTraits<ParametersValueType>::One) = 0;
 
-  /** Get the current metric value stored in m_Value. This is only
-   * meaningful after a call to GetValue() or GetValueAndDerivative().
-   * Note that this would normally be called GetValue, but that name is
-   * used for historical reasons by GetValue() to compute the current
-   * metric value and store it in m_Value. */
-  MeasureType GetCurrentValue();
 
 protected:
   ObjectToObjectMetricBase();
