@@ -32,7 +32,7 @@ GradientDescentLineSearchOptimizerv4
   this->m_Phi = 1.618034;
   this->m_Resphi = 2 - this->m_Phi;
   this->m_Epsilon = 0.01;
-  this->SetSearchMethod( SearchNearBaselineLearningRate );
+  this->m_SearchMethod = SearchNearBaselineLearningRate;
 }
 
 /**
