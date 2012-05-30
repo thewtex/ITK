@@ -28,6 +28,7 @@ ConjugateGradientLineSearchOptimizerv4
 ::ConjugateGradientLineSearchOptimizerv4()
 {
   this->m_CurrentBestValue = NumericTraits< MeasureType >::max();
+  this->m_SearchMethod = SearchNearPreviousLearningRate;
 }
 
 /**
@@ -66,6 +67,9 @@ ConjugateGradientLineSearchOptimizerv4
 ::AdvanceOneStep()
 {
   itkDebugMacro("AdvanceOneStep");
+  /* Cache the learning rate so we can optionally restore it later */
+  InternalComputationValueType baseLearningRate = this->m_LearningRate;
+  this->ModifyGradientByScales();
 
   /* This will estimate the learning rate (m_LearningRate)
    * if the options are set to do so. We only ever want to
@@ -75,7 +79,6 @@ ConjugateGradientLineSearchOptimizerv4
     this->m_BestParameters = this->GetCurrentPosition( );
     this->m_CurrentBestValue = NumericTraits< MeasureType >::max();
     DerivativeType baseGradient( this->m_Gradient );
-    this->ModifyGradientByScales();
     this->EstimateLearningRate();
     this->m_Gradient = baseGradient;
     this->m_ConjugateGradient.SetSize( this->m_Gradient.GetSize( ) );
@@ -90,22 +93,14 @@ ConjugateGradientLineSearchOptimizerv4
     }
   this->m_LastGradient = this->m_Gradient;
   this->m_ConjugateGradient = this->m_Gradient + this->m_ConjugateGradient * gamma;
-  if ( this->m_ConjugateGradient.two_norm() > ( this->m_Gradient.two_norm( ) * 5 ) )
-    {
-    this->m_ConjugateGradient = this->m_Gradient;
-    }
-  else
-    {
-    this->m_Gradient = this->m_ConjugateGradient;
-    }
-
-  /* Cache the learning rate so we can optionally restore it later */
-  InternalComputationValueType baseLearningRate = this->m_LearningRate;
-  this->ModifyGradientByScales();
 
   /* Estimate a learning rate for this step */
-  this->m_LearningRate = this->GoldenSectionSearch( this->m_LearningRate * this->m_LowerLimit ,
-    this->m_LearningRate , this->m_LearningRate * this->m_UpperLimit  );
+  if ( ( this->m_Value - this->m_CurrentBestValue ) > itk::NumericTraits< InternalComputationValueType >::epsilon() ||
+         this->m_SearchMethod == SearchAtEveryIteration )
+    {
+    this->m_LearningRate = this->GoldenSectionSearch( this->m_LearningRate * this->m_LowerLimit ,
+      this->m_LearningRate , this->m_LearningRate * this->m_UpperLimit );
+    }
 
   /* Begin threaded gradient modification of m_Gradient variable. */
   this->ModifyGradientByLearningRate();
