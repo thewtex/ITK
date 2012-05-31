@@ -746,10 +746,14 @@ int itkMattesMutualInformationImageToImageMetricv4Test(int, char *[] )
     return EXIT_FAILURE;
     }
 
+/////////////////////////////////////////////////////////////////////////////////////////
+
 //FIXME:
 std::cout << "Returning early." << std::endl;
 return EXIT_SUCCESS;
+
 /////////////////////////////////////////////////////////////////////////////////////////
+
   // Test metric with a BSpline interpolator
   typedef itk::BSplineInterpolateImageFunction< ImageType, double >
     BSplineInterpolatorType;
