@@ -23,7 +23,8 @@ PatchBasedDenoisingImageFilter<TInputImage, TOutputImage>
   m_UpdateBuffer    = OutputImageType::New();
 
   // patch weights
-  this->UseSmoothDiscPatchWeightsOn();
+  m_UseSmoothDiscPatchWeights = true;
+
 
   // by default, turn on automatic kerel-sigma estimation
   this->DoKernelBandwidthEstimationOn();

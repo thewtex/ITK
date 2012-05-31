@@ -63,8 +63,9 @@ SpatialNeighborSubsampler<TSample, TRegion>
 ::SetRadius(const RadiusType& radius)
 {
   itkDebugMacro("Setting Radius to " << radius);
-  if (this->m_Radius != radius ||
-      !this->m_RadiusInitialized)
+  if ( !this->m_RadiusInitialized
+       || this->m_Radius != radius
+     )
     {
     this->m_Radius = radius;
     this->m_RadiusInitialized = true;
