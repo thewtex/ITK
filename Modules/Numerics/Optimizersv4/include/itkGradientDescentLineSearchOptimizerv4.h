@@ -53,6 +53,10 @@ namespace itk
  * an initial learning rate or the previous iteration's learning rate.
  * See SearchMethodType for details.
  *
+ * By default, this optimizer will return the best value and associated
+ * parameters that were calculated during the optimization.
+ * See SetReturnBestParametersAndValue().
+ *
  * \ingroup ITKOptimizersv4
  */
 class ITK_EXPORT GradientDescentLineSearchOptimizerv4
@@ -82,18 +86,25 @@ public:
   typedef itk::Function::WindowConvergenceMonitoringFunction<double> ConvergenceMonitoringType;
 
   /** Enum's for golden section search method. Set via SetSearchMethod.
-   *  SearchNearBaselineLearningRate - the search will always
-   *    be performed around the baseline learning rate, which is the
-   *    initial learning rate either from user assignment or estimation
-   *    in the first iteration.
-   *  SearchNearPreviousLearningRate - the search will be performed
-   *    around the learning rate calculated from the golden section
+   *
+   *  SearchNearBaselineLearningRate - when the metric value increases,
+   *    the search will always be performed
+   *    around the baseline learning rate, which is the
+   *    initial learning rate either from user assignment
+   *    or estimation in the first iteration.
+   *
+   *  SearchNearPreviousLearningRate - when the metric value increases,
+   *    search around the learning rate calculated from the golden section
    *    search in the previous iteration. The first iteration uses
    *    either the user-assigned learning rate or an estimated one.
+   *
+   *  SearchAtEveryIteration - always search around the learning rate
+   *  calculated in the previous iteration, even if metric value decreases.
    */
   typedef enum {
     SearchNearBaselineLearningRate = 0,
-    SearchNearPreviousLearningRate
+    SearchNearPreviousLearningRate,
+    SearchAtEveryIteration
     } SearchMethodType;
 
   /** Set/Get the golden section search method.
@@ -120,6 +131,8 @@ public:
   itkGetMacro( LowerLimit , InternalComputationValueType );
   itkSetMacro( UpperLimit , InternalComputationValueType );
   itkGetMacro( UpperLimit , InternalComputationValueType );
+  itkSetMacro( MaximumLineSearchIterations , unsigned int );
+  itkGetMacro( MaximumLineSearchIterations , unsigned int );
 
 protected:
 
@@ -145,6 +158,11 @@ protected:
 
   /** Search method. See SearchMethodType documentation */
   SearchMethodType  m_SearchMethod;
+
+  /** Controls the maximum recursion depth for the golden section search */
+  unsigned int      m_MaximumLineSearchIterations;
+  /** Counts the recursion depth for the golden section search */
+  unsigned int      m_LineSearchIterations;
 
 private:
 
