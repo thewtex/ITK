@@ -77,37 +77,6 @@ extern "C" int finite(double);
 #endif
 
 //--------------------------------------------------------------------------------
-
-#if !VCL_STATIC_CONST_INIT_FLOAT_NO_DEFN
-
-//: constants
-const double vnl_math::e                VCL_STATIC_CONST_INIT_FLOAT_DEFN( 2.71828182845904523540 );
-const double vnl_math::log2e            VCL_STATIC_CONST_INIT_FLOAT_DEFN( 1.44269504088896340740 );
-const double vnl_math::log10e           VCL_STATIC_CONST_INIT_FLOAT_DEFN( 0.43429448190325182765 );
-const double vnl_math::ln2              VCL_STATIC_CONST_INIT_FLOAT_DEFN( 0.69314718055994530942 );
-const double vnl_math::ln10             VCL_STATIC_CONST_INIT_FLOAT_DEFN( 2.30258509299404568402 );
-const double vnl_math::pi               VCL_STATIC_CONST_INIT_FLOAT_DEFN( 3.14159265358979323846 );
-const double vnl_math::pi_over_2        VCL_STATIC_CONST_INIT_FLOAT_DEFN( 1.57079632679489661923 );
-const double vnl_math::pi_over_4        VCL_STATIC_CONST_INIT_FLOAT_DEFN( 0.78539816339744830962 );
-const double vnl_math::one_over_pi      VCL_STATIC_CONST_INIT_FLOAT_DEFN( 0.31830988618379067154 );
-const double vnl_math::two_over_pi      VCL_STATIC_CONST_INIT_FLOAT_DEFN( 0.63661977236758134308 );
-const double vnl_math::two_over_sqrtpi  VCL_STATIC_CONST_INIT_FLOAT_DEFN( 1.12837916709551257390 );
-const double vnl_math::one_over_sqrt2pi VCL_STATIC_CONST_INIT_FLOAT_DEFN( 0.39894228040143267794 );
-const double vnl_math::sqrt2            VCL_STATIC_CONST_INIT_FLOAT_DEFN( 1.41421356237309504880 );
-const double vnl_math::sqrt1_2          VCL_STATIC_CONST_INIT_FLOAT_DEFN( 0.70710678118654752440 );
-const double vnl_math::euler            VCL_STATIC_CONST_INIT_FLOAT_DEFN( 0.57721566490153286061 );
-
-//: IEEE double machine precision
-const double vnl_math::eps              VCL_STATIC_CONST_INIT_FLOAT_DEFN( 2.2204460492503131e-16 );
-const double vnl_math::sqrteps          VCL_STATIC_CONST_INIT_FLOAT_DEFN( 1.4901161193847660e-08 );
-
-//: IEEE single machine precision
-const float vnl_math::float_eps         VCL_STATIC_CONST_INIT_FLOAT_DEFN( 1.1920928960e-7f );
-const float vnl_math::float_sqrteps     VCL_STATIC_CONST_INIT_FLOAT_DEFN( 3.4526698307e-4f );
-
-#endif
-
-//--------------------------------------------------------------------------------
 #if defined(VCL_ICC)
 #include <mathimf.h> // defines isnanf, isnan, and isnanl
 //: Return true iff x is "Not a Number"
@@ -285,7 +254,9 @@ char   vnl_huge_val(char)   { return 0x7f; }
 
 
 //----------------------------------------------------------------------
-double vnl_math::angle_0_to_2pi(double angle)
+namespace vnl_math
+{
+double angle_0_to_2pi(double angle)
 {
     double a;
   if (angle>=2*vnl_math::pi)
@@ -305,4 +276,5 @@ double vnl_math::angle_0_to_2pi(double angle)
     a = 0;
   }
   return a;
+}
 }

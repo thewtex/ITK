@@ -80,35 +80,34 @@ short    vnl_huge_val(short);
 char     vnl_huge_val(char);
 
 //: real numerical constants
-class vnl_math
+namespace vnl_math
 {
- public:
   //: pi, e and all that
-  static VNL_DLL_DATA const double e                VCL_STATIC_CONST_INIT_FLOAT_DECL(2.7182818284590452354);
-  static VNL_DLL_DATA const double log2e            VCL_STATIC_CONST_INIT_FLOAT_DECL(1.4426950408889634074);
-  static VNL_DLL_DATA const double log10e           VCL_STATIC_CONST_INIT_FLOAT_DECL(0.43429448190325182765);
-  static VNL_DLL_DATA const double ln2              VCL_STATIC_CONST_INIT_FLOAT_DECL(0.69314718055994530942);
-  static VNL_DLL_DATA const double ln10             VCL_STATIC_CONST_INIT_FLOAT_DECL(2.30258509299404568402);
-  static VNL_DLL_DATA const double pi               VCL_STATIC_CONST_INIT_FLOAT_DECL(3.14159265358979323846);
-  static VNL_DLL_DATA const double pi_over_2        VCL_STATIC_CONST_INIT_FLOAT_DECL(1.57079632679489661923);
-  static VNL_DLL_DATA const double pi_over_4        VCL_STATIC_CONST_INIT_FLOAT_DECL(0.78539816339744830962);
-  static VNL_DLL_DATA const double one_over_pi      VCL_STATIC_CONST_INIT_FLOAT_DECL(0.31830988618379067154);
-  static VNL_DLL_DATA const double two_over_pi      VCL_STATIC_CONST_INIT_FLOAT_DECL(0.63661977236758134308);
-  static VNL_DLL_DATA const double two_over_sqrtpi  VCL_STATIC_CONST_INIT_FLOAT_DECL(1.12837916709551257390);
-  static VNL_DLL_DATA const double one_over_sqrt2pi VCL_STATIC_CONST_INIT_FLOAT_DECL(0.39894228040143267794);
-  static VNL_DLL_DATA const double sqrt2            VCL_STATIC_CONST_INIT_FLOAT_DECL(1.41421356237309504880);
-  static VNL_DLL_DATA const double sqrt1_2          VCL_STATIC_CONST_INIT_FLOAT_DECL(0.70710678118654752440);
-  static VNL_DLL_DATA const double euler            VCL_STATIC_CONST_INIT_FLOAT_DECL(0.57721566490153286061);
+ const double e                = 2.7182818284590452354;
+ const double log2e            = 1.4426950408889634074;
+ const double log10e           = 0.43429448190325182765;
+ const double ln2              = 0.69314718055994530942;
+ const double ln10             = 2.30258509299404568402;
+ const double pi               = 3.14159265358979323846;
+ const double pi_over_2        = 1.57079632679489661923;
+ const double pi_over_4        = 0.78539816339744830962;
+ const double one_over_pi      = 0.31830988618379067154;
+ const double two_over_pi      = 0.63661977236758134308;
+ const double two_over_sqrtpi  = 1.12837916709551257390;
+ const double one_over_sqrt2pi = 0.39894228040143267794;
+ const double sqrt2            = 1.41421356237309504880;
+ const double sqrt1_2          = 0.70710678118654752440;
+ const double euler            = 0.57721566490153286061;
 
   //: IEEE double machine precision
-  static VNL_DLL_DATA const double eps             VCL_STATIC_CONST_INIT_FLOAT_DECL(2.2204460492503131e-16);
-  static VNL_DLL_DATA const double sqrteps         VCL_STATIC_CONST_INIT_FLOAT_DECL(1.490116119384766e-08);
+ const double eps             = 2.2204460492503131e-16;
+ const double sqrteps         = 1.490116119384766e-08;
   //: IEEE single machine precision
-  static VNL_DLL_DATA const float float_eps        VCL_STATIC_CONST_INIT_FLOAT_DECL(1.192092896e-07f);
-  static VNL_DLL_DATA const float float_sqrteps    VCL_STATIC_CONST_INIT_FLOAT_DECL(3.4526698307e-4f);
+ const float float_eps        = 1.192092896e-07f;
+ const float float_sqrteps    = 3.4526698307e-4f;
 //: Convert an angle to [0, 2Pi) range
-  static double angle_0_to_2pi(double angle);
-};
+ double angle_0_to_2pi(double angle);
+}
 
 // We do not want to make assumptions about unknown types that happen
 // to have conversions to one of the fundamental types.  The templated
