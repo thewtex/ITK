@@ -103,6 +103,9 @@ public:
   typedef typename Superclass::FixedTransformJacobianType     FixedTransformJacobianType;
   typedef typename Superclass::MovingTransformJacobianType    MovingTransformJacobianType;
 
+  typedef typename Superclass::MovingDisplacementFieldTransformType  DisplacementFieldTransformType;
+
+
   /** Dimension type */
   typedef typename Superclass::DimensionType                  DimensionType;
 
@@ -131,6 +134,7 @@ public:
   itkStaticConstMacro( PointDimension, DimensionType, Superclass::FixedDimension );
 
   typedef FixedPointType                               PointType;
+  typedef FixedPixelType                               PixelType;
   typedef typename PointType::CoordRepType             CoordRepType;
   typedef FixedPointsContainer                         PointsContainer;
   typedef typename PointsContainer::ConstIterator      PointsConstIterator;
@@ -224,18 +228,18 @@ public:
    * Function to be defined in the appropriate derived classes.  Calculates
    * the local metric value for a single point.
    */
-  virtual MeasureType GetLocalNeighborhoodValue( const PointType & ) const = 0;
+  virtual MeasureType GetLocalNeighborhoodValue( const PointType &, const PixelType & ) const = 0;
 
   /**
    * Calculates the local derivative for a single point.
    */
-  virtual LocalDerivativeType GetLocalNeighborhoodDerivative( const PointType & ) const;
+  virtual LocalDerivativeType GetLocalNeighborhoodDerivative( const PointType &, const PixelType & ) const;
 
   /**
    * Calculates the local value/derivative for a single point.
    */
   virtual void GetLocalNeighborhoodValueAndDerivative( const PointType &,
-    MeasureType &, LocalDerivativeType & ) const = 0;
+    MeasureType &, LocalDerivativeType &, const PixelType & ) const = 0;
 
   /**
    * Get the virtual point set, derived from the fixed point set.
