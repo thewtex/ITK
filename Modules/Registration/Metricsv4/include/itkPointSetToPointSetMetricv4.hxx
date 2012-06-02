@@ -102,15 +102,15 @@ PointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>
     {
     if( ! this->m_UserHasSetVirtualDomain )
       {
-      typename Superclass::MovingDisplacementFieldTransformType::Pointer displacementTransform;
+      typename DisplacementFieldTransformType::Pointer displacementTransform;
       displacementTransform = this->GetMovingDisplacementFieldTransform();
       if( displacementTransform.IsNull() )
         {
         itkExceptionMacro("Expected the moving transform to be of type DisplacementFieldTransform or derived, "
                           "or a CompositeTransform with DisplacementFieldTransform as the last to have been added." );
         }
-      typedef typename Superclass::MovingDisplacementFieldTransformType::DisplacementFieldType FieldType;
-      typename FieldType::Pointer field = displacementTransform->GetDisplacementField();
+      typedef typename DisplacementFieldTransformType::DisplacementFieldType DisplacementFieldType;
+      typename DisplacementFieldType::Pointer field = displacementTransform->GetDisplacementField();
       this->SetVirtualDomain( field->GetSpacing(), field->GetOrigin(), field->GetDirection(), field->GetBufferedRegion() );
       }
     }
@@ -173,6 +173,12 @@ PointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>
     }
   PointsConstIterator virtualIt = this->m_VirtualTransformedPointSet->GetPoints()->Begin();
 
+  bool usePointSetData = false;
+  if( this->m_FixedPointSet->GetPointData() && this->m_FixedPointSet->GetPoints()->Size() == this->m_FixedPointSet->GetPointData()->Size() )
+    {
+    usePointSetData = true;
+    }
+
   while( It != this->m_FixedTransformedPointSet->GetPoints()->End() )
     {
     /* Verify the virtual point is in the virtual domain.
@@ -185,7 +191,13 @@ PointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>
       continue;
       }
 
-    value += this->GetLocalNeighborhoodValue( It.Value() );
+    PixelType pixel = 0;
+    if( usePointSetData )
+      {
+      this->m_FixedPointSet->GetPointData( It.Index(), &pixel );
+      }
+
+    value += this->GetLocalNeighborhoodValue( It.Value(), pixel );
     ++virtualIt;
     ++It;
     }
@@ -242,6 +254,12 @@ PointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>
   PointsConstIterator It = this->m_FixedTransformedPointSet->GetPoints()->Begin();
   PointsConstIterator end = this->m_FixedTransformedPointSet->GetPoints()->End();
 
+  bool usePointSetData = false;
+  if( this->m_FixedPointSet->GetPointData() && this->m_FixedPointSet->GetPoints()->Size() == this->m_FixedPointSet->GetPointData()->Size() )
+    {
+    usePointSetData = true;
+    }
+
   while( It != end )
     {
     MeasureType pointValue = NumericTraits<MeasureType>::Zero;
@@ -257,14 +275,20 @@ PointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>
       continue;
       }
 
+    PixelType pixel = 0;
+    if( usePointSetData )
+      {
+      this->m_FixedPointSet->GetPointData( It.Index(), &pixel );
+      }
+
     if( calculateValue )
       {
-      this->GetLocalNeighborhoodValueAndDerivative( It.Value(), pointValue, pointDerivative );
+      this->GetLocalNeighborhoodValueAndDerivative( It.Value(), pointValue, pointDerivative, pixel );
       value += pointValue;
       }
     else
       {
-      pointDerivative = this->GetLocalNeighborhoodDerivative( It.Value() );
+      pointDerivative = this->GetLocalNeighborhoodDerivative( It.Value(), pixel );
       }
 
     // Map into parameter space
@@ -356,11 +380,11 @@ template<class TFixedPointSet, class TMovingPointSet>
 typename PointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>
 ::LocalDerivativeType
 PointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>
-::GetLocalNeighborhoodDerivative( const PointType & point ) const
+::GetLocalNeighborhoodDerivative( const PointType & point, const PixelType & pixel ) const
 {
   MeasureType measure;
   LocalDerivativeType localDerivative;
-  this->GetLocalNeighborhoodValueAndDerivative( point, measure, localDerivative );
+  this->GetLocalNeighborhoodValueAndDerivative( point, measure, localDerivative, pixel );
   return localDerivative;
 }
 
