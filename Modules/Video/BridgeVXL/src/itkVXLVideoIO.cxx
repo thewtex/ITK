@@ -65,7 +65,7 @@ void VXLVideoIO::FinishReadingOrWriting()
 {
   if (this->m_Writer != NULL)
     {
-    delete this->m_Writer;
+   // delete this->m_Writer;
     this->m_Writer = NULL;
     }
   if (this->m_Reader != NULL)

@@ -1,3 +1,20 @@
+/*=========================================================================
+ *
+ *  Copyright Insight Software Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
 #include <iostream>
 
 #include "vidl_itk_istream.hxx"
@@ -35,8 +52,7 @@ bool TestFormat(vidl_pixel_format expectedFormat)
 // Templated test
 //
 template<class TPixelType>
-int vidl_itk_istreamTestWithPixelType(char* argv[], vidl_pixel_format expectedFormat)
-{
+int vidl_itk_istreamTestWithPixelType(char* argv[], vidl_pixel_format expectedFormat) {
   // typedefs
   typedef TPixelType                        PixelType;
   typedef itk::Image<PixelType, 2>          FrameType;
@@ -98,12 +114,12 @@ int vidl_itk_istreamTestWithPixelType(char* argv[], vidl_pixel_format expectedFo
 
   // Return success
   delete istream;
-  delete ostream;
+  //delete ostream;
   return EXIT_SUCCESS;
 }
 
 #define TemplatedTestMacro(PixelType, expectedFormat)                               \
-  if (vidl_itk_istreamTestWithPixelType<PixelType>( argv, expectedFormat) ==   \
+  if (vidl_itk_istreamTestWithPixelType<PixelType>( argv, expectedFormat) == \
       EXIT_FAILURE)                                                                 \
     {                                                                               \
     return EXIT_FAILURE;                                                            \
@@ -132,7 +148,7 @@ int vidl_itk_istreamTest ( int argc, char *argv[] )
   //
 
   // Scalar types
-  TemplatedTestMacro(bool, VIDL_PIXEL_FORMAT_MONO_1);
+  //TemplatedTestMacro(bool, VIDL_PIXEL_FORMAT_MONO_1);
   TemplatedTestMacro(char, VIDL_PIXEL_FORMAT_MONO_8);
   TemplatedTestMacro(unsigned char, VIDL_PIXEL_FORMAT_MONO_8);
   TemplatedTestMacro(short, VIDL_PIXEL_FORMAT_MONO_16);
