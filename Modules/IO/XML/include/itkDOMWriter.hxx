@@ -28,7 +28,7 @@ namespace itk
 {
 
 template< class T >
-DOMWriter<T>::DOMWriter()
+DOMWriter<T>::DOMWriter() : m_Input( NULL )
 {
   // Create the logger.
   this->m_Logger = LoggerType::New();
@@ -43,6 +43,23 @@ DOMWriter<T>::DOMWriter()
   // some other settings
   this->m_Logger->SetTimeStampFormat( Logger::HUMANREADABLE );
   this->m_Logger->SetHumanReadableFormat( "%Y-%b-%d %H:%M:%S" ); // time stamp format
+}
+
+/** Set the input object to be written. */
+template< class T >
+void
+DOMWriter<T>::SetInput( const InputType* input )
+{
+  this->m_Input = input;
+  this->m_InputHolder = dynamic_cast<const LightObject*>(input);
+}
+
+/** Get the input object to be written. */
+template< class T >
+const typename DOMWriter<T>::InputType *
+DOMWriter<T>::GetInput() const
+{
+  return this->m_Input;
 }
 
 /**
