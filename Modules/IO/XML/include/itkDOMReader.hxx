@@ -27,7 +27,7 @@ namespace itk
 {
 
 template< class T >
-DOMReader<T>::DOMReader()
+DOMReader<T>::DOMReader() : m_Output( NULL )
 {
   // Create the logger.
   this->m_Logger = LoggerType::New();
@@ -45,6 +45,34 @@ DOMReader<T>::DOMReader()
 }
 
 /**
+ * The output object will be created automatically, but the user
+ * can appoint a user object as the output by calling this function.
+ */
+template< class T >
+void
+DOMReader<T>::SetOutput( OutputType* output )
+{
+  this->m_Output = output;
+  this->m_OutputHolder = dynamic_cast<LightObject*>(output);
+}
+
+/** Get the output object for full access. */
+template< class T >
+typename DOMReader<T>::OutputType *
+DOMReader<T>::GetOutput()
+{
+  return this->m_Output;
+}
+
+/** Get the output object for read-only access. */
+template< class T >
+const typename DOMReader<T>::OutputType *
+DOMReader<T>::GetOutput() const
+{
+  return this->m_Output;
+}
+
+/**
  * Function called by Update() or end-users to generate the output object from a DOM object.
  * Some derived readers may accept an incomplete DOM object during the reading process, in those cases
  * the optional argument 'userdata' can be used to provide the missed information.
@@ -58,11 +86,27 @@ DOMReader<T>::Update( const DOMNodeType* inputdom, const void* userdata )
     itkExceptionMacro( "read from an invalid DOM object" );
     }
 
+  // group subsequent logging under this reader
+  this->GetLogger()->SetName( this->GetNameOfClass() );
+
+  // variable/info needed for logging
+  FancyString info;
+  FancyString tagname = inputdom->GetName();
+
+  // log start of reading
+  info << ClearContent << "Reading \"" << tagname << "\" ...\n";
+  this->GetLogger()->Info( info );
+
+  // perform actual reading
   this->GenerateData( inputdom, userdata );
+
+  // log end of reading
+  info << ClearContent << "Reading \"" << tagname << "\" done!\n";
+  this->GetLogger()->Info( info );
 
   if ( this->GetOutput() == NULL )
     {
-    itkExceptionMacro( "not valid output object was generated" );
+    itkExceptionMacro( "no valid output object was generated" );
     }
 }
 
