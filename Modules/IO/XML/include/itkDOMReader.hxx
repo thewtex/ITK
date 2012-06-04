@@ -27,7 +27,7 @@ namespace itk
 {
 
 template< class T >
-DOMReader<T>::DOMReader()
+DOMReader<T>::DOMReader() : m_Output( NULL )
 {
   // Create the logger.
   this->m_Logger = LoggerType::New();
@@ -42,6 +42,34 @@ DOMReader<T>::DOMReader()
   // some other settings
   this->m_Logger->SetTimeStampFormat( Logger::HUMANREADABLE );
   this->m_Logger->SetHumanReadableFormat( "%Y-%b-%d %H:%M:%S" ); // time stamp format
+}
+
+/**
+ * The output object will be created automatically, but the user
+ * can appoint a user object as the output by calling this function.
+ */
+template< class T >
+void
+DOMReader<T>::SetOutput( OutputType* output )
+{
+  this->m_Output = output;
+  this->m_OutputHolder = dynamic_cast<LightObject*>(output);
+}
+
+/** Get the output object for full access. */
+template< class T >
+DOMReader<T>::OutputType*
+DOMReader<T>::GetOutput()
+{
+  return this->m_Output;
+}
+
+/** Get the output object for read-only access. */
+template< class T >
+const DOMReader<T>::OutputType*
+DOMReader<T>::GetOutput() const
+{
+  return this->m_Output;
 }
 
 /**
