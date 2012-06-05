@@ -3,6 +3,10 @@ href=\"http://dicom.offis.de/dcmtk.php.en\">DCMTK</a> DICOM
 library suite.")
 
 itk_module(ITKDCMTK
+  DEPENDS
+  ITKZLIB
+  ITKJPEG
+  ITKTIFF
   DESCRIPTION
     "${DOCUMENTATION}"
 )
