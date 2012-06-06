@@ -14,7 +14,7 @@ itk_module(ITKBiasCorrection
     ITKOptimizers
   TEST_DEPENDS
     ITKTestKernel
-    ITKImageSource
+    ITKSource
     ITKImageIntensity
     ITKImageGrid
     ITKThresholding
