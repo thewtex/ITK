@@ -31,7 +31,7 @@ int itkGPUReductionTest(int argc, char *argv[])
     std::cout << "received " << argc << " arguments, but didn't expect any."
               << "first ignored argument: " << argv[1] << std::endl;
   }
-  unsigned int numPixels;
+  int numPixels;
 
   numPixels  = 256;
 
@@ -43,7 +43,7 @@ int itkGPUReductionTest(int argc, char *argv[])
   unsigned int bytes = numPixels * sizeof(ElementType);
   ElementType*    h_idata = (ElementType*)malloc(bytes);
 
-  for(unsigned int ii=0; ii<numPixels; ii++)
+  for(int ii=0; ii<numPixels; ii++)
   {
     h_idata[ii] = 1;
   }
