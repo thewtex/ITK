@@ -33,7 +33,7 @@
 
 template <class ImageT>
 int doDenoising(const std::string inputFileName, const std::string outputFileName,
-                const int numIterations, const int numThreads,
+                const int numIterations,
                 const int numToSample, const float sigmaMultiplicationFactor,
                 const std::string noiseModel, const float fidelityWeight)
 {
@@ -100,9 +100,6 @@ int doDenoising(const std::string inputFileName, const std::string outputFileNam
 
   // number of iterations over the image of denoising
   filter->SetNumberOfIterations(numIterations);
-
-  // number of threads to use in parallel
-  filter->SetNumberOfThreads(numThreads);
 
   // sampling the image to find similar patches
   typename SamplerType::Pointer sampler = SamplerType::New();
@@ -193,7 +190,7 @@ int itkPatchBasedDenoisingImageFilterTest( int argc, char * argv [] )
     std::cerr << "Usage :  " << argv[0]
               << " inputImageFileName outputImageFileName"
               << " numDimensions numComponents"
-              << " [numIterations] [numThreads]"
+              << " [numIterations]"
               << " [numPatchesToSample] [sigmaMultiplicationFactor]"
               << " [noiseModel] [fidelityWeight]"
               << std::endl;
@@ -214,22 +211,16 @@ int itkPatchBasedDenoisingImageFilterTest( int argc, char * argv [] )
     numIterations = atoi(argv[5]);
   }
 
-  unsigned int numThreads = 1;
+  unsigned int numToSample = 1000;
   if (argc > 6)
   {
-    numThreads = atoi(argv[6]);
-  }
-
-  unsigned int numToSample = 1000;
-  if (argc > 7)
-  {
-    numToSample = atoi(argv[7]);
+    numToSample = atoi(argv[6]);
   }
 
   float sigmaMultFactor = 1;
-  if (argc > 8)
+  if (argc > 7)
   {
-    sigmaMultFactor = atof(argv[8]);
+    sigmaMultFactor = atof(argv[7]);
   }
 
   std::vector< std::string > modelChoices;
@@ -240,9 +231,9 @@ int itkPatchBasedDenoisingImageFilterTest( int argc, char * argv [] )
   noiseModel = modelChoices[0];
 
   float fidelityWeight = 0.0;
-  if (argc > 9)
+  if (argc > 8)
   {
-    noiseModel = argv[9];
+    noiseModel = argv[8];
     bool validChoice = false;
     for (unsigned int ii = 0; ii < modelChoices.size(); ++ii)
     {
@@ -260,9 +251,9 @@ int itkPatchBasedDenoisingImageFilterTest( int argc, char * argv [] )
       }
       return EXIT_FAILURE;
     }
-    if (argc > 10)
+    if (argc > 9)
     {
-      fidelityWeight = atof(argv[10]);
+      fidelityWeight = atof(argv[9]);
     }
     else
     {
@@ -300,7 +291,7 @@ int itkPatchBasedDenoisingImageFilterTest( int argc, char * argv [] )
   if (numComponents == 1 && numDimensions == 2)
     {
     return doDenoising<OneComponent2DImage>(inFileName, outFileName,
-                                            numIterations, numThreads,
+                                            numIterations,
                                             numToSample, sigmaMultFactor,
                                             noiseModel, fidelityWeight);
   }
@@ -314,21 +305,21 @@ int itkPatchBasedDenoisingImageFilterTest( int argc, char * argv [] )
   else if (numComponents == 3 && numDimensions == 2)
   {
     return doDenoising<ThreeComponent2DImage>(inFileName, outFileName,
-                                              numIterations, numThreads,
+                                              numIterations,
                                               numToSample, sigmaMultFactor,
                                               noiseModel, fidelityWeight);
   }
   else if (numComponents == 4 && numDimensions == 2)
   {
     return doDenoising<FourComponent2DImage>(inFileName, outFileName,
-                                             numIterations, numThreads,
+                                             numIterations,
                                              numToSample, sigmaMultFactor,
                                              noiseModel, fidelityWeight);
   }
   else if (numComponents == 6 && numDimensions == 2)
   {
     return doDenoising<SixComponent2DImage>(inFileName, outFileName,
-                                            numIterations, numThreads,
+                                            numIterations,
                                             numToSample, sigmaMultFactor,
                                             noiseModel, fidelityWeight);
   }
@@ -336,35 +327,35 @@ int itkPatchBasedDenoisingImageFilterTest( int argc, char * argv [] )
   else if (numComponents == 1 && numDimensions == 3)
   {
     return doDenoising<OneComponent3DImage>(inFileName, outFileName,
-                                            numIterations, numThreads,
+                                            numIterations,
                                             numToSample, sigmaMultFactor,
                                             noiseModel, fidelityWeight);
   }
 //   else if (numComponents == 2 && numDimensions == 3)
 //   {
 //     return doDenoising<TwoComponent3DImage>(inFileName, outFileName,
-//                                             numIterations, numThreads,
+//                                             numIterations,
 //                                             numToSample, sigmaMultFactor,
 //                                             noiseModel, fidelityWeight);
 //   }
   else if (numComponents == 3 && numDimensions == 3)
   {
     return doDenoising<ThreeComponent3DImage>(inFileName, outFileName,
-                                              numIterations, numThreads,
+                                              numIterations,
                                               numToSample, sigmaMultFactor,
                                               noiseModel, fidelityWeight);
   }
   else if (numComponents == 4 && numDimensions == 3)
   {
     return doDenoising<FourComponent3DImage>(inFileName, outFileName,
-                                             numIterations, numThreads,
+                                             numIterations,
                                              numToSample, sigmaMultFactor,
                                              noiseModel, fidelityWeight);
   }
   else if (numComponents == 6 && numDimensions == 3)
   {
     return doDenoising<SixComponent3DImage>(inFileName, outFileName,
-                                            numIterations, numThreads,
+                                            numIterations,
                                             numToSample, sigmaMultFactor,
                                             noiseModel, fidelityWeight);
   }
