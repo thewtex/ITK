@@ -78,6 +78,9 @@ public:
   typedef ObjectToObjectMetricBase                  MetricType;
   typedef MetricType::Pointer                       MetricTypePointer;
 
+  /** Derivative type */
+  typedef MetricType::DerivativeType                DerivativeType;
+
   /** Number of parameters type */
   typedef MetricType::NumberOfParametersType        NumberOfParametersType;
 
@@ -102,6 +105,10 @@ public:
 
   /** Get whether scales are identity. Cannot be set */
   itkGetConstReferenceMacro( ScalesAreIdentity, bool );
+
+  /** Get whether the scales have been set. Returns
+   *  true if <tt> m_Scales.Size() > 0 </tt> */
+  bool GetScalesInitialized( void ) const;
 
   /** Set the number of threads to use when threading.
    * The default is the global default number of threads
@@ -136,7 +143,6 @@ protected:
   /** Scales. Size is expected to be == metric->GetNumberOfLocalParameters().
    * See the main documentation for more details. */
   ScalesType                    m_Scales;
-
 
   /** Flag to avoid unnecessary arithmetic when scales are identity. */
   bool                          m_ScalesAreIdentity;

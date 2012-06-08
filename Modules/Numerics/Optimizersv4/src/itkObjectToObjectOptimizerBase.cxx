@@ -46,13 +46,24 @@ ObjectToObjectOptimizerBase
 
   os << indent << "Number of threads: " << this->m_NumberOfThreads << std::endl;
   os << indent << "Number of scales:  " << this->m_Scales.Size() << std::endl;
-  if( this->m_Scales.Size() > 0 )
+  if( this->GetScalesInitialized() )
     {
     os << indent << "m_Scales: " << this->m_Scales << std::endl;
     }
+  else
+    {
+    os << indent << "m_Scales: uninitialized." << std::endl;
+    }
   os << indent << "m_ScalesAreIdentity: " << this->GetScalesAreIdentity() << std::endl;
-  os << indent << "Metric: " << std::endl;
-  m_Metric->Print( os, indent.GetNextIndent() );
+  if( this->m_Metric.IsNotNull() )
+    {
+    os << indent << "Metric: " << std::endl;
+    m_Metric->Print( os, indent.GetNextIndent() );
+    }
+  else
+    {
+    os << indent << "Metric is not set." << std::endl;
+    }
 }
 
 //-------------------------------------------------------------------
@@ -85,7 +96,7 @@ ObjectToObjectOptimizerBase
 
   /* Verify m_Scales. If m_Scales hasn't been set, initialize to all 1's. */
   typedef ScalesType::ValueType     ValueType;
-  if( this->m_Scales.Size() > 0 )
+  if( this->GetScalesInitialized() )
     {
     if( this->m_Scales.Size() != this->m_Metric->GetNumberOfLocalParameters() )
       {
@@ -137,6 +148,14 @@ ObjectToObjectOptimizerBase
     itkExceptionMacro("m_Metric has not been assigned. Cannot get parameters.");
     }
   return this->m_Metric->GetParameters();
+}
+
+//-------------------------------------------------------------------
+bool
+ObjectToObjectOptimizerBase
+::GetScalesInitialized( void ) const
+{
+  return this->m_Scales.Size() > 0;
 }
 
 }//namespace itk
