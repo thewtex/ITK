@@ -118,35 +118,67 @@ macro(itk_end_wrap_submodule_gccxml module)
   set(gccxml_inc_file "${WRAPPER_LIBRARY_OUTPUT_DIR}/gcc_xml.inc")
   set(xml_file "${WRAPPER_LIBRARY_OUTPUT_DIR}/${module}.xml")
 
-  if(ITK_USE_CCACHE)
-    add_custom_command(
-      OUTPUT ${xml_file}
-      COMMAND "${CCACHE_EXECUTABLE}" "${GCCXML}"
-            -c
-            -fxml-start=_cable_
-            -o ${xml_file}
-            ${CONFIG_GCCXML_INC_CONTENTS}
-            -DCSWIG
-            -DCABLE_CONFIGURATION
-            -DITK_MANUAL_INSTANTIATION
-            ${cxx_file}
-      DEPENDS ${GCCXML} ${cxx_file}
-    )
-  else(ITK_USE_CCACHE)
-    add_custom_command(
-      OUTPUT ${xml_file}
-      COMMAND ${GCCXML}
-            -fxml-start=_cable_
-            -fxml=${xml_file}
-            --gccxml-gcc-options ${gccxml_inc_file}
-            -DCSWIG
-            -DCABLE_CONFIGURATION
-            -DITK_MANUAL_INSTANTIATION
-            ${cxx_file}
-      DEPENDS ${GCCXML} ${cxx_file} ${gccxml_inc_file}
-    )
-  endif(ITK_USE_CCACHE)
-
+  IF(MSVC90)
+    if(ITK_USE_CCACHE)
+      add_custom_command(
+        OUTPUT ${xml_file}
+        COMMAND "${CCACHE_EXECUTABLE}" "${GCCXML}"
+              -c
+              -fxml-start=_cable_
+              -o ${xml_file}
+              ${CONFIG_GCCXML_INC_CONTENTS}
+              -DCSWIG
+              -DCABLE_CONFIGURATION
+              -DITK_MANUAL_INSTANTIATION
+              -D"_HAS_TR1=0"
+              ${cxx_file}
+        DEPENDS ${GCCXML} ${cxx_file}
+      )
+    else(ITK_USE_CCACHE)
+      add_custom_command(
+        OUTPUT ${xml_file}
+        COMMAND ${GCCXML}
+              -fxml-start=_cable_
+              -fxml=${xml_file}
+              --gccxml-gcc-options ${gccxml_inc_file}
+              -DCSWIG
+              -DCABLE_CONFIGURATION
+              -DITK_MANUAL_INSTANTIATION
+              -D"_HAS_TR1=0"
+              ${cxx_file}
+        DEPENDS ${GCCXML} ${cxx_file} ${gccxml_inc_file}
+      )
+    endif(ITK_USE_CCACHE)
+  else(MSVC90)
+      if(ITK_USE_CCACHE)
+      add_custom_command(
+        OUTPUT ${xml_file}
+        COMMAND "${CCACHE_EXECUTABLE}" "${GCCXML}"
+              -c
+              -fxml-start=_cable_
+              -o ${xml_file}
+              ${CONFIG_GCCXML_INC_CONTENTS}
+              -DCSWIG
+              -DCABLE_CONFIGURATION
+              -DITK_MANUAL_INSTANTIATION
+              ${cxx_file}
+        DEPENDS ${GCCXML} ${cxx_file}
+      )
+    else(ITK_USE_CCACHE)
+      add_custom_command(
+        OUTPUT ${xml_file}
+        COMMAND ${GCCXML}
+              -fxml-start=_cable_
+              -fxml=${xml_file}
+              --gccxml-gcc-options ${gccxml_inc_file}
+              -DCSWIG
+              -DCABLE_CONFIGURATION
+              -DITK_MANUAL_INSTANTIATION
+              ${cxx_file}
+        DEPENDS ${GCCXML} ${cxx_file} ${gccxml_inc_file}
+      )
+    endif(ITK_USE_CCACHE)
+  endif(MSVC90)
   set(GCC_XML_OUTPUT_FILES ${GCC_XML_OUTPUT_FILES} ${xml_file})
 
 endmacro(itk_end_wrap_submodule_gccxml)
