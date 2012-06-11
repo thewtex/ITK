@@ -535,14 +535,14 @@ FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, 
 
   if(!input)
     {
-    itkExceptionMacro("no feature points");
+    itkExceptionMacro("No feature points");
     }
 
   const PointDataContainerType *displacementVector = input->GetPointData();
 
   if(!displacementVector)
     {
-    itkExceptionMacro("no displacement vector associated with feature point set");
+    itkExceptionMacro("No displacement vectors associated with feature point set");
     }
 
   const PointsContainer *featurePoints = input->GetPoints();
