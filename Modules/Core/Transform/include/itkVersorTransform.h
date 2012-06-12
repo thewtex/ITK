@@ -136,12 +136,9 @@ protected:
   {
   }
 
-  /** This method must be made protected here because it is not a safe way of
+  /** \deprecated This method must be made protected here because it is not a safe way of
    * initializing the Versor */
-  virtual void SetRotationMatrix(const MatrixType & matrix)
-  {
-    this->Superclass::SetRotationMatrix(matrix);
-  }
+  itkLegacyMacro( virtual void SetRotationMatrix(const MatrixType & matrix) );
 
   void SetVarVersor(const VersorType & newVersor)
   {

@@ -94,7 +94,7 @@ protected:
                 << "</filter-name>"
                 << std::endl;
       std::cout << "<filter-time>"
-                << this->GetTimeProbe().GetMeanTime()
+                << this->GetTimeProbe().GetMean()
                 << "</filter-time>"
                 << std::endl;
       std::cout << "</filter-end>";
