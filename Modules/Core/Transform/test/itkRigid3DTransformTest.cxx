@@ -60,7 +60,7 @@ bool TestSettingTranslation(void)
 
     TransformType::Pointer r1 = TransformType::New();
     //r1->SetIdentity();
-    r1->SetRotationMatrix( R );
+    r1->SetMatrix( R );
     r1->Translate( T );
 
     TransformType::ParametersType p1;
@@ -304,7 +304,7 @@ int itkRigid3DTransformTest(int ,char * [] )
     mrotation[1][0] = -sinth;
     mrotation[1][1] =  costh;
 
-    rotation->SetRotationMatrix( mrotation );
+    rotation->SetMatrix( mrotation );
 
     TransformType::OffsetType ioffset;
     ioffset.Fill( 0.0f );
@@ -331,7 +331,7 @@ int itkRigid3DTransformTest(int ,char * [] )
       }
 
     // Verify the Matrix content
-    TransformType::MatrixType matrix0 = rotation->GetRotationMatrix();
+    TransformType::MatrixType matrix0 = rotation->GetMatrix();
     std::cout << "Rotation matrix:  " << std::endl;
     std::cout << matrix0 << std::endl;
 
