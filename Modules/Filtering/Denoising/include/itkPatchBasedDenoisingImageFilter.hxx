@@ -69,6 +69,37 @@ PatchBasedDenoisingImageFilter<TInputImage, TOutputImage>
 }
 
 template <class TInputImage, class TOutputImage>
+PatchBasedDenoisingImageFilter<TInputImage, TOutputImage>
+::~PatchBasedDenoisingImageFilter()
+{
+  EmptyCaches();
+}
+
+template <class TInputImage, class TOutputImage>
+void
+PatchBasedDenoisingImageFilter<TInputImage, TOutputImage>
+::EmptyCaches()
+{
+  for (unsigned int threadId = 0; threadId < m_ThreadData.size(); ++threadId)
+  {
+    SizeValueType cacheSize = m_ThreadData[threadId].eigenValsCache.size();
+    for (SizeValueType c = 0; c < cacheSize; ++c)
+    {
+      if (m_ThreadData[threadId].eigenValsCache[c] != 0)
+      {
+        delete m_ThreadData[threadId].eigenValsCache[c];
+      }
+      if (m_ThreadData[threadId].eigenVecsCache[c] != 0)
+      {
+        delete m_ThreadData[threadId].eigenVecsCache[c];
+      }
+    }
+    m_ThreadData[threadId].eigenValsCache.empty();
+    m_ThreadData[threadId].eigenVecsCache.empty();
+  }
+}
+
+template <class TInputImage, class TOutputImage>
 void
 PatchBasedDenoisingImageFilter<TInputImage, TOutputImage>
 ::SetThreadData(int threadId, const ThreadDataStruct& data)
@@ -298,6 +329,9 @@ PatchBasedDenoisingImageFilter<TInputImage, TOutputImage>
   {
     m_NumIndependentComponents = 1;
   }
+
+  EmptyCaches();
+
   // initialize thread data struct
   const unsigned int numThreads = this->GetNumberOfThreads();
   for (unsigned int thread = 0; thread < numThreads; ++thread)
@@ -762,12 +796,17 @@ PatchBasedDenoisingImageFilter<TInputImage, TOutputImage>
       continue;
     }
 
+    // only evaluating each pixel once, so nothing to cache
+    bool useCachedComputations = false;
     InputImageRegionConstIteratorType imgIt(img, *fIt);
     imgIt.GoToBegin();
     for (imgIt.GoToBegin(); !imgIt.IsAtEnd(); ++imgIt)
     {
       ComputeLogMapAndWeightedSquaredGeodesicDifference(imgIt.Get(), identityTensor,
                                                         identityWeight,
+                                                        useCachedComputations, 0,
+                                                        threadData.eigenValsCache,
+                                                        threadData.eigenVecsCache,
                                                         tmpDiff, tmpNorm);
 
       if (tmpNorm[0] < minNorm[0])
@@ -850,6 +889,10 @@ void
 PatchBasedDenoisingImageFilter<TInputImage, TOutputImage>
 ::ComputeSignedEuclideanDifferenceAndWeightedSquaredNorm(const PixelType& a, const PixelType& b,
                                                          const RealArrayType& weight,
+                                                         bool itkNotUsed(useCachedComputations),
+                                                         SizeValueType itkNotUsed(cacheIndex),
+                                                         EigenValuesCacheType& itkNotUsed(eigenValsCache),
+                                                         EigenVectorsCacheType& itkNotUsed(eigenVecsCache),
                                                          RealType& diff, RealArrayType& norm)
 {
   for (unsigned int pc = 0; pc < m_NumPixelComponents; ++pc)
@@ -867,91 +910,148 @@ PatchBasedDenoisingImageFilter<TInputImage, TOutputImage>
 ::ComputeLogMapAndWeightedSquaredGeodesicDifference(const DiffusionTensor3D<PixelValueType>& spdMatrixA,
                                                     const DiffusionTensor3D<PixelValueType>& spdMatrixB,
                                                     const RealArrayType& weight,
+                                                    bool useCachedComputations,
+                                                    SizeValueType cacheIndex,
+                                                    EigenValuesCacheType& eigenValsCache,
+                                                    EigenVectorsCacheType& eigenVecsCache,
                                                     RealType& symMatrixLogMap, RealArrayType& geodesicDist)
 {
-
-  typedef typename PixelType::EigenValuesArrayType   EigenValuesArrayType;
-  typedef typename PixelType::EigenVectorsMatrixType EigenVectorsMatrixType;
   typedef typename PixelType::MatrixType             MatrixType;
   typedef typename RealType::EigenValuesArrayType    RealEigenValuesArrayType;
   typedef typename RealType::EigenVectorsMatrixType  RealEigenVectorsMatrixType;
   typedef typename RealType::MatrixType              RealMatrixType;
-  EigenValuesArrayType eigenVals;
-  EigenVectorsMatrixType eigenVecs;
-  RealEigenValuesArrayType realEigenVals;
-  RealEigenVectorsMatrixType realEigenVecs;
-  MatrixType eigenValsMatrix;
-  MatrixType eigenValsInvMatrix;
-  MatrixType g;
-  MatrixType gInv;
-  MatrixType gInvTransposed;
-  RealMatrixType tempMat;
-  MatrixType YMat;
+  EigenValuesArrayType       eigenVals;
+  EigenVectorsMatrixType     eigenVecs;
+  RealEigenValuesArrayType   YEigenVals;
+  RealEigenVectorsMatrixType YEigenVecs;
   RealType Y;
-  RealMatrixType realG;
-  RealType logEigenValsMatrix;
-  RealType logSquaredEigenValsMatrix;
-  RealMatrixType temp;
-  RealMatrixType tempTransposed;
-  RealType expMap;
-  RealMatrixType symMatrixTemp;
 
-  spdMatrixA.ComputeEigenAnalysis(eigenVals, eigenVecs);
-  // transposing since the matlab code used column vectors, but the ComputeEigenAnalysis returns a row vector
-  eigenVecs = eigenVecs.GetTranspose();
-
-  eigenValsMatrix.Fill(0);
-  eigenValsInvMatrix.Fill(0);
-  for (unsigned int ii = 0; ii < 3; ++ii)
+  if (useCachedComputations)
   {
-    RealValueType val = vcl_sqrt(vnl_math_max(PixelValueType(1e-15), eigenVals[ii]));
-    eigenValsMatrix[ii][ii] = val;
-    eigenValsInvMatrix[ii][ii] = 1.0 / val;
+    eigenVals = *(eigenValsCache[cacheIndex]);
+    eigenVecs = *(eigenVecsCache[cacheIndex]);
   }
-  g = eigenVecs * eigenValsMatrix;
-  gInv = eigenValsInvMatrix * eigenVecs.GetTranspose();
-  gInvTransposed = gInv.GetTranspose();
-
-  // Y = gInv * spdMatrixB * gInv.GetTranspose()
-  YMat = (spdMatrixB.PreMultiply(gInv)) * gInvTransposed;
-  for (unsigned int ii = 0; ii < 3; ++ii)
+  else
   {
-    Y(ii,0) = YMat[ii][0];
-    Y(ii,1) = YMat[ii][1];
-    Y(ii,2) = YMat[ii][2];
-  }
-
-  Y.ComputeEigenAnalysis(realEigenVals, realEigenVecs);
-  // transposing since the matlab code used column vectors, but the ComputeEigenAnalysis returns a row vector
-  realEigenVecs = realEigenVecs.GetTranspose();
-
-  // create an eigen val diagonal matrix consisting of log(eigenVals)
-  logEigenValsMatrix.Fill(0);
-  logSquaredEigenValsMatrix.Fill(0);
-  for (unsigned int ii = 0; ii < 3; ++ii)
-  {
-    RealValueType val = vcl_log(vnl_math_max(RealValueType(1e-15),realEigenVals[ii]));
-    logEigenValsMatrix(ii,ii) = val;
-    logSquaredEigenValsMatrix(ii,ii) = val * val;
-    for (unsigned int jj = 0; jj < 3; ++jj)
+    spdMatrixA.ComputeEigenAnalysis(eigenVals, eigenVecs);
+    for (unsigned int ii = 0; ii < 3; ++ii)
     {
-      realG[ii][jj] = g[ii][jj];
+      eigenVals[ii] = vnl_math_max(PixelValueType(1e-15), eigenVals[ii]);
     }
+
+    if (cacheIndex >= eigenValsCache.size())
+    {
+      eigenValsCache.resize(cacheIndex+1, 0);
+      eigenVecsCache.resize(cacheIndex+1, 0);
+    }
+
+    if (eigenValsCache[cacheIndex]) delete eigenValsCache[cacheIndex];
+    if (eigenVecsCache[cacheIndex]) delete eigenVecsCache[cacheIndex];
+
+    eigenValsCache[cacheIndex] = new EigenValuesArrayType(eigenVals);
+    eigenVecsCache[cacheIndex] = new EigenVectorsMatrixType(eigenVecs);
   }
 
-  temp = realG * realEigenVecs;
-  tempTransposed = temp.GetTranspose();
-  // symMatrixLogMap = temp * logEigenVals * temp.GetTranspose()
-  symMatrixTemp = (logEigenValsMatrix.PreMultiply(temp)) * tempTransposed;
+  // note that matlab code gives eigenvecs in column vectors, but the ComputeEigenAnalysis returns a row vector
+
+  // compute Y = gInv * spdMatrixB * gInv'
+  // where gInv = sqrtEigenValsInvMatrix * eigenVecs
+  // and sqrtEigenValsInvMatrix is a diagonal matrix whose entries are 1.0 / sqrt(eigenVals)
+  // g = eigenVecs.GetTranspose() * sqrtEigenValsMatrix
+  // where sqrtEigenValsMatrix is a diagonal matrix whose entries are sqrt(eigenVals)
+  //
+  // Since we are always working with DiffusionTensor3D pixels which are always 3x3,
+  //  these calculations can be optimized as follows.
+
+  RealValueType factor0;
+  RealValueType factor1;
+  RealValueType factor2;
+  factor0 = spdMatrixB[0] * eigenVecs(0,0) + spdMatrixB[1] * eigenVecs(0,1) + spdMatrixB[2] * eigenVecs(0,2);
+  factor1 = spdMatrixB[1] * eigenVecs(0,0) + spdMatrixB[3] * eigenVecs(0,1) + spdMatrixB[4] * eigenVecs(0,2);
+  factor2 = spdMatrixB[2] * eigenVecs(0,0) + spdMatrixB[4] * eigenVecs(0,1) + spdMatrixB[5] * eigenVecs(0,2);
+
+  Y[0] = ( eigenVecs(0,0) * factor0 + eigenVecs(0,1) * factor1 + eigenVecs(0,2) * factor2 ) / eigenVals[0];
+  Y[1] = ( eigenVecs(1,0) * factor0 + eigenVecs(1,1) * factor1 + eigenVecs(1,2) * factor2 ) / vcl_sqrt(eigenVals[0] * eigenVals[1]);
+  Y[2] = ( eigenVecs(2,0) * factor0 + eigenVecs(2,1) * factor1 + eigenVecs(2,2) * factor2 ) / vcl_sqrt(eigenVals[0] * eigenVals[2]);
+
+  factor0 = spdMatrixB[0] * eigenVecs(1,0) + spdMatrixB[1] * eigenVecs(1,1) + spdMatrixB[2] * eigenVecs(1,2);
+  factor1 = spdMatrixB[1] * eigenVecs(1,0) + spdMatrixB[3] * eigenVecs(1,1) + spdMatrixB[4] * eigenVecs(1,2);
+  factor2 = spdMatrixB[2] * eigenVecs(1,0) + spdMatrixB[4] * eigenVecs(1,1) + spdMatrixB[5] * eigenVecs(1,2);
+
+  Y[3] = ( eigenVecs(1,0) * factor0 + eigenVecs(1,1) * factor1 + eigenVecs(1,2) * factor2 ) / eigenVals[1];
+  Y[4] = ( eigenVecs(2,0) * factor0 + eigenVecs(2,1) * factor1 + eigenVecs(2,2) * factor2 ) / vcl_sqrt(eigenVals[1] * eigenVals[2]);
+
+  factor0 = spdMatrixB[0] * eigenVecs(2,0) + spdMatrixB[1] * eigenVecs(2,1) + spdMatrixB[2] * eigenVecs(2,2);
+  factor1 = spdMatrixB[1] * eigenVecs(2,0) + spdMatrixB[3] * eigenVecs(2,1) + spdMatrixB[4] * eigenVecs(2,2);
+  factor2 = spdMatrixB[2] * eigenVecs(2,0) + spdMatrixB[4] * eigenVecs(2,1) + spdMatrixB[5] * eigenVecs(2,2);
+
+  Y[5] = ( eigenVecs(2,0) * factor0 + eigenVecs(2,1) * factor1 + eigenVecs(2,2) * factor2 ) / eigenVals[2];
+
+  Y.ComputeEigenAnalysis(YEigenVals, YEigenVecs);
+
+  // note that matlab code gives eigenvecs in column vectors, but the ComputeEigenAnalysis returns a row vector
+
+  // compute symMatrixLogMap = temp * logEigenVals * temp.GetTranspose()
+  // where logEigenVals is a diagonal matrix whose entries are log(eigenVals of Y)
+  // and temp = g * (eigenVecs of Y).GetTranspose()
+  // geodesic distance = weight^2 * logSquaredEigenValsMatrix.GetTrace()
+  // where logSquaredEigenValsMatrix is a Diagonal matrix whose values = (log(eigenVals of Y)) ^ 2
+  //
+  // Since we are always working with DiffusionTensor3D pixels which are always 3x3,
+  //  these calculations can be optimized as follows.
   for (unsigned int ii = 0; ii < 3; ++ii)
   {
-    symMatrixLogMap(ii,0) = symMatrixTemp[ii][0];
-    symMatrixLogMap(ii,1) = symMatrixTemp[ii][1];
-    symMatrixLogMap(ii,2) = symMatrixTemp[ii][2];
+    YEigenVals[ii] = vcl_log(vnl_math_max(RealValueType(1e-15),YEigenVals[ii]));
   }
+  const RealValueType eigVal0 = vcl_sqrt(eigenVals[0]);
+  const RealValueType eigVal1 = vcl_sqrt(eigenVals[1]);
+  const RealValueType eigVal2 = vcl_sqrt(eigenVals[2]);
+  const RealValueType YEigVal0 = YEigenVals[0];
+  const RealValueType YEigVal1 = YEigenVals[1];
+  const RealValueType YEigVal2 = YEigenVals[2];
+
+  const RealValueType temp00 = eigenVecs(0,0) * YEigenVecs(0,0) * eigVal0 +
+                               eigenVecs(1,0) * YEigenVecs(0,1) * eigVal1 +
+                               eigenVecs(2,0) * YEigenVecs(0,2) * eigVal2;
+  const RealValueType temp01 = eigenVecs(0,0) * YEigenVecs(1,0) * eigVal0 +
+                               eigenVecs(1,0) * YEigenVecs(1,1) * eigVal1 +
+                               eigenVecs(2,0) * YEigenVecs(1,2) * eigVal2;
+  const RealValueType temp02 = eigenVecs(0,0) * YEigenVecs(2,0) * eigVal0 +
+                               eigenVecs(1,0) * YEigenVecs(2,1) * eigVal1 +
+                               eigenVecs(2,0) * YEigenVecs(2,2) * eigVal2;
+
+  const RealValueType temp10 = eigenVecs(0,1) * YEigenVecs(0,0) * eigVal0 +
+                               eigenVecs(1,1) * YEigenVecs(0,1) * eigVal1 +
+                               eigenVecs(2,1) * YEigenVecs(0,2) * eigVal2;
+  const RealValueType temp11 = eigenVecs(0,1) * YEigenVecs(1,0) * eigVal0 +
+                               eigenVecs(1,1) * YEigenVecs(1,1) * eigVal1 +
+                               eigenVecs(2,1) * YEigenVecs(1,2) * eigVal2;
+  const RealValueType temp12 = eigenVecs(0,1) * YEigenVecs(2,0) * eigVal0 +
+                               eigenVecs(1,1) * YEigenVecs(2,1) * eigVal1 +
+                               eigenVecs(2,1) * YEigenVecs(2,2) * eigVal2;
+
+  const RealValueType temp20 = eigenVecs(0,2) * YEigenVecs(0,0) * eigVal0 +
+                               eigenVecs(1,2) * YEigenVecs(0,1) * eigVal1 +
+                               eigenVecs(2,2) * YEigenVecs(0,2) * eigVal2;
+  const RealValueType temp21 = eigenVecs(0,2) * YEigenVecs(1,0) * eigVal0 +
+                               eigenVecs(1,2) * YEigenVecs(1,1) * eigVal1 +
+                               eigenVecs(2,2) * YEigenVecs(1,2) * eigVal2;
+  const RealValueType temp22 = eigenVecs(0,2) * YEigenVecs(2,0) * eigVal0 +
+                               eigenVecs(1,2) * YEigenVecs(2,1) * eigVal1 +
+                               eigenVecs(2,2) * YEigenVecs(2,2) * eigVal2;
+  symMatrixLogMap[0] = YEigVal0 * temp00 * temp00 + YEigVal1 * temp01 * temp01 + YEigVal2 * temp02 * temp02;
+  symMatrixLogMap[1] = YEigVal0 * temp00 * temp10 + YEigVal1 * temp01 * temp11 + YEigVal2 * temp02 * temp12;
+  symMatrixLogMap[2] = YEigVal0 * temp00 * temp20 + YEigVal1 * temp01 * temp21 + YEigVal2 * temp02 * temp22;
+
+  symMatrixLogMap[3] = YEigVal0 * temp10 * temp10 + YEigVal1 * temp11 * temp11 + YEigVal2 * temp12 * temp12;
+  symMatrixLogMap[4] = YEigVal0 * temp10 * temp20 + YEigVal1 * temp11 * temp21 + YEigVal2 * temp12 * temp22;
+
+  symMatrixLogMap[5] = YEigVal0 * temp20 * temp20 + YEigVal1 * temp21 * temp21 + YEigVal2 * temp22 * temp22;
 
   RealValueType wt = weight[0];
-  geodesicDist[0] = wt * wt * (logSquaredEigenValsMatrix.GetTrace());
+  geodesicDist[0] = wt * wt * (YEigVal0 * YEigVal0 + YEigVal1 * YEigVal1 + YEigVal2 * YEigVal2);
+
+
 }
 
 template <class TInputImage, class TOutputImage>
@@ -978,67 +1078,113 @@ PatchBasedDenoisingImageFilter<TInputImage, TOutputImage>
   typedef typename RealType::EigenValuesArrayType   RealEigenValuesArrayType;
   typedef typename RealType::EigenVectorsMatrixType RealEigenVectorsMatrixType;
   typedef typename RealType::MatrixType             RealMatrixType;
-
-  RealEigenValuesArrayType eigenVals;
-  RealEigenVectorsMatrixType eigenVecs;
-  RealMatrixType eigenValsMatrix;
-  RealMatrixType eigenValsInvMatrix;
-  RealMatrixType g;
-  RealMatrixType gInv;
-  RealMatrixType gInvTransposed;
-  RealMatrixType YMat;
+  RealEigenValuesArrayType    eigenVals;
+  RealEigenVectorsMatrixType  eigenVecs;
+  RealEigenValuesArrayType    YEigenVals;
+  RealEigenVectorsMatrixType  YEigenVecs;
   RealType Y;
-  RealMatrixType realG;
-  RealType expEigenValsMatrix;
-  RealMatrixType temp;
-  RealMatrixType tempTransposed;
   RealType expMap;
-  RealMatrixType expMapMat;
 
   spdMatrix.ComputeEigenAnalysis(eigenVals, eigenVecs);
-  // transposing since the matlab code used column vectors, but the ComputeEigenAnalysis returns a row vector
-  eigenVecs = eigenVecs.GetTranspose();
-  eigenValsMatrix.Fill(0);
-  eigenValsInvMatrix.Fill(0);
-  for (unsigned int ii = 0; ii < 3; ++ii)
-  {
-    RealValueType val = vcl_sqrt(vnl_math_max(RealValueType(1e-15), eigenVals[ii]));
-    eigenValsMatrix[ii][ii] = val;
-    eigenValsInvMatrix[ii][ii] = 1.0 / val;
-  }
-  g = eigenVecs * eigenValsMatrix;
-  gInv = eigenValsInvMatrix * eigenVecs.GetTranspose();
-  gInvTransposed = gInv.GetTranspose();
-  // Y = gInv * symMatrix * gInv.GetTranspose()
-  YMat = (symMatrix.PreMultiply(gInv)) * gInvTransposed;
-  for (unsigned int ii = 0; ii < 3; ++ii)
-  {
-    Y(ii,0) = YMat[ii][0];
-    Y(ii,1) = YMat[ii][1];
-    Y(ii,2) = YMat[ii][2];
-  }
 
-  Y.ComputeEigenAnalysis(eigenVals, eigenVecs);
-  // transposing since the matlab code used column vectors, but the ComputeEigenAnalysis returns a row vector
-  eigenVecs = eigenVecs.GetTranspose();
-
-  // create an eigen val diagonal matrix consisting of e^eigenVals
-  expEigenValsMatrix.Fill(0);
   for (unsigned int ii = 0; ii < 3; ++ii)
   {
-    expEigenValsMatrix(ii,ii) = vcl_exp(eigenVals[ii]);
+    eigenVals[ii] = vnl_math_max(RealValueType(1e-15), eigenVals[ii]);
   }
+  // note that matlab code gives eigenvecs in column vectors, but the ComputeEigenAnalysis returns a row vector
 
-  temp = g * eigenVecs;
-  tempTransposed = temp.GetTranspose();
-  // expMap = temp * expEigenVals * temp.GetTranspose()
-  expMapMat = (expEigenValsMatrix.PreMultiply(temp)) * tempTransposed;
+  // compute Y = gInv * symMatrix * gInv'
+  // where gInv = sqrtEigenValsInvMatrix * eigenVecs
+  // and sqrtEigenValsInvMatrix is a diagonal matrix whose entries are 1.0 / sqrt(eigenVals)
+  // g = eigenVecs.GetTranspose() * sqrtEigenValsMatrix
+  // where sqrtEigenValsMatrix is a diagonal matrix whose entries are sqrt(eigenVals)
+  //
+  // Since we are always working with DiffusionTensor3D pixels which are always 3x3,
+  //  these calculations can be optimized as follows.
+  RealValueType factor0;
+  RealValueType factor1;
+  RealValueType factor2;
+
+  factor0 = symMatrix[0] * eigenVecs(0,0) + symMatrix[1] * eigenVecs(0,1) + symMatrix[2] * eigenVecs(0,2);
+  factor1 = symMatrix[1] * eigenVecs(0,0) + symMatrix[3] * eigenVecs(0,1) + symMatrix[4] * eigenVecs(0,2);
+  factor2 = symMatrix[2] * eigenVecs(0,0) + symMatrix[4] * eigenVecs(0,1) + symMatrix[5] * eigenVecs(0,2);
+
+  Y[0] = ( eigenVecs(0,0) * factor0 + eigenVecs(0,1) * factor1 + eigenVecs(0,2) * factor2 ) / eigenVals[0];
+  Y[1] = ( eigenVecs(1,0) * factor0 + eigenVecs(1,1) * factor1 + eigenVecs(1,2) * factor2 ) / vcl_sqrt(eigenVals[0] * eigenVals[1]);
+  Y[2] = ( eigenVecs(2,0) * factor0 + eigenVecs(2,1) * factor1 + eigenVecs(2,2) * factor2 ) / vcl_sqrt(eigenVals[0] * eigenVals[2]);
+
+  factor0 = symMatrix[0] * eigenVecs(1,0) + symMatrix[1] * eigenVecs(1,1) + symMatrix[2] * eigenVecs(1,2);
+  factor1 = symMatrix[1] * eigenVecs(1,0) + symMatrix[3] * eigenVecs(1,1) + symMatrix[4] * eigenVecs(1,2);
+  factor2 = symMatrix[2] * eigenVecs(1,0) + symMatrix[4] * eigenVecs(1,1) + symMatrix[5] * eigenVecs(1,2);
+
+  Y[3] = ( eigenVecs(1,0) * factor0 + eigenVecs(1,1) * factor1 + eigenVecs(1,2) * factor2 ) / eigenVals[1];
+  Y[4] = ( eigenVecs(2,0) * factor0 + eigenVecs(2,1) * factor1 + eigenVecs(2,2) * factor2 ) / vcl_sqrt(eigenVals[1] * eigenVals[2]);
+
+  factor0 = symMatrix[0] * eigenVecs(2,0) + symMatrix[1] * eigenVecs(2,1) + symMatrix[2] * eigenVecs(2,2);
+  factor1 = symMatrix[1] * eigenVecs(2,0) + symMatrix[3] * eigenVecs(2,1) + symMatrix[4] * eigenVecs(2,2);
+  factor2 = symMatrix[2] * eigenVecs(2,0) + symMatrix[4] * eigenVecs(2,1) + symMatrix[5] * eigenVecs(2,2);
+
+  Y[5] = ( eigenVecs(2,0) * factor0 + eigenVecs(2,1) * factor1 + eigenVecs(2,2) * factor2 ) / eigenVals[2];
+
+  // note that matlab code gives eigenvecs in column vectors, but the ComputeEigenAnalysis returns a row vector
+
+  // compute expMap = temp * expEigenVals * temp.GetTranspose()
+  // where expEigenVals is a diagonal matrix whose entries are exp(eigenVals of Y)
+  // and temp = g * (eigenVecs of Y).GetTranspose()
+  //
+  // Since we are always working with DiffusionTensor3D pixels which are always 3x3,
+  //  these calculations can be optimized as follows.
+
+  Y.ComputeEigenAnalysis(YEigenVals, YEigenVecs);
+
   for (unsigned int ii = 0; ii < 3; ++ii)
   {
-    expMap(ii,0) = expMapMat[ii][0];
-    expMap(ii,1) = expMapMat[ii][1];
-    expMap(ii,2) = expMapMat[ii][2];
+    YEigenVals[ii] = vcl_exp(YEigenVals[ii]);
   }
+  const RealValueType eigVal0 = vcl_sqrt(eigenVals[0]);
+  const RealValueType eigVal1 = vcl_sqrt(eigenVals[1]);
+  const RealValueType eigVal2 = vcl_sqrt(eigenVals[2]);
+  const RealValueType YEigVal0 = YEigenVals[0];
+  const RealValueType YEigVal1 = YEigenVals[1];
+  const RealValueType YEigVal2 = YEigenVals[2];
+
+  const RealValueType temp00 = eigenVecs(0,0) * YEigenVecs(0,0) * eigVal0 +
+                               eigenVecs(1,0) * YEigenVecs(0,1) * eigVal1 +
+                               eigenVecs(2,0) * YEigenVecs(0,2) * eigVal2;
+  const RealValueType temp01 = eigenVecs(0,0) * YEigenVecs(1,0) * eigVal0 +
+                               eigenVecs(1,0) * YEigenVecs(1,1) * eigVal1 +
+                               eigenVecs(2,0) * YEigenVecs(1,2) * eigVal2;
+  const RealValueType temp02 = eigenVecs(0,0) * YEigenVecs(2,0) * eigVal0 +
+                               eigenVecs(1,0) * YEigenVecs(2,1) * eigVal1 +
+                               eigenVecs(2,0) * YEigenVecs(2,2) * eigVal2;
+
+  const RealValueType temp10 = eigenVecs(0,1) * YEigenVecs(0,0) * eigVal0 +
+                               eigenVecs(1,1) * YEigenVecs(0,1) * eigVal1 +
+                               eigenVecs(2,1) * YEigenVecs(0,2) * eigVal2;
+  const RealValueType temp11 = eigenVecs(0,1) * YEigenVecs(1,0) * eigVal0 +
+                               eigenVecs(1,1) * YEigenVecs(1,1) * eigVal1 +
+                               eigenVecs(2,1) * YEigenVecs(1,2) * eigVal2;
+  const RealValueType temp12 = eigenVecs(0,1) * YEigenVecs(2,0) * eigVal0 +
+                               eigenVecs(1,1) * YEigenVecs(2,1) * eigVal1 +
+                               eigenVecs(2,1) * YEigenVecs(2,2) * eigVal2;
+
+  const RealValueType temp20 = eigenVecs(0,2) * YEigenVecs(0,0) * eigVal0 +
+                               eigenVecs(1,2) * YEigenVecs(0,1) * eigVal1 +
+                               eigenVecs(2,2) * YEigenVecs(0,2) * eigVal2;
+  const RealValueType temp21 = eigenVecs(0,2) * YEigenVecs(1,0) * eigVal0 +
+                               eigenVecs(1,2) * YEigenVecs(1,1) * eigVal1 +
+                               eigenVecs(2,2) * YEigenVecs(1,2) * eigVal2;
+  const RealValueType temp22 = eigenVecs(0,2) * YEigenVecs(2,0) * eigVal0 +
+                               eigenVecs(1,2) * YEigenVecs(2,1) * eigVal1 +
+                               eigenVecs(2,2) * YEigenVecs(2,2) * eigVal2;
+  expMap[0] = YEigVal0 * temp00 * temp00 + YEigVal1 * temp01 * temp01 + YEigVal2 * temp02 * temp02;
+  expMap[1] = YEigVal0 * temp00 * temp10 + YEigVal1 * temp01 * temp11 + YEigVal2 * temp02 * temp12;
+  expMap[2] = YEigVal0 * temp00 * temp20 + YEigVal1 * temp01 * temp21 + YEigVal2 * temp02 * temp22;
+
+  expMap[3] = YEigVal0 * temp10 * temp10 + YEigVal1 * temp11 * temp11 + YEigVal2 * temp12 * temp12;
+  expMap[4] = YEigVal0 * temp10 * temp20 + YEigVal1 * temp11 * temp21 + YEigVal2 * temp12 * temp22;
+
+  expMap[5] = YEigVal0 * temp20 * temp20 + YEigVal1 * temp21 * temp21 + YEigVal2 * temp22 * temp22;
 
   return expMap;
 }
@@ -1441,6 +1587,7 @@ PatchBasedDenoisingImageFilter<TInputImage, TOutputImage>
     RealArrayType tmpNorm1(m_NumIndependentComponents);
     RealArrayType tmpNorm2(m_NumIndependentComponents);
 
+    bool useCachedComputations = false;
     for (typename BaseSamplerType::SubsampleConstIterator selectedIt = selectedPatches->Begin();
          selectedIt != selectedPatches->End();
          ++selectedIt)
@@ -1464,10 +1611,16 @@ PatchBasedDenoisingImageFilter<TInputImage, TOutputImage>
         ComputeDifferenceAndWeightedSquaredNorm(currentPatchVec[jj],
                                                 selectedPatch.GetPixel(jj),
                                                 m_IntensityRescaleInvFactor,
+                                                useCachedComputations, jj,
+                                                threadData.eigenValsCache,
+                                                threadData.eigenVecsCache,
                                                 diff1, tmpNorm1);
         ComputeDifferenceAndWeightedSquaredNorm(currentPatchVec[kk],
                                                 selectedPatch.GetPixel(kk),
                                                 m_IntensityRescaleInvFactor,
+                                                useCachedComputations, kk,
+                                                threadData.eigenValsCache,
+                                                threadData.eigenVecsCache,
                                                 diff2, tmpNorm2);
         for (unsigned int ic = 0; ic < m_NumIndependentComponents; ++ic)
         {
@@ -1480,7 +1633,11 @@ PatchBasedDenoisingImageFilter<TInputImage, TOutputImage>
       ComputeDifferenceAndWeightedSquaredNorm(currentPatchVec[center],
                                               selectedPatch.GetPixel(center),
                                               m_IntensityRescaleInvFactor,
+                                              useCachedComputations, center,
+                                              threadData.eigenValsCache,
+                                              threadData.eigenVecsCache,
                                               centerPatchDifference, centerPatchSquaredNorm);
+      useCachedComputations = true;
 
       for (unsigned int ic = 0; ic < m_NumIndependentComponents; ++ic)
       {
@@ -1824,7 +1981,8 @@ PatchBasedDenoisingImageFilter<TInputImage, TOutputImage>
       {
         // get intensity update driven by patch-based denoiser
         const RealType gradientJointEntropy
-          = this->ComputeGradientJointEntropy(sampleIt.GetInstanceIdentifier(), inList, sampler);
+          = this->ComputeGradientJointEntropy(sampleIt.GetInstanceIdentifier(), inList, sampler,
+                                              threadData);
 
         const RealValueType stepSizeSmoothing = 0.2;
         result = AddUpdate(result,  gradientJointEntropy * (smoothingWeight * stepSizeSmoothing));
@@ -1925,7 +2083,8 @@ typename PatchBasedDenoisingImageFilter<TInputImage, TOutputImage>::RealType
 PatchBasedDenoisingImageFilter<TInputImage, TOutputImage>
 ::ComputeGradientJointEntropy(InstanceIdentifier id,
                               typename ListAdaptorType::Pointer& inList,
-                              BaseSamplerPointer& sampler)
+                              BaseSamplerPointer& sampler,
+                              ThreadDataStruct& threadData)
 {
   typedef typename OutputImageType::IndexType IndexType;
 
@@ -2006,6 +2165,8 @@ PatchBasedDenoisingImageFilter<TInputImage, TOutputImage>
   RealArrayType tmpNorm1(m_NumIndependentComponents);
   RealArrayType tmpNorm2(m_NumIndependentComponents);
 
+  bool useCachedComputations = false;
+
   for (typename BaseSamplerType::SubsampleConstIterator selectedIt = selectedPatches->Begin();
        selectedIt != selectedPatches->End();
        ++selectedIt)
@@ -2032,10 +2193,18 @@ PatchBasedDenoisingImageFilter<TInputImage, TOutputImage>
         RealType diff2;
         ComputeDifferenceAndWeightedSquaredNorm(currentPatchVec[jj],
                                                 selectedPatch.GetPixel(jj),
-                                                patchWeightVec[jj], diff1, tmpNorm1);
+                                                patchWeightVec[jj],
+                                                useCachedComputations, jj,
+                                                threadData.eigenValsCache,
+                                                threadData.eigenVecsCache,
+                                                diff1, tmpNorm1);
         ComputeDifferenceAndWeightedSquaredNorm(currentPatchVec[kk],
                                                 selectedPatch.GetPixel(kk),
-                                                patchWeightVec[kk], diff2, tmpNorm2);
+                                                patchWeightVec[kk],
+                                                useCachedComputations, kk,
+                                                threadData.eigenValsCache,
+                                                threadData.eigenVecsCache,
+                                                diff2, tmpNorm2);
 
         for (unsigned int ic = 0; ic < m_NumIndependentComponents; ++ic)
         {
@@ -2047,6 +2216,10 @@ PatchBasedDenoisingImageFilter<TInputImage, TOutputImage>
       ComputeDifferenceAndWeightedSquaredNorm(currentPatchVec[center],
                                               selectedPatch.GetPixel(center),
                                               patchWeightVec[center],
+                                              useCachedComputations,
+                                              center,
+                                              threadData.eigenValsCache,
+                                              threadData.eigenVecsCache,
                                               centerPatchDifference,
                                               centerPatchSquaredNorm);
       for (unsigned int ic = 0; ic < m_NumIndependentComponents; ++ic)
@@ -2066,7 +2239,11 @@ PatchBasedDenoisingImageFilter<TInputImage, TOutputImage>
           RealType diff;
           ComputeDifferenceAndWeightedSquaredNorm(currentPatchVec[jj],
                                                   selectedPatch.GetPixel(jj),
-                                                  patchWeightVec[jj], diff, tmpNorm1);
+                                                  patchWeightVec[jj],
+                                                  useCachedComputations, jj,
+                                                  threadData.eigenValsCache,
+                                                  threadData.eigenVecsCache,
+                                                  diff, tmpNorm1);
           for (unsigned int ic = 0; ic < m_NumIndependentComponents; ++ic)
           {
             squaredNorm[ic] += tmpNorm1[ic];
@@ -2077,7 +2254,11 @@ PatchBasedDenoisingImageFilter<TInputImage, TOutputImage>
           RealType diff;
           ComputeDifferenceAndWeightedSquaredNorm(currentPatchVec[kk],
                                                   selectedPatch.GetPixel(kk),
-                                                  patchWeightVec[kk], diff, tmpNorm1);
+                                                  patchWeightVec[kk],
+                                                  useCachedComputations, kk,
+                                                  threadData.eigenValsCache,
+                                                  threadData.eigenVecsCache,
+                                                  diff, tmpNorm1);
           for (unsigned int ic = 0; ic < m_NumIndependentComponents; ++ic)
           {
             squaredNorm[ic] += tmpNorm1[ic];
@@ -2089,12 +2270,17 @@ PatchBasedDenoisingImageFilter<TInputImage, TOutputImage>
       ComputeDifferenceAndWeightedSquaredNorm(currentPatchVec[center],
                                               selectedPatch.GetPixel(center),
                                               patchWeightVec[center],
+                                              useCachedComputations, center,
+                                              threadData.eigenValsCache,
+                                              threadData.eigenVecsCache,
                                               centerPatchDifference, centerPatchSquaredNorm);
       for (unsigned int ic = 0; ic < m_NumIndependentComponents; ++ic)
       {
         squaredNorm[ic] += centerPatchSquaredNorm[ic];
       }
     } // end if entire patch is inbounds
+
+    useCachedComputations = true;
 
     RealValueType gaussianJointEntropy = NumericTraits<RealValueType>::Zero;
     for (unsigned int ic = 0; ic < m_NumIndependentComponents; ++ic)
