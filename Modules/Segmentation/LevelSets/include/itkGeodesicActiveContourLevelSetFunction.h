@@ -24,7 +24,8 @@ namespace itk
 {
 /** \class GeodesicActiveContourLevelSetFunction
  *
- * \brief This function is used in GeodesicActiveContourLevelSetImageFilter to
+ * \brief This function is used in GeodesicActiveContourLevelSetImageFilter tooo
+oo
  * segment structures in an image based on a user supplied edge potential map.
  *
  * \par IMPORTANT
