@@ -25,7 +25,7 @@ namespace itk
 namespace Functor
 {
 
-/** \class GPU functor base class
+/** \class GPUFunctorBase
  *
  * \brief Base functor class for GPU functor image filters.
  *

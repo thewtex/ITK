@@ -17,7 +17,7 @@
 *=========================================================================*/
 
 /**
- * \class GPUImage Data Management
+ * \class GPUImageDataManager
  *
  * DataManager for GPUImage. This class will take care of data synchronization
  * between CPU Image and GPU Image.
