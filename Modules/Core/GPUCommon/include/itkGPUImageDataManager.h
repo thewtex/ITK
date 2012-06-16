@@ -16,15 +16,6 @@
 *
 *=========================================================================*/
 
-/**
- * \class GPUImage Data Management
- *
- * DataManager for GPUImage. This class will take care of data synchronization
- * between CPU Image and GPU Image.
- *
- * \ingroup ITKGPUCommon
- */
-
 #ifndef __itkGPUImageDataManager_h
 #define __itkGPUImageDataManager_h
 
@@ -41,6 +32,14 @@ namespace itk
 {
 template < class TPixel, unsigned int NDimension > class GPUImage;
 
+/**
+ * \class GPUImageDataManager
+ *
+ * DataManager for GPUImage. This class will take care of data synchronization
+ * between CPU Image and GPU Image.
+ *
+ * \ingroup ITKGPUCommon
+ */
 template < class ImageType >
 class ITK_EXPORT GPUImageDataManager : public GPUDataManager
 {
