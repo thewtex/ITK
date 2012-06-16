@@ -169,6 +169,7 @@ public:
   /**
    * The following function finds a child or sibling or relative using a query string or path.
    * A path or QueryString consists of multiple following items that are separated by '/':
+   * \verbatim
    *     -[n]           : an older sibling by distance 1 (when omitted) or n;
    *     +[n]           : a younger sibling by distance 1 (when omitted) or n;
    *     n              : a child at index n;
@@ -178,6 +179,7 @@ public:
    *     .              : current node;
    *     ..             : parent node;
    *     /<rpath>       : absolute path (denote apath), search from the root.
+   * \endverbatim
    *
    * The method returns NULL if queried node does not exist.
    */
