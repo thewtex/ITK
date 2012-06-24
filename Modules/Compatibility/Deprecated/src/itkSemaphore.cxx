@@ -47,7 +47,9 @@ std::string Semaphore::GetUniqueName()
 
 #endif
 
-Semaphore::Semaphore ()
+Semaphore::Semaphore ():
+  m_Pad1("THIS_IS_EMPTY_SPACE_TO_AVOID_FALSE_SHARING_AND_THRASHING"),
+  m_Pad2("THIS_IS_EMPTY_SPACE_TO_AVOID_FALSE_SHARING_AND_THRASHING")
 {
 #ifdef ITK_USE_UNIX_IPC_SEMAPHORES
   m_Sema = -1;
