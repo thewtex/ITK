@@ -1,6 +1,11 @@
 set(DOCUMENTATION "This is a collection of classes that are intended to be
 removed from the toolkit.")
 
+if(NOT ITK_LEGACY_REMOVE)
+  set(EXCLUDE_IT "EXCLUDE_FROM_ALL")
+else()
+  set(EXCLUDE_IT "")
+endif()
 itk_module(ITKDeprecated
   DEPENDS
     ITKAnisotropicSmoothing
@@ -81,6 +86,7 @@ itk_module(ITKDeprecated
     ITKWatersheds
   TEST_DEPENDS
     ITKTestKernel
+  ${EXCLUDE_IT}
   DESCRIPTION
     "${DOCUMENTATION}"
 )
