@@ -270,7 +270,7 @@ ScalarImageToRunLengthMatrixFilter<TImageType, THistogramFrequencyContainer>
         {
         output->IncreaseFrequencyOfMeasurement( run, 1 );
 
-        itkDebugStatement(typename THistogramFrequencyContainer::IndexType tempMeasurementIndex;)
+        itkDebugStatement(typename HistorgramType::IndexType tempMeasurementIndex;)
         itkDebugStatement(output->GetIndex(run,tempMeasurementIndex);)
         itkDebugMacro( "centerIndex<->index: "
             << static_cast<int>( centerPixelIntensity )
