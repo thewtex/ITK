@@ -1,6 +1,13 @@
 set(DOCUMENTATION "This is a collection of classes that are intended to be
 removed from the toolkit.")
 
+if(NOT ITK_LEGACY_REMOVE AND ITKV3_COMPATIBILITY)
+  # If ITK_LEGACY_REMOVE:BOOL=ON AND ITKV3_COMPATIBILITY:BOOL=OFF
+  # then exclude the deprecated code from being built.
+  set(EXCLUDE_DEPRECATED_LEGACY_CODE "EXCLUDE_FROM_ALL")
+else()
+  set(EXCLUDE_DEPRECATED_LEGACY_CODE "")
+endif()
 itk_module(ITKDeprecated
   DEPENDS
     ITKAnisotropicSmoothing
@@ -81,6 +88,7 @@ itk_module(ITKDeprecated
     ITKWatersheds
   TEST_DEPENDS
     ITKTestKernel
+    ${EXCLUDE_DEPRECATED_LEGACY_CODE}
   DESCRIPTION
     "${DOCUMENTATION}"
 )
