@@ -116,7 +116,7 @@ template< class TImage, class TMask, class TFeatures >
 void
 MaskFeaturePointSelectionFilter< TImage, TMask, TFeatures >
 ::GenerateData()
-{
+ {
   // generate non-connectivity offsets
   this->ComputeConnectivityOffsets();
 
@@ -151,27 +151,27 @@ MaskFeaturePointSelectionFilter< TImage, TMask, TFeatures >
   const TMask * mask = this->GetMaskImage();
 
   if ( mask == NULL )
-    {
+  {
     // create all 1s selectionMap
     selectionMap->FillBuffer( NumericTraits< MapPixelType >::One );
-    }
+  }
   else
-    {
+  {
     // copy mask into selectionMap
     ImageRegionConstIterator< MaskType > maskItr( mask, region );
     ImageRegionIterator< SelectionMapType > mapItr( selectionMap, region );
     for ( maskItr.GoToBegin(), mapItr.GoToBegin(); !maskItr.IsAtEnd(); ++maskItr, ++mapItr )
-      {
+    {
       mapItr.Set( static_cast< MapPixelType >( maskItr.Get() ) );
-      }
     }
+  }
 
   // set safe region for picking feature points depending on whether tensors are computed
   IndexType safeIndex = region.GetIndex();
   SizeType safeSize = region.GetSize();
 
   if ( m_ComputeStructureTensors )
-    {
+  {
     // tensor calculations access points in 2 X m_BlockRadius + 1 radius
     SizeType onesSize;
     onesSize.Fill( 1 );
@@ -179,13 +179,13 @@ MaskFeaturePointSelectionFilter< TImage, TMask, TFeatures >
     const SizeType blockSize =  m_BlockRadius + m_BlockRadius + onesSize;
     safeIndex += blockSize;
     safeSize -= blockSize + blockSize;
-    }
+  }
   else
-    {
+  {
     // variance calculations access points in m_BlockRadius radius
     safeIndex += m_BlockRadius;
     safeSize -= m_BlockRadius + m_BlockRadius;
-    }
+  }
 
   region.SetIndex( safeIndex );
   region.SetSize( safeSize );
@@ -200,54 +200,75 @@ MaskFeaturePointSelectionFilter< TImage, TMask, TFeatures >
   typedef std::multimap< double, IndexType > MultiMapType;
   MultiMapType pointMap;
 
+  IndexType index;
+  PointType point;
+
   // compute variance for eligible points
   for ( imageItr.GoToBegin(), mapItr.GoToBegin(); !imageItr.IsAtEnd(); ++imageItr, ++mapItr )
-    {
+  {
     if ( mapItr.Get() )
+    {
+      //std::cout << "image index : " << imageItr.GetIndex() << std::endl;
+      image->TransformIndexToPhysicalPoint( imageItr.GetIndex(), point);
+      if(image->TransformPhysicalPointToIndex(point, index) == false)
       {
+        itkExceptionMacro("A feauture point lies outside the image.");
+      }
+
       CompensatedSummation< double > sum;
       CompensatedSummation< double > sumOfSquares;
       for ( NeighborSizeType i = 0; i < numPixelsInNeighborhood; i++ )
-        {
+      {
         const ImagePixelType pixel = imageItr.GetPixel( i );
         sum += pixel;
         sumOfSquares += pixel * pixel;
-        }
+      }
 
       const double mean = sum.GetSum() / numPixelsInNeighborhood;
       const double squaredMean = mean * mean;
       const double meanOfSquares = sumOfSquares.GetSum() / numPixelsInNeighborhood;
 
       const double variance = meanOfSquares - squaredMean;
-
       typedef typename MultiMapType::value_type PairType;
 
-      pointMap.insert( PairType( variance, imageItr.GetIndex() ) );
-      }
+      // we only insert blocks to the point Map with variance > 0
+      if(itk::NumericTraits<double>::IsPositive(variance))
+        pointMap.insert( PairType( variance, imageItr.GetIndex() ) );
     }
+  }
 
   // number of points to select
-  SizeValueType pointsLeft = Math::Floor<SizeValueType>( 0.5 + pointMap.size() * m_SelectFraction );
+  IndexValueType NumPointsInserted = -1; // initialize to -1
+  IndexValueType maxNumPointsToInserted = Math::Floor<SizeValueType>( 0.5 + pointMap.size() * m_SelectFraction );
+  if(maxNumPointsToInserted <= 0)
+    itkExceptionMacro("Invalid number of selected feature points!");
 
-  // pick points with highest variance first
+  const double TRACE_EPSILON = 1e-8;
+
+  // pick points with highest variance first (inverse iteration)
   typedef typename MultiMapType::reverse_iterator MapReverseIterator;
   MapReverseIterator rit = pointMap.rbegin();
-  while ( rit != pointMap.rend() && pointsLeft )
-    {
+  while ( rit != pointMap.rend() && NumPointsInserted < maxNumPointsToInserted)
+  {
     // if point is not marked off in selection map and there are still points to be picked
     const IndexType & indexOfPointToPick = rit->second;
-    if ( selectionMap->GetPixel( indexOfPointToPick ) )
-      {
-      pointsLeft--;
 
-      // add point to points container
-      PointType point;
-      image->TransformIndexToPhysicalPoint( indexOfPointToPick, point );
-      points->InsertElement( pointsLeft, point );
+    // index should be inside the mask image (GetPixel = 1)
+    if ( selectionMap->GetPixel( indexOfPointToPick ) )
+    {
+      NumPointsInserted++;
+
+      image->TransformIndexToPhysicalPoint( indexOfPointToPick,point);
+      if ( image->TransformPhysicalPointToIndex(point,index) == false)
+      {
+        itkExceptionMacro("A Feature Point lies outside the image!");
+      }
+      // add the point to the container
+      points->InsertElement( NumPointsInserted, point );
 
       // compute and add structure tensor into pointData
       if ( m_ComputeStructureTensors )
-        {
+      {
         StructureTensorType product;
         StructureTensorType tensor;
         tensor.Fill( 0 );
@@ -265,12 +286,14 @@ MaskFeaturePointSelectionFilter< TImage, TMask, TFeatures >
         ConstNeighborhoodIterator< ImageType > gradientItr( neighborRadiusForTensor, image, center );
 
         gradientItr.GoToBegin();
+
         // iterate over voxels in the neighbourhood
         for ( SizeValueType i = 0; i < gradientItr.Size(); i++ )
-          {
+        {
           OffsetType off = gradientItr.GetOffset( i );
+
           for ( unsigned j = 0; j < ImageDimension; j++ )
-            {
+          {
             OffsetType left = off;
             left[ j ] -= 1;
 
@@ -283,29 +306,37 @@ MaskFeaturePointSelectionFilter< TImage, TMask, TFeatures >
 
             // using image GetPixel instead of iterator GetPixel since offsets might be outside of neighbourhood
             gradI( j, 0 ) = ( leftPixelValue - rightPixelValue ) / doubleSpacing;
-            }
+          }
 
           // Compute tensor product of gradI with itself
           product = gradI * gradI.GetTranspose();
           tensor += product;
-          }
-
-        tensor /= vnl_trace( tensor.GetVnlMatrix() );
-
-        pointData->InsertElement( pointsLeft, tensor );
         }
+
+        double trace = vnl_trace( tensor.GetVnlMatrix() );
+
+        // trace should be non-zero
+        if(std::fabs(trace) < TRACE_EPSILON)
+        {
+          itkExceptionMacro("trace of tensor equals zero!");
+        }
+
+        tensor /= trace;
+        pointData->InsertElement( NumPointsInserted , tensor );
+
+      } // end of compute structure tensor
 
       // mark off connected points
       const MapPixelType ineligeblePointCode = 0;
       for ( SizeValueType j = 0, n = m_NonConnectivityOffsets.size(); j < n; j++ )
-        {
+      {
         IndexType idx = rit->second;
         idx += m_NonConnectivityOffsets[ j ];
         selectionMap->SetPixel( idx, ineligeblePointCode );
-        }
       }
-      rit++;
     }
+    rit++;
+  }
 
   // set points
   pointSet->SetPoints( points );
