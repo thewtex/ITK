@@ -130,7 +130,12 @@ VectorConfidenceConnectedImageFilter< TInputImage, TOutputImage >
   SecondFunctionType;
   typedef FloodFilledImageFunctionConditionalIterator< OutputImageType, DistanceThresholdFunctionType > IteratorType;
   typedef FloodFilledImageFunctionConditionalConstIterator< InputImageType,
-                                                            SecondFunctionType >        SecondIteratorType;
+                                         if ( m_Seeds.empty() )
+    {
+    // if there are no seeds set then the output will simply be a zero
+    // filled image.
+    return;
+    }                    SecondFunctionType >        SecondIteratorType;
 
   unsigned int loop;
 
@@ -142,6 +147,13 @@ VectorConfidenceConnectedImageFilter< TInputImage, TOutputImage >
   outputImage->SetBufferedRegion(region);
   outputImage->Allocate();
   outputImage->FillBuffer (NumericTraits< OutputImagePixelType >::Zero);
+
+  if ( m_Seeds.empty() )
+    {
+    // if there are no seeds set then the output will simply be a zero
+    // filled image.
+    return;
+    }
 
   // Compute the statistics of the seed point
   typedef VectorMeanImageFunction< InputImageType > VectorMeanImageFunctionType;
