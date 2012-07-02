@@ -132,7 +132,6 @@ MaskFeaturePointSelectionFilter< TImage, TMask, TFeatures >
 
   PointsContainerPointer points = PointsContainer::New();
 
-
   typedef typename FeaturePointsType::PointDataContainer  PointDataContainer;
   typedef typename PointDataContainer::Pointer            PointDataContainerPointer;
 
@@ -203,7 +202,7 @@ MaskFeaturePointSelectionFilter< TImage, TMask, TFeatures >
   // compute variance for eligible points
   for ( imageItr.GoToBegin(), mapItr.GoToBegin(); !imageItr.IsAtEnd(); ++imageItr, ++mapItr )
     {
-    if ( mapItr.Get() )
+    if ( mapItr.Get() && region.IsInside(imageItr.GetIndex()) )
       {
       CompensatedSummation< double > sum;
       CompensatedSummation< double > sumOfSquares;
@@ -219,32 +218,38 @@ MaskFeaturePointSelectionFilter< TImage, TMask, TFeatures >
       const double meanOfSquares = sumOfSquares.GetSum() / numPixelsInNeighborhood;
 
       const double variance = meanOfSquares - squaredMean;
-
       typedef typename MultiMapType::value_type PairType;
 
-      pointMap.insert( PairType( variance, imageItr.GetIndex() ) );
+      // we only insert blocks with variance > 0
+      if(itk::NumericTraits<double>::IsPositive(variance))
+        {
+        pointMap.insert( PairType( variance, imageItr.GetIndex() ) );
+        }
       }
     }
 
   // number of points to select
-  SizeValueType pointsLeft = Math::Floor<SizeValueType>( 0.5 + pointMap.size() * m_SelectFraction );
+  IndexValueType NumPointsInserted = -1; // initialize to -1
+  IndexValueType maxNumPointsToInserted = Math::Floor<SizeValueType>( 0.5 + pointMap.size() * m_SelectFraction );
+  if(maxNumPointsToInserted <= 0)
+    {
+    itkExceptionMacro("Invalid number of selected feature points!");
+    }
 
-  // pick points with highest variance first
+  const double TRACE_EPSILON = 1e-8;
+
+  // pick points with highest variance first (inverse iteration)
   typedef typename MultiMapType::reverse_iterator MapReverseIterator;
   MapReverseIterator rit = pointMap.rbegin();
-  while ( rit != pointMap.rend() && pointsLeft )
+  while ( rit != pointMap.rend() && NumPointsInserted < maxNumPointsToInserted)
     {
     // if point is not marked off in selection map and there are still points to be picked
     const IndexType & indexOfPointToPick = rit->second;
-    if ( selectionMap->GetPixel( indexOfPointToPick ) )
+
+    // index should be inside the mask image (GetPixel = 1)
+    if ( selectionMap->GetPixel( indexOfPointToPick ) && region.IsInside(indexOfPointToPick) )
       {
-      pointsLeft--;
-
-      // add point to points container
-      PointType point;
-      image->TransformIndexToPhysicalPoint( indexOfPointToPick, point );
-      points->InsertElement( pointsLeft, point );
-
+      NumPointsInserted++;
       // compute and add structure tensor into pointData
       if ( m_ComputeStructureTensors )
         {
@@ -265,10 +270,12 @@ MaskFeaturePointSelectionFilter< TImage, TMask, TFeatures >
         ConstNeighborhoodIterator< ImageType > gradientItr( neighborRadiusForTensor, image, center );
 
         gradientItr.GoToBegin();
+
         // iterate over voxels in the neighbourhood
         for ( SizeValueType i = 0; i < gradientItr.Size(); i++ )
           {
           OffsetType off = gradientItr.GetOffset( i );
+
           for ( unsigned j = 0; j < ImageDimension; j++ )
             {
             OffsetType left = off;
@@ -290,10 +297,25 @@ MaskFeaturePointSelectionFilter< TImage, TMask, TFeatures >
           tensor += product;
           }
 
-        tensor /= vnl_trace( tensor.GetVnlMatrix() );
+        double trace = vnl_trace( tensor.GetVnlMatrix() );
 
-        pointData->InsertElement( pointsLeft, tensor );
-        }
+        // trace should be non-zero
+        if ( vnl_math_abs(trace) < TRACE_EPSILON )
+          {
+            rit++;
+            NumPointsInserted--;
+            continue;
+          }
+
+        tensor /= trace;
+        pointData->InsertElement( NumPointsInserted , tensor );
+
+        } // end of compute structure tensor
+
+      // add the point to the container
+      PointType point;
+      image->TransformIndexToPhysicalPoint( indexOfPointToPick, point );
+      points->InsertElement( NumPointsInserted, point );
 
       // mark off connected points
       const MapPixelType ineligeblePointCode = 0;
@@ -304,9 +326,8 @@ MaskFeaturePointSelectionFilter< TImage, TMask, TFeatures >
         selectionMap->SetPixel( idx, ineligeblePointCode );
         }
       }
-      rit++;
+    rit++;
     }
-
   // set points
   pointSet->SetPoints( points );
   pointSet->SetPointData( pointData );
