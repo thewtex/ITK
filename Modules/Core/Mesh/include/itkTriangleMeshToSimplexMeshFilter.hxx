@@ -126,22 +126,23 @@ void TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
 template< typename TInputMesh, typename TOutputMesh >
 void
 TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
-::CreateEdgeForTrianglePair(CellIdentifier pointIndex, CellIdentifier boundaryId)
+::CreateEdgeForTrianglePair(CellIdentifier pointIndex, CellIdentifier boundaryId,
+                            TOutputMesh *outputMesh)
 {
   EdgeIdentifierType facePair = m_EdgeNeighborList->GetElement(boundaryId);
 
   if ( facePair.first == pointIndex )
     {
-    this->GetOutput()->AddNeighbor(pointIndex, facePair.second);
+    outputMesh->AddNeighbor(pointIndex, facePair.second);
     }
   else
     {
-    this->GetOutput()->AddNeighbor(pointIndex, facePair.first);
+    outputMesh->AddNeighbor(pointIndex, facePair.first);
     }
 
   if ( !m_HandledEdgeIds->IndexExists(boundaryId) )
     {
-    CellIdentifier edgeId = this->GetOutput()->AddEdge(facePair.first, facePair.second);
+    CellIdentifier edgeId = outputMesh->AddEdge(facePair.first, facePair.second);
     m_LineCellIndices->InsertElement(facePair, edgeId);
     m_HandledEdgeIds->InsertElement(boundaryId, edgeId);
     }
@@ -151,10 +152,10 @@ template< typename TInputMesh, typename TOutputMesh >
 void TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
 ::CreateSimplexNeighbors()
 {
-  OutputMeshPointer output = this->GetOutput(0);
+  TOutputMesh *output = this->GetOutput(0);
 
   // add neighbor vertices
-  OutputPointsContainerPointer  outputPointsContainer =  this->GetOutput(0)->GetPoints();
+  OutputPointsContainerPointer  outputPointsContainer =  output->GetPoints();
   OutputPointsContainerIterator points =  outputPointsContainer->Begin();
 
   CellIdentifier tp0, tp1, tp2;
@@ -172,9 +173,9 @@ void TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
     tp1 = cntlines->GetElement(key1);
     tp2 = cntlines->GetElement(key2);
 
-    CreateEdgeForTrianglePair(idx, tp0);
-    CreateEdgeForTrianglePair(idx, tp1);
-    CreateEdgeForTrianglePair(idx, tp2);
+    CreateEdgeForTrianglePair(idx, tp0, output);
+    CreateEdgeForTrianglePair(idx, tp1, output);
+    CreateEdgeForTrianglePair(idx, tp2, output);
 
     points++;
     }
@@ -279,7 +280,7 @@ TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
 {
   const InputPointsContainer *      pointsContainer =  this->GetInput(0)->GetPoints();
   InputPointsContainerConstIterator points =  pointsContainer->Begin();
-
+  TOutputMesh *                     outputMesh = this->GetOutput();
   PointIdentifier idx;
 
   typedef itk::MapContainer< CellIdentifier, CellIdentifier > MapType;
@@ -339,7 +340,7 @@ TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
     CellIdentifier nextIdx = startIdx;
     CellFeatureIdentifier featureId = 0;
 
-    CellIdentifier faceIndex = this->GetOutput()->AddFace(m_NewSimplexCellPointer);
+    CellIdentifier faceIndex = outputMesh->AddFace(m_NewSimplexCellPointer);
 
     while ( tmpMap->IndexExists(nextIdx) )
       {
@@ -363,7 +364,7 @@ TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
         {
         std::cout << "error!!! " << std::endl;
         }
-      this->GetOutput()->SetBoundaryAssignment(1, faceIndex, featureId++, edgeIdx);
+      outputMesh->SetBoundaryAssignment(1, faceIndex, featureId++, edgeIdx);
 
       if ( newIdx == startIdx )
         {

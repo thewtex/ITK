@@ -140,7 +140,9 @@ protected:
    * two neighboring triangles of the input mesh over the
    * edge the both triangles have in common.
    */
-  void CreateEdgeForTrianglePair(CellIdentifier pointIndex, CellIdentifier boundaryId);
+  void CreateEdgeForTrianglePair(CellIdentifier pointIndex,
+                                 CellIdentifier boundaryId,
+                                 TOutputMesh *outputMesh);
 
   /**
    * Constructs the neighborhood relations for all simplex mesh points

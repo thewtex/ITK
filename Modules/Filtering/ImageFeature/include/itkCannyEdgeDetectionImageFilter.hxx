@@ -77,6 +77,9 @@ CannyEdgeDetectionImageFilter< TInputImage, TOutputImage >::CannyEdgeDetectionIm
   //Initialize the list
   m_NodeStore = ListNodeStorageType::New();
   m_NodeList = ListType::New();
+
+  m_InputImage = 0;
+  m_OutputImage = 0;
 }
 
 template< class TInputImage, class TOutputImage >
@@ -120,7 +123,6 @@ CannyEdgeDetectionImageFilter< TInputImage, TOutputImage >
   // Here input is the result from the gaussian filter
   //      output is the update buffer.
   typename  OutputImageType::Pointer input  = m_GaussianFilter->GetOutput();
-  typename  OutputImageType::Pointer output = this->GetOutput();
 
   // set iterator radius
   Size< ImageDimension > radius; radius.Fill(1);
@@ -143,7 +145,7 @@ CannyEdgeDetectionImageFilter< TInputImage, TOutputImage >
     {
     NeighborhoodType bit(radius, input, *fit);
 
-    it = ImageRegionIterator< OutputImageType >(output, *fit);
+    it = ImageRegionIterator< OutputImageType >(this->m_OutputImage, *fit);
     bit.OverrideBoundaryCondition(&nbc);
     bit.GoToBegin();
 
@@ -262,11 +264,12 @@ void
 CannyEdgeDetectionImageFilter< TInputImage, TOutputImage >
 ::GenerateData()
 {
-  // Allocate the output
-  this->GetOutput()->SetBufferedRegion( this->GetOutput()->GetRequestedRegion() );
-  this->GetOutput()->Allocate();
+  this->m_InputImage = this->GetInput();
+  this->m_OutputImage = this->GetOutput();
 
-  typename  InputImageType::ConstPointer input  = this->GetInput();
+  // Allocate the output
+  this->m_OutputImage->SetBufferedRegion( this->GetOutput()->GetRequestedRegion() );
+  this->m_OutputImage->Allocate();
 
   typename ZeroCrossingImageFilter< TOutputImage, TOutputImage >::Pointer
   zeroCrossFilter = ZeroCrossingImageFilter< TOutputImage, TOutputImage >::New();
@@ -276,7 +279,7 @@ CannyEdgeDetectionImageFilter< TInputImage, TOutputImage >
   // 1.Apply the Gaussian Filter to the input image.-------
   m_GaussianFilter->SetVariance(m_Variance);
   m_GaussianFilter->SetMaximumError(m_MaximumError);
-  m_GaussianFilter->SetInput(input);
+  m_GaussianFilter->SetInput(this->m_InputImage);
   // modify to force excution, due to grafting complications
   m_GaussianFilter->Modified();
   m_GaussianFilter->Update();
@@ -293,7 +296,7 @@ CannyEdgeDetectionImageFilter< TInputImage, TOutputImage >
 
   // Calculate the zero crossings of the 2nd directional derivative and write
   // the result to output buffer.
-  zeroCrossFilter->SetInput( this->GetOutput() );
+  zeroCrossFilter->SetInput( this->m_OutputImage );
   zeroCrossFilter->Update();
 
   // 4. Hysteresis Thresholding---------
@@ -329,8 +332,8 @@ CannyEdgeDetectionImageFilter< TInputImage, TOutputImage >
 
   oit.GoToBegin();
 
-  ImageRegionIterator< TOutputImage > uit( this->GetOutput(),
-                                           this->GetOutput()->GetRequestedRegion() );
+  ImageRegionIterator< TOutputImage > uit( this->m_OutputImage,
+                                           this->m_OutputImage->GetRequestedRegion() );
   uit.GoToBegin();
   while ( !uit.IsAtEnd() )
     {
@@ -375,8 +378,8 @@ CannyEdgeDetectionImageFilter< TInputImage, TOutputImage >
 
   ConstNeighborhoodIterator< TOutputImage > oit( radius,
                                                  input, input->GetRequestedRegion() );
-  ImageRegionIteratorWithIndex< TOutputImage > uit( this->GetOutput(),
-                                                    this->GetOutput()->GetRequestedRegion() );
+  ImageRegionIteratorWithIndex< TOutputImage > uit( this->m_OutputImage,
+                                                    this->m_OutputImage->GetRequestedRegion() );
 
   uit.SetIndex(index);
   if ( uit.Get() == NumericTraits< OutputImagePixelType >::One )
@@ -440,7 +443,7 @@ CannyEdgeDetectionImageFilter< TInputImage, TOutputImage >
   // Here input is the result from the gaussian filter
   //      input1 is the 2nd derivative result
   //      output is the gradient of 2nd derivative
-  typename OutputImageType::Pointer input1 = this->GetOutput();
+  typename OutputImageType::Pointer input1 = this->m_OutputImage;
   typename OutputImageType::Pointer input = m_GaussianFilter->GetOutput();
 
   typename  InputImageType::Pointer output  = m_UpdateBuffer1;
