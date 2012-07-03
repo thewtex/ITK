@@ -326,6 +326,8 @@ DeformableSimplexMesh3DFilter< TInputMesh, TOutputMesh >
 {
   const InputMeshType *inputMesh = this->GetInput(0);
 
+  const GradientImageType *gradientImage = this->GetGradient();
+
   // Filters should not modify their input...
   // There is a design flaw here.
   InputPointsContainer *nonConstPoints =
@@ -341,7 +343,7 @@ DeformableSimplexMesh3DFilter< TInputMesh, TOutputMesh >
 
     this->ComputeInternalForce(data);
 
-    this->ComputeExternalForce(data);
+    this->ComputeExternalForce(data,gradientImage);
 
     displacement.SetVnlVector( m_Alpha * ( data->internalForce ).GetVnlVector()
                                  + ( data->externalForce ).GetVnlVector() );
@@ -416,12 +418,10 @@ DeformableSimplexMesh3DFilter< TInputMesh, TOutputMesh >
 template< typename TInputMesh, typename TOutputMesh >
 void
 DeformableSimplexMesh3DFilter< TInputMesh, TOutputMesh >
-::ComputeExternalForce(SimplexMeshGeometry *data)
+::ComputeExternalForce(SimplexMeshGeometry *data,const GradientImageType *gradientImage)
 {
   PointType         vec_for, tmp_vec_1, tmp_vec_2, tmp_vec_3;
   GradientIndexType coord, coord2, tmp_co_1, tmp_co_2, tmp_co_3;
-
-  const GradientImageType * gradientImage = this->GetGradient();
 
   coord[0] = static_cast< GradientIndexValueType >( data->pos[0] );
   coord[1] = static_cast< GradientIndexValueType >( data->pos[1] );

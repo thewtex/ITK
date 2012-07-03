@@ -343,6 +343,9 @@ private:
 
   typename ListNodeStorageType::Pointer m_NodeStore;
   ListPointerType m_NodeList;
+
+  const InputImageType *m_InputImage;
+  OutputImageType      *m_OutputImage;
 };
 } //end of namespace itk
 
