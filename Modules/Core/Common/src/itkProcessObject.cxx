@@ -56,6 +56,8 @@ ProcessObject
 
   m_NumberOfIndexedInputs = 0;
   m_NumberOfIndexedOutputs = 0;
+
+  m_AtomicCounter = Object::New();
 }
 
 /**
@@ -455,6 +457,15 @@ DataObject *
 ProcessObject
 ::GetOutput(const DataObjectIdentifierType & key)
 {
+
+  this->m_AtomicCounter->Register();
+
+  if ( this->m_AtomicCounter->GetReferenceCount() > 100000 )
+    {
+    itkExceptionMacro( "Made an suspicious large number of call to GetInput!" );
+    }
+
+
   DataObjectPointerMap::iterator it = m_Outputs.find(key);
   if ( it == m_Outputs.end() )
     {
@@ -467,6 +478,7 @@ const DataObject *
 ProcessObject
 ::GetOutput(const DataObjectIdentifierType & key) const
 {
+
   DataObjectPointerMap::const_iterator it = m_Outputs.find(key);
   if ( it == m_Outputs.end() )
     {
@@ -606,6 +618,16 @@ DataObject *
 ProcessObject
 ::GetInput(const DataObjectIdentifierType & key)
 {
+
+  this->m_AtomicCounter->Register();
+
+  if ( this->m_AtomicCounter->GetReferenceCount() > 100000 )
+    {
+    itkExceptionMacro( "Made an suspicious large number of call to GetInput!" );
+    }
+
+
+
   DataObjectPointerMap::iterator it = m_Inputs.find(key);
   if ( it == m_Inputs.end() )
     {
@@ -618,6 +640,14 @@ const DataObject *
 ProcessObject
 ::GetInput(const DataObjectIdentifierType & key) const
 {
+
+  this->m_AtomicCounter->Register();
+
+  if ( this->m_AtomicCounter->GetReferenceCount() > 100000 )
+    {
+    itkExceptionMacro( "Made an suspicious large number of call to GetInput!" );
+    }
+
   DataObjectPointerMap::const_iterator it = m_Inputs.find(key);
   if ( it == m_Inputs.end() )
     {
@@ -821,6 +851,7 @@ ProcessObject::DataObjectIdentifierType
 ProcessObject
 ::MakeNameFromIndex(DataObjectPointerArraySizeType idx) const
 {
+
   if( idx == 0 )
     {
     return "Primary";
@@ -844,6 +875,7 @@ ProcessObject::DataObjectPointerArraySizeType
 ProcessObject
 ::MakeIndexFromName(const DataObjectIdentifierType & name) const
 {
+
   if( name == "Primary" )
     {
     itkDebugMacro("MakeIndexFromName("<<name<<") -> 0");
