@@ -109,7 +109,7 @@ void TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
 {
   //create the points of the simplex mesh
   typename IndexSetType::iterator faceIterator = m_FaceSet->begin();
-
+  TOutputMesh *output = this->GetOutput();
   while ( faceIterator != m_FaceSet->end() )
     {
     InputPointType  newPoint = ComputeFaceCenter(*faceIterator);
@@ -117,8 +117,8 @@ void TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
     copyPoint.CastFrom(newPoint);
 
     unsigned int id = *faceIterator;
-    this->GetOutput()->SetPoint(id, copyPoint);
-    this->GetOutput()->SetGeometryData( id, new itk::SimplexMeshGeometry() );
+    output->SetPoint(id, copyPoint);
+    output->SetGeometryData( id, new itk::SimplexMeshGeometry() );
     faceIterator++;
     }
 }
@@ -126,22 +126,24 @@ void TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
 template< typename TInputMesh, typename TOutputMesh >
 void
 TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
-::CreateEdgeForTrianglePair(CellIdentifier pointIndex, CellIdentifier boundaryId)
+::CreateEdgeForTrianglePair(CellIdentifier pointIndex,
+                            CellIdentifier boundaryId,
+                            TOutputMesh *output)
 {
   EdgeIdentifierType facePair = m_EdgeNeighborList->GetElement(boundaryId);
 
   if ( facePair.first == pointIndex )
     {
-    this->GetOutput()->AddNeighbor(pointIndex, facePair.second);
+    output->AddNeighbor(pointIndex, facePair.second);
     }
   else
     {
-    this->GetOutput()->AddNeighbor(pointIndex, facePair.first);
+    output->AddNeighbor(pointIndex, facePair.first);
     }
 
   if ( !m_HandledEdgeIds->IndexExists(boundaryId) )
     {
-    CellIdentifier edgeId = this->GetOutput()->AddEdge(facePair.first, facePair.second);
+    CellIdentifier edgeId = output->AddEdge(facePair.first, facePair.second);
     m_LineCellIndices->InsertElement(facePair, edgeId);
     m_HandledEdgeIds->InsertElement(boundaryId, edgeId);
     }
@@ -151,16 +153,15 @@ template< typename TInputMesh, typename TOutputMesh >
 void TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
 ::CreateSimplexNeighbors()
 {
-  OutputMeshPointer output = this->GetOutput(0);
+  TOutputMesh *output = this->GetOutput(0);
 
   // add neighbor vertices
-  OutputPointsContainerPointer  outputPointsContainer =  this->GetOutput(0)->GetPoints();
+  OutputPointsContainerPointer  outputPointsContainer =  output->GetPoints();
   OutputPointsContainerIterator points =  outputPointsContainer->Begin();
 
   CellIdentifier tp0, tp1, tp2;
 
   InputBoundaryAssignmentsContainerPointer cntlines = this->GetInput(0)->GetBoundaryAssignments(1);
-
   while ( points != outputPointsContainer->End() )
     {
     PointIdentifier idx = points.Index();
@@ -172,9 +173,9 @@ void TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
     tp1 = cntlines->GetElement(key1);
     tp2 = cntlines->GetElement(key2);
 
-    CreateEdgeForTrianglePair(idx, tp0);
-    CreateEdgeForTrianglePair(idx, tp1);
-    CreateEdgeForTrianglePair(idx, tp2);
+    CreateEdgeForTrianglePair(idx, tp0, output);
+    CreateEdgeForTrianglePair(idx, tp1, output);
+    CreateEdgeForTrianglePair(idx, tp2, output);
 
     points++;
     }
@@ -284,6 +285,8 @@ TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
 
   typedef itk::MapContainer< CellIdentifier, CellIdentifier > MapType;
 
+  TOutputMesh *output = this->GetOutput();
+
   while ( points != pointsContainer->End() )
     {
     idx = points.Index();
@@ -339,8 +342,7 @@ TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
     CellIdentifier nextIdx = startIdx;
     CellFeatureIdentifier featureId = 0;
 
-    CellIdentifier faceIndex = this->GetOutput()->AddFace(m_NewSimplexCellPointer);
-
+    CellIdentifier faceIndex = output->AddFace(m_NewSimplexCellPointer);
     while ( tmpMap->IndexExists(nextIdx) )
       {
       m_NewSimplexCellPointer->SetPointId(vertexIdx++, nextIdx);
@@ -363,7 +365,7 @@ TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
         {
         std::cout << "error!!! " << std::endl;
         }
-      this->GetOutput()->SetBoundaryAssignment(1, faceIndex, featureId++, edgeIdx);
+      output->SetBoundaryAssignment(1, faceIndex, featureId++, edgeIdx);
 
       if ( newIdx == startIdx )
         {

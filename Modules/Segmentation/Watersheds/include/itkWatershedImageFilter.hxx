@@ -135,7 +135,8 @@ WatershedImageFilter< TInputImage >
   // HighestCalculatedFloodLevel must be reset on the Tree Generator
   //
   if ( m_InputChanged
-       || ( this->GetInput()->GetPipelineMTime() > m_GenerateDataMTime )
+
+|| ( this->GetInput()->GetPipelineMTime() > m_GenerateDataMTime )
        || m_ThresholdChanged )
     {
     m_Segmenter->PrepareOutputs();
