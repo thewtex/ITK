@@ -111,9 +111,12 @@ SignedMaurerDistanceMapImageFilter< TInputImage, TOutputImage >
 {
   ThreadIdType nbthreads = this->GetNumberOfThreads();
 
+  OutputImageType *outputPtr = this->GetOutput();
+  const InputImageType *inputPtr = this->GetInput();
+
   // prepare the data
   this->AllocateOutputs();
-  this->m_Spacing = this->GetOutput()->GetSpacing();
+  this->m_Spacing = outputPtr->GetSpacing();
 
   // store the binary image in an image with a pixel type as small as possible
   // instead of keeping the native input pixel type to avoid using too much
@@ -133,14 +136,14 @@ SignedMaurerDistanceMapImageFilter< TInputImage, TOutputImage >
   binaryFilter->SetUpperThreshold(this->m_BackgroundValue);
   binaryFilter->SetInsideValue( NumericTraits< OutputPixelType >::max() );
   binaryFilter->SetOutsideValue( NumericTraits< OutputPixelType >::Zero );
-  binaryFilter->SetInput( this->GetInput() );
+  binaryFilter->SetInput( inputPtr );
   binaryFilter->SetNumberOfThreads( nbthreads );
   progressAcc->RegisterInternalFilter( binaryFilter, 0.1f );
-  binaryFilter->GraftOutput( this->GetOutput() );
+  binaryFilter->GraftOutput( outputPtr );
   binaryFilter->Update();
 
   // Dilate the inverted image by 1 pixel to give it the same boundary
-  // as the univerted this->GetInput().
+  // as the univerted inputPtr.
   typedef BinaryContourImageFilter< OutputImageType,
                                     OutputImageType > BorderFilterType;
   typename BorderFilterType::Pointer borderFilter = BorderFilterType::New();
@@ -181,6 +184,10 @@ SignedMaurerDistanceMapImageFilter< TInputImage, TOutputImage >
   InputRegionType region = outputRegionForThread;
   InputSizeType   size   = region.GetSize();
   InputIndexType  startIndex = outputRegionForThread.GetIndex();
+
+
+  OutputImageType      *outputPtr = this->GetOutput();
+  const InputImageType *inputPtr = this->GetInput();
 
   // compute the number of rows first, so we can setup a progress reporter
   std::vector< InputSizeValueType > NumberOfRows;
@@ -257,8 +264,8 @@ SignedMaurerDistanceMapImageFilter< TInputImage, TOutputImage >
 
     typename OutputImageType::RegionType outputRegion = outputRegionForThread;
 
-    OutputIterator Ot(this->GetOutput(), outputRegion);
-    InputIterator  It(this->GetInput(),  outputRegion);
+    OutputIterator Ot(outputPtr, outputRegion);
+    InputIterator  It(inputPtr,  outputRegion);
 
     Ot.GoToBegin();
     It.GoToBegin();
@@ -312,14 +319,15 @@ void
 SignedMaurerDistanceMapImageFilter< TInputImage, TOutputImage >
 ::Voronoi(unsigned int d, OutputIndexType idx)
 {
-  OutputImagePointer    output = this->GetOutput();
+  OutputImageType      *output = this->GetOutput();
   OutputRegionType      oRegion = output->GetRequestedRegion();
   OutputSizeValueType   nd = oRegion.GetSize()[d];
 
   vnl_vector< OutputPixelType > g(nd, 0 );
   vnl_vector< OutputPixelType > h(nd, 0 );
 
-  InputImageConstPointer input = this->GetInput();
+  const InputImageType *input = this->GetInput();
+
   InputRegionType iRegion = input->GetRequestedRegion();
   InputIndexType startIndex = iRegion.GetIndex();
 
@@ -405,7 +413,7 @@ SignedMaurerDistanceMapImageFilter< TInputImage, TOutputImage >
       }
     idx[d] = i + startIndex[d];
 
-    if ( this->GetInput()->GetPixel(idx) != this->m_BackgroundValue )
+    if ( input->GetPixel(idx) != this->m_BackgroundValue )
       {
       if ( this->m_InsideIsPositive )
         {
