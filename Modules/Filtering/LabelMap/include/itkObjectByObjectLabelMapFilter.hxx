@@ -138,7 +138,7 @@ ObjectByObjectLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFil
   output->ClearLabels();
 
   // give the input bg value as default bg value to the output
-  this->GetOutput()->SetBackgroundValue( this->GetInput()->GetBackgroundValue() );
+  output->SetBackgroundValue( this->GetInput()->GetBackgroundValue() );
 
   // set the input image of the first filter of our internal pipeline
   m_Select->SetInput( this->GetInput() );

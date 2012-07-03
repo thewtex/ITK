@@ -109,7 +109,7 @@ void TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
 {
   //create the points of the simplex mesh
   typename IndexSetType::iterator faceIterator = m_FaceSet->begin();
-
+  TOutputMesh *output = this->GetOutput();
   while ( faceIterator != m_FaceSet->end() )
     {
     InputPointType  newPoint = ComputeFaceCenter(*faceIterator);
@@ -117,8 +117,8 @@ void TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
     copyPoint.CastFrom(newPoint);
 
     unsigned int id = *faceIterator;
-    this->GetOutput()->SetPoint(id, copyPoint);
-    this->GetOutput()->SetGeometryData( id, new itk::SimplexMeshGeometry() );
+    output->SetPoint(id, copyPoint);
+    output->SetGeometryData( id, new itk::SimplexMeshGeometry() );
     faceIterator++;
     }
 }
@@ -340,7 +340,7 @@ TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
     CellFeatureIdentifier featureId = 0;
 
     CellIdentifier faceIndex = this->GetOutput()->AddFace(m_NewSimplexCellPointer);
-
+    TOutputMesh *output = this->GetOutput();
     while ( tmpMap->IndexExists(nextIdx) )
       {
       m_NewSimplexCellPointer->SetPointId(vertexIdx++, nextIdx);
@@ -363,7 +363,7 @@ TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
         {
         std::cout << "error!!! " << std::endl;
         }
-      this->GetOutput()->SetBoundaryAssignment(1, faceIndex, featureId++, edgeIdx);
+      output->SetBoundaryAssignment(1, faceIndex, featureId++, edgeIdx);
 
       if ( newIdx == startIdx )
         {
