@@ -50,9 +50,10 @@ LabelMapToLabelImageFilter< TInputImage, TOutputImage >
 {
   const typename LabelObjectType::LabelType & label = labelObject->GetLabel();
   typename LabelObjectType::ConstIndexIterator it( labelObject );
+  TOutputImage *output = this->GetOutput();
   while( !it.IsAtEnd() )
     {
-    this->GetOutput()->SetPixel( it.GetIndex(), label );
+    output->SetPixel( it.GetIndex(), label );
     ++it;
     }
 }

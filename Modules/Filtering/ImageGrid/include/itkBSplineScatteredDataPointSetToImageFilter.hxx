@@ -233,11 +233,12 @@ BSplineScatteredDataPointSetToImageFilter<TInputPointSet, TOutputImage>
   this->GetOutput()->SetRegions( this->m_Size );
   this->GetOutput()->Allocate();
 
+  const TInputPointSet *input = this->GetInput();
   /**
    * Perform some error checking on the input
    */
   if( this->m_UsePointWeights &&
-    ( this->m_PointWeights->Size() != this->GetInput()->GetNumberOfPoints() ) )
+      ( this->m_PointWeights->Size() != input->GetNumberOfPoints() ) )
     {
     itkExceptionMacro(
       "The number of weight points and input points must be equal." );
@@ -275,11 +276,11 @@ BSplineScatteredDataPointSetToImageFilter<TInputPointSet, TOutputImage>
 
   this->m_InputPointData->Initialize();
   this->m_OutputPointData->Initialize();
-  if( this->GetInput()->GetNumberOfPoints() > 0 )
+  if( input->GetNumberOfPoints() > 0 )
     {
     typename PointDataContainerType::ConstIterator It =
-      this->GetInput()->GetPointData()->Begin();
-    while( It != this->GetInput()->GetPointData()->End() )
+      input->GetPointData()->Begin();
+    while( It != input->GetPointData()->End() )
       {
       if( !this->m_UsePointWeights )
         {
@@ -588,15 +589,16 @@ BSplineScatteredDataPointSetToImageFilter<TInputPointSet, TOutputImage>
   /**
    * Determine which points should be handled by this particular thread.
    */
+  const TInputPointSet *input = this->GetInput();
   ThreadIdType numberOfThreads = this->GetNumberOfThreads();
   SizeValueType numberOfPointsPerThread = static_cast<SizeValueType>(
-    this->GetInput()->GetNumberOfPoints() / numberOfThreads );
+    input->GetNumberOfPoints() / numberOfThreads );
 
   unsigned int start = threadId * numberOfPointsPerThread;
   unsigned int end = start + numberOfPointsPerThread;
   if( threadId == this->GetNumberOfThreads() - 1 )
     {
-    end = this->GetInput()->GetNumberOfPoints();
+    end = input->GetNumberOfPoints();
     }
 
   for( unsigned int n = start; n < end; n++ )
@@ -604,7 +606,7 @@ BSplineScatteredDataPointSetToImageFilter<TInputPointSet, TOutputImage>
     PointType point;
     point.Fill( 0.0 );
 
-    this->GetInput()->GetPoint( n, &point );
+    input->GetPoint( n, &point );
 
     for( unsigned int i = 0; i < ImageDimension; i++ )
       {
@@ -1078,12 +1080,15 @@ BSplineScatteredDataPointSetToImageFilter<TInputPointSet, TOutputImage>
 
   typename PointDataContainerType::ConstIterator ItIn =
     this->m_InputPointData->Begin();
+
+  const TInputPointSet *input = this->GetInput();
+
   while( ItIn != this->m_InputPointData->End() )
     {
     PointType point;
     point.Fill( 0.0 );
 
-    this->GetInput()->GetPoint( ItIn.Index(), &point );
+    input->GetPoint( ItIn.Index(), &point );
 
     for( unsigned int i = 0; i < ImageDimension; i++ )
       {

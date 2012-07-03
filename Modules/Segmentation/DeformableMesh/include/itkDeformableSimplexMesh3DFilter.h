@@ -238,7 +238,7 @@ protected:
   /**
    * Compute the external force component
    */
-  virtual void ComputeExternalForce(SimplexMeshGeometry *data);
+  virtual void ComputeExternalForce(SimplexMeshGeometry *data,  const GradientImageType *gradient);
 
   /**
    * At the and of the deformation the output mesh is created
