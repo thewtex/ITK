@@ -17,6 +17,7 @@
  *=========================================================================*/
 #ifndef __itkGradientToMagnitudeImageFilter_h
 #define __itkGradientToMagnitudeImageFilter_h
+#if !defined( ITK_LEGACY_REMOVE )
 
 #include "itkVectorMagnitudeImageFilter.h"
 
@@ -36,8 +37,10 @@ namespace itk
  * This filter is here for backwards compatibility. It has been renamed to
  * VectorMagnitudeImageFilter in the ImageIntensity module.
  *
- * \ingroup IntensityImageFilters  MultiThreaded
+ * \deprecated
  * \ingroup ITKDeprecated
+ * \ingroup ITKIntensityImageFilters
+ * \ingroup ITKMultiThreaded
  */
 
 template< class TInputImage, class TOutputImage >
@@ -75,4 +78,5 @@ private:
 };
 } // end namespace itk
 
+#endif //#if !defined( ITK_LEGACY_REMOVE )
 #endif

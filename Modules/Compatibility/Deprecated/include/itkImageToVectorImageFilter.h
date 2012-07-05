@@ -17,6 +17,7 @@
  *=========================================================================*/
 #ifndef __itkImageToVectorImageFilter_h
 #define __itkImageToVectorImageFilter_h
+#if !defined( ITK_LEGACY_REMOVE )
 
 #include "itkImageToImageFilter.h"
 #include "itkVectorContainer.h"
@@ -26,7 +27,8 @@ namespace itk
 {
 /** \class ImageToVectorImageFilter
  * \brief This class takes as input 'n' itk::Image's and composes them into
- * a single itk::VectorImage.
+ * a single itk::VectorImage. NOTE: This class is deprecated. You should
+ * use itkComposeImageFilter instead.
  *
  * \par Inputs and Usage
  * \code
@@ -40,7 +42,7 @@ namespace itk
  * the same size and origin.
  *
  * \sa VectorImage
- * \ingroup Deprecated
+ * \deprecated
  * \ingroup ITKDeprecated
  *
  * \wiki
@@ -106,4 +108,5 @@ private:
 #include "itkImageToVectorImageFilter.hxx"
 #endif
 
+#endif //#if !defined( ITK_LEGACY_REMOVE )
 #endif

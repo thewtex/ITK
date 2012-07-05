@@ -18,6 +18,7 @@
 #ifndef __itkDivideByConstantImageFilter_h
 #define __itkDivideByConstantImageFilter_h
 #include "itkDivideImageFilter.h"
+#if !defined( ITK_LEGACY_REMOVE )
 
 namespace itk
 {
@@ -34,6 +35,7 @@ namespace itk
  * Based on filters from the Insight Journal paper:
  * http://hdl.handle.net/1926/510
  *
+ * \deprecated
  * \ingroup ITKDeprecated
  * \sa DivideImageFilter
  */
@@ -59,4 +61,5 @@ protected:
 };
 
 }
+#endif //#if !defined( ITK_LEGACY_REMOVE )
 #endif
