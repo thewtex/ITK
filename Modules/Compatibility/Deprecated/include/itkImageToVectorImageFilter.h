@@ -26,7 +26,8 @@ namespace itk
 {
 /** \class ImageToVectorImageFilter
  * \brief This class takes as input 'n' itk::Image's and composes them into
- * a single itk::VectorImage.
+ * a single itk::VectorImage. NOTE: This class is deprecated. You should
+ * use itkComposeImageFilter instead.
  *
  * \par Inputs and Usage
  * \code
