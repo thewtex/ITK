@@ -17,6 +17,7 @@
  *=========================================================================*/
 #ifndef __itkAddConstantToImageFilter_h
 #define __itkAddConstantToImageFilter_h
+#if !defined( ITK_LEGACY_REMOVE )
 #include "itkAddImageFilter.h"
 namespace itk
 {
@@ -33,6 +34,7 @@ namespace itk
  * Based on filters from the Insight Journal paper:
  * http://hdl.handle.net/1926/510
  *
+ * \deprecated
  * \ingroup ITKDeprecated
  * \sa AddImageFilter
  */
@@ -58,4 +60,5 @@ protected:
 };
 
 }
+#endif //#if !defined( ITK_LEGACY_REMOVE )
 #endif
