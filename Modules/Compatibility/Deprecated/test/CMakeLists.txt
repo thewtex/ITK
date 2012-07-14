@@ -8,11 +8,6 @@ itkNonUniformBSplineTest.cxx
 itkReflectImageFilterTest.cxx
 itkShiftScaleInPlaceImageFilterTest.cxx
 itkTwoOutputExampleImageFilterTest.cxx
-itkGradientToMagnitudeImageFilterTest.cxx
-itkAddConstantToImageFilterTest.cxx
-itkDivideByConstantImageFilterTest.cxx
-itkMultiplyByConstantImageFilterTest.cxx
-itkSubtractConstantFromImageFilterTest.cxx
 )
 
 # For itkTestDriverIncludeDeprecatedIOFactories.h.
@@ -34,17 +29,7 @@ itk_add_test(NAME itkShiftScaleInPlaceImageFilterTest
       COMMAND ITKDeprecatedTestDriver itkShiftScaleInPlaceImageFilterTest)
 itk_add_test(NAME itkTwoOutputExampleImageFilterTest
       COMMAND ITKDeprecatedTestDriver itkTwoOutputExampleImageFilterTest)
-itk_add_test(NAME itkGradientToMagnitudeImageFilterTest
-      COMMAND ITKDeprecatedTestDriver itkGradientToMagnitudeImageFilterTest)
 
-itk_add_test(NAME DeprecatedAddConstantToImageFilterTest
-  COMMAND ITKDeprecatedTestDriver itkAddConstantToImageFilterTest)
-itk_add_test(NAME DeprecatedSubtractConstantFromaImageFilterTest
-  COMMAND ITKDeprecatedTestDriver itkSubtractConstantFromImageFilterTest)
-itk_add_test(NAME DeprecatedMultiplyByConstantImageFilterTest
-  COMMAND ITKDeprecatedTestDriver itkMultiplyByConstantImageFilterTest)
-itk_add_test(NAME DeprecatedDivideByConstantImageFilterTest
-  COMMAND ITKDeprecatedTestDriver itkDivideByConstantImageFilterTest)
 
 create_test_sourcelist(DeprecatedIOTests  DeprecatedIOTestDriver.cxx
         itkDICOMImageIO2Test.cxx
