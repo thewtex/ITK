@@ -34,15 +34,6 @@ PointSetToSpatialObjectDemonsRegistration< TFixedPointSet, TMovingSpatialObject 
 }
 
 /**
- * Starts the Registration Process
- */
-template< typename TFixedPointSet, typename TMovingSpatialObject >
-void
-PointSetToSpatialObjectDemonsRegistration< TFixedPointSet, TMovingSpatialObject >
-::StartRegistration(void)
-{}
-
-/**
  * PrintSelf
  */
 template< typename TFixedPointSet, typename TMovingSpatialObject >
@@ -54,6 +45,28 @@ PointSetToSpatialObjectDemonsRegistration< TFixedPointSet, TMovingSpatialObject 
   os << indent << "Fixed PointSet: " << m_FixedPointSet.GetPointer() << std::endl;
   os << indent << "Moving SpatialObject: " << m_MovingSpatialObject.GetPointer() << std::endl;
 }
+
+#if !defined(ITK_LEGACY_REMOVE)
+/**
+ * Starts the Registration Process
+ */
+  // StartRegistration is an old API from before
+  // ImageRegistrationMethod was a subclass of ProcessObject.
+  // Historically, one could call StartRegistration() instead of
+  // calling Update().  However, when called directly by the user, the
+  // inputs to ImageRegistrationMethod may not be up to date.  This
+  // may cause an unexpected behavior.
+  //
+  // Since we cannot eliminate StartRegistration for backward
+  // compatibility reasons, we check whether StartRegistration was
+  // called directly or whether Update() (which in turn called
+  // StartRegistration()).
+template< typename TFixedPointSet, typename TMovingSpatialObject >
+void
+PointSetToSpatialObjectDemonsRegistration< TFixedPointSet, TMovingSpatialObject >
+::StartRegistration(void)
+{}
+#endif
 } // end namespace itk
 
 #endif

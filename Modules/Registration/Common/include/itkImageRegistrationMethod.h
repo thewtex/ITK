@@ -224,13 +224,9 @@ protected:
    * compatibility reasons, we check whether StartRegistration was
    * called directly or whether Update() (which in turn called
    * StartRegistration()). */
-  void StartRegistration(void);
+  itkLegacyMacro(void StartRegistration(void));
 
-  /** Method that initiates the optimization process. This method should not be
-   * called directly by the users. Instead, this method is intended to be
-   * invoked internally by the StartRegistration() which is in turn invoked by
-   * the Update() method.
-   * This method should be declared protected. */
+  /* Start the Optimization */
   void StartOptimization(void);
 
 private:

@@ -481,6 +481,29 @@ ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform>
   this->SetMetricSamplingPercentagePerLevel( samplingPercentagePerLevel );
 }
 
+#if !defined(ITK_LEGACY_REMOVE)
+/**
+ * Starts the Registration Process
+ */
+template<typename TFixedImage, typename TMovingImage, typename TTransform>
+void
+ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform>
+::StartRegistration(void)
+{
+  // StartRegistration is an old API from before
+  // ImageRegistrationMethod was a subclass of ProcessObject.
+  // Historically, one could call StartRegistration() instead of
+  // calling Update().  However, when called directly by the user, the
+  // inputs to ImageRegistrationMethod may not be up to date.  This
+  // may cause an unexpected behavior.
+  //
+  // Since we cannot eliminate StartRegistration for backward
+  // compatibility reasons, we check whether StartRegistration was
+  // called directly or whether Update() (which in turn called
+  // StartRegistration()).
+  this->GenerateData();
+}
+#endif
 } // end namespace itk
 
 #endif
