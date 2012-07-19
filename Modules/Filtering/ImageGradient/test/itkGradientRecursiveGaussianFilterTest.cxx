@@ -82,9 +82,10 @@ int itkGradientRecursiveGaussianFilterTest(int, char* [] )
   start[2] = 2;
 
   // Create one iterator for an internal region
-  region.SetSize( size );
-  region.SetIndex( start );
-  myIteratorType itb( inputImage, region );
+  myRegionType innerRegion;
+  innerRegion.SetSize( size );
+  innerRegion.SetIndex( start );
+  myIteratorType itb( inputImage, innerRegion );
 
   // Initialize the content the internal region
   while( !itb.IsAtEnd() )
@@ -94,8 +95,7 @@ int itkGradientRecursiveGaussianFilterTest(int, char* [] )
     }
 
   // Declare the type for the
-  typedef itk::GradientRecursiveGaussianImageFilter<
-                                            myImageType >  myFilterType;
+  typedef itk::GradientRecursiveGaussianImageFilter< myImageType >  myFilterType;
 
   typedef myFilterType::OutputImageType myGradientImageType;
 
@@ -121,12 +121,10 @@ int itkGradientRecursiveGaussianFilterTest(int, char* [] )
   myGradientImageType::Pointer outputImage = filter->GetOutput();
 
   // Declare Iterator type for the output image
-  typedef itk::ImageRegionIteratorWithIndex<
-                                 myGradientImageType>  myOutputIteratorType;
+  typedef itk::ImageRegionIteratorWithIndex<myGradientImageType>  myOutputIteratorType;
 
   // Create an iterator for going through the output image
-  myOutputIteratorType itg( outputImage,
-                            outputImage->GetRequestedRegion() );
+  myOutputIteratorType itg( outputImage, outputImage->GetRequestedRegion() );
 
   //  Print the content of the result image
   std::cout << " Result " << std::endl;
@@ -136,9 +134,51 @@ int itkGradientRecursiveGaussianFilterTest(int, char* [] )
     std::cout << itg.Get();
     ++itg;
     }
+  std::cout << std::endl;
 
+  //
+  // Test with a change in image direction
+  //
+  myImageType::DirectionType direction;
+  direction.Fill( 0.0 );
+  direction[0][0] = -1.0;
+  direction[1][1] = -1.0;
+  direction[2][2] = -1.0;
+  inputImage->SetDirection( direction );
+
+  // Create a  Filter
+  myFilterType::Pointer filter2 = myFilterType::New();
+  filter2->SetInput( inputImage );
+  filter2->SetSigma( 2.5 );
+  filter2->Update();
+  myGradientImageType::Pointer outputFlippedImage = filter2->GetOutput();
+
+  // compare the output between identity direction and flipped direction
+  std::cout << " Result of flipped image " << std::endl;
+  myOutputIteratorType itf( outputFlippedImage, outputFlippedImage->GetRequestedRegion() );
+  itf.GoToBegin();
+  bool passed = true;
+  while( !itf.IsAtEnd() )
+    {
+    std::cout << itf.Get();
+    myImageType::IndexType index;
+    for( unsigned int d = 0; d < myDimension; d++ )
+      {
+      index[d] = region.GetSize()[d] - 1 - itf.GetIndex()[d];
+      }
+    if( itf.Value() != outputImage->GetPixel( index ) )
+      {
+      passed = false;
+      }
+    ++itf;
+    }
+  std::cout << std::endl;
+  if( ! passed )
+    {
+    std::cerr << "Flipped image gradient does not match regular image as expected." << std::endl;
+    return EXIT_FAILURE;
+    }
 
   // All objects should be automatically destroyed at this point
   return EXIT_SUCCESS;
-
 }
