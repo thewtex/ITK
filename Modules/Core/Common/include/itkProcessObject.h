@@ -679,6 +679,8 @@ private:
   DataObjectPointerMap   m_Inputs;
   DataObjectPointerMap   m_Outputs;
 
+  Object::Pointer m_AtomicCounter;
+
   /** An array that caches the ReleaseDataFlags of the inputs */
   std::map< DataObjectIdentifierType, bool > m_CachedInputReleaseDataFlags;
 
