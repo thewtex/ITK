@@ -28,6 +28,14 @@
 #define _WIN32_WINNT 0x0400
 #endif
 
+#ifdef __APPLE__
+#define ITK_USE_GRANDCENTRALDISPATCH
+#endif
+
+#if defined(ITK_USE_GRANDCENTRALDISPATCH)
+#include <dispatch/dispatch.h>
+#endif
+
 #if defined(ITK_USE_PTHREADS)
 #include <pthread.h>
 #elif defined(ITK_USE_WIN32_THREADS)
@@ -44,11 +52,16 @@ namespace itk
 #define ITK_MAX_THREADS              128
   typedef pthread_mutex_t MutexType;
   typedef pthread_mutex_t FastMutexType;
-  typedef void *( * ThreadFunctionType )(void *);
   typedef pthread_t ThreadProcessIDType;
+#if defined(ITK_USE_GRANDCENTRALDISPATCH)
+  typedef void ( * ThreadFunctionType )(void *);
+#define ITK_THREAD_RETURN_VALUE
+#define ITK_THREAD_RETURN_TYPE  void
+#else
+  typedef void *( * ThreadFunctionType )(void *);
 #define ITK_THREAD_RETURN_VALUE  NULL
 #define ITK_THREAD_RETURN_TYPE   void *
-
+#endif
 #elif defined(ITK_USE_WIN32_THREADS)
 
 #define ITK_MAX_THREADS              128
