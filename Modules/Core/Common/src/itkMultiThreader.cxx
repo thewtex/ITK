@@ -29,8 +29,11 @@
 #include "itkNumericTraits.h"
 #include <iostream>
 
-
-#if defined(ITK_USE_PTHREADS)
+#if defined(ITK_USE_GRANDCENTRALDISPATCH)
+// Test using GrandCentralDispatch
+#include <dispatch/dispatch.h>
+#include "itkMultiThreaderGCDThreads.cxx"
+#elif defined(ITK_USE_PTHREADS)
 #include "itkMultiThreaderPThreads.cxx"
 #elif defined(ITK_USE_WIN32_THREADS)
 #include "itkMultiThreaderWinThreads.cxx"
@@ -41,6 +44,13 @@
 
 namespace itk
 {
+#if defined(ITK_USE_GRANDCENTRALDISPATCH)
+extern "C"
+{
+typedef void *( *c_void_cast )(void *);
+}
+#endif
+
 // Initialize static member that controls global maximum number of threads.
 ThreadIdType MultiThreader:: m_GlobalMaximumNumberOfThreads = ITK_MAX_THREADS;
 
@@ -201,10 +211,16 @@ MultiThreader::MultiThreader()
   m_SingleMethod = 0;
   m_SingleData = 0;
   m_NumberOfThreads = this->GetGlobalDefaultNumberOfThreads();
+
+
+  m_GCDQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+  m_GCDGroup = dispatch_group_create();
 }
 
 MultiThreader::~MultiThreader()
-{}
+{
+dispatch_release(m_GCDQueue);
+}
 
 // Set the user defined method that will be run on NumberOfThreads threads
 // when SingleMethodExecute is called.
@@ -235,8 +251,11 @@ void MultiThreader::SetMultipleMethod(ThreadIdType index, ThreadFunctionType f, 
 // Execute the method set as the SingleMethod on NumberOfThreads threads.
 void MultiThreader::SingleMethodExecute()
 {
-  ThreadIdType                 thread_loop = 0;
+#if defined(ITK_USE_GRANDCENTRALDISPATCH)
+  //NOTHING to define in GCD
+#else
   ThreadProcessIDType process_id[ITK_MAX_THREADS];
+#endif
 
   if ( !m_SingleMethod )
     {
@@ -258,14 +277,23 @@ void MultiThreader::SingleMethodExecute()
   std::string exceptionDetails;
   try
     {
-    for ( thread_loop = 1; thread_loop < m_NumberOfThreads; thread_loop++ )
+#if defined(ITK_USE_GRANDCENTRALDISPATCH)
+    const ThreadIdType thread_loop_start = 0;
+#else
+    const ThreadIdType thread_loop_start = 1;
+#endif
+    for ( ThreadIdType thread_loop = thread_loop_start; thread_loop < m_NumberOfThreads; thread_loop++ )
       {
       m_ThreadInfoArray[thread_loop].UserData    = m_SingleData;
       m_ThreadInfoArray[thread_loop].NumberOfThreads = m_NumberOfThreads;
       m_ThreadInfoArray[thread_loop].ThreadFunction = m_SingleMethod;
 
+#if defined(ITK_USE_GRANDCENTRALDISPATCH)
+      this->DispatchSingleMethodThread(&m_ThreadInfoArray[thread_loop]);
+#else
       process_id[thread_loop] =
         this->DispatchSingleMethodThread(&m_ThreadInfoArray[thread_loop]);
+#endif
       }
     }
   catch ( std::exception & e )
@@ -282,7 +310,9 @@ void MultiThreader::SingleMethodExecute()
     // threads are correctly cleaned
     exceptionOccurred = true;
     }
-
+#if defined(ITK_USE_GRANDCENTRALDISPATCH)
+  dispatch_group_wait( m_GCDGroup, DISPATCH_TIME_FOREVER );
+#else
   // Now, the parent thread calls this->SingleMethod() itself
   //
   //
@@ -347,6 +377,7 @@ void MultiThreader::SingleMethodExecute()
       exceptionOccurred = true;
       }
     }
+#endif // GCD BLOCK
 
   if ( exceptionOccurred )
     {
