@@ -32,6 +32,8 @@
 #include "itkThreadSupport.h"
 #include "itkIntTypes.h"
 
+
+
 namespace itk
 {
 /** \class MultiThreader
@@ -224,6 +226,11 @@ private:
    * ProcessObject is a friend so that it can call PrintSelf() on its
    * Multithreader. */
   friend class ProcessObject;
+
+#if defined (ITK_USE_GRANDCENTRALDISPATCH)
+  dispatch_queue_t m_GCDQueue;
+  dispatch_group_t m_GCDGroup;
+#endif
 };
 }  // end namespace itk
 #endif
