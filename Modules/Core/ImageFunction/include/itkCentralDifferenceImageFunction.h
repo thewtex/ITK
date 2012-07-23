@@ -21,6 +21,7 @@
 #include "itkImageFunction.h"
 #include "itkCovariantVector.h"
 #include "itkInterpolateImageFunction.h"
+#include "itkDefaultConvertPixelTraits.h"
 
 namespace itk
 {
@@ -39,11 +40,12 @@ namespace itk
  */
 template<
   class TInputImage,
-  class TCoordRep = float >
+  class TCoordRep = float,
+  class TOutputType = CovariantVector<double, TInputImage::ImageDimension >
+  >
 class ITK_EXPORT CentralDifferenceImageFunction:
   public ImageFunction< TInputImage,
-                        CovariantVector< double, \
-                                         TInputImage::ImageDimension >,
+                        TOutputType,
                         TCoordRep >
 {
 public:
@@ -52,13 +54,12 @@ public:
                       TInputImage::ImageDimension);
 
   /** Standard class typedefs. */
-  typedef CentralDifferenceImageFunction Self;
+  typedef CentralDifferenceImageFunction   Self;
   typedef ImageFunction< TInputImage,
-                         CovariantVector< double,
-                                          itkGetStaticConstMacro(ImageDimension) >,
+                         TOutputType,
                          TCoordRep >       Superclass;
-  typedef SmartPointer< Self >       Pointer;
-  typedef SmartPointer< const Self > ConstPointer;
+  typedef SmartPointer< Self >             Pointer;
+  typedef SmartPointer< const Self >       ConstPointer;
 
   /** Run-time type information (and related methods). */
   itkTypeMacro(CentralDifferenceImageFunction, ImageFunction);
@@ -69,8 +70,23 @@ public:
   /** InputImageType typedef support. */
   typedef TInputImage InputImageType;
 
+  /** InputPixelType typedef support */
+  typedef typename InputImageType::PixelType InputPixelType;
+
+  /** InputPixelConvert typedef support */
+  typedef DefaultConvertPixelTraits< InputPixelType > InputPixelConvertType;
+
   /** OutputType typdef support. */
   typedef typename Superclass::OutputType OutputType;
+
+  /** Output convert typedef support */
+  typedef DefaultConvertPixelTraits<OutputType> OutputConvertType;
+
+  /** Output value typedef support */
+  typedef typename OutputConvertType::ComponentType OutputValueType;
+
+  /** Scalar derivative typedef support */
+  typedef CovariantVector<OutputValueType, itkGetStaticConstMacro(ImageDimension) > ScalarDerivativeType;
 
   /** Index typedef support. */
   typedef typename Superclass::IndexType IndexType;
