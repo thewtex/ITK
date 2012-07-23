@@ -105,12 +105,6 @@ GaussianExponentialDiffeomorphicTransform<TScalar, NDimensions>
   SuperSuperclass::UpdateTransformParameters( expUpdate, factor );
 
   //
-  // Add the update field to the current total field before (optionally)
-  // smoothing the total field
-  //
-  SuperSuperclass::UpdateTransformParameters( update, factor );
-
-  //
   // Smooth the total field
   //
   bool smoothTotalField = true;
