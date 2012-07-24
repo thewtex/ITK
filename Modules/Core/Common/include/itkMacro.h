@@ -41,6 +41,8 @@
 #include "itkWin32Header.h"
 #include "itkConfigure.h"
 
+#include <typeinfo>
+
 #include <string>
 #include <cstdlib>
 #ifndef NDEBUG
@@ -1171,5 +1173,34 @@ itkTypeMacro(newexcp, parentexcp);                                              
 #define ITK_TYPENAME typename
 #endif
 
+/** itkDynamicCastInDebugMode
+  * Use static_cast in Release builds, and dynamic_cast in Debug
+  */
+#ifndef NDEBUG
+template <typename TTarget, typename TSource>
+TTarget itkDynamicCastInDebugMode(TSource x)
+{
+  if(x == 0)
+    {
+    return 0;
+    }
+  TTarget rval = dynamic_cast<TTarget>(x);
+  if(rval == 0)
+    {
+    itkGenericExceptionMacro(<< "Failed dynamic cast to "
+                             << typeid(TTarget).name()
+                             << " object type = "
+                             << x->GetNameOfClass());
+    }
+  return rval;
+}
+#else
+
+template <typename TTarget, typename TSource>
+TTarget itkDynamicCastInDebugMode(TSource x)
+{
+  return static_cast<TTarget>(x);
+}
+#endif // NDEBUG
 
 #endif //end of itkMacro.h

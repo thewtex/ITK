@@ -61,8 +61,8 @@ ImageToVectorImageFilter< TInputImage >
 
   for ( unsigned int i = 0; i < numberOfInputs; i++ )
     {
-    InputImageType *input = static_cast< InputImageType * >(
-      this->ProcessObject::GetInput(i) );
+    InputImageType *input =
+      itkDynamicCastInDebugMode< InputImageType * >( this->ProcessObject::GetInput(i) );
     if ( !input )
       {
       itkExceptionMacro(<< "Input " << i << " not set!");
