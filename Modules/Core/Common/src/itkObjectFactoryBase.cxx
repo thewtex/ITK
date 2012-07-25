@@ -173,7 +173,7 @@ void
 ObjectFactoryBase
 ::InitializeFactoryList()
 {
-  m_CleanUpObjectFactoryGlobal.Use();
+  static_cast<void>(m_CleanUpObjectFactoryGlobal.Use());
   /**
    * Don't do anything if we are already initialized
    */
