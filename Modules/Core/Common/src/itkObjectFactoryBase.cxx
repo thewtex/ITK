@@ -36,7 +36,7 @@ namespace
 class CleanUpObjectFactory
 {
 public:
-  inline void Use()
+  inline void Use() const
   {}
 
   ~CleanUpObjectFactory()
@@ -44,8 +44,17 @@ public:
     itk::ObjectFactoryBase::UnRegisterAllFactories();
   }
 };
-//NOTE:  KWStyle insists on m_ for m_CleanUpObjectFactoryGlobal
-static CleanUpObjectFactory m_CleanUpObjectFactoryGlobal;
+// Use a static function variable so that it will be initialized on
+// demand, and avoid a potential static initialization fiasco, during
+// factory registration.
+// This is an implementation of construct on first use with the trade
+// off of being deconstructed on exit, for not being able to be used
+// during other deconstruction of variables.
+const CleanUpObjectFactory &GetCleanUpObjectFactoryGlobal()
+{
+  static CleanUpObjectFactory _CleanUpObjectFactoryGlobal;
+  return _CleanUpObjectFactoryGlobal;
+}
 }
 
 namespace itk
@@ -173,7 +182,7 @@ void
 ObjectFactoryBase
 ::InitializeFactoryList()
 {
-  m_CleanUpObjectFactoryGlobal.Use();
+  GetCleanUpObjectFactoryGlobal().Use();
   /**
    * Don't do anything if we are already initialized
    */
