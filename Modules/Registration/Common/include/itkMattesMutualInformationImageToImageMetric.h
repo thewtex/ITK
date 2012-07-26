@@ -318,21 +318,29 @@ private:
 
   mutable PRatioArrayType m_PRatioArray;
 
-  /** Helper variable for accumulating the derivative of the metric. */
-  mutable std::vector<DerivativeType> m_ThreaderMetricDerivative;
-
   /** The moving image marginal PDF. */
   mutable std::vector<PDFValueType>               m_MovingImageMarginalPDF;
-  mutable std::vector<std::vector<PDFValueType> > m_ThreaderFixedImageMarginalPDF;
 
   /** The joint PDF and PDF derivatives. */
   typename std::vector<JointPDFType::Pointer>            m_ThreaderJointPDF;
   typename std::vector<JointPDFDerivativesType::Pointer> m_ThreaderJointPDFDerivatives;
 
-  std::vector<int> m_ThreaderJointPDFStartBin;
-  std::vector<int> m_ThreaderJointPDFEndBin;
-
   mutable std::vector<PDFValueType> m_ThreaderJointPDFSum;
+
+  struct PerThreadS
+  {
+    int JointPDFStartBin;
+    int JointPDFEndBin;
+
+    /** Helper variable for accumulating the derivative of the metric. */
+    DerivativeType MetricDerivative;
+
+    std::vector<PDFValueType> FixedImageMarginalPDF;
+
+    typename TransformType::JacobianType Jacobian;
+  }  __attribute__ ((aligned (64)));
+
+  mutable std::vector< PerThreadS > m_PerThread;
 
   bool         m_UseExplicitPDFDerivatives;
   mutable bool m_ImplicitDerivativesSecondPass;
