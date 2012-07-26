@@ -72,6 +72,8 @@
 #cmakedefine ITK_HAS_STLTR1_TR1_TYPE_TRAITS
 // defined if the system has <type_traits> header
 #cmakedefine ITK_HAS_STLTR1_TYPE_TRAITS
+// defined if the compiler supports C++11 alignas type specifier
+#cmakedefine ITK_HAS_CPP11_ALIGNAS
 
 /*
  * Every exception may define a string with the function name for each
