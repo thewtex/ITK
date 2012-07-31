@@ -209,7 +209,7 @@ void TreeNode< TValueType >::AddChild(TreeNode< TValueType > *node)
   Pointer nodeKeepAlive = node;
 
   node->SetParent(this);
-  m_Children.push_back(node);
+  m_Children.push_back(nodeKeepAlive);
 }
 
 /** Add a child at a specific position in the children list */
