@@ -57,14 +57,6 @@ endif(NOT EXTERNAL_WRAP_ITK_PROJECT)
 
 
 ###############################################################################
-# hide cable swig dir in external projects - it is safer to use the same as the
-# one used to build wrapitk
-if(EXTERNAL_WRAP_ITK_PROJECT)
-  mark_as_advanced(GCCXML)
-endif(EXTERNAL_WRAP_ITK_PROJECT)
-
-
-###############################################################################
 # store the current dir, so it can be reused later
 set(ITK_WRAP_GCCXML_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}" CACHE INTERNAL "gccxml source dir")
 set(ITK_WRAP_GCCXML_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}" CACHE INTERNAL "gccxml binary dir")
