@@ -73,7 +73,7 @@ protected:
   SquaredEdgeLengthDecimationQuadEdgeMeshFilter();
   virtual ~SquaredEdgeLengthDecimationQuadEdgeMeshFilter();
 
-  /**
+  /*
    * \brief Compute the measure value for iEdge
    * \param[in] iEdge
    * \return measure value, here the squared edge length
