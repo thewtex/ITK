@@ -84,7 +84,7 @@ public:
    * the pixel buffer.
    */
   virtual void BuildFromBuffer(const void *buffer,
-                               const int xsize, const int ysize, const int zsize) = 0;
+                               const unsigned int xsize, const unsigned int ysize, const unsigned int zsize) = 0;
 
   /** Get the ColorTable Pointer
    *
@@ -128,7 +128,7 @@ public:
 
   ImageTypePointer GetImage();
 
-  virtual void BuildFromBuffer(const void *buffer, const int xsize, const int ysize, const int zsize);
+  virtual void BuildFromBuffer(const void *buffer, const unsigned int xsize, const unsigned int ysize, const unsigned int zsize);
 
   void BuildFromImage(Image< TPixel, 3 > *fromImage);
 
