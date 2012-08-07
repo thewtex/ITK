@@ -20,7 +20,9 @@
 
 #include "itkGaussianExponentialDiffeomorphicTransform.h"
 
+#include "itkComposeDisplacementFieldsImageFilter.h"
 #include "itkExponentialDisplacementFieldImageFilter.h"
+#include "itkMultiplyImageFilter.h"
 
 namespace itk
 {
@@ -88,20 +90,11 @@ GaussianExponentialDiffeomorphicTransform<TScalar, NDimensions>
     updateField = updateSmoothField;
     }
 
-  typedef ExponentialDisplacementFieldImageFilter<ConstantVelocityFieldType, DisplacementFieldType> ExponentiatorType;
-  typename ExponentiatorType::Pointer exponentiator = ExponentiatorType::New();
-  exponentiator->SetInput( updateField );
-  exponentiator->SetAutomaticNumberOfIterations( this->m_CalculateNumberOfIterationsAutomatically );
-  exponentiator->SetMaximumNumberOfIterations( this->m_MaximumNumberOfIterations );
-  exponentiator->SetComputeInverse( false );
-  exponentiator->Update();
+  // Rescale the field by the max norm
 
-  // Now rescale the field by the max norm
-
-  typename DisplacementFieldType::Pointer expField = exponentiator->GetOutput();
   typename DisplacementFieldType::SpacingType spacing = displacementField->GetSpacing();
 
-  ImageRegionIterator<DisplacementFieldType> ItF( expField, expField->GetRequestedRegion() );
+  ImageRegionIterator<DisplacementFieldType> ItF( updateField, updateField->GetRequestedRegion() );
 
   ScalarType maxNorm = NumericTraits<ScalarType>::NonpositiveMin();
   for( ItF.GoToBegin(); !ItF.IsAtEnd(); ++ItF )
@@ -127,14 +120,25 @@ GaussianExponentialDiffeomorphicTransform<TScalar, NDimensions>
 
   typedef MultiplyImageFilter<DisplacementFieldType, RealImageType, DisplacementFieldType> MultiplierType;
   typename MultiplierType::Pointer multiplier = MultiplierType::New();
-  multiplier->SetInput( expField );
+  multiplier->SetInput( updateField );
   multiplier->SetConstant( scale );
 
   typename DisplacementFieldType::Pointer scaledUpdateField = multiplier->GetOutput();
   scaledUpdateField->Update();
   scaledUpdateField->DisconnectPipeline();
 
-  DerivativeValueType *updatePointer = reinterpret_cast<DerivativeValueType *>( scaledUpdateField->GetBufferPointer() );
+  typedef ExponentialDisplacementFieldImageFilter<ConstantVelocityFieldType, DisplacementFieldType> ExponentiatorType;
+  typename ExponentiatorType::Pointer exponentiator = ExponentiatorType::New();
+  exponentiator->SetInput( scaledUpdateField );
+  exponentiator->SetAutomaticNumberOfIterations( this->m_CalculateNumberOfIterationsAutomatically );
+  exponentiator->SetMaximumNumberOfIterations( this->m_MaximumNumberOfIterations );
+  exponentiator->SetComputeInverse( false );
+
+  typename DisplacementFieldType::Pointer exponentiatedField = exponentiator->GetOutput();
+  exponentiatedField->Update();
+  exponentiatedField->DisconnectPipeline();
+
+  DerivativeValueType *updatePointer = reinterpret_cast<DerivativeValueType *>( exponentiatedField->GetBufferPointer() );
 
   // Add the update field to the current total field
   bool letArrayManageMemory = false;
@@ -169,6 +173,60 @@ GaussianExponentialDiffeomorphicTransform<TScalar, NDimensions>
     DisplacementFieldPointer totalSmoothField = this->GaussianSmoothDisplacementField( totalField, this->GetGaussianSmoothingVarianceForTheTotalField() );
 
     ImageAlgorithm::Copy<DisplacementFieldType, DisplacementFieldType>( totalSmoothField, totalField, totalSmoothField->GetBufferedRegion(), totalField->GetBufferedRegion() );
+    }
+
+  // Compute the inverse displacement field if requested
+
+  if( this->m_ComputeInverse )
+    {
+
+    // Create identity field if the inverse displacement field doesn't exist.
+
+    if( !this->GetInverseDisplacementField() )
+      {
+      DisplacementVectorType zeroVector( 0.0 );
+
+      typename DisplacementFieldType::Pointer identityField = DisplacementFieldType::New();
+      identityField->CopyInformation( displacementField );
+      identityField->SetRegions( displacementField->GetRequestedRegion() );
+      identityField->Allocate();
+      identityField->FillBuffer( zeroVector );
+
+      this->SetInverseDisplacementField( identityField );
+      }
+
+    typename ExponentiatorType::Pointer exponentiatorInv = ExponentiatorType::New();
+    exponentiatorInv->SetInput( scaledUpdateField );
+    exponentiatorInv->SetAutomaticNumberOfIterations( this->m_CalculateNumberOfIterationsAutomatically );
+    exponentiatorInv->SetMaximumNumberOfIterations( this->m_MaximumNumberOfIterations );
+    exponentiatorInv->SetComputeInverse( true );
+    exponentiatorInv->Update();
+
+    typedef ComposeDisplacementFieldsImageFilter<DisplacementFieldType, DisplacementFieldType> ComposerType;
+    typename ComposerType::Pointer composer = ComposerType::New();
+    composer->SetDisplacementField( exponentiatorInv->GetOutput() );
+    composer->SetWarpingField( this->GetInverseDisplacementField() );
+    composer->Update();
+
+    //
+    // Smooth the total field
+    //
+    bool smoothTotalInvField = true;
+    if( this->m_GaussianSmoothingVarianceForTheTotalField <= 0.0 )
+      {
+      itkDebugMacro( "Not smoothing the total inverse field." );
+      smoothTotalInvField = false;
+
+      this->SetInverseDisplacementField( composer->GetOutput() );
+      }
+    if( smoothTotalInvField )
+      {
+      itkDebugMacro( "Smoothing the total inverse field." );
+
+      DisplacementFieldPointer totalSmoothInvField = this->GaussianSmoothDisplacementField( composer->GetOutput(), this->GetGaussianSmoothingVarianceForTheTotalField() );
+
+      this->SetInverseDisplacementField( totalSmoothInvField );
+      }
     }
 }
 
