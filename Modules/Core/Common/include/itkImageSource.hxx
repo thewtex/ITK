@@ -169,25 +169,22 @@ ImageSource< TOutputImage >
   const typename TOutputImage::SizeType & requestedRegionSize =
     outputPtr->GetRequestedRegion().GetSize();
 
-  int splitAxis;
-  typename TOutputImage::IndexType splitIndex;
-  typename TOutputImage::SizeType splitSize;
 
   // Initialize the splitRegion to the output requested region
   splitRegion = outputPtr->GetRequestedRegion();
-  splitIndex = splitRegion.GetIndex();
-  splitSize = splitRegion.GetSize();
+  typename TOutputImage::IndexType splitIndex = splitRegion.GetIndex();
+  typename TOutputImage::SizeType splitSize = splitRegion.GetSize();
 
   // split on the outermost dimension available
-  splitAxis = outputPtr->GetImageDimension() - 1;
+  unsigned int splitAxis = outputPtr->GetImageDimension() - 1;
   while ( requestedRegionSize[splitAxis] == 1 )
     {
-    --splitAxis;
-    if ( splitAxis < 0 )
+    if ( splitAxis == 0 )
       { // cannot split
       itkDebugMacro("  Cannot Split");
       return 1;
       }
+    --splitAxis;
     }
 
   // determine the actual number of pieces that will be generated
