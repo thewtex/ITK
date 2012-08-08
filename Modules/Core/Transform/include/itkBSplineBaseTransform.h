@@ -290,7 +290,7 @@ public:
 
   virtual TransformCategoryType GetTransformCategory() const
   {
-    return Self::BSpline;
+    return Superclass::BSpline;
   }
 
   unsigned int GetNumberOfAffectedWeights() const;

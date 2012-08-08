@@ -96,7 +96,8 @@ BSplineBaseTransform<TScalarType, NDimensions, VSplineOrder>
     {
     // Clean up this->m_InternalParametersBuffer because we will
     // use an externally supplied set of parameters as the buffer
-    this->m_InternalParametersBuffer = ParametersType( 0 );
+//     this->m_InternalParametersBuffer = ParametersType( 0 );
+    this->m_InternalParametersBuffer = parameters;
     }
 
   // Keep a reference to the input parameters

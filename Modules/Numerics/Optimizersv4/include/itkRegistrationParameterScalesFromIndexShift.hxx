@@ -52,11 +52,6 @@ RegistrationParameterScalesFromIndexShift< TMetric >
 {
   typedef itk::ContinuousIndex< FloatType, TTransform::OutputSpaceDimension > TransformOutputType;
 
-  // We save the old parameters and apply the delta parameters to calculate the
-  // voxel shift. After it is done, we will reset to the old parameters.
-  TransformBase *transform = const_cast<TransformBase *>(this->GetTransform());
-  const ParametersType oldParameters = transform->GetParameters();
-
   const SizeValueType numSamples = this->m_SamplePoints.size();
 
   VirtualPointType point;
@@ -87,7 +82,12 @@ RegistrationParameterScalesFromIndexShift< TMetric >
   }
 
   // restore the parameters in the transform
-  transform->SetParameters(oldParameters);
+  ParametersType negDeltaParameters( deltaParameters.Size() );
+  for( unsigned int i = 0; i < negDeltaParameters.Size(); i++ )
+    {
+    negDeltaParameters[i] = -deltaParameters[i];
+    }
+  this->UpdateTransformParameters(negDeltaParameters);
 }
 
 /** Transform a physical point to its continuous index */

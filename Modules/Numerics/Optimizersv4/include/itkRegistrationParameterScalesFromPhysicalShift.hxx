@@ -54,8 +54,6 @@ RegistrationParameterScalesFromPhysicalShift< TMetric >
 
   // We save the old parameters and apply the delta parameters to calculate the
   // voxel shift. After it is done, we will reset to the old parameters.
-  TransformBase *transform = const_cast<TransformBase *>(this->GetTransform());
-  const ParametersType oldParameters = transform->GetParameters();
 
   const SizeValueType numSamples = this->m_SamplePoints.size();
 
@@ -84,10 +82,15 @@ RegistrationParameterScalesFromPhysicalShift< TMetric >
 
     // find the local shift for each sample point
     sampleShifts[c] = newMappedVoxel.EuclideanDistanceTo(oldMappedVoxels[c]);
-  }
+    }
 
   // restore the parameters in the transform
-  transform->SetParameters(oldParameters);
+  ParametersType negDeltaParameters( deltaParameters.Size() );
+  for( unsigned int i = 0; i < negDeltaParameters.Size(); i++ )
+    {
+    negDeltaParameters[i] = -deltaParameters[i];
+    }
+  this->UpdateTransformParameters(negDeltaParameters);
 }
 
 /** Print the information about this class */
