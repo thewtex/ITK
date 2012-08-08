@@ -355,15 +355,17 @@ protected:
    */
   CoefficientImageArray m_CoefficientImages;
 
-  /** Keep a pointer to the input parameters. */
-  const ParametersType *m_InputParametersPointer;
-
   /** Internal parameters buffer. */
   ParametersType m_InternalParametersBuffer;
 
-
   /** Pointer to function used to compute Bspline interpolation weights. */
   typename WeightsFunctionType::Pointer m_WeightsFunction;
+
+  /** Return the number of local parameters */
+  virtual NumberOfParametersType GetNumberOfLocalParameters() const
+  {
+    return this->GetNumberOfParameters();
+  }
 
 private:
   BSplineBaseTransform( const Self & ); // purposely not implemented
