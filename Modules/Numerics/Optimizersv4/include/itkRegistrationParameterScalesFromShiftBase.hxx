@@ -53,7 +53,8 @@ RegistrationParameterScalesFromShiftBase< TMetric >
   FloatType minNonZeroShift = NumericTraits<FloatType>::max();
 
   OffsetValueType offset = 0;
-  if( this->GetTransform()->GetTransformCategory() == MovingTransformType::DisplacementField )
+
+  if( this->IsDisplacementFieldTransform() )
     {
     //FIXME: remove if we end up not using this
     //if( this->MetricIsPointSetToPointSetType() )
@@ -77,6 +78,7 @@ RegistrationParameterScalesFromShiftBase< TMetric >
     // since smoothing may change the values around the local voxel.
     deltaParameters.Fill(NumericTraits< typename ParametersType::ValueType >::Zero);
     deltaParameters[offset + i] = m_SmallParameterVariation;
+
     maxShift = this->ComputeMaximumVoxelShift(deltaParameters);
 
     parameterScales[i] = maxShift;
@@ -108,7 +110,6 @@ RegistrationParameterScalesFromShiftBase< TMetric >
       parameterScales[i] *= NumericTraits< typename ScalesType::ValueType >::One / m_SmallParameterVariation / m_SmallParameterVariation;
       }
     }
-
 }
 
 /** Compute the scale for a step. For transform T(x + t * step), the scale
@@ -123,7 +124,7 @@ RegistrationParameterScalesFromShiftBase< TMetric >
   this->SetStepScaleSamplingStrategy();
   this->SampleVirtualDomain();
 
-  if( this->GetTransform()->GetTransformCategory() == MovingTransformType::DisplacementField )
+  if( this->TransformHasLocalSupportForScalesEstimation() )
     {
     return this->ComputeMaximumVoxelShift(step);
     }
@@ -161,9 +162,9 @@ void
 RegistrationParameterScalesFromShiftBase< TMetric >
 ::EstimateLocalStepScales(const ParametersType &step, ScalesType &localStepScales)
 {
-  if( !( this->GetTransform()->GetTransformCategory() == MovingTransformType::DisplacementField ) )
+  if( !this->TransformHasLocalSupportForScalesEstimation() )
     {
-    itkExceptionMacro("EstimateLocalStepScales: the transform doesn't have local support.");
+    itkExceptionMacro( "EstimateLocalStepScales: the transform doesn't have local support (displacement field or b-spline)." );
     }
 
   this->CheckAndSetInputs();

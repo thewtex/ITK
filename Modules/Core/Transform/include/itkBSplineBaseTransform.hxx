@@ -96,7 +96,7 @@ BSplineBaseTransform<TScalarType, NDimensions, VSplineOrder>
     {
     // Clean up this->m_InternalParametersBuffer because we will
     // use an externally supplied set of parameters as the buffer
-    this->m_InternalParametersBuffer = ParametersType( 0 );
+    this->m_InternalParametersBuffer = parameters;
     }
 
   // Keep a reference to the input parameters
@@ -248,7 +248,8 @@ BSplineBaseTransform<TScalarType, NDimensions, VSplineOrder>
     itkExceptionMacro(
       << "Cannot GetParameters() because this->m_InputParametersPointer is NULL." );
     }
-  return *( this->m_InputParametersPointer );
+//   return *( this->m_InputParametersPointer );
+  return this->m_InternalParametersBuffer;
 }
 
 // Get the parameters

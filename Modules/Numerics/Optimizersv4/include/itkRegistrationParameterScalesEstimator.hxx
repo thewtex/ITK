@@ -19,6 +19,8 @@
 #define __itkRegistrationParameterScalesEstimator_hxx
 
 #include "itkRegistrationParameterScalesEstimator.h"
+
+#include "itkCompositeTransform.h"
 #include "itkPointSet.h"
 #include "itkObjectToObjectMetric.h"
 
@@ -125,23 +127,104 @@ RegistrationParameterScalesEstimator< TMetric >
 }
 
 /** Check if the transform being optimized has local support. */
+
 template< class TMetric >
 bool
 RegistrationParameterScalesEstimator< TMetric >
 ::IsDisplacementFieldTransform()
 {
-  bool isDisplacementFieldTransform = false;
-
   if( this->m_TransformForward && this->m_Metric->GetMovingTransform()->GetTransformCategory() == MovingTransformType::DisplacementField )
     {
-    isDisplacementFieldTransform = true;
+    return true;
     }
-  if( !this->m_TransformForward && this->m_Metric->GetFixedTransform()->GetTransformCategory() == FixedTransformType::DisplacementField )
+  else if( !this->m_TransformForward && this->m_Metric->GetFixedTransform()->GetTransformCategory() == FixedTransformType::DisplacementField )
     {
-    isDisplacementFieldTransform = true;
+    return true;
+    }
+  return false;
+}
+
+template< class TMetric >
+bool
+RegistrationParameterScalesEstimator< TMetric >
+::IsBSplineTransform()
+{
+  bool isBSplineTransform = false;
+
+  if( this->m_TransformForward && this->m_Metric->GetMovingTransform()->GetTransformCategory() == MovingTransformType::BSpline )
+    {
+    isBSplineTransform = true;
+    }
+  else if( !this->m_TransformForward && this->m_Metric->GetFixedTransform()->GetTransformCategory() == FixedTransformType::BSpline )
+    {
+    isBSplineTransform = true;
     }
 
-  return isDisplacementFieldTransform;
+  // We need to check for the case where the fixed/moving transform is
+  // a composite transform with optimizing B-spline transforms.
+  // The CompositeTransform class function GetTransformCategory() handles
+  // this scenario for displacement field transforms but we need to duplicate
+  // the analogous b-spline case here.
+
+  if( !isBSplineTransform )
+    {
+    if( this->m_TransformForward )
+      {
+      typedef CompositeTransform<FloatType, MovingDimension> CompositeTransformType;
+      typename CompositeTransformType::Pointer compositeTransform = dynamic_cast<CompositeTransformType *>( const_cast<MovingTransformType *>( this->m_Metric->GetMovingTransform() ) );
+
+      if( compositeTransform )
+        {
+        isBSplineTransform = true;
+        for( signed long tind = static_cast<signed long>( compositeTransform->GetNumberOfTransforms() ) - 1; tind >= 0; tind-- )
+          {
+          if( compositeTransform->GetNthTransformToOptimize( tind ) &&
+            ( compositeTransform->GetNthTransform( tind ).GetPointer()->GetTransformCategory() != MovingTransformType::BSpline ) )
+            {
+            isBSplineTransform = false;
+            break;
+            }
+          }
+        }
+      }
+    else // !this->m_TransformForward
+      {
+      typedef CompositeTransform<FloatType, FixedDimension> CompositeTransformType;
+      typename CompositeTransformType::Pointer compositeTransform = dynamic_cast<CompositeTransformType *>( const_cast<FixedTransformType *>( this->m_Metric->GetFixedTransform() ) );
+
+      if( compositeTransform )
+        {
+        isBSplineTransform = true;
+        for( signed long tind = static_cast<signed long>( compositeTransform->GetNumberOfTransforms() ) - 1; tind >= 0; tind-- )
+          {
+          if( compositeTransform->GetNthTransformToOptimize( tind ) &&
+            ( compositeTransform->GetNthTransform( tind ).GetPointer()->GetTransformCategory() != FixedTransformType::BSpline ) )
+            {
+            isBSplineTransform = false;
+            break;
+            }
+          }
+        }
+      }
+    }
+
+  return isBSplineTransform;
+}
+
+
+template< class TMetric >
+bool
+RegistrationParameterScalesEstimator< TMetric >
+::TransformHasLocalSupportForScalesEstimation()
+{
+  if( this->IsDisplacementFieldTransform() || this->IsBSplineTransform() )
+    {
+    return true;
+    }
+  else
+    {
+    return false;
+    }
 }
 
 /** Get the number of scales. */
@@ -301,7 +384,7 @@ RegistrationParameterScalesEstimator< TMetric >
     {
     this->SetSamplingStrategy(VirtualDomainPointSetSampling);
     }
-  else if( this->IsDisplacementFieldTransform() )
+  else if( this->TransformHasLocalSupportForScalesEstimation() )
     {
     this->SetSamplingStrategy(CentralRegionSampling);
     }
@@ -328,7 +411,7 @@ RegistrationParameterScalesEstimator< TMetric >
     {
     this->SetSamplingStrategy(VirtualDomainPointSetSampling);
     }
-  else if (this->IsDisplacementFieldTransform())
+  else if( this->TransformHasLocalSupportForScalesEstimation() )
     {
     // Have to use FullDomainSampling for a transform with local support
     this->SetSamplingStrategy(FullDomainSampling);
