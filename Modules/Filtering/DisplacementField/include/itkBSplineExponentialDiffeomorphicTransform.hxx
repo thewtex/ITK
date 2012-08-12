@@ -200,8 +200,19 @@ BSplineExponentialDiffeomorphicTransform<TScalar, NDimensions>
   typedef ExponentialDisplacementFieldImageFilter<ConstantVelocityFieldType, DisplacementFieldType> ExponentiatorType;
   typename ExponentiatorType::Pointer exponentiator = ExponentiatorType::New();
   exponentiator->SetInput( velocityField );
-  exponentiator->SetAutomaticNumberOfIterations( this->m_CalculateNumberOfIntegrationStepsAutomatically );
-  exponentiator->SetMaximumNumberOfIterations( this->m_NumberOfIntegrationSteps );
+  if( this->m_CalculateNumberOfIntegrationStepsAutomatically || this->m_NumberOfIntegrationSteps == 0 )
+    {
+    exponentiator->SetAutomaticNumberOfIterations( true );
+    if( this->m_NumberOfIntegrationSteps == 0 )
+      {
+      itkWarningMacro( "Number of integration steps is 0.  Calculating the number of integration steps automatically." );
+      }
+    }
+  else
+    {
+    exponentiator->SetAutomaticNumberOfIterations( false );
+    exponentiator->SetMaximumNumberOfIterations( this->m_NumberOfIntegrationSteps );
+    }
   exponentiator->SetComputeInverse( false );
   exponentiator->Update();
 
@@ -213,8 +224,19 @@ BSplineExponentialDiffeomorphicTransform<TScalar, NDimensions>
     {
     typename ExponentiatorType::Pointer exponentiatorInv = ExponentiatorType::New();
     exponentiatorInv->SetInput( velocityField );
-    exponentiatorInv->SetAutomaticNumberOfIterations( this->m_CalculateNumberOfIntegrationStepsAutomatically );
-    exponentiatorInv->SetMaximumNumberOfIterations( this->m_NumberOfIntegrationSteps );
+    if( this->m_CalculateNumberOfIntegrationStepsAutomatically || this->m_NumberOfIntegrationSteps == 0 )
+      {
+      exponentiatorInv->SetAutomaticNumberOfIterations( true );
+      if( this->m_NumberOfIntegrationSteps == 0 )
+        {
+        itkWarningMacro( "Number of integration steps is 0.  Calculating the number of integration steps automatically." );
+        }
+      }
+    else
+      {
+      exponentiatorInv->SetAutomaticNumberOfIterations( false );
+      exponentiatorInv->SetMaximumNumberOfIterations( this->m_NumberOfIntegrationSteps );
+      }
     exponentiatorInv->SetComputeInverse( true );
     exponentiatorInv->Update();
 
