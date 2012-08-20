@@ -201,22 +201,22 @@ int PerformExpImageRegistration( int argc, char *argv[] )
   typedef itk::Vector<RealType, VImageDimension> VectorType;
   VectorType zeroVector( 0.0 );
   typedef itk::Image<VectorType, VImageDimension> DisplacementFieldType;
-  typename DisplacementFieldType::Pointer displacementField = DisplacementFieldType::New();
+  typedef itk::Image<VectorType, VImageDimension> ConstantVelocityFieldType;
+  typename ConstantVelocityFieldType::Pointer displacementField = ConstantVelocityFieldType::New();
   displacementField->CopyInformation( fixedImage );
   displacementField->SetRegions( fixedImage->GetBufferedRegion() );
   displacementField->Allocate();
   displacementField->FillBuffer( zeroVector );
 
-  typedef itk::GaussianExponentialDiffeomorphicTransform<RealType, VImageDimension> DisplacementFieldTransformType;
+  typedef itk::GaussianExponentialDiffeomorphicTransform<RealType, VImageDimension> ConstantVelocityFieldTransformType;
 
-  typedef itk::ImageRegistrationMethodv4<FixedImageType, MovingImageType, DisplacementFieldTransformType> DisplacementFieldRegistrationType;
+  typedef itk::ImageRegistrationMethodv4<FixedImageType, MovingImageType, ConstantVelocityFieldTransformType> DisplacementFieldRegistrationType;
   typename DisplacementFieldRegistrationType::Pointer displacementFieldSimple = DisplacementFieldRegistrationType::New();
 
-  typename DisplacementFieldTransformType::Pointer fieldTransform = const_cast<DisplacementFieldTransformType *>( displacementFieldSimple->GetOutput()->Get() );
+  typename ConstantVelocityFieldTransformType::Pointer fieldTransform = const_cast<ConstantVelocityFieldTransformType *>( displacementFieldSimple->GetOutput()->Get() );
   fieldTransform->SetGaussianSmoothingVarianceForTheUpdateField( 0.75 );
   fieldTransform->SetGaussianSmoothingVarianceForTheVelocityField( 1.5 );
-  fieldTransform->SetDisplacementField( displacementField );
-  fieldTransform->SetComputeInverse( true );
+  fieldTransform->SetConstantVelocityField( displacementField );
   fieldTransform->SetCalculateNumberOfIntegrationStepsAutomatically( true );
 
   typedef itk::ANTSNeighborhoodCorrelationImageToImageMetricv4<FixedImageType, MovingImageType> CorrelationMetricType;
@@ -267,7 +267,7 @@ int PerformExpImageRegistration( int argc, char *argv[] )
   smoothingSigmasPerLevel[2] = 1;
   displacementFieldSimple->SetSmoothingSigmasPerLevel( smoothingSigmasPerLevel );
 
-  typedef itk::GaussianExponentialDiffeomorphicTransformParametersAdaptor<DisplacementFieldTransformType> DisplacementFieldTransformAdaptorType;
+  typedef itk::GaussianExponentialDiffeomorphicTransformParametersAdaptor<ConstantVelocityFieldTransformType> VelocityFieldTransformAdaptorType;
 
   typename DisplacementFieldRegistrationType::TransformParametersAdaptorsContainerType adaptors;
 
@@ -277,13 +277,13 @@ int PerformExpImageRegistration( int argc, char *argv[] )
     // domain at each level.  To speed up calculation and avoid unnecessary memory
     // usage, we could calculate these fixed parameters directly.
 
-    typedef itk::ShrinkImageFilter<DisplacementFieldType, DisplacementFieldType> ShrinkFilterType;
+    typedef itk::ShrinkImageFilter<ConstantVelocityFieldType, ConstantVelocityFieldType> ShrinkFilterType;
     typename ShrinkFilterType::Pointer shrinkFilter = ShrinkFilterType::New();
     shrinkFilter->SetShrinkFactors( shrinkFactorsPerLevel[level] );
-    shrinkFilter->SetInput( displacementField );
+    shrinkFilter->SetInput( fieldTransform->GetConstantVelocityField() );
     shrinkFilter->Update();
 
-    typename DisplacementFieldTransformAdaptorType::Pointer fieldTransformAdaptor = DisplacementFieldTransformAdaptorType::New();
+    typename VelocityFieldTransformAdaptorType::Pointer fieldTransformAdaptor = VelocityFieldTransformAdaptorType::New();
     fieldTransformAdaptor->SetRequiredSpacing( shrinkFilter->GetOutput()->GetSpacing() );
     fieldTransformAdaptor->SetRequiredSize( shrinkFilter->GetOutput()->GetBufferedRegion().GetSize() );
     fieldTransformAdaptor->SetRequiredDirection( shrinkFilter->GetOutput()->GetDirection() );
@@ -308,7 +308,7 @@ int PerformExpImageRegistration( int argc, char *argv[] )
     return EXIT_FAILURE;
     }
 
-  compositeTransform->AddTransform( const_cast<DisplacementFieldTransformType *>( displacementFieldSimple->GetOutput()->Get() ) );
+  compositeTransform->AddTransform( const_cast<ConstantVelocityFieldTransformType *>( displacementFieldSimple->GetOutput()->Get() ) );
 
   std::cout << "After displacement registration: " << std::endl
             << "Last LearningRate: " << optimizer->GetLearningRate() << std::endl

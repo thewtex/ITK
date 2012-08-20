@@ -26,8 +26,10 @@ namespace itk
 template<class TTransform>
 GaussianExponentialDiffeomorphicTransformParametersAdaptor<TTransform>
 ::GaussianExponentialDiffeomorphicTransformParametersAdaptor() :
-  m_GaussianSmoothingVarianceForTheVelocityField( 1.75 ),
-  m_GaussianSmoothingVarianceForTheVelocityFieldSetTime( 0 )
+  m_GaussianSmoothingVarianceForTheVelocityField( 0.5 ),
+  m_GaussianSmoothingVarianceForTheUpdateField( 1.75 ),
+  m_GaussianSmoothingVarianceForTheVelocityFieldSetTime( 0 ),
+  m_GaussianSmoothingVarianceForTheUpdateFieldSetTime( 0 )
 {
 }
 
@@ -54,6 +56,20 @@ GaussianExponentialDiffeomorphicTransformParametersAdaptor<TTransform>
 template<class TTransform>
 void
 GaussianExponentialDiffeomorphicTransformParametersAdaptor<TTransform>
+::SetGaussianSmoothingVarianceForTheUpdateField( ScalarType variance )
+{
+  this->m_GaussianSmoothingVarianceForTheUpdateFieldSetTime = this->GetMTime();
+  if( this->m_GaussianSmoothingVarianceForTheUpdateField != variance )
+    {
+    itkDebugMacro( "Setting GaussianSmoothingVarianceForTheUpdateField to " << variance );
+    this->m_GaussianSmoothingVarianceForTheUpdateField = variance;
+    this->Modified();
+    }
+}
+
+template<class TTransform>
+void
+GaussianExponentialDiffeomorphicTransformParametersAdaptor<TTransform>
 ::AdaptTransformParameters()
 {
   Superclass::AdaptTransformParameters();
@@ -63,8 +79,12 @@ GaussianExponentialDiffeomorphicTransformParametersAdaptor<TTransform>
     this->m_Transform->SetGaussianSmoothingVarianceForTheVelocityField(
       this->m_GaussianSmoothingVarianceForTheVelocityField );
     }
+  if( this->m_GaussianSmoothingVarianceForTheUpdateFieldSetTime > 0 )
+    {
+    this->m_Transform->SetGaussianSmoothingVarianceForTheUpdateField(
+      this->m_GaussianSmoothingVarianceForTheUpdateField );
+    }
 }
-
 
 template <class TTransform>
 void
@@ -80,6 +100,12 @@ GaussianExponentialDiffeomorphicTransformParametersAdaptor<TTransform>
       {
       os << indent << "m_GaussianSmoothingVarianceForTheVelocityField: "
          << this->m_GaussianSmoothingVarianceForTheVelocityField
+         << std::endl;
+      }
+    if( this->m_GaussianSmoothingVarianceForTheUpdateFieldSetTime > 0 )
+      {
+      os << indent << "m_GaussianSmoothingVarianceForTheUpdateField: "
+         << this->m_GaussianSmoothingVarianceForTheUpdateField
          << std::endl;
       }
     }

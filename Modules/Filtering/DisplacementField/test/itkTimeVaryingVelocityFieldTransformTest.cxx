@@ -99,7 +99,7 @@ int itkTimeVaryingVelocityFieldTransformTest( int, char* [] )
   TransformType::Pointer transform = TransformType::New();
   transform->SetLowerTimeBound( 0.0 );
   transform->SetUpperTimeBound( 1.0 );
-  transform->SetTimeVaryingVelocityField( timeVaryingVelocityField );
+  transform->SetVelocityField( timeVaryingVelocityField );
   transform->IntegrateVelocityField();
 
   // Now Clone the Transform and test transform again
@@ -116,6 +116,9 @@ int itkTimeVaryingVelocityFieldTransformTest( int, char* [] )
   displacement.Fill( 0.1 );
 
   point += displacement;
+
+  std::cout << point << " , " << transformedPoint << std::endl;
+
   if( point.EuclideanDistanceTo( transformedPoint ) > 0.01 )
     {
     std::cerr << "Failed to produce the expected transformed point." << std::endl;
@@ -151,7 +154,6 @@ int itkTimeVaryingVelocityFieldTransformTest( int, char* [] )
     std::cerr << "Cloned transform failed to produce the expected inverse transformed point." << std::endl;
     return EXIT_FAILURE;
     }
-
 
   transform->Print( std::cout, 3 );
 

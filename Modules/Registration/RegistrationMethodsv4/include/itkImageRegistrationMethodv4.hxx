@@ -253,10 +253,14 @@ ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform>
 {
   for( this->m_CurrentLevel = 0; this->m_CurrentLevel < this->m_NumberOfLevels; this->m_CurrentLevel++ )
     {
+    std::cout << "HERE 0" << std::endl;
     this->InitializeRegistrationAtEachLevel( this->m_CurrentLevel );
+    std::cout << "HERE 1" << std::endl;
 
     this->m_Metric->Initialize();
+    std::cout << "HERE 2" << std::endl;
     this->m_Optimizer->StartOptimization();
+    std::cout << "HERE 3" << std::endl;
     }
 }
 
