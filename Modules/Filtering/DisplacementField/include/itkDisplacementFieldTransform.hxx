@@ -93,7 +93,10 @@ DisplacementFieldTransform<TScalar, NDimensions>
     {
     itkExceptionMacro( "No interpolator is specified." );
     }
-
+  if( !( this->m_Interpolator->GetInputImage() ) )
+    {
+    this->m_Interpolator->SetInputImage( this->m_DisplacementField );
+    }
   typename InterpolatorType::ContinuousIndexType cidx;
   typename InterpolatorType::PointType point;
   point.CastFrom( inputPoint );
