@@ -222,8 +222,7 @@ int PerformBSplineExpImageRegistration( int argc, char *argv[] )
 
   fieldTransform->SetNumberOfControlPointsForTheUpdateField( updateControlPoints );
   fieldTransform->SetNumberOfControlPointsForTheVelocityField( velocityControlPoints );
-  fieldTransform->SetDisplacementField( displacementField );
-  fieldTransform->SetComputeInverse( true );
+  fieldTransform->SetConstantVelocityField( displacementField );
   fieldTransform->SetCalculateNumberOfIntegrationStepsAutomatically( true );
 
   typedef itk::ANTSNeighborhoodCorrelationImageToImageMetricv4<FixedImageType, MovingImageType> CorrelationMetricType;
