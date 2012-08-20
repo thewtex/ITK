@@ -41,7 +41,6 @@ int itkBSplineExponentialDiffeomorphicTransformTest(int ,char *[] )
   /* Create a displacement field transform */
   DisplacementTransformType::Pointer displacementTransform =
       DisplacementTransformType::New();
-  displacementTransform->SetComputeInverse( true );
   displacementTransform->SetCalculateNumberOfIntegrationStepsAutomatically( true );
   displacementTransform->SetNumberOfIntegrationSteps( 10 );
 
@@ -81,9 +80,9 @@ int itkBSplineExponentialDiffeomorphicTransformTest(int ,char *[] )
   DisplacementTransformType::ArrayType meshSizeForUpdateField;
   meshSizeForUpdateField.Fill( 15 );
   displacementTransform->SetMeshSizeForTheUpdateField( meshSizeForUpdateField );
-  DisplacementTransformType::ArrayType meshSizeForTotalField;
-  meshSizeForTotalField.Fill( 30 );
-  displacementTransform->SetMeshSizeForTheTotalField( meshSizeForTotalField );
+  DisplacementTransformType::ArrayType meshSizeForVelocityField;
+  meshSizeForVelocityField.Fill( 30 );
+  displacementTransform->SetMeshSizeForTheVelocityField( meshSizeForVelocityField );
   displacementTransform->SetSplineOrder( 3 );
   displacementTransform->SetParameters( paramsFill );
 
