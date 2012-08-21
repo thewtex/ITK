@@ -136,6 +136,9 @@ public:
   itkSetInputMacro(Mesh, MeshType);
   itkGetInputMacro(Mesh, MeshType);
 
+  /** Create the deformed image */
+  void CreateWriteDeformedMovingImage(std::string deformedImageName,bool bInterpolate);
+
 #ifdef ITK_USE_CONCEPT_CHECKING
   /** Begin concept checking */
   /** Currently only the 3D implementation is available due to a narrow
