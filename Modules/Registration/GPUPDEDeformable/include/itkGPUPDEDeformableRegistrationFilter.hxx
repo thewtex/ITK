@@ -61,7 +61,7 @@ GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField
 
   //PixelType is a Vector
   defines << "#define OUTPIXELTYPE ";
-  GetTypenameInString( typeid ( typename TDeformationField::PixelType::ValueType ), defines );
+  GetTypenameInString( typeid ( DeformationScalarType ), defines );
 
   std::cout << "Defines: " << defines.str() << std::endl;
 
@@ -313,9 +313,17 @@ GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField
 
   // release memory
   m_TempField->Initialize();
-  m_GPUSmoothingKernel->Initialize();
-  delete m_SmoothingKernel;
-  m_SmoothingKernel = NULL;
+
+  for (int dir=0; dir<ImageDimension; dir++)
+    {
+    m_GPUSmoothingKernels[dir]->Initialize();
+    delete m_SmoothingKernels[dir];
+    m_SmoothingKernels[dir] = NULL;
+
+    m_UpdateFieldGPUSmoothingKernels[dir]->Initialize();
+    delete m_UpdateFieldSmoothingKernels[dir];
+    m_UpdateFieldSmoothingKernels[dir] = NULL;
+    }
 
   m_GPUImageSizes->Initialize();
   delete m_ImageSizes;
@@ -358,19 +366,21 @@ GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField
 template< class TFixedImage, class TMovingImage, class TDeformationField, class TParentImageFilter >
 void
 GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField, TParentImageFilter >
-::GPUSmoothDisplacementField()
+::GPUSmoothVectorField(DeformationFieldPointer field,
+                       typename GPUDataManager::Pointer GPUSmoothingKernels[],
+                       int GPUSmoothingKernelSizes[])
 {
-  typedef typename DeformationFieldType::PixelType       VectorType;
-  typedef typename VectorType::ValueType                 ScalarType;
-  typedef GaussianOperator< ScalarType, ImageDimension > OperatorType;
+  //typedef typename DeformationFieldType::PixelType       VectorType;
+  //typedef typename VectorType::ValueType                 ScalarType;
+  //typedef GaussianOperator< ScalarType, ImageDimension > OperatorType;
 
   // image arguments
   typedef typename itk::GPUTraits< TDeformationField >::Type GPUBufferImage;
   typedef typename itk::GPUTraits< TDeformationField >::Type GPUOutputImage;
 
   typename GPUBufferImage::Pointer  bfPtr =  dynamic_cast< GPUBufferImage * >( m_TempField.GetPointer() );
-  typename GPUOutputImage::Pointer  otPtr =  dynamic_cast< GPUOutputImage * >( this->GetOutput() ); //this->ProcessObject::GetOutput(0)
-                                                                                                    // );
+  typename GPUOutputImage::Pointer  otPtr =  dynamic_cast< GPUOutputImage * >( field.GetPointer() );
+
   typename GPUOutputImage::SizeType outSize = otPtr->GetLargestPossibleRegion().GetSize();
 
   int imgSize[3];
@@ -390,7 +400,6 @@ GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField
   size_t localSize[3], globalSize[3];
   unsigned int blockSize = OpenCLGetLocalBlockSize(ImageDim);
   int indir, outdir; // direction for smoothing and/or storage
-  typedef typename TDeformationField::PixelType::ValueType ValueType;
 
   for ( indir = 0; indir < ImageDim; indir++ )
     {
@@ -425,20 +434,24 @@ GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField
     this->m_GPUKernelManager->SetKernelArg(m_SmoothDeformationFieldGPUKernelHandle, argidx++, sizeof(int), &(ImageDim));
 
     //smoothing kernel
-    this->m_GPUKernelManager->SetKernelArgWithImage(m_SmoothDeformationFieldGPUKernelHandle, argidx++, m_GPUSmoothingKernel);
-    this->m_GPUKernelManager->SetKernelArg(m_SmoothDeformationFieldGPUKernelHandle, argidx++, sizeof(int), &(m_SmoothingKernelSize));
+    this->m_GPUKernelManager->SetKernelArgWithImage(m_SmoothDeformationFieldGPUKernelHandle,
+      argidx++, GPUSmoothingKernels[indir]);
+    this->m_GPUKernelManager->SetKernelArg(m_SmoothDeformationFieldGPUKernelHandle,
+      argidx++, sizeof(int), &(GPUSmoothingKernelSizes[indir]));
 
     //indir and outdir
     this->m_GPUKernelManager->SetKernelArg(m_SmoothDeformationFieldGPUKernelHandle, argidx++, sizeof(int), &(indir));
     this->m_GPUKernelManager->SetKernelArg(m_SmoothDeformationFieldGPUKernelHandle, argidx++, sizeof(int), &(outdir));
 
     //shared memory below
-    this->m_GPUKernelManager->SetKernelArg(m_SmoothDeformationFieldGPUKernelHandle, argidx++, sizeof(ValueType)*m_SmoothingKernelSize, NULL);
-    this->m_GPUKernelManager->SetKernelArg(m_SmoothDeformationFieldGPUKernelHandle, argidx++, sizeof(ValueType)*(blockSize+m_SmoothingKernelSize-1), NULL);
+    this->m_GPUKernelManager->SetKernelArg(m_SmoothDeformationFieldGPUKernelHandle,
+      argidx++, sizeof(DeformationScalarType)*GPUSmoothingKernelSizes[indir], NULL);
+    this->m_GPUKernelManager->SetKernelArg(m_SmoothDeformationFieldGPUKernelHandle,
+      argidx++, sizeof(DeformationScalarType)*(blockSize+GPUSmoothingKernelSizes[indir]-1), NULL);
 
     // launch kernel
     this->m_GPUKernelManager->LaunchKernel(m_SmoothDeformationFieldGPUKernelHandle, (int)TDeformationField::ImageDimension, globalSize, localSize );
-    }
+    } //for smoothing direction indir
 
   if (ImageDim % 2 != 0) //swap the final result if ImageDim is odd
     {
@@ -458,7 +471,9 @@ GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField
 ::SmoothDisplacementField()
 {
   this->m_SmoothFieldTime.Start();
-  this->GPUSmoothDisplacementField();
+  this->GPUSmoothVectorField(this->GetDeformationField(),
+    this->m_GPUSmoothingKernels,
+    this->m_SmoothingKernelSizes);
   this->m_SmoothFieldTime.Stop();
 }
 
@@ -470,55 +485,11 @@ void
 GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField, TParentImageFilter >
 ::SmoothUpdateField()
 {
-  // The update buffer will be overwritten with new data.
-  DeformationFieldPointer field = this->GetUpdateBuffer();
-
-  typedef typename DeformationFieldType::PixelType       VectorType;
-  typedef typename VectorType::ValueType                 ScalarType;
-  typedef GaussianOperator< ScalarType, ImageDimension > OperatorType;
-  typedef VectorNeighborhoodOperatorImageFilter<
-    DeformationFieldType,
-    DeformationFieldType >                             SmootherType;
-
-  OperatorType                   opers[ImageDimension];
-  typename SmootherType::Pointer smoothers[ImageDimension];
-
-  for ( unsigned int j = 0; j < ImageDimension; j++ )
-    {
-    // smooth along this dimension
-    opers[j].SetDirection(j);
-    double variance = vnl_math_sqr(this->GetUpdateFieldStandardDeviations()[j]);
-    //double variance = vnl_math_sqr( 1.0 );
-    opers[j].SetVariance(variance);
-    opers[j].SetMaximumError( this->GetMaximumError() );
-    opers[j].SetMaximumKernelWidth( this->GetMaximumKernelWidth() );
-    opers[j].CreateDirectional();
-
-    smoothers[j] = SmootherType::New();
-    smoothers[j]->SetOperator(opers[j]);
-    smoothers[j]->ReleaseDataFlagOn();
-
-    if ( j > 0 )
-      {
-      smoothers[j]->SetInput( smoothers[j - 1]->GetOutput() );
-      }
-    }
-  smoothers[0]->SetInput(field);
-  smoothers[ImageDimension - 1]->GetOutput()
-  ->SetRequestedRegion( field->GetBufferedRegion() );
-
-  smoothers[ImageDimension - 1]->Update();
-
-  // field to contain the final smoothed data, do the equivalent of a graft
-  field->SetPixelContainer( smoothers[ImageDimension - 1]->GetOutput()
-                            ->GetPixelContainer() );
-  field->SetRequestedRegion( smoothers[ImageDimension - 1]->GetOutput()
-                             ->GetRequestedRegion() );
-  field->SetBufferedRegion( smoothers[ImageDimension - 1]->GetOutput()
-                            ->GetBufferedRegion() );
-  field->SetLargestPossibleRegion( smoothers[ImageDimension - 1]->GetOutput()
-                                   ->GetLargestPossibleRegion() );
-  field->CopyInformation( smoothers[ImageDimension - 1]->GetOutput() );
+  this->m_SmoothFieldTime.Start();
+  this->GPUSmoothVectorField(this->GetUpdateBuffer(),
+    this->m_UpdateFieldGPUSmoothingKernels,
+    this->m_UpdateFieldSmoothingKernelSizes);
+  this->m_SmoothFieldTime.Stop();
 }
 
 /*
@@ -542,30 +513,73 @@ GPUPDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDeformationField
   m_TempField->SetBufferedRegion( field->GetBufferedRegion() );
   m_TempField->Allocate();
 
-  typedef typename TDeformationField::PixelType::ValueType ValueType;
+  typedef GaussianOperator< DeformationScalarType, ImageDimension > OperatorType;
+  OperatorType oper;
 
-  // allocate smoothing kernel
-  ValueType coefficients[5] = {0.050882235450215044,
-    0.21183832469709751, 0.47455887970537486,
-    0.21183832469709751, 0.050882235450215044};
-
-  m_SmoothingKernelSize = 5;
-  m_SmoothingKernel     = new ValueType[m_SmoothingKernelSize];
-
-  // kernel may be changed later
-  for (int i=0; i<m_SmoothingKernelSize; i++)
+  // Automatically create the smoothing kernels in advance.
+  // Therefore, we will avoid the data copy to GPU at every
+  // call to the smoothing function.
+  //
+  // Allocate smoothing kernel for displacement field
+  for (int dir = 0; dir < ImageDimension; dir++)
     {
-    m_SmoothingKernel[i] = (ValueType) coefficients[i];
+    //for each smoothing direction
+    oper.SetDirection(dir);
+    double variance = vnl_math_sqr(this->GetStandardDeviations()[dir]);
+    oper.SetVariance(variance);
+    oper.SetMaximumError(this->GetMaximumError());
+    oper.SetMaximumKernelWidth(this->GetMaximumKernelWidth());
+    oper.CreateDirectional();
+    int ksize = oper.GetSize()[dir];
+
+    //DeformationScalarType coefficients[5] = {0.050882235450215044,
+    //  0.21183832469709751, 0.47455887970537486,
+    //  0.21183832469709751, 0.050882235450215044};
+    m_SmoothingKernelSizes[dir] = ksize;
+    m_SmoothingKernels[dir] = new DeformationScalarType[ksize];
+    for (int i=0; i<ksize; i++)
+      {
+      m_SmoothingKernels[dir][i] = (DeformationScalarType) (oper[i]);
+      }
+
+    // convolution kernel buffer on GPU
+    m_GPUSmoothingKernels[dir] = GPUDataManager::New();
+    m_GPUSmoothingKernels[dir]->SetBufferSize( sizeof(DeformationScalarType)*ksize );
+    m_GPUSmoothingKernels[dir]->SetCPUBufferPointer( m_SmoothingKernels[dir] );
+    m_GPUSmoothingKernels[dir]->SetBufferFlag( CL_MEM_READ_ONLY );
+    m_GPUSmoothingKernels[dir]->Allocate();
+
+    m_GPUSmoothingKernels[dir]->SetGPUDirtyFlag(true);
     }
 
-  // convolution kernel for GPU
-  m_GPUSmoothingKernel = GPUDataManager::New();
-  m_GPUSmoothingKernel->SetBufferSize( sizeof(ValueType)*m_SmoothingKernelSize );
-  m_GPUSmoothingKernel->SetCPUBufferPointer( m_SmoothingKernel );
-  m_GPUSmoothingKernel->SetBufferFlag( CL_MEM_READ_ONLY );
-  m_GPUSmoothingKernel->Allocate();
+  // Allocate smoothing kernel for update field
+  for (int dir = 0; dir < ImageDimension; dir++)
+    {
+    //for each smoothing direction
+    oper.SetDirection(dir);
+    double variance = vnl_math_sqr(this->GetUpdateFieldStandardDeviations()[dir]);
+    oper.SetVariance(variance);
+    oper.SetMaximumError(this->GetMaximumError());
+    oper.SetMaximumKernelWidth(this->GetMaximumKernelWidth());
+    oper.CreateDirectional();
+    int ksize = oper.GetSize()[dir];
 
-  m_GPUSmoothingKernel->SetGPUDirtyFlag(true);
+    m_UpdateFieldSmoothingKernelSizes[dir] = ksize;
+    m_UpdateFieldSmoothingKernels[dir] = new DeformationScalarType[ksize];
+    for (int i=0; i<ksize; i++)
+      {
+      m_UpdateFieldSmoothingKernels[dir][i] = (DeformationScalarType) (oper[i]);
+      }
+
+    // convolution kernel buffer on GPU
+    m_UpdateFieldGPUSmoothingKernels[dir] = GPUDataManager::New();
+    m_UpdateFieldGPUSmoothingKernels[dir]->SetBufferSize( sizeof(DeformationScalarType)*ksize );
+    m_UpdateFieldGPUSmoothingKernels[dir]->SetCPUBufferPointer( m_UpdateFieldSmoothingKernels[dir] );
+    m_UpdateFieldGPUSmoothingKernels[dir]->SetBufferFlag( CL_MEM_READ_ONLY );
+    m_UpdateFieldGPUSmoothingKernels[dir]->Allocate();
+
+    m_UpdateFieldGPUSmoothingKernels[dir]->SetGPUDirtyFlag(true);
+    }
 
   // allocate image dimension array
   typename TDeformationField::SizeType outSize = field->GetLargestPossibleRegion().GetSize();

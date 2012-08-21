@@ -41,7 +41,7 @@
 #include "itkGPUContextManager.h"
 #include "itkGPUDemonsRegistrationFilter.h"
 
-namespace{
+namespace {
 // The following class is used to support callbacks
 // on the filter in the pipeline that follows later
 template<typename TRegistration>
@@ -65,9 +65,15 @@ public:
 
 const unsigned int ImageDimension = 2;
 const unsigned int testIterations = 1;
-const unsigned int numOfIterations = 500;
 
-itk::TimeProbe gpuTime, cpuTime;
+const unsigned int numOfIterations = 500;
+const float displacementFieldSmoothingSigma = 1.0;
+const float updateFieldSmoothingSigma = 1.0;
+const float maximumRMSError = 0.01;
+const bool smoothUpdateField = true;
+
+itk::TimeProbe gpuTime;
+itk::TimeProbe cpuTime;
 
 typedef float                                             InternalPixelType;
 typedef itk::Vector< float, ImageDimension >              VectorPixelType;
@@ -192,7 +198,8 @@ itk::SmartPointer<GPUDeformationFieldType> itkGPUDemons(int, char *argv[], unsig
 
   //casting pixel type from short to float
   typedef float                                      InternalPixelType;
-  typedef itk::GPUImage< InternalPixelType, Dimension > InternalImageType;
+  typedef itk::GPUImage< InternalPixelType, Dimension >
+                                                     InternalImageType;
   typedef itk::CastImageFilter< FixedImageType,
                                 InternalImageType >  FixedImageCasterType;
   typedef itk::CastImageFilter< MovingImageType,
@@ -221,7 +228,7 @@ itk::SmartPointer<GPUDeformationFieldType> itkGPUDemons(int, char *argv[], unsig
 
   //demons registration
   typedef itk::Vector< float, Dimension >             VectorPixelType;
-  typedef itk::GPUImage<  VectorPixelType, Dimension >   DeformationFieldType;
+  typedef itk::GPUImage< VectorPixelType, Dimension > DeformationFieldType;
   typedef itk::GPUDemonsRegistrationFilter<
                                 InternalImageType,
                                 InternalImageType,
@@ -241,7 +248,10 @@ itk::SmartPointer<GPUDeformationFieldType> itkGPUDemons(int, char *argv[], unsig
   filter->SetMovingImage( matcher->GetOutput() );
 
   filter->SetNumberOfIterations( numOfIterations );
-  filter->SetStandardDeviations( 1.0 );
+  filter->SetStandardDeviations( displacementFieldSmoothingSigma );
+  filter->SetUpdateFieldStandardDeviations( updateFieldSmoothingSigma );
+  filter->SetSmoothUpdateField(smoothUpdateField);
+  filter->SetMaximumRMSError(maximumRMSError);
 
   gpuTime.Start();
   filter->Update();
@@ -365,7 +375,10 @@ itk::SmartPointer<CPUDeformationFieldType> itkCPUDemons(int, char *argv[], unsig
   filter->SetMovingImage( matcher->GetOutput() );
 
   filter->SetNumberOfIterations( numOfIterations );
-  filter->SetStandardDeviations( 1.0 );
+  filter->SetStandardDeviations( displacementFieldSmoothingSigma );
+  filter->SetUpdateFieldStandardDeviations( updateFieldSmoothingSigma );
+  filter->SetSmoothUpdateField(smoothUpdateField);
+  filter->SetMaximumRMSError(maximumRMSError);
 
   cpuTime.Start();
   filter->Update();

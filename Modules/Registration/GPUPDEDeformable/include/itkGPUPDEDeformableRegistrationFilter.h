@@ -109,6 +109,9 @@ public:
   /** Deformation field type. */
   typedef TDeformationField                      DeformationFieldType;
   typedef typename DeformationFieldType::Pointer DeformationFieldPointer;
+  typedef typename TDeformationField::PixelType  DeformationVectorType;
+  typedef typename TDeformationField::PixelType::ValueType
+                                                 DeformationScalarType;
 
   /** Types inherithed from the GPUSuperclass */
   typedef typename GPUSuperclass::OutputImageType OutputImageType;
@@ -127,7 +130,7 @@ public:
                       GPUSuperclass::ImageDimension);
 
   /** Get OpenCL Kernel source as a string, creates a GetOpenCLSource method */
-itkGetOpenCLSourceFromKernelMacro(GPUPDEDeformableRegistrationFilterKernel);
+  itkGetOpenCLSourceFromKernelMacro(GPUPDEDeformableRegistrationFilterKernel);
 
   /** Set the fixed image. */
   void SetFixedImage(const FixedImageType *ptr);
@@ -181,7 +184,11 @@ protected:
    * by setting the StandardDeviations. */
   virtual void SmoothDisplacementField();
 
-  virtual void GPUSmoothDisplacementField();
+  /** Smooth a vector field, which may be m_DisplacementField or
+   * m_UpdateBuffer. */
+  virtual void GPUSmoothVectorField(DeformationFieldPointer field,
+    typename GPUDataManager::Pointer GPUSmoothingKernels[],
+    int GPUSmoothingKernelSizes[]);
 
   virtual void AllocateSmoothingBuffer();
 
@@ -219,10 +226,16 @@ private:
    * the deformation field. */
   DeformationFieldPointer m_TempField;
 private:
-  /** Memory buffer for smoothing kernel. */
-  int                              m_SmoothingKernelSize;
-  float*                           m_SmoothingKernel;
-  typename GPUDataManager::Pointer m_GPUSmoothingKernel;
+  /** Memory buffer for smoothing kernels of the displacement field. */
+  int                              m_SmoothingKernelSizes[ImageDimension];
+  float*                           m_SmoothingKernels[ImageDimension];
+  typename GPUDataManager::Pointer m_GPUSmoothingKernels[ImageDimension];
+
+  /** Memory buffer for smoothing kernels of the update field. */
+  int                              m_UpdateFieldSmoothingKernelSizes[ImageDimension];
+  float*                           m_UpdateFieldSmoothingKernels[ImageDimension];
+  typename GPUDataManager::Pointer m_UpdateFieldGPUSmoothingKernels[ImageDimension];
+
   int*                             m_ImageSizes;
   typename GPUDataManager::Pointer m_GPUImageSizes;
 
