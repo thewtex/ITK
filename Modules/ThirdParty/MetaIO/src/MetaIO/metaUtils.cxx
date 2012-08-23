@@ -998,7 +998,7 @@ bool MET_SkipToVal(METAIO_STREAM::istream &fp)
     c = fp.get();
     }
 
-  while( !fp.eof() && ( c == MET_SeperatorChar || c == ':' || isblank(c) ) )
+  while( !fp.eof() && ( c == MET_SeperatorChar || c == ':' || c == ' ' || c == '\t' ) )
     {
     c = fp.get();
     }
@@ -1075,7 +1075,7 @@ bool MET_Read(METAIO_STREAM::istream &fp,
 
     // trim white space on name
     i--;
-    while(isblank(s[i]) && i>0)
+    while((s[i] == ' ' || s[i] ==  '\t') && i>0)
       {
       s[i--] = '\0';
       }
