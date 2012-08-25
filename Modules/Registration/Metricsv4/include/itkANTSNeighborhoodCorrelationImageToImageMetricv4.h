@@ -21,7 +21,8 @@
 #include "itkImageToImageMetricv4.h"
 #include "itkConstNeighborhoodIterator.h"
 
-#include "itkANTSNeighborhoodCorrelationImageToImageMetricv4DenseGetValueAndDerivativeThreader.h"
+// #include "itkANTSNeighborhoodCorrelationImageToImageMetricv4DenseGetValueAndDerivativeThreader.h"
+#include "itkANTSNeighborhoodCorrelationImageToImageMetricv4GetValueAndDerivativeThreader.h"
 
 #include <deque>
 
@@ -208,6 +209,7 @@ protected:
     VirtualPointType        virtualPoint;
   } ScanMemType;
 
+  // For dense scan over one image region
   typedef struct ScanParametersType {
     // const values during scanning
     ImageRegionType scanRegion;
@@ -222,10 +224,24 @@ protected:
 
   } ScanParametersType;
 
-  friend class ANTSNeighborhoodCorrelationImageToImageMetricv4DenseGetValueAndDerivativeThreader< Superclass, Self >;
-  typedef ANTSNeighborhoodCorrelationImageToImageMetricv4DenseGetValueAndDerivativeThreader< Superclass, Self >
+//  friend class ANTSNeighborhoodCorrelationImageToImageMetricv4DenseGetValueAndDerivativeThreader< Superclass, Self >;
+//  typedef ANTSNeighborhoodCorrelationImageToImageMetricv4DenseGetValueAndDerivativeThreader< Superclass, Self >
+//    ANTSNeighborhoodCorrelationImageToImageMetricv4DenseGetValueAndDerivativeThreaderType;
+//
+//  friend class ANTSNeighborhoodCorrelationImageToImageMetricv4SparseGetValueAndDerivativeThreader< Superclass, Self >;
+//  typedef ANTSNeighborhoodCorrelationImageToImageMetricv4SparseGetValueAndDerivativeThreader< Superclass, Self >
+//    ANTSNeighborhoodCorrelationImageToImageMetricv4SparseGetValueAndDerivativeThreaderType;
+
+
+  friend class ANTSNeighborhoodCorrelationImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedImageRegionPartitioner< VirtualImageDimension >, Superclass, Self >;
+  typedef ANTSNeighborhoodCorrelationImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedImageRegionPartitioner< VirtualImageDimension >, Superclass, Self >
     ANTSNeighborhoodCorrelationImageToImageMetricv4DenseGetValueAndDerivativeThreaderType;
 
+  friend class ANTSNeighborhoodCorrelationImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedIndexedContainerPartitioner, Superclass, Self >;
+  typedef ANTSNeighborhoodCorrelationImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedIndexedContainerPartitioner, Superclass, Self >
+    ANTSNeighborhoodCorrelationImageToImageMetricv4SparseGetValueAndDerivativeThreaderType;
+
+  //TODO: this should go to the threader class
   /** Create an iterator over the virtual sub region */
   void InitializeScanning(const ImageRegionType &scanRegion,
     ScanIteratorType &scanIt, ScanMemType &scanMem,
