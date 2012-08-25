@@ -368,7 +368,6 @@ int itkCentralDifferenceImageFunctionTest(int, char* [] )
     result = EXIT_FAILURE;
     }
 
-
   if( result == EXIT_SUCCESS )
     {
     std::cout << "Test passed." << std::endl;
