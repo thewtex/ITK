@@ -23,7 +23,7 @@
 
 /**
  * Test program for ANTSNeighborhoodCorrelationImageToImageMetricv4,
- * using a synthectic image and initial displacement.
+ * using a synthetic image and initial displacement.
  *
  */
 
@@ -340,6 +340,88 @@ int itkANTSNeighborhoodCorrelationImageToImageMetricv4Test( int, char ** const )
   std::cout << std::endl << "derivative of moving transform as a field:" << std::endl;
   ANTSNeighborhoodCorrelationImageToImageMetricv4Test_PrintDerivativeAsVectorImage(fixedImage, derivativeReturn, ImageDimension);
 
+  /* Compare the derivative computed from sparse threader to the dense threader */
+  /* Create a sample point set by sampling all points */
+  typedef MetricType::FixedSampledPointSetType  PointSetType;
+  typedef PointSetType::PointType               PointType;
+
+  std::cout << "Creating point set..." << std::endl;
+
+  PointSetType::Pointer               pset(PointSetType::New());
+
+  unsigned long ind=0,ct=0;
+  itk::ImageRegionIteratorWithIndex<ImageType> It(fixedImage, fixedImage->GetLargestPossibleRegion() );
+  for( It.GoToBegin(); !It.IsAtEnd(); ++It )
+    {
+    // take every point
+      PointType pt;
+      fixedImage->TransformIndexToPhysicalPoint( It.GetIndex(), pt);
+      pset->SetPoint(ind, pt);
+      ind++;
+      ct++;
+    }
+  std::cout << "Setting point set with " << ind << " points of " << fixedImage->GetLargestPossibleRegion().GetNumberOfPixels() << " total " << std::endl;
+  std::cout << "Testing metric with point set..." << std::endl;
+
+  /* run the metric with the sparse threader */
+  MetricTypePointer metricSparse = MetricType::New();
+  metricSparse->SetRadius(neighborhood_radius);
+  metricSparse->SetFixedImage(fixedImage);
+  metricSparse->SetMovingImage(movingImage);
+  metricSparse->SetFixedTransform(transformFId);
+  metricSparse->SetMovingTransform(transformMdisplacement);
+  metricSparse->SetFixedSampledPointSet( pset );
+  metricSparse->SetUseFixedSampledPointSet( true );
+
+  try
+    {
+    metricSparse->Initialize();
+    }
+  catch (itk::ExceptionObject & exc)
+    {
+    std::cerr << "Caught unexpected exception during Initialize() for sparse threader: " << exc;
+    std::cerr << "Test FAILED." << std::endl;
+    return EXIT_FAILURE;
+    }
+
+  MetricType::MeasureType valueReturnSparse;
+  MetricType::DerivativeType derivativeReturnSparse;
+
+  try
+    {
+    std::cout << "Calling GetValueAndDerivative..." << std::endl;
+    metricSparse->GetValueAndDerivative(valueReturnSparse, derivativeReturnSparse);
+    }
+  catch (itk::ExceptionObject & exc)
+    {
+    std::cerr << "Caught unexpected exception during GetValueAndDrivative() for sparse threader: " << exc;
+    std::cerr << "Test FAILED." << std::endl;
+    return EXIT_FAILURE;
+    }
+
+  std::cout << "Check Value return values between dense and sparse threader..." << std::endl;
+  std::cout << "dense: " << valueReturn1
+                << ", sparse: " << valueReturnSparse << std::endl;
+  if( valueReturn1 != valueReturnSparse )
+    {
+    std::cerr << "Results for Value don't match using dense and sparse threaders: " << valueReturn1
+              << ", (sparse) " << valueReturnSparse << std::endl;
+    }
+  std::cout << "Test passed." << std::endl;
+
+  std::cout << "Check Derivative return values between dense and sparse threader..." << std::endl;
+  std::cout << "derivative of moving transform (sparse threader):" << std::endl;
+  std::cout << derivativeReturnSparse << std::endl;
+  std::cout << std::endl << "derivative of moving transform as a field  (sparse threader):" << std::endl;
+  ANTSNeighborhoodCorrelationImageToImageMetricv4Test_PrintDerivativeAsVectorImage(fixedImage, derivativeReturnSparse, ImageDimension);
+  double tolerance = 1e-7;
+  if ( !derivativeReturn.is_equal(derivativeReturnSparse, tolerance) )
+    {
+    std::cerr << "Results for derivative don't match using dense and sparse threaders: "
+              << "dense threader: " <<  std::endl;
+    ANTSNeighborhoodCorrelationImageToImageMetricv4Test_PrintDerivativeAsVectorImage(fixedImage, derivativeReturn, ImageDimension);
+    }
+
   // Test that non-overlapping images will generate a warning
   // and return max value for metric value.
   DisplacementTransformType::ParametersType parameters( transformMdisplacement->GetNumberOfParameters() );
@@ -356,11 +438,6 @@ int itkANTSNeighborhoodCorrelationImageToImageMetricv4Test( int, char ** const )
               << "  Metric value: " << valueReturn << std::endl
               << "  Expected metric max value: " << expectedMetricMax << std::endl;
     }
-
-  // Test that an exception is thrown if sampling is set
-  std::cout << "Testing use with sampled point set, expect a warning: " << std::endl;
-  metric->UseFixedSampledPointSetOn();
-  TRY_EXPECT_EXCEPTION( metric->Initialize() );
 
   std::cout << "Test PASSED." << std::endl;
   return EXIT_SUCCESS;

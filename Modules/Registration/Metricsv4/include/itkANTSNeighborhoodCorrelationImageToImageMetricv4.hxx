@@ -34,8 +34,10 @@ ANTSNeighborhoodCorrelationImageToImageMetricv4<TFixedImage, TMovingImage,TVirtu
   // We have our own GetValueAndDerivativeThreader's that we want
   // ImageToImageMetricv4 to use.
   this->m_DenseGetValueAndDerivativeThreader  = ANTSNeighborhoodCorrelationImageToImageMetricv4DenseGetValueAndDerivativeThreaderType::New();
+
+  //TODO:
   // not implemented
-  //this->m_SparseGetValueAndDerivativeThreader =
+  this->m_SparseGetValueAndDerivativeThreader = ANTSNeighborhoodCorrelationImageToImageMetricv4SparseGetValueAndDerivativeThreaderType::New();
 }
 
 template<class TFixedImage, class TMovingImage, class TVirtualImage>
@@ -51,7 +53,10 @@ ANTSNeighborhoodCorrelationImageToImageMetricv4<TFixedImage, TMovingImage, TVirt
 {
   if( this->GetUseFixedSampledPointSet() )
     {
-    itkExceptionMacro("UseFixedSampledPointSet is set, but not supported in this metric.");
+    // itkExceptionMacro("UseFixedSampledPointSet is set, but not supported in this metric.");
+    //TODO:
+    // TODO: not sure what to do when using sparse point set
+    // put anything for initialization here:
     }
   Superclass::Initialize();
 }
