@@ -109,5 +109,14 @@ int itkMetaImageIOTest2(int argc, char* argv[])
 
   pass = ( TestUnknowMetaDataBug( argv[1] ) == EXIT_SUCCESS );
 
-  return EXIT_SUCCESS;
+
+  if ( pass )
+    {
+    return EXIT_SUCCESS;
+    }
+  else
+    {
+    return EXIT_FAILURE;
+    }
+
 }
