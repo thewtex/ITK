@@ -55,14 +55,7 @@ ConstShapedNeighborhoodIterator< TImage, TBoundaryCondition >
     }
   else
     {
-    while ( n > *it )
-      {
-      it++;
-      if ( it == m_ActiveIndexList.end() )
-        {
-        break;
-        }
-      }
+    it = std::upper_bound( m_ActiveIndexList.begin(), m_ActiveIndexList.end(), n );
     if ( it == m_ActiveIndexList.end() )
       {
       m_ActiveIndexList.insert(it, n);
@@ -104,13 +97,10 @@ ConstShapedNeighborhoodIterator< TImage, TBoundaryCondition >
     }
   else
     {
-    while ( n != *it )
+    it = std::lower_bound( m_ActiveIndexList.begin(), m_ActiveIndexList.end(), n );
+    if ( it == m_ActiveIndexList.end() )
       {
-      it++;
-      if ( it == m_ActiveIndexList.end() )
-        {
-        return;
-        }
+      return;
       }
     m_ActiveIndexList.erase(it);
     }
