@@ -46,31 +46,19 @@ ConstShapedNeighborhoodIterator< TImage, TBoundaryCondition >
 {
   const OffsetValueType *OffsetTable = this->m_ConstImage->GetOffsetTable();
 
-  // Insert so that the list remains ordered.
-  IndexListIterator it = m_ActiveIndexList.begin();
-
   if ( m_ActiveIndexList.empty() )
     {
     m_ActiveIndexList.push_front(n);
     }
   else
     {
-    while ( n > *it )
-      {
-      it++;
-      if ( it == m_ActiveIndexList.end() )
-        {
-        break;
-        }
-      }
-    if ( it == m_ActiveIndexList.end() )
-      {
-      m_ActiveIndexList.insert(it, n);
-      }
-    else if ( n != *it )
-      {
-      m_ActiveIndexList.insert(it, n);
-      }
+    // Insert so that the list remains ordered.
+    const NeighborIndexType indexIteraterable[1] = { n };
+    std::set_union(
+      indexIteraterable, indexIteraterable + 1,
+      m_ActiveIndexList.begin(), m_ActiveIndexList.end(),
+      m_ActiveIndexList.begin()
+      );
     }
 
   // Adjust the begin and end iterators.
@@ -104,13 +92,10 @@ ConstShapedNeighborhoodIterator< TImage, TBoundaryCondition >
     }
   else
     {
-    while ( n != *it )
+    it = std::lower_bound( m_ActiveIndexList.begin(), m_ActiveIndexList.end(), n );
+    if ( it == m_ActiveIndexList.end() )
       {
-      it++;
-      if ( it == m_ActiveIndexList.end() )
-        {
-        return;
-        }
+      return;
       }
     m_ActiveIndexList.erase(it);
     }
