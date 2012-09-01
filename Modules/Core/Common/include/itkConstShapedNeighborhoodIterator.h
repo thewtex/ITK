@@ -85,6 +85,8 @@ public:
   typedef ConstShapedNeighborhoodIterator                    Self;
   typedef NeighborhoodIterator< TImage, TBoundaryCondition > Superclass;
 
+  using Superclass::SetRegion;
+
   /** Inherit typedefs from superclass */
   typedef typename Superclass::OffsetType      OffsetType;
   typedef typename OffsetType::OffsetValueType OffsetValueType;
