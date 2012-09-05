@@ -1,4 +1,8 @@
 cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
+include(CMakeDependentOption)
+#
+# use ExternalProject
+include(ExternalProject)
 
 if(WIN32 OR NOT EXISTS /dev/urandom)
   cmake_minimum_required(VERSION 2.8.5)
@@ -211,6 +215,29 @@ if( ITK_USE_GPU )
 endif()
 
 #-----------------------------------------------------------------------------
+#
+# External packages that can be built for enhanced ITK functionality
+#
+
+# With CMake 2.8.9 or later, the UPDATE_COMMAND is required for updates to occur.
+# For earlier versions, we nullify the update state to prevent updates and
+# undesirable rebuild.
+if(CMAKE_VERSION VERSION_LESS 2.8.9)
+  set(cmakeversion_external_update UPDATE_COMMAND "")
+else()
+  set(cmakeversion_external_update LOG_UPDATE 1)
+endif()
+
+#-----------------------------------------------------------------------------
+# Git protocole option
+#-----------------------------------------------------------------------------
+option(${CMAKE_PROJECT_NAME}_USE_GIT_PROTOCOL "If behind a firewall turn this off to use http instead." ON)
+set(git_protocol "git")
+if(NOT ${CMAKE_PROJECT_NAME}_USE_GIT_PROTOCOL)
+  set(git_protocol "http")
+endif()
+
+#-----------------------------------------------------------------------------
 # Manage FFT v3 Options
 #
 # USE_FFTWD -- use double precision fftw
@@ -226,11 +253,24 @@ option(USE_SYSTEM_FFTW "Use an installed version of fftw" OFF)
 mark_as_advanced(USE_SYSTEM_FFTW)
 
 if( USE_FFTWD OR USE_FFTWF )
-  #
+  include(itkExternal_FFTW)
+endif()
+
+#-----------------------------------------------------------------------------
+# Manage DCMTK Options
+#
+# USE_DCMTK -- use double precision fftw
+option(USE_DCMTK "Use the DICOM Toolkit" OFF)
+mark_as_advanced(USE_DCMTK)
+
+# USE_SYSTEM_DCMTK -- locate a readybuilt fftw installation
+option(USE_SYSTEM_DCMTK "Use an installed version of DCMTK" OFF)
+mark_as_advanced(USE_SYSTEM_DCMTK)
+
+if( USE_DCMTK )
   # use ExternalProject
   include(ExternalProject)
-
-  include(itkExternal_FFTW)
+  include(itkExternal_DCMTK)
 endif()
 
 if(NOT ITKV3_COMPATIBILITY)

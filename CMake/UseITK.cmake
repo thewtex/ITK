@@ -16,6 +16,12 @@ if (ITK_USE_FFTWF OR ITK_USE_FFTWD)
   set(ITK_LIBRARY_DIRS ${ITK_LIBRARY_DIRS} "${ITK_FFTW_LIBDIR}")
 endif()
 
+# Add DCMTK include and library directories
+if (ITK_USE_DCMTK)
+  set(ITK_INCLUDE_DIRS ${ITK_INCLUDE_DIRS} "${ITK_DCMTK_INCLUDE_DIRECTORY}")
+  set(ITK_LIBRARY_DIRS ${ITK_LIBRARY_DIRS} "${ITK_DCMTK_LIBRARY_DIRECTORY}")
+endif()
+
 # Add include directories needed to use ITK.
 include_directories(BEFORE ${ITK_INCLUDE_DIRS})
 
