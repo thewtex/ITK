@@ -150,6 +150,8 @@ add_executable(DigitallyReconstructedRadiograph1 DigitallyReconstructedRadiograp
 target_link_libraries(DigitallyReconstructedRadiograph1  ${ITK_LIBRARIES})
 add_executable(ResampleImageFilter7 ResampleImageFilter7.cxx )
 target_link_libraries(ResampleImageFilter7  ${ITK_LIBRARIES})
+add_executable(LaplaceBeltramiOperator LaplaceBeltramiOperator.cxx )
+target_link_libraries(LaplaceBeltramiOperator  ${ITK_LIBRARIES})
 
 if(BUILD_TESTING)
   add_subdirectory(test)

@@ -9,6 +9,7 @@ itkDiscreteGaussianCurvatureQuadEdgeMeshFilterTest.cxx
 itkDiscreteMaximumCurvatureQuadEdgeMeshFilterTest.cxx
 itkDiscreteMeanCurvatureQuadEdgeMeshFilterTest.cxx
 itkDiscreteMinimumCurvatureQuadEdgeMeshFilterTest.cxx
+itkLaplaceBeltramiFilterTest.cxx
 itkNormalQuadEdgeMeshFilterTest.cxx
 itkParameterizationQuadEdgeMeshFilterTest.cxx
 itkQuadricDecimationQuadEdgeMeshFilterTest.cxx
@@ -93,6 +94,9 @@ itk_add_test(NAME itkBinaryMask3DQuadEdgeMeshSourceTest
 itk_add_test(NAME itkRegularSphereQuadEdgeMeshSourceTest
       COMMAND ITKQuadEdgeMeshFilteringTestDriver itkRegularSphereQuadEdgeMeshSourceTest
               ${ITK_TEST_OUTPUT_DIR}/itkRegularSphereMeshQuadEdgeMeshSourceTest.vtk)
+itk_add_test(NAME itkLaplaceBeltramiFilterTest0
+      COMMAND ITKQuadEdgeMeshFilteringTestDriver itkLaplaceBeltramiFilterTest
+              DATA{${INPUTDATA}/mushroom.vtk} 4)
 itk_add_test(NAME itkNormalQuadEdgeMeshFilterTest0
       COMMAND ITKQuadEdgeMeshFilteringTestDriver itkNormalQuadEdgeMeshFilterTest
               DATA{${INPUTDATA}/mushroom.vtk} 0)
