@@ -28,12 +28,14 @@
     <SampleCode>
       <Old>
         <![CDATA[
-        Image< IdentifierType, ::itk::GetImageDimension< TInputImage >::ImageDimension > >
+         Image< IdentifierType, ::itk::GetImageDimension< TInputImage >::ImageDimension > >
+         itkStaticConstMacro(InputPointDimension, unsigned int, ::itk::GetMeshDimension< TInputMesh >::PointDimension );
         ]]>
       </Old>
       <New>
         <![CDATA[
         Image< IdentifierType, TInputImage::ImageDimension > >
+        itkStaticConstMacro(InputPointDimension, unsigned int, TInputMesh::PointDimension );
         ]]>
       </New>
 
