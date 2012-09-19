@@ -13,6 +13,7 @@ itk_module(ITKStatistics
     ITKTestKernel
     ITKImageIntensity
     ITKImageCompose
+    ITKIOMesh
   DESCRIPTION
     "${DOCUMENTATION}"
 )
