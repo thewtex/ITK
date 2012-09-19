@@ -56,3 +56,18 @@ itk_add_test(NAME  MaximumDecisionRuleTest COMMAND ${ITK_TEST_DRIVER}
 
 itk_add_test(NAME  MaximumRatioDecisionRuleTest COMMAND ${ITK_TEST_DRIVER}
           $<TARGET_FILE:MaximumRatioDecisionRule>)
+
+itk_add_test(NAME  VectorKernelPCA COMMAND ${ITK_TEST_DRIVER}
+  $<TARGET_FILE:VectorKernelPCA>
+            3 6.25
+            DATA{${ITK_SOURCE_DIR}/Examples/Data/PCATestSurface.vtk}
+            ${TEMP}/PCA_Output
+            DATA{${ITK_SOURCE_DIR}/Examples/Data/PCATestSurface_alpha0_01.vtk}
+            DATA{${ITK_SOURCE_DIR}/Examples/Data/PCATestSurface_alpha0_02.vtk}
+            DATA{${ITK_SOURCE_DIR}/Examples/Data/PCATestSurface_alpha0_03.vtk}
+            DATA{${ITK_SOURCE_DIR}/Examples/Data/PCATestSurface_alpha0_04.vtk}
+            DATA{${ITK_SOURCE_DIR}/Examples/Data/PCATestSurface_alpha0_05.vtk}
+            DATA{${ITK_SOURCE_DIR}/Examples/Data/PCATestSurface_alpha0_06.vtk}
+            DATA{${ITK_SOURCE_DIR}/Examples/Data/PCATestSurface_alpha0_07.vtk}
+            DATA{${ITK_SOURCE_DIR}/Examples/Data/PCATestSurface_alpha0_08.vtk}
+)

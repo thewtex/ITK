@@ -98,6 +98,9 @@ target_link_libraries(ImageMutualInformation1 ${ITK_LIBRARIES})
 add_executable(ScalarImageKmeansModelEstimator ScalarImageKmeansModelEstimator.cxx )
 target_link_libraries(ScalarImageKmeansModelEstimator ${ITK_LIBRARIES})
 
+add_executable(VectorKernelPCA VectorKernelPCA.cxx )
+target_link_libraries(VectorKernelPCA ${ITK_LIBRARIES})
+
 if(BUILD_TESTING)
   add_subdirectory(test)
 endif()
