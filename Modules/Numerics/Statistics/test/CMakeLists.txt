@@ -90,6 +90,7 @@ itkStatisticsAlgorithmTest.cxx
 itkStatisticsAlgorithmTest2.cxx
 itkUniformRandomSpatialNeighborSubsamplerTest.cxx
 itkVectorContainerToListSampleAdaptorTest.cxx
+itkVectorKernelPCATest.cxx
 )
 
 CreateTestDriver(ITKStatistics  "${ITKStatistics-Test_LIBRARIES}" "${ITKStatisticsTests}")
@@ -400,3 +401,15 @@ itk_add_test(NAME itkUniformRandomSpatialNeighborSubsamplerTest
      ${ITK_TEST_OUTPUT_DIR}/itkUniformRandomSubsamplingTest.mha)
 itk_add_test(NAME itkVectorContainerToListSampleAdaptorTest
       COMMAND ITKStatisticsTestDriver itkVectorContainerToListSampleAdaptorTest)
+itk_add_test(NAME itkVectorKernelPCATest
+      COMMAND ITKStatisticsTestDriver itkVectorKernelPCATest
+         ${ITK_SOURCE_DIR}/Examples/Data/PCATestSurface.vtk
+         ${ITK_SOURCE_DIR}/Examples/Data/PCATestSurface_alpha0_01.vtk
+         ${ITK_SOURCE_DIR}/Examples/Data/PCATestSurface_alpha0_02.vtk
+         ${ITK_SOURCE_DIR}/Examples/Data/PCATestSurface_alpha0_03.vtk
+         ${ITK_SOURCE_DIR}/Examples/Data/PCATestSurface_alpha0_04.vtk
+         ${ITK_SOURCE_DIR}/Examples/Data/PCATestSurface_alpha0_05.vtk
+         ${ITK_SOURCE_DIR}/Examples/Data/PCATestSurface_alpha0_06.vtk
+         ${ITK_SOURCE_DIR}/Examples/Data/PCATestSurface_alpha0_07.vtk
+         ${ITK_SOURCE_DIR}/Examples/Data/PCATestSurface_alpha0_08.vtk
+)
