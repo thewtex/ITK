@@ -1209,7 +1209,7 @@ BSplineScatteredDataPointSetToImageFilter<TInputPointSet, TOutputImage>
 
     spacing[i] = domain / static_cast<RealType>( totalNumberOfSpans );
 
-    origin[i] = -0.5 * spacing[i] * ( this->m_SplineOrder[i] - 1 );
+    origin[i] = this->m_Origin[i] - 0.5 * spacing[i] * ( this->m_SplineOrder[i] - 1 );
     }
   origin = this->m_Direction * origin;
 
