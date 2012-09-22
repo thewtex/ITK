@@ -30,19 +30,17 @@ PolyLineParametricPath< VDimension >
 {
   OutputType output;
   PointType  outputPoint;
-  VertexType vertex0;
-  VertexType vertex1;
   double     fractionOfLineSegment;
 
   // Handle the endpoint carefully, since there is no following vertex
   const InputType endPoint = static_cast< InputType >( m_VertexList->Size() - 1 );
   if ( input > endPoint || itk::Math::FloatAlmostEqual( input, endPoint ) )
     {
-    return this->m_VertexList->ElementAt(m_VertexList->Size() - 1); // the last vertex
+    return static_cast<const VertexListType*>(this->m_VertexList)->ElementAt(m_VertexList->Size() - 1); // the last vertex
     }
 
-  vertex0 = m_VertexList->ElementAt( int(input) );
-  vertex1 = m_VertexList->ElementAt( int(input + 1.0) );
+  VertexType vertex0 = static_cast<const VertexListType*>(this->m_VertexList)->ElementAt( int(input) );
+  VertexType vertex1 = static_cast<const VertexListType*>(this->m_VertexList)->ElementAt( int(input + 1.0) );
 
   fractionOfLineSegment = input - int(input);
 
