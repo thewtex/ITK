@@ -158,6 +158,9 @@ typedef signed long   OffsetValueType;
 /** Type to count and reference number of threads */
 typedef unsigned int  ThreadIdType;
 
+/** Type to count and reference the modification time of objects. */
+typedef SizeValueType ModifiedTimeType;
+
 }
 
 #endif  /* __itkIntTypes_h */

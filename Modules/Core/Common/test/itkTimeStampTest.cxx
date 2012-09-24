@@ -20,6 +20,7 @@
 #include "itkTimeStamp.h"
 #include "itkMultiThreader.h"
 
+
 // A helper struct for the test, the idea is to have one timestamp per thread.
 // To ease the writing of the test, we use  MultiThreader::SingleMethodExecute
 // with an array of timestamps in the shared data
@@ -86,7 +87,7 @@ int itkTimeStampTest(int, char*[])
     // Call Modified once  on any object to make it up-to-date
     multithreader->Modified();
 
-    const long int init_mtime = multithreader->GetMTime();
+    const itk::ModifiedTimeType init_mtime = multithreader->GetMTime();
     std::cout << "init_mtime: " << init_mtime << std::endl;
 
     long int prev_mtime = init_mtime;
@@ -97,11 +98,11 @@ int itkTimeStampTest(int, char*[])
       {
       multithreader->SingleMethodExecute();
 
-      long int min_mtime = helper.timestamps[0].GetMTime();
-      long int max_mtime = helper.timestamps[0].GetMTime();
+      itk::ModifiedTimeType min_mtime = helper.timestamps[0].GetMTime();
+      itk::ModifiedTimeType max_mtime = helper.timestamps[0].GetMTime();
       for(int k=0; k < numberOfThreads; k++)
         {
-        const long int & mtime = helper.timestamps[k].GetMTime();
+        const itk::ModifiedTimeType & mtime = helper.timestamps[k].GetMTime();
         if ( mtime > max_mtime )
           {
           max_mtime = mtime;
@@ -125,7 +126,7 @@ int itkTimeStampTest(int, char*[])
           {
           // Test whether the all modified times have
           // been used
-          const long int index = helper.timestamps[k].GetMTime()-min_mtime;
+          const itk::ModifiedTimeType index = helper.timestamps[k].GetMTime()-min_mtime;
 
           if ( istimestamped[index] == true )
             {
