@@ -204,7 +204,7 @@ public:
 
   /** Returns the latest modified time of the spatial object, and
    * any of its components. */
-  unsigned long GetMTime(void) const;
+  ModifiedTimeType GetMTime(void) const;
 
   /** Returns the latest modified time of the spatial object, but not
    *  the modification time of the children */
@@ -556,7 +556,7 @@ private:
   void operator=(const Self &); //purposely not implemented
 
   BoundingBoxPointer    m_Bounds;
-  mutable unsigned long m_BoundsMTime;
+  mutable ModifiedTimeType m_BoundsMTime;
 
   TransformPointer m_ObjectToParentTransform;
   TransformPointer m_ObjectToWorldTransform;
