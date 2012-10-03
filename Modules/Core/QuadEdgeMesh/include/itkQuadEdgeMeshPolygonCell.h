@@ -143,7 +143,7 @@ public:
     if ( numberOfPoints )
       {
       PointIdentifier i = 0;
-      
+
       PointIdInternalConstIterator it   = this->InternalPointIdsBegin();
       PointIdInternalConstIterator end  = this->InternalPointIdsEnd();
 
