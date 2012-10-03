@@ -128,7 +128,7 @@ MapContainer< TElementIdentifier, TElement >
   MapConstIterator it = this->MapType::find(id);
   if( it != this->MapType::end() )
     {
-    if( element )
+    if ( element )
       {
       *element = it->second;
       }

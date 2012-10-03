@@ -1171,9 +1171,10 @@ QuadEdgeMesh< TPixel, VDimension, TTraits >
     {
     typename QEPrimal::IteratorGeom it  = initialEdge->BeginGeomOnext();
     typename QEPrimal::IteratorGeom end = initialEdge->EndGeomOnext();
+
     while ( it != end )
       {
-      if ( it.Value()->GetDestination() == pid1 )
+      if (  it.Value()->GetDestination() == pid1 )
         {
         return ( dynamic_cast< QEPrimal * >( it.Value() ) );
         }
