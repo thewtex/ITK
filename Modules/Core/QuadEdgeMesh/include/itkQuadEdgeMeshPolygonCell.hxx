@@ -127,12 +127,13 @@ unsigned int QuadEdgeMeshPolygonCell< TCellInterface >
 {
   // The constructor creates one edge by default
   unsigned int                 n = 0;
-  PointIdInternalConstIterator it = this->InternalPointIdsBegin();
+  PointIdInternalConstIterator it   = this->InternalPointIdsBegin();
+  PointIdInternalConstIterator end  = this->InternalPointIdsBegin();
 
-  while ( it != this->InternalPointIdsEnd() )
+  while ( it != end )
     {
-    it++;
-    n++;
+    ++it;
+    ++n;
     }
   // it's impossible to get n < 3 except the empty case
   if ( n > 2 )
