@@ -75,3 +75,5 @@ install(FILES
   DESTINATION ${ITKCommon_INSTALL_INCLUDE_DIR}
   COMPONENT Development
   )
+
+add_subdirectory(include)
