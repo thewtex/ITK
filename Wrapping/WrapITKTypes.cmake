@@ -175,8 +175,8 @@ set(itk_Wrap_SymmetricSecondRankTensor ${WRAPPER_TEMPLATES})
 
 WRAP_TYPE("itk::Image" "I")
   # Make a list of all of the selected image pixel types and also double (for
-  # BSplineDeformableTransform), uchar (for 8-bit image output), and ulong
-  # (for the watershed and relabel filters).
+  # BSplineDeformableTransform), uchar (for 8-bit image output), ulong
+  # (for the watershed and relabel filters)
   UNIQUE(wrap_image_types "${WRAP_ITK_ALL_TYPES};D;UC;UL;RGBUC;RGBAUC;VD")
 
   foreach(d ${ITK_WRAP_DIMS})
@@ -199,6 +199,9 @@ WRAP_TYPE("itk::Image" "I")
     # SymmetricSecondRankTensor types required by level set filters
     ADD_TEMPLATE("${ITKM_SSRT${ITKM_D}${d}}${d}"  "${ITKT_SSRT${ITKM_D}${d}}, ${d}")
 
+    # Vector types required by VelocityFieldTranform classes
+    INCREMENT(d_inc ${d})
+    ADD_TEMPLATE("${ITKM_VD${d}}${d_inc}" "${ITKT_VD${d}},${d_inc}")
   endforeach()
 END_WRAP_TYPE()
 set(itk_Wrap_Image ${WRAPPER_TEMPLATES})

@@ -1,6 +1,13 @@
 itk_wrap_class("itk::ImageBase" POINTER)
+  set(dims "")
   foreach(d ${ITK_WRAP_DIMS})
-    itk_wrap_template("${d}"  "${d}")
+    # For VelocityFieldTranform
+    INCREMENT(d_inc ${d})
+    list(APPEND dims ${d} ${d_inc})
+  endforeach(d)
+  list(REMOVE_DUPLICATES dims)
+  foreach(d ${dims})
+    itk_wrap_template("${d}" "${d}")
   endforeach(d)
 itk_end_wrap_class()
 
