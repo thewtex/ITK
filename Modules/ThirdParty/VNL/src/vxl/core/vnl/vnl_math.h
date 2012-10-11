@@ -48,6 +48,9 @@
 # if !VXL_HAS_EMMINTRIN_H
 #   error "Required file emmintrin.h for SSE2 not found"
 # else
+#   if defined(__MINGW32__)
+#     include <windows.h> // workaround for C++/C linkage error
+#   endif
 #   include <emmintrin.h> // sse 2 intrinsics
 #   define USE_SSE2_IMPL 1
 # endif

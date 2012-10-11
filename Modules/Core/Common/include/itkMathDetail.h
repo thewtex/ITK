@@ -40,6 +40,7 @@
 #endif /* ITK_HAVE_FENV_H */
 
 #ifdef ITK_HAVE_EMMINTRIN_H
+#include "itkWindows.h" // To avoid C++ linkage conflicts with C linkage with MinGW
 #include <emmintrin.h> // sse 2 intrinsics
 #endif /* ITK_HAVE_EMMINTRIN_H */
 
