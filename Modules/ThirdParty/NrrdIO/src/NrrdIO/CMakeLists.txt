@@ -24,15 +24,6 @@ if(NOT BUILD_SHARED_LIBS)
  set(TEEM_STATIC 1)
 endif()
 
-# Configure files with settings for use by the build.
-CONFIGURE_FILE(${ITK3P_NrrdIO_SOURCE_DIR}/NrrdConfigure.h.in
-  ${ITK3P_NrrdIO_BINARY_DIR}/NrrdConfigure.h)
-
-# Need to be able to fine NrrdConfig.h
-INCLUDE_DIRECTORIES(
-  ${ITK3P_NrrdIO_BINARY_DIR}
-)
-
 #-----------------------------------------------------------------------------
 # Find platform-specific differences in the handling of IEEE floating point
 # special values.
@@ -44,13 +35,6 @@ if(QNANHIBIT_VALUE)
 else(QNANHIBIT_VALUE)
    set(QNANHIBIT 0 CACHE INTERNAL "The 22nd bit of 32-bit floating-point quiet NaN.")
 endif(QNANHIBIT_VALUE)
-
-# Set compiler flags for endian-ness.
-#IF(CMAKE_WORDS_BIGENDIAN)
-#  ADD_DEFINITIONS(-DTEEM_ENDIAN=4321)
-#ELSE(CMAKE_WORDS_BIGENDIAN)
-#  ADD_DEFINITIONS(-DTEEM_ENDIAN=1234)
-#ENDIF(CMAKE_WORDS_BIGENDIAN)
 
 #The QNANHIBIT variable is configured by the root level CMakeLists.txt
 IF(QNANHIBIT)

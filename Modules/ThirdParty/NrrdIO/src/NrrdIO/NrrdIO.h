@@ -1,28 +1,29 @@
 /*
   NrrdIO: stand-alone code for basic nrrd functionality
+  Copyright (C) 2012, 2011, 2010, 2009  University of Chicago
   Copyright (C) 2008, 2007, 2006, 2005  Gordon Kindlmann
   Copyright (C) 2004, 2003, 2002, 2001, 2000, 1999, 1998  University of Utah
- 
+
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any
   damages arising from the use of this software.
- 
+
   Permission is granted to anyone to use this software for any
   purpose, including commercial applications, and to alter it and
   redistribute it freely, subject to the following restrictions:
- 
+
   1. The origin of this software must not be misrepresented; you must
      not claim that you wrote the original software. If you use this
      software in a product, an acknowledgment in the product
      documentation would be appreciated but is not required.
- 
+
   2. Altered source versions must be plainly marked as such, and must
      not be misrepresented as being the original software.
- 
+
   3. This notice may not be removed or altered from any source distribution.
 */
 
-#include "NrrdConfigure.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -50,7 +51,8 @@
 #define TEEM_VERSION_MAJOR       1   /* must be 1 digit */
 #define TEEM_VERSION_MINOR      11   /* 1 or 2 digits */
 #define TEEM_VERSION_PATCH      00   /* 1 or 2 digits */
-#define TEEM_VERSION         11100   /* can be easily compared numerically */
+#define TEEM_VERSION         11100   /* must be 5 digits, to facilitate
+                                        easy numerical comparison */
 #define TEEM_VERSION_STRING "1.11.0" /* cannot be so easily compared */
 
 /* THE FOLLOWING INCLUDE IS ONLY FOR THE ITK DISTRIBUTION.
@@ -75,68 +77,111 @@ extern "C" {
 #if defined(_WIN32) && !defined(__CYGWIN__) && !defined(__MINGW32__)
 typedef signed __int64 airLLong;
 typedef unsigned __int64 airULLong;
-#define AIR_LLONG_FMT "%I64d"
-#define AIR_ULLONG_FMT "%I64u"
-#define AIR_LLONG(x) x##i64
-#define AIR_ULLONG(x) x##ui64
+#  define AIR_LLONG_FMT "%I64d"
+#  define AIR_ULLONG_FMT "%I64u"
+#  define AIR_LLONG(x) x##i64
+#  define AIR_ULLONG(x) x##ui64
 #else
 typedef signed long long airLLong;
 typedef unsigned long long airULLong;
-#define AIR_LLONG_FMT "%lld"
-#define AIR_ULLONG_FMT "%llu"
-#define AIR_LLONG(x) x##ll
-#define AIR_ULLONG(x) x##ull
+#  define AIR_LLONG_FMT "%lld"
+#  define AIR_ULLONG_FMT "%llu"
+#  define AIR_LLONG(x) x##ll
+#  define AIR_ULLONG(x) x##ull
 #endif
 
-/* This is annoying, thanks to windows */
-#define AIR_PI 3.14159265358979323846
-#define AIR_E  2.71828182845904523536
 
-#define AIR_STRLEN_SMALL (128+1)
+/*
+** These serve as conservative estimates on how large various strings
+** might end up being.  It would be theoretically better to completely
+** avoid the use of fixed-size buffers, but in many contexts the
+** implementation complexity of handling them reliably is distracts
+** from more urgent implementation goals.  In the mean time, these can
+** be used safely as long as the lengths are used consistently.
+**
+** The possibly unfortunate convention that has become established in
+** Teem is code using these tends to NOT add the "+1", to explicitly
+** indicate the space for 0-termination, and instead assumes it is
+** part of the numbers below, even though this is at the cost of
+** confusion about how the maximal strlen() will be less than each of
+** these numbers. This will be addressed in Teem 2.0.
+*/
+#define AIR_STRLEN_SMALL (128+1) /* has to be big enough to hold:
+                                  - printed value of size_t and ptrdiff_t,
+                                  - line of text that should contain file
+                                    format "magic"
+                                  */
 #define AIR_STRLEN_MED   (256+1)
 #define AIR_STRLEN_LARGE (512+1)
-#define AIR_STRLEN_HUGE  (1024+1)
+#define AIR_STRLEN_HUGE (1024+1) /* has to be big enough to hold
+                                    a biff error message (one line of it) */
 
-/* enum.c: enum value <--> string conversion utility */  
+/*
+******** airPtrPtrUnion
+**
+** union of addresses of pointers to various types, to deal with strict
+** aliasing warnings, especially with the first argument to airArrayNew().
+** Unfortunately this can't meet the needs of all such cases because some
+** libraries need to manage addresses of arrays of other kinds of
+** library-specific objects (about which air is ignorant).
+*/
+typedef union {
+  unsigned char **uc;
+  signed char **sc;
+  char **c;
+  char ***cp;
+  unsigned short **us;
+  short **s;
+  unsigned int **ui;
+  int **i;
+  float **f;
+  double **d;
+  void **v;
+} airPtrPtrUnion;
+
+/*
+******** airEnum struct
+**
+** The airEnum provides the basic mechanism of mapping from a
+** string to an int enum value, and back.
+*/
 typedef struct {
   const char *name;
                /* what are these things? */
   unsigned int M;
-               /* If "val" is NULL, the the valid enum values are from 1 
-                  to M (represented by strings str[1] through str[M]), and
-                  the unknown/invalid value is 0.  If "val" is non-NULL, the
-                  valid enum values are from val[1] to val[M] (but again, 
-                  represented by strings str[1] through str[M]), and the
-                  unknown/invalid value is val[0].  In both cases, str[0]
-                  is the string to represent an unknown/invalid value */
+               /* str[0]: string for the unknown/invalid value;
+                * str[1] .. str[M]: canonical strings for the enum values;
+                * "val" NULL: unknown/invalid = 0;
+                *             valid values are 1 .. M
+                * "val" non-NULL: unknown/invalid = val[0];
+                *                 valid are val[1].. val[M]
+                */
   const char **str; 
-               /* "canonical" textual representation of the enum values */
+               /* see above */
   const int *val;
-               /* non-NULL iff valid values in the enum are not [1..M], and/or
-                  if value for unknown/invalid is not zero */
+               /* see above */
   const char **desc;
                /* desc[i] is a short description of the enum values represented
                   by str[i] (thereby starting with the unknown value), to be
                   used to by things like hest */
   const char **strEqv;  
-               /* All the variations in strings recognized in mapping from
-                  string to value (the values in valEqv).  This **MUST** be
-                  terminated by a zero-length string ("") so as to signify
-                  the end of the list.  This should not contain the string
-                  for unknown/invalid.  If "strEqv" is NULL, then mapping
-                  from string to value is done by traversing "str", and 
-                  "valEqv" is ignored. */
+               /* If non-NULL, all the variations in strings recognized in
+                  mapping from string to value (the values in valEqv).
+                  This **MUST** be terminated by a zero-length string ("") so
+                  as to signify the end of the list.  This should *not*
+                  contain the string for unknown/invalid.
+                  If "strEqv" is NULL, then mapping from string to value is
+                  done only by traversing "str", and "valEqv" is ignored. */
   const int *valEqv;
-               /* The values corresponding to the strings in strEqv; there
-                  should be one integer for each non-zero-length string in
-                  strEqv: strEqv[i] is a valid string representation for
-                  value valEqv[i]. This should not contain the value for
-                  unknown/invalid.  This "valEqv" is ignored if "strEqv" is
-                  NULL. */
+               /* If strEqv non-NULL, valEqv holds the values corresponding
+                  to the strings in strEqv, with one integer for each
+                  non-zero-length string in strEqv: strEqv[i] is a valid
+                  string representation for value valEqv[i]. This should *not*
+                  contain the value for unknown/invalid.
+                  This "valEqv" is ignored if "strEqv" is NULL. */
   int sense;   /* require case matching on strings */
 } airEnum;
 NRRDIO_EXPORT int airEnumUnknown(const airEnum *enm);
-NRRDIO_EXPORT int airEnumLast(const airEnum *enm);
 NRRDIO_EXPORT int airEnumValCheck(const airEnum *enm, int val);
 NRRDIO_EXPORT const char *airEnumStr(const airEnum *enm, int val);
 NRRDIO_EXPORT const char *airEnumDesc(const airEnum *enm, int val);
@@ -144,7 +189,6 @@ NRRDIO_EXPORT int airEnumVal(const airEnum *enm, const char *str);
 NRRDIO_EXPORT char *airEnumFmtDesc(const airEnum *enm, int val, int canon,
                                 const char *fmt);
 NRRDIO_EXPORT void airEnumPrint(FILE *file, const airEnum *enm);
-
 
 /*
 ******** airEndian enum
@@ -161,14 +205,14 @@ enum {
 };
 /* endianAir.c */
 NRRDIO_EXPORT const airEnum *const airEndian;
-NRRDIO_EXPORT const int airMyEndian;
+NRRDIO_EXPORT int airMyEndian(void);
 
 /* array.c: poor-man's dynamically resizable arrays */
 typedef struct {
   void *data,         /* where the data is */
     **dataP;          /* (possibly NULL) address of user's data variable,
                          kept in sync with internal "data" variable */
-  size_t len,         /* length of array: # units for which there is
+  unsigned int len,   /* length of array: # units for which there is
                          considered to be data (which is <= total # units
                          allocated).  The # bytes which contain data is
                          len*unit.  Always updated (unlike "*lenP") */
@@ -202,15 +246,14 @@ typedef struct {
   void (*doneCB)(void *);  /* called on addresses of invalidated elements */
 
 } airArray;
-NRRDIO_EXPORT airArray *airArrayNew(void **dataP, size_t *lenP, size_t unit,
-                                 size_t incr);
+NRRDIO_EXPORT airArray *airArrayNew(void **dataP, unsigned int *lenP, size_t unit,
+                                 unsigned int incr);
 NRRDIO_EXPORT void airArrayStructCB(airArray *a, void (*initCB)(void *),
                                  void (*doneCB)(void *));
 NRRDIO_EXPORT void airArrayPointerCB(airArray *a, void *(*allocCB)(void),
                                   void *(*freeCB)(void *));
-NRRDIO_EXPORT void airArrayLenSet(airArray *a, size_t newlen);
-NRRDIO_EXPORT void airArrayLenPreSet(airArray *a, size_t newlen);
-NRRDIO_EXPORT size_t airArrayLenIncr(airArray *a, int delta);
+NRRDIO_EXPORT void airArrayLenSet(airArray *a, unsigned int newlen);
+NRRDIO_EXPORT unsigned int airArrayLenIncr(airArray *a, int delta);
 NRRDIO_EXPORT airArray *airArrayNix(airArray *a);
 NRRDIO_EXPORT airArray *airArrayNuke(airArray *a);
 
@@ -298,16 +341,17 @@ enum {
   airTypeInt,       /*  2 */
   airTypeUInt,      /*  3 */
   airTypeLongInt,   /*  4 */
-  airTypeSize_t,    /*  5 */
-  airTypeFloat,     /*  6 */
-  airTypeDouble,    /*  7 */
-  airTypeChar,      /*  8 */
-  airTypeString,    /*  9 */
-  airTypeEnum,      /* 10 */
-  airTypeOther,     /* 11 */
+  airTypeULongInt,  /*  5 */
+  airTypeSize_t,    /*  6 */
+  airTypeFloat,     /*  7 */
+  airTypeDouble,    /*  8 */
+  airTypeChar,      /*  9 */
+  airTypeString,    /* 10 */
+  airTypeEnum,      /* 11 */
+  airTypeOther,     /* 12 */
   airTypeLast
 };
-#define AIR_TYPE_MAX   11
+#define AIR_TYPE_MAX   12
 /* parseAir.c */
 NRRDIO_EXPORT double airAtod(const char *str);
 NRRDIO_EXPORT int airSingleSscanf(const char *str, const char *fmt, void *ptr);
@@ -350,12 +394,13 @@ NRRDIO_EXPORT int airStrtokQuoting;
 NRRDIO_EXPORT char *airStrtok(char *s, const char *ct, char **last);
 NRRDIO_EXPORT unsigned int airStrntok(const char *s, const char *ct);
 NRRDIO_EXPORT char *airStrtrans(char *s, char from, char to);
+NRRDIO_EXPORT char *airStrcpy(char *dst, size_t dstSize, const char *src);
 NRRDIO_EXPORT int airEndsWith(const char *s, const char *suff);
 NRRDIO_EXPORT char *airUnescape(char *s);
 NRRDIO_EXPORT char *airOneLinify(char *s);
 NRRDIO_EXPORT char *airToLower(char *str);
 NRRDIO_EXPORT char *airToUpper(char *str);
-NRRDIO_EXPORT unsigned int airOneLine(FILE *file, char *line, int size);
+NRRDIO_EXPORT unsigned int airOneLine(FILE *file, char *line, unsigned int size);
 
 /* sane.c */
 /*
@@ -373,14 +418,14 @@ enum {
   airInsane_FltDblFPClass, /*  5: double -> float assignment messed up the
                                airFPClass_f() of the value */
   airInsane_QNaNHiBit,     /*  6: airMyQNaNHiBit is wrong */
-  airInsane_AIR_NAN,       /*  7: airFPClass_f(AIR_QNAN,AIR_SNAN) wrong */
+  airInsane_AIR_NAN,       /*  7: airFPClass_f(AIR_QNAN) wrong
+                                  (no longer checking on problematic SNAN) */
   airInsane_dio,           /*  8: airMyDio set to something invalid */
-  airInsane_32Bit,         /*  9: airMy32Bit is wrong */
-  airInsane_UCSize,        /* 10: unsigned char isn't 8 bits */
-  airInsane_FISize,        /* 11: sizeof(float), sizeof(int) not 4 */
-  airInsane_DLSize         /* 12: sizeof(double), sizeof(airLLong) not 8 */
+  airInsane_UCSize,        /*  9: unsigned char isn't 8 bits */
+  airInsane_FISize,        /* 10: sizeof(float), sizeof(int) not 4 */
+  airInsane_DLSize         /* 11: sizeof(double), sizeof(airLLong) not 8 */
 };
-#define AIR_INSANE_MAX        12
+#define AIR_INSANE_MAX        11
 NRRDIO_EXPORT const char *airInsaneErr(int insane);
 NRRDIO_EXPORT int airSanity(void);
 
@@ -393,7 +438,7 @@ NRRDIO_EXPORT void *airFree(void *ptr);
 NRRDIO_EXPORT FILE *airFopen(const char *name, FILE *std, const char *mode);
 NRRDIO_EXPORT FILE *airFclose(FILE *file);
 NRRDIO_EXPORT int airSinglePrintf(FILE *file, char *str, const char *fmt, ...);
-NRRDIO_EXPORT const int airMy32Bit;
+NRRDIO_EXPORT char *airSprintSize_t(char str[AIR_STRLEN_SMALL], size_t val);
 
 /* dio.c */
 /*
@@ -451,6 +496,7 @@ NRRDIO_EXPORT void airMopError(airArray *arr);
 NRRDIO_EXPORT void airMopOkay(airArray *arr);
 NRRDIO_EXPORT void airMopDebug(airArray *arr);
 
+
 /*******     the interminable sea of defines and macros     *******/
 
 #define AIR_TRUE 1
@@ -466,39 +512,48 @@ NRRDIO_EXPORT void airMopDebug(airArray *arr);
 #define AIR_UNUSED(x) (void)(x)
 
 /*
-******** AIR_CAST
+******** AIR_CAST, AIR_UINT, AIR_INT
 **
-** just a cast, but with the added ability to grep for it more easily,
+** just casts, but with the added ability to grep for them more easily,
 ** since casts should probably always be revisited and reconsidered.
 */
 #define AIR_CAST(t, v) ((t)(v))
+#define AIR_UINT(x) AIR_CAST(unsigned int, x)
+#define AIR_INT(x) AIR_CAST(int, x)
 
 /*
-******** AIR_CALLOC
+******** AIR_VOIDP, AIR_CVOIDP
 **
-** slightly simpler wrapper around cast and calloc
+** explicit casting to "void *" (and "const void *") from non-void* pointers
+** is strictly speaking needed for the %p format specifier in printf-like
+** functions; this is a slightly more convenient form
+*/
+#define AIR_VOIDP(x) AIR_CAST(void *, x)
+#define AIR_CVOIDP(x) AIR_CAST(const void *, x)
+
+/*
+******** AIR_MALLOC, AIR_CALLOC
+**
+** slightly simpler wrapper around cast and malloc/calloc
 **
 ** HEY note that "T" is not guarded by parentheses in its first usage,
 ** as arguments in Teem macros normally are
 */
+#define AIR_MALLOC(N, T) (T*)(malloc((N)*sizeof(T)))
 #define AIR_CALLOC(N, T) (T*)(calloc((N), sizeof(T)))
 
 /*
 ******** AIR_ENDIAN, AIR_QNANHIBIT, AIR_DIO
 **
-** These reflect particulars of hardware which we're running on.
-** The reason to have these in addition to TEEM_ENDIAN, TEEM_DIO, etc.,
-** is that those are not by default defined for every source-file
-** compilation: the Teem library has to define NEED_ENDIAN, NEED_DIO, etc,
-** and these in turn generate appropriate compile command-line flags
-** by Common.mk. By having these defined here, they become available
-** to anyone who simply links against the air library (and includes air.h),
-** with no command-line flags required, and no usage of Common.mk required.
+** These reflect particulars of hardware which we're running on. The
+** difference from the things starting with TEEM_ is that the TEEM_
+** values are for passing architecture-specific to compilation of source
+** files, and thes AIR_ variables are for advertising that information
+** to anyone linking against air (or Teem) and including air.h.
 */
-#define AIR_ENDIAN (airMyEndian)
+#define AIR_ENDIAN (airMyEndian())
 #define AIR_QNANHIBIT (airMyQNaNHiBit)
 #define AIR_DIO (airMyDio)
-#define AIR_32BIT (airMy32Bit)
 
 /*
 ******** AIR_NAN, AIR_QNAN, AIR_SNAN, AIR_POS_INF, AIR_NEG_INF
@@ -538,24 +593,25 @@ NRRDIO_EXPORT void airMopDebug(airArray *arr);
 ** saved to memory and loaded back, may end up being different.  I
 ** have yet to produce this behavior, or convince myself it can't happen.
 **
-** The reason to #define AIR_EXISTS as airExists_d is that on some
+** The reason to #define AIR_EXISTS as airExists is that on some
 ** optimizing compilers, the !((x) - (x)) doesn't work.  This has been
 ** the case on Windows and 64-bit irix6 (64 bit) with -Ofast.  If
 ** airSanity fails because a special value "exists", then use the
 ** first version of AIR_EXISTS.
 **
-** There are two performance consequences of using airExists_d(x):
-** 1) Its a function call (but WIN32 can __inline it)
-** 2) (via AIR_EXISTS_D) It requires bit-wise operations on 64-bit
-** ints, which might be terribly slow.
+** There is a performance consequence of using airExists(x), in that it
+** is a function call, although (HEY) we should facilitate inline'ing it
+** for compilers that know how to.
 **
-** The reason for using airExists_d and not airExists_f is for
-** doubles > FLT_MAX: airExists_f would say these are infinity.
+** gcc 4.5.3 -std=c89, at least on cygwin, has problems with
+** the type of "!((x) - (x))" when used with bit-wise xor ^, saying
+** "invalid operands to binary ^ (have ‘int’ and ‘int’)" but these
+** problems oddly went away with the explicit cast to int.
 */
 #if 1
 #define AIR_EXISTS(x) (airExists(x))
 #else
-#define AIR_EXISTS(x) (!((x) - (x)))
+#define AIR_EXISTS(x) (AIR_CAST(int, !((x) - (x))))
 #endif
 
 
@@ -674,49 +730,6 @@ NRRDIO_EXPORT void airMopDebug(airArray *arr);
 #define AIR_ROUNDUP_UI(x)   ((unsigned int)(floor((x)+0.5)))
 #define AIR_ROUNDDOWN_UI(x) ((unsigned int)(ceil((x)-0.5)))
 
-/*
-******** _AIR_SIZE_T_CNV, _AIR_PTRDIFF_T_CNV, 
-**
-** Format specifiers to use when printf/fprintf/sprintf-ing a value of
-** type size_t or ptrdiff_t.  In C99, this is done with "%z" and "%t",
-** respectively.
-**
-** This is not a useful macro for the world at large- only for Teem
-** source files.  Why: we need to leave this as a bare string, so that
-** we can exploit C's implicit string concatenation in forming a
-** format string.  Therefore, unlike the definition of AIR_ENDIAN,
-** AIR_DIO, etc, _AIR_SIZE_T_CNV can NOT just refer to a const variable
-** (like airMyEndian).  Therefore, TEEM_32BIT has to be defined for
-** ALL source files which want to use _AIR_SIZE_T_CNV, and to be safe,
-** that's all Teem files.  The converse is, since there is no
-** expectation that other projects which use Teem will be defining
-** TEEM_32BIT, this is not useful outside Teem, thus the leading _.
-**
-** http://www.viva64.com/art-1-2-710804781.html for size conventions.
-**
-** It appears that 32 bit APPLE uses ld for size_t and int for ptrdiff.
-*/
-#if TEEM_32BIT == 0
-#  ifdef _WIN64
-#    define _AIR_SIZE_T_CNV "%I64u"
-#    define _AIR_PTRDIFF_T_CNV "%I64d"
-#  else
-#    define _AIR_SIZE_T_CNV "%lu"
-#    define _AIR_PTRDIFF_T_CNV "%ld"
-#  endif
-#elif TEEM_32BIT == 1
-#  ifdef __APPLE__
-#    define _AIR_SIZE_T_CNV "%lu"
-#    define _AIR_PTRDIFF_T_CNV "%d"
-#  else
-#    define _AIR_SIZE_T_CNV "%u"
-#    define _AIR_PTRDIFF_T_CNV "%d"
-#  endif
-#else
-#  define _AIR_SIZE_T_CNV "(no _AIR_SIZE_T_CNV w/out TEEM_32BIT %*d)"
-#  define _AIR_PTRDIFF_T_CNV "(no _AIR_PTRDIFF_T_CNV w/out TEEM_32BIT %*d)"
-#endif
-
 #ifdef __cplusplus
 }
 #endif
@@ -740,7 +753,7 @@ typedef struct {
                                   of biffMsg creation */
   char **err;                  /* array of error strings; the err array itself
                                   is NOT null-terminated */
-  size_t errNum;               /* length of "err" == # strings stored */
+  unsigned int errNum;         /* length of "err" == # strings stored */
   airArray *errArr;            /* air array for err and num */
 } biffMsg;
 
@@ -748,33 +761,17 @@ typedef struct {
 NRRDIO_EXPORT biffMsg *biffMsgNew(const char *key);
 NRRDIO_EXPORT biffMsg *biffMsgNix(biffMsg *msg);
 NRRDIO_EXPORT void biffMsgAdd(biffMsg *msg, const char *err);
-NRRDIO_EXPORT void biffMsgAddVL(biffMsg *msg, const char *errfmt, va_list args);
-NRRDIO_EXPORT void biffMsgAddf(biffMsg *msg, const char *errfmt, ...)
-#ifdef __GNUC__
-__attribute__ ((format(printf,2,3)))
-#endif
-;
 NRRDIO_EXPORT void biffMsgClear(biffMsg *msg);
 NRRDIO_EXPORT unsigned int biffMsgLineLenMax(const biffMsg *msg);
 NRRDIO_EXPORT void biffMsgMove(biffMsg *dest, biffMsg *src,
                              const char *err);
-NRRDIO_EXPORT void biffMsgMoveVL(biffMsg *dest, biffMsg *src,
-                               const char *errfmt, va_list args);
-NRRDIO_EXPORT void biffMsgMovef(biffMsg *dest, biffMsg *src,
-                                const char *errfmt, ...)
-#ifdef __GNUC__
-__attribute__ ((format(printf,3,4)))
-#endif
-;
+NRRDIO_EXPORT unsigned int biffMsgErrNum(const biffMsg *msg);
 NRRDIO_EXPORT unsigned int biffMsgStrlen(const biffMsg *msg);
-NRRDIO_EXPORT char *biffMsgStrAlloc(const biffMsg *msg);
 NRRDIO_EXPORT void biffMsgStrSet(char *ret, const biffMsg *msg);
-NRRDIO_EXPORT char *biffMsgStrGet(const biffMsg *msg);
 NRRDIO_EXPORT biffMsg *biffMsgNoop;
 
 /* biffbiff.c */
 NRRDIO_EXPORT void biffAdd(const char *key, const char *err);
-NRRDIO_EXPORT void biffAddVL(const char *key, const char *errfmt, va_list args);
 NRRDIO_EXPORT void biffAddf(const char *key, const char *errfmt, ...)
 #ifdef __GNUC__
   __attribute__ ((format(printf,2,3)))
@@ -788,22 +785,10 @@ __attribute__ ((format(printf,3,4)))
 #endif
 ;
 NRRDIO_EXPORT char *biffGet(const char *key);
-NRRDIO_EXPORT int biffGetStrlen(const char *key);
+NRRDIO_EXPORT unsigned int biffGetStrlen(const char *key);
 NRRDIO_EXPORT void biffSetStr(char *str, const char *key);
-NRRDIO_EXPORT size_t biffCheck(const char *key);
 NRRDIO_EXPORT void biffDone(const char *key);
-NRRDIO_EXPORT void biffMove(const char *destKey, const char *err,
-                          const char *srcKey);
-NRRDIO_EXPORT void biffMoveVL(const char *destKey, const char *srcKey,
-                            const char *errfmt, va_list args);
-NRRDIO_EXPORT void biffMovef(const char *destKey, const char *srcKey,
-                            const char *errfmt, ...)
-#ifdef __GNUC__
-__attribute__ ((format(printf,3,4)))
-#endif
-;
 NRRDIO_EXPORT char *biffGetDone(const char *key);
-NRRDIO_EXPORT void biffSetStrDone(char *str, const char *key);
 
 #ifdef __cplusplus
 }
@@ -831,6 +816,8 @@ extern "C" {
 #define NRRD_EXT_TEXT   ".txt"
 #define NRRD_EXT_EPS    ".eps"
 
+/* HEY: should this be renamed -> MAXNUM ? Would be more consistent
+   with other Teem pound-define names */
 #define NRRD_KERNEL_PARMS_NUM 8    /* max # arguments to a kernel-
                                       this is weird: it isn't the max
                                       of any of the NrrdKernels
@@ -843,48 +830,18 @@ extern "C" {
                                       simplifies implementation. */
 
 /* 
-** For the 64-bit integer types (not standard except in C99), we try
-** to use the names for the _MIN and _MAX values which are used in C99
-** (as well as gcc) such as LLONG_MAX.
-** 
-** If these aren't defined, we try the ones used on SGI such as
-** LONGLONG_MAX.
-**
-** If these aren't defined either, we go wild and define something
-** ourselves (which just happen to be the values defined in C99), with
-** total disregard to what the architecture and compiler actually
-** support.  These values are tested, however, by nrrdSanity().
+** For the 64-bit integer types (not standard except in C99), we used
+** to try to use the names for the _MIN and _MAX values which are used
+** in C99 (as well as gcc) such as LLONG_MAX, or those used on SGI
+** such as LONGLONG_MAX.  However, since the tests (in nrrdSanity)
+** were re-written to detect overflow based on manipulation of
+** specific values, we might as well also define the _MIN and _MAX in
+** terms of explicit values (which agree with those defined by C99).
 */
 
-#ifdef LLONG_MAX
-#  define NRRD_LLONG_MAX LLONG_MAX
-#else
-#  ifdef LONGLONG_MAX
-#    define NRRD_LLONG_MAX LONGLONG_MAX
-#  else
-#    define NRRD_LLONG_MAX AIR_LLONG(9223372036854775807)
-#  endif
-#endif
-
-#ifdef LLONG_MIN
-#  define NRRD_LLONG_MIN LLONG_MIN
-#else
-#  ifdef LONGLONG_MIN
-#    define NRRD_LLONG_MIN LONGLONG_MIN
-#  else
-#    define NRRD_LLONG_MIN (-NRRD_LLONG_MAX-AIR_LLONG(1))
-#  endif
-#endif
-
-#ifdef ULLONG_MAX
-#  define NRRD_ULLONG_MAX ULLONG_MAX
-#else
-#  ifdef ULONGLONG_MAX
-#    define NRRD_ULLONG_MAX ULONGLONG_MAX
-#  else
-#    define NRRD_ULLONG_MAX AIR_ULLONG(18446744073709551615)
-#  endif
-#endif
+#define NRRD_LLONG_MAX AIR_LLONG(9223372036854775807)
+#define NRRD_LLONG_MIN (-NRRD_LLONG_MAX-AIR_LLONG(1))
+#define NRRD_ULLONG_MAX AIR_ULLONG(18446744073709551615)
 
 /*
 ** Chances are, you shouldn't mess with these
@@ -990,7 +947,7 @@ enum {
 **
 ** all the different types, identified by integer
 **
-** 18 July 03: After some consternation, I decided to set
+** 18 July 03: After some consternation, GLK decided to set
 ** nrrdTypeUnknown and nrrdTypeDefault to the same thing, with the
 ** reasoning that the only times that nrrdTypeDefault is used is when
 ** controlling an *output* type (the type of "nout"), or rather,
@@ -1231,16 +1188,6 @@ enum {
 #define NRRD_BASIC_INFO_NONE 0
 
 /*
-** the "endian" enum is actually in the air library, but it is very
-** convenient to have it incorporated into the nrrd enum framework for
-** the purposes of string<-->int conversion.  Unfortunately, the
-** little and big values are 1234 and 4321 respectively, so
-** NRRD_ENDIAN_MAX is not actually the highest valid value, but only
-** an indicator of how many valid values there are.
-*/
-#define NRRD_ENDIAN_MAX 2
-
-/*
 ******** nrrdField enum
 **
 ** the various fields we can parse in a NRRD header
@@ -1265,7 +1212,7 @@ enum {
 ** axis.c (for per-axis info):
 **    _nrrdAxisInfoCopy()
 ** methodsNrrd.c:
-**    lots of functions, but you knew that ...
+**    lots of functions, but you knew that . . .
 */
 enum {
   nrrdField_unknown,
@@ -1320,7 +1267,7 @@ enum {
 enum {
   nrrdHasNonExistFalse,     /* 0: no non-existent values were seen */
   nrrdHasNonExistTrue,      /* 1: some non-existent values were seen */
-  nrrdHasNonExistOnly,      /* 2: NOTHING BUT non-existant values were seen */
+  nrrdHasNonExistOnly,      /* 2: NOTHING BUT non-existent values were seen */
   nrrdHasNonExistUnknown,   /* 3 */
   nrrdHasNonExistLast
 };
@@ -1473,92 +1420,93 @@ extern "C" {
 ** Unlike nrrdAxisSpacing, this assumes that center is either
 ** nrrdCenterCell or nrrdCenterNode, but not nrrdCenterUnknown.
 */
-#define NRRD_SPACING(center, min, max, size)  \
-  (nrrdCenterCell == center                        \
-   ? ((max) - (min))/(size)                        \
-   : ((max) - (min))/((size) - 1))                 \
+#define NRRD_SPACING(center, min, max, size)        \
+  (nrrdCenterCell == center                         \
+   ? ((max) - (min))/AIR_CAST(double, size)         \
+   : ((max) - (min))/(AIR_CAST(double, (size)- 1))) \
 
 /*
 ******** NRRD_COORD_UPDATE
 **
-** This is for doing the "carrying" associated with gradually
-** incrementing an array of coordinates.  Assuming that the given
-** coordinate array "coord" has been incrementing by adding 1 to THE
-** FIRST, THE ZERO-ETH, ELEMENT (this is a strong assumption), then,
-** this macro is good for propagating the change up to higher axes
-** (which really only happens when the position has stepped over the
-** limit on a lower axis.)  Relies on the array of axes sizes "size",
-** as as the length "dim" of "coord" and "size".
+** This is for doing the "carrying" associated with gradually incrementing an
+** array of coordinates.  Assuming that the given coordinate array "coord" has
+** been incremented by adding 1 to coord[0], this macro will propagating the
+** change up to higher axes (when the coordinate has reached the size on a
+** lower axis.)  In addition, the final statement of the macro prevents the
+** last index from going past a valid value.
 **
-** This may be turned into something more general purpose soon. 
+** Assumptions:
+** -- coord[] and size[] should both be arrays of unsigned integral values,
+**    presumably size_t
+** -- size[i] is >= 1 for all i<dim (size 0 is invalid)
+** -- dim is an unsigned int (0 is ok; result is a no-op)
+** Violating these will create invalid coordinate arrays or generate
+** compiler warnings about comparisons between signed and unsigned.
+**
+** The "ddd" variable name in this and subsequent macros is an effort to
+** avoid possible symbol name shadowing.
 */
-#define NRRD_COORD_UPDATE(coord, size, dim)    \
-do {                                           \
-  unsigned int d;                              \
-  for (d=0;                                    \
-       d < (dim)-1 && (coord)[d] == (size)[d]; \
-       d++) {                                  \
-    (coord)[d] = 0;                            \
-    (coord)[d+1]++;                            \
-  }                                            \
-} while (0)
+#define NRRD_COORD_UPDATE(coord, size, dim)                             \
+  {                                                                     \
+    unsigned int ddd;                                                   \
+    for (ddd=0;                                                         \
+         ddd+1 < (dim) && (coord)[ddd] >= (size)[ddd];                  \
+         ddd++) {                                                       \
+      (coord)[ddd] = 0;                                                 \
+      (coord)[ddd+1]++;                                                 \
+    }                                                                   \
+    if (dim) {                                                          \
+      (coord)[(dim)-1] = AIR_MIN((coord)[(dim)-1], (size)[(dim)-1]-1);  \
+    }                                                                   \
+  }
 
 /*
 ******** NRRD_COORD_INCR
 **
-** same as NRRD_COORD_UPDATE, but starts by incrementing coord[idx]
+** increments coord[idx] (by one) and then calls NRRD_COORD_UPDATE to
+** propagate this change as necessary to higher numbered axes.  Does
+** nothing if idx>=dim, since that would be an invalid index into
+** coord[] and size[]
 */
-#define NRRD_COORD_INCR(coord, size, dim, idx) \
-do {                                           \
-  unsigned int d;                              \
-  for (d=idx, (coord)[d]++;                    \
-       d < (dim)-1 && (coord)[d] == (size)[d]; \
-       d++) {                                  \
-    (coord)[d] = 0;                            \
-    (coord)[d+1]++;                            \
-  }                                            \
-} while (0)
+#define NRRD_COORD_INCR(coord, size, dim, idx)                          \
+  if ((idx) < (dim)) {                                                  \
+    (coord)[(idx)]++;                                                   \
+    NRRD_COORD_UPDATE((coord)+(idx), (size)+(idx), (dim)-(idx));        \
+  }
 
 /*
 ******** NRRD_INDEX_GEN
 **
-** Given a coordinate array "coord", as well as the array sizes "size"
-** and dimension "dim", calculates the linear index, and stores it in
-** "I".
+** Given array coordinates "coord" and sizes "size", both of length "dim",
+** this calculates the linear index represented by coord (assuming lower
+** coordinates are for *faster* axes), and stores it in "I".  Has the same
+** assumptions as NRRD_COORD_UPDATE.
 */
-#define NRRD_INDEX_GEN(I, coord, size, dim)     \
-{                                               \
-  int d;                                        \
-  d = (dim) - 1;                                \
-  if ( (d) >= 0 )                               \
-  {                                             \
-    (I) = (coord)[d];                           \
-    d--;                                        \
-    while( d >= 0 )                             \
-    {                                           \
-    (I) = (coord)[d] + (size)[d] * (I);         \
-    d--;                                        \
-    }                                           \
-  }                                             \
-}
+#define NRRD_INDEX_GEN(I, coord, size, dim)             \
+  {                                                     \
+    unsigned int ddd = (dim);                           \
+    (I) = 0;                                            \
+    while (ddd) {                                       \
+      ddd--;                                            \
+      (I) = (coord)[ddd] + (size)[ddd]*(I);             \
+    }                                                   \
+  }
+
 /*
 ******** NRRD_COORD_GEN
 **
 ** opposite of NRRD_INDEX_GEN: going from linear index "I" to
 ** coordinate array "coord".
-**
-** HUGE NOTE: the I argument will end up as ZERO when this is done!
-** If passing a loop control variable, pass a copy instead!
-** Hello, side-effects!  This is awful!
 */
 #define NRRD_COORD_GEN(coord, size, dim, I)   \
-do {                                          \
-  unsigned int d;                             \
-  for (d=0; d<=(dim)-1; d++) {                \
-    (coord)[d] = I % (size)[d];               \
-    I /= (size)[d];                           \
-  }                                           \
-} while (0)
+  {                                           \
+    unsigned int ddd;                         \
+    size_t myI = (I);                         \
+    for (ddd=0; ddd<(dim); ddd++) {           \
+      (coord)[ddd] = myI % (size)[ddd];       \
+      myI /= (size)[ddd];                     \
+    }                                         \
+  }
 
 #ifdef __cplusplus
 }
@@ -1807,7 +1755,7 @@ typedef struct NrrdIoState_t {
                                to whence this nrrd is "save"ed, MINUS the
                                trailing "/", so as to facilitate games with
                                header-relative data files */
-    *base,                  /* when "save"ing a nrrd into seperate
+    *base,                  /* when "save"ing a nrrd into separate
                                header and data, the name of the header
                                file (e.g. "output.nhdr") MINUS the ".nhdr".
                                This is massaged to produce a header-
@@ -1873,11 +1821,22 @@ typedef struct NrrdIoState_t {
   long int byteSkip;        /* exactly like lineSkip, but bytes
                                instead of lines.  First the lines are
                                skipped, then the bytes */
+  /* Note that the NRRD0004 and NRRD0005 file formats indicate that a numbered
+     sequence of data filenames should be indexed via a "%d" format
+     specification, and that the format doc says nothing about the "min" and
+     "max" fields of "data file" being only positive.  So the following three
+     dataFN* fields are appropriately (signed) ints, even if all normal usage
+     could also be represented with unsigned ints.  Nonetheless, the return
+     from _nrrdDataFNNumber(), which gives the total number of file names, is
+     still appropriately an unsigned int. This may be revisited if the file
+     format itself is adjusted. */
   int dataFNMin,            /* used with dataFNFormat to identify .. */
     dataFNMax,              /* .. all the multiple detached datafiles */
-    dataFNStep,             /* how to step from max to min */
-    dataFNIndex,            /* which of the data files are being read */
-    pos,                    /* line[pos] is beginning of stuff which
+    dataFNStep;             /* how to step from max to min */
+  /* On the other hand, dataFNIndex ranges from 0 to (#datafiles-1),
+     and not dataFNMin to dataFNMax, so it really should be unsigned */
+  unsigned int dataFNIndex; /* which of the data files are being read */
+  int pos,                  /* line[pos] is beginning of stuff which
                                still has yet to be parsed */
     endian,                 /* endian-ness of the data in file, for
                                those encoding/type combinations for
@@ -1903,6 +1862,9 @@ typedef struct NrrdIoState_t {
                                datafiles).  Warning: can result in broken
                                noncomformant files.
                                (be careful with this) */
+    skipFormatURL,          /* if non-zero for NRRD format ON WRITE:
+                               skip the comment lines that document where
+                               to find the NRRD file format specs */
     keepNrrdDataFileOpen,   /* ON READ: when there is only a single dataFile,
                                don't close nio->dataFile when
                                you otherwise would, when reading the
@@ -1967,13 +1929,12 @@ NRRDIO_EXPORT const airEnum *const nrrdSpacingStatus;
 
 /******** arrays of things (poor-man's functions/predicates) */
 /* arraysNrrd.c */
-NRRDIO_EXPORT const char nrrdTypePrintfStr[][AIR_STRLEN_SMALL];
-NRRDIO_EXPORT const size_t nrrdTypeSize[];
-NRRDIO_EXPORT const double nrrdTypeMin[];
-NRRDIO_EXPORT const double nrrdTypeMax[];
-NRRDIO_EXPORT const int nrrdTypeIsIntegral[];
-NRRDIO_EXPORT const int nrrdTypeIsUnsigned[];
-NRRDIO_EXPORT const double nrrdTypeNumberOfValues[];
+NRRDIO_EXPORT const char nrrdTypePrintfStr[NRRD_TYPE_MAX+1][AIR_STRLEN_SMALL];
+NRRDIO_EXPORT const size_t nrrdTypeSize[NRRD_TYPE_MAX+1];
+NRRDIO_EXPORT const double nrrdTypeMin[NRRD_TYPE_MAX+1];
+NRRDIO_EXPORT const double nrrdTypeMax[NRRD_TYPE_MAX+1];
+NRRDIO_EXPORT const int nrrdTypeIsIntegral[NRRD_TYPE_MAX+1];
+NRRDIO_EXPORT const int nrrdTypeIsUnsigned[NRRD_TYPE_MAX+1];
 
 /******** pseudo-constructors, pseudo-destructors, and such */
 /* methodsNrrd.c */
@@ -2001,8 +1962,6 @@ NRRDIO_EXPORT int nrrdMaybeAlloc_nva(Nrrd *nrrd, int type, unsigned int dim,
                                    const size_t *size);
 NRRDIO_EXPORT int nrrdMaybeAlloc_va(Nrrd *nrrd, int type, unsigned int dim,
                                   ... /* size_t sx, sy, .., ax(dim-1) size */);
-NRRDIO_EXPORT int nrrdPPM(Nrrd *, size_t sx, size_t sy);
-NRRDIO_EXPORT int nrrdPGM(Nrrd *, size_t sx, size_t sy);
 
 /******** axis info related */
 /* axis.c */
@@ -2079,8 +2038,10 @@ NRRDIO_EXPORT void nrrdSpaceVecScaleAdd2(double sum[NRRD_SPACE_DIM_MAX],
 NRRDIO_EXPORT void nrrdSpaceVecScale(double out[NRRD_SPACE_DIM_MAX], 
                                    double scl, 
                                    const double vec[NRRD_SPACE_DIM_MAX]);
-NRRDIO_EXPORT double nrrdSpaceVecNorm(int sdim,
+NRRDIO_EXPORT double nrrdSpaceVecNorm(unsigned int sdim,
                                     const double vec[NRRD_SPACE_DIM_MAX]);
+NRRDIO_EXPORT int nrrdSpaceVecExists(unsigned int sdim,
+                                   double vec[NRRD_SPACE_DIM_MAX]);
 NRRDIO_EXPORT void nrrdSpaceVecSetNaN(double vec[NRRD_SPACE_DIM_MAX]);
 
 /******** comments related */
@@ -2091,7 +2052,7 @@ NRRDIO_EXPORT int nrrdCommentCopy(Nrrd *nout, const Nrrd *nin);
 
 /******** key/value pairs */
 /* keyvalue.c */
-NRRDIO_EXPORT size_t nrrdKeyValueSize(const Nrrd *nrrd);
+NRRDIO_EXPORT unsigned int nrrdKeyValueSize(const Nrrd *nrrd);
 NRRDIO_EXPORT int nrrdKeyValueAdd(Nrrd *nrrd,
                                 const char *key, const char *value);
 NRRDIO_EXPORT char *nrrdKeyValueGet(const Nrrd *nrrd, const char *key);
@@ -2137,7 +2098,7 @@ NRRDIO_EXPORT const NrrdEncoding *
 NRRDIO_EXPORT int (*nrrdFieldInfoParse[NRRD_FIELD_MAX+1])(FILE *file, Nrrd *nrrd,
                                                         NrrdIoState *nio,
                                                         int useBiff);
-NRRDIO_EXPORT size_t _nrrdDataFNNumber(NrrdIoState *nio);
+NRRDIO_EXPORT unsigned int _nrrdDataFNNumber(NrrdIoState *nio);
 NRRDIO_EXPORT int _nrrdContainsPercentThisAndMore(const char *str, char thss);
 NRRDIO_EXPORT int _nrrdDataFNCheck(NrrdIoState *nio, Nrrd *nrrd, int useBiff);
 

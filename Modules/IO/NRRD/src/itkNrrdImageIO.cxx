@@ -82,10 +82,10 @@ NrrdImageIO::NrrdToITKComponentType(const int nrrdComponentType) const
     // cross-platform across 32-vs-64 bit machines, but we'll use it
     // where possible.
     case nrrdTypeLLong:
-      return airMy32Bit ? UNKNOWNCOMPONENTTYPE : LONG;
+      return (4 == sizeof(long)) ? UNKNOWNCOMPONENTTYPE : LONG;
       break;
     case nrrdTypeULLong:
-      return airMy32Bit ? UNKNOWNCOMPONENTTYPE : ULONG;
+      return (4 == sizeof(long)) ? UNKNOWNCOMPONENTTYPE : ULONG;
       break;
     case nrrdTypeInt:
       return INT;
@@ -131,10 +131,10 @@ NrrdImageIO::ITKToNrrdComponentType(const ImageIOBase::IOComponentType itkCompon
     // cross-platform across 32-vs-64 bit machines, but we can figure out
     // a cross-platform way of storing the information.
     case LONG:
-      return airMy32Bit ? nrrdTypeInt : nrrdTypeLLong;
+      return (4 == sizeof(long)) ? nrrdTypeInt : nrrdTypeLLong;
       break;
     case ULONG:
-      return airMy32Bit ? nrrdTypeUInt : nrrdTypeULLong;
+      return (4 == sizeof(long)) ? nrrdTypeUInt : nrrdTypeULLong;
       break;
     case INT:
       return nrrdTypeInt;
