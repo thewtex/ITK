@@ -18,8 +18,9 @@
 #ifndef __itkObjectToObjectOptimizerBase_h
 #define __itkObjectToObjectOptimizerBase_h
 
-#include "itkOptimizerParameters.h"
+#include "itkObjectToObjectOptimizerBaseTypes.h"
 #include "itkObjectToObjectMetricBase.h"
+#include "itkOptimizerParameterScalesEstimator.h"
 #include "itkIntTypes.h"
 
 namespace itk
@@ -38,7 +39,11 @@ namespace itk
  * appropriate, typically by passing it to its transform that is
  * being optimized.
  *
- * \c SetScales allows setting of a per-local-parameter scaling array. If
+ * The user can scale each component of the gradient (derivative)
+ * at each iteration in one of two ways:
+ *
+ * 1) manually, by setting a scaling vector using method SetScales().
+ * SetScales() allows setting of a per-local-parameter scaling array. If
  * unset, the \c m_Scales array will be initialized to all 1's.
  * Note that when used with transforms with local support, these scales
  * correspond to each _local_ parameter, and not to each parameter. For
@@ -46,6 +51,14 @@ namespace itk
  * is size N, with each element corresponding to a dimension within the
  * transform's displacement field, and is applied to each vector in the
  * displacement field.
+ *
+ * or,
+ *
+ * 2) automatically, by assigning a ScalesEstimator using SetScalesEstimator().
+ * When ScalesEstimator is assigned, the optimizer is enabled by default to
+ * estimate scales, and can be changed via SetDoEstimateScales(). The scales
+ * are estimated and assigned once, during the call to StartOptimization().
+ * This option will override any manually-assigned scales.
  *
  * Threading of some optimizer operations may be handled within
  * derived classes, for example in GradientDescentOptimizer.
@@ -69,14 +82,17 @@ public:
   itkTypeMacro(ObjectToObjectOptimizerBase, Object);
 
   /**  Scale type. */
-  typedef OptimizerParameters< double >             ScalesType;
+  typedef ObjectToObjectOptimizerBaseScalesType      ScalesType;
 
   /**  Parameters type. */
-  typedef OptimizerParameters< double >             ParametersType;
+  typedef ObjectToObjectOptimizerBaseParametersType  ParametersType;
 
   /** Metric function type */
   typedef ObjectToObjectMetricBase                  MetricType;
   typedef MetricType::Pointer                       MetricTypePointer;
+
+  /** Derivative type */
+  typedef MetricType::DerivativeType                DerivativeType;
 
   /** Number of parameters type */
   typedef MetricType::NumberOfParametersType        NumberOfParametersType;
@@ -112,6 +128,30 @@ public:
   /** Get whether scales are identity. Cannot be set */
   itkGetConstReferenceMacro( ScalesAreIdentity, bool );
 
+  /** Get whether the scales have been set. Returns
+   *  true if <tt> m_Scales.Size() > 0 </tt> */
+  bool GetScalesInitialized( void ) const;
+
+  /** Set the scales estimator.
+   *
+   *  A ScalesEstimator is required for the scales estimation
+   *  options to work. See the main documentation.
+   *  Derived classes may also provide learning-rate estimation,
+   *  in which case a scales estimator is also required.
+   *
+   * \sa SetDoEstimateScales()
+   */
+  itkSetObjectMacro(ScalesEstimator, OptimizerParameterScalesEstimator);
+
+  /** Option to use ScalesEstimator for scales estimation.
+   * The estimation is performed once at begin of
+   * optimization, and overrides any scales set using SetScales().
+   * Default is true.
+   */
+  itkSetMacro(DoEstimateScales, bool);
+  itkGetConstReferenceMacro(DoEstimateScales, bool);
+  itkBooleanMacro(DoEstimateScales);
+
   /** Set the number of threads to use when threading.
    * The default is the global default number of threads
    * returned from itkMultiThreader. */
@@ -146,9 +186,11 @@ protected:
    * See the main documentation for more details. */
   ScalesType                    m_Scales;
 
-
   /** Flag to avoid unnecessary arithmetic when scales are identity. */
   bool                          m_ScalesAreIdentity;
+
+  /** Scales estimator. Optionally provided by user. */
+  OptimizerParameterScalesEstimator::Pointer m_ScalesEstimator;
 
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
@@ -158,6 +200,11 @@ private:
   ObjectToObjectOptimizerBase( const Self & );
   //purposely not implemented
   void operator=( const Self& );
+
+  /** Flag to control use of the ScalesEstimator (if set) for
+   * automatic scale estimation during StartOptimization()
+   */
+  bool m_DoEstimateScales;
 
 };
 
