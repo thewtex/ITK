@@ -19,7 +19,6 @@
 #define __itkGradientDescentOptimizerv4_h
 
 #include "itkGradientDescentOptimizerBasev4.h"
-#include "itkOptimizerParameterScalesEstimator.h"
 #include "itkWindowConvergenceMonitoringFunction.h"
 
 namespace itk
@@ -40,14 +39,8 @@ namespace itk
  * can be stored and retried via GetValue() and GetCurrentPosition().
  * See SetReturnBestParametersAndValue().
  *
- * The user can scale each component of the df / dp in two ways:
- * 1) manually, by setting a scaling vector using method SetScales().
- * Or,
- * 2) automatically, by assigning a ScalesEstimator using SetScalesEstimator().
- * When ScalesEstimator is assigned, the optimizer is enabled by default to
- * estimate scales, and can be changed via SetDoEstimateScales(). The scales
- * are estimated and assigned once, during the call to StartOptimization().
- * This option will override any manually-assigned scales.
+ * Gradient scales can be manually set or automatically estimated,
+ * as documented in the base class.
  *
  * The learing rate defaults to 1.0, and can be set in two ways:
  * 1) manually, via \c SetLearningRate().
@@ -62,9 +55,11 @@ namespace itk
  * SetDoEstimateLearningRateOnce(false). When enabled, the optimizer computes learning
  * rate(s) such that at each step, each voxel's change in physical space will be less
  * than m_MaximumStepSizeInPhysicalUnits.
+ *
  *      m_LearningRate =
  *        m_MaximumStepSizeInPhysicalUnits /
  *        m_ScalesEstimator->EstimateStepScale(scaledGradient)
+ *
  * where m_MaximumStepSizeInPhysicalUnits defaults to the voxel spacing returned by
  * m_ScalesEstimator->EstimateMaximumStepSize() (which is typically 1 voxel),
  * and can be set by the user via SetMaximumStepSizeInPhysicalUnits().
@@ -123,25 +118,6 @@ public:
 
   /** Get the maximum step size, in physical space units. */
   itkGetConstReferenceMacro(MaximumStepSizeInPhysicalUnits, InternalComputationValueType);
-
-  /** Set the scales estimator.
-   *
-   *  A ScalesEstimator is required for the scales and learning rate estimation
-   *  options to work. See the main documentation.
-   *
-   * \sa SetDoEstimateScales()
-   * \sa SetDoEstimateLearningRateAtEachIteration()
-   * \sa SetDoEstimateLearningOnce()
-   */
-  itkSetObjectMacro(ScalesEstimator, OptimizerParameterScalesEstimator);
-
-  /** Option to use ScalesEstimator for scales estimation.
-   * The estimation is performed once at begin of
-   * optimization, and overrides any scales set using SetScales().
-   * Default is true. */
-  itkSetMacro(DoEstimateScales, bool);
-  itkGetConstReferenceMacro(DoEstimateScales, bool);
-  itkBooleanMacro(DoEstimateScales);
 
   /** Option to use ScalesEstimator for learning rate estimation at
    * *each* iteration. The estimation overrides the learning rate
@@ -242,8 +218,6 @@ protected:
 
   virtual void PrintSelf( std::ostream & os, Indent indent ) const;
 
-  OptimizerParameterScalesEstimator::Pointer m_ScalesEstimator;
-
   /** Minimum convergence value for convergence checking.
    *  The convergence checker calculates convergence value by fitting to
    *  a window of the energy profile. When the convergence value reaches
@@ -271,10 +245,6 @@ protected:
   bool m_ReturnBestParametersAndValue;
 
 private:
-  /** Flag to control use of the ScalesEstimator (if set) for
-   * automatic scale estimation during StartOptimization()
-   */
-  bool m_DoEstimateScales;
 
   /** Flag to control use of the ScalesEstimator (if set) for
    * automatic learning step estimation at *each* iteration.

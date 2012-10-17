@@ -31,6 +31,7 @@ ObjectToObjectOptimizerBase
   // valgrind warning.
   this->m_NumberOfThreads = MultiThreader::GetGlobalDefaultNumberOfThreads();
   this->m_ScalesAreIdentity = false;
+  this->m_DoEstimateScales = true;
 }
 
 //-------------------------------------------------------------------
@@ -46,13 +47,34 @@ ObjectToObjectOptimizerBase
 
   os << indent << "Number of threads: " << this->m_NumberOfThreads << std::endl;
   os << indent << "Number of scales:  " << this->m_Scales.Size() << std::endl;
-  if( this->m_Scales.Size() > 0 )
+  if( this->GetScalesInitialized() )
     {
     os << indent << "m_Scales: " << this->m_Scales << std::endl;
     }
+  else
+    {
+    os << indent << "m_Scales: uninitialized." << std::endl;
+    }
   os << indent << "m_ScalesAreIdentity: " << this->GetScalesAreIdentity() << std::endl;
-  os << indent << "Metric: " << std::endl;
-  m_Metric->Print( os, indent.GetNextIndent() );
+  if( this->m_Metric.IsNotNull() )
+    {
+    os << indent << "Metric: " << std::endl;
+    m_Metric->Print( os, indent.GetNextIndent() );
+    }
+  else
+    {
+    os << indent << "Metric is not set." << std::endl;
+    }
+  if( this->m_ScalesEstimator.IsNull() )
+    {
+    os << indent << "No ScalesEstimator set." << std::endl;
+    }
+  else
+    {
+    os << indent << "ScalesEstimator: " << std::endl;
+    this->m_ScalesEstimator->Print( os, indent.GetNextIndent() );
+    }
+  os << indent << "DoEstimateScales: " << this->m_DoEstimateScales << std::endl;
 }
 
 //-------------------------------------------------------------------
@@ -83,15 +105,22 @@ ObjectToObjectOptimizerBase
     return;
     }
 
+  /* Estimate the parameter scales if requested. */
+  if ( this->m_DoEstimateScales && this->m_ScalesEstimator.IsNotNull() )
+    {
+    ScalesType scales;
+    this->m_ScalesEstimator->EstimateScales( scales );
+    this->SetScales( scales );
+    itkDebugMacro( "Estimated scales = " << this->m_Scales );
+    }
+
   /* Verify m_Scales. If m_Scales hasn't been set, initialize to all 1's. */
   typedef ScalesType::ValueType     ValueType;
-  if( this->m_Scales.Size() > 0 )
+  if( this->GetScalesInitialized() )
     {
     if( this->m_Scales.Size() != this->m_Metric->GetNumberOfLocalParameters() )
       {
-      itkExceptionMacro("Size of scales (" << this->m_Scales.Size()
-                        << ") must equal number of local parameters (" <<
-                        this->m_Metric->GetNumberOfLocalParameters() << ").");
+      itkExceptionMacro("Size of scales (" << this->m_Scales.Size() << ") must equal number of local parameters (" << this->m_Metric->GetNumberOfLocalParameters() << ").");
       }
     /* Check that all values in m_Scales are > machine epsilon, to avoid
      * division by zero/epsilon.
@@ -102,13 +131,12 @@ ObjectToObjectOptimizerBase
       {
       if( this->m_Scales[i] <= NumericTraits<ValueType>::epsilon() )
         {
-        itkExceptionMacro("m_Scales values must be > epsilon.");
+        itkExceptionMacro("m_Scales values must be > epsilon: " << this->m_Scales);
         }
       /* Check if the scales are identity. Consider to be identity if
        * within a tolerance, to allow for automatically estimated scales
        * that may not be exactly 1.0 when in priciniple they should be. */
-      ValueType difference =
-        vcl_fabs( NumericTraits<ValueType>::OneValue() - this->m_Scales[i] );
+      ValueType difference = vcl_fabs( NumericTraits<ValueType>::OneValue() - this->m_Scales[i] );
       ValueType tolerance = static_cast<ValueType>( 0.01 );
       if( difference > tolerance  )
         {
@@ -145,6 +173,14 @@ ObjectToObjectOptimizerBase
 ::GetValue()
 {
   return this->GetCurrentMetricValue();
+}
+
+//-------------------------------------------------------------------
+bool
+ObjectToObjectOptimizerBase
+::GetScalesInitialized( void ) const
+{
+  return this->m_Scales.Size() > 0;
 }
 
 }//namespace itk

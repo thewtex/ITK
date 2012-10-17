@@ -20,7 +20,7 @@
 
 #include "itkObject.h"
 #include "itkObjectFactory.h"
-#include "itkObjectToObjectOptimizerBase.h"
+#include "itkObjectToObjectOptimizerBaseTypes.h"
 #include "itkSingleValuedCostFunctionv4.h"
 
 namespace itk
@@ -48,11 +48,11 @@ public:
   itkTypeMacro( OptimizerParameterScalesEstimator, Object );
 
   /** Type of scales */
-  typedef ObjectToObjectOptimizerBase::ScalesType        ScalesType;
+  typedef ObjectToObjectOptimizerBaseScalesType        ScalesType;
   /** Type of parameters of the optimizer */
-  typedef ObjectToObjectOptimizerBase::ParametersType    ParametersType;
+  typedef ObjectToObjectOptimizerBaseParametersType    ParametersType;
   /** Type of float */
-  typedef double                                         FloatType;
+  typedef double                                       FloatType;
 
   /** Estimate parameter scales. */
   virtual void EstimateScales(ScalesType &scales) = 0;
