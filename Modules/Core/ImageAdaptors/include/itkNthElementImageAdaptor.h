@@ -20,6 +20,7 @@
 
 #include "itkImageAdaptor.h"
 #include "itkNthElementPixelAccessor.h"
+#include "itkVectorImageToImageAdaptor.h"
 
 namespace itk
 {
@@ -74,10 +75,45 @@ public:
 
   /** Select the element number to be accessed */
   void SelectNthElement(unsigned int nth)
-  {
+    {
     this->GetPixelAccessor().SetElementNumber(nth);
     this->Modified();
-  }
+    }
+
+protected:
+  NthElementImageAdaptor() {}
+  virtual ~NthElementImageAdaptor() {}
+private:
+  NthElementImageAdaptor(const Self &); //purposely not implemented
+  void operator=(const Self &);         //purposely not implemented
+};
+
+// Specialization for VectorImage
+template< class TPixel, unsigned int VImageDimension , class TOutputPixelType >
+class ITK_EXPORT NthElementImageAdaptor< VectorImage< TPixel, VImageDimension >, TOutputPixelType >:
+  public ImageAdaptor< VectorImage< TPixel, VImageDimension >, Accessor::VectorImageToImagePixelAccessor< TPixel > >
+{
+public:
+  /** Standard class typedefs. */
+  typedef NthElementImageAdaptor                                               Self;
+  typedef VectorImage< TPixel, VImageDimension >                               VectorImageType;
+  typedef ImageAdaptor< VectorImageType,
+                        Accessor::VectorImageToImagePixelAccessor< TPixel >  > Superclass;
+  typedef SmartPointer< Self >                                                 Pointer;
+  typedef SmartPointer< const Self >                                           ConstPointer;
+
+  /** Run-time type information (and related methods). */
+  itkTypeMacro(NthElementImageAdaptor, ImageAdaptor);
+
+  /** Method for creation through the object factory. */
+  itkNewMacro(Self);
+
+  /** Select the element number to be accessed */
+  void SelectNthElement(unsigned int nth)
+    {
+    this->GetPixelAccessor().SetExtractComponentIdx(nth);
+    this->Modified();
+    }
 
 protected:
   NthElementImageAdaptor() {}

@@ -128,6 +128,10 @@ private:
  * (NAMIC), funded by the National Institutes of Health through the NIH Roadmap
  * for Medical Research, Grant U54 EB005149.
  *
+ * \deprecated Please use the more generic NthElementImageAdaptor.
+ *
+ * \sa NthElementImageAdaptor
+ *
  * \ingroup ImageAdaptors
  *
  * \ingroup ITKImageAdaptors
