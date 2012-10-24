@@ -274,9 +274,10 @@ itk_add_test(NAME itkImageSeriesWriterTest
       COMMAND ITKIOImageBaseTestDriver itkImageSeriesWriterTest
               ${DICOMSERIES_DIR} ${ITK_TEST_OUTPUT_DIR} png)
 
-if(ITK_BUILD_SHARED_LIBS)
+#if(ITK_BUILD_SHARED_LIBS)
   itk_add_test(NAME itkIOPluginTest
-           COMMAND ITKIOImageBaseTestDriver itkIOPluginTest
+           COMMAND itkTestDriver  --add-before-env ITK_AUTOLOAD_PATH ${ITK_TEST_OUTPUT_DIR}
+              "$<TARGET_FILE:ITKIOImageBaseTestDriver>" itkIOPluginTest
              ${ITK_TEST_OUTPUT_DIR}
              "FileFreeIO::Size=128,256:Spacing=.5,.8:Origin=5,6:Direction=-1,0,0,-1"
              ${ITK_TEST_OUTPUT_DIR}/itkIOPluginTest.png
@@ -288,7 +289,7 @@ if(ITK_BUILD_SHARED_LIBS)
   target_link_libraries(FileFreeTestLib ${ITKIOImageBase_LIBRARIES})
   set_property(TARGET FileFreeTestLib PROPERTY LIBRARY_OUTPUT_DIRECTORY ${ITK_TEST_OUTPUT_DIR})
   add_dependencies(ITKIOImageBaseTestDriver FileFreeTestLib)
-endif()
+#endif()
 itk_add_test(NAME itkNoiseImageFilterTest
       COMMAND ITKIOImageBaseTestDriver
     --compare DATA{${ITK_DATA_ROOT}/Baseline/BasicFilters/itkNoiseImageFilterTest.png}
