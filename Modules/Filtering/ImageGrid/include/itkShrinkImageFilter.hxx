@@ -329,6 +329,11 @@ ShrinkImageFilter< TInputImage, TOutputImage >
 
   typename TOutputImage::PointType outputOrigin = outputPtr->GetOrigin();
   outputOrigin = outputOrigin + ( inputCenterPoint - outputCenterPoint );
+
+  // the output origin must lay in the center of an input pixel.
+  typename TInputImage::IndexType index;
+  inputPtr->TransformPhysicalPointToIndex( outputOrigin, index );
+  inputPtr->TransformIndexToPhysicalPoint( index, outputOrigin );
   outputPtr->SetOrigin(outputOrigin);
 
   // Set region

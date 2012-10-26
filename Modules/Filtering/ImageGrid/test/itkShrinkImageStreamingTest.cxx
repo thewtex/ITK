@@ -70,7 +70,19 @@ int itkShrinkImageStreamingTest(int, char* [] )
   streamer = itk::StreamingImageFilter<ShortImage, ShortImage>::New();
   streamer->SetInput( monitor2->GetOutput() );
   streamer->SetNumberOfStreamDivisions( numberOfStreamDivisions );
-  streamer->Update();
+
+
+  try
+    {
+    streamer->Update();
+    }
+  catch(...)
+    {
+    std::cerr << "Unexpected Exception!" << std::endl;
+    std::cerr << monitor2 << std::endl;
+    streamer->GetOutput()->Print( std::cerr );
+    throw;
+    }
 
 
   // this verifies that the pipeline was executed as expected allong

@@ -49,6 +49,7 @@ itkResampleImageTest6.cxx
 itkResamplePhasedArray3DSpecialCoordinatesImageTest.cxx
 itkPushPopTileImageFilterTest.cxx
 itkShrinkImagePreserveObjectPhysicalLocations.cxx
+itkShrinkImagePreservePhysicalLocationsTest.cxx
 itkShrinkImageStreamingTest.cxx
 itkShrinkImageTest.cxx
 itkZeroFluxNeumannPadImageFilterTest.cxx
@@ -232,6 +233,8 @@ itk_add_test(NAME itkPushPopTileImageFilterTest
     itkPushPopTileImageFilterTest DATA{${ITK_DATA_ROOT}/Input/Shapes.png} DATA{${ITK_DATA_ROOT}/Input/VisibleWomanEyeSlice.png} DATA{${ITK_DATA_ROOT}/Input/cake_easy.png} DATA{${ITK_DATA_ROOT}/Input/cthead1.png} ${ITK_TEST_OUTPUT_DIR}/PushPopTileImageFilterTest.png)
 itk_add_test(NAME itkShrinkImagePreserveObjectPhysicalLocations
       COMMAND ITKImageGridTestDriver itkShrinkImagePreserveObjectPhysicalLocations)
+itk_add_test(NAME itkShrinkImagePreservePhysicalLocationsTest
+      COMMAND ITKImageGridTestDriver itkShrinkImagePreservePhysicalLocationsTest)
 itk_add_test(NAME itkShrinkImageStreamingTest
       COMMAND ITKImageGridTestDriver itkShrinkImageStreamingTest)
 itk_add_test(NAME itkShrinkImageTest
