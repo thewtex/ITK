@@ -34,12 +34,11 @@ NeighborhoodInnerProduct< TImage, TOperator, TComputation >
 
   typedef typename TImage::PixelType                                    InputPixelType;
   typedef typename NumericTraits< InputPixelType >::RealType            InputPixelRealType;
-  typedef typename NumericTraits< InputPixelRealType >::AccumulateType  AccumulateRealType;
+  typedef typename NumericTraits< TOperator >::AccumulateType  AccumulateRealType;
 
   AccumulateRealType sum = NumericTraits< AccumulateRealType >::Zero;
 
-  typedef typename NumericTraits<OutputPixelType>::ValueType
-      OutputPixelValueType;
+  typedef typename NumericTraits<OutputPixelType>::RealType OutputPixelValueType;
 
   o_it = op.Begin();
   const typename OperatorType::ConstIterator op_end = op.End();
