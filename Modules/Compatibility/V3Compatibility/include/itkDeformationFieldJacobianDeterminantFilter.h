@@ -77,7 +77,7 @@ namespace itk
 template< typename TInputImage,
           typename TRealType = float,
           typename TOutputImage = Image< TRealType,
-                                         ::itk::GetImageDimension< TInputImage >::ImageDimension >
+                                         TInputImage::ImageDimension >
           >
 class ITK_EXPORT DeformationFieldJacobianDeterminantFilter:
   public DisplacementFieldJacobianDeterminantFilter< TInputImage, TRealType, TOutputImage >
@@ -122,7 +122,7 @@ public:
     TRealType, ::itk::GetVectorDimension< InputPixelType >::VectorDimension >
   RealVectorType;
   typedef Image<
-    RealVectorType, ::itk::GetImageDimension< TInputImage >::ImageDimension >
+    RealVectorType, TInputImage::ImageDimension >
   RealVectorImageType;
 
   /** Type of the iterator that will be used to move through the image.  Also

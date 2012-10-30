@@ -61,7 +61,7 @@ class ITK_EXPORT VectorCentralDifferenceImageFunction:
   public ImageFunction< TInputImage,
                         Matrix< double,                                                            \
                                 ::itk::GetDimension< typename TInputImage::PixelType >::Dimension, \
-                                ::itk::GetImageDimension< TInputImage >::ImageDimension >,
+                                TInputImage::ImageDimension >,
                         TCoordRep >
 {
 public:
