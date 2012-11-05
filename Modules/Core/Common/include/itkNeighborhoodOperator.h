@@ -175,13 +175,9 @@ private:
 };
 } // namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkNeighborhoodOperator.hxx"
-#endif
 
 /*
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkNeighborhoodOperator.hxx"
-#endif
 */
 #endif

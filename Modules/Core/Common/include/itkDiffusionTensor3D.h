@@ -140,8 +140,6 @@ public:
 } // end namespace itk
 #include "itkNumericTraitsDiffusionTensor3DPixel.h"
 
-#if ITK_TEMPLATE_TXX
 #include "itkDiffusionTensor3D.hxx"
-#endif
 
 #endif

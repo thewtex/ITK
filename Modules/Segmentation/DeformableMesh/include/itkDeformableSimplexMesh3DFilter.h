@@ -316,8 +316,6 @@ protected:
 }; // end of class
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkDeformableSimplexMesh3DFilter.hxx"
-#endif
 
 #endif //__itkDeformableSimplexMesh3DFilter_h

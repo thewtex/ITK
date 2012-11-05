@@ -164,8 +164,6 @@ private:
 }; // class ImageClassifierBase
 } // namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkImageClassifierBase.hxx"
-#endif
 
 #endif

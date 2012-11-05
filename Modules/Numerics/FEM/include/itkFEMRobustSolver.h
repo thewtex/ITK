@@ -384,8 +384,6 @@ public:
 
 }  // end namespace itk::fem
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkFEMRobustSolver.hxx"
-#endif
 
 #endif

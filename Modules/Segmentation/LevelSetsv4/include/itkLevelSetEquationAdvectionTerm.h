@@ -152,8 +152,6 @@ private:
 
 }
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkLevelSetEquationAdvectionTerm.hxx"
-#endif
 
 #endif

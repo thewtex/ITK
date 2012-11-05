@@ -203,8 +203,6 @@ private:
 };
 } // end namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkGaussianBlurImageFunction.hxx"
-#endif
 
 #endif

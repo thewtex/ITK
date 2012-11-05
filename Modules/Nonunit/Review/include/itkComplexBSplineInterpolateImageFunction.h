@@ -143,8 +143,6 @@ private:
 }; // class
 } // namespace
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkComplexBSplineInterpolateImageFunction.hxx"
-#endif
 
 #endif

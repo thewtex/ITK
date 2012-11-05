@@ -188,8 +188,6 @@ private:
 };
 } // namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkVTKImageImport.hxx"
-#endif
 
 #endif // __itkVTKImageImport_h

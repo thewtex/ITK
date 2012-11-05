@@ -68,9 +68,7 @@ protected:
 } // end namespace Statistics
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
-  #include "itkSymmetricSigmoidTransferFunction.hxx"
-#endif
+#include "itkSymmetricSigmoidTransferFunction.hxx"
 
 
 #endif

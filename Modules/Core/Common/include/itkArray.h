@@ -178,8 +178,6 @@ std::ostream & operator<<(std::ostream & os, const Array< TValueType > & arr)
 }
 } // namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkArray.hxx"
-#endif
 
 #endif

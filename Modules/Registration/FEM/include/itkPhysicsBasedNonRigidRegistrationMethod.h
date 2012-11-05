@@ -181,8 +181,6 @@ private:
 }
 }  // end namespace itk::fem
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkPhysicsBasedNonRigidRegistrationMethod.hxx"
-#endif
 
 #endif

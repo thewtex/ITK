@@ -217,8 +217,6 @@ private:
 };
 } // end namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkVelocityFieldTransform.hxx"
-#endif
 
 #endif // __itkVelocityFieldTransform_h

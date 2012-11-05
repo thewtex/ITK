@@ -491,9 +491,7 @@ public:
 } // end namespace itk
 
 #if !defined( CABLE_CONFIGURATION )
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkCellInterface.hxx"
-#endif
 #endif
 
 #endif

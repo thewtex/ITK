@@ -163,8 +163,6 @@ private:
 };
 } // namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkGaussianDerivativeImageFunction.hxx"
-#endif
 
 #endif

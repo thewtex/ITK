@@ -174,8 +174,6 @@ private:
 
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkInvertDisplacementFieldImageFilter.hxx"
-#endif
 
 #endif

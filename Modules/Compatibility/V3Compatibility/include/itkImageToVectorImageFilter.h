@@ -108,8 +108,6 @@ private:
 };
 }
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkImageToVectorImageFilter.hxx"
-#endif
 
 #endif

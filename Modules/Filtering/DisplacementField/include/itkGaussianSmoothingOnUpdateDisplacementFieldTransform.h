@@ -132,8 +132,6 @@ private:
 
 } // end namespace itk
 
-#if ITK_TEMPLATE_TXX
-# include "itkGaussianSmoothingOnUpdateDisplacementFieldTransform.hxx"
-#endif
+#include "itkGaussianSmoothingOnUpdateDisplacementFieldTransform.hxx"
 
 #endif // __itkGaussianSmoothingOnUpdateDisplacementFieldTransform_h

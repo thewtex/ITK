@@ -169,8 +169,6 @@ private:
 };
 }
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkLevelSetEvolutionBase.hxx"
-#endif
 
 #endif // __itkLevelSetEvolutionBase_h

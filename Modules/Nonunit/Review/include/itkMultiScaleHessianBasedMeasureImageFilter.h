@@ -218,8 +218,6 @@ private:
 };
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkMultiScaleHessianBasedMeasureImageFilter.hxx"
-#endif
 
 #endif

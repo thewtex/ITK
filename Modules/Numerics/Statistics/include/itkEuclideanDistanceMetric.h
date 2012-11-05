@@ -72,8 +72,6 @@ protected:
 } // end of namespace Statistics
 } // end of namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkEuclideanDistanceMetric.hxx"
-#endif
 
 #endif

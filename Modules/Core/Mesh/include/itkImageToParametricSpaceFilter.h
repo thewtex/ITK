@@ -109,8 +109,6 @@ private:
 };
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkImageToParametricSpaceFilter.hxx"
-#endif
 
 #endif

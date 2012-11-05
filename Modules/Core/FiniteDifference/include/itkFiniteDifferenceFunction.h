@@ -193,8 +193,6 @@ private:
 };
 } // end namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkFiniteDifferenceFunction.hxx"
-#endif
 
 #endif

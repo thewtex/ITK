@@ -98,8 +98,6 @@ private:
 };
 } // namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkThinPlateR2LogRSplineKernelTransform.hxx"
-#endif
 
 #endif // __itkThinPlateR2LogRSplineKernelTransform_h

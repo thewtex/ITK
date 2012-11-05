@@ -172,8 +172,6 @@ private:
 } // end namespace bio
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkBioCellularAggregate.hxx"
-#endif
 
 #endif

@@ -81,8 +81,6 @@ private:
 } // end namespace Statistics
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkRBFBackPropagationLearningFunction.hxx"
-#endif
 
 #endif

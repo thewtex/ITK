@@ -84,8 +84,6 @@ private:
 }; //class GaussianSmoothingOnUpdateDisplacementFieldTransformParametersAdaptor
 }  // namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkGaussianSmoothingOnUpdateDisplacementFieldTransformParametersAdaptor.hxx"
-#endif
 
 #endif /* __itkGaussianSmoothingOnUpdateDisplacementFieldTransformParametersAdaptor_h */

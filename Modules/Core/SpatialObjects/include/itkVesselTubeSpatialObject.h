@@ -80,8 +80,6 @@ private:
 };
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkVesselTubeSpatialObject.hxx"
-#endif
 
 #endif // __itkVesselTubeSpatialObject_h

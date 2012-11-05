@@ -454,10 +454,6 @@ private:
 }; // End Class: Mesh
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
-#ifndef CABLE_CONFIGURATION
 #include "itkMesh.hxx"
-#endif
-#endif
 
 #endif

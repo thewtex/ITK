@@ -116,8 +116,6 @@ private:
 
 } // end namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkRingBuffer.hxx"
-#endif
 
 #endif

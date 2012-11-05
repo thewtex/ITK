@@ -136,8 +136,6 @@ class ITK_EXPORT LevelSetDomainMapImageFilter : public ImageToImageFilter< TInpu
 
 } /* namespace itk */
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkLevelSetDomainMapImageFilter.hxx"
-#endif
 
 #endif

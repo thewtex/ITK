@@ -122,8 +122,6 @@ private:
 };
 } // namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkAffineGeometryFrame.hxx"
-#endif
 
 #endif /* __itkAffineGeometryFrame_h */

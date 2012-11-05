@@ -363,8 +363,6 @@ private:
 };
 } // end namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkKernelTransform.hxx"
-#endif
 
 #endif // __itkKernelTransform_h

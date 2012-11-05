@@ -431,8 +431,6 @@ private:
 }  // end namespace fem
 }  // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkFEMSolver.hxx"
-#endif
 
 #endif // #ifndef __itkFEMSolver_h

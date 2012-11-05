@@ -122,8 +122,6 @@ private:
 };
 } // namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkColorTable.hxx"
-#endif
 
 #endif

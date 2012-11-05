@@ -173,8 +173,6 @@ private:
 }; // end of FastChamferDistanceImageFilter class
 } //end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkFastChamferDistanceImageFilter.hxx"
-#endif
 
 #endif

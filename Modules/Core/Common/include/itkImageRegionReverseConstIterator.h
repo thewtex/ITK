@@ -372,8 +372,6 @@ protected:
 };
 } // end namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkImageRegionReverseConstIterator.hxx"
-#endif
 
 #endif

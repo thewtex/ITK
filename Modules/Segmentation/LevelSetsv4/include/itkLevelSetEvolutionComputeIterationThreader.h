@@ -191,8 +191,6 @@ private:
 
 } // namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkLevelSetEvolutionComputeIterationThreader.hxx"
-#endif
 
 #endif

@@ -87,8 +87,6 @@ private:
 
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkMeanSquaresImageToImageMetricv4GetValueAndDerivativeThreader.hxx"
-#endif
 
 #endif

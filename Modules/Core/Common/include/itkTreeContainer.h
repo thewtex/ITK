@@ -115,8 +115,6 @@ protected:
 };
 } // namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkTreeContainer.hxx"
-#endif
 
 #endif

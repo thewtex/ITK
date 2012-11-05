@@ -257,8 +257,6 @@ private:
 }
 }  // end namespace itk::fem
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkFEMSolverCrankNicolson.hxx"
-#endif
 
 #endif // #ifndef __itkFEMSolverCrankNicolson_h

@@ -198,8 +198,6 @@ private:
 };
 } // end namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkPCAShapeSignedDistanceFunction.hxx"
-#endif
 
 #endif

@@ -86,8 +86,6 @@ protected:
 };
 } // end of namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkContourSpatialObjectPoint.hxx"
-#endif
 
 #endif // __itkContourSpatialObjectPoint_h

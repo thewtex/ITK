@@ -106,8 +106,6 @@ private:
 };
 } // end namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkVectorLinearInterpolateImageFunction.hxx"
-#endif
 
 #endif

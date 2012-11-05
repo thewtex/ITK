@@ -88,6 +88,4 @@ private:
 
 #endif
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkJointHistogramMutualInformationComputeJointPDFThreaderBase.hxx"
-#endif

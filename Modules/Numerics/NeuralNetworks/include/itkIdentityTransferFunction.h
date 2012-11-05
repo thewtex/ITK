@@ -67,9 +67,7 @@ protected:
 } // end namespace Statistics
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
-  #include "itkIdentityTransferFunction.hxx"
-#endif
+#include "itkIdentityTransferFunction.hxx"
 
 
 #endif

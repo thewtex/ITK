@@ -101,8 +101,6 @@ private:
 };
 } // namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkSpatialObjectReader.hxx"
-#endif
 
 #endif // __itkSpatialObjectReader_h

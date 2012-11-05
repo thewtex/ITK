@@ -107,7 +107,5 @@ private:
   void operator=(const Self &);   //purposely not implemented
 };
 } // end namespace itk
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkSphereMeshSource.hxx"
-#endif
 #endif

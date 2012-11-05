@@ -76,7 +76,5 @@ private:
   void operator = ( const Self& ); // purposely not implemented
  };
  }
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkLevelSetEvolutionNumberOfIterationsStoppingCriterion.hxx"
-#endif
 #endif

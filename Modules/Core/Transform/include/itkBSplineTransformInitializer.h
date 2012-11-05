@@ -113,8 +113,6 @@ private:
 }; //class BSplineTransformInitializer
 }  // namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkBSplineTransformInitializer.hxx"
-#endif
 
 #endif /* __itkBSplineTransformInitializer_h */

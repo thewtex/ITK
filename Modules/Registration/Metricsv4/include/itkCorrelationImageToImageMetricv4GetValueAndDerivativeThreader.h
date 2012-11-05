@@ -144,8 +144,6 @@ private:
 
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkCorrelationImageToImageMetricv4GetValueAndDerivativeThreader.hxx"
-#endif
 
 #endif

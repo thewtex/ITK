@@ -100,8 +100,6 @@ private:
 };
 } // end namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkGaussianSpatialFunction.hxx"
-#endif
 
 #endif

@@ -106,8 +106,6 @@ private:
 };
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkNormalizedCorrelationImageToImageMetric.hxx"
-#endif
 
 #endif

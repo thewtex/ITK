@@ -303,8 +303,6 @@ private:
 } // end of namespace Statistics
 } // end of namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkImageToListSampleAdaptor.hxx"
-#endif
 
 #endif

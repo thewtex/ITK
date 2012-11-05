@@ -117,8 +117,6 @@ private:
 };
 }
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkShiSparseLevelSetImage.hxx"
-#endif
 
 #endif // __itkShiSparseLevelSetImage_h

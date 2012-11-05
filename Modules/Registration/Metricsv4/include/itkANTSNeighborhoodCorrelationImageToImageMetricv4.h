@@ -193,8 +193,6 @@ private:
 
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkANTSNeighborhoodCorrelationImageToImageMetricv4.hxx"
-#endif
 
 #endif

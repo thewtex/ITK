@@ -121,8 +121,6 @@ private:
 };  // class RobustAutomaticThresholdCalculator
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkRobustAutomaticThresholdCalculator.hxx"
-#endif
 
 #endif /* __itkRobustAutomaticThresholdCalculator_h */

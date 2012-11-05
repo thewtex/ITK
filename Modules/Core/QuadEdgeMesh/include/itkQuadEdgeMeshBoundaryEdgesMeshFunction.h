@@ -70,8 +70,6 @@ private:
 };
 }
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkQuadEdgeMeshBoundaryEdgesMeshFunction.hxx"
-#endif
 
 #endif

@@ -125,8 +125,6 @@ private:
 };
 } // namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkFFTWRealToHalfHermitianForwardFFTImageFilter.hxx"
-#endif
 
 #endif //__itkFFTWRealToHalfHermitianForwardFFTImageFilter_h

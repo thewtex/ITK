@@ -101,8 +101,6 @@ protected:
 };
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkPlaneSpatialObject.hxx"
-#endif
 
 #endif // __itkPlaneSpatialObject_h

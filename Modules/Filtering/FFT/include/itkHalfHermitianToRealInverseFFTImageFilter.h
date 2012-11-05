@@ -116,13 +116,11 @@ private:
 };
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #ifndef __itkVnlHalfHermitianToRealInverseFFTImageFilter_h
 #ifndef __itkVnlHalfHermitianToRealInverseFFTImageFilter_hxx
 #ifndef __itkFFTWHalfHermitianToRealInverseFFTImageFilter_h
 #ifndef __itkFFTWHalfHermitianToRealInverseFFTImageFilter_hxx
 #include "itkHalfHermitianToRealInverseFFTImageFilter.hxx"
-#endif
 #endif
 #endif
 #endif

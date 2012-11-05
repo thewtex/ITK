@@ -135,8 +135,6 @@ private:
 
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkAttributeRelabelLabelMapFilter.hxx"
-#endif
 
 #endif

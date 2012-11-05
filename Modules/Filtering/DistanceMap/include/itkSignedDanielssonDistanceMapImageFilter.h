@@ -235,8 +235,6 @@ private:
                            // class
 } //end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkSignedDanielssonDistanceMapImageFilter.hxx"
-#endif
 
 #endif

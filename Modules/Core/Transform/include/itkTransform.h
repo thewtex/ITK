@@ -582,8 +582,6 @@ private:
 };
 } // end namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkTransform.hxx"
-#endif
 
 #endif

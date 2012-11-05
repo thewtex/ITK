@@ -296,8 +296,6 @@ ScaleTransform<ScalarType, NDimensions>::BackTransform(const OutputCovariantVect
 
 }  // namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkScaleTransform.hxx"
-#endif
 
 #endif /* __itkScaleTransform_h */

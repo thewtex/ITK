@@ -371,8 +371,6 @@ protected:
 };
 } // namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkConstShapedNeighborhoodIterator.hxx"
-#endif
 
 #endif

@@ -524,8 +524,6 @@ private:
 }; // class MatrixOffsetTransformBase
 }  // namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkMatrixOffsetTransformBase.hxx"
-#endif
 
 #endif /* __itkMatrixOffsetTransformBase_h */

@@ -111,8 +111,6 @@ private:
 };
 } // namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkElasticBodyReciprocalSplineKernelTransform.hxx"
-#endif
 
 #endif // __itkElasticBodyReciprocalSplineKernelTransform_h

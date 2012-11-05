@@ -282,8 +282,6 @@ private:
 };
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkExtractImageFilter.hxx"
-#endif
 
 #endif

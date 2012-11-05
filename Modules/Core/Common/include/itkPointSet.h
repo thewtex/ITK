@@ -235,14 +235,10 @@ private:
 };                              // End Class: PointSet
 } // end namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkPointSet.hxx"
-#endif
 
 /*
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkPointSet.hxx"
-#endif
 */
 
 #endif

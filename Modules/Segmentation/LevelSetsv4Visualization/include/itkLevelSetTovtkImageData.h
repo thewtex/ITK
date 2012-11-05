@@ -225,7 +225,5 @@ private:
 };
 }
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkLevelSetTovtkImageData.hxx"
-#endif
 #endif // __itkLevelSetTovtkImageData_h

@@ -187,8 +187,6 @@ private:
 };
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkSmoothingRecursiveGaussianImageFilter.hxx"
-#endif
 
 #endif

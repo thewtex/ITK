@@ -99,8 +99,6 @@ private:
 };
 }
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkVnlInverseFFTImageFilter.hxx"
-#endif
 
 #endif

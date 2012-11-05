@@ -52,8 +52,6 @@ public:
 };
 }
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkBresenhamLine.hxx"
-#endif
 
 #endif

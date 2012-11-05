@@ -380,8 +380,6 @@ private:
 }; // class KLMRegionGrowImageFilter
 } // namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkKLMRegionGrowImageFilter.hxx"
-#endif
 
 #endif

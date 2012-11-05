@@ -192,8 +192,6 @@ private:
 };
 } // namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkRayCastInterpolateImageFunction.hxx"
-#endif
 
 #endif

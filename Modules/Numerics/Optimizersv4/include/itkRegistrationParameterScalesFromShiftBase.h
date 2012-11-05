@@ -109,8 +109,6 @@ private:
 }  // namespace itk
 
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkRegistrationParameterScalesFromShiftBase.hxx"
-#endif
 
 #endif /* __itkRegistrationParameterScalesFromShiftBase_h */

@@ -501,8 +501,6 @@ bool CalculateOrientedImage(
   bool useLabelImage = true);
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkLabelGeometryImageFilter.hxx"
-#endif
 
 #endif

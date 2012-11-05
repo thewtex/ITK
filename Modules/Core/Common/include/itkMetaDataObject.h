@@ -304,8 +304,6 @@ inline bool ExposeMetaData(const MetaDataDictionary & Dictionary, const char *co
   ITK_OBJECT_TYPE_METADATAPRINT_1COMMA(itk::Image< STORAGE_TYPE, 7 >::Pointer) \
   ITK_OBJECT_TYPE_METADATAPRINT_1COMMA(itk::Image< STORAGE_TYPE, 8 >::Pointer) \
 
-#if ITK_TEMPLATE_TXX
 #include "itkMetaDataObject.hxx"
-#endif
 
 #endif //itkMetaDataObject_h

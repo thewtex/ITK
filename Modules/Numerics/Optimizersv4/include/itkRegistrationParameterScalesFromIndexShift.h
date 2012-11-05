@@ -103,8 +103,6 @@ private:
 }  // namespace itk
 
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkRegistrationParameterScalesFromIndexShift.hxx"
-#endif
 
 #endif /* __itkRegistrationParameterScalesFromIndexShift_h */

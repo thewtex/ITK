@@ -243,8 +243,6 @@ private:
 };
 } // namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkDiscreteGaussianDerivativeImageFunction.hxx"
-#endif
 
 #endif

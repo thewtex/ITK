@@ -119,8 +119,6 @@ void ITKCommon_EXPORT CompensatedSummationAddElement( double& compensation, doub
 
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkCompensatedSummation.hxx"
-#endif
 
 #endif

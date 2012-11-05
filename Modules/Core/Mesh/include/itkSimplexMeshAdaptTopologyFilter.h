@@ -314,8 +314,6 @@ protected:
 };
 } //end of namespace
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkSimplexMeshAdaptTopologyFilter.hxx"
-#endif
 
 #endif // __itkSimplexMeshAdaptTopologyFilter_h

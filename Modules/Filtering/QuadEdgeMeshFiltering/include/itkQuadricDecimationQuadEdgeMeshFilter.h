@@ -157,7 +157,5 @@ private:
   QuadricElementMapType m_Quadric;
 };
 }
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkQuadricDecimationQuadEdgeMeshFilter.hxx"
-#endif
 #endif

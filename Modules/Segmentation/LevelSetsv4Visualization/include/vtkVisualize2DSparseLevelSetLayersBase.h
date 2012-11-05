@@ -103,7 +103,5 @@ private:
   vtkVisualize2DSparseLevelSetLayersBase ( const Self& );
   void operator = ( const Self& );
 };
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "vtkVisualize2DSparseLevelSetLayersBase.hxx"
-#endif
 #endif

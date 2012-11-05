@@ -134,8 +134,6 @@ private:
 };
 } // namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkLaplacianOperator.hxx"
-#endif
 
 #endif

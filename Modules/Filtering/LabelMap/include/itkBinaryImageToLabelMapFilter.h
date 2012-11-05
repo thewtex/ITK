@@ -253,10 +253,6 @@ private:
 };
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
-#if !defined( CABLE_CONFIGURATION )
 #include "itkBinaryImageToLabelMapFilter.hxx"
-#endif
-#endif
 
 #endif

@@ -141,9 +141,7 @@ private:
 } // end namespace fem
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkFEMSolverHyperbolic.hxx"
-#endif
 
 
 #endif // #ifndef __itkFEMSolverHyperbolic_h

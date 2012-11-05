@@ -137,8 +137,6 @@ private:
 }; // class RegionGrowImageFilter
 } // namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkRegionGrowImageFilter.hxx"
-#endif
 
 #endif

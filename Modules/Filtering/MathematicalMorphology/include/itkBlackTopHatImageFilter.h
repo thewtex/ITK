@@ -117,8 +117,6 @@ private:
 }; // end of class
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkBlackTopHatImageFilter.hxx"
-#endif
 
 #endif

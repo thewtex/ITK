@@ -155,8 +155,6 @@ private:
 }; // class ImageModelEstimator
 } // namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkImageModelEstimatorBase.hxx"
-#endif
 
 #endif

@@ -164,8 +164,6 @@ protected:
 } //namespace itk
 } //namespace statistics
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkLayerBase.hxx"
-#endif
 
 #endif

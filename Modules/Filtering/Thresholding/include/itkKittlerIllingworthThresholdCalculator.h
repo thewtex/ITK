@@ -92,8 +92,6 @@ private:
 } // end namespace itk
 
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkKittlerIllingworthThresholdCalculator.hxx"
-#endif
 
 #endif

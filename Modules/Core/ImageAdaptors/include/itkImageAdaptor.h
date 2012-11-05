@@ -426,8 +426,6 @@ private:
 };
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkImageAdaptor.hxx"
-#endif
 
 #endif

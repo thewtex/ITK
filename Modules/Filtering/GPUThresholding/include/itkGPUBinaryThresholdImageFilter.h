@@ -224,8 +224,6 @@ private:
 
 } // end of namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkGPUBinaryThresholdImageFilter.hxx"
-#endif
 
 #endif

@@ -95,8 +95,6 @@ private:
 };
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkMeanSquaresPointSetToImageMetric.hxx"
-#endif
 
 #endif

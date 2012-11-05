@@ -88,8 +88,6 @@ private:
 };
 }
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkHeavisideStepFunction.hxx"
-#endif
 
 #endif

@@ -130,8 +130,6 @@ private:
 } // end namespace Testing
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkTestingStretchIntensityImageFilter.hxx"
-#endif
 
 #endif

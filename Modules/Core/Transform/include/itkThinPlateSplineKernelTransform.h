@@ -97,8 +97,6 @@ private:
 };
 } // namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkThinPlateSplineKernelTransform.hxx"
-#endif
 
 #endif // __itkThinPlateSplineKernelTransform_h

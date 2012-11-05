@@ -77,8 +77,6 @@ private:
 
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkLevelSetImage.hxx"
-#endif
 
 #endif // __itkLevelSetImage_h

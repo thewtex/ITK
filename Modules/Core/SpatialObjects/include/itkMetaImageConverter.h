@@ -84,8 +84,6 @@ private:
 
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
-  #include "itkMetaImageConverter.hxx"
-#endif
+#include "itkMetaImageConverter.hxx"
 
 #endif

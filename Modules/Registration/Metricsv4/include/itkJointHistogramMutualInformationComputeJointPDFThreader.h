@@ -130,6 +130,4 @@ private:
 
 #endif
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkJointHistogramMutualInformationComputeJointPDFThreader.hxx"
-#endif

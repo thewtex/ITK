@@ -212,8 +212,6 @@ private:
 };                                //class Rigid3DTransform
 }  // namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkRigid3DTransform.hxx"
-#endif
 
 #endif /* __itkRigid3DTransform_h */

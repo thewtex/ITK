@@ -238,8 +238,6 @@ private:
 };
 }
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkLevelSetBase.hxx"
-#endif
 
 #endif // __itkLevelSetBase_h

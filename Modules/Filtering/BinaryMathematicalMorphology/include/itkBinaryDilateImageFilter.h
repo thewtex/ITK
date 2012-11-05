@@ -136,8 +136,6 @@ private:
 };
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkBinaryDilateImageFilter.hxx"
-#endif
 
 #endif

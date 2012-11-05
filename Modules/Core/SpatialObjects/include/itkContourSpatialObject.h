@@ -175,8 +175,6 @@ protected:
 };
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkContourSpatialObject.hxx"
-#endif
 
 #endif // __itkContourSpatialObject_h

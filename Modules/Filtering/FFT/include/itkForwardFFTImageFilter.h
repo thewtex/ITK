@@ -88,13 +88,11 @@ private:
 };
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #ifndef __itkVnlForwardFFTImageFilter_h
 #ifndef __itkVnlForwardFFTImageFilter_hxx
 #ifndef __itkFFTWForwardFFTImageFilter_h
 #ifndef __itkFFTWForwardFFTImageFilter_hxx
 #include "itkForwardFFTImageFilter.hxx"
-#endif
 #endif
 #endif
 #endif

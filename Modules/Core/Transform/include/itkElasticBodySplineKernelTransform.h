@@ -113,8 +113,6 @@ private:
 };
 } // namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkElasticBodySplineKernelTransform.hxx"
-#endif
 
 #endif // __itkElasticBodySplineKernelTransform_h

@@ -374,8 +374,6 @@ private:
 }; // class BSplineBaseTransform
 }  // namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkBSplineBaseTransform.hxx"
-#endif
 
 #endif /* __itkBSplineBaseTransform_h */

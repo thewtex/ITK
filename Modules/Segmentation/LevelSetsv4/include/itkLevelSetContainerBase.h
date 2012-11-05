@@ -291,8 +291,6 @@ private:
 };
 }
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkLevelSetContainerBase.hxx"
-#endif
 
 #endif // __itkLevelSetContainerBase_h

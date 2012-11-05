@@ -177,8 +177,6 @@ private:
 };
 }
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkOctree.hxx"
-#endif
 
 #endif                          /* __itkOctree_h */

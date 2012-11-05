@@ -325,8 +325,6 @@ template <typename TImage, typename TBoundaryCondition>
 
 } // end of namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkImageToNeighborhoodSampleAdaptor.hxx"
-#endif
 
 #endif

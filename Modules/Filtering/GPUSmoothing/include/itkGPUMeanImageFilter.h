@@ -174,8 +174,6 @@ private:
 
 } // end namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkGPUMeanImageFilter.hxx"
-#endif
 
 #endif

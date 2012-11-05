@@ -163,8 +163,6 @@ private:
 }; //class ScalableAffineTransform
 }  // namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkScalableAffineTransform.hxx"
-#endif
 
 #endif /* __itkScalableAffineTransform_h */

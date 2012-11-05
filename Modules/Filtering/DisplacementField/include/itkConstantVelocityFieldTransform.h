@@ -223,8 +223,6 @@ private:
 
 } // end namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkConstantVelocityFieldTransform.hxx"
-#endif
 
 #endif // __itkConstantVelocityFieldTransform_h

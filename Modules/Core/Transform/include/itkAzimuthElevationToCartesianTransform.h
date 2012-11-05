@@ -221,8 +221,6 @@ private:
 }; //class AzimuthElevationToCartesianTransform
 }  // namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkAzimuthElevationToCartesianTransform.hxx"
-#endif
 
 #endif /* __itkAzimuthElevationToCartesianTransform_h */

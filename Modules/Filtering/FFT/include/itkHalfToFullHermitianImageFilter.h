@@ -116,8 +116,6 @@ private:
 };
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkHalfToFullHermitianImageFilter.hxx"
-#endif
 
 #endif // __itkHalfToFullHermitianImageFilter_h

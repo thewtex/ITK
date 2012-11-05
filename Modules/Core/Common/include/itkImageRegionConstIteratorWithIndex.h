@@ -188,8 +188,6 @@ public:
 };
 } // end namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkImageRegionConstIteratorWithIndex.hxx"
-#endif
 
 #endif

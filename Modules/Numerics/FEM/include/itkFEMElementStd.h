@@ -159,8 +159,6 @@ protected:
 }
 }  // end namespace itk::fem
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkFEMElementStd.hxx"
-#endif
 
 #endif // #ifndef __itkFEMElementStd_h

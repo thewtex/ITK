@@ -188,8 +188,6 @@ private:
 
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkImageToImageMetricv4GetValueAndDerivativeThreaderBase.hxx"
-#endif
 
 #endif

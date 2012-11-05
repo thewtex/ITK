@@ -65,9 +65,7 @@ protected:
 } // end namespace Statistics
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkLogSigmoidTransferFunction.hxx"
-#endif
 
 
 #endif

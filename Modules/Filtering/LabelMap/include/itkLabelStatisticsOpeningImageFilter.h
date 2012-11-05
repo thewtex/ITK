@@ -191,8 +191,6 @@ private:
 }; // end of class
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkLabelStatisticsOpeningImageFilter.hxx"
-#endif
 
 #endif

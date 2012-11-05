@@ -155,8 +155,6 @@ private:
 };
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkLabeledPointSetToPointSetMetricv4.hxx"
-#endif
 
 #endif

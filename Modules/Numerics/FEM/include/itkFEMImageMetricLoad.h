@@ -365,8 +365,6 @@ private:
 }
 }  // end namespace fem/itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkFEMImageMetricLoad.hxx"
-#endif
 
 #endif

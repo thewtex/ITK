@@ -129,8 +129,6 @@ private:
 };
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkExpectationBasedPointSetToPointSetMetricv4.hxx"
-#endif
 
 #endif

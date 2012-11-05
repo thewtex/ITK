@@ -70,8 +70,6 @@ private:
 } // end namespace functor
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkCopperColormapFunction.hxx"
-#endif
 
 #endif

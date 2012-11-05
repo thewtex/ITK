@@ -223,8 +223,6 @@ private:
 
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkJointHistogramMutualInformationImageToImageMetricv4.hxx"
-#endif
 
 #endif

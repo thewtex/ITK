@@ -138,8 +138,6 @@ private:
 
 } // namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkParametricPath.hxx"
-#endif
 
 #endif

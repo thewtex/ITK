@@ -331,8 +331,6 @@ private:
 }
 } // end namespace fem/itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkFEMFiniteDifferenceFunctionLoad.hxx"
-#endif
 
 #endif

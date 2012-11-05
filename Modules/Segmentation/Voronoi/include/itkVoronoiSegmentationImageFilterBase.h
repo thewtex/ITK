@@ -268,8 +268,6 @@ private:
 };
 } //end namespace
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkVoronoiSegmentationImageFilterBase.hxx"
-#endif
 
 #endif

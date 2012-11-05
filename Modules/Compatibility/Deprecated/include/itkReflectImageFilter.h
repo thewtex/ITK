@@ -98,9 +98,7 @@ private:
 };
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkReflectImageFilter.hxx"
-#endif
 
 #endif //#if !defined( ITK_LEGACY_REMOVE )
 #endif

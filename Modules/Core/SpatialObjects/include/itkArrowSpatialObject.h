@@ -143,8 +143,6 @@ private:
 };
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkArrowSpatialObject.hxx"
-#endif
 
 #endif // __itkArrowSpatialObject_h

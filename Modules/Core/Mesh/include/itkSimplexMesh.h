@@ -282,8 +282,6 @@ private:
 }; // End Class:  SimplexMesh
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkSimplexMesh.hxx"
-#endif
 
 #endif

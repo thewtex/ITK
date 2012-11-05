@@ -239,8 +239,6 @@ FancyString& operator<<( FancyString& s, const T& data );
 
 } // namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkFancyString.hxx"
-#endif
 
 #endif // __itkFancyString_h

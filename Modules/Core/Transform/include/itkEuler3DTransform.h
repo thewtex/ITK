@@ -143,8 +143,6 @@ private:
 }; // class Euler3DTransform
 }  // namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkEuler3DTransform.hxx"
-#endif
 
 #endif /* __itkEuler3DTransform_h */

@@ -90,8 +90,6 @@ protected:
 } // end namespace bio
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkBioCell.hxx"
-#endif
 
 #endif

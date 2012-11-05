@@ -190,8 +190,6 @@ private:
 };
 }
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkFFTConvolutionImageFilter.hxx"
-#endif
 
 #endif

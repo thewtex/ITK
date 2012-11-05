@@ -91,8 +91,6 @@ private:
 };
 } // end namespace ITK
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkProjectedIterativeDeconvolutionImageFilter.hxx"
-#endif
 
 #endif

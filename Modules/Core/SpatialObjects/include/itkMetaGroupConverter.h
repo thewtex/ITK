@@ -77,8 +77,6 @@ private:
 };
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
-  #include "itkMetaGroupConverter.hxx"
-#endif
+#include "itkMetaGroupConverter.hxx"
 
 #endif

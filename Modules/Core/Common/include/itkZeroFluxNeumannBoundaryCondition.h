@@ -128,14 +128,10 @@ public:
 };
 } // end namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkZeroFluxNeumannBoundaryCondition.hxx"
-#endif
 
 /*
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkZeroFluxNeumannBoundaryCondition.hxx"
-#endif
 */
 
 #endif

@@ -123,8 +123,6 @@ private:
   };
 }
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkDiscreteLevelSetImage.hxx"
-#endif
 
 #endif // __itkDiscreteLevelSetImage_h

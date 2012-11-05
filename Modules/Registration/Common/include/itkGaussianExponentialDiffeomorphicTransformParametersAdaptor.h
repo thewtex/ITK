@@ -83,8 +83,6 @@ private:
 }; //class GaussianExponentialDiffeomorphicTransformParametersAdaptor
 }  // namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkGaussianExponentialDiffeomorphicTransformParametersAdaptor.hxx"
-#endif
 
 #endif /* __itkGaussianExponentialDiffeomorphicTransformParametersAdaptor_h */

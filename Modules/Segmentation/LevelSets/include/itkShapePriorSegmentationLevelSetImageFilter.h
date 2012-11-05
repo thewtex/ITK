@@ -200,8 +200,6 @@ private:
 };
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkShapePriorSegmentationLevelSetImageFilter.hxx"
-#endif
 
 #endif

@@ -140,8 +140,6 @@ private:
 
 } // end namespace itk
 
-#if ITK_TEMPLATE_TXX
-# include "itkGaussianSmoothingOnUpdateTimeVaryingVelocityFieldTransform.hxx"
-#endif
+#include "itkGaussianSmoothingOnUpdateTimeVaryingVelocityFieldTransform.hxx"
 
 #endif // __itkGaussianSmoothingOnUpdateTimeVaryingVelocityFieldTransform_h

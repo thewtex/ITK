@@ -151,8 +151,6 @@ private:
 }; //class BSplineTransformParametersAdaptor
 }  // namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkBSplineTransformParametersAdaptor.hxx"
-#endif
 
 #endif /* __itkBSplineTransformParametersAdaptor_h */

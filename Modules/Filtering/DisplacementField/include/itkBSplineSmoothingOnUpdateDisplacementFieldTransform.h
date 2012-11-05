@@ -198,8 +198,6 @@ private:
 
 } // end namespace itk
 
-#if ITK_TEMPLATE_TXX
-# include "itkBSplineSmoothingOnUpdateDisplacementFieldTransform.hxx"
-#endif
+#include "itkBSplineSmoothingOnUpdateDisplacementFieldTransform.hxx"
 
 #endif // __itkBSplineSmoothingOnUpdateDisplacementFieldTransform_h

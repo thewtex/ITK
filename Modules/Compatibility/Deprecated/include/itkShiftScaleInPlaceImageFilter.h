@@ -143,9 +143,7 @@ private:
 };
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkShiftScaleInPlaceImageFilter.hxx"
-#endif
 
 #endif //#if !defined( ITK_LEGACY_REMOVE )
 #endif

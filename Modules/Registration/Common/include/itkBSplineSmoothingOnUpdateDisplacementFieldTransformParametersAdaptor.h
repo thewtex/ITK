@@ -132,8 +132,6 @@ private:
 }; //class BSplineSmoothingOnUpdateDisplacementFieldTransformParametersAdaptor
 }  // namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkBSplineSmoothingOnUpdateDisplacementFieldTransformParametersAdaptor.hxx"
-#endif
 
 #endif /* __itkBSplineSmoothingOnUpdateDisplacementFieldTransformParametersAdaptor_h */

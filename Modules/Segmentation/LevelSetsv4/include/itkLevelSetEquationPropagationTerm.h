@@ -139,8 +139,6 @@ private:
 
 }
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkLevelSetEquationPropagationTerm.hxx"
-#endif
 
 #endif

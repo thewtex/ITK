@@ -91,8 +91,6 @@ private:
 
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkVTKVisualize2DLevelSetAsElevationMap.hxx"
-#endif
 
 #endif // itkVTKVisualize2DLevelSetAsElevationMap_H

@@ -113,8 +113,6 @@ private:
 };  // class KappaSigmaThresholdImageCalculator
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkKappaSigmaThresholdImageCalculator.hxx"
-#endif
 
 #endif /* __itkKappaSigmaThresholdImageCalculator_h */

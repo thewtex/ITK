@@ -246,8 +246,6 @@ protected:
 };
 }
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkGeometricalQuadEdge.hxx"
-#endif
 
 #endif

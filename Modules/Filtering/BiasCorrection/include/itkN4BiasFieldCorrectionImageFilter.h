@@ -436,8 +436,6 @@ private:
 
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkN4BiasFieldCorrectionImageFilter.hxx"
-#endif
 
 #endif

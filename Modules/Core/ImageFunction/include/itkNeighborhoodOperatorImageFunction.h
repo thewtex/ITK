@@ -125,14 +125,10 @@ private:
 };
 } // end namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkNeighborhoodOperatorImageFunction.hxx"
-#endif
 
 /*
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkNeighborhoodOperatorImageFunction.hxx"
-#endif
 */
 
 #endif

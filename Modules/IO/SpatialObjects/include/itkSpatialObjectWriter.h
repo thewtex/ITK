@@ -108,8 +108,6 @@ private:
 };
 } // namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkSpatialObjectWriter.hxx"
-#endif
 
 #endif // __itkSpatialObjectWriter_h

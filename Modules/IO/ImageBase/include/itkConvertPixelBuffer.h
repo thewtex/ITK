@@ -160,8 +160,6 @@ private:
 };
 } //namespace ITK
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkConvertPixelBuffer.hxx"
-#endif
 
 #endif // __itkConvertPixelBuffer_h

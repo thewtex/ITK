@@ -185,7 +185,5 @@ private:
 };
 }
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkUpdateWhitakerSparseLevelSet.hxx"
-#endif
 #endif // __itkUpdateWhitakerSparseLevelSet_h

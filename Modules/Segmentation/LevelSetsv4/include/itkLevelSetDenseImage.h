@@ -100,8 +100,6 @@ private:
   };
 }
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkLevelSetDenseImage.hxx"
-#endif
 
 #endif // __itkLevelSetDenseImage_h

@@ -217,8 +217,6 @@ private:
                                           // TransformToDeformationFieldSource
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkTransformToDeformationFieldSource.hxx"
-#endif
 
 #endif // end #ifndef __itkTransformToDeformationFieldSource_h

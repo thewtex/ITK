@@ -112,8 +112,6 @@ private:
 }; //class FixedCenterOfRotationAffineTransform
 }  // namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkFixedCenterOfRotationAffineTransform.hxx"
-#endif
 
 #endif /* __itkFixedCenterOfRotationAffineTransform_h */

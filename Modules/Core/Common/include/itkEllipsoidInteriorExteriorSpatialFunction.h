@@ -101,8 +101,6 @@ private:
 };
 } // end namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkEllipsoidInteriorExteriorSpatialFunction.hxx"
-#endif
 
 #endif

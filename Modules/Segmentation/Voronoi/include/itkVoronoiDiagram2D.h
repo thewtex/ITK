@@ -276,8 +276,6 @@ private:
 }; // end class: VoronoiDiagram2D
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkVoronoiDiagram2D.hxx"
-#endif
 
 #endif

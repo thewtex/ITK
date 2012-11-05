@@ -224,8 +224,6 @@ ITK_EXPORT InputStreamType & operator>>(InputStreamType & is,
 
 #include "itkNumericTraitsTensorPixel.h"
 
-#if ITK_TEMPLATE_TXX
 #include "itkSymmetricSecondRankTensor.hxx"
-#endif
 
 #endif

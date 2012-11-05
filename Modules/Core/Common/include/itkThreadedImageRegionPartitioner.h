@@ -110,8 +110,6 @@ private:
 
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
-# include "itkThreadedImageRegionPartitioner.hxx"
-#endif
+#include "itkThreadedImageRegionPartitioner.hxx"
 
 #endif

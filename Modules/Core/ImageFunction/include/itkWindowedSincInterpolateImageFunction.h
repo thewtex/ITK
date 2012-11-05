@@ -343,8 +343,6 @@ private:
 };
 } // namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkWindowedSincInterpolateImageFunction.hxx"
-#endif
 
 #endif // _itkWindowedSincInterpolateImageFunction_h

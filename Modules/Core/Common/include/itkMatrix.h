@@ -266,8 +266,6 @@ ITK_EXPORT std::ostream & operator<<(std::ostream & os, const Matrix< T, NRows, 
 }
 } // end namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkMatrix.hxx"
-#endif
 
 #endif

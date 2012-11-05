@@ -116,8 +116,6 @@ private:
 }  // namespace itk
 
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkRegistrationParameterScalesFromJacobian.hxx"
-#endif
 
 #endif /* __itkRegistrationParameterScalesFromJacobian_h */

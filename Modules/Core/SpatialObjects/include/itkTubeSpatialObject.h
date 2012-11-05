@@ -176,8 +176,6 @@ private:
 };
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkTubeSpatialObject.hxx"
-#endif
 
 #endif // __itkTubeSpatialObject_h

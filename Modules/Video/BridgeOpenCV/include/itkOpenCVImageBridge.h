@@ -211,8 +211,6 @@ private:
 
 } // end namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkOpenCVImageBridge.hxx"
-#endif
 
 #endif

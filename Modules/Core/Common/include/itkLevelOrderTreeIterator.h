@@ -99,8 +99,6 @@ private:
 
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkLevelOrderTreeIterator.hxx"
-#endif
 
 #endif

@@ -134,8 +134,6 @@ private:
 };
 }
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkConvolutionImageFilter.hxx"
-#endif
 
 #endif

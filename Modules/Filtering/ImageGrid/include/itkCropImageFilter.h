@@ -119,8 +119,6 @@ private:
 };
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkCropImageFilter.hxx"
-#endif
 
 #endif

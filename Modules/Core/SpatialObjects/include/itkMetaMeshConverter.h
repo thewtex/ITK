@@ -82,8 +82,6 @@ private:
 };
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
-  #include "itkMetaMeshConverter.hxx"
-#endif
+#include "itkMetaMeshConverter.hxx"
 
 #endif

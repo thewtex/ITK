@@ -98,8 +98,6 @@ protected:
 };
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkBoxSpatialObject.hxx"
-#endif
 
 #endif // __itkBoxSpatialObject_h

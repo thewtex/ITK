@@ -88,8 +88,6 @@ struct ITK_EXPORT CalculateOutputWrapOffsetModifiers {
 } // end namespace NeighborhoodAlgorithm
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkNeighborhoodAlgorithm.hxx"
-#endif
 
 #endif

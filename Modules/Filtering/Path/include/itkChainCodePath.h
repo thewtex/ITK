@@ -153,8 +153,6 @@ private:
 };
 } // end namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkChainCodePath.hxx"
-#endif
 
 #endif

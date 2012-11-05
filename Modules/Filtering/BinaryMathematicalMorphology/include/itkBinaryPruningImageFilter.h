@@ -143,8 +143,6 @@ private:
 }; // end of BinaryThinningImageFilter class
 } //end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkBinaryPruningImageFilter.hxx"
-#endif
 
 #endif

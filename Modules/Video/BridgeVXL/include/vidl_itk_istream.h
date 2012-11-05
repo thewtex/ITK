@@ -138,8 +138,6 @@ protected:
 
 } // end namespace itk
 
-#if ITK_MANUAL_INSTANTIATION
 #include "vidl_itk_istream.hxx"
-#endif
 
 #endif

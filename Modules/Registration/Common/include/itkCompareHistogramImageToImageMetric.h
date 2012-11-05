@@ -174,8 +174,6 @@ private:
 };
 } // End namespace itk.
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkCompareHistogramImageToImageMetric.hxx"
-#endif
 
 #endif // __itkCompareHistogramImageToImageMetric_h

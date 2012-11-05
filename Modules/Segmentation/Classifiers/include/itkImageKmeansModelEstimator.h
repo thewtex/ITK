@@ -282,8 +282,6 @@ private:
 }; // class ImageKmeansModelEstimator
 } // namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkImageKmeansModelEstimator.hxx"
-#endif
 
 #endif

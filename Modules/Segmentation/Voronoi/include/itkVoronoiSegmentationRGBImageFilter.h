@@ -169,8 +169,6 @@ private:
 };
 } //end namespace
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkVoronoiSegmentationRGBImageFilter.hxx"
-#endif
 
 #endif

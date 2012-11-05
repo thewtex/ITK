@@ -209,8 +209,6 @@ private:
 }; // class ImagePCAShapeModelEstimator
 } // namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkImagePCAShapeModelEstimator.hxx"
-#endif
 
 #endif

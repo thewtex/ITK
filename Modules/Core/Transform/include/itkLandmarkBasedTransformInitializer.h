@@ -183,8 +183,6 @@ private:
 }; //class LandmarkBasedTransformInitializer
 }  // namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkLandmarkBasedTransformInitializer.hxx"
-#endif
 
 #endif /* __itkLandmarkBasedTransformInitializer_h */

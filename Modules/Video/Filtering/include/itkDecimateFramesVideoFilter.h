@@ -84,8 +84,6 @@ private:
 
 } // end namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkDecimateFramesVideoFilter.hxx"
-#endif
 
 #endif

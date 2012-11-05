@@ -241,8 +241,6 @@ private:
 };
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkImageSeriesWriter.hxx"
-#endif
 
 #endif // __itkImageSeriesWriter_h

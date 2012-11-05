@@ -126,8 +126,6 @@ private:
 
 } // namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkFFTWInverseFFTImageFilter.hxx"
-#endif
 
 #endif //__itkFFTWInverseFFTImageFilter_h

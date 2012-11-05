@@ -81,8 +81,6 @@ private:
 }; // end of class
 } // end of namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkHistogramAlgorithmBase.hxx"
-#endif
 
 #endif

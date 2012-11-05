@@ -450,8 +450,6 @@ private:
 
 } // end namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkDisplacementFieldTransform.hxx"
-#endif
 
 #endif // __itkDisplacementFieldTransform_h

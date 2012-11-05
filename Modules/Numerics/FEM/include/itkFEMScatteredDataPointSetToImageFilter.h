@@ -302,8 +302,6 @@ private:
 }// end namespace fem
 }// end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkFEMScatteredDataPointSetToImageFilter.hxx"
-#endif
 
 #endif

@@ -109,8 +109,6 @@ private:
 };
 } // namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkBSplineCenteredL2ResampleImageFilterBase.hxx"
-#endif
 
 #endif

@@ -434,7 +434,5 @@ private:
 
 }
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkBinaryImageToLevelSetImageAdaptor.hxx"
-#endif
 #endif // __itkBinaryImageToLevelSetImageAdaptorBase_h

@@ -227,8 +227,6 @@ private:
 };
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkImageToSpatialObjectRegistrationMethod.hxx"
-#endif
 
 #endif

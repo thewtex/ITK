@@ -97,8 +97,6 @@ private:
 };
 }
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkQuadEdgeMeshScalarDataVTKPolyDataWriter.hxx"
-#endif
 
 #endif

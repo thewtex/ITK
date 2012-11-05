@@ -278,8 +278,6 @@ private:
 }  // namespace itk
 
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkRegistrationParameterScalesEstimator.hxx"
-#endif
 
 #endif /* __itkRegistrationParameterScalesEstimator_h */

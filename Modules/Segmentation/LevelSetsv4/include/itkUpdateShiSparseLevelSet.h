@@ -145,8 +145,6 @@ private:
 };
 }
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkUpdateShiSparseLevelSet.hxx"
-#endif
 
 #endif // __itkUpdateShiSparseLevelSet_h

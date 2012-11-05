@@ -340,8 +340,6 @@ private:
 };
 } // end namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkVectorImage.hxx"
-#endif
 
 #endif

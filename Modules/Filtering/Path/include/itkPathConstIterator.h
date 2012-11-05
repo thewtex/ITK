@@ -233,8 +233,6 @@ protected: //made protected so other iterators can access
 };
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkPathConstIterator.hxx"
-#endif
 
 #endif

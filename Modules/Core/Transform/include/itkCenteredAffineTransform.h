@@ -121,8 +121,6 @@ private:
 }; // class CenteredAffineTransform
 }  // namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkCenteredAffineTransform.hxx"
-#endif
 
 #endif /* __itkCenteredAffineTransform_h */

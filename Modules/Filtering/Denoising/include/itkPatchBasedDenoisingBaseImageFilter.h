@@ -349,8 +349,6 @@ public ImageToImageFilter<TInputImage, TOutputImage>
 
 } // end namespace itk
 
-#if ITK_TEMPLATE_TXX
-# include "itkPatchBasedDenoisingBaseImageFilter.hxx"
-#endif
+#include "itkPatchBasedDenoisingBaseImageFilter.hxx"
 
 #endif

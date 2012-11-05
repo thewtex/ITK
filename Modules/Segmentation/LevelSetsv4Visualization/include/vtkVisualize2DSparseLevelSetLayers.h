@@ -172,7 +172,5 @@ private:
   void operator = ( const Self& );
 };
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "vtkVisualize2DSparseLevelSetLayers.hxx"
-#endif
 #endif

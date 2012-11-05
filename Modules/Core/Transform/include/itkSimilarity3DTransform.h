@@ -145,8 +145,6 @@ private:
 }; // class Similarity3DTransform
 }  // namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkSimilarity3DTransform.hxx"
-#endif
 
 #endif /* __itkSimilarity3DTransform_h */

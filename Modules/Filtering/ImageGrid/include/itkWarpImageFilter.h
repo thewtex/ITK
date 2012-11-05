@@ -289,8 +289,6 @@ private:
 };
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkWarpImageFilter.hxx"
-#endif
 
 #endif

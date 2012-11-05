@@ -130,8 +130,6 @@ private:
 };
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkLabelMapFilter.hxx"
-#endif
 
 #endif

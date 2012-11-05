@@ -132,8 +132,6 @@ private:
 };
 } // end namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkBSplineInterpolationWeightFunction.hxx"
-#endif
 
 #endif

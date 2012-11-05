@@ -117,8 +117,6 @@ private:
   void operator = ( const Self& ); //purposely not implemented
 };
 }
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkMalcolmSparseLevelSetImage.hxx"
-#endif
 
 #endif // __itkMalcolmSparseLevelSetImage_h

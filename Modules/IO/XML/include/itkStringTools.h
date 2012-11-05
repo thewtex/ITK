@@ -148,8 +148,6 @@ public:
 
 } // namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkStringTools.hxx"
-#endif
 
 #endif // __itkStringTools_h

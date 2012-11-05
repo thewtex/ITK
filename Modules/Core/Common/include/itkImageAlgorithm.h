@@ -164,9 +164,7 @@ private:
 } // end namespace itk
 
 
-#if ITK_TEMPLATE_TXX
 #include "itkImageAlgorithm.hxx"
-#endif
 
 
 #endif //__itkImageAlgorithm_h

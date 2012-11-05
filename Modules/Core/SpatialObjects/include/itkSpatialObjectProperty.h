@@ -93,8 +93,6 @@ private:
 };
 }
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkSpatialObjectProperty.hxx"
-#endif
 
 #endif // __SpatialObjectProperty_h

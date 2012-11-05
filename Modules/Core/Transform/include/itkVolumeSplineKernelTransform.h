@@ -101,8 +101,6 @@ private:
 };
 } // namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkVolumeSplineKernelTransform.hxx"
-#endif
 
 #endif // __itkVolumeSplineKernelTransform_h

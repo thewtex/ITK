@@ -55,8 +55,6 @@ void DoFace(typename TImage::ConstPointer input,
             const typename TImage::RegionType face);
 } // namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkVanHerkGilWermanUtilities.hxx"
-#endif
 
 #endif

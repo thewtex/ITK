@@ -107,8 +107,6 @@ private:
 };
 } // End namespace itk.
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkCorrelationCoefficientHistogramImageToImageMetric.hxx"
-#endif
 
 #endif // __itkCorrelationCoefficientHistogramImageToImageMetric_h

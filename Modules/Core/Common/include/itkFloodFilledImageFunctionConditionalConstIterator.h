@@ -110,8 +110,6 @@ public:
 };
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkFloodFilledImageFunctionConditionalConstIterator.hxx"
-#endif
 
 #endif

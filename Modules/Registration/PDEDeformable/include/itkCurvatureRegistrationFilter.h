@@ -202,9 +202,7 @@ private:
 };
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkCurvatureRegistrationFilter.hxx"
-#endif
 
 #endif //defined(USE_FFTWF) || defined(USE_FFTWD)
 

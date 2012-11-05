@@ -115,8 +115,6 @@ protected:
 };
 } // end namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkImageLinearIteratorWithIndex.hxx"
-#endif
 
 #endif

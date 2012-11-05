@@ -281,8 +281,6 @@ private:
 };
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkESMDemonsRegistrationFunction.hxx"
-#endif
 
 #endif

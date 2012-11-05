@@ -209,8 +209,6 @@ private:
                                           // TransformToDisplacementFieldSource
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkTransformToDisplacementFieldSource.hxx"
-#endif
 
 #endif // end #ifndef __itkTransformToDisplacementFieldSource_h

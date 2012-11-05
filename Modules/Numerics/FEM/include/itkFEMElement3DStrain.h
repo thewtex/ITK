@@ -117,8 +117,6 @@ protected:
 }
 }  // end namespace itk::fem
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkFEMElement3DStrain.hxx"
-#endif
 
 #endif  // #ifndef __itkFEMElement3DStrain_h

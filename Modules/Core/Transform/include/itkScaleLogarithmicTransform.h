@@ -121,8 +121,6 @@ private:
                                                  // ScaleLogarithmicTransform
 }  // namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkScaleLogarithmicTransform.hxx"
-#endif
 
 #endif /* __itkScaleLogarithmicTransform_h */

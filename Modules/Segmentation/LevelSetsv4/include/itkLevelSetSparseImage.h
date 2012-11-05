@@ -132,8 +132,6 @@ private:
   };
 }
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkLevelSetSparseImage.hxx"
-#endif
 
 #endif // __itkLevelSetSparseImage_h

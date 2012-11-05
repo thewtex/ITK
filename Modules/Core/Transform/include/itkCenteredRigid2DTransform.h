@@ -175,8 +175,6 @@ private:
 };                                        // class CenteredRigid2DTransform
 }  // namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkCenteredRigid2DTransform.hxx"
-#endif
 
 #endif /* __itkCenteredRigid2DTransform_h */

@@ -104,8 +104,6 @@ private:
 
 } // end of namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkGPUUnaryFunctorImageFilter.hxx"
-#endif
 
 #endif

@@ -51,8 +51,6 @@ struct VnlFFTCommon
 };
 } // namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkVnlFFTCommon.hxx"
-#endif
 
 #endif // __itkVnlFFTCommon_h

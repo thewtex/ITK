@@ -127,8 +127,6 @@ private:
 };                                //class Euler2DTransform
 }  // namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkEuler2DTransform.hxx"
-#endif
 
 #endif /* __itkEuler2DTransform_h */

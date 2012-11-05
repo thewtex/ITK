@@ -262,7 +262,5 @@ private:
   double m_ObjectThreshold;
 };
 } // end namespace itk
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkRGBGibbsPriorFilter.hxx"
-#endif
 #endif

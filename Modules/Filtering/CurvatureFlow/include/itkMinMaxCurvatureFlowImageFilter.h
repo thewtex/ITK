@@ -149,8 +149,6 @@ private:
 };
 } // end namspace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkMinMaxCurvatureFlowImageFilter.hxx"
-#endif
 
 #endif

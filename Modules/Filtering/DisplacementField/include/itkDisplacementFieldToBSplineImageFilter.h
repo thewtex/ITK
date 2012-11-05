@@ -206,8 +206,6 @@ private:
 
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkDisplacementFieldToBSplineImageFilter.hxx"
-#endif
 
 #endif

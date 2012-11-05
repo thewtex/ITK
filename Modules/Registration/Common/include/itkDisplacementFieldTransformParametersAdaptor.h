@@ -131,8 +131,6 @@ private:
 }; //class DisplacementFieldTransformParametersAdaptor
 }  // namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkDisplacementFieldTransformParametersAdaptor.hxx"
-#endif
 
 #endif /* __itkDisplacementFieldTransformParametersAdaptor_h */

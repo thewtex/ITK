@@ -161,8 +161,6 @@ protected:
 };
 } // namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkSobelOperator.hxx"
-#endif
 
 #endif

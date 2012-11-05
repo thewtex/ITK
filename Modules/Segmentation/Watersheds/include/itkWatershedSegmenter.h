@@ -377,8 +377,6 @@ private:
 } // end namespace watershed
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkWatershedSegmenter.hxx"
-#endif
 
 #endif

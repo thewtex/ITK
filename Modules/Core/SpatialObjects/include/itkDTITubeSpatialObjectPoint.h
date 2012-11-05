@@ -114,8 +114,6 @@ protected:
 };
 } // end of namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkDTITubeSpatialObjectPoint.hxx"
-#endif
 
 #endif // __itkDTITubeSpatialObjectPoint_h

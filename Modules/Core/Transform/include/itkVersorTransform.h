@@ -168,8 +168,6 @@ private:
 }; // class VersorTransform
 }  // namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkVersorTransform.hxx"
-#endif
 
 #endif /* __itkVersorTransform_h */

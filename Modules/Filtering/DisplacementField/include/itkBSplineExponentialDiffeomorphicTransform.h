@@ -171,8 +171,6 @@ private:
 
 } // end namespace itk
 
-#if ITK_TEMPLATE_TXX
-# include "itkBSplineExponentialDiffeomorphicTransform.hxx"
-#endif
+#include "itkBSplineExponentialDiffeomorphicTransform.hxx"
 
 #endif // __itkBSplineExponentialDiffeomorphicTransform_h

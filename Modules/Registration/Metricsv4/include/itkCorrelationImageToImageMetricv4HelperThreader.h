@@ -130,8 +130,6 @@ private:
 
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkCorrelationImageToImageMetricv4HelperThreader.hxx"
-#endif
 
 #endif

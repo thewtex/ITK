@@ -89,7 +89,5 @@ namespace itk
     void operator = ( const Self& ); // purposely not implemented
  };
  }
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkLevelSetEvolutionStoppingCriterion.hxx"
-#endif
 #endif

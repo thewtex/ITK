@@ -307,8 +307,6 @@ private:
 }; // class BSplineTransform
 }  // namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkBSplineTransform.hxx"
-#endif
 
 #endif /* __itkBSplineTransform_h */

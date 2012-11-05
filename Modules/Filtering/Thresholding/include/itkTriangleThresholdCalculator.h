@@ -82,8 +82,6 @@ private:
 } // end namespace itk
 
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkTriangleThresholdCalculator.hxx"
-#endif
 
 #endif

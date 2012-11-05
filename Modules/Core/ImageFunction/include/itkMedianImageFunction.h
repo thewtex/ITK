@@ -123,8 +123,6 @@ private:
 };
 } // end namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkMedianImageFunction.hxx"
-#endif
 
 #endif

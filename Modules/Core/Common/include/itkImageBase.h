@@ -717,8 +717,6 @@ private:
 };
 } // end namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkImageBase.hxx"
-#endif
 
 #endif

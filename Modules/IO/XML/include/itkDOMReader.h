@@ -153,8 +153,6 @@ private:
 
 } // namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkDOMReader.hxx"
-#endif
 
 #endif // __itkDOMReader_h

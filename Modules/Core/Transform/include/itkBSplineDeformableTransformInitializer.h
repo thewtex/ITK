@@ -127,9 +127,7 @@ private:
 }; //class BSplineDeformableTransformInitializer
 }  // namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkBSplineDeformableTransformInitializer.hxx"
-#endif
 
 #else  // def ITKV3_COMPATIBILITY
 #error "itkBSplineDeformableTransformInitializer.h should only be included for ITKv3 compatibility. Build with ITKV3_COMPATIBILITY=ON to use this"

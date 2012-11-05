@@ -205,8 +205,6 @@ private:
 };
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkPointSetToImageRegistrationMethod.hxx"
-#endif
 
 #endif

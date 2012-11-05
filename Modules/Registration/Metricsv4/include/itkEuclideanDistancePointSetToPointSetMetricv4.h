@@ -89,8 +89,6 @@ private:
 };
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkEuclideanDistancePointSetToPointSetMetricv4.hxx"
-#endif
 
 #endif

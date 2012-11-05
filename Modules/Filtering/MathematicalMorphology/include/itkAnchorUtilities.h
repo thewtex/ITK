@@ -54,8 +54,6 @@ void DoAnchorFace(const TImage * input,
 
 } // namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkAnchorUtilities.hxx"
-#endif
 
 #endif

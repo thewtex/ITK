@@ -114,9 +114,7 @@ private:
 }
 
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkGenerateImageSource.hxx"
-#endif
 
 
 #endif //__itkGenerateImageSource_h

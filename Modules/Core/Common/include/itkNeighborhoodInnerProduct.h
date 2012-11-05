@@ -89,14 +89,10 @@ public:
 };
 } // end namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkNeighborhoodInnerProduct.hxx"
-#endif
 
 /*
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkNeighborhoodInnerProduct.hxx"
-#endif
 */
 
 #endif

@@ -328,8 +328,6 @@ public:
 };
 } // namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkNeighborhoodIterator.hxx"
-#endif
 
 #endif

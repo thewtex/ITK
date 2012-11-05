@@ -259,8 +259,6 @@ public:
 };
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkMutualInformationImageToImageMetric.hxx"
-#endif
 
 #endif

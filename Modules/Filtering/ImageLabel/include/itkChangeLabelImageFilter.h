@@ -169,8 +169,6 @@ private:
 };
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkChangeLabelImageFilter.hxx"
-#endif
 
 #endif

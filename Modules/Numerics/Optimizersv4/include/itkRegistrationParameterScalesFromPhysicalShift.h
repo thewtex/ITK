@@ -81,8 +81,6 @@ private:
 }  // namespace itk
 
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkRegistrationParameterScalesFromPhysicalShift.hxx"
-#endif
 
 #endif /* __itkRegistrationParameterScalesFromPhysicalShift_h */

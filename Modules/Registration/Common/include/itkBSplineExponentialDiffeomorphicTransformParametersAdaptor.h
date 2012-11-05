@@ -132,8 +132,6 @@ private:
 }; //class BSplineExponentialDiffeomorphicTransformParametersAdaptor
 }  // namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkBSplineExponentialDiffeomorphicTransformParametersAdaptor.hxx"
-#endif
 
 #endif /* __itkBSplineExponentialDiffeomorphicTransformParametersAdaptor_h */

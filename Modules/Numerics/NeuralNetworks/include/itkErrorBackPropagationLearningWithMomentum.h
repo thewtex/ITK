@@ -72,8 +72,6 @@ protected:
 } // end namespace Statistics
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
-  #include "itkErrorBackPropagationLearningWithMomentum.hxx"
-#endif
+#include "itkErrorBackPropagationLearningWithMomentum.hxx"
 
 #endif

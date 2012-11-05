@@ -224,9 +224,7 @@ private:
 };
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkDeformableMesh3DFilter.hxx"
-#endif
 
 #endif //#if !defined( ITK_LEGACY_REMOVE )
 #endif

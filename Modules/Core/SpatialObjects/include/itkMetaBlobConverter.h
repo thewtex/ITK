@@ -78,8 +78,6 @@ private:
 };
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
-  #include "itkMetaBlobConverter.hxx"
-#endif
+#include "itkMetaBlobConverter.hxx"
 
 #endif

@@ -103,8 +103,6 @@ private:
 
 } // end namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkGPUImageToImageFilter.hxx"
-#endif
 
 #endif

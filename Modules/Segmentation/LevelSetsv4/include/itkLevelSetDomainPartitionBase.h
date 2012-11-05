@@ -69,8 +69,6 @@ private:
 };
 } //end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkLevelSetDomainPartitionBase.hxx"
-#endif
 
 #endif

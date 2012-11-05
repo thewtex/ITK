@@ -132,8 +132,6 @@ private:
 }; //class TimeVaryingVelocityFieldTransformParametersAdaptor
 }  // namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkTimeVaryingVelocityFieldTransformParametersAdaptor.hxx"
-#endif
 
 #endif /* __itkTimeVaryingVelocityFieldTransformParametersAdaptor_h */

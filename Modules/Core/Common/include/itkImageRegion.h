@@ -326,8 +326,6 @@ template< unsigned int VImageDimension >
 std::ostream & operator<<(std::ostream & os, const ImageRegion< VImageDimension > & region);
 } // end namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkImageRegion.hxx"
-#endif
 
 #endif

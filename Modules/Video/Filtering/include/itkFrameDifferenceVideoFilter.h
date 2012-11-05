@@ -88,8 +88,6 @@ private:
 
 } // end namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkFrameDifferenceVideoFilter.hxx"
-#endif
 
 #endif

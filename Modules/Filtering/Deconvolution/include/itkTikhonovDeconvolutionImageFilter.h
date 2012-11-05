@@ -176,8 +176,6 @@ private:
 
 }
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkTikhonovDeconvolutionImageFilter.hxx"
-#endif
 
 #endif

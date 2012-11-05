@@ -139,8 +139,6 @@ private:
 };
 } // namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkExtensionVelocitiesImageFilter.hxx"
-#endif
 
 #endif

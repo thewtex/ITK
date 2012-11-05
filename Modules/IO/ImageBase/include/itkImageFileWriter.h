@@ -223,9 +223,7 @@ private:
 };
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkImageFileWriter.hxx"
-#endif
 
 #ifdef ITK_IO_FACTORY_REGISTER_MANAGER
 #include "itkImageIOFactoryRegisterManager.h"

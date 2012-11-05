@@ -128,9 +128,7 @@ private:
   }
 
 
-#ifndef ITK_MANUAL_INSTANTIATION
-# include "itkPointSetFunction.hxx"
-#endif
+#include "itkPointSetFunction.hxx"
 
 
 #endif

@@ -180,8 +180,6 @@ private:
                                                // CenteredSimilarity2DTransform
 }  // namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkCenteredSimilarity2DTransform.hxx"
-#endif
 
 #endif /* __itkCenteredSimilarity2DTransform_h */

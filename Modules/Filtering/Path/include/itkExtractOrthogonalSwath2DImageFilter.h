@@ -162,8 +162,6 @@ private:
 };
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkExtractOrthogonalSwath2DImageFilter.hxx"
-#endif
 
 #endif

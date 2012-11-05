@@ -267,8 +267,6 @@ private:
 };
 }
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkLevelSetEquationContainer.hxx"
-#endif
 
 #endif // __itkLevelSetEquationContainer_h

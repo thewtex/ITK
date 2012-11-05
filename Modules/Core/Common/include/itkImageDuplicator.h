@@ -99,8 +99,6 @@ private:
 };
 } // end namespace itk
 
-#if ITK_TEMPLATE_TXX
 #include "itkImageDuplicator.hxx"
-#endif
 
 #endif /* __itkImageDuplicator_h */

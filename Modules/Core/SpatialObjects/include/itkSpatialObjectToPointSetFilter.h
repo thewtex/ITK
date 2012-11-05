@@ -105,8 +105,6 @@ private:
 };
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkSpatialObjectToPointSetFilter.hxx"
-#endif
 
 #endif

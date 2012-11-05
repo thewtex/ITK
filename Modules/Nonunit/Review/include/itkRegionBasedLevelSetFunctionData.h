@@ -145,7 +145,5 @@ private:
 };
 } //end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkRegionBasedLevelSetFunctionData.hxx"
-#endif
 #endif

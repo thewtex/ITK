@@ -253,8 +253,6 @@ private:
 }; // class declaration
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkConnectedRegionsMeshFilter.hxx"
-#endif
 
 #endif

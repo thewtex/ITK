@@ -143,8 +143,6 @@ private:
 };
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkOrthogonalSwath2DPathFilter.hxx"
-#endif
 
 #endif

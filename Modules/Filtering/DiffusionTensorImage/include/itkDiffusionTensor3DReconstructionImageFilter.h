@@ -325,8 +325,6 @@ private:
 };
 }
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkDiffusionTensor3DReconstructionImageFilter.hxx"
-#endif
 
 #endif

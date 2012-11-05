@@ -131,8 +131,6 @@ private:
 }; //class ConstantVelocityFieldTransformParametersAdaptor
 }  // namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkConstantVelocityFieldTransformParametersAdaptor.hxx"
-#endif
 
 #endif /* __itkConstantVelocityFieldTransformParametersAdaptor_h */

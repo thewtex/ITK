@@ -141,8 +141,6 @@ private:
 };
 
 }
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkLevelSetEquationChanAndVeseInternalTerm.hxx"
-#endif
 
 #endif

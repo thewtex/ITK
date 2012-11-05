@@ -152,8 +152,6 @@ private:
 }; // class ImageGaussianModelEstimator
 } // namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkImageGaussianModelEstimator.hxx"
-#endif
 
 #endif

@@ -264,10 +264,6 @@ public:
 };
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
-#if !defined( CABLE_CONFIGURATION )
 #include "itkConnectedComponentImageFilter.hxx"
-#endif
-#endif
 
 #endif

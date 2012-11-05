@@ -137,8 +137,6 @@ private:
 };
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkSpatialObjectToImageStatisticsCalculator.hxx"
-#endif
 
 #endif /* __itkSpatialObjectToImageStatisticsCalculator_h */

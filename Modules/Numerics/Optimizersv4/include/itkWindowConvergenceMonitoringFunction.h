@@ -93,8 +93,6 @@ private:
 } // end namespace function
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkWindowConvergenceMonitoringFunction.hxx"
-#endif
 
 #endif

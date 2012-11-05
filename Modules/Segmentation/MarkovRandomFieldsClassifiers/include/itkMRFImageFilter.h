@@ -411,8 +411,6 @@ private:
 }; // class MRFImageFilter
 } // namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkMRFImageFilter.hxx"
-#endif
 
 #endif

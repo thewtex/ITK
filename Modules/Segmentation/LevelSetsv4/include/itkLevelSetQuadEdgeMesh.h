@@ -115,7 +115,5 @@ private:
 };
 }
 
-#ifndef ITK_MANUAL_INSTANTIATION
 #include "itkLevelSetQuadEdgeMesh.hxx"
-#endif
 #endif // __itkLevelSetQuadEdgeMesh_h
