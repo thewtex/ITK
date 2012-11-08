@@ -296,8 +296,13 @@ void TIFFImageIO::ReadTwoSamplesPerPixelImage(void *out,
                                               unsigned int width,
                                               unsigned int height)
 {
+#ifdef TIFF_INT64_T
   uint64_t isize = TIFFScanlineSize64(m_InternalImage->m_Image);
   uint64_t cc;
+#else
+  tsize_t isize = TIFFScanlineSize(m_InternalImage->m_Image);
+  tsize_t cc;
+#endif
   int      row;
   tdata_t  buf = _TIFFmalloc(isize);
 
@@ -449,8 +454,15 @@ void TIFFImageIO::ReadGenericImage(void *out,
                                    unsigned int width,
                                    unsigned int height)
 {
+
+#ifdef TIFF_INT64_T
   uint64_t isize = TIFFScanlineSize64(m_InternalImage->m_Image);
   uint64_t cc;
+#else
+  tsize_t isize = TIFFScanlineSize(m_InternalImage->m_Image);
+  tsize_t cc;
+#endif
+
   int      row, inc;
   tdata_t  buf = _TIFFmalloc(isize);
 
@@ -1756,11 +1768,14 @@ void TIFFImageIO::InternalWrite(const void *buffer)
   const SizeType oneGigaByte = 1024 * oneMegaByte;
   const SizeType twoGigaBytes = 2 * oneGigaByte;
 
+#ifdef TIFF_INT64_T
   if ( this->GetImageSizeInBytes() > twoGigaBytes )
     {
     // Adding the "8" option enables the use of big tiff
     mode = "w8";
     }
+#else
+#endif
 
   TIFF *tif = TIFFOpen(m_FileName.c_str(), mode );
   if ( !tif )
@@ -1948,7 +1963,13 @@ bool TIFFImageIO::CanFindTIFFTag(unsigned int t)
     }
 
   ttag_t           tag = t;     // 32bits integer
-  const TIFFField *fld = TIFFFieldWithTag(m_InternalImage->m_Image, tag);
+#ifdef TIFF_INT64_T
+  const TIFFField *fld = NULL;
+#else
+  const TIFFFieldInfo *fld = NULL;
+#endif
+
+  fld = TIFFFieldWithTag(m_InternalImage->m_Image, tag);
   if ( fld == NULL )
     {
     return false;
