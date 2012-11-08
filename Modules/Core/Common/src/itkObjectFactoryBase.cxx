@@ -579,6 +579,9 @@ ObjectFactoryBase
         }
       }
     }
+
+  // HACK: Force libraries to be reloaded after one in unregistered
+  ObjectFactoryBasePrivate::m_Initialized = false;
 }
 
 /**
