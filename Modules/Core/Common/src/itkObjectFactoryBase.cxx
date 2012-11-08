@@ -193,7 +193,6 @@ ObjectFactoryBase
     ObjectFactoryBasePrivate::m_Initialized = true;
     ObjectFactoryBase::InitializeFactoryList();
     ObjectFactoryBase::RegisterDefaults();
-    ObjectFactoryBase::LoadDynamicFactories();
     }
 }
 
@@ -478,6 +477,7 @@ ObjectFactoryBase
       }
     }
   ObjectFactoryBase::Initialize();
+  ObjectFactoryBase::LoadDynamicFactories();
 
   //
   //  Register the factory in the internal list at the requested location.
