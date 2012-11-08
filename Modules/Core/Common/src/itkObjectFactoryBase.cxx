@@ -479,6 +479,9 @@ ObjectFactoryBase
     }
   ObjectFactoryBase::Initialize();
 
+  // This additional call may cause additional atempts to load libraries.
+  ObjectFactoryBase::LoadDynamicFactories();
+
   //
   //  Register the factory in the internal list at the requested location.
   //
