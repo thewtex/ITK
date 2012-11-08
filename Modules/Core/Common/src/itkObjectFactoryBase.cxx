@@ -85,6 +85,7 @@ namespace ObjectFactoryBasePrivate
 {
 FactoryListType * m_RegisteredFactories;
 bool              m_Initialized;
+bool              m_DynamicFactoriesLoaded;
 }
 
 /**
@@ -213,6 +214,14 @@ void
 ObjectFactoryBase
 ::LoadDynamicFactories()
 {
+  /**
+   * if the Dynamic factories have already been loaded, do nothing
+   */
+  if (ObjectFactoryBasePrivate::m_DynamicFactoriesLoaded)
+    {
+    return;
+    }
+
   /**
    * follow PATH conventions
    */
@@ -396,6 +405,7 @@ ObjectFactoryBase
         }
       }
     }
+  ObjectFactoryBasePrivate::m_DynamicFactoriesLoaded = true;
 }
 
 /**
@@ -478,6 +488,7 @@ ObjectFactoryBase
       }
     }
   ObjectFactoryBase::Initialize();
+  ObjectFactoryBase::LoadDynamicFactories();
 
   //
   //  Register the factory in the internal list at the requested location.
