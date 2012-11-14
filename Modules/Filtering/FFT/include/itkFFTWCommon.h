@@ -351,7 +351,9 @@ public:
   }
   static void DestroyPlan(PlanType p)
   {
+    FFTWGlobalConfiguration::Lock();
     fftwf_destroy_plan(p);
+    FFTWGlobalConfiguration::Unlock();
   }
 };
 
@@ -653,7 +655,9 @@ public:
   }
   static void DestroyPlan(PlanType p)
   {
+    FFTWGlobalConfiguration::Lock();
     fftw_destroy_plan(p);
+    FFTWGlobalConfiguration::Unlock();
   }
 };
 
