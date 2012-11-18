@@ -21,7 +21,6 @@
 #include "itkImageRegistrationMethodv4.h"
 
 #include "itkDiscreteGaussianImageFilter.h"
-#include "itkGradientDescentOptimizerv4.h"
 #include "itkImageRandomConstIteratorWithIndex.h"
 #include "itkImageRegionConstIteratorWithIndex.h"
 #include "itkIterationReporter.h"
@@ -40,7 +39,7 @@ template<typename TFixedImage, typename TMovingImage, typename TTransform>
 ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform>
 ::ImageRegistrationMethodv4()
 {
-  this->SetNumberOfRequiredOutputs( 2 );
+  this->SetNumberOfRequiredOutputs( 1 );
 
   this->m_CurrentLevel = 0;
   this->m_CurrentIteration = 0;
@@ -58,35 +57,7 @@ ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform>
   typename IdentityTransformType::Pointer defaultMovingInitialTransform = IdentityTransformType::New();
   this->m_MovingInitialTransform = defaultMovingInitialTransform;
 
-  typedef LinearInterpolateImageFunction<FixedImageType, RealType> DefaultFixedInterpolatorType;
-  typename DefaultFixedInterpolatorType::Pointer fixedInterpolator = DefaultFixedInterpolatorType::New();
-  this->m_FixedInterpolator = fixedInterpolator;
-
-  typedef LinearInterpolateImageFunction<MovingImageType, RealType> DefaultMovingInterpolatorType;
-  typename DefaultMovingInterpolatorType::Pointer movingInterpolator = DefaultMovingInterpolatorType::New();
-  this->m_MovingInterpolator = movingInterpolator;
-
-  typedef JointHistogramMutualInformationImageToImageMetricv4<FixedImageType, MovingImageType> MetricForStageOneType;
-  typename MetricForStageOneType::Pointer mutualInformationMetric = MetricForStageOneType::New();
-  mutualInformationMetric->SetNumberOfHistogramBins( 20 );
-  mutualInformationMetric->SetUseMovingImageGradientFilter( false );
-  mutualInformationMetric->SetUseFixedImageGradientFilter( false );
-  mutualInformationMetric->SetUseFixedSampledPointSet( false );
-  this->m_Metric = mutualInformationMetric;
-
-  typedef RegistrationParameterScalesFromPhysicalShift<MetricType> ScalesEstimatorForAffineTransformType;
-  typename ScalesEstimatorForAffineTransformType::Pointer scalesEstimator = ScalesEstimatorForAffineTransformType::New();
-  scalesEstimator->SetMetric( mutualInformationMetric );
-  scalesEstimator->SetTransformForward( true );
-
-  typedef GradientDescentOptimizerv4 DefaultOptimizerType;
-  typename DefaultOptimizerType::Pointer optimizer = DefaultOptimizerType::New();
-  optimizer->SetLearningRate( 1.0 );
-  optimizer->SetNumberOfIterations( 1000 );
-  optimizer->SetScalesEstimator( scalesEstimator );
-  this->m_Optimizer = optimizer;
-
-  // By default we set up an affine transform for a 3-level image registration.
+  // By default we set up a 3-level image registration.
 
   m_NumberOfLevels = 0;
   this->SetNumberOfLevels( 3 );
@@ -98,8 +69,8 @@ ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform>
   this->ProcessObject::SetNthOutput( 0, transformDecorator );
 
   this->m_ShrinkFactorsPerLevel.SetSize( this->m_NumberOfLevels );
-  this->m_ShrinkFactorsPerLevel[0] = 2;
-  this->m_ShrinkFactorsPerLevel[1] = 1;
+  this->m_ShrinkFactorsPerLevel[0] = 4;
+  this->m_ShrinkFactorsPerLevel[1] = 2;
   this->m_ShrinkFactorsPerLevel[2] = 1;
 
   this->m_SmoothingSigmasPerLevel.SetSize( this->m_NumberOfLevels );
@@ -112,12 +83,168 @@ ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform>
   this->m_MetricSamplingStrategy = NONE;
   this->m_MetricSamplingPercentagePerLevel.SetSize( this->m_NumberOfLevels );
   this->m_MetricSamplingPercentagePerLevel.Fill( 1.0 );
+
+  this->m_MultiOptimizer = MultiOptimizerType::New();
 }
 
 template<typename TFixedImage, typename TMovingImage, typename TTransform>
 ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform>
 ::~ImageRegistrationMethodv4()
 {
+}
+
+template<typename TFixedImage, typename TMovingImage, typename TTransform>
+void
+ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform>
+::SetFixedImage( SizeType index, const FixedImageType *image )
+{
+  itkDebugMacro( "setting fixed image input " << index << " to " << image );
+  if( image != static_cast<FixedImageType *>( this->ProcessObject::GetInput( 2 * index ) ) )
+    {
+    this->ProcessObject::SetNthInput( 2 * index, const_cast<FixedImageType *>( image ) );
+    this->Modified();
+    }
+}
+
+template<typename TFixedImage, typename TMovingImage, typename TTransform>
+const typename ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform>::FixedImageType *
+ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform>
+::GetFixedImage( SizeType index ) const
+{
+  itkDebugMacro( "returning fixed image input " << index << " of "
+                                    << static_cast<const FixedImageType *>( this->ProcessObject::GetInput( 2 * index ) ) );
+  return static_cast<const FixedImageType *>( this->ProcessObject::GetInput( 2 * index ) );
+}
+
+template<typename TFixedImage, typename TMovingImage, typename TTransform>
+void
+ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform>
+::SetMovingImage( SizeType index, const MovingImageType *image )
+{
+  itkDebugMacro( "setting moving image input " << index << " to " << image );
+  if( image != static_cast<MovingImageType *>( this->ProcessObject::GetInput( 2 * index + 1 ) ) )
+    {
+    this->ProcessObject::SetNthInput( 2 * index + 1, const_cast<MovingImageType *>( image ) );
+    this->Modified();
+    }
+}
+
+template<typename TFixedImage, typename TMovingImage, typename TTransform>
+const typename ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform>::MovingImageType *
+ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform>
+::GetMovingImage( SizeType index ) const
+{
+  itkDebugMacro( "returning moving image input " << index << " of "
+                                    << static_cast<const MovingImageType *>( this->ProcessObject::GetInput( 2 * index + 1 ) ) );
+  return static_cast<const MovingImageType *>( this->ProcessObject::GetInput( 2 * index + 1 ) );
+}
+
+template<typename TFixedImage, typename TMovingImage, typename TTransform>
+void
+ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform>
+::SetFixedInterpolator( SizeType index, FixedInterpolatorType *interpolator )
+{
+  itkDebugMacro( "setting fixed interpolator input " << index << " to " << interpolator );
+  if( index >= this->m_FixedInterpolators.size() )
+    {
+    this->m_FixedInterpolators.resize( index + 1 );
+    }
+
+  if( interpolator != this->m_FixedInterpolators[index].GetPointer() )
+    {
+    this->m_FixedInterpolators[index] = interpolator;
+    this->Modified();
+    }
+}
+
+template<typename TFixedImage, typename TMovingImage, typename TTransform>
+typename ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform>::FixedInterpolatorType *
+ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform>
+::GetFixedInterpolator( SizeType index )
+{
+  itkDebugMacro( "returning fixed interpolator " << index );
+  return this->m_FixedInterpolators[index].GetPointer();
+}
+
+template<typename TFixedImage, typename TMovingImage, typename TTransform>
+void
+ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform>
+::SetMovingInterpolator( SizeType index, MovingInterpolatorType *interpolator )
+{
+  itkDebugMacro( "setting moving interpolator input " << index << " to " << interpolator );
+  if( index >= this->m_MovingInterpolators.size() )
+    {
+    this->m_MovingInterpolators.resize( index + 1 );
+    }
+
+  if( interpolator != this->m_MovingInterpolators[index].GetPointer() )
+    {
+    this->m_MovingInterpolators[index] = interpolator;
+    this->Modified();
+    }
+}
+
+template<typename TFixedImage, typename TMovingImage, typename TTransform>
+typename ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform>::MovingInterpolatorType *
+ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform>
+::GetMovingInterpolator( SizeType index )
+{
+  itkDebugMacro( "returning moving interpolator " << index );
+  return this->m_MovingInterpolators[index].GetPointer();
+}
+
+template<typename TFixedImage, typename TMovingImage, typename TTransform>
+void
+ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform>
+::SetMetric( SizeType index, MetricType *metric )
+{
+  itkDebugMacro( "setting metric input " << index << " to " << metric );
+  if( index >= this->m_Metrics.size() )
+    {
+    this->m_Metrics.resize( index + 1 );
+    }
+
+  if( metric != this->m_Metrics[index].GetPointer() )
+    {
+    this->m_Metrics[index] = metric;
+    this->Modified();
+    }
+}
+
+template<typename TFixedImage, typename TMovingImage, typename TTransform>
+typename ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform>::MetricType *
+ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform>
+::GetMetric( SizeType index )
+{
+  itkDebugMacro( "returning metric " << index );
+  return this->m_Metrics[index].GetPointer();
+}
+
+template<typename TFixedImage, typename TMovingImage, typename TTransform>
+void
+ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform>
+::SetOptimizer( SizeType index, OptimizerType *optimizer )
+{
+  itkDebugMacro( "setting optimizer input " << index << " to " << optimizer );
+  if( index >= this->m_Optimizers.size() )
+    {
+    this->m_Optimizers.resize( index + 1 );
+    }
+
+  if( optimizer != this->m_Optimizers[index].GetPointer() )
+    {
+    this->m_Optimizers[index] = optimizer;
+    this->Modified();
+    }
+}
+
+template<typename TFixedImage, typename TMovingImage, typename TTransform>
+typename ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform>::OptimizerType *
+ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform>
+::GetOptimizer( SizeType index )
+{
+  itkDebugMacro( "returning optimizer " << index );
+  return this->m_Optimizers[index].GetPointer();
 }
 
 /*
@@ -130,21 +257,90 @@ ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform>
 {
   // Sanity checks
 
-  if ( !this->m_Optimizer )
+  if( this->GetNumberOfInputs() % 2 != 0 )
     {
-    itkExceptionMacro( "The optimizer is not present." );
+    itkExceptionMacro( "The number of fixed and moving images is not equal." );
     }
-  if ( !this->m_FixedInterpolator )
+
+  SizeType numberOfImagePairs = static_cast<unsigned int>( 0.5 * this->GetNumberOfInputs() );
+
+  if( numberOfImagePairs == 0 )
     {
-    itkExceptionMacro( "The fixed image interpolator is not present." );
+    itkExceptionMacro( "There are no input images." );
     }
-  if ( !this->m_MovingInterpolator )
+  if( this->m_FixedInterpolators.size() == 0 )
     {
-    itkExceptionMacro( "The moving image interpolator is not present." );
+    // Set up a default linear interpolator for each image pair if
+    // no fixed interpolators have been set.
+
+    typedef LinearInterpolateImageFunction<FixedImageType, RealType> DefaultFixedInterpolatorType;
+    for( unsigned int n = 0; n < numberOfImagePairs; n++ )
+      {
+      typename DefaultFixedInterpolatorType::Pointer fixedInterpolator = DefaultFixedInterpolatorType::New();
+      this->SetFixedInterpolator( n, fixedInterpolator );
+      }
     }
-  if ( !this->m_Metric )
+  if( this->m_MovingInterpolators.size() == 0 )
     {
-    itkExceptionMacro( "The image metric is not present." );
+    // Set up a default linear interpolator for each image pair if
+    // no moving interpolators have been set.
+
+    typedef LinearInterpolateImageFunction<MovingImageType, RealType> DefaultMovingInterpolatorType;
+    for( unsigned int n = 0; n < numberOfImagePairs; n++ )
+      {
+      typename DefaultMovingInterpolatorType::Pointer movingInterpolator = DefaultMovingInterpolatorType::New();
+      this->SetMovingInterpolator( n, movingInterpolator );
+      }
+    }
+  if( this->m_Metrics.size() == 0 )
+    {
+    // Set up a default metric for each image pair if no metrics have been set.
+
+    typedef JointHistogramMutualInformationImageToImageMetricv4<FixedImageType, MovingImageType> DefaultMetricType;
+    for( unsigned int n = 0; n < numberOfImagePairs; n++ )
+      {
+      typename DefaultMetricType::Pointer mutualInformationMetric = DefaultMetricType::New();
+      mutualInformationMetric->SetNumberOfHistogramBins( 20 );
+      mutualInformationMetric->SetUseMovingImageGradientFilter( false );
+      mutualInformationMetric->SetUseFixedImageGradientFilter( false );
+      mutualInformationMetric->SetUseFixedSampledPointSet( false );
+      this->SetMetric( n, mutualInformationMetric );
+      }
+    }
+  if( this->m_Optimizers.size() == 0 )
+    {
+    // Set up a default optimizer for each image pair if no optimizers have been set.
+    // Note that the derived non-traditional registration methods class perform their
+    // own optimization so they would not use any passed or default optimizers.  However,
+    // to make things simple, we set default optimizers for all registration methods.
+
+    typedef RegistrationParameterScalesFromPhysicalShift<MetricType> DefaultScalesEstimatorType;
+    typedef GradientDescentOptimizerv4 DefaultOptimizerType;
+    for( unsigned int n = 0; n < numberOfImagePairs; n++ )
+      {
+      typename DefaultScalesEstimatorType::Pointer scalesEstimator = DefaultScalesEstimatorType::New();
+      scalesEstimator->SetMetric( this->GetMetric( n ) );
+      scalesEstimator->SetTransformForward( true );
+
+      typename DefaultOptimizerType::Pointer optimizer = DefaultOptimizerType::New();
+      optimizer->SetLearningRate( 1.0 );
+      optimizer->SetNumberOfIterations( 1000 );
+      optimizer->SetScalesEstimator( scalesEstimator );
+      this->SetOptimizer( n, optimizer );
+      }
+    }
+
+  if( this->m_FixedInterpolators.size() != numberOfImagePairs
+      || this->m_MovingInterpolators.size() != numberOfImagePairs
+      || this->m_Metrics.size() != numberOfImagePairs
+      || this->m_Optimizers.size() != numberOfImagePairs )
+    {
+    itkExceptionMacro( "The number of inputs is not coordinated. "
+      << "Number of optimizers = " << this->m_Optimizers.size() << ", "
+      << "number of fixed image interpolators = " << this->m_FixedInterpolators.size() << ", "
+      << "number of moving image interpolators = " << this->m_MovingInterpolators.size() << ", "
+      << "number of metrics = " << this->m_Metrics.size() << ", and "
+      << "number of fixed + moving images = " << this->GetNumberOfInputs() << "." );
     }
 
   this->m_CurrentIteration = 0;
@@ -167,52 +363,6 @@ ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform>
     this->m_TransformParametersAdaptorsPerLevel[level]->AdaptTransformParameters();
     }
 
-  // At each resolution, we can
-  //   1. subsample the reference domain (typically the fixed image) and/or
-  //   2. smooth the fixed and moving images.
-
-  typedef ShrinkImageFilter<FixedImageType, FixedImageType> ShrinkFilterType;
-  typename ShrinkFilterType::Pointer shrinkFilter = ShrinkFilterType::New();
-  shrinkFilter->SetShrinkFactors( this->m_ShrinkFactorsPerLevel[level] );
-  shrinkFilter->SetInput( this->GetFixedImage() );
-  shrinkFilter->Update();
-
-  typedef DiscreteGaussianImageFilter<FixedImageType, FixedImageType> FixedImageSmoothingFilterType;
-  typename FixedImageSmoothingFilterType::Pointer fixedImageSmoothingFilter = FixedImageSmoothingFilterType::New();
-  if( this->m_SmoothingSigmasAreSpecifiedInPhysicalUnits == true )
-    {
-    fixedImageSmoothingFilter->SetUseImageSpacingOn();
-    }
-  else
-    {
-    fixedImageSmoothingFilter->SetUseImageSpacingOff();
-    }
-  fixedImageSmoothingFilter->SetVariance( vnl_math_sqr( this->m_SmoothingSigmasPerLevel[level] ) );
-  fixedImageSmoothingFilter->SetMaximumError( 0.01 );
-  fixedImageSmoothingFilter->SetInput( this->GetFixedImage() );
-
-  this->m_FixedSmoothImage = fixedImageSmoothingFilter->GetOutput();
-  this->m_FixedSmoothImage->Update();
-  this->m_FixedSmoothImage->DisconnectPipeline();
-
-  typedef DiscreteGaussianImageFilter<MovingImageType, MovingImageType> MovingImageSmoothingFilterType;
-  typename MovingImageSmoothingFilterType::Pointer movingImageSmoothingFilter = MovingImageSmoothingFilterType::New();
-  if( this->m_SmoothingSigmasAreSpecifiedInPhysicalUnits == true )
-    {
-    movingImageSmoothingFilter->SetUseImageSpacingOn();
-    }
-  else
-    {
-    movingImageSmoothingFilter->SetUseImageSpacingOff();
-    }
-  movingImageSmoothingFilter->SetVariance( vnl_math_sqr( this->m_SmoothingSigmasPerLevel[level] ) );
-  movingImageSmoothingFilter->SetMaximumError( 0.01 );
-  movingImageSmoothingFilter->SetInput( this->GetMovingImage() );
-
-  this->m_MovingSmoothImage = movingImageSmoothingFilter->GetOutput();
-  this->m_MovingSmoothImage->Update();
-  this->m_MovingSmoothImage->DisconnectPipeline();
-
   // Set-up the composite transform at initialization
   if( level == 0 )
     {
@@ -229,33 +379,103 @@ ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform>
     }
   this->m_CompositeTransform->SetOnlyMostRecentTransformToOptimizeOn();
 
+  // At each resolution and for each image pair, we can
+  //   1. subsample the reference domain (typically the fixed image) and/or
+  //   2. smooth the fixed and moving images.
 
-  // Update the image metric
+  for( unsigned int n = 0; n < numberOfImagePairs; n++ )
+    {
+    typedef ShrinkImageFilter<FixedImageType, FixedImageType> ShrinkFilterType;
+    typename ShrinkFilterType::Pointer shrinkFilter = ShrinkFilterType::New();
+    shrinkFilter->SetShrinkFactors( this->m_ShrinkFactorsPerLevel[level] );
+    shrinkFilter->SetInput( this->GetFixedImage( n ) );
+    shrinkFilter->Update();
 
-  this->m_Metric->SetFixedTransform( this->m_FixedInitialTransform );
-  this->m_Metric->SetMovingTransform( this->m_CompositeTransform );
-  this->m_Metric->SetFixedInterpolator( this->m_FixedInterpolator );
-  this->m_Metric->SetMovingInterpolator( this->m_MovingInterpolator );
-  this->m_Metric->SetFixedImage( this->m_FixedSmoothImage );
-  this->m_Metric->SetMovingImage( this->m_MovingSmoothImage );
-  this->m_Metric->SetVirtualDomainFromImage( shrinkFilter->GetOutput() );
+    typedef DiscreteGaussianImageFilter<FixedImageType, FixedImageType> FixedImageSmoothingFilterType;
+    typename FixedImageSmoothingFilterType::Pointer fixedImageSmoothingFilter = FixedImageSmoothingFilterType::New();
+    if( this->m_SmoothingSigmasAreSpecifiedInPhysicalUnits == true )
+      {
+      fixedImageSmoothingFilter->SetUseImageSpacingOn();
+      }
+    else
+      {
+      fixedImageSmoothingFilter->SetUseImageSpacingOff();
+      }
+    fixedImageSmoothingFilter->SetVariance( vnl_math_sqr( this->m_SmoothingSigmasPerLevel[level] ) );
+    fixedImageSmoothingFilter->SetMaximumError( 0.01 );
+    fixedImageSmoothingFilter->SetInput( this->GetFixedImage( n ) );
+
+    this->m_FixedSmoothImages.push_back( fixedImageSmoothingFilter->GetOutput() );
+    this->m_FixedSmoothImages[n]->Update();
+    this->m_FixedSmoothImages[n]->DisconnectPipeline();
+
+    typedef DiscreteGaussianImageFilter<MovingImageType, MovingImageType> MovingImageSmoothingFilterType;
+    typename MovingImageSmoothingFilterType::Pointer movingImageSmoothingFilter = MovingImageSmoothingFilterType::New();
+    if( this->m_SmoothingSigmasAreSpecifiedInPhysicalUnits == true )
+      {
+      movingImageSmoothingFilter->SetUseImageSpacingOn();
+      }
+    else
+      {
+      movingImageSmoothingFilter->SetUseImageSpacingOff();
+      }
+    movingImageSmoothingFilter->SetVariance( vnl_math_sqr( this->m_SmoothingSigmasPerLevel[level] ) );
+    movingImageSmoothingFilter->SetMaximumError( 0.01 );
+    movingImageSmoothingFilter->SetInput( this->GetMovingImage( n ) );
+
+    this->m_MovingSmoothImages.push_back( movingImageSmoothingFilter->GetOutput() );
+    this->m_MovingSmoothImages[n]->Update();
+    this->m_MovingSmoothImages[n]->DisconnectPipeline();
+
+    // Update the image metric
+
+    this->m_Metrics[n]->SetFixedTransform( this->m_FixedInitialTransform );
+    this->m_Metrics[n]->SetMovingTransform( this->m_CompositeTransform );
+    this->m_Metrics[n]->SetFixedInterpolator( this->m_FixedInterpolators[n] );
+    this->m_Metrics[n]->SetMovingInterpolator( this->m_MovingInterpolators[n] );
+    this->m_Metrics[n]->SetFixedImage( this->m_FixedSmoothImages[n] );
+    this->m_Metrics[n]->SetMovingImage( this->m_MovingSmoothImages[n] );
+    this->m_Metrics[n]->SetVirtualDomainFromImage( shrinkFilter->GetOutput() );
+
+    // Update the optimizer
+
+    this->m_Optimizers[n]->SetMetric( this->m_Metrics[n] );
+
+    if( ( this->m_Optimizers[n]->GetScales() ).Size() != this->m_OutputTransform->GetNumberOfLocalParameters() )
+      {
+      typedef typename OptimizerType::ScalesType ScalesType;
+      ScalesType scales;
+      scales.SetSize( this->m_OutputTransform->GetNumberOfLocalParameters() );
+      scales.Fill( NumericTraits<typename ScalesType::ValueType>::OneValue() );
+      this->m_Optimizers[n]->SetScales( scales );
+      }
+    }
+
+  // if the number of image pairs is greater than 1, we need to use the multi optimizer
+  // otherwise we use this->m_Optimizers[0]
+  if( numberOfImagePairs > 1 )
+    {
+    typename MultiOptimizerType::OptimizersListType optimizersList = this->m_MultiOptimizer->GetOptimizersList();
+
+    typedef typename MultiOptimizerType::LocalOptimizerType LocalOptimizerType;
+
+    optimizersList.clear();
+    for( unsigned int n = 0; n < this->m_Optimizers.size(); n++ )
+      {
+      optimizersList.push_back( dynamic_cast<LocalOptimizerType *>( ( this->m_Optimizers[n] ).GetPointer() ) );
+      }
+    this->m_MultiOptimizer->SetOptimizersList( optimizersList );
+
+    this->m_MasterOptimizer = this->m_MultiOptimizer;
+    }
+  else
+    {
+    this->m_MasterOptimizer = this->m_Optimizers[0];
+    }
 
   if( this->m_MetricSamplingStrategy != NONE )
     {
     this->SetMetricSamplePoints();
-    }
-
-  // Update the optimizer
-
-  this->m_Optimizer->SetMetric( this->m_Metric );
-
-  if( ( this->m_Optimizer->GetScales() ).Size() != this->m_OutputTransform->GetNumberOfLocalParameters() )
-    {
-    typedef typename OptimizerType::ScalesType ScalesType;
-    ScalesType scales;
-    scales.SetSize( this->m_OutputTransform->GetNumberOfLocalParameters() );
-    scales.Fill( NumericTraits<typename ScalesType::ValueType>::OneValue() );
-    this->m_Optimizer->SetScales( scales );
     }
 }
 
@@ -271,8 +491,11 @@ ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform>
     {
     this->InitializeRegistrationAtEachLevel( this->m_CurrentLevel );
 
-    this->m_Metric->Initialize();
-    this->m_Optimizer->StartOptimization();
+    for( unsigned int n = 0; n < this->m_Metrics.size(); n++ )
+      {
+      this->m_Metrics[n]->Initialize();
+      }
+    this->m_MasterOptimizer->StartOptimization();
     }
 }
 
@@ -358,7 +581,7 @@ ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform>
 
   typedef typename MetricType::VirtualImageType         VirtualDomainImageType;
   typedef typename VirtualDomainImageType::RegionType   VirtualDomainRegionType;
-  const VirtualDomainImageType * virtualImage = this->m_Metric->GetVirtualImage();
+  const VirtualDomainImageType * virtualImage = this->m_Metrics[0]->GetVirtualImage();
   const VirtualDomainRegionType & virtualDomainRegion = virtualImage->GetRequestedRegion();
   const typename VirtualDomainImageType::SpacingType oneThirdVirtualSpacing = virtualImage->GetSpacing() / 3.0;
 
@@ -421,8 +644,12 @@ ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform>
       itkExceptionMacro( "Invalid sampling strategy requested." );
       }
     }
-  this->m_Metric->SetFixedSampledPointSet( samplePointSet );
-  this->m_Metric->SetUseFixedSampledPointSet( true );
+
+  for( unsigned int n = 0; n < this->m_Metrics.size(); n++ )
+    {
+    this->m_Metrics[n]->SetFixedSampledPointSet( samplePointSet );
+    this->m_Metrics[n]->SetUseFixedSampledPointSet( true );
+    }
 }
 
 /*
@@ -434,11 +661,6 @@ ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform>
 ::PrintSelf( std::ostream & os, Indent indent ) const
 {
   Superclass::PrintSelf( os, indent );
-
-  os << indent << "Moving interpolator:" << std::endl;
-  this->m_MovingInterpolator->Print( std::cout, indent );
-  os << indent << "Fixed interpolator:" << std::endl;
-  this->m_FixedInterpolator->Print( std::cout, indent );
 
   os << "Number of levels = " << this->m_NumberOfLevels << std::endl;
 

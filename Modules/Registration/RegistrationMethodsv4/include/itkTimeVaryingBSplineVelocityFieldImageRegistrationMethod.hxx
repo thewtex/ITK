@@ -103,7 +103,7 @@ TimeVaryingBSplineVelocityFieldImageRegistrationMethod<TFixedImage, TMovingImage
   sampledVelocityFieldSize.Fill( this->m_NumberOfTimePointSamples );
   sampledVelocityFieldDirection.SetIdentity();
 
-  typename VirtualImageType::ConstPointer virtualDomainImage = this->m_Metric->GetVirtualImage();
+  typename VirtualImageType::ConstPointer virtualDomainImage = this->m_Metrics[0]->GetVirtualImage();
 
   typedef typename MetricType::DerivativeType MetricDerivativeType;
   const typename MetricDerivativeType::SizeValueType metricDerivativeSize = virtualDomainImage->GetLargestPossibleRegion().GetNumberOfPixels() * ImageDimension;
@@ -224,7 +224,7 @@ TimeVaryingBSplineVelocityFieldImageRegistrationMethod<TFixedImage, TMovingImage
       typedef itk::ResampleImageFilter<MovingImageType, VirtualImageType> MovingImageResampleFilterType;
       typename MovingImageResampleFilterType::Pointer movingImageResampler = MovingImageResampleFilterType::New();
       movingImageResampler->SetTransform( this->m_CompositeTransform );
-      movingImageResampler->SetInput( this->m_MovingSmoothImage );
+      movingImageResampler->SetInput( this->m_MovingSmoothImages[0] );
       movingImageResampler->SetSize( virtualDomainImage->GetLargestPossibleRegion().GetSize() );
       movingImageResampler->SetOutputOrigin( virtualDomainImage->GetOrigin() );
       movingImageResampler->SetOutputSpacing( virtualDomainImage->GetSpacing() );
@@ -235,7 +235,7 @@ TimeVaryingBSplineVelocityFieldImageRegistrationMethod<TFixedImage, TMovingImage
       typedef itk::ResampleImageFilter<FixedImageType, VirtualImageType> FixedImageResampleFilterType;
       typename FixedImageResampleFilterType::Pointer fixedImageResampler = FixedImageResampleFilterType::New();
       fixedImageResampler->SetTransform( fixedDisplacementFieldTransform );
-      fixedImageResampler->SetInput( this->m_FixedSmoothImage );
+      fixedImageResampler->SetInput( this->m_FixedSmoothImages[0] );
       fixedImageResampler->SetSize( virtualDomainImage->GetLargestPossibleRegion().GetSize() );
       fixedImageResampler->SetOutputOrigin( virtualDomainImage->GetOrigin() );
       fixedImageResampler->SetOutputSpacing( virtualDomainImage->GetSpacing() );
@@ -243,14 +243,14 @@ TimeVaryingBSplineVelocityFieldImageRegistrationMethod<TFixedImage, TMovingImage
       fixedImageResampler->SetDefaultPixelValue( 0 );
       fixedImageResampler->Update();
 
-      this->m_Metric->SetFixedImage( fixedImageResampler->GetOutput() );
-      this->m_Metric->SetFixedTransform( identityTransform );
-      this->m_Metric->SetMovingImage( movingImageResampler->GetOutput() );
-      this->m_Metric->SetMovingTransform( identityDisplacementFieldTransform );
-      this->m_Metric->Initialize();
+      this->m_Metrics[0]->SetFixedImage( fixedImageResampler->GetOutput() );
+      this->m_Metrics[0]->SetFixedTransform( identityTransform );
+      this->m_Metrics[0]->SetMovingImage( movingImageResampler->GetOutput() );
+      this->m_Metrics[0]->SetMovingTransform( identityDisplacementFieldTransform );
+      this->m_Metrics[0]->Initialize();
 
       metricDerivative.Fill( NumericTraits<typename MetricDerivativeType::ValueType>::Zero );
-      this->m_Metric->GetValueAndDerivative( value, metricDerivative );
+      this->m_Metrics[0]->GetValueAndDerivative( value, metricDerivative );
 
       // Note: we are intentionally ignoring the jacobian determinant.
       // It does not change the direction of the optimization, only
