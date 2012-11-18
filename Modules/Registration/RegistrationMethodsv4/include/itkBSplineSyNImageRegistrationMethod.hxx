@@ -120,7 +120,7 @@ BSplineSyNImageRegistrationMethod<TFixedImage, TMovingImage, TOutputTransform>
       typedef ResampleImageFilter<MovingImageType, MovingImageType> MovingResamplerType;
       typename MovingResamplerType::Pointer movingResampler = MovingResamplerType::New();
       movingResampler->SetTransform( movingComposite );
-      movingResampler->SetInput( this->m_MovingSmoothImage );
+      movingResampler->SetInput( this->m_MovingSmoothImages[0] );
       movingResampler->SetSize( virtualDomainImage->GetRequestedRegion().GetSize() );
       movingResampler->SetOutputOrigin( virtualDomainImage->GetOrigin() );
       movingResampler->SetOutputSpacing( virtualDomainImage->GetSpacing() );
@@ -131,7 +131,7 @@ BSplineSyNImageRegistrationMethod<TFixedImage, TMovingImage, TOutputTransform>
       typedef ResampleImageFilter<FixedImageType, FixedImageType> FixedResamplerType;
       typename FixedResamplerType::Pointer fixedResampler = FixedResamplerType::New();
       fixedResampler->SetTransform( fixedComposite );
-      fixedResampler->SetInput( this->m_FixedSmoothImage );
+      fixedResampler->SetInput( this->m_FixedSmoothImages[0] );
       fixedResampler->SetSize( virtualDomainImage->GetRequestedRegion().GetSize() );
       fixedResampler->SetOutputOrigin( virtualDomainImage->GetOrigin() );
       fixedResampler->SetOutputSpacing( virtualDomainImage->GetSpacing() );
@@ -155,10 +155,10 @@ BSplineSyNImageRegistrationMethod<TFixedImage, TMovingImage, TOutputTransform>
       }
     else
       {
-      fixedToMiddleSmoothUpdateField = this->ComputeUpdateField( this->m_FixedSmoothImage, fixedComposite,
-        this->m_MovingSmoothImage, movingComposite, movingMetricValue );
-      movingToMiddleSmoothUpdateField = this->ComputeUpdateField( this->m_MovingSmoothImage, movingComposite,
-        this->m_FixedSmoothImage, fixedComposite, fixedMetricValue );
+      fixedToMiddleSmoothUpdateField = this->ComputeUpdateField( this->m_FixedSmoothImages[0], fixedComposite,
+        this->m_MovingSmoothImages[0], movingComposite, movingMetricValue );
+      movingToMiddleSmoothUpdateField = this->ComputeUpdateField( this->m_MovingSmoothImages[0], movingComposite,
+        this->m_FixedSmoothImages[0], fixedComposite, fixedMetricValue );
       }
     if ( this->m_AverageMidPointGradients )
       {
