@@ -188,9 +188,9 @@ ImageSource< TOutputImage >
     }
 
   // determine the actual number of pieces that will be generated
-  typename TOutputImage::SizeType::SizeValueType range = requestedRegionSize[splitAxis];
-  unsigned int valuesPerThread = Math::Ceil< unsigned int >(range / (double)num);
-  unsigned int maxThreadIdUsed = Math::Ceil< unsigned int >(range / (double)valuesPerThread) - 1;
+  const double range=static_cast<double>(requestedRegionSize[splitAxis]);
+  const unsigned int valuesPerThread = Math::Ceil< unsigned int >(range / static_cast<double>(num));
+  const unsigned int maxThreadIdUsed = Math::Ceil< unsigned int >(range / static_cast<double>(valuesPerThread)) - 1;
 
   // Split the region
   if ( i < maxThreadIdUsed )

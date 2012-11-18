@@ -139,7 +139,7 @@ public:
   void SetTrueDims(const unsigned int Dim0, const unsigned int Dim1,
                    const unsigned int Dim2);
 
-  unsigned int GetValue(const unsigned int Dim0, const unsigned int Dim1,
+  int GetValue(const unsigned int Dim0, const unsigned int Dim1,
                         const unsigned int Dim2);
 
   virtual void SetWidth(unsigned int width);

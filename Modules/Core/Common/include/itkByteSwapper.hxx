@@ -270,8 +270,8 @@ ByteSwapper< T >
 ::Swap2(void *pin)
 {
   unsigned short *      p = reinterpret_cast< unsigned short * >( pin );
-  const unsigned short h1 = *p  << 8;
-  const unsigned short h2 = *p  >> 8;
+  const unsigned short h1 = (*p) << 8;
+  const unsigned short h2 = (*p) >> 8;
   *p = h1 | h2;
 }
 
@@ -318,7 +318,7 @@ ByteSwapper< T >
       pos[1] = one_byte;
       pos = pos + 2;
       }
-    fp->write( (char *)cpy, static_cast<streamsize>(2 * chunkSize) );
+    fp->write( (char *)cpy, static_cast<std::streamsize>(2 * chunkSize) );
     ptr = (char *)ptr + chunkSize * 2;
     num -= chunkSize;
     if ( num < chunkSize )
@@ -402,7 +402,7 @@ ByteSwapper< T >
       pos[2] = one_byte;
       pos = pos + 4;
       }
-    fp->write( (char *)cpy, static_cast<streamsize>(4 * chunkSize) );
+    fp->write( (char *)cpy, static_cast<std::streamsize>(4 * chunkSize) );
     ptr  = (char *)ptr + chunkSize * 4;
     num -= chunkSize;
     if ( num < chunkSize )
@@ -509,7 +509,7 @@ ByteSwapper< T >
       pos[4] = one_byte;
       pos = pos + 8;
       }
-    fp->write( (char *)cpy, static_cast<streamsize>(8 * chunkSize) );
+    fp->write( (char *)cpy, static_cast<std::streamsize>(8 * chunkSize) );
     ptr  = (char *)ptr + chunkSize * 8;
     num -= chunkSize;
     if ( num < chunkSize )
