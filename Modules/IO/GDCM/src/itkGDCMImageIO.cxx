@@ -888,9 +888,9 @@ void GDCMImageIO::Write(const void *buffer)
     if ( bitsAllocated != "" && bitsStored != "" && highBit != "" && pixelRep != "" )
       {
       outpixeltype.SetBitsAllocated( atoi( bitsAllocated.c_str() ) );
-      outpixeltype.SetBitsStored( atoi( bitsStored.c_str() ) );
-      outpixeltype.SetHighBit( atoi( highBit.c_str() ) );
-      outpixeltype.SetPixelRepresentation( atoi( pixelRep.c_str() ) );
+      outpixeltype.SetBitsStored( static_cast<unsigned short int>(atoi( bitsStored.c_str() )) );
+      outpixeltype.SetHighBit( static_cast<unsigned short int>(atoi( highBit.c_str()) ) );
+      outpixeltype.SetPixelRepresentation( static_cast<unsigned short int>(atoi( pixelRep.c_str() )) );
       if ( this->GetNumberOfComponents() != 1 )
         {
         itkExceptionMacro(<< "Sorry Dave I can't do that");
@@ -928,7 +928,7 @@ void GDCMImageIO::Write(const void *buffer)
     ir.SetIntercept(m_RescaleIntercept);
     ir.SetSlope(m_RescaleSlope);
     ir.SetPixelFormat(pixeltype);
-    ir.SetMinMaxForPixelType( outpixeltype.GetMin(), outpixeltype.GetMax() );
+    ir.SetMinMaxForPixelType( static_cast<double>(outpixeltype.GetMin()), static_cast<double>(outpixeltype.GetMax()) );
     image.SetIntercept(m_RescaleIntercept);
     image.SetSlope(m_RescaleSlope);
     char *copy = new char[len];
