@@ -109,7 +109,7 @@ inline unsigned int ZF(const unsigned int octantID)
 /** @} */ // End of defgroup
 
 template< class TPixel, unsigned int ColorTableSize, class MappingFunctionType >
-unsigned int
+int
 Octree< TPixel, ColorTableSize, MappingFunctionType >::GetValue(const unsigned int Dim0,
                                                                 const unsigned int Dim1,
                                                                 const unsigned int Dim2)
