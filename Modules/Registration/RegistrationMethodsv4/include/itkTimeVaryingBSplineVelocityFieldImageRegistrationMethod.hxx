@@ -224,7 +224,7 @@ TimeVaryingBSplineVelocityFieldImageRegistrationMethod<TFixedImage, TMovingImage
       typedef itk::ResampleImageFilter<MovingImageType, VirtualImageType> MovingImageResampleFilterType;
       typename MovingImageResampleFilterType::Pointer movingImageResampler = MovingImageResampleFilterType::New();
       movingImageResampler->SetTransform( this->m_CompositeTransform );
-      movingImageResampler->SetInput( this->m_MovingSmoothImage );
+      movingImageResampler->SetInput( this->m_MovingSmoothImages[0] );
       movingImageResampler->SetSize( virtualDomainImage->GetLargestPossibleRegion().GetSize() );
       movingImageResampler->SetOutputOrigin( virtualDomainImage->GetOrigin() );
       movingImageResampler->SetOutputSpacing( virtualDomainImage->GetSpacing() );
@@ -235,7 +235,7 @@ TimeVaryingBSplineVelocityFieldImageRegistrationMethod<TFixedImage, TMovingImage
       typedef itk::ResampleImageFilter<FixedImageType, VirtualImageType> FixedImageResampleFilterType;
       typename FixedImageResampleFilterType::Pointer fixedImageResampler = FixedImageResampleFilterType::New();
       fixedImageResampler->SetTransform( fixedDisplacementFieldTransform );
-      fixedImageResampler->SetInput( this->m_FixedSmoothImage );
+      fixedImageResampler->SetInput( this->m_FixedSmoothImages[0] );
       fixedImageResampler->SetSize( virtualDomainImage->GetLargestPossibleRegion().GetSize() );
       fixedImageResampler->SetOutputOrigin( virtualDomainImage->GetOrigin() );
       fixedImageResampler->SetOutputSpacing( virtualDomainImage->GetSpacing() );

@@ -21,9 +21,11 @@
 
 #include "itkImageRegistrationMethodv4.h"
 
+#include "itkAffineTransform.h"
 #include "itkANTSNeighborhoodCorrelationImageToImageMetricv4.h"
 #include "itkGaussianSmoothingOnUpdateDisplacementFieldTransform.h"
 #include "itkGaussianSmoothingOnUpdateDisplacementFieldTransformParametersAdaptor.h"
+#include "itkJointHistogramMutualInformationImageToImageMetricv4.h"
 
 template<class TFilter>
 class CommandIterationUpdate : public itk::Command
@@ -125,7 +127,8 @@ int PerformSimpleImageRegistration( int argc, char *argv[] )
   movingImage->Update();
   movingImage->DisconnectPipeline();
 
-  typedef itk::ImageRegistrationMethodv4<FixedImageType, MovingImageType> AffineRegistrationType;
+  typedef itk::AffineTransform<double, VImageDimension> AffineTransformType;
+  typedef itk::ImageRegistrationMethodv4<FixedImageType, MovingImageType, AffineTransformType> AffineRegistrationType;
   typedef itk::GradientDescentOptimizerv4 GradientDescentOptimizerv4Type;
   typename AffineRegistrationType::Pointer affineSimple = AffineRegistrationType::New();
   affineSimple->SetFixedImage( fixedImage );
@@ -139,6 +142,19 @@ int PerformSimpleImageRegistration( int argc, char *argv[] )
     std::cerr << "Returned unexpected value of TRUE." << std::endl;
     return EXIT_FAILURE;
     }
+
+  typedef itk::JointHistogramMutualInformationImageToImageMetricv4<FixedImageType, MovingImageType> MIMetricType;
+  typename MIMetricType::Pointer mutualInformationMetric = MIMetricType::New();
+  mutualInformationMetric->SetNumberOfHistogramBins( 20 );
+  mutualInformationMetric->SetUseMovingImageGradientFilter( false );
+  mutualInformationMetric->SetUseFixedImageGradientFilter( false );
+  mutualInformationMetric->SetUseFixedSampledPointSet( false );
+  affineSimple->SetMetric( mutualInformationMetric );
+
+  typedef itk::RegistrationParameterScalesFromPhysicalShift<MIMetricType> AffineScalesEstimatorType;
+  typename AffineScalesEstimatorType::Pointer scalesEstimator1 = AffineScalesEstimatorType::New();
+  scalesEstimator1->SetMetric( mutualInformationMetric );
+  scalesEstimator1->SetTransformForward( true );
 
   affineSimple->SmoothingSigmasAreSpecifiedInPhysicalUnitsOn();
   affineSimple->SetSmoothingSigmasAreSpecifiedInPhysicalUnits( true );
@@ -169,6 +185,7 @@ int PerformSimpleImageRegistration( int argc, char *argv[] )
   affineOptimizer->SetNumberOfIterations( atoi( argv[5] ) );
   affineOptimizer->SetDoEstimateLearningRateOnce( false ); //true by default
   affineOptimizer->SetDoEstimateLearningRateAtEachIteration( true );
+  affineOptimizer->SetScalesEstimator( scalesEstimator1 );
 
   typedef CommandIterationUpdate<AffineRegistrationType> AffineCommandType;
   typename AffineCommandType::Pointer affineObserver = AffineCommandType::New();
