@@ -39,7 +39,6 @@ GradientDescentOptimizerv4
   this->m_MinimumConvergenceValue = 1e-8;//NumericTraits<InternalComputationValueType>::epsilon();//1e-30;
   this->m_ConvergenceWindowSize = 50;
 
-  this->m_DoEstimateScales = true;
   this->m_DoEstimateLearningRateAtEachIteration = false;
   this->m_DoEstimateLearningRateOnce = true;
   this->m_ReturnBestParametersAndValue = false;
@@ -64,16 +63,6 @@ GradientDescentOptimizerv4
   os << indent << "Learning rate:" << this->m_LearningRate << std::endl;
   os << indent << "MaximumStepSizeInPhysicalUnits: "
                << this->m_MaximumStepSizeInPhysicalUnits << std::endl;
-  if( this->m_ScalesEstimator.IsNull() )
-    {
-    os << indent << "No ScalesEstimator set." << std::endl;
-    }
-  else
-    {
-    os << indent << "ScalesEstimator: " << std::endl;
-    this->m_ScalesEstimator->Print( os, indent.GetNextIndent() );
-    }
-  os << indent << "DoEstimateScales: " << this->m_DoEstimateScales << std::endl;
   os << indent << "DoEstimateLearningRateAtEachIteration: "
                << this->m_DoEstimateLearningRateAtEachIteration << std::endl;
   os << indent << "DoEstimateLearningRateOnce: "
@@ -97,15 +86,11 @@ GradientDescentOptimizerv4
     itkExceptionMacro("Both m_DoEstimateLearningRateOnce and m_DoEstimateLearningRateAtEachIteration are enabled. Not allowed. ");
     }
 
-  /* Estimate the parameter scales if requested. */
-  if ( this->m_DoEstimateScales && this->m_ScalesEstimator.IsNotNull() )
+  /* Initialize maximum step size */
+  if ( this->m_ScalesEstimator.IsNotNull() && ( this->m_DoEstimateLearningRateOnce || this->m_DoEstimateLearningRateAtEachIteration ) )
     {
-    this->m_ScalesEstimator->EstimateScales(this->m_Scales);
-    itkDebugMacro( "Estimated scales = " << this->m_Scales );
-
     /* If user hasn't set this, assign the default. */
-    if ( this->m_MaximumStepSizeInPhysicalUnits <=
-      NumericTraits<InternalComputationValueType>::epsilon())
+    if ( this->m_MaximumStepSizeInPhysicalUnits <= NumericTraits<InternalComputationValueType>::epsilon())
       {
       this->m_MaximumStepSizeInPhysicalUnits = this->m_ScalesEstimator->EstimateMaximumStepSize();
       }

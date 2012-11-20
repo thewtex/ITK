@@ -11,6 +11,9 @@ set(ITKOptimizersv4_SRC
   itkMultiGradientOptimizerv4.cxx
   itkQuasiNewtonOptimizerv4.cxx
   itkQuasiNewtonOptimizerv4EstimateNewtonStepThreader.cxx
+  itkSingleValuedNonLinearVnlOptimizerv4.cxx
+  itkSingleValuedVnlCostFunctionAdaptorv4.cxx
+  itkLBFGSOptimizerv4.cxx
 )
 
 add_library(ITKOptimizersv4 ${ITKOptimizersv4_SRC})
