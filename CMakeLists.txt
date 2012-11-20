@@ -4,9 +4,7 @@ include(CMakeDependentOption)
 # use ExternalProject
 include(ExternalProject)
 
-if(WIN32 OR NOT EXISTS /dev/urandom)
-  cmake_minimum_required(VERSION 2.8.5)
-endif()
+cmake_minimum_required(VERSION 2.8.8)
 
 project(ITK)
 

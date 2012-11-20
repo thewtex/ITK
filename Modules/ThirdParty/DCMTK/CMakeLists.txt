@@ -67,6 +67,10 @@ if(ITK_USE_SYSTEM_DCMTK)
   itk_module_impl()
 
 else(ITK_USE_SYSTEM_DCMTK)
+  if(MSVC)
+    message(FATAL_ERROR "The ITKDCMTK module requires ITK_USE_SYSTEM_DCMTK to be ON for MSVC.")
+  endif()
+
   #
   # this is a first guess, I presume that
   # on windows the library name is dependent on
@@ -95,6 +99,18 @@ else(ITK_USE_SYSTEM_DCMTK)
   # Use DCMTK include files in place in the build directory.
   set(ITKDCMTK_INCLUDE ${CMAKE_CURRENT_BINARY_DIR}/${DCMTK_EPNAME})
 
+  set(_ITKDCMTK_LIB_NAMES dcmdata dcmimage dcmimgle dcmjpeg dcmjpls
+      dcmnet dcmpstat dcmqrdb dcmsr dcmtls ijg12 ijg16 ijg8 oflog ofstd)
+  if(BUILD_SHARED_LIBS)
+    set(_ITKDCMTK_LIB_LINKAGE SHARED)
+  else()
+    set(_ITKDCMTK_LIB_LINKAGE STATIC)
+  endif()
+  foreach(lib ${_ITKDCMTK_LIB_NAMES})
+    # add it as an imported  library target
+    add_library(${lib} ${_ITKDCMTK_LIB_LINKAGE} IMPORTED GLOBAL)
+  endforeach()
+
   # 'stringize' the libraries. Brad King addition
   set(ITKDCMTK_LIBRARIES "${_ITKDCMTK_LIB_NAMES}")
   #
@@ -117,7 +133,7 @@ else(ITK_USE_SYSTEM_DCMTK)
     set(ITKDCMTK_EXPORT_CODE_BUILD "
 foreach(lib ${_ITKDCMTK_LIB_NAMES})
   if(NOT TARGET \${lib})
-    add_library(\${lib} ${_ITKDCMTK_LIB_LINKAGE} IMPORTED)
+    add_library(\${lib} ${_ITKDCMTK_LIB_LINKAGE} IMPORTED GLOBAL)
     foreach(c ${CMAKE_CONFIGURATION_TYPES})
       string(TOUPPER \"\${c}\" C)
       set_property(TARGET \${lib} PROPERTY IMPORTED_LOCATION_\${C}
@@ -130,7 +146,7 @@ endforeach()
     set(ITKDCMTK_EXPORT_CODE_BUILD "
 foreach(lib ${_ITKDCMTK_LIB_NAMES})
   if(NOT TARGET \${lib})
-    add_library(\${lib} ${_ITKDCMTK_LIB_LINKAGE} IMPORTED)
+    add_library(\${lib} ${_ITKDCMTK_LIB_LINKAGE} IMPORTED GLOBAL)
     set_property(TARGET \${lib} PROPERTY IMPORTED_LOCATION
       \"${lib_dir}/${lib_prefix}\${lib}${lib_suffix}\")
   endif()
@@ -142,7 +158,7 @@ endforeach()
   set(ITKDCMTK_EXPORT_CODE_INSTALL "
 foreach(lib ${_ITKDCMTK_LIB_NAMES})
   if(NOT TARGET \${lib})
-    add_library(\${lib} ${_ITKDCMTK_LIB_LINKAGE} IMPORTED)
+    add_library(\${lib} ${_ITKDCMTK_LIB_LINKAGE} IMPORTED GLOBAL)
     set_property(TARGET \${lib} PROPERTY IMPORTED_LOCATION
       \"\${ITK_INSTALL_PREFIX}/lib/${lib_prefix}\${lib}${lib_suffix}\")
   endif()
