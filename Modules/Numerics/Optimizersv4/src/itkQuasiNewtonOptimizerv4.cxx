@@ -55,7 +55,7 @@ QuasiNewtonOptimizerv4
   itkDebugMacro("StartOptimization");
 
   const SizeValueType numPara = this->m_Metric->GetNumberOfParameters();
-  const SizeValueType numLocalPara = this->m_Metric->GetNumberOfLocalParameters();
+  const SizeValueType numLocalPara = this->m_Metric->GetAggregateNumberOfLocalParameters();
   const SizeValueType numLocals = this->m_Metric->GetNumberOfParameters() / numLocalPara;
 
   /* Set up the data for Quasi-Newton method */
@@ -185,7 +185,7 @@ void
 QuasiNewtonOptimizerv4
 ::CombineGradientNewtonStep()
 {
-  const SizeValueType numLocalPara = this->m_Metric->GetNumberOfLocalParameters();
+  const SizeValueType numLocalPara = this->m_Metric->GetAggregateNumberOfLocalParameters();
   const SizeValueType numLocals = this->m_Metric->GetNumberOfParameters() / numLocalPara;
 
   bool validNewtonStepExists = false;
@@ -261,7 +261,7 @@ void QuasiNewtonOptimizerv4
 void QuasiNewtonOptimizerv4
 ::ResetNewtonStep(IndexValueType loc)
 {
-  const SizeValueType numLocalPara = this->m_Metric->GetNumberOfLocalParameters();
+  const SizeValueType numLocalPara = this->m_Metric->GetAggregateNumberOfLocalParameters();
 
   // Initialize Hessian to identity matrix
   m_HessianArray[loc].Fill(NumericTraits<InternalComputationValueType>::Zero);
@@ -303,7 +303,7 @@ QuasiNewtonOptimizerv4
 void QuasiNewtonOptimizerv4
 ::EstimateNewtonStepOverSubRange( const IndexRangeType& subrange )
 {
-  const SizeValueType numLocalPara = this->m_Metric->GetNumberOfLocalParameters();
+  const SizeValueType numLocalPara = this->m_Metric->GetAggregateNumberOfLocalParameters();
 
   IndexValueType low = subrange[0] / numLocalPara;
   IndexValueType high = subrange[1] / numLocalPara;
@@ -346,7 +346,7 @@ bool QuasiNewtonOptimizerv4
     return false;
     }
 
-  const SizeValueType numLocalPara = this->m_Metric->GetNumberOfLocalParameters();
+  const SizeValueType numLocalPara = this->m_Metric->GetAggregateNumberOfLocalParameters();
   IndexValueType offset = loc * numLocalPara;
 
   ParametersType dx(numLocalPara);  //delta of position x: x_k+1 - x_k

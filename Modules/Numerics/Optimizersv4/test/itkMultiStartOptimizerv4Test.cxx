@@ -117,7 +117,7 @@ public:
     return false;
     }
 
-  unsigned int GetNumberOfLocalParameters() const
+  unsigned int GetAggregateNumberOfLocalParameters() const
   {
     return SpaceDimension;
   }

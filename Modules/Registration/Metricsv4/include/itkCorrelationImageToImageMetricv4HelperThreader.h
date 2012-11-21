@@ -112,6 +112,7 @@ protected:
         DerivativeType &                  ,
         const ThreadIdType                 ) const
   {
+    itkExceptionMacro("This method should not be reached.");
     return false;
   }
 

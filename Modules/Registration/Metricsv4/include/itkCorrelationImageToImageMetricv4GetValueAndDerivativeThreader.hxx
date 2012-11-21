@@ -36,7 +36,7 @@ void CorrelationImageToImageMetricv4GetValueAndDerivativeThreader< TDomainPartit
     }
 
   /* This size always comes from the moving image */
-  const NumberOfParametersType globalDerivativeSize = this->GetCachedNumberOfParameters();
+  const NumberOfParametersType globalDerivativeSize = this->m_CorrelationAssociate->GetNumberOfParameters();
 
   // set size
   m_InternalCumSumPerThread.resize(this->GetNumberOfThreadsUsed());
@@ -69,7 +69,7 @@ CorrelationImageToImageMetricv4GetValueAndDerivativeThreader<TDomainPartitioner,
 {
 
   /* This size always comes from the moving image */
-  const NumberOfParametersType globalDerivativeSize = this->GetCachedNumberOfParameters();
+  const NumberOfParametersType globalDerivativeSize = this->m_Associate->GetNumberOfParameters();
 
   /* Store the number of valid points the enclosing class \c
    * m_NumberOfValidPoints by collecting the valid points per thread. */
@@ -151,6 +151,13 @@ CorrelationImageToImageMetricv4GetValueAndDerivativeThreader<TDomainPartitioner,
   MovingImageGradientType     mappedMovingImageGradient;
   bool                        pointIsValid = false;
   MeasureType                 metricValueResult;
+
+  /* Size local-specific intermediate storage. This is only needed for local-support transforms that
+   * have variable number of local parameters. SetSize is efficient in that memory is not changed
+   * if the size isn't changed. */
+  NumberOfParametersType numLocal = this->m_Associate->GetNumberOfLocalParametersAtPoint( virtualPoint );
+  this->m_LocalDerivativesPerThread[threadId].SetSize( numLocal );
+  this->m_MovingTransformJacobianPerThread[threadId].SetSize( this->m_Associate->VirtualImageDimension, numLocal );
 
   /* Transform the point into fixed and moving spaces, and evaluate.
    * Different behavior with pre-warping enabled is handled transparently.
@@ -274,7 +281,7 @@ CorrelationImageToImageMetricv4GetValueAndDerivativeThreader<TDomainPartitioner,
     /** For dense transforms, this returns identity */
     this->m_CorrelationAssociate->GetMovingTransform()->ComputeJacobianWithRespectToParameters(virtualPoint, jacobian);
 
-    for (unsigned int par = 0; par < this->m_CorrelationAssociate->GetNumberOfLocalParameters(); par++)
+    for (unsigned int par = 0; par < jacobian.columns(); par++)
       {
       InternalComputationValueType sum = NumericTraits< InternalComputationValueType >::Zero;
       for (SizeValueType dim = 0; dim < ImageToImageMetricv4Type::MovingImageDimension; dim++)

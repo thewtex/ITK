@@ -296,7 +296,21 @@ public:
     update.Fill(1);
     try
       {
-    transform->UpdateTransformParameters( update );
+      transform->UpdateTransformParameters( update );
+      }
+    catch( itk::ExceptionObject & e )
+      {
+      std::cerr << e << std::endl;
+      }
+
+    typename TransformType::DerivativeType fullArray( transform->GetNumberOfParameters() );
+    typename TransformType::InputPointType point;
+    point.Fill(1.0);
+    typename TransformType::DerivativeType localUpdate( transform->GetNumberOfLocalParametersAtPoint(point) );
+    localUpdate.Fill(1.0);
+    try
+      {
+      transform->UpdateFullArrayWithLocalParametersAtPoint( fullArray, localUpdate, point );
       }
     catch( itk::ExceptionObject & e )
       {

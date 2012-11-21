@@ -271,7 +271,7 @@ ScaleSkewVersor3DTransform<TScalarType>
   const ValueType vz = this->GetVersor().GetZ();
   const ValueType vw = this->GetVersor().GetW();
 
-  jacobian.SetSize( 3, this->GetNumberOfLocalParameters() );
+  jacobian.SetSize( 3, this->GetNumberOfParameters() );
   jacobian.Fill(0.0);
 
   const double px = p[0] - this->GetCenter()[0];

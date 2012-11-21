@@ -101,7 +101,7 @@ public:
     return false;
     }
 
-  unsigned int GetNumberOfLocalParameters() const
+  unsigned int GetAggregateNumberOfLocalParameters() const
   {
     return SpaceDimension;
   }
@@ -151,15 +151,15 @@ int itkGradientDescentOptimizerv4Test2(int, char* [] )
   itkOptimizer->SetLearningRate( 1.0 );
   itkOptimizer->SetNumberOfIterations( 1 );
 
-  ScalesType scales( metric->GetNumberOfLocalParameters() );
-  for( NumberOfParametersType i=0; i < metric->GetNumberOfLocalParameters(); i++ )
+  ScalesType scales( metric->GetAggregateNumberOfLocalParameters() );
+  for( NumberOfParametersType i=0; i < metric->GetAggregateNumberOfLocalParameters(); i++ )
     {
     scales[i] = i+2;
     }
   itkOptimizer->SetScales( scales );
 
   ParametersType truth( metric->GetNumberOfParameters() );
-  NumberOfParametersType numLocal = metric->GetNumberOfLocalParameters();
+  NumberOfParametersType numLocal = metric->GetAggregateNumberOfLocalParameters();
   NumberOfParametersType numLoops = metric->GetNumberOfParameters() / numLocal;
   for( NumberOfParametersType i=0; i < numLoops; i++ )
     {

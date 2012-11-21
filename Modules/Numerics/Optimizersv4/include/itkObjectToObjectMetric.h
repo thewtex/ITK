@@ -164,7 +164,8 @@ public:
   virtual void Initialize(void) throw ( ExceptionObject );
 
   virtual NumberOfParametersType GetNumberOfParameters() const;
-  virtual NumberOfParametersType GetNumberOfLocalParameters() const;
+  virtual NumberOfParametersType GetAggregateNumberOfLocalParameters() const;
+  virtual NumberOfParametersType GetNumberOfLocalParametersAtPoint( const VirtualPointType & ) const;
   virtual void SetParameters( ParametersType & params );
   virtual const ParametersType & GetParameters() const;
   virtual bool HasLocalSupport() const;
@@ -287,7 +288,12 @@ protected:
    * and in the same physical space. */
   virtual void VerifyDisplacementFieldSizeAndPhysicalSpace();
 
+  /** Using the virtual image, transform a physical point in the virtual domain
+   * into an index into the virtual domain. */
   bool TransformPhysicalPointToVirtualIndex( const VirtualPointType &, VirtualIndexType & ) const;
+
+  /** Using the virtual image, transform an index in the virtual domain
+   * into a physical point in the virtual domain. */
   void TransformVirtualIndexToPhysicalPoint( const VirtualIndexType &, VirtualPointType & ) const;
 
   /** If the moving transform is a DisplacementFieldTransform, return it.

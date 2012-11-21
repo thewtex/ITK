@@ -381,20 +381,81 @@ public:
    * a conversion to member variables for use in TransformPoint. */
   virtual void UpdateTransformParameters( const DerivativeType & update, TScalarType factor = 1.0 );
 
+  /** Updates an array of parameter-related data at a given point. \point is used to
+   *  determine which portions of \c fullArray should be updated, via addition, by \c localUpdate.
+   *  This method is required for efficiency by transforms with a spatially-varying number
+   *  of local parameters. For example, transforms derived from PiecewiseTransformBase.
+   *  It can also be used by local transforms that require updates only of local parameters,
+   *  for example DisplacementFieldTransform.
+   *  By default this method simply adds \c localUpdate to \c fullArray. It need only be overridden
+   *  as needed by spatially-varying transforms.
+   *  \note The transform's parameters themselves are \b not modified.
+   *  \param fullArray Is expected to be an array of size GetNumberOfParameters().
+   *  \param localUpdate Is expected to be an array of size GetNumberOfLocalParametersAtPoint( \c point ).
+   *  \param point Is the point at which the \c localUpdate array is relevant.
+   *  \warning The size of the parameters is not checked, for efficiency.
+   *  Also for efficiency, even in cases when the transform operates on a bound domain,
+   *  \c point may not be bounds-checked.
+   */
+  virtual void UpdateFullArrayWithLocalParametersAtPoint( DerivativeType & fullArray, const DerivativeType & localUpdate, const InputPointType & itkNotUsed(point) ) const
+  {
+    fullArray += localUpdate;
+  }
+
+  /** Return the constant number of local parameters that defines the
+   *  Transform over the whole Transform domain.
+   *  For instance, in the case of a deformation field, this will be equal to
+   *  the number of image dimensions. If it is an affine transform, this will
+   *  be the same as the GetNumberOfParameters().
+   *  For transforms based on MultiTransformBase, this returns the cumulative number
+   *  of local parameters for all sub-transforms.
+   *  This value is constant over the whole domain over which the transform my operate.
+   *  By default this returns GetNumberOfParameters().
+   *  \note This value is the same as the \b maximum possible width of the jacobian returned by
+   *  ComputeJacobianWithRespectToParameters(). It is needed for computation of transform derivative-related values.
+   *  \sa GetNumberOfParameters
+   *  \sa GetNumberOfLocalParametersAtPoint
+   */
+  virtual NumberOfParametersType GetAggregateNumberOfLocalParameters(void) const
+  {
+    return this->m_Parameters.Size();
+  }
+
   /** Return the number of local parameters that completely defines the
-   *  Transform at an individual voxel.
+   *  Transform at a \b particular voxel.
+   *  By default this simply returns GetAggregateNumberOfLocalParameters().
    *  For transforms with local support, this will enable downstream
    *  computation of the jacobian wrt only the local support region.
    *  For instance, in the case of a deformation field, this will be equal to
    *  the number of image dimensions. If it is an affine transform, this will
    *  be the same as the GetNumberOfParameters().
+   *  Specialized transforms, such as those based on PiecewiseTransformBase,
+   *  may have a spatially-dependent number of local parameters.
+   *  \warning By default, the input point is not bounds-checked against
+   *  any limiting domain the transform might be using.
+   *  \sa GetAggregateNumberOfLocalParameters
+   *  \sa GetNumberOfLocalParametersAtPointIsConstant
    */
-  virtual NumberOfParametersType GetNumberOfLocalParameters(void) const
+  virtual NumberOfParametersType GetNumberOfLocalParametersAtPoint(const InputPointType  &) const
   {
-    return this->GetNumberOfParameters();
+    return this->GetAggregateNumberOfLocalParameters();
   }
 
-  /** Return the number of parameters that completely define the Transfom  */
+  /** Returns whether the transform always returns the same value for
+   *  GetNumberOfLocalParametersAtPoint, regardless of the point's
+   *  position. This is useful for speed optimization.
+   *  By default, returns true.
+   *  \sa GetAggreateNumberOfLocalParametersAtPoint
+   */
+  virtual bool GetNumberOfLocalParametersAtPointIsConstant() const
+  {
+    return true;
+  }
+
+  /** Return the number of parameters that completely define the Transfom.
+   *  \sa GetAggreateNumberOfLocalParameters
+   *  \sa GetNumberOfLocalParametersAtPoint
+   */
   virtual NumberOfParametersType GetNumberOfParameters(void) const
   {
     return this->m_Parameters.Size();
@@ -406,7 +467,6 @@ public:
    * user.  The inverse is recomputed if this current transform has been
    * modified.
    * This method is intended to be overriden as needed by derived classes.
-   *
    */
   bool GetInverse( Self *itkNotUsed(inverseTransform) ) const
   {
@@ -491,15 +551,15 @@ public:
    *
    *  This is also used for efficient computation of a point-local jacobian
    *  for dense transforms.
-   *  \c jacobian is assumed to be thread-local variable, otherwise memory corruption
+   *  \point the point at which to compute the jacobian
+   *  \param jacobian is assumed to be thread-local variable, otherwise memory corruption
    *  will most likely occur during multi-threading.
-   *  To avoid repeatitive memory allocation, pass in 'jacobian' with its size
-   *  already set. */
-  virtual void ComputeJacobianWithRespectToParameters(const InputPointType  & itkNotUsed(p), JacobianType & itkNotUsed(jacobian) ) const
+   *  The size of \c jacobian is [NOutputDimensions x GetNumberOfLocalParametersAtPoint( \c point )]
+   *  \note The size of \c jacobian can change with \c point if GetNumberOfLocalParametersAtPointIsConstant() returns false.
+   *  \note To avoid repeatitive memory allocation, pass in 'jacobian' with its size already set. */
+  virtual void ComputeJacobianWithRespectToParameters(const InputPointType & itkNotUsed(point), JacobianType & itkNotUsed(jacobian) ) const
   {
-    itkExceptionMacro(
-      "ComputeJacobianWithRespectToParamters( InputPointType, JacobianType"
-      " is unimplemented for " << this->GetNameOfClass() );
+    itkExceptionMacro( "ComputeJacobianWithRespectToParamters( InputPointType, JacobianType is unimplemented for " << this->GetNameOfClass() );
   }
 
 
@@ -510,11 +570,8 @@ public:
    *  since there is no change with respect to position. */
   virtual void ComputeJacobianWithRespectToPosition(const InputPointType & itkNotUsed(x), JacobianType & itkNotUsed(jacobian) ) const
   {
-    itkExceptionMacro(
-      "ComputeJacobianWithRespectToPosition( InputPointType, JacobianType"
-      " is unimplemented for " << this->GetNameOfClass() );
+    itkExceptionMacro( "ComputeJacobianWithRespectToPosition( InputPointType, JacobianType is unimplemented for " << this->GetNameOfClass() );
   }
-
 
   /** This provides the ability to get a local jacobian value
    *  in a dense/local transform, e.g. DisplacementFieldTransform. For such

@@ -301,7 +301,7 @@ public:
   typedef SizeType MeshSizeType;
 
   /** Return the number of local parameters */
-  virtual NumberOfParametersType GetNumberOfLocalParameters() const
+  virtual NumberOfParametersType GetAggregateNumberOfLocalParameters() const
   {
     return this->GetNumberOfParameters();
   }

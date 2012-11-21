@@ -63,7 +63,7 @@ public:
     value = 1.0; derivative.Fill(0.0);
     }
 
-  unsigned int GetNumberOfLocalParameters() const
+  unsigned int GetAggregateNumberOfLocalParameters() const
   { return 3; }
 
   void UpdateTransformParameters( const DerivativeType &, ParametersValueType ) {}
@@ -135,7 +135,7 @@ int itkObjectToObjectOptimizerBaseTest(int , char* [])
   std::cout << "value: " << optimizer->GetCurrentMetricValue() << std::endl;
 
   /* Test set/get of scales */
-  ObjectToObjectOptimizerBaseTestOptimizer::NumberOfParametersType scalesSize = metric->GetNumberOfLocalParameters();
+  ObjectToObjectOptimizerBaseTestOptimizer::NumberOfParametersType scalesSize = metric->GetAggregateNumberOfLocalParameters();
   typedef ObjectToObjectOptimizerBaseTestOptimizer::ScalesType ScalesType;
   ScalesType scales(scalesSize);
   scales.Fill(3.19);
@@ -170,7 +170,7 @@ int itkObjectToObjectOptimizerBaseTest(int , char* [])
     }
 
   /* Test that weights are init'ed by default to identity */
-  ObjectToObjectOptimizerBaseTestOptimizer::NumberOfParametersType weightsSize = metric->GetNumberOfLocalParameters();
+  ObjectToObjectOptimizerBaseTestOptimizer::NumberOfParametersType weightsSize = metric->GetAggregateNumberOfLocalParameters();
   TRY_EXPECT_NO_EXCEPTION( optimizer->StartOptimization() );
   ScalesType weightsReturn = optimizer->GetWeights();
   if( weightsReturn.Size() != 0 || ! optimizer->GetWeightsAreIdentity() )

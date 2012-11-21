@@ -587,17 +587,14 @@ int itkCompositeTransformTest(int, char *[] )
    */
 
   /* Add yet another affine transform */
-  AffineType::Pointer affine3 = AffineType::New();
-  matrix2[0][0] = 1.1;
-  matrix2[0][1] = 2.2;
-  matrix2[1][0] = 3.3;
-  matrix2[1][1] = 4.4;
-  vector2[0] = 5.5;
-  vector2[1] = 6.5;
-  affine3->SetMatrix(matrix2);
-  affine3->SetOffset(vector2);
+  typedef itk::TranslationTransform<ScalarType, NDimensions>  TranslationTransformType;
+  TranslationTransformType::Pointer translation = TranslationTransformType::New();
+  TranslationTransformType::ParametersType transVector(NDimensions);
+  transVector[0] = 1.2345;
+  transVector[1] = 2.3456;
+  translation->SetParameters( transVector );
 
-  compositeTransform->AddTransform( affine3 );
+  compositeTransform->AddTransform( translation );
   // std::cout << "compositeTransform with 3 subs: "
   //          << std::endl << compositeTransform << std::endl;
 
@@ -632,8 +629,7 @@ int itkCompositeTransformTest(int, char *[] )
     }
 
   /* Test accessors */
-  CompositeType::TransformQueueType transformQueue =
-    compositeTransform->GetTransformQueue();
+  CompositeType::TransformQueueType transformQueue = compositeTransform->GetTransformQueue();
   if( transformQueue.size() != 3 )
     {
     std::cout << "Failed getting transform queue." << std::endl;
@@ -641,8 +637,7 @@ int itkCompositeTransformTest(int, char *[] )
     }
   std::cout << "Got TransformQueue." << std::endl;
 
-  CompositeType::TransformsToOptimizeFlagsType flagsQueue =
-    compositeTransform->GetTransformsToOptimizeFlags();
+  CompositeType::TransformsToOptimizeFlagsType flagsQueue = compositeTransform->GetTransformsToOptimizeFlags();
   if( flagsQueue.size() != 3 )
     {
     std::cout << "Failed getting optimize flags queue." << std::endl;
@@ -651,8 +646,7 @@ int itkCompositeTransformTest(int, char *[] )
 
   /* Get inverse and check TransformsToOptimize flags are correct */
   CompositeType::ConstPointer inverseTransform3;
-  inverseTransform3 = dynamic_cast<const CompositeType *>
-    ( compositeTransform->GetInverseTransform().GetPointer() );
+  inverseTransform3 = dynamic_cast<const CompositeType *>( compositeTransform->GetInverseTransform().GetPointer() );
   if( !inverseTransform3 )
     {
     std::cout << "Failed calling GetInverseTransform() (3)." << std::endl;
@@ -662,46 +656,76 @@ int itkCompositeTransformTest(int, char *[] )
       inverseTransform3->GetNthTransformToOptimize(1) ||
       inverseTransform3->GetNthTransformToOptimize(2) )
     {
-    std::cout << "Failed checking TransformsToOptimize flags on inverse. "
-              << std::endl;
+    std::cout << "Failed checking TransformsToOptimize flags on inverse. " << std::endl;
     return EXIT_FAILURE;
+    }
+
+  /* Test clone */
+  std::cout << "Test cloning." << std::endl;
+  CompositeType::Pointer clone = compositeTransform->Clone();
+  if( clone.IsNull() )
+    {
+    std::cout << "Failing cloning. NULL pointer." << std::endl;
+    return EXIT_FAILURE;
+    }
+  if( clone->GetNumberOfTransforms() != compositeTransform->GetNumberOfTransforms() )
+    {
+    std::cout << "Failed cloning. Not the same number of transforms." << std::endl;
+    return EXIT_FAILURE;
+    }
+  for( itk::SizeValueType n=0; n < clone->GetNumberOfTransforms(); n++ )
+    {
+    if( ! testVectorArray( clone->GetNthTransform(n)->GetParameters(), compositeTransform->GetNthTransform(n)->GetParameters() ) )
+      {
+      std::cout << "Failed cloning. Parameters for tranform " << n << " are not the same." << std::endl;
+      return EXIT_FAILURE;
+      }
+    if( clone->GetNthTransformToOptimize(n) != compositeTransform->GetNthTransformToOptimize(n) )
+      {
+      std::cout << "Failed cloning. Optimize flags do not agree for transform " << n << std::endl;
+      return EXIT_FAILURE;
+      }
     }
 
   /* Test get params with only 1st and last transforms set to optimize.
    * This implicitly tests the m_PreviousTransformsToOptimizeUpdateTime mechanism
    * for updating m_TransformsToOptimizeQueue.
-   * This includes the affine and affine3 transforms */
+   * This includes the affine and translation transforms */
 
   compositeTransform->SetNthTransformToOptimize(0, true);
   if( !compositeTransform->GetNthTransformToOptimize(0) ||
       compositeTransform->GetNthTransformToOptimize(1) ||
       !compositeTransform->GetNthTransformToOptimize(2) )
     {
-    std::cout << "Failed setting last TransformToOptimize flag. "
-              << "Composite Transform: " << std::endl << compositeTransform
-              << std::endl;
+    std::cout << "Failed setting last TransformToOptimize flag. Composite Transform: " << std::endl << compositeTransform << std::endl;
     return EXIT_FAILURE;
     }
 
   parametersTest = compositeTransform->GetParameters();
   affineParamsN = affine->GetNumberOfParameters();
-  unsigned int affine3ParamsN = affine3->GetNumberOfParameters();
-  parametersTruth.SetSize( affineParamsN + affine3ParamsN );
-  for( unsigned int n = 0; n < affine3ParamsN; n++ )
+  unsigned int translationParamsN = translation->GetNumberOfParameters();
+  parametersTruth.SetSize( affineParamsN + translationParamsN );
+
+  std::cout << "GetNumberOfParameters with 1 & 3 to optimize: " << std::endl;
+  unsigned int numParameters1and3 = compositeTransform->GetNumberOfParameters();
+  std::cout << "Number of parameters: " << numParameters1and3 << std::endl;
+  if( numParameters1and3 != affineParamsN + translationParamsN )
     {
-    parametersTruth.SetElement(
-      n, affine3->GetParameters().GetElement( n ) );
+    std::cout << "GetNumberOfParameters failed with only transforms 1 and 3 active:."
+              << std::endl << "Expected " << affineParamsN + translationParamsN << std::endl;
+    }
+
+  for( unsigned int n = 0; n < translationParamsN; n++ )
+    {
+    parametersTruth.SetElement( n, translation->GetParameters().GetElement( n ) );
     }
   for( unsigned int n = 0; n < affineParamsN; n++ )
     {
-    parametersTruth.SetElement( n + affine3ParamsN,
-                                affine->GetParameters().GetElement( n ) );
+    parametersTruth.SetElement( n + translationParamsN, affine->GetParameters().GetElement( n ) );
     }
   std::cout << "Get 1st and 3rd transform Parameters: " << std::endl
-            << "parametersTruth: " << std::endl << parametersTruth
-            << std::endl
-            << "parametersTest from Composite: " << std::endl << parametersTest
-            << std::endl;
+            << "parametersTruth: " << std::endl << parametersTruth << std::endl
+            << "parametersTest from Composite: " << std::endl << parametersTest << std::endl;
 
   if( !testVectorArray( parametersTest, parametersTruth ) )
     {
@@ -709,25 +733,50 @@ int itkCompositeTransformTest(int, char *[] )
     return EXIT_FAILURE;
     }
 
+  /* Test local parameters */
+  std::cout << "** GetAggregateLocalNumberOfParameters with 1 & 3 to optimize: " << std::endl;
+  unsigned int affineLocalParamsN = affine->GetAggregateNumberOfLocalParameters();
+  unsigned int translationLocalParamsN = translation->GetAggregateNumberOfLocalParameters();
+  unsigned int numLocalParameters1and3 = compositeTransform->GetAggregateNumberOfLocalParameters();
+  std::cout << "Aggregate Number of Local parameters: " << numLocalParameters1and3 << std::endl;
+  if( numLocalParameters1and3 != affineLocalParamsN + translationLocalParamsN )
+    {
+    std::cout << "GetAggreateNumberOfLocalParameters failed with only transforms 1 and 3 active:."
+              << std::endl << "Expected " << affineLocalParamsN + translationLocalParamsN << std::endl;
+    }
+
+  std::cout << "** GetLocalNumberOfParametersAtPoint with 1 & 3 to optimize: " << std::endl;
+  CompositeType::InputPointType point;
+  point.Fill( itk::NumericTraits<CompositeType::InputPointType::ValueType>::OneValue() );
+  affineLocalParamsN = affine->GetNumberOfLocalParametersAtPoint( point );
+  translationLocalParamsN = translation->GetNumberOfLocalParametersAtPoint( point );
+  numLocalParameters1and3 = compositeTransform->GetNumberOfLocalParametersAtPoint( point );
+  std::cout << "Number of Local parameters at point: " << numLocalParameters1and3 << std::endl;
+  if( numLocalParameters1and3 != affineLocalParamsN + translationLocalParamsN )
+    {
+    std::cout << "GetNumberOfLocalParametersAtPoint failed with only transforms 1 and 3 active:."
+              << std::endl << "Expected " << affineLocalParamsN + translationLocalParamsN << std::endl;
+    }
+
   /* Test ComputeJacobianWithRespectToParameters with three transforms, two of which (1st and 3rd) are active.
    * Remember that the point gets transformed by preceding transforms
    * before its used for individual Jacobian. */
   std::cout << "Test ComputeJacobianWithRespectToParameters with three transforms: " << std::endl;
-  CompositeType::JacobianType   jacTruth, jacComposite2, jacAffine, jacAffine3;
+  CompositeType::JacobianType   jacTruth, jacComposite2, jacAffine, jacTranslation;
   CompositeType::InputPointType jacPoint2;
   jacPoint2[0] = 1;
   jacPoint2[1] = 2;
   compositeTransform->ComputeJacobianWithRespectToParameters( jacPoint2, jacComposite2 );
-  affine3->ComputeJacobianWithRespectToParameters( jacPoint2, jacAffine3 );
-  jacPoint2 = affine3->TransformPoint( jacPoint2 );
+  translation->ComputeJacobianWithRespectToParameters( jacPoint2, jacTranslation );
+  jacPoint2 = translation->TransformPoint( jacPoint2 );
   jacPoint2 = affine2->TransformPoint( jacPoint2 );
   affine->ComputeJacobianWithRespectToParameters( jacPoint2, jacAffine );
-  jacTruth.SetSize( jacAffine3.rows(), jacAffine.cols() + jacAffine3.cols() );
-  jacTruth.update( affine->GetMatrix() * affine2->GetMatrix() * jacAffine3, 0, 0 );
-  jacTruth.update( jacAffine, 0, jacAffine3.cols() );
+  jacTruth.SetSize( jacTranslation.rows(), jacAffine.cols() + jacTranslation.cols() );
+  jacTruth.update( affine->GetMatrix() * affine2->GetMatrix() * jacTranslation, 0, 0 );
+  jacTruth.update( jacAffine, 0, jacTranslation.cols() );
   std::cout << "transformed jacPoint: " << jacPoint2 << std::endl;
   std::cout << "Affine jacobian:" << std::endl << jacAffine;
-  std::cout << "affine3 jacobian:" << std::endl << jacAffine3;
+  std::cout << "translation jacobian:" << std::endl << jacTranslation;
   std::cout << "Truth jacobian:" << std::endl << jacTruth;
   std::cout << "Composite jacobian:" << std::endl << jacComposite2;
   if( !testJacobian( jacComposite2, jacTruth ) )
@@ -740,49 +789,70 @@ int itkCompositeTransformTest(int, char *[] )
    * NOTE Once there are transforms that do something other than simple
    * addition in TransformUpdateParameters, this should be updated here.
    */
+  {
+  /* Single transform full update, of last transform only */
+  compositeTransform->SetOnlyMostRecentTransformToOptimizeOn();
+  CompositeType::ParametersType truth = compositeTransform->GetParameters();
+  CompositeType::DerivativeType update( compositeTransform->GetNumberOfParameters() );
+  update.Fill(10);
+  truth += update;
+  compositeTransform->UpdateTransformParameters( update );
+  CompositeType::ParametersType updateResult = compositeTransform->GetParameters();
+  std::cout << "Testing UpdateTransformParameters 1. " << std::endl;
+  if( !testVectorArray( truth, updateResult ) )
     {
-    /* Single transform full update, of last transform only */
-    compositeTransform->SetOnlyMostRecentTransformToOptimizeOn();
-    CompositeType::ParametersType truth = compositeTransform->GetParameters();
-    CompositeType::DerivativeType
-    update( compositeTransform->GetNumberOfParameters() );
-    update.Fill(10);
-    truth += update;
-    compositeTransform->UpdateTransformParameters( update );
-    CompositeType::ParametersType
-      updateResult = compositeTransform->GetParameters();
-    std::cout << "Testing UpdateTransformParameters 1. "
-              << std::endl;
-    if( !testVectorArray( truth, updateResult ) )
-      {
-      std::cout << "UpdateTransformParameters 1 failed. " << std::endl
-                << " truth:  " << truth << std::endl
-                << " result: " << updateResult << std::endl;
-      return EXIT_FAILURE;
-      }
+    std::cout << "UpdateTransformParameters 1 failed. " << std::endl << " truth:  " << truth << std::endl << " result: " << updateResult << std::endl;
+    return EXIT_FAILURE;
+    }
 
-    /* Update partially two transforms, with a scaling factor */
-    compositeTransform->SetNthTransformToOptimizeOn(0);
-    truth = compositeTransform->GetParameters();
-    update.SetSize( compositeTransform->GetNumberOfParameters() );
-    AffineType::ScalarType factor = 0.5;
-    for( unsigned int i = 0;
-         i < compositeTransform->GetNumberOfParameters(); i++ )
-      {
-      update[i] = i;
-      truth[i] += update[i] * factor;
-      }
-    compositeTransform->UpdateTransformParameters( update, factor );
-    updateResult = compositeTransform->GetParameters();
-    std::cout << "Testing UpdateTransformParameters 3. "
-              << std::endl;
-    if( !testVectorArray( truth, updateResult ) )
-      {
-      std::cout << "UpdateTransformParameters 3 failed. " << std::endl
-                << " truth:  " << truth << std::endl
-                << " result: " << updateResult << std::endl;
-      return EXIT_FAILURE;
-      }
+  /* Update partially two transforms, with a scaling factor */
+  compositeTransform->SetNthTransformToOptimizeOn(0);
+  truth = compositeTransform->GetParameters();
+  update.SetSize( compositeTransform->GetNumberOfParameters() );
+  AffineType::ScalarType factor = 0.5;
+  for( unsigned int i = 0; i < compositeTransform->GetNumberOfParameters(); i++ )
+    {
+    update[i] = i;
+    truth[i] += update[i] * factor;
+    }
+  compositeTransform->UpdateTransformParameters( update, factor );
+  updateResult = compositeTransform->GetParameters();
+  std::cout << "Testing UpdateTransformParameters 3. " << std::endl;
+  if( !testVectorArray( truth, updateResult ) )
+    {
+    std::cout << "UpdateTransformParameters 3 failed. " << std::endl << " truth:  " << truth << std::endl << " result: " << updateResult << std::endl;
+    return EXIT_FAILURE;
+    }
+  }
+
+  /* Test UpdateFullArrayWithLocalParametersAtPoint. 1st and 3rd transforms are active.
+   * Remember that 3rd txf comes first in the parrameter array. */
+  CompositeType::DerivativeType fullArray( compositeTransform->GetNumberOfParameters() );
+  fullArray.Fill( 0.0 );
+  CompositeType::InputPointType updatePoint;
+  updatePoint.Fill(1.0);
+  CompositeType::NumberOfParametersType numLocal = compositeTransform->GetNumberOfLocalParametersAtPoint( updatePoint );
+  CompositeType::DerivativeType localUpdate( numLocal );
+  CompositeType::DerivativeType truthArray( compositeTransform->GetNumberOfParameters() );
+  truthArray.Fill( 0.0 );
+  for( itk::SizeValueType n=0; n < translation->GetNumberOfLocalParametersAtPoint( updatePoint ); n++ )
+    {
+    localUpdate[n] = n + 3.0;
+    truthArray[n] += localUpdate[n];
+    }
+  /* These offsets are the same, but we create them seprately here to show the proper interpretation. */
+  itk::SizeValueType offset = translation->GetNumberOfParameters();
+  itk::SizeValueType localOffset = translation->GetNumberOfLocalParametersAtPoint(updatePoint);
+  for( itk::SizeValueType n=0; n < affine->GetNumberOfLocalParametersAtPoint( updatePoint ); n++ )
+    {
+    localUpdate[localOffset + n] = n + 30.0;
+    truthArray[offset+n] += localUpdate[localOffset + n];
+    }
+  compositeTransform->UpdateFullArrayWithLocalParametersAtPoint( fullArray, localUpdate, updatePoint );
+  if( ! testVectorArray( truthArray, fullArray ) )
+    {
+    std::cout << "Failed in test of UpdateFullArrayWithLocalParametersAtPoint. Expected: " << truthArray << std::endl << "Got: " << fullArray << std::endl;
+    return EXIT_FAILURE;
     }
 
   /* Test RemoveTransform */
@@ -831,7 +901,6 @@ int itkCompositeTransformTest(int, char *[] )
   CompositeType::Pointer compositeTransform3 = CompositeType::New();
   CompositeType::Pointer compositeTransform4 = CompositeType::New();
 
-  typedef itk::TranslationTransform<double, NDimensions>  TranslationTransformType;
   typedef TranslationTransformType::Pointer               TranslationTransformPointer;
   typedef std::vector<TranslationTransformPointer>        TranslationTransformVector;
   TranslationTransformVector  translationTransformVector(12);

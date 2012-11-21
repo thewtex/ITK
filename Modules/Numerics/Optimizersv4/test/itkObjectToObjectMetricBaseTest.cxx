@@ -63,7 +63,7 @@ public:
     value = 1.0; derivative.Fill(0.0);
   }
 
-  unsigned int GetNumberOfLocalParameters() const
+  unsigned int GetAggregateNumberOfLocalParameters() const
   { return 0; }
 
   void UpdateTransformParameters( const DerivativeType &, ParametersValueType ) {}

@@ -38,7 +38,7 @@ namespace itk
  *  GetValueAndDerivative
  *  Initialize
  *  GetNumberOfParameters
- *  GetNumberOfLocalParameters
+ *  GetAggregateNumberOfLocalParameters
  *  GetParameters
  *  SetParameters
  *  HasLocalSupport
@@ -133,7 +133,7 @@ public:
    * transform being optimized in the case of registration. Some of these are
    * used in non-metric classes, e.g. optimizers. */
   virtual NumberOfParametersType GetNumberOfParameters() const = 0;
-  virtual NumberOfParametersType GetNumberOfLocalParameters() const = 0;
+  virtual NumberOfParametersType GetAggregateNumberOfLocalParameters() const = 0;
 
   /** Set the active transform's parameters */
   virtual void SetParameters( ParametersType & params ) = 0;

@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkMultiTransformBase_h
-#define __itkMultiTransformBase_h
+#ifndef __itkMultiTransform_h
+#define __itkMultiTransform_h
 
 #include "itkTransform.h"
 
@@ -25,7 +25,7 @@
 namespace itk
 {
 
-/** \class MultiTransformBase
+/** \class MultiTransform
  * \brief This abstract class contains a list of transforms and provides basic methods.
  *
  * This abstract base class is used by classes that operate on a list of
@@ -61,18 +61,18 @@ namespace itk
  */
 template
 <class TScalar = double, unsigned int NDimensions = 3, unsigned int NSubDimensions = NDimensions>
-class ITK_EXPORT MultiTransformBase :
+class ITK_EXPORT MultiTransform :
   public Transform<TScalar, NDimensions, NDimensions>
 {
 public:
   /** Standard class typedefs. */
-  typedef MultiTransformBase                           Self;
+  typedef MultiTransform                               Self;
   typedef Transform<TScalar, NDimensions, NDimensions> Superclass;
   typedef SmartPointer<Self>                           Pointer;
   typedef SmartPointer<const Self>                     ConstPointer;
 
   /** Run-time type information (and related methods). */
-  itkTypeMacro( MultiTransformBase, Transform );
+  itkTypeMacro( MultiTransform, Transform );
 
   /** Sub transform type **/
   typedef Transform<TScalar, NSubDimensions, NSubDimensions > TransformType;
@@ -223,34 +223,39 @@ public:
       concatenated into a single ParametersType object.
       \note The sub-transforms are read in forward queue order,
       so the returned array is ordered in the same way. That is,
-      first sub-transform to be added is returned first in the
+      the first sub-transform added is returned first in the
       parameter array.*/
   virtual const ParametersType & GetParameters(void) const;
 
-  /* SetParameters for all sub-transforms.
+  /** SetParameters for all sub-transforms.
    * See GetParameters() for parameter ordering. */
   virtual void  SetParameters(const ParametersType & p);
 
-  /* GetFixedParameters for all sub-transforms.
+  /** GetFixedParameters for all sub-transforms.
    * See GetParameters() for parameter ordering. */
   virtual const ParametersType & GetFixedParameters(void) const;
 
-  /* SetFixedParameters for all sub-transforms.
+  /** SetFixedParameters for all sub-transforms.
    * See GetParameters() for parameter ordering. */
   virtual void SetFixedParameters(const ParametersType & fixedParameters);
 
-  /* Get total number of parameters. Sum of all sub-transforms. */
+  /** Get total number of parameters. Sum of all sub-transforms. */
   virtual NumberOfParametersType GetNumberOfParameters(void) const;
 
-  /* Get total number of local parameters, the sum of all sub-transforms. */
-  virtual NumberOfParametersType GetNumberOfLocalParameters(void) const;
+  /** Get total number of local parameters, the sum of all sub-transforms. */
+  virtual NumberOfParametersType GetAggregateNumberOfLocalParameters(void) const;
 
-  /* Get total number of fixed parameters, the sum of all sub-transforms. */
+  virtual NumberOfParametersType GetNumberOfLocalParametersAtPoint(const InputPointType  &) const;
+
+  /** Get total number of fixed parameters, the sum of all sub-transforms. */
   virtual NumberOfParametersType GetNumberOfFixedParameters(void) const;
 
   /** Update the transform's parameters by the values in \c update.
    * See GetParameters() for parameter ordering. */
   virtual void UpdateTransformParameters( const DerivativeType & update, ScalarType  factor = 1.0 );
+
+  /* Redeclare this as pure virtual to force derived classes to redefine */
+  virtual void UpdateFullArrayWithLocalParametersAtPoint( DerivativeType &, const DerivativeType &, const InputPointType & ) const = 0;
 
   /** Returns a boolean indicating whether it is possible or not to compute the
    * inverse of this current Transform. If it is possible, then the inverse of
@@ -264,9 +269,12 @@ public:
 //  virtual void FlattenTransformQueue();
 
 protected:
-  MultiTransformBase();
-  virtual ~MultiTransformBase();
+  MultiTransform();
+  virtual ~MultiTransform();
   void PrintSelf( std::ostream& os, Indent indent ) const;
+
+  /** Clone the current transform */
+  virtual typename LightObject::Pointer InternalClone() const;
 
   virtual void PushFrontTransform( TransformTypePointer t  )
   {
@@ -300,7 +308,7 @@ protected:
   mutable ModifiedTimeType        m_LocalParametersUpdateTime;
 
 private:
-  MultiTransformBase( const Self & ); // purposely not implemented
+  MultiTransform( const Self & ); // purposely not implemented
   void operator=( const Self & );     // purposely not implemented
 
 };
@@ -308,7 +316,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkMultiTransformBase.hxx"
+#include "itkMultiTransform.hxx"
 #endif
 
-#endif // __itkMultiTransformBase_h
+#endif // __itkMultiTransform_h

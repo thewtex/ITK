@@ -102,7 +102,7 @@ DemonsImageToImageMetricv4GetValueAndDerivativeThreader< TDomainPartitioner, TIm
     return true;
     }
 
-  for ( SizeValueType p = 0; p < this->GetCachedNumberOfLocalParameters(); p++ )
+  for ( SizeValueType p = 0; p < localDerivativeReturn.Size(); p++ )
     {
     localDerivativeReturn[p] = speedValue * (*gradient)[p] / denominator;
     }

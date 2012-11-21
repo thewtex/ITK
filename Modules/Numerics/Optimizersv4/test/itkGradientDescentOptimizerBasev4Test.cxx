@@ -59,7 +59,7 @@ public:
     derivative.Fill( itk::NumericTraits< ParametersValueType >::Zero );
     }
 
-  unsigned int GetNumberOfLocalParameters() const
+  unsigned int GetAggregateNumberOfLocalParameters() const
   { return 3; }
 
   void UpdateTransformParameters( const DerivativeType &, ParametersValueType ) {}

@@ -60,7 +60,7 @@ public:
     derivative.Fill(0.0);
     }
 
-  unsigned int GetNumberOfLocalParameters() const
+  unsigned int GetAggregateNumberOfLocalParameters() const
   { return 0; }
 
   void UpdateTransformParameters( const DerivativeType &, ParametersValueType ) {}
@@ -271,7 +271,7 @@ int itkRegistrationParameterScalesFromIndexShiftTest(int , char* [])
 
   // Check the correctness
   RegistrationParameterScalesFromShiftType::ScalesType theoreticalLocalScales(
-    displacementTransform->GetNumberOfLocalParameters());
+    displacementTransform->GetAggregateNumberOfLocalParameters());
   theoreticalLocalScales.Fill(1.0);
 
   bool displacementPass = true;

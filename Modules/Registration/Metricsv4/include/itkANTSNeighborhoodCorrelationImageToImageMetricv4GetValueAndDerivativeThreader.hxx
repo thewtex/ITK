@@ -88,7 +88,7 @@ ANTSNeighborhoodCorrelationImageToImageMetricv4GetValueAndDerivativeThreader< TD
        * transform is being used. */
       if( this->GetComputeDerivative() )
         {
-        this->StorePointDerivativeResult( scanIt.GetIndex(), threadId );
+        this->StorePointDerivativeResult( virtualPoint, threadId );
         }
       }
 
@@ -470,6 +470,14 @@ ANTSNeighborhoodCorrelationImageToImageMetricv4GetValueAndDerivativeThreader< TD
 ::ComputeMovingTransformDerivative( const ScanIteratorType &, ScanMemType &scanMem, const ScanParametersType &, DerivativeType &deriv, MeasureType &localCC, const ThreadIdType threadId) const
 {
   MovingImageGradientType derivWRTImage;
+
+  /* Size local-specific intermediate storage. This is only needed for local-support transforms that
+   * have variable number of local parameters. SetSize is efficient in that memory is not changed
+   * if the size isn't changed. Make sure it gets sized no matter what. */
+  NumberOfParametersType numLocal = this->m_Associate->GetNumberOfLocalParametersAtPoint( scanMem.virtualPoint );
+  deriv.SetSize( numLocal );
+  this->m_MovingTransformJacobianPerThread[threadId].SetSize( this->m_ANTSAssociate->VirtualImageDimension, numLocal );
+
   localCC = NumericTraits<MeasureType>::OneValue();
 
   typedef InternalComputationValueType LocalRealType;
@@ -508,9 +516,7 @@ ANTSNeighborhoodCorrelationImageToImageMetricv4GetValueAndDerivativeThreader< TD
     /** For dense transforms, this returns identity */
     this->m_Associate->GetMovingTransform()->ComputeJacobianWithRespectToParameters( scanMem.virtualPoint, jacobian );
 
-    NumberOfParametersType numberOfLocalParameters = this->m_Associate->GetMovingTransform()->GetNumberOfLocalParameters();
-
-    for (NumberOfParametersType par = 0; par < numberOfLocalParameters; par++)
+    for (NumberOfParametersType par = 0; par < numLocal; par++)
       {
       deriv[par] = NumericTraits<DerivativeValueType>::Zero;
       for (ImageDimensionType dim = 0; dim < TImageToImageMetric::MovingImageDimension; dim++)
@@ -530,7 +536,7 @@ template < class TDomainPartitioner, class TImageToImageMetric, class TNeighborh
 bool
 ANTSNeighborhoodCorrelationImageToImageMetricv4GetValueAndDerivativeThreader< TDomainPartitioner, TImageToImageMetric, TNeighborhoodCorrelationMetric >
 ::ProcessVirtualPoint_impl(IdentityHelper<ThreadedIndexedContainerPartitioner> itkNotUsed(self),
-    const VirtualIndexType & virtualIndex, const VirtualPointType & itkNotUsed(virtualPoint),
+    const VirtualIndexType & virtualIndex, const VirtualPointType & virtualPoint,
     const ThreadIdType threadId )
 {
 
@@ -586,7 +592,7 @@ ANTSNeighborhoodCorrelationImageToImageMetricv4GetValueAndDerivativeThreader< TD
      * transform is being used. */
     if( this->GetComputeDerivative() )
       {
-      this->StorePointDerivativeResult( scanIt.GetIndex(), threadId );
+      this->StorePointDerivativeResult( virtualPoint, threadId );
       }
     }
 

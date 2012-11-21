@@ -100,7 +100,9 @@ PointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>
   // This will create a virtual domain that matches the DisplacementFieldTransform.
   // If the virutal domain has already been set, it will
   // be verified against the transform in Superclass::Initialize.
-  if( this->HasLocalSupport() )
+  //
+  //TODO: will need to support this check or similar for Piecewise txf's too.
+  if( this->HasLocalSupport() && this->m_MovingTransform->GetTransformCategory() != MovingTransformType::Piecewise)
     {
     if( ! this->m_UserHasSetVirtualDomain )
       {
@@ -235,10 +237,8 @@ PointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>
   derivative.Fill( NumericTraits<DerivativeValueType>::Zero );
 
   value = NumericTraits<MeasureType>::Zero;
-  MovingTransformJacobianType  jacobian( MovingPointDimension, this->GetNumberOfLocalParameters() );
-
-  DerivativeType localTransformDerivative( this->GetNumberOfLocalParameters() );
-  localTransformDerivative.Fill( NumericTraits<DerivativeValueType>::Zero );
+  MovingTransformJacobianType  jacobian;
+  DerivativeType localTransformDerivative;
 
   // Virtual point set will be the same size as fixed point set as long as it's
   // generated from the fixed point set.
@@ -281,14 +281,16 @@ PointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>
       pointDerivative = this->GetLocalNeighborhoodDerivative( It.Value(), pixel );
       }
 
+    /* Resize intermediary variables. These will only actually be resized after the first point
+     * for transforms that have variable number of local parameters. */
+    NumberOfParametersType numLocal = this->GetNumberOfLocalParametersAtPoint( virtualIt.Value() );
+    jacobian.SetSize( MovingPointDimension, numLocal );
+    localTransformDerivative.SetSize( numLocal );
+    localTransformDerivative.Fill( NumericTraits<DerivativeValueType>::Zero );
+
     // Map into parameter space
-    if( this->HasLocalSupport() )
-      {
-      // Reset to zero since we're not accumulating in the local-support case.
-      localTransformDerivative.Fill( NumericTraits<DerivativeValueType>::Zero );
-      }
     this->GetMovingTransform()->ComputeJacobianWithRespectToParameters( virtualIt.Value(), jacobian );
-    for ( NumberOfParametersType par = 0; par < this->GetNumberOfLocalParameters(); par++ )
+    for ( NumberOfParametersType par = 0; par < this->GetAggregateNumberOfLocalParameters(); par++ )
       {
       for( DimensionType d = 0; d < PointDimension; ++d )
         {
@@ -296,11 +298,8 @@ PointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>
         }
       }
 
-    // For local-support transforms, store the per-point result
-    if( this->HasLocalSupport() )
-      {
-      this->StorePointDerivative( virtualIt.Value(), localTransformDerivative, derivative );
-      }
+    // store the per-point result
+    this->StorePointDerivative( virtualIt.Value(), localTransformDerivative, derivative );
 
     ++It;
     ++virtualIt;
@@ -311,7 +310,7 @@ PointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>
     // For global-support transforms, average the accumulated derivative result
     if( ! this->HasLocalSupport() )
       {
-      derivative = localTransformDerivative / static_cast<DerivativeValueType>(this->m_NumberOfValidPoints);
+      derivative /= static_cast<DerivativeValueType>(this->m_NumberOfValidPoints);
       }
     value /= static_cast<MeasureType>( this->m_NumberOfValidPoints );
     }
@@ -343,26 +342,34 @@ void
 PointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>
 ::StorePointDerivative( const VirtualPointType & virtualPoint, const DerivativeType & pointDerivative, DerivativeType & field ) const
 {
-  // Update derivative field at some index.
-  // This requires the active transform displacement field to be the
-  // same size as virtual domain, and that VirtualImage PixelType
-  // is scalar (both of which are verified during Metric initialization).
-  try
+  if( ! this->HasLocalSupport() )
     {
-    OffsetValueType offset = this->ComputeParameterOffsetFromVirtualPoint( virtualPoint, this->GetNumberOfLocalParameters() );
-    for (NumberOfParametersType i=0; i < this->GetNumberOfLocalParameters(); i++)
-      {
-      /* Be sure to *add* here and not assign. Required for proper behavior
-       * with multi-variate metric. */
-      field[offset+i] += pointDerivative[i];
-      }
+    field += pointDerivative;
     }
-  catch( ExceptionObject & exc )
+  else
     {
-    std::string msg("Caught exception: \n");
-    msg += exc.what();
-    ExceptionObject err(__FILE__, __LINE__, msg);
-    throw err;
+    // Update derivative field at some index.
+    // This requires the active transform displacement field to be the
+    // same size as virtual domain, and that VirtualImage PixelType
+    // is scalar (both of which are verified during Metric initialization).
+    try
+      {
+      this->GetMovingTransform()->UpdateFullArrayWithLocalParametersAtPoint( field, pointDerivative, virtualPoint );
+      //OffsetValueType offset = this->ComputeParameterOffsetFromVirtualPoint( virtualPoint, this->GetAggregateNumberOfLocalParameters() );
+      //for (NumberOfParametersType i=0; i < this->GetAggregateNumberOfLocalParameters(); i++)
+      //  {
+        /* Be sure to *add* here and not assign. Required for proper behavior
+         * with multi-variate metric. */
+      //  field[offset+i] += pointDerivative[i];
+      //  }
+      }
+    catch( ExceptionObject & exc )
+      {
+      std::string msg("Caught exception: \n");
+      msg += exc.what();
+      ExceptionObject err(__FILE__, __LINE__, msg);
+      throw err;
+      }
     }
 }
 

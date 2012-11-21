@@ -231,15 +231,15 @@ RegistrationParameterScalesEstimator< TMetric >
 template< class TMetric >
 SizeValueType
 RegistrationParameterScalesEstimator< TMetric >
-::GetNumberOfLocalParameters()
+::GetAggregateNumberOfLocalParameters()
 {
   if (this->GetTransformForward())
     {
-    return this->m_Metric->GetMovingTransform()->GetNumberOfLocalParameters();
+    return this->m_Metric->GetMovingTransform()->GetAggregateNumberOfLocalParameters();
     }
   else
     {
-    return this->m_Metric->GetFixedTransform()->GetNumberOfLocalParameters();
+    return this->m_Metric->GetFixedTransform()->GetAggregateNumberOfLocalParameters();
     }
 }
 
@@ -291,7 +291,7 @@ RegistrationParameterScalesEstimator< TMetric >
 ::ComputeSquaredJacobianNorms( const VirtualPointType  & point, ParametersType & squareNorms )
 {
   JacobianType jacobian;
-  const SizeValueType numPara = this->GetNumberOfLocalParameters();
+  const SizeValueType numPara = this->GetAggregateNumberOfLocalParameters();
   const SizeValueType dim = this->GetDimension();
 
   if (this->GetTransformForward())

@@ -659,7 +659,7 @@ MatrixOffsetTransformBase<TScalarType, NInputDimensions, NOutputDimensions>
 {
   // This will not reallocate memory if the dimensions are equal
   // to the matrix's current dimensions.
-  jacobian.SetSize( NOutputDimensions, this->GetNumberOfLocalParameters() );
+  jacobian.SetSize( NOutputDimensions, this->GetNumberOfParameters() );
   jacobian.Fill(0.0);
 
   // The Jacobian of the affine transform is composed of

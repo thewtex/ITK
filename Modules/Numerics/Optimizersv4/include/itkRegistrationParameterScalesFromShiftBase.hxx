@@ -41,7 +41,7 @@ RegistrationParameterScalesFromShiftBase< TMetric >
   this->SampleVirtualDomain();
 
   const SizeValueType numAllPara = this->GetTransform()->GetNumberOfParameters();
-  const SizeValueType numLocalPara = this->GetNumberOfLocalParameters();
+  const SizeValueType numLocalPara = this->GetAggregateNumberOfLocalParameters();
 
   parameterScales.SetSize(numLocalPara);
 
@@ -182,7 +182,7 @@ RegistrationParameterScalesFromShiftBase< TMetric >
   this->ComputeSampleShifts(step, sampleShifts);
 
   const SizeValueType numAllPara = this->GetTransform()->GetNumberOfParameters();
-  const SizeValueType numPara = this->GetNumberOfLocalParameters();
+  const SizeValueType numPara = this->GetAggregateNumberOfLocalParameters();
   const SizeValueType numLocals = numAllPara / numPara;
 
   localStepScales.SetSize(numLocals);

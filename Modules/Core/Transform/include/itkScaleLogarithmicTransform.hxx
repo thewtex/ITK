@@ -96,7 +96,7 @@ ScaleLogarithmicTransform<ScalarType, NDimensions>
 {
   const ScaleType & scales = this->GetScale();
 
-  jacobian.SetSize( SpaceDimension, this->GetNumberOfLocalParameters() );
+  jacobian.SetSize( SpaceDimension, this->GetNumberOfParameters() );
   jacobian.Fill(0);
   for( unsigned int dim = 0; dim < SpaceDimension; dim++ )
     {

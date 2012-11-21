@@ -284,7 +284,7 @@ void
 Rigid2DTransform<TScalarType>::ComputeJacobianWithRespectToParameters(const InputPointType & p,
                                                                       JacobianType & j ) const
 {
-  j.SetSize( OutputSpaceDimension, this->GetNumberOfLocalParameters() );
+  j.SetSize( OutputSpaceDimension, this->GetNumberOfParameters() );
   j.Fill(0.0);
 
   const double ca = vcl_cos( this->GetAngle() );

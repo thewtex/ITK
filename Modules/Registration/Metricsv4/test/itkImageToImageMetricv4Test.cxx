@@ -85,7 +85,7 @@ protected:
     /* Just return some test values that can verify proper mechanics */
     metricValueResult = mappedFixedPixelValue + mappedMovingPixelValue;
 
-    for ( unsigned int par = 0; par < this->m_Associate->GetNumberOfLocalParameters(); par++ )
+    for ( unsigned int par = 0; par < localDerivativeReturn.Size(); par++ )
       {
       double sum = 0.0;
       for ( unsigned int dim = 0; dim < TImageToImageMetricv4::MovingImageDimension; dim++ )
@@ -186,15 +186,11 @@ bool ImageToImageMetricv4TestTestArray(
 
 //Global types
 const unsigned int ImageToImageMetricv4TestImageDimensionality = 2;
-typedef itk::Image< double, ImageToImageMetricv4TestImageDimensionality >
-                                      ImageToImageMetricv4TestImageType;
-typedef ImageToImageMetricv4TestMetric<
+typedef itk::Image< double, ImageToImageMetricv4TestImageDimensionality >   ImageToImageMetricv4TestImageType;
+typedef ImageToImageMetricv4TestMetric< ImageToImageMetricv4TestImageType,
                                         ImageToImageMetricv4TestImageType,
-                                        ImageToImageMetricv4TestImageType,
-                                        ImageToImageMetricv4TestImageType>
-                                         ImageToImageMetricv4TestMetricType;
-typedef ImageToImageMetricv4TestMetricType::Pointer
-                                      ImageToImageMetricv4TestMetricPointer;
+                                        ImageToImageMetricv4TestImageType>  ImageToImageMetricv4TestMetricType;
+typedef ImageToImageMetricv4TestMetricType::Pointer                         ImageToImageMetricv4TestMetricPointer;
 //
 // Compute truth values for the identity-transform tests
 //
@@ -241,6 +237,8 @@ void ImageToImageMetricv4TestComputeIdentityTruthValues(
     // complete test, but it does test the rest of the mechanics.
     ImageToImageMetricv4TestMetricType::MovingImageGradientType movingImageDerivative;
     ImageToImageMetricv4TestMetricType::FixedImageGradientType fixedImageDerivative;
+    ImageToImageMetricv4TestMetricType::FixedImagePointType fixedPoint;
+    fixedImage->TransformIndexToPhysicalPoint( itFixed.GetIndex(), fixedPoint );
     if( metric->GetUseFixedImageGradientFilter() )
       {
       ImageToImageMetricv4TestMetricType::FixedImageGradientImageType::ConstPointer fixedGradientImage = metric->GetFixedImageGradientImage();
@@ -250,9 +248,7 @@ void ImageToImageMetricv4TestComputeIdentityTruthValues(
       {
       typedef ImageToImageMetricv4TestMetricType::FixedImageGradientCalculatorType::ConstPointer FixedGradientCalculatorPointer;
       FixedGradientCalculatorPointer fixedGradientCalculator = metric->GetFixedImageGradientCalculator();
-      ImageToImageMetricv4TestMetricType::FixedImagePointType point;
-      fixedImage->TransformIndexToPhysicalPoint( itFixed.GetIndex(), point );
-      fixedImageDerivative = fixedGradientCalculator->Evaluate( point );
+      fixedImageDerivative = fixedGradientCalculator->Evaluate( fixedPoint );
       // We can skip the call to TransformCovariantVector since we're
       // working with identity transforms only.
       }
@@ -271,20 +267,20 @@ void ImageToImageMetricv4TestComputeIdentityTruthValues(
       movingImageDerivative = movingGradientCalculator->Evaluate( point );
       }
 
-    for ( unsigned int par = 0;
-          par < metric->GetNumberOfLocalParameters(); par++ )
+    ImageToImageMetricv4TestMetricType::NumberOfParametersType numLocal = metric->GetNumberOfLocalParametersAtPoint( fixedPoint );
+    for ( unsigned int par = 0; par < numLocal; par++ )
       {
       double sum = 0.0;
-      for ( unsigned int dim = 0;
-              dim < ImageToImageMetricv4TestImageDimensionality; dim++ )
+      for ( unsigned int dim = 0; dim < ImageToImageMetricv4TestImageDimensionality; dim++ )
         {
         sum += movingImageDerivative[dim] + fixedImageDerivative[dim];
         }
 
-      if( metric->GetMovingTransform()->GetTransformCategory() == MovingTransformType::DisplacementField )
+      if( metric->HasLocalSupport() )
         {
-        truthDerivative[ count * metric->GetNumberOfLocalParameters() + par ]
-                                                                        = sum;
+        //Note, this will need updating to test with PiecewiseTransforms with variable
+        // number of local parameters by point.
+        truthDerivative[ count * numLocal + par ] = sum;
         }
       else
         {
@@ -298,7 +294,7 @@ void ImageToImageMetricv4TestComputeIdentityTruthValues(
 
   // Take the averages
   truthValue /= metric->GetNumberOfValidPoints();
-  if( metric->GetMovingTransform()->GetTransformCategory() != MovingTransformType::DisplacementField )
+  if( ! metric->HasLocalSupport() )
     {
     truthDerivative /= metric->GetNumberOfValidPoints();
     }

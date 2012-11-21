@@ -20,6 +20,7 @@
 
 #include "itkDomainThreader.h"
 #include "itkCompensatedSummation.h"
+#include "itkFastMutexLock.h"
 
 namespace itk
 {
@@ -159,7 +160,7 @@ protected:
   /** Store derivative result from a single point calculation.
    * \warning If this method is overridden or otherwise not used
    * in a derived class, be sure to *accumulate* results. */
-  virtual void StorePointDerivativeResult( const VirtualIndexType & virtualIndex,
+  virtual void StorePointDerivativeResult( const VirtualPointType & virtualPoint,
                                            const ThreadIdType threadID );
 
   /** Intermediary threaded metric value storage. */
@@ -176,14 +177,15 @@ protected:
    * classes for efficiency. */
   mutable std::vector< JacobianType >                 m_MovingTransformJacobianPerThread;
 
-  /** Cached values to avoid call overhead.
-   *  These will only be set once threading has been started. */
-  mutable NumberOfParametersType                      m_CachedNumberOfParameters;
-  mutable NumberOfParametersType                      m_CachedNumberOfLocalParameters;
-
 private:
   ImageToImageMetricv4GetValueAndDerivativeThreaderBase( const Self & ); // purposely not implemented
   void operator=( const Self & ); // purposely not implemented
+
+  /* Mutex lock is needed in some cases for updating the derivative at each point */
+  typename FastMutexLock::Pointer m_DerivativeUpdateMutexLock;
+  bool                            m_DerivativeUpdateNeedsMutexLock;
+
+
 };
 
 } // end namespace itk

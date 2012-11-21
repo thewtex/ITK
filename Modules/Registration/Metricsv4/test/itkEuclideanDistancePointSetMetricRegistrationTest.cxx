@@ -146,7 +146,7 @@ int itkEuclideanDistancePointSetMetricRegistrationTestRun(
     {
     std::cout << "local-support transform non-zero parameters: " << std::endl;
     typename TTransform::ParametersType params = transform->GetParameters();
-    for( itk::SizeValueType n = 0; n < transform->GetNumberOfParameters(); n += transform->GetNumberOfLocalParameters() )
+    for( itk::SizeValueType n = 0; n < transform->GetNumberOfParameters(); n += transform->GetAggregateNumberOfLocalParameters() )
       {
       typename TTransform::ParametersValueType zero = itk::NumericTraits<typename TTransform::ParametersValueType>::ZeroValue();
       if( params[n] != zero && params[n+1] != zero )

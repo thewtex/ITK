@@ -252,7 +252,7 @@ int itkQuasiNewtonOptimizerv4RegistrationTestMain(int argc, char *argv[])
 
   // Optimizer
   typename RegistrationParameterScalesFromShiftType::ScalesType
-    displacementScales( displacementTransform->GetNumberOfLocalParameters() );
+    displacementScales( displacementTransform->GetAggregateNumberOfLocalParameters() );
   displacementScales.Fill(1);
   optimizer->SetMetric( metric );
   optimizer->SetNumberOfIterations( numberOfDisplacementIterations );

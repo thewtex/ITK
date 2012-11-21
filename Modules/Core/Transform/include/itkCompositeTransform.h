@@ -18,7 +18,7 @@
 #ifndef __itkCompositeTransform_h
 #define __itkCompositeTransform_h
 
-#include "itkMultiTransformBase.h"
+#include "itkMultiTransform.h"
 
 #include <deque>
 
@@ -86,14 +86,14 @@ namespace itk
 template
 <class TScalar = double, unsigned int NDimensions = 3>
 class ITK_EXPORT CompositeTransform :
-  public MultiTransformBase<TScalar, NDimensions>
+  public MultiTransform<TScalar, NDimensions>
 {
 public:
   /** Standard class typedefs. */
-  typedef CompositeTransform                                    Self;
-  typedef MultiTransformBase<TScalar, NDimensions, NDimensions> Superclass;
-  typedef SmartPointer<Self>                                    Pointer;
-  typedef SmartPointer<const Self>                              ConstPointer;
+  typedef CompositeTransform                                Self;
+  typedef MultiTransform<TScalar, NDimensions, NDimensions> Superclass;
+  typedef SmartPointer<Self>                                Pointer;
+  typedef SmartPointer<const Self>                          ConstPointer;
 
   /** Run-time type information (and related methods). */
   itkTypeMacro( CompositeTransform, Transform );
@@ -318,7 +318,7 @@ public:
       so the returned array is ordered in the same way. That is,
       the last sub-transform to be added is returned first in the
       parameter array. This is the opposite of what's done in the
-      parent MultiTransformBase class. */
+      parent MultiTransform class. */
   virtual const ParametersType & GetParameters(void) const;
 
   /* SetParameters only for transforms that are set to be optimized
@@ -337,9 +337,11 @@ public:
    * optimized */
   virtual NumberOfParametersType GetNumberOfParameters(void) const;
 
-  /* Get total number of local parameters for transforms that are set
+  /* Get total number of aggregate local parameters for transforms that are set
    * to be optimized */
-  virtual NumberOfParametersType GetNumberOfLocalParameters(void) const;
+  virtual NumberOfParametersType GetAggregateNumberOfLocalParameters(void) const;
+
+  virtual NumberOfParametersType GetNumberOfLocalParametersAtPoint(const InputPointType  &) const;
 
   /* Get total number of fixed parameters for transforms that are set
    * to be optimized */
@@ -348,6 +350,10 @@ public:
   /** Update the transform's parameters by the values in \c update.
    * See GetParameters() for parameter ordering. */
   virtual void UpdateTransformParameters( const DerivativeType & update, ScalarType  factor = 1.0 );
+
+  /** Update \c fullArray with values from \c localUpdate at \c point.
+   * See GetParameters() for parameter ordering. */
+  virtual void UpdateFullArrayWithLocalParametersAtPoint( DerivativeType & fullArray, const DerivativeType & localUpdate, const InputPointType & point) const;
 
   /**
    * Flatten the transform queue such that there are no nested composite transforms.

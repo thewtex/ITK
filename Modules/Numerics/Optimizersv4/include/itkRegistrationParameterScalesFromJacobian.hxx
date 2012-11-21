@@ -43,7 +43,7 @@ RegistrationParameterScalesFromJacobian< TMetric >
   this->SetScalesSamplingStrategy();
   this->SampleVirtualDomain();
 
-  const SizeValueType numPara = this->GetNumberOfLocalParameters();
+  const SizeValueType numPara = this->GetAggregateNumberOfLocalParameters();
 
   parameterScales.SetSize(numPara);
 
@@ -125,7 +125,7 @@ RegistrationParameterScalesFromJacobian< TMetric >
   this->ComputeSampleStepScales(step, sampleScales);
 
   const SizeValueType numSamples = this->m_SamplePoints.size();
-  const SizeValueType numPara = this->GetNumberOfLocalParameters();
+  const SizeValueType numPara = this->GetAggregateNumberOfLocalParameters();
   const SizeValueType numAllPara = this->GetTransform()->GetNumberOfParameters();
   const SizeValueType numLocals = numAllPara / numPara;
 
@@ -155,7 +155,7 @@ RegistrationParameterScalesFromJacobian< TMetric >
 {
   const SizeValueType numSamples = this->m_SamplePoints.size();
   const SizeValueType dim = this->GetDimension();
-  const SizeValueType numPara = this->GetNumberOfLocalParameters();
+  const SizeValueType numPara = this->GetAggregateNumberOfLocalParameters();
 
   sampleScales.SetSize(numSamples);
 

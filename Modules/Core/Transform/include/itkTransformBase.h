@@ -95,7 +95,8 @@ public:
     BSpline=2,
     Spline=3,
     DisplacementField=4,
-    VelocityField=5
+    VelocityField=5,
+    Piecewise=6
   } TransformCategoryType;
 
   /** Get transform category */

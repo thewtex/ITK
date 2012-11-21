@@ -382,6 +382,14 @@ public:
 
   virtual void UpdateTransformParameters( const DerivativeType & update, ScalarType factor = 1.0 );
 
+  /**
+   * \copydoc Transform::UpdateFullArrayWithLocalParametersAtPoint()
+   *
+   * \note This rounds point to generate a discrete index for determing the position
+   * within \c fullArray to update. No interpolation is performed.
+   */
+  virtual void UpdateFullArrayWithLocalParametersAtPoint( DerivativeType & fullArray, const DerivativeType & localUpdate, const InputPointType & itkNotUsed(point) ) const;
+
   /** Return an inverse of this transform.
    * Note that the inverse displacement field must be set by the user. */
   bool GetInverse( Self *inverse ) const;
@@ -396,7 +404,7 @@ public:
     return Self::DisplacementField;
   }
 
-  virtual NumberOfParametersType GetNumberOfLocalParameters(void) const
+  virtual NumberOfParametersType GetAggregateNumberOfLocalParameters(void) const
   {
     return Dimension;
   }

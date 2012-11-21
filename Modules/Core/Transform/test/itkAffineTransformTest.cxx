@@ -596,8 +596,7 @@ int itkAffineTransformTest(int, char *[])
   jaff->ComputeJacobianWithRespectToPosition( jpoint, jaffJacobian );
   for( unsigned int i = 0; i < Affine3DType::MatrixType::RowDimensions; i++ )
     {
-    for( unsigned int j = 0;
-         j < Affine3DType::MatrixType::ColumnDimensions; j++ )
+    for( unsigned int j = 0; j < Affine3DType::MatrixType::ColumnDimensions; j++ )
       {
       if( !testValue( jaffJacobian[i][j], jaffMatrix[i][j] ) )
         {
@@ -684,6 +683,25 @@ int itkAffineTransformTest(int, char *[])
       return EXIT_FAILURE;
       }
     }
+
+  /* Test UpdateFullArrayWithLocalParametersAtPoint */
+  Affine3DType::DerivativeType fullArray( paff->GetNumberOfParameters() );
+  fullArray.Fill( 0.0 );
+  Affine3DType::InputPointType point;
+  point.Fill( 2.0 );
+  Affine3DType::DerivativeType localUpdate( paff->GetNumberOfLocalParametersAtPoint( point ) );
+  for( unsigned int i = 0; i < paff->GetNumberOfParameters(); i++ )
+    {
+    localUpdate[i] = i;
+    }
+  paff->UpdateFullArrayWithLocalParametersAtPoint( fullArray, localUpdate, point );
+  if( fullArray != localUpdate )
+    {
+    std::cout << "Error testing UpdateFullArrayWithLocalParametersAtPoint. Expected: " << localUpdate << std::endl << "Got: " << fullArray << std::endl;
+    return EXIT_FAILURE;
+    }
+
+  /****/
 
   paff->SetIdentity();
   paff->Print( std::cout );

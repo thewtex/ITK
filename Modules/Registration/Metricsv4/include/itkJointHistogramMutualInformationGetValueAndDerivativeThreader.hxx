@@ -145,7 +145,7 @@ JointHistogramMutualInformationGetValueAndDerivativeThreader< TDomainPartitioner
   /** For dense transforms, this returns identity */
   this->m_JointAssociate->m_MovingTransform->ComputeJacobianWithRespectToParameters( virtualPoint, jacobian );
 
-  for ( NumberOfParametersType par = 0; par < this->GetCachedNumberOfLocalParameters(); par++ )
+  for ( NumberOfParametersType par = 0; par < localDerivativeReturn.Size(); par++ )
     {
     InternalComputationValueType sum = NumericTraits< InternalComputationValueType >::Zero;
     for ( SizeValueType dim = 0; dim < TImageToImageMetric::MovingImageDimension; dim++ )

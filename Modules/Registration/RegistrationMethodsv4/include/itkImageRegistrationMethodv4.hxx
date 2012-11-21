@@ -349,11 +349,11 @@ ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform>
 
   this->m_Optimizer->SetMetric( this->m_Metric );
 
-  if( ( this->m_Optimizer->GetScales() ).Size() != this->m_OutputTransform->GetNumberOfLocalParameters() )
+  if( ( this->m_Optimizer->GetScales() ).Size() != this->m_OutputTransform->GetAggregateNumberOfLocalParameters() )
     {
     typedef typename OptimizerType::ScalesType ScalesType;
     ScalesType scales;
-    scales.SetSize( this->m_OutputTransform->GetNumberOfLocalParameters() );
+    scales.SetSize( this->m_OutputTransform->GetAggregateNumberOfLocalParameters() );
     scales.Fill( NumericTraits<typename ScalesType::ValueType>::OneValue() );
     this->m_Optimizer->SetScales( scales );
     }

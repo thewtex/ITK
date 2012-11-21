@@ -252,7 +252,7 @@ Euler3DTransform<TScalarType>
   const double cz = vcl_cos(m_AngleZ);
   const double sz = vcl_sin(m_AngleZ);
 
-  jacobian.SetSize( 3, this->GetNumberOfLocalParameters() );
+  jacobian.SetSize( 3, this->GetNumberOfParameters() );
   jacobian.Fill(0.0);
 
   const double px = p[0] - this->GetCenter()[0];

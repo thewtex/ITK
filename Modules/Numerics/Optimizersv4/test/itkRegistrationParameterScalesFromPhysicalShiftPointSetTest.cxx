@@ -304,7 +304,7 @@ int itkRegistrationParameterScalesFromPhysicalShiftPointSetTest(int , char* [])
   std::cout << "Shift scales for the displacement field transform = " << localScales << std::endl;
 
   // Check the correctness
-  RegistrationParameterScalesFromPhysicalShiftType::ScalesType theoreticalLocalScales( displacementTransform->GetNumberOfLocalParameters() );
+  RegistrationParameterScalesFromPhysicalShiftType::ScalesType theoreticalLocalScales( displacementTransform->GetAggregateNumberOfLocalParameters() );
   theoreticalLocalScales.Fill(1.0);
 
   bool displacementPass = true;

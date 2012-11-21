@@ -150,7 +150,7 @@ MattesMutualInformationImageToImageMetricv4GetValueAndDerivativeThreader< TDomai
       JointPDFDerivativesIndexType jointPDFDerivativesIndex;
       jointPDFDerivativesIndex.Fill(0);
       JointPDFDerivativesSizeType jointPDFDerivativesSize;
-      jointPDFDerivativesSize[0] = this->GetCachedNumberOfLocalParameters();
+      jointPDFDerivativesSize[0] = this->m_MattesAssociate->GetAggregateNumberOfLocalParameters();
       jointPDFDerivativesSize[1] = this->m_MattesAssociate->m_NumberOfHistogramBins;
       jointPDFDerivativesSize[2] = this->m_MattesAssociate->m_NumberOfHistogramBins;
 
@@ -274,8 +274,8 @@ MattesMutualInformationImageToImageMetricv4GetValueAndDerivativeThreader< TDomai
     if( this->m_MattesAssociate->HasLocalSupport() )
       {
       OffsetValueType jointPdfIndex1D = pdfMovingIndex + (fixedImageParzenWindowIndex * this->m_MattesAssociate->m_NumberOfHistogramBins);
-      localDerivativeOffset = this->m_MattesAssociate->ComputeParameterOffsetFromVirtualIndex( virtualIndex, this->GetCachedNumberOfLocalParameters() );
-      for (NumberOfParametersType i=0; i < this->GetCachedNumberOfLocalParameters(); i++)
+      localDerivativeOffset = this->m_MattesAssociate->ComputeParameterOffsetFromVirtualIndex( virtualIndex, this->m_MattesAssociate->GetAggregateNumberOfLocalParameters() );
+      for (NumberOfParametersType i=0; i < this->m_MattesAssociate->GetAggregateNumberOfLocalParameters(); i++)
         {
         this->m_MattesAssociate->m_JointPdfIndex1DArray[localDerivativeOffset + i] = jointPdfIndex1D;
         }
@@ -306,11 +306,11 @@ MattesMutualInformationImageToImageMetricv4GetValueAndDerivativeThreader< TDomai
       // Not used with global support transforms.
       DerivativeValueType * localSupportDerivativeResultPtr = NULL;
 
-    if( this->m_MattesAssociate->m_MovingTransform->GetTransformCategory() == MovingTransformType::DisplacementField )
-      {
-      // ptr to where the derivative result should go, for efficiency
-      localSupportDerivativeResultPtr = &( this->m_MattesAssociate->m_LocalDerivativeByParzenBin[movingParzenBin][localDerivativeOffset] );
-      }
+      if( this->m_MattesAssociate->HasLocalSupport() )
+        {
+        // ptr to where the derivative result should go, for efficiency
+        localSupportDerivativeResultPtr = &( this->m_MattesAssociate->m_LocalDerivativeByParzenBin[movingParzenBin][localDerivativeOffset] );
+        }
 
       // Compute PDF derivative contribution.
       this->ComputePDFDerivatives(threadID,
@@ -353,14 +353,14 @@ MattesMutualInformationImageToImageMetricv4GetValueAndDerivativeThreader< TDomai
   const OffsetValueType pdfFixedIndex = fixedImageParzenWindowIndex;
 
   JointPDFDerivativesValueType *derivPtr=0;
-  if( this->m_MattesAssociate->m_MovingTransform->GetTransformCategory() != MovingTransformType::DisplacementField )
+  if( ! this->m_MattesAssociate->HasLocalSupport() )
     {
     derivPtr = this->m_MattesAssociate->m_ThreaderJointPDFDerivatives[threadID]->GetBufferPointer()
       + ( pdfFixedIndex  * this->m_MattesAssociate->m_ThreaderJointPDFDerivatives[threadID]->GetOffsetTable()[2] )
       + ( pdfMovingIndex * this->m_MattesAssociate->m_ThreaderJointPDFDerivatives[threadID]->GetOffsetTable()[1] );
     }
 
-  for( NumberOfParametersType mu = 0; mu < this->GetCachedNumberOfLocalParameters(); mu++ )
+  for( NumberOfParametersType mu = 0; mu < jacobian.columns(); mu++ )
     {
     PDFValueType innerProduct = 0.0;
     for( SizeValueType dim = 0; dim < this->m_MattesAssociate->MovingImageDimension; dim++ )
@@ -369,7 +369,7 @@ MattesMutualInformationImageToImageMetricv4GetValueAndDerivativeThreader< TDomai
       }
 
     const PDFValueType derivativeContribution = innerProduct * cubicBSplineDerivativeValue;
-    if( this->m_MattesAssociate->m_MovingTransform->GetTransformCategory() == MovingTransformType::DisplacementField )
+    if( this->m_MattesAssociate->HasLocalSupport() )
       {
       *( localSupportDerivativeResultPtr ) += derivativeContribution;
       localSupportDerivativeResultPtr++;
@@ -413,7 +413,7 @@ MattesMutualInformationImageToImageMetricv4GetValueAndDerivativeThreader< TDomai
       /* See note above about threading. */
       for( ThreadIdType threadID = 0; threadID < this->GetNumberOfThreadsUsed(); threadID++ )
         {
-        const NumberOfParametersType rowSize = this->GetCachedNumberOfLocalParameters() * this->m_MattesAssociate->m_NumberOfHistogramBins;
+        const NumberOfParametersType rowSize = this->m_MattesAssociate->GetAggregateNumberOfLocalParameters() * this->m_MattesAssociate->m_NumberOfHistogramBins;
 
         const SizeValueType maxI = rowSize * ( this->m_MattesAssociate->m_ThreaderJointPDFEndBin[threadID] - this->m_MattesAssociate->m_ThreaderJointPDFStartBin[threadID] + 1 );
 

@@ -124,8 +124,7 @@ int itkDisplacementFieldTransformTest(int, char *[] )
   typedef  itk::Vector<ScalarType, dimensions>             Vector2Type;
 
   /* Create a displacement field transform */
-  DisplacementTransformType::Pointer displacementTransform =
-    DisplacementTransformType::New();
+  DisplacementTransformType::Pointer displacementTransform = DisplacementTransformType::New();
   typedef DisplacementTransformType::DisplacementFieldType FieldType;
   typedef DisplacementTransformType::DisplacementFieldType DisplacementFieldType;
   FieldType::Pointer field = FieldType::New(); // This is based on itk::Image
@@ -266,13 +265,10 @@ int itkDisplacementFieldTransformTest(int, char *[] )
     {
     identity[i][i] = 1.0;
     }
-  displacementTransform->ComputeJacobianWithRespectToParameters(
-    testPoint, testIdentity );
+  displacementTransform->ComputeJacobianWithRespectToParameters( testPoint, testIdentity );
   if( !sameArray2D( identity, testIdentity, 1e-10 ) )
     {
-    std::cout << "Failed returning identity for "
-    "ComputeJacobianWithRespectToParameters( point, ... )"
-              << std::endl;
+    std::cout << "Failed returning identity for ComputeJacobianWithRespectToParameters( point, ... )" << std::endl;
     return EXIT_FAILURE;
     }
   DisplacementTransformType::IndexType testIndex;
@@ -281,9 +277,7 @@ int itkDisplacementFieldTransformTest(int, char *[] )
     testIndex, testIdentity );
   if( !sameArray2D( identity, testIdentity, 1e-10 ) )
     {
-    std::cout << "Failed returning identity for "
-    "ComputeJacobianWithRespectToParameters( index, ... )"
-              << std::endl;
+    std::cout << "Failed returning identity for ComputeJacobianWithRespectToParameters( index, ... )" << std::endl;
     return EXIT_FAILURE;
     }
 
@@ -377,8 +371,7 @@ int itkDisplacementFieldTransformTest(int, char *[] )
   std::cout << "covariant vector 1 transformed: " << deformcVector << std::endl;
   if( !sameVector( deformcVector, deformcVectorTruth, 0.1 ) )
     {
-    std::cout << "Failed transforming vector 1. Should be "
-              << deformcVectorTruth << std::endl;
+    std::cout << "Failed transforming vector 1. Should be " << deformcVectorTruth << std::endl;
     return EXIT_FAILURE;
     }
 
@@ -395,8 +388,7 @@ int itkDisplacementFieldTransformTest(int, char *[] )
 
   if( !caughtException )
     {
-    std::cout << "Expected TransformCovariantVector(vector) to throw exception."
-              << std::endl;
+    std::cout << "Expected TransformCovariantVector(vector) to throw exception." << std::endl;
     return EXIT_FAILURE;
     }
 
@@ -407,13 +399,10 @@ int itkDisplacementFieldTransformTest(int, char *[] )
 
   deformcVVectorTruth = affineTransform->TransformCovariantVector( testcVVector );
   deformcVVector = displacementTransform->TransformCovariantVector( testcVVector, testPoint );
-  std::cout << "variable length covariant vector 1 transformed: "
-            << deformcVVector << std::endl;
+  std::cout << "variable length covariant vector 1 transformed: " << deformcVVector << std::endl;
   if( !sameVariableVector( deformcVVector, deformcVVectorTruth, 0.1 ) )
     {
-    std::cout
-    << "Failed transforming variable length covariant vector 1. Should be "
-    << deformcVVectorTruth << std::endl;
+    std::cout << "Failed transforming variable length covariant vector 1. Should be " << deformcVVectorTruth << std::endl;
     return EXIT_FAILURE;
     }
 
@@ -430,14 +419,12 @@ int itkDisplacementFieldTransformTest(int, char *[] )
 
   if( !caughtException )
     {
-    std::cout << "Expected TransformCovariantVector(vector) to throw exception."
-              << std::endl;
+    std::cout << "Expected TransformCovariantVector(vector) to throw exception." << std::endl;
     return EXIT_FAILURE;
     }
 
   DisplacementTransformType::InputDiffusionTensor3DType  testTensor;
-  DisplacementTransformType::OutputDiffusionTensor3DType deformTensor,
-    deformTensorTruth;
+  DisplacementTransformType::OutputDiffusionTensor3DType deformTensor, deformTensorTruth;
   testTensor[0] = 3;
   testTensor[1] = 0.01;
   testTensor[2] = 0.01;
@@ -448,13 +435,11 @@ int itkDisplacementFieldTransformTest(int, char *[] )
   // pass thru functionality only for now
   deformTensorTruth = affineTransform->TransformDiffusionTensor3D( testTensor );
   std::cout << "tensor 1:             " << testTensor << std::endl;
-  deformTensor = displacementTransform->TransformDiffusionTensor3D(
-      testTensor, testPoint );
+  deformTensor = displacementTransform->TransformDiffusionTensor3D( testTensor, testPoint );
   std::cout << "tensor 1 transformed: " << deformTensor << std::endl;
   if( !sameTensor( deformTensor, deformTensorTruth, 0.0001 ) )
     {
-    std::cout << "Failed transforming tensor 1. Should be "
-              << deformTensorTruth << std::endl;
+    std::cout << "Failed transforming tensor 1. Should be " << deformTensorTruth << std::endl;
     // return EXIT_FAILURE;
     }
 
@@ -471,8 +456,7 @@ int itkDisplacementFieldTransformTest(int, char *[] )
 
   if( !caughtException )
     {
-    std::cout << "Expected TransformDiffusionTensor(tensor) to throw exception."
-              << std::endl;
+    std::cout << "Expected TransformDiffusionTensor(tensor) to throw exception." << std::endl;
     return EXIT_FAILURE;
     }
 
@@ -498,16 +482,12 @@ int itkDisplacementFieldTransformTest(int, char *[] )
 
   /* Test UpdateTransformParameters */
   std::cout << "Testing UpdateTransformParameters..." << std::endl;
-  DisplacementTransformType::DerivativeType
-  derivative( displacementTransform->GetNumberOfParameters() );
-  DisplacementTransformType::DerivativeType
-  updateTruth( displacementTransform->GetNumberOfParameters() );
-  DisplacementTransformType::ParametersType
-  params( displacementTransform->GetNumberOfParameters() );
+  DisplacementTransformType::DerivativeType derivative( displacementTransform->GetNumberOfParameters() );
+  DisplacementTransformType::DerivativeType updateTruth( displacementTransform->GetNumberOfParameters() );
+  DisplacementTransformType::ParametersType params( displacementTransform->GetNumberOfParameters() );
   derivative.Fill(1.2);
   ScalarType testFactor = 1.5;
-  for( unsigned int i = 0;
-       i < displacementTransform->GetNumberOfParameters(); i++ )
+  for( unsigned int i = 0; i < displacementTransform->GetNumberOfParameters(); i++ )
     {
     params[i] = i;
     updateTruth[i] = params[i] + derivative[i] * testFactor;
@@ -517,17 +497,53 @@ int itkDisplacementFieldTransformTest(int, char *[] )
   params = displacementTransform->GetParameters();
   // std::cout  << "params: " << std::endl << params << std::endl;
   //           << "derivativeTruth: " << std::endl << derivative << std::endl
-  for( unsigned int i = 0;
-       i < displacementTransform->GetNumberOfParameters(); i++ )
+  for( unsigned int i = 0; i < displacementTransform->GetNumberOfParameters(); i++ )
     {
     if( params[i] != updateTruth[i] )
       {
       std::cout << "UpdateTransformParameters test failed: " << std::endl;
-      std::cout << "params: " << std::endl << params << std::endl
-                << "updateTruth: " << std::endl << updateTruth << std::endl;
+      std::cout << "params: " << std::endl << params << std::endl << "updateTruth: " << std::endl << updateTruth << std::endl;
       return EXIT_FAILURE;
       }
     }
+
+  /* Test UpdateFullArrayWithLocalParametersAtPoint */
+  DisplacementTransformType::DerivativeType fullArray( displacementTransform->GetNumberOfParameters() );
+  DisplacementTransformType::DerivativeType truthArray( displacementTransform->GetNumberOfParameters() );
+  fullArray.Fill( 0.0 );
+  truthArray.Fill( 0.0 );
+  DisplacementTransformType::InputPointType point;
+  point.Fill( 1.0 );
+  DisplacementTransformType::NumberOfParametersType numLocal = displacementTransform->GetNumberOfLocalParametersAtPoint( point );
+  DisplacementTransformType::DerivativeType localUpdate( numLocal );
+  DisplacementTransformType::IndexType pointIndex;
+  displacementTransform->GetDisplacementField()->TransformPhysicalPointToIndex( point, pointIndex );
+  itk::OffsetValueType offset = displacementTransform->GetDisplacementField()->ComputeOffset( pointIndex ) * numLocal;
+  for( DisplacementTransformType::NumberOfParametersType n=0; n < numLocal; n++ )
+    {
+    localUpdate[n] = n + 1.0;
+    truthArray[offset + n] += localUpdate[n];
+    }
+  displacementTransform->UpdateFullArrayWithLocalParametersAtPoint( fullArray, localUpdate, point );
+  if( fullArray != truthArray )
+    {
+    std::cout << "UpdateFullArrayWithLocalParametersAtPoint 1 failed. Expected: " << truthArray << std::endl << "Got: " << fullArray << std::endl;
+    return EXIT_FAILURE;
+    }
+
+  /* Again, but at 0th point to test w/out the offset calculation. */
+  point.Fill( 0.0 );
+  for( DisplacementTransformType::NumberOfParametersType n=0; n < numLocal; n++ )
+    {
+    truthArray[n] += localUpdate[n];
+    }
+  displacementTransform->UpdateFullArrayWithLocalParametersAtPoint( fullArray, localUpdate, point );
+  if( fullArray != truthArray )
+    {
+    std::cout << "UpdateFullArrayWithLocalParametersAtPoint 2 failed. Expected: " << truthArray << std::endl << "Got: " << fullArray << std::endl;
+    return EXIT_FAILURE;
+    }
+
 
   /* Test IsLinear()
    * Should always return false */
@@ -540,8 +556,7 @@ int itkDisplacementFieldTransformTest(int, char *[] )
 
   /* We haven't set an inverse displacement field for the inverse displacement
  * transform, so we should get a false return here */
-  DisplacementTransformType::Pointer inverseTransform
-    = DisplacementTransformType::New();
+  DisplacementTransformType::Pointer inverseTransform = DisplacementTransformType::New();
   if( displacementTransform->GetInverse( inverseTransform ) )
     {
     std::cout << "Expected GetInverse() to fail." << std::endl;

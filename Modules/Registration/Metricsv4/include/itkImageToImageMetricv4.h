@@ -421,7 +421,7 @@ public:
   itkGetConstReferenceMacro(UseMovingImageGradientFilter, bool);
   itkBooleanMacro(UseMovingImageGradientFilter);
 
-  /** Get number of threads to used in the the most recent
+  /** Get number of threads used in the the most recent
    * evaluation.  Only valid after GetValueAndDerivative() or
    * GetValue() has been called. */
   virtual ThreadIdType GetNumberOfThreadsUsed() const;

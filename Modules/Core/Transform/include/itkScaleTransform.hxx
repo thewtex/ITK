@@ -212,7 +212,7 @@ void
 ScaleTransform<ScalarType, NDimensions>
 ::ComputeJacobianWithRespectToParameters(const InputPointType & p, JacobianType & j) const
 {
-  j.SetSize( SpaceDimension, this->GetNumberOfLocalParameters() );
+  j.SetSize( SpaceDimension, this->GetNumberOfParameters() );
   j.Fill(0.0);
   for( unsigned int dim = 0; dim < SpaceDimension; dim++ )
     {

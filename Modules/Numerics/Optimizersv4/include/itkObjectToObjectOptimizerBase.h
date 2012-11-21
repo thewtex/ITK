@@ -164,7 +164,7 @@ protected:
   /** Metric measure value at a given iteration, as most recently evaluated. */
   MeasureType                   m_CurrentMetricValue;
 
-  /** Scales. Size is expected to be == metric->GetNumberOfLocalParameters().
+  /** Scales. Size is expected to be == metric->GetAggregateNumberOfLocalParameters().
    * See the main documentation for more details. */
   ScalesType                    m_Scales;
 

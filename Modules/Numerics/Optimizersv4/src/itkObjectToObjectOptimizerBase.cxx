@@ -101,11 +101,11 @@ ObjectToObjectOptimizerBase
   typedef ScalesType::ValueType     ValueType;
   if( this->m_Scales.Size() > 0 )
     {
-    if( this->m_Scales.Size() != this->m_Metric->GetNumberOfLocalParameters() )
+    if( this->m_Scales.Size() != this->m_Metric->GetAggregateNumberOfLocalParameters() )
       {
       itkExceptionMacro("Size of scales (" << this->m_Scales.Size()
                         << ") must equal number of local parameters (" <<
-                        this->m_Metric->GetNumberOfLocalParameters() << ").");
+                        this->m_Metric->GetAggregateNumberOfLocalParameters() << ").");
       }
     /* Check that all values in m_Scales are > machine epsilon, to avoid
      * division by zero/epsilon.
@@ -133,7 +133,7 @@ ObjectToObjectOptimizerBase
   else
     {
     //Initialize scales to identity
-    m_Scales.SetSize( this->m_Metric->GetNumberOfLocalParameters() );
+    m_Scales.SetSize( this->m_Metric->GetAggregateNumberOfLocalParameters() );
     m_Scales.Fill( NumericTraits<ValueType>::OneValue() );
     this->m_ScalesAreIdentity = true;
     }
@@ -142,10 +142,10 @@ ObjectToObjectOptimizerBase
   typedef ScalesType::ValueType     ValueType;
   if( this->m_Weights.Size() > 0 )
     {
-    if( this->m_Weights.Size() != this->m_Metric->GetNumberOfLocalParameters() )
+    if( this->m_Weights.Size() != this->m_Metric->GetAggregateNumberOfLocalParameters() )
       {
       itkExceptionMacro("Size of weights (" << this->m_Weights.Size()
-                        << ") must equal number of local parameters (" << this->m_Metric->GetNumberOfLocalParameters() << ").");
+                        << ") must equal number of local parameters (" << this->m_Metric->GetAggregateNumberOfLocalParameters() << ").");
       }
     /* Check if they are identity within tolerance. */
     typedef ScalesType::size_type     SizeType;

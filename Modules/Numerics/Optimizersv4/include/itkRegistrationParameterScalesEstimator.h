@@ -197,7 +197,7 @@ protected:
   bool IsBSplineTransform();
 
   /** Get the number of local parameters. */
-  SizeValueType GetNumberOfLocalParameters();
+  SizeValueType GetAggregateNumberOfLocalParameters();
 
   /** Update the transform with a change in parameters. */
   void UpdateTransformParameters(const ParametersType &deltaParameters);

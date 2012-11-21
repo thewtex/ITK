@@ -216,7 +216,7 @@ Rigid3DPerspectiveTransform<TScalarType>
 ::ComputeJacobianWithRespectToParameters(const InputPointType &,
                                          JacobianType & jacobian) const
 {
-  jacobian.SetSize( 3, this->GetNumberOfLocalParameters() );
+  jacobian.SetSize( 3, this->GetNumberOfParameters() );
   jacobian.Fill(0.0);
   // TODO
 }

@@ -29,6 +29,7 @@ set(ITKMetricsv4Tests
   itkObjectToObjectMultiMetricv4RegistrationTest.cxx
   itkMeanSquaresImageToImageMetricv4SpeedTest.cxx
   itkMeanSquaresImageToImageMetricv4VectorRegistrationTest.cxx
+  itkPiecewiseTransformRegistrationTest.cxx
 )
 
 set(INPUTDATA ${ITK_DATA_ROOT}/Input)
@@ -249,3 +250,12 @@ itk_add_test(NAME itkMeanSquaresImageToImageMetricv4VectorRegistrationTest
               DATA{Input/apple.jpg}
               ${TEMP}/itkMeanSquaresImageToImageMetricv4VectorRegistrationTest.nii.gz
               100 25 )
+
+itk_add_test(NAME itkPiecewiseTransformRegistrationTest
+      COMMAND ITKMetricsv4TestDriver
+              itkPiecewiseTransformRegistrationTest
+              75  #iterations1
+              0.8 #maxStepSize1
+              120 #iterations2
+              0.1 #maxStepSize2
+              )

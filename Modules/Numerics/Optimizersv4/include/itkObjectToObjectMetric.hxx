@@ -22,6 +22,7 @@
 #include "itkTransform.h"
 #include "itkIdentityTransform.h"
 #include "itkCompositeTransform.h"
+#include "itkPiecewiseTransform.h"
 
 namespace itk
 {
@@ -70,7 +71,8 @@ ObjectToObjectMetric<TFixedDimension, TMovingDimension, TVirtualImage>
     }
 
   /* Special checks for when the moving transform is dense/high-dimensional */
-  if( this->HasLocalSupport() )
+  //TODO: We'll also want to check this for PiecewiseTransforms, but that needs more work.
+  if( this->HasLocalSupport() && this->m_MovingTransform->GetTransformCategory() != MovingTransformType::Piecewise)
     {
     /* Verify that virtual domain and displacement field are the same size
      * and in the same physical space. Handles CompositeTransform by checking
@@ -91,6 +93,7 @@ ObjectToObjectMetric<TFixedDimension, TMovingDimension, TVirtualImage>
                         PixelTraits< VirtualPixelType >::Dimension );
       }
     }
+
 }
 
 /*
@@ -162,14 +165,25 @@ ObjectToObjectMetric<TFixedDimension, TMovingDimension, TVirtualImage>
 }
 
 /*
- * GetNumberOfLocalParameters
+ * GetAggregateNumberOfLocalParameters
  */
 template<unsigned int TFixedDimension, unsigned int TMovingDimension, class TVirtualImage>
 typename ObjectToObjectMetric<TFixedDimension, TMovingDimension, TVirtualImage>::NumberOfParametersType
 ObjectToObjectMetric<TFixedDimension, TMovingDimension, TVirtualImage>
-::GetNumberOfLocalParameters() const
+::GetAggregateNumberOfLocalParameters() const
 {
-  return this->m_MovingTransform->GetNumberOfLocalParameters();
+  return this->m_MovingTransform->GetAggregateNumberOfLocalParameters();
+}
+
+/*
+ * GetNumberOfLocalParametersAtPoint
+ */
+template<unsigned int TFixedDimension, unsigned int TMovingDimension, class TVirtualImage>
+typename ObjectToObjectMetric<TFixedDimension, TMovingDimension, TVirtualImage>::NumberOfParametersType
+ObjectToObjectMetric<TFixedDimension, TMovingDimension, TVirtualImage>
+::GetNumberOfLocalParametersAtPoint( const VirtualPointType & point ) const
+{
+  return this->m_MovingTransform->GetNumberOfLocalParametersAtPoint( point );
 }
 
 /*
@@ -180,7 +194,12 @@ bool
 ObjectToObjectMetric<TFixedDimension, TMovingDimension, TVirtualImage>
 ::HasLocalSupport() const
 {
-  return ( this->m_MovingTransform->GetTransformCategory() == MovingTransformType::DisplacementField );
+  if( this->m_MovingTransform->GetTransformCategory() == MovingTransformType::DisplacementField || this->m_MovingTransform->GetTransformCategory() == MovingTransformType::Piecewise )
+    {
+    return true;
+    }
+
+  return false;
 }
 
 template<unsigned int TFixedDimension, unsigned int TMovingDimension, class TVirtualImage>

@@ -118,7 +118,7 @@ public:
     return SpaceDimension;
   }
 
-  unsigned int GetNumberOfLocalParameters() const
+  unsigned int GetAggregateNumberOfLocalParameters() const
   {
     return SpaceDimension;
   }
@@ -233,7 +233,7 @@ int itkGradientDescentLineSearchOptimizerv4Test(int, char* [] )
   // test with non-idenity scales
   //
   std::cout << "Test optimization with non-identity scales:" << std::endl;
-  ScalesType scales( metric->GetNumberOfLocalParameters() );
+  ScalesType scales( metric->GetAggregateNumberOfLocalParameters() );
   scales.Fill(0.5);
   itkOptimizer->SetScales( scales );
   itkOptimizer->SetLowerLimit( -10 );

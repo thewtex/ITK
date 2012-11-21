@@ -76,6 +76,13 @@ namespace itk
  *
  * See ImageToImageMetricv4 for details of common metric operation and options.
  *
+ * \note Local-support transforms are only allowed if they contain only a single
+ * active transform at a time. That is, PiecewiseTransforms are not supported.
+ * Support for these could likely be added, but it was not readily appearant how
+ * to do so at the time of development of the PiecewiseTransform. Of particular
+ * difficulty would be PiecewiseTransforms containing a mix of local and global-
+ * support transforms.
+ *
  * References:
  * [1] "Nonrigid multimodality image registration"
  *      D. Mattes, D. R. Haynor, H. Vesselle, T. Lewellen and W. Eubank

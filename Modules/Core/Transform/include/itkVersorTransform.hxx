@@ -187,7 +187,7 @@ VersorTransform<TScalarType>
   const ValueType vz = m_Versor.GetZ();
   const ValueType vw = m_Versor.GetW();
 
-  jacobian.SetSize( 3, this->GetNumberOfLocalParameters() );
+  jacobian.SetSize( 3, this->GetNumberOfParameters() );
   jacobian.Fill(0.0);
 
   const double px = p[0] - this->GetCenter()[0];

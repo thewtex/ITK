@@ -30,6 +30,8 @@
 #include "itkGradientDescentOptimizerv4.h"
 #include "itkImageRegionIteratorWithIndex.h"
 
+#include "itkPiecewiseTransform.h"
+
 /* This test performs a simple registration test on each
  * ImageToImageMetricv4 metric, testing that:
  *  1) metric value is minimized
@@ -110,11 +112,24 @@ int ImageToImageMetricv4RegistrationTestRun( typename TMetric::Pointer metric, i
   typename TranslationTransformType::Pointer translationTransform = TranslationTransformType::New();
   translationTransform->SetIdentity();
 
+
+// create a piecwise transform will two translation transforms
+typedef PiecewiseTransformRegistrationTestTransform<double, Dimension> PiecewiseTransformType;
+typedef itk::TranslationTransform<double, Dimension>                   TranslationTransformType;
+typename PiecewiseTransformType::Pointer   piecewiseTransform = PiecewiseTransformType::New();
+typename TranslationTransformType::Pointer translationTransform = TranslationTransformType::New();
+translationTransform->SetIdentity();
+piecewiseTransform->AddTransform( translationTransform );
+//  translationTransform = TranslationTransformType::New();
+//  translationTransform->SetIdentity();
+//  piecewiseTransform->AddTransform( translationTransform );
+
   // setup metric
   //
   metric->SetFixedImage( fixedImage );
   metric->SetMovingImage( movingImage );
-  metric->SetMovingTransform( translationTransform );
+//  metric->SetMovingTransform( translationTransform );
+  metric->SetMovingTransform( piecewiseTransform );
   metric->SetUseMovingImageGradientFilter( doGradientFilter );
   metric->SetUseFixedImageGradientFilter( doGradientFilter );
   std::cout << "Use image gradient filter: " << doGradientFilter << std::endl;
@@ -181,6 +196,7 @@ int ImageToImageMetricv4RegistrationTestRun( typename TMetric::Pointer metric, i
   std::cout << "image size: " << size;
   std::cout << ", # of iterations: " << optimizer->GetNumberOfIterations() << ", max step size: "
             << optimizer->GetMaximumStepSizeInPhysicalUnits() << std::endl;
+  std::cout << "optimizer scales: " << optimizer->GetScales() << std::endl;
   std::cout << "imageShift: " << imageShift << std::endl;
   std::cout << "Transform final parameters: " << translationTransform->GetParameters() << std::endl;
 
@@ -253,6 +269,17 @@ int itkImageToImageMetricv4RegistrationTestRunAll (int argc, char *argv[])
 
   bool passed = true;
 
+  // MeanSquares
+  {
+  typedef itk::MeanSquaresImageToImageMetricv4<ImageType, ImageType> MetricType;
+  typename MetricType::Pointer metric = MetricType::New();
+  std::cout << std::endl << "*** MeanSquares metric: " << std::endl;
+  if( ImageToImageMetricv4RegistrationTestRun<Dimension, ImageType, MetricType>( metric, numberOfIterations1, maximumStepSize1, doSampling, doGradientFilter ) != EXIT_SUCCESS )
+    {
+    passed = false;
+    }
+  }
+
   // ANTS Neighborhood Correlation
   // This metric does not support sampling
   if( !doSampling )
@@ -294,17 +321,6 @@ int itkImageToImageMetricv4RegistrationTestRunAll (int argc, char *argv[])
   typename MetricType::Pointer metric = MetricType::New();
   std::cout << std::endl << "*** MattesMutualInformation metric: " << std::endl;
   if( ImageToImageMetricv4RegistrationTestRun<Dimension, ImageType, MetricType>( metric, numberOfIterations2, maximumStepSize2, doSampling, doGradientFilter ) != EXIT_SUCCESS )
-    {
-    passed = false;
-    }
-  }
-
-  // MeanSquares
-  {
-  typedef itk::MeanSquaresImageToImageMetricv4<ImageType, ImageType> MetricType;
-  typename MetricType::Pointer metric = MetricType::New();
-  std::cout << std::endl << "*** MeanSquares metric: " << std::endl;
-  if( ImageToImageMetricv4RegistrationTestRun<Dimension, ImageType, MetricType>( metric, numberOfIterations1, maximumStepSize1, doSampling, doGradientFilter ) != EXIT_SUCCESS )
     {
     passed = false;
     }

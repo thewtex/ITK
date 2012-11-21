@@ -102,10 +102,8 @@ DisplacementFieldTransform<TScalar, NDimensions>
 
   if( this->m_Interpolator->IsInsideBuffer( point ) )
     {
-    this->m_DisplacementField->
-    TransformPhysicalPointToContinuousIndex( point, cidx );
-    typename InterpolatorType::OutputType displacement =
-      this->m_Interpolator->EvaluateAtContinuousIndex( cidx );
+    this->m_DisplacementField->TransformPhysicalPointToContinuousIndex( point, cidx );
+    typename InterpolatorType::OutputType displacement = this->m_Interpolator->EvaluateAtContinuousIndex( cidx );
     outputPoint += displacement;
     }
   // else
@@ -363,6 +361,30 @@ DisplacementFieldTransform<TScalar, NDimensions>
   // This simply adds the values.
   // TODO: This should be multi-threaded probably, via image add filter.
   Superclass::UpdateTransformParameters( update, factor );
+}
+
+template <class TScalar, unsigned int NDimensions>
+void
+DisplacementFieldTransform<TScalar, NDimensions>
+::UpdateFullArrayWithLocalParametersAtPoint( DerivativeType & fullArray, const DerivativeType & localUpdate, const InputPointType & point ) const
+{
+  typename DisplacementFieldType::IndexType index;
+
+  /* This will round the point to generate a discrete index. We check the boundaries here
+   * because it's done anyway by the TransformPhyisicalPointToIndex routine. */
+  if( this->m_DisplacementField->TransformPhysicalPointToIndex( point, index ) )
+    {
+    NumberOfParametersType numLocal = this->GetNumberOfLocalParametersAtPoint( point );
+    OffsetValueType offset = this->m_DisplacementField->ComputeOffset(index) * numLocal;
+    for( NumberOfParametersType p=0; p < numLocal; p++ )
+      {
+      fullArray[offset + p] += localUpdate[p];
+      }
+    }
+  else
+    {
+    itkExceptionMacro("Out-of-bounds point passed: " << point);
+    }
 }
 
 template <class TScalar, unsigned int NDimensions>

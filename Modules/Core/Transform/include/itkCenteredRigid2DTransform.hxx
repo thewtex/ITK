@@ -133,7 +133,7 @@ CenteredRigid2DTransform<TScalarType>
   const double ca = vcl_cos( this->GetAngle() );
   const double sa = vcl_sin( this->GetAngle() );
 
-  jacobian.SetSize( 2, this->GetNumberOfLocalParameters() );
+  jacobian.SetSize( 2, this->GetNumberOfParameters() );
   jacobian.Fill(0.0);
 
   const double cx = this->GetCenter()[0];

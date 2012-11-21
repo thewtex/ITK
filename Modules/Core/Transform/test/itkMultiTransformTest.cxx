@@ -19,7 +19,7 @@
 #include <iostream>
 
 #include "itkAffineTransform.h"
-#include "itkMultiTransformBase.h"
+#include "itkMultiTransform.h"
 #include "itkTranslationTransform.h"
 #include "itkTestingMacros.h"
 #include "itkDisplacementFieldTransform.h"
@@ -99,24 +99,23 @@ bool testVectorArray( const TVector & v1, const TVector & v2 )
 
 } // namespace
 
-/******/
+/*******************************************************/
 
-const unsigned int itkMultiTransformBaseTestNDimensions = 2;
+const unsigned int itkMultiTransformTestNDimensions = 2;
 
 template
-<class TScalar = double, unsigned int NDimensions = itkMultiTransformBaseTestNDimensions>
-class MultiTransformBaseTestTransform :
-  public itk::MultiTransformBase<TScalar, NDimensions>
+<class TScalar = double, unsigned int NDimensions = itkMultiTransformTestNDimensions>
+class MultiTransformTestTransform : public itk::MultiTransform<TScalar, NDimensions>
 {
 public:
   /** Standard class typedefs. */
-  typedef MultiTransformBaseTestTransform                             Self;
-  typedef itk::MultiTransformBase<TScalar, NDimensions, NDimensions>  Superclass;
-  typedef itk::SmartPointer<Self>                                     Pointer;
-  typedef itk::SmartPointer<const Self>                               ConstPointer;
+  typedef MultiTransformTestTransform                             Self;
+  typedef itk::MultiTransform<TScalar, NDimensions, NDimensions>  Superclass;
+  typedef itk::SmartPointer<Self>                                 Pointer;
+  typedef itk::SmartPointer<const Self>                           ConstPointer;
 
   /** Run-time type information (and related methods). */
-  itkTypeMacro( MultiTransformBaseTestTransform, MultiTransformBase );
+  itkTypeMacro( MultiTransformTestTransform, MultiTransform );
 
   /** New macro for creation of through a Smart Pointer */
   itkNewMacro( Self );
@@ -132,26 +131,31 @@ public:
     return point;
   }
 
+  virtual void UpdateFullArrayWithLocalParametersAtPoint( typename Superclass::DerivativeType &, const typename Superclass::DerivativeType &, const typename Superclass::InputPointType & ) const
+  {
+    itkExceptionMacro("Not implemented.");
+  }
+
 protected:
-  MultiTransformBaseTestTransform(){};
-  virtual ~MultiTransformBaseTestTransform(){};
+  MultiTransformTestTransform(){};
+  virtual ~MultiTransformTestTransform(){};
 
 private:
-  MultiTransformBaseTestTransform( const Self & ); // purposely not implemented
+  MultiTransformTestTransform( const Self & ); // purposely not implemented
   void operator=( const Self & );     // purposely not implemented
 
 };
 
 /******/
 
-int itkMultiTransformBaseTest(int, char *[] )
+int itkMultiTransformTest(int, char *[] )
 {
-  const unsigned int NDimensions = itkMultiTransformBaseTestNDimensions;
+  const unsigned int NDimensions = itkMultiTransformTestNDimensions;
 
   /* Create multi-transform */
-  typedef MultiTransformBaseTestTransform<double, NDimensions>  MultiTransformType;
-  typedef MultiTransformType::Superclass                        Superclass;
-  typedef Superclass::ScalarType                                ScalarType;
+  typedef MultiTransformTestTransform<double, NDimensions>  MultiTransformType;
+  typedef MultiTransformType::Superclass                    Superclass;
+  typedef Superclass::ScalarType                            ScalarType;
 
   MultiTransformType::Pointer multiTransform = MultiTransformType::New();
 
@@ -447,15 +451,29 @@ int itkMultiTransformBaseTest(int, char *[] )
     std::cout << "GetNumberOfParameters failed for two-transform." << std::endl << "Expected " << affineParamsN + displacementParamsN << std::endl;
     }
 
-  /* Test GetNumberOfLocalParameters */
-  std::cout << "GetNumberOfLocalParameters: " << std::endl;
-  unsigned int affineLocalParamsN = affine->GetNumberOfLocalParameters();
-  unsigned int displacementLocalParamsN = displacementTransform->GetNumberOfLocalParameters();
-  unsigned int nLocalParameters = multiTransform->GetNumberOfLocalParameters();
-  std::cout << "Number of local parameters: " << nParameters << std::endl;
+  /* Test GetAggregateNumberOfLocalParameters */
+  std::cout << "GetAggregateNumberOfLocalParameters: " << std::endl;
+  unsigned int affineLocalParamsN = affine->GetAggregateNumberOfLocalParameters();
+  unsigned int displacementLocalParamsN = displacementTransform->GetAggregateNumberOfLocalParameters();
+  unsigned int nLocalParameters = multiTransform->GetAggregateNumberOfLocalParameters();
+  std::cout << "Number of local parameters: " << nLocalParameters << std::endl;
   if( nLocalParameters != affineLocalParamsN + displacementLocalParamsN )
     {
-    std::cout << "GetNumberOfLocalParameters failed for two-transform." << std::endl << "Expected " << affineLocalParamsN + displacementLocalParamsN << std::endl;
+    std::cout << "GetAggregateNumberOfLocalParameters failed for two-transform." << std::endl << "Expected " << affineLocalParamsN + displacementLocalParamsN << std::endl;
+    }
+
+  /* Test GetNumberOfLocalParametersAtPoint */
+  std::cout << "GetNumberOfLocalParametersAtPoint: " << std::endl;
+  AffineType::InputPointType point;
+  point[0] = 1.0;
+  point[1] = 2.0;
+  affineLocalParamsN = affine->GetNumberOfLocalParametersAtPoint(point);
+  displacementLocalParamsN = displacementTransform->GetNumberOfLocalParametersAtPoint(point);
+  nLocalParameters = multiTransform->GetNumberOfLocalParametersAtPoint(point);
+  std::cout << "Number of local parameters at point: " << nLocalParameters << std::endl;
+  if( nLocalParameters != affineLocalParamsN + displacementLocalParamsN )
+    {
+    std::cout << "GetNumberOfLocalParametersAtPoint failed for two-transform." << std::endl << "Expected " << affineLocalParamsN + displacementLocalParamsN << std::endl;
     }
 
   /* Get parameters with multi-transform. They're filled from transforms in same order as queue. */
@@ -611,6 +629,28 @@ int itkMultiTransformBaseTest(int, char *[] )
     /* Test with wrong size for update */
     update.SetSize(1);
     TRY_EXPECT_EXCEPTION( multiTransform->UpdateTransformParameters( update, factor ) );
+    }
+
+  /* Test clone */
+  std::cout << "Test cloning." << std::endl;
+  MultiTransformType::Pointer clone = multiTransform->Clone();
+  if( clone.IsNull() )
+    {
+    std::cout << "Failing cloning. NULL pointer." << std::endl;
+    return EXIT_FAILURE;
+    }
+  if( clone->GetNumberOfTransforms() != multiTransform->GetNumberOfTransforms() )
+    {
+    std::cout << "Failed cloning. Not the same number of transforms." << std::endl;
+    return EXIT_FAILURE;
+    }
+  for( itk::SizeValueType n=0; n < clone->GetNumberOfTransforms(); n++ )
+    {
+    if( ! testVectorArray( clone->GetNthTransform(n)->GetParameters(), multiTransform->GetNthTransform(n)->GetParameters() ) )
+      {
+      std::cout << "Failed cloning. Parameters for tranform " << n << " are not the same." << std::endl;
+      return EXIT_FAILURE;
+      }
     }
 
   /* Test SetParameters with wrong size array */

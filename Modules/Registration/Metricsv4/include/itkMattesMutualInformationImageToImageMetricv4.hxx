@@ -19,6 +19,7 @@
 #define __itkMattesMutualInformationImageToImageMetricv4_hxx
 
 #include "itkMattesMutualInformationImageToImageMetricv4.h"
+#include "itkPiecewiseTransform.h"
 
 namespace itk
 {
@@ -74,12 +75,19 @@ MattesMutualInformationImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualI
   /* Superclass initialization */
   this->Superclass::Initialize();
 
+  /* Check that we're not using an unsupported type of local-support transform.
+   * To support PiecewiseTransforms and other types that can contain multiple transforms
+   * that are optimized at the same time, this class must be updated, and it's not
+   * readily appearant how to do this. */
+  if( this->HasLocalSupport() && this->m_MovingTransform->GetTransformCategory() != MovingTransformType::DisplacementField )
+    {
+    itkExceptionMacro("The moving transform is of an unsupported PiecewiseTransform type.");
+    }
+
   /* Expects moving image gradient source */
   if( this->GetGradientSourceIncludesFixed() || !this->GetGradientSourceIncludesMoving() )
     {
-    itkExceptionMacro("Expected gradient source to be only Moving. Instead gradient source is: "
-                      " Fixed: " << this->GetGradientSourceIncludesFixed()
-                      << " Moving: " << this->GetGradientSourceIncludesMoving() );
+    itkExceptionMacro("Expected gradient source to be only Moving. Gradient source: Fixed: " << this->GetGradientSourceIncludesFixed() << " Moving: " << this->GetGradientSourceIncludesMoving() );
     }
 
   {
@@ -278,7 +286,7 @@ MattesMutualInformationImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualI
           JointPDFValueType const * derivPtr = this->m_ThreaderJointPDFDerivatives[0]->GetBufferPointer()
             + ( fixedIndex  * this->m_ThreaderJointPDFDerivatives[0]->GetOffsetTable()[2] )
             + ( movingIndex * this->m_ThreaderJointPDFDerivatives[0]->GetOffsetTable()[1] );
-          for( unsigned int parameter = 0; parameter < this->GetNumberOfLocalParameters(); ++parameter, derivPtr++ )
+          for( unsigned int parameter = 0; parameter < this->GetAggregateNumberOfLocalParameters(); ++parameter, derivPtr++ )
             {
             // Ref: eqn 23 of Thevenaz & Unser paper [3]
             (*(this->m_DerivativeResult))[parameter] += ( *derivPtr ) * pRatio;

@@ -15,10 +15,10 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkCompositeTransform_hxx
-#define __itkCompositeTransform_hxx
+#ifndef __itkRegularGridPiecewiseTransform_hxx
+#define __itkRegularGridPiecewiseTransform_hxx
 
-#include "itkCompositeTransform.h"
+#include "itkRegularGridPiecewiseTransform.h"
 #include <cstring> // for memcpy on some platforms
 
 namespace itk
@@ -29,11 +29,8 @@ namespace itk
  */
 template
 <class TScalar, unsigned int NDimensions>
-CompositeTransform<TScalar, NDimensions>::CompositeTransform()
+RegularGridPiecewiseTransform<TScalar, NDimensions>::RegularGridPiecewiseTransform()
 {
-  this->m_TransformsToOptimizeFlags.clear();
-  this->m_TransformsToOptimizeQueue.clear();
-  this->m_PreviousTransformsToOptimizeUpdateTime = 0;
 }
 
 /**
@@ -41,8 +38,8 @@ CompositeTransform<TScalar, NDimensions>::CompositeTransform()
  */
 template
 <class TScalar, unsigned int NDimensions>
-CompositeTransform<TScalar, NDimensions>::
-~CompositeTransform()
+RegularGridPiecewiseTransform<TScalar, NDimensions>::
+~RegularGridPiecewiseTransform()
 {
 }
 
@@ -51,8 +48,8 @@ CompositeTransform<TScalar, NDimensions>::
  */
 template
 <class TScalar, unsigned int NDimensions>
-typename CompositeTransform<TScalar, NDimensions>::TransformCategoryType
-CompositeTransform<TScalar, NDimensions>
+typename RegularGridPiecewiseTransform<TScalar, NDimensions>::TransformCategoryType
+RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::GetTransformCategory() const
 {
   // Check if linear
@@ -89,9 +86,9 @@ CompositeTransform<TScalar, NDimensions>
  */
 template
 <class TScalar, unsigned int NDimensions>
-typename CompositeTransform<TScalar, NDimensions>
+typename RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::OutputPointType
-CompositeTransform<TScalar, NDimensions>
+RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::TransformPoint( const InputPointType& inputPoint ) const
 {
   OutputPointType outputPoint( inputPoint );
@@ -115,9 +112,9 @@ CompositeTransform<TScalar, NDimensions>
  */
 template
 <class TScalar, unsigned int NDimensions>
-typename CompositeTransform<TScalar, NDimensions>
+typename RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::OutputVectorType
-CompositeTransform<TScalar, NDimensions>
+RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::TransformVector( const InputVectorType & inputVector ) const
 {
   OutputVectorType outputVector( inputVector );
@@ -142,9 +139,9 @@ CompositeTransform<TScalar, NDimensions>
  */
 template
 <class TScalar, unsigned int NDimensions>
-typename CompositeTransform<TScalar, NDimensions>
+typename RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::OutputVectorType
-CompositeTransform<TScalar, NDimensions>
+RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::TransformVector( const InputVectorType & inputVector, const InputPointType & inputPoint ) const
 {
   OutputVectorType outputVector( inputVector );
@@ -170,9 +167,9 @@ CompositeTransform<TScalar, NDimensions>
  */
 template
 <class TScalar, unsigned int NDimensions>
-typename CompositeTransform<TScalar, NDimensions>
+typename RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::OutputVnlVectorType
-CompositeTransform<TScalar, NDimensions>
+RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::TransformVector( const InputVnlVectorType & inputVector, const InputPointType & inputPoint ) const
 {
   OutputVnlVectorType outputVector( inputVector );
@@ -198,9 +195,9 @@ CompositeTransform<TScalar, NDimensions>
  */
 template
 <class TScalar, unsigned int NDimensions>
-typename CompositeTransform<TScalar, NDimensions>
+typename RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::OutputVnlVectorType
-CompositeTransform<TScalar, NDimensions>
+RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::TransformVector( const InputVnlVectorType & inputVector) const
 {
   OutputVnlVectorType outputVector( inputVector );
@@ -224,9 +221,9 @@ CompositeTransform<TScalar, NDimensions>
  */
 template
 <class TScalar, unsigned int NDimensions>
-typename CompositeTransform<TScalar, NDimensions>
+typename RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::OutputVectorPixelType
-CompositeTransform<TScalar, NDimensions>
+RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::TransformVector( const InputVectorPixelType & inputVector ) const
 {
   OutputVectorPixelType outputVector( inputVector );
@@ -250,9 +247,9 @@ CompositeTransform<TScalar, NDimensions>
  */
 template
 <class TScalar, unsigned int NDimensions>
-typename CompositeTransform<TScalar, NDimensions>
+typename RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::OutputVectorPixelType
-CompositeTransform<TScalar, NDimensions>
+RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::TransformVector( const InputVectorPixelType & inputVector, const InputPointType & inputPoint ) const
 {
   OutputVectorPixelType outputVector( inputVector );
@@ -279,9 +276,9 @@ CompositeTransform<TScalar, NDimensions>
  */
 template
 <class TScalar, unsigned int NDimensions>
-typename CompositeTransform<TScalar, NDimensions>
+typename RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::OutputCovariantVectorType
-CompositeTransform<TScalar, NDimensions>
+RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::TransformCovariantVector( const InputCovariantVectorType & inputVector ) const
 {
   OutputCovariantVectorType outputVector( inputVector );
@@ -305,9 +302,9 @@ CompositeTransform<TScalar, NDimensions>
  */
 template
 <class TScalar, unsigned int NDimensions>
-typename CompositeTransform<TScalar, NDimensions>
+typename RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::OutputCovariantVectorType
-CompositeTransform<TScalar, NDimensions>
+RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::TransformCovariantVector( const InputCovariantVectorType & inputVector, const InputPointType & inputPoint ) const
 {
   OutputCovariantVectorType outputVector( inputVector );
@@ -333,9 +330,9 @@ CompositeTransform<TScalar, NDimensions>
  */
 template
 <class TScalar, unsigned int NDimensions>
-typename CompositeTransform<TScalar, NDimensions>
+typename RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::OutputVectorPixelType
-CompositeTransform<TScalar, NDimensions>
+RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::TransformCovariantVector( const InputVectorPixelType & inputVector ) const
 {
   OutputVectorPixelType outputVector( inputVector );
@@ -359,9 +356,9 @@ CompositeTransform<TScalar, NDimensions>
  */
 template
 <class TScalar, unsigned int NDimensions>
-typename CompositeTransform<TScalar, NDimensions>
+typename RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::OutputVectorPixelType
-CompositeTransform<TScalar, NDimensions>
+RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::TransformCovariantVector( const InputVectorPixelType & inputVector, const InputPointType & inputPoint ) const
 {
   OutputVectorPixelType outputVector( inputVector );
@@ -387,9 +384,9 @@ CompositeTransform<TScalar, NDimensions>
  */
 template
 <class TScalar, unsigned int NDimensions>
-typename CompositeTransform<TScalar, NDimensions>
+typename RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::OutputDiffusionTensor3DType
-CompositeTransform<TScalar, NDimensions>
+RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::TransformDiffusionTensor3D( const InputDiffusionTensor3DType & inputTensor, const InputPointType & inputPoint ) const
 {
   OutputDiffusionTensor3DType outputTensor( inputTensor );
@@ -415,9 +412,9 @@ CompositeTransform<TScalar, NDimensions>
  */
 template
 <class TScalar, unsigned int NDimensions>
-typename CompositeTransform<TScalar, NDimensions>
+typename RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::OutputVectorPixelType
-CompositeTransform<TScalar, NDimensions>
+RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::TransformDiffusionTensor3D( const InputVectorPixelType & inputTensor, const InputPointType & inputPoint ) const
 {
   OutputVectorPixelType outputTensor( inputTensor );
@@ -443,9 +440,9 @@ CompositeTransform<TScalar, NDimensions>
  */
 template
 <class TScalar, unsigned int NDimensions>
-typename CompositeTransform<TScalar, NDimensions>
+typename RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::OutputDiffusionTensor3DType
-CompositeTransform<TScalar, NDimensions>
+RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::TransformDiffusionTensor3D( const InputDiffusionTensor3DType & inputTensor ) const
 {
   OutputDiffusionTensor3DType outputTensor( inputTensor );
@@ -469,9 +466,9 @@ CompositeTransform<TScalar, NDimensions>
  */
 template
 <class TScalar, unsigned int NDimensions>
-typename CompositeTransform<TScalar, NDimensions>
+typename RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::OutputVectorPixelType
-CompositeTransform<TScalar, NDimensions>
+RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::TransformDiffusionTensor3D( const InputVectorPixelType & inputTensor ) const
 {
   OutputVectorPixelType outputTensor( inputTensor );
@@ -495,9 +492,9 @@ CompositeTransform<TScalar, NDimensions>
  */
 template
 <class TScalar, unsigned int NDimensions>
-typename CompositeTransform<TScalar, NDimensions>
+typename RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::OutputSymmetricSecondRankTensorType
-CompositeTransform<TScalar, NDimensions>
+RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::TransformSymmetricSecondRankTensor( const InputSymmetricSecondRankTensorType & inputTensor, const InputPointType & inputPoint ) const
 {
   OutputSymmetricSecondRankTensorType outputTensor( inputTensor );
@@ -523,9 +520,9 @@ CompositeTransform<TScalar, NDimensions>
  */
 template
 <class TScalar, unsigned int NDimensions>
-typename CompositeTransform<TScalar, NDimensions>
+typename RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::OutputVectorPixelType
-CompositeTransform<TScalar, NDimensions>
+RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::TransformSymmetricSecondRankTensor( const InputVectorPixelType & inputTensor, const InputPointType & inputPoint ) const
 {
   OutputVectorPixelType outputTensor( inputTensor );
@@ -551,9 +548,9 @@ CompositeTransform<TScalar, NDimensions>
  */
 template
 <class TScalar, unsigned int NDimensions>
-typename CompositeTransform<TScalar, NDimensions>
+typename RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::OutputSymmetricSecondRankTensorType
-CompositeTransform<TScalar, NDimensions>
+RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::TransformSymmetricSecondRankTensor( const InputSymmetricSecondRankTensorType & inputTensor ) const
 {
   OutputSymmetricSecondRankTensorType outputTensor( inputTensor );
@@ -577,9 +574,9 @@ CompositeTransform<TScalar, NDimensions>
  */
 template
 <class TScalar, unsigned int NDimensions>
-typename CompositeTransform<TScalar, NDimensions>
+typename RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::OutputVectorPixelType
-CompositeTransform<TScalar, NDimensions>
+RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::TransformSymmetricSecondRankTensor( const InputVectorPixelType & inputTensor ) const
 {
   OutputVectorPixelType outputTensor( inputTensor );
@@ -604,7 +601,7 @@ CompositeTransform<TScalar, NDimensions>
 template
 <class TScalar, unsigned int NDimensions>
 bool
-CompositeTransform<TScalar, NDimensions>
+RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::GetInverse( Self *inverse ) const
 {
   typename TransformQueueType::const_iterator it;
@@ -640,9 +637,9 @@ CompositeTransform<TScalar, NDimensions>
  */
 template
 <class TScalar, unsigned int NDimensions>
-typename CompositeTransform<TScalar, NDimensions>
+typename RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::InverseTransformBasePointer
-CompositeTransform<TScalar, NDimensions>
+RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::GetInverseTransform() const
 {
   /* This method can't be defined in Superclass because of the call to New() */
@@ -661,15 +658,15 @@ CompositeTransform<TScalar, NDimensions>
 template
 <class TScalar, unsigned int NDimensions>
 void
-CompositeTransform<TScalar, NDimensions>
+RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::ComputeJacobianWithRespectToParameters( const InputPointType & p, JacobianType & j ) const
 {
   /* Returns a concatenated MxN array, holding the Jacobian of each sub
    * transform that is selected for optimization. The order is the same
    * as that in which they're applied, i.e. reverse order.
    * M rows = dimensionality of the transforms
-   * N cols = total number of local parameters in the selected sub transforms at point. */
-  j.SetSize( NDimensions, this->GetNumberOfLocalParametersAtPoint(p) );
+   * N cols = total number of parameters in the selected sub transforms. */
+  j.SetSize( NDimensions, this->GetAggregateNumberOfLocalParameters() );
 
   NumberOfParametersType offset = NumericTraits< NumberOfParametersType >::Zero;
 
@@ -729,8 +726,10 @@ CompositeTransform<TScalar, NDimensions>
       /* The matrices are row-major, so block copy is less obviously
        * better */
 
+      // to do: why parameters are listed from N-1 to 1???
       typename TransformType::JacobianType current_jacobian;
-      NumberOfParametersType numberOfLocalParameters = transform->GetNumberOfLocalParametersAtPoint( p );
+      NumberOfParametersType numberOfLocalParameters = transform->GetAggregateNumberOfLocalParameters();
+
       current_jacobian.SetSize( NDimensions, numberOfLocalParameters );
       transform->ComputeJacobianWithRespectToParameters( transformedPoint, current_jacobian );
       j.update( current_jacobian, 0, offset );
@@ -778,10 +777,10 @@ CompositeTransform<TScalar, NDimensions>
 
 template
 <class TScalar, unsigned int NDimensions>
-const typename CompositeTransform<TScalar, NDimensions>::ParametersType
-& CompositeTransform<TScalar, NDimensions>
+const typename RegularGridPiecewiseTransform<TScalar, NDimensions>::ParametersType
+& RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::GetParameters() const
-{
+  {
   TransformQueueType transforms = this->GetTransformsToOptimizeQueue();
   if( transforms.size() == 1 )
     {
@@ -817,12 +816,12 @@ const typename CompositeTransform<TScalar, NDimensions>::ParametersType
     }
 
   return this->m_Parameters;
-}
+  }
 
 template
 <class TScalar, unsigned int NDimensions>
 void
-CompositeTransform<TScalar, NDimensions>
+RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::SetParameters(const ParametersType & inputParameters)
 {
   /* We do not copy inputParameters into m_Parameters,
@@ -832,11 +831,6 @@ CompositeTransform<TScalar, NDimensions>
      sub transforms currently selected for optimization, in
      the order of the queue from begin() to end(). */
   TransformQueueType transforms = this->GetTransformsToOptimizeQueue();
-
-  if( transforms.size() == 0 )
-    {
-    return;
-    }
 
   /* Verify proper input size. */
   if( inputParameters.Size() != this->GetNumberOfParameters() )
@@ -900,10 +894,10 @@ CompositeTransform<TScalar, NDimensions>
 
 template
 <class TScalar, unsigned int NDimensions>
-const typename CompositeTransform<TScalar, NDimensions>::ParametersType
-& CompositeTransform<TScalar, NDimensions>
+const typename RegularGridPiecewiseTransform<TScalar, NDimensions>::ParametersType
+& RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::GetFixedParameters(void) const
-{
+  {
   TransformQueueType transforms = this->GetTransformsToOptimizeQueue();
   /* Resize destructively. But if it's already this size, nothing is done so
    * it's efficient. */
@@ -928,22 +922,17 @@ const typename CompositeTransform<TScalar, NDimensions>::ParametersType
   while( it != transforms.begin() );
 
   return this->m_FixedParameters;
-}
+  }
 
 template
 <class TScalar, unsigned int NDimensions>
 void
-CompositeTransform<TScalar, NDimensions>
+RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::SetFixedParameters(const ParametersType & inputParameters)
 {
   /* Assumes input params are concatenation of the parameters of the
    * sub transforms currently selected for optimization. */
   TransformQueueType transforms = this->GetTransformsToOptimizeQueue();
-
-  if( transforms.size() == 0 )
-    {
-    return;
-    }
 
   NumberOfParametersType offset = NumericTraits< NumberOfParametersType >::Zero;
 
@@ -980,8 +969,8 @@ CompositeTransform<TScalar, NDimensions>
 }
 
 template<class TScalar, unsigned int NDimensions>
-typename CompositeTransform<TScalar, NDimensions>::NumberOfParametersType
-CompositeTransform<TScalar, NDimensions>
+typename RegularGridPiecewiseTransform<TScalar, NDimensions>::NumberOfParametersType
+RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::GetNumberOfParameters(void) const
 {
   /* Returns to total number of params in all transforms currently
@@ -1007,8 +996,8 @@ CompositeTransform<TScalar, NDimensions>
 }
 
 template<class TScalar, unsigned int NDimensions>
-typename CompositeTransform<TScalar, NDimensions>::NumberOfParametersType
-CompositeTransform<TScalar, NDimensions>
+typename RegularGridPiecewiseTransform<TScalar, NDimensions>::NumberOfParametersType
+RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::GetAggregateNumberOfLocalParameters(void) const
 {
   if ( this->GetMTime() == this->m_LocalParametersUpdateTime )
@@ -1037,31 +1026,10 @@ CompositeTransform<TScalar, NDimensions>
   return result;
 }
 
-template<class TScalar, unsigned int NDimensions>
-typename CompositeTransform<TScalar, NDimensions>::NumberOfParametersType
-CompositeTransform<TScalar, NDimensions>
-::GetNumberOfLocalParametersAtPoint(const InputPointType & point) const
-{
-  /* Returns to total number of *local* params at point, in all transforms currently
-   * set to be used for optimized. */
-  NumberOfParametersType result = NumericTraits< NumberOfParametersType >::Zero;
-  const TransformType * transform;
-
-  for( signed long tind = (signed long) this->GetNumberOfTransforms() - 1; tind >= 0; tind-- )
-    {
-    if( this->GetNthTransformToOptimize( tind ) )
-      {
-      transform = this->GetNthTransform( tind ).GetPointer();
-      result += transform->GetNumberOfLocalParametersAtPoint( point );
-      }
-    }
-  return result;
-}
-
 template
 <class TScalar, unsigned int NDimensions>
-typename CompositeTransform<TScalar, NDimensions>::NumberOfParametersType
-CompositeTransform<TScalar, NDimensions>
+typename RegularGridPiecewiseTransform<TScalar, NDimensions>::NumberOfParametersType
+RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::GetNumberOfFixedParameters(void) const
 {
   /* Returns to total number of params in all transforms currently
@@ -1086,7 +1054,7 @@ CompositeTransform<TScalar, NDimensions>
 template
 <class TScalar, unsigned int NDimensions>
 void
-CompositeTransform<TScalar, NDimensions>
+RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::UpdateTransformParameters(  const DerivativeType & update, ScalarType  factor )
 {
   /* Update parameters within the sub-transforms set to be optimized. */
@@ -1110,7 +1078,8 @@ CompositeTransform<TScalar, NDimensions>
 
   TransformType * subtransform;
 
-  for( signed long tind = (signed long) this->GetNumberOfTransforms() - 1; tind >= 0; tind-- )
+  for( signed long tind = (signed long) this->GetNumberOfTransforms() - 1;
+       tind >= 0; tind-- )
     {
     if( this->GetNthTransformToOptimize( tind ) )
       {
@@ -1119,7 +1088,8 @@ CompositeTransform<TScalar, NDimensions>
        * to the subregion corresponding to the individual subtransform.
        * This simply creates an Array object with data pointer, no
        * memory is allocated or copied. */
-      DerivativeType subUpdate( &( (update.data_block() )[offset]), subtransform->GetNumberOfParameters(), false );
+      DerivativeType subUpdate( &( (update.data_block() )[offset]),
+                                subtransform->GetNumberOfParameters(), false );
       /* This call will also call SetParameters, so don't need to call it
        * expliclity here. */
       subtransform->UpdateTransformParameters( subUpdate, factor );
@@ -1131,45 +1101,8 @@ CompositeTransform<TScalar, NDimensions>
 
 template
 <class TScalar, unsigned int NDimensions>
-void
-CompositeTransform<TScalar, NDimensions>
-::UpdateFullArrayWithLocalParametersAtPoint( DerivativeType & fullArray, const DerivativeType & localUpdate, const InputPointType & point) const
-{
-  /* Update fullArray using local parameter information at point for the sub-transforms set to be optimized. */
-
-  if( localUpdate.Size() != this->GetNumberOfLocalParametersAtPoint(point) )
-    {
-    itkExceptionMacro("Parameter localUpdate size, " << localUpdate.Size() << ", must be same as this->GetNumberOfLocalParametersAtPoint(point): "
-                      << this->GetNumberOfLocalParametersAtPoint(point) << std::endl);
-    }
-
-  NumberOfParametersType offsetFull = NumericTraits< NumberOfParametersType >::Zero;
-  NumberOfParametersType offsetLocal = NumericTraits< NumberOfParametersType >::Zero;
-
-  TransformType * subtransform;
-
-  for( signed long tind = (signed long) this->GetNumberOfTransforms() - 1; tind >= 0; tind-- )
-    {
-    if( this->GetNthTransformToOptimize( tind ) )
-      {
-      subtransform = const_cast<TransformType*>( this->GetNthTransform( tind ).GetPointer() );
-      /* The input values are in a monolithic block, so we have to point
-       * to the subregion corresponding to the individual subtransform.
-       * This simply creates an Array object with data pointer - no memory is allocated or copied. */
-      DerivativeType subFullArray( &( (fullArray.data_block() )[offsetFull]), subtransform->GetNumberOfParameters(), false );
-      NumberOfParametersType numLocal = subtransform->GetNumberOfLocalParametersAtPoint(point);
-      DerivativeType subLocalUpdate( &( (localUpdate.data_block() )[offsetLocal]), numLocal, false );
-      subtransform->UpdateFullArrayWithLocalParametersAtPoint( subFullArray, subLocalUpdate, point );
-      offsetFull += subtransform->GetNumberOfParameters();
-      offsetLocal += numLocal;
-      }
-    }
-}
-
-template
-<class TScalar, unsigned int NDimensions>
-typename CompositeTransform<TScalar, NDimensions>::TransformQueueType
-& CompositeTransform<TScalar, NDimensions>
+typename RegularGridPiecewiseTransform<TScalar, NDimensions>::TransformQueueType
+& RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::GetTransformsToOptimizeQueue() const
   {
   /* Update the list of transforms to use for optimization only if
@@ -1193,7 +1126,7 @@ typename CompositeTransform<TScalar, NDimensions>::TransformQueueType
 template
 <class TScalar, unsigned int NDimensions>
 void
-CompositeTransform<TScalar, NDimensions>
+RegularGridPiecewiseTransform<TScalar, NDimensions>
 ::FlattenTransformQueue()
 {
   TransformQueueType             transformQueue;
@@ -1202,17 +1135,17 @@ CompositeTransform<TScalar, NDimensions>
 
   for( SizeValueType m = 0; m < this->GetNumberOfTransforms(); m++ )
     {
-    Self * nestedCompositeTransform = dynamic_cast<Self *>( const_cast<TransformType *>( this->m_TransformQueue[m].GetPointer() ) );
-    if( nestedCompositeTransform )
+    Self * nestedRegularGridPiecewiseTransform = dynamic_cast<Self *>( const_cast<TransformType *>( this->m_TransformQueue[m].GetPointer() ) );
+    if( nestedRegularGridPiecewiseTransform )
       {
-      nestedCompositeTransform->FlattenTransformQueue();
-      for( SizeValueType n = 0; n < nestedCompositeTransform->GetNumberOfTransforms(); n++ )
+      nestedRegularGridPiecewiseTransform->FlattenTransformQueue();
+      for( SizeValueType n = 0; n < nestedRegularGridPiecewiseTransform->GetNumberOfTransforms(); n++ )
         {
-        transformQueue.push_back( nestedCompositeTransform->GetNthTransform( n ) );
-        if( nestedCompositeTransform->GetNthTransformToOptimize( n ) )
+        transformQueue.push_back( nestedRegularGridPiecewiseTransform->GetNthTransform( n ) );
+        if( nestedRegularGridPiecewiseTransform->GetNthTransformToOptimize( n ) )
           {
           transformsToOptimizeFlags.push_back( true );
-          transformsToOptimizeQueue.push_back( nestedCompositeTransform->GetNthTransform( n ) );
+          transformsToOptimizeQueue.push_back( nestedRegularGridPiecewiseTransform->GetNthTransform( n ) );
           }
         else
           {
@@ -1242,7 +1175,7 @@ CompositeTransform<TScalar, NDimensions>
 
 template <class TScalarType, unsigned int NDimensions>
 void
-CompositeTransform<TScalarType, NDimensions>
+RegularGridPiecewiseTransform<TScalarType, NDimensions>
 ::PrintSelf( std::ostream& os, Indent indent ) const
 {
   Superclass::PrintSelf( os, indent );
@@ -1271,30 +1204,40 @@ CompositeTransform<TScalarType, NDimensions>
     }
   os << indent <<  "End of TransformsToOptimizeQueue." << std::endl << "<<<<<<<<<<" << std::endl;
 
-  os << indent <<  "End of CompositeTransform." << std::endl << "<<<<<<<<<<" << std::endl;
+  os << indent <<  "End of RegularGridPiecewiseTransform." << std::endl << "<<<<<<<<<<" << std::endl;
 }
 
 template
 <class TScalarType, unsigned int NDimensions>
 typename LightObject::Pointer
-CompositeTransform<TScalarType, NDimensions>
+RegularGridPiecewiseTransform<TScalarType, NDimensions>
 ::InternalClone() const
 {
-  typename LightObject::Pointer loPtr = Superclass::InternalClone();
+  // This class doesn't use its superclass implemenation
+  // TODO: is it really the right behavior?
+  // LightObject::Pointer loPtr = Superclass::InternalClone();
 
-  typename Self::Pointer rval = dynamic_cast<Self *>(loPtr.GetPointer());
-  if(rval.IsNull())
+  LightObject::Pointer loPtr = CreateAnother();
+  typename Self::Pointer clone =
+    dynamic_cast<Self *>(loPtr.GetPointer());
+  if(clone.IsNull())
     {
     itkExceptionMacro(<< "downcast to type " << this->GetNameOfClass() << " failed.");
     }
 
-  typename TransformsToOptimizeFlagsType::iterator tfIt;
+  typename TransformQueueType::iterator tqIt =
+    this->m_TransformQueue.begin();
 
-  for(SizeValueType i=0; i < this->GetNumberOfTransforms(); i++)
+  typename TransformsToOptimizeFlagsType::iterator tfIt =
+    this->m_TransformsToOptimizeFlags.begin();
+
+  for(int i = 0; tqIt != this->m_TransformQueue.end() &&
+        tfIt != this->m_TransformsToOptimizeFlags.end();
+      ++tqIt, ++tfIt, ++i)
     {
-    rval->SetNthTransformToOptimize( i, this->GetNthTransformToOptimize(i) );
+    clone->AddTransform((*tqIt)->Clone().GetPointer());
+    clone->SetNthTransformToOptimize(i,(*tfIt));
     }
-
   return loPtr;
 }
 

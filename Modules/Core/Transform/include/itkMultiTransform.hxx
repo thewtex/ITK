@@ -15,10 +15,10 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkMultiTransformBase_hxx
-#define __itkMultiTransformBase_hxx
+#ifndef __itkMultiTransform_hxx
+#define __itkMultiTransform_hxx
 
-#include "itkMultiTransformBase.h"
+#include "itkMultiTransform.h"
 #include <cstring> // for memcpy on some platforms
 
 namespace itk
@@ -29,7 +29,7 @@ namespace itk
  */
 template
 <class TScalar, unsigned int NDimensions, unsigned int NSubDimensions>
-MultiTransformBase<TScalar, NDimensions, NSubDimensions>::MultiTransformBase() : Superclass( 0 )
+MultiTransform<TScalar, NDimensions, NSubDimensions>::MultiTransform() : Superclass( 0 )
 {
   this->m_NumberOfLocalParameters = itk::NumericTraits< NumberOfParametersType >::Zero;
   this->m_LocalParametersUpdateTime = itk::NumericTraits< ModifiedTimeType >::Zero;
@@ -41,8 +41,8 @@ MultiTransformBase<TScalar, NDimensions, NSubDimensions>::MultiTransformBase() :
  */
 template
 <class TScalar, unsigned int NDimensions, unsigned int NSubDimensions>
-MultiTransformBase<TScalar, NDimensions, NSubDimensions>::
-~MultiTransformBase()
+MultiTransform<TScalar, NDimensions, NSubDimensions>::
+~MultiTransform()
 {
 }
 
@@ -51,8 +51,8 @@ MultiTransformBase<TScalar, NDimensions, NSubDimensions>::
  */
 template
 <class TScalar, unsigned int NDimensions, unsigned int NSubDimensions>
-typename MultiTransformBase<TScalar, NDimensions, NSubDimensions>::TransformCategoryType
-MultiTransformBase<TScalar, NDimensions, NSubDimensions>
+typename MultiTransform<TScalar, NDimensions, NSubDimensions>::TransformCategoryType
+MultiTransform<TScalar, NDimensions, NSubDimensions>
 ::GetTransformCategory() const
 {
   // If all sub-transforms are the same, return that type. Otherwise
@@ -85,7 +85,7 @@ MultiTransformBase<TScalar, NDimensions, NSubDimensions>
 template
 <class TScalar, unsigned int NDimensions, unsigned int NSubDimensions>
 bool
-MultiTransformBase<TScalar, NDimensions, NSubDimensions>
+MultiTransform<TScalar, NDimensions, NSubDimensions>
 ::IsLinear() const
 {
   // If all sub-transforms are linear, return true.
@@ -101,8 +101,8 @@ MultiTransformBase<TScalar, NDimensions, NSubDimensions>
 
 template
 <class TScalar, unsigned int NDimensions, unsigned int NSubDimensions>
-const typename MultiTransformBase<TScalar, NDimensions, NSubDimensions>::ParametersType
-& MultiTransformBase<TScalar, NDimensions, NSubDimensions>
+const typename MultiTransform<TScalar, NDimensions, NSubDimensions>::ParametersType
+& MultiTransform<TScalar, NDimensions, NSubDimensions>
 ::GetParameters() const
 {
   /* Resize destructively. But if it's already this size, nothing is done so
@@ -131,7 +131,7 @@ const typename MultiTransformBase<TScalar, NDimensions, NSubDimensions>::Paramet
 template
 <class TScalar, unsigned int NDimensions, unsigned int NSubDimensions>
 void
-MultiTransformBase<TScalar, NDimensions, NSubDimensions>
+MultiTransform<TScalar, NDimensions, NSubDimensions>
 ::SetParameters(const ParametersType & inputParameters)
 {
   /* We do not copy inputParameters into m_Parameters,
@@ -139,6 +139,12 @@ MultiTransformBase<TScalar, NDimensions, NSubDimensions>
 
   /* We assume input params are concatenation of the parameters of the
      sub-transforms, in order of the queue from begin() to end(). */
+
+  /* If queue is empty, simply return. This support use of Superclass::InternalClone */
+  if( this->GetNumberOfTransforms() == 0 )
+    {
+    return;
+    }
 
   /* Verify proper input size. */
   if( inputParameters.Size() != this->GetNumberOfParameters() )
@@ -179,8 +185,8 @@ MultiTransformBase<TScalar, NDimensions, NSubDimensions>
 
 template
 <class TScalar, unsigned int NDimensions, unsigned int NSubDimensions>
-const typename MultiTransformBase<TScalar, NDimensions, NSubDimensions>::ParametersType
-& MultiTransformBase<TScalar, NDimensions, NSubDimensions>
+const typename MultiTransform<TScalar, NDimensions, NSubDimensions>::ParametersType
+& MultiTransform<TScalar, NDimensions, NSubDimensions>
 ::GetFixedParameters(void) const
 {
   /* Resize destructively. But if it's already this size, nothing is done so
@@ -210,9 +216,15 @@ const typename MultiTransformBase<TScalar, NDimensions, NSubDimensions>::Paramet
 template
 <class TScalar, unsigned int NDimensions, unsigned int NSubDimensions>
 void
-MultiTransformBase<TScalar, NDimensions, NSubDimensions>
+MultiTransform<TScalar, NDimensions, NSubDimensions>
 ::SetFixedParameters(const ParametersType & inputParameters)
 {
+  /* If queue is empty, simply return. This support use of Superclass::InternalClone */
+  if( this->GetNumberOfTransforms() == 0 )
+    {
+    return;
+    }
+
   /* Verify proper input size. */
   if( inputParameters.Size() != this->GetNumberOfFixedParameters() )
     {
@@ -249,8 +261,8 @@ MultiTransformBase<TScalar, NDimensions, NSubDimensions>
 }
 
 template<class TScalar, unsigned int NDimensions, unsigned int NSubDimensions>
-typename MultiTransformBase<TScalar, NDimensions, NSubDimensions>::NumberOfParametersType
-MultiTransformBase<TScalar, NDimensions, NSubDimensions>
+typename MultiTransform<TScalar, NDimensions, NSubDimensions>::NumberOfParametersType
+MultiTransform<TScalar, NDimensions, NSubDimensions>
 ::GetNumberOfParameters(void) const
 {
   /* Returns to total number of params in all transforms currently
@@ -274,9 +286,9 @@ MultiTransformBase<TScalar, NDimensions, NSubDimensions>
 }
 
 template<class TScalar, unsigned int NDimensions, unsigned int NSubDimensions>
-typename MultiTransformBase<TScalar, NDimensions, NSubDimensions>::NumberOfParametersType
-MultiTransformBase<TScalar, NDimensions, NSubDimensions>
-::GetNumberOfLocalParameters(void) const
+typename MultiTransform<TScalar, NDimensions, NSubDimensions>::NumberOfParametersType
+MultiTransform<TScalar, NDimensions, NSubDimensions>
+::GetAggregateNumberOfLocalParameters(void) const
 {
   if ( this->GetMTime() == this->m_LocalParametersUpdateTime )
    {
@@ -294,16 +306,32 @@ MultiTransformBase<TScalar, NDimensions, NSubDimensions>
   for( SizeValueType tind = 0; tind < this->GetNumberOfTransforms(); tind++ )
     {
     transform = this->GetNthTransform( tind ).GetPointer();
-    result += transform->GetNumberOfLocalParameters();
+    result += transform->GetAggregateNumberOfLocalParameters();
     }
   this->m_NumberOfLocalParameters = result;
   return result;
 }
 
+template<class TScalar, unsigned int NDimensions, unsigned int NSubDimensions>
+typename MultiTransform<TScalar, NDimensions, NSubDimensions>::NumberOfParametersType
+MultiTransform<TScalar, NDimensions, NSubDimensions>
+::GetNumberOfLocalParametersAtPoint( const InputPointType & point ) const
+{
+  NumberOfParametersType result = NumericTraits< NumberOfParametersType >::Zero;
+  const TransformType * transform;
+
+  for( SizeValueType tind = 0; tind < this->GetNumberOfTransforms(); tind++ )
+    {
+    transform = this->GetNthTransform( tind ).GetPointer();
+    result += transform->GetNumberOfLocalParametersAtPoint( point );
+    }
+  return result;
+}
+
 template
 <class TScalar, unsigned int NDimensions, unsigned int NSubDimensions>
-typename MultiTransformBase<TScalar, NDimensions, NSubDimensions>::NumberOfParametersType
-MultiTransformBase<TScalar, NDimensions, NSubDimensions>
+typename MultiTransform<TScalar, NDimensions, NSubDimensions>::NumberOfParametersType
+MultiTransform<TScalar, NDimensions, NSubDimensions>
 ::GetNumberOfFixedParameters(void) const
 {
   NumberOfParametersType result = NumericTraits< NumberOfParametersType >::Zero;
@@ -320,7 +348,7 @@ MultiTransformBase<TScalar, NDimensions, NSubDimensions>
 template
 <class TScalar, unsigned int NDimensions, unsigned int NSubDimensions>
 void
-MultiTransformBase<TScalar, NDimensions, NSubDimensions>
+MultiTransform<TScalar, NDimensions, NSubDimensions>
 ::UpdateTransformParameters(  const DerivativeType & update, ScalarType  factor )
 {
   /* Update parameters within the sub-transforms. */
@@ -365,7 +393,7 @@ MultiTransformBase<TScalar, NDimensions, NSubDimensions>
 template
 <class TScalar, unsigned int NDimensions, unsigned int NSubDimensions>
 bool
-MultiTransformBase<TScalar, NDimensions, NSubDimensions>
+MultiTransform<TScalar, NDimensions, NSubDimensions>
 ::GetInverse( Self *inverse ) const
 {
   typename TransformQueueType::const_iterator it;
@@ -391,8 +419,33 @@ MultiTransformBase<TScalar, NDimensions, NSubDimensions>
 
 template
 <class TScalar, unsigned int NDimensions, unsigned int NSubDimensions>
+typename LightObject::Pointer
+MultiTransform<TScalar, NDimensions, NSubDimensions>
+::InternalClone() const
+{
+  // Superclass won't currently do anything relevant for this class,
+  // but still call it in case something changes in the future.
+  typename LightObject::Pointer loPtr = Superclass::InternalClone();
+
+  typename Self::Pointer rval = dynamic_cast<Self *>(loPtr.GetPointer());
+  if(rval.IsNull())
+    {
+    itkExceptionMacro(<< "downcast to type " << this->GetNameOfClass() << " failed.");
+    }
+
+  typename TransformQueueType::iterator it;
+  for( it = this->m_TransformQueue.begin(); it != this->m_TransformQueue.end(); ++it )
+    {
+    rval->AddTransform((*it)->Clone().GetPointer());
+    }
+
+  return loPtr;
+}
+
+template
+<class TScalar, unsigned int NDimensions, unsigned int NSubDimensions>
 void
-MultiTransformBase<TScalar, NDimensions, NSubDimensions>
+MultiTransform<TScalar, NDimensions, NSubDimensions>
 ::PrintSelf( std::ostream& os, Indent indent ) const
 {
   Superclass::PrintSelf( os, indent );
@@ -411,7 +464,7 @@ MultiTransformBase<TScalar, NDimensions, NSubDimensions>
     (*cit)->Print( os, indent );
     }
 
-  os << indent <<  "End of MultiTransformBase." << std::endl << "<<<<<<<<<<" << std::endl;
+  os << indent <<  "End of " << this->GetNameOfClass() << std::endl << "<<<<<<<<<<" << std::endl;
 }
 
 } // namespace itk
