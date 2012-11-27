@@ -26,7 +26,7 @@ if(DCMTK_USE_LIBICONV)
     ExternalProject_add(libiconv
       URL http://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.14.tar.gz
       URL_MD5 e34509b1623cec449dfeb73d7ce9c6c6
-      #  GIT_REPOSITORY git://git.savannah.gnu.org/libiconv.git
+      #  GIT_REPOSITORY http://git.savannah.gnu.org/libiconv.git
       PREFIX ${ITKDCMTK_BINARY_DIR}
       UPDATE_COMMAND ""
       CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=${ITKDCMTK_PREREQS}
@@ -172,7 +172,7 @@ endforeach()
     string(REPLACE ";" ":::" DCMTK${libdep}_INCLUDE_DIRS "${ITK${libdep}_INCLUDE_DIRS}")
   endforeach()
 
-  set(DCMTK_GIT_REPOSITORY "git://git.dcmtk.org/dcmtk.git")
+  set(DCMTK_GIT_REPOSITORY "http://git.dcmtk.org/dcmtk.git")
   set(DCMTK_GIT_TAG GIT_TAG ab844899a92f46e2d880c38c85ce098933533aef)
 
   set(DCMTK_EP_FLAGS
