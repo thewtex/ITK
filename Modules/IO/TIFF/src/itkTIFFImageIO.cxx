@@ -159,11 +159,11 @@ int TIFFReaderInternal::Initialize()
           {
           // look for the number of images
           std::string desc = description[0];
-          int         pos = desc.find("images=");
-          int         pos2 = desc.find("\n");
+          std::string::size_type pos = desc.find("images=");
+          std::string::size_type pos2 = desc.find("\n");
           if ( ( pos != -1 ) && ( pos2 != -1 ) )
             {
-            this->m_NumberOfPages = atoi( desc.substr(pos + 7, pos2 - pos - 7).c_str() );
+            this->m_NumberOfPages = static_cast<short unsigned int>( atoi( desc.substr(pos + 7, pos2 - pos - 7).c_str() ) );
             }
           }
         }
@@ -939,9 +939,9 @@ int TIFFImageIO::EvaluateImageAt(void *out, void *in)
         short *image_us = (short *)out;
         short *source_us = (short *)in;
         this->GetColor(*source_us, &red, &green, &blue);
-        *( image_us )   = red << 8;
-        *( image_us + 1 ) = green << 8;
-        *( image_us + 2 ) = blue << 8;
+        *( image_us )   = red << static_cast<short int>(8);
+        *( image_us + 1 ) = green << static_cast<short int>(8);
+        *( image_us + 2 ) = blue << static_cast<short int>(8);
         }
       else if ( m_ComponentType == CHAR )
         {
@@ -1721,10 +1721,10 @@ void TIFFImageIO::InternalWrite(const void *buffer)
 {
   char *outPtr = (char *)buffer;
 
-  unsigned int width, height, page, pages = 1;
+  unsigned int page, pages = 1;
 
-  width =  m_Dimensions[0];
-  height = m_Dimensions[1];
+  const SizeValueType width =  m_Dimensions[0];
+  const SizeValueType height = m_Dimensions[1];
   if ( m_NumberOfDimensions == 3 )
     {
     pages = m_Dimensions[2];
