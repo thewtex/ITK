@@ -55,11 +55,17 @@ public:
   typedef SpatialObject< itkGetStaticConstMacro(ObjectDimension) >
   InternalSpatialObjectType;
 
-  /** Set the input SpatialObject. */
+  /** Get/Set the input SpatialObject. */
   itkSetConstObjectMacro(Input, SpatialObjectType);
 
-  /** Get the output SpatialObject. */
-  itkGetObjectMacro(Output, SpatialObjectType);
+  /** Get/Set the output SpatialObject. */
+#if 0 //HACK: This needs logic regarding ITK_LEGACY_REMOVE
+  virtual SpatialObjectType * GetOutput () //This function is to provide a facade of looking like a filter, even though it is only an itkObject.
+    {
+    return this->m_Output.GetPointer();
+    }
+#endif
+  itkGetModifiableObjectMacro(Output, SpatialObjectType);
 
   /** Compute of the input SpatialObject. */
   void Update(void);
