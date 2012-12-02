@@ -91,11 +91,10 @@ public:
   itkSetClampMacro(Distance, double, 0.0, 1.0);
   itkGetConstMacro(Distance, double);
 
-  /** Set the interpolator function */
+  /** Get/Set the interpolator function */
   itkSetObjectMacro(Interpolator, InterpolatorType)
-
-  /** Get a pointer to the interpolator function. */
   itkGetObjectMacro(Interpolator, InterpolatorType);
+  itkGetConstObjectMacro(Interpolator, InterpolatorType);
 
   /** This method is used to set the state of the filter before
    * multi-threading. */

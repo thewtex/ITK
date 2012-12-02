@@ -72,11 +72,10 @@ public:
   /** Run-time type information (and related methods). */
   itkTypeMacro(InteriorExteriorMeshFilter, MeshToMeshFilter);
 
-  /** Set the spatial function. */
+  /** Get/Set the spatial function. */
   itkSetObjectMacro(SpatialFunction, SpatialFunctionType);
-
-  /** Get the spatial function. */
   itkGetObjectMacro(SpatialFunction, SpatialFunctionType);
+  itkGetConstObjectMacro(SpatialFunction, SpatialFunctionType);
 
   typedef DataObjectDecorator< SpatialFunctionType >
   SpatialFunctionDataObjectType;

@@ -116,8 +116,8 @@ public:
   /** Set/Get the input narrowband. A narrowband is represented as
    * a VectorContainer of LevelSetNodes. */
   void SetInputNarrowBand(NodeContainer *ptr);
-
   itkGetObjectMacro(InputNarrowBand, NodeContainer);
+  itkGetConstObjectMacro(InputNarrowBand, NodeContainer);
 
   /** Get the container of inside points. The inside points are
    * stored in a VectorContainer of LevelSetNodes. */

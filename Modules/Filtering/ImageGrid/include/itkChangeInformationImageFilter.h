@@ -110,6 +110,7 @@ public:
   }
 
   itkGetObjectMacro(ReferenceImage, TInputImage);
+  itkGetConstObjectMacro(ReferenceImage, TInputImage);
 
   itkSetMacro(UseReferenceImage, bool);
   itkBooleanMacro(UseReferenceImage);

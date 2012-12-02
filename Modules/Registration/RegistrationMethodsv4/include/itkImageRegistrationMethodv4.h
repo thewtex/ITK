@@ -185,10 +185,12 @@ public:
   /** Set/Get the optimizer. */
   itkSetObjectMacro( Optimizer, OptimizerType );
   itkGetObjectMacro( Optimizer, OptimizerType );
+  itkGetConstObjectMacro( Optimizer, OptimizerType );
 
   /** Set/Get the metric. */
   itkSetObjectMacro( Metric, MetricType );
   itkGetObjectMacro( Metric, MetricType );
+  itkGetConstObjectMacro( Metric, MetricType );
 
   /** Set/Get the metric sampling strategy. */
   itkSetMacro( MetricSamplingStrategy, MetricSamplingStrategyType );

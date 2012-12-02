@@ -90,6 +90,7 @@ public:
   /** Set/Get the image to be segmented */
   itkSetObjectMacro( Input, InputImageType );
   itkGetObjectMacro( Input, InputImageType );
+  itkGetConstObjectMacro( Input, InputImageType );
 
   itkSetMacro( Coefficient, LevelSetOutputRealType );
   itkGetMacro( Coefficient, LevelSetOutputRealType );
@@ -98,9 +99,11 @@ public:
   itkGetMacro( CurrentLevelSetId, LevelSetIdentifierType );
 
   itkGetObjectMacro( CurrentLevelSetPointer, LevelSetType );
+  itkGetConstObjectMacro( CurrentLevelSetPointer, LevelSetType );
 
   virtual void SetLevelSetContainer( LevelSetContainerType*ptr );
   itkGetObjectMacro( LevelSetContainer, LevelSetContainerType );
+  itkGetConstObjectMacro( LevelSetContainer, LevelSetContainerType );
 
   /** Returns the weighted term contribution at the given location iP, i.e.
    *  \f$ \alpha_i \cdot \omega_i( p ) \f$

@@ -133,9 +133,13 @@ public:
 
   // Get methods to get the entire VectorContainers for Elements, Nodes, Loads, and Materials
   itkGetObjectMacro(ElementContainer, ElementContainerType);
+  itkGetConstObjectMacro(ElementContainer, ElementContainerType);
   itkGetObjectMacro(NodeContainer, NodeContainerType);
+  itkGetConstObjectMacro(NodeContainer, NodeContainerType);
   itkGetObjectMacro(LoadContainer, LoadContainerType);
+  itkGetConstObjectMacro(LoadContainer, LoadContainerType);
   itkGetObjectMacro(MaterialContainer, MaterialContainerType);
+  itkGetConstObjectMacro(MaterialContainer, MaterialContainerType);
 
   /** Get the Degrees of Freedom for the FE model */
   unsigned int GetNumberOfDegreesOfFreedom(void) const

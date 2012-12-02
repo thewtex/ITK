@@ -138,6 +138,7 @@ protected:
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   itkGetObjectMacro(Transform, TransformType);
+  itkGetConstObjectMacro(Transform, TransformType);
 
 private:
   CenteredTransformInitializer(const Self &); //purposely not implemented

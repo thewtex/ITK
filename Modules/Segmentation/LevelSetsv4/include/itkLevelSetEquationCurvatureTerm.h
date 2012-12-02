@@ -94,6 +94,7 @@ public:
   calculation. */
   void SetCurvatureImage( CurvatureImageType* CurvatureImage );
   itkGetObjectMacro( CurvatureImage, CurvatureImageType );
+  itkGetConstObjectMacro( CurvatureImage, CurvatureImageType );
 
   itkSetMacro( UseCurvatureImage, bool );
   itkGetMacro( UseCurvatureImage, bool );

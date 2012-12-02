@@ -156,6 +156,7 @@ public:
   }
 
   itkGetObjectMacro(DataManager, GPUImageDataManager< GPUImage >);
+  itkGetConstObjectMacro(DataManager, GPUImageDataManager< GPUImage >);
 
   GPUDataManager::Pointer GetGPUDataManager() const;
 

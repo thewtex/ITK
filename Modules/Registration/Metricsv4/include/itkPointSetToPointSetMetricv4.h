@@ -254,7 +254,7 @@ public:
    * Get the virtual point set, derived from the fixed point set.
    * If the virtual point set has not yet been derived, it will be
    * in this call. */
-  const VirtualPointSetType * GetVirtualTransformedPointSet();
+  const VirtualPointSetType * GetVirtualTransformedPointSet( void ) const;
 
   /**
    * Initialize the metric by making sure that all the components

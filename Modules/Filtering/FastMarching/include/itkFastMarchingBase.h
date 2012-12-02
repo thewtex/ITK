@@ -167,22 +167,27 @@ public:
   /** Set/Get TrialPoints */
   itkSetObjectMacro( TrialPoints, NodePairContainerType );
   itkGetObjectMacro( TrialPoints, NodePairContainerType );
+  itkGetConstObjectMacro( TrialPoints, NodePairContainerType );
 
   /** Set/Get AlivePoints */
   itkSetObjectMacro( AlivePoints, NodePairContainerType );
   itkGetObjectMacro( AlivePoints, NodePairContainerType );
+  itkGetConstObjectMacro( AlivePoints, NodePairContainerType );
 
   /** Set/Get ProcessedPoints */
   itkSetObjectMacro( ProcessedPoints, NodePairContainerType );
   itkGetObjectMacro( ProcessedPoints, NodePairContainerType );
+  itkGetConstObjectMacro( ProcessedPoints, NodePairContainerType );
 
   /** Set/Get ForbiddenPoints */
   itkSetObjectMacro( ForbiddenPoints, NodePairContainerType );
   itkGetObjectMacro( ForbiddenPoints, NodePairContainerType );
+  itkGetConstObjectMacro( ForbiddenPoints, NodePairContainerType );
 
   /** \brief Set/Get the Stopping Criterion */
-  itkGetObjectMacro( StoppingCriterion, StoppingCriterionType );
   itkSetObjectMacro( StoppingCriterion, StoppingCriterionType );
+  itkGetObjectMacro( StoppingCriterion, StoppingCriterionType );
+  itkGetConstObjectMacro( StoppingCriterion, StoppingCriterionType );
 
   /** \brief Set/Get SpeedConstant */
   itkGetMacro( SpeedConstant, double );

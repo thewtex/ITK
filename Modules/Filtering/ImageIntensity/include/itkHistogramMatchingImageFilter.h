@@ -140,8 +140,11 @@ public:
    * output. Objects are only valid after Update() has been called
    * on this filter. */
   itkGetObjectMacro(SourceHistogram, HistogramType);
+  itkGetConstObjectMacro(SourceHistogram, HistogramType);
   itkGetObjectMacro(ReferenceHistogram, HistogramType);
+  itkGetConstObjectMacro(ReferenceHistogram, HistogramType);
   itkGetObjectMacro(OutputHistogram, HistogramType);
+  itkGetConstObjectMacro(OutputHistogram, HistogramType);
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   /** Begin concept checking */

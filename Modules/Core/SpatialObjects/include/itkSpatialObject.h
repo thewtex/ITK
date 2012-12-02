@@ -146,7 +146,6 @@ public:
   /** This defines the transformation from the global coordinate frame.
    *  By setting this transform, the local transform is computed */
   void SetObjectToWorldTransform(TransformType *transform);
-
   itkGetObjectMacro(ObjectToWorldTransform, TransformType);
   itkGetConstObjectMacro(ObjectToWorldTransform, TransformType);
   itkGetObjectMacro(IndexToWorldTransform, TransformType);

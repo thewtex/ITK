@@ -124,12 +124,14 @@ public:
 
   /** Get the source landmarks list, which we will denote \f$ p \f$. */
   itkGetObjectMacro(SourceLandmarks, PointSetType);
+  itkGetConstObjectMacro(SourceLandmarks, PointSetType);
 
   /** Set the source landmarks list. */
   virtual void SetSourceLandmarks(PointSetType *);
 
   /** Get the target landmarks list, which we will denote  \f$ q \f$. */
   itkGetObjectMacro(TargetLandmarks, PointSetType);
+  itkGetConstObjectMacro(TargetLandmarks, PointSetType);
 
   /** Set the target landmarks list. */
   virtual void SetTargetLandmarks(PointSetType *);
@@ -137,6 +139,7 @@ public:
   /** Get the displacements list, which we will denote \f$ d \f$,
    * where \f$ d_i = q_i - p_i \f$. */
   itkGetObjectMacro(Displacements, VectorSetType);
+  itkGetConstObjectMacro(Displacements, VectorSetType);
 
   /** Compute W matrix. */
   void ComputeWMatrix(void);

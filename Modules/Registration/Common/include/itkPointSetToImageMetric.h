@@ -135,12 +135,14 @@ public:
 
   /** Get a pointer to the Transform.  */
   itkGetObjectMacro(Transform, TransformType);
+  itkGetConstObjectMacro(Transform, TransformType);
 
   /** Connect the Interpolator. */
   itkSetObjectMacro(Interpolator, InterpolatorType);
 
   /** Get a pointer to the Interpolator.  */
   itkGetObjectMacro(Interpolator, InterpolatorType);
+  itkGetConstObjectMacro(Interpolator, InterpolatorType);
 
   /** Get Gradient Image. */
   itkGetConstObjectMacro(GradientImage, GradientImageType);

@@ -118,10 +118,12 @@ public:
   /** Get the container of auxiliary values associated with the inside
    *  points. */
   itkGetObjectMacro(AuxInsideValues, AuxValueContainer);
+  itkGetConstObjectMacro(AuxInsideValues, AuxValueContainer);
 
   /** Get the container of auxiliary values associate with the outside
    *  points. */
   itkGetObjectMacro(AuxOutsideValues, AuxValueContainer);
+  itkGetConstObjectMacro(AuxOutsideValues, AuxValueContainer);
 
 protected:
   LevelSetVelocityNeighborhoodExtractor();

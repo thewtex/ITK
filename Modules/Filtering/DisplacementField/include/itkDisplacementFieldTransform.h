@@ -180,27 +180,31 @@ public:
     Dimension>
   OptimizerParametersHelperType;
 
-  /** Get/Set the displacement field. */
-  itkGetObjectMacro( DisplacementField, DisplacementFieldType );
-  /** Set the displacement field. Create special set accessor to update
+  /** Get/Set the displacement field.
+   * Set the displacement field. Create special set accessor to update
    * interpolator and assign displacement field to transform parameters
    * container. */
   virtual void SetDisplacementField( DisplacementFieldType* field );
+  itkGetObjectMacro( DisplacementField, DisplacementFieldType );
+  itkGetConstObjectMacro( DisplacementField, DisplacementFieldType );
 
   /** Get/Set the inverse displacement field. This must be supplied by the user for
    * GetInverse() to work. */
-  itkGetObjectMacro( InverseDisplacementField, DisplacementFieldType );
   virtual void SetInverseDisplacementField( DisplacementFieldType * inverseDisplacementField );
+  itkGetObjectMacro( InverseDisplacementField, DisplacementFieldType );
+  itkGetConstObjectMacro( InverseDisplacementField, DisplacementFieldType );
 
-  /** Get/Set the interpolator. */
-  itkGetObjectMacro( Interpolator, InterpolatorType );
-  /* Create out own set accessor that assigns the displacement field */
+  /** Get/Set the interpolator.
+   * Create out own set accessor that assigns the displacement field */
   virtual void SetInterpolator( InterpolatorType* interpolator );
+  itkGetObjectMacro( Interpolator, InterpolatorType );
+  itkGetConstObjectMacro( Interpolator, InterpolatorType );
 
-  /** Get/Set the interpolator for the inverse field. */
-  itkGetObjectMacro( InverseInterpolator, InterpolatorType );
-  /* Create out own set accessor that assigns the displacement field */
+  /** Get/Set the interpolator for the inverse field.
+   * Create out own set accessor that assigns the displacement field */
   virtual void SetInverseInterpolator( InterpolatorType* interpolator );
+  itkGetObjectMacro( InverseInterpolator, InterpolatorType );
+  itkGetConstObjectMacro( InverseInterpolator, InterpolatorType );
 
   /** Get the modification time of displacement field */
   itkGetConstReferenceMacro( DisplacementFieldSetTime, ModifiedTimeType );

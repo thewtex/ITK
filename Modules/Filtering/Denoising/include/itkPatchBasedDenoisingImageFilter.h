@@ -206,6 +206,7 @@ public:
   /** Set/Get the class used for creating a subsample of patches. */
   itkSetObjectMacro(Sampler, BaseSamplerType);
   itkGetObjectMacro(Sampler, BaseSamplerType);
+  itkGetConstObjectMacro(Sampler, BaseSamplerType);
 
 protected:
   PatchBasedDenoisingImageFilter();

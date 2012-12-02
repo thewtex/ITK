@@ -75,11 +75,10 @@ public:
 
   itkStaticConstMacro(ImageDimension, unsigned int, ImageType::ImageDimension);
 
-  /** Set the input image. */
+  /** Get/Set the input image. */
   itkSetConstObjectMacro(InputImage, ImageType);
-
-  /** Get the output image. */
   itkGetObjectMacro(Output, ImageType);
+  itkGetConstObjectMacro(Output, ImageType);
 
   /** Compute of the input image. */
   void Update(void);

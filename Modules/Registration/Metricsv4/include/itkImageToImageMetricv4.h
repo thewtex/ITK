@@ -401,14 +401,18 @@ public:
   /** Set/Get the gradient filter */
   itkSetObjectMacro( FixedImageGradientFilter, FixedImageGradientFilterType );
   itkGetObjectMacro( FixedImageGradientFilter, FixedImageGradientFilterType );
+  itkGetConstObjectMacro( FixedImageGradientFilter, FixedImageGradientFilterType );
   itkSetObjectMacro( MovingImageGradientFilter, MovingImageGradientFilterType );
   itkGetObjectMacro( MovingImageGradientFilter, MovingImageGradientFilterType );
+  itkGetConstObjectMacro( MovingImageGradientFilter, MovingImageGradientFilterType );
 
   /** Set/Get gradient calculators */
   itkSetObjectMacro( FixedImageGradientCalculator, FixedImageGradientCalculatorType);
   itkGetObjectMacro( FixedImageGradientCalculator, FixedImageGradientCalculatorType);
+  itkGetConstObjectMacro( FixedImageGradientCalculator, FixedImageGradientCalculatorType);
   itkSetObjectMacro( MovingImageGradientCalculator, MovingImageGradientCalculatorType);
   itkGetObjectMacro( MovingImageGradientCalculator, MovingImageGradientCalculatorType);
+  itkGetConstObjectMacro( MovingImageGradientCalculator, MovingImageGradientCalculatorType);
 
   /** Set/Get gradient computation via an image filter,
    * for fixed image. */

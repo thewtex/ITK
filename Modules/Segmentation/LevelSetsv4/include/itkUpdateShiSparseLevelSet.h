@@ -83,6 +83,7 @@ public:
   typedef typename EquationContainerType::TermContainerPointer  TermContainerPointer;
 
   itkGetObjectMacro( OutputLevelSet, LevelSetType );
+  itkGetConstObjectMacro( OutputLevelSet, LevelSetType );
 
   /** Update function for initializing and computing the output level set */
   void Update();
@@ -90,13 +91,14 @@ public:
   /** Set/Get the sparse levet set image */
   itkSetObjectMacro( InputLevelSet, LevelSetType );
   itkGetObjectMacro( InputLevelSet, LevelSetType );
+  itkGetConstObjectMacro( InputLevelSet, LevelSetType );
 
   /** Set/Get the RMS change for the update */
   itkGetMacro( RMSChangeAccumulator, LevelSetOutputRealType );
 
   /** Set/Get the Equation container for computing the update */
   itkSetObjectMacro( EquationContainer, EquationContainerType );
-  itkGetObjectMacro( EquationContainer, EquationContainerType );
+  itkGetConstObjectMacro( EquationContainer, EquationContainerType );
 
   /** Set/Get the current level set id */
   itkSetMacro( CurrentLevelSetId, IdentifierType );

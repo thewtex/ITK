@@ -113,10 +113,12 @@ public:
   /** Set the container auxiliary values at the initial alive points. */
   itkSetObjectMacro(AuxiliaryAliveValues, AuxValueContainerType );
   itkGetObjectMacro(AuxiliaryAliveValues, AuxValueContainerType );
+  itkGetConstObjectMacro(AuxiliaryAliveValues, AuxValueContainerType );
 
   /** Set the container of auxiliary values at the initial trial points. */
   itkSetObjectMacro(AuxiliaryTrialValues, AuxValueContainerType );
   itkGetObjectMacro(AuxiliaryTrialValues, AuxValueContainerType );
+  itkGetConstObjectMacro(AuxiliaryTrialValues, AuxValueContainerType );
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   /** Begin concept checking */

@@ -525,6 +525,7 @@ public:
 
   /** Get a pointer to the interpolator function. */
   itkGetObjectMacro( Interpolator, InterpolatorType );
+  itkGetConstObjectMacro( Interpolator, InterpolatorType );
 
   /** Set the Gaussian smoothing standard deviations for the
    * displacement field. The values are set with respect to pixel

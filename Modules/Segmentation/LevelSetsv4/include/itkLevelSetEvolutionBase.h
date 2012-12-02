@@ -93,6 +93,7 @@ public:
 
   itkSetObjectMacro( LevelSetContainer, LevelSetContainerType );
   itkGetObjectMacro( LevelSetContainer, LevelSetContainerType );
+  itkGetConstObjectMacro( LevelSetContainer, LevelSetContainerType );
 
   /** Set/Get the value of alpha for computing the time-step using CFL conditions */
   itkSetMacro( Alpha, LevelSetOutputRealType );
@@ -104,10 +105,12 @@ public:
   /** Set/Get the equation container for updating all the level sets */
   itkSetObjectMacro( EquationContainer, EquationContainerType );
   itkGetObjectMacro( EquationContainer, EquationContainerType );
+  itkGetConstObjectMacro( EquationContainer, EquationContainerType );
 
   /** Set/Get the Stopping Criterion */
-  itkGetObjectMacro( StoppingCriterion, StoppingCriterionType );
   itkSetObjectMacro( StoppingCriterion, StoppingCriterionType );
+  itkGetObjectMacro( StoppingCriterion, StoppingCriterionType );
+  itkGetConstObjectMacro( StoppingCriterion, StoppingCriterionType );
 
   /** Get the number of iterations that have occurred. */
   itkGetConstMacro( NumberOfIterations, IdentifierType );

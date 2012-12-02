@@ -187,6 +187,7 @@ public:
   /** Set/Get the calculator to use to compute the threshold */
   itkSetObjectMacro(Calculator, CalculatorType);
   itkGetObjectMacro(Calculator, CalculatorType);
+  itkGetConstObjectMacro(Calculator, CalculatorType);
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   /** Begin concept checking */

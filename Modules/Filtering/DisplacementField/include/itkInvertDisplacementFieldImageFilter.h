@@ -76,6 +76,7 @@ public:
 
   /** Get the interpolator. */
   itkGetObjectMacro( Interpolator, InterpolatorType );
+  itkGetConstObjectMacro( Interpolator, InterpolatorType );
 
   /** Set the deformation field */
   void SetDisplacementField( const InputFieldType *field )

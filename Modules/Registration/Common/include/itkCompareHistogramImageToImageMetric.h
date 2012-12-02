@@ -123,12 +123,14 @@ public:
 
   /** Get a pointer to the Transform.  */
   itkGetObjectMacro(TrainingTransform, TransformType);
+  itkGetConstObjectMacro(TrainingTransform, TransformType);
 
   /** Set the Interpolator. */
   itkSetObjectMacro(TrainingInterpolator, InterpolatorType);
 
   /** Get a pointer to the Interpolator.  */
   itkGetObjectMacro(TrainingInterpolator, InterpolatorType);
+  itkGetConstObjectMacro(TrainingInterpolator, InterpolatorType);
 
   /** Set the region over which the training histogram will be computed */
   itkSetMacro(TrainingFixedImageRegion, FixedImageRegionType);

@@ -66,11 +66,10 @@ public:
   /** Run-time type information (and related methods). */
   itkTypeMacro(TransformMeshFilter, MeshToMeshFilter);
 
-  /** Set transform. */
+  /** Get/Set transform. */
   itkSetObjectMacro(Transform, TransformType);
-
-  /** Get transform. */
   itkGetObjectMacro(Transform, TransformType);
+  itkGetConstObjectMacro(Transform, TransformType);
 
 protected:
   TransformMeshFilter();

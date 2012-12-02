@@ -149,6 +149,7 @@ public:
 
   /** Get the Interpolator. */
   itkGetObjectMacro(Interpolator, InterpolatorType);
+  itkGetConstObjectMacro(Interpolator, InterpolatorType);
 
   /** Get Value and Derivatives for MultipleValuedOptimizers */
   virtual void GetValueAndDerivative(const ParametersType & parameters,

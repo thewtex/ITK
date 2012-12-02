@@ -92,11 +92,10 @@ public:
   /** Type definitions for the training image. */
   //typedef typename TTrainingImage::Pointer TrainingImagePointer;
 
-  /** Set the input image. */
+  /** Get/Set the input image. */
   itkSetObjectMacro(InputImage, InputImageType);
-
-  /** Get the input image. */
   itkGetObjectMacro(InputImage, InputImageType);
+  itkGetConstObjectMacro(InputImage, InputImageType);
 
   /** Set the classified image. */
   void SetMembershipFunctions(MembershipFunctionPointerVector

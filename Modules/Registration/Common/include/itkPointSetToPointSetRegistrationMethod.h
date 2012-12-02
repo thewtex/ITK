@@ -117,14 +117,17 @@ public:
   /** Set/Get the Optimizer. */
   itkSetObjectMacro(Optimizer,  OptimizerType);
   itkGetObjectMacro(Optimizer,  OptimizerType);
+  itkGetConstObjectMacro(Optimizer,  OptimizerType);
 
   /** Set/Get the Metric. */
   itkSetObjectMacro(Metric, MetricType);
   itkGetObjectMacro(Metric, MetricType);
+  itkGetConstObjectMacro(Metric, MetricType);
 
   /** Set/Get the Transfrom. */
   itkSetObjectMacro(Transform, TransformType);
   itkGetObjectMacro(Transform, TransformType);
+  itkGetConstObjectMacro(Transform, TransformType);
 
   /** Set/Get the initial transformation parameters. */
   virtual void SetInitialTransformParameters(const ParametersType & param);

@@ -267,6 +267,7 @@ public:
   /** Set/Get the domain map image filter. */
   itkSetObjectMacro( DomainMapFilter, DomainMapImageFilterType );
   itkGetObjectMacro( DomainMapFilter, DomainMapImageFilterType );
+  itkGetConstObjectMacro( DomainMapFilter, DomainMapImageFilterType );
 
   /** Does the level set container have a domain map? */
   bool HasDomainMap() const;

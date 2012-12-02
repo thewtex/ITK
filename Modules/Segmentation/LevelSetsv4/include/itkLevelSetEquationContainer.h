@@ -109,6 +109,7 @@ public:
 
   itkSetObjectMacro( LevelSetContainer, LevelSetContainerType );
   itkGetObjectMacro( LevelSetContainer, LevelSetContainerType );
+  itkGetConstObjectMacro( LevelSetContainer, LevelSetContainerType );
 
 protected:
   typedef std::map< LevelSetIdentifierType, TermContainerPointer >  MapContainerType;

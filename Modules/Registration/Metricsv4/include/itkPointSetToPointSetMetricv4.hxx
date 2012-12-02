@@ -443,7 +443,7 @@ PointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>
 template<class TFixedPointSet, class TMovingPointSet>
 const typename PointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>::VirtualPointSetType *
 PointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>
-::GetVirtualTransformedPointSet()
+::GetVirtualTransformedPointSet( void ) const
 {
   // First make sure the virtual point set is current.
   this->TransformFixedAndCreateVirtualPointSet();
