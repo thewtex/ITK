@@ -75,11 +75,16 @@ public:
 
   itkStaticConstMacro(ImageDimension, unsigned int, ImageType::ImageDimension);
 
-  /** Set the input image. */
   itkSetConstObjectMacro(InputImage, ImageType);
 
-  /** Get the output image. */
-  itkGetObjectMacro(Output, ImageType);
+  /** Get/Set the input image. */
+#if 0 //HACK: This needs logic regarding ITK_LEGACY_REMOVE
+  virtual ImageType * GetOutput () //This function is to provide a facade of looking like a filter, even though it is only an itkObject.
+    {
+    return this->m_Output.GetPointer();
+    }
+#endif
+  itkGetModifiableObjectMacro(Output, ImageType);
 
   /** Compute of the input image. */
   void Update(void);
