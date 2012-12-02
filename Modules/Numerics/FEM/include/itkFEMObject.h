@@ -132,10 +132,14 @@ public:
   void DeepCopy(FEMObject *Copy);
 
   // Get methods to get the entire VectorContainers for Elements, Nodes, Loads, and Materials
-  itkGetObjectMacro(ElementContainer, ElementContainerType);
-  itkGetObjectMacro(NodeContainer, NodeContainerType);
-  itkGetObjectMacro(LoadContainer, LoadContainerType);
-  itkGetObjectMacro(MaterialContainer, MaterialContainerType);
+  itkGetModifiableObjectMacro(ElementContainer, ElementContainerType);
+  itkGetConstObjectMacro(ElementContainer, ElementContainerType);
+  itkGetModifiableObjectMacro(NodeContainer, NodeContainerType);
+  itkGetConstObjectMacro(NodeContainer, NodeContainerType);
+  itkGetModifiableObjectMacro(LoadContainer, LoadContainerType);
+  itkGetConstObjectMacro(LoadContainer, LoadContainerType);
+  itkGetModifiableObjectMacro(MaterialContainer, MaterialContainerType);
+  itkGetConstObjectMacro(MaterialContainer, MaterialContainerType);
 
   /** Get the Degrees of Freedom for the FE model */
   unsigned int GetNumberOfDegreesOfFreedom(void) const

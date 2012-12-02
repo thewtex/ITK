@@ -99,7 +99,8 @@ public:
   been set, it casts the input image and uses it in the term contribution
   calculation. */
   itkSetObjectMacro( PropagationImage, PropagationImageType );
-  itkGetObjectMacro( PropagationImage, PropagationImageType );
+  itkGetModifiableObjectMacro(PropagationImage, PropagationImageType );
+  itkGetConstObjectMacro(PropagationImage, PropagationImageType );
 
   /** \todo to be documented. */
   virtual void Update();

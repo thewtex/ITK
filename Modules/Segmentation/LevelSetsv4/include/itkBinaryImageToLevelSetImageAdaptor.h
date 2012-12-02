@@ -84,7 +84,8 @@ public:
   /** Set the signed distance image filter.  Defaults to a
    * SignedMaurerDistanceMapImageFilter. */
   itkSetObjectMacro( SignedDistanceTransformFilter, SignedDistanceTransformFilterType );
-  itkGetObjectMacro( SignedDistanceTransformFilter, SignedDistanceTransformFilterType );
+  itkGetModifiableObjectMacro(SignedDistanceTransformFilter, SignedDistanceTransformFilterType );
+  itkGetConstObjectMacro(SignedDistanceTransformFilter, SignedDistanceTransformFilterType );
 
   /**
    * Input is a binary image m_InputImage

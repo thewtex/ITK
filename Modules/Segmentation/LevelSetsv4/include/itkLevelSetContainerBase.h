@@ -261,12 +261,13 @@ public:
   bool RemoveLevelSet( const LevelSetIdentifierType& iId );
 
   /** \todo add documentation */
-  itkSetObjectMacro( Heaviside, HeavisideType );
-  itkGetConstObjectMacro( Heaviside, HeavisideType );
+  itkSetConstObjectMacro( Heaviside, HeavisideType );
+  itkGetConstObjectMacro(Heaviside, HeavisideType );
 
   /** Set/Get the domain map image filter. */
   itkSetObjectMacro( DomainMapFilter, DomainMapImageFilterType );
-  itkGetObjectMacro( DomainMapFilter, DomainMapImageFilterType );
+  itkGetModifiableObjectMacro(DomainMapFilter, DomainMapImageFilterType );
+  itkGetConstObjectMacro(DomainMapFilter, DomainMapImageFilterType );
 
   /** Does the level set container have a domain map? */
   bool HasDomainMap() const;

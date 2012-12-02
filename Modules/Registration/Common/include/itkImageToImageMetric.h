@@ -138,28 +138,26 @@ public:
   /**  Type of the parameters. */
   typedef typename Superclass::ParametersType ParametersType;
 
-  /** Connect the Fixed Image.  */
+  /** Get/Set the Fixed Image.  */
   itkSetConstObjectMacro( FixedImage, FixedImageType );
+  itkGetConstObjectMacro(FixedImage, FixedImageType );
 
-  /** Get the Fixed Image. */
-  itkGetConstObjectMacro( FixedImage, FixedImageType );
-
-  /** Connect the Moving Image.  */
+  /** Get/Set the Moving Image.  */
   itkSetConstObjectMacro( MovingImage, MovingImageType );
-
-  /** Get the Moving Image. */
-  itkGetConstObjectMacro( MovingImage, MovingImageType );
+  itkGetConstObjectMacro(MovingImage, MovingImageType );
 
   /** Connect the Transform. */
   itkSetObjectMacro( Transform, TransformType );
 
   /** Get a pointer to the Transform.  */
+  itkGetModifiableObjectMacro(Transform, TransformType);
   itkGetConstObjectMacro(Transform, TransformType);
 
   /** Connect the Interpolator. */
   itkSetObjectMacro(Interpolator, InterpolatorType);
 
   /** Get a pointer to the Interpolator.  */
+  itkGetModifiableObjectMacro(Interpolator, InterpolatorType);
   itkGetConstObjectMacro(Interpolator, InterpolatorType);
 
   /** Get the number of pixels considered in the computation. */
@@ -207,6 +205,7 @@ public:
   virtual void ComputeGradient(void);
 
   /** Get Gradient Image. */
+  itkGetModifiableObjectMacro(GradientImage, GradientImageType);
   itkGetConstObjectMacro(GradientImage, GradientImageType);
 
   /** Set the parameters defining the Transform. */
@@ -312,6 +311,7 @@ public:
 
   typedef MultiThreader MultiThreaderType;
   /** Get the Threader. */
+  itkGetModifiableObjectMacro(Threader, MultiThreaderType);
   itkGetConstObjectMacro(Threader, MultiThreaderType);
   const TransformPointer * GetThreaderTransform()
   {

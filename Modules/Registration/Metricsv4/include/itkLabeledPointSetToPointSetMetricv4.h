@@ -109,7 +109,8 @@ public:
    * the \c EuclideanDistancePointSetToPointSetMetricv4.
    */
   itkSetObjectMacro( PointSetMetric, PointSetMetricType );
-  itkGetObjectMacro( PointSetMetric, PointSetMetricType );
+  itkGetModifiableObjectMacro(PointSetMetric, PointSetMetricType );
+  itkGetConstObjectMacro(PointSetMetric, PointSetMetricType );
 
   /**
    * Ensure label type is an integer type

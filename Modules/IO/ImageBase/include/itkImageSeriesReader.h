@@ -119,7 +119,8 @@ public:
    * ImageFileReader to determine the file type. This method can be
    * used to specify which IO to use. */
   itkSetObjectMacro(ImageIO, ImageIOBase);
-  itkGetObjectMacro(ImageIO, ImageIOBase);
+  itkGetModifiableObjectMacro(ImageIO, ImageIOBase);
+  itkGetConstObjectMacro(ImageIO, ImageIOBase);
 
   /** \brief Set/Get MetaDataDictionaryArrayUpdate enables the updating of
    * the MetaDataDictionaryArray.

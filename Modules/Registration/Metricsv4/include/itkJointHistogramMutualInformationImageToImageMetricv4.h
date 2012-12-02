@@ -108,7 +108,8 @@ public:
   typedef typename JointPDFType::IndexValueType JointPDFIndexValueType;
 
   /** Get the JointPDF.  Valid after GetValueAndDerivative has been called. */
-  itkGetConstObjectMacro( JointPDF, JointPDFType );
+  itkGetModifiableObjectMacro(JointPDF, JointPDFType );
+  itkGetConstObjectMacro(JointPDF, JointPDFType );
 
   // Declare the type for the derivative calculation
   typedef itk::GradientRecursiveGaussianImageFilter< JointPDFType > JPDFGradientFilterType;

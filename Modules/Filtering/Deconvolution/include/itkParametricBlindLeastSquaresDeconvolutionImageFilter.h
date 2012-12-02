@@ -92,6 +92,7 @@ public:
 
   /** Set/get the parametric kernel source. */
   void SetKernelSource(KernelSourceType * kernelSource);
+  itkGetModifiableObjectMacro(KernelSource, KernelSourceType);
   itkGetConstObjectMacro(KernelSource, KernelSourceType);
 
   /** Set/get the scale factor (also known as learning rate) for the

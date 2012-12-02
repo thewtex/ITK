@@ -121,7 +121,8 @@ public:
   itkGetConstMacro(Threshold, double);
 
   /** Get the radius image */
-  itkGetObjectMacro(RadiusImage, OutputImageType);
+  itkGetModifiableObjectMacro(RadiusImage, OutputImageType);
+  itkGetConstObjectMacro(RadiusImage, OutputImageType);
 
   /** Set the scale of the derivative function (using DoG) */
   itkSetMacro(SigmaGradient, double);

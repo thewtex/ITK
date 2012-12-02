@@ -106,29 +106,27 @@ public:
   /** Get the histogram to be used in the metric calculation */
   itkGetConstReferenceMacro(TrainingHistogram, HistogramPointerType);
 
-  /** Set the Training Fixed Image.  */
+  /** Get/Set the Training Fixed Image.  */
   itkSetConstObjectMacro(TrainingFixedImage, FixedImageType);
-
-  /** Get the Training Fixed Image. */
   itkGetConstObjectMacro(TrainingFixedImage, FixedImageType);
 
-  /** Set the Training Moving Image.  */
+  /** Get/Set the Training Moving Image.  */
   itkSetConstObjectMacro(TrainingMovingImage, MovingImageType);
-
-  /** Get the Training Moving Image. */
   itkGetConstObjectMacro(TrainingMovingImage, MovingImageType);
 
   /** Set the Training Transform. */
   itkSetObjectMacro(TrainingTransform, TransformType);
 
   /** Get a pointer to the Transform.  */
-  itkGetObjectMacro(TrainingTransform, TransformType);
+  itkGetModifiableObjectMacro(TrainingTransform, TransformType);
+  itkGetConstObjectMacro(TrainingTransform, TransformType);
 
   /** Set the Interpolator. */
   itkSetObjectMacro(TrainingInterpolator, InterpolatorType);
 
   /** Get a pointer to the Interpolator.  */
-  itkGetObjectMacro(TrainingInterpolator, InterpolatorType);
+  itkGetModifiableObjectMacro(TrainingInterpolator, InterpolatorType);
+  itkGetConstObjectMacro(TrainingInterpolator, InterpolatorType);
 
   /** Set the region over which the training histogram will be computed */
   itkSetMacro(TrainingFixedImageRegion, FixedImageRegionType);

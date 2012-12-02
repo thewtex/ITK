@@ -133,7 +133,8 @@ public:
 
   /** Set/Get the optimizer. */
   itkSetObjectMacro( LocalOptimizer, OptimizerType );
-  itkGetObjectMacro( LocalOptimizer, OptimizerType );
+  itkGetModifiableObjectMacro(LocalOptimizer, OptimizerType );
+  itkGetConstObjectMacro(LocalOptimizer, OptimizerType );
 
   inline ParameterListSizeType GetBestParametersIndex( ) { return this->m_BestParametersIndex; }
 

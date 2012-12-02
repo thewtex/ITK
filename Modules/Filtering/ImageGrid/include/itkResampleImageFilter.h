@@ -174,7 +174,7 @@ public:
   typedef typename TOutputImage::PointType     OriginPointType;
   typedef typename TOutputImage::DirectionType DirectionType;
 
-  /** Set the coordinate transformation.
+  /** Get/Set the coordinate transformation.
    * Set the coordinate transform to use for resampling.  Note that this must
    * be in physical coordinates and it is the output-to-input transform, NOT
    * the input-to-output transform that you might naively expect.  By default
@@ -182,8 +182,6 @@ public:
    * transform here, before attempting to run the filter, if you do not want to
    * use the default Identity transform. */
   itkSetConstObjectMacro(Transform, TransformType);
-
-  /** Get a pointer to the coordinate transform. */
   itkGetConstObjectMacro(Transform, TransformType);
 
   /** Set the interpolator function.  The default is
@@ -196,6 +194,7 @@ public:
   itkSetObjectMacro(Interpolator, InterpolatorType);
 
   /** Get a pointer to the interpolator function. */
+  itkGetModifiableObjectMacro(Interpolator, InterpolatorType);
   itkGetConstObjectMacro(Interpolator, InterpolatorType);
 
   /** Set the extrapolator function.  The default behavior when sampling outside
@@ -204,6 +203,7 @@ public:
   itkSetObjectMacro(Extrapolator, ExtrapolatorType);
 
   /** Get a pointer to the extrapolator function. */
+  itkGetModifiableObjectMacro(Extrapolator, ExtrapolatorType);
   itkGetConstObjectMacro(Extrapolator, ExtrapolatorType);
 
   /** Set the size of the output image. */

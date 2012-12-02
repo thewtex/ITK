@@ -174,12 +174,14 @@ public:
   itkSetObjectMacro(FixedTransform, FixedTransformType);
 
   /** Get a pointer to the fixed transform.  */
+  itkGetModifiableObjectMacro(FixedTransform, FixedTransformType);
   itkGetConstObjectMacro(FixedTransform, FixedTransformType);
 
   /** Connect the moving transform. */
   itkSetObjectMacro(MovingTransform, MovingTransformType);
 
   /** Get a pointer to the moving transform.  */
+  itkGetModifiableObjectMacro(MovingTransform, MovingTransformType);
   itkGetConstObjectMacro(MovingTransform, MovingTransformType);
 
   /** Connect the moving transform using a backwards-compatible name.
@@ -246,7 +248,8 @@ public:
    *  the m_VirtualImage buffered region. */
   const VirtualRegionType   &  GetVirtualRegion( void ) const;
 
-  itkGetConstObjectMacro( VirtualImage, VirtualImageType );
+  itkGetModifiableObjectMacro(VirtualImage, VirtualImageType );
+  itkGetConstObjectMacro(VirtualImage, VirtualImageType );
 
   /** Computes an offset for accessing parameter data from a virtual domain
    * index. Relevant for metrics with local-support transforms, to access

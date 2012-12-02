@@ -294,15 +294,14 @@ public:
    * Without this mask, this filter calculates the energy value using
    * all pixels in the input image.  */
   void SetInputMask(ImageMaskType *inputMask);
+  itkGetModifiableObjectMacro(InputMask, ImageMaskType);
+  itkGetConstObjectMacro(InputMask, ImageMaskType);
 
-  itkGetObjectMacro(InputMask, ImageMaskType);
-
-  /** Sets the out mask image pointer.
+  /** Get/Set the out mask image pointer.
    * Without this mask, this filter corrects every pixel in the input image. */
   void SetOutputMask(ImageMaskType *outputMask);
-
-  /** Gets the output mask image pointer. */
-  itkGetObjectMacro(OutputMask, ImageMaskType);
+  itkGetModifiableObjectMacro(OutputMask, ImageMaskType);
+  itkGetConstObjectMacro(OutputMask, ImageMaskType);
 
   /** If you set this true, this filter assumes the bias field is
    * multiplicative and internally uses log intensity values for

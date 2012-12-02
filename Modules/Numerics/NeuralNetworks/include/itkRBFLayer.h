@@ -107,14 +107,14 @@ public:
   itkGetConstReferenceMacro( Bias, ValueType );
 
   void SetDistanceMetric(DistanceMetricType* f);
-  itkGetObjectMacro( DistanceMetric, DistanceMetricType );
-  itkGetConstObjectMacro( DistanceMetric, DistanceMetricType );
+  itkGetModifiableObjectMacro(DistanceMetric, DistanceMetricType );
+  itkGetConstObjectMacro(DistanceMetric, DistanceMetricType );
 
   itkSetMacro(NumClasses,unsigned int);
   itkGetConstReferenceMacro(NumClasses,unsigned int);
 
   void SetRBF(RBFType* f);
-  itkGetObjectMacro(RBF, RBFType);
+  itkGetModifiableObjectMacro(RBF, RBFType);
   itkGetConstObjectMacro(RBF, RBFType);
 
 protected:

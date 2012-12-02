@@ -61,7 +61,8 @@ namespace itk
    typedef IdentifierType IterationIdType;
 
    itkSetObjectMacro( LevelSetContainer, LevelSetContainerType );
-   itkGetObjectMacro( LevelSetContainer, LevelSetContainerType );
+   itkGetModifiableObjectMacro(LevelSetContainer, LevelSetContainerType );
+   itkGetConstObjectMacro(LevelSetContainer, LevelSetContainerType );
 
    itkSetMacro( NumberOfIterations, IterationIdType );
    itkGetMacro( NumberOfIterations, IterationIdType );

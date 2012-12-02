@@ -89,7 +89,8 @@ public:
 
   /** Set/Get the DomainPartitioner. */
   itkSetObjectMacro(       DomainPartitioner, DomainPartitionerType );
-  itkGetConstObjectMacro(  DomainPartitioner, DomainPartitionerType );
+  itkGetModifiableObjectMacro(DomainPartitioner, DomainPartitionerType );
+itkGetConstObjectMacro(DomainPartitioner, DomainPartitionerType );
 
   /** Accessor for number of threads that were actually used in the last
    * ThreadedExecution. */

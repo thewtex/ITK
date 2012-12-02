@@ -63,6 +63,7 @@ public:
   itkSetObjectMacro(MiniPipelineFilter, ProcessObject);
 
   /** Set the mini-pipeline filter */
+  itkGetModifiableObjectMacro(MiniPipelineFilter, ProcessObject);
   itkGetConstObjectMacro(MiniPipelineFilter, ProcessObject);
 
   /**

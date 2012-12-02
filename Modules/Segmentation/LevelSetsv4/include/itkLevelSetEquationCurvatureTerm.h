@@ -93,7 +93,8 @@ public:
   been set, it casts the input image and uses it in the term contribution
   calculation. */
   void SetCurvatureImage( CurvatureImageType* CurvatureImage );
-  itkGetObjectMacro( CurvatureImage, CurvatureImageType );
+  itkGetModifiableObjectMacro(CurvatureImage, CurvatureImageType );
+  itkGetConstObjectMacro(CurvatureImage, CurvatureImageType );
 
   itkSetMacro( UseCurvatureImage, bool );
   itkGetMacro( UseCurvatureImage, bool );

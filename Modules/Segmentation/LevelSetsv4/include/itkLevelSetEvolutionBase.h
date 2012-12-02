@@ -92,7 +92,8 @@ public:
   typedef typename StoppingCriterionType::Pointer StoppingCriterionPointer;
 
   itkSetObjectMacro( LevelSetContainer, LevelSetContainerType );
-  itkGetObjectMacro( LevelSetContainer, LevelSetContainerType );
+  itkGetModifiableObjectMacro(LevelSetContainer, LevelSetContainerType );
+  itkGetConstObjectMacro(LevelSetContainer, LevelSetContainerType );
 
   /** Set/Get the value of alpha for computing the time-step using CFL conditions */
   itkSetMacro( Alpha, LevelSetOutputRealType );
@@ -103,11 +104,13 @@ public:
 
   /** Set/Get the equation container for updating all the level sets */
   itkSetObjectMacro( EquationContainer, EquationContainerType );
-  itkGetObjectMacro( EquationContainer, EquationContainerType );
+  itkGetModifiableObjectMacro(EquationContainer, EquationContainerType );
+  itkGetConstObjectMacro(EquationContainer, EquationContainerType );
 
   /** Set/Get the Stopping Criterion */
-  itkGetObjectMacro( StoppingCriterion, StoppingCriterionType );
   itkSetObjectMacro( StoppingCriterion, StoppingCriterionType );
+  itkGetModifiableObjectMacro(StoppingCriterion, StoppingCriterionType );
+  itkGetConstObjectMacro(StoppingCriterion, StoppingCriterionType );
 
   /** Get the number of iterations that have occurred. */
   itkGetConstMacro( NumberOfIterations, IdentifierType );

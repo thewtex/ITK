@@ -128,7 +128,9 @@ public:
   void MomentsOn()  { m_UseMoments = true; }
 
   /** Get() access to the moments calculators */
-  itkGetConstObjectMacro(FixedCalculator,  FixedImageCalculatorType);
+  itkGetModifiableObjectMacro(FixedCalculator, FixedImageCalculatorType);
+  itkGetConstObjectMacro(FixedCalculator, FixedImageCalculatorType);
+  itkGetModifiableObjectMacro(MovingCalculator, MovingImageCalculatorType);
   itkGetConstObjectMacro(MovingCalculator, MovingImageCalculatorType);
 
 protected:
@@ -137,7 +139,8 @@ protected:
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
-  itkGetObjectMacro(Transform, TransformType);
+  itkGetModifiableObjectMacro(Transform, TransformType);
+  itkGetConstObjectMacro(Transform, TransformType);
 
 private:
   CenteredTransformInitializer(const Self &); //purposely not implemented
