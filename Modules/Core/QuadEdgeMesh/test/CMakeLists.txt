@@ -1,14 +1,11 @@
 itk_module_test()
 set(ITKQuadEdgeMeshTests
-itkQuadEdgeMeshPointTest1.cxx
 itkQuadEdgeMeshTest1.cxx
 itkQuadEdgeMeshTest2.cxx
 itkQuadEdgeMeshTest3.cxx
 itkQuadEdgeMeshPolygonCellTest.cxx
 itkQuadEdgeMeshFrontIteratorTest.cxx
 itkQuadEdgeMeshScalarDataVTKPolyDataWriterTest1.cxx
-itkQuadEdgeTest1.cxx
-itkGeometricalQuadEdgeTest1.cxx
 itkQuadEdgeMeshAddFaceTest1.cxx
 itkQuadEdgeMeshAddFaceTest2.cxx
 itkQuadEdgeMeshBasicLayerTest.cxx
@@ -33,8 +30,6 @@ itkDynamicQuadEdgeMeshTest.cxx
 
 CreateTestDriver(ITKQuadEdgeMesh  "${ITKQuadEdgeMesh-Test_LIBRARIES}" "${ITKQuadEdgeMeshTests}")
 
-itk_add_test(NAME itkQuadEdgeMeshPointTest1
-      COMMAND ITKQuadEdgeMeshTestDriver itkQuadEdgeMeshPointTest1)
 itk_add_test(NAME itkQuadEdgeMeshTest1
       COMMAND ITKQuadEdgeMeshTestDriver itkQuadEdgeMeshTest1)
 itk_add_test(NAME itkQuadEdgeMeshTest2
@@ -48,10 +43,6 @@ itk_add_test(NAME itkQuadEdgeMeshFrontIteratorTest
 itk_add_test(NAME itkQuadEdgeMeshScalarDataVTKPolyDataWriterTest1
       COMMAND ITKQuadEdgeMeshTestDriver itkQuadEdgeMeshScalarDataVTKPolyDataWriterTest1
               ${ITK_TEST_OUTPUT_DIR}/sphere.vtk)
-itk_add_test(NAME itkQuadEdgeTest1
-      COMMAND ITKQuadEdgeMeshTestDriver itkQuadEdgeTest1)
-itk_add_test(NAME itkGeometricalQuadEdgeTest1
-      COMMAND ITKQuadEdgeMeshTestDriver itkGeometricalQuadEdgeTest1)
 itk_add_test(NAME itkQuadEdgeMeshAddFaceTest1_0
       COMMAND ITKQuadEdgeMeshTestDriver itkQuadEdgeMeshAddFaceTest1
               0)

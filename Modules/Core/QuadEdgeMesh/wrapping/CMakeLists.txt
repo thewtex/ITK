@@ -1,11 +1,6 @@
 itk_wrap_module(ITKQuadEdgeMesh)
 
 set(WRAPPER_LIBRARY_GROUPS
-  itkQuadEdge
-  itkGeometricalQuadEdge
-  itkQuadEdgeMeshPoint
-  itkQuadEdgeMeshTraits
-  itkQuadEdgeCellTraitsInfo
   itkQuadEdgeMeshLineCell
   ITKQuadEdgeMeshBase
   # itkQuadEdgeMesh

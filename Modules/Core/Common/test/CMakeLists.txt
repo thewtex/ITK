@@ -162,6 +162,9 @@ itkImageRegionConstIteratorWithOnlyIndexTest.cxx
 itkImageRandomConstIteratorWithOnlyIndexTest.cxx
 itkConstNeighborhoodIteratorWithOnlyIndexTest.cxx
 itkImageToImageToleranceTest.cxx
+itkGeometricalQuadEdgeTest1.cxx
+itkQuadEdgeMeshPointTest1.cxx
+itkQuadEdgeTest1.cxx
 )
 
 CreateTestDriver(ITKCommon1 "${ITKCommon_LIBRARIES}" "${ITKCommon1Tests}")
@@ -462,3 +465,6 @@ itk_add_test(NAME itkImageRandomConstIteratorWithOnlyIndexTest COMMAND ITKCommon
 itk_add_test(NAME itkConstNeighborhoodIteratorWithOnlyIndexTest COMMAND ITKCommon2TestDriver itkConstNeighborhoodIteratorWithOnlyIndexTest)
 
 itk_add_test(NAME itkImageToImageToleranceTest COMMAND ITKCommon2TestDriver itkImageTOImageToleranceTest)
+itk_add_test(NAME itkGeometricalQuadEdgeTest1 COMMAND ITKCommon2TestDriver itkGeometricalQuadEdgeTest1)
+itk_add_test(NAME itkQuadEdgeMeshPointTest1 COMMAND ITKCommon2TestDriver itkQuadEdgeMeshPointTest1)
+itk_add_test(NAME itkQuadEdgeTest1 COMMAND ITKCommon2TestDriver itkQuadEdgeTest1)

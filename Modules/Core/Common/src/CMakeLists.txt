@@ -70,6 +70,7 @@ itkEquivalencyTable.cxx
 itkXMLFileOutputWindow.cxx
 itkStoppingCriterionBase.cxx
 itkCompensatedSummation.cxx
+itkQuadEdge.cxx
 )
 
 if(WIN32)

@@ -35,6 +35,11 @@ set(WRAPPER_LIBRARY_GROUPS
   itkInPlaceImageFilterB
   itkDefaultDynamicMeshTraits
   itkDefaultStaticMeshTraits
+  itkQuadEdgeMeshTraits
+  itkQuadEdgeCellTraitsInfo
+  itkQuadEdgeMeshPoint
+  itkGeometricalQuadEdge
+  itkQuadEdge
 #  itkCellInterface
 #  itkPointSet
 #  itkVertexCell
