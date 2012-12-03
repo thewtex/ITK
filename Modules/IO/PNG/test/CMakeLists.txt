@@ -11,3 +11,6 @@ itk_add_test(NAME itkPNGImageIOTest1
 itk_add_test(NAME itkPNGImageIOTest2
       COMMAND ITKIOPNGTestDriver itkPNGImageIOTest
               DATA{${ITK_DATA_ROOT}/Input/VisibleWomanEyeSlice.png} ${ITK_TEST_OUTPUT_DIR}/itkPNGImageIOTest2.png)
+itk_add_test(NAME itkPNGImageIOTest3
+      COMMAND ITKIOPNGTestDriver itkPNGImageIOTest
+              DATA{Input/GrayAlpha.png} ${ITK_TEST_OUTPUT_DIR}/itkPNGImageIOTest3.png)
