@@ -1,5 +1,4 @@
 itk_wrap_include("itkMesh.h")
-# itk_wrap_include("itkQuadEdgeMeshTraits.h")
 
 itk_wrap_class("itk::ImageToMeshFilter" POINTER)
   foreach(d ${ITK_WRAP_DIMS})
