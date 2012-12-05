@@ -117,7 +117,7 @@ RelabelComponentImageFilter< TInputImage, TOutputImage >
     progress.CompletedPixel();
     }
 
-  // Now we need to reorder the labels. Use the m_ObjectSortingOrder
+  // Now we need to reorder the labels. Use the m_SortByObjectSize
   // to determine how to sort the objects. Define a map for converting
   // input labels to output labels.
   //
@@ -135,8 +135,9 @@ RelabelComponentImageFilter< TInputImage, TOutputImage >
     sizeVector.push_back( ( *mapIt ).second );
     }
 
-  // sort the objects by size and define the map to use to relabel the image
-  std::sort( sizeVector.begin(), sizeVector.end(), RelabelComponentSizeInPixelsComparator() );
+  // sort the objects (by size or number) and define the map to use to relabel the image
+  std::sort( sizeVector.begin(), sizeVector.end(),
+      RelabelComponentSizeInPixelsComparator(m_SortByObjectSize) );
 
   // create a lookup table to map the input label to the output label.
   // cache the object sizes for later access by the user
@@ -229,7 +230,8 @@ RelabelComponentImageFilter< TInputImage, TOutputImage >
   os << indent << "OriginalNumberOfObjects: " << m_OriginalNumberOfObjects << std::endl;
   os << indent << "NumberOfObjectsToPrint: "
      << m_NumberOfObjectsToPrint << std::endl;
-  os << indent << "MinimumObjectSizez: " << m_MinimumObjectSize << std::endl;
+  os << indent << "MinimumObjectSize: " << m_MinimumObjectSize << std::endl;
+  os << indent << "SortByObjectSize: " << m_SortByObjectSize << std::endl;
 
   typename ObjectSizeInPixelsContainerType::const_iterator it;
   ObjectSizeInPhysicalUnitsContainerType::const_iterator   fit;

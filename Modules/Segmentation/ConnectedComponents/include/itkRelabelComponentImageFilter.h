@@ -169,6 +169,14 @@ public:
    * through to the output. */
   itkGetConstMacro(MinimumObjectSize, ObjectSizeType);
 
+  /** Controls whether the object labels are sorted by size.
+   * If false, order of labels is kept. */
+  itkSetMacro(SortByObjectSize, bool);
+
+  /** Controls whether the object labels are sorted by size.
+   * If false, order of labels is kept. */
+  itkGetConstMacro(SortByObjectSize, bool);
+
   /** Get the size of each object in pixels. This information is only
    * valid after the filter has executed.  Size of the background is
    * not calculated.  Size of object #1 is
@@ -242,7 +250,8 @@ protected:
 
   RelabelComponentImageFilter():
     m_NumberOfObjects(0), m_NumberOfObjectsToPrint(10),
-    m_OriginalNumberOfObjects(0), m_MinimumObjectSize(0)
+    m_OriginalNumberOfObjects(0), m_MinimumObjectSize(0),
+    m_SortByObjectSize(true)
   { this->InPlaceOff(); }
   virtual ~RelabelComponentImageFilter() {}
 
@@ -268,20 +277,21 @@ protected:
   // put the function objects here for sorting in descending order
   class RelabelComponentSizeInPixelsComparator
   {
-public:
+  public:
+    RelabelComponentSizeInPixelsComparator(bool sortByObjectSize):
+        m_SortByObjectSize(sortByObjectSize) {};
     bool operator()(const RelabelComponentObjectType & a,
                     const RelabelComponentObjectType & b)
     {
-      if ( a.m_SizeInPixels > b.m_SizeInPixels )
+      if ( m_SortByObjectSize && a.m_SizeInPixels > b.m_SizeInPixels )
         {
         return true;
         }
-      else if ( a.m_SizeInPixels < b.m_SizeInPixels )
+      else if ( m_SortByObjectSize && a.m_SizeInPixels < b.m_SizeInPixels )
         {
         return false;
         }
-      // size in pixels and physical units are the same, sort based on
-      // original object number
+      // else sort based on original object number
       else if ( a.m_ObjectNumber < b.m_ObjectNumber )
         {
         return true;
@@ -291,6 +301,8 @@ public:
         return false;
         }
     }
+  private:
+    bool m_SortByObjectSize;
   };
 
 private:
@@ -301,6 +313,7 @@ private:
   LabelType      m_NumberOfObjectsToPrint;
   LabelType      m_OriginalNumberOfObjects;
   ObjectSizeType m_MinimumObjectSize;
+  bool           m_SortByObjectSize;
 
   ObjectSizeInPixelsContainerType         m_SizeOfObjectsInPixels;
   ObjectSizeInPhysicalUnitsContainerType  m_SizeOfObjectsInPhysicalUnits;
