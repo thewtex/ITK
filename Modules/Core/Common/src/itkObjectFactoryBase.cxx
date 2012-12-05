@@ -213,6 +213,7 @@ void
 ObjectFactoryBase
 ::LoadDynamicFactories()
 {
+  std::cerr << "---> LoadDynamicFactories" << std::endl;
   /**
    * follow PATH conventions
    */
@@ -443,6 +444,8 @@ ObjectFactoryBase
   // initialization.
   ObjectFactoryBase::InitializeFactoryList();
 
+  std::cerr << "--->RegisterFactoryInternal: " << factory->GetNameOfClass() << std::endl;
+
   ObjectFactoryBasePrivate::m_RegisteredFactories->push_back(factory);
   factory->Register();
 }
@@ -454,6 +457,7 @@ void
 ObjectFactoryBase
 ::RegisterFactory(ObjectFactoryBase *factory, InsertionPositionType where, size_t position)
 {
+  std::cerr << "--->RegisterFactory: " << factory->GetNameOfClass() << std::endl;
   if ( factory->m_LibraryHandle == 0 )
     {
     const char nonDynamicName[] = "Non-Dynamicaly loaded factory";
@@ -565,6 +569,7 @@ void
 ObjectFactoryBase
 ::UnRegisterFactory(ObjectFactoryBase *factory)
 {
+  std::cerr << "--->UnRegisterFactory" << std::endl;
   if ( ObjectFactoryBasePrivate::m_RegisteredFactories )
     {
     for ( std::list< ObjectFactoryBase * >::iterator i =
