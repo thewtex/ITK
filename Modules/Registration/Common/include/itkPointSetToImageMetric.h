@@ -118,16 +118,12 @@ public:
   /**  Type of the parameters. */
   typedef Superclass::ParametersType ParametersType;
 
-  /** Connect the Fixed Image.  */
+  /** Get/Set the Fixed Image.  */
   itkSetConstObjectMacro(FixedPointSet, FixedPointSetType);
-
-  /** Get the Fixed Image. */
   itkGetConstObjectMacro(FixedPointSet, FixedPointSetType);
 
-  /** Connect the Moving Image.  */
+  /** Get/Set the Moving Image.  */
   itkSetConstObjectMacro(MovingImage, MovingImageType);
-
-  /** Get the Moving Image. */
   itkGetConstObjectMacro(MovingImage, MovingImageType);
 
   /** Connect the Transform. */
@@ -135,6 +131,7 @@ public:
 
   /** Get a pointer to the Transform.  */
   itkGetObjectMacro(Transform, TransformType);
+  itkGetModifiableObjectMacro(Transform, TransformType);
   itkGetConstObjectMacro(Transform, TransformType);
 
   /** Connect the Interpolator. */
@@ -142,9 +139,11 @@ public:
 
   /** Get a pointer to the Interpolator.  */
   itkGetObjectMacro(Interpolator, InterpolatorType);
+  itkGetModifiableObjectMacro(Interpolator, InterpolatorType);
   itkGetConstObjectMacro(Interpolator, InterpolatorType);
 
   /** Get Gradient Image. */
+  itkGetModifiableObjectMacro(GradientImage, GradientImageType);
   itkGetConstObjectMacro(GradientImage, GradientImageType);
 
   /** Get the number of pixels considered in the computation. */

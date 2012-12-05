@@ -66,7 +66,8 @@ public:
 
   itkSetObjectMacro( Mesh, MeshType );
   itkGetObjectMacro( Mesh, MeshType );
-  itkGetConstObjectMacro( Mesh, MeshType );
+  itkGetModifiableObjectMacro(Mesh, MeshType );
+  itkGetConstObjectMacro(Mesh, MeshType );
 
   /** Returns the value of the level set function at a given location iP */
   virtual OutputType Evaluate( const InputType& iP ) const;

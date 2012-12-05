@@ -68,6 +68,7 @@ public:
   virtual void SetCostFunction(CostFunctionType *costFunction);
 
   /** Get the cost function. */
+  itkGetModifiableObjectMacro(CostFunction, CostFunctionType);
   itkGetConstObjectMacro(CostFunction, CostFunctionType);
 
   /** Get the cost function value at the given parameters. */

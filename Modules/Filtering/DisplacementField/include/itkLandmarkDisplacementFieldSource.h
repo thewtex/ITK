@@ -101,6 +101,7 @@ public:
    * */
   itkSetObjectMacro(KernelTransform, KernelTransformType);
   itkGetObjectMacro(KernelTransform, KernelTransformType);
+  itkGetModifiableObjectMacro(KernelTransform, KernelTransformType);
   itkGetConstObjectMacro(KernelTransform, KernelTransformType);
 
   /** Set the size of the output image. */

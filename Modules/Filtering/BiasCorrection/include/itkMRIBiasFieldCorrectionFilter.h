@@ -295,12 +295,14 @@ public:
    * all pixels in the input image.  */
   void SetInputMask(ImageMaskType *inputMask);
   itkGetObjectMacro(InputMask, ImageMaskType);
+  itkGetModifiableObjectMacro(InputMask, ImageMaskType);
   itkGetConstObjectMacro(InputMask, ImageMaskType);
 
   /** Get/Set the out mask image pointer.
    * Without this mask, this filter corrects every pixel in the input image. */
   void SetOutputMask(ImageMaskType *outputMask);
   itkGetObjectMacro(OutputMask, ImageMaskType);
+  itkGetModifiableObjectMacro(OutputMask, ImageMaskType);
   itkGetConstObjectMacro(OutputMask, ImageMaskType);
 
   /** If you set this true, this filter assumes the bias field is

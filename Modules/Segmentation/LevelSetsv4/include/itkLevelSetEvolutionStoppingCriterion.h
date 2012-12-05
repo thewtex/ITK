@@ -62,7 +62,8 @@ namespace itk
 
    itkSetObjectMacro( LevelSetContainer, LevelSetContainerType );
    itkGetObjectMacro( LevelSetContainer, LevelSetContainerType );
-   itkGetConstObjectMacro( LevelSetContainer, LevelSetContainerType );
+   itkGetModifiableObjectMacro(LevelSetContainer, LevelSetContainerType );
+   itkGetConstObjectMacro(LevelSetContainer, LevelSetContainerType );
 
    itkSetMacro( NumberOfIterations, IterationIdType );
    itkGetMacro( NumberOfIterations, IterationIdType );

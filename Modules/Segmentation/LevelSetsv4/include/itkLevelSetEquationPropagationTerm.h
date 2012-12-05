@@ -100,7 +100,8 @@ public:
   calculation. */
   itkSetObjectMacro( PropagationImage, PropagationImageType );
   itkGetObjectMacro( PropagationImage, PropagationImageType );
-  itkGetConstObjectMacro( PropagationImage, PropagationImageType );
+  itkGetModifiableObjectMacro(PropagationImage, PropagationImageType );
+  itkGetConstObjectMacro(PropagationImage, PropagationImageType );
 
   /** \todo to be documented. */
   virtual void Update();

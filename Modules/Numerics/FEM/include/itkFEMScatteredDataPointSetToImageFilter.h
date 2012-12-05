@@ -226,10 +226,12 @@ public:
 
   itkSetObjectMacro(Mesh, MeshType);
   itkGetObjectMacro(Mesh, MeshType);
+  itkGetModifiableObjectMacro(Mesh, MeshType);
   itkGetConstObjectMacro(Mesh, MeshType);
 
   itkSetObjectMacro(FEMSolver, FEMSolverType);
   itkGetObjectMacro(FEMSolver, FEMSolverType);
+  itkGetModifiableObjectMacro(FEMSolver, FEMSolverType);
   itkGetConstObjectMacro(FEMSolver, FEMSolverType);
 
   /** Get/Set the number of voxels/pixels in each dimension used during the mesh generation */

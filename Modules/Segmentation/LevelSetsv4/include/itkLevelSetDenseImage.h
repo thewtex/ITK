@@ -70,7 +70,8 @@ public:
 
   virtual void SetImage( ImageType* iImage );
   itkGetObjectMacro( Image, ImageType );
-  itkGetConstObjectMacro( Image, ImageType );
+  itkGetModifiableObjectMacro(Image, ImageType );
+  itkGetConstObjectMacro(Image, ImageType );
 
   /** Returns the value of the level set function at a given location iP */
   virtual OutputType Evaluate( const InputType& iP ) const;

@@ -130,12 +130,14 @@ public:
   itkSetObjectMacro(Transform, TransformType);
   /** Get a pointer to the Transform.  */
   itkGetObjectMacro(Transform, TransformType);
+  itkGetModifiableObjectMacro(Transform, TransformType);
   itkGetConstObjectMacro(Transform, TransformType);
 
   /** Connect the Interpolator. */
   itkSetObjectMacro(Interpolator, InterpolatorType);
   /** Get a pointer to the Interpolator.  */
   itkGetObjectMacro(Interpolator, InterpolatorType);
+  itkGetModifiableObjectMacro(Interpolator, InterpolatorType);
   itkGetConstObjectMacro(Interpolator, InterpolatorType);
 
   /** Connect the Interpolator. */

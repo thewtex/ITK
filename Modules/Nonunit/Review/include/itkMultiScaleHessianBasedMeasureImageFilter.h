@@ -128,6 +128,7 @@ public:
    itk::ImageToImage filter */
   itkSetObjectMacro(HessianToMeasureFilter, HessianToMeasureFilterType);
   itkGetObjectMacro(HessianToMeasureFilter, HessianToMeasureFilterType);
+  itkGetModifiableObjectMacro(HessianToMeasureFilter, HessianToMeasureFilterType);
   itkGetConstObjectMacro(HessianToMeasureFilter, HessianToMeasureFilterType);
 
   /** Methods to turn on/off flag to inform the filter that the Hessian-based measure

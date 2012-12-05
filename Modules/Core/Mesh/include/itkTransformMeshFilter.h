@@ -69,6 +69,7 @@ public:
   /** Get/Set transform. */
   itkSetObjectMacro(Transform, TransformType);
   itkGetObjectMacro(Transform, TransformType);
+  itkGetModifiableObjectMacro(Transform, TransformType);
   itkGetConstObjectMacro(Transform, TransformType);
 
 protected:

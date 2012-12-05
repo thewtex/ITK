@@ -129,6 +129,7 @@ public:
 
   /** Get the Simplified accumulator */
   itkGetObjectMacro(SimplifyAccumulator, OutputImageType);
+  itkGetModifiableObjectMacro(SimplifyAccumulator, OutputImageType);
   itkGetConstObjectMacro(SimplifyAccumulator, OutputImageType);
 
   /** Get the list of lines. This recomputes the lines */

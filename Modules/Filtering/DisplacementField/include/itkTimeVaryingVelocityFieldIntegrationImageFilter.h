@@ -96,7 +96,8 @@ public:
   /** Get/Set the time-varying velocity field interpolator.  Default = linear. */
   itkSetObjectMacro( VelocityFieldInterpolator, VelocityFieldInterpolatorType );
   itkGetObjectMacro( VelocityFieldInterpolator, VelocityFieldInterpolatorType );
-  itkGetConstObjectMacro( VelocityFieldInterpolator, VelocityFieldInterpolatorType );
+  itkGetModifiableObjectMacro(VelocityFieldInterpolator, VelocityFieldInterpolatorType );
+  itkGetConstObjectMacro(VelocityFieldInterpolator, VelocityFieldInterpolatorType );
 
   /**
    * Get/Set the deformation field interpolator for the initial diffeomorphism
@@ -104,14 +105,16 @@ public:
    */
   itkSetObjectMacro( DisplacementFieldInterpolator, DisplacementFieldInterpolatorType );
   itkGetObjectMacro( DisplacementFieldInterpolator, DisplacementFieldInterpolatorType );
-  itkGetConstObjectMacro( DisplacementFieldInterpolator, DisplacementFieldInterpolatorType );
+  itkGetModifiableObjectMacro(DisplacementFieldInterpolator, DisplacementFieldInterpolatorType );
+  itkGetConstObjectMacro(DisplacementFieldInterpolator, DisplacementFieldInterpolatorType );
 
   /**
    * Get/Set the initial diffeomorphism
    */
   itkSetObjectMacro( InitialDiffeomorphism, DisplacementFieldType );
   itkGetObjectMacro( InitialDiffeomorphism, DisplacementFieldType );
-  itkGetConstObjectMacro( InitialDiffeomorphism, DisplacementFieldType );
+  itkGetModifiableObjectMacro(InitialDiffeomorphism, DisplacementFieldType );
+  itkGetConstObjectMacro(InitialDiffeomorphism, DisplacementFieldType );
 
   /**
    * Set the lower time bound defining the integration domain of the transform.

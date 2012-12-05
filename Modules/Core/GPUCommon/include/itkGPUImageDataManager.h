@@ -59,8 +59,10 @@ public:
   static const unsigned int        ImageDimension = ImageType::ImageDimension;
 
   itkGetObjectMacro(GPUBufferedRegionIndex, GPUDataManager);
+  itkGetModifiableObjectMacro(GPUBufferedRegionIndex, GPUDataManager);
   itkGetConstObjectMacro(GPUBufferedRegionIndex, GPUDataManager);
   itkGetObjectMacro(GPUBufferedRegionSize, GPUDataManager);
+  itkGetModifiableObjectMacro(GPUBufferedRegionSize, GPUDataManager);
   itkGetConstObjectMacro(GPUBufferedRegionSize, GPUDataManager);
 
   void SetImagePointer( typename ImageType::Pointer img );

@@ -53,7 +53,8 @@ public:
   /** Get/Set transform. */
   itkSetObjectMacro(Transform, TransformType);
   itkGetObjectMacro(Transform,TransformType);
-  itkGetConstObjectMacro(Transform,TransformType);
+  itkGetModifiableObjectMacro(Transform, TransformType);
+  itkGetConstObjectMacro(Transform, TransformType);
 
 protected:
   MeshSourceGraftOutputFilter();

@@ -110,7 +110,8 @@ public:
    */
   itkSetObjectMacro( PointSetMetric, PointSetMetricType );
   itkGetObjectMacro( PointSetMetric, PointSetMetricType );
-  itkGetConstObjectMacro( PointSetMetric, PointSetMetricType );
+  itkGetModifiableObjectMacro(PointSetMetric, PointSetMetricType );
+  itkGetConstObjectMacro(PointSetMetric, PointSetMetricType );
 
   /**
    * Ensure label type is an integer type

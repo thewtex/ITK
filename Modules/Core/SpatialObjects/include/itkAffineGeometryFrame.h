@@ -50,6 +50,7 @@ public:
   itkTypeMacro(AffineGeometryFrame, Object);
 
   /** Get the bounding box */
+  itkGetModifiableObjectMacro(BoundingBox, BoundingBoxType);
   itkGetConstObjectMacro(BoundingBox, BoundingBoxType);
 
   const BoundsArrayType GetBounds() const
@@ -75,20 +76,24 @@ public:
   /** Set/Get the IndexToObjectTransform */
   itkSetObjectMacro(IndexToObjectTransform, TransformType);
   itkGetObjectMacro(IndexToObjectTransform, TransformType);
+  itkGetModifiableObjectMacro(IndexToObjectTransform, TransformType);
   itkGetConstObjectMacro(IndexToObjectTransform, TransformType);
 
   /** Set/Get the ObjectToNodeTransform */
   itkSetObjectMacro(ObjectToNodeTransform, TransformType);
   itkGetObjectMacro(ObjectToNodeTransform, TransformType);
+  itkGetModifiableObjectMacro(ObjectToNodeTransform, TransformType);
   itkGetConstObjectMacro(ObjectToNodeTransform, TransformType);
 
   /** Set/Get the IndexToWorldTransform */
   itkSetObjectMacro(IndexToWorldTransform, TransformType);
   itkGetObjectMacro(IndexToWorldTransform, TransformType);
+  itkGetModifiableObjectMacro(IndexToWorldTransform, TransformType);
   itkGetConstObjectMacro(IndexToWorldTransform, TransformType);
 
   /** Get the IndexToNodeTransform
    *  This Transform cannot be set, and is just computed internally */
+  itkGetModifiableObjectMacro(IndexToNodeTransform, TransformType);
   itkGetConstObjectMacro(IndexToNodeTransform, TransformType);
 
   /** Initialize the geometry frame */

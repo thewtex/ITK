@@ -152,6 +152,7 @@ public:
   * not work properly (e.g., unknown or unusual extension). */
   void  SetMeshIO(MeshIOBase *meshIO);
   itkGetObjectMacro(MeshIO, MeshIOBase);
+  itkGetModifiableObjectMacro(MeshIO, MeshIOBase);
   itkGetConstObjectMacro(MeshIO, MeshIOBase);
 
   /** Prepare the allocation of the output mesh during the first back

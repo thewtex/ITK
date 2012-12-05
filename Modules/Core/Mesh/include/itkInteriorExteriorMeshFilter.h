@@ -75,6 +75,7 @@ public:
   /** Get/Set the spatial function. */
   itkSetObjectMacro(SpatialFunction, SpatialFunctionType);
   itkGetObjectMacro(SpatialFunction, SpatialFunctionType);
+  itkGetModifiableObjectMacro(SpatialFunction, SpatialFunctionType);
   itkGetConstObjectMacro(SpatialFunction, SpatialFunctionType);
 
   typedef DataObjectDecorator< SpatialFunctionType >

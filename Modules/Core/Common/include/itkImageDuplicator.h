@@ -75,9 +75,14 @@ public:
 
   itkStaticConstMacro(ImageDimension, unsigned int, ImageType::ImageDimension);
 
-  /** Get/Set the input image. */
   itkSetConstObjectMacro(InputImage, ImageType);
-  itkGetObjectMacro(Output, ImageType);
+
+  /** Get/Set the input image. */
+  virtual ImageType * GetOutput () //This function is to provide a facade of looking like a filter, even though it is only an itkObject.
+    {
+    return this->m_Output.GetPointer();
+    }
+  itkGetModifiableObjectMacro(Output, ImageType);
   itkGetConstObjectMacro(Output, ImageType);
 
   /** Compute of the input image. */

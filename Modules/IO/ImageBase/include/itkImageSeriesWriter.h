@@ -123,6 +123,7 @@ public:
    * for non-standard file suffix). */
   itkSetObjectMacro(ImageIO, ImageIOBase);
   itkGetObjectMacro(ImageIO, ImageIOBase);
+  itkGetModifiableObjectMacro(ImageIO, ImageIOBase);
   itkGetConstObjectMacro(ImageIO, ImageIOBase);
 
   /** A special version of the Update() method for writers.  It

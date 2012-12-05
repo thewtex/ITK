@@ -135,6 +135,7 @@ public:
   /** Set/Get the mean image. */
   itkSetObjectMacro(MeanImage, ImageType);
   itkGetObjectMacro(MeanImage, ImageType);
+  itkGetModifiableObjectMacro(MeanImage, ImageType);
   itkGetConstObjectMacro(MeanImage, ImageType);
 
   /** Set/Get the principal component images. */
@@ -151,6 +152,7 @@ public:
   /** Set/Get transform. */
   itkSetObjectMacro(Transform, TransformType);
   itkGetObjectMacro(Transform, TransformType);
+  itkGetModifiableObjectMacro(Transform, TransformType);
   itkGetConstObjectMacro(Transform, TransformType);
 
   /** A PCAShape is defined by a set of shape and pose parameters. */

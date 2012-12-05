@@ -108,6 +108,7 @@ public:
    */
   itkSetObjectMacro(Colormap, ColormapType);
   itkGetObjectMacro(Colormap, ColormapType);
+  itkGetModifiableObjectMacro(Colormap, ColormapType);
   itkGetConstObjectMacro(Colormap, ColormapType);
 
   /**

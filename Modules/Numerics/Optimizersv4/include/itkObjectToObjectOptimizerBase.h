@@ -98,7 +98,8 @@ public:
   /** Accessors for Metric */
   itkSetObjectMacro( Metric, MetricType );
   itkGetObjectMacro( Metric, MetricType );
-  itkGetConstObjectMacro( Metric, MetricType );
+  itkGetModifiableObjectMacro(Metric, MetricType );
+  itkGetConstObjectMacro(Metric, MetricType );
 
   /** Accessor for metric value. Returns the value
    *  stored in m_CurrentMetricValue from the most recent

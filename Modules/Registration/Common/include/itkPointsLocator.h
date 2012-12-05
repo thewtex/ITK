@@ -89,7 +89,8 @@ public:
   itkSetObjectMacro( Points, PointsContainer );
 
   /** Set/Get the points from which the bounding box should be computed. */
-  itkGetConstObjectMacro( Points, PointsContainer );
+  itkGetModifiableObjectMacro(Points, PointsContainer );
+  itkGetConstObjectMacro(Points, PointsContainer );
 
   /** Compute the kd-tree that will facilitate the querying the points. */
   void Initialize();

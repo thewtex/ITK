@@ -353,24 +353,24 @@ public:
    * any given iteration of the optimizer. */
   typedef typename Superclass::NumberOfParametersType   NumberOfParametersType;
 
-  /* Set/get images */
-  /** Connect the Fixed Image.  */
+  /* Get/Set the Fixed Image.  */
   itkSetConstObjectMacro(FixedImage, FixedImageType);
-  /** Get the Fixed Image. */
   itkGetConstObjectMacro(FixedImage, FixedImageType);
-  /** Connect the Moving Image.  */
+
+  /** Get/Set the Moving Image.  */
   itkSetConstObjectMacro(MovingImage, MovingImageType);
-  /** Get the Moving Image. */
   itkGetConstObjectMacro(MovingImage, MovingImageType);
 
   /** Connect the fixed interpolator. */
   itkSetObjectMacro(FixedInterpolator, FixedInterpolatorType);
   /** Get a pointer to the fixed interpolator.  */
+  itkGetModifiableObjectMacro(FixedInterpolator, FixedInterpolatorType);
   itkGetConstObjectMacro(FixedInterpolator, FixedInterpolatorType);
 
   /** Connect the Moving interpolator. */
   itkSetObjectMacro(MovingInterpolator, MovingInterpolatorType);
   /** Get a pointer to the Moving interpolator.  */
+  itkGetModifiableObjectMacro(MovingInterpolator, MovingInterpolatorType);
   itkGetConstObjectMacro(MovingInterpolator, MovingInterpolatorType);
 
   /** Set/Get the moving image mask. */
@@ -396,23 +396,28 @@ public:
   itkBooleanMacro(UseFixedSampledPointSet);
 
   /** Get the virtual domain sampling point set */
+  itkGetModifiableObjectMacro(VirtualSampledPointSet, VirtualPointSetType);
   itkGetConstObjectMacro(VirtualSampledPointSet, VirtualPointSetType);
 
   /** Set/Get the gradient filter */
   itkSetObjectMacro( FixedImageGradientFilter, FixedImageGradientFilterType );
   itkGetObjectMacro( FixedImageGradientFilter, FixedImageGradientFilterType );
-  itkGetConstObjectMacro( FixedImageGradientFilter, FixedImageGradientFilterType );
+  itkGetModifiableObjectMacro(FixedImageGradientFilter, FixedImageGradientFilterType );
+  itkGetConstObjectMacro(FixedImageGradientFilter, FixedImageGradientFilterType );
   itkSetObjectMacro( MovingImageGradientFilter, MovingImageGradientFilterType );
   itkGetObjectMacro( MovingImageGradientFilter, MovingImageGradientFilterType );
-  itkGetConstObjectMacro( MovingImageGradientFilter, MovingImageGradientFilterType );
+  itkGetModifiableObjectMacro(MovingImageGradientFilter, MovingImageGradientFilterType );
+  itkGetConstObjectMacro(MovingImageGradientFilter, MovingImageGradientFilterType );
 
   /** Set/Get gradient calculators */
   itkSetObjectMacro( FixedImageGradientCalculator, FixedImageGradientCalculatorType);
   itkGetObjectMacro( FixedImageGradientCalculator, FixedImageGradientCalculatorType);
-  itkGetConstObjectMacro( FixedImageGradientCalculator, FixedImageGradientCalculatorType);
+  itkGetModifiableObjectMacro(FixedImageGradientCalculator, FixedImageGradientCalculatorType);
+  itkGetConstObjectMacro(FixedImageGradientCalculator, FixedImageGradientCalculatorType);
   itkSetObjectMacro( MovingImageGradientCalculator, MovingImageGradientCalculatorType);
   itkGetObjectMacro( MovingImageGradientCalculator, MovingImageGradientCalculatorType);
-  itkGetConstObjectMacro( MovingImageGradientCalculator, MovingImageGradientCalculatorType);
+  itkGetModifiableObjectMacro(MovingImageGradientCalculator, MovingImageGradientCalculatorType);
+  itkGetConstObjectMacro(MovingImageGradientCalculator, MovingImageGradientCalculatorType);
 
   /** Set/Get gradient computation via an image filter,
    * for fixed image. */
@@ -437,8 +442,10 @@ public:
   virtual ThreadIdType GetMaximumNumberOfThreads() const;
 
   /** Get Fixed Gradient Image. */
+  itkGetModifiableObjectMacro(FixedImageGradientImage, FixedImageGradientImageType);
   itkGetConstObjectMacro(FixedImageGradientImage, FixedImageGradientImageType);
   /** Get Moving Gradient Image. */
+  itkGetModifiableObjectMacro(MovingImageGradientImage, MovingImageGradientImageType);
   itkGetConstObjectMacro(MovingImageGradientImage, MovingImageGradientImageType);
 
   /** Get number of valid points from most recent update */

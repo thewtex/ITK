@@ -90,6 +90,7 @@ public:
   /** Get/Set the helper class for dividing the input into chunks. */
   itkSetObjectMacro(RegionSplitter, SplitterType);
   itkGetObjectMacro(RegionSplitter, SplitterType);
+  itkGetModifiableObjectMacro(RegionSplitter, SplitterType);
   itkGetConstObjectMacro(RegionSplitter, SplitterType);
 
   /** Override UpdateOutputData() from ProcessObject to divide upstream

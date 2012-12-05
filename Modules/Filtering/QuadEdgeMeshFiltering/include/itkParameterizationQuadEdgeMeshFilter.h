@@ -112,6 +112,7 @@ public:
 
   itkSetObjectMacro(BorderTransform, MeshBorderTransform);
   itkGetObjectMacro(BorderTransform, MeshBorderTransform);
+  itkGetModifiableObjectMacro(BorderTransform, MeshBorderTransform);
   itkGetConstObjectMacro(BorderTransform, MeshBorderTransform);
 
 protected:

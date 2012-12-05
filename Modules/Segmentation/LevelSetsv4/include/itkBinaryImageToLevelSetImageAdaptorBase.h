@@ -60,12 +60,14 @@ public:
 
   /** Get the sparse levet set function */
   itkGetObjectMacro( LevelSet, LevelSetType );
-  itkGetConstObjectMacro( LevelSet, LevelSetType );
+  itkGetModifiableObjectMacro(LevelSet, LevelSetType );
+  itkGetConstObjectMacro(LevelSet, LevelSetType );
 
   /** Set/Get the input image*/
   itkSetObjectMacro( InputImage, InputImageType );
   itkGetObjectMacro( InputImage, InputImageType );
-  itkGetConstObjectMacro( InputImage, InputImageType );
+  itkGetModifiableObjectMacro(InputImage, InputImageType );
+  itkGetConstObjectMacro(InputImage, InputImageType );
 
 protected:
   /** Constructor */

@@ -129,7 +129,8 @@ public:
   typedef typename NeighborhoodIteratorType::RadiusType NeighborhoodRadiusType;
 
   itkGetObjectMacro( LabelImage, LabelImageType );
-  itkGetConstObjectMacro( LabelImage, LabelImageType );
+  itkGetModifiableObjectMacro(LabelImage, LabelImageType );
+  itkGetConstObjectMacro(LabelImage, LabelImageType );
 
 
   /** The output largeset possible, spacing and origin is computed as follows.

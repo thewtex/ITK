@@ -133,7 +133,8 @@ private:
   /** Get/Set the intermediate DOM object. */
   itkSetObjectMacro( IntermediateDOM, DOMNodeType );
   itkGetObjectMacro( IntermediateDOM, DOMNodeType );
-  itkGetConstObjectMacro( IntermediateDOM, DOMNodeType );
+  itkGetModifiableObjectMacro(IntermediateDOM, DOMNodeType );
+  itkGetConstObjectMacro(IntermediateDOM, DOMNodeType );
 
   /** Variable to hold the input XML file name. */
   std::string m_FileName;

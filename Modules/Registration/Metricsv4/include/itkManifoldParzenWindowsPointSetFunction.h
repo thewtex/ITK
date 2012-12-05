@@ -176,7 +176,8 @@ public:
   GaussianConstPointer GetGaussian( PointIdentifier ) const ;
 
   /** Get the points locator describing the point set neighborhood */
-  itkGetConstObjectMacro( PointsLocator, PointsLocatorType );
+  itkGetModifiableObjectMacro(PointsLocator, PointsLocatorType );
+  itkGetConstObjectMacro(PointsLocator, PointsLocatorType );
 
 protected:
   ManifoldParzenWindowsPointSetFunction();

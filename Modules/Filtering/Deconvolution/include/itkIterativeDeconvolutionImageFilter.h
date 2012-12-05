@@ -81,6 +81,7 @@ public:
   itkGetMacro(NumberOfIterations, unsigned int);
 
   /** Set/get the current estimate. */
+  itkGetModifiableObjectMacro(CurrentEstimate, InternalImageType);
   itkGetConstObjectMacro(CurrentEstimate, InternalImageType);
 
   /** Stop iteration. When this method is called, the iteration will

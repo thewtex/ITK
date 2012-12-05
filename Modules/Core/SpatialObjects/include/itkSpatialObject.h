@@ -140,6 +140,7 @@ public:
   itkTypeMacro(SpatialObject, DataObject);
 
   /** Set/Get the AffineGeometryFrame */
+  itkGetModifiableObjectMacro(AffineGeometryFrame, AffineGeometryFrameType);
   itkGetConstObjectMacro(AffineGeometryFrame, AffineGeometryFrameType);
   itkSetObjectMacro(AffineGeometryFrame, AffineGeometryFrameType);
 
@@ -147,8 +148,11 @@ public:
    *  By setting this transform, the local transform is computed */
   void SetObjectToWorldTransform(TransformType *transform);
   itkGetObjectMacro(ObjectToWorldTransform, TransformType);
+  itkGetModifiableObjectMacro(ObjectToWorldTransform, TransformType);
   itkGetConstObjectMacro(ObjectToWorldTransform, TransformType);
+
   itkGetObjectMacro(IndexToWorldTransform, TransformType);
+  itkGetModifiableObjectMacro(IndexToWorldTransform, TransformType);
   itkGetConstObjectMacro(IndexToWorldTransform, TransformType);
 
   /** Compute the World transform when the local transform is set
@@ -377,25 +381,38 @@ public:
 
   /** Return a raw pointer to the node container */
   itkGetObjectMacro(TreeNode, TreeNodeType);
+  itkGetModifiableObjectMacro(TreeNode, TreeNodeType);
   itkGetConstObjectMacro(TreeNode, TreeNodeType);
 
   /** Theses functions are just calling the AffineGeometryFrame functions */
   /** Set the spacing of the spatial object. */
-  void SetSpacing(const double
-                  spacing[itkGetStaticConstMacro(ObjectDimension)])
-  { this->GetIndexToObjectTransform()->SetScale(spacing); }
+  void SetSpacing(const double spacing[itkGetStaticConstMacro(ObjectDimension)])
+  {
+  m_AffineGeometryFrame->GetModifiableIndexToObjectTransform()->SetScale(spacing);
+  this->Modified();
+  }
   /** Get the spacing of the spatial object. */
   virtual const double * GetSpacing() const
-  { return this->GetIndexToObjectTransform()->GetScale(); }
+  {
+  return this->GetIndexToObjectTransform()->GetScale();
+  }
 
   /** Transform points from the internal data coordinate system
    * of the object (typically the indices of the image from which
    * the object was defined) to "physical" space (which accounts
    * for the spacing, orientation, and offset of the indices)
    */
-  TransformType * GetIndexToObjectTransform(void);
-
   const TransformType * GetIndexToObjectTransform(void) const;
+
+  TransformType * GetModifiableIndexToObjectTransform(void)
+    {
+    return m_AffineGeometryFrame->GetModifiableIndexToObjectTransform();
+    }
+  TransformType * GetIndexToObjectTransform(void)
+    {
+    return m_AffineGeometryFrame->GetModifiableIndexToObjectTransform();
+    }
+
 
   /** Transforms points from the object-specific "physical" space
    * to the "physical" space of its parent object.
@@ -538,7 +555,9 @@ protected:
   itkSetMacro(Dimension, unsigned int);
   itkGetConstReferenceMacro(Dimension, unsigned int)
   itkSetMacro(TypeName, std::string);
+  itkGetModifiableObjectMacro(Bounds, BoundingBoxType);
   itkGetConstObjectMacro(Bounds, BoundingBoxType);
+  itkGetModifiableObjectMacro(InternalInverseTransform, TransformType);
   itkGetConstObjectMacro(InternalInverseTransform, TransformType);
 
   /** This convenience method take the IndexToWorldTransform, and

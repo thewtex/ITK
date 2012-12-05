@@ -171,23 +171,21 @@ public:
   typedef typename Superclass::VirtualPointSetType    VirtualPointSetType;
   typedef typename Superclass::VirtualPointSetPointer VirtualPointSetPointer;
 
-  /** Connect the fixed pointset.  */
+  /** Get/Set the fixed pointset.  */
   itkSetConstObjectMacro( FixedPointSet, FixedPointSetType );
-
-  /** Get the fixed point set. */
-  itkGetConstObjectMacro( FixedPointSet, FixedPointSetType );
+  itkGetConstObjectMacro(FixedPointSet, FixedPointSetType );
 
   /** Get the moving transformed point set.  */
-  itkGetConstObjectMacro( FixedTransformedPointSet, FixedTransformedPointSetType );
+  itkGetModifiableObjectMacro(FixedTransformedPointSet, FixedTransformedPointSetType );
+  itkGetConstObjectMacro(FixedTransformedPointSet, FixedTransformedPointSetType );
 
-  /** Connect the moving point set.  */
-  itkSetObjectMacro( MovingPointSet, MovingPointSetType );
-
-  /** Get the moving point set. */
-  itkGetConstObjectMacro( MovingPointSet, MovingPointSetType );
+  /** Get/Set the moving point set.  */
+  itkSetConstObjectMacro( MovingPointSet, MovingPointSetType );
+  itkGetConstObjectMacro(MovingPointSet, MovingPointSetType );
 
   /** Get the moving transformed point set.  */
-  itkGetConstObjectMacro( MovingTransformedPointSet, MovingTransformedPointSetType );
+  itkGetModifiableObjectMacro(MovingTransformedPointSet, MovingTransformedPointSetType );
+  itkGetConstObjectMacro(MovingTransformedPointSet, MovingTransformedPointSetType );
 
   /**
    * For now return the number of points used in the value/derivative calculations.

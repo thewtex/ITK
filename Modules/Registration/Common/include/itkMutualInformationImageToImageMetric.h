@@ -177,6 +177,7 @@ public:
    * probability distribution. Default is the GaussianKernelFunction. */
   itkSetObjectMacro(KernelFunction, KernelFunctionType);
   itkGetObjectMacro(KernelFunction, KernelFunctionType);
+  itkGetModifiableObjectMacro(KernelFunction, KernelFunctionType);
   itkGetConstObjectMacro(KernelFunction, KernelFunctionType);
 
   /** Reinitialize the seed of the random number generator that selects the

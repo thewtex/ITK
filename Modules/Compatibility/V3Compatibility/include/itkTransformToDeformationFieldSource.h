@@ -116,7 +116,8 @@ public:
   itkSetConstObjectMacro(Transform, TransformType);
 
   /** Get a pointer to the coordinate transform. */
-  itkGetConstObjectMacro(Transform, TransformType);
+  itkGetModifiableObjectMacro(Transform, TransformType);
+itkGetConstObjectMacro(Transform, TransformType);
 
   /** Set the size of the output image. */
   virtual void SetOutputSize(const SizeType & size);

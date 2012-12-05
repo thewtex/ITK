@@ -118,11 +118,13 @@ public:
   /** Get the container of auxiliary values associated with the inside
    *  points. */
   itkGetObjectMacro(AuxInsideValues, AuxValueContainer);
+  itkGetModifiableObjectMacro(AuxInsideValues, AuxValueContainer);
   itkGetConstObjectMacro(AuxInsideValues, AuxValueContainer);
 
   /** Get the container of auxiliary values associate with the outside
    *  points. */
   itkGetObjectMacro(AuxOutsideValues, AuxValueContainer);
+  itkGetModifiableObjectMacro(AuxOutsideValues, AuxValueContainer);
   itkGetConstObjectMacro(AuxOutsideValues, AuxValueContainer);
 
 protected:

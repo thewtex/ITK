@@ -57,7 +57,13 @@ public:
 
   /** Get/Set the input SpatialObject. */
   itkSetConstObjectMacro(Input, SpatialObjectType);
-  itkGetObjectMacro(Output, SpatialObjectType);
+
+  /** Get/Set the output SpatialObject. */
+  virtual SpatialObjectType * GetOutput () //This function is to provide a facade of looking like a filter, even though it is only an itkObject.
+    {
+    return this->m_Output.GetPointer();
+    }
+  itkGetModifiableObjectMacro(Output, SpatialObjectType);
   itkGetConstObjectMacro(Output, SpatialObjectType);
 
   /** Compute of the input SpatialObject. */

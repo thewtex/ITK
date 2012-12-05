@@ -144,10 +144,12 @@ public:
 
   void SetInputFilter(InputFilterType *filter);
   itkGetObjectMacro(InputFilter, InputFilterType);
+  itkGetModifiableObjectMacro(InputFilter, InputFilterType);
   itkGetConstObjectMacro(InputFilter, InputFilterType);
 
   void SetOutputFilter(OutputFilterType *filter);
   itkGetObjectMacro(OutputFilter, OutputFilterType);
+  itkGetModifiableObjectMacro(OutputFilter, OutputFilterType);
   itkGetConstObjectMacro(OutputFilter, OutputFilterType);
 
   /** The index of the slice currently processed by the filter. This is intended to be

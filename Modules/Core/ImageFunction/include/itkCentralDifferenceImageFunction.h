@@ -146,7 +146,8 @@ public:
   virtual void SetInterpolator(InterpolatorType *interpolator);
 
   /** Get the interpolator. */
-  itkGetConstObjectMacro( Interpolator, InterpolatorType );
+  itkGetModifiableObjectMacro(Interpolator, InterpolatorType );
+  itkGetConstObjectMacro(Interpolator, InterpolatorType );
 
   /** Evalulate the image derivative by central differencing at specified index.
    *

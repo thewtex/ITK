@@ -95,6 +95,7 @@ public:
   /** Get/Set the input image. */
   itkSetObjectMacro(InputImage, InputImageType);
   itkGetObjectMacro(InputImage, InputImageType);
+  itkGetModifiableObjectMacro(InputImage, InputImageType);
   itkGetConstObjectMacro(InputImage, InputImageType);
 
   /** Set the classified image. */

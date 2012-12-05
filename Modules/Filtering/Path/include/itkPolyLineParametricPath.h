@@ -117,6 +117,7 @@ public:
   }
 
   /** Return the container of Vertices as a const object. */
+  itkGetModifiableObjectMacro(VertexList, VertexListType);
   itkGetConstObjectMacro(VertexList, VertexListType);
 
 protected:

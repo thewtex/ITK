@@ -117,6 +117,7 @@ public:
   /** Set/Get the interpolator */
   void SetInterpolator(InterpolatorType *interpolator);
   itkGetObjectMacro(Interpolator, InterpolatorType);
+  itkGetModifiableObjectMacro(Interpolator, InterpolatorType);
   itkGetConstObjectMacro(Interpolator, InterpolatorType);
 
 protected:

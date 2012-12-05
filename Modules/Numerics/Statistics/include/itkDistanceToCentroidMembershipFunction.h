@@ -79,6 +79,7 @@ public:
   itkSetObjectMacro(DistanceMetric, DistanceMetricType);
 
   /** Get the DistanceMetric used by the MembershipFunction */
+  itkGetModifiableObjectMacro(DistanceMetric, DistanceMetricType);
   itkGetConstObjectMacro(DistanceMetric, DistanceMetricType);
 
   /** Get the DistanceMetric used by the MembershipFunction. This is

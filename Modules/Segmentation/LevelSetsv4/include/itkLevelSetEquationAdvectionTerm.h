@@ -95,7 +95,8 @@ public:
 
   void SetAdvectionImage( AdvectionImageType* iImage );
   itkGetObjectMacro( AdvectionImage, AdvectionImageType );
-  itkGetConstObjectMacro( AdvectionImage, AdvectionImageType );
+  itkGetModifiableObjectMacro(AdvectionImage, AdvectionImageType );
+  itkGetConstObjectMacro(AdvectionImage, AdvectionImageType );
 
   itkSetMacro( DerivativeSigma, LevelSetOutputRealType );
   itkGetMacro( DerivativeSigma, LevelSetOutputRealType );

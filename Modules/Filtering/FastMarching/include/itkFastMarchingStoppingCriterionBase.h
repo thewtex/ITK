@@ -67,7 +67,8 @@ public:
 
   itkSetObjectMacro( Domain, OutputDomainType );
   itkGetObjectMacro( Domain, OutputDomainType );
-  itkGetConstObjectMacro( Domain, OutputDomainType );
+  itkGetModifiableObjectMacro(Domain, OutputDomainType );
+  itkGetConstObjectMacro(Domain, OutputDomainType );
 
  protected:
   /** Constructor */

@@ -112,7 +112,7 @@ PointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>
                           "or a CompositeTransform with DisplacementFieldTransform as the last to have been added." );
         }
       typedef typename DisplacementFieldTransformType::DisplacementFieldType DisplacementFieldType;
-      typename DisplacementFieldType::Pointer field = displacementTransform->GetDisplacementField();
+      typename DisplacementFieldType::ConstPointer field = displacementTransform->GetDisplacementField();
       this->SetVirtualDomain( field->GetSpacing(), field->GetOrigin(), field->GetDirection(), field->GetBufferedRegion() );
       }
     }

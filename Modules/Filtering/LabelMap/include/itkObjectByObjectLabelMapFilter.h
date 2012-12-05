@@ -150,11 +150,13 @@ public:
 
   void SetInputFilter( InputFilterType * filter );
   itkGetObjectMacro( InputFilter, InputFilterType );
-  itkGetConstObjectMacro( InputFilter, InputFilterType );
+  itkGetModifiableObjectMacro(InputFilter, InputFilterType );
+  itkGetConstObjectMacro(InputFilter, InputFilterType );
 
   void SetOutputFilter( OutputFilterType * filter );
   itkGetObjectMacro( OutputFilter, OutputFilterType );
-  itkGetConstObjectMacro( OutputFilter, OutputFilterType );
+  itkGetModifiableObjectMacro(OutputFilter, OutputFilterType );
+  itkGetConstObjectMacro(OutputFilter, OutputFilterType );
 
 
   /** If KeepLabels is set to true, the filter will do its best to reuse the labels

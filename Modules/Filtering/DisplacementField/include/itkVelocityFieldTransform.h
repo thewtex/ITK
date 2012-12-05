@@ -116,7 +116,8 @@ public:
    * container. */
   virtual void SetVelocityField( VelocityFieldType * );
   itkGetObjectMacro( VelocityField, VelocityFieldType );
-  itkGetConstObjectMacro( VelocityField, VelocityFieldType );
+  itkGetModifiableObjectMacro(VelocityField, VelocityFieldType );
+  itkGetConstObjectMacro(VelocityField, VelocityFieldType );
 
   virtual void SetFixedParameters( const ParametersType & );
 
@@ -124,7 +125,8 @@ public:
    * Create out own set accessor that assigns the velocity field */
   virtual void SetVelocityFieldInterpolator( VelocityFieldInterpolatorType * );
   itkGetObjectMacro( VelocityFieldInterpolator, VelocityFieldInterpolatorType );
-  itkGetConstObjectMacro( VelocityFieldInterpolator, VelocityFieldInterpolatorType );
+  itkGetModifiableObjectMacro(VelocityFieldInterpolator, VelocityFieldInterpolatorType );
+  itkGetConstObjectMacro(VelocityFieldInterpolator, VelocityFieldInterpolatorType );
 
   /** Get the modification time of velocity field */
   itkGetConstReferenceMacro( VelocityFieldSetTime, unsigned long );

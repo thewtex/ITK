@@ -136,6 +136,7 @@ public:
    * not work properly (e.g., unknown or unusual extension). */
   void  SetImageIO(ImageIOBase *imageIO);
   itkGetObjectMacro(ImageIO, ImageIOBase);
+  itkGetModifiableObjectMacro(ImageIO, ImageIOBase);
   itkGetConstObjectMacro(ImageIO, ImageIOBase);
 
   /** Prepare the allocation of the output image during the first back

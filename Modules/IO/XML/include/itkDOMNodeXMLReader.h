@@ -86,8 +86,12 @@ public:
    * can appoint a user DOM object as the output by calling this function.
    */
   itkSetObjectMacro( Output, OutputType );
-  itkGetObjectMacro( Output, OutputType );
-  itkGetConstObjectMacro( Output, OutputType );
+  virtual OutputType * GetOutput () //This function is to provide a facade of looking like a filter, even though it is only an itkObject.
+    {
+    return this->m_Output.GetPointer();
+    }
+  itkGetModifiableObjectMacro(Output, OutputType );
+  itkGetConstObjectMacro(Output, OutputType );
 
   /**
    * Function called by Update() or end-users to generate the output DOM object
