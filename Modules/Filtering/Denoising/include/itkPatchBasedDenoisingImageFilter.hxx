@@ -535,31 +535,24 @@ PatchBasedDenoisingImageFilter<TInputImage, TOutputImage>
   const unsigned int physicalLength = physicalRegion.GetNumberOfPixels();
   const unsigned int centerPosition = (physicalLength - 1) / 2;
 
+  typename WeightsImageType::PointType centerPoint;
+  centerPoint.Fill( patchRadius );
+
   ImageRegionIterator<WeightsImageType> pwIt(physicalWeightsImage, physicalRegion);
   unsigned int                          pos = 0;
   for ( pwIt.GoToBegin(), pos = 0; !pwIt.IsAtEnd(); ++pwIt, ++pos )
     {
-    // compute distances of each pixel from center pixel
-    Vector <DistanceType, ImageDimension> distanceVector;
-    for (unsigned int d = 0; d < ImageDimension; d++)
+    unsigned int posModulo = pos;
+
+    Vector<DistanceType, ImageDimension> distanceVector;
+    for ( unsigned int d = 0; d < ImageDimension; d++ )
       {
-      if (d == 0)
-        {
-        distanceVector[d]
-          = static_cast<DistanceType> (pos            % physicalDiameter)
-            - static_cast<DistanceType> (centerPosition % physicalDiameter);
-        }
-      else
-        {
-        distanceVector[d]
-          = static_cast<DistanceType> (pos            /
-                                       static_cast<unsigned int> (Math::Round<double> (pow(static_cast<double>(physicalDiameter),static_cast<int>(d) ) ) ) )
-            - static_cast<DistanceType> (centerPosition /
-                                         static_cast<unsigned int> (Math::Round<double> (pow(static_cast<double>(physicalDiameter),
-                                                           static_cast<int>(d) ) ) ) );
-        }
+      int k = static_cast<DistanceType>( vcl_pow( static_cast<double>( physicalDiameter ), static_cast<int>( ImageDimension - d - 1 ) ) );
+      distanceVector[ImageDimension - d - 1] = static_cast<unsigned int>( posModulo / k );
+      posModulo %= k;
       }
-    const float distanceFromCenter = distanceVector.GetNorm();
+
+    const float distanceFromCenter = ( centerPoint.GetVectorFromOrigin() - distanceVector ).GetNorm();
 
     // compute weights based on distance of pixel from center
     // details in Awate and Whitaker 2005 IEEE CVPR, 2006 IEEE TPAMI
@@ -636,11 +629,10 @@ PatchBasedDenoisingImageFilter<TInputImage, TOutputImage>
     } // end for each element in the patch
   if (patchWeights[(this->GetPatchLengthInVoxels() - 1)/2] != 1.0)
     {
-    itkExceptionMacro (<< "Center pixel's weight ("
+    itkExceptionMacro( << "Center pixel's weight ("
                        << patchWeights[(this->GetPatchLengthInVoxels() - 1)/2]
-                       << ") must be equal to 1.0 ");
+                       << ") must be equal to 1.0.  Try a larger patch radius. " );
     }
-
   //
   this->SetPatchWeights(patchWeights);
 } // end InitializePatchWeights
