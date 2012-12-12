@@ -413,12 +413,23 @@ void PNGImageIO::ReadImageInformation()
 
   // see if the PNG file stored spacing information,
   // ignore the units (for now).
-  double px_width = 1.0, px_height = 1.0; // use default values if not in file
-  int    units = PNG_SCALE_UNKNOWN;
-  png_get_sCAL(png_ptr, info_ptr, &units, &px_width, &px_height);
-
-  m_Spacing[0] = px_width;
-  m_Spacing[1] = px_height;
+  int units = PNG_RESOLUTION_UNKNOWN;
+  png_uint_32 xres;
+  png_uint_32 yres;
+  if (png_get_pHYs(png_ptr, info_ptr, &xres, &yres, &units)) //pHYs chunk is present
+    {
+    m_Spacing[0] = 2835.0 / xres;
+    m_Spacing[1] = 2835.0 / yres;
+    }
+  else //use sCAL chunk with fallback to default 1x1
+    {
+    units = PNG_SCALE_UNKNOWN;
+    double px_width = 1.0;
+    double px_height = 1.0; // use default values if not in file
+    png_get_sCAL(png_ptr, info_ptr, &units, &px_width, &px_height);
+    m_Spacing[0] = px_width;
+    m_Spacing[1] = px_height;
+    }
 
   // clean up
   png_destroy_read_struct(&png_ptr, &info_ptr,
@@ -589,9 +600,10 @@ void PNGImageIO::WriteSlice(const std::string & fileName, const void *buffer)
   //      set the unit_type to unknown.  if we add units to ITK, we should
   //          convert pixel size to meters and store units as meters (png
   //          has three set of units: meters, radians, and unknown).
+  //          PNG_RESOLUTION_METER should go with Math::Round(1.0/colSpacing)
 #if (PNG_LIBPNG_VER_MAJOR < 2 && PNG_LIBPNG_VER_MINOR < 4)
-  png_set_sCAL(png_ptr, info_ptr, PNG_SCALE_UNKNOWN, colSpacing,
-               rowSpacing);
+  png_set_pHYs(png_ptr, info_ptr, Math::Round<png_uint_32>(2835.0/colSpacing),
+               Math::Round<png_uint_32>(2835.0/rowSpacing), PNG_RESOLUTION_UNKNOWN);
 #endif
 
   //std::cout << "PNG_INFO_sBIT: " << PNG_INFO_sBIT << std::endl;
