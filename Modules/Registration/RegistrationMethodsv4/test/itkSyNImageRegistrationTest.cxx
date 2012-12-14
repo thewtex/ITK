@@ -142,10 +142,6 @@ int PerformDisplacementFieldImageRegistration( int itkNotUsed( argc ), char *arg
     const_cast<typename AffineRegistrationType::OptimizerType *>( affineSimple->GetOptimizer() ) );
   optimizer->SetNumberOfIterations( 100 );
 
-  //typedef CommandIterationUpdate<AffineRegistrationType> AffineCommandType;
-  //typename AffineCommandType::Pointer affineObserver = AffineCommandType::New();
-  //affineSimple->AddObserver( itk::IterationEvent(), affineObserver );
-
   try
     {
     std::cout << "Affine transform" << std::endl;
