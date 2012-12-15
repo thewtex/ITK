@@ -32,13 +32,13 @@ template<class TFilter>
 class CommandIterationUpdate : public itk::Command
 {
 public:
-  typedef CommandIterationUpdate   Self;
-  typedef itk::Command             Superclass;
-  typedef itk::SmartPointer<Self>  Pointer;
+  typedef CommandIterationUpdate                                          Self;
+  typedef itk::Command                                                    Superclass;
+  typedef itk::SmartPointer<Self>                                         Pointer;
   itkNewMacro( Self );
 
-  typedef typename TFilter::FixedImageType                                FixedImageType;
   itkStaticConstMacro( ImageDimension, unsigned int, FixedImageType::ImageDimension ); /** ImageDimension constants */
+  typedef typename TFilter::FixedImageType                                FixedImageType;
   typedef typename TFilter::OutputTransformType::ScalarType               RealType;
   typedef itk::DisplacementFieldTransform<RealType, ImageDimension>       DisplacementFieldTransformType;
   typedef typename DisplacementFieldTransformType::DisplacementFieldType  DisplacementFieldType;
