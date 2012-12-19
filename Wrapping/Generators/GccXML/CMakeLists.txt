@@ -17,7 +17,7 @@ if(ITK_USE_SYSTEM_GCCXML)
 else()
   include(ExternalProject)
   # build gccxml as an external project
-  if(WIN32)
+  if(MSVC)
     # windows build requires an extra step after the install. We use the test to run that step
     set(test TEST_COMMAND ${CMAKE_CURRENT_BINARY_DIR}/gccxml/bin/gccxml_vcconfig.bat)
   else()
