@@ -35,46 +35,33 @@ bool MINCImageIO::CanReadFile(const char *file)
   
   std::string::size_type mncPos = filename.rfind(".mnc");
   if ( (mncPos != std::string::npos)
-	&& (mncPos == filename.length() - 4) )
+    && (mncPos == filename.length() - 4) )
     {
     return true;
     }
 
   mncPos = filename.rfind(".MNC");
   if ( (mncPos != std::string::npos)
-	&& (mncPos == filename.length() - 4) )
+    && (mncPos == filename.length() - 4) )
     {
     return true;
     }
 
   mncPos = filename.rfind(".mnc2");
   if ( (mncPos != std::string::npos)
-	&& (mncPos == filename.length() - 5) )
+    && (mncPos == filename.length() - 5) )
     {
     return true;
     }
   
   mncPos = filename.rfind(".MNC2");
   if ( (mncPos != std::string::npos)
-	&& (mncPos == filename.length() - 5) )
+    && (mncPos == filename.length() - 5) )
     {
     return true;
     }
 
-//   mihandle_t volume;
-// 
-//   if ( miopen_volume(file, MI2_OPEN_READ, &volume) < 0 )
-//     {
-//     itkDebugMacro(<< " Can not open File:" << file << "\n");
-//     return false;
-//     }
-//   if ( miclose_volume(volume) < 0 )
-//     {
-//     itkDebugMacro(<< " Can not close File:" << file << "\n");
-//     return false;
-//     }
-
-  return true;
+  return false;
 }
 
 void MINCImageIO::Read(void *buffer)
@@ -126,16 +113,16 @@ void MINCImageIO::Read(void *buffer)
     case INT:
       volume_data_type=MI_TYPE_INT;
       break;
-//     case ULONG://TODO: make sure we are cross-platform here!
-//       volume_data_type=MI_TYPE_ULONG;
-//       break;
-//     case LONG://TODO: make sure we are cross-platform here!
-//       volume_data_type=MI_TYPE_LONG;
-//       break;
-    case FLOAT://TODO: make sure we are cross-platform here!
+   case ULONG://TODO: make sure we are cross-platform here!
+      volume_data_type=MI_TYPE_UINT;
+      break;
+   case LONG://TODO: make sure we are cross-platform here!
+      volume_data_type=MI_TYPE_INT;
+      break;
+    case FLOAT:
       volume_data_type=MI_TYPE_FLOAT;
       break;
-    case DOUBLE://TODO: make sure we are cross-platform here!
+    case DOUBLE:
       volume_data_type=MI_TYPE_DOUBLE;
       break;
     default:
