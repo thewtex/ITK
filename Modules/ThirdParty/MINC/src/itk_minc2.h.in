@@ -15,34 +15,26 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#include "itkMINC2ImageIOFactory.h"
-#include "itkCreateObjectFunction.h"
-#include "itkMINC2ImageIO.h"
-#include "itkVersion.h"
+/*=========================================================================
+ *
+ *  Portions of this file are subject to the VTK Toolkit Version 3 copyright.
+ *
+ *  Copyright (c) Ken Martin, Will Schroeder, Bill Lorensen
+ *
+ *  For complete copyright, license and disclaimer of warranty information
+ *  please refer to the NOTICE file at the top of the ITK source tree.
+ *
+ *=========================================================================*/
 
-namespace itk
-{
-MINC2ImageIOFactory::MINC2ImageIOFactory()
-{
-  this->RegisterOverride( "itkImageIOBase",
-                          "itkMINC2ImageIO",
-                          "MINC2 Image IO",
-                          1,
-                          CreateObjectFunction< MINC2ImageIO >::New() );
-}
+#ifndef __itk_minc2_h
+#define __itk_minc2_h
 
-MINC2ImageIOFactory::~MINC2ImageIOFactory()
-{}
+/* Use the tiff library configured for ITK.  */
+#cmakedefine ITK_USE_SYSTEM_MINC
+#ifdef ITK_USE_SYSTEM_MINC
+# include <minc2.h>
+#else
+# include "libsrc2/minc2.h"
+#endif
 
-const char *
-MINC2ImageIOFactory::GetITKSourceVersion(void) const
-{
-  return ITK_SOURCE_VERSION;
-}
-
-const char *
-MINC2ImageIOFactory::GetDescription(void) const
-{
-  return "MINC2 ImageIO Factory, allows the loading of MINC2 images into insight";
-}
-} // end namespace itk
+#endif
