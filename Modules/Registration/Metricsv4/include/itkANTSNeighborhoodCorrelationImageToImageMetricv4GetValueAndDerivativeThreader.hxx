@@ -38,36 +38,38 @@ ANTSNeighborhoodCorrelationImageToImageMetricv4GetValueAndDerivativeThreader< TD
     itkExceptionMacro("Dynamic casting of associate pointer failed.");
     }
 
-  VirtualPointType     virtualPoint;
-  MeasureType          metricValueResult = NumericTraits< MeasureType >::Zero;
-  MeasureType          metricValueSum = NumericTraits< MeasureType >::Zero;
-  bool                 pointIsValid;
-  ScanIteratorType     scanIt;
-  ScanParametersType   scanParameters;
-  ScanMemType          scanMem;
-
   DerivativeType & localDerivativeResult = this->m_LocalDerivativesPerThread[threadId];
 
   /* Create an iterator over the virtual sub region */
-  // this->m_ANTSAssociate->InitializeScanning( virtualImageSubRegion, scanIt, scanMem, scanParameters );
+  ScanMemType          scanMem;
+  ScanParametersType   scanParameters;
+  ScanIteratorType     scanIt;
   this->InitializeScanning( virtualImageSubRegion, scanIt, scanMem, scanParameters );
+  scanIt.GoToBegin();
 
   /* Iterate over the sub region */
-  scanIt.GoToBegin();
+  MeasureType          metricValueSum = NumericTraits< MeasureType >::Zero;
   while (!scanIt.IsAtEnd())
     {
-    /* Get the virtual point */
-    this->m_ANTSAssociate->TransformVirtualIndexToPhysicalPoint( scanIt.GetIndex(), virtualPoint );
-
     /* Call the user method in derived classes to do the specific
      * calculations for value and derivative. */
     try
       {
       this->UpdateQueues(scanIt, scanMem, scanParameters, threadId);
-      pointIsValid = this->ComputeInformationFromQueues(scanIt, scanMem, scanParameters, threadId);
+      const bool pointIsValid = this->ComputeInformationFromQueues(scanIt, scanMem, scanParameters, threadId);
       if( pointIsValid )
         {
+        MeasureType metricValueResult;
         this->ComputeMovingTransformDerivative(scanIt, scanMem, scanParameters, localDerivativeResult, metricValueResult, threadId );
+        /* Assign the results */
+        this->m_NumberOfValidPointsPerThread[threadId]++;
+        metricValueSum -= metricValueResult;
+        /* Store the result. This depends on what type of
+         * transform is being used. */
+        if( this->GetComputeDerivative() )
+          {
+          this->StorePointDerivativeResult( scanIt.GetIndex(), threadId );
+          }
         }
       }
     catch (ExceptionObject & exc)
@@ -77,19 +79,6 @@ ANTSNeighborhoodCorrelationImageToImageMetricv4GetValueAndDerivativeThreader< TD
       msg += exc.what();
       ExceptionObject err(__FILE__, __LINE__, msg);
       throw err;
-      }
-
-    /* Assign the results */
-    if ( pointIsValid )
-      {
-      this->m_NumberOfValidPointsPerThread[threadId]++;
-      metricValueSum -= metricValueResult;
-      /* Store the result. This depends on what type of
-       * transform is being used. */
-      if( this->GetComputeDerivative() )
-        {
-        this->StorePointDerivativeResult( scanIt.GetIndex(), threadId );
-        }
       }
 
     //next index
@@ -138,11 +127,14 @@ ANTSNeighborhoodCorrelationImageToImageMetricv4GetValueAndDerivativeThreader< TD
 
    typedef InternalComputationValueType LocalRealType;
 
-   // Now add the rest of the values from each hyperplane
-   SizeValueType diameter = 2 * scanParameters.radius[0];
-
    const LocalRealType localZero = NumericTraits<LocalRealType>::ZeroValue();
-   for (SizeValueType i = numberOfFillZero; i < ( diameter + NumericTraits<SizeValueType>::OneValue() ); i++)
+   const LocalRealType localOne = NumericTraits<LocalRealType>::OneValue();
+
+   // Now add the rest of the values from each hyperplane
+   const SizeValueType diameter = 2 * scanParameters.radius[0];
+   const SizeValueType diameterPlusOne=diameter+localOne;
+
+   for (SizeValueType i = numberOfFillZero; i < diameterPlusOne; i++)
      {
      LocalRealType sumFixed2      = localZero;
      LocalRealType sumMoving2     = localZero;
@@ -151,33 +143,41 @@ ANTSNeighborhoodCorrelationImageToImageMetricv4GetValueAndDerivativeThreader< TD
      LocalRealType sumFixedMoving = localZero;
      LocalRealType count = localZero;
 
-     for ( SizeValueType indct = i; indct < hoodlen; indct += ( diameter + NumericTraits<SizeValueType>::OneValue() ) )
+     for ( SizeValueType indct = i; indct < hoodlen; indct += diameterPlusOne )
        {
-       typename ScanIteratorType::OffsetType internalIndex, offset;
-       bool isInBounds = scanIt.IndexInBounds( indct, internalIndex, offset );
-       if (!isInBounds)
          {
-         // std::cout << "DEBUG: error" << std::endl;
-         continue;
+         typename ScanIteratorType::OffsetType internalIndex;
+         typename ScanIteratorType::OffsetType offset;
+         const bool isInBounds = scanIt.IndexInBounds( indct, internalIndex, offset );
+         if (!isInBounds)
+           {
+           // std::cout << "DEBUG: error" << std::endl;
+           continue;
+           }
          }
 
-       typename VirtualImageType::IndexType index = scanIt.GetIndex(indct);
+       const typename VirtualImageType::IndexType index = scanIt.GetIndex(indct);
 
-       VirtualPointType        virtualPoint;
        FixedImagePointType     mappedFixedPoint;
        FixedImagePixelType     fixedImageValue;
        MovingImagePointType    mappedMovingPoint;
        MovingImagePixelType    movingImageValue;
-       bool pointIsValid;
 
+       VirtualPointType        virtualPoint;
        this->m_ANTSAssociate->TransformVirtualIndexToPhysicalPoint(index, virtualPoint);
-
        try
          {
-         pointIsValid = this->m_ANTSAssociate->TransformAndEvaluateFixedPoint( virtualPoint, mappedFixedPoint, fixedImageValue );
+         const bool pointIsValid = (
+           this->m_ANTSAssociate->TransformAndEvaluateFixedPoint( virtualPoint, mappedFixedPoint, fixedImageValue )
+           && this->m_ANTSAssociate->TransformAndEvaluateMovingPoint( virtualPoint, mappedMovingPoint, movingImageValue ) );
          if ( pointIsValid )
            {
-           pointIsValid = this->m_ANTSAssociate->TransformAndEvaluateMovingPoint( virtualPoint, mappedMovingPoint, movingImageValue );
+           sumFixed2 += fixedImageValue  * fixedImageValue;
+           sumMoving2 += movingImageValue * movingImageValue;
+           sumFixed += fixedImageValue;
+           sumMoving += movingImageValue;
+           sumFixedMoving += fixedImageValue * movingImageValue;
+           count += NumericTraits<LocalRealType>::OneValue();
            }
          }
        catch (ExceptionObject & exc)
@@ -189,16 +189,6 @@ ANTSNeighborhoodCorrelationImageToImageMetricv4GetValueAndDerivativeThreader< TD
          throw err;
          }
 
-
-       if ( pointIsValid )
-         {
-         sumFixed2 += fixedImageValue  * fixedImageValue;
-         sumMoving2 += movingImageValue * movingImageValue;
-         sumFixed += fixedImageValue;
-         sumMoving += movingImageValue;
-         sumFixedMoving += fixedImageValue * movingImageValue;
-         count += NumericTraits<LocalRealType>::OneValue();
-         }
        }//for indct
 
      scanMem.QsumFixed2.push_back(sumFixed2);
@@ -215,11 +205,9 @@ template < class TDomainPartitioner, class TImageToImageMetric, class TNeighborh
  ANTSNeighborhoodCorrelationImageToImageMetricv4GetValueAndDerivativeThreader< TDomainPartitioner, TImageToImageMetric, TNeighborhoodCorrelationMetric >
 ::UpdateQueuesToNextScanWindow( const ScanIteratorType &scanIt, ScanMemType &scanMem, const ScanParametersType &scanParameters, const ThreadIdType ) const
 {
- const SizeValueType hoodlen = scanParameters.windowLength;
-
  typedef InternalComputationValueType LocalRealType;
-
  const LocalRealType localZero = NumericTraits<LocalRealType>::ZeroValue();
+ const LocalRealType localOne = NumericTraits<LocalRealType>::OneValue();
 
  LocalRealType sumFixed2      = localZero;
  LocalRealType sumMoving2     = localZero;
@@ -228,35 +216,43 @@ template < class TDomainPartitioner, class TImageToImageMetric, class TNeighborh
  LocalRealType sumFixedMoving = localZero;
  LocalRealType count          = localZero;
 
- SizeValueType diameter = 2 * scanParameters.radius[0];
-
- for ( SizeValueType indct = diameter; indct < hoodlen; indct += (diameter + NumericTraits<SizeValueType>::OneValue()))
+ const SizeValueType diameter = 2 * scanParameters.radius[0];
+ const SizeValueType diameterPlusOne=diameter + localOne;
+ const SizeValueType hoodlen = scanParameters.windowLength;
+ for ( SizeValueType indct = diameter; indct < hoodlen; indct += diameterPlusOne)
    {
-   typename ScanIteratorType::OffsetType internalIndex, offset;
-   bool isInBounds = scanIt.IndexInBounds( indct, internalIndex, offset );
-
+   //typename ScanIteratorType::OffsetType internalIndex;
+   //typename ScanIteratorType::OffsetType offset;
+   //const bool isInBounds = scanIt.IndexInBounds( indct , internalIndex, offset );
+   const bool isInBounds = scanIt.IndexInBounds( indct );
    if (!isInBounds)
-   {
-   continue;
-   }
+     {
+     continue;
+     }
 
-   typename VirtualImageType::IndexType index = scanIt.GetIndex(indct);
+   const typename VirtualImageType::IndexType &index = scanIt.GetIndex(indct);
 
    VirtualPointType virtualPoint;
-   FixedImagePointType mappedFixedPoint;
-   FixedImagePixelType fixedImageValue;
-   MovingImagePointType mappedMovingPoint;
-   MovingImagePixelType movingImageValue;
-   MovingImageGradientType movingImageGradient;
-   bool pointIsValid;
-
    this->m_ANTSAssociate->TransformVirtualIndexToPhysicalPoint(index, virtualPoint);
    try
      {
-     pointIsValid = this->m_ANTSAssociate->TransformAndEvaluateFixedPoint( virtualPoint, mappedFixedPoint, fixedImageValue );
-     if (pointIsValid)
+     FixedImagePointType mappedFixedPoint;
+     FixedImagePixelType fixedImageValue;
+     const bool fixedPointIsValid = this->m_ANTSAssociate->TransformAndEvaluateFixedPoint( virtualPoint, mappedFixedPoint, fixedImageValue );
+     if(fixedPointIsValid)
        {
-       pointIsValid = this->m_ANTSAssociate->TransformAndEvaluateMovingPoint( virtualPoint, mappedMovingPoint, movingImageValue );
+       MovingImagePointType mappedMovingPoint;
+       MovingImagePixelType movingImageValue;
+       const bool movingPointIsValid = this->m_ANTSAssociate->TransformAndEvaluateMovingPoint( virtualPoint, mappedMovingPoint, movingImageValue );
+       if ( movingPointIsValid )
+         {
+         sumFixed2 += fixedImageValue  * fixedImageValue;
+         sumMoving2 += movingImageValue * movingImageValue;
+         sumFixed += fixedImageValue;
+         sumMoving += movingImageValue;
+         sumFixedMoving += fixedImageValue * movingImageValue;
+         count += localOne;
+         }
        }
      }
    catch (ExceptionObject & exc)
@@ -266,15 +262,6 @@ template < class TDomainPartitioner, class TImageToImageMetric, class TNeighborh
      msg += exc.what();
      ExceptionObject err(__FILE__, __LINE__, msg);
      throw err;
-     }
-   if ( pointIsValid )
-     {
-     sumFixed2 += fixedImageValue  * fixedImageValue;
-     sumMoving2 += movingImageValue * movingImageValue;
-     sumFixed += fixedImageValue;
-     sumMoving += movingImageValue;
-     sumFixedMoving += fixedImageValue * movingImageValue;
-     count += NumericTraits<LocalRealType>::OneValue();
      }
    }
    scanMem.QsumFixed2.push_back(sumFixed2);
@@ -397,12 +384,12 @@ ANTSNeighborhoodCorrelationImageToImageMetricv4GetValueAndDerivativeThreader< TD
    ++itFixedMoving;
    }
 
- LocalRealType fixedMean  = sumFixed  / count;
- LocalRealType movingMean = sumMoving / count;
+ const LocalRealType fixedMean  = sumFixed  / count;
+ const LocalRealType movingMean = sumMoving / count;
 
- LocalRealType sFixedFixed   = sumFixed2 - fixedMean * sumFixed - fixedMean * sumFixed + count * fixedMean * fixedMean;
- LocalRealType sMovingMoving = sumMoving2 - movingMean * sumMoving - movingMean * sumMoving + count * movingMean * movingMean;
- LocalRealType sFixedMoving  = sumFixedMoving - movingMean * sumFixed - fixedMean * sumMoving + count * movingMean * fixedMean;
+ const LocalRealType sFixedFixed   = sumFixed2 - fixedMean * sumFixed - fixedMean * sumFixed + count * fixedMean * fixedMean;
+ const LocalRealType sMovingMoving = sumMoving2 - movingMean * sumMoving - movingMean * sumMoving + count * movingMean * movingMean;
+ const LocalRealType sFixedMoving  = sumFixedMoving - movingMean * sumFixed - fixedMean * sumMoving + count * movingMean * fixedMean;
 
  typename VirtualImageType::IndexType oindex = scanIt.GetIndex();
 
@@ -433,6 +420,18 @@ ANTSNeighborhoodCorrelationImageToImageMetricv4GetValueAndDerivativeThreader< TD
          {
          this->m_ANTSAssociate->ComputeMovingImageGradientAtPoint( mappedMovingPoint, movingImageGradient );
          }
+       scanMem.fixedA        = fixedImageValue  - fixedMean;
+       scanMem.movingA       = movingImageValue - movingMean;
+       scanMem.sFixedMoving  = sFixedMoving;
+       scanMem.sFixedFixed   = sFixedFixed;
+       scanMem.sMovingMoving = sMovingMoving;
+
+       scanMem.fixedImageGradient  = fixedImageGradient;
+       scanMem.movingImageGradient = movingImageGradient;
+
+       scanMem.mappedFixedPoint  = mappedFixedPoint;
+       scanMem.mappedMovingPoint = mappedMovingPoint;
+       scanMem.virtualPoint      = virtualPoint;
        }
      }
    }
@@ -444,23 +443,6 @@ ANTSNeighborhoodCorrelationImageToImageMetricv4GetValueAndDerivativeThreader< TD
    ExceptionObject err(__FILE__, __LINE__, msg);
    throw err;
    }
-
- if ( pointIsValid )
-   {
-   scanMem.fixedA        = fixedImageValue  - fixedMean;
-   scanMem.movingA       = movingImageValue - movingMean;
-   scanMem.sFixedMoving  = sFixedMoving;
-   scanMem.sFixedFixed   = sFixedFixed;
-   scanMem.sMovingMoving = sMovingMoving;
-
-   scanMem.fixedImageGradient  = fixedImageGradient;
-   scanMem.movingImageGradient = movingImageGradient;
-
-   scanMem.mappedFixedPoint  = mappedFixedPoint;
-   scanMem.mappedMovingPoint = mappedMovingPoint;
-   scanMem.virtualPoint      = virtualPoint;
-   }
-
  return pointIsValid;
 }
 
@@ -469,9 +451,6 @@ void
 ANTSNeighborhoodCorrelationImageToImageMetricv4GetValueAndDerivativeThreader< TDomainPartitioner, TImageToImageMetric, TNeighborhoodCorrelationMetric >
 ::ComputeMovingTransformDerivative( const ScanIteratorType &, ScanMemType &scanMem, const ScanParametersType &, DerivativeType &deriv, MeasureType &localCC, const ThreadIdType threadId) const
 {
-  MovingImageGradientType derivWRTImage;
-  localCC = NumericTraits<MeasureType>::OneValue();
-
   typedef InternalComputationValueType LocalRealType;
 
   LocalRealType sFixedFixed   = scanMem.sFixedFixed;
@@ -480,26 +459,29 @@ ANTSNeighborhoodCorrelationImageToImageMetricv4GetValueAndDerivativeThreader< TD
   LocalRealType fixedI        = scanMem.fixedA;
   LocalRealType movingI       = scanMem.movingA;
 
-  LocalRealType sFixedFixed_sMovingMoving = sFixedFixed * sMovingMoving;
+  const LocalRealType sFixedFixed_sMovingMoving = sFixedFixed * sMovingMoving;
+  const LocalRealType inv_sFixedFixed_sMovingMoving = 1.0/sFixedFixed_sMovingMoving;
 
+  localCC = NumericTraits<MeasureType>::OneValue();
   if ( fabs(sFixedFixed_sMovingMoving) > NumericTraits< LocalRealType >::epsilon() )
     {
-    localCC = sFixedMoving * sFixedMoving / (sFixedFixed_sMovingMoving);
+    localCC = sFixedMoving * sFixedMoving * inv_sFixedFixed_sMovingMoving;
     }
 
   if( this->m_ANTSAssociate->GetComputeDerivative() )
     {
+    deriv.Fill( NumericTraits<DerivativeValueType>::Zero );
     const MovingImageGradientType movingImageGradient = scanMem.movingImageGradient;
 
     if ( ! (sFixedFixed > NumericTraits<LocalRealType>::epsilon() && sMovingMoving > NumericTraits<LocalRealType>::epsilon() ) )
       {
-      deriv.Fill( NumericTraits<DerivativeValueType>::Zero );
       return;
       }
 
+    MovingImageGradientType derivWRTImage;
     for (ImageDimensionType qq = 0; qq < TImageToImageMetric::VirtualImageDimension; qq++)
       {
-      derivWRTImage[qq] = 2.0 * sFixedMoving / (sFixedFixed_sMovingMoving) * (fixedI - sFixedMoving / sMovingMoving * movingI) * movingImageGradient[qq];
+      derivWRTImage[qq] = 2.0 * sFixedMoving * inv_sFixedFixed_sMovingMoving * (fixedI - sFixedMoving / sMovingMoving * movingI) * movingImageGradient[qq];
       }
 
     /* Use a pre-allocated jacobian object for efficiency */
@@ -508,11 +490,9 @@ ANTSNeighborhoodCorrelationImageToImageMetricv4GetValueAndDerivativeThreader< TD
     /** For dense transforms, this returns identity */
     this->m_Associate->GetMovingTransform()->ComputeJacobianWithRespectToParameters( scanMem.virtualPoint, jacobian );
 
-    NumberOfParametersType numberOfLocalParameters = this->m_Associate->GetMovingTransform()->GetNumberOfLocalParameters();
-
+    const NumberOfParametersType numberOfLocalParameters = this->m_Associate->GetMovingTransform()->GetNumberOfLocalParameters();
     for (NumberOfParametersType par = 0; par < numberOfLocalParameters; par++)
       {
-      deriv[par] = NumericTraits<DerivativeValueType>::Zero;
       for (ImageDimensionType dim = 0; dim < TImageToImageMetric::MovingImageDimension; dim++)
         {
         deriv[par] += derivWRTImage[dim] * jacobian(dim, par);
