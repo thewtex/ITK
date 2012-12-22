@@ -85,7 +85,7 @@ template <class T, unsigned int n>
 class vnl_vector_fixed
 {
  protected:
-  T data_[n];
+  T __attribute__ (( aligned (32))) data_[n];
 
  public:
   typedef vnl_vector_fixed<T,n> self;

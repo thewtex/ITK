@@ -26,6 +26,29 @@ namespace itk
 /**
  *  Product by a Vector
  */
+Vector< double, 3 >
+Matrix< double, 3, 3 >
+::operator*(const Vector< double, 3 > & vect) const
+{
+  Vector< double, 3 > result;
+  double * const rr=&result[0];
+  double const * const vv=&vect[0];
+  double const * const A=m_Matrix[0]; //Get a pointer to the first element of array
+#if 0
+  for ( unsigned int r = 0; r < 3; r++ )
+    {
+    result[r]  = m_Matrix(r, 0) * vect[0];
+    result[r] += m_Matrix(r, 1) * vect[1];
+    result[r] += m_Matrix(r, 2) * vect[2];
+    }
+#else
+    rr[0]  = A[0] * vv[0] + A[1] * vv[1] + A[2] * vv[2];
+    rr[1]  = A[3] * vv[0] + A[4] * vv[1] + A[5] * vv[2];
+    rr[2]  = A[6] * vv[0] + A[7] * vv[1] + A[8] * vv[2];
+#endif
+  return result;
+}
+
 template< class T, unsigned int NRows, unsigned int NColumns >
 Vector< T, NRows >
 Matrix< T, NRows, NColumns >
@@ -34,12 +57,11 @@ Matrix< T, NRows, NColumns >
   Vector< T, NRows > result;
   for ( unsigned int r = 0; r < NRows; r++ )
     {
-    T sum = NumericTraits< T >::Zero;
-    for ( unsigned int c = 0; c < NColumns; c++ )
+    result[r] = m_Matrix(r, 0) * vect[0];
+    for ( unsigned int c = 1; c < NColumns; c++ )
       {
-      sum += m_Matrix(r, c) * vect[c];
+      result[r] += m_Matrix(r, c) * vect[c];
       }
-    result[r] = sum;
     }
   return result;
 }
@@ -55,12 +77,11 @@ Matrix< T, NRows, NColumns >
   Point< T, NRows > result;
   for ( unsigned int r = 0; r < NRows; r++ )
     {
-    T sum = NumericTraits< T >::Zero;
-    for ( unsigned int c = 0; c < NColumns; c++ )
+    result[r] = m_Matrix(r, 0) * pnt[0];
+    for ( unsigned int c = 1; c < NColumns; c++ )
       {
-      sum += m_Matrix(r, c) * pnt[c];
+      result[r] += m_Matrix(r, c) * pnt[c];
       }
-    result[r] = sum;
     }
   return result;
 }

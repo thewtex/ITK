@@ -111,7 +111,7 @@ class vnl_matrix_fixed_fake_base
 template <class T, unsigned int num_rows, unsigned int num_cols>
 class vnl_matrix_fixed  VNL_MATRIX_FIXED_VCL60_WORKAROUND
 {
-  T data_[num_rows][num_cols]; // Local storage
+  T __attribute__ (( aligned (32))) data_[num_rows][num_cols]; // Local storage
 
  public:
   typedef vnl_matrix_fixed<T,num_rows,num_cols> self;
