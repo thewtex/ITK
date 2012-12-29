@@ -26,6 +26,20 @@ namespace itk
 /**
  *  Product by a Vector
  */
+//Paritally specialized versions for performance of common cases
+template <>
+ITKCommon_EXPORT
+Vector< double, 2 >
+Matrix< double, 2, 2 >
+::operator*(const Vector< double, 2 > & vect) const;
+
+//Paritally specialized versions for performance of common cases
+template <>
+ITKCommon_EXPORT
+Vector< double, 3 >
+Matrix< double, 3, 3 >
+::operator*(const Vector< double, 3 > & vect) const;
+
 template< class T, unsigned int NRows, unsigned int NColumns >
 Vector< T, NRows >
 Matrix< T, NRows, NColumns >
