@@ -38,7 +38,7 @@ static double abs_diff(const itk::RGBPixel<unsigned char> &pix1,const itk::RGBPi
 {
   double diff=0.0;
   for(int i=0;i<3;i++)
-    diff += fabs(pix1[i]-pix2[i]);
+    diff += fabs((double)(pix1[i]-pix2[i]));
   return diff;
 }
 
@@ -104,7 +104,7 @@ static double abs_vector_diff(const itk::VariableLengthVector<TPixel> &pix1,cons
   double diff=0.0;
   for(size_t i=0;i<pix1.GetSize();i++)
   {
-    double d=fabs(pix1[i]-pix2[i]);
+    double d=fabs((double)(pix1[i]-pix2[i]));
     if(d>diff) diff=d;
   }
   return diff;

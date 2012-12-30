@@ -17,6 +17,7 @@
  *=========================================================================*/
 #include "itkMINCImageIO.h"
 #include <stdio.h>
+#include <ctype.h>
 #include "vnl/vnl_vector.h"
 #include "itkMetaDataObject.h"
 
@@ -592,8 +593,13 @@ bool MINCImageIO::CanWriteFile(const char *name)
 {
   std::string filename = name;
 
+#ifdef _MSC_VER
+  // transform filename to lower case to make checks case-insensitive
+  std::transform(filename.begin(), filename.end(), filename.begin(), ( int ( * )(int) ) tolower);
+#else
   // transform filename to lower case to make checks case-insensitive
   std::transform(filename.begin(), filename.end(), filename.begin(), ( int ( * )(int) ) std::tolower);
+#endif //_MSC_VER
 
   if (  filename == "" )
     {
