@@ -105,7 +105,7 @@ endif()
   endforeach()
 
   set(MINC_GIT_REPOSITORY "https://github.com/BIC-MNI/libminc.git")
-  set(MINC_GIT_TAG "eb6c57858f829937bbf72e619bc94c4ee282cad8")
+  set(MINC_GIT_TAG "a2879ee435025791ba6af36202c59ae17ecb689d")
   set(MINC_CMAKE_ARGS )
   set(MINC_HDF5_ARGS )
   if(NOT ITK_USE_SYSTEM_HDF5)
@@ -116,9 +116,9 @@ endif()
     set(MINC_CMAKE_ARGS ${MINC_CMAKE_ARGS} "-DZLIB_LIBRARY:FILEPATH=${MINCZLIB_LIBRARIES}")
   endif()
   ExternalProject_Add(${MINC_EPNAME}
-    #GIT_REPOSITORY ${MINC_GIT_REPOSITORY}
-    #GIT_TAG ${MINC_GIT_TAG}
-    URL ${CMAKE_CURRENT_SOURCE_DIR}/../../../../libminc
+    GIT_REPOSITORY ${MINC_GIT_REPOSITORY}
+    GIT_TAG ${MINC_GIT_TAG}
+#    URL ${CMAKE_CURRENT_SOURCE_DIR}/../../../../libminc
     SOURCE_DIR ${MINC_EPNAME}
     BINARY_DIR ${MINC_EPNAME}-build
     INSTALL_COMMAND ""
