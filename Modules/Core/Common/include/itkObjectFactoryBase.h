@@ -118,7 +118,7 @@ public:
    *
    * If the position value is out of range, an exception will be thrown.
    */
-  static void RegisterFactory(ObjectFactoryBase *,
+  static int RegisterFactory(ObjectFactoryBase *,
     InsertionPositionType where=INSERT_AT_BACK, size_t position = 0);
 
   /** Remove a factory from the list of registered factories. */
