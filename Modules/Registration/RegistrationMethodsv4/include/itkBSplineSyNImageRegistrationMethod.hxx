@@ -28,6 +28,9 @@
 #include "itkMultiplyImageFilter.h"
 #include "itkWindowConvergenceMonitoringFunction.h"
 
+
+#include "itkImageFileWriter.h"
+
 namespace itk
 {
 /**
@@ -154,7 +157,7 @@ BSplineSyNImageRegistrationMethod<TFixedImage, TMovingImage, TOutputTransform>
     fixedComposer->Update();
 
     DisplacementFieldPointer fixedToMiddleSmoothTotalFieldTmp = this->BSplineSmoothDisplacementField( fixedComposer->GetOutput(),
-      this->m_FixedToMiddleTransform->GetNumberOfControlPointsForTheTotalField(), fixedImageMask );
+      this->m_FixedToMiddleTransform->GetNumberOfControlPointsForTheTotalField(), NULL );
 
     typename ComposerType::Pointer movingComposer = ComposerType::New();
     movingComposer->SetDisplacementField( movingToMiddleSmoothUpdateField );
@@ -162,7 +165,7 @@ BSplineSyNImageRegistrationMethod<TFixedImage, TMovingImage, TOutputTransform>
     movingComposer->Update();
 
     DisplacementFieldPointer movingToMiddleSmoothTotalFieldTmp = this->BSplineSmoothDisplacementField( movingComposer->GetOutput(),
-      this->m_MovingToMiddleTransform->GetNumberOfControlPointsForTheTotalField(), movingImageMask );
+      this->m_MovingToMiddleTransform->GetNumberOfControlPointsForTheTotalField(), NULL );
 
     // Iteratively estimate the inverse fields.
 
@@ -321,8 +324,27 @@ BSplineSyNImageRegistrationMethod<TFixedImage, TMovingImage, TOutputTransform>
   importer->SetDirection( virtualDomainImage->GetDirection() );
   importer->Update();
 
+  typename WeightedMaskImageType::Pointer weightedMask = NULL;
+
+  if( mask )
+    {
+    typedef ResampleImageFilter<MaskImageType, WeightedMaskImageType> MaskResamplerType;
+    typename MaskResamplerType::Pointer maskResampler = MaskResamplerType::New();
+    maskResampler->SetTransform( fixedTransform );
+    maskResampler->SetInput( dynamic_cast<ImageMaskSpatialObjectType *>( const_cast<FixedImageMaskType *>( mask ) )->GetImage() );
+    maskResampler->SetSize( virtualDomainImage->GetBufferedRegion().GetSize() );
+    maskResampler->SetOutputOrigin( virtualDomainImage->GetOrigin() );
+    maskResampler->SetOutputSpacing( virtualDomainImage->GetSpacing() );
+    maskResampler->SetOutputDirection( virtualDomainImage->GetDirection() );
+    maskResampler->SetDefaultPixelValue( 0 );
+
+    weightedMask = maskResampler->GetOutput();
+    weightedMask->Update();
+    weightedMask->DisconnectPipeline();
+    }
+
   DisplacementFieldPointer updateField = this->BSplineSmoothDisplacementField( importer->GetOutput(),
-    this->m_FixedToMiddleTransform->GetNumberOfControlPointsForTheUpdateField(), mask );
+    this->m_FixedToMiddleTransform->GetNumberOfControlPointsForTheUpdateField(), weightedMask );
 
   typename DisplacementFieldType::SpacingType spacing = updateField->GetSpacing();
   ImageRegionConstIterator<DisplacementFieldType> ItF( updateField, updateField->GetLargestPossibleRegion() );
@@ -364,7 +386,7 @@ BSplineSyNImageRegistrationMethod<TFixedImage, TMovingImage, TOutputTransform>
 template<typename TFixedImage, typename TMovingImage, typename TOutputTransform>
 typename BSplineSyNImageRegistrationMethod<TFixedImage, TMovingImage, TOutputTransform>::DisplacementFieldPointer
 BSplineSyNImageRegistrationMethod<TFixedImage, TMovingImage, TOutputTransform>
-::BSplineSmoothDisplacementField( const DisplacementFieldType * field, const ArrayType & numberOfControlPoints, const FixedImageMaskType * mask )
+::BSplineSmoothDisplacementField( const DisplacementFieldType * field, const ArrayType & numberOfControlPoints, const WeightedMaskImageType * mask )
 {
   typedef ImageDuplicator<DisplacementFieldType> DuplicatorType;
   typename DuplicatorType::Pointer duplicator = DuplicatorType::New();
@@ -381,18 +403,19 @@ BSplineSyNImageRegistrationMethod<TFixedImage, TMovingImage, TOutputTransform>
       }
     }
 
+  {
+  typedef ImageFileWriter<DisplacementFieldType> WriterType;
+  typename WriterType::Pointer writer = WriterType::New();
+  writer->SetInput( smoothField );
+  writer->SetFileName( "beforeField.nii.gz" );
+  writer->Update();
+  }
+
   typename BSplineFilterType::Pointer bspliner = BSplineFilterType::New();
   bspliner->SetDisplacementField( field );
   if( mask )
     {
-    typedef ImageMaskSpatialObject<ImageDimension> ImageMaskSpatialObjectType;
-
-    typedef CastImageFilter<typename ImageMaskSpatialObjectType::ImageType, typename BSplineFilterType::RealImageType> CasterType;
-    typename CasterType::Pointer caster = CasterType::New();
-    caster->SetInput( dynamic_cast<ImageMaskSpatialObjectType *>( const_cast<FixedImageMaskType *>( mask ) )->GetImage() );
-    caster->Update();
-
-    bspliner->SetConfidenceImage( caster->GetOutput() );
+    bspliner->SetConfidenceImage( mask );
     }
   bspliner->SetNumberOfControlPoints( numberOfControlPoints );
   bspliner->SetSplineOrder( this->m_FixedToMiddleTransform->GetSplineOrder() );
