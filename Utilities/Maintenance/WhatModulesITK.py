@@ -98,7 +98,7 @@ for f in sys.argv:
         allIncludes.update(FindIncludes(f))
     else:
         print program + ": " + f + " does not exist"
-        exit(1)
+
 
 # Build a set that contains all modules referenced in command line files
 allModules = set()
