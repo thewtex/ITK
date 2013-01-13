@@ -580,6 +580,31 @@ Versor< T >
   m_W = cosangle2;
 }
 
+#define TRANSFORMVECTORMATH_MACRO( VectorObject )   \
+  const ValueType xx = m_X * m_X;                   \
+  const ValueType yy = m_Y * m_Y;                   \
+  const ValueType zz = m_Z * m_Z;                   \
+  const ValueType xy = m_X * m_Y;                   \
+  const ValueType xz = m_X * m_Z;                   \
+  const ValueType xw = m_X * m_W;                   \
+  const ValueType yz = m_Y * m_Z;                   \
+  const ValueType yw = m_Y * m_W;                   \
+  const ValueType zw = m_Z * m_W;                   \
+                                                    \
+  const ValueType mxx = 1.0 - 2.0 * ( yy + zz );    \
+  const ValueType myy = 1.0 - 2.0 * ( xx + zz );    \
+  const ValueType mzz = 1.0 - 2.0 * ( xx + yy );    \
+  const ValueType mxy = 2.0 * ( xy - zw );          \
+  const ValueType mxz = 2.0 * ( xz + yw );          \
+  const ValueType myx = 2.0 * ( xy + zw );          \
+  const ValueType mzx = 2.0 * ( xz - yw );          \
+  const ValueType mzy = 2.0 * ( yz + xw );          \
+  const ValueType myz = 2.0 * ( yz - xw );          \
+                                                    \
+  result[0] = mxx * VectorObject[0] + mxy * VectorObject[1] + mxz * VectorObject[2]; \
+  result[1] = myx * VectorObject[0] + myy * VectorObject[1] + myz * VectorObject[2]; \
+  result[2] = mzx * VectorObject[0] + mzy * VectorObject[1] + mzz * VectorObject[2]
+
 /** Transform a Vector */
 template< class T >
 typename Versor< T >::VectorType
@@ -587,31 +612,7 @@ Versor< T >
 ::Transform(const VectorType & v) const
 {
   VectorType result;
-
-  const ValueType xx = m_X * m_X;
-  const ValueType yy = m_Y * m_Y;
-  const ValueType zz = m_Z * m_Z;
-  const ValueType xy = m_X * m_Y;
-  const ValueType xz = m_X * m_Z;
-  const ValueType xw = m_X * m_W;
-  const ValueType yz = m_Y * m_Z;
-  const ValueType yw = m_Y * m_W;
-  const ValueType zw = m_Z * m_W;
-
-  const ValueType mxx = 1.0 - 2.0 * ( yy + zz );
-  const ValueType myy = 1.0 - 2.0 * ( xx + zz );
-  const ValueType mzz = 1.0 - 2.0 * ( xx + yy );
-  const ValueType mxy = 2.0 * ( xy - zw );
-  const ValueType mxz = 2.0 * ( xz + yw );
-  const ValueType myx = 2.0 * ( xy + zw );
-  const ValueType mzx = 2.0 * ( xz - yw );
-  const ValueType mzy = 2.0 * ( yz + xw );
-  const ValueType myz = 2.0 * ( yz - xw );
-
-  result[0] = mxx * v[0] + mxy * v[1] + mxz * v[2];
-  result[1] = myx * v[0] + myy * v[1] + myz * v[2];
-  result[2] = mzx * v[0] + mzy * v[1] + mzz * v[2];
-
+  TRANSFORMVECTORMATH_MACRO(v);
   return result;
 }
 
@@ -624,31 +625,7 @@ Versor< T >
 ::Transform(const CovariantVectorType & v) const
 {
   CovariantVectorType result;
-
-  const ValueType xx = m_X * m_X;
-  const ValueType yy = m_Y * m_Y;
-  const ValueType zz = m_Z * m_Z;
-  const ValueType xy = m_X * m_Y;
-  const ValueType xz = m_X * m_Z;
-  const ValueType xw = m_X * m_W;
-  const ValueType yz = m_Y * m_Z;
-  const ValueType yw = m_Y * m_W;
-  const ValueType zw = m_Z * m_W;
-
-  const ValueType mxx = 1.0 - 2.0 * ( yy + zz );
-  const ValueType myy = 1.0 - 2.0 * ( xx + zz );
-  const ValueType mzz = 1.0 - 2.0 * ( xx + yy );
-  const ValueType mxy = 2.0 * ( xy - zw );
-  const ValueType mxz = 2.0 * ( xz + yw );
-  const ValueType myx = 2.0 * ( xy + zw );
-  const ValueType mzx = 2.0 * ( xz - yw );
-  const ValueType mzy = 2.0 * ( yz + xw );
-  const ValueType myz = 2.0 * ( yz - xw );
-
-  result[0] = mxx * v[0] + mxy * v[1] + mxz * v[2];
-  result[1] = myx * v[0] + myy * v[1] + myz * v[2];
-  result[2] = mzx * v[0] + mzy * v[1] + mzz * v[2];
-
+  TRANSFORMVECTORMATH_MACRO(v);
   return result;
 }
 
@@ -659,31 +636,7 @@ Versor< T >
 ::Transform(const PointType & v) const
 {
   PointType result;
-
-  const ValueType xx = m_X * m_X;
-  const ValueType yy = m_Y * m_Y;
-  const ValueType zz = m_Z * m_Z;
-  const ValueType xy = m_X * m_Y;
-  const ValueType xz = m_X * m_Z;
-  const ValueType xw = m_X * m_W;
-  const ValueType yz = m_Y * m_Z;
-  const ValueType yw = m_Y * m_W;
-  const ValueType zw = m_Z * m_W;
-
-  const ValueType mxx = 1.0 - 2.0 * ( yy + zz );
-  const ValueType myy = 1.0 - 2.0 * ( xx + zz );
-  const ValueType mzz = 1.0 - 2.0 * ( xx + yy );
-  const ValueType mxy = 2.0 * ( xy - zw );
-  const ValueType mxz = 2.0 * ( xz + yw );
-  const ValueType myx = 2.0 * ( xy + zw );
-  const ValueType mzx = 2.0 * ( xz - yw );
-  const ValueType mzy = 2.0 * ( yz + xw );
-  const ValueType myz = 2.0 * ( yz - xw );
-
-  result[0] = mxx * v[0] + mxy * v[1] + mxz * v[2];
-  result[1] = myx * v[0] + myy * v[1] + myz * v[2];
-  result[2] = mzx * v[0] + mzy * v[1] + mzz * v[2];
-
+  TRANSFORMVECTORMATH_MACRO(v);
   return result;
 }
 
@@ -694,31 +647,7 @@ Versor< T >
 ::Transform(const VnlVectorType & v) const
 {
   VnlVectorType result;
-
-  const ValueType xx = m_X * m_X;
-  const ValueType yy = m_Y * m_Y;
-  const ValueType zz = m_Z * m_Z;
-  const ValueType xy = m_X * m_Y;
-  const ValueType xz = m_X * m_Z;
-  const ValueType xw = m_X * m_W;
-  const ValueType yz = m_Y * m_Z;
-  const ValueType yw = m_Y * m_W;
-  const ValueType zw = m_Z * m_W;
-
-  const ValueType mxx = 1.0 - 2.0 * ( yy + zz );
-  const ValueType myy = 1.0 - 2.0 * ( xx + zz );
-  const ValueType mzz = 1.0 - 2.0 * ( xx + yy );
-  const ValueType mxy = 2.0 * ( xy - zw );
-  const ValueType mxz = 2.0 * ( xz + yw );
-  const ValueType myx = 2.0 * ( xy + zw );
-  const ValueType mzx = 2.0 * ( xz - yw );
-  const ValueType mzy = 2.0 * ( yz + xw );
-  const ValueType myz = 2.0 * ( yz - xw );
-
-  result[0] = mxx * v[0] + mxy * v[1] + mxz * v[2];
-  result[1] = myx * v[0] + myy * v[1] + myz * v[2];
-  result[2] = mzx * v[0] + mzy * v[1] + mzz * v[2];
-
+  TRANSFORMVECTORMATH_MACRO(v);
   return result;
 }
 
