@@ -174,7 +174,7 @@ endforeach()
   # DCMTK tag brought up to Dec 4 2012 version, to pick
   # up fix for CMakeLists that was causing Windows builds to
   # fail
-  set(DCMTK_GIT_TAG "148fc86171e0bee332a5fabd36d213f76e775a8b")
+  set(DCMTK_GIT_TAG "8f6a406044ec8d521d3ccd19001f254d4545b2fc")
 
   set(DCMTK_EP_FLAGS
     -DDCMTK_FORCE_FPIC_ON_UNIX:BOOL=ON
