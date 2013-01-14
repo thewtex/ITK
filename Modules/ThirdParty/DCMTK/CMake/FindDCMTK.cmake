@@ -1,5 +1,8 @@
+# adapted version of FindDCMTK, better suited for super-builds
+
 # - find DCMTK libraries and applications
 #
+
 #  DCMTK_INCLUDE_DIRS   - Directories to include to use DCMTK
 #  DCMTK_LIBRARIES     - Files to link against to use DCMTK
 #  DCMTK_FOUND         - If false, don't try to use DCMTK
@@ -22,7 +25,7 @@
 # implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # See the License for more information.
 #=============================================================================
-# (To distribute this file outside of CMake, substitute the full
+# (To distributed this file outside of CMake, substitute the full
 #  License text for the above reference.)
 
 #
@@ -31,56 +34,89 @@
 # Modified for EasyViz by Thomas Sondergaard.
 #
 
+# prefer DCMTK_DIR over default system paths like /usr/lib
+set(CMAKE_PREFIX_PATH ${DCMTK_DIR}/lib ${CMAKE_PREFIX_PATH}) # this is given to FIND_LIBRARY or FIND_PATH
+
 if(NOT DCMTK_FOUND AND NOT DCMTK_DIR)
   set(DCMTK_DIR
-    "/usr"
+    "/usr/include/dcmtk/"
     CACHE
     PATH
-    "Root of DCMTK source or installation tree")
+    "Root of DCMTK source tree (optional).")
   mark_as_advanced(DCMTK_DIR)
 endif()
 
+# Find all libraries, store debug and release separately
 foreach(lib
-    dcmdata
+    dcmpstat
+    dcmsr
+    dcmsign
+    dcmtls
+    dcmqrdb
+    dcmnet
+    dcmjpeg
     dcmimage
     dcmimgle
-    dcmjpeg
-    dcmnet
-    dcmpstat
-    dcmqrdb
-    dcmsign
-    dcmsr
-    dcmtls
+    dcmdata
+    oflog
+    ofstd
     ijg12
     ijg16
     ijg8
-    oflog
-    ofstd)
+    )
 
-  find_library(DCMTK_${lib}_LIBRARY
+  # Find Release libraries
+  find_library(DCMTK_${lib}_LIBRARY_RELEASE
     ${lib}
     PATHS
     ${DCMTK_DIR}/${lib}/libsrc
     ${DCMTK_DIR}/${lib}/libsrc/Release
-    ${DCMTK_DIR}/${lib}/libsrc/Debug
     ${DCMTK_DIR}/${lib}/Release
+    ${DCMTK_DIR}/lib
+    ${DCMTK_DIR}/lib/Release
+    ${DCMTK_DIR}/dcmjpeg/lib${lib}/Release
+    NO_DEFAULT_PATH
+    )
+
+  # Find Debug libraries
+  find_library(DCMTK_${lib}_LIBRARY_DEBUG
+    ${lib}
+    PATHS
+    ${DCMTK_DIR}/${lib}/libsrc
+    ${DCMTK_DIR}/${lib}/libsrc/Debug
     ${DCMTK_DIR}/${lib}/Debug
-    ${DCMTK_DIR}/lib)
+    ${DCMTK_DIR}/lib
+    ${DCMTK_DIR}/lib/Debug
+    ${DCMTK_DIR}/dcmjpeg/lib${lib}/Debug
+    NO_DEFAULT_PATH
+    )
 
-  mark_as_advanced(DCMTK_${lib}_LIBRARY)
+  mark_as_advanced(DCMTK_${lib}_LIBRARY_RELEASE)
+  mark_as_advanced(DCMTK_${lib}_LIBRARY_DEBUG)
 
-  if(DCMTK_${lib}_LIBRARY)
-    list(APPEND DCMTK_LIBRARIES ${DCMTK_${lib}_LIBRARY})
+  # Add libraries to variable according to build type
+  if(DCMTK_${lib}_LIBRARY_RELEASE)
+    list(APPEND DCMTK_LIBRARIES optimized ${DCMTK_${lib}_LIBRARY_RELEASE})
+  endif()
+
+  if(DCMTK_${lib}_LIBRARY_DEBUG)
+    list(APPEND DCMTK_LIBRARIES debug ${DCMTK_${lib}_LIBRARY_DEBUG})
   endif()
 
 endforeach()
 
-# foreach(libname TIFF ZLIB LIBICONV JPEG)
-#   find_package(${libname} REQUIRED)
-#   foreach(lib ${${libname}_LIBRARIES})
-#     list(APPEND DCMTK_LIBRARIES ${lib})
-#   endforeach()
-# endforeach()
+set(CMAKE_THREAD_LIBS_INIT)
+if(DCMTK_oflog_LIBRARY_RELEASE OR DCMTK_oflog_LIBRARY_DEBUG)
+  # Hack - Not having a DCMTKConfig.cmake file to read the settings from, we will attempt to
+  # find the library in all cases.
+  # Ideally, pthread library should be discovered only if DCMTK_WITH_THREADS is enabled.
+  set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
+  find_package(Threads)
+endif()
+
+if(CMAKE_THREAD_LIBS_INIT)
+  list(APPEND DCMTK_LIBRARIES ${CMAKE_THREAD_LIBS_INIT})
+endif()
 
 set(DCMTK_config_TEST_HEADER osconfig.h)
 set(DCMTK_dcmdata_TEST_HEADER dctypes.h)
@@ -94,8 +130,6 @@ set(DCMTK_dcmsign_TEST_HEADER sicert.h)
 set(DCMTK_dcmsr_TEST_HEADER dsrtree.h)
 set(DCMTK_dcmtls_TEST_HEADER tlslayer.h)
 set(DCMTK_ofstd_TEST_HEADER ofstdinc.h)
-
-set(DCMTK_TOP_INCLUDE_DIR "")
 
 foreach(dir
     config
@@ -115,29 +149,21 @@ foreach(dir
     PATHS
     ${DCMTK_DIR}/${dir}/include
     ${DCMTK_DIR}/${dir}
-    ${DCMTK_DIR}/include/${dir}
     ${DCMTK_DIR}/include/dcmtk/${dir}
     ${DCMTK_DIR}/${dir}/include/dcmtk/${dir}
-    )
+    ${DCMTK_DIR}/include/${dir})
+
   mark_as_advanced(DCMTK_${dir}_INCLUDE_DIR)
+  #message("** DCMTKs ${dir} found at ${DCMTK_${dir}_INCLUDE_DIR}")
 
   if(DCMTK_${dir}_INCLUDE_DIR)
-    if(NOT DCMTK_TOP_INCLUDE_DIR)
-      #
-      # since DCMTK client programs often use #include "dcmtk/xxx/xxx.h"
-      # add in the top level include directory.
-      get_filename_component(DCMTK_TOP_INCLUDE_DIR
-        ${DCMTK_${dir}_INCLUDE_DIR} PATH)
-      get_filename_component(DCMTK_TOP_INCLUDE_DIR
-        ${DCMTK_TOP_INCLUDE_DIR} PATH)
-      list(APPEND DCMTK_INCLUDE_DIRS ${DCMTK_TOP_INCLUDE_DIR})
-    endif()
     list(APPEND
       DCMTK_INCLUDE_DIRS
       ${DCMTK_${dir}_INCLUDE_DIR})
   endif()
 endforeach()
 
+list(APPEND DCMTK_INCLUDE_DIRS ${DCMTK_DIR}/include)
 
 if(WIN32)
   list(APPEND DCMTK_LIBRARIES netapi32 wsock32)
@@ -152,21 +178,5 @@ if(DCMTK_ofstd_INCLUDE_DIR)
   mark_as_advanced(DCMTK_dcmtk_INCLUDE_DIR)
 endif()
 
-include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(DCMTK DEFAULT_MSG
-  DCMTK_config_INCLUDE_DIR
-  DCMTK_ofstd_INCLUDE_DIR
-  DCMTK_ofstd_LIBRARY
-  DCMTK_dcmdata_INCLUDE_DIR
-  DCMTK_dcmdata_LIBRARY
-  DCMTK_dcmimgle_INCLUDE_DIR
-  DCMTK_dcmimgle_LIBRARY)
-
 # Compatibility: This variable is deprecated
 set(DCMTK_INCLUDE_DIR ${DCMTK_INCLUDE_DIRS})
-
-foreach(executable dcmdump dcmdjpeg dcmdrle)
-  string(TOUPPER ${executable} EXECUTABLE)
-  find_program(DCMTK_${EXECUTABLE}_EXECUTABLE ${executable} ${DCMTK_DIR}/bin)
-  mark_as_advanced(DCMTK_${EXECUTABLE}_EXECUTABLE)
-endforeach()
