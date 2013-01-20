@@ -34,6 +34,8 @@
 #include "itkObjectFactory.h"
 #include "itkProgressReporter.h"
 
+#include <algorithm>
+
 namespace itk
 {
 /**
@@ -126,6 +128,28 @@ ThresholdImageFilter< TImage >
 }
 
 /**
+ * The values inside the range are set to OutsideValue
+ */
+template< class TImage >
+void
+ThresholdImageFilter< TImage >
+::ThresholdInside(const PixelType & lower, const PixelType & upper)
+{
+  if ( lower > upper )
+    {
+    itkExceptionMacro(<< "Lower threshold cannot be greater than upper threshold.");
+    return;
+    }
+
+  if ( m_Lower != upper || m_Upper != lower )
+    {
+    m_Lower = upper;
+    m_Upper = lower;
+    this->Modified();
+    }
+}
+
+/**
  *
  */
 template< class TImage >
@@ -151,11 +175,19 @@ ThresholdImageFilter< TImage >
   // support progress methods/callbacks
   ProgressReporter progress( this, threadId, outputRegionForThread.GetNumberOfPixels() );
 
+  PixelType lower = m_Lower;
+  PixelType upper = m_Upper;
+  const bool invert = lower > upper;
+  if ( invert )
+    {
+    std::swap(lower, upper);
+    }
+
   // walk the regions, threshold each pixel
   while ( !outIt.IsAtEnd() )
     {
     const PixelType value = inIt.Get();
-    if ( m_Lower <= value && value <= m_Upper )
+    if (  ((lower <= value) && (value <= upper)) ^ invert )
       {
       // pixel passes to output unchanged and is replaced by m_OutsideValue in
       // the inverse output image
