@@ -96,6 +96,9 @@ public:
   /** The values outside the range are set to OutsideValue. */
   void ThresholdOutside(const PixelType & lower, const PixelType & upper);
 
+  /** The values inside the range are set to OutsideValue. */
+  void ThresholdInside(const PixelType & lower, const PixelType & upper);
+
   /** Set/Get methods to set the lower threshold */
   itkSetMacro(Lower, PixelType);
   itkGetConstMacro(Lower, PixelType);
