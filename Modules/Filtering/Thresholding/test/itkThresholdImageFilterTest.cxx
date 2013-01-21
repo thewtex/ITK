@@ -57,6 +57,7 @@ int itkThresholdImageFilterTest(int, char* [] )
     // Exercise threshold setting functions
     threshold->ThresholdAbove( 10.0 );
     threshold->ThresholdBelow( 900.0 );
+    threshold->ThresholdInside( -10.0, 20.0);
     threshold->ThresholdOutside( 5.0, 40.0 );
 
     // Call update multiple times to make sure that the RandomImageSource
@@ -261,6 +262,51 @@ int itkThresholdImageFilterTest(int, char* [] )
       {
       os = new itksys_ios::ostringstream;
       *os << "Filter above failed:"
+          << " lower: " << threshold->GetLower()
+          << " upper: " << threshold->GetUpper()
+          << " output: " << outputValue;
+      itk::OutputWindow::GetInstance()->DisplayText( os->str().c_str() );
+      return EXIT_FAILURE;
+      }
+
+    // Inside [-1, 1]
+    threshold->ThresholdInside(-1, 1);
+    threshold->Update();
+    outputValue = threshold->GetOutput()->GetPixel(index);
+    if ( outputValue != outsideValue)
+      {
+      os = new itksys_ios::ostringstream;
+      *os << "Filter inside failed:"
+          << " lower: " << threshold->GetLower()
+          << " upper: " << threshold->GetUpper()
+          << " output: " << outputValue;
+      itk::OutputWindow::GetInstance()->DisplayText( os->str().c_str() );
+      return EXIT_FAILURE;
+      }
+
+    // Inside [0, 2]
+    threshold->ThresholdInside(0, 2);
+    threshold->Update();
+    outputValue = threshold->GetOutput()->GetPixel(index);
+    if ( outputValue != outsideValue)
+      {
+      os = new itksys_ios::ostringstream;
+      *os << "Filter inside failed:"
+          << " lower: " << threshold->GetLower()
+          << " upper: " << threshold->GetUpper()
+          << " output: " << outputValue;
+      itk::OutputWindow::GetInstance()->DisplayText( os->str().c_str() );
+      return EXIT_FAILURE;
+      }
+
+    // Inside [1, 3]
+    threshold->ThresholdInside(1, 3);
+    threshold->Update();
+    outputValue = threshold->GetOutput()->GetPixel(index);
+    if ( outputValue != inputValue)
+      {
+      os = new itksys_ios::ostringstream;
+      *os << "Filter inside failed:"
           << " lower: " << threshold->GetLower()
           << " upper: " << threshold->GetUpper()
           << " output: " << outputValue;

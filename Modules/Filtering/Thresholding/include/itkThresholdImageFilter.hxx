@@ -34,6 +34,8 @@
 #include "itkObjectFactory.h"
 #include "itkProgressReporter.h"
 
+#include <algorithm>
+
 namespace itk
 {
 /**
@@ -46,6 +48,7 @@ ThresholdImageFilter< TImage >
   m_OutsideValue = NumericTraits< PixelType >::Zero;
   m_Lower = NumericTraits< PixelType >::NonpositiveMin();
   m_Upper = NumericTraits< PixelType >::max();
+  m_Negated = false;
   this->InPlaceOff();
 }
 
@@ -79,10 +82,12 @@ ThresholdImageFilter< TImage >
 ::ThresholdAbove(const PixelType & thresh)
 {
   if ( m_Upper != thresh
-       || m_Lower > NumericTraits< PixelType >::NonpositiveMin() )
+       || m_Lower > NumericTraits< PixelType >::NonpositiveMin()
+       || m_Negated == true )
     {
     m_Lower = NumericTraits< PixelType >::NonpositiveMin();
     m_Upper = thresh;
+    m_Negated = false;
     this->Modified();
     }
 }
@@ -95,10 +100,13 @@ void
 ThresholdImageFilter< TImage >
 ::ThresholdBelow(const PixelType & thresh)
 {
-  if ( m_Lower != thresh || m_Upper < NumericTraits< PixelType >::max() )
+  if ( m_Lower != thresh
+       || m_Upper < NumericTraits< PixelType >::max()
+       || m_Negated == true )
     {
     m_Lower = thresh;
     m_Upper = NumericTraits< PixelType >::max();
+    m_Negated = false;
     this->Modified();
     }
 }
@@ -117,10 +125,36 @@ ThresholdImageFilter< TImage >
     return;
     }
 
-  if ( m_Lower != lower || m_Upper != upper )
+  if ( m_Lower != lower || m_Upper != upper || m_Negated == true )
     {
     m_Lower = lower;
     m_Upper = upper;
+    m_Negated = false;
+    this->Modified();
+    }
+}
+
+/**
+ * The values inside the range are set to OutsideValue
+ */
+template< class TImage >
+void
+ThresholdImageFilter< TImage >
+::ThresholdInside(const PixelType & lower, const PixelType & upper)
+{
+  if ( lower > upper )
+    {
+    itkExceptionMacro(<< "Lower threshold cannot be greater than upper threshold.");
+    return;
+    }
+
+  if ( m_Lower != lower
+       || m_Upper != upper
+       || m_Negated == false )
+    {
+    m_Lower = lower;
+    m_Upper = upper;
+    m_Negated = true;
     this->Modified();
     }
 }
@@ -155,7 +189,7 @@ ThresholdImageFilter< TImage >
   while ( !outIt.IsAtEnd() )
     {
     const PixelType value = inIt.Get();
-    if ( m_Lower <= value && value <= m_Upper )
+    if (  ((m_Lower <= value) && (value <= m_Upper)) ^ m_Negated )
       {
       // pixel passes to output unchanged and is replaced by m_OutsideValue in
       // the inverse output image
