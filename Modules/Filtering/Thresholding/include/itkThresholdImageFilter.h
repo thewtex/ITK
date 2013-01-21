@@ -40,7 +40,7 @@ namespace itk
  *
  * ThresholdImageFilter sets image values to a user-specified "outside"
  * value (by default, "black") if the image values are below, above, or
- * between simple threshold values.
+ * outside threshold values.
  *
  * The pixels must support the operators >= and <=.
  *
@@ -96,6 +96,9 @@ public:
   /** The values outside the range are set to OutsideValue. */
   void ThresholdOutside(const PixelType & lower, const PixelType & upper);
 
+  /** The values inside the range are set to OutsideValue. */
+  void ThresholdInside(const PixelType & lower, const PixelType & upper);
+
   /** Set/Get methods to set the lower threshold */
   itkSetMacro(Lower, PixelType);
   itkGetConstMacro(Lower, PixelType);
@@ -103,6 +106,13 @@ public:
   /** Set/Get methods to set the upper threshold */
   itkSetMacro(Upper, PixelType);
   itkGetConstMacro(Upper, PixelType);
+
+  /** Set/Get methods to swap the outside value with the input value.
+   * False by default.
+   */
+  itkSetMacro(Negated, bool);
+  itkGetConstMacro(Negated, bool);
+  itkBooleanMacro(Negated);
 
   /** Some additional typedefs.  */
   typedef TImage                                InputImageType;
@@ -141,6 +151,7 @@ private:
   PixelType m_OutsideValue;
   PixelType m_Lower;
   PixelType m_Upper;
+  bool m_Negated;
 };
 } // end namespace itk
 
