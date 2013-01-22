@@ -50,7 +50,7 @@ GradientVectorFlowImageFilter< TInputImage, TOutputImage, TInternalPixel >
 
   this->InitInterImage();
 
-  m_TimeStep = 0.2 / m_NoiseLevel;
+  m_TimeStep = 1/(std::pow(2.0, ImageDimension) * m_NoiseLevel);
 
   int i = 0;
 
