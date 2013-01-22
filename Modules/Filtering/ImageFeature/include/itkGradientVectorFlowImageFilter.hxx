@@ -19,13 +19,6 @@
 #define __itkGradientVectorFlowImageFilter_hxx
 #include "itkGradientVectorFlowImageFilter.h"
 
-/** @brief This implementation of GVF closely follows this paper:
- *         http://ww.vavlab.ee.boun.edu.tr/courses/574/materialx/Active%20Contours/xu_GVF.pdf
- *
- *         dx and dy are assumed to be 1 and the CFL restriction for convergence
- *         has been modified for multi-dimensional images
- */
-
 namespace itk
 {
 template< class TInputImage, class TOutputImage, class TInternalPixel >
@@ -56,7 +49,7 @@ GradientVectorFlowImageFilter< TInputImage, TOutputImage, TInternalPixel >
 
   this->InitInterImage();
 
-/**
+/*
  * According to Courant-Friedrichs-Lewy restriction (Eqn 18). However, the paper
  * assumes 2D images which leads to a too-large timestep for 3D images.
  *
@@ -78,15 +71,15 @@ GradientVectorFlowImageFilter< TInputImage, TOutputImage, TInternalPixel >
 }
 
 
-/**
- *  @brief Precompute B(x, y), C1(x, y), C2(x, y).. etc. These images do not
- *         change throughout the course of the computation.
+/*
+ *  Precompute B(x, y), C1(x, y), C2(x, y).. etc. These images do not
+ *  change throughout the course of the computation.
  *
- *         The intermediate image represents the image of the current time step.
+ *  The intermediate image represents the image of the current time step.
  *
- *         The internal images are simply the intermediate image split into its
- *         component images. (Useful for calculating laplacian image in each direction
- *         later)
+ *  The internal images are simply the intermediate image split into its
+ *  component images. (Useful for calculating laplacian image in each direction
+ *  later)
  */
 template< class TInputImage, class TOutputImage, class TInternalPixel >
 void
@@ -141,10 +134,10 @@ GradientVectorFlowImageFilter< TInputImage, TOutputImage, TInternalPixel >
 
     while ( !inputIt.IsAtEnd() )
       {
-      intermediateIt.Set( inputIt.Get() ); /** Set the intermediate image to the
+      intermediateIt.Set( inputIt.Get() ); /*  Set the intermediate image to the
                                             *  input image (gradient image) initially
                                             */
-      internalIt.Set(inputIt.Get()[i]);    /** Set the internal images to the
+      internalIt.Set(inputIt.Get()[i]);    /*  Set the internal images to the
                                             *  respective direction of the input
                                             *  image initially
                                             */
@@ -164,18 +157,18 @@ GradientVectorFlowImageFilter< TInputImage, TOutputImage, TInternalPixel >
   CIt.GoToBegin();
   inputIt.GoToBegin();
 
-/** Calculate b(x, y), c1(x, y), c2(x, y), etc.... (eqn 15) */
+/* Calculate b(x, y), c1(x, y), c2(x, y), etc.... (eqn 15) */
   while ( !inputIt.IsAtEnd() )
     {
     b = 0.0;
     m_vec = inputIt.Get();
     for ( i = 0; i < ImageDimension; i++ )
       {
-      b = b + m_vec[i] * m_vec[i]; /**  b = fx^2 + fy^2 ... */
+      b = b + m_vec[i] * m_vec[i]; /*  b = fx^2 + fy^2 ... */
       }
     for ( i = 0; i < ImageDimension; i++ )
       {
-      c_vec[i] =  b * m_vec[i]; /** c1 = b * fx, c2 = b * fy ... */
+      c_vec[i] =  b * m_vec[i]; /* c1 = b * fx, c2 = b * fy ... */
       }
     BIt.Set(b);
     CIt.Set(c_vec);
@@ -186,8 +179,8 @@ GradientVectorFlowImageFilter< TInputImage, TOutputImage, TInternalPixel >
     }
 }
 
-/**
- * @brief Splits the intermediate image (image of vectors) into multiple
+/*
+ * Splits the intermediate image (image of vectors) into multiple
  * internal images (image of pixels)
  */
 template< class TInputImage, class TOutputImage, class TInternalPixel >
@@ -216,7 +209,7 @@ GradientVectorFlowImageFilter< TInputImage, TOutputImage, TInternalPixel >
     }
 }
 
-/**
+/*
  * @brief Calculates the next timestep
  */
 template< class TInputImage, class TOutputImage, class TInternalPixel >
@@ -257,7 +250,7 @@ GradientVectorFlowImageFilter< TInputImage, TOutputImage, TInternalPixel >
     for ( i = 0; i < ImageDimension; i++ )
       {
       m_vec[i] = ( 1 - b * m_TimeStep ) * intermediateIt.Get()[i] + c_vec[i] *
-      m_TimeStep; /** first and third term of eqn 16 */
+      m_TimeStep; // first and third term of eqn 16
       }
     outputIt.Set(m_vec);
     ++intermediateIt;
