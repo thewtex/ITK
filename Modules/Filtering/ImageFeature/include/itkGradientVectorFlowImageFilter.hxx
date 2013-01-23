@@ -130,29 +130,16 @@ GradientVectorFlowImageFilter< TInputImage, TOutputImage, TInternalPixel >
   InputImageIterator intermediateIt( m_IntermediateImage,
                                      m_IntermediateImage->GetBufferedRegion() );
 
-  for ( i = 0; i < ImageDimension; i++ )
+  while (!inputIt.IsAtEnd())
     {
-    InternalImageIterator internalIt( m_InternalImages[i],
-                                      m_InternalImages[i]->GetBufferedRegion() );
-    internalIt.GoToBegin();
-
-    inputIt.GoToBegin();
-    intermediateIt.GoToBegin();
-
-    while ( !inputIt.IsAtEnd() )
-      {
-      intermediateIt.Set( inputIt.Get() ); /** Set the intermediate image to the
-                                            *  input image (gradient image) initially
-                                            */
-      internalIt.Set(inputIt.Get()[i]);    /** Set the internal images to the
-                                            *  respective direction of the input
-                                            *  image initially
-                                            */
-      ++internalIt;
-      ++intermediateIt;
-      ++inputIt;
-      }
+    intermediateIt.Set( inputIt.Get() ); /** Set the intermediate image to the
+                                          *  input image (gradient image) initially
+                                          */
+    ++intermediateIt;
+    ++inputIt;
     }
+
+  UpdateInterImage();
 
   InternalImageIterator BIt( m_BImage,
                              m_BImage->GetBufferedRegion() );
