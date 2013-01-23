@@ -236,14 +236,6 @@ GradientVectorFlowImageFilter< TInputImage, TOutputImage, TInternalPixel >
   InternalImageConstIterator BIt( m_BImage,
                              m_BImage->GetBufferedRegion() );
 
-  PixelType m_vec, c_vec;
-
-  unsigned int i;
-  unsigned int j;
-
-  double b;
-  double r;
-
   outputIt.GoToBegin();
   intermediateIt.GoToBegin();
   BIt.GoToBegin();
@@ -251,10 +243,11 @@ GradientVectorFlowImageFilter< TInputImage, TOutputImage, TInternalPixel >
 
   while ( !outputIt.IsAtEnd() )
     {
-    b = BIt.Get();
-    c_vec = CIt.Get();
+    const double b = BIt.Get();
+    PixelType c_vec = CIt.Get();
 
-    for ( i = 0; i < ImageDimension; i++ )
+    PixelType m_vec;
+    for ( unsigned int i = 0; i < ImageDimension; i++ )
       {
       m_vec[i] = ( 1 - b * m_TimeStep ) * intermediateIt.Get()[i] + c_vec[i] *
       m_TimeStep; /** first and third term of eqn 16 */
@@ -266,32 +259,32 @@ GradientVectorFlowImageFilter< TInputImage, TOutputImage, TInternalPixel >
     ++BIt;
     }
 
-  for ( i = 0; i < ImageDimension; i++ )
+  for ( unsigned int i = 0; i < ImageDimension; i++ )
     {
     m_LaplacianFilter->SetInput(m_InternalImages[i]);
     m_LaplacianFilter->UpdateLargestPossibleRegion();
 
-    InternalImageIterator internalIt( m_LaplacianFilter->GetOutput(),
+    InternalImageIterator laplacianIt( m_LaplacianFilter->GetOutput(),
                                       m_LaplacianFilter->GetOutput()->GetBufferedRegion() );
 
-    internalIt.GoToBegin();
+    laplacianIt.GoToBegin();
     outputIt.GoToBegin();
     intermediateIt.GoToBegin();
 
-    r = m_NoiseLevel * m_TimeStep;
-    for ( j = 0; j < ImageDimension; j++ )
+    double r = m_NoiseLevel * m_TimeStep; /** eqn 17, dx and dy are assumed to be 1 */
+    for ( unsigned int j = 0; j < ImageDimension; j++ )
       {
       r = r / m_Steps[j];
       }
 
     while ( !outputIt.IsAtEnd() )
       {
-      m_vec = outputIt.Get();
-      m_vec[i] = m_vec[i] + r *internalIt. Get();
+      PixelType m_vec = outputIt.Get();
+      m_vec[i] = m_vec[i] + r * laplacianIt.Get(); /** 2nd term of eqn 16 */
       outputIt.Set(m_vec);
       intermediateIt.Set(m_vec);
       ++intermediateIt;
-      ++internalIt;
+      ++laplacianIt;
       ++outputIt;
       }
     }
