@@ -1,0 +1,3 @@
+project(ITKIOSCIFIO)
+set(ITKIOSCIFIO_LIBRARIES ITKIOSCIFIO)
+itk_module_impl()
