@@ -17,6 +17,7 @@
  *=========================================================================*/
 #ifndef __itkTestDriverIncludeBuiltInIOFactories_h
 #define __itkTestDriverIncludeBuiltInIOFactories_h
+#include "itkSCIFIOImageIOFactory.h"
 #include "itkBioRadImageIOFactory.h"
 #include "itkBMPImageIOFactory.h"
 #include "itkGDCMImageIOFactory.h"
@@ -38,6 +39,7 @@
 
 void ProcessArgumentsAndRegisterBuiltInFactories(int *ac, ArgumentStringType *av)
 {
+  itk::ObjectFactoryBase::RegisterFactory( itk::SCIFIOImageIOFactory::New() );
   itk::ObjectFactoryBase::RegisterFactory( itk::BioRadImageIOFactory::New() );
   itk::ObjectFactoryBase::RegisterFactory( itk::GDCMImageIOFactory::New() );
   itk::ObjectFactoryBase::RegisterFactory( itk::MetaImageIOFactory::New() );
