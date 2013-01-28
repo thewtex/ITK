@@ -119,22 +119,17 @@ if(CMAKE_THREAD_LIBS_INIT)
 endif()
 
 #
-# SPECIFIC CASE FOR DCMTK BUILD DIR
+# SPECIFIC CASE FOR DCMTK BUILD DIR as DCMTK_DIR
 # (as opposed to a DCMTK install dir)
-#
-# the header files are in the source directory,
-# but we don't know how to find the source directory
-# without peeking at the CMakeDirectoryInformation.cmake.
-# once we know where the source is, we can add it to the
-# paths searched for include files
-find_file(CMakeDirInfoFile
-  CMakeDirectoryInformation.cmake
-  PATHS ${DCMTK_DIR}/config/CMakeFiles
-  NO_DEFAULT_PATH
-)
-if(EXISTS ${CMakeDirInfoFile})
-  include(${CMakeDirInfoFile})
-  set(DCMTK_SOURCE_DIR ${CMAKE_RELATIVE_PATH_TOP_SOURCE})
+# Have to find the source directory.
+if(EXISTS ${DCMTK_DIR}/CMakeCache.txt)
+          load_cache(${DCMTK_DIR} READ_WITH_PREFIX "EXT"
+          DCMTK_SOURCE_DIR)
+  if(NOT EXISTS ${EXTDCMTK_SOURCE_DIR})
+    message(FATAL_ERROR
+      "DCMTK build directory references
+nonexistant DCMTK source directory ${EXTDCMTK_SOURCE_DIR}")
+  endif()
 endif()
 
 set(DCMTK_config_TEST_HEADER osconfig.h)
@@ -167,6 +162,10 @@ foreach(dir
     dcmtls
     ofstd
     oflog)
+  if(EXTDCMTK_SOURCE_DIR)
+    set(SOURCE_DIR_PATH
+      ${EXTDCMTK_SOURCE_DIR}/${dir}/include/dcmtk/${dir})
+  endif()
   find_path(DCMTK_${dir}_INCLUDE_DIR
     ${DCMTK_${dir}_TEST_HEADER}
     PATHS
@@ -175,24 +174,21 @@ foreach(dir
     ${DCMTK_DIR}/include/dcmtk/${dir}
     ${DCMTK_DIR}/${dir}/include/dcmtk/${dir}
     ${DCMTK_DIR}/include/${dir}
-    ${DCMTK_SOURCE_DIR}/${dir}/include/dcmtk/${dir}
+    ${SOURCE_DIR_PATH}
     )
 
   mark_as_advanced(DCMTK_${dir}_INCLUDE_DIR)
 
   if(DCMTK_${dir}_INCLUDE_DIR)
-    message("DCMTK_${dir}_INCLUDE_DIR=${DCMTK_${dir}_INCLUDE_DIR}")
+    # add the 'include' path so eg
+    #include "dcmtk/dcmimgle/dcmimage.h"
+    # works
+    get_filename_component(_include ${DCMTK_${dir}_INCLUDE_DIR} PATH)
+    get_filename_component(_include ${_include} PATH)
     list(APPEND
       DCMTK_INCLUDE_DIRS
-      ${DCMTK_${dir}_INCLUDE_DIR})
-    if(EXISTS ${CMakeDirInfoFile})
-      # to handle full path includes eg
-      # include "dcmtk/dcmimgle/dcmimage.h"
-      get_filename_component(dir2 ${DCMTK_${dir}_INCLUDE_DIR} PATH)
-      get_filename_component(dir2 ${dir2} PATH)
-      message("Adding ${dir2}")
-      list(APPEND DCMTK_INCLUDE_DIRS ${dir2})
-    endif()
+      ${DCMTK_${dir}_INCLUDE_DIR}
+      ${_include})
   endif()
 endforeach()
 
