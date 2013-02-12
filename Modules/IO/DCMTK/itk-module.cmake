@@ -10,5 +10,4 @@ itk_module(ITKIODCMTK
     ITKImageIntensity
   DESCRIPTION
     "${DOCUMENTATION}"
-  EXCLUDE_FROM_ALL
 )
