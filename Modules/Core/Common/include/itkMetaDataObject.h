@@ -218,7 +218,7 @@ inline bool ExposeMetaData(MetaDataDictionary & Dictionary, const std::string ke
 template< class T >
 inline bool ExposeMetaData(const MetaDataDictionary & Dictionary, const std::string key, T & outval)
 {
-  MetaDataDictionary NonConstVersion = Dictionary;
+  MetaDataDictionary& NonConstVersion = const_cast< MetaDataDictionary & >( Dictionary );
 
   return ExposeMetaData(NonConstVersion, key, outval);
 }
