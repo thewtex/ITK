@@ -30,9 +30,16 @@
 
 #include "itkProcessObject.h"
 #include "itkImage.h"
+#include "itkImageRegionSplitterBase.h"
 
 namespace itk
 {
+
+struct ITKCommon_EXPORT ImageSourceCommon
+{
+  static  const ImageRegionSplitterBase*  GetGlobalDefaultSplitter(void);
+};
+
 /** \class ImageSource
  *  \brief Base class for all process objects that output image data.
  *
@@ -61,7 +68,8 @@ namespace itk
  * \endwiki
  */
 template< class TOutputImage >
-class ITK_EXPORT ImageSource:public ProcessObject
+class ITK_EXPORT ImageSource
+  : public ProcessObject, public ImageSourceCommon
 {
 public:
   /** Standard class typedefs. */
@@ -286,6 +294,8 @@ protected:
    * Note that this flow of control is only available if a filter provides
    * a ThreadedGenerateData() method and NOT a GenerateData() method. */
   virtual void AfterThreadedGenerateData() {}
+
+  virtual const ImageRegionSplitterBase* GetImageRegionSplitter(void) const;
 
   /** Split the output's RequestedRegion into "num" pieces, returning
    * region "i" as "splitRegion". This method is called "num" times. The
