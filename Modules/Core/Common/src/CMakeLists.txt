@@ -35,6 +35,8 @@ itkLightObject.cxx
 itkStdStreamLogOutput.cxx
 itkLightProcessObject.cxx
 itkRegion.cxx
+itkImageSource.cxx
+itkImageRegionSplitterBase.cxx
 itkFastMutexLock.cxx
 itkVersion.cxx
 itkNumericTraitsRGBAPixel.cxx
