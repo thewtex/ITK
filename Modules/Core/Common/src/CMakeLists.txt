@@ -37,6 +37,7 @@ itkLightProcessObject.cxx
 itkRegion.cxx
 itkImageSource.cxx
 itkImageRegionSplitterBase.cxx
+itkImageRegionSplitterDirection.cxx
 itkFastMutexLock.cxx
 itkVersion.cxx
 itkNumericTraitsRGBAPixel.cxx
