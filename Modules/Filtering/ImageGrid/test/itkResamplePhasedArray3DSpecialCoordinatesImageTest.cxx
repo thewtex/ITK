@@ -23,21 +23,23 @@
 #include "itkResampleImageFilter.h"
 
 
-enum {NDimensions = 3};
-
-typedef float                                                 PixelType;
-typedef itk::PhasedArray3DSpecialCoordinatesImage<PixelType>  InputImageType;
-typedef itk::Image<PixelType, NDimensions>                    ImageType;
-typedef InputImageType::Pointer             InputImagePointerType;
-typedef ImageType::Pointer                  ImagePointerType;
-typedef ImageType::RegionType               ImageRegionType;
-typedef ImageType::SizeType                 ImageSizeType;
-typedef ImageType::IndexType                ImageIndexType;
-typedef double                              CoordRepType;
-
-
 int itkResamplePhasedArray3DSpecialCoordinatesImageTest(int, char* [] )
 {
+
+  enum {NDimensions = 3};
+
+  typedef float                                                 PixelType;
+  typedef itk::PhasedArray3DSpecialCoordinatesImage<PixelType>  InputImageType;
+  typedef itk::Image<PixelType, NDimensions>                    ImageType;
+
+  typedef InputImageType::Pointer             InputImagePointerType;
+  typedef ImageType::Pointer                  ImagePointerType;
+  typedef ImageType::RegionType               ImageRegionType;
+  typedef ImageType::SizeType                 ImageSizeType;
+  typedef ImageType::IndexType                ImageIndexType;
+  typedef double                              CoordRepType;
+
+
   // Create and configure an image
   InputImagePointerType image = InputImageType::New();
   ImageIndexType  index = {{0,  0,  0}};
