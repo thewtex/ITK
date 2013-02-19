@@ -27,7 +27,7 @@ namespace Functor
 {
 /**
  * \class NOT
- * \brief
+ * \brief Unary logical NOT functor
  * \ingroup ITKImageIntensity
  */
 template< class TInput, class TOutput = TInput >
@@ -69,7 +69,7 @@ public:
  *  output_pixel = static_cast<OutputPixelType>( !input_pixel )
  * \endcode
  *
- * Where "!" is the unary NOT operator in C++.
+ * Where "!" is the unary Logical NOT operator in C++.
  *
  * \ingroup IntensityImageFilters
  * \ingroup MultiThreaded
