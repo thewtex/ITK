@@ -113,6 +113,16 @@ itk_add_test(NAME itkNormalizedCorrelationImageFilterTest
               ${ITK_TEST_OUTPUT_DIR}/NormalizedCorrelationImageFilterTest.png
     itkNormalizedCorrelationImageFilterTest DATA{${ITK_DATA_ROOT}/Input/sf4.png} DATA{${ITK_DATA_ROOT}/Input/circle.png} ${ITK_TEST_OUTPUT_DIR}/NormalizedCorrelationImageFilterTest.png)
 
+
+itk_add_test(NAME ImageWithFilenameSpacesTest2
+  COMMAND ITKConvolutionTestDriver
+  itkNormalizedCorrelationImageFilterTest DATA{${ITK_DATA_ROOT}/Input/RandomImageWithoutFilenameSpaces.png}  DATA{${ITK_DATA_ROOT}/Input/RandomImageWithoutFilenameSpaces.png} ${ITK_TEST_OUTPUT_DIR}/ImageWithFilenameSpacesTest2.mhd)
+
+itk_add_test(NAME ImageWithFilenameSpacesTest
+  COMMAND ITKConvolutionTestDriver
+  itkNormalizedCorrelationImageFilterTest DATA{${ITK_DATA_ROOT}/Input/Random\ Image\ With\ Filename\ Spaces.png}  DATA{${ITK_DATA_ROOT}/Input/Random\ Image\ With\ Filename\ Spaces.png} ${ITK_TEST_OUTPUT_DIR}/ImageWithFilenameSpacesTest.mhd)
+
+
 # Masked FFT NCC tests
 # Test with three different shapes
 itk_add_test(NAME itkMaskedFFTNormalizedCorrelationImageFilterTest1
