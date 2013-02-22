@@ -9,7 +9,29 @@ option(DCMTK_USE_LIBICONV "Use IConv Library in DCMTK" OFF)
 #  add_library(... IMPORTED GLOBAL)
 # in the adjacent CMakeLists.txt file instead.
 # For now define targets here to make them global.
-if(NOT ITK_USE_SYSTEM_DCMTK)
+if(ITK_USE_SYSTEM_DCMTK)
+  find_package(DCMTK NO_MODULE)
+   if(DCMTK_FOUND)
+    message("DCMTK NO_MODULE")
+    message("DCMTK_LIBRARIES=${DCMTK_LIBRARIES}")
+    message("DCMTK_INCLUDE_DIRS=${DCMTK_INCLUDE_DIRS}")
+    #
+    # Some versions of DCMTKConfig.cmake doesn't properly define
+    # everything needed for NO_MODULE, but CMAKE quietly acts as though
+    # it found what it needed.
+    if(NOT "XXX${DCMTK_LIBRARIES}" STREQUAL "XXXX" AND NOT "XXX${DCMTK_INCLUDE_DIRS}" STREQUAL "XXX")
+      return()
+    endif()
+  endif()
+  #
+  # as of CMake 2.8.8 the DCMTKConfig.cmake file included with CMake doesn't
+  # work properly so use our own.
+  list(INSERT CMAKE_MODULE_PATH 0 "${CMAKE_CURRENT_LIST_DIR}/CMake")
+  find_package(DCMTK REQUIRED)
+  message("DCMTK OLD SCHOOL")
+  message("DCMTK_LIBRARIES=${DCMTK_LIBRARIES}")
+  message("DCMTK_INCLUDE_DIRS=${DCMTK_INCLUDE_DIRS}")
+else(ITK_USE_SYSTEM_DCMTK)
   if(MSVC)
     message(FATAL_ERROR "The ITKDCMTK module requires ITK_USE_SYSTEM_DCMTK to be ON for MSVC.")
   endif()
@@ -24,4 +46,4 @@ if(NOT ITK_USE_SYSTEM_DCMTK)
     # add it as an imported  library target
     add_library(${lib} ${_ITKDCMTK_LIB_LINKAGE} IMPORTED)
   endforeach()
-endif(NOT ITK_USE_SYSTEM_DCMTK)
+endif(ITK_USE_SYSTEM_DCMTK)
