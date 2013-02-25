@@ -70,6 +70,7 @@ itkEquivalencyTable.cxx
 itkXMLFileOutputWindow.cxx
 itkStoppingCriterionBase.cxx
 itkCompensatedSummation.cxx
+itkArrayOutputSpecialization.cxx
 )
 
 if(WIN32)
@@ -109,7 +110,10 @@ if(NOT WIN32 AND CMAKE_COMPILER_IS_GNUCXX AND BUILD_SHARED_LIBS)
   endif()
 endif()
 
-target_link_libraries(ITKCommon itksys ITKVNLInstantiation)
+target_link_libraries(ITKCommon
+  itksys
+  ITKVNLInstantiation
+  ${ITKDoubleConversion_LIBRARIES})
 
 if(UNIX)
   target_link_libraries(ITKCommon ${CMAKE_THREAD_LIBS} ${CMAKE_DL_LIBS} -lm)
