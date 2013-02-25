@@ -1,0 +1,8 @@
+set(DoubleConversion_TARGETS_NAME ${ITKDoubleConversion-targets})
+set(DoubleConversion_INSTALL_BIN_DIR ${ITKDOUBLECONVERSION_INSTALL_RUNTIME_DIR})
+set(DoubleConversion_INSTALL_LIB_DIR ${ITKDOUBLECONVERSION_INSTALL_LIBRARY_DIR})
+set(DoubleConversion_INSTALL_INCLUDE_DIR ${ITKDOUBLECONVERSION_INSTALL_INCLUDE_DIR})
+set(DoubleConversion_INSTALL_DATA_DIR ${ITK_INSTALL_DATA_DIR})
+
+add_subdirectory(double-conversion)
+itk_module_target(itkdouble-conversion NO_INSTALL)
