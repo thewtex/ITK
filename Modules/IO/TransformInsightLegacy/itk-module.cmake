@@ -4,6 +4,7 @@ of itkTransform object in txt format.")
 itk_module(ITKIOTransformInsightLegacy
   DEPENDS
     ITKIOTransformBase
+    ITKDOUBLECONVERSION
   TEST_DEPENDS
     ITKTestKernel
   DESCRIPTION
