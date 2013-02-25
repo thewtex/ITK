@@ -20,6 +20,7 @@
 #include "itkMeshFileReader.h"
 #include "itkMeshFileWriter.h"
 #include "itkVectorFieldPCA.h"
+#include "itkTriangleCell.h"
 #include "vnl/vnl_vector.h"
 
 int showUsage(const char* programName)
@@ -45,6 +46,8 @@ int main( int argc, char *argv[] )
   typedef double                      PointDataType;
   typedef itk::Array<PointDataType>   PointDataVectorType;
   typedef PointDataVectorType         PixelType;
+  typedef itk::Vector<PointDataType>  OutPointDataVectorType;
+  typedef OutPointDataVectorType      OutPixelType;
 
   typedef double             DDataType;
   typedef double             CoordRep;
@@ -55,7 +58,8 @@ int main( int argc, char *argv[] )
   typedef double             PCAResultsType;
 
   // Declare the type of the input mesh
-  typedef itk::Mesh<PixelType,Dimension> InMeshType;
+  typedef itk::Mesh<PixelType,Dimension>    InMeshType;
+  typedef itk::Mesh<OutPixelType,Dimension> OutMeshType;
 
   // Declare the type of the kernel function class
   typedef itk::GaussianDistanceKernel<CoordRep> KernelType;
@@ -69,8 +73,8 @@ int main( int argc, char *argv[] )
   const char* outFileNameBase = argv[4];
 
   //  We can now instantiate the types of the reader/writer.
-  typedef itk::MeshFileReader< InMeshType >  ReaderType;
-  typedef itk::MeshFileWriter< InMeshType >  WriterType;
+  typedef itk::MeshFileReader< InMeshType >   ReaderType;
+  typedef itk::MeshFileWriter< OutMeshType >  WriterType;
 
   // create readers/writers
   ReaderType::Pointer meshReader = ReaderType::New();
@@ -109,6 +113,8 @@ int main( int argc, char *argv[] )
 
   vectorFieldSet->Reserve(fieldSetCount);
 
+  unsigned int vectorFieldDimension = 0;
+  unsigned int vectorFieldCount = 0;
   unsigned int setIx = 0;
   for (int i = MIN_ARG_COUNT - 1; i < argc; i++)
     {
@@ -132,8 +138,6 @@ int main( int argc, char *argv[] )
     InMeshType::PointDataContainerPointer pointData = meshWithField->GetPointData();
 
     // should know vector field dimensions now
-    unsigned int vectorFieldDimension = 0;
-    unsigned int vectorFieldCount = 0;
     if (setIx == 0)
       {
       vectorFieldCount = pointData->Size();
@@ -198,6 +202,38 @@ int main( int argc, char *argv[] )
     return EXIT_FAILURE;
     }
 
+  // copy the mesh for output so the point data is of type VECTORS
+  // instead of COLOR_SCALARS
+  OutMeshType::Pointer outMesh = OutMeshType::New();
+  InMeshType::PointsContainerPointer points = mesh->GetPoints( );
+  InMeshType::PointsContainerConstIterator it = points->Begin();
+  InMeshType::PointsContainerConstIterator itEnd = points->End();
+  unsigned int ixPt = 0;
+  while ( it != itEnd )
+    {
+    InMeshType::PointType point = it.Value();
+    outMesh->SetPoint( ixPt++, point );
+    it++;
+    }
+
+  ixPt = 0;
+  InMeshType::CellsContainerPointer cells = mesh->GetCells( );
+  InMeshType::CellsContainerConstIterator itCells = cells->Begin();
+  InMeshType::CellsContainerConstIterator itCellsEnd = cells->End();
+  outMesh->GetCells()->Reserve( cells->Size() );
+
+  typedef OutMeshType::CellType::CellAutoPointer         CellAutoPointer;
+  typedef itk::TriangleCell< OutMeshType::CellType >     TriangleType;
+
+  while ( itCells != itCellsEnd )
+    {
+    CellAutoPointer outCell;
+    outCell.TakeOwnership( new TriangleType );
+    outCell->SetPointIds( itCells.Value()->PointIdsBegin(), itCells.Value()->PointIdsEnd() );
+    outMesh->SetCell( ixPt++, outCell );
+    itCells++;
+    }
+
   char fName[1024];
   std::ofstream debugOut;
   debugOut.precision(15);
@@ -241,7 +277,7 @@ int main( int argc, char *argv[] )
   vcl_strcat(outFileName, "Ave.vtk");
 
   meshWriter->SetFileName(outFileName);
-  meshWriter->SetInput(mesh);
+  meshWriter->SetInput(outMesh);
 
   try
     {
@@ -258,10 +294,14 @@ int main( int argc, char *argv[] )
     {
     PCACalculatorType::MatrixType basisFunction = pcaCalc->GetBasisVectors()->GetElement(j);
     PixelType oneFunctionVal;
+    OutPixelType oneVectFunctionVal;
     for (unsigned int k = 0; k < basisFunction.rows(); k++)
       {
       oneFunctionVal = basisFunction.get_row(k);
-      mesh->SetPointData(k, oneFunctionVal);
+      oneVectFunctionVal[0] = oneFunctionVal[0];
+      oneVectFunctionVal[1] = oneFunctionVal[1];
+      oneVectFunctionVal[2] = oneFunctionVal[2];
+      outMesh->SetPointData(k, oneVectFunctionVal);
       }
     //  The name of the file to be read or written is passed with the
     //  SetFileName() method.
@@ -273,7 +313,7 @@ int main( int argc, char *argv[] )
     vcl_strcat(outFileName, ".vtk");
 
     meshWriter->SetFileName(outFileName);
-    meshWriter->SetInput(mesh);
+    meshWriter->SetInput(outMesh);
 
     try
       {

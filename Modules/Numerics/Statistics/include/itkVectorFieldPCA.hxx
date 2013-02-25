@@ -270,9 +270,8 @@ VectorFieldPCA<TVectorFieldElementType, TPCType, TPointSetPixelType, TPointSetCo
       {
       for (unsigned l = k; l < m_VectorDimCount; l++)
         {
-        InputPointType p1, p2;
-        m_PointSet->GetPoint(k, &p1);
-        m_PointSet->GetPoint(l, &p2);
+        InputPointType p1 = m_PointSet->GetPoint(k);
+        InputPointType p2 = m_PointSet->GetPoint(l);
 
         kernelM(k, l) = m_KernelFunction->Evaluate(p1.SquaredEuclideanDistanceTo(p2));
         kernelM(l, k) = kernelM(k, l);
