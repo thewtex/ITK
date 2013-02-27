@@ -1166,15 +1166,21 @@ bool GDCMImageIO::GetValueFromTag(const std::string & tag, std::string & value)
 {
   MetaDataDictionary & dict = this->GetMetaDataDictionary();
 
-  return ExposeMetaData< std::string >(dict, tag, value);
+  std::string tag_lower;
+  std::transform( tag.begin(), tag.end(), tag_lower.begin(),
+                  static_cast<int(*)(int)>( ::tolower ) );
+
+  return ExposeMetaData< std::string >(dict, tag_lower, value);
 }
 
 bool GDCMImageIO::GetLabelFromTag(const std::string & tag,
                                   std::string & labelId)
 {
+  std::string tag_lower;
+  std::transform( tag.begin(), tag.end(), tag_lower.begin(),
+                  static_cast<int(*)(int)>( ::tolower ) );
   gdcm::Tag t;
-
-  if ( t.ReadFromPipeSeparatedString( tag.c_str() ) && t.IsPublic() )
+  if ( t.ReadFromPipeSeparatedString( tag_lower.c_str() ) && t.IsPublic() )
     {
     const gdcm::Global &    g = gdcm::Global::GetInstance();
     const gdcm::Dicts &     dicts = g.GetDicts();

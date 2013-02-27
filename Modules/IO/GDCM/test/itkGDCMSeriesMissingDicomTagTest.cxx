@@ -68,6 +68,7 @@ int itkGDCMSeriesMissingDicomTagTest( int argc, char* argv[] )
 
   reader->SetFileNames( filenames );
   reader->SetImageIO( gdcmIO );
+  gdcmIO->SetLoadPrivateTags(true);
 
   try
     {
@@ -106,5 +107,53 @@ int itkGDCMSeriesMissingDicomTagTest( int argc, char* argv[] )
     return EXIT_FAILURE;
     }
 
+  bool UpperLowerCaseTestSucceed=true;
+    {
+    // Test upper and lower case tagkeys
+    std::vector<std::string> tagkeyValues(2);
+    tagkeyValues[0]="0008|103e"; // Test lower case key
+    tagkeyValues[1]="0008|103E"; // Test upper case key
+    for(size_t tkvIndex=0; tkvIndex < 2; ++tkvIndex)
+      {
+      const std::string tagkey = tagkeyValues[tkvIndex];
+      const std::string knownValueForSeriesDescription("Series Description");
+      std::string labelId("NO_LABEL_ID_FOUND");
+      if( itk::GDCMImageIO::GetLabelFromTag( tagkey, labelId ) && labelId == knownValueForSeriesDescription )
+        {
+        std::cout << labelId << " (" << tagkey << ")" << std::endl;
+        }
+      else
+        {
+        std::cout << "No label id found! for: " << tagkey << " " << labelId << std::endl;
+        UpperLowerCaseTestSucceed=false;
+        }
+      }
+    }
+    {
+    // Test upper and lower case tagkeys
+    std::vector<std::string> tagkeyValues(2);
+    tagkeyValues[0]="0019|109c"; // Test lower case key
+    tagkeyValues[1]="0019|109c"; // Test upper case key
+    for(size_t tkvIndex=0; tkvIndex < 2; ++tkvIndex)
+      {
+      const std::string tagkey = tagkeyValues[tkvIndex];
+      const std::string knownValueForSeriesDescription("3dtof");
+      std::string value("NOT_FOUND");
+      if( gdcmIO->GetValueFromTag(tagkey, value) && value == knownValueForSeriesDescription)
+        {
+        std::cout << value << std::endl;
+        }
+      else
+        {
+        std::cout << "Value found in file for: "<< tagkey << " "
+          << value << " != " << knownValueForSeriesDescription << std::endl;
+        UpperLowerCaseTestSucceed=false;
+        }
+      }
+    }
+  if ( UpperLowerCaseTestSucceed == false)
+    {
+    return EXIT_FAILURE;
+    }
   return EXIT_SUCCESS;
 }
