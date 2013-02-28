@@ -20,6 +20,7 @@
 
 #include "VNLSparseLUSolverTraits.h"
 #include "VNLIterativeSparseSolverTraits.h"
+#include "VNLSparseSymmetricEigensystemTraits.h"
 
 #include "itkParameterizationQuadEdgeMeshFilter.h"
 
@@ -160,9 +161,10 @@ int ParameterizationQuadEdgeMeshFilterTest( int argc, char* argv[] )
 
 int itkParameterizationQuadEdgeMeshFilterTest( int argc, char* argv[] )
 {
-  typedef double                                    TCoord;
-  typedef VNLIterativeSparseSolverTraits< TCoord >  IterativeSolverTraits;
-  typedef VNLSparseLUSolverTraits< TCoord >         LUSolverTraits;
+  typedef double                                        TCoord;
+  typedef VNLIterativeSparseSolverTraits< TCoord >      IterativeSolverTraits;
+  typedef VNLSparseLUSolverTraits< TCoord >             LUSolverTraits;
+  typedef VNLSparseSymmetricEigensystemTraits< TCoord > SSESolverTraits;
 
   if( atoi( argv[4] ) == 0 )
     {
@@ -171,6 +173,10 @@ int itkParameterizationQuadEdgeMeshFilterTest( int argc, char* argv[] )
   else if( atoi( argv[4] ) == 1 )
     {
     return ParameterizationQuadEdgeMeshFilterTest< LUSolverTraits >( argc, argv );
+    }
+  else if( atoi( argv[4] ) == 2 )
+    {
+    return ParameterizationQuadEdgeMeshFilterTest< SSESolverTraits >( argc, argv );
     }
   else
     {

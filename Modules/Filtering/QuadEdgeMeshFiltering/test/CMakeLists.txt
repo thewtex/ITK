@@ -103,7 +103,7 @@ itk_add_test(NAME itkNormalQuadEdgeMeshFilterTest2
 
 foreach( border 0 1 )
   foreach( coeff 0 1 2 3 4 )
-    foreach( solver 0 1 )
+    foreach( solver 0 1 2 )
       itk_add_test(NAME itkParameterizationQuadEdgeMeshFilterTestb${border}_c${coeff}_s${solver}
             COMMAND ITKQuadEdgeMeshFilteringTestDriver
                     itkParameterizationQuadEdgeMeshFilterTest
