@@ -30,7 +30,7 @@ namespace itk
 {
 
 /** \class LaplaceBeltramiFilter
- * \brief
+ * \brief Laplace Beltrami operator on QE meshes
  *
  * LaplaceBeltramiFilter defines basis functions on a quad edge mesh, then (if
  * requested) determines the N most significant eigenvalues of the basis.
@@ -67,8 +67,6 @@ public:
   /** Run-time type information (and related methods). */
   itkTypeMacro(LaplaceBeltramiFilter, QuadEdgeMeshToQuadEdgeMeshFilter);
 
-//  void SetInput(TInputMesh *input);
-
   /** Convenient constants obtained from TMeshTraits template parameter. */
   itkStaticConstMacro(InputPointDimension, unsigned int,
      ::itk::GetMeshDimension< TInputMesh >::PointDimension );
@@ -81,7 +79,10 @@ public:
   itkSetMacro( HarmonicScaleValue, double );
   itkGetMacro( HarmonicScaleValue, double );
 
-  typedef  enum { VonNeumanCondition, DirichletCondition } BoundaryConditionEnumType;
+  typedef  enum {
+    VONNEUMAN = 0, // zero on the boundaries
+    DIRICHLET      // gradient tangent to surface boundary
+    } BoundaryConditionEnumType;
 
   itkSetMacro( BoundaryConditionType, BoundaryConditionEnumType );
   itkGetMacro( BoundaryConditionType, BoundaryConditionEnumType );
@@ -112,29 +113,10 @@ public:
   typedef Array2D< double >            HarmonicSetType;
 
 
-  /**
-  * \brief Get the Laplace Beltrami operator
-  * \param[out] lbOp
-  */
-  void GetLBOperator( LBMatrixType& lbOp ) const;
-
-  /**
-  * \brief Get the areas for each vertex
-  * \param[out] lbVa
-  */
-  void GetVertexAreas( LBMatrixType& lbVa) const;
-
-  /**
-  * \brief Eigenvalues of the solution
-  * \param[out] eigs
-  */
-  void GetEigenvalues( EigenvalueSetType& eigs ) const;
-
-  /**
-  * \brief Get the areas for each vertex
-  * \param[out] harms
-  */
-  void GetHarmonics( HarmonicSetType& harms ) const;
+  itkGetConstReferenceMacro(LBOperator, LBMatrixType);
+  itkGetConstReferenceMacro(VertexAreas, LBMatrixType);
+  itkGetConstReferenceMacro(Eigenvalues, EigenvalueSetType);
+  itkGetConstReferenceMacro(Harmonics, HarmonicSetType);
 
   /**
   * \brief Get a single surface harmonic
@@ -180,6 +162,18 @@ private:
 
   /** Harmonics for the most significant basis functions */
   HarmonicSetType m_Harmonics;
+
+  /**
+  * \brief Generate areas associated with each vertex
+  */
+  virtual bool ComputeVertexAreas(Array<double> &vertexAreas);
+  virtual unsigned int GetEdges(Array2D<unsigned int> &edges,
+                                Array<unsigned int>   &boundaryVertex,
+                                Array2D<double>       &edgeAngles);
+  virtual void ComputeLaplacian(Array2D<unsigned int> &edges,
+                                Array2D<double>       &edgeAngles,
+                                Array<double>         &vertexAreas);
+  virtual bool ComputeHarmonics(Array<unsigned int>   &boundaryVertex);
 
 };
 } // end namespace itk

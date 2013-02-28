@@ -26,7 +26,7 @@
 #include "vnl/vnl_copy.h"
 #include "vnl/vnl_copy.cxx"
 #include "vnl/vnl_sparse_matrix.txx"
-#include "vnl/algo/vnl_sparse_symmetric_eigensystem.h"
+#include "VNLSparseSymmetricEigensystemTraits.h"
 
 #include <float.h>  // for DBL_MIN
 #include "itkArray.h"
@@ -39,51 +39,7 @@ LaplaceBeltramiFilter< TInputMesh, TOutputMesh >
 {
   SetEigenValueCount(0);
   SetHarmonicScaleValue(0.0);
-  SetBoundaryConditionType(DirichletCondition);
-}
-
-/**
- * Get the Laplace Beltrami operator
- */
-template <class TInputMesh, class TOutputMesh>
-void
-LaplaceBeltramiFilter<TInputMesh, TOutputMesh>
-::GetLBOperator( LBMatrixType& lbOp ) const
-{
-  lbOp = this->m_LBOperator;
-}
-
-/**
- * Get the areas for each vertex
- */
-template <class TInputMesh, class TOutputMesh>
-void
-LaplaceBeltramiFilter<TInputMesh, TOutputMesh>
-::GetVertexAreas( LBMatrixType& lbVa ) const
-{
-  lbVa = this->m_VertexAreas;
-}
-
-/**
- * Get the surface harmonics at each vertex
- */
-template <class TInputMesh, class TOutputMesh>
-void
-LaplaceBeltramiFilter<TInputMesh, TOutputMesh>
-::GetHarmonics( HarmonicSetType& harms ) const
-{
-  harms = this->m_Harmonics;
-}
-
-/**
- * Get the eigenvalues of the solution
- */
-template <class TInputMesh, class TOutputMesh>
-void
-LaplaceBeltramiFilter<TInputMesh, TOutputMesh>
-::GetEigenvalues( EigenvalueSetType& eigs ) const
-{
-  eigs = this->m_Eigenvalues;
+  SetBoundaryConditionType(DIRICHLET);
 }
 
 /**
@@ -108,37 +64,23 @@ LaplaceBeltramiFilter< TInputMesh, TOutputMesh >
 }
 
 /**
- * This method causes the filter to generate its output.
+ * Determine the area associated with each vertex
  */
 template <class TInputMesh, class TOutputMesh>
-void
+bool
 LaplaceBeltramiFilter< TInputMesh, TOutputMesh >
-::GenerateData(void)
+::ComputeVertexAreas(itk::Array<double> &vertexAreas)
 {
-  typedef typename TInputMesh::PointsContainer  InputPointsContainer;
-
-  typedef typename TInputMesh::PointsContainerConstPointer
-    InputMeshPointsContainerConstPointer;
-
-  this->CopyInputMeshToOutputMesh();
-
   InputMeshConstPointer  inputMesh      =  this->GetInput();
-  OutputMeshPointer      outputMesh     =  this->GetOutput();
 
   unsigned int sides = 3;
-
-  InputMeshPointsContainerConstPointer  inPoints  = inputMesh->GetPoints();
-
   unsigned int cellCount = inputMesh->GetNumberOfCells();
-  unsigned int vertexCount = inputMesh->GetNumberOfPoints();
 
   itk::Array<double> faceAreas(cellCount);
-  itk::Array<double> vertexAreas(vertexCount);
-  itk::Array<unsigned int> vertexCounts(vertexCount);
+  vertexAreas.set_size(inputMesh->GetNumberOfPoints());
 
   faceAreas.Fill(0.0);
   vertexAreas.Fill(0.0);
-  vertexCounts.Fill(0);
 
   InputCellAutoPointer cellPtr;
 
@@ -151,18 +93,15 @@ LaplaceBeltramiFilter< TInputMesh, TOutputMesh >
       {
       itkExceptionMacro("cell has " << aCellNumberOfPoints << " points\n"
       "This filter can only process triangle meshes.");
-      return;
+      return false;
       }
 
     const unsigned long *tp;
     tp = cellPtr->GetPointIds();
 
-    InputPointType v1;
-    InputPointType v2;
-    InputPointType v3;
-    inputMesh->GetPoint((int)(tp[0]), &v1);
-    inputMesh->GetPoint((int)(tp[1]), &v2);
-    inputMesh->GetPoint((int)(tp[2]), &v3);
+    InputPointType v1 = inputMesh->GetPoint((int)(tp[0]));
+    InputPointType v2 = inputMesh->GetPoint((int)(tp[1]));
+    InputPointType v3 = inputMesh->GetPoint((int)(tp[2]));
 
     // determine if face is obtuse
     vnl_vector<double> x12(InputPointDimension);
@@ -220,22 +159,33 @@ LaplaceBeltramiFilter< TInputMesh, TOutputMesh >
       }
     }
 
-  const double FaceAreaTolerance = 1.0e-15;
-  for (unsigned int vertIx = 0; vertIx < vertexCount; vertIx++)
-    {
-    if (vertexAreas(vertIx) < FaceAreaTolerance)
-      {
-      itkExceptionMacro("Vertex " << vertIx << " has virtually no face area:  "
-        << vertexAreas(vertIx) << "\n");
-      return;
-      }
-    }
+  return true;
+
+}
+
+/**
+ * Determine edges, edge angles, and boundary vertices
+ * return the edgeCount
+ */
+template <class TInputMesh, class TOutputMesh>
+unsigned int
+LaplaceBeltramiFilter< TInputMesh, TOutputMesh >
+::GetEdges(itk::Array2D<unsigned int> &edges,
+           itk::Array<unsigned int> &boundaryVertex,
+           itk::Array2D<double> &edgeAngles)
+{
+  InputMeshConstPointer  inputMesh      =  this->GetInput();
+
+  unsigned int cellCount = inputMesh->GetNumberOfCells();
+  unsigned int vertexCount = inputMesh->GetNumberOfPoints();
 
   // compute edges and detect boundary
   vnl_sparse_matrix<unsigned int> edgeMatrix(vertexCount, vertexCount);
-  itk::Array2D<unsigned int> edges(cellCount * 3, 2);
+  edges.set_size(cellCount * 3, 2);
   edges.Fill(0);
   unsigned int edgeCount = 0;
+
+  InputCellAutoPointer cellPtr;
 
   for (unsigned int cellId = 0; cellId < cellCount; cellId++)
     {
@@ -283,13 +233,10 @@ LaplaceBeltramiFilter< TInputMesh, TOutputMesh >
     edgeFace(edgeMatrix(tp[2], tp[0]) - 1, cellId) = 1;
     }
 
-  itk::Array<unsigned int> boundaryEdge(edgeCount);
-  itk::Array<unsigned int> boundaryVertex(vertexCount);
-
-  boundaryEdge.Fill(0);
+  boundaryVertex.set_size(vertexCount);
   boundaryVertex.Fill(0);
 
-  itk::Array2D<double> edgeAngles(edgeCount, 2);
+  edgeAngles.set_size(edgeCount, 2);
   edgeAngles.Fill(0.0);
 
   for (unsigned int edgeIx = 0; edgeIx < edgeCount; edgeIx++)
@@ -322,7 +269,7 @@ LaplaceBeltramiFilter< TInputMesh, TOutputMesh >
       if( i1 < 0 || i2 < 0 )
         {
         itkExceptionMacro("failed to find edges for cell " << faceIx << "\n");
-        return;
+        return 0;
         }
 
       unsigned int s = i1 + i2;
@@ -342,7 +289,7 @@ LaplaceBeltramiFilter< TInputMesh, TOutputMesh >
       else
         {
         itkExceptionMacro("bad vertex indices " << i1 << ", " << i2 << " for face " << faceIx << "\n");
-        return;
+        return 0;
         }
 
       InputPointType verts[3];
@@ -376,17 +323,29 @@ LaplaceBeltramiFilter< TInputMesh, TOutputMesh >
     if (aRow.size() == 1)
       {
       // have a boundary edge
-      boundaryEdge(edgeIx) = 1;
       boundaryVertex(edges(edgeIx, 0)) = 1;
       boundaryVertex(edges(edgeIx, 1)) = 1;
       edgeAngles(edgeIx, 1) = 0;
       }
     }
+  return edgeCount;
+}
 
-  // compute the Laplacian matrix
+/**
+ * compute the Laplacian matrix
+ */
+template <class TInputMesh, class TOutputMesh>
+void
+LaplaceBeltramiFilter< TInputMesh, TOutputMesh >
+::ComputeLaplacian(itk::Array2D<unsigned int> &edges,
+                   itk::Array2D<double> &edgeAngles,
+                   itk::Array<double> &vertexAreas)
+{
+  unsigned int vertexCount = this->GetInput()->GetNumberOfPoints();
+
   m_LBOperator.set_size(vertexCount, vertexCount);
 
-  for (unsigned int edgeIx = 0; edgeIx < edgeCount; edgeIx++)
+  for (unsigned int edgeIx = 0; edgeIx < edges.rows(); edgeIx++)
     {
     double laplacian =
         (edgeAngles(edgeIx, 0) + edgeAngles(edgeIx, 1)) / 2.0;
@@ -406,115 +365,170 @@ LaplaceBeltramiFilter< TInputMesh, TOutputMesh >
       }
     m_LBOperator(vertexIx, vertexIx) = -accum;
     }
+}
+
+/**
+ * compute the surface harmonics
+ */
+template <class TInputMesh, class TOutputMesh>
+bool
+LaplaceBeltramiFilter< TInputMesh, TOutputMesh >
+::ComputeHarmonics(itk::Array<unsigned int> &boundaryVertex)
+{
+  unsigned int vertexCount = this->GetInput()->GetNumberOfPoints();
+
+  // Need to solve the following eigensystem:
+  // A * V = B * V * D, or
+  // m_LBOperator * eVectors = m_VertexAreas * eVectors * eValues
+
+  int elementCount = vertexCount;
+
+  typedef VNLSparseSymmetricEigensystemTraits<double> SSEType;
+  SSEType::MatrixType A;
+  SSEType::MatrixType B;
+
+  if (!boundaryVertex.sum())
+    {
+    // closed surface
+    A = m_LBOperator;
+    B = m_VertexAreas;
+    }
+  else if (m_BoundaryConditionType == VONNEUMAN)
+    {
+    // for Von Neuman, zero out the "area" of the boundary vertices
+    // before solving standard eigenvalue problem
+    A = m_LBOperator;
+    B = SSEType::InitializeSparseMatrix(m_VertexAreas.rows());
+
+    elementCount = 0;
+    // Zero out diagonal matrix for boundary values
+    for (unsigned int ix = 0; ix < vertexCount; ix++)
+      {
+      if (!boundaryVertex(ix))
+        {
+        SSEType::FillMatrix(B, ix, ix, m_VertexAreas(ix, ix));
+        elementCount++;
+        }
+      }
+    }
+  else if (m_BoundaryConditionType == DIRICHLET)
+    {
+    // non-boundary point count
+    elementCount -= boundaryVertex.sum();
+    A = SSEType::InitializeSparseMatrix(elementCount);
+    B = SSEType::InitializeSparseMatrix(elementCount);
+
+    int colCount = 0;
+    int rowCount = 0;
+    // collapse matrix by removing boundary values
+    for (unsigned int ix = 0; ix < vertexCount; ix++)
+      {
+      colCount = 0;
+      if (!boundaryVertex(ix))
+        {
+        SSEType::FillMatrix(B, rowCount, rowCount, m_VertexAreas(ix, ix));
+        for (unsigned int jx = 0; jx < vertexCount; jx++)
+          {
+          if (!boundaryVertex(jx))
+            {
+            if (m_LBOperator(ix, jx))
+              {
+              SSEType::FillMatrix(A, rowCount, colCount, m_LBOperator(ix, jx));
+              }
+            colCount++;
+            }
+          }
+        rowCount++;
+        }
+      }
+    }
+  else
+    {
+    itkExceptionMacro("Unknown Boundary Condition Type:  " << m_BoundaryConditionType << "\n");
+    return false;
+    }
+
+  SSEType::EigenvectorMatrixType eigenvectors;
+  SSEType::VectorType            eigenvalues;
+  if (!SSEType::Calculate(A, B, this->m_EigenValueCount,
+                          eigenvectors, eigenvalues,
+                          false, true, 1.0e-10, 10000, 1.0))
+    {
+    // failed to compute eigenvalues
+    itkExceptionMacro("Eigensystem failure\n");
+    return false;
+    }
+
+  // get the output
+  this->m_Eigenvalues = eigenvalues;
+  this->m_Harmonics.set_size(this->m_EigenValueCount, vertexCount);
+  for (unsigned int evIx = 0; evIx < this->m_EigenValueCount; evIx++)
+    {
+    vnl_vector< double > sseEigenvector = eigenvectors.get_column(evIx);
+    vnl_vector< double > eigenvector(vertexCount);
+    eigenvector = 0.0;
+
+    int nonboundaryCount = 0;
+    for (unsigned int vxIx = 0; vxIx < vertexCount; vxIx++)
+      {
+      if (!boundaryVertex(vxIx) ||
+          (m_BoundaryConditionType != DIRICHLET))
+        {
+        eigenvector(vxIx) = sseEigenvector(nonboundaryCount++);
+        }
+      }
+    this->m_Harmonics.set_row(evIx, eigenvector);
+    }
+    return true;
+}
+
+/**
+ * This method causes the filter to generate its output.
+ */
+template <class TInputMesh, class TOutputMesh>
+void
+LaplaceBeltramiFilter< TInputMesh, TOutputMesh >
+::GenerateData(void)
+{
+  this->CopyInputMeshToOutputMesh();
+
+  InputMeshConstPointer  inputMesh      =  this->GetInput();
+  OutputMeshPointer      outputMesh     =  this->GetOutput();
+
+  unsigned int vertexCount = inputMesh->GetNumberOfPoints();
+
+  itk::Array<double> vertexAreas;
+
+  // compute areas of faces and vertices
+  if (!ComputeVertexAreas(vertexAreas))
+    return;
+
+  const double FaceAreaTolerance = 1.0e-15;
+  for (unsigned int vertIx = 0; vertIx < vertexCount; vertIx++)
+    {
+    if (vertexAreas(vertIx) < FaceAreaTolerance)
+      {
+      itkExceptionMacro("Vertex " << vertIx << " has virtually no face area:  "
+        << vertexAreas(vertIx) << "\n");
+      return;
+      }
+    }
+
+  // compute edges and detect boundary
+  vnl_sparse_matrix<unsigned int> edgeMatrix(vertexCount, vertexCount);
+  itk::Array2D<unsigned int> edges;
+  itk::Array<unsigned int> boundaryVertex;
+  itk::Array2D<double> edgeAngles;
+  if (!GetEdges(edges, boundaryVertex, edgeAngles))
+    return;
+
+  // compute the Laplacian matrix
+  ComputeLaplacian(edges, edgeAngles, vertexAreas);
 
   // compute harmonics?
   if (this->m_EigenValueCount)
     {
-
-    // Need to solve the following eigensystem:
-    // A * V = B * V * D, or
-    // m_LBOperator * eVectors = m_VertexAreas * eVectors * eValues
-
-    int elementCount = vertexCount;
-    LBMatrixType A, B;
-
-    if (!boundaryVertex.sum())
-      {
-      // closed surface
-      A = m_LBOperator;
-      B = m_VertexAreas;
-      }
-    else if (m_BoundaryConditionType == VonNeumanCondition)
-      {
-      // for Von Neuman, zero out the "area" of the boundary vertices
-      // before solving standard eigenvalue problem
-      A = m_LBOperator;
-      B.set_size(m_VertexAreas.rows(), m_VertexAreas.cols());
-
-      elementCount = 0;
-      // Zero out diagonal matrix for boundary values
-      for (unsigned int ix = 0; ix < vertexCount; ix++)
-        {
-        if (!boundaryVertex(ix))
-          {
-          B(ix, ix) = m_VertexAreas(ix, ix);
-          elementCount++;
-          }
-        }
-      }
-    else if (m_BoundaryConditionType == DirichletCondition)
-      {
-      // non-boundary point count
-      elementCount -= boundaryVertex.sum();
-      A.set_size(elementCount, elementCount);
-      B.set_size(elementCount, elementCount);
-
-      int colCount = 0;
-      int rowCount = 0;
-      // collapse matrix by removing boundary values
-      for (unsigned int ix = 0; ix < vertexCount; ix++)
-        {
-        colCount = 0;
-        if (!boundaryVertex(ix))
-          {
-          B(rowCount, rowCount) = m_VertexAreas(ix, ix);
-          for (unsigned int jx = 0; jx < vertexCount; jx++)
-            {
-            if (!boundaryVertex(jx))
-              {
-              if (m_LBOperator(ix, jx))
-                {
-                A(rowCount, colCount) = m_LBOperator(ix, jx);
-                }
-              colCount++;
-              }
-            }
-          rowCount++;
-          }
-        }
-      }
-    else
-      {
-      itkExceptionMacro("Unknown Boundary Condition Type:  " << m_BoundaryConditionType << "\n");
-      return;
-      }
-
-    vnl_sparse_symmetric_eigensystem sse;
-    int eigensystemResult = 0;
-    if ((eigensystemResult =
-            sse.CalculateNPairs(A, B, this->m_EigenValueCount,
-                      1.0e-10, 0, false, true,
-                      10000, 1.0)) != 0)
-      {
-      // failed to compute eigenvalues
-      itkExceptionMacro("Eigensystem failure with result:  " <<
-                                                eigensystemResult << "\n");
-      return;
-      }
-
-    // get the output
-    this->m_Eigenvalues.set_size(this->m_EigenValueCount);
-    this->m_Harmonics.set_size(this->m_EigenValueCount, vertexCount);
-    for (unsigned int evIx = 0; evIx < this->m_EigenValueCount; evIx++)
-      {
-      this->m_Eigenvalues(evIx) = sse.get_eigenvalue(evIx);
-      vnl_vector< double > sseEigenvector = sse.get_eigenvector(evIx);
-      vnl_vector< double > eigenvector(vertexCount);
-      eigenvector = 0.0;
-
-      int nonboundaryCount = 0;
-      for (unsigned int vxIx = 0; vxIx < vertexCount; vxIx++)
-        {
-        if (!boundaryVertex(vxIx) ||
-            (m_BoundaryConditionType != DirichletCondition))
-          {
-          eigenvector(vxIx) = sseEigenvector(nonboundaryCount++);
-          }
-        }
-      // the eigenvectors come out of ARPACK++ backwards compared to vnl/MATLAB
-      this->m_Harmonics.set_row((this->m_EigenValueCount - 1) - evIx, eigenvector);
-      }
-
+    ComputeHarmonics(boundaryVertex);
     this->SetSurfaceHarmonic(0);
     }
   else

@@ -16,20 +16,6 @@
  *
  *=========================================================================*/
 
-
-/*
-#include <stdlib.h>
-#include <stdio.h>
-#include <iostream>
-#include <fstream>
-
-#ifdef _WINDOWS
-#include <getoptwin32.h>
-#else
-#include <getopt.h>
-#endif
-*/
-
 //  Software Guide : BeginLatex
 //
 //  The LaplaceBeltramiFilter defines scalar valued basis functions on a quad
@@ -47,7 +33,6 @@
 #include "itkQuadEdgeMesh.h"
 #include "itkLaplaceBeltramiFilter.h"
 #include "itkMeshFileReader.h"
-//#include "itkVTKPolyDataReader.h"
 #include "itkQuadEdgeMeshScalarDataVTKPolyDataWriter.h"
 
 void showUsage()
@@ -101,17 +86,17 @@ int main(int argc, char *argv[])
     const unsigned int eCount = atoi( argv[1] );
 
     LbFilterType::BoundaryConditionEnumType boundaryCond =
-                                LbFilterType::DirichletCondition;
+                                LbFilterType::DIRICHLET;
     if( argc == 4 )
       {
       int boundaryConditionInput = atoi( argv[3] );
       switch (boundaryConditionInput)
         {
         case 1:
-          boundaryCond = LbFilterType::VonNeumanCondition;
+          boundaryCond = LbFilterType::VONNEUMAN;
           break;
         case 2:
-          boundaryCond = LbFilterType::DirichletCondition;
+          boundaryCond = LbFilterType::DIRICHLET;
           break;
         default:
           std::cerr << "\n** Invalid Boundary Condition Type:  " << argv[4] << ".  **\n";
@@ -124,7 +109,6 @@ int main(int argc, char *argv[])
     const char* inFile = argv[2];
 
     //  We can now instantiate the types of the reader.
-//    typedef itk::VTKPolyDataReader< InMeshType >  ReaderType;
     typedef itk::MeshFileReader< InMeshType >  ReaderType;
 
     // create readers
