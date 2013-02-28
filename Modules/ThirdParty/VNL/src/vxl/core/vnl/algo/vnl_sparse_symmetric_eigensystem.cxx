@@ -343,10 +343,19 @@ int vnl_sparse_symmetric_eigensystem::CalculateNPairs(
 
   vnl_vector<double> workVector;
 
+  /* declare the arpack workspace workspace locally -
+     keeps static variables local and on the stack */
+  struct dsaupd_workspace arpack_sse_workspace;
+  memset(&arpack_sse_workspace, 0, sizeof(struct dsaupd_workspace));
+  arpack_sse_workspace.dsapps_workspace.first = true;
+  arpack_sse_workspace.dsaitr_workspace.first = true;
+  arpack_sse_workspace.dgetv0_workspace.inits = true;
+
   while (!basisCalculated)
   {
     // Calling arpack routine dsaupd.
     v3p_netlib_dsaupd_(
+      &arpack_sse_workspace,
       &ido, &genEigProblem, &matSize, which,
       &nEVL, &tolerance, resid, &numberLanczosVecsL, &V[1], &matSize,
           &iParam[1], &iPntr[1], &workd[1], &workl[1], &lworkl, &info,

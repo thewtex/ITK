@@ -1,4 +1,5 @@
 extern int v3p_netlib_dsapps_(
+  struct dsaupd_workspace *workspace,
   v3p_netlib_integer *n,
   v3p_netlib_integer *kev,
   v3p_netlib_integer *np,

@@ -171,14 +171,17 @@ static integer c__1 = 1;
 /* ----------------------------------------------------------------------- */
 
 /*<        >*/
-/* Subroutine */ int dsapps_(integer *n, integer *kev, integer *np,
+/* Subroutine */ int dsapps_(struct dsaupd_workspace *workspace, integer *n, integer *kev, integer *np,
         doublereal *shift, doublereal *v, integer *ldv, doublereal *h__,
         integer *ldh, doublereal *resid, doublereal *q, integer *ldq,
         doublereal *workd)
 {
     /* Initialized data */
 
+    struct dsapps_static *_;
+/* MRB
     static logical first = TRUE_;
+*/
 
     /* System generated locals */
     integer h_dim1, h_offset, q_dim1, q_offset, v_dim1, v_offset, i__1, i__2,
@@ -201,7 +204,9 @@ static integer c__1 = 1;
             *, doublereal *, integer *, doublereal *, integer *);
     extern doublereal dlamch_(char *, ftnlen);
     extern /* Subroutine */ int second_(real *);
+/* MRB
     static doublereal epsmch;
+*/
     integer istart, kplusp /*, msglvl */;
     extern /* Subroutine */ int dlacpy_(char *, integer *, integer *,
             doublereal *, integer *, doublereal *, integer *, ftnlen),
@@ -304,6 +309,8 @@ static integer c__1 = 1;
     q_offset = 1 + q_dim1;
     q -= q_offset;
 
+    _ = &workspace->dsapps_workspace;
+
     /* Function Body */
 
 /*     %-----------------------% */
@@ -311,11 +318,11 @@ static integer c__1 = 1;
 /*     %-----------------------% */
 
 /*<       if (first) then >*/
-    if (first) {
+    if (_->first) {
 /*<          epsmch = dlamch('Epsilon-Machine') >*/
-        epsmch = dlamch_("Epsilon-Machine", (ftnlen)15);
+        _->epsmch = dlamch_("Epsilon-Machine", (ftnlen)15);
 /*<          first = .false. >*/
-        first = FALSE_;
+        _->first = FALSE_;
 /*<       end if >*/
     }
 /*<       itop = 1 >*/
@@ -389,7 +396,7 @@ L20:
             big = (d__1 = h__[i__ + (h_dim1 << 1)], abs(d__1)) + (d__2 = h__[
                     i__ + 1 + (h_dim1 << 1)], abs(d__2));
 /*<             if (h(i+1,1) .le. epsmch*big) then >*/
-            if (h__[i__ + 1 + h_dim1] <= epsmch * big) {
+            if (h__[i__ + 1 + h_dim1] <= _->epsmch * big) {
 /*               if (msglvl .gt. 0) then */
 /*                  call ivout (logfil, 1, i, ndigit, */
 /*     &                 '_sapps: deflation at row/column no.') */
@@ -655,7 +662,7 @@ L90:
         big = (d__1 = h__[i__ + (h_dim1 << 1)], abs(d__1)) + (d__2 = h__[i__
                 + 1 + (h_dim1 << 1)], abs(d__2));
 /*<          if (h(i+1,1) .le. epsmch*big) then >*/
-        if (h__[i__ + 1 + h_dim1] <= epsmch * big) {
+        if (h__[i__ + 1 + h_dim1] <= _->epsmch * big) {
 /*            if (msglvl .gt. 0) then */
 /*               call ivout (logfil, 1, i, ndigit, */
 /*     &              '_sapps: deflation at row/column no.') */

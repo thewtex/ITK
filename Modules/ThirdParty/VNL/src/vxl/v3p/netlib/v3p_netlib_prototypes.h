@@ -112,6 +112,7 @@
 #include "laso/dortqr.h"
 #include "laso/dvsort.h"
 #include "laso/urand.h"
+#include "arpack/arpack.h"
 #include "arpack/dgetv0.h"
 #include "arpack/dsaitr.h"
 #include "arpack/dsapps.h"

@@ -160,14 +160,17 @@ static doublereal c_b29 = -1.;
 /* ----------------------------------------------------------------------- */
 
 /*<        >*/
-/* Subroutine */ int dgetv0_(integer *ido, char *bmat, integer *itry, logical
+/* Subroutine */ int dgetv0_(struct dsaupd_workspace *workspace, integer *ido, char *bmat, integer *itry, logical
         *initv, integer *n, integer *j, doublereal *v, integer *ldv,
         doublereal *resid, doublereal *rnorm, integer *ipntr, doublereal *
         workd, integer *ierr, ftnlen bmat_len)
 {
     /* Initialized data */
 
+    struct dgetv0_static *_;
+/* MRB
     static logical inits = TRUE_;
+*/
 
     /* System generated locals */
     integer v_dim1, v_offset, i__1;
@@ -180,18 +183,24 @@ static doublereal c_b29 = -1.;
     integer jj;
     extern doublereal ddot_(integer *, doublereal *, integer *, doublereal *,
             integer *);
+/* MRB
     static integer iter;
     static logical orth;
+*/
     extern doublereal dnrm2_(integer *, doublereal *, integer *);
+/* MRB
     static integer iseed[4];
+*/
     extern /* Subroutine */ int dgemv_(char *, integer *, integer *,
             doublereal *, doublereal *, integer *, doublereal *, integer *,
             doublereal *, doublereal *, integer *, ftnlen);
     integer idist;
     extern /* Subroutine */ int dcopy_(integer *, doublereal *, integer *,
             doublereal *, integer *);
+/* MRB
     static logical first;
     static doublereal rnorm0;
+*/
 /*  static integer msglvl; */
     extern /* Subroutine */ int dlarnv_(integer *, integer *, integer *,
             doublereal *);
@@ -288,6 +297,8 @@ static doublereal c_b29 = -1.;
     v -= v_offset;
     --ipntr;
 
+    _ = &workspace->dgetv0_workspace;
+
     /* Function Body */
 
 /*     %-----------------------% */
@@ -301,17 +312,17 @@ static doublereal c_b29 = -1.;
 /*     %-----------------------------------% */
 
 /*<       if (inits) then >*/
-    if (inits) {
+    if (_->inits) {
 /*<           iseed(1) = 1 >*/
-        iseed[0] = 1;
+        _->iseed[0] = 1;
 /*<           iseed(2) = 3 >*/
-        iseed[1] = 3;
+        _->iseed[1] = 3;
 /*<           iseed(3) = 5 >*/
-        iseed[2] = 5;
+        _->iseed[2] = 5;
 /*<           iseed(4) = 7 >*/
-        iseed[3] = 7;
+        _->iseed[3] = 7;
 /*<           inits = .false. >*/
-        inits = FALSE_;
+        _->inits = FALSE_;
 /*<       end if >*/
     }
 
@@ -331,11 +342,11 @@ static doublereal c_b29 = -1.;
 /*<          ierr   = 0 >*/
         *ierr = 0;
 /*<          iter   = 0 >*/
-        iter = 0;
+        _->iter = 0;
 /*<          first  = .FALSE. >*/
-        first = FALSE_;
+        _->first = FALSE_;
 /*<          orth   = .FALSE. >*/
-        orth = FALSE_;
+        _->orth = FALSE_;
 
 /*        %-----------------------------------------------------% */
 /*        | Possibly generate a random starting vector in RESID | */
@@ -351,7 +362,7 @@ static doublereal c_b29 = -1.;
 /*<             idist = 2 >*/
             idist = 2;
 /*<             call dlarnv (idist, iseed, n, resid) >*/
-            dlarnv_(&idist, iseed, n, &resid[1]);
+            dlarnv_(&idist, _->iseed, n, &resid[1]);
 /*<          end if >*/
         }
 
@@ -386,7 +397,7 @@ static doublereal c_b29 = -1.;
 /*     %-----------------------------------------% */
 
 /*<       if (first) go to 20 >*/
-    if (first) {
+    if (_->first) {
         goto L20;
     }
 
@@ -395,7 +406,7 @@ static doublereal c_b29 = -1.;
 /*     %-----------------------------------------------% */
 
 /*<       if (orth)  go to 40 >*/
-    if (orth) {
+    if (_->orth) {
         goto L40;
     }
 
@@ -416,7 +427,7 @@ static doublereal c_b29 = -1.;
 /*<       call second (t2) >*/
 /*  second_(&t2); */
 /*<       first = .TRUE. >*/
-    first = TRUE_;
+    _->first = TRUE_;
 /*<       if (bmat .eq. 'G') then >*/
     if (*(unsigned char *)bmat == 'G') {
 /*<          nbx = nbx + 1 >*/
@@ -451,21 +462,21 @@ L20:
     }
 
 /*<       first = .FALSE. >*/
-    first = FALSE_;
+    _->first = FALSE_;
 /*<       if (bmat .eq. 'G') then >*/
     if (*(unsigned char *)bmat == 'G') {
 /*<           rnorm0 = ddot (n, resid, 1, workd, 1) >*/
-        rnorm0 = ddot_(n, &resid[1], &c__1, &workd[1], &c__1);
+        _->rnorm0 = ddot_(n, &resid[1], &c__1, &workd[1], &c__1);
 /*<           rnorm0 = sqrt(abs(rnorm0)) >*/
-        rnorm0 = sqrt((abs(rnorm0)));
+        _->rnorm0 = sqrt((abs(_->rnorm0)));
 /*<       else if (bmat .eq. 'I') then >*/
     } else if (*(unsigned char *)bmat == 'I') {
 /*<            rnorm0 = dnrm2(n, resid, 1) >*/
-        rnorm0 = dnrm2_(n, &resid[1], &c__1);
+        _->rnorm0 = dnrm2_(n, &resid[1], &c__1);
 /*<       end if >*/
     }
 /*<       rnorm  = rnorm0 >*/
-    *rnorm = rnorm0;
+    *rnorm = _->rnorm0;
 
 /*     %---------------------------------------------% */
 /*     | Exit if this is the very first Arnoldi step | */
@@ -489,7 +500,7 @@ L20:
 /*     %---------------------------------------------------------------% */
 
 /*<       orth = .TRUE. >*/
-    orth = TRUE_;
+    _->orth = TRUE_;
 /*<    30 continue >*/
 L30:
 
@@ -566,21 +577,21 @@ L40:
 /*      end if */
 
 /*<       if (rnorm .gt. 0.717*rnorm0) go to 50 >*/
-    if (*rnorm > rnorm0 * (float).717) {
+    if (*rnorm > _->rnorm0 * (float).717) {
         goto L50;
     }
 
 /*<       iter = iter + 1 >*/
-    ++iter;
+    ++_->iter;
 /*<       if (iter .le. 1) then >*/
-    if (iter <= 1) {
+    if (_->iter <= 1) {
 
 /*        %-----------------------------------% */
 /*        | Perform iterative refinement step | */
 /*        %-----------------------------------% */
 
 /*<          rnorm0 = rnorm >*/
-        rnorm0 = *rnorm;
+        _->rnorm0 = *rnorm;
 /*<          go to 30 >*/
         goto L30;
 /*<       else >*/

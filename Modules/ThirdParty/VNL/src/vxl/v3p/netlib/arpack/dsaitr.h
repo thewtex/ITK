@@ -1,4 +1,5 @@
 extern int v3p_netlib_dsaitr_(
+  struct dsaupd_workspace *workspace,
   v3p_netlib_integer *ido,
   char *bmat,
   v3p_netlib_integer *n,

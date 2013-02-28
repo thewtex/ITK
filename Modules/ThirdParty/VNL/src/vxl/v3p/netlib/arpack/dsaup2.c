@@ -219,7 +219,9 @@ static logical c_true = TRUE_;
 /* ----------------------------------------------------------------------- */
 
 /*<        >*/
-/* Subroutine */ int dsaup2_(integer *ido, char *bmat, integer *n, char *
+/* Subroutine */ int dsaup2_(
+        struct dsaupd_workspace *workspace,
+        integer *ido, char *bmat, integer *n, char *
         which, integer *nev, integer *np, doublereal *tol, doublereal *resid,
         integer *mode, integer *iupd, integer *ishift, integer *mxiter,
         doublereal *v, integer *ldv, doublereal *h__, integer *ldh,
@@ -242,48 +244,64 @@ static logical c_true = TRUE_;
     integer j;
 /*  static real t0, t1, t2, t3; */
 /*  integer kp[3]; */
+/* MRB
     static integer np0, nev0;
+*/
     extern doublereal ddot_(integer *, doublereal *, integer *, doublereal *,
             integer *);
+/* MRB
     static doublereal eps23;
+*/
     integer ierr;
+/* MRB
     static integer iter;
+*/
     doublereal temp;
     integer nevd2;
     extern doublereal dnrm2_(integer *, doublereal *, integer *);
+/* MRB
     static logical getv0;
+*/
     integer nevm2;
+/* MRB
     static logical cnorm;
+*/
     extern /* Subroutine */ int dcopy_(integer *, doublereal *, integer *,
             doublereal *, integer *), dswap_(integer *, doublereal *, integer
             *, doublereal *, integer *);
+/* MRB
     static integer nconv;
     static logical initv;
     static doublereal rnorm;
-    extern /* Subroutine */ int dgetv0_(integer *, char *, integer *, logical
+*/
+    extern /* Subroutine */ int dgetv0_(struct dsaupd_workspace *, integer *, char *, integer *, logical
             *, integer *, integer *, doublereal *, integer *, doublereal *,
             doublereal *, integer *, doublereal *, integer *, ftnlen);
     extern doublereal dlamch_(char *, ftnlen);
     integer nevbef;
     extern /* Subroutine */ int second_(real *);
+/* MRB
     static logical update;
+*/
     char wprime[2];
+/* MRB
     static logical ushift;
-    static integer kplusp /*, msglvl */;
+    static integer kplusp */ /*, msglvl */ /*;
+*/
     integer nptemp;
-    extern /* Subroutine */ int dsaitr_(integer *, char *, integer *, integer
+    extern /* Subroutine */ int dsaitr_(struct dsaupd_workspace *, integer *, char *, integer *, integer
             *, integer *, integer *, doublereal *, doublereal *, doublereal *,
              integer *, doublereal *, integer *, integer *, doublereal *,
             integer *, ftnlen), dsconv_(integer *, doublereal *, doublereal *,
              doublereal *, integer *), dseigt_(doublereal *, integer *,
             doublereal *, integer *, doublereal *, doublereal *, doublereal *,
              integer *), dsgets_(integer *, char *, integer *, integer *,
-            doublereal *, doublereal *, doublereal *, ftnlen), dsapps_(
+            doublereal *, doublereal *, doublereal *, ftnlen), dsapps_(struct dsaupd_workspace *,
             integer *, integer *, integer *, doublereal *, doublereal *,
             integer *, doublereal *, integer *, doublereal *, doublereal *,
             integer *, doublereal *), dsortr_(char *, logical *, integer *,
             doublereal *, doublereal *, ftnlen);
-
+    struct dsaup2_static *_;
 
 /*     %----------------------------------------------------% */
 /*     | Include files for debugging and timing information | */
@@ -385,6 +403,8 @@ static logical c_true = TRUE_;
     q -= q_offset;
     --ipntr;
 
+    _ = &workspace->dsaup2_workspace;
+
     /* Function Body */
     if (*ido == 0) {
 
@@ -403,9 +423,9 @@ static logical c_true = TRUE_;
 /*        %---------------------------------% */
 
 /*<          eps23 = dlamch('Epsilon-Machine') >*/
-        eps23 = dlamch_("Epsilon-Machine", (ftnlen)15);
+        _->eps23 = dlamch_("Epsilon-Machine", (ftnlen)15);
 /*<          eps23 = eps23**(2.0D+0/3.0D+0) >*/
-        eps23 = pow_dd(&eps23, &c_b3);
+        _->eps23 = pow_dd(&_->eps23, &c_b3);
 
 /*        %-------------------------------------% */
 /*        | nev0 and np0 are integer variables  | */
@@ -413,9 +433,9 @@ static logical c_true = TRUE_;
 /*        %-------------------------------------% */
 
 /*<          nev0   = nev >*/
-        nev0 = *nev;
+        _->nev0 = *nev;
 /*<          np0    = np >*/
-        np0 = *np;
+        _->np0 = *np;
 
 /*        %-------------------------------------% */
 /*        | kplusp is the bound on the largest  | */
@@ -427,11 +447,11 @@ static logical c_true = TRUE_;
 /*        %-------------------------------------% */
 
 /*<          kplusp = nev0 + np0 >*/
-        kplusp = nev0 + np0;
+        _->kplusp = _->nev0 + _->np0;
 /*<          nconv  = 0 >*/
-        nconv = 0;
+        _->nconv = 0;
 /*<          iter   = 0 >*/
-        iter = 0;
+        _->iter = 0;
 
 /*        %--------------------------------------------% */
 /*        | Set flags for computing the first NEV steps | */
@@ -439,13 +459,13 @@ static logical c_true = TRUE_;
 /*        %--------------------------------------------% */
 
 /*<          getv0    = .true. >*/
-        getv0 = TRUE_;
+        _->getv0 = TRUE_;
 /*<          update   = .false. >*/
-        update = FALSE_;
+        _->update = FALSE_;
 /*<          ushift   = .false. >*/
-        ushift = FALSE_;
+        _->ushift = FALSE_;
 /*<          cnorm    = .false. >*/
-        cnorm = FALSE_;
+        _->cnorm = FALSE_;
 
 /*<          if (info .ne. 0) then >*/
         if (*info != 0) {
@@ -455,13 +475,13 @@ static logical c_true = TRUE_;
 /*        %--------------------------------------------% */
 
 /*<             initv = .true. >*/
-            initv = TRUE_;
+            _->initv = TRUE_;
 /*<             info  = 0 >*/
             *info = 0;
 /*<          else >*/
         } else {
 /*<             initv = .false. >*/
-            initv = FALSE_;
+            _->initv = FALSE_;
 /*<          end if >*/
         }
 /*<       end if >*/
@@ -476,10 +496,10 @@ static logical c_true = TRUE_;
 /* L10: */
 
 /*<       if (getv0) then >*/
-    if (getv0) {
+    if (_->getv0) {
 /*<        >*/
-        dgetv0_(ido, bmat, &c__1, &initv, n, &c__1, &v[v_offset], ldv, &resid[
-                1], &rnorm, &ipntr[1], &workd[1], info, (ftnlen)1);
+        dgetv0_(workspace, ido, bmat, &c__1, &_->initv, n, &c__1, &v[v_offset], ldv, &resid[
+                1], &_->rnorm, &ipntr[1], &workd[1], info, (ftnlen)1);
 
 /*<          if (ido .ne. 99) go to 9000 >*/
         if (*ido != 99) {
@@ -487,7 +507,7 @@ static logical c_true = TRUE_;
         }
 
 /*<          if (rnorm .eq. zero) then >*/
-        if (rnorm == 0.) {
+        if (_->rnorm == 0.) {
 
 /*           %-----------------------------------------% */
 /*           | The initial vector is zero. Error exit. | */
@@ -500,7 +520,7 @@ static logical c_true = TRUE_;
 /*<          end if >*/
         }
 /*<          getv0 = .false. >*/
-        getv0 = FALSE_;
+        _->getv0 = FALSE_;
 /*<          ido  = 0 >*/
         *ido = 0;
 /*<       end if >*/
@@ -511,7 +531,7 @@ static logical c_true = TRUE_;
 /*     %------------------------------------------------------------% */
 
 /*<       if (update) go to 20 >*/
-    if (update) {
+    if (_->update) {
         goto L20;
     }
 
@@ -520,7 +540,7 @@ static logical c_true = TRUE_;
 /*     %-------------------------------------------% */
 
 /*<       if (ushift) go to 50 >*/
-    if (ushift) {
+    if (_->ushift) {
         goto L50;
     }
 
@@ -530,7 +550,7 @@ static logical c_true = TRUE_;
 /*     %-------------------------------------% */
 
 /*<       if (cnorm)  go to 100 >*/
-    if (cnorm) {
+    if (_->cnorm) {
         goto L100;
     }
 
@@ -539,7 +559,7 @@ static logical c_true = TRUE_;
 /*     %----------------------------------------------------------% */
 
 /*<        >*/
-    dsaitr_(ido, bmat, n, &c__0, &nev0, mode, &resid[1], &rnorm, &v[v_offset],
+    dsaitr_(workspace, ido, bmat, n, &c__0, &_->nev0, mode, &resid[1], &_->rnorm, &v[v_offset],
              ldv, &h__[h_offset], ldh, &ipntr[1], &workd[1], info, (ftnlen)1);
 
 /*     %---------------------------------------------------% */
@@ -564,7 +584,7 @@ static logical c_true = TRUE_;
 /*<          np   = info >*/
         *np = *info;
 /*<          mxiter = iter >*/
-        *mxiter = iter;
+        *mxiter = _->iter;
 /*<          info = -9999 >*/
         *info = -9999;
 /*<          go to 1200 >*/
@@ -584,7 +604,7 @@ static logical c_true = TRUE_;
 L1000:
 
 /*<          iter = iter + 1 >*/
-    ++iter;
+    ++_->iter;
 
 /*         if (msglvl .gt. 0) then */
 /*            call ivout (logfil, 1, iter, ndigit, */
@@ -606,10 +626,10 @@ L1000:
 /*<    20    continue >*/
 L20:
 /*<          update = .true. >*/
-    update = TRUE_;
+    _->update = TRUE_;
 
 /*<        >*/
-    dsaitr_(ido, bmat, n, nev, np, mode, &resid[1], &rnorm, &v[v_offset], ldv,
+    dsaitr_(workspace, ido, bmat, n, nev, np, mode, &resid[1], &_->rnorm, &v[v_offset], ldv,
              &h__[h_offset], ldh, &ipntr[1], &workd[1], info, (ftnlen)1);
 
 /*        %---------------------------------------------------% */
@@ -634,7 +654,7 @@ L20:
 /*<             np = info >*/
         *np = *info;
 /*<             mxiter = iter >*/
-        *mxiter = iter;
+        *mxiter = _->iter;
 /*<             info = -9999 >*/
         *info = -9999;
 /*<             go to 1200 >*/
@@ -642,7 +662,7 @@ L20:
 /*<          end if >*/
     }
 /*<          update = .false. >*/
-    update = FALSE_;
+    _->update = FALSE_;
 
 /*         if (msglvl .gt. 1) then */
 /*            call dvout (logfil, 1, rnorm, ndigit, */
@@ -655,7 +675,7 @@ L20:
 /*        %--------------------------------------------------------% */
 
 /*<          call dseigt (rnorm, kplusp, h, ldh, ritz, bounds, workl, ierr) >*/
-    dseigt_(&rnorm, &kplusp, &h__[h_offset], ldh, &ritz[1], &bounds[1], &
+    dseigt_(&_->rnorm, &_->kplusp, &h__[h_offset], ldh, &ritz[1], &bounds[1], &
             workl[1], &ierr);
 
 /*<          if (ierr .ne. 0) then >*/
@@ -673,9 +693,9 @@ L20:
 /*        %----------------------------------------------------% */
 
 /*<          call dcopy(kplusp, ritz, 1, workl(kplusp+1), 1) >*/
-    dcopy_(&kplusp, &ritz[1], &c__1, &workl[kplusp + 1], &c__1);
+    dcopy_(&_->kplusp, &ritz[1], &c__1, &workl[_->kplusp + 1], &c__1);
 /*<          call dcopy(kplusp, bounds, 1, workl(2*kplusp+1), 1) >*/
-    dcopy_(&kplusp, &bounds[1], &c__1, &workl[(kplusp << 1) + 1], &c__1);
+    dcopy_(&_->kplusp, &bounds[1], &c__1, &workl[(_->kplusp << 1) + 1], &c__1);
 
 /*        %---------------------------------------------------% */
 /*        | Select the wanted Ritz values and their bounds    | */
@@ -688,9 +708,9 @@ L20:
 /*        %---------------------------------------------------% */
 
 /*<          nev = nev0 >*/
-    *nev = nev0;
+    *nev = _->nev0;
 /*<          np = np0 >*/
-    *np = np0;
+    *np = _->np0;
 /*<          call dsgets (ishift, which, nev, np, ritz, bounds, workl) >*/
     dsgets_(ishift, which, nev, np, &ritz[1], &bounds[1], &workl[1], (ftnlen)
             2);
@@ -702,7 +722,7 @@ L20:
 /*<          call dcopy (nev, bounds(np+1), 1, workl(np+1), 1) >*/
     dcopy_(nev, &bounds[*np + 1], &c__1, &workl[*np + 1], &c__1);
 /*<          call dsconv (nev, ritz(np+1), workl(np+1), tol, nconv) >*/
-    dsconv_(nev, &ritz[*np + 1], &workl[*np + 1], tol, &nconv);
+    dsconv_(nev, &ritz[*np + 1], &workl[*np + 1], tol, &_->nconv);
 
 /*<          if (msglvl .gt. 2) then >*/
 /*  if (msglvl > 2) { */
@@ -749,7 +769,7 @@ L20:
     }
 
 /*<        >*/
-    if (nconv >= nev0 || iter > *mxiter || *np == 0) {
+    if (_->nconv >= _->nev0 || _->iter > *mxiter || *np == 0) {
 
 /*           %------------------------------------------------% */
 /*           | Prepare to exit. Put the converged Ritz values | */
@@ -774,7 +794,7 @@ L20:
 /*<                wprime = 'SA' >*/
             s_copy(wprime, "SA", (ftnlen)2, (ftnlen)2);
 /*<                call dsortr (wprime, .true., kplusp, ritz, bounds) >*/
-            dsortr_(wprime, &c_true, &kplusp, &ritz[1], &bounds[1], (ftnlen)2)
+            dsortr_(wprime, &c_true, &_->kplusp, &ritz[1], &bounds[1], (ftnlen)2)
                     ;
 /*<                nevd2 = nev / 2 >*/
             nevd2 = *nev / 2;
@@ -785,13 +805,13 @@ L20:
 /*<        >*/
                 i__1 = min(nevd2,*np);
 /* Computing MAX */
-                i__2 = kplusp - nevd2 + 1, i__3 = kplusp - *np + 1;
+                i__2 = _->kplusp - nevd2 + 1, i__3 = _->kplusp - *np + 1;
                 dswap_(&i__1, &ritz[nevm2 + 1], &c__1, &ritz[max(i__2,i__3)],
                         &c__1);
 /*<        >*/
                 i__1 = min(nevd2,*np);
 /* Computing MAX */
-                i__2 = kplusp - nevd2 + 1, i__3 = kplusp - *np;
+                i__2 = _->kplusp - nevd2 + 1, i__3 = _->kplusp - *np;
                 dswap_(&i__1, &bounds[nevm2 + 1], &c__1, &bounds[max(i__2,
                         i__3) + 1], &c__1);
 /*<                end if >*/
@@ -827,7 +847,7 @@ L20:
             }
 
 /*<                call dsortr (wprime, .true., kplusp, ritz, bounds) >*/
-            dsortr_(wprime, &c_true, &kplusp, &ritz[1], &bounds[1], (ftnlen)2)
+            dsortr_(wprime, &c_true, &_->kplusp, &ritz[1], &bounds[1], (ftnlen)2)
                     ;
 
 /*<             end if >*/
@@ -839,11 +859,11 @@ L20:
 /*           %--------------------------------------------------% */
 
 /*<             do 35 j = 1, nev0 >*/
-        i__1 = nev0;
+        i__1 = _->nev0;
         for (j = 1; j <= i__1; ++j) {
 /*<                temp = max( eps23, abs(ritz(j)) ) >*/
 /* Computing MAX */
-            d__2 = eps23, d__3 = (d__1 = ritz[j], abs(d__1));
+            d__2 = _->eps23, d__3 = (d__1 = ritz[j], abs(d__1));
             temp = max(d__2,d__3);
 /*<                bounds(j) = bounds(j)/temp >*/
             bounds[j] /= temp;
@@ -861,7 +881,7 @@ L20:
 /*<             wprime = 'LA' >*/
         s_copy(wprime, "LA", (ftnlen)2, (ftnlen)2);
 /*<             call dsortr(wprime, .true., nev0, bounds, ritz) >*/
-        dsortr_(wprime, &c_true, &nev0, &bounds[1], &ritz[1], (ftnlen)2);
+        dsortr_(wprime, &c_true, &_->nev0, &bounds[1], &ritz[1], (ftnlen)2);
 
 /*           %----------------------------------------------% */
 /*           | Scale the Ritz estimate back to its original | */
@@ -869,11 +889,11 @@ L20:
 /*           %----------------------------------------------% */
 
 /*<             do 40 j = 1, nev0 >*/
-        i__1 = nev0;
+        i__1 = _->nev0;
         for (j = 1; j <= i__1; ++j) {
 /*<                 temp = max( eps23, abs(ritz(j)) ) >*/
 /* Computing MAX */
-            d__2 = eps23, d__3 = (d__1 = ritz[j], abs(d__1));
+            d__2 = _->eps23, d__3 = (d__1 = ritz[j], abs(d__1));
             temp = max(d__2,d__3);
 /*<                 bounds(j) = bounds(j)*temp >*/
             bounds[j] *= temp;
@@ -900,7 +920,7 @@ L20:
 /*<                wprime = 'LA' >*/
             s_copy(wprime, "LA", (ftnlen)2, (ftnlen)2);
 /*<                call dsortr(wprime, .true., nconv, ritz, bounds) >*/
-            dsortr_(wprime, &c_true, &nconv, &ritz[1], &bounds[1], (ftnlen)2);
+            dsortr_(wprime, &c_true, &_->nconv, &ritz[1], &bounds[1], (ftnlen)2);
 
 /*<             else >*/
         } else {
@@ -912,7 +932,7 @@ L20:
 /*              | ritz.                                        | */
 /*              %----------------------------------------------% */
 /*<                call dsortr(which, .true., nconv, ritz, bounds) >*/
-            dsortr_(which, &c_true, &nconv, &ritz[1], &bounds[1], (ftnlen)2);
+            dsortr_(which, &c_true, &_->nconv, &ritz[1], &bounds[1], (ftnlen)2);
 
 /*<             end if >*/
         }
@@ -923,7 +943,7 @@ L20:
 /*           %------------------------------------------% */
 
 /*<             h(1,1) = rnorm >*/
-        h__[h_dim1 + 1] = rnorm;
+        h__[h_dim1 + 1] = _->rnorm;
 
 /*            if (msglvl .gt. 1) then */
 /*               call dvout (logfil, kplusp, ritz, ndigit, */
@@ -937,7 +957,7 @@ L20:
 /*           %------------------------------------% */
 
 /*<             if (iter .gt. mxiter .and. nconv .lt. nev) info = 1 >*/
-        if (iter > *mxiter && nconv < *nev) {
+        if (_->iter > *mxiter && _->nconv < *nev) {
             *info = 1;
         }
 
@@ -946,17 +966,17 @@ L20:
 /*           %---------------------% */
 
 /*<             if (np .eq. 0 .and. nconv .lt. nev0) info = 2 >*/
-        if (*np == 0 && nconv < nev0) {
+        if (*np == 0 && _->nconv < _->nev0) {
             *info = 2;
         }
 
 /*<             np = nconv >*/
-        *np = nconv;
+        *np = _->nconv;
 /*<             go to 1100 >*/
         goto L1100;
 
 /*<          else if (nconv .lt. nev .and. ishift .eq. 1) then >*/
-    } else if (nconv < *nev && *ishift == 1) {
+    } else if (_->nconv < *nev && *ishift == 1) {
 
 /*           %---------------------------------------------------% */
 /*           | Do not have all the requested eigenvalues yet.    | */
@@ -968,20 +988,20 @@ L20:
         nevbef = *nev;
 /*<             nev = nev + min (nconv, np/2) >*/
 /* Computing MIN */
-        i__1 = nconv, i__2 = *np / 2;
+        i__1 = _->nconv, i__2 = *np / 2;
         *nev += min(i__1,i__2);
 /*<             if (nev .eq. 1 .and. kplusp .ge. 6) then >*/
-        if (*nev == 1 && kplusp >= 6) {
+        if (*nev == 1 && _->kplusp >= 6) {
 /*<                nev = kplusp / 2 >*/
-            *nev = kplusp / 2;
+            *nev = _->kplusp / 2;
 /*<             else if (nev .eq. 1 .and. kplusp .gt. 2) then >*/
-        } else if (*nev == 1 && kplusp > 2) {
+        } else if (*nev == 1 && _->kplusp > 2) {
 /*<                nev = 2 >*/
             *nev = 2;
 /*<             end if >*/
         }
 /*<             np  = kplusp - nev >*/
-        *np = kplusp - *nev;
+        *np = _->kplusp - *nev;
 
 /*           %---------------------------------------% */
 /*           | If the size of NEV was just increased | */
@@ -1028,7 +1048,7 @@ L20:
 /*           %-----------------------------------------------------% */
 
 /*<             ushift = .true. >*/
-        ushift = TRUE_;
+        _->ushift = TRUE_;
 /*<             ido = 3 >*/
         *ido = 3;
 /*<             go to 9000 >*/
@@ -1046,7 +1066,7 @@ L50:
 /*        %------------------------------------% */
 
 /*<          ushift = .false. >*/
-    ushift = FALSE_;
+    _->ushift = FALSE_;
 
 
 /*        %---------------------------------------------------------% */
@@ -1080,7 +1100,7 @@ L50:
 /*        %---------------------------------------------------------% */
 
 /*<        >*/
-    dsapps_(n, nev, np, &ritz[1], &v[v_offset], ldv, &h__[h_offset], ldh, &
+    dsapps_(workspace, n, nev, np, &ritz[1], &v[v_offset], ldv, &h__[h_offset], ldh, &
             resid[1], &q[q_offset], ldq, &workd[1]);
 
 /*        %---------------------------------------------% */
@@ -1090,7 +1110,7 @@ L50:
 /*        %---------------------------------------------% */
 
 /*<          cnorm = .true. >*/
-    cnorm = TRUE_;
+    _->cnorm = TRUE_;
 /*<          call second (t2) >*/
 /*  second_(&t2); */
 /*<          if (bmat .eq. 'G') then >*/
@@ -1139,17 +1159,17 @@ L100:
 /*<          if (bmat .eq. 'G') then          >*/
     if (*(unsigned char *)bmat == 'G') {
 /*<             rnorm = ddot (n, resid, 1, workd, 1) >*/
-        rnorm = ddot_(n, &resid[1], &c__1, &workd[1], &c__1);
+        _->rnorm = ddot_(n, &resid[1], &c__1, &workd[1], &c__1);
 /*<             rnorm = sqrt(abs(rnorm)) >*/
-        rnorm = sqrt((abs(rnorm)));
+        _->rnorm = sqrt((abs(_->rnorm)));
 /*<          else if (bmat .eq. 'I') then >*/
     } else if (*(unsigned char *)bmat == 'I') {
 /*<             rnorm = dnrm2(n, resid, 1) >*/
-        rnorm = dnrm2_(n, &resid[1], &c__1);
+        _->rnorm = dnrm2_(n, &resid[1], &c__1);
 /*<          end if >*/
     }
 /*<          cnorm = .false. >*/
-    cnorm = FALSE_;
+    _->cnorm = FALSE_;
 /*<   130    continue >*/
 /* L130: */
 
@@ -1175,9 +1195,9 @@ L100:
 L1100:
 
 /*<       mxiter = iter >*/
-    *mxiter = iter;
+    *mxiter = _->iter;
 /*<       nev = nconv >*/
-    *nev = nconv;
+    *nev = _->nconv;
 
 /*<  1200 continue >*/
 L1200:

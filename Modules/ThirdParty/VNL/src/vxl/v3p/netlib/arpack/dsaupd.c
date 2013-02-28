@@ -441,9 +441,10 @@ extern "C" {
 /* ----------------------------------------------------------------------- */
 
 /*<        >*/
-/* Subroutine */ int dsaupd_(integer *ido, char *bmat, integer *n, char *
+/* Subroutine */ int dsaupd_(struct dsaupd_workspace *workspace,
+        integer *ido, char *bmat, integer *n, char *
         which, integer *nev, doublereal *tol, doublereal *resid, integer *ncv,
-         doublereal *v, integer *ldv, integer *iparam, integer *ipntr,
+        doublereal *v, integer *ldv, integer *iparam, integer *ipntr,
         doublereal *workd, doublereal *workl, integer *lworkl, integer *info,
         ftnlen bmat_len, ftnlen which_len)
 {
@@ -456,9 +457,14 @@ extern "C" {
     /* Local variables */
     integer j;
 /*  static real t0, t1; */
+/* MRB - moved to the input dsaupd_static workspace struct
     static integer nb, ih, iq, np, iw, ldh, ldq, nev0, mode, ierr, iupd, next,
              ritz;
-    extern /* Subroutine */ int dsaup2_(integer *, char *, integer *, char *,
+*/
+    struct dsaupd_static *_;
+
+    extern /* Subroutine */ int dsaup2_(struct dsaupd_workspace *workspace,
+            integer *, char *, integer *, char *,
             integer *, integer *, doublereal *, doublereal *, integer *,
             integer *, integer *, integer *, doublereal *, integer *,
             doublereal *, integer *, doublereal *, doublereal *, doublereal *,
@@ -466,7 +472,9 @@ extern "C" {
             ftnlen, ftnlen);
     extern doublereal dlamch_(char *, ftnlen);
     extern /* Subroutine */ int second_(real *);
-    static integer bounds, ishift, /* msglvl, */ mxiter;
+/* MRB - moved to the input dsaupd_static workspace struct
+    static integer bounds, ishift, */ /* msglvl, */ /* mxiter;
+*/
     extern /* Subroutine */ int dstats_();
 
 
@@ -554,6 +562,8 @@ extern "C" {
     --ipntr;
     --workl;
 
+    _ = &workspace->dsaupd_workspace;
+
     /* Function Body */
     if (*ido == 0) {
 
@@ -570,22 +580,22 @@ extern "C" {
 /*      msglvl = debug_1.msaupd; */
 
 /*<          ierr   = 0 >*/
-        ierr = 0;
+        _->ierr = 0;
 /*<          ishift = iparam(1) >*/
-        ishift = iparam[1];
+        _->ishift = iparam[1];
 /*<          mxiter = iparam(3) >*/
-        mxiter = iparam[3];
+        _->mxiter = iparam[3];
 /*<          nb     = iparam(4) >*/
-        nb = iparam[4];
+        _->nb = iparam[4];
 
 /*        %--------------------------------------------% */
 /*        | Revision 2 performs only implicit restart. | */
 /*        %--------------------------------------------% */
 
 /*<          iupd   = 1 >*/
-        iupd = 1;
+        _->iupd = 1;
 /*<          mode   = iparam(7) >*/
-        mode = iparam[7];
+        _->mode = iparam[7];
 
 /*        %----------------% */
 /*        | Error checking | */
@@ -594,15 +604,15 @@ extern "C" {
 /*<          if (n .le. 0) then >*/
         if (*n <= 0) {
 /*<             ierr = -1 >*/
-            ierr = -1;
+            _->ierr = -1;
 /*<          else if (nev .le. 0) then >*/
         } else if (*nev <= 0) {
 /*<             ierr = -2 >*/
-            ierr = -2;
+            _->ierr = -2;
 /*<          else if (ncv .le. nev .or.  ncv .gt. n) then >*/
         } else if (*ncv <= *nev || *ncv > *n) {
 /*<             ierr = -3 >*/
-            ierr = -3;
+            _->ierr = -3;
 /*<          end if >*/
         }
 
@@ -612,11 +622,11 @@ extern "C" {
 /*        %----------------------------------------------% */
 
 /*<          np     = ncv - nev >*/
-        np = *ncv - *nev;
+        _->np = *ncv - *nev;
 
 /*<          if (mxiter .le. 0)                     ierr = -4 >*/
-        if (mxiter <= 0) {
-            ierr = -4;
+        if (_->mxiter <= 0) {
+            _->ierr = -4;
         }
 /*<        >*/
         if (s_cmp(which, "LM", (ftnlen)2, (ftnlen)2) != 0 && s_cmp(which,
@@ -624,36 +634,36 @@ extern "C" {
                 ftnlen)2, (ftnlen)2) != 0 && s_cmp(which, "SA", (ftnlen)2, (
                 ftnlen)2) != 0 && s_cmp(which, "BE", (ftnlen)2, (ftnlen)2) !=
                 0) {
-            ierr = -5;
+            _->ierr = -5;
         }
 /*<          if (bmat .ne. 'I' .and. bmat .ne. 'G') ierr = -6 >*/
         if (*(unsigned char *)bmat != 'I' && *(unsigned char *)bmat != 'G') {
-            ierr = -6;
+            _->ierr = -6;
         }
 
 /*<          if (lworkl .lt. ncv**2 + 8*ncv)        ierr = -7 >*/
 /* Computing 2nd power */
         i__1 = *ncv;
         if (*lworkl < i__1 * i__1 + (*ncv << 3)) {
-            ierr = -7;
+            _->ierr = -7;
         }
 /*<          if (mode .lt. 1 .or. mode .gt. 5) then >*/
-        if (mode < 1 || mode > 5) {
+        if (_->mode < 1 || _->mode > 5) {
 /*<                                                 ierr = -10 >*/
-            ierr = -10;
+            _->ierr = -10;
 /*<          else if (mode .eq. 1 .and. bmat .eq. 'G') then >*/
-        } else if (mode == 1 && *(unsigned char *)bmat == 'G') {
+        } else if (_->mode == 1 && *(unsigned char *)bmat == 'G') {
 /*<                                                 ierr = -11 >*/
-            ierr = -11;
+            _->ierr = -11;
 /*<          else if (ishift .lt. 0 .or. ishift .gt. 1) then >*/
-        } else if (ishift < 0 || ishift > 1) {
+        } else if (_->ishift < 0 || _->ishift > 1) {
 /*<                                                 ierr = -12 >*/
-            ierr = -12;
+            _->ierr = -12;
 /*<          else if (nev .eq. 1 .and. which .eq. 'BE') then >*/
         } else if (*nev == 1 && s_cmp(which, "BE", (ftnlen)2, (ftnlen)2) == 0)
                  {
 /*<                                                 ierr = -13 >*/
-            ierr = -13;
+            _->ierr = -13;
 /*<          end if >*/
         }
 
@@ -662,9 +672,9 @@ extern "C" {
 /*        %------------% */
 
 /*<          if (ierr .ne. 0) then >*/
-        if (ierr != 0) {
+        if (_->ierr != 0) {
 /*<             info = ierr >*/
-            *info = ierr;
+            *info = _->ierr;
 /*<             ido  = 99 >*/
             *ido = 99;
 /*<             go to 9000 >*/
@@ -677,8 +687,8 @@ extern "C" {
 /*        %------------------------% */
 
 /*<          if (nb .le. 0)                         nb = 1 >*/
-        if (nb <= 0) {
-            nb = 1;
+        if (_->nb <= 0) {
+            _->nb = 1;
         }
 /*<          if (tol .le. zero)                     tol = dlamch('EpsMach') >*/
         if (*tol <= 0.) {
@@ -693,9 +703,9 @@ extern "C" {
 /*        %----------------------------------------------% */
 
 /*<          np     = ncv - nev >*/
-        np = *ncv - *nev;
+        _->np = *ncv - *nev;
 /*<          nev0   = nev  >*/
-        nev0 = *nev;
+        _->nev0 = *nev;
 
 /*        %-----------------------------% */
 /*        | Zero out internal workspace | */
@@ -725,34 +735,34 @@ extern "C" {
 /*        %-------------------------------------------------------% */
 
 /*<          ldh    = ncv >*/
-        ldh = *ncv;
+        _->ldh = *ncv;
 /*<          ldq    = ncv >*/
-        ldq = *ncv;
+        _->ldq = *ncv;
 /*<          ih     = 1 >*/
-        ih = 1;
+        _->ih = 1;
 /*<          ritz   = ih     + 2*ldh >*/
-        ritz = ih + (ldh << 1);
+        _->ritz = _->ih + (_->ldh << 1);
 /*<          bounds = ritz   + ncv >*/
-        bounds = ritz + *ncv;
+        _->bounds = _->ritz + *ncv;
 /*<          iq     = bounds + ncv >*/
-        iq = bounds + *ncv;
+        _->iq = _->bounds + *ncv;
 /*<          iw     = iq     + ncv**2 >*/
 /* Computing 2nd power */
         i__1 = *ncv;
-        iw = iq + i__1 * i__1;
+        _->iw = _->iq + i__1 * i__1;
 /*<          next   = iw     + 3*ncv >*/
-        next = iw + *ncv * 3;
+        _->next = _->iw + *ncv * 3;
 
 /*<          ipntr(4) = next >*/
-        ipntr[4] = next;
+        ipntr[4] = _->next;
 /*<          ipntr(5) = ih >*/
-        ipntr[5] = ih;
+        ipntr[5] = _->ih;
 /*<          ipntr(6) = ritz >*/
-        ipntr[6] = ritz;
+        ipntr[6] = _->ritz;
 /*<          ipntr(7) = bounds >*/
-        ipntr[7] = bounds;
+        ipntr[7] = _->bounds;
 /*<          ipntr(11) = iw >*/
-        ipntr[11] = iw;
+        ipntr[11] = _->iw;
 /*<       end if >*/
     }
 
@@ -761,9 +771,9 @@ extern "C" {
 /*     %-------------------------------------------------------% */
 
 /*<        >*/
-    dsaup2_(ido, bmat, n, which, &nev0, &np, tol, &resid[1], &mode, &iupd, &
-            ishift, &mxiter, &v[v_offset], ldv, &workl[ih], &ldh, &workl[ritz]
-            , &workl[bounds], &workl[iq], &ldq, &workl[iw], &ipntr[1], &workd[
+    dsaup2_(workspace, ido, bmat, n, which, &_->nev0, &_->np, tol, &resid[1], &_->mode, &_->iupd, &
+            _->ishift, &_->mxiter, &v[v_offset], ldv, &workl[_->ih], &_->ldh, &workl[_->ritz]
+            , &workl[_->bounds], &workl[_->iq], &_->ldq, &workl[_->iw], &ipntr[1], &workd[
             1], info, (ftnlen)1, (ftnlen)2);
 
 /*     %--------------------------------------------------% */
@@ -773,7 +783,7 @@ extern "C" {
 
 /*<       if (ido .eq. 3) iparam(8) = np >*/
     if (*ido == 3) {
-        iparam[8] = np;
+        iparam[8] = _->np;
     }
 /*<       if (ido .ne. 99) go to 9000 >*/
     if (*ido != 99) {
@@ -781,9 +791,9 @@ extern "C" {
     }
 
 /*<       iparam(3) = mxiter >*/
-    iparam[3] = mxiter;
+    iparam[3] = _->mxiter;
 /*<       iparam(5) = np >*/
-    iparam[5] = np;
+    iparam[5] = _->np;
 /*<       iparam(9) = nopx >*/
 /*  iparam[9] = timing_1.nopx; */
 /*<       iparam(10) = nbx >*/

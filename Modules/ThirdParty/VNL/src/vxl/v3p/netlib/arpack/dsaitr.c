@@ -246,14 +246,16 @@ static doublereal c_b51 = -1.;
 /* ----------------------------------------------------------------------- */
 
 /*<        >*/
-/* Subroutine */ int dsaitr_(integer *ido, char *bmat, integer *n, integer *k,
+/* Subroutine */ int dsaitr_(struct dsaupd_workspace *workspace, integer *ido, char *bmat, integer *n, integer *k,
          integer *np, integer *mode, doublereal *resid, doublereal *rnorm,
         doublereal *v, integer *ldv, doublereal *h__, integer *ldh, integer *
         ipntr, doublereal *workd, integer *info, ftnlen bmat_len)
 {
     /* Initialized data */
 
+/* MRB
     static logical first = TRUE_;
+*/
 
     /* System generated locals */
     integer h_dim1, h_offset, v_dim1, v_offset, i__1;
@@ -263,16 +265,24 @@ static doublereal c_b51 = -1.;
 
     /* Local variables */
     integer i__;
+/* MRB
     static integer j;
+*/
 /*  static real t0, t1, t2, t3, t4, t5; */
     integer jj;
+/* MRB
     static integer ipj, irj, ivj;
+*/
     extern doublereal ddot_(integer *, doublereal *, integer *, doublereal *,
             integer *);
+/* MRB
     static integer ierr, iter, itry;
+*/
     extern doublereal dnrm2_(integer *, doublereal *, integer *);
     doublereal temp1;
+/* MRB
     static logical orth1, orth2, step3, step4;
+*/
     extern /* Subroutine */ int dscal_(integer *, doublereal *, doublereal *,
             integer *), dgemv_(char *, integer *, integer *, doublereal *,
             doublereal *, integer *, doublereal *, integer *, doublereal *,
@@ -281,17 +291,25 @@ static doublereal c_b51 = -1.;
     extern /* Subroutine */ int dcopy_(integer *, doublereal *, integer *,
             doublereal *, integer *);
 /*  doublereal xtemp[2]; */
+/* MRB
     static doublereal wnorm;
-    extern /* Subroutine */ int dgetv0_(integer *, char *, integer *, logical
+*/
+    extern /* Subroutine */ int dgetv0_(struct dsaupd_workspace *workspace, integer *, char *, integer *, logical
             *, integer *, integer *, doublereal *, integer *, doublereal *,
             doublereal *, integer *, doublereal *, integer *, ftnlen);
+/* MRB
     static doublereal rnorm1;
+*/
     extern doublereal dlamch_(char *, ftnlen);
     extern /* Subroutine */ int dlascl_(char *, integer *, integer *,
             doublereal *, doublereal *, integer *, integer *, doublereal *,
             integer *, integer *, ftnlen), second_(real *);
+    struct dsaitr_static *_;
+
+/* MRB
     static doublereal safmin;
     static logical rstart;
+*/
 /*  static integer msglvl; */
 
 
@@ -388,6 +406,8 @@ static doublereal c_b51 = -1.;
     h__ -= h_offset;
     --ipntr;
 
+    _ = &workspace->dsaitr_workspace;
+
     /* Function Body */
 
 /*     %-----------------------% */
@@ -395,9 +415,9 @@ static doublereal c_b51 = -1.;
 /*     %-----------------------% */
 
 /*<       if (first) then >*/
-    if (first) {
+    if (_->first) {
 /*<          first = .false. >*/
-        first = FALSE_;
+        _->first = FALSE_;
 
 /*        %--------------------------------% */
 /*        | safmin = safe minimum is such  | */
@@ -405,7 +425,7 @@ static doublereal c_b51 = -1.;
 /*        %--------------------------------% */
 
 /*<          safmin = dlamch('safmin') >*/
-        safmin = dlamch_("safmin", (ftnlen)6);
+        _->safmin = dlamch_("safmin", (ftnlen)6);
 /*<       end if >*/
     }
 
@@ -429,15 +449,15 @@ static doublereal c_b51 = -1.;
 /*<          info   = 0 >*/
         *info = 0;
 /*<          step3  = .false. >*/
-        step3 = FALSE_;
+        _->step3 = FALSE_;
 /*<          step4  = .false. >*/
-        step4 = FALSE_;
+        _->step4 = FALSE_;
 /*<          rstart = .false. >*/
-        rstart = FALSE_;
+        _->rstart = FALSE_;
 /*<          orth1  = .false. >*/
-        orth1 = FALSE_;
+        _->orth1 = FALSE_;
 /*<          orth2  = .false. >*/
-        orth2 = FALSE_;
+        _->orth2 = FALSE_;
 
 /*        %--------------------------------% */
 /*        | Pointer to the current step of | */
@@ -445,7 +465,7 @@ static doublereal c_b51 = -1.;
 /*        %--------------------------------% */
 
 /*<          j      = k + 1 >*/
-        j = *k + 1;
+        _->j = *k + 1;
 
 /*        %------------------------------------------% */
 /*        | Pointers used for reverse communication  | */
@@ -453,11 +473,11 @@ static doublereal c_b51 = -1.;
 /*        %------------------------------------------% */
 
 /*<          ipj    = 1 >*/
-        ipj = 1;
+        _->ipj = 1;
 /*<          irj    = ipj   + n >*/
-        irj = ipj + *n;
+        _->irj = _->ipj + *n;
 /*<          ivj    = irj   + n >*/
-        ivj = irj + *n;
+        _->ivj = _->irj + *n;
 /*<       end if >*/
     }
 
@@ -475,23 +495,23 @@ static doublereal c_b51 = -1.;
 /*     %-------------------------------------------------% */
 
 /*<       if (step3)  go to 50 >*/
-    if (step3) {
+    if (_->step3) {
         goto L50;
     }
 /*<       if (step4)  go to 60 >*/
-    if (step4) {
+    if (_->step4) {
         goto L60;
     }
 /*<       if (orth1)  go to 70 >*/
-    if (orth1) {
+    if (_->orth1) {
         goto L70;
     }
 /*<       if (orth2)  go to 90 >*/
-    if (orth2) {
+    if (_->orth2) {
         goto L90;
     }
 /*<       if (rstart) go to 30 >*/
-    if (rstart) {
+    if (_->rstart) {
         goto L30;
     }
 
@@ -546,11 +566,11 @@ L1000:
 /*<             nrstrt = nrstrt + 1 >*/
 /*  ++timing_1.nrstrt; */
 /*<             itry   = 1 >*/
-    itry = 1;
+    _->itry = 1;
 /*<    20       continue >*/
 L20:
 /*<             rstart = .true. >*/
-    rstart = TRUE_;
+    _->rstart = TRUE_;
 /*<             ido    = 0 >*/
     *ido = 0;
 /*<    30       continue >*/
@@ -562,18 +582,18 @@ L30:
 /*           %--------------------------------------% */
 
 /*<        >*/
-    dgetv0_(ido, bmat, &itry, &c_false, n, &j, &v[v_offset], ldv, &resid[1],
-            rnorm, &ipntr[1], &workd[1], &ierr, (ftnlen)1);
+    dgetv0_(workspace, ido, bmat, &_->itry, &c_false, n, &_->j, &v[v_offset], ldv, &resid[1],
+            rnorm, &ipntr[1], &workd[1], &_->ierr, (ftnlen)1);
 /*<             if (ido .ne. 99) go to 9000 >*/
     if (*ido != 99) {
         goto L9000;
     }
 /*<             if (ierr .lt. 0) then >*/
-    if (ierr < 0) {
+    if (_->ierr < 0) {
 /*<                itry = itry + 1 >*/
-        ++itry;
+        ++_->itry;
 /*<                if (itry .le. 3) go to 20 >*/
-        if (itry <= 3) {
+        if (_->itry <= 3) {
             goto L20;
         }
 
@@ -584,7 +604,7 @@ L30:
 /*              %------------------------------------------------% */
 
 /*<                info = j - 1 >*/
-        *info = j - 1;
+        *info = _->j - 1;
 /*<                call second (t1) >*/
 /*      second_(&t1); */
 /*<                tsaitr = tsaitr + (t1 - t0) >*/
@@ -607,15 +627,15 @@ L40:
 /*        %---------------------------------------------------------% */
 
 /*<          call dcopy (n, resid, 1, v(1,j), 1) >*/
-    dcopy_(n, &resid[1], &c__1, &v[j * v_dim1 + 1], &c__1);
+    dcopy_(n, &resid[1], &c__1, &v[_->j * v_dim1 + 1], &c__1);
 /*<          if (rnorm .ge. safmin) then >*/
-    if (*rnorm >= safmin) {
+    if (*rnorm >= _->safmin) {
 /*<              temp1 = one / rnorm >*/
         temp1 = 1. / *rnorm;
 /*<              call dscal (n, temp1, v(1,j), 1) >*/
-        dscal_(n, &temp1, &v[j * v_dim1 + 1], &c__1);
+        dscal_(n, &temp1, &v[_->j * v_dim1 + 1], &c__1);
 /*<              call dscal (n, temp1, workd(ipj), 1) >*/
-        dscal_(n, &temp1, &workd[ipj], &c__1);
+        dscal_(n, &temp1, &workd[_->ipj], &c__1);
 /*<          else >*/
     } else {
 
@@ -625,10 +645,10 @@ L40:
 /*            %-----------------------------------------% */
 
 /*<        >*/
-        dlascl_("General", &i__, &i__, rnorm, &c_b18, n, &c__1, &v[j * v_dim1
+        dlascl_("General", &i__, &i__, rnorm, &c_b18, n, &c__1, &v[_->j * v_dim1
                 + 1], n, &infol, (ftnlen)7);
 /*<        >*/
-        dlascl_("General", &i__, &i__, rnorm, &c_b18, n, &c__1, &workd[ipj],
+        dlascl_("General", &i__, &i__, rnorm, &c_b18, n, &c__1, &workd[_->ipj],
                 n, &infol, (ftnlen)7);
 /*<          end if >*/
     }
@@ -639,19 +659,19 @@ L40:
 /*        %------------------------------------------------------% */
 
 /*<          step3 = .true. >*/
-    step3 = TRUE_;
+    _->step3 = TRUE_;
 /*<          nopx  = nopx + 1 >*/
 /*  ++timing_1.nopx; */
 /*<          call second (t2) >*/
 /*  second_(&t2); */
 /*<          call dcopy (n, v(1,j), 1, workd(ivj), 1) >*/
-    dcopy_(n, &v[j * v_dim1 + 1], &c__1, &workd[ivj], &c__1);
+    dcopy_(n, &v[_->j * v_dim1 + 1], &c__1, &workd[_->ivj], &c__1);
 /*<          ipntr(1) = ivj >*/
-    ipntr[1] = ivj;
+    ipntr[1] = _->ivj;
 /*<          ipntr(2) = irj >*/
-    ipntr[2] = irj;
+    ipntr[2] = _->irj;
 /*<          ipntr(3) = ipj >*/
-    ipntr[3] = ipj;
+    ipntr[3] = _->ipj;
 /*<          ido = 1 >*/
     *ido = 1;
 
@@ -675,14 +695,14 @@ L50:
 /*  timing_1.tmvopx += t3 - t2; */
 
 /*<          step3 = .false. >*/
-    step3 = FALSE_;
+    _->step3 = FALSE_;
 
 /*        %------------------------------------------% */
 /*        | Put another copy of OP*v_{j} into RESID. | */
 /*        %------------------------------------------% */
 
 /*<          call dcopy (n, workd(irj), 1, resid, 1) >*/
-    dcopy_(n, &workd[irj], &c__1, &resid[1], &c__1);
+    dcopy_(n, &workd[_->irj], &c__1, &resid[1], &c__1);
 
 /*        %-------------------------------------------% */
 /*        | STEP 4:  Finish extending the symmetric   | */
@@ -704,11 +724,11 @@ L50:
 /*<             nbx = nbx + 1 >*/
 /*      ++timing_1.nbx; */
 /*<             step4 = .true. >*/
-        step4 = TRUE_;
+        _->step4 = TRUE_;
 /*<             ipntr(1) = irj >*/
-        ipntr[1] = irj;
+        ipntr[1] = _->irj;
 /*<             ipntr(2) = ipj >*/
-        ipntr[2] = ipj;
+        ipntr[2] = _->ipj;
 /*<             ido = 2 >*/
         *ido = 2;
 
@@ -721,7 +741,7 @@ L50:
 /*<          else if (bmat .eq. 'I') then >*/
     } else if (*(unsigned char *)bmat == 'I') {
 /*<               call dcopy(n, resid, 1 , workd(ipj), 1) >*/
-        dcopy_(n, &resid[1], &c__1, &workd[ipj], &c__1);
+        dcopy_(n, &resid[1], &c__1, &workd[_->ipj], &c__1);
 /*<          end if >*/
     }
 /*<    60    continue >*/
@@ -742,7 +762,7 @@ L60:
     }
 
 /*<          step4 = .false. >*/
-    step4 = FALSE_;
+    _->step4 = FALSE_;
 
 /*        %-------------------------------------% */
 /*        | The following is needed for STEP 5. | */
@@ -760,19 +780,19 @@ L65:
 /*           %----------------------------------% */
 
 /*<             wnorm = ddot (n, resid, 1, workd(ivj), 1) >*/
-        wnorm = ddot_(n, &resid[1], &c__1, &workd[ivj], &c__1);
+        _->wnorm = ddot_(n, &resid[1], &c__1, &workd[_->ivj], &c__1);
 /*<             wnorm = sqrt(abs(wnorm)) >*/
-        wnorm = sqrt((abs(wnorm)));
+        _->wnorm = sqrt((abs(_->wnorm)));
 /*<          else if (bmat .eq. 'G') then          >*/
     } else if (*(unsigned char *)bmat == 'G') {
 /*<             wnorm = ddot (n, resid, 1, workd(ipj), 1) >*/
-        wnorm = ddot_(n, &resid[1], &c__1, &workd[ipj], &c__1);
+        _->wnorm = ddot_(n, &resid[1], &c__1, &workd[_->ipj], &c__1);
 /*<             wnorm = sqrt(abs(wnorm)) >*/
-        wnorm = sqrt((abs(wnorm)));
+        _->wnorm = sqrt((abs(_->wnorm)));
 /*<          else if (bmat .eq. 'I') then >*/
     } else if (*(unsigned char *)bmat == 'I') {
 /*<             wnorm = dnrm2(n, resid, 1) >*/
-        wnorm = dnrm2_(n, &resid[1], &c__1);
+        _->wnorm = dnrm2_(n, &resid[1], &c__1);
 /*<          end if >*/
     }
 
@@ -793,13 +813,13 @@ L65:
 /*<          if (mode .ne. 2 ) then >*/
     if (*mode != 2) {
 /*<        >*/
-        dgemv_("T", n, &j, &c_b18, &v[v_offset], ldv, &workd[ipj], &c__1, &
-                c_b43, &workd[irj], &c__1, (ftnlen)1);
+        dgemv_("T", n, &_->j, &c_b18, &v[v_offset], ldv, &workd[_->ipj], &c__1, &
+                c_b43, &workd[_->irj], &c__1, (ftnlen)1);
 /*<          else if (mode .eq. 2) then >*/
     } else if (*mode == 2) {
 /*<        >*/
-        dgemv_("T", n, &j, &c_b18, &v[v_offset], ldv, &workd[ivj], &c__1, &
-                c_b43, &workd[irj], &c__1, (ftnlen)1);
+        dgemv_("T", n, &_->j, &c_b18, &v[v_offset], ldv, &workd[_->ivj], &c__1, &
+                c_b43, &workd[_->irj], &c__1, (ftnlen)1);
 /*<          end if >*/
     }
 
@@ -809,7 +829,7 @@ L65:
 /*        %--------------------------------------% */
 
 /*<        >*/
-    dgemv_("N", n, &j, &c_b51, &v[v_offset], ldv, &workd[irj], &c__1, &c_b18,
+    dgemv_("N", n, &_->j, &c_b51, &v[v_offset], ldv, &workd[_->irj], &c__1, &c_b18,
             &resid[1], &c__1, (ftnlen)1);
 
 /*        %--------------------------------------% */
@@ -817,24 +837,24 @@ L65:
 /*        %--------------------------------------% */
 
 /*<          h(j,2) = workd(irj + j - 1) >*/
-    h__[j + (h_dim1 << 1)] = workd[irj + j - 1];
+    h__[_->j + (h_dim1 << 1)] = workd[_->irj + _->j - 1];
 /*<          if (j .eq. 1  .or.  rstart) then >*/
-    if (j == 1 || rstart) {
+    if (_->j == 1 || _->rstart) {
 /*<             h(j,1) = zero >*/
-        h__[j + h_dim1] = 0.;
+        h__[_->j + h_dim1] = 0.;
 /*<          else >*/
     } else {
 /*<             h(j,1) = rnorm >*/
-        h__[j + h_dim1] = *rnorm;
+        h__[_->j + h_dim1] = *rnorm;
 /*<          end if >*/
     }
 /*<          call second (t4) >*/
 /*  second_(&t4); */
 
 /*<          orth1 = .true. >*/
-    orth1 = TRUE_;
+    _->orth1 = TRUE_;
 /*<          iter  = 0 >*/
-    iter = 0;
+    _->iter = 0;
 
 /*<          call second (t2) >*/
 /*  second_(&t2); */
@@ -843,11 +863,11 @@ L65:
 /*<             nbx = nbx + 1 >*/
 /*      ++timing_1.nbx; */
 /*<             call dcopy (n, resid, 1, workd(irj), 1) >*/
-        dcopy_(n, &resid[1], &c__1, &workd[irj], &c__1);
+        dcopy_(n, &resid[1], &c__1, &workd[_->irj], &c__1);
 /*<             ipntr(1) = irj >*/
-        ipntr[1] = irj;
+        ipntr[1] = _->irj;
 /*<             ipntr(2) = ipj >*/
-        ipntr[2] = ipj;
+        ipntr[2] = _->ipj;
 /*<             ido = 2 >*/
         *ido = 2;
 
@@ -860,7 +880,7 @@ L65:
 /*<          else if (bmat .eq. 'I') then >*/
     } else if (*(unsigned char *)bmat == 'I') {
 /*<             call dcopy (n, resid, 1, workd(ipj), 1) >*/
-        dcopy_(n, &resid[1], &c__1, &workd[ipj], &c__1);
+        dcopy_(n, &resid[1], &c__1, &workd[_->ipj], &c__1);
 /*<          end if >*/
     }
 /*<    70    continue >*/
@@ -881,7 +901,7 @@ L70:
     }
 
 /*<          orth1 = .false. >*/
-    orth1 = FALSE_;
+    _->orth1 = FALSE_;
 
 /*        %------------------------------% */
 /*        | Compute the B-norm of r_{j}. | */
@@ -890,7 +910,7 @@ L70:
 /*<          if (bmat .eq. 'G') then          >*/
     if (*(unsigned char *)bmat == 'G') {
 /*<             rnorm = ddot (n, resid, 1, workd(ipj), 1) >*/
-        *rnorm = ddot_(n, &resid[1], &c__1, &workd[ipj], &c__1);
+        *rnorm = ddot_(n, &resid[1], &c__1, &workd[_->ipj], &c__1);
 /*<             rnorm = sqrt(abs(rnorm)) >*/
         *rnorm = sqrt((abs(*rnorm)));
 /*<          else if (bmat .eq. 'I') then >*/
@@ -916,7 +936,7 @@ L70:
 /*        %-----------------------------------------------------------% */
 
 /*<          if (rnorm .gt. 0.717*wnorm) go to 100 >*/
-    if (*rnorm > wnorm * (float).717) {
+    if (*rnorm > _->wnorm * (float).717) {
         goto L100;
     }
 /*<          nrorth = nrorth + 1 >*/
@@ -949,8 +969,8 @@ L80:
 /*        %----------------------------------------------------% */
 
 /*<        >*/
-    dgemv_("T", n, &j, &c_b18, &v[v_offset], ldv, &workd[ipj], &c__1, &c_b43,
-            &workd[irj], &c__1, (ftnlen)1);
+    dgemv_("T", n, &_->j, &c_b18, &v[v_offset], ldv, &workd[_->ipj], &c__1, &c_b43,
+            &workd[_->irj], &c__1, (ftnlen)1);
 
 /*        %----------------------------------------------% */
 /*        | Compute the correction to the residual:      | */
@@ -961,18 +981,18 @@ L80:
 /*        %----------------------------------------------% */
 
 /*<        >*/
-    dgemv_("N", n, &j, &c_b51, &v[v_offset], ldv, &workd[irj], &c__1, &c_b18,
+    dgemv_("N", n, &_->j, &c_b51, &v[v_offset], ldv, &workd[_->irj], &c__1, &c_b18,
             &resid[1], &c__1, (ftnlen)1);
 
 /*<          if (j .eq. 1  .or.  rstart) h(j,1) = zero >*/
-    if (j == 1 || rstart) {
-        h__[j + h_dim1] = 0.;
+    if (_->j == 1 || _->rstart) {
+        h__[_->j + h_dim1] = 0.;
     }
 /*<          h(j,2) = h(j,2) + workd(irj + j - 1) >*/
-    h__[j + (h_dim1 << 1)] += workd[irj + j - 1];
+    h__[_->j + (h_dim1 << 1)] += workd[_->irj + _->j - 1];
 
 /*<          orth2 = .true. >*/
-    orth2 = TRUE_;
+    _->orth2 = TRUE_;
 /*<          call second (t2) >*/
 /*  second_(&t2); */
 /*<          if (bmat .eq. 'G') then >*/
@@ -980,11 +1000,11 @@ L80:
 /*<             nbx = nbx + 1 >*/
 /*      ++timing_1.nbx; */
 /*<             call dcopy (n, resid, 1, workd(irj), 1) >*/
-        dcopy_(n, &resid[1], &c__1, &workd[irj], &c__1);
+        dcopy_(n, &resid[1], &c__1, &workd[_->irj], &c__1);
 /*<             ipntr(1) = irj >*/
-        ipntr[1] = irj;
+        ipntr[1] = _->irj;
 /*<             ipntr(2) = ipj >*/
-        ipntr[2] = ipj;
+        ipntr[2] = _->ipj;
 /*<             ido = 2 >*/
         *ido = 2;
 
@@ -998,7 +1018,7 @@ L80:
 /*<          else if (bmat .eq. 'I') then >*/
     } else if (*(unsigned char *)bmat == 'I') {
 /*<             call dcopy (n, resid, 1, workd(ipj), 1) >*/
-        dcopy_(n, &resid[1], &c__1, &workd[ipj], &c__1);
+        dcopy_(n, &resid[1], &c__1, &workd[_->ipj], &c__1);
 /*<          end if >*/
     }
 /*<    90    continue >*/
@@ -1024,13 +1044,13 @@ L90:
 /*<          if (bmat .eq. 'G') then          >*/
     if (*(unsigned char *)bmat == 'G') {
 /*<              rnorm1 = ddot (n, resid, 1, workd(ipj), 1) >*/
-        rnorm1 = ddot_(n, &resid[1], &c__1, &workd[ipj], &c__1);
+        _->rnorm1 = ddot_(n, &resid[1], &c__1, &workd[_->ipj], &c__1);
 /*<              rnorm1 = sqrt(abs(rnorm1)) >*/
-        rnorm1 = sqrt((abs(rnorm1)));
+        _->rnorm1 = sqrt((abs(_->rnorm1)));
 /*<          else if (bmat .eq. 'I') then >*/
     } else if (*(unsigned char *)bmat == 'I') {
 /*<              rnorm1 = dnrm2(n, resid, 1) >*/
-        rnorm1 = dnrm2_(n, &resid[1], &c__1);
+        _->rnorm1 = dnrm2_(n, &resid[1], &c__1);
 /*<          end if >*/
     }
 
@@ -1051,14 +1071,14 @@ L90:
 /*        %-----------------------------------------% */
 
 /*<          if (rnorm1 .gt. 0.717*rnorm) then >*/
-    if (rnorm1 > *rnorm * (float).717) {
+    if (_->rnorm1 > *rnorm * (float).717) {
 
 /*           %--------------------------------% */
 /*           | No need for further refinement | */
 /*           %--------------------------------% */
 
 /*<             rnorm = rnorm1 >*/
-        *rnorm = rnorm1;
+        *rnorm = _->rnorm1;
 
 /*<          else >*/
     } else {
@@ -1071,11 +1091,11 @@ L90:
 /*<             nitref = nitref + 1 >*/
 /*      ++timing_1.nitref; */
 /*<             rnorm  = rnorm1 >*/
-        *rnorm = rnorm1;
+        *rnorm = _->rnorm1;
 /*<             iter   = iter + 1 >*/
-        ++iter;
+        ++_->iter;
 /*<             if (iter .le. 1) go to 80 >*/
-        if (iter <= 1) {
+        if (_->iter <= 1) {
             goto L80;
         }
 
@@ -1106,9 +1126,9 @@ L90:
 L100:
 
 /*<          rstart = .false. >*/
-    rstart = FALSE_;
+    _->rstart = FALSE_;
 /*<          orth2  = .false. >*/
-    orth2 = FALSE_;
+    _->orth2 = FALSE_;
 
 /*<          call second (t5) >*/
 /*  second_(&t5); */
@@ -1122,13 +1142,13 @@ L100:
 /*        %----------------------------------------------------------% */
 
 /*<          if (h(j,1) .lt. zero) then >*/
-    if (h__[j + h_dim1] < 0.) {
+    if (h__[_->j + h_dim1] < 0.) {
 /*<             h(j,1) = -h(j,1) >*/
-        h__[j + h_dim1] = -h__[j + h_dim1];
+        h__[_->j + h_dim1] = -h__[_->j + h_dim1];
 /*<             if ( j .lt. k+np) then  >*/
-        if (j < *k + *np) {
+        if (_->j < *k + *np) {
 /*<                call dscal(n, -one, v(1,j+1), 1) >*/
-            dscal_(n, &c_b51, &v[(j + 1) * v_dim1 + 1], &c__1);
+            dscal_(n, &c_b51, &v[(_->j + 1) * v_dim1 + 1], &c__1);
 /*<             else >*/
         } else {
 /*<                call dscal(n, -one, resid, 1) >*/
@@ -1143,9 +1163,9 @@ L100:
 /*        %------------------------------------% */
 
 /*<          j = j + 1 >*/
-    ++j;
+    ++_->j;
 /*<          if (j .gt. k+np) then >*/
-    if (j > *k + *np) {
+    if (_->j > *k + *np) {
 /*<             call second (t1) >*/
 /*      second_(&t1); */
 /*<             tsaitr = tsaitr + (t1 - t0) >*/
