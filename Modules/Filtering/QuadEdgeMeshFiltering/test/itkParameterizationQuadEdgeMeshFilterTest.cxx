@@ -160,9 +160,9 @@ int ParameterizationQuadEdgeMeshFilterTest( int argc, char* argv[] )
 
 int itkParameterizationQuadEdgeMeshFilterTest( int argc, char* argv[] )
 {
-  typedef double                                    TCoord;
-  typedef VNLIterativeSparseSolverTraits< TCoord >  IterativeSolverTraits;
-  typedef VNLSparseLUSolverTraits< TCoord >         LUSolverTraits;
+  typedef double                                        TCoord;
+  typedef VNLIterativeSparseSolverTraits< TCoord >      IterativeSolverTraits;
+  typedef VNLSparseLUSolverTraits< TCoord >             LUSolverTraits;
 
   if( atoi( argv[4] ) == 0 )
     {
