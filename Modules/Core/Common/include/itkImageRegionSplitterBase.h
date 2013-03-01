@@ -21,8 +21,12 @@
 #include "itkImageRegion.h"
 #include "itkObjectFactory.h"
 
+#include "itkImageIORegion.h"
+
 namespace itk
 {
+
+class ImageIORegion;
 
 /** \class ImageRegionSplitterBase
  * \brief Divide an image region into several pieces.
@@ -86,11 +90,17 @@ public:
     unsigned int GetNumberOfSplits(const ImageRegion<VImageDimension> & region,
                                    unsigned int requestedNumber) const
   {
-    typedef ImageRegion<VImageDimension> ImageRegionType;
-
     return this->GetNumberOfSplits( VImageDimension,
                                     region.GetIndex().m_Index,
                                     region.GetSize().m_Size,
+                                    requestedNumber);
+  }
+  inline unsigned int GetNumberOfSplits(const ImageIORegion &region,
+                                        unsigned int requestedNumber) const
+  {
+    return this->GetNumberOfSplits( region.GetImageDimension(),
+                                    &region.GetIndex()[0],
+                                    &region.GetSize()[0],
                                     requestedNumber);
   }
 
@@ -112,6 +122,16 @@ public:
                            numberOfPieces,
                            region.GetModifiableIndex().m_Index,
                            region.GetModifiableSize().m_Size );
+  }
+  unsigned int GetSplit( unsigned int i,
+                         unsigned int numberOfPieces,
+                         ImageIORegion & region ) const
+  {
+    return this->GetSplit( region.GetImageDimension(),
+                           i,
+                           numberOfPieces,
+                           &region.GetModifiableIndex()[0],
+                           &region.GetModifiableSize()[0] );
   }
 
 protected:
