@@ -398,7 +398,7 @@ int itkTreeContainerTest2(int, char* [])
   while(it != InternalList.end())
     {
     std::list<TestData*>::iterator it2 = it;
-    it++;
+    ++it;
     TestData* t = *it2;
     InternalList.erase(it2);
     delete t;

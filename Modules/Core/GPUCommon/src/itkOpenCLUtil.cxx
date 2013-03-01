@@ -110,7 +110,6 @@ cl_device_id OpenCLGetMaxFlopsDev(cl_context cxGPUContext)
   clGetContextInfo(cxGPUContext, CL_CONTEXT_DEVICES, szParmDataBytes, cdDevices, NULL);
 
   cl_device_id max_flops_device = cdDevices[0];
-  int          max_flops = 0;
 
   size_t current_device = 0;
 
@@ -123,7 +122,7 @@ cl_device_id OpenCLGetMaxFlopsDev(cl_context cxGPUContext)
   clGetDeviceInfo(cdDevices[current_device], CL_DEVICE_MAX_CLOCK_FREQUENCY, sizeof(clock_frequency), &clock_frequency,
                   NULL);
 
-  max_flops = compute_units * clock_frequency;
+  int max_flops = compute_units * clock_frequency;
   ++current_device;
 
   while( current_device < device_count )
@@ -156,33 +155,31 @@ cl_device_id OpenCLGetMaxFlopsDev(cl_context cxGPUContext)
 //
 void OpenCLPrintDeviceInfo(cl_device_id device, bool verbose)
 {
-  cl_int err;
-
   char device_string[1024];
 
-  err = clGetDeviceInfo(device, CL_DEVICE_NAME, sizeof(device_string), &device_string, NULL);
+  clGetDeviceInfo(device, CL_DEVICE_NAME, sizeof(device_string), &device_string, NULL);
   printf("%s\n", device_string);
 
   size_t worksize[3];
-  err = clGetDeviceInfo(device,CL_DEVICE_MAX_WORK_ITEM_SIZES,sizeof(worksize),&worksize,NULL);
+  clGetDeviceInfo(device,CL_DEVICE_MAX_WORK_ITEM_SIZES,sizeof(worksize),&worksize,NULL);
   std::cout << "Maximum Work Item Sizes : { " << worksize[0] << ", " << worksize[1] << ", " << worksize[2] << " }" << std::endl;
 
   size_t maxWorkgroupSize;
-  err = clGetDeviceInfo(device,CL_DEVICE_MAX_WORK_GROUP_SIZE,sizeof(maxWorkgroupSize),&maxWorkgroupSize,NULL);
+  clGetDeviceInfo(device,CL_DEVICE_MAX_WORK_GROUP_SIZE,sizeof(maxWorkgroupSize),&maxWorkgroupSize,NULL);
   std::cout << "Maximum Work Group Size : " << maxWorkgroupSize << std::endl;
 
   if (verbose)
   {
     cl_uint mem_align;
-    err = clGetDeviceInfo(device, CL_DEVICE_MEM_BASE_ADDR_ALIGN, sizeof(mem_align), &mem_align, NULL);
+    clGetDeviceInfo(device, CL_DEVICE_MEM_BASE_ADDR_ALIGN, sizeof(mem_align), &mem_align, NULL);
     std::cout << "Alignment in bits of the base address : " << mem_align << std::endl;
 
     cl_uint min_align;
-    err = clGetDeviceInfo(device, CL_DEVICE_MIN_DATA_TYPE_ALIGN_SIZE, sizeof(min_align), &min_align, NULL);
+    clGetDeviceInfo(device, CL_DEVICE_MIN_DATA_TYPE_ALIGN_SIZE, sizeof(min_align), &min_align, NULL);
     std::cout << "Smallest alignment in bytes for any data type : " << min_align << std::endl;
 
     char device_extensions[1024];
-    err = clGetDeviceInfo(device, CL_DEVICE_EXTENSIONS, sizeof(device_extensions), &device_extensions, NULL);
+    clGetDeviceInfo(device, CL_DEVICE_EXTENSIONS, sizeof(device_extensions), &device_extensions, NULL);
     printf("%s\n", device_extensions);
 
   }

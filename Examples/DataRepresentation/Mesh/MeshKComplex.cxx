@@ -466,10 +466,10 @@ int main(int, char *[])
 
   MeshType::CellFeatureIdentifier featureId = 0;
 
-  mesh->SetBoundaryAssignment( dimension, cellId, featureId++, 11 );
-  mesh->SetBoundaryAssignment( dimension, cellId, featureId++, 12 );
-  mesh->SetBoundaryAssignment( dimension, cellId, featureId++, 13 );
-  mesh->SetBoundaryAssignment( dimension, cellId, featureId++, 14 );
+  mesh->SetBoundaryAssignment( dimension, cellId, ++featureId, 11 );
+  mesh->SetBoundaryAssignment( dimension, cellId, ++featureId, 12 );
+  mesh->SetBoundaryAssignment( dimension, cellId, ++featureId, 13 );
+  mesh->SetBoundaryAssignment( dimension, cellId, ++featureId, 14 );
   // Software Guide : EndCodeSnippet
 
 
@@ -514,12 +514,12 @@ int main(int, char *[])
   dimension = 1;  // one-dimensional features = edges
   featureId = 0;  // reinitialize the count
 
-  mesh->SetBoundaryAssignment( dimension, cellId, featureId++,  5 );
-  mesh->SetBoundaryAssignment( dimension, cellId, featureId++,  6 );
-  mesh->SetBoundaryAssignment( dimension, cellId, featureId++,  7 );
-  mesh->SetBoundaryAssignment( dimension, cellId, featureId++,  8 );
-  mesh->SetBoundaryAssignment( dimension, cellId, featureId++,  9 );
-  mesh->SetBoundaryAssignment( dimension, cellId, featureId++, 10 );
+  mesh->SetBoundaryAssignment( dimension, cellId, ++featureId,  5 );
+  mesh->SetBoundaryAssignment( dimension, cellId, ++featureId,  6 );
+  mesh->SetBoundaryAssignment( dimension, cellId, ++featureId,  7 );
+  mesh->SetBoundaryAssignment( dimension, cellId, ++featureId,  8 );
+  mesh->SetBoundaryAssignment( dimension, cellId, ++featureId,  9 );
+  mesh->SetBoundaryAssignment( dimension, cellId, ++featureId, 10 );
   // Software Guide : EndCodeSnippet
 
   //  Software Guide : BeginLatex
@@ -536,10 +536,10 @@ int main(int, char *[])
   dimension = 2;  // two-dimensional features = triangles
   featureId = 0;  // reinitialize the count
 
-  mesh->SetBoundaryAssignment( dimension, cellId, featureId++,  1 );
-  mesh->SetBoundaryAssignment( dimension, cellId, featureId++,  2 );
-  mesh->SetBoundaryAssignment( dimension, cellId, featureId++,  3 );
-  mesh->SetBoundaryAssignment( dimension, cellId, featureId++,  4 );
+  mesh->SetBoundaryAssignment( dimension, cellId, ++featureId,  1 );
+  mesh->SetBoundaryAssignment( dimension, cellId, ++featureId,  2 );
+  mesh->SetBoundaryAssignment( dimension, cellId, ++featureId,  3 );
+  mesh->SetBoundaryAssignment( dimension, cellId, ++featureId,  4 );
   // Software Guide : EndCodeSnippet
 
   //  Software Guide : BeginLatex

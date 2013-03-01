@@ -336,7 +336,7 @@ public:
           {
           value += this->m_Interpolator->Evaluate( transformedPoint );
           }
-        it++;
+        ++it;
         }
       return value;
     }
