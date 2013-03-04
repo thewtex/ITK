@@ -132,8 +132,8 @@ int itkLandmarkBasedTransformInitializerTest(int, char * [])
   TransformInitializerType::Pointer initializer = TransformInitializerType::New();
 
   // Set fixed and moving landmarks
-  TransformInitializerType::LandmarkPointContainer fixedLandmarks = NULL;
-  TransformInitializerType::LandmarkPointContainer movingLandmarks = NULL;
+  TransformInitializerType::LandmarkPointContainer fixedLandmarks;
+  TransformInitializerType::LandmarkPointContainer movingLandmarks;
 
   Init3DPoints<TransformInitializerType>(fixedLandmarks,movingLandmarks);
 
