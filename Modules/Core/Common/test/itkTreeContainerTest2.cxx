@@ -38,6 +38,7 @@ class TestData {
 
 public:
     TestData() {
+        this->value = 0;
         counter++;
     }
 
