@@ -67,6 +67,8 @@ int itkLabelMapTest2(int argc, char * argv[])
   map->SetRegions( regionIn );
   map->Allocate();
 
+  regionOut = map->GetRequestedRegion();
+
   map->SetBackgroundValue(255);
 
   LabelObjectType::Pointer lo = LabelObjectType::New();
