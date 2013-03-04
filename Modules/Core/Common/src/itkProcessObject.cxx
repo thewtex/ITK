@@ -1538,7 +1538,7 @@ ProcessObject
     this->InvokeEvent( AbortEvent() );
     this->ResetPipeline();
     this->RestoreInputReleaseDataFlags();
-    throw excp;
+    throw &excp;
     }
   catch (...)
     {
