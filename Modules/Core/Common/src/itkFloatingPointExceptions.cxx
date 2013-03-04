@@ -247,7 +247,6 @@ int fedisableexcept(unsigned int)
 
 typedef union {
     struct {
-        unsigned long hi;
         unsigned long lo;
     } i;
     double d;

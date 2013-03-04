@@ -71,7 +71,7 @@ public:
   using Superclass::MakeNameFromIndex;
   using Superclass::MakeIndexFromName;
   using Superclass::SetNthInput;
-  using Superclass::AddInput;
+//  using Superclass::AddInput;
   using Superclass::RemoveInput;
   using Superclass::SetNumberOfRequiredInputs;
   using Superclass::GetNumberOfRequiredInputs;
@@ -81,7 +81,7 @@ public:
   using Superclass::PopFrontInput;
   using Superclass::SetNumberOfIndexedInputs;
   using Superclass::SetNthOutput;
-  using Superclass::AddOutput;
+//  using Superclass::AddOutput;
   using Superclass::RemoveOutput;
   using Superclass::SetNumberOfRequiredOutputs;
   using Superclass::GetNumberOfRequiredOutputs;
