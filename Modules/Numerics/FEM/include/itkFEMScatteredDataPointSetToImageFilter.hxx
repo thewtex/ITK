@@ -126,7 +126,7 @@ FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, 
 
   this->m_FEMSolver->Update();
 
-  this->ProduceDeformationField();
+  this->ProduceInverseDeformationField();
 }
 
 template<class TInputPointSet, class TInputMesh, class TOutputImage, class TInputConfidencePointSet, class TInputTensorPointSet>
@@ -611,73 +611,131 @@ FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, 
 template<class TInputPointSet, class TInputMesh, class TOutputImage, class TInputConfidencePointSet, class TInputTensorPointSet>
 void
 FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, TInputConfidencePointSet, TInputTensorPointSet>
-::ProduceDeformationField()
+::ProduceInverseDeformationField()
 {
-  // Produce deformation field based on the solution.
-
+  // Produce an inverse deformation field based on the solution.
+  // get the output image and fill the buffer with zeros
   ImageType *output = this->GetOutput();
-  RegionType region = output->GetLargestPossibleRegion();
-  ImageRegionIterator<ImageType> iter(output, region);
-
-  PointType point;
-  unsigned int solutionIndex = 0;
-  FEMVectorType globalPoint(ImageDimension);
-  FEMVectorType localPoint(ImageDimension);
+  PixelType pix;
+  pix.Fill(0);
+  output->FillBuffer(pix);
+  typedef Element::VectorType vec;
+  vec vMin,vMax;
+  Element::Pointer elem;
+  vec nodeDispl;
+  std::vector<vec> nodeDisplVector;
+  unsigned int numDofs=0;
+  RegionType region;
+  SizeType regionSize;
+  Element::DegreeOfFreedomIDType id;
+  PointType global_pt;
+  vec vGlobal,vLocal;
+  vec shapeF,dVec;
   PixelType displacement;
 
-  // step over all points within the region
-  for( iter.GoToBegin(); !iter.IsAtEnd(); ++iter )
+  // Loop through all the cells of mesh
+  typename itk::fem::FEMObject<ImageDimension>::ElementContainerType::Iterator it;
+  for( it = this->GetFEMSolver()->GetOutput()->GetElementContainer()->Begin(); it != this->GetFEMSolver()->GetOutput()->GetElementContainer()->End(); ++it )
     {
-    output->TransformIndexToPhysicalPoint(iter.GetIndex(), point);
-    for( unsigned int d = 0; d < ImageDimension; d++ )
+    // dof's are now available in elements of the output
+    elem = it.Value();
+    // Initialize the bounding box
+    vMin = elem->GetNodeCoordinates(0); // these are the deformed coordinates of the mesh!
+    vMax = vMin;
+    const unsigned int NumberOfDimensions = elem->GetNumberOfSpatialDimensions();
+    // Find the bounding box of the cell
+    for( unsigned int i = 1; i < elem->GetNumberOfNodes(); i++ )
       {
-      globalPoint[d] = point[d];
-      }
-
-    fem::Element::ConstPointer element = m_FEMSolver->GetElementAtPoint(globalPoint);
-
-    if(element.IsNull())
-      {
-      for(unsigned i = 0; i < ImageDimension; i++)
+      const vec& v = elem->GetNodeCoordinates(i);
+      for( unsigned int j = 0; j < NumberOfDimensions; j++ )
         {
-        displacement[i] = 0.0;
-        }
-
-      iter.Set(displacement);
-      continue;
-      }
-
-    // the point is inside the element.
-    if( element->GetLocalFromGlobalCoordinates(globalPoint, localPoint) )
-      {
-      const FEMVectorType & shape = element->ShapeFunctions(localPoint);
-
-      const unsigned int NnDOF = element->GetNumberOfDegreesOfFreedomPerNode();
-      const unsigned int Nnodes = element->GetNumberOfNodes();
-
-      FEMVectorType simulatedDisplacement(NnDOF, 0.0);
-      FEMVectorType nodeSolution(NnDOF);
-
-      for(unsigned int m = 0; m < Nnodes; ++m)
-        {
-        for(unsigned int j = 0; j < NnDOF; ++j)
+        if( v[j] < vMin[j] )
           {
-          unsigned int dofId = element->GetDegreeOfFreedom(m * NnDOF + j);
-          nodeSolution[j] = m_FEMSolver->GetSolution(dofId,solutionIndex);
+          vMin[j] = v[j];
           }
-
-        simulatedDisplacement += shape[m] * nodeSolution;
-
+        if( v[j] > vMax[j] )
+          {
+          vMax[j] = v[j];
+          }
         }
+      numDofs = elem->GetNumberOfDegreesOfFreedomPerNode();
+      nodeDispl.set_size(numDofs);
+      nodeDisplVector.clear();
 
-      for(unsigned i = 0; i < ImageDimension; i++)
+      // Take the displacements of each node
+      for( unsigned int i = 0; i < elem->GetNumberOfNodes(); i++ )
         {
-        displacement[i] = simulatedDisplacement[i];
+        nodeDispl.fill(0);
+        for(int j=0; j<numDofs; j++)
+          {
+          id = elem->GetNode(i)->GetDegreeOfFreedom(j);
+          nodeDispl[j] = this->GetFEMSolver()->GetSolution(id,0);
+          }
+        nodeDisplVector.push_back(nodeDispl);
         }
 
-      iter.Set(displacement);
-      }
+      typename ImageType::PointType minPoint,maxPoint;
+      for( unsigned int j = 0; j < ImageDimension; j++ )
+        {
+        minPoint[j] = vMin[j];
+        maxPoint[j] = vMax[j];
+        }
+      // Check if the bounding box corners of the element are outside the image
+      IndexType vMinIndex,vMaxIndex,vDirectionIndex;
+      if( output->TransformPhysicalPointToIndex(minPoint,vMinIndex) == false )
+        {
+        continue;
+        }
+      if( output->TransformPhysicalPointToIndex(maxPoint,vMaxIndex) == false )
+        {
+        continue;
+        }
 
+      // Set the region size of the bounding box
+      for( unsigned int i = 0; i < NumberOfDimensions; i++ )
+        {
+        regionSize[i] = vMaxIndex[i] - vMinIndex[i] + 1;
+        }
+
+      region.SetSize(regionSize);
+      region.SetIndex(vMinIndex);
+      itk::ImageRegionIterator<ImageType> iter(output,region);
+      IndexType index;
+      vGlobal.set_size(numDofs);
+      vLocal.set_size(numDofs);
+      dVec.set_size(numDofs);
+      dVec.fill(0);
+
+      // Step over all voxels of the region size
+      for( iter.GoToBegin(); !iter.IsAtEnd(); ++iter )
+        {
+        index = iter.GetIndex();
+        output->TransformIndexToPhysicalPoint(index,global_pt);
+        for( unsigned int j = 0; j < ImageDimension; j++ )
+          {
+          vGlobal[j] = global_pt[j];
+          }
+        // Check if the point is within the element.
+        vLocal.fill(0);
+        if( elem->GetLocalFromGlobalCoordinates(vGlobal,vLocal) == false )
+          {
+          continue;
+          }
+        // get the shape functions
+        shapeF = elem->ShapeFunctions(vLocal);
+        dVec.fill(0);
+        for( int k=0; k < elem->GetNumberOfNodes(); k++ )
+          {
+          dVec = dVec + (shapeF[k] * nodeDisplVector.at(k));
+          }
+        for(unsigned i = 0; i < ImageDimension; i++)
+          {
+          displacement[i] = - dVec[i];
+          }
+        // set the displacement of the deformation field
+        output->SetPixel(index,displacement);
+        }
+      }
     }
 }
 

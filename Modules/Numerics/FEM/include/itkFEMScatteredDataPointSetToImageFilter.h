@@ -271,7 +271,7 @@ protected:
   /** Run the solver and call ProduceDeformationField to produce deformation field */
   void GenerateData();
 
-  void ProduceDeformationField();
+  void ProduceInverseDeformationField();
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
