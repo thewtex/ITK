@@ -33,8 +33,10 @@ class ShowProgressPDEObject
 {
 public:
   ShowProgressPDEObject(itk::ProcessObject* o):
-    m_Prefix("")
-    {m_Process = o;}
+    m_Prefix(""),
+    m_Process(o)
+    {
+    }
   void ShowProgress()
     {
     std::cout <<  m_Prefix;

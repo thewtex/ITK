@@ -203,8 +203,7 @@ int itkObjectToObjectMultiMetricv4RegistrationTest(int argc, char *argv[])
   translationTransform->SetIdentity();
 
   // create images
-  ImageType::Pointer fixedImage = ImageType::New();
-  ImageType::Pointer movingImage = ImageType::New();
+  ImageType::Pointer fixedImage, movingImage;
   ImageType::OffsetType imageShift;
   imageShift.Fill(0);
   ObjectToObjectMultiMetricv4RegistrationTestCreateImages<ImageType>( fixedImage, movingImage, imageShift );
