@@ -178,7 +178,7 @@ public:
 
   void SetDistanceTransform(::itk::Image<float, 3> *im)
   {
-    ((MorphFunction *)(this->GetDifferenceFunction().GetPointer()))
+    (dynamic_cast<MorphFunction *>(this->GetDifferenceFunction().GetPointer()))
       ->SetDistanceTransform(im);
   }
 
