@@ -116,7 +116,7 @@ int itkGreaterEqualTest(int, char* [] )
     ++it2;
   }
 
-  int status1, status2, status3;
+  // Define status1, status2, status3
   {
   // Create a logic Filter
   myFilterTypePointer filter = myFilterType::New();
@@ -138,7 +138,7 @@ int itkGreaterEqualTest(int, char* [] )
   PixelType FG = filter->GetFunctor().GetForegroundValue();
   PixelType BG = filter->GetFunctor().GetBackgroundValue();
 
-  status1 = checkImOnImRes < myImageType1, myImageType2, myImageType3,
+  int status1 = checkImOnImRes < myImageType1, myImageType2, myImageType3,
                              std::greater_equal<myImageType1::PixelType>
                              >
     ( inputImageA, inputImageB, outputImage, FG, BG);
@@ -173,7 +173,7 @@ int itkGreaterEqualTest(int, char* [] )
   PixelType FG = filter->GetFunctor().GetForegroundValue();
   PixelType BG = filter->GetFunctor().GetBackgroundValue();
   PixelType C = filter->GetConstant2();
-  status2 = checkImOnConstRes < myImageType1, PixelType,
+  int status2 = checkImOnConstRes < myImageType1, PixelType,
                                 myImageType3,
                                 std::greater_equal<PixelType>
                                 >
@@ -206,7 +206,7 @@ int itkGreaterEqualTest(int, char* [] )
   PixelType FG = filter->GetFunctor().GetForegroundValue();
   PixelType BG = filter->GetFunctor().GetBackgroundValue();
 
-  status3 = checkConstOnImRes < PixelType, myImageType2,
+  int status3 = checkConstOnImRes < PixelType, myImageType2,
                                 myImageType3,
                                 std::greater_equal<PixelType>
                                 >
