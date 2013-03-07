@@ -887,8 +887,7 @@ void Bruker2DSEQImageIO::ReadImageInformation()
     if ( index != std::string::npos )
       {
       std::string tempString = RECO_image_type;
-      std::string recoType = "";
-      recoType = readFileBufferString.substr( index + tempString.length() );
+      std::string recoType = readFileBufferString.substr( index + tempString.length() );
       if ( recoType.find(MAGNITUDE_IMAGE) != std::string::npos )
         {
         EncapsulateMetaData< std::string >(
@@ -1031,9 +1030,6 @@ void Bruker2DSEQImageIO::ReadImageInformation()
   acqp_InputStream.imbue( std::locale::classic() );
   while ( !acqp_InputStream.eof() )
     {
-    int numEchoes = 0;
-    int numRepetitions = 0;
-    int numInversionTimes = 0;
     acqp_InputStream.getline( readFileBuffer, sizeof( readFileBuffer ) );
 
     acqpFileString = readFileBuffer;
@@ -1219,6 +1215,7 @@ void Bruker2DSEQImageIO::ReadImageInformation()
     index = acqpFileString.find(ACQ_echo_time);
     if ( index != std::string::npos )
       {
+      int numEchoes = 0;
       std::string        tempString = ACQ_echo_time;
       std::istringstream echoTimeString( acqpFileString.substr(
                                            index + tempString.length() ) );
@@ -1270,6 +1267,7 @@ void Bruker2DSEQImageIO::ReadImageInformation()
     index = acqpFileString.find(ACQ_repetition_time);
     if ( index != std::string::npos )
       {
+      int numRepetitions = 0;
       std::string        tempString = ACQ_repetition_time;
       std::istringstream reptitionTimeString( acqpFileString.substr(
                                                 index + tempString.length() ) );
@@ -1321,6 +1319,7 @@ void Bruker2DSEQImageIO::ReadImageInformation()
     index = acqpFileString.find(ACQ_inversion_time);
     if ( index != std::string::npos )
       {
+      int numInversionTimes = 0;
       std::string        tempString = ACQ_inversion_time;
       std::istringstream inversionTimeString( acqpFileString.substr(
                                                 index + tempString.length() ) );
@@ -1377,7 +1376,7 @@ void Bruker2DSEQImageIO::ReadImageInformation()
       tempString = acqpFileString.substr( index + tempString.length() );
       // MS VC++ cannot handle commas, so replace with spaces.
       for ( std::string::iterator iter = tempString.begin();
-            iter != tempString.end(); iter++ )
+            iter != tempString.end(); ++iter )
         {
         if ( *iter == ',' )
           {

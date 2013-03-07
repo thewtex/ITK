@@ -143,7 +143,7 @@ ArchetypeSeriesFileNames
   IntVectorType         numGroupLength;
   int                   sIndex;
   std::string::iterator sit;
-  for ( sit = fileName.begin(); sit < fileName.end(); sit++ )
+  for ( sit = fileName.begin(); sit < fileName.end(); ++sit )
     {
     // If the element is a number, find its starting index and length.
     if ( ( *sit ) >= '0' && ( *sit ) <= '9' )
