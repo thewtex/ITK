@@ -120,7 +120,7 @@ RegularStepGradientDescentBaseOptimizer
                                  << " iterations. "
                                  << excp.GetDescription();
       this->StopOptimization();
-      throw excp;
+      throw;
       }
 
     if ( m_Stop )

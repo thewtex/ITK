@@ -257,7 +257,7 @@ SPSAOptimizer
     m_StopCondition = MetricError;
     StopOptimization();
     // Pass exception to caller
-    throw err;
+    throw;
     }
 
   /** Compute the gain a_k */

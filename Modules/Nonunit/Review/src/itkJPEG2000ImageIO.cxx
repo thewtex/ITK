@@ -145,9 +145,7 @@ void JPEG2000ImageIO::ReadImageInformation()
 {
   itkDebugMacro(<< "ReadImageInformation()");
 
-  FILE *l_file = NULL;
-
-  l_file = fopen(this->m_FileName.c_str(), "rb");
+  FILE *l_file = fopen(this->m_FileName.c_str(), "rb");
 
   /* decompression parameters */
 
@@ -164,9 +162,7 @@ void JPEG2000ImageIO::ReadImageInformation()
   /* set decoding parameters to default values */
   opj_set_default_decoder_parameters(& (this->m_Internal->m_DecompressionParameters) );
 
-  opj_stream_t *cio = NULL;
-
-  cio = opj_stream_create_default_file_stream(l_file, true);
+  opj_stream_t *cio = opj_stream_create_default_file_stream(l_file, true);
 
   this->m_Internal->m_Dinfo = NULL;  /* handle to a decompressor */
 
@@ -391,9 +387,7 @@ void JPEG2000ImageIO::Read(void *buffer)
 {
   itkDebugMacro(<< "JPEG2000ImageIO::Read() Begin");
 
-  FILE *l_file = NULL;
-
-  l_file = fopen(this->m_FileName.c_str(), "rb");
+  FILE *l_file = fopen(this->m_FileName.c_str(), "rb");
 
   if ( !l_file )
     {
@@ -405,9 +399,7 @@ void JPEG2000ImageIO::Read(void *buffer)
       << itksys::SystemTools::GetLastSystemError() );
     }
 
-  opj_stream_t *l_stream = NULL;
-
-  l_stream = opj_stream_create_default_file_stream(l_file, true);
+  opj_stream_t *l_stream = opj_stream_create_default_file_stream(l_file, true);
   if ( !l_stream )
     {
     itkExceptionMacro(
@@ -694,6 +686,7 @@ void JPEG2000ImageIO::Read(void *buffer)
       itkDebugMacro(<< "initialStrideInBytes:    " << initialStrideInBytes);
       itkDebugMacro(<< "priorStrideInBytes:      " << priorStrideInBytes);
       itkDebugMacro(<< "postStrideInBytes:       " << postStrideInBytes);
+
 
       //TODO: Read the void buffer within the tile ROI. How do we specify the
       // tile ROI iteration
@@ -987,8 +980,7 @@ JPEG2000ImageIO
     cmptparm[0].h = h;
     }
 
-  opj_image_t *l_image = NULL;
-  l_image = opj_image_create(this->GetNumberOfComponents(), &cmptparm[0], color_space);
+  opj_image_t *l_image = opj_image_create(this->GetNumberOfComponents(), &cmptparm[0], color_space);
 
   if ( !l_image )
     {
@@ -1098,8 +1090,7 @@ JPEG2000ImageIO
       << "Reason: opj_setup_encoder returns false" );
     }
 
-  FILE *l_file = NULL;
-  l_file = fopen(parameters.outfile, "wb");
+  FILE *l_file = fopen(parameters.outfile, "wb");
   if ( !l_file )
     {
     itkExceptionMacro(
@@ -1112,8 +1103,7 @@ JPEG2000ImageIO
 
   /* open a byte stream for writing */
   /* allocate memory for all tiles */
-  opj_stream_t *cio = 00;
-  cio = opj_stream_create_default_file_stream(l_file, false);
+  opj_stream_t *cio = opj_stream_create_default_file_stream(l_file, false);
   if ( !cio )
     {
     itkExceptionMacro(

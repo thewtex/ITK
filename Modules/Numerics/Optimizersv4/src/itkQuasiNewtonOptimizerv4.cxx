@@ -175,7 +175,7 @@ QuasiNewtonOptimizerv4
     this->StopOptimization();
 
     // Pass exception to caller
-    throw err;
+    throw;
     }
 
   this->InvokeEvent( IterationEvent() );
