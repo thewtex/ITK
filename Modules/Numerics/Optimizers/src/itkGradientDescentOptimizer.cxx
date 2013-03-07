@@ -120,7 +120,7 @@ GradientDescentOptimizer
       StopOptimization();
 
       // Pass exception to caller
-      throw err;
+      throw;
       }
 
     if ( m_Stop )

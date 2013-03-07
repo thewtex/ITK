@@ -717,8 +717,8 @@ HDF5ImageIO
       this->SetDimensions(i,Dims[i]);
       }
     }
-    std::string VoxelTypeName(groupName);
-    VoxelTypeName += VoxelType;
+    //std::string VoxelTypeName(groupName);
+    //VoxelTypeName += VoxelType;
     //std::string typeVal = this->ReadString(VoxelTypeName);
 
 
@@ -877,26 +877,26 @@ HDF5ImageIO
     imageSet.close();
     }
   // catch failure caused by the H5File operations
-  catch( H5::AttributeIException error )
+  catch( H5::AttributeIException & error )
     {
     itkExceptionMacro(<< error.getCDetailMsg());
     }
-  catch( H5::FileIException error )
+  catch( H5::FileIException & error )
     {
     itkExceptionMacro(<< error.getCDetailMsg());
     }
   // catch failure caused by the DataSet operations
-  catch( H5::DataSetIException error )
+  catch( H5::DataSetIException & error )
     {
     itkExceptionMacro(<< error.getCDetailMsg());
     }
   // catch failure caused by the DataSpace operations
-  catch( H5::DataSpaceIException error )
+  catch( H5::DataSpaceIException & error )
     {
     itkExceptionMacro(<< error.getCDetailMsg());
     }
   // catch failure caused by the DataSpace operations
-  catch( H5::DataTypeIException error )
+  catch( H5::DataTypeIException & error )
     {
     itkExceptionMacro(<< error.getCDetailMsg());
     }
@@ -1191,22 +1191,22 @@ HDF5ImageIO
       }
     }
   // catch failure caused by the H5File operations
-  catch( H5::FileIException error )
+  catch( H5::FileIException & error )
     {
     itkExceptionMacro(<< error.getCDetailMsg());
     }
   // catch failure caused by the DataSet operations
-  catch( H5::DataSetIException error )
+  catch( H5::DataSetIException & error )
     {
     itkExceptionMacro(<< error.getCDetailMsg());
     }
   // catch failure caused by the DataSpace operations
-  catch( H5::DataSpaceIException error )
+  catch( H5::DataSpaceIException & error )
     {
     itkExceptionMacro(<< error.getCDetailMsg());
     }
   // catch failure caused by the DataSpace operations
-  catch( H5::DataTypeIException error )
+  catch( H5::DataTypeIException & error )
     {
     itkExceptionMacro(<< error.getCDetailMsg());
     }
@@ -1269,22 +1269,22 @@ HDF5ImageIO
     delete [] dims;
     }
   // catch failure caused by the H5File operations
-  catch( H5::FileIException error )
+  catch( H5::FileIException & error )
     {
     itkExceptionMacro(<< error.getCDetailMsg());
     }
   // catch failure caused by the DataSet operations
-  catch( H5::DataSetIException error )
+  catch( H5::DataSetIException & error )
     {
     itkExceptionMacro(<< error.getCDetailMsg());
     }
   // catch failure caused by the DataSpace operations
-  catch( H5::DataSpaceIException error )
+  catch( H5::DataSpaceIException & error )
     {
     itkExceptionMacro(<< error.getCDetailMsg());
     }
   // catch failure caused by the DataSpace operations
-  catch( H5::DataTypeIException error )
+  catch( H5::DataTypeIException & error )
     {
     itkExceptionMacro(<< error.getCDetailMsg());
     }
