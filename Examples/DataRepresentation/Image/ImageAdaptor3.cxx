@@ -70,7 +70,7 @@ public:
 
   VectorPixelAccessor() : m_Index(0) {}
 
-  void operator=( const VectorPixelAccessor & vpa )
+  VectorPixelAccessor & operator=( const VectorPixelAccessor & vpa )
     {
       m_Index = vpa.m_Index;
     }
