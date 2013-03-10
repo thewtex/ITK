@@ -106,10 +106,9 @@ public:
     FACE_CONNECTIVITY = 2
   };
 
-  /** set/get non-connectivity with radius == 1 of dimension connect,
-   * 0 <= connect < ImageDimension; 0 is vertex connectivity (e.g., 26 in 3D),
-   * 1 is edge connectivity (e.g., 18 in 3D), 2 is face connectivity
-   * (e.g., 6 in 3D), etc */
+  /** set/get non-connectivity of dimension connect,
+   * 0 <= connect < ImageDimension; 0 is vertex connectivity,
+   * 1 is edge connectivity, 2 is face connectivity, etc */
   itkSetMacro(NonConnectivity, unsigned);
   itkGetMacro(NonConnectivity, unsigned);
 
@@ -120,6 +119,10 @@ public:
   /** set/get half size of the block for calculating variance */
   itkSetMacro(BlockRadius, SizeType);
   itkGetConstReferenceMacro(BlockRadius, SizeType);
+
+  /** set/get half size of the block for the non-connectivity */
+  itkSetMacro(NonConnectivityRadius, SizeType);
+  itkGetConstReferenceMacro(NonConnectivityRadius, SizeType);
 
   /** enable/disable tensor computations */
   itkSetMacro(ComputeStructureTensors, bool);
@@ -162,6 +165,7 @@ private:
   unsigned                   m_NonConnectivity;
   std::vector< OffsetType >  m_NonConnectivityOffsets;
   SizeType                   m_BlockRadius;
+  SizeType                   m_NonConnectivityRadius;
   double                     m_SelectFraction;
   bool                       m_ComputeStructureTensors;
 };
