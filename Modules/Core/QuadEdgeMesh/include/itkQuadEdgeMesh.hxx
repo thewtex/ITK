@@ -1246,11 +1246,13 @@ QuadEdgeMesh< TPixel, VDimension, TTraits >
     }
 #endif
 
+  size_t N = points.size();
+
   // Check if existing edges have no face on the left.
-  for ( unsigned int i = 0; i < points.size(); i++ )
+  for ( size_t i = 0; i < N; i++ )
     {
     PointIdentifier pid0 = points[i];
-    PointIdentifier pid1 = points[( i + 1 ) % points.size()];
+    PointIdentifier pid1 = points[ ( i + 1 ) % N ];
 
     QEPrimal *edge = this->FindEdge(pid0, pid1);
 
@@ -1258,7 +1260,7 @@ QuadEdgeMesh< TPixel, VDimension, TTraits >
       {
       if ( edge->IsLeftSet() )
         {
-        itkDebugMacro("Edge [" << i << " " << ( ( i + 1 ) % points.size() )
+        itkDebugMacro("Edge [" << i << " " << ( ( i + 1 ) % N )
                                << " has a left face.");
         return (QEPrimal *)NULL;
         }
@@ -1285,16 +1287,16 @@ typename QuadEdgeMesh< TPixel, VDimension, TTraits >::QEPrimal *
 QuadEdgeMesh< TPixel, VDimension, TTraits >
 ::AddFaceWithSecurePointList(const PointIdList & points, bool CheckEdges)
 {
-  typedef std::vector< QEPrimal * > QEList;
-  QEList FaceQEList;
-
   const PointIdentifier numberOfPoints = static_cast< PointIdentifier >( points.size() );
+
+  typedef std::vector< QEPrimal * > QEList;
+  QEList FaceQEList( numberOfPoints, NULL );
 
   // Now create edge list and create missing edges if needed.
   for ( PointIdentifier i = 0; i < numberOfPoints; i++ )
     {
     PointIdentifier pid0 = points[i];
-    PointIdentifier pid1 = points[( i + 1 ) % points.size()];
+    PointIdentifier pid1 = points[( i + 1 ) % numberOfPoints];
     QEPrimal *      edge = this->FindEdge(pid0, pid1);
 
     if ( !edge && CheckEdges )
@@ -1304,26 +1306,29 @@ QuadEdgeMesh< TPixel, VDimension, TTraits >
         {
         return ( entry );
         }
-      FaceQEList.push_back(entry);
+      FaceQEList[i] = entry;
       }
     else
       {
       //FIXME throw exception here if !edge
-      FaceQEList.push_back(edge);
+      FaceQEList[i] = edge;
       }
     }
 
   // Reorder all Onext rings
   QEPrimal *e1;
   QEPrimal *e0 = FaceQEList.back();
-  for ( typename QEList::iterator it = FaceQEList.begin();
-        it != FaceQEList.end();
-        ++it )
+
+  typename QEList::iterator fIt = FaceQEList.begin();
+  typename QEList::iterator fEnd = FaceQEList.end();
+
+  while( fIt != fEnd )
     {
     e1 = e0->GetSym();
-    e0 = *it;
+    e0 = *fIt;
 
     e0->ReorderOnextRingBeforeAddFace(e1);
+    ++fIt;
     }
 
   // all edges are ready to receive a face on the left
@@ -1361,10 +1366,13 @@ QuadEdgeMesh< TPixel, VDimension, TTraits >
   // Associate the above generated CellIndex as the default FaceRefType
   // of the new face [ i.e. use the itk level CellIdentifier as the
   // GeometricalQuadEdge::m_Origin of dual edges (edges of type QEDual) ].
-  typename QEPrimal::IteratorGeom it;
-  for ( it = entry->BeginGeomLnext(); it != entry->EndGeomLnext(); it++ )
+  typename QEPrimal::IteratorGeom it  = entry->BeginGeomLnext();
+  typename QEPrimal::IteratorGeom end = entry->EndGeomLnext();
+
+  while( it != end )
     {
     it.Value()->SetLeft(fid);
+    ++it;
     }
 
   ++m_NumberOfFaces;
@@ -1387,11 +1395,11 @@ QuadEdgeMesh< TPixel, VDimension, TTraits >
   const PointIdentifier & bPid,
   const PointIdentifier & cPid)
 {
-  PointIdList points;
+  PointIdList points( 3 );
 
-  points.push_back(aPid);
-  points.push_back(bPid);
-  points.push_back(cPid);
+  points[0] = aPid;
+  points[1] = bPid;
+  points[2] = cPid;
   return this->AddFace(points);
 }
 
@@ -1437,12 +1445,12 @@ typename QuadEdgeMesh< TPixel, VDimension, TTraits >::CoordRepType
 QuadEdgeMesh< TPixel, VDimension, TTraits >
 ::ComputeEdgeLength(QEPrimal *e)
 {
-  const PointType org  = this->GetPoint( e->GetOrigin() );
-  const PointType dest = this->GetPoint( e->GetDestination() );
+  const PointsContainer *points = this->GetPoints();
 
-  const CoordRepType length = org.EuclideanDistanceTo(dest);
+  const PointType org  = points->GetElement( e->GetOrigin() );
+  const PointType dest = points->GetElement( e->GetDestination() );
 
-  return ( length );
+  return org.EuclideanDistanceTo(dest);
 }
 
 /**
@@ -1468,14 +1476,15 @@ QuadEdgeMesh< TPixel, VDimension, TTraits >
 
   PointIdentifier  numberOfPoints = NumericTraits<PointIdentifier>::Zero;
   PointsContainerConstIterator pointIterator = points->Begin();
+  PointsContainerConstIterator pointEnd = points->End();
 
-  while ( pointIterator != points->End() )
+  while ( pointIterator != pointEnd )
     {
     if ( pointIterator.Value().GetEdge() )
       {
-      numberOfPoints++;
+      ++numberOfPoints;
       }
-    pointIterator++;
+    ++pointIterator;
     }
 
   return ( numberOfPoints );
@@ -1503,7 +1512,7 @@ QuadEdgeMesh< TPixel, VDimension, TTraits >
     NumOfPoints = cellIterator.Value()->GetNumberOfPoints();
     if ( NumOfPoints > 2 )
       {
-      numberOfFaces++;
+      ++numberOfFaces;
       }
     ++cellIterator;
     }
@@ -1522,9 +1531,7 @@ typename QuadEdgeMesh< TPixel, VDimension, TTraits >::CellIdentifier
 QuadEdgeMesh< TPixel, VDimension, TTraits >
 ::ComputeNumberOfEdges() const
 {
-  CellIdentifier numberOfEdges = this->GetEdgeCells()->size();
-
-  return ( numberOfEdges );
+  return static_cast< CellIdentifier >( this->GetEdgeCells()->size() );
 }
 } // namespace itk
 
