@@ -111,6 +111,9 @@ if(NOT WIN32 AND CMAKE_COMPILER_IS_GNUCXX AND BUILD_SHARED_LIBS)
     set_target_properties(ITKCommon PROPERTIES
       COMPILE_FLAGS "${ITKCommon_CXX_FLAGS}"
     )
+    # Visibility of template specializations is buggy in GNU.
+    set_source_files_properties( itkArrayOutputSpecialization.cxx PROPERTIES
+      COMPILE_FLAGS -fvisibility=default )
   endif()
 endif()
 
