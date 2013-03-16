@@ -95,9 +95,11 @@ std::ostream & operator<<(std::ostream & os, const Array2D< TValueType > & arr)
   return os;
 }
 
-// declaration of specilization
+#ifndef _MSC_VER
+// declaration of specialization
 template<> std::ostream & operator<<(std::ostream & os, const Array2D< float > & arr);
 template<> std::ostream & operator<<(std::ostream & os, const Array2D< double > & arr);
+#endif
 
 // export specification for explicit instantiation
 template ITKCommon_EXPORT std::ostream & operator<<(std::ostream & os, const Array2D< float > & arr);

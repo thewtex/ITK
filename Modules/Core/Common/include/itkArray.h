@@ -180,9 +180,11 @@ std::ostream & operator<<(std::ostream & os, const Array< TValueType > & arr)
   return os;
 }
 
-// declaration of specilization
+#ifndef _MSC_VER
+// declaration of specialization
 template<> std::ostream & operator<< <double> (std::ostream & os, const Array< double > & arr);
 template<> std::ostream & operator<< <float> (std::ostream & os, const Array< float > & arr);
+#endif
 
 // export specification for explicit instantiation
 template ITKCommon_EXPORT std::ostream & operator<< <double> (std::ostream & os, const Array< double > & arr);
