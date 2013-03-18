@@ -75,6 +75,7 @@ PhysicsBasedNonRigidRegistrationMethod<TFixedImage, TMovingImage, TMaskImage, TM
   os << indent << "m_BlockRadius: " << m_BlockRadius << std::endl
      << indent << "m_SearchRadius: " << m_SearchRadius << std::endl
      << indent << "m_SelectFraction: " << m_SelectFraction << std::endl
+     << indent << "m_RejectFraction: " << this->m_FEMFilter->GetFEMSolver()->GetFractionErrorRejected() << std::endl
      << indent << "m_NonConnectivity: " << m_NonConnectivity << std::endl
      << indent << "m_ApproximationSteps: " << m_ApproximationSteps << std::endl
      << indent << "m_OutlierRejectionSteps: " << m_OutlierRejectionSteps << std::endl;
@@ -107,7 +108,7 @@ PhysicsBasedNonRigidRegistrationMethod<TFixedImage, TMovingImage, TMaskImage, TM
   this->m_FEMFilter->SetOrigin( fixedImage->GetOrigin() );
   this->m_FEMFilter->SetSize( fixedImage->GetLargestPossibleRegion().GetSize() );
 
-  typename FEMFilterType::FEMSolverType * femSolver = this->m_FEMFilter->GetModifiableFEMSolver();
+  typename FEMFilterType::FEMSolverType * femSolver = this->m_FEMFilter->GetFEMSolver();
   femSolver->SetApproximationSteps( this->m_ApproximationSteps );
   femSolver->SetOutlierRejectionSteps( this->m_OutlierRejectionSteps );
 
