@@ -100,8 +100,10 @@ template<> std::ostream & operator<<(std::ostream & os, const Array2D< float > &
 template<> std::ostream & operator<<(std::ostream & os, const Array2D< double > & arr);
 
 // export specification for explicit instantiation
+#ifndef _MSC_VER
 template ITKCommon_EXPORT std::ostream & operator<<(std::ostream & os, const Array2D< float > & arr);
 template ITKCommon_EXPORT std::ostream & operator<<(std::ostream & os, const Array2D< double > & arr);
+#endif
 
 } // namespace itk
 
