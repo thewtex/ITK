@@ -15,10 +15,10 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkNumberToString_hxx
-#define __itkNumberToString_hxx
+#ifndef __itkStringToNumber_hxx
+#define __itkStringToNumber_hxx
 
-#include "itkNumberToString.h"
+#include "itkStringToNumber.h"
 #include "itkNumericTraits.h"
 
 #include <sstream>
@@ -27,12 +27,13 @@ namespace itk
 {
 
 template<typename TValueType>
-std::string NumberToString<TValueType>::operator() (TValueType val)
+typename StringToNumber<TValueType>::ValueType
+StringToNumber<TValueType>::operator() (std::string val)
 {
-  std::ostringstream output;
-  output << val;
-
-  return output.str();
+  TValueType number;
+  std::istringstream input(val);
+  input >> number;
+  return number;
 }
 
 }

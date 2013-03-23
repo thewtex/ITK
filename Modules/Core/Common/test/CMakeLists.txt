@@ -97,6 +97,7 @@ itkPixelAccessTest.cxx
 itkPointGeometryTest.cxx
 itkMersenneTwisterRandomVariateGeneratorTest.cxx
 itkNumberToStringTest.cxx
+itkStringToNumberTest.cxx
 )
 
 set(ITKCommon2Tests
@@ -351,6 +352,7 @@ itk_add_test(NAME itkNumericTraitsTest COMMAND  ITKCommon1TestDriver --full-outp
 itk_add_test(NAME itkIntTypesTest COMMAND ITKCommon1TestDriver itkIntTypesTest)
 itk_add_test(NAME itkOctreeTest COMMAND ITKCommon2TestDriver itkOctreeTest)
 itk_add_test(NAME itkNumberToStringTest COMMAND ITKCommon1TestDriver itkNumberToStringTest)
+itk_add_test(NAME itkStringToNumberTest COMMAND ITKCommon1TestDriver itkStringToNumberTest)
 
 if(ITK_BUILD_SHARED_LIBS)
   itk_add_test(NAME itkObjectFactoryTest2 COMMAND ITKCommon2TestDriver itkObjectFactoryTest2 ${ITK_TEST_OUTPUT_DIR} ${ITK_TEST_OUTPUT_DIR})

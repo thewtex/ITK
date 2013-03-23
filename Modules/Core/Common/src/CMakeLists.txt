@@ -77,6 +77,7 @@ itkStoppingCriterionBase.cxx
 itkCompensatedSummation.cxx
 itkArrayOutputSpecialization.cxx
 itkNumberToString.cxx
+itkStringToNumber.cxx
 )
 
 if(WIN32)
