@@ -1631,6 +1631,7 @@ PREDEFINED             = "itkNotUsed(x)=" \
                          "itkSetObjectMacro(name,type)=                   virtual void Set##name (type* _arg);" \
                          "itkSetConstObjectMacro(name,type)=                   virtual void Set##name ( const type* _arg);" \
                          "itkGetConstObjectMacro(name,type)=                   virtual const type* Get##name ();" \
+                         "itkGetModifiableObjectMacro(name,type)=                   virtual const type* Get##name ();" \
                          "itkGetConstReferenceMacro(name,type)=                   virtual const type& Get##name ();" \
                          "itkSetEnumMacro(name,type)=                   virtual void Set##name (const type _arg);" \
                          "itkGetEnumMacro(name,type)=                   virtual type Get##name () const;" \
