@@ -1,10 +1,16 @@
 #!/usr/bin/env python
 
-import sys, os, re, glob, cStringIO
+from __future__ import print_function
+import sys, os, re, glob
+try:
+  import io
+except ImportError:
+  import cStringIO as io
+
 
 
 def usage():
-  print >> sys.stderr, """usage: mdoc.py set group file [files...]
+  print( """usage: mdoc.py set group file [files...]
   Add the tag "\\ingroup group" to all the doxygen comment with a \\class
   tag in it.
 
@@ -21,12 +27,12 @@ usage: mdoc.py massive-set [ITK-source]
 usage: mdoc.py massive-check [ITK-source]
   Check that all the headers in ITK have their module name in their \\ingroup tag.
   As for 'check', a warning is displayed if the tag is missing and 1 is returned.
-"""
+""",end="\n", file=sys.stderr)
 
 def setGroup( fname, group ):
-#  print >> sys.stderr, "Processing", fname
+#  print("Processing", fname,end="\n",file=sys.stderr)
   f = open( fname, "r" )
-  out = cStringIO.StringIO()
+  out = io.StringIO()
   # load everything in memory
   fcontent = f.read()
   f.close()
@@ -64,7 +70,7 @@ def setGroup( fname, group ):
   f.close()
 
 def checkGroup( fname, group ):
-#  print >> sys.stderr, "Checking", fname
+#  print("Checking", fname,end="\n",file=sys.stderr) 
   f = open( fname, "r" )
   # load everything in memory
   fcontent = f.read()
@@ -80,7 +86,7 @@ def checkGroup( fname, group ):
         # get class name and the line for debug output
         cname = re.search(r"\class +([^ ]*)", dcontent).group(1).strip()
         line = len(fcontent[:m.start(1)].splitlines())
-        print >> sys.stderr, r'%s:%s: error: "\ingroup %s" not set in class %s.' % (fname, line, group, cname)
+        print(r'%s:%s: error: "\ingroup %s" not set in class %s.' % (fname, line, group, cname),end="\n",file=sys.stderr)
         ret = 1
   return ret
 
@@ -135,7 +141,7 @@ def main():
       else:
         count += 1
         ret = max( ret, checkGroup(fname, module) )
-    print >> sys.stderr, count, "headers checked."
+    print(count,"headers checked.", end="\n", file=sys.stderr)
     return ret
 
   elif command == "massive-check":
@@ -158,11 +164,11 @@ def main():
       for fname2 in glob.glob(dname+"/include/*.h"):
         count += 1
         ret = max( ret, checkGroup(fname2, module) )
-    print >> sys.stderr, count, "headers checked."
+    print(count,"headers checked.",end="\n",file=sys.stderr)
     return ret
 
   else:
-    print >> sys.stderr, "Unknown command", command
+    print("Unknown command", command, end="\n",file=sys.stderr )
     usage()
     return 1
 
