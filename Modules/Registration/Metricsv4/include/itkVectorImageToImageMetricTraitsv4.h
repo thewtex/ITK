@@ -21,7 +21,7 @@
 #include "itkImage.h"
 #include "itkCovariantVector.h"
 #include "itkVariableLengthVector.h"
-#include "itkObjectToObjectMetricBase.h"
+#include "itkObjectToObjectMetricBaseTemplate.h"
 #include "itkDefaultConvertPixelTraits.h"
 #include "itkGradientRecursiveGaussianImageFilter.h"
 #include "itkCentralDifferenceImageFunction.h"
@@ -45,7 +45,7 @@ template<
   class    TMovingImageType,
   class    TVirtualImageType,
   unsigned int NumberOfComponents,
-  typename TCoordRep = typename ObjectToObjectMetricBase::CoordinateRepresentationType
+  typename TCoordRep = typename ObjectToObjectMetricBaseTemplate<double>::CoordinateRepresentationType
   >
 class VectorImageToImageMetricTraitsv4
 {

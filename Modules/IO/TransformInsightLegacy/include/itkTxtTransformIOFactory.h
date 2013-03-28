@@ -18,9 +18,7 @@
 #ifndef __itkTxtTransformIOFactory_h
 #define __itkTxtTransformIOFactory_h
 
-
-#include "itkObjectFactoryBase.h"
-#include "itkTransformIOBase.h"
+#include "itkTxtTransformIOFactoryTemplate.h"
 
 namespace itk
 {
@@ -28,43 +26,8 @@ namespace itk
    * \brief Create instances of TxtTransformIO objects using an object factory.
    * \ingroup ITKIOTransformInsightLegacy
    */
-class ITK_EXPORT TxtTransformIOFactory:public ObjectFactoryBase
-{
-public:
-  /** Standard class typedefs. */
-  typedef TxtTransformIOFactory      Self;
-  typedef ObjectFactoryBase          Superclass;
-  typedef SmartPointer< Self >       Pointer;
-  typedef SmartPointer< const Self > ConstPointer;
+typedef TxtTransformIOFactoryTemplate<double> TxtTransformIOFactory;
 
-  /** Class methods used to interface with the registered factories. */
-  virtual const char * GetITKSourceVersion(void) const;
-
-  virtual const char * GetDescription(void) const;
-
-  /** Method for class instantiation. */
-  itkFactorylessNewMacro(Self);
-
-  /** Run-time type information (and related methods). */
-  itkTypeMacro(TxtTransformIOFactory, ObjectFactoryBase);
-
-  /** Register one factory of this type  */
-  static void RegisterOneFactory(void)
-  {
-    TxtTransformIOFactory::Pointer metaFactory = TxtTransformIOFactory::New();
-
-    ObjectFactoryBase::RegisterFactoryInternal(metaFactory);
-  }
-
-protected:
-  TxtTransformIOFactory();
-  ~TxtTransformIOFactory();
-  virtual void PrintSelf(std::ostream & os, Indent indent) const;
-
-private:
-  TxtTransformIOFactory(const Self &); //purposely not implemented
-  void operator=(const Self &);        //purposely not implemented
-};
 } // end namespace itk
 
 #endif

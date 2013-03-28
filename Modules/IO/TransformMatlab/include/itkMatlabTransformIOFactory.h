@@ -19,8 +19,7 @@
 #define __itkMatlabTransformIOFactory_h
 
 
-#include "itkObjectFactoryBase.h"
-#include "itkTransformIOBase.h"
+#include "itkMatlabTransformIOFactoryTemplate.h"
 
 namespace itk
 {
@@ -29,44 +28,8 @@ namespace itk
  *  object factory.
  * \ingroup ITKIOTransformMatlab
  */
-class ITK_EXPORT MatlabTransformIOFactory:public ObjectFactoryBase
-{
-public:
-  /** Standard class typedefs. */
-  typedef MatlabTransformIOFactory   Self;
-  typedef ObjectFactoryBase          Superclass;
-  typedef SmartPointer< Self >       Pointer;
-  typedef SmartPointer< const Self > ConstPointer;
+typedef MatlabTransformIOFactoryTemplate<double> MatlabTransformIOFactory;
 
-  /** Class methods used to interface with the registered factories. */
-  virtual const char * GetITKSourceVersion(void) const;
-
-  virtual const char * GetDescription(void) const;
-
-  /** Method for class instantiation. */
-  itkFactorylessNewMacro(Self);
-
-  /** Run-time type information (and related methods). */
-  itkTypeMacro(MatlabTransformIOFactory, ObjectFactoryBase);
-
-  /** Register one factory of this type  */
-  static void RegisterOneFactory(void)
-  {
-    MatlabTransformIOFactory::Pointer metaFactory =
-      MatlabTransformIOFactory::New();
-
-    ObjectFactoryBase::RegisterFactoryInternal(metaFactory);
-  }
-
-protected:
-  MatlabTransformIOFactory();
-  ~MatlabTransformIOFactory();
-  virtual void PrintSelf(std::ostream & os, Indent indent) const;
-
-private:
-  MatlabTransformIOFactory(const Self &); //purposely not implemented
-  void operator=(const Self &);           //purposely not implemented
-};
 } // end namespace itk
 
 #endif

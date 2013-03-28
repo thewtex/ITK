@@ -18,10 +18,11 @@
 #ifndef __itkTransformFileReader_h
 #define __itkTransformFileReader_h
 
-#include "itkTransformIOBase.h"
+#include "itkTransformFileReaderTemplate.h"
 
 namespace itk
 {
+
 /** \class TransformFileReader
  *
  * \brief TODO
@@ -31,57 +32,8 @@ namespace itk
  * \wikiexample{IO/TransformFileReader,Read a transform from a file}
  * \endwiki
  */
-class ITK_EXPORT TransformFileReader:public LightProcessObject
-{
-public:
+typedef itk::TransformFileReaderTemplate<double> TransformFileReader;
 
-  /** SmartPointer typedef support */
-  typedef TransformFileReader                 Self;
-  typedef SmartPointer< Self >                Pointer;
-  typedef TransformBase                       TransformType;
-
-  typedef TransformType::ParametersType      ParametersType;
-  typedef TransformIOBase::TransformPointer  TransformPointer;
-  typedef TransformIOBase::TransformListType TransformListType;
-
-  /** Method for creation through the object factory */
-  itkNewMacro(Self);
-
-  /** Run-time type information (and related methods). */
-  typedef Object Superclass;
-  itkTypeMacro(TransformFileReader, LightProcessObject);
-
-  /** Set the filename  */
-  itkSetStringMacro(FileName);
-
-  /** Get the filename */
-  itkGetStringMacro(FileName);
-
-  /** Read the transform */
-  virtual void Update();
-
-  /** Get the list of transform */
-  TransformListType * GetTransformList() { return &m_TransformList; }
-
-protected:
-  TransformIOBase::Pointer m_TransformIO;
-  TransformFileReader(const Self &); //purposely not implemented
-  void operator=(const Self &);      //purposely not implemented
-  void PrintSelf(std::ostream & os, Indent indent) const;
-
-  std::string m_FileName;
-
-  TransformFileReader();
-  virtual ~TransformFileReader();
-  void CreateTransform(TransformPointer & ptr, const std::string & ClassName);
-
-private:
-  TransformListType m_TransformList;
-};
-} // namespace itk
-
-#ifdef ITK_IO_FACTORY_REGISTER_MANAGER
-#include "itkTransformIOFactoryRegisterManager.h"
-#endif
+}
 
 #endif // __itkTransformFileReader_h

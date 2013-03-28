@@ -6,12 +6,16 @@ set(ITKMetricsv4Tests
   itkLabeledPointSetMetricTest.cxx
   itkImageToImageMetricv4Test.cxx
   itkJointHistogramMutualInformationImageToImageMetricv4Test.cxx
+  itkJointHistogramMutualInformationImageToImageMetricComputationTypeTemplatev4Test.cxx
   itkJointHistogramMutualInformationImageToImageRegistrationTest.cxx
   itkMeanSquaresImageToImageMetricv4Test.cxx
+  itkMeanSquaresImageToImageMetricComputationTypeTemplatev4Test.cxx
   itkCorrelationImageToImageMetricv4Test.cxx
+  itkCorrelationImageToImageMetricComputationTypeTemplatev4Test.cxx
   itkMeanSquaresImageToImageMetricv4OnVectorTest.cxx
   itkMeanSquaresImageToImageMetricv4OnVectorTest2.cxx
   itkANTSNeighborhoodCorrelationImageToImageMetricv4Test.cxx
+  itkANTSNeighborhoodCorrelationImageToImageMetricComputationTypeTemplatev4Test.cxx
   itkANTSNeighborhoodCorrelationImageToImageRegistrationTest.cxx
   itkMattesMutualInformationImageToImageMetricv4Test.cxx
   itkMattesMutualInformationImageToImageMetricv4RegistrationTest.cxx
@@ -21,6 +25,7 @@ set(ITKMetricsv4Tests
   itkMeanSquaresImageToImageMetricv4RegistrationTest.cxx
   itkImageToImageMetricv4RegistrationTest.cxx
   itkDemonsImageToImageMetricv4Test.cxx
+  itkDemonsImageToImageMetricComputationTypeTemplatev4Test.cxx
   itkDemonsImageToImageMetricv4RegistrationTest.cxx
   itkEuclideanDistancePointSetMetricRegistrationTest.cxx
   itkExpectationBasedPointSetMetricRegistrationTest.cxx
@@ -60,6 +65,10 @@ itk_add_test(NAME itkJointHistogramMutualInformationImageToImageMetricv4Test
       COMMAND ITKMetricsv4TestDriver
               itkJointHistogramMutualInformationImageToImageMetricv4Test)
 
+itk_add_test(NAME itkJointHistogramMutualInformationImageToImageMetricComputationTypeTemplatev4Test
+      COMMAND ITKMetricsv4TestDriver
+              itkJointHistogramMutualInformationImageToImageMetricComputationTypeTemplatev4Test)
+
 itk_add_test(NAME itkJointHistogramMutualInformationImageToImageRegistrationTest
       COMMAND ITKMetricsv4TestDriver
               itkJointHistogramMutualInformationImageToImageRegistrationTest
@@ -80,9 +89,17 @@ itk_add_test(NAME itkMeanSquaresImageToImageMetricv4Test
       COMMAND ITKMetricsv4TestDriver
       itkMeanSquaresImageToImageMetricv4Test)
 
+itk_add_test(NAME itkMeanSquaresImageToImageMetricComputationTypeTemplatev4Test
+      COMMAND ITKMetricsv4TestDriver
+      itkMeanSquaresImageToImageMetricComputationTypeTemplatev4Test)
+
 itk_add_test(NAME itkCorrelationImageToImageMetricv4Test
       COMMAND ITKMetricsv4TestDriver
       itkCorrelationImageToImageMetricv4Test)
+
+itk_add_test(NAME itkCorrelationImageToImageMetricComputationTypeTemplatev4Test
+      COMMAND ITKMetricsv4TestDriver
+     itkCorrelationImageToImageMetricComputationTypeTemplatev4Test)
 
 itk_add_test(NAME itkMeanSquaresImageToImageMetricv4OnVectorTest
       COMMAND ITKMetricsv4TestDriver
@@ -95,6 +112,10 @@ itk_add_test(NAME itkMeanSquaresImageToImageMetricv4OnVectorTest2
 itk_add_test(NAME itkANTSNeighborhoodCorrelationImageToImageMetricv4Test
       COMMAND ITKMetricsv4TestDriver
               itkANTSNeighborhoodCorrelationImageToImageMetricv4Test)
+
+itk_add_test(NAME itkANTSNeighborhoodCorrelationImageToImageMetricComputationTypeTemplatev4Test
+      COMMAND ITKMetricsv4TestDriver
+              itkANTSNeighborhoodCorrelationImageToImageMetricComputationTypeTemplatev4Test)
 
 itk_add_test(NAME itkANTSNeighborhoodCorrelationImageToImageRegistrationTest
       COMMAND ITKMetricsv4TestDriver
@@ -180,6 +201,10 @@ itk_add_test(NAME itkImageToImageMetricv4RegistrationTest3
 itk_add_test(NAME itkDemonsImageToImageMetricv4Test
       COMMAND ITKMetricsv4TestDriver
               itkDemonsImageToImageMetricv4Test)
+
+itk_add_test(NAME itkDemonsImageToImageMetricComputationTypeTemplatev4Test
+      COMMAND ITKMetricsv4TestDriver
+              itkDemonsImageToImageMetricComputationTypeTemplatev4Test)
 
 itk_add_test(NAME itkDemonsImageToImageMetricv4RegistrationTest
       COMMAND ITKMetricsv4TestDriver

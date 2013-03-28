@@ -17,7 +17,8 @@
  *=========================================================================*/
 #ifndef __itkTxtTransformIO_h
 #define __itkTxtTransformIO_h
-#include "itkTransformIOBase.h"
+
+#include "itkTxtTransformIOTemplate.h"
 
 namespace itk
 {
@@ -25,45 +26,6 @@ namespace itk
    * \brief Create instances of TxtTransformIO objects.
    * \ingroup ITKIOTransformInsightLegacy
    */
-class ITK_EXPORT TxtTransformIO:public TransformIOBase
-{
-public:
-  typedef TxtTransformIO                Self;
-  typedef TransformIOBase               Superclass;
-  typedef SmartPointer< Self >          Pointer;
-  typedef TransformBase                 TransformType;
-  typedef Superclass::TransformPointer  TransformPointer;
-  typedef Superclass::TransformListType TransformListType;
-  /** Run-time type information (and related methods). */
-  itkTypeMacro(TxtTransformIO, TransformIOBase);
-  itkNewMacro(Self);
-
-  /** Determine the file type. Returns true if this ImageIO can read the
-   * file specified. */
-  virtual bool CanReadFile(const char *);
-
-  /** Determine the file type. Returns true if this ImageIO can read the
-   * file specified. */
-  virtual bool CanWriteFile(const char *);
-
-  /** Reads the data from disk into the memory buffer provided. */
-  virtual void Read();
-
-  /** Writes the data to disk from the memory buffer provided. Make sure
-   * that the IORegions has been set properly. The buffer is cast to a
-   * pointer to the beginning of the image data. */
-  virtual void Write();
-
-  /* Helper function for Read method, used for CompositeTransform reading. */
-  void ReadComponentFile( std::string Value );
-
-protected:
-  TxtTransformIO();
-  virtual ~TxtTransformIO();
-
-private:
-  /** trim spaces and newlines from start and end of a string */
-  std::string trim(std::string const & source, char const *delims = " \t\r\n");
-};
+typedef TxtTransformIOTemplate<double> TxtTransformIO;
 }
 #endif // __itkTxtTransformIO_h
