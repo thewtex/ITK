@@ -72,9 +72,12 @@ public:
    * reference counted. */
   Self & operator=(const Self & it)
   {
-    m_IsAtEnd = it.m_IsAtEnd; // copy the end flag
-    m_Image = it.m_Image;     // copy the smart pointer
-    m_Region = it.m_Region;   // copy the region
+    if(this != &it)
+      {
+      m_IsAtEnd = it.m_IsAtEnd; // copy the end flag
+      m_Image = it.m_Image;     // copy the smart pointer
+      m_Region = it.m_Region;   // copy the region
+      }
     return *this;
   }
 

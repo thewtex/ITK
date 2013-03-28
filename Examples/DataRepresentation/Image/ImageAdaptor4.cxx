@@ -75,9 +75,10 @@ public:
     m_Threshold = threshold;
     }
 
-  void operator=( const ThresholdingPixelAccessor & vpa )
+  ThresholdingPixelAccessor & operator=( const ThresholdingPixelAccessor & vpa )
     {
     m_Threshold = vpa.m_Threshold;
+    return *this;
     }
 
 private:
