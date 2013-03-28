@@ -18,9 +18,7 @@
 #ifndef __itkHDF5TransformIOFactory_h
 #define __itkHDF5TransformIOFactory_h
 
-
-#include "itkObjectFactoryBase.h"
-#include "itkTransformIOBase.h"
+#include "itkHDF5TransformIOFactoryTemplate.h"
 
 namespace itk
 {
@@ -29,43 +27,8 @@ namespace itk
    *
    * \ingroup ITKIOTransformHDF5
    */
-class HDF5TransformIOFactory:public ObjectFactoryBase
-{
-public:
-  /** Standard class typedefs. */
-  typedef HDF5TransformIOFactory     Self;
-  typedef ObjectFactoryBase          Superclass;
-  typedef SmartPointer< Self >       Pointer;
-  typedef SmartPointer< const Self > ConstPointer;
+typedef HDF5TransformIOFactoryTemplate<double> HDF5TransformIOFactory;
 
-  /** Class methods used to interface with the registered factories. */
-  virtual const char * GetITKSourceVersion(void) const;
-
-  virtual const char * GetDescription(void) const;
-
-  /** Method for class instantiation. */
-  itkFactorylessNewMacro(Self);
-
-  /** Run-time type information (and related methods). */
-  itkTypeMacro(HDF5TransformIOFactory, ObjectFactoryBase);
-
-  /** Register one factory of this type  */
-  static void RegisterOneFactory(void)
-  {
-    HDF5TransformIOFactory::Pointer metaFactory = HDF5TransformIOFactory::New();
-
-    ObjectFactoryBase::RegisterFactoryInternal(metaFactory);
-  }
-
-protected:
-  HDF5TransformIOFactory();
-  ~HDF5TransformIOFactory();
-  virtual void PrintSelf(std::ostream & os, Indent indent) const;
-
-private:
-  HDF5TransformIOFactory(const Self &); //purposely not implemented
-  void operator=(const Self &);        //purposely not implemented
-};
 } // end namespace itk
 
 #endif
