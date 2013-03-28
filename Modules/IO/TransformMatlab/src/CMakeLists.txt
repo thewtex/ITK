@@ -1,6 +1,5 @@
 set(ITKIOTransformMatlab_SRC
-itkMatlabTransformIO.cxx
-itkMatlabTransformIOFactory.cxx
+itkMatlabTransformIOFactoryTemplate.cxx
 )
 
 add_library(ITKIOTransformMatlab ${ITKIOTransformMatlab_SRC})
