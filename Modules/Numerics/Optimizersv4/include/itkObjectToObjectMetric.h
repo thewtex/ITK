@@ -81,25 +81,25 @@ namespace itk
  *
  * \ingroup ITKOptimizersv4
  */
-template<unsigned int TFixedDimension, unsigned int TMovingDimension, class TVirtualImage = Image<typename ObjectToObjectMetricBase::ParametersValueType, TFixedDimension> >
+template<unsigned int TFixedDimension, unsigned int TMovingDimension, class TVirtualImage = Image<double, TFixedDimension>, class InternalComputationType=double>
 class ITK_EXPORT ObjectToObjectMetric:
-  public ObjectToObjectMetricBase
+  public ObjectToObjectMetricBaseTemplate< InternalComputationType >
 {
 public:
   /** Standard class typedefs. */
-  typedef ObjectToObjectMetric         Self;
-  typedef ObjectToObjectMetricBase     Superclass;
-  typedef SmartPointer< Self >         Pointer;
-  typedef SmartPointer< const Self >   ConstPointer;
+  typedef ObjectToObjectMetric                                        Self;
+  typedef ObjectToObjectMetricBaseTemplate< InternalComputationType > Superclass;
+  typedef SmartPointer< Self >                                        Pointer;
+  typedef SmartPointer< const Self >                                  ConstPointer;
 
   /** Run-time type information (and related methods). */
-  itkTypeMacro(ObjectToObjectMetric, ObjectToObjectMetricBase);
+  itkTypeMacro(ObjectToObjectMetric, ObjectToObjectMetricBaseTemplate);
 
   /** Type used for representing object components  */
-  typedef typename Superclass::ParametersValueType            CoordinateRepresentationType;
+  typedef InternalComputationType            CoordinateRepresentationType;
 
   /** Type for internal computations */
-  typedef typename Superclass::InternalComputationValueType   InternalComputationValueType;
+  typedef InternalComputationType            InternalComputationValueType;
 
   /**  Type of the measure. */
   typedef typename Superclass::MeasureType            MeasureType;
@@ -110,11 +110,12 @@ public:
 
   /**  Type of the parameters. */
   typedef typename Superclass::ParametersType         ParametersType;
-  typedef typename Superclass::ParametersValueType    ParametersValueType;
   typedef typename Superclass::NumberOfParametersType NumberOfParametersType;
 
+  typedef typename Superclass::GradientSourceType     GradientSourceType;
+
   /** Dimension type */
-  typedef SizeValueType                       DimensionType;
+  typedef SizeValueType                               DimensionType;
 
   /** Object dimension accessors */
   itkStaticConstMacro(FixedDimension, DimensionType, TFixedDimension);
@@ -140,8 +141,8 @@ public:
   typedef typename VirtualPointSetType::Pointer                                 VirtualPointSetPointer;
 
   /**  Type of the Transform Base classes */
-  typedef Transform<ParametersValueType, TVirtualImage::ImageDimension, TMovingDimension> MovingTransformType;
-  typedef Transform<ParametersValueType, TVirtualImage::ImageDimension, TFixedDimension>  FixedTransformType;
+  typedef Transform<InternalComputationType, TVirtualImage::ImageDimension, TMovingDimension> MovingTransformType;
+  typedef Transform<InternalComputationType, TVirtualImage::ImageDimension, TFixedDimension>  FixedTransformType;
 
   typedef typename FixedTransformType::Pointer         FixedTransformPointer;
   typedef typename FixedTransformType::InputPointType  FixedInputPointType;
@@ -168,7 +169,7 @@ public:
   virtual void SetParameters( ParametersType & params );
   virtual const ParametersType & GetParameters() const;
   virtual bool HasLocalSupport() const;
-  virtual void UpdateTransformParameters( const DerivativeType & derivative, ParametersValueType factor);
+  virtual void UpdateTransformParameters( const DerivativeType & derivative, InternalComputationType factor);
 
   /** Connect the fixed transform. */
   itkSetObjectMacro(FixedTransform, FixedTransformType);

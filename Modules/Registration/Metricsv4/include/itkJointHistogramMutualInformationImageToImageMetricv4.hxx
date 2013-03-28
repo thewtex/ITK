@@ -27,8 +27,8 @@
 namespace itk
 {
 
-template <class TFixedImage,class TMovingImage,class TVirtualImage>
-JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage>
+template <class TFixedImage, class TMovingImage, class TVirtualImage, class InternalComputationType>
+JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage,InternalComputationType>
 ::JointHistogramMutualInformationImageToImageMetricv4()
 {
   // Initialize histogram properties
@@ -54,15 +54,15 @@ JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVi
   this->m_JointPDF             = JointPDFType::New();
 }
 
-template <class TFixedImage, class TMovingImage, class TVirtualImage>
-JointHistogramMutualInformationImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage>
+template <class TFixedImage, class TMovingImage, class TVirtualImage, class InternalComputationType>
+JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage,InternalComputationType>
 ::~JointHistogramMutualInformationImageToImageMetricv4()
 {
 }
 
-template <class TFixedImage,class TMovingImage,class TVirtualImage>
+template <class TFixedImage, class TMovingImage, class TVirtualImage, class InternalComputationType>
 void
-JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage>
+JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage,InternalComputationType>
 ::Initialize() throw (itk::ExceptionObject)
 {
   Superclass::Initialize();
@@ -207,9 +207,9 @@ JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVi
 }
 
 
-template <class TFixedImage, class TMovingImage, class TVirtualImage>
+template <class TFixedImage, class TMovingImage, class TVirtualImage, class InternalComputationType>
 void
-JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage>
+JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage,InternalComputationType>
 ::InitializeForIteration() const
 {
   Superclass::InitializeForIteration();
@@ -296,9 +296,9 @@ JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVi
     }
 }
 
-template <class TFixedImage, class TMovingImage, class TVirtualImage>
-typename JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage>::MeasureType
-JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage>
+template <class TFixedImage, class TMovingImage, class TVirtualImage, class InternalComputationType>
+typename JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage,InternalComputationType>::MeasureType
+JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage,InternalComputationType>
 ::GetValue() const
 {
   DerivativeType dummyDeriviative;
@@ -316,9 +316,9 @@ JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVi
   return this->m_Value;
 }
 
-template <class TFixedImage, class TMovingImage, class TVirtualImage>
-typename JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage>::MeasureType
-JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage>
+template <class TFixedImage, class TMovingImage, class TVirtualImage, class InternalComputationType>
+typename JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage,InternalComputationType>::MeasureType
+JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage,InternalComputationType>
 ::ComputeValue() const
 {
   /**
@@ -359,9 +359,9 @@ JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVi
   return ( -1.0 * total_mi.GetSum() / this->m_Log2  );
 }
 
-template <class TFixedImage, class TMovingImage, class TVirtualImage>
+template <class TFixedImage, class TMovingImage, class TVirtualImage, class InternalComputationType>
 void
-JointHistogramMutualInformationImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage>
+JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage,InternalComputationType>
 ::ComputeJointPDFPoint( const FixedImagePixelType fixedImageValue,
                         const MovingImagePixelType movingImageValue,
                         JointPDFPointType& jointPDFpoint ) const
@@ -372,9 +372,9 @@ JointHistogramMutualInformationImageToImageMetricv4<TFixedImage, TMovingImage, T
     jointPDFpoint[1] = b;
 }
 
-template <class TFixedImage, class TMovingImage, class TVirtualImage>
+template <class TFixedImage, class TMovingImage, class TVirtualImage, class InternalComputationType>
 void
-JointHistogramMutualInformationImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage>
+JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage,InternalComputationType>
 ::PrintSelf (std::ostream & os, Indent indent) const
 {
   // Print the superclass

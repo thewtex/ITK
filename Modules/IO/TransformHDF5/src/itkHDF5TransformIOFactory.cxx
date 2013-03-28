@@ -16,50 +16,31 @@
  *
  *=========================================================================*/
 #include "itkHDF5TransformIOFactory.h"
-#include "itkCreateObjectFunction.h"
-#include "itkHDF5TransformIO.h"
-#include "itkVersion.h"
+
+template class itk::HDF5TransformIOFactoryTemplate<float>;
+template class itk::HDF5TransformIOFactoryTemplate<double>;
 
 namespace itk
 {
-void HDF5TransformIOFactory::PrintSelf(std::ostream &, Indent) const
-{}
-
-HDF5TransformIOFactory::HDF5TransformIOFactory()
-{
-  this->RegisterOverride( "itkTransformIOBase",
-                          "itkHDF5TransformIO",
-                          "HD5 Transform IO",
-                          1,
-                          CreateObjectFunction< HDF5TransformIO >::New() );
-}
-
-HDF5TransformIOFactory::~HDF5TransformIOFactory()
-{}
-
-const char *
-HDF5TransformIOFactory::GetITKSourceVersion(void) const
-{
-  return ITK_SOURCE_VERSION;
-}
-
-const char *
-HDF5TransformIOFactory::GetDescription() const
-{
-  return "HD5 TransformIO Factory, allows the"
-         " loading of HDF5 transforms into insight";
-}
-
 // Undocumented API used to register during static initialization.
 // DO NOT CALL DIRECTLY.
-static bool HDF5TransformIOFactoryHasBeenRegistered;
-
-void HDF5TransformIOFactoryRegister__Private(void)
+static bool HDF5TransformIOFactoryTemplateFloatHasBeenRegistered = false;
+void HDF5TransformIOFactoryTemplateFloatRegister__Private(void)
 {
-  if( ! HDF5TransformIOFactoryHasBeenRegistered )
-    {
-    HDF5TransformIOFactoryHasBeenRegistered = true;
-    HDF5TransformIOFactory::RegisterOneFactory();
-    }
+if( ! HDF5TransformIOFactoryTemplateFloatHasBeenRegistered )
+  {
+  HDF5TransformIOFactoryTemplateFloatHasBeenRegistered = true;
+  HDF5TransformIOFactoryTemplate<float>::RegisterOneFactory();
+  }
+}
+
+static bool HDF5TransformIOFactoryTemplateDoubleHasBeenRegistered = false;
+void HDF5TransformIOFactoryTemplateDoubleRegister__Private(void)
+{
+if( ! HDF5TransformIOFactoryTemplateDoubleHasBeenRegistered )
+  {
+  HDF5TransformIOFactoryTemplateDoubleHasBeenRegistered = true;
+  HDF5TransformIOFactoryTemplate<double>::RegisterOneFactory();
+  }
 }
 } // end namespace itk

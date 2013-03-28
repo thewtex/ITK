@@ -18,25 +18,25 @@
 #ifndef __itkMatlabTransformIOFactory_h
 #define __itkMatlabTransformIOFactory_h
 
-
 #include "itkObjectFactoryBase.h"
 #include "itkTransformIOBase.h"
 
 namespace itk
 {
-/** \class MatlabTransformIOFactory
+/** \class MatlabTransformIOFactoryTemplate
  *  \brief Create instances of MatlabTransformIO objects using an
  *  object factory.
  * \ingroup ITKIOTransformMatlab
  */
-class ITK_EXPORT MatlabTransformIOFactory:public ObjectFactoryBase
+template<class ParametersValueType>
+class ITK_EXPORT MatlabTransformIOFactoryTemplate:public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */
-  typedef MatlabTransformIOFactory   Self;
-  typedef ObjectFactoryBase          Superclass;
-  typedef SmartPointer< Self >       Pointer;
-  typedef SmartPointer< const Self > ConstPointer;
+  typedef MatlabTransformIOFactoryTemplate  Self;
+  typedef ObjectFactoryBase                 Superclass;
+  typedef SmartPointer< Self >              Pointer;
+  typedef SmartPointer< const Self >        ConstPointer;
 
   /** Class methods used to interface with the registered factories. */
   virtual const char * GetITKSourceVersion(void) const;
@@ -47,26 +47,37 @@ public:
   itkFactorylessNewMacro(Self);
 
   /** Run-time type information (and related methods). */
-  itkTypeMacro(MatlabTransformIOFactory, ObjectFactoryBase);
+  itkTypeMacro(MatlabTransformIOFactoryTemplate, ObjectFactoryBase);
 
   /** Register one factory of this type  */
   static void RegisterOneFactory(void)
   {
-    MatlabTransformIOFactory::Pointer metaFactory =
-      MatlabTransformIOFactory::New();
+    typename MatlabTransformIOFactoryTemplate<ParametersValueType>::Pointer metaFactory =
+        MatlabTransformIOFactoryTemplate<ParametersValueType>::New();
 
     ObjectFactoryBase::RegisterFactoryInternal(metaFactory);
   }
 
 protected:
-  MatlabTransformIOFactory();
-  ~MatlabTransformIOFactory();
+  MatlabTransformIOFactoryTemplate();
+  ~MatlabTransformIOFactoryTemplate();
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
-  MatlabTransformIOFactory(const Self &); //purposely not implemented
+  MatlabTransformIOFactoryTemplate(const Self &); //purposely not implemented
   void operator=(const Self &);           //purposely not implemented
 };
+
+/** This helps to meet backward compatibility */
+typedef MatlabTransformIOFactoryTemplate<double> MatlabTransformIOFactory;
+
 } // end namespace itk
+
+extern template class itk::MatlabTransformIOFactoryTemplate<float>;
+extern template class itk::MatlabTransformIOFactoryTemplate<double>;
+
+#ifndef ITK_MANUAL_INSTANTIATION
+#include "itkMatlabTransformIOFactory.hxx"
+#endif
 
 #endif

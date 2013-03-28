@@ -24,19 +24,20 @@
 
 namespace itk
 {
-/** \class HDF5TransformIOFactory
+/** \class HDF5TransformIOFactoryTemplate
    * \brief Create instances of HDF5TransformIO objects using an object factory.
    *
    * \ingroup ITKIOTransformHDF5
    */
-class HDF5TransformIOFactory:public ObjectFactoryBase
+template<class ParametersValueType>
+class HDF5TransformIOFactoryTemplate:public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */
-  typedef HDF5TransformIOFactory     Self;
-  typedef ObjectFactoryBase          Superclass;
-  typedef SmartPointer< Self >       Pointer;
-  typedef SmartPointer< const Self > ConstPointer;
+  typedef HDF5TransformIOFactoryTemplate      Self;
+  typedef ObjectFactoryBase                   Superclass;
+  typedef SmartPointer< Self >                Pointer;
+  typedef SmartPointer< const Self >          ConstPointer;
 
   /** Class methods used to interface with the registered factories. */
   virtual const char * GetITKSourceVersion(void) const;
@@ -47,25 +48,37 @@ public:
   itkFactorylessNewMacro(Self);
 
   /** Run-time type information (and related methods). */
-  itkTypeMacro(HDF5TransformIOFactory, ObjectFactoryBase);
+  itkTypeMacro(HDF5TransformIOFactoryTemplate, ObjectFactoryBase);
 
   /** Register one factory of this type  */
   static void RegisterOneFactory(void)
   {
-    HDF5TransformIOFactory::Pointer metaFactory = HDF5TransformIOFactory::New();
+    typename HDF5TransformIOFactoryTemplate<ParametersValueType>::Pointer metaFactory =
+      HDF5TransformIOFactoryTemplate<ParametersValueType>::New();
 
     ObjectFactoryBase::RegisterFactoryInternal(metaFactory);
   }
 
 protected:
-  HDF5TransformIOFactory();
-  ~HDF5TransformIOFactory();
+  HDF5TransformIOFactoryTemplate();
+  ~HDF5TransformIOFactoryTemplate();
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
-  HDF5TransformIOFactory(const Self &); //purposely not implemented
+  HDF5TransformIOFactoryTemplate(const Self &); //purposely not implemented
   void operator=(const Self &);        //purposely not implemented
 };
+
+/** This helps to meet backward compatibility */
+typedef HDF5TransformIOFactoryTemplate<double> HDF5TransformIOFactory;
+
 } // end namespace itk
+
+extern template class itk::HDF5TransformIOFactoryTemplate<float>;
+extern template class itk::HDF5TransformIOFactoryTemplate<double>;
+
+#ifndef ITK_MANUAL_INSTANTIATION
+#include "itkHDF5TransformIOFactory.hxx"
+#endif
 
 #endif

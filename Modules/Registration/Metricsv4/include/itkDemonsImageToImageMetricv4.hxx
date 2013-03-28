@@ -23,8 +23,8 @@
 namespace itk
 {
 
-template < class TFixedImage, class TMovingImage, class TVirtualImage >
-DemonsImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage>
+template < class TFixedImage, class TMovingImage, class TVirtualImage, class InternalComputationType >
+DemonsImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage, InternalComputationType>
 ::DemonsImageToImageMetricv4()
 {
   // We have our own GetValueAndDerivativeThreader's that we want
@@ -41,15 +41,15 @@ DemonsImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage>
 
 }
 
-template < class TFixedImage, class TMovingImage, class TVirtualImage >
-DemonsImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage>
+template < class TFixedImage, class TMovingImage, class TVirtualImage, class InternalComputationType >
+DemonsImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage, InternalComputationType>
 ::~DemonsImageToImageMetricv4()
 {
 }
 
-template < class TFixedImage, class TMovingImage, class TVirtualImage >
+template < class TFixedImage, class TMovingImage, class TVirtualImage, class InternalComputationType >
 void
-DemonsImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage>
+DemonsImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage, InternalComputationType>
 ::Initialize(void) throw ( itk::ExceptionObject )
 {
   // Make sure user has not set to use both moving and fixed image
@@ -92,9 +92,9 @@ DemonsImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage>
   Superclass::Initialize();
 }
 
-template < class TFixedImage, class TMovingImage, class TVirtualImage  >
+template < class TFixedImage, class TMovingImage, class TVirtualImage, class InternalComputationType >
 void
-DemonsImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage>
+DemonsImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage, InternalComputationType>
 ::PrintSelf(std::ostream& os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);

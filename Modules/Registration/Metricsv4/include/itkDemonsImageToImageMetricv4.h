@@ -51,16 +51,16 @@ namespace itk
  * \sa itkImageToImageMetricv4
  * \ingroup ITKMetricsv4
  */
-template <class TFixedImage, class TMovingImage, class TVirtualImage = TFixedImage >
+template <class TFixedImage, class TMovingImage, class TVirtualImage = TFixedImage, class InternalComputationType=double >
 class ITK_EXPORT DemonsImageToImageMetricv4 :
-public ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage>
+public ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage, InternalComputationType>
 {
 public:
   /** Standard class typedefs. */
-  typedef DemonsImageToImageMetricv4                                     Self;
-  typedef ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage> Superclass;
-  typedef SmartPointer<Self>                                             Pointer;
-  typedef SmartPointer<const Self>                                       ConstPointer;
+  typedef DemonsImageToImageMetricv4                                                              Self;
+  typedef ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage, InternalComputationType> Superclass;
+  typedef SmartPointer<Self>                                                                      Pointer;
+  typedef SmartPointer<const Self>                                                                ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -88,7 +88,8 @@ public:
   typedef typename Superclass::VirtualPointSetType     VirtualSPointSetType;
   typedef typename Superclass::NumberOfParametersType  NumberOfParametersType;
 
-  typedef typename Superclass::InternalComputationValueType InternalComputationValueType;
+  /** It should be possible to derive the internal computation type from the class object. */
+  typedef InternalComputationType                      InternalComputationValueType;
 
   typedef typename Superclass::ImageDimensionType      ImageDimensionType;
 
