@@ -16,50 +16,35 @@
  *
  *=========================================================================*/
 #include "itkMatlabTransformIOFactory.h"
-#include "itkCreateObjectFunction.h"
-#include "itkMatlabTransformIO.h"
-#include "itkVersion.h"
+
+template class itk::MatlabTransformIOFactoryTemplate<float>;
+template class itk::MatlabTransformIOFactoryTemplate<double>;
 
 namespace itk
 {
-void MatlabTransformIOFactory::PrintSelf(std::ostream &, Indent) const
-{}
-
-MatlabTransformIOFactory::MatlabTransformIOFactory()
-{
-  this->RegisterOverride( "itkTransformIOBase",
-                          "itkMatlabTransformIO",
-                          "Matlab Transform IO",
-                          1,
-                          CreateObjectFunction< MatlabTransformIO >::New() );
-}
-
-MatlabTransformIOFactory::~MatlabTransformIOFactory()
-{}
-
-const char *
-MatlabTransformIOFactory::GetITKSourceVersion(void) const
-{
-  return ITK_SOURCE_VERSION;
-}
-
-const char *
-MatlabTransformIOFactory::GetDescription() const
-{
-  return "Matlab TransformIO Factory, allows the "
-         "loading of Nifti images into insight";
-}
 
 // Undocumented API used to register during static initialization.
 // DO NOT CALL DIRECTLY.
-static bool MatlabTransformIOFactoryHasBeenRegistered;
+static bool MatlabTransformIOFactoryTemplateFloatHasBeenRegistered = false;
 
-void MatlabTransformIOFactoryRegister__Private(void)
+void MatlabTransformIOFactoryTemplateFloatRegister__Private(void)
 {
-  if( ! MatlabTransformIOFactoryHasBeenRegistered )
-    {
-    MatlabTransformIOFactoryHasBeenRegistered = true;
-    MatlabTransformIOFactory::RegisterOneFactory();
-    }
+if( ! MatlabTransformIOFactoryTemplateFloatHasBeenRegistered )
+  {
+  MatlabTransformIOFactoryTemplateFloatHasBeenRegistered = true;
+  MatlabTransformIOFactoryTemplate<float>::RegisterOneFactory();
+  }
 }
+
+static bool MatlabTransformIOFactoryTemplateDoubleHasBeenRegistered = false;
+
+void MatlabTransformIOFactoryTemplateDoubleRegister__Private(void)
+{
+if( ! MatlabTransformIOFactoryTemplateDoubleHasBeenRegistered )
+  {
+  MatlabTransformIOFactoryTemplateDoubleHasBeenRegistered = true;
+  MatlabTransformIOFactoryTemplate<double>::RegisterOneFactory();
+  }
+}
+
 } // end namespace itk

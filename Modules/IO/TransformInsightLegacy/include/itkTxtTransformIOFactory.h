@@ -18,24 +18,24 @@
 #ifndef __itkTxtTransformIOFactory_h
 #define __itkTxtTransformIOFactory_h
 
-
 #include "itkObjectFactoryBase.h"
 #include "itkTransformIOBase.h"
 
 namespace itk
 {
-/** \class TxtTransformIOFactory
+/** \class TxtTransformIOFactoryTemplate
    * \brief Create instances of TxtTransformIO objects using an object factory.
    * \ingroup ITKIOTransformInsightLegacy
    */
-class ITK_EXPORT TxtTransformIOFactory:public ObjectFactoryBase
+template<class ParametersValueType>
+class ITK_EXPORT TxtTransformIOFactoryTemplate:public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */
-  typedef TxtTransformIOFactory      Self;
-  typedef ObjectFactoryBase          Superclass;
-  typedef SmartPointer< Self >       Pointer;
-  typedef SmartPointer< const Self > ConstPointer;
+  typedef TxtTransformIOFactoryTemplate     Self;
+  typedef ObjectFactoryBase                 Superclass;
+  typedef SmartPointer< Self >              Pointer;
+  typedef SmartPointer< const Self >        ConstPointer;
 
   /** Class methods used to interface with the registered factories. */
   virtual const char * GetITKSourceVersion(void) const;
@@ -46,25 +46,37 @@ public:
   itkFactorylessNewMacro(Self);
 
   /** Run-time type information (and related methods). */
-  itkTypeMacro(TxtTransformIOFactory, ObjectFactoryBase);
+  itkTypeMacro(TxtTransformIOFactoryTemplate, ObjectFactoryBase);
 
   /** Register one factory of this type  */
   static void RegisterOneFactory(void)
   {
-    TxtTransformIOFactory::Pointer metaFactory = TxtTransformIOFactory::New();
+    typename TxtTransformIOFactoryTemplate<ParametersValueType>::Pointer metaFactory =
+        TxtTransformIOFactoryTemplate<ParametersValueType>::New();
 
     ObjectFactoryBase::RegisterFactoryInternal(metaFactory);
   }
 
 protected:
-  TxtTransformIOFactory();
-  ~TxtTransformIOFactory();
+  TxtTransformIOFactoryTemplate();
+  ~TxtTransformIOFactoryTemplate();
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
-  TxtTransformIOFactory(const Self &); //purposely not implemented
+  TxtTransformIOFactoryTemplate(const Self &); //purposely not implemented
   void operator=(const Self &);        //purposely not implemented
 };
+
+/** This helps to meet backward compatibility */
+typedef TxtTransformIOFactoryTemplate<double> TxtTransformIOFactory;
+
 } // end namespace itk
+
+extern template class itk::TxtTransformIOFactoryTemplate<float>;
+extern template class itk::TxtTransformIOFactoryTemplate<double>;
+
+#ifndef ITK_MANUAL_INSTANTIATION
+#include "itkTxtTransformIOFactory.hxx"
+#endif
 
 #endif
