@@ -92,16 +92,16 @@ namespace itk
  * \sa itkImageToImageMetricv4
  * \ingroup ITKMetricsv4
  */
-template <class TFixedImage, class TMovingImage, class TVirtualImage = TFixedImage >
+template <class TFixedImage, class TMovingImage, class TVirtualImage = TFixedImage, class InternalComputationType = double >
 class ITK_EXPORT MattesMutualInformationImageToImageMetricv4 :
-public ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage>
+public ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage, InternalComputationType>
 {
 public:
   /** Standard class typedefs. */
-  typedef MattesMutualInformationImageToImageMetricv4                    Self;
-  typedef ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage> Superclass;
-  typedef SmartPointer<Self>                                             Pointer;
-  typedef SmartPointer<const Self>                                       ConstPointer;
+  typedef MattesMutualInformationImageToImageMetricv4                                             Self;
+  typedef ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage, InternalComputationType> Superclass;
+  typedef SmartPointer<Self>                                                                      Pointer;
+  typedef SmartPointer<const Self>                                                                ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -152,7 +152,7 @@ public:
   /** The marginal PDFs are stored as std::vector. */
   //NOTE:  floating point precision is not as stable.
   // Double precision proves faster and more robust in real-world testing.
-  typedef double PDFValueType;
+  typedef InternalComputationType PDFValueType;
 
   /** Typedef for the joint PDF and PDF derivatives are stored as ITK Images. */
   typedef Image<PDFValueType, 2> JointPDFType;
@@ -166,7 +166,7 @@ public:
     {
     if( this->m_ThreaderJointPDF.size() == 0 )
       {
-      return JointPDFType::Pointer(NULL);
+      return typename JointPDFType::Pointer(NULL);
       }
     return this->m_ThreaderJointPDF[0];
     }
@@ -181,7 +181,7 @@ public:
     {
     if( this->m_ThreaderJointPDFDerivatives.size() == 0 )
       {
-      return JointPDFDerivativesType::Pointer(NULL);
+      return typename JointPDFDerivativesType::Pointer(NULL);
       }
     return this->m_ThreaderJointPDFDerivatives[0];
     }
@@ -199,14 +199,14 @@ protected:
 
   void PrintSelf(std::ostream& os, Indent indent) const;
 
-  typedef JointPDFType::IndexType             JointPDFIndexType;
-  typedef JointPDFType::PixelType             JointPDFValueType;
-  typedef JointPDFType::RegionType            JointPDFRegionType;
-  typedef JointPDFType::SizeType              JointPDFSizeType;
-  typedef JointPDFDerivativesType::IndexType  JointPDFDerivativesIndexType;
-  typedef JointPDFDerivativesType::PixelType  JointPDFDerivativesValueType;
-  typedef JointPDFDerivativesType::RegionType JointPDFDerivativesRegionType;
-  typedef JointPDFDerivativesType::SizeType   JointPDFDerivativesSizeType;
+  typedef typename JointPDFType::IndexType             JointPDFIndexType;
+  typedef typename JointPDFType::PixelType             JointPDFValueType;
+  typedef typename JointPDFType::RegionType            JointPDFRegionType;
+  typedef typename JointPDFType::SizeType              JointPDFSizeType;
+  typedef typename JointPDFDerivativesType::IndexType  JointPDFDerivativesIndexType;
+  typedef typename JointPDFDerivativesType::PixelType  JointPDFDerivativesValueType;
+  typedef typename JointPDFDerivativesType::RegionType JointPDFDerivativesRegionType;
+  typedef typename JointPDFDerivativesType::SizeType   JointPDFDerivativesSizeType;
 
   /** Typedefs for BSpline kernel and derivative functions. */
   typedef BSplineKernelFunction<3,PDFValueType>           CubicBSplineFunctionType;
@@ -248,8 +248,8 @@ protected:
   mutable std::vector<std::vector<PDFValueType> > m_ThreaderFixedImageMarginalPDF;
 
   /** The joint PDF and PDF derivatives. */
-  typename std::vector<JointPDFType::Pointer>            m_ThreaderJointPDF;
-  typename std::vector<JointPDFDerivativesType::Pointer> m_ThreaderJointPDFDerivatives;
+  typename std::vector<typename JointPDFType::Pointer>            m_ThreaderJointPDF;
+  typename std::vector<typename JointPDFDerivativesType::Pointer> m_ThreaderJointPDFDerivatives;
 
   std::vector<int> m_ThreaderJointPDFStartBin;
   std::vector<int> m_ThreaderJointPDFEndBin;

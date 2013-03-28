@@ -69,16 +69,17 @@ namespace itk
  *
  * \ingroup ITKMetricsv4
  */
-template <class TFixedImage, class TMovingImage, class TVirtualImage = TFixedImage >
+template <class TFixedImage, class TMovingImage, class TVirtualImage = TFixedImage, class InternalComputationValueType=double>
 class ITK_EXPORT CorrelationImageToImageMetricv4 :
-public ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage>
+public ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage, InternalComputationValueType>
 {
 public:
   /** Standard class typedefs. */
-  typedef CorrelationImageToImageMetricv4                                Self;
-  typedef ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage> Superclass;
-  typedef SmartPointer<Self>                                             Pointer;
-  typedef SmartPointer<const Self>                                       ConstPointer;
+  typedef CorrelationImageToImageMetricv4                                           Self;
+  typedef ImageToImageMetricv4
+          <TFixedImage, TMovingImage, TVirtualImage, InternalComputationValueType>  Superclass;
+  typedef SmartPointer<Self>                                                        Pointer;
+  typedef SmartPointer<const Self>                                                  ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);

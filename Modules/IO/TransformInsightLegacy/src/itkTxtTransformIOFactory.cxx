@@ -16,50 +16,35 @@
  *
  *=========================================================================*/
 #include "itkTxtTransformIOFactory.h"
-#include "itkCreateObjectFunction.h"
-#include "itkTxtTransformIO.h"
-#include "itkVersion.h"
+
+template class itk::TxtTransformIOFactoryTemplate<float>;
+template class itk::TxtTransformIOFactoryTemplate<double>;
 
 namespace itk
 {
-void TxtTransformIOFactory::PrintSelf(std::ostream &, Indent) const
-{}
-
-TxtTransformIOFactory::TxtTransformIOFactory()
-{
-  this->RegisterOverride( "itkTransformIOBase",
-                          "itkTxtTransformIO",
-                          "Txt Transform IO",
-                          1,
-                          CreateObjectFunction< TxtTransformIO >::New() );
-}
-
-TxtTransformIOFactory::~TxtTransformIOFactory()
-{}
-
-const char *
-TxtTransformIOFactory::GetITKSourceVersion(void) const
-{
-  return ITK_SOURCE_VERSION;
-}
-
-const char *
-TxtTransformIOFactory::GetDescription() const
-{
-  return "Txt TransformIO Factory, allows the"
-         " loading of Nifti images into insight";
-}
 
 // Undocumented API used to register during static initialization.
 // DO NOT CALL DIRECTLY.
-static bool TxtTransformIOFactoryHasBeenRegistered;
+static bool TxtTransformIOFactoryTemplateFloatHasBeenRegistered;
 
-void TxtTransformIOFactoryRegister__Private(void)
+void TxtTransformIOFactoryTemplateFloatRegister__Private(void)
 {
-  if( ! TxtTransformIOFactoryHasBeenRegistered )
-    {
-    TxtTransformIOFactoryHasBeenRegistered = true;
-    TxtTransformIOFactory::RegisterOneFactory();
-    }
+if( ! TxtTransformIOFactoryTemplateFloatHasBeenRegistered )
+  {
+  TxtTransformIOFactoryTemplateFloatHasBeenRegistered = true;
+  TxtTransformIOFactoryTemplate<float>::RegisterOneFactory();
+  }
 }
+
+static bool TxtTransformIOFactoryTemplateDoubleHasBeenRegistered;
+
+void TxtTransformIOFactoryTemplateDoubleRegister__Private(void)
+{
+if( ! TxtTransformIOFactoryTemplateDoubleHasBeenRegistered )
+  {
+  TxtTransformIOFactoryTemplateDoubleHasBeenRegistered = true;
+  TxtTransformIOFactoryTemplate<double>::RegisterOneFactory();
+  }
+}
+
 } // end namespace itk

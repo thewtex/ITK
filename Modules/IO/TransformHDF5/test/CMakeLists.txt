@@ -1,6 +1,7 @@
 itk_module_test()
 set(ITKIOTransformHDF5Tests
 itkIOTransformHDF5Test.cxx
+itkIOTransformHDF5TemplateTest.cxx
 )
 
 CreateTestDriver(ITKIOTransformHDF5 "${ITKIOTransformHDF5-Test_LIBRARIES}" "${ITKIOTransformHDF5Tests}")
