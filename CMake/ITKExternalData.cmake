@@ -1,6 +1,16 @@
 get_filename_component(_ITKExternalData_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
-include(${_ITKExternalData_DIR}/ExternalData.cmake)
 
+if(NOT COMMAND ExternalData_add_test)
+  if(EXISTS ${CMAKE_ROOT}/Modules/ExternalData.cmake)
+    include(ExternalData)
+  else()
+    include(${_ITKExternalData_DIR}/ExternalData.cmake)
+  endif()
+endif()
+
+
+## The user can specify an environmental variable for shared locations of
+## of object files to prevent continous downloading of common objects.
 if(NOT ExternalData_OBJECT_STORES)
   # Use ExternalData_OBJECT_STORES from environment as default.
   set(ExternalData_OBJECT_STORES_DEFAULT "")
