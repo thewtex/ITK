@@ -38,19 +38,18 @@ namespace itk
  * \ingroup ITKMetricsv4
  */
 template <class TFixedImage, class TMovingImage, class TVirtualImage = TFixedImage,
-          class TMetricTraits = DefaultImageToImageMetricTraitsv4<TFixedImage,TMovingImage,TVirtualImage>
+          class InternalComputationType = double,
+          class TMetricTraits = DefaultImageToImageMetricTraitsv4<TFixedImage,TMovingImage,TVirtualImage,InternalComputationType>
           >
 class ITK_EXPORT MeanSquaresImageToImageMetricv4 :
-  public ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage, TMetricTraits>
+  public ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage, InternalComputationType, TMetricTraits>
 {
 public:
   /** Standard class typedefs. */
-  typedef MeanSquaresImageToImageMetricv4                                     Self;
-
-  typedef ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage, TMetricTraits> Superclass;
-
-  typedef SmartPointer<Self>                                             Pointer;
-  typedef SmartPointer<const Self>                                       ConstPointer;
+  typedef MeanSquaresImageToImageMetricv4                                                                        Self;
+  typedef ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage, InternalComputationType, TMetricTraits> Superclass;
+  typedef SmartPointer<Self>                                                                                     Pointer;
+  typedef SmartPointer<const Self>                                                                               ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);

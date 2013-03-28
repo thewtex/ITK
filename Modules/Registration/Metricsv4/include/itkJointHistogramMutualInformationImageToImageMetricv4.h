@@ -41,31 +41,30 @@ namespace itk
  * \ingroup ITKMetricsv4
  */
 
-template<class TFixedImage,class TMovingImage,class TVirtualImage = TFixedImage>
+template<class TFixedImage,class TMovingImage,class TVirtualImage = TFixedImage, class InternalComputationType=double>
 class ITK_EXPORT JointHistogramMutualInformationImageToImageMetricv4 :
-  public ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage>
+  public ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage, InternalComputationType>
 {
 public:
 
   /** Standard class typedefs. */
-  typedef JointHistogramMutualInformationImageToImageMetricv4            Self;
-  typedef ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage> Superclass;
-  typedef SmartPointer<Self>                                             Pointer;
-  typedef SmartPointer<const Self>                                       ConstPointer;
+  typedef JointHistogramMutualInformationImageToImageMetricv4                                     Self;
+  typedef ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage, InternalComputationType> Superclass;
+  typedef SmartPointer<Self>                                                                      Pointer;
+  typedef SmartPointer<const Self>                                                                ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
 
   /** Run-time type information (and related methods). */
-  itkTypeMacro(JointHistogramMutualInformationImageToImageMetricv4,
-                ImageToImageMetricv4);
+  itkTypeMacro(JointHistogramMutualInformationImageToImageMetricv4, ImageToImageMetricv4);
 
   /** Type used for representing parameter values  */
   typedef typename Superclass::CoordinateRepresentationType
                                                   CoordinateRepresentationType;
   /** Type used internally for computations */
-  typedef typename Superclass::InternalComputationValueType
-                                                  InternalComputationValueType;
+  /** It should be possible to derive the internal computation type from the class object. */
+  typedef InternalComputationType                 InternalComputationValueType;
   /**  Type of the parameters. */
   typedef typename Superclass::ParametersType         ParametersType;
   typedef typename Superclass::ParametersValueType    ParametersValueType;

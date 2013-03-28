@@ -25,8 +25,8 @@ namespace itk
 {
 
 /** Constructor */
-template<unsigned int TFixedDimension, unsigned int TMovingDimension, class TVirtualImage>
-ObjectToObjectMultiMetricv4<TFixedDimension, TMovingDimension, TVirtualImage>
+template<unsigned int TFixedDimension, unsigned int TMovingDimension, class TVirtualImage, class InternalComputationType>
+ObjectToObjectMultiMetricv4<TFixedDimension, TMovingDimension, TVirtualImage, InternalComputationType>
 ::ObjectToObjectMultiMetricv4()
 {
   this->m_MetricQueue.clear();
@@ -36,42 +36,42 @@ ObjectToObjectMultiMetricv4<TFixedDimension, TMovingDimension, TVirtualImage>
 }
 
 /** Destructor */
-template<unsigned int TFixedDimension, unsigned int TMovingDimension, class TVirtualImage>
-ObjectToObjectMultiMetricv4<TFixedDimension, TMovingDimension, TVirtualImage>
+template<unsigned int TFixedDimension, unsigned int TMovingDimension, class TVirtualImage, class InternalComputationType>
+ObjectToObjectMultiMetricv4<TFixedDimension, TMovingDimension, TVirtualImage, InternalComputationType>
 ::~ObjectToObjectMultiMetricv4()
 {
 }
 
 /** Add a metric to the queue. */
-template<unsigned int TFixedDimension, unsigned int TMovingDimension, class TVirtualImage>
+template<unsigned int TFixedDimension, unsigned int TMovingDimension, class TVirtualImage, class InternalComputationType>
 void
-ObjectToObjectMultiMetricv4<TFixedDimension, TMovingDimension, TVirtualImage>
+ObjectToObjectMultiMetricv4<TFixedDimension, TMovingDimension, TVirtualImage, InternalComputationType>
 ::AddMetric (MetricType* metric)
 {
   this->m_MetricQueue.push_back(metric);
 }
 
 /** Clear the queue */
-template<unsigned int TFixedDimension, unsigned int TMovingDimension, class TVirtualImage>
+template<unsigned int TFixedDimension, unsigned int TMovingDimension, class TVirtualImage, class InternalComputationType>
 void
-ObjectToObjectMultiMetricv4<TFixedDimension, TMovingDimension, TVirtualImage>
+ObjectToObjectMultiMetricv4<TFixedDimension, TMovingDimension, TVirtualImage, InternalComputationType>
 ::ClearMetricQueue()
 {
   this->m_MetricQueue.clear();
 }
 
 /** Get the number of metrics */
-template<unsigned int TFixedDimension, unsigned int TMovingDimension, class TVirtualImage>
+template<unsigned int TFixedDimension, unsigned int TMovingDimension, class TVirtualImage, class InternalComputationType>
 itk::SizeValueType
-ObjectToObjectMultiMetricv4<TFixedDimension, TMovingDimension, TVirtualImage>
+ObjectToObjectMultiMetricv4<TFixedDimension, TMovingDimension, TVirtualImage, InternalComputationType>
 ::GetNumberOfMetrics() const
 {
   return this->m_MetricQueue.size();
 }
 
-template<unsigned int TFixedDimension, unsigned int TMovingDimension, class TVirtualImage>
+template<unsigned int TFixedDimension, unsigned int TMovingDimension, class TVirtualImage, class InternalComputationType>
 void
-ObjectToObjectMultiMetricv4<TFixedDimension, TMovingDimension, TVirtualImage>
+ObjectToObjectMultiMetricv4<TFixedDimension, TMovingDimension, TVirtualImage, InternalComputationType>
 ::SetMovingTransform( MovingTransformType * transform )
 {
   if( this->GetNumberOfMetrics() == 0 )
@@ -85,9 +85,9 @@ ObjectToObjectMultiMetricv4<TFixedDimension, TMovingDimension, TVirtualImage>
     }
 }
 
-template<unsigned int TFixedDimension, unsigned int TMovingDimension, class TVirtualImage>
+template<unsigned int TFixedDimension, unsigned int TMovingDimension, class TVirtualImage, class InternalComputationType>
 void
-ObjectToObjectMultiMetricv4<TFixedDimension, TMovingDimension, TVirtualImage>
+ObjectToObjectMultiMetricv4<TFixedDimension, TMovingDimension, TVirtualImage, InternalComputationType>
 ::SetFixedTransform( FixedTransformType * transform )
 {
   if( this->GetNumberOfMetrics() == 0 )
@@ -101,9 +101,9 @@ ObjectToObjectMultiMetricv4<TFixedDimension, TMovingDimension, TVirtualImage>
     }
 }
 
-template<unsigned int TFixedDimension, unsigned int TMovingDimension, class TVirtualImage>
+template<unsigned int TFixedDimension, unsigned int TMovingDimension, class TVirtualImage, class InternalComputationType>
 void
-ObjectToObjectMultiMetricv4<TFixedDimension, TMovingDimension, TVirtualImage>
+ObjectToObjectMultiMetricv4<TFixedDimension, TMovingDimension, TVirtualImage, InternalComputationType>
 ::Initialize() throw ( ExceptionObject )
 {
   if( this->GetNumberOfMetrics() == 0 )
@@ -229,9 +229,9 @@ ObjectToObjectMultiMetricv4<TFixedDimension, TMovingDimension, TVirtualImage>
   Superclass::Initialize();
 }
 
-template<unsigned int TFixedDimension, unsigned int TMovingDimension, class TVirtualImage>
-typename ObjectToObjectMultiMetricv4<TFixedDimension, TMovingDimension, TVirtualImage>::MeasureType
-ObjectToObjectMultiMetricv4<TFixedDimension, TMovingDimension, TVirtualImage>
+template<unsigned int TFixedDimension, unsigned int TMovingDimension, class TVirtualImage, class InternalComputationType>
+typename ObjectToObjectMultiMetricv4<TFixedDimension, TMovingDimension, TVirtualImage, InternalComputationType>::MeasureType
+ObjectToObjectMultiMetricv4<TFixedDimension, TMovingDimension, TVirtualImage, InternalComputationType>
 ::GetValue() const
 {
   for (SizeValueType j = 0; j < this->GetNumberOfMetrics(); j++)
@@ -244,18 +244,18 @@ ObjectToObjectMultiMetricv4<TFixedDimension, TMovingDimension, TVirtualImage>
   return firstValue;
 }
 
-template<unsigned int TFixedDimension, unsigned int TMovingDimension, class TVirtualImage>
+template<unsigned int TFixedDimension, unsigned int TMovingDimension, class TVirtualImage, class InternalComputationType>
 void
-ObjectToObjectMultiMetricv4<TFixedDimension, TMovingDimension, TVirtualImage>
+ObjectToObjectMultiMetricv4<TFixedDimension, TMovingDimension, TVirtualImage, InternalComputationType>
 ::GetDerivative(DerivativeType & derivativeResult) const
 {
   MeasureType firstValue;
   this->GetValueAndDerivative( firstValue, derivativeResult );
 }
 
-template<unsigned int TFixedDimension, unsigned int TMovingDimension, class TVirtualImage>
+template<unsigned int TFixedDimension, unsigned int TMovingDimension, class TVirtualImage, class InternalComputationType>
 void
-ObjectToObjectMultiMetricv4<TFixedDimension, TMovingDimension, TVirtualImage>
+ObjectToObjectMultiMetricv4<TFixedDimension, TMovingDimension, TVirtualImage, InternalComputationType>
 ::GetValueAndDerivative(MeasureType & firstValue, DerivativeType & derivativeResult) const
 {
   if ( derivativeResult.GetSize() != this->GetNumberOfParameters() )
@@ -303,17 +303,17 @@ ObjectToObjectMultiMetricv4<TFixedDimension, TMovingDimension, TVirtualImage>
   this->m_Value = firstValue;
 }
 
-template<unsigned int TFixedDimension, unsigned int TMovingDimension, class TVirtualImage>
-typename ObjectToObjectMultiMetricv4<TFixedDimension, TMovingDimension, TVirtualImage>::MetricValueArrayType
-ObjectToObjectMultiMetricv4<TFixedDimension, TMovingDimension, TVirtualImage>
+template<unsigned int TFixedDimension, unsigned int TMovingDimension, class TVirtualImage, class InternalComputationType>
+typename ObjectToObjectMultiMetricv4<TFixedDimension, TMovingDimension, TVirtualImage, InternalComputationType>::MetricValueArrayType
+ObjectToObjectMultiMetricv4<TFixedDimension, TMovingDimension, TVirtualImage, InternalComputationType>
 ::GetValueArray() const
 {
   return this->m_MetricValueArray;
 }
 
-template<unsigned int TFixedDimension, unsigned int TMovingDimension, class TVirtualImage>
-typename ObjectToObjectMultiMetricv4<TFixedDimension, TMovingDimension, TVirtualImage>::MeasureType
-ObjectToObjectMultiMetricv4<TFixedDimension, TMovingDimension, TVirtualImage>
+template<unsigned int TFixedDimension, unsigned int TMovingDimension, class TVirtualImage, class InternalComputationType>
+typename ObjectToObjectMultiMetricv4<TFixedDimension, TMovingDimension, TVirtualImage, InternalComputationType>::MeasureType
+ObjectToObjectMultiMetricv4<TFixedDimension, TMovingDimension, TVirtualImage, InternalComputationType>
 ::GetWeightedValue() const
 {
   MeasureType value = NumericTraits<MeasureType>::Zero;
@@ -326,18 +326,18 @@ ObjectToObjectMultiMetricv4<TFixedDimension, TMovingDimension, TVirtualImage>
   return value;
 }
 
-template<unsigned int TFixedDimension, unsigned int TMovingDimension, class TVirtualImage>
-const typename ObjectToObjectMultiMetricv4<TFixedDimension, TMovingDimension, TVirtualImage>::MetricQueueType &
-ObjectToObjectMultiMetricv4<TFixedDimension, TMovingDimension, TVirtualImage>
+template<unsigned int TFixedDimension, unsigned int TMovingDimension, class TVirtualImage, class InternalComputationType>
+const typename ObjectToObjectMultiMetricv4<TFixedDimension, TMovingDimension, TVirtualImage, InternalComputationType>::MetricQueueType &
+ObjectToObjectMultiMetricv4<TFixedDimension, TMovingDimension, TVirtualImage, InternalComputationType>
 ::GetMetricQueue() const
 {
   return this->m_MetricQueue;
 }
 
 
-template<unsigned int TFixedDimension, unsigned int TMovingDimension, class TVirtualImage>
+template<unsigned int TFixedDimension, unsigned int TMovingDimension, class TVirtualImage, class InternalComputationType>
 bool
-ObjectToObjectMultiMetricv4<TFixedDimension, TMovingDimension, TVirtualImage>
+ObjectToObjectMultiMetricv4<TFixedDimension, TMovingDimension, TVirtualImage, InternalComputationType>
 ::SupportsArbitraryVirtualDomainSamples( void ) const
 {
   for (SizeValueType j = 0; j < this->GetNumberOfMetrics(); j++)
@@ -350,9 +350,9 @@ ObjectToObjectMultiMetricv4<TFixedDimension, TMovingDimension, TVirtualImage>
   return true;
 }
 
-template<unsigned int TFixedDimension, unsigned int TMovingDimension, class TVirtualImage>
+template<unsigned int TFixedDimension, unsigned int TMovingDimension, class TVirtualImage, class InternalComputationType>
 void
-ObjectToObjectMultiMetricv4<TFixedDimension, TMovingDimension, TVirtualImage>
+ObjectToObjectMultiMetricv4<TFixedDimension, TMovingDimension, TVirtualImage, InternalComputationType>
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   os << indent << "Weights of metric derivatives: " << this->m_MetricWeights << std::endl;
