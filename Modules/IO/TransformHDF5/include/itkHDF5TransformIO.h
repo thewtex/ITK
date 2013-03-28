@@ -17,20 +17,8 @@
  *=========================================================================*/
 #ifndef __itkHDF5TransformIO_h
 #define __itkHDF5TransformIO_h
-#include "itkTransformIOBase.h"
 
-#include <string>
-
-// Avoids KWStyle error from forward declaration below.
-namespace itk
-{
-}
-
-// Forward declaration of class H5::H5File
-namespace H5
-{
-class H5File;
-}
+#include "itkHDF5TransformIOTemplate.h"
 
 namespace itk
 {
@@ -43,55 +31,7 @@ namespace itk
  *
  * \ingroup ITKIOTransformHDF5
  */
-class HDF5TransformIO:public TransformIOBase
-{
-public:
-  typedef HDF5TransformIO               Self;
-  typedef TransformIOBase               Superclass;
-  typedef SmartPointer< Self >          Pointer;
-  typedef TransformBase                 TransformType;
-  typedef Superclass::TransformPointer  TransformPointer;
-  typedef Superclass::TransformListType TransformListType;
-  typedef TransformType::ParametersType ParametersType;
-  /** Run-time type information (and related methods). */
-  itkTypeMacro(HDF5TransformIO, TransformIOBase);
-  itkNewMacro(Self);
+typedef HDF5TransformIOTemplate<double> HDF5TransformIO;
 
-  /** Determine the file type. Returns true if this ImageIO can read the
-   * file specified. */
-  virtual bool CanReadFile(const char *);
-
-  /** Determine the file type. Returns true if this ImageIO can read the
-   * file specified. */
-  virtual bool CanWriteFile(const char *);
-
-  /** Reads the data from disk into the memory buffer provided. */
-  virtual void Read();
-
-  /** Writes the data to disk from the memory buffer provided. Make sure
-   * that the IORegions has been set properly. The buffer is cast to a
-   * pointer to the beginning of the image data. */
-  virtual void Write();
-
-protected:
-  HDF5TransformIO();
-  virtual ~HDF5TransformIO();
-
-private:
-  /** Read a parameter array from the file location name */
-  ParametersType ReadParameters(const std::string &DataSetName);
-
-  /** Write a parameter array to the file location name */
-  void WriteParameters(const std::string &name,
-                       const ParametersType &parameters);
-
-  /** write a string variable */
-  void WriteString(const std::string &path, const std::string &value);
-  void WriteString(const std::string &path, const char *value);
-  void WriteOneTransform(const int transformIndex,
-                         const TransformType *transform);
-
-  H5::H5File *m_H5File;
-};
 }
 #endif // __itkHDF5TransformIO_h

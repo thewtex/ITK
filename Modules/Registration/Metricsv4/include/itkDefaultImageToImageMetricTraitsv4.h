@@ -22,7 +22,7 @@
 #include "itkCovariantVector.h"
 #include "itkCentralDifferenceImageFunction.h"
 #include "itkGradientRecursiveGaussianImageFilter.h"
-#include "itkObjectToObjectMetricBase.h"
+#include "itkObjectToObjectMetricBaseTemplate.h"
 
 namespace itk
 {
@@ -42,7 +42,7 @@ template<
   class    TFixedImageType,
   class    TMovingImageType,
   class    TVirtualImageType,
-  typename TCoordRep = typename ObjectToObjectMetricBase::CoordinateRepresentationType
+  typename TCoordRep = typename ObjectToObjectMetricBaseTemplate<double>::CoordinateRepresentationType
   >
 class DefaultImageToImageMetricTraitsv4
 {
