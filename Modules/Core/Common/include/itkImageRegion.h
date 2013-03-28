@@ -130,11 +130,6 @@ public:
   ImageRegion(const SizeType & size)
   { m_Size = size; m_Index.Fill(0); }
 
-  /** operator=. ImageRegion is a lightweight object that is not reference
-   * counted, so operator= is public. */
-  void operator=(const Self & region)
-  { m_Index = region.m_Index;  m_Size = region.m_Size; }
-
   /** Set the index defining the corner of the region. */
   void SetIndex(const IndexType & index)
   { m_Index = index; }

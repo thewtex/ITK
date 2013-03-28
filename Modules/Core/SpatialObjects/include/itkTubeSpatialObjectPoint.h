@@ -92,9 +92,6 @@ public:
   /** Get number of dimensions */
   unsigned short int GetNumDimensions(void) const;
 
-  /** Copy one TubeSpatialObjectPoint to another */
-  Self & operator=(const TubeSpatialObjectPoint & rhs);
-
 protected:
 
   VectorType          m_T;

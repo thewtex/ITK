@@ -136,10 +136,6 @@ public:
   /** Walk forward along the line to the next index in the image. */
   void operator++();
 
-  /** operator= is provided to make sure the handle to the image is properly
-   * reference counted. */
-  Self & operator=(const Self & it);
-
   /** Constructor establishes an iterator to walk along a line */
   LineConstIterator(const ImageType *imagePtr, const IndexType & firstIndex, const IndexType & lastIndex);
 

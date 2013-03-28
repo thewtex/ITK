@@ -198,21 +198,6 @@ public:
       m_Histogram = l.m_Histogram;
     }
 
-    // added for completeness
-    void operator= (const LabelStatistics& l)
-    {
-      m_Count = l.m_Count;
-      m_Minimum = l.m_Minimum;
-      m_Maximum = l.m_Maximum;
-      m_Mean = l.m_Mean;
-      m_Sum = l.m_Sum;
-      m_SumOfSquares = l.m_SumOfSquares;
-      m_Sigma = l.m_Sigma;
-      m_Variance = l.m_Variance;
-      m_BoundingBox = l.m_BoundingBox;
-      m_Histogram = l.m_Histogram;
-    }
-
     IdentifierType  m_Count;
     RealType        m_Minimum;
     RealType        m_Maximum;

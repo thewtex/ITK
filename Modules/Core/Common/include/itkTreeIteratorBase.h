@@ -177,17 +177,6 @@ public:
     this->Next();
   }
 
-  /** operator = */
-  const Self & operator=(const Self & iterator)
-  {
-    m_Position = iterator.m_Position;
-    m_Begin  = iterator.m_Begin;
-    m_End = iterator.m_End;
-    m_Root = iterator.m_Root;
-    m_Tree = iterator.m_Tree;
-    return *this;
-  }
-
   virtual ~TreeIteratorBase() {}
 
 protected:

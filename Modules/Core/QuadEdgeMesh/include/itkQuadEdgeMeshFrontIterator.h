@@ -152,17 +152,6 @@ public:
                                 QEType *seed  = (QEType *)0);
   virtual ~QuadEdgeMeshFrontBaseIterator();
 
-  Self & operator=(const Self & r)
-  {
-    m_Mesh  = r.m_Mesh;
-    m_Start = r.m_Start;
-    m_Seed  = r.m_Seed;
-    m_Front = r.m_Front;
-    m_IsPointVisited = r.m_IsPointVisited;
-    m_CurrentEdge = r.m_CurrentEdge;
-    return ( *this );
-  }
-
   // Iteration methods.
   bool operator==(Self & r)
   {

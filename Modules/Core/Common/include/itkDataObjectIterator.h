@@ -42,14 +42,6 @@ public:
     m_End = iter.m_End;
   }
 
-  DataObjectIterator & operator=(const DataObjectIterator & iter)
-  {
-    m_Iterator = iter.m_Iterator;
-    m_Begin = iter.m_Begin;
-    m_End = iter.m_End;
-    return *this;
-  }
-
   DataObject * GetDataObject()
   {
     return m_Iterator->second;

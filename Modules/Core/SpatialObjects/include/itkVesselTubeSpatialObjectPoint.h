@@ -94,9 +94,6 @@ public:
   /** Set Alpha3 */
   void SetAlpha3(const float newAlpha);
 
-  /** Copy one VesselTubeSpatialObjectPoint to another */
-  Self & operator=(const VesselTubeSpatialObjectPoint & rhs);
-
 protected:
 
   /** First of 3 alpha values */

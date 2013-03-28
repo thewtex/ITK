@@ -73,9 +73,6 @@ public:
   void SetNormal(const double normalx,
                  const double normaly, const double normalz);
 
-  /** Copy one ContourSpatialObjectPoint to another */
-  Self & operator=(const ContourSpatialObjectPoint & rhs);
-
 protected:
 
   VectorType m_Normal;

@@ -53,22 +53,6 @@ GaussianDerivativeOperator< TPixel, VDimension, TAllocator >
   m_MaximumKernelWidth = other.m_MaximumKernelWidth;
 }
 
-/** Assignment operator */
-template< class TPixel, unsigned int VDimension, class TAllocator >
-GaussianDerivativeOperator< TPixel, VDimension, TAllocator > &
-GaussianDerivativeOperator< TPixel, VDimension, TAllocator >
-::operator=(const Self & other)
-{
-  Superclass::operator=(other);
-  m_NormalizeAcrossScale = other.m_NormalizeAcrossScale;
-  m_Spacing = other.m_Spacing;
-  m_Order = other.m_Order;
-  m_Variance = other.m_Variance;
-  m_MaximumError = other.m_MaximumError;
-  m_MaximumKernelWidth = other.m_MaximumKernelWidth;
-  return *this;
-}
-
 template< class TPixel, unsigned int VDimension, class TAllocator >
 typename GaussianDerivativeOperator< TPixel, VDimension, TAllocator >
 ::CoefficientVector

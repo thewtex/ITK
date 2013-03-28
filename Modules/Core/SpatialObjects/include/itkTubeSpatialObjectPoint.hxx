@@ -195,21 +195,6 @@ TubeSpatialObjectPoint< TPointDimension >
   os << indent << "Normal2: " << m_Normal2 << std::endl;
 }
 
-template< unsigned int TPointDimension >
-typename TubeSpatialObjectPoint< TPointDimension >::Self &
-TubeSpatialObjectPoint< TPointDimension >
-::operator=(const TubeSpatialObjectPoint & rhs)
-{
-  this->m_ID = rhs.m_ID;
-  m_R = rhs.m_R;
-  m_NumDimensions = rhs.m_NumDimensions;
-  this->m_X = rhs.m_X;
-  m_T = rhs.m_T;
-  m_Normal1 = rhs.m_Normal1;
-  m_Normal2 = rhs.m_Normal2;
-  this->m_Color = rhs.m_Color;
-  return *this;
-}
 } // end namespace itk
 
 #endif

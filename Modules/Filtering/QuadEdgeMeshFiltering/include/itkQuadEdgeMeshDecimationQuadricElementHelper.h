@@ -201,7 +201,15 @@ public:
   // operators
   Self & operator=(const Self & iRight)
   {
-    this->m_Coefficients = iRight.m_Coefficients;
+    if(this != &iRight)
+      {
+      this->m_Coefficients = iRight.m_Coefficients;
+      this->m_A = iRight.m_A;
+      this->m_B = iRight.m_B;
+      this->m_Rank = iRight.m_Rank;
+      this->m_SVDAbsoluteThreshold = iRight.m_SVDAbsoluteThreshold;
+      this->m_SVDRelativeThreshold = iRight.m_SVDRelativeThreshold;
+      }
     return *this;
   }
 

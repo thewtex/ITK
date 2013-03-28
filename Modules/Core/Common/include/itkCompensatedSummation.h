@@ -78,11 +78,6 @@ public:
   /** Constructor. */
   CompensatedSummation();
 
-  /** Copy constructor. */
-  CompensatedSummation( const Self & rhs );
-  /** Assignment operator. */
-  void operator=( const Self & rhs );
-
   /** Add an element to the sum. */
   void AddElement( const FloatType & element );
   Self & operator+=( const FloatType & rhs );

@@ -114,25 +114,6 @@ public:
   /** Compute whether the index of interest should be included in the flood */
   virtual bool IsPixelIncluded(const IndexType & index) const = 0;
 
-  /** operator= is provided to make sure the handle to the image is properly
-   * reference counted. */
-  Self & operator=(const Self & it)
-  {
-    this->m_Image = it.m_Image;     // copy the smart pointer
-    this->m_Region = it.m_Region;
-    this->m_Function = it.m_Function;
-    this->m_TemporaryPointer = it.m_TemporaryPointer;
-    this->m_Seeds = it.m_Seeds;
-    this->m_ImageOrigin = it.m_ImageOrigin;
-    this->m_ImageSpacing = it.m_ImageSpacing;
-    this->m_ImageRegion = it.m_ImageRegion;
-    this->m_IndexStack = it.m_IndexStack;
-    this->m_LocationVector = it.m_LocationVector;
-    this->m_FoundUncheckedNeighbor = it.m_FoundUncheckedNeighbor;
-    this->m_IsValidIndex = it.m_IsValidIndex;
-    return *this;
-  }
-
   /** Get the dimension (size) of the index. */
   static unsigned int GetIteratorDimension()
   { return TImage::ImageDimension; }

@@ -92,10 +92,6 @@ public:
   /** Copy constructor */
   GaussianDerivativeOperator(const Self & other);
 
-  /** Assignment operator */
-  Self & operator=(const Self & other);
-
-
   /** Set/Get the flag for calculating scale-space normalized
    * derivatives.
    *

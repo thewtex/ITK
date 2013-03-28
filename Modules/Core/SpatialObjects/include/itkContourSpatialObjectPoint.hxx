@@ -130,18 +130,6 @@ ContourSpatialObjectPoint< TPointDimension >
   os << indent <<  m_Normal << std::endl;
 }
 
-/** Copy a surface point to another */
-template< unsigned int TPointDimension >
-typename ContourSpatialObjectPoint< TPointDimension >::Self &
-ContourSpatialObjectPoint< TPointDimension >
-::operator=(const ContourSpatialObjectPoint & rhs)
-{
-  this->m_ID = rhs.GetID();
-  this->m_X = rhs.GetPosition();
-  this->m_Normal = rhs.GetNormal();
-  this->m_PickedPoint = rhs.GetPickedPoint();
-  return *this;
-}
 } // end namespace itk
 
 #endif

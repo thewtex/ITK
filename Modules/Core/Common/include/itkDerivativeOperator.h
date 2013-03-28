@@ -84,14 +84,6 @@ public:
     NeighborhoodOperator< TPixel, VDimension, TAllocator >(other)
   { m_Order = other.m_Order;  }
 
-  /** Assignment operator */
-  Self & operator=(const Self & other)
-  {
-    Superclass::operator=(other);
-    m_Order = other.m_Order;
-    return *this;
-  }
-
   /** Sets the order of the derivative. */
   void SetOrder(const unsigned int & order)
   {
