@@ -21,7 +21,7 @@
 #include "itkObject.h"
 #include "itkObjectFactory.h"
 #include "itkObjectToObjectOptimizerBase.h"
-#include "itkSingleValuedCostFunctionv4.h"
+#include "itkSingleValuedCostFunctionTemplatev4.h"
 
 namespace itk
 {

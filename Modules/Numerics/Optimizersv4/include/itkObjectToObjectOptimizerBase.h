@@ -18,9 +18,8 @@
 #ifndef __itkObjectToObjectOptimizerBase_h
 #define __itkObjectToObjectOptimizerBase_h
 
-#include "itkOptimizerParameters.h"
+#include "itkObjectToObjectOptimizerBaseTemplate.h"
 #include "itkObjectToObjectMetricBase.h"
-#include "itkIntTypes.h"
 
 namespace itk
 {
@@ -63,133 +62,7 @@ namespace itk
  *
  * \ingroup ITKOptimizersv4
  */
-
-class ITK_EXPORT ObjectToObjectOptimizerBase : public Object
-{
-public:
-  /** Standard class typedefs. */
-  typedef ObjectToObjectOptimizerBase                 Self;
-  typedef Object                                      Superclass;
-  typedef SmartPointer< Self >                        Pointer;
-  typedef SmartPointer< const Self >                  ConstPointer;
-
-  /** Run-time type information (and related methods). */
-  itkTypeMacro(ObjectToObjectOptimizerBase, Object);
-
-  /**  Scale type. */
-  typedef OptimizerParameters< double >             ScalesType;
-
-  /**  Parameters type. */
-  typedef OptimizerParameters< double >             ParametersType;
-
-  /** Metric function type */
-  typedef ObjectToObjectMetricBase                  MetricType;
-  typedef MetricType::Pointer                       MetricTypePointer;
-
-  /** Number of parameters type */
-  typedef MetricType::NumberOfParametersType        NumberOfParametersType;
-
-  /** Measure type */
-  typedef MetricType::MeasureType                   MeasureType;
-
-  /** Internal computation value type */
-  typedef MetricType::InternalComputationValueType  InternalComputationValueType;
-
-  /** Accessors for Metric */
-  itkSetObjectMacro( Metric, MetricType );
-  itkGetModifiableObjectMacro(Metric, MetricType );
-
-  /** Accessor for metric value. Returns the value
-   *  stored in m_CurrentMetricValue from the most recent
-   *  call to evaluate the metric. */
-  itkGetConstReferenceMacro( CurrentMetricValue, MeasureType );
-
-  /** Deprecated accessor for currently stored metric value for use
-   *  by classes that support both v4 and v3 optimizers.
-   *
-   *  \sa GetCurrentMetricValue()
-   */
-  const MeasureType & GetValue();
-
-  /** Set current parameters scaling. */
-  itkSetMacro( Scales, ScalesType );
-
-  /** Get current parameters scaling. */
-  itkGetConstReferenceMacro( Scales, ScalesType );
-
-  /** Get whether scales are identity. Cannot be set */
-  itkGetConstReferenceMacro( ScalesAreIdentity, bool );
-
-  /** Set current parameters weights. */
-  itkSetMacro( Weights, ScalesType );
-
-  /** Get current parameters weights. This will return an
-   * empty array when weights have not been set by user. */
-  itkGetConstReferenceMacro( Weights, ScalesType );
-
-  /** Get whether weights are identity. Cannot be set */
-  itkGetConstReferenceMacro( WeightsAreIdentity, bool );
-
-  /** Set the number of threads to use when threading.
-   * The default is the global default number of threads
-   * returned from itkMultiThreader. */
-  virtual void SetNumberOfThreads( ThreadIdType number );
-
-  /** Get the number of threads set to be used. */
-  itkGetConstReferenceMacro( NumberOfThreads, ThreadIdType );
-
-  /** Get a reference to the current position of the optimization.
-   * This returns the parameters from the assigned metric, since the optimizer
-   * itself does not store a position. */
-  const ParametersType & GetCurrentPosition();
-
-  /** Run the optimization.
-   * \param doOnlyInitialization This is false by default. It should only be
-   * set to true for special cases when the class should be initialized to
-   * perform optimization, but no optimization should be run. For example,
-   * itkMultiGradientOptimizerv4 needs to do this.
-   * \note Derived classes must override and call this superclass method, then
-   * perform any additional initialization before performing optimization. */
-  virtual void StartOptimization( bool doOnlyInitialization = false );
-
-protected:
-
-  /** Default constructor */
-  ObjectToObjectOptimizerBase();
-  virtual ~ObjectToObjectOptimizerBase();
-
-  MetricTypePointer             m_Metric;
-  ThreadIdType                  m_NumberOfThreads;
-
-  /** Metric measure value at a given iteration, as most recently evaluated. */
-  MeasureType                   m_CurrentMetricValue;
-
-  /** Scales. Size is expected to be == metric->GetNumberOfLocalParameters().
-   * See the main documentation for more details. */
-  ScalesType                    m_Scales;
-
-  /** Parameter weights. These are applied to local parameters, at the same time
-   * as scales. See main documentation.
-   * If not set by user, the array remains empty and treated as identity to simplify
-   * the reuse of an optimizer with transforms with different numbers of parameters. */
-  ScalesType                    m_Weights;
-
-  /** Flag to avoid unnecessary arithmetic when scales are identity. */
-  bool                          m_ScalesAreIdentity;
-
-  /** Flag to avoid unnecessary arithmetic when weights are identity. */
-  bool                          m_WeightsAreIdentity;
-
-  virtual void PrintSelf(std::ostream & os, Indent indent) const;
-
-private:
-
-  //purposely not implemented
-  ObjectToObjectOptimizerBase( const Self & );
-  //purposely not implemented
-  void operator=( const Self& );
-
-};
+typedef ObjectToObjectOptimizerBaseTemplate<double> ObjectToObjectOptimizerBase;
 
 } // end namespace itk
 

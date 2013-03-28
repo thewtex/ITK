@@ -17,7 +17,8 @@
  *=========================================================================*/
 #ifndef __itkMatlabTransformIO_h
 #define __itkMatlabTransformIO_h
-#include "itkTransformIOBase.h"
+
+#include "itkMatlabTransformIOTemplate.h"
 
 namespace itk
 {
@@ -25,38 +26,7 @@ namespace itk
  *  \brief Create instances of MatlabTransformIO objects.
  * \ingroup ITKIOTransformMatlab
  */
-class ITK_EXPORT MatlabTransformIO:public TransformIOBase
-{
-public:
-  typedef MatlabTransformIO             Self;
-  typedef TransformIOBase               Superclass;
-  typedef SmartPointer< Self >          Pointer;
-  typedef TransformBase                 TransformType;
-  typedef Superclass::TransformPointer  TransformPointer;
-  typedef Superclass::TransformListType TransformListType;
-  /** Run-time type information (and related methods). */
-  itkTypeMacro(MatlabTransformIO, TransformIOBase);
-  itkNewMacro(Self);
+typedef MatlabTransformIOTemplate<double> MatlabTransformIO;
 
-  /** Determine the file type. Returns true if this ImageIO can read the
-   * file specified. */
-  virtual bool CanReadFile(const char *);
-
-  /** Determine the file type. Returns true if this ImageIO can read the
-   * file specified. */
-  virtual bool CanWriteFile(const char *);
-
-  /** Reads the data from disk into the memory buffer provided. */
-  virtual void Read();
-
-  /** Writes the data to disk from the memory buffer provided. Make sure
-   * that the IORegions has been set properly. The buffer is cast to a
-   * pointer to the beginning of the image data. */
-  virtual void Write();
-
-protected:
-  MatlabTransformIO();
-  virtual ~MatlabTransformIO();
-};
 }
 #endif // __itkMatlabTransformIO_h
