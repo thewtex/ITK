@@ -53,7 +53,10 @@ const Array2D< TValueType > &
 Array2D< TValueType >
 ::operator=(const Self & array)
 {
-  this->VnlMatrixType::operator=(array);
+  if(this != &array)
+    {
+    this->VnlMatrixType::operator=(array);
+    }
   return *this;
 }
 
@@ -63,7 +66,10 @@ const Array2D< TValueType > &
 Array2D< TValueType >
 ::operator=(const VnlMatrixType & matrix)
 {
-  this->VnlMatrixType::operator=(matrix);
+  if(this != &matrix)
+    {
+    this->VnlMatrixType::operator=(matrix);
+    }
   return *this;
 }
 
