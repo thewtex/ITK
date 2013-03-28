@@ -18,10 +18,7 @@
 #ifndef __itkCostFunction_h
 #define __itkCostFunction_h
 
-#include "itkObject.h"
-#include "itkObjectFactory.h"
-#include "itkArray.h"
-#include "itkOptimizerParameters.h"
+#include "itkCostFunctionTemplate.h"
 
 namespace itk
 {
@@ -32,38 +29,8 @@ namespace itk
  *
  * \ingroup ITKOptimizers
  */
+typedef CostFunctionTemplate<double> CostFunction;
 
-class ITK_EXPORT CostFunction:public Object
-{
-public:
-  /** Standard class typedefs. */
-  typedef CostFunction               Self;
-  typedef Object                     Superclass;
-  typedef SmartPointer< Self >       Pointer;
-  typedef SmartPointer< const Self > ConstPointer;
-
-  /** Run-time type information (and related methods). */
-  itkTypeMacro(CostFunction, Object);
-
-  /**  ParametersType typedef.
-   *  It defines a position in the optimization search space. */
-  typedef double                                     ParametersValueType;
-  typedef OptimizerParameters< ParametersValueType > ParametersType;
-
-  /** Return the number of parameters required to compute
-   *  this cost function.
-   *  This method MUST be overloaded by derived classes. */
-  virtual unsigned int GetNumberOfParameters(void) const  = 0;
-
-protected:
-  CostFunction() {}
-  virtual ~CostFunction() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
-
-private:
-  CostFunction(const Self &);   //purposely not implemented
-  void operator=(const Self &); //purposely not implemented
-};
 } // end namespace itk
 
 #endif

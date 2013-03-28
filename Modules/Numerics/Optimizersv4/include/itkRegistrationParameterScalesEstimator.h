@@ -230,7 +230,7 @@ protected:
   VirtualRegionType GetVirtualDomainCentralRegion();
 
   /** Get the transform in use. */
-  const TransformBase *GetTransform();
+  const TransformBaseTemplate<double> *GetTransform();
 
   /** Get the dimension of the target transformed to. */
   SizeValueType GetDimension();

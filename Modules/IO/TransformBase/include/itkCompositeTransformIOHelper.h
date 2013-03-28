@@ -18,7 +18,7 @@
 #ifndef __itkCompositeTransformIOHelper_h
 #define __itkCompositeTransformIOHelper_h
 
-#include "itkTransformIOBase.h"
+#include "itkCompositeTransformIOHelperTemplate.h"
 
 namespace itk
 {
@@ -41,50 +41,9 @@ namespace itk
  *  of CompositeTransform.
  * \ingroup ITKIOTransformBase
  */
-class CompositeTransformIOHelper
-{
-public:
-  typedef TransformIOBase::TransformType          TransformType;
-  typedef TransformIOBase::TransformPointer       TransformPointer;
-  typedef TransformIOBase::TransformListType      TransformListType;
-  typedef TransformIOBase::ConstTransformPointer  ConstTransformPointer;
-  typedef TransformIOBase::ConstTransformListType ConstTransformListType;
 
-  /** from a composite transform, recover a
-   * TransformIOBase::ConstTransformList.
-   * This will re-build the list each time it is called, so it is best
-   * to call it once per CompositeTransform and access it through the
-   * ConstTransformListType reference, as any subsequent calls will
-   * rebuild the list and possibly invalidate any iterators on the
-   * list.
-   */
-  ConstTransformListType &GetTransformList(const TransformType *transform);
-  /** set a compositeTransform's transform list from a
-   ** TransformIOABase::TransformList.  If there is any mismatch
-   ** between a transform being added to composite and the composite,
-   ** this will throw an exception
-   */
-  void SetTransformList(TransformType *transform,TransformListType &transformList);
-
-private:
-  ConstTransformListType m_TransformList;
-
-  /** Builds a list of TransformBase from the CompositeTransform's
-   ** queue. A cascade of calls with different template parameters
-   ** selects the correct concrete type for CompositeTransform.
-   */
-  template <typename TScalar, unsigned TDim>
-  int BuildTransformList(const TransformType *transform);
-  /** Sets a CompositeTransform's TransformQueue from the
-   **  TransformIO's list of TransformBase. Will throw an exception
-   **  if the scalar type or dimension of the transform being added
-   **  doesn't match that of the concrete CompositeTransform's type.
-   */
-  template <typename TScalar, unsigned TDim>
-  int InternalSetTransformList(TransformType *transform,TransformListType &transformList);
-
-};
-
+typedef itk::CompositeTransformIOHelperTemplate<double> CompositeTransformIOHelper;
 
 }
+
 #endif //  __itkCompositeTransformIOHelper_h

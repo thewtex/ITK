@@ -110,7 +110,7 @@ int itkOptimizersHierarchyTest(int, char* [] )
                                 SingleValuedNonLinearVnlOptimizerType;
 
   // This is only type checking. This class is not expected to be instantiated
-  typedef itk::CostFunction     CostFunctionType;
+  typedef itk::CostFunctionTemplate<double>     CostFunctionType;
 
   // This is only type checking. This class is not expected to be instantiated
   typedef itk::SingleValuedCostFunction     SingleValuedCostFunctionType;
