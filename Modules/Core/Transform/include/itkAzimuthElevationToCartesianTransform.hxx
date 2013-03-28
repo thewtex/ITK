@@ -77,7 +77,8 @@ AzimuthElevationToCartesianTransform< TScalarType, NDimensions >::PrintSelf(std:
 template< class TScalarType, unsigned int NDimensions >
 typename AzimuthElevationToCartesianTransform< TScalarType, NDimensions >
 ::OutputPointType
-AzimuthElevationToCartesianTransform< TScalarType, NDimensions >::TransformPoint(const InputPointType & point) const
+AzimuthElevationToCartesianTransform< TScalarType, NDimensions >
+::TransformPoint(const InputPointType & point) const
 {
   OutputPointType result;
 

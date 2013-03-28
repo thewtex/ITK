@@ -639,7 +639,7 @@ install(FILES ${ITK_BINARY_DIR}/CMakeFiles/ITKConfig.cmake
               CMake/ITKModuleAPI.cmake
               CMake/UseITK.cmake
               CMake/itkImageIOFactoryRegisterManager.h.in
-              CMake/itkTransformIOFactoryRegisterManager.h.in
+              CMake/itkTransformIOFactoryTemplateRegisterManager.h.in
   DESTINATION ${ITK_INSTALL_PACKAGE_DIR}
   COMPONENT Development)
 get_property(ITKTargets_MODULES GLOBAL PROPERTY ITKTargets_MODULES)
