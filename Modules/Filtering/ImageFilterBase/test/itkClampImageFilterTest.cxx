@@ -58,11 +58,14 @@ bool TestClampFromTo()
 
   typedef itk::RandomImageSource< InputImageType > SourceType;
   typename SourceType::Pointer source = SourceType::New();
+  source->SetMin(static_cast< TInputPixelType >(0));
+  source->SetMax(static_cast< TInputPixelType >(20));
 
   typename InputImageType::SizeValueType randomSize[3] = {18, 17, 23};
   source->SetSize( randomSize );
 
   typename FilterType::Pointer filter = FilterType::New();
+  filter->SetBounds(static_cast< TOutputPixelType>(5), static_cast< TOutputPixelType>(15));
   filter->SetInput( source->GetOutput() );
   filter->UpdateLargestPossibleRegion();
 
@@ -79,6 +82,9 @@ bool TestClampFromTo()
   std::cout << "Casting from " << GetClampTypeName< TInputPixelType >()
             << " to " << GetClampTypeName< TOutputPixelType >() << " ... ";
 
+  const double typeMin = filter->GetLowerBound();
+  const double typeMax = filter->GetUpperBound();;
+
   it.GoToBegin();
   ot.GoToBegin();
   while ( !it.IsAtEnd() )
@@ -88,16 +94,14 @@ bool TestClampFromTo()
     TOutputPixelType expectedValue;
 
     double dInValue = static_cast< double >( inValue );
-    double typeMin = itk::NumericTraits< TOutputPixelType >::NonpositiveMin();
-    double typeMax = itk::NumericTraits< TOutputPixelType >::max();
 
     if ( dInValue < typeMin )
       {
-      expectedValue = itk::NumericTraits< TOutputPixelType >::NonpositiveMin();
+      expectedValue = static_cast< TOutputPixelType >( typeMin );
       }
     else if ( dInValue > typeMax )
       {
-      expectedValue = itk::NumericTraits< TOutputPixelType >::max();
+      expectedValue = static_cast< TOutputPixelType >( typeMax );
       }
     else
       {
