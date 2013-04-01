@@ -239,3 +239,4 @@
 @ITK_SOURCE_DIR@/Modules/Video/IO/include/itk*.h
 @ITK_SOURCE_DIR@/Modules/Video/IO/include/itk*.hxx
 @ITK_SOURCE_DIR@/Modules/Video/IO/src/itk*.cxx
+@ITK_SOURCE_DIR@/Modules/Filtering/*/test/*.cxx
