@@ -175,7 +175,7 @@ GradientDescentOptimizerv4
       this->StopOptimization();
 
       // Pass exception to caller
-      throw;
+      throw err;
       }
 
     /* Check if optimization has been stopped externally.
@@ -259,7 +259,7 @@ GradientDescentOptimizerv4
     this->StopOptimization();
 
     // Pass exception to caller
-    throw;
+    throw err;
     }
 
   this->InvokeEvent( IterationEvent() );

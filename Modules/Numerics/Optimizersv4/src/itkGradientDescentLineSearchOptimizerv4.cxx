@@ -93,7 +93,7 @@ GradientDescentLineSearchOptimizerv4
     this->m_StopConditionDescription << "UpdateTransformParameters error";
     this->StopOptimization();
     // Pass exception to caller
-    throw;
+    throw err;
     }
 
   this->InvokeEvent( IterationEvent() );
