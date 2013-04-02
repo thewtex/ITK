@@ -25,7 +25,7 @@ echo "#define itk_tiff_mangle_h\n" >> $OUT_FILE
 echo "/*This header file mangles all symbols exported from the tiff library.\n It is included in all files while building the tiff library. Due to\n namespace pollution, no tiff headers should be included in .h files in\n ITK.*/" >> $OUT_FILE
 
 # grep functions
-symbol_list=$(objdump -t lib/libitktiff-4.4.so  | grep .text | awk '{print $6}' | grep -v .text | grep -v __do_global | grep -v call_gmon_start | grep -v frame_dummy| grep -v __fstat |sort)
+symbol_list=$(objdump -t lib/libitktiff-4.4.so  | grep .text | awk '{print $6}' | grep -v .text | grep -v __do_global | grep -v call_gmon_start | grep -v frame_dummy| grep -v __fstat | grep -v ^fstat$ |sort)
 for symbol in $symbol_list
 do
     echo $symbol | sed 's/.*/#define & itk_&/' | awk '{printf "%-8s%-40s%s\n", $1, $2, $3}'  >> $OUT_FILE

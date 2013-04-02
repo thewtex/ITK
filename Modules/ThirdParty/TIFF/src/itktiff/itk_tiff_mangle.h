@@ -53,7 +53,6 @@
 #define find1span                               itk_find1span
 #define fpAcc                                   itk_fpAcc
 #define fpDiff                                  itk_fpDiff
-//#define fstat                                   itk_fstat
 #define gtStripContig                           itk_gtStripContig
 #define gtStripSeparate                         itk_gtStripSeparate
 #define gtTileContig                            itk_gtTileContig
