@@ -35,7 +35,6 @@ namespace Functor
  * to be able to cast the output value.
  *
  * \ingroup ITKImageIntensity
- * \ingroup ITKImageFilterBase
  */
 template< class TInput, class TOutput = TInput >
 class Clamp
@@ -116,7 +115,7 @@ private:
  *
  * \ingroup IntensityImageFilters
  * \ingroup MultiThreaded
- * \ingroup ITKImageFilterBase
+ * \ingroup ITKImageIntensity
  *
  * \sa UnaryFunctorImageFilter
  * \sa CastImageFilter
@@ -125,7 +124,6 @@ private:
  * \wikiexample{ImageProcessing/ClampImageFilter,Cast an image from one type to another but clamp to the output value range}
  * \endwiki
  */
-
 template <class TInputImage, class TOutputImage>
 class ITK_EXPORT ClampImageFilter :
   public UnaryFunctorImageFilter< TInputImage,TOutputImage,

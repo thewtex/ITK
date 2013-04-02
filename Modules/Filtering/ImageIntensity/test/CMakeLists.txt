@@ -73,6 +73,7 @@ itkGreaterEqualTest.cxx
 itkGreaterTest.cxx
 itkLessEqualTest.cxx
 itkLessTest.cxx
+itkClampImageFilterTest.cxx
 
 )
 
@@ -256,3 +257,5 @@ itk_add_test(NAME itkLessEqualTest
       COMMAND ITKImageIntensityTestDriver itkLessEqualTest)
 itk_add_test(NAME itkLessTest
       COMMAND ITKImageIntensityTestDriver itkLessTest)
+itk_add_test(NAME itkClampImageFilterTest
+      COMMAND ITKImageIntensityTestDriver itkClampImageFilterTest)
