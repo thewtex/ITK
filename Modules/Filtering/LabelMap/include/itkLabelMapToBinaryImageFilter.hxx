@@ -25,12 +25,67 @@
 
 namespace itk
 {
+
+template< class TAssociate >
+void
+LabelMapToBinaryImageFilterThreader< TAssociate >
+::ThreadedExecution( const DomainType & outputRegionForThread,
+  const ThreadIdType itkNotUsed(threadId) )
+{
+  OutputImageType *output = this->m_Associate->GetOutput();
+
+  typedef typename OutputImageType::PixelType OutputImagePixelType;
+  const OutputImagePixelType foregroundValue = this->m_Associate->GetForegroundValue();
+  const OutputImagePixelType backgroundValue = this->m_Associate->GetBackgroundValue();
+
+  // fill the output with background value - they will be overridden with the
+  // foreground value later, if there is some objects
+  if ( this->m_Associate->GetNumberOfIndexedInputs() == 2 )
+    {
+    // fill the background with the background values from the background image
+    ImageRegionConstIterator< OutputImageType > bgIt( this->m_Associate->GetBackgroundImage(), outputRegionForThread );
+    ImageRegionIterator< OutputImageType >      oIt( output, outputRegionForThread );
+
+    bgIt.GoToBegin();
+    oIt.GoToBegin();
+
+    while ( !oIt.IsAtEnd() )
+      {
+      const OutputImagePixelType & bg = bgIt.Get();
+      if ( bg != foregroundValue )
+        {
+        oIt.Set( bg );
+        }
+      else
+        {
+        oIt.Set( backgroundValue );
+        }
+      ++oIt;
+      ++bgIt;
+      }
+    }
+  else
+    {
+    // fill the background with the background value
+    ImageRegionIterator< OutputImageType > oIt(output, outputRegionForThread);
+    oIt.GoToBegin();
+
+    while ( !oIt.IsAtEnd() )
+      {
+      oIt.Set( backgroundValue );
+      ++oIt;
+      }
+    }
+};
+
 template< class TInputImage, class TOutputImage >
 LabelMapToBinaryImageFilter< TInputImage, TOutputImage >
 ::LabelMapToBinaryImageFilter()
 {
   this->m_BackgroundValue = NumericTraits< OutputImagePixelType >::NonpositiveMin();
   this->m_ForegroundValue = NumericTraits< OutputImagePixelType >::max();
+
+  this->m_Threader = ThreaderType::New();
 }
 
 template< class TInputImage, class TOutputImage >
@@ -61,82 +116,17 @@ LabelMapToBinaryImageFilter< TInputImage, TOutputImage >
 template< class TInputImage, class TOutputImage >
 void
 LabelMapToBinaryImageFilter< TInputImage, TOutputImage >
-::BeforeThreadedGenerateData()
+::GenerateData()
 {
-  ThreadIdType numberOfThreads = this->GetNumberOfThreads();
+  this->AllocateOutputs();
 
-  if ( itk::MultiThreader::GetGlobalMaximumNumberOfThreads() != 0 )
-    {
-    numberOfThreads = vnl_math_min(
-      this->GetNumberOfThreads(), itk::MultiThreader::GetGlobalMaximumNumberOfThreads() );
-    }
-
-  // number of threads can be constrained by the region size, so call the
-  // SplitRequestedRegion to get the real number of threads which will be used
-  typename TOutputImage::RegionType splitRegion;  // dummy region - just to call
-                                                  // the following method
-
-  numberOfThreads = this->SplitRequestedRegion(0, numberOfThreads, splitRegion);
-
-  m_Barrier = Barrier::New();
-
-  m_Barrier->Initialize(numberOfThreads);
-
-  this->Superclass::BeforeThreadedGenerateData();
-}
-
-template< class TInputImage, class TOutputImage >
-void
-LabelMapToBinaryImageFilter< TInputImage, TOutputImage >
-::ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread, ThreadIdType threadId)
-{
-  OutputImageType *output = this->GetOutput();
-
-  // fill the output with background value - they will be overridden with the
-  // foreground value later, if there is some objects
-  if ( this->GetNumberOfIndexedInputs() == 2 )
-    {
-    // fill the background with the background values from the background image
-    ImageRegionConstIterator< OutputImageType > bgIt(this->GetBackgroundImage(), outputRegionForThread);
-    ImageRegionIterator< OutputImageType >      oIt(output, outputRegionForThread);
-
-    bgIt.GoToBegin();
-    oIt.GoToBegin();
-
-    while ( !oIt.IsAtEnd() )
-      {
-      const OutputImagePixelType & bg = bgIt.Get();
-      if ( bg != this->m_ForegroundValue )
-        {
-        oIt.Set(bg);
-        }
-      else
-        {
-        oIt.Set(this->m_BackgroundValue);
-        }
-      ++oIt;
-      ++bgIt;
-      }
-    }
-  else
-    {
-    // fill the background with the background value
-    ImageRegionIterator< OutputImageType > oIt(output, outputRegionForThread);
-    oIt.GoToBegin();
-
-    while ( !oIt.IsAtEnd() )
-      {
-      oIt.Set(this->m_BackgroundValue);
-      ++oIt;
-      }
-    }
-
-  // wait for the other threads to complete that part
-  this->m_Barrier->Wait();
+  const OutputImageType *output = this->GetOutput();
+  const OutputImageRegionType outputRegion = output->GetRequestedRegion();
+  this->m_Threader->Execute( this, outputRegion );
 
   // and delegate to the superclass implementation to use the thread support for
   // the label objects
-  this->Superclass::ThreadedGenerateData(outputRegionForThread, threadId);
+  this->ImageSource< OutputImageType >::GenerateData();
 }
 
 template< class TInputImage, class TOutputImage >
@@ -166,8 +156,8 @@ LabelMapToBinaryImageFilter< TInputImage, TOutputImage >
   os << indent << "BackgroundValue: "
      << static_cast< typename NumericTraits< OutputImagePixelType >::PrintType >( this->m_BackgroundValue )
      << std::endl;
-  os << indent << "Barrier object: " << this->m_Barrier.GetPointer() << std::endl;
 }
+
 } // end namespace itk
 
 #endif

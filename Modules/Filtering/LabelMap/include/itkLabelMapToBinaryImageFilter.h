@@ -19,10 +19,46 @@
 #define __itkLabelMapToBinaryImageFilter_h
 
 #include "itkLabelMapFilter.h"
-#include "itkBarrier.h"
+#include "itkDomainThreader.h"
+#include "itkThreadedImageRegionPartitioner.h"
 
 namespace itk
 {
+
+/** \class LabelMapToBinaryImageFilterThreader
+ *
+ * \brief DomainThreader class to operate on the output image.
+ */
+template< class TAssociate >
+class LabelMapToBinaryImageFilterThreader:
+  public DomainThreader< ThreadedImageRegionPartitioner< TAssociate::OutputImageDimension >, TAssociate >
+{
+public:
+  /** Standard class typedefs */
+  typedef LabelMapToBinaryImageFilterThreader                                                              Self;
+  typedef DomainThreader< ThreadedImageRegionPartitioner< TAssociate::OutputImageDimension >, TAssociate > Superclass;
+  typedef SmartPointer< Self >                                                                             Pointer;
+
+  /** Some convenient typedefs. */
+  typedef typename Superclass::DomainType DomainType;
+  typedef TAssociate                      AssociateType;
+
+  typedef typename AssociateType::OutputImageType OutputImageType;
+
+  /** Standard New method. */
+  itkNewMacro( Self );
+
+protected:
+  LabelMapToBinaryImageFilterThreader() {}
+
+  virtual void ThreadedExecution( const DomainType & subDomain,
+    const ThreadIdType threadId );
+
+private:
+  LabelMapToBinaryImageFilterThreader( const Self & ); // purposely not implemented
+  void operator=( const Self & );                      // purposely not implemented
+};
+
 /** \class LabelMapToBinaryImageFilter
  * \brief Convert a LabelMap to a binary image.
  *
@@ -124,18 +160,16 @@ protected:
   /** LabelMapToBinaryImageFilter needs the entire input be
    * available. Thus, it needs to provide an implementation of
    * GenerateInputRequestedRegion(). */
-  void GenerateInputRequestedRegion();
+  virtual void GenerateInputRequestedRegion();
 
   /** LabelMapToBinaryImageFilter will produce the entire output. */
-  void EnlargeOutputRequestedRegion( DataObject *itkNotUsed(output) );
+  virtual void EnlargeOutputRequestedRegion( DataObject *itkNotUsed(output) );
 
-  virtual void BeforeThreadedGenerateData();
-
-  virtual void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread, ThreadIdType threadId);
+  virtual void GenerateData();
 
   virtual void ThreadedProcessLabelObject(LabelObjectType *labelObject);
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   LabelMapToBinaryImageFilter(const Self &); //purposely not implemented
@@ -144,8 +178,12 @@ private:
   OutputImagePixelType m_BackgroundValue;
   OutputImagePixelType m_ForegroundValue;
 
-  typename Barrier::Pointer m_Barrier;
+  typedef LabelMapToBinaryImageFilterThreader< Self > ThreaderType;
+  friend class LabelMapToBinaryImageFilterThreader< Self >;
+  typename ThreaderType::Pointer m_Threader;
+
 }; // end of class
+
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
