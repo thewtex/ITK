@@ -19,9 +19,47 @@
 #define __itkLabelMapMaskImageFilter_h
 
 #include "itkLabelMapFilter.h"
-#include "itkBarrier.h"
+#include "itkDomainThreader.h"
+#include "itkThreadedImageRegionPartitioner.h"
 
 namespace itk {
+
+/** \class LabelMapMaskImageFilterThreader
+ *
+ * \brief DomainThreader to operate on the output image.
+ *
+ * \ingroup ITKLabelMap
+ */
+template< class TAssociate >
+class LabelMapMaskImageFilterThreader:
+  public DomainThreader< ThreadedImageRegionPartitioner< TAssociate::OutputImageDimension >, TAssociate >
+{
+public:
+  /** Standard class typedefs */
+  typedef LabelMapMaskImageFilterThreader                                                                  Self;
+  typedef DomainThreader< ThreadedImageRegionPartitioner< TAssociate::OutputImageDimension >, TAssociate > Superclass;
+  typedef SmartPointer< Self >                                                                             Pointer;
+
+  /** Some convenient typedefs. */
+  typedef typename Superclass::DomainType DomainType;
+  typedef TAssociate                      AssociateType;
+
+  typedef typename AssociateType::OutputImageType OutputImageType;
+
+  /** Standard New method. */
+  itkNewMacro( Self );
+
+protected:
+  LabelMapMaskImageFilterThreader() {}
+
+  virtual void ThreadedExecution( const DomainType & subDomain,
+    const ThreadIdType threadId );
+
+private:
+  LabelMapMaskImageFilterThreader( const Self & ); // purposely not implemented
+  void operator=( const Self & );                      // purposely not implemented
+
+};
 
 /** \class LabelMapMaskImageFilter
  * \brief Mask and image with a LabelMap
@@ -162,9 +200,7 @@ protected:
 
   virtual void GenerateOutputInformation();
 
-  virtual void BeforeThreadedGenerateData();
-
-  virtual void ThreadedGenerateData(const OutputImageRegionType& outputRegionForThread, ThreadIdType threadId );
+  virtual void GenerateData();
 
   virtual void ThreadedProcessLabelObject( LabelObjectType * labelObject );
 
@@ -182,7 +218,9 @@ private:
 
   TimeStamp                 m_CropTimeStamp;
 
-  typename Barrier::Pointer m_Barrier;
+  typedef LabelMapMaskImageFilterThreader< Self > ThreaderType;
+  friend class LabelMapMaskImageFilterThreader< Self >;
+  typename ThreaderType::Pointer m_Threader;
 
 }; // end of class
 

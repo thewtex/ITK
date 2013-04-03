@@ -27,6 +27,41 @@
 
 namespace itk {
 
+template< class TAssociate >
+void
+LabelMapMaskImageFilterThreader< TAssociate >
+::ThreadedExecution( const DomainType & outputRegionForThread,
+  const ThreadIdType itkNotUsed(threadId) )
+{
+  typedef typename AssociateType::OutputImageType OutputImageType;
+  typedef typename AssociateType::InputImageType  InputImageType;
+
+  OutputImageType * output = this->m_Associate->GetOutput();
+  InputImageType * input = const_cast<InputImageType *>( this->m_Associate->GetInput() );
+  const OutputImageType * input2 = this->m_Associate->GetFeatureImage();
+
+  // we will keep the values from the feature image if the same pixel in the label image
+  // equals the label given by the user. The other pixels are set to the background value.
+  if( ( input->GetBackgroundValue() == this->m_Associate->m_Label ) ^ this->m_Associate->m_Negated )
+    {
+    // the user want the mask to be the background of the label collection image
+    // copy the feature image to the output image
+
+    // copy input2 region to output
+    ImageAlgorithm::Copy( input2, output, outputRegionForThread, outputRegionForThread );
+
+    }
+  else
+    {
+    ImageRegionIterator< OutputImageType > outputIt( output, outputRegionForThread );
+
+    for ( outputIt.GoToBegin(); !outputIt.IsAtEnd(); ++outputIt )
+      {
+      outputIt.Set( this->m_Associate->m_BackgroundValue );
+      }
+    }
+}
+
 template <class TInputImage, class TOutputImage>
 LabelMapMaskImageFilter<TInputImage, TOutputImage>
 ::LabelMapMaskImageFilter()
@@ -37,6 +72,8 @@ LabelMapMaskImageFilter<TInputImage, TOutputImage>
   m_Negated = false;
   m_Crop = false;
   m_CropBorder.Fill( 0 );
+
+  m_Threader = ThreaderType::New();
 }
 
 template <class TInputImage, class TOutputImage>
@@ -234,11 +271,6 @@ LabelMapMaskImageFilter<TInputImage, TOutputImage>
     // no crop -> use the default implementation
     Superclass::GenerateOutputInformation();
     }
-
-  // std::cout << "LargestPossibleRegion: " << this->GetOutput()->GetLargestPossibleRegion() << std::endl;
-  // std::cout << "BufferedRegion: " << this->GetOutput()->GetBufferedRegion() << std::endl;
-  // std::cout << "RequestedRegion: " << this->GetOutput()->GetRequestedRegion() << std::endl;
-
 }
 
 template <class TInputImage, class TOutputImage>
@@ -250,105 +282,55 @@ LabelMapMaskImageFilter<TInputImage, TOutputImage>
     ->SetRequestedRegion( this->GetOutput()->GetLargestPossibleRegion() );
 }
 
-
 template <class TInputImage, class TOutputImage>
 void
 LabelMapMaskImageFilter<TInputImage, TOutputImage>
-::BeforeThreadedGenerateData()
+::GenerateData()
 {
-  ThreadIdType nbOfThreads = this->GetNumberOfThreads();
-  if( itk::MultiThreader::GetGlobalMaximumNumberOfThreads() != 0 )
-    {
-    nbOfThreads = std::min( this->GetNumberOfThreads(), itk::MultiThreader::GetGlobalMaximumNumberOfThreads() );
-    }
-  // number of threads can be constrained by the region size, so call the SplitRequestedRegion
-  // to get the real number of threads which will be used
-  typename TOutputImage::RegionType splitRegion;  // dummy region - just to call the following method
-  nbOfThreads = this->SplitRequestedRegion(0, nbOfThreads, splitRegion);
-  // std::cout << "nbOfThreads: " << nbOfThreads << std::endl;
-
-  m_Barrier = Barrier::New();
-  m_Barrier->Initialize( nbOfThreads );
-
-  Superclass::BeforeThreadedGenerateData();
-
-}
-
-
-template <class TInputImage, class TOutputImage>
-void
-LabelMapMaskImageFilter<TInputImage, TOutputImage>
-::ThreadedGenerateData( const OutputImageRegionType& outputRegionForThread, ThreadIdType threadId )
-{
+  this->AllocateOutputs();
   ProgressReporter progress( this, 0, 1 );
   OutputImageType * output = this->GetOutput();
   InputImageType * input = const_cast<InputImageType *>(this->GetInput());
   const OutputImageType * input2 = this->GetFeatureImage();
 
-  // we will keep the values from the feature image if the same pixel in the label image
-  // equals the label given by the user. The other pixels are set to the background value.
-  if( ( input->GetBackgroundValue() == m_Label ) ^ m_Negated )
-    {
-    // the user want the mask to be the background of the label collection image
-    // copy the feature image to the output image
-
-    // copy input2 region to output
-    ImageAlgorithm::Copy( input2, output, outputRegionForThread, outputRegionForThread );
-
-    }
-  else
-    {
-    ImageRegionIterator< OutputImageType > outputIt( output, outputRegionForThread );
-
-    for ( outputIt.GoToBegin(); !outputIt.IsAtEnd(); ++outputIt )
-      {
-      outputIt.Set( m_BackgroundValue );
-      }
-    }
-
-  // wait for the other threads to complete that part
-  m_Barrier->Wait();
+  this->m_Threader->Execute( this, output->GetRequestedRegion() );
 
   if( input->GetBackgroundValue() == m_Label )
     {
     // and delegate to the superclass implementation to use the thread support for the label objects
-    Superclass::ThreadedGenerateData( outputRegionForThread, threadId );
+    Superclass::GenerateData();
     }
   else
     {
-    // need only one thread - take the first one
-    if( threadId == 0 )
+    const LabelObjectType * labelObject = this->GetLabelMap()->GetLabelObject( m_Label );
+
+    if( !m_Negated )
       {
-      const LabelObjectType * labelObject = this->GetLabelMap()->GetLabelObject( m_Label );
-
-      if( !m_Negated )
+      typename LabelObjectType::ConstIndexIterator it( labelObject );
+      while( ! it.IsAtEnd() )
         {
-        typename LabelObjectType::ConstIndexIterator it( labelObject );
-        while( ! it.IsAtEnd() )
-          {
-          const IndexType & idx = it.GetIndex();
-          output->SetPixel( idx, input2->GetPixel( idx ) );
-          ++it;
-          }
+        const IndexType & idx = it.GetIndex();
+        output->SetPixel( idx, input2->GetPixel( idx ) );
+        ++it;
         }
-      else
+      }
+    else
+      {
+      // and mark the label object as background
+
+      // should we take care to not write outside the image ?
+      bool testIdxIsInside = m_Crop && ( input->GetBackgroundValue() == m_Label ) ^ m_Negated;
+      RegionType outputRegion = output->GetLargestPossibleRegion();
+
+      typename LabelObjectType::ConstIndexIterator it( labelObject );
+      while( ! it.IsAtEnd() )
         {
-        // and mark the label object as background
-
-        // should we take care to not write outside the image ?
-        bool testIdxIsInside = m_Crop && ( input->GetBackgroundValue() == m_Label ) ^ m_Negated;
-        RegionType outputRegion = output->GetLargestPossibleRegion();
-
-        typename LabelObjectType::ConstIndexIterator it( labelObject );
-        while( ! it.IsAtEnd() )
+        const IndexType & idx = it.GetIndex();
+        if( !testIdxIsInside || outputRegion.IsInside( idx ) )
           {
-          const IndexType & idx = it.GetIndex();
-          if( !testIdxIsInside || outputRegion.IsInside( idx ) )
-            {
-            output->SetPixel( idx, m_BackgroundValue );
-            }
-          ++it;
+          output->SetPixel( idx, m_BackgroundValue );
           }
+        ++it;
         }
       }
     }

@@ -35,14 +35,17 @@ LabelMapToLabelImageFilter< TInputImage, TOutputImage >
 template< class TInputImage, class TOutputImage >
 void
 LabelMapToLabelImageFilter< TInputImage, TOutputImage >
-::BeforeThreadedGenerateData()
+::GenerateData()
 {
+  this->AllocateOutputs();
+
   OutputImageType *     output = this->GetOutput();
   const InputImageType *input = this->GetInput();
 
   output->FillBuffer( input->GetBackgroundValue() );
-  Superclass::BeforeThreadedGenerateData();
   this->m_OutputImage = this->GetOutput();
+
+  Superclass::GenerateData();
 }
 
 template< class TInputImage, class TOutputImage >
