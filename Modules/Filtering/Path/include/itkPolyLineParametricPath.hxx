@@ -92,7 +92,13 @@ PolyLineParametricPath<VDimension>
     {
     if (input == this->EndOfInput())
       {
-      return this->GetZeroOffset();
+      const OutputType finalIndex = this->EvaluateToIndex(this->EndOfInput());
+      OffsetType final_offset;
+      for (unsigned int i = 0; i < VDimension; ++i)
+        {
+        final_offset[i] = finalIndex[i] - originalIndex[i];
+        }
+      return final_offset;
       }
 
     //Check to make sure we aren't already at a place with an offset of 1 pixel
