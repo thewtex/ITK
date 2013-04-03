@@ -127,9 +127,7 @@ protected:
 
   virtual void ThreadedProcessLabelObject(LabelObjectType *labelObject);
 
-  virtual void BeforeThreadedGenerateData();
-
-  virtual void AfterThreadedGenerateData();
+  virtual void GenerateData();
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 

@@ -28,6 +28,8 @@ namespace itk
 /** \class LabelMapToBinaryImageFilterThreader
  *
  * \brief DomainThreader class to operate on the output image.
+ *
+ * \ingroup ITKLabelMap
  */
 template< class TAssociate >
 class LabelMapToBinaryImageFilterThreader:

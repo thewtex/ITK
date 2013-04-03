@@ -19,11 +19,47 @@
 #define __itkLabelMapOverlayImageFilter_h
 
 #include "itkLabelMapFilter.h"
-#include "itkBarrier.h"
 #include "itkLabelOverlayFunctor.h"
 #include "itkRGBPixel.h"
+#include "itkDomainThreader.h"
+#include "itkThreadedImageRegionPartitioner.h"
 
 namespace itk {
+
+/** \class LabelMapOverlayImageFilterThreader
+ *
+ * \brief DomainThreader to operate on the output image.
+ */
+template< class TAssociate >
+class LabelMapOverlayImageFilterThreader:
+  public DomainThreader< ThreadedImageRegionPartitioner< TAssociate::OutputImageDimension >, TAssociate >
+{
+public:
+  /** Standard class typedefs */
+  typedef LabelMapOverlayImageFilterThreader                                                               Self;
+  typedef DomainThreader< ThreadedImageRegionPartitioner< TAssociate::OutputImageDimension >, TAssociate > Superclass;
+  typedef SmartPointer< Self >                                                                             Pointer;
+
+  /** Some convenient typedefs. */
+  typedef typename Superclass::DomainType DomainType;
+  typedef TAssociate                      AssociateType;
+
+  typedef typename AssociateType::OutputImageType OutputImageType;
+
+  /** Standard New method. */
+  itkNewMacro( Self );
+
+protected:
+  LabelMapOverlayImageFilterThreader() {}
+
+  virtual void ThreadedExecution( const DomainType & subDomain,
+    const ThreadIdType threadId );
+
+private:
+  LabelMapOverlayImageFilterThreader( const Self & ); // purposely not implemented
+  void operator=( const Self & );                      // purposely not implemented
+
+};
 
 /** \class LabelMapOverlayImageFilter
 * \brief Apply a colormap to a label map and superimpose it on an image.
@@ -144,9 +180,7 @@ protected:
   /** LabelMapOverlayImageFilter will produce the entire output. */
   void EnlargeOutputRequestedRegion(DataObject *itkNotUsed(output));
 
-  virtual void BeforeThreadedGenerateData();
-
-  virtual void ThreadedGenerateData(const OutputImageRegionType& outputRegionForThread, ThreadIdType threadId );
+  virtual void GenerateData();
 
   virtual void ThreadedProcessLabelObject( LabelObjectType * labelObject );
 
@@ -159,7 +193,10 @@ private:
   void operator=(const Self&); //purposely not implemented
 
   double                    m_Opacity;
-  typename Barrier::Pointer m_Barrier;
+
+  typedef LabelMapOverlayImageFilterThreader< Self > ThreaderType;
+  friend class LabelMapOverlayImageFilterThreader< Self >;
+  typename ThreaderType::Pointer m_Threader;
 
 }; // end of class
 
