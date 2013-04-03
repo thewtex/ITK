@@ -98,10 +98,10 @@ namespace itk
  * to \f$ \Delta t \f$ in the finite difference update equation described in
  * FiniteDifferenceImageFilter (see itkFiniteDifferenceImageFilter for more
  * information).  Appropriate time steps for solving this type of p.d.e. depend
- * on the dimensionality of the image and the order of the equation.  Typical
- * values are less than 0.250.  A stable value for most 2 and 3d functions is
- * 0.125.  In general, you should keep the time step below
- * \f$(PixelSpacing)/2^{N+1}\f$, where \f$N\f$ is the number of image
+ * on the dimensionality of the image and the order of the equation.
+ * Stable values for most 2D and 3D functions are
+ * 0.125 and 0.0625, respectively.  In general, you should keep the time step below
+ * \f$1/2^{N+1}\f$, where \f$N\f$ is the number of image
  * dimensions.  A filter will automatically attempt to constrain its time step
  * to a stable  value and generate a run-time warning if the time step is set
  * too high.
