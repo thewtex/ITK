@@ -87,7 +87,7 @@ protected:
   LabelMapToLabelImageFilter();
   ~LabelMapToLabelImageFilter() {}
 
-  virtual void BeforeThreadedGenerateData();
+  virtual void GenerateData();
 
   virtual void ThreadedProcessLabelObject(LabelObjectType *labelObject);
 

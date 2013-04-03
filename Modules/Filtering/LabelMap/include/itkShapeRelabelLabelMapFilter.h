@@ -21,6 +21,7 @@
 #include "itkInPlaceLabelMapFilter.h"
 #include "itkLabelObject.h"
 #include "itkShapeLabelObjectAccessors.h"
+#include "itkProgressReporter.h"
 
 namespace itk
 {
@@ -97,19 +98,19 @@ public:
   itkGetConstMacro(Attribute, AttributeType);
   itkSetMacro(Attribute, AttributeType);
   void SetAttribute(const std::string & s)
-  {
+    {
     this->SetAttribute( LabelObjectType::GetAttributeFromName(s) );
-  }
+    }
 
 protected:
   ShapeRelabelLabelMapFilter();
   ~ShapeRelabelLabelMapFilter() {}
 
-  void GenerateData();
+  virtual void GenerateData();
 
   template< class TAttributeAccessor >
   void TemplatedGenerateData(const TAttributeAccessor &)
-  {
+    {
     // Allocate the output
     this->AllocateOutputs();
 
@@ -164,7 +165,7 @@ protected:
 
       ++it2;
       }
-  }
+    }
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 

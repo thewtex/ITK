@@ -150,9 +150,7 @@ ChangeRegionLabelMapFilter< TInputImage >
   // remove the object if it is empty
   if ( labelObject->Empty() )
     {
-    this->m_LabelObjectContainerLock->Lock();
     this->GetOutput()->RemoveLabelObject(labelObject);
-    this->m_LabelObjectContainerLock->Unlock();
     }
 }
 

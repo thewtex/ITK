@@ -19,7 +19,6 @@
 #define __itkAttributePositionLabelMapFilter_hxx
 
 #include "itkAttributePositionLabelMapFilter.h"
-#include "itkProgressReporter.h"
 #include "itkLabelMapUtilities.h"
 
 /*

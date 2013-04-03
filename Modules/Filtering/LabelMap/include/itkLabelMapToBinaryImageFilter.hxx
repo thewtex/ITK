@@ -126,7 +126,7 @@ LabelMapToBinaryImageFilter< TInputImage, TOutputImage >
 
   // and delegate to the superclass implementation to use the thread support for
   // the label objects
-  this->ImageSource< OutputImageType >::GenerateData();
+  this->Superclass::GenerateData();
 }
 
 template< class TInputImage, class TOutputImage >
