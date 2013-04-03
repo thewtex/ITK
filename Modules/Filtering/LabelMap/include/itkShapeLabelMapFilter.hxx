@@ -45,9 +45,9 @@ ShapeLabelMapFilter< TImage, TLabelImage >
 template< class TImage, class TLabelImage >
 void
 ShapeLabelMapFilter< TImage, TLabelImage >
-::BeforeThreadedGenerateData()
+::GenerateData()
 {
-  Superclass::BeforeThreadedGenerateData();
+  this->AllocateOutputs();
 
   // Generate the label image, if needed
   if ( m_ComputeFeretDiameter )
@@ -64,6 +64,11 @@ ShapeLabelMapFilter< TImage, TLabelImage >
       m_LabelImage = lci2i->GetOutput();
       }
     }
+
+  Superclass::GenerateData();
+
+  // Release the label image
+  m_LabelImage = NULL;
 }
 
 template< class TImage, class TLabelImage >
@@ -739,17 +744,6 @@ ShapeLabelMapFilter< TImage, TLabelImage >
   return perimeter;
 };
 #endif
-
-template< class TImage, class TLabelImage >
-void
-ShapeLabelMapFilter< TImage, TLabelImage >
-::AfterThreadedGenerateData()
-{
-  Superclass::AfterThreadedGenerateData();
-
-  // Release the label image
-  m_LabelImage = NULL;
-}
 
 template< class TImage, class TLabelImage >
 void

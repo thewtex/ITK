@@ -29,11 +29,50 @@
 #define __itkLabelMapFilter_h
 
 #include "itkImageToImageFilter.h"
-#include "itkProgressReporter.h"
-#include "itkFastMutexLock.h"
+#include "itkDomainThreader.h"
+#include "itkThreadedIteratorRangePartitioner.h"
 
 namespace itk
 {
+
+/** \class LabelMapFilterThreader
+ *
+ * \brief DomainThreader class to operate on each sub-domain of labels.
+ *
+ * It runs the LabelMapFilter's ThreadedProcessLabelObject on each sub-domain of
+ * labels that are processed in a thread.
+ *
+ * \ingroup ITKLabelMap
+ */
+template< class TAssociate >
+class LabelMapFilterThreader:
+  public DomainThreader< ThreadedIteratorRangePartitioner< typename TAssociate::InputImageType::LabelObjectVectorType::iterator >, TAssociate >
+{
+public:
+  /** Standard class typedefs */
+  typedef LabelMapFilterThreader  Self;
+  typedef DomainThreader< ThreadedIteratorRangePartitioner< typename TAssociate::InputImageType::LabelObjectVectorType::iterator >, TAssociate >
+                                  Superclass;
+  typedef SmartPointer< Self >    Pointer;
+
+  /** Some convenient typedefs. */
+  typedef typename Superclass::DomainType DomainType;
+  typedef TAssociate                      AssociateType;
+
+  /** Standard New method. */
+  itkNewMacro( Self );
+
+protected:
+  LabelMapFilterThreader() {}
+
+  virtual void ThreadedExecution( const DomainType & subDomain,
+    const ThreadIdType threadId );
+
+private:
+  LabelMapFilterThreader( const Self & ); // purposely not implemented
+  void operator=( const Self & );         // purposely not implemented
+};
+
 /** \class LabelMapFilter
  * \brief Base class for filters that take an image as input and overwrite that image as the output
  *
@@ -102,12 +141,10 @@ protected:
   LabelMapFilter();
   ~LabelMapFilter();
 
-  virtual void BeforeThreadedGenerateData();
+  /** Calls ThreadedProcessLabelObject on each labelObject. */
+  virtual void GenerateData();
 
-  virtual void AfterThreadedGenerateData();
-
-  virtual void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread, ThreadIdType threadId);
-
+  /** NULL method to be defined by inherited classes. */
   virtual void ThreadedProcessLabelObject(LabelObjectType *labelObject);
 
   /**
@@ -115,19 +152,18 @@ protected:
    * if the label collection image to use is not the input image.
    */
   virtual InputImageType * GetLabelMap()
-  {
+    {
     return static_cast< InputImageType * >( const_cast< DataObject * >( this->ProcessObject::GetInput(0) ) );
-  }
-
-  typename FastMutexLock::Pointer m_LabelObjectContainerLock;
+    }
 
 private:
   LabelMapFilter(const Self &); //purposely not implemented
   void operator=(const Self &); //purposely not implemented
 
-  typename InputImageType::Iterator m_LabelObjectIterator;
+  typedef LabelMapFilterThreader< Self > ThreaderType;
+  friend class LabelMapFilterThreader< Self >;
+  typename ThreaderType::Pointer m_Threader;
 
-  ProgressReporter *m_Progress;
 };
 } // end namespace itk
 

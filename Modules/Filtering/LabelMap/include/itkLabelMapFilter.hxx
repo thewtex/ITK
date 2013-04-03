@@ -28,25 +28,43 @@
 #ifndef __itkLabelMapFilter_hxx
 #define __itkLabelMapFilter_hxx
 #include "itkLabelMapFilter.h"
+#include "itkProgressReporter.h"
 
 namespace itk
 {
+
+template< class TAssociate >
+void
+LabelMapFilterThreader< TAssociate >
+::ThreadedExecution( const DomainType & labelObjectRange,
+  const ThreadIdType threadId )
+{
+  typedef typename Superclass::DomainPartitionerType   DomainPartitionerType;
+  typedef typename DomainPartitionerType::IteratorType IteratorType;
+  size_t labelObjectCount = 0;
+  for( IteratorType it = labelObjectRange.Begin(); it != labelObjectRange.End(); ++it )
+    {
+    ++labelObjectCount;
+    }
+  ProgressReporter progress( this->m_Associate, threadId, labelObjectCount );
+  for( IteratorType it = labelObjectRange.Begin(); it != labelObjectRange.End(); ++it )
+    {
+    this->m_Associate->ThreadedProcessLabelObject( (*it).GetPointer() );
+    progress.CompletedPixel();
+    }
+}
+
 template< class TInputImage, class TOutputImage >
 LabelMapFilter< TInputImage, TOutputImage >
 ::LabelMapFilter()
 {
-  m_Progress = NULL;
+  m_Threader = ThreaderType::New();
 }
 
 template< class TInputImage, class TOutputImage >
 LabelMapFilter< TInputImage, TOutputImage >
 ::~LabelMapFilter()
 {
-  // be sure that the progress reporter has been destroyed
-  if ( m_Progress != NULL )
-    {
-    delete m_Progress;
-    }
 }
 
 template< class TInputImage, class TOutputImage >
@@ -77,68 +95,15 @@ LabelMapFilter< TInputImage, TOutputImage >
 template< class TInputImage, class TOutputImage >
 void
 LabelMapFilter< TInputImage, TOutputImage >
-::BeforeThreadedGenerateData()
+::GenerateData()
 {
-  // initialize the iterator
-  m_LabelObjectIterator =  typename InputImageType::Iterator(this->GetLabelMap());
-//  m_LabelObjectIterator = typename InputImageType::Iterator(this->GetLabelMap());
+  this->AllocateOutputs();
 
-  // and the mutex
-  m_LabelObjectContainerLock = FastMutexLock::New();
+  InputImageType * inputLabelMap = this->GetLabelMap();
+  typename InputImageType::LabelObjectVectorType labelObjectVector = inputLabelMap->GetLabelObjects();
 
-  // be sure that the previous progress reporter has been destroyed
-  if ( m_Progress != NULL )
-    {
-    delete m_Progress;
-    }
-  // initialize the progress reporter
-  m_Progress = new ProgressReporter( this, 0, this->GetLabelMap()->GetNumberOfLabelObjects() );
-}
-
-template< class TInputImage, class TOutputImage >
-void
-LabelMapFilter< TInputImage, TOutputImage >
-::AfterThreadedGenerateData()
-{
-  // destroy progress reporter
-  delete m_Progress;
-  m_Progress = NULL;
-}
-
-template< class TInputImage, class TOutputImage >
-void
-LabelMapFilter< TInputImage, TOutputImage >
-::ThreadedGenerateData( const OutputImageRegionType &, ThreadIdType itkNotUsed(threadId) )
-{
-  while ( true )
-    {
-    // first lock the mutex
-    m_LabelObjectContainerLock->Lock();
-
-    if ( m_LabelObjectIterator.IsAtEnd() )
-      {
-      // no more objects. Release the lock and return
-      m_LabelObjectContainerLock->Unlock();
-      return;
-      }
-
-    // get the label object
-    LabelObjectType *labelObject = m_LabelObjectIterator.GetLabelObject();
-
-    // increment the iterator now, so it will not be invalidated if the object
-    // is destroyed
-    ++m_LabelObjectIterator;
-
-    // pretend one more object is processed, even if it will be done later, to
-    // simplify the lock management
-    m_Progress->CompletedPixel();
-
-    // unlock the mutex, so the other threads can get an object
-    m_LabelObjectContainerLock->Unlock();
-
-    // and run the user defined method for that object
-    this->ThreadedProcessLabelObject(labelObject);
-    }
+  typename ThreaderType::DomainType completeDomain( labelObjectVector.begin(), labelObjectVector.end() );
+  this->m_Threader->Execute( this, completeDomain );
 }
 
 template< class TInputImage, class TOutputImage >

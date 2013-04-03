@@ -26,13 +26,46 @@
 
 namespace itk {
 
+template< class TAssociate >
+void
+LabelMapOverlayImageFilterThreader< TAssociate >
+::ThreadedExecution( const DomainType & outputRegionForThread,
+  const ThreadIdType itkNotUsed(threadId) )
+{
+  typedef typename AssociateType::OutputImageType  OutputImageType;
+  typedef typename AssociateType::LabelMapType     LabelMapType;
+  typedef typename AssociateType::FeatureImageType FeatureImageType;
+  typedef typename AssociateType::FunctorType      FunctorType;
+
+  OutputImageType * output = this->m_Associate->GetOutput();
+  LabelMapType * input = const_cast<LabelMapType *>( this->m_Associate->GetInput() );
+  const FeatureImageType * input2 = this->m_Associate->GetFeatureImage();
+
+  FunctorType function;
+  function.SetBackgroundValue( input->GetBackgroundValue() );
+  function.SetOpacity( this->m_Associate->m_Opacity );
+
+  ImageRegionConstIterator< FeatureImageType > featureIt( input2, outputRegionForThread );
+  ImageRegionIterator< OutputImageType > outputIt( output, outputRegionForThread );
+
+  for ( featureIt.GoToBegin(), outputIt.GoToBegin();
+        !featureIt.IsAtEnd();
+        ++featureIt, ++outputIt )
+    {
+    outputIt.Set( function( featureIt.Get(), input->GetBackgroundValue() ) );
+    }
+}
+
+
 template<class TLabelMap, class TFeatureImage, class TOutputImage>
 LabelMapOverlayImageFilter<TLabelMap, TFeatureImage, TOutputImage>
 ::LabelMapOverlayImageFilter()
 {
   this->SetNumberOfRequiredInputs(2);
   m_Opacity = 0.5;
+  m_Threader = ThreaderType::New();
 }
+
 
 template<class TLabelMap, class TFeatureImage, class TOutputImage>
 void
@@ -49,6 +82,7 @@ LabelMapOverlayImageFilter<TLabelMap, TFeatureImage, TOutputImage>
   input->SetRequestedRegion( input->GetLargestPossibleRegion() );
 }
 
+
 template <class TLabelMap, class TFeatureImage, class TOutputImage>
 void
 LabelMapOverlayImageFilter<TLabelMap, TFeatureImage, TOutputImage>
@@ -62,55 +96,16 @@ LabelMapOverlayImageFilter<TLabelMap, TFeatureImage, TOutputImage>
 template<class TLabelMap, class TFeatureImage, class TOutputImage>
 void
 LabelMapOverlayImageFilter<TLabelMap, TFeatureImage, TOutputImage>
-::BeforeThreadedGenerateData()
+::GenerateData()
 {
-  ThreadIdType nbOfThreads = this->GetNumberOfThreads();
-  if( itk::MultiThreader::GetGlobalMaximumNumberOfThreads() != 0 )
-    {
-    nbOfThreads = std::min( this->GetNumberOfThreads(), itk::MultiThreader::GetGlobalMaximumNumberOfThreads() );
-    }
-  // number of threads can be constrained by the region size, so call the SplitRequestedRegion
-  // to get the real number of threads which will be used
-  typename TOutputImage::RegionType splitRegion;  // dummy region - just to call the following method
-  nbOfThreads = this->SplitRequestedRegion(0, nbOfThreads, splitRegion);
-  // std::cout << "nbOfThreads: " << nbOfThreads << std::endl;
+  this->AllocateOutputs();
 
-  m_Barrier = Barrier::New();
-  m_Barrier->Initialize( nbOfThreads );
-
-  Superclass::BeforeThreadedGenerateData();
-
-}
-
-
-template<class TLabelMap, class TFeatureImage, class TOutputImage>
-void
-LabelMapOverlayImageFilter<TLabelMap, TFeatureImage, TOutputImage>
-::ThreadedGenerateData( const OutputImageRegionType& outputRegionForThread, ThreadIdType threadId )
-{
   OutputImageType * output = this->GetOutput();
-  LabelMapType * input = const_cast<LabelMapType *>(this->GetInput());
-  const FeatureImageType * input2 = this->GetFeatureImage();
 
-  FunctorType function;
-  function.SetBackgroundValue( input->GetBackgroundValue() );
-  function.SetOpacity( m_Opacity );
-
-  ImageRegionConstIterator< FeatureImageType > featureIt( input2, outputRegionForThread );
-  ImageRegionIterator< OutputImageType > outputIt( output, outputRegionForThread );
-
-  for ( featureIt.GoToBegin(), outputIt.GoToBegin();
-        !featureIt.IsAtEnd();
-        ++featureIt, ++outputIt )
-    {
-    outputIt.Set( function( featureIt.Get(), input->GetBackgroundValue() ) );
-    }
-
-  // wait for the other threads to complete that part
-  m_Barrier->Wait();
+  this->m_Threader->Execute( this, output->GetRequestedRegion() );
 
   // and delegate to the superclass implementation to use the thread support for the label objects
-  Superclass::ThreadedGenerateData( outputRegionForThread, threadId );
+  Superclass::GenerateData();
 }
 
 
