@@ -54,10 +54,22 @@ ThreadedIteratorRangePartitioner< TIterator >
     {
     ++count;
     }
+  if( count == 0 )
+    {
+    subDomain.m_Begin = it;
+    subDomain.m_End = it;
+    return 1;
+    }
+
   ThreadIdType valuesPerThread =
     Math::Ceil<ThreadIdType>( static_cast< double >( count ) / static_cast< double >( requestedTotal ));
   ThreadIdType maxThreadIdUsed =
     Math::Ceil<ThreadIdType>( static_cast< double >( count ) / static_cast< double >( valuesPerThread )) - 1;
+
+  if( threadId > maxThreadIdUsed )
+    {
+    return maxThreadIdUsed + 1;
+    }
 
   // Split the domain
   it = completeDomain.Begin();
@@ -67,7 +79,7 @@ ThreadedIteratorRangePartitioner< TIterator >
     ++it;
     }
   subDomain.m_Begin = it;
-  if (threadId < maxThreadIdUsed)
+  if( threadId < maxThreadIdUsed )
     {
     const ThreadIdType endIndexCount = valuesPerThread;
     for( ThreadIdType ii = 0; ii < endIndexCount; ++ii )
@@ -76,7 +88,7 @@ ThreadedIteratorRangePartitioner< TIterator >
       }
     subDomain.m_End = it;
     }
-  if (threadId == maxThreadIdUsed)
+  if( threadId == maxThreadIdUsed )
     {
     // last thread needs to process the "rest" of the range
     subDomain.m_End = completeDomain.End();
