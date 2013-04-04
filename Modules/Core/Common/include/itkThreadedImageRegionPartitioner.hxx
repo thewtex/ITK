@@ -89,6 +89,13 @@ ThreadedImageRegionPartitioner<VDimension>
   ThreadIdType maxThreadIdUsed =
     Math::Ceil<ThreadIdType>( range / static_cast<double>(valuesPerThread) ) - 1;
 
+  // If the subDomain is not used, do not try to populate.  This prevents
+  // crashes when Visual Studio does un-safe optimization.
+  if( threadId > maxThreadIdUsed )
+    {
+    return maxThreadIdUsed + 1;
+    }
+
   // Split the region
   if( threadID < maxThreadIdUsed )
     {

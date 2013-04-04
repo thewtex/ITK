@@ -59,6 +59,13 @@ ThreadedIteratorRangePartitioner< TIterator >
   ThreadIdType maxThreadIdUsed =
     Math::Ceil<ThreadIdType>( static_cast< double >( count ) / static_cast< double >( valuesPerThread )) - 1;
 
+  // If the subDomain is not used, do not try to populate.  This prevents
+  // crashes when Visual Studio does un-safe optimization.
+  if( threadId > maxThreadIdUsed )
+    {
+    return maxThreadIdUsed + 1;
+    }
+
   // Split the domain
   it = completeDomain.Begin();
   const ThreadIdType startIndexCount = threadId * valuesPerThread;
@@ -67,7 +74,7 @@ ThreadedIteratorRangePartitioner< TIterator >
     ++it;
     }
   subDomain.m_Begin = it;
-  if (threadId < maxThreadIdUsed)
+  if( threadId < maxThreadIdUsed )
     {
     const ThreadIdType endIndexCount = valuesPerThread;
     for( ThreadIdType ii = 0; ii < endIndexCount; ++ii )
@@ -76,7 +83,7 @@ ThreadedIteratorRangePartitioner< TIterator >
       }
     subDomain.m_End = it;
     }
-  if (threadId == maxThreadIdUsed)
+  if( threadId == maxThreadIdUsed )
     {
     // last thread needs to process the "rest" of the range
     subDomain.m_End = completeDomain.End();
