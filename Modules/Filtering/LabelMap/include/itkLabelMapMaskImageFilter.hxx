@@ -33,7 +33,6 @@ LabelMapMaskImageFilterThreader< TAssociate >
 ::ThreadedExecution( const DomainType & outputRegionForThread,
   const ThreadIdType itkNotUsed(threadId) )
 {
-  typedef typename AssociateType::OutputImageType OutputImageType;
   typedef typename AssociateType::InputImageType  InputImageType;
 
   OutputImageType * output = this->m_Associate->GetOutput();

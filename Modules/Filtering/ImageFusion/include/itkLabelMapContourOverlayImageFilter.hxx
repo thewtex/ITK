@@ -41,7 +41,6 @@ LabelMapContourOverlayImageFilterThreader< TAssociate >
 ::ThreadedExecution( const DomainType & outputRegionForThread,
   const ThreadIdType itkNotUsed(threadId) )
 {
-  typedef typename AssociateType::OutputImageType  OutputImageType;
   typedef typename AssociateType::LabelMapType     LabelMapType;
   typedef typename AssociateType::FeatureImageType FeatureImageType;
   typedef typename AssociateType::FunctorType      FunctorType;
