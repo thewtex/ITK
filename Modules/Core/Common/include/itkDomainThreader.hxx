@@ -125,10 +125,15 @@ DomainThreader< TDomainPartitioner, TAssociate >
 
   // Get the sub-domain to process for this thread.
   DomainType subdomain;
-  const ThreadIdType total = str->domainThreader->GetDomainPartitioner()->PartitionDomain(threadId,
+  ThreadIdType total = 0;
+  const DomainPartitionerType * domainPartitioner = str->domainThreader->GetDomainPartitioner();
+  if( domainPartitioner )
+    {
+    total = domainPartitioner->PartitionDomain(threadId,
                                             threadCount,
                                             str->domainThreader->m_CompleteDomain,
                                             subdomain);
+    }
 
   // Execute the actual method with appropriate sub-domain.
   // If the threadID is greater than the total number of regions
