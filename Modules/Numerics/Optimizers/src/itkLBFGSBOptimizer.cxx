@@ -42,37 +42,36 @@ public:
 
   /** Create with a reference to the ITK object */
   LBFGSBOptimizerHelper(vnl_cost_function & f,
-                        LBFGSBOptimizer *itkObj);
+                        LBFGSBOptimizer * const itkObj);
 
   /** Handle new iteration event */
   virtual bool report_iter();
 
 private:
-  LBFGSBOptimizer *m_ItkObj;
+  LBFGSBOptimizer * const m_ItkObj;
 };
 
 /**
  * Constructor
  */
 LBFGSBOptimizer
-::LBFGSBOptimizer()
+::LBFGSBOptimizer():
+  m_Trace(false),
+  m_OptimizerInitialized(false),
+  m_CostFunctionConvergenceFactor(1e+7),
+  m_ProjectedGradientTolerance(1e-5),
+  m_MaximumNumberOfIterations(500),
+  m_MaximumNumberOfEvaluations(500),
+  m_MaximumNumberOfCorrections(5),
+  m_CurrentIteration(0),
+  m_InfinityNormOfProjectedGradient(0.0),
+  m_VnlOptimizer(0)
 {
-  m_OptimizerInitialized = false;
-  m_VnlOptimizer         = 0;
-  m_Trace                              = false;
+  m_StopConditionDescription.str("");
 
   m_LowerBound       = InternalBoundValueType(0);
   m_UpperBound       = InternalBoundValueType(0);
   m_BoundSelection   = InternalBoundSelectionType(0);
-
-  m_CostFunctionConvergenceFactor   = 1e+7;
-  m_ProjectedGradientTolerance      = 1e-5;
-  m_MaximumNumberOfIterations       = 500;
-  m_MaximumNumberOfEvaluations      = 500;
-  m_MaximumNumberOfCorrections      = 5;
-  m_CurrentIteration                = 0;
-  m_InfinityNormOfProjectedGradient = 0.0;
-  m_StopConditionDescription.str("");
 }
 
 /**
@@ -167,35 +166,12 @@ LBFGSBOptimizer
 ::SetLowerBound(
   const BoundValueType & value)
 {
-  m_LowerBound = value;
+  this->m_LowerBound = value;
   if ( m_OptimizerInitialized )
     {
     m_VnlOptimizer->set_lower_bound(m_LowerBound);
     }
-
   this->Modified();
-}
-
-/**
- * Get lower bound
- */
-const
-LBFGSBOptimizer
-::BoundValueType &
-LBFGSBOptimizer
-::GetLowerBound()
-{
-  return m_LowerBound;
-}
-
-/**
- * Return Current Value
- */
-LBFGSBOptimizer::MeasureType
-LBFGSBOptimizer
-::GetValue() const
-{
-  return this->GetCachedValue();
 }
 
 /**
@@ -206,25 +182,22 @@ LBFGSBOptimizer
 ::SetUpperBound(
   const BoundValueType & value)
 {
-  m_UpperBound = value;
+  this->m_UpperBound = value;
   if ( m_OptimizerInitialized )
     {
     m_VnlOptimizer->set_upper_bound(m_UpperBound);
     }
-
   this->Modified();
 }
 
 /**
- * Get upper bound
+ * Return Current Value
  */
-const
+LBFGSBOptimizer::MeasureType
 LBFGSBOptimizer
-::BoundValueType &
-LBFGSBOptimizer
-::GetUpperBound()
+::GetValue() const
 {
-  return m_UpperBound;
+  return this->GetCachedValue();
 }
 
 /**
@@ -241,18 +214,6 @@ LBFGSBOptimizer
     m_VnlOptimizer->set_bound_selection(m_BoundSelection);
     }
   this->Modified();
-}
-
-/**
- * Get bound selection array
- */
-const
-LBFGSBOptimizer
-::BoundSelectionType &
-LBFGSBOptimizer
-::GetBoundSelection()
-{
-  return m_BoundSelection;
 }
 
 /** Set/Get the CostFunctionConvergenceFactor. Algorithm terminates
@@ -444,7 +405,7 @@ LBFGSBOptimizer
 /** Create with a reference to the ITK object */
 LBFGSBOptimizerHelper
 ::LBFGSBOptimizerHelper(vnl_cost_function & f,
-                        LBFGSBOptimizer *itkObj):
+                        LBFGSBOptimizer * const itkObj):
   vnl_lbfgsb(f),
   m_ItkObj(itkObj)
 {}
@@ -480,20 +441,21 @@ LBFGSBOptimizerHelper
 const std::string
 LBFGSBOptimizer::GetStopConditionDescription() const
 {
+  std::ostringstream StopConditionDescription;
+  StopConditionDescription.str("");
   if ( m_VnlOptimizer )
     {
-    m_StopConditionDescription.str("");
-    m_StopConditionDescription << this->GetNameOfClass() << ": ";
+    StopConditionDescription << this->GetNameOfClass() << ": ";
     switch ( m_VnlOptimizer->get_failure_code() )
       {
       case vnl_nonlinear_minimizer::ERROR_FAILURE:
-        m_StopConditionDescription << "Failure";
+        StopConditionDescription << "Failure";
         break;
       case vnl_nonlinear_minimizer::ERROR_DODGY_INPUT:
-        m_StopConditionDescription << "Dodgy input";
+        StopConditionDescription << "Dodgy input";
         break;
       case vnl_nonlinear_minimizer::CONVERGED_FTOL:
-        m_StopConditionDescription << "Function tolerance reached after "
+        StopConditionDescription << "Function tolerance reached after "
                                    << m_CurrentIteration
                                    << " iterations. "
                                    << "The relative reduction of the cost function <= "
@@ -506,38 +468,34 @@ LBFGSBOptimizer::GetStopConditionDescription() const
 
         break;
       case vnl_nonlinear_minimizer::CONVERGED_XTOL:
-        m_StopConditionDescription << "Solution tolerance reached";
+        StopConditionDescription << "Solution tolerance reached";
         break;
       case vnl_nonlinear_minimizer::CONVERGED_XFTOL:
-        m_StopConditionDescription << "Solution and Function tolerance both reached";
+        StopConditionDescription << "Solution and Function tolerance both reached";
         break;
       case vnl_nonlinear_minimizer::CONVERGED_GTOL:
-        m_StopConditionDescription << "Gradient tolerance reached. "
+        StopConditionDescription << "Gradient tolerance reached. "
                                    << "Projected gradient tolerance is "
                                    << m_ProjectedGradientTolerance;
         break;
       case vnl_nonlinear_minimizer::FAILED_TOO_MANY_ITERATIONS:
-        m_StopConditionDescription << "Too many iterations. Iterations = "
+        StopConditionDescription << "Too many iterations. Iterations = "
                                    << m_MaximumNumberOfEvaluations;
         break;
       case vnl_nonlinear_minimizer::FAILED_FTOL_TOO_SMALL:
-        m_StopConditionDescription << "Function tolerance too small";
+        StopConditionDescription << "Function tolerance too small";
         break;
       case vnl_nonlinear_minimizer::FAILED_XTOL_TOO_SMALL:
-        m_StopConditionDescription << "Solution tolerance too small";
+        StopConditionDescription << "Solution tolerance too small";
         break;
       case vnl_nonlinear_minimizer::FAILED_GTOL_TOO_SMALL:
-        m_StopConditionDescription << "Gradient tolerance too small";
+        StopConditionDescription << "Gradient tolerance too small";
         break;
       case vnl_nonlinear_minimizer::FAILED_USER_REQUEST:
         break;
       }
-    return m_StopConditionDescription.str();
     }
-  else
-    {
-    return std::string("");
-    }
+  return StopConditionDescription.str();
 }
 } // end namespace itk
 
