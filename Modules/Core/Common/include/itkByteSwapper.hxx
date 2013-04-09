@@ -305,7 +305,8 @@ ByteSwapper< T >
   char * cpy = new char[chunkSize * 2];
   while ( num )
     {
-    memcpy(cpy, ptr, chunkSize * 2);
+    std::copy(static_cast<char *>(ptr),
+              static_cast<char *>(ptr) + (chunkSize * 2), cpy);
 
     char * pos = cpy;
     for ( BufferSizeType i = 0; i < chunkSize; i++ )
@@ -385,7 +386,8 @@ ByteSwapper< T >
 
   while ( num )
     {
-    memcpy(cpy, ptr, chunkSize * 4);
+    std::copy(static_cast<char *>(ptr),
+              static_cast<char *>(ptr) + (chunkSize * 4), cpy);
 
     char * pos = cpy;
     for ( BufferSizeType i = 0; i < chunkSize; i++ )
@@ -484,7 +486,8 @@ ByteSwapper< T >
 
   while ( num )
     {
-    memcpy(cpy, ptr, chunkSize * 8);
+    std::copy(static_cast<char *>(ptr),
+              static_cast<char *>(ptr) + (chunkSize * 8), cpy);
 
     ByteSwapper< T >::Swap8Range( (void *)cpy, chunkSize );
 

@@ -111,7 +111,7 @@ void ImageAlgorithm::DispatchedCopy( const TImageType *inImage, TImageType *outI
     const char *inBuffer = static_cast<const char*>(in) + inOffset;
     char* outBuffer = static_cast<char*>(out) + outOffset;
 
-    memcpy( outBuffer, inBuffer, sizeOfChunk );
+    std::copy(inBuffer, inBuffer + sizeOfChunk ,  outBuffer);
 
     if ( movingDirection == _RegionType::ImageDimension )
       {

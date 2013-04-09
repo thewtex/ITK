@@ -23,7 +23,7 @@
 #include "itkMath.h"
 
 #include <memory>
-
+#include <algorithm>
 
 namespace itk
 {
@@ -241,7 +241,9 @@ public:
    * memory that is the appropriate size.
    * \sa GetIndex() */
   void SetIndex(const IndexValueType val[VIndexDimension])
-  { memcpy(m_Index, val, sizeof( IndexValueType ) * VIndexDimension); }
+  {
+    std::copy(val, val + VIndexDimension, m_Index);
+  }
 
   /** Sets the value of one of the elements in the index.
    * This method is mainly intended to facilitate the access to elements
