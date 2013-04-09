@@ -35,18 +35,12 @@ template< class TInputImage, class TOutputImage >
 LabelMapFilter< TInputImage, TOutputImage >
 ::LabelMapFilter()
 {
-  m_Progress = NULL;
 }
 
 template< class TInputImage, class TOutputImage >
 LabelMapFilter< TInputImage, TOutputImage >
 ::~LabelMapFilter()
 {
-  // be sure that the progress reporter has been destroyed
-  if ( m_Progress != NULL )
-    {
-    delete m_Progress;
-    }
 }
 
 template< class TInputImage, class TOutputImage >
@@ -86,29 +80,14 @@ LabelMapFilter< TInputImage, TOutputImage >
   // and the mutex
   m_LabelObjectContainerLock = FastMutexLock::New();
 
-  // be sure that the previous progress reporter has been destroyed
-  if ( m_Progress != NULL )
-    {
-    delete m_Progress;
-    }
-  // initialize the progress reporter
-  m_Progress = new ProgressReporter( this, 0, this->GetLabelMap()->GetNumberOfLabelObjects() );
+  m_InverseNumberOfLabelObjects = 1.0/this->GetLabelMap()->GetNumberOfLabelObjects();
+  m_NumberOfLabelObjectsProcessed = 0;
 }
 
 template< class TInputImage, class TOutputImage >
 void
 LabelMapFilter< TInputImage, TOutputImage >
-::AfterThreadedGenerateData()
-{
-  // destroy progress reporter
-  delete m_Progress;
-  m_Progress = NULL;
-}
-
-template< class TInputImage, class TOutputImage >
-void
-LabelMapFilter< TInputImage, TOutputImage >
-::ThreadedGenerateData( const OutputImageRegionType &, ThreadIdType itkNotUsed(threadId) )
+::ThreadedGenerateData( const OutputImageRegionType &, ThreadIdType threadId )
 {
   while ( true )
     {
@@ -119,6 +98,12 @@ LabelMapFilter< TInputImage, TOutputImage >
       {
       // no more objects. Release the lock and return
       m_LabelObjectContainerLock->Unlock();
+
+      if (threadId==0)
+        {
+        this->UpdateProgress(1.0);
+        }
+
       return;
       }
 
@@ -128,16 +113,31 @@ LabelMapFilter< TInputImage, TOutputImage >
     // increment the iterator now, so it will not be invalidated if the object
     // is destroyed
     ++m_LabelObjectIterator;
+    ++m_NumberOfLabelObjectsProcessed;
 
-    // pretend one more object is processed, even if it will be done later, to
-    // simplify the lock management
-    m_Progress->CompletedPixel();
+    const double progress = m_InverseNumberOfLabelObjects*m_NumberOfLabelObjectsProcessed;
 
     // unlock the mutex, so the other threads can get an object
     m_LabelObjectContainerLock->Unlock();
 
     // and run the user defined method for that object
     this->ThreadedProcessLabelObject(labelObject);
+
+    if (threadId==0)
+      {
+      this->UpdateProgress(progress);
+      }
+
+    // all threads needs to check the abort flag
+    if ( this->GetAbortGenerateData() )
+      {
+      std::string    msg;
+      ProcessAborted e(__FILE__, __LINE__);
+      msg += "Object " + std::string(this->GetNameOfClass() ) + ": AbortGenerateDataOn";
+      e.SetDescription(msg);
+      throw e;
+      }
+
     }
 }
 
