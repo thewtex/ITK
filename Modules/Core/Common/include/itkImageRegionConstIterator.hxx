@@ -63,7 +63,7 @@ ImageRegionConstIterator< TImage >
   if ( !done )
     {
     while ( ( ( dim + 1 ) < ImageIteratorDimension )
-            && ( ind[dim] > startIndex[dim] +  static_cast< IndexValueType >( size[dim] ) - 1 ) )
+            && (  static_cast< SizeValueType >( ind[d] - startIndex[d] ) >= size[d] )
       {
       ind[dim] = startIndex[dim];
       ind[++dim]++;
