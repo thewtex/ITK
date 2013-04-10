@@ -356,8 +356,7 @@ template<class T>
 vnl_vector<T>&
 vnl_vector<T>::fill (T const& value)
 {
-  for (unsigned i = 0; i < this->num_elmts; i++)
-    this->data[i] = value;
+  vcl_fill_n( this->data, this->num_elmts, value );
   return *this;
 }
 
