@@ -26,6 +26,7 @@
 #endif
 
 #include "vnl/vnl_vector.h"
+#include <algorithm> // std::fill_n
 
 namespace itk
 {
@@ -102,7 +103,7 @@ public:
   /** Set the all the elements of the array to the specified value */
   void Fill(TValueType const & v)
     {
-    this->fill(v);
+    std::fill_n( this->data_block(), this->num_elmts, v );
     }
 
   /** Copy opertor */
