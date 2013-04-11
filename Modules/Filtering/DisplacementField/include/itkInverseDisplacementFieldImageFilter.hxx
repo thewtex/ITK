@@ -180,6 +180,11 @@ InverseDisplacementFieldImageFilter< TInputImage, TOutputImage >
     value = ot.Get();
     sampledInput->TransformIndexToPhysicalPoint(ot.GetIndex(), sourcePoint);
 
+    for ( unsigned int i = 0; i < ImageDimension; i++ )
+      {
+      sourcePoint[i] += value[i];
+      }
+
     source->InsertElement(landmarkId,  sourcePoint);
 
     for ( unsigned int i = 0; i < ImageDimension; i++ )
@@ -355,6 +360,7 @@ InverseDisplacementFieldImageFilter< TInputImage, TOutputImage >
 
   return latestTime;
 }
+
 } // end namespace itk
 
 #endif
