@@ -5,6 +5,7 @@ itkImageToImageFilterTest.cxx
 itkVectorNeighborhoodOperatorImageFilterTest.cxx
 itkMaskNeighborhoodOperatorImageFilterTest.cxx
 itkCastImageFilterTest.cxx
+itkCastImageFilterPerformance.cxx
 itkClampImageFilterTest.cxx
 )
 
@@ -37,5 +38,7 @@ itk_add_test(NAME itkMaskNeighborhoodOperatorImageFilterTest
     itkMaskNeighborhoodOperatorImageFilterTest DATA{${ITK_DATA_ROOT}/Input/cthead1.png} ${ITK_TEST_OUTPUT_DIR}/MaskNeighborhoodOperatorImageFilterTest.png)
 itk_add_test(NAME itkCastImageFilterTest
       COMMAND ITKImageFilterBaseTestDriver itkCastImageFilterTest)
+itk_add_test(NAME itkCastImageFilterPerformace
+      COMMAND ITKImageFilterBaseTestDriver itkCastImageFilterPerformance)
 itk_add_test(NAME itkClampImageFilterTest
       COMMAND ITKImageFilterBaseTestDriver itkClampImageFilterTest)
