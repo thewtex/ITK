@@ -22,7 +22,6 @@
 #include "itkHalfHermitianToRealInverseFFTImageFilter.hxx"
 #include "itkImageRegionIterator.h"
 #include "itkProgressReporter.h"
-#include "itkStdAlgorithm.h"
 
 namespace itk
 {
@@ -100,7 +99,9 @@ FFTWHalfHermitianToRealInverseFFTImageFilter< TInputImage, TOutputImage >
                                       !m_CanUseDestructiveAlgorithm );
   if( !m_CanUseDestructiveAlgorithm )
     {
-    itk::algorithm::copy_n(inputPtr->GetBufferPointer(), totalInputSize,  in);
+    memcpy( in,
+            inputPtr->GetBufferPointer(),
+            totalInputSize * sizeof(typename FFTWProxyType::ComplexType) );
     }
   FFTWProxyType::Execute( plan );
 
