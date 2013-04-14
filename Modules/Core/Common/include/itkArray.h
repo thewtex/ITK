@@ -78,6 +78,7 @@ public:
    * memory when this object is destroyed. */
   Array(ValueType *data, SizeValueType sz, bool LetArrayManageMemory = false);
 
+#if 0
   /** Constructor that initializes array with contents from a user supplied
    * buffer. The pointer to the buffer and the length is specified. By default,
    * the array does not manage the memory of the buffer. It merely points to
@@ -86,6 +87,7 @@ public:
    * memory when this object is destroyed. */
   Array(const ValueType *data, SizeValueType sz,
         bool LetArrayManageMemory = false);
+#endif
 
   /** Constructor to initialize an array from another of any data type */
   template< class TArrayValue >

@@ -60,6 +60,7 @@ Array< TValueType >
   m_LetArrayManageMemory = LetArrayManageMemory;
 }
 
+#if 0
 /** Constructor with user specified data */
 template< typename TValueType >
 Array< TValueType >
@@ -70,6 +71,7 @@ Array< TValueType >
   vnl_vector< TValueType >::num_elmts = sz;
   m_LetArrayManageMemory = LetArrayManageMemory;
 }
+#endif
 
 /** Destructor */
 template< typename TValueType >
