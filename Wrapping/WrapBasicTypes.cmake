@@ -15,6 +15,10 @@ set(ITKM_UI "UI")             # Mangle
 set(ITKT_UL "unsigned long")  # Type
 set(ITKM_UL "UL")             # Mangle
 
+set(ITKT_ULL "unsigned long long") # Type
+set(ITKM_ULL "ULL")                # Mangle
+
+
 set(ITKT_SC "signed char")    # Type
 set(ITKM_SC "SC")             # Mangle
 
@@ -26,6 +30,10 @@ set(ITKM_SI "SI")             # Mangle
 
 set(ITKT_SL "signed long")    # Type
 set(ITKM_SL "SL")             # Mangle
+
+set(ITKT_SLL "signed long long") # Type
+set(ITKM_SLL "SLL")              # Mangle
+
 
 set(ITKT_F  "float")          # Type
 set(ITKM_F  "F")              # Mangle
@@ -61,6 +69,9 @@ endif()
 if(ITK_WRAP_unsigned_long)
   set(WRAP_ITK_USIGN_INT ${WRAP_ITK_USIGN_INT} "UL")
 endif()
+if(ITK_WRAP_unsigned_long_long)
+  set(WRAP_ITK_USIGN_INT ${WRAP_ITK_USIGN_INT} "ULL")
+endif()
 if(ITK_WRAP_unsigned_short)
   set(WRAP_ITK_USIGN_INT ${WRAP_ITK_USIGN_INT} "US")
 endif()
@@ -71,6 +82,9 @@ if(ITK_WRAP_signed_char)
 endif()
 if(ITK_WRAP_signed_long)
   set(WRAP_ITK_SIGN_INT ${WRAP_ITK_SIGN_INT} "SL")
+endif()
+if(ITK_WRAP_signed_long_long)
+  set(WRAP_ITK_SIGN_INT ${WRAP_ITK_SIGN_INT} "SLL")
 endif()
 if(ITK_WRAP_signed_short)
   set(WRAP_ITK_SIGN_INT ${WRAP_ITK_SIGN_INT} "SS")
