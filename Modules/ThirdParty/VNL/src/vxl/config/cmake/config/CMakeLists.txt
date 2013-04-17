@@ -335,11 +335,6 @@ IF (${VXL_INT_64} MATCHES "^long$")
 ELSE(${VXL_INT_64} MATCHES "^long$")
   SET(VXL_INT_64_IS_LONG 0)
 ENDIF(${VXL_INT_64} MATCHES "^long$")
-IF (${VXL_INT_64} MATCHES "^long long$")
-  SET(VXL_INT_64_IS_LONG_LONG 1)
-ELSE(${VXL_INT_64} MATCHES "^long long$")
-  SET(VXL_INT_64_IS_LONG_LONG 0)
-ENDIF(${VXL_INT_64} MATCHES "^long long$")
 
 #
 # Check unistd stuff
