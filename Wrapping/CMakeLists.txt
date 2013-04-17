@@ -56,10 +56,12 @@ set(WrapITK_VERSION_PATCH 0)
 option(ITK_WRAP_unsigned_char "Wrap unsigned char type" ON)
 option(ITK_WRAP_unsigned_short "Wrap unsigned short type" OFF)
 option(ITK_WRAP_unsigned_long "Wrap unsigned long type" OFF)
+option(ITK_WRAP_unsigned_long_long "Wrap unsigned long type" OFF)
 
 option(ITK_WRAP_signed_char "Wrap signed char type" OFF)
 option(ITK_WRAP_signed_short "Wrap signed short type" ON)
 option(ITK_WRAP_signed_long "Wrap signed long type" OFF)
+option(ITK_WRAP_signed_long_long "Wrap signed long long type" OFF)
 
 option(ITK_WRAP_float "Wrap float type" ON)
 option(ITK_WRAP_double "Wrap double type" OFF)
