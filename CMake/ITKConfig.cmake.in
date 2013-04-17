@@ -84,3 +84,11 @@ if (ITK_USE_FFTWF OR ITK_USE_FFTWD)
   set(ITK_INCLUDE_DIRS ${ITK_INCLUDE_DIRS} "${ITK_FFTW_INCLUDE_PATH}")
   set(ITK_LIBRARY_DIRS ${ITK_LIBRARY_DIRS} "${ITK_FFTW_LIBDIR}")
 endif()
+
+# Avoid VTK linking errors if possible.
+if(ITKVtkGlue_LOADED OR ITKLevelSetsv4Visualization_LOADED)
+  set(_used_vtk_config "@VTK_DIR@/VTKConfig.cmake")
+  if(NOT DEFINED VTK_LIBRARIES AND EXISTS "${_used_vtk_config}")
+    include("${_used_vtk_config}")
+  endif()
+endif()
