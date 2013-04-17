@@ -49,6 +49,7 @@ INCLUDE (${vxl_SOURCE_DIR}/config/cmake/config/vxl_config_macros.cmake)
 #
 
 PERFORM_CMAKE_TEST(vxl_platform_tests.cxx VCL_HAS_BOOL)
+PERFORM_CMAKE_TEST(vxl_platform_tests.cxx VCL_HAS_LONG_LONG)
 PERFORM_CMAKE_TEST(vxl_platform_tests.cxx VCL_HAS_TYPENAME)
 PERFORM_CMAKE_TEST(vxl_platform_tests.cxx VCL_HAS_EXPORT)
 PERFORM_CMAKE_TEST(vxl_platform_tests.cxx VCL_HAS_MUTABLE)
@@ -334,6 +335,11 @@ IF (${VXL_INT_64} MATCHES "^long$")
 ELSE(${VXL_INT_64} MATCHES "^long$")
   SET(VXL_INT_64_IS_LONG 0)
 ENDIF(${VXL_INT_64} MATCHES "^long$")
+IF (${VXL_INT_64} MATCHES "^long long$")
+  SET(VXL_INT_64_IS_LONG_LONG 1)
+ELSE(${VXL_INT_64} MATCHES "^long long$")
+  SET(VXL_INT_64_IS_LONG_LONG 0)
+ENDIF(${VXL_INT_64} MATCHES "^long long$")
 
 #
 # Check unistd stuff
