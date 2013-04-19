@@ -57,10 +57,15 @@ int itkBinaryReconstructionByErosionImageFilterTest(int argc, char * argv[])
   reconstruction->SetBackgroundValue( bg );
   TEST_SET_GET_VALUE( bg , reconstruction->GetBackgroundValue() );
 
-  reconstruction->SetMaskImage( reader->GetOutput() );
-  reconstruction->SetInput( "MaskImage", reader->GetOutput() );
-  reconstruction->SetMarkerImage( reader2->GetOutput() );
-  reconstruction->SetInput( "MarkerImage", reader2->GetOutput() );
+  ImageType::Pointer maskImage = reader->GetOutput();
+  reconstruction->SetMaskImage( maskImage );
+  reconstruction->SetInput( "MaskImage", maskImage );
+  reconstruction->SetInput( 1, maskImage );
+  ImageType::Pointer markerImage = reader2->GetOutput();
+  reconstruction->SetMarkerImage( markerImage );
+  reconstruction->SetInput( "MarkerImage", markerImage );
+  reconstruction->SetInput( 0, markerImage );
+  reconstruction->SetInput( markerImage );
 
   itk::SimpleFilterWatcher watcher(reconstruction, "filter");
 

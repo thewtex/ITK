@@ -131,17 +131,24 @@ public:
   itkSetMacro(ForegroundValue, OutputImagePixelType);
   itkGetConstMacro(ForegroundValue, OutputImagePixelType);
 
-   /** Set the marker image */
+  /** Set the marker image. */
   void SetMarkerImage( const InputImageType *input );
 
-  /** Get the marker image */
+  /** Get the marker image. */
   InputImageType * GetMarkerImage();
 
-   /** Set the mask image */
+   /** Set the mask image. */
   void SetMaskImage( const InputImageType *input );
 
-  /** Get the mask image */
+  /** Get the mask image. */
   InputImageType * GetMaskImage();
+
+  /** Set/Get the mask or marker image by index. */
+  using Superclass::SetInput;
+  virtual void SetInput(const InputImageType *image);
+  virtual void SetInput(unsigned int, const TInputImage *image);
+  const InputImageType * GetInput(void) const;
+  const InputImageType * GetInput(unsigned int idx) const;
 
 protected:
   BinaryReconstructionByDilationImageFilter();

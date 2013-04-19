@@ -72,6 +72,59 @@ BinaryReconstructionByDilationImageFilter<TInputImage>
 template<class TInputImage>
 void
 BinaryReconstructionByDilationImageFilter<TInputImage>
+::SetInput(const InputImageType *input)
+{
+  // Process object is not const-correct, so the const casting is required.
+  this->ProcessObject::SetInput( "MarkerImage", const_cast< InputImageType * >( input ));
+}
+
+template<class TInputImage>
+void
+BinaryReconstructionByDilationImageFilter<TInputImage>
+::SetInput(unsigned int index, const TInputImage *image)
+{
+  switch( index )
+    {
+  case 0:
+    // Process object is not const-correct, so the const casting is required.
+    this->ProcessObject::SetInput( "MarkerImage", const_cast< InputImageType * >( image ));
+    break;
+  case 1:
+    // Process object is not const-correct, so the const casting is required.
+    this->ProcessObject::SetInput( "MaskImage", const_cast< InputImageType * >( image ));
+    break;
+  default:
+    itkExceptionMacro(<< "Invalid input index: " << index);
+    }
+}
+
+template<class TInputImage>
+const typename BinaryReconstructionByDilationImageFilter<TInputImage>::InputImageType *
+BinaryReconstructionByDilationImageFilter<TInputImage>
+::GetInput(void) const
+{
+  return itkDynamicCastInDebugMode< const InputImageType* >( this->ProcessObject::GetInput( "MarkerImage" ) );
+}
+
+template<class TInputImage>
+const typename BinaryReconstructionByDilationImageFilter<TInputImage>::InputImageType *
+BinaryReconstructionByDilationImageFilter<TInputImage>
+::GetInput(unsigned int index) const
+{
+  switch( index )
+    {
+  case 0:
+    return itkDynamicCastInDebugMode< const InputImageType * >( this->ProcessObject::GetInput( "MarkerImage" ) );
+  case 1:
+    return itkDynamicCastInDebugMode< const InputImageType * >( this->ProcessObject::GetInput( "MaskImage" ) );
+  default:
+    itkExceptionMacro(<< "Invalid input index: " << index);
+    }
+}
+
+template<class TInputImage>
+void
+BinaryReconstructionByDilationImageFilter<TInputImage>
 ::GenerateInputRequestedRegion()
 {
   // call the superclass' implementation of this method
