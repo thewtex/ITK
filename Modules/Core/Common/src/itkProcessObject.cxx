@@ -26,11 +26,56 @@
  *
  *=========================================================================*/
 #include "itkProcessObject.h"
+#include "itkMutexLockHolder.h"
 
 #include <stdio.h>
 
 namespace itk
 {
+
+
+namespace
+{
+const size_t ITK_NUMBER_OF_GLOBAL_INDEX_NAMES = 100;
+SimpleFastMutexLock globalIndexNamesLock;
+const ProcessObject::DataObjectIdentifierType *globalIndexNames;
+
+struct CleanUpProcessObject
+{
+  ~CleanUpProcessObject()
+    {
+      delete[] globalIndexNames;
+      globalIndexNames = NULL;
+    }
+};
+CleanUpProcessObject globalCleanUpProcessObject;
+}
+
+
+const ProcessObject::DataObjectIdentifierType* GetGlobalIndexNames(void)
+{
+  if ( globalIndexNames == NULL )
+    {
+    // thread safe lazy initialization, prevent race condition on
+    // setting, with an atomic set if null.
+    MutexLockHolder< SimpleFastMutexLock > lock(globalIndexNamesLock);
+    if ( globalIndexNames == NULL  )
+      {
+      ProcessObject::DataObjectIdentifierType *indexNames = new ProcessObject::DataObjectIdentifierType[ITK_NUMBER_OF_GLOBAL_INDEX_NAMES];
+
+      char buf[17+4];
+      for (unsigned int idx = 0; idx < ITK_NUMBER_OF_GLOBAL_INDEX_NAMES; ++idx)
+        {
+        sprintf(buf, "IndexedDataObject%u", idx);
+        indexNames[idx] = buf;
+        }
+      globalIndexNames = indexNames;
+      }
+    }
+  return globalIndexNames;
+}
+
+
 /**
  * Instantiate object with no start, end, or progress methods.
  */
@@ -885,7 +930,11 @@ ProcessObject::DataObjectIdentifierType
 ProcessObject
 ::MakeNameFromIndex(DataObjectPointerArraySizeType idx) const
 {
-  if ( idx < 999 )
+  if (idx < ITK_NUMBER_OF_GLOBAL_INDEX_NAMES)
+    {
+    return GetGlobalIndexNames()[idx];
+    }
+  else if ( idx < 999 )
     {
     char buf[17+4];
     sprintf(buf, "IndexedDataObject%u", static_cast<unsigned int>(idx));
