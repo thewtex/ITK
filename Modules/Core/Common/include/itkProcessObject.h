@@ -673,6 +673,12 @@ private:
   DataObjectPointerArraySizeType MakeIndexFromName( const DataObjectIdentifierType & ) const;
   bool IsIndexedName( const DataObjectIdentifierType & ) const;
 
+  /** Single access method to a global variable containing the default
+   * index names. This method provides concurrent thread safe access and
+   * lazy initialization to the global variable.
+   */
+  static const char * const* GetGlobalIndexNames(void);
+
   /** STL map to store the named inputs and outputs */
   typedef std::map< DataObjectIdentifierType, DataObjectPointer, NameComparator > DataObjectPointerMap;
 

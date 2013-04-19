@@ -26,11 +26,37 @@
  *
  *=========================================================================*/
 #include "itkProcessObject.h"
+#include "itkMutexLockHolder.h"
 
 #include <stdio.h>
 
 namespace itk
 {
+
+
+namespace
+{ // local namespace for managing globals
+const size_t ITK_NUMBER_OF_GLOBAL_INDEX_NAMES = 100;
+const size_t ITK_GLOBAL_INDEX_NAMES_LENGTH = 17+2+1; // len("IndexedDataObject") + 2 digits + \0
+SimpleFastMutexLock globalIndexNamesLock;
+const char * const *globalIndexNames;
+
+struct CleanUpProcessObject
+{
+  ~CleanUpProcessObject()
+    {
+      if (globalIndexNames != NULL)
+        {
+        delete[] globalIndexNames[0];
+        delete[] globalIndexNames;
+        }
+      globalIndexNames = NULL;
+    }
+};
+CleanUpProcessObject globalCleanUpProcessObject;
+}
+
+
 /**
  * Instantiate object with no start, end, or progress methods.
  */
@@ -887,18 +913,15 @@ ProcessObject::DataObjectIdentifierType
 ProcessObject
 ::MakeNameFromIndex(DataObjectPointerArraySizeType idx) const
 {
-  if ( idx < 999 )
+  if (idx < ITK_NUMBER_OF_GLOBAL_INDEX_NAMES)
     {
-    char buf[17+4];
-    sprintf(buf, "IndexedDataObject%u", static_cast<unsigned int>(idx));
-    return buf;
+    return ProcessObject::DataObjectIdentifierType(this->GetGlobalIndexNames()[idx]);
     }
   else
     {
-    const char baseName[] = "IndexedDataObject";
-    std::ostringstream oss;
-    oss << baseName << idx;
-    return oss.str();
+    char buf[17+21]; // a 64-bit integer is ~20 decimal places max
+    sprintf(buf, "IndexedDataObject%u", static_cast<unsigned int>(idx));
+    return buf;
     }
 }
 
@@ -984,6 +1007,37 @@ ProcessObject
   DataObjectPointerArraySizeType idx;
   return (std::istringstream(idxStr) >> idx);
 }
+
+
+const char * const*
+ProcessObject
+::GetGlobalIndexNames(void)
+{
+  if ( globalIndexNames == NULL )
+    {
+    // thread safe lazy initialization, prevent race condition on
+    // setting, with an atomic set if null.
+    MutexLockHolder< SimpleFastMutexLock > lock(globalIndexNamesLock);
+    if ( globalIndexNames == NULL  )
+      {
+      // we allocate an array of c-string pointers, and a continuous
+      // block for their buffers
+      char **indexNames = new char *[ITK_NUMBER_OF_GLOBAL_INDEX_NAMES];
+      char *nameBuffer = new char[ITK_NUMBER_OF_GLOBAL_INDEX_NAMES*ITK_GLOBAL_INDEX_NAMES_LENGTH];
+
+      char *buf = nameBuffer;
+      for (unsigned int idx = 0; idx < ITK_NUMBER_OF_GLOBAL_INDEX_NAMES; ++idx)
+        {
+        int l = sprintf(buf, "IndexedDataObject%u", idx);
+        indexNames[idx] = buf;
+        buf += l +1;
+        }
+      globalIndexNames = indexNames;
+      }
+    }
+  return globalIndexNames;
+}
+
 
 /**
  * Update the progress of the process object. If a ProgressMethod exists,
