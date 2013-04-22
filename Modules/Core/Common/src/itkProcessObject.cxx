@@ -95,12 +95,13 @@ ProcessObject
   m_Progress = 0.0f;
   m_Updating = false;
 
+  m_IndexedInputNames.push_back( &m_PrimaryInputName );
+
   m_Threader = MultiThreader::New();
   m_NumberOfThreads = m_Threader->GetNumberOfThreads();
 
   m_ReleaseDataBeforeUpdateFlag = true;
 
-  m_NumberOfIndexedInputs = 0;
   m_NumberOfIndexedOutputs = 0;
 }
 
@@ -163,12 +164,28 @@ ProcessObject
 {
   if( this->GetNumberOfIndexedInputs() != num )
     {
-    // remove the extra inputs
-    for( DataObjectPointerArraySizeType i=num; i<this->GetNumberOfIndexedInputs(); i++ )
+    if ( num < this->GetNumberOfIndexedInputs() )
       {
-      this->RemoveInput( this->MakeNameFromInputIndex( i ) );
+      // remove the extra inputs
+      for( DataObjectPointerArraySizeType i=num; i<this->GetNumberOfIndexedInputs(); ++i )
+        {
+        this->RemoveInput( *m_IndexedInputNames[i] );
+
+        }
+      // keep the primary Input cached but removed from the named map
+      m_IndexedInputNames.resize( std::max<DataObjectPointerArraySizeType>(num, 1) );
       }
-    m_NumberOfIndexedInputs = num;
+    else
+      {
+      for (  DataObjectPointerArraySizeType i = m_IndexedInputNames.size(); i < num; ++i)
+        {
+        DataObjectPointerMap::value_type p(this->MakeNameFromInputIndex( i ), NULL);
+        // note: insert will not change value if it's already there.
+        DataObjectPointerMap::iterator it = m_Inputs.insert(p).first;
+        m_IndexedInputNames.push_back( &it->first );
+        }
+      }
+
     this->Modified();
     }
 }
@@ -239,6 +256,10 @@ ProcessObject
     // just remove the last indexed input
     this->SetNumberOfIndexedInputs( this->GetNumberOfIndexedInputs() -1 );
     }
+  else if( idx < this->GetNumberOfIndexedInputs() )
+    {
+    this->RemoveInput( *m_IndexedInputNames[idx] );
+    }
   else
     {
     this->RemoveInput( this->MakeNameFromInputIndex( idx ) );
@@ -285,7 +306,7 @@ ProcessObject
     {
     this->SetNumberOfIndexedInputs(idx + 1);
     }
-  this->SetInput( this->MakeNameFromInputIndex(idx), input );
+  this->SetInput( *m_IndexedInputNames[idx], input );
 }
 
 /**
@@ -375,7 +396,7 @@ ProcessObject
     }
   else
     {
-    this->RemoveOutput( this->MakeNameFromOutputIndex( idx ) );
+    this->RemoveOutput( *m_IndexedInputNames[idx] );
     }
 }
 
@@ -700,52 +721,60 @@ DataObject *
 ProcessObject
 ::GetInput(DataObjectPointerArraySizeType i)
 {
-  return this->GetInput( this->MakeNameFromInputIndex(i) );
+  if (i >=  this->GetNumberOfIndexedInputs())
+    {
+    return NULL;
+    }
+  return this->GetInput( *m_IndexedInputNames[i] );
 }
 
 const DataObject *
 ProcessObject
 ::GetInput(DataObjectPointerArraySizeType i) const
 {
-  return this->GetInput( this->MakeNameFromInputIndex(i) );
+  if (i >=  this->GetNumberOfIndexedInputs())
+    {
+    return NULL;
+    }
+  return this->GetInput( *m_IndexedInputNames[i] );
 }
 
 const DataObject *
 ProcessObject
 ::GetPrimaryInput() const
 {
-  return this->GetInput(this->m_PrimaryInputName);
+  return this->GetInput( *m_IndexedInputNames[0]);
 }
 
 DataObject *
 ProcessObject
 ::GetPrimaryInput()
 {
-  return this->GetInput(this->m_PrimaryInputName);
+  return this->GetInput( *m_IndexedInputNames[0]);
 }
 
 void
 ProcessObject
 ::SetPrimaryInput(DataObject * object)
 {
-  this->SetInput(this->m_PrimaryInputName, object);
+  this->SetInput( *m_IndexedInputNames[0], object);
 }
 
 void
 ProcessObject
 ::SetPrimaryInputName(const DataObjectIdentifierType & key)
 {
-  if( key != this->m_PrimaryInputName )
+  if( key !=  *m_IndexedInputNames[0] )
     {
-    DataObjectPointerMap::iterator it = this->m_Inputs.find( this->m_PrimaryInputName );
+    DataObjectPointerMap::iterator it = this->m_Inputs.find( *m_IndexedInputNames[0] );
     if( it != m_Inputs.end() )
       {
-      this->RemoveRequiredInputName( this->m_PrimaryInputName );
+      this->RemoveRequiredInputName( *m_IndexedInputNames[0] );
       this->m_Inputs[key] = it->second;
       }
 
     m_PrimaryInputName = key;
-    this->AddRequiredInputName( m_PrimaryInputName );
+    this->AddRequiredInputName( key );
 
     this->Modified();
     }
@@ -781,7 +810,7 @@ ProcessObject
       {
       this->SetInput( name, NULL );
       }
-    if( name == this->m_PrimaryInputName && m_NumberOfRequiredInputs == 0 )
+    if( name == *m_IndexedInputNames[0] && m_NumberOfRequiredInputs == 0 )
       {
       m_NumberOfRequiredInputs = 1;
       }
@@ -797,7 +826,7 @@ ProcessObject
 {
   if( m_RequiredInputNames.erase( name ) )
     {
-    if( name == this->m_PrimaryInputName && m_NumberOfRequiredInputs == 1 )
+    if( name == *m_IndexedInputNames[0] && m_NumberOfRequiredInputs == 1 )
       {
       m_NumberOfRequiredInputs = 0;
       }
@@ -869,15 +898,15 @@ ProcessObject::DataObjectPointerArraySizeType
 ProcessObject
 ::GetNumberOfIndexedInputs() const
 {
-  if( m_NumberOfIndexedInputs > 0 )
+  // this first element should always contain the primary input's
+  // name, if this is not true there is an internal logic error.
+  assert(  m_IndexedInputNames.size() >= 1 );
+
+  if (  m_IndexedInputNames.size() > 1 )
     {
-    return m_NumberOfIndexedInputs;
+    return m_IndexedInputNames.size();
     }
-  if( this->GetPrimaryInput() )
-    {
-    return 1;
-    }
-  return 0;
+  return this->GetPrimaryInput() != NULL;
 }
 
 // ProcessObject::ConstDataObjectPointerArray
@@ -910,7 +939,7 @@ ProcessObject
 {
   if( idx == 0 )
     {
-    return this->m_PrimaryInputName;
+    return *m_IndexedInputNames[0];
     }
   return this->MakeNameFromIndex(idx);
 }
@@ -953,7 +982,7 @@ ProcessObject::DataObjectPointerArraySizeType
 ProcessObject
 ::MakeIndexFromInputName(const DataObjectIdentifierType & name) const
 {
-  if( name == this->m_PrimaryInputName )
+  if( name == *m_IndexedInputNames[0] )
     {
     itkDebugMacro("MakeIndexFromName("<<name<<") -> 0");
     return 0;
@@ -999,7 +1028,7 @@ bool
 ProcessObject
 ::IsIndexedInputName(const DataObjectIdentifierType & name) const
 {
-  if( name == this->m_PrimaryInputName )
+  if( name == *m_IndexedInputNames[0] )
     {
     return true;
     }
@@ -1104,6 +1133,15 @@ ProcessObject
     os << indent << "No Inputs\n";
     }
 
+  os << indent << "Indexed Inputs: " << std::endl;
+  unsigned int idx = 0;
+  for ( std::vector< const DataObjectIdentifierType *>::const_iterator i = m_IndexedInputNames.begin();
+        i != m_IndexedInputNames.end();
+        ++i, ++idx)
+    {
+    os << indent2 << idx << ": " << **i << std::endl;
+    }
+
   if( !m_RequiredInputNames.empty() )
     {
     os << indent << "Required Input Names: ";
@@ -1135,8 +1173,6 @@ ProcessObject
     os << indent << "No Outputs\n";
     }
 
-  os << indent << "NumberOfIndexedInputs: "
-     << m_NumberOfIndexedInputs << std::endl;
   os << indent << "NumberOfRequiredInputs: "
      << m_NumberOfRequiredInputs << std::endl;
   os << indent << "NumberOfIndexedOutputs: "
@@ -1759,11 +1795,11 @@ ProcessObject
     this->Modified();
     if( m_NumberOfRequiredInputs > 0 )
       {
-      this->AddRequiredInputName( this->m_PrimaryInputName );
+      this->AddRequiredInputName( *m_IndexedInputNames[0] );
       }
     if( m_NumberOfRequiredInputs == 0 )
       {
-      this->RemoveRequiredInputName( this->m_PrimaryInputName );
+      this->RemoveRequiredInputName( *m_IndexedInputNames[0] );
       }
     }
 }
@@ -1794,6 +1830,7 @@ void
 ProcessObject
 ::RemoveInput(DataObject * input)
 {
+  // TODO fix me for names inputs!!
   if( !input )
     {
     return;

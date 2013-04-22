@@ -676,14 +676,16 @@ private:
   /** STL map to store the named inputs and outputs */
   typedef std::map< DataObjectIdentifierType, DataObjectPointer, NameComparator > DataObjectPointerMap;
 
+
   /** Named input and outputs containers */
   DataObjectPointerMap   m_Inputs;
   DataObjectPointerMap   m_Outputs;
 
+  std::vector< const DataObjectIdentifierType *> m_IndexedInputNames;
+
   /** An array that caches the ReleaseDataFlags of the inputs */
   std::map< DataObjectIdentifierType, bool > m_CachedInputReleaseDataFlags;
 
-  DataObjectPointerArraySizeType  m_NumberOfIndexedInputs;
   DataObjectPointerArraySizeType  m_NumberOfIndexedOutputs;
 
   DataObjectPointerArraySizeType  m_NumberOfRequiredInputs;
