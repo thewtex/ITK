@@ -764,20 +764,8 @@ void
 ProcessObject
 ::SetPrimaryInputName(const DataObjectIdentifierType & key)
 {
-  if( key !=  *m_IndexedInputNames[0] )
-    {
-    DataObjectPointerMap::iterator it = this->m_Inputs.find( *m_IndexedInputNames[0] );
-    if( it != m_Inputs.end() )
-      {
-      this->RemoveRequiredInputName( *m_IndexedInputNames[0] );
-      this->m_Inputs[key] = it->second;
-      }
-
-    m_PrimaryInputName = key;
-    this->AddRequiredInputName( key );
-
-    this->Modified();
-    }
+  this->RemoveRequiredInputName( *m_IndexedInputNames[0] );
+  this->AddRequiredInputName( key, 0 );
 }
 
 bool
@@ -800,24 +788,79 @@ ProcessObject
   return res;
 }
 
+
 bool
 ProcessObject
 ::AddRequiredInputName( const DataObjectIdentifierType & name )
 {
-  if( m_RequiredInputNames.insert( name ).second )
+  if( name.empty() )
     {
-    if( ! this->HasInput( name ) )
-      {
-      this->SetInput( name, NULL );
-      }
-    if( name == *m_IndexedInputNames[0] && m_NumberOfRequiredInputs == 0 )
-      {
-      m_NumberOfRequiredInputs = 1;
-      }
-    this->Modified();
-    return true;
+    itkExceptionMacro("An empty string can't be used as an input identifier");
     }
-  return false;
+
+  if( !m_RequiredInputNames.insert( name ).second )
+    {
+    return false;
+    }
+
+  DataObjectPointerMap::value_type p(name, NULL);
+  // note: insert will not change value if it's already there.
+  DataObjectPointerMap::iterator it = m_Inputs.insert(p).first;
+
+  if( name == *m_IndexedInputNames[0] && m_NumberOfRequiredInputs == 0 )
+    {
+    m_NumberOfRequiredInputs = 1;
+    }
+  this->Modified();
+  return true;
+}
+
+bool
+ProcessObject
+::AddRequiredInputName( const DataObjectIdentifierType & name,
+                        DataObjectPointerArraySizeType idx )
+{
+  if( name.empty() )
+    {
+    itkExceptionMacro("An empty string can't be used as an input identifier");
+    }
+
+  if( !m_RequiredInputNames.insert( name ).second )
+    {
+    return false;
+    }
+
+  DataObjectPointerMap::value_type p(name, NULL);
+  // note: insert will not change value if it's already there.
+  DataObjectPointerMap::iterator it = m_Inputs.insert(p).first;
+
+  if ( idx >= this->GetNumberOfIndexedInputs() )
+    {
+    this->SetNumberOfIndexedInputs(idx + 1);
+    }
+  else if( !it->second )
+    {
+    // if the old index had a data object move that to the new name
+    it->second = this->GetInput( *m_IndexedInputNames[idx] );
+    }
+
+  if( idx == 0 )
+    {
+    m_PrimaryInputName = name;
+    }
+  else
+    {
+    m_IndexedInputNames[idx] = &it->first;
+    }
+
+
+  if( name == *m_IndexedInputNames[0] && m_NumberOfRequiredInputs == 0 )
+    {
+    m_NumberOfRequiredInputs = 1;
+    }
+
+  this->Modified();
+  return true;
 }
 
 bool
@@ -900,7 +943,7 @@ ProcessObject
 {
   // this first element should always contain the primary input's
   // name, if this is not true there is an internal logic error.
-  assert(  m_IndexedInputNames.size() >= 1 );
+  itkAssertInDebugAndIgnoreInReleaseMacro(  m_IndexedInputNames.size() >= 1 );
 
   if (  m_IndexedInputNames.size() > 1 )
     {
