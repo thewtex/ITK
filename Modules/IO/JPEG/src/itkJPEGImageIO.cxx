@@ -365,6 +365,24 @@ void JPEGImageIO::ReadImageInformation()
       break;
     }
 
+  // If we have some spacing information we use it
+  if ( cinfo.density_unit > 0
+    && cinfo.X_density > 0
+    && cinfo.Y_density > 0
+  )
+    {
+    if ( cinfo.density_unit == 1 ) // inches
+      {
+      m_Spacing[0] = 25.4 / cinfo.X_density;
+      m_Spacing[1] = 25.4 / cinfo.Y_density;
+      }
+    else if ( cinfo.density_unit == 2 ) // cm
+      {
+      m_Spacing[0] = 10.0 / cinfo.X_density;
+      m_Spacing[1] = 10.0 / cinfo.Y_density;
+      }
+    }
+
   // close the file
   jpeg_destroy_decompress(&cinfo);
 
@@ -513,6 +531,15 @@ void JPEGImageIO::WriteSlice(std::string & fileName, const void *buffer)
     default:
       cinfo.in_color_space = JCS_UNKNOWN;
       break;
+    }
+
+  if ( m_Spacing[0] > 0 && m_Spacing[1] > 0 )
+    {
+    // store the spacing information as pixels per inch in order to retain
+    // as much precision as possible
+    cinfo.density_unit = 2;
+    cinfo.X_density = static_cast<UINT16>(25.4/m_Spacing[0]); // pixels per inch
+    cinfo.Y_density = static_cast<UINT16>(25.4/m_Spacing[1]); // pixels per inch
     }
 
   // set the compression parameters
