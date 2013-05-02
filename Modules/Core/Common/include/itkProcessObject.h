@@ -453,7 +453,8 @@ protected:
 
   /** Set/Get the name associated with the Primary output.  Defaults to "Primary". */
   virtual void SetPrimaryInputName(const DataObjectIdentifierType & key);
-  itkGetStringMacro(PrimaryInputName);
+  virtual const char *GetPrimaryInputName( void ) const
+  { return this->m_IndexedInputs[0]->first.c_str(); }
 
   /** Set the main input */
   virtual void SetPrimaryInput(DataObject *input);
@@ -658,22 +659,6 @@ private:
   ProcessObject(const Self &);  //purposely not implemented
   void operator=(const Self &); //purposely not implemented
 
-  struct NameComparator
-  {
-    bool operator()( const DataObjectIdentifierType & a, const DataObjectIdentifierType & b ) const
-    {
-      if( b == "Primary" )
-        {
-        return false;
-        }
-      if( a == "Primary" )
-        {
-        return true;
-        }
-      return a < b;
-    }
-  };
-
   DataObjectIdentifierType MakeNameFromIndex( DataObjectPointerArraySizeType ) const;
   DataObjectPointerArraySizeType MakeIndexFromName( const DataObjectIdentifierType & ) const;
   bool IsIndexedName( const DataObjectIdentifierType & ) const;
@@ -685,7 +670,7 @@ private:
   static const char * const* GetGlobalIndexNames(void);
 
   /** STL map to store the named inputs and outputs */
-  typedef std::map< DataObjectIdentifierType, DataObjectPointer, NameComparator > DataObjectPointerMap;
+  typedef std::map< DataObjectIdentifierType, DataObjectPointer > DataObjectPointerMap;
 
 
   /** Named input and outputs containers */
@@ -703,13 +688,12 @@ private:
   DataObjectPointerArraySizeType  m_NumberOfRequiredOutputs;
 
   /** STL map to store the named inputs and outputs */
-  typedef std::set< DataObjectIdentifierType, NameComparator > NameSet;
+  typedef std::set< DataObjectIdentifierType > NameSet;
 
   /** The required inputs */
   NameSet m_RequiredInputNames;
 
-  /** The name associated with the Primary input or output.  Defaults to "Primary". */
-  DataObjectIdentifierType m_PrimaryInputName;
+  /** The name associated with the Primary  output.  Defaults to "Primary". */
   DataObjectIdentifierType m_PrimaryOutputName;
 
   /** These support the progress method and aborting filter execution. */
