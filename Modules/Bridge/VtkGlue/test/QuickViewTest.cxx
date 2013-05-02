@@ -81,8 +81,11 @@ template<class T> void ViewRGB(const char *name,
   typename SourceType::Pointer sourceG = SourceType::New();
   typename SourceType::Pointer sourceB = SourceType::New();
   sourceR->SetSize(size);
+  sourceR->SetNumberOfThreads(1);
   sourceG->SetSize(size);
+  sourceG->SetNumberOfThreads(1);
   sourceB->SetSize(size);
+  sourceB->SetNumberOfThreads(1);
 
   typename ComposeFilterType::Pointer compose =
     ComposeFilterType::New();
