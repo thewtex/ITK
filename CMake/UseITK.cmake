@@ -58,10 +58,14 @@ if(NOT ITK_NO_IO_FACTORY_REGISTER_MANAGER)
   set(LIST_OF_FACTORIES_REGISTRATION "")
   set(LIST_OF_FACTORY_NAMES "")
 
-  foreach (TransformFormat  Matlab Txt HDF5 MINC)
-      set (LIST_OF_FACTORIES_REGISTRATION "${LIST_OF_FACTORIES_REGISTRATION}void ${TransformFormat}TransformIOFactoryRegister__Private(void);")
-      set (LIST_OF_FACTORY_NAMES  "${LIST_OF_FACTORY_NAMES}${TransformFormat}TransformIOFactoryRegister__Private,")
+  foreach (TransformFormat  Matlab Txt HDF5)
+    set (LIST_OF_FACTORIES_REGISTRATION "${LIST_OF_FACTORIES_REGISTRATION}void ${TransformFormat}TransformIOFactoryRegister__Private(void);")
+    set (LIST_OF_FACTORY_NAMES  "${LIST_OF_FACTORY_NAMES}${TransformFormat}TransformIOFactoryRegister__Private,")
   endforeach()
+  if (ITKIOMINC_LOADED)
+    set (LIST_OF_FACTORIES_REGISTRATION "${LIST_OF_FACTORIES_REGISTRATION}void MINCTransformIOFactoryRegister__Private(void);")
+    set (LIST_OF_FACTORY_NAMES  "${LIST_OF_FACTORY_NAMES}MINCTransformIOFactoryRegister__Private,")
+  endif()
 
   get_filename_component(_selfdir "${CMAKE_CURRENT_LIST_FILE}" PATH)
   configure_file(${_selfdir}/itkTransformIOFactoryRegisterManager.h.in
