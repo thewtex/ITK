@@ -51,6 +51,22 @@
 
 #include <sstream>
 
+
+#if defined( _MSC_VER )
+#pragma warning ( push )
+//warning C4244: conversion, possible loss of data
+#pragma warning ( disable : 4244 )
+#endif
+
+#include <algorithm>
+
+
+#ifdef _MSC_VER
+//warning C4244: conversion, possible loss of data
+#pragma warning ( pop )
+#endif
+
+
 /** \namespace itk
  * \brief The "itk" namespace contains all Insight Segmentation and
  * Registration Toolkit (ITK) classes. There are several nested namespaces

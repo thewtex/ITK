@@ -31,6 +31,13 @@
 /** Disable some common warnings in MS VC++ */
 #if defined( _MSC_VER )
 
+#pragma warning ( push )
+//warning C4244: conversion, possible loss of data
+#pragma warning ( disable : 4244 )
+#include <algorithm>
+//warning C4244: conversion, possible loss of data
+#pragma warning ( pop )
+
 // 'conversion' conversion from 'type1' to 'type2', possible loss of data
 #pragma warning ( disable : 4244 )
 
