@@ -38,6 +38,17 @@
 #ifndef __itkMacro_h
 #define __itkMacro_h
 
+#if defined( _MSC_VER )
+#pragma warning ( push )
+//warning C4244: conversion, possible loss of data
+#pragma warning ( disable : 4244 )
+#include <xutility>
+#include <algorithm>
+//warning C4244: conversion, possible loss of data
+#pragma warning ( pop )
+#endif
+
+
 #include "itkWin32Header.h"
 #include "itkConfigure.h"
 
@@ -50,6 +61,7 @@
 #endif
 
 #include <sstream>
+
 
 /** \namespace itk
  * \brief The "itk" namespace contains all Insight Segmentation and
