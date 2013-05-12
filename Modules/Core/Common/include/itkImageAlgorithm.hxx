@@ -131,9 +131,20 @@ void ImageAlgorithm::DispatchedCopy( const InputImageType *inImage,
     const typename InputImageType::InternalPixelType* inBuffer = in + inOffset*NumberOfInternalComponents;
     typename OutputImageType::InternalPixelType* outBuffer = out + outOffset*NumberOfInternalComponents;
 
+#if defined( _MSC_VER )
+#pragma warning ( push )
+//warning C4244: conversion, possible loss of data
+#pragma warning ( disable : 4244 )
+#endif
+
     std::copy(inBuffer,
               inBuffer+sizeOfChunkInInternalComponents ,
               outBuffer);
+
+#ifdef _MSC_VER
+//warning C4244: conversion, possible loss of data
+#pragma warning ( pop )
+#endif
 
     if ( movingDirection == _RegionType::ImageDimension )
       {
