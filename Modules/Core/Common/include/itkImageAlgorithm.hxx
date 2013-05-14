@@ -131,9 +131,10 @@ void ImageAlgorithm::DispatchedCopy( const InputImageType *inImage,
     const typename InputImageType::InternalPixelType* inBuffer = in + inOffset*NumberOfInternalComponents;
     typename OutputImageType::InternalPixelType* outBuffer = out + outOffset*NumberOfInternalComponents;
 
-    std::copy(inBuffer,
-              inBuffer+sizeOfChunkInInternalComponents ,
-              outBuffer);
+    std::copy(
+      inBuffer,
+      inBuffer+sizeOfChunkInInternalComponents ,
+      reinterpret_cast<typename InputImageType::InternalPixelType*>(outBuffer));
 
     if ( movingDirection == _RegionType::ImageDimension )
       {
