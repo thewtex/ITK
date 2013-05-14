@@ -87,6 +87,8 @@ protected:
   void ReadVolumeHeader(gzFile fp);
 
 private:
+  /** check if a filename is for a compressed file */
+  bool IsCompressedFilename(const std::string fname);
   /// processes the actual data buffer
   void SwapBytesIfNecessary(void * const buffer, const unsigned long numberOfPixels);
 

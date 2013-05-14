@@ -18,106 +18,19 @@
 
 #include "itkMGHImageIOFactory.h"
 #include "itkMGHImageIO.h"
-
+#include "itkRandomImageSource.h"
 #include "itkImage.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 #include "itksys/SystemTools.hxx"
 #include "itkMetaDataObject.h"
+#include "itkDiffusionTensor3D.h"
 #include "itkIOCommon.h"
 
 #include "itkIOTestHelper.h"
-
+#include "itkMGHImageIOTest.h"
 
 #define SPECIFIC_IMAGEIO_MODULE_TEST
-
-template<unsigned int TDimension>
-typename itk::ImageBase<TDimension>::DirectionType
-PreFillDirection()
-{
-  typename itk::ImageBase<TDimension>::DirectionType myDirection;
-  myDirection.Fill(0.0);
-  myDirection.SetIdentity();
-  itkGenericExceptionMacro("This template should never be used. Only valid values are given below.");
-  return myDirection;
-}
-
-
-template<>
-itk::ImageBase<1>::DirectionType
-PreFillDirection<1> ()
-{
-  itk::ImageBase<1>::DirectionType myDirection;
-  myDirection.Fill(0.0);
-  myDirection[0][0] = -1.0;
-  return myDirection;
-}
-
-template<>
-itk::ImageBase<2>::DirectionType
-PreFillDirection<2> ()
-{
-  itk::ImageBase<2>::DirectionType myDirection;
-  myDirection.Fill(0.0);
-  myDirection[0][1] = 1.0;
-  myDirection[1][0] = -1.0;
-  return myDirection;
-}
-
-template<>
-itk::ImageBase<3>::DirectionType
-PreFillDirection<3> ()
-{
-  itk::ImageBase<3>::DirectionType myDirection;
-  myDirection.Fill(0.0);
-  myDirection[0][2] = 1.0;
-  myDirection[1][0] = -1.0;
-  myDirection[2][1] = 1.0;
-  return myDirection;
-}
-
-template<>
-itk::ImageBase<4>::DirectionType
-PreFillDirection<4> ()
-{
-  itk::ImageBase<4>::DirectionType myDirection;
-  myDirection.Fill(0.0);
-  myDirection[0][2] = 1.0;
-  myDirection[1][0] = -1.0;
-  myDirection[2][1] = 1.0;
-  myDirection[3][3] = 1.0;
-  return myDirection;
-}
-
-bool Equal(const double a, const double b)
-{
-  // actual equality
-  double diff = a - b;
-  if(diff == 0.0)
-    {
-    return true;
-    }
-  // signs match?
-  if((a < 0.00 && b >= 0.0) ||
-     (b < 0.0 && a >= 0.0))
-    {
-    return false;
-    }
-  if(diff < 0.0)
-    {
-    diff = -diff;
-    }
-  double avg = (a+b)/2.0;
-  if(avg < 0.0)
-    {
-    avg = - avg;
-    }
-  if(diff > avg/1000.0)
-    {
-    return false;
-    }
-  return true;
-}
 
 int itkMGHImageIOTest(int ac, char* av[])
 {
@@ -158,13 +71,16 @@ int itkMGHImageIOTest(int ac, char* av[])
     }
   else if ( TestMode == std::string("TestReadWriteOfSmallImageOfAllTypes"))
     {
-    //TODO: Need to write test that exercises this code more.
-
-    //TODO: Need to test reading/writting of supported types:
-    //      MGHImageIO supports unsigned char, int, float and short
-
+    std::string fn("test.mgz");
+    if( ( returnStatus = itkMGHImageIOTestReadWriteTest<unsigned char,3>(fn,3,"null", true) ) != EXIT_FAILURE &&
+        ( returnStatus = itkMGHImageIOTestReadWriteTest<short int,3>(fn,3,"null", true) ) != EXIT_FAILURE &&
+        ( returnStatus = itkMGHImageIOTestReadWriteTest<int,3>(fn,3,"null", true) ) != EXIT_FAILURE &&
+        ( returnStatus = itkMGHImageIOTestReadWriteTest<float,3>(fn,3,"null", true) ) != EXIT_FAILURE &&
+        ( returnStatus = itkMGHImageIOTestReadWriteTest<itk::DiffusionTensor3D<float>, 3>(fn,3,"null", true) ) != EXIT_FAILURE )
+      {
+      returnStatus = EXIT_SUCCESS;
+      }
     //TODO: Need to test with images of non-identity direction cosigns, spacing, origin
-    returnStatus = EXIT_FAILURE;
     }
   else if( TestMode == std::string("ReadImagesTest") ) //This is a mechanism for reading unsigned int images for testing.
     {

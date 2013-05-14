@@ -18,6 +18,7 @@
 #include "itkMGHImageIO.h"
 #include "itkByteSwapper.h"
 #include "itkMetaDataObject.h"
+#include "itksys/SystemTools.hxx"
 #include <fstream>
 
 namespace itk
@@ -30,10 +31,10 @@ static const int MRI_SHORT = 4;
 static const int MRI_TENSOR = 6;
 
 //VALID file extensions
-static const std::string __MGH_EXT=std::string("mgh");
-static const std::string __MGZ_EXT=std::string("mgz");
-static const std::string __GZ_EXT=std::string("gz");
-static const std::string __MGHGZ_EXT=std::string("mgh.gz");
+static const std::string __MGH_EXT=std::string(".mgh");
+static const std::string __MGZ_EXT=std::string(".mgz");
+static const std::string __GZ_EXT=std::string(".gz");
+static const std::string __MGHGZ_EXT=std::string(".mgh.gz");
 
 static const int FS_DIMENSION_HEADER_SIZE = sizeof(int) * 7;
 static const int FS_RAS_HEADER_SIZE = (sizeof(float) * 15) + sizeof(short);
@@ -85,19 +86,6 @@ TWrite(std::ostream& os, T value)
   delete pt;
 }
 
-// -------------------------------
-
-//TODO:  Use ITK kw_sys version of this so that we don't need to maintain a separate version.
-static
-std::string
-GetExtension( const std::string& filename)
-{
-  const std::string::size_type pos = filename.find_last_of(".");
-  const std::string extension(filename, pos + 1, filename.length() );
-
-  return extension;
-}
-
 // --------------------------------------
 //
 // MGHImageIO
@@ -117,6 +105,14 @@ MGHImageIO::~MGHImageIO()
 }
 
 bool
+MGHImageIO::
+IsCompressedFilename(const std::string fname)
+{
+  const std::string extension = itksys::SystemTools::GetFilenameExtension(fname.c_str());
+  return extension == __MGZ_EXT || extension == __GZ_EXT || extension == __MGHGZ_EXT;
+}
+
+bool
 MGHImageIO::CanReadFile(const char* FileNameToRead)
 {
   const std::string filename(FileNameToRead);
@@ -128,14 +124,8 @@ MGHImageIO::CanReadFile(const char* FileNameToRead)
     }
 
   // check if the correct extension is given by the user
-  const std::string extension = GetExtension(filename);
-  if( extension == __MGH_EXT ||
-      extension == __MGZ_EXT )
-    {
-    return true;
-    }
-  else if( extension == __GZ_EXT &&
-    filename.substr( filename.size() - 7 ) == __MGHGZ_EXT )
+  const std::string extension = itksys::SystemTools::GetFilenameExtension(filename.c_str());
+  if( extension == __MGH_EXT || this->IsCompressedFilename(filename) )
     {
     return true;
     }
@@ -503,11 +493,8 @@ MGHImageIO::CanWriteFile(const char* name)
     }
 
   //TODO:  Use ITK Extension extractor
-  const std::string extension = GetExtension(filename);
-  if( extension != __MGH_EXT &&
-      extension != __MGZ_EXT
-  //TODO: Add support for "mgh.gz" just for completeness
-      )
+  const std::string extension = itksys::SystemTools::GetFilenameExtension(filename.c_str());
+  if( extension != __MGH_EXT && !this->IsCompressedFilename(filename))
     {
     return false;
     }
@@ -518,8 +505,7 @@ void
 MGHImageIO::WriteImageInformation()
 {
   //TODO:  Use ITK Extension extractor
-  const std::string extension = GetExtension(m_FileName);
-  if( extension == __MGH_EXT )
+  if( !this->IsCompressedFilename(this->m_FileName) )
     {
     WriteUncompressedHeader();
     }
@@ -539,9 +525,8 @@ void
 MGHImageIO::Write(const void* buffer)
 {
   // Write the image information before writing data
-  const std::string extension = GetExtension(m_FileName);
 
-  if( extension == __MGH_EXT )
+  if( !this->IsCompressedFilename(this->m_FileName) )
     {
     this->WriteUncompressedHeader();
     this->WriteUncompressedData(buffer);
