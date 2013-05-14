@@ -5,6 +5,7 @@ itkImageToImageFilterTest.cxx
 itkVectorNeighborhoodOperatorImageFilterTest.cxx
 itkMaskNeighborhoodOperatorImageFilterTest.cxx
 itkCastImageFilterTest.cxx
+itkCastImageFilterPerformance.cxx
 )
 
 # Disable optimization on the tests below to avoid possible
@@ -35,3 +36,6 @@ itk_add_test(NAME itkMaskNeighborhoodOperatorImageFilterTest
     itkMaskNeighborhoodOperatorImageFilterTest DATA{${ITK_DATA_ROOT}/Input/cthead1.png} ${ITK_TEST_OUTPUT_DIR}/MaskNeighborhoodOperatorImageFilterTest.png)
 itk_add_test(NAME itkCastImageFilterTest
       COMMAND ITKImageFilterBaseTestDriver itkCastImageFilterTest)
+
+itk_add_test(NAME itkCastImageFilterPerformance
+      COMMAND ITKImageFilterBaseTestDriver itkCastImageFilterPerformance)

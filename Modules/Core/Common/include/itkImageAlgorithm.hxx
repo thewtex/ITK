@@ -131,9 +131,13 @@ void ImageAlgorithm::DispatchedCopy( const InputImageType *inImage,
     const typename InputImageType::InternalPixelType* inBuffer = in + inOffset*NumberOfInternalComponents;
     typename OutputImageType::InternalPixelType* outBuffer = out + outOffset*NumberOfInternalComponents;
 
-    std::copy(inBuffer,
-              inBuffer+sizeOfChunkInInternalComponents ,
-              outBuffer);
+    typedef Caster<typename InputImageType::InternalPixelType,
+      typename OutputImageType::InternalPixelType > CasterFunctor;
+
+    std::transform(inBuffer,
+                   inBuffer+sizeOfChunkInInternalComponents ,
+                   outBuffer,
+                   CasterFunctor() );
 
     if ( movingDirection == _RegionType::ImageDimension )
       {

@@ -169,6 +169,15 @@ private:
   };
 /** \endcond */
 
+  template< typename TA, typename TB>
+  struct Caster
+    {
+      TA operator() ( const TB b ) const
+      {
+        return static_cast<TA>( b );
+      }
+    };
+
 };
 } // end namespace itk
 
