@@ -31,8 +31,10 @@
 /** Disable some common warnings in MS VC++ */
 #if defined( _MSC_VER )
 
-// 'conversion' conversion from 'type1' to 'type2', possible loss of data
-#pragma warning ( disable : 4244 )
+// 'conversion' conversion from 'type1' to 'type2', possible loss of
+// data
+#pragma warning ( disable : 4244)
+#include <xutility>
 
 // 'identifier' : truncation from 'type1' to 'type2'
 #pragma warning ( disable : 4305 )
