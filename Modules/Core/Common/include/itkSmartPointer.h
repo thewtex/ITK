@@ -18,6 +18,8 @@
 #ifndef __itkSmartPointer_h
 #define __itkSmartPointer_h
 
+#include "itkWin32Header.h"
+
 #include <iostream>
 
 namespace itk

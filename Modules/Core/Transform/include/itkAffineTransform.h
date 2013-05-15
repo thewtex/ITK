@@ -18,9 +18,8 @@
 #ifndef __itkAffineTransform_h
 #define __itkAffineTransform_h
 
-#include <iostream>
-
 #include "itkMatrixOffsetTransformBase.h"
+#include <iostream>
 
 namespace itk
 {

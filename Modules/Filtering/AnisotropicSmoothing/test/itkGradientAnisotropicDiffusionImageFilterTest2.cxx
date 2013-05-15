@@ -16,7 +16,6 @@
  *
  *=========================================================================*/
 
-#include <fstream>
 #include "itkCastImageFilter.h"
 #include "itkGradientAnisotropicDiffusionImageFilter.h"
 #include "itkImageFileReader.h"
