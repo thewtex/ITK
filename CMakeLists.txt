@@ -4,6 +4,9 @@ include(CMakeDependentOption)
 # use ExternalProject
 include(ExternalProject)
 
+## HACK: WIP: Only For testing, this will force building of the MGHIO
+set(Fetch_MGHIO ON CACHE BOOL "Temporary Force build of MGHIO" FORCE )
+
 if(WIN32)
   cmake_minimum_required(VERSION 2.8.8)
 elseif(NOT EXISTS /dev/urandom)
