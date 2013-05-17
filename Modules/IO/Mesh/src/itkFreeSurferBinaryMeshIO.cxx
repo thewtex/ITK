@@ -313,9 +313,9 @@ FreeSurferBinaryMeshIO
 
     if ( itk::ByteSwapper< itk::uint32_t >::SystemIsBigEndian() )
       {
-      buffer[0] = pv[0];
-      buffer[1] = pv[1];
-      buffer[2] = pv[2];
+      buffer[0] = pv[1];
+      buffer[1] = pv[2];
+      buffer[2] = pv[3];
       }
     else
       {
