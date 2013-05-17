@@ -1980,7 +1980,6 @@ bool TIFFImageIO::CanFindTIFFTag(unsigned int t)
   return true;
 }
 
-#ifndef ITK_USE_SYSTEM_TIFF
 void * TIFFImageIO::ReadRawByteFromTag(unsigned int t, short & value_count)
 {
   // m_InternalImage needs to be valid
@@ -1991,7 +1990,13 @@ void * TIFFImageIO::ReadRawByteFromTag(unsigned int t, short & value_count)
     }
   ttag_t           tag = t;
   void *           raw_data = NULL;
+
+#ifdef TIFF_INT64_T // detect if libtiff4
   const TIFFField *fld = TIFFFieldWithTag(m_InternalImage->m_Image, tag);
+#else
+  const TIFFFieldInfo *fld = TIFFFieldWithTag(m_InternalImage->m_Image, tag);
+#endif
+
   if ( fld == NULL )
     {
     itkExceptionMacro(<< "fld is NULL");
@@ -2018,6 +2023,5 @@ void * TIFFImageIO::ReadRawByteFromTag(unsigned int t, short & value_count)
     }
   return raw_data;
 }
-#endif // ITK_USE_SYSTEM_TIFF
 
 } // end namespace itk
