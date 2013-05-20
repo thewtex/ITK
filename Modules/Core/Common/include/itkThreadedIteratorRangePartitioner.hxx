@@ -59,9 +59,9 @@ ThreadedIteratorRangePartitioner< TIterator >
   ThreadIdType maxThreadIdUsed =
     Math::Ceil<ThreadIdType>( static_cast< double >( count ) / static_cast< double >( valuesPerThread )) - 1;
 
-  // Split the domain
+  // advance to begining of range, but not past end
   it = completeDomain.Begin();
-  const ThreadIdType startIndexCount = threadId * valuesPerThread;
+  const ThreadIdType startIndexCount = std::max( threadId * valuesPerThread,  count );
   for( ThreadIdType ii = 0; ii < startIndexCount; ++ii )
     {
     ++it;
