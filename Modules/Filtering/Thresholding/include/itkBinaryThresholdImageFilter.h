@@ -20,6 +20,7 @@
 
 #include "itkUnaryFunctorImageFilter.h"
 #include "itkConceptChecking.h"
+  //
 #include "itkSimpleDataObjectDecorator.h"
 
 namespace itk
