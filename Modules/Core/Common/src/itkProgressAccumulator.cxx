@@ -47,6 +47,10 @@ ProgressAccumulator
     filter->AddObserver(ProgressEvent(), m_CallbackCommand);
   unsigned long iterationTag =
     filter->AddObserver(IterationEvent(), m_CallbackCommand);
+  unsigned long startTag =
+    filter->AddObserver(StartEvent(), m_CallbackCommand);
+  unsigned long endTag =
+    filter->AddObserver(EndEvent(), m_CallbackCommand);
 
   // Create a record for the filter
   struct FilterRecord record;
@@ -55,7 +59,8 @@ ProgressAccumulator
   record.Weight = weight;
   record.ProgressObserverTag = progressTag;
   record.IterationObserverTag = iterationTag;
-  record.Progress = 0.0f;
+  record.StartObserverTag = startTag;
+  record.EndObserverTag = endTag;
 
   // Add the record to the list
   m_FilterRecord.push_back(record);
@@ -72,6 +77,8 @@ ProgressAccumulator
     {
     it->Filter->RemoveObserver(it->ProgressObserverTag);
     it->Filter->RemoveObserver(it->IterationObserverTag);
+    it->Filter->RemoveObserver(it->StartObserverTag);
+    it->Filter->RemoveObserver(it->EndObserverTag);
     }
 
   // Clear the filter array
@@ -93,7 +100,6 @@ ProgressAccumulator
   FilterRecordVector::iterator it;
   for ( it = m_FilterRecord.begin(); it != m_FilterRecord.end(); ++it )
     {
-    it->Progress = 0.0f;
     it->Filter->SetProgress(0.0f);
     }
 }
@@ -107,7 +113,6 @@ ProgressAccumulator
   FilterRecordVector::iterator it;
   for ( it = m_FilterRecord.begin(); it != m_FilterRecord.end(); ++it )
     {
-    it->Progress = 0.0f;
     it->Filter->SetProgress(0.0f);
     }
 }
@@ -118,12 +123,14 @@ ProgressAccumulator
 {
   ProgressEvent  pe;
   IterationEvent ie;
+  StartEvent se;
 
   if ( typeid( event ) == typeid( pe ) )
     {
-    // Add up the progress from different filters
+    // Start the progress from the progress accumulated so far.
     m_AccumulatedProgress = m_BaseAccumulatedProgress;
 
+    // Add up the new progress from different filters.
     FilterRecordVector::iterator it;
     for ( it = m_FilterRecord.begin(); it != m_FilterRecord.end(); ++it )
       {
@@ -148,7 +155,28 @@ ProgressAccumulator
       }
     }
   else if ( typeid( event ) == typeid( ie ) )
-          {}
+  {}
+  else if ( typeid( event ) == typeid( se ) )
+  {
+    // When a filter is restarted, we can capture the progress it has made so far and add it
+    // to the accumulated value.
+    // This is especially helpful when streaming is used since the filter is restarted multiple
+    // times for different regions of the input.
+    // By capturing the start event, it is no longer necessary for filters that use the ProgressAccumulator
+    // to explicitly call ResetFilterProgressAndKeepAccumulatedProgress().
+
+    FilterRecordVector::iterator it;
+    for ( it = m_FilterRecord.begin(); it != m_FilterRecord.end(); ++it )
+    {
+      if( who == it->Filter )
+      {
+        // On a start event, we need to capture the accumulated progress for this filter
+        // and then reset this filter's progress.
+        m_BaseAccumulatedProgress += it->Filter->GetProgress() * it->Weight;
+        it->Filter->SetProgress(0.0f);
+      }
+    }
+  }
 }
 
 void ProgressAccumulator
