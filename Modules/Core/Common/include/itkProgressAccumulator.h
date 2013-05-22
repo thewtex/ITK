@@ -83,6 +83,12 @@ public:
    */
   void ResetProgress();
 
+  /**
+   * Reset the filter progress but keep the accumulated progress.
+   * This method is no longer necessary because the ProgressAccumulator
+   * now internally checks if a filter has been restarted and updates
+   * the accumulated progress automatically.
+   */
   void ResetFilterProgressAndKeepAccumulatedProgress();
 
 protected:
@@ -106,9 +112,8 @@ private:
     // The tags for adding/removing observers to mini-pipeline filter
     unsigned long ProgressObserverTag;
     unsigned long IterationObserverTag;
-
-    // The progress accumulated by the filter since last Reset()
-    float Progress;
+    unsigned long StartObserverTag;
+    unsigned long EndObserverTag;
   };
 
   /** A callback function that is called by the progressing filters */
