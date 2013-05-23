@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Change SYSTEM "http://ij.itk.org/itkfaq/ITKMigration.dtd">
+
+<!--**
+**
+** SinglePrecisionITK.xml
+**
+** >>>>>>>>>>>>>>>>>>>>>>>>>>>>
+** THIS FILE HAS BEEN AUTOMATICALLY GENERATED. EDIT IT BEFORE COMMITING
+** <<<<<<<<<<<<<<<<<<<<<<<<<<<
+**
+** Please, make sure this file validates the following w3c test before committing it: http://validator.w3.org
+**-->
+<Change>
+    <!--**
+    ** Title for the online migration page
+    **-->
+    <Title>
+      Support Single Precision Computations in ITK
+    </Title>
+
+    <!--**
+    ** The author of the change
+    **-->
+    <Author>
+      Ali Ghayoor
+    </Author>
+
+    <!--**
+    ** Date of creation for the XML document
+    **-->
+    <Date>
+      2013-05-23
+    </Date>
+
+    <!--**
+    ** Plain text description of the change
+    ** Extracted from git commit messages
+    **-->
+    <Description>
+      <![CDATA[
+      The current registration framework of ITK just can process data using double precision.
+      However, based on our need, in some cases using &apos;float&apos; type is enough
+      for the computations precision. This feature allows CPU to process more data
+      in its cache, so it can increase the computations speed. Also, saving the outputs in single
+      precision needs less memory of disk. It is specially important when the outputs need a lot of
+      spaces to be written to the disk e.g. deformation fields.
+
+      A) One of the main obstacles to do the compuatations in single precision is the definition of
+      &quot;ParametersValueType&quot; in the &quot;itkTransformBase&quot; class, which is hard
+      coded to &apos;double&apos;.
+
+      This obstacle can be removed by changing the itkTransformBase class to
+      a template class named &quot;itkTransformBaseTemplate&amp;lt;TScalar&gt;&quot; that TScalar
+      can be set to &apos;float&apos; or &apos;double&apos;.
+
+      As the &quot;itkTransformBase&quot; is at the top hierarchy of many other
+      transform classes, we should be careful to keep backward compatiblity.
+
+      Two groups of classes are important in this regard:
+      1- All transform classes because they are derived from the transformBase
+      class.
+      2- All the IO classes that are related to Reading/Writing transforms.
+
+      As all transform classes are already defined as a template over &apos;ScalarType&apos;,
+      the first group of files do not cause any incompatibility issue here.
+
+      To keep backward compatibility for the IO group classes, I have created a
+      hierarchy of classes parallel to original ones. The classes included
+      in new hierarchy are defined as a template over the internal computations
+      type that is float or double.
+
+      While backward compatibility is met, user can use this new set of classes
+      to write a more flexible program than can work with both single and double precision.
+
+      B) The second main obstacle is that &quot;ParametersValueType&quot; is hard
+      coded as &apos;double&apos; in &quot;itkCostFunction&quot; base class.
+
+      Therefore, again I created a new hierarchy of classes for all Metric and
+      Optimizer classes as I did for transform IO classes.
+
+      A bunch of files are added; The computation type is added as a new
+      template value called &quot;InternalComputationType&quot;. However, some of newly added
+      template values are called &quot;ValueType&quot;, &quot;ParameterValueType&quot; or
+      &quot;ScalarType&quot;.
+
+      Notice again that Metric and Optimizer classes are not derived from
+      their template version.
+      We have to keep the inheritance hierarchy; therefore, I made a hierarchy of new template
+      classes. Also, many non-templated legacy classes are defined using their template version.
+
+      PS: New template versions of metric and optimizer classes are added just for ITKv4.
+
+      ITK is built completely and all tests are passed after changes of this patch.
+
+      ]]>
+    </Description>
+
+    <!--**
+    ** Sample code snippets
+    ** Extracted from git diff of changed files in Examples and Testing
+    **-->
+    <SampleCode>
+      <Old>
+        <![CDATA[
+        TransformBase::Pointer newTransform = TransformBase::New();
+        ]]>
+      </Old>
+
+      <New>
+        <![CDATA[
+        TransformBaseTemplate<double>::Pointer newTransform = TransformBaseTemplate<double>::New();
+
+        -- Or in a general way:
+        typename TransformBaseTemplate<ScalarType>::Pointer newTransform = TransformBaseTemplate<ScalarType>::New();
+        ]]>
+      </New>
+
+    </SampleCode>
+
+    <!--**
+    ** The change-ids for all commits in the topic branch
+    **-->
+    <Gerrit-ChangeId>
+      If55fcd401fcc9373cba2e0749e27e3c2fa4b2cd1
+    </Gerrit-ChangeId>
+
+    <!--**
+    ** List of all changed files from the topic branch
+    **-->
+    <FileList>
+      CMake/UseITK.cmake
+      CMake/itkTransformIOFactoryRegisterManager.h.in
+      CMake/itkTransformIOFactoryTemplateRegisterManager.h.in
+      CMakeLists.txt
+      Modules/Core/Transform/include/itkAzimuthElevationToCartesianTransform.hxx
+      Modules/Core/Transform/include/itkTransform.h
+      Modules/Core/Transform/include/itkTransformBase.h
+      Modules/Core/Transform/include/itkTransformBaseTemplate.h
+      Modules/Filtering/DisplacementField/include/itkTimeVaryingVelocityFieldIntegrationImageFilter.h
+      Modules/Filtering/DisplacementField/include/itkTimeVaryingVelocityFieldIntegrationImageFilter.hxx
+      Modules/Filtering/ImageGrid/include/itkVectorResampleImageFilter.h
+      Modules/Filtering/ImageGrid/include/itkVectorResampleImageFilter.hxx
+      Modules/IO/TransformBase/include/itkCompositeTransformIOHelper.h
+      Modules/IO/TransformBase/include/itkCompositeTransformIOHelperTemplate.h
+      Modules/IO/TransformBase/include/itkCompositeTransformIOHelperTemplate.hxx
+      Modules/IO/TransformBase/include/itkTransformFileReader.h
+      Modules/IO/TransformBase/include/itkTransformFileReaderTemplate.h
+      Modules/IO/TransformBase/include/itkTransformFileReaderTemplate.hxx
+      Modules/IO/TransformBase/include/itkTransformFileWriter.h
+      Modules/IO/TransformBase/include/itkTransformFileWriterTemplate.h
+      Modules/IO/TransformBase/include/itkTransformFileWriterTemplate.hxx
+      Modules/IO/TransformBase/include/itkTransformIOBase.h
+      Modules/IO/TransformBase/include/itkTransformIOBaseTemplate.h
+      Modules/IO/TransformBase/include/itkTransformIOBaseTemplate.hxx
+      Modules/IO/TransformBase/include/itkTransformIOFactory.h
+      Modules/IO/TransformBase/include/itkTransformIOFactoryTemplate.h
+      Modules/IO/TransformBase/include/itkTransformIOFactoryTemplate.hxx
+      Modules/IO/TransformBase/src/CMakeLists.txt
+      Modules/IO/TransformBase/src/itkCompositeTransformIOHelper.cxx
+      Modules/IO/TransformBase/src/itkTransformFileReader.cxx
+      Modules/IO/TransformBase/src/itkTransformFileWriter.cxx
+      Modules/IO/TransformBase/src/itkTransformIOBase.cxx
+      Modules/IO/TransformBase/src/itkTransformIOFactory.cxx
+      Modules/IO/TransformBase/test/itkTransformFileReaderTemplateTest.cxx
+      Modules/IO/TransformBase/test/itkTransformFileWriterTemplateTest.cxx
+      Modules/IO/TransformHDF5/include/itkHDF5TransformIO.h
+      Modules/IO/TransformHDF5/include/itkHDF5TransformIOFactory.h
+      Modules/IO/TransformHDF5/include/itkHDF5TransformIOFactoryTemplate.h
+      Modules/IO/TransformHDF5/include/itkHDF5TransformIOFactoryTemplate.hxx
+      Modules/IO/TransformHDF5/include/itkHDF5TransformIOTemplate.h
+      Modules/IO/TransformHDF5/include/itkHDF5TransformIOTemplate.hxx
+      Modules/IO/TransformHDF5/src/CMakeLists.txt
+      Modules/IO/TransformHDF5/src/itkHDF5TransformIO.cxx
+      Modules/IO/TransformHDF5/src/itkHDF5TransformIOFactory.cxx
+      Modules/IO/TransformHDF5/src/itkHDF5TransformIOFactoryTemplate.cxx
+      Modules/IO/TransformHDF5/src/itkHDF5TransformIOTemplate.cxx
+      Modules/IO/TransformHDF5/test/CMakeLists.txt
+      Modules/IO/TransformHDF5/test/itkIOTransformHDF5TemplateTest.cxx
+      Modules/IO/TransformInsightLegacy/include/itkTxtTransformIO.h
+      Modules/IO/TransformInsightLegacy/include/itkTxtTransformIOFactory.h
+      Modules/IO/TransformInsightLegacy/include/itkTxtTransformIOFactoryTemplate.h
+      Modules/IO/TransformInsightLegacy/include/itkTxtTransformIOFactoryTemplate.hxx
+      Modules/IO/TransformInsightLegacy/include/itkTxtTransformIOTemplate.h
+      Modules/IO/TransformInsightLegacy/include/itkTxtTransformIOTemplate.hxx
+      Modules/IO/TransformInsightLegacy/src/CMakeLists.txt
+      Modules/IO/TransformInsightLegacy/src/itkTxtTransformIO.cxx
+      Modules/IO/TransformInsightLegacy/src/itkTxtTransformIOFactory.cxx
+      Modules/IO/TransformInsightLegacy/src/itkTxtTransformIOFactoryTemplate.cxx
+      Modules/IO/TransformInsightLegacy/test/itkIOTransformTxtTemplateTest.cxx
+      Modules/IO/TransformMatlab/include/itkMatlabTransformIO.h
+      Modules/IO/TransformMatlab/include/itkMatlabTransformIOFactory.h
+      Modules/IO/TransformMatlab/include/itkMatlabTransformIOFactoryTemplate.h
+      Modules/IO/TransformMatlab/include/itkMatlabTransformIOFactoryTemplate.hxx
+      Modules/IO/TransformMatlab/include/itkMatlabTransformIOTemplate.h
+      Modules/IO/TransformMatlab/include/itkMatlabTransformIOTemplate.hxx
+      Modules/IO/TransformMatlab/src/CMakeLists.txt
+      Modules/IO/TransformMatlab/src/itkMatlabTransformIO.cxx
+      Modules/IO/TransformMatlab/src/itkMatlabTransformIOFactory.cxx
+      Modules/IO/TransformMatlab/src/itkMatlabTransformIOFactoryTemplate.cxx
+      Modules/IO/TransformMatlab/test/CMakeLists.txt
+      Modules/IO/TransformMatlab/test/itkIOTransformMatlabTemplateTest.cxx
+      Modules/Numerics/Optimizers/include/itkCostFunction.h
+      Modules/Numerics/Optimizers/include/itkCostFunctionTemplate.h
+      Modules/Numerics/Optimizers/include/itkCostFunctionTemplate.hxx
+      Modules/Numerics/Optimizers/src/CMakeLists.txt
+      Modules/Numerics/Optimizers/src/itkCostFunction.cxx
+      Modules/Numerics/Optimizers/test/itkOptimizersHierarchyTest.cxx
+      Modules/Numerics/Optimizersv4/include/itkConjugateGradientLineSearchOptimizerTemplatev4.h
+      Modules/Numerics/Optimizersv4/include/itkConjugateGradientLineSearchOptimizerTemplatev4.hxx
+      Modules/Numerics/Optimizersv4/include/itkGradientDescentLineSearchOptimizerTemplatev4.h
+      Modules/Numerics/Optimizersv4/include/itkGradientDescentLineSearchOptimizerTemplatev4.hxx
+      Modules/Numerics/Optimizersv4/include/itkGradientDescentOptimizerBaseTemplatev4.h
+      Modules/Numerics/Optimizersv4/include/itkGradientDescentOptimizerBaseTemplatev4.hxx
+      Modules/Numerics/Optimizersv4/include/itkGradientDescentOptimizerBasev4ModifyGradientByLearningRateThreaderTemplate.h
+      Modules/Numerics/Optimizersv4/include/itkGradientDescentOptimizerBasev4ModifyGradientByLearningRateThreaderTemplate.hxx
+      Modules/Numerics/Optimizersv4/include/itkGradientDescentOptimizerBasev4ModifyGradientByScalesThreaderTemplate.h
+      Modules/Numerics/Optimizersv4/include/itkGradientDescentOptimizerBasev4ModifyGradientByScalesThreaderTemplate.hxx
+      Modules/Numerics/Optimizersv4/include/itkGradientDescentOptimizerTemplatev4.h
+      Modules/Numerics/Optimizersv4/include/itkGradientDescentOptimizerTemplatev4.hxx
+      Modules/Numerics/Optimizersv4/include/itkMultiGradientOptimizerTemplatev4.h
+      Modules/Numerics/Optimizersv4/include/itkMultiGradientOptimizerTemplatev4.hxx
+      Modules/Numerics/Optimizersv4/include/itkMultiStartOptimizerTemplatev4.h
+      Modules/Numerics/Optimizersv4/include/itkMultiStartOptimizerTemplatev4.hxx
+      Modules/Numerics/Optimizersv4/include/itkObjectToObjectMetricBase.h
+      Modules/Numerics/Optimizersv4/include/itkObjectToObjectMetricBaseTemplate.h
+      Modules/Numerics/Optimizersv4/include/itkObjectToObjectMetricBaseTemplate.hxx
+      Modules/Numerics/Optimizersv4/include/itkObjectToObjectMetricComputationTypeTemplate.h
+      Modules/Numerics/Optimizersv4/include/itkObjectToObjectMetricComputationTypeTemplate.hxx
+      Modules/Numerics/Optimizersv4/include/itkObjectToObjectOptimizerBase.h
+      Modules/Numerics/Optimizersv4/include/itkObjectToObjectOptimizerBaseTemplate.h
+      Modules/Numerics/Optimizersv4/include/itkObjectToObjectOptimizerBaseTemplate.hxx
+      Modules/Numerics/Optimizersv4/include/itkOptimizerParameterScalesEstimator.h
+      Modules/Numerics/Optimizersv4/include/itkOptimizerParameterScalesEstimatorTemplate.h
+      Modules/Numerics/Optimizersv4/include/itkQuasiNewtonOptimizerTemplatev4.h
+      Modules/Numerics/Optimizersv4/include/itkQuasiNewtonOptimizerTemplatev4.hxx
+      Modules/Numerics/Optimizersv4/include/itkQuasiNewtonOptimizerv4EstimateNewtonStepThreaderTemplate.h
+      Modules/Numerics/Optimizersv4/include/itkQuasiNewtonOptimizerv4EstimateNewtonStepThreaderTemplate.hxx
+      Modules/Numerics/Optimizersv4/include/itkRegistrationParameterScalesEstimator.h
+      Modules/Numerics/Optimizersv4/include/itkRegistrationParameterScalesEstimator.hxx
+      Modules/Numerics/Optimizersv4/include/itkRegistrationParameterScalesEstimatorTemplate.h
+      Modules/Numerics/Optimizersv4/include/itkRegistrationParameterScalesEstimatorTemplate.hxx
+      Modules/Numerics/Optimizersv4/include/itkRegistrationParameterScalesFromIndexShift.hxx
+      Modules/Numerics/Optimizersv4/include/itkRegistrationParameterScalesFromPhysicalShift.hxx
+      Modules/Numerics/Optimizersv4/include/itkRegistrationParameterScalesFromPhysicalShiftTemplate.h
+      Modules/Numerics/Optimizersv4/include/itkRegistrationParameterScalesFromPhysicalShiftTemplate.hxx
+      Modules/Numerics/Optimizersv4/include/itkRegistrationParameterScalesFromShiftBaseTemplate.h
+      Modules/Numerics/Optimizersv4/include/itkRegistrationParameterScalesFromShiftBaseTemplate.hxx
+      Modules/Numerics/Optimizersv4/include/itkSingleValuedCostFunctionTemplatev4.h
+      Modules/Numerics/Optimizersv4/include/itkSingleValuedCostFunctionv4.h
+      Modules/Numerics/Optimizersv4/src/CMakeLists.txt
+      Modules/Numerics/Optimizersv4/src/itkObjectToObjectMetricBase.cxx
+      Modules/Numerics/Optimizersv4/src/itkObjectToObjectOptimizerBase.cxx
+      Modules/Numerics/Optimizersv4/test/itkObjectToObjectOptimizerBaseTest.cxx
+      Modules/Registration/Common/include/itkBSplineTransformParametersAdaptor.hxx
+      Modules/Registration/Common/include/itkTimeVaryingBSplineVelocityFieldTransformParametersAdaptor.hxx
+      Modules/Registration/Metricsv4/include/itkANTSNeighborhoodCorrelationImageToImageMetricComputationTypeTemplatev4.h
+      Modules/Registration/Metricsv4/include/itkANTSNeighborhoodCorrelationImageToImageMetricComputationTypeTemplatev4.hxx
+      Modules/Registration/Metricsv4/include/itkANTSNeighborhoodCorrelationImageToImageMetricv4GetValueAndDerivativeThreader.hxx
+      Modules/Registration/Metricsv4/include/itkANTSNeighborhoodCorrelationImageToImageMetricv4GetValueAndDerivativeThreaderTemplate.h
+      Modules/Registration/Metricsv4/include/itkANTSNeighborhoodCorrelationImageToImageMetricv4GetValueAndDerivativeThreaderTemplate.hxx
+      Modules/Registration/Metricsv4/include/itkCorrelationImageToImageMetricComputationTypeTemplatev4.h
+      Modules/Registration/Metricsv4/include/itkCorrelationImageToImageMetricComputationTypeTemplatev4.hxx
+      Modules/Registration/Metricsv4/include/itkCorrelationImageToImageMetricv4GetValueAndDerivativeThreader.hxx
+      Modules/Registration/Metricsv4/include/itkCorrelationImageToImageMetricv4GetValueAndDerivativeThreaderTemplate.h
+      Modules/Registration/Metricsv4/include/itkCorrelationImageToImageMetricv4GetValueAndDerivativeThreaderTemplate.hxx
+      Modules/Registration/Metricsv4/include/itkCorrelationImageToImageMetricv4HelperThreader.hxx
+      Modules/Registration/Metricsv4/include/itkCorrelationImageToImageMetricv4HelperThreaderTemplate.h
+      Modules/Registration/Metricsv4/include/itkCorrelationImageToImageMetricv4HelperThreaderTemplate.hxx
+      Modules/Registration/Metricsv4/include/itkDefaultImageToImageMetricTraitsv4.h
+      Modules/Registration/Metricsv4/include/itkDemonsImageToImageMetricComputationTypeTemplatev4.h
+      Modules/Registration/Metricsv4/include/itkDemonsImageToImageMetricComputationTypeTemplatev4.hxx
+      Modules/Registration/Metricsv4/include/itkDemonsImageToImageMetricv4GetValueAndDerivativeThreaderTemplate.h
+      Modules/Registration/Metricsv4/include/itkDemonsImageToImageMetricv4GetValueAndDerivativeThreaderTemplate.hxx
+      Modules/Registration/Metricsv4/include/itkImageToImageMetricComputationTypeTemplatev4.h
+      Modules/Registration/Metricsv4/include/itkImageToImageMetricComputationTypeTemplatev4.hxx
+      Modules/Registration/Metricsv4/include/itkImageToImageMetricv4GetValueAndDerivativeThreaderBase.hxx
+      Modules/Registration/Metricsv4/include/itkImageToImageMetricv4GetValueAndDerivativeThreaderBaseTemplate.h
+      Modules/Registration/Metricsv4/include/itkImageToImageMetricv4GetValueAndDerivativeThreaderBaseTemplate.hxx
+      Modules/Registration/Metricsv4/include/itkImageToImageMetricv4GetValueAndDerivativeThreaderTemplate.h
+      Modules/Registration/Metricsv4/include/itkImageToImageMetricv4GetValueAndDerivativeThreaderTemplate.hxx
+      Modules/Registration/Metricsv4/include/itkJointHistogramMutualInformationComputeJointPDFThreaderBase.hxx
+      Modules/Registration/Metricsv4/include/itkJointHistogramMutualInformationComputeJointPDFThreaderBaseTemplate.h
+      Modules/Registration/Metricsv4/include/itkJointHistogramMutualInformationComputeJointPDFThreaderBaseTemplate.hxx
+      Modules/Registration/Metricsv4/include/itkJointHistogramMutualInformationComputeJointPDFThreaderTemplate.h
+      Modules/Registration/Metricsv4/include/itkJointHistogramMutualInformationComputeJointPDFThreaderTemplate.hxx
+      Modules/Registration/Metricsv4/include/itkJointHistogramMutualInformationGetValueAndDerivativeThreaderTemplate.h
+      Modules/Registration/Metricsv4/include/itkJointHistogramMutualInformationGetValueAndDerivativeThreaderTemplate.hxx
+      Modules/Registration/Metricsv4/include/itkJointHistogramMutualInformationImageToImageMetricComputationTypeTemplatev4.h
+      Modules/Registration/Metricsv4/include/itkJointHistogramMutualInformationImageToImageMetricComputationTypeTemplatev4.hxx
+      Modules/Registration/Metricsv4/include/itkMattesMutualInformationImageToImageMetricComputationTypeTemplatev4.h
+      Modules/Registration/Metricsv4/include/itkMattesMutualInformationImageToImageMetricComputationTypeTemplatev4.hxx
+      Modules/Registration/Metricsv4/include/itkMattesMutualInformationImageToImageMetricv4GetValueAndDerivativeThreaderTemplate.h
+      Modules/Registration/Metricsv4/include/itkMattesMutualInformationImageToImageMetricv4GetValueAndDerivativeThreaderTemplate.hxx
+      Modules/Registration/Metricsv4/include/itkMeanSquaresImageToImageMetricComputationTypeTemplatev4.h
+      Modules/Registration/Metricsv4/include/itkMeanSquaresImageToImageMetricComputationTypeTemplatev4.hxx
+      Modules/Registration/Metricsv4/include/itkMeanSquaresImageToImageMetricv4GetValueAndDerivativeThreaderTemplate.h
+      Modules/Registration/Metricsv4/include/itkMeanSquaresImageToImageMetricv4GetValueAndDerivativeThreaderTemplate.hxx
+      Modules/Registration/Metricsv4/include/itkObjectToObjectMultiMetricTemplatev4.h
+      Modules/Registration/Metricsv4/include/itkObjectToObjectMultiMetricTemplatev4.hxx
+      Modules/Registration/Metricsv4/include/itkPointSetToPointSetMetricComputationTypeTemplatev4.h
+      Modules/Registration/Metricsv4/include/itkPointSetToPointSetMetricComputationTypeTemplatev4.hxx
+      Modules/Registration/Metricsv4/include/itkVectorImageToImageMetricTraitsv4.h
+      Modules/Registration/Metricsv4/test/CMakeLists.txt
+      Modules/Registration/Metricsv4/test/itkANTSNeighborhoodCorrelationImageToImageMetricComputationTypeTemplatev4Test.cxx
+      Modules/Registration/Metricsv4/test/itkCorrelationImageToImageMetricComputationTypeTemplatev4Test.cxx
+      Modules/Registration/Metricsv4/test/itkDemonsImageToImageMetricComputationTypeTemplatev4Test.cxx
+      Modules/Registration/Metricsv4/test/itkJointHistogramMutualInformationImageToImageMetricComputationTypeTemplatev4Test.cxx
+      Modules/Registration/Metricsv4/test/itkMeanSquaresImageToImageMetricComputationTypeTemplatev4Test.cxx
+      Modules/Registration/RegistrationMethodsv4/include/itkBSplineSyNImageRegistrationMethodMultiPrecision.h
+      Modules/Registration/RegistrationMethodsv4/include/itkBSplineSyNImageRegistrationMethodMultiPrecision.hxx
+      Modules/Registration/RegistrationMethodsv4/include/itkImageRegistrationMethodMultiPrecisionv4.h
+      Modules/Registration/RegistrationMethodsv4/include/itkImageRegistrationMethodMultiPrecisionv4.hxx
+      Modules/Registration/RegistrationMethodsv4/include/itkSyNImageRegistrationMethodMultiPrecision.h
+      Modules/Registration/RegistrationMethodsv4/include/itkSyNImageRegistrationMethodMultiPrecision.hxx
+      Modules/Registration/RegistrationMethodsv4/include/itkTimeVaryingBSplineVelocityFieldImageRegistrationMethodMultiPrecision.h
+      Modules/Registration/RegistrationMethodsv4/include/itkTimeVaryingBSplineVelocityFieldImageRegistrationMethodMultiPrecision.hxx
+      Modules/Registration/RegistrationMethodsv4/include/itkTimeVaryingVelocityFieldImageRegistrationMethodMultiPrecisionv4.h
+      Modules/Registration/RegistrationMethodsv4/include/itkTimeVaryingVelocityFieldImageRegistrationMethodMultiPrecisionv4.hxx
+    </FileList>
+
+    <!--**
+    ** If the migration can be accomplished by a simple string
+    ** substitution, then use the following construct to define
+    ** the substitution rule.
+    **
+    ** <MigrationFix-Automatic>
+    **   <Old>
+    **     <![CDATA[MipsleledName]]>
+    **   </Old>
+    **   <New>
+    **     <![CDATA[MisspelledName]]>
+    **   </New>
+    ** </MigrationFix-Automatic>
+    **-->
+
+    <!--**
+    ** If the migration can NOT be accomplished by a simple string
+    ** substitution, but potential problem spots can be identified,
+    ** use the following construct to define a migration flag rule.
+    **
+    ** <MigrationFix-Manual>
+    **   OldFunctionName
+    ** </MigrationFix-Manual>
+    **-->
+
+</Change>
