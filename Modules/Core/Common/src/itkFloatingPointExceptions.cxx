@@ -421,9 +421,11 @@ SetEnabled(bool val)
     }
 }
 
-#if defined(_WIN32)
+#if defined(_MSC_VER)
 
+#if defined(_MSC_VER)
 #include <float.h>
+#endif
 
 void FloatingPointExceptions
 ::Enable()
@@ -442,7 +444,8 @@ void FloatingPointExceptions
   FloatingPointExceptions::m_Enabled = false;
 }
 
-#else // defined( _WIN32 )
+#else
+#if not defined( _WIN32 )
 
 void
 FloatingPointExceptions
@@ -480,6 +483,7 @@ FloatingPointExceptions
   FloatingPointExceptions::m_Enabled = false;
 }
 
-#endif // defined ( _WIN32 )
+#endif // not defined ( _WIN32 )
+#endif // defined ( _MSC_VER )
 
 } // end of itk namespace
