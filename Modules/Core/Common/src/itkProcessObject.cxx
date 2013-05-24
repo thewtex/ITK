@@ -1173,9 +1173,13 @@ ProcessObject
  */
 void
 ProcessObject
-::UpdateProgress(float amount)
+::UpdateProgress(float progress)
 {
-  m_Progress = amount;
+  // Clamp the value to be between 0 and 1.
+  float min = 0.0f;
+  float max = 1.0f;
+  m_Progress = ( progress < min ? min : ( progress > max ? max : progress ) );
+
   this->InvokeEvent( ProgressEvent() );
 }
 
