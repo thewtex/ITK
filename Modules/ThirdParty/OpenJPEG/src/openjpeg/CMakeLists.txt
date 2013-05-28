@@ -58,6 +58,9 @@ ELSE(BUILD_SHARED_LIBS)
   SET(OPJ_STATIC 1)
 ENDIF(BUILD_SHARED_LIBS)
 
+INCLUDE(CheckIncludeFile)
+CHECK_INCLUDE_FILE( "stdbool.h" HAVE_STDBOOL_H )
+
 CONFIGURE_FILE(${ITK3P_OpenJPEG_SOURCE_DIR}/openjpegDllConfig.h.in
                ${ITK3P_OpenJPEG_BINARY_DIR}/openjpegDllConfig.h)
 

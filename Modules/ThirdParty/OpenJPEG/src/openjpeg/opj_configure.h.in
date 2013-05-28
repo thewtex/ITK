@@ -28,5 +28,6 @@
   #endif
 #endif
 
+#cmakedefine HAVE_STDBOOL_H
 
 #endif /* __OPJ_CONFIGURE_H */

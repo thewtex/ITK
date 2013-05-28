@@ -50,6 +50,7 @@
 #ifndef __cplusplus
   #if defined(HAVE_STDBOOL_H)
     #include <stdbool.h>
+    #define bool _Bool
   #else
     #if !defined(bool)
       #define  bool  unsigned char
