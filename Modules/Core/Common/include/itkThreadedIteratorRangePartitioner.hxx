@@ -45,41 +45,68 @@ ThreadedIteratorRangePartitioner< TIterator >
                    const DomainType& completeDomain,
                    DomainType& subDomain ) const
 {
-  // overallIndexRange is expected to be inclusive
+  // Protect against division by 0 below. Seems this would be a bug
+  // in MultiThreader if it passed 0 for requestedTotal.
+  if( requestedTotal == 0 )
+    {
+    itkExceptionMacro( "requestedTotal == 0. "
+                      << "Error: input 'requestedTotal' is zero-length." );
+    }
 
-  // determine the actual number of pieces that will be generated
-  typename DomainType::IteratorType it;
-  ThreadIdType count = NumericTraits< ThreadIdType >::Zero;
+  // Determine the actual number of pieces that will be generated
+  DomainIteratorType it;
+  DomainLengthType count = 0;
   for( it = completeDomain.Begin(); it != completeDomain.End(); ++it )
     {
     ++count;
     }
-  ThreadIdType valuesPerThread =
-    Math::Ceil<ThreadIdType>( static_cast< double >( count ) / static_cast< double >( requestedTotal ));
+
+  // Make sure we don't have a 0-valued count to avoid
+  // division by 0 below.
+  // This would be a bug in the passed completeDomain.
+  if( count == 0 )
+    {
+    itkExceptionMacro( "completeDomain.Begin() == completeDomain.End(). "
+                      << "Error in input 'completeDomain'" );
+    }
+
+  DomainLengthType valuesPerThread =
+    Math::Ceil<DomainLengthType>( static_cast< double >( count ) / static_cast< double >( requestedTotal ));
   ThreadIdType maxThreadIdUsed =
     Math::Ceil<ThreadIdType>( static_cast< double >( count ) / static_cast< double >( valuesPerThread )) - 1;
 
   // Split the domain
-  it = completeDomain.Begin();
-  const ThreadIdType startIndexCount = threadId * valuesPerThread;
-  for( ThreadIdType ii = 0; ii < startIndexCount; ++ii )
+  if( threadId > maxThreadIdUsed )
     {
-    ++it;
+    // To be safe, for a threadId past the maxThreadIdUsed,
+    // subDomain should be zero-length at the end of the completeDomain
+    subDomain.m_Begin = completeDomain.End();
+    subDomain.m_End = completeDomain.End();
     }
-  subDomain.m_Begin = it;
-  if (threadId < maxThreadIdUsed)
+  else // if( threadId <= maxThreadIdUsed )
     {
-    const ThreadIdType endIndexCount = valuesPerThread;
-    for( ThreadIdType ii = 0; ii < endIndexCount; ++ii )
+    it = completeDomain.Begin();
+    const DomainLengthType startIndexCount = threadId * valuesPerThread;
+    for( DomainLengthType ii = 0; ii < startIndexCount; ++ii )
       {
       ++it;
       }
-    subDomain.m_End = it;
-    }
-  if (threadId == maxThreadIdUsed)
-    {
-    // last thread needs to process the "rest" of the range
-    subDomain.m_End = completeDomain.End();
+    subDomain.m_Begin = it;
+
+    if( threadId < maxThreadIdUsed )
+      {
+      const DomainLengthType endIndexCount = valuesPerThread;
+      for( DomainLengthType ii = 0; ii < endIndexCount; ++ii )
+        {
+        ++it;
+        }
+      subDomain.m_End = it;
+      }
+    else // if( threadId == maxThreadIdUsed )
+      {
+      // Last thread needs to process the "rest" of the range
+      subDomain.m_End = completeDomain.End();
+      }
     }
 
   return maxThreadIdUsed + 1;
