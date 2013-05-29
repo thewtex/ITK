@@ -85,7 +85,11 @@ NrrdImageIO::NrrdToITKComponentType(const int nrrdComponentType) const
       return (4 == sizeof(long) ) ? UNKNOWNCOMPONENTTYPE : LONG;
       break;
     case nrrdTypeULLong:
+#if defined(_WIN32)
+      return (8 == sizeof(long long) ) ? ULONG : UNKNOWNCOMPONENTTYPE;
+#else
       return (4 == sizeof(long) ) ? UNKNOWNCOMPONENTTYPE : ULONG;
+#endif
       break;
     case nrrdTypeInt:
       return INT;
