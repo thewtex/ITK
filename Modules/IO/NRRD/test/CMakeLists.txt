@@ -9,6 +9,7 @@ itkNrrdDiffusionTensor3DImageReadTensorDoubleWriteTensorDoubleTest.cxx
 itkNrrdDiffusionTensor3DImageReadTest.cxx
 itkNrrdDiffusionTensor3DImageReadWriteTest.cxx
 itkNrrdImageReadWriteTest.cxx
+itkNrrdUnsignedLongImageReadWriteTest.cxx
 itkNrrdRGBAImageReadWriteTest.cxx
 itkNrrdRGBImageReadWriteTest.cxx
 itkNrrdVectorImageReadTest.cxx
@@ -128,6 +129,9 @@ itk_add_test(NAME itkNrrdImageReadWriteTest11
     --compare DATA{${ITK_DATA_ROOT}/Baseline/IO/vol-ascii.nrrd}
               ${ITK_TEST_OUTPUT_DIR}/vol11.nrrd
     itkNrrdImageReadWriteTest DATA{${ITK_DATA_ROOT}/Input/vol-gzip-little.nhdr,vol-gzip-little.raw.gz} ${ITK_TEST_OUTPUT_DIR}/vol11.nrrd)
+itk_add_test(NAME itkNrrdUnsignedLongImageReadWriteTest
+      COMMAND ITKIONRRDTestDriver
+    itkNrrdUnsignedLongImageReadWriteTest ${ITK_TEST_OUTPUT_DIR}/box-unsignedlong.nrrd)
 itk_add_test(NAME itkNrrdRGBAImageReadWriteTest
       COMMAND ITKIONRRDTestDriver
     --compare DATA{${ITK_DATA_ROOT}/Baseline/IO/NrrdRGBAImageReadWriteTest.png}
