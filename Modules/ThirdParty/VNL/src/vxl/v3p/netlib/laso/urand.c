@@ -15,12 +15,14 @@ extern "C" {
 #endif
 #include "v3p_netlib.h"
 
+#include "stdio.h"
+
 /*<       REAL FUNCTION URAND(IY) >*/
 doublereal urand_(integer *iy)
 {
     /* Initialized data */
 
-    static integer m2 = 0; /* constant */
+    static uinteger m2 = 0; /* constant */
     static integer itwo = 2; /* constant */
 
     /* System generated locals */
@@ -30,7 +32,7 @@ doublereal urand_(integer *iy)
     double atan(doublereal), sqrt(doublereal);
 
     /* Local variables */
-    integer m;
+    uinteger m;
     real s=0;
     integer ia=0, ic=0, mic=0;
     doublereal halfm;
