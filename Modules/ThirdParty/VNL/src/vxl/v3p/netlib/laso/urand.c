@@ -30,7 +30,6 @@ doublereal urand_(integer *iy)
     double atan(doublereal), sqrt(doublereal);
 
     /* Local variables */
-    integer m;
     real s=0;
     integer ia=0, ic=0, mic=0;
     doublereal halfm;
@@ -54,6 +53,9 @@ doublereal urand_(integer *iy)
         goto L20;
     }
 
+    m2 = ((integer) 1) << ( sizeof(integer) * 8 - 2);
+
+#if 0  /* just use bit shifting to prevent signed integer overflow */
 /*  IF FIRST ENTRY, COMPUTE MACHINE INTEGER WORD LENGTH */
 
 /*<       M = 1 >*/
@@ -67,6 +69,7 @@ L10:
     if (m > m2) {
         goto L10;
     }
+#endif
 /*<       HALFM = M2 >*/
     halfm = (doublereal) m2;
 
