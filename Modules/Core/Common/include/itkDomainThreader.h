@@ -120,13 +120,13 @@ protected:
 
   /** Do the threaded operation, somewhat like \c ThreadedGenerateData in an
    * ImageSource.
-   * \param subdomain The subdomain to operate on.
+   * \param subDomain The subdomain to operate on.
    * \param threadId  The identifier for the current thread.
    * Data to perform the operation on can be accessed by dereferencing
    * this->m_Associate, which has direct access to private and protected
    * members the enclosing class.
    */
-  virtual void ThreadedExecution( const DomainType& subdomain,
+  virtual void ThreadedExecution( const DomainType& subDomain,
                                   const ThreadIdType threadId ) = 0;
 
   /** When \c Execute in run, this method is run single-threaded after \c

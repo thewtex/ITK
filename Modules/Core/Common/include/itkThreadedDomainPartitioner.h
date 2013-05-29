@@ -37,14 +37,11 @@ namespace itk
  * classes to provide the particular functionality required for
  * TDomain type.
  *
- * \sa ThreadedImageRegionPartitioner
+ * \sa DomainThreader
  *
  * \ingroup DataProcessing
- *
  * \ingroup ITKCommon
- *
  */
-
 template <class TDomain >
 class ITK_EXPORT ThreadedDomainPartitioner : public Object
 {
@@ -61,22 +58,22 @@ public:
   /** Type of the input object that's split for threading */
   typedef TDomain                   DomainType;
 
-  /** Split the output's RequestedObject into \c requestedTotal "pieces",
-   * returning piece \c i as \c splitObject. "Pieces" may represent
-   * an image region, or a index range for a parameter array, etc, depending
-   * on the type of object over which this class is templated.
-   * This method is called \c requestedTotal times, which is the number of
-   * threads available for use. The
-   * pieces must not overlap. The method returns the number of pieces that
-   * the routine is capable of splitting the output RequestedObject,
-   * i.e. return value is less than or equal to \c requestedTotal.
-   * This must be overridden by derived classes to provide specialized
-   * behavior. */
+  /** Split the Domain \c completeDomain into up to \c requestedTotal
+   * non-overlapping subdomains, setting subdomain \c i as \c subDomain and
+   * returning the total number of subdomains actually available.
+   *
+   * Subdomains may represent an image region, or a index range for a parameter
+   * array, etc, depending on the type of object over which this class is
+   * templated.
+   *
+   * This method should be called repeatedly for each value of \c i, from 0 up
+   * to the return value (which is always less than or equal to \c requestedTotal).
+   */
   virtual
-  ThreadIdType PartitionDomain(const ThreadIdType threadID,
+  ThreadIdType PartitionDomain(const ThreadIdType i,
                            const ThreadIdType requestedTotal,
                            const DomainType& completeDomain,
-                           DomainType& subdomain) const = 0;
+                           DomainType& subDomain) const = 0;
 
 protected:
   ThreadedDomainPartitioner(){}

@@ -24,14 +24,13 @@
 /** \class ThreadedIndexedContainerPartitioner
  *  \brief Partitions an indexed container.
  *
- * The DomainType is defined to be a two element itk::Index of ElementIdentifiers:
+ * The \c DomainType is defined to be a two element itk::Index of ElementIdentifiers:
  * the first element defines the start of the domain, and the second element
  * defines the end of the domain.
  *
  * Element counting starts from zero and the identifier at the end of the domain
  * is inclusive.
  *
- * \sa ThreadedImageRegionPartitioner
  * \sa ThreadedDomainPartitioner
  * \sa IndexedContainerInterface
  * \ingroup ITKCommon
@@ -56,23 +55,26 @@ public:
   /** Run-time type information (and related methods). */
   itkTypeMacro(ThreadedIndexedContainerPartitioner, ThreadedDomainPartitioner);
 
-  /** Type for convenience of base class methods */
-  typedef Superclass::DomainType  DomainType;
+  /** Types for the object being partitioned */
+  typedef Superclass::DomainType      DomainType;
+  typedef DomainType::IndexValueType  DomainLengthType;
 
-  /** Synonym for the domain that is more descriptive. */
-  typedef DomainType                       IndexRangeType;
-
-  /** Split the IndexRange \c overallIndexRange into
-   * \c requestedTotal subranges, returning subrange \c i as \c splitIndex.
-   * This method is called \c requestedTotal times. The
-   * pieces will not overlap. The method returns the number of pieces that
-   * the routine is capable of splitting the output RequestedObject,
-   * i.e. return value is less than or equal to \c requestedTotal. */
+  /** Split the IndexRange \c completeIndexRange into up to \c requestedTotal
+   * non-overlapping subranges, setting subrange \c i as \c subIndexRange and
+   * returning the total number of subranges actually available.
+   *
+   * This method should be called repeatedly for each value of \c i, from 0 up
+   * to the return value (which is always less than or equal to \c requestedTotal).
+   *
+   * It is an error for \c completeIndexRange to be zero-length.
+   * If \c requestedTotal is greater than the return value, the contents of
+   * \c subIndexRange are undefined.
+   */
   virtual
   ThreadIdType PartitionDomain(const ThreadIdType i,
                            const ThreadIdType requestedTotal,
                            const DomainType& completeIndexRange,
-                           DomainType& subdomain) const;
+                           DomainType& subIndexRange) const;
 
 protected:
   ThreadedIndexedContainerPartitioner();
