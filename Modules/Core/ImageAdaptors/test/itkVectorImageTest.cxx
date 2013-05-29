@@ -25,6 +25,7 @@
 #include "itkImageRegionIteratorWithIndex.h"
 #include "itkImageFileWriter.h"
 #include "itkImageFileReader.h"
+#include "itkTestingMacros.h"
 
 
 // This test tests:
@@ -116,6 +117,84 @@ bool testVectorImageAdaptor( typename TAdaptor::Pointer & vectorImageAdaptor,
   return failed;
 }
 
+template< class TPixel, unsigned int VDimension >
+bool testVectorImageBasicMethods( void )
+{
+  const unsigned int VectorLength = 3 * VDimension;
+
+  typedef itk::VectorImage< TPixel, VDimension >   VectorImageType;
+
+  std::cout << "Testing Get/SetPixel methods." << std::endl;
+
+  typename VectorImageType::Pointer image = VectorImageType::New();
+  typename VectorImageType::SizeType  size = {{11, 9, 7}};
+  typename VectorImageType::RegionType region;
+  region.SetSize( size );
+  image->SetRegions( region );
+  image->SetNumberOfComponentsPerPixel( VectorLength );
+  image->Allocate();
+
+  typename VectorImageType::PixelType f( VectorLength );
+  f.Fill(3.14f);
+
+  image->FillBuffer( f );
+
+  typename VectorImageType::IndexType idx = {{1,1,1}};
+
+  typename VectorImageType::ConstPointer cimage(image);
+
+  // test get methods
+
+  TEST_EXPECT_EQUAL(f, image->GetPixel(idx));
+  TEST_EXPECT_EQUAL(f, cimage->GetPixel(idx));
+  TEST_EXPECT_EQUAL(f, (*image)[idx]);
+  TEST_EXPECT_EQUAL(f, (*cimage)[idx]);
+
+
+  // test get by reference methods
+
+  typename VectorImageType::PixelType v( VectorLength );
+  v.Fill(2.22f);
+
+  // note: this VectorImage method requires the compiler to perform return value
+  // optimization to work as expected
+  image->GetPixel(idx).Fill( 2.22f );
+  TEST_EXPECT_EQUAL(v, image->GetPixel(idx));
+  TEST_EXPECT_EQUAL(v, cimage->GetPixel(idx));
+  TEST_EXPECT_EQUAL(v, (*image)[idx]);
+  TEST_EXPECT_EQUAL(v, (*cimage)[idx]);
+
+  typename VectorImageType::PixelType temp = image->GetPixel(idx);
+  temp.Fill(2.23f);
+  v.Fill(2.23f);
+  TEST_EXPECT_EQUAL(v, image->GetPixel(idx));
+  TEST_EXPECT_EQUAL(v, cimage->GetPixel(idx));
+  TEST_EXPECT_EQUAL(v, (*image)[idx]);
+  TEST_EXPECT_EQUAL(v, (*cimage)[idx]);
+
+  v.Fill(3.33f);
+
+  (*image)[idx].Fill( 3.33f );
+  TEST_EXPECT_EQUAL(v, image->GetPixel(idx));
+  TEST_EXPECT_EQUAL(v, cimage->GetPixel(idx));
+  TEST_EXPECT_EQUAL(v, (*image)[idx]);
+  TEST_EXPECT_EQUAL(v, (*cimage)[idx]);
+
+  // test set method
+
+  v.Fill(4.44f);
+
+  image->SetPixel(idx, v);
+  TEST_EXPECT_EQUAL(v, image->GetPixel(idx));
+  TEST_EXPECT_EQUAL(v, cimage->GetPixel(idx));
+  TEST_EXPECT_EQUAL(v, (*image)[idx]);
+  TEST_EXPECT_EQUAL(v, (*cimage)[idx]);
+
+  std::cout << "Testing Get/SetPixel methods [PASSED]" << std::endl;
+
+  return EXIT_SUCCESS;
+}
+
 int itkVectorImageTest( int, char* argv[] )
 {
   bool failed = false;
@@ -123,6 +202,12 @@ int itkVectorImageTest( int, char* argv[] )
   const unsigned int Dimension    = 3;
   const unsigned int VectorLength = 2 * Dimension;
   typedef float PixelType;
+
+  if ( testVectorImageBasicMethods<double, 3>() == EXIT_FAILURE )
+    {
+    std::cout << "Testing Get/SetPixel methods [FAILED]" << std::endl;
+    failed = true;
+    }
 
   {
   // Test 1.
