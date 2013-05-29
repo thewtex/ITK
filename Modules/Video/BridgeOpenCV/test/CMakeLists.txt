@@ -5,6 +5,7 @@ set(ITKVideoBridgeOpenCVTests
   itkOpenCVImageBridgeRGBTest.cxx
   itkOpenCVVideoIOTest.cxx
   itkOpenCVVideoIOFactoryTest.cxx
+  itkOpenCVBasicTypeBridgeTest.cxx
 )
 
 include_directories(${ITKVideoBridgeOpenCV_INCLUDE_DIRS})
