@@ -113,13 +113,13 @@ int itkMaskedFFTNormalizedCorrelationImageFilterTest(int argc, char * argv[] )
     }
   catch( itk::ExceptionObject & excep )
     {
-    std::cerr << "Exception catched !" << std::endl;
+    std::cerr << "Exception caught !" << std::endl;
     std::cerr << excep << std::endl;
     }
 
   std::cout << "Maximum overlapping pixels: " << filter->GetMaximumNumberOfOverlappingPixels() << std::endl;
-  std::cout << "Required fraction of overlapping pixels: " << filter->GetRequiredFractionOfOverlappingPixels() << std::endl;
-  std::cout << "Required number of overlapping pixels: " << filter->GetRequiredNumberOfOverlappingPixels() << std::endl;
+  std::cout << "Minimum required fraction of overlapping pixels: " << filter->GetRequiredFractionOfOverlappingPixels() << std::endl;
+  std::cout << "Minimum required number of overlapping pixels: " << filter->GetRequiredNumberOfOverlappingPixels() << std::endl;
 
   return EXIT_SUCCESS;
 }

@@ -228,13 +228,7 @@ public:
 
   /** Set and get the required fraction of overlapping pixels */
   itkGetMacro(RequiredFractionOfOverlappingPixels,RealPixelType);
-  void SetRequiredFractionOfOverlappingPixels(RealPixelType requiredFractionOfOverlappingPixels)
-  {
-    // The fraction must be between 0 and 1.
-    requiredFractionOfOverlappingPixels = (requiredFractionOfOverlappingPixels < 0.0) ? 0.0 : requiredFractionOfOverlappingPixels;
-    requiredFractionOfOverlappingPixels = (requiredFractionOfOverlappingPixels > 1.0) ? 1.0 : requiredFractionOfOverlappingPixels;
-    m_RequiredFractionOfOverlappingPixels = requiredFractionOfOverlappingPixels;
-  }
+  itkSetClampMacro(RequiredFractionOfOverlappingPixels, RealPixelType, 0.0f, 1.0f);
 
   /** Get the maximum number of overlapping pixels. */
   itkGetMacro(MaximumNumberOfOverlappingPixels,SizeValueType);
@@ -253,6 +247,8 @@ protected:
     m_RequiredNumberOfOverlappingPixels = 0;
     m_RequiredFractionOfOverlappingPixels = 0;
     m_MaximumNumberOfOverlappingPixels = 0;
+    m_TotalForwardAndInverseFFTs = 12.0;
+    m_AccumulatedProgress = 0.0;
   }
   virtual ~MaskedFFTNormalizedCorrelationImageFilter() {}
   void PrintSelf(std::ostream& os, Indent indent) const;
@@ -331,6 +327,11 @@ private:
   RealPixelType m_RequiredFractionOfOverlappingPixels;
   /** This is computed internally */
   SizeValueType m_MaximumNumberOfOverlappingPixels;
+
+  /** This is used for the progress reporter */
+  float m_TotalForwardAndInverseFFTs;
+  /** The total accumulated progress */
+  float m_AccumulatedProgress;
 };
 } // end namespace itk
 
