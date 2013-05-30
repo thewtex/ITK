@@ -8,6 +8,7 @@ set(ITKConvolutionTests
   itkFFTConvolutionImageFilterDeltaFunctionTest.cxx
   itkNormalizedCorrelationImageFilterTest.cxx
   itkMaskedFFTNormalizedCorrelationImageFilterTest.cxx
+  itkMaskedFFTNormalizedCorrelationImageFilterTest2.cxx
   itkFFTNormalizedCorrelationImageFilterTest.cxx
 )
 
@@ -185,3 +186,12 @@ itk_add_test(NAME itkFFTNormalizedCorrelationImageFilterTest5
     --compare DATA{Baseline/itkMaskedFFTNormalizedCorrelationImageFilterTest5.png}
               ${ITK_TEST_OUTPUT_DIR}/itkFFTNormalizedCorrelationImageFilterTest5.png
     itkMaskedFFTNormalizedCorrelationImageFilterTest DATA{Input/FixedRectangles.png} DATA{Input/MovingRectangles.png} ${ITK_TEST_OUTPUT_DIR}/itkFFTNormalizedCorrelationImageFilterTest5.png 0)
+
+# Masked FFT NCC tests with writing out a registered image.
+itk_add_test(NAME itkMaskedFFTTranslationRegistrationImageFilterTest
+      COMMAND ITKConvolutionTestDriver
+    --compare DATA{Baseline/itkMaskedFFTTranslationRegistrationImageFilterTest.png}
+              ${ITK_TEST_OUTPUT_DIR}/itkMaskedFFTTranslationRegistrationImageFilterTest.png
+    itkMaskedFFTNormalizedCorrelationImageFilterTest2 DATA{Input/UltrasoundFixedImageX130Y130.png} DATA{Input/UltrasoundMovingImageX130Y130.png}
+    ${ITK_TEST_OUTPUT_DIR}/itkMaskedFFTTranslationRegistrationImageFilterTest.png 0.1
+    DATA{Input/UltrasoundFixedMaskX130Y130.png} DATA{Input/UltrasoundMovingMaskX130Y130.png})
