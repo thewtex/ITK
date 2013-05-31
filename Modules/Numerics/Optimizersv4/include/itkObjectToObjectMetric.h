@@ -82,7 +82,7 @@ namespace itk
  * \ingroup ITKOptimizersv4
  */
 template<unsigned int TFixedDimension, unsigned int TMovingDimension, class TVirtualImage = Image<typename ObjectToObjectMetricBase::ParametersValueType, TFixedDimension> >
-class ITK_EXPORT ObjectToObjectMetric:
+class ObjectToObjectMetric:
   public ObjectToObjectMetricBase
 {
 public:

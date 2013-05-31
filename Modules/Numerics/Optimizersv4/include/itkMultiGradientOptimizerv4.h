@@ -42,7 +42,7 @@ namespace itk
  * \ingroup ITKOptimizersv4
  */
 
-class ITK_EXPORT MultiGradientOptimizerv4
+class MultiGradientOptimizerv4
   : public GradientDescentOptimizerv4
 {
 public:

@@ -91,7 +91,7 @@ namespace itk
   */
 
 template<unsigned int TFixedDimension, unsigned int TMovingDimension, class TVirtualImage = Image<typename ObjectToObjectMetricBase::ParametersValueType, TFixedDimension> >
-class ITK_EXPORT ObjectToObjectMultiMetricv4:
+class ObjectToObjectMultiMetricv4:
   public ObjectToObjectMetric<TFixedDimension, TMovingDimension, TVirtualImage>
 {
 public:

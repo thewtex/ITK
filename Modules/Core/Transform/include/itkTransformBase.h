@@ -36,7 +36,7 @@ namespace itk
  *
  * \ingroup ITKTransform
  */
-class ITK_EXPORT TransformBase:public Object
+class TransformBase:public Object
 {
 public:
   /** Standard class typedefs. */

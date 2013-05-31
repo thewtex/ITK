@@ -55,7 +55,7 @@ namespace itk
  *
  * \ingroup ITKOptimizersv4
  */
-class ITK_EXPORT GradientDescentLineSearchOptimizerv4
+class GradientDescentLineSearchOptimizerv4
   : public GradientDescentOptimizerv4
 {
 public:

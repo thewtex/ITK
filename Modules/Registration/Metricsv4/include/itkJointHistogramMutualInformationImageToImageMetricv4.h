@@ -42,7 +42,7 @@ namespace itk
  */
 
 template<class TFixedImage,class TMovingImage,class TVirtualImage = TFixedImage>
-class ITK_EXPORT JointHistogramMutualInformationImageToImageMetricv4 :
+class JointHistogramMutualInformationImageToImageMetricv4 :
   public ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage>
 {
 public:

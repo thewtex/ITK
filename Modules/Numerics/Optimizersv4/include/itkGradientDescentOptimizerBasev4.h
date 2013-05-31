@@ -35,7 +35,7 @@ namespace itk
  * \ingroup ITKOptimizersv4
  */
 
-class ITK_EXPORT GradientDescentOptimizerBasev4
+class GradientDescentOptimizerBasev4
   : public ObjectToObjectOptimizerBase
 {
 public:
