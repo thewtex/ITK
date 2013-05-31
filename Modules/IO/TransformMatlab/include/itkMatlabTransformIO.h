@@ -25,7 +25,7 @@ namespace itk
  *  \brief Create instances of MatlabTransformIO objects.
  * \ingroup ITKIOTransformMatlab
  */
-class ITK_EXPORT MatlabTransformIO:public TransformIOBase
+class MatlabTransformIO:public TransformIOBase
 {
 public:
   typedef MatlabTransformIO             Self;

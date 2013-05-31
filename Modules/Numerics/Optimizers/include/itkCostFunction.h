@@ -33,7 +33,7 @@ namespace itk
  * \ingroup ITKOptimizers
  */
 
-class ITK_EXPORT CostFunction:public Object
+class CostFunction:public Object
 {
 public:
   /** Standard class typedefs. */

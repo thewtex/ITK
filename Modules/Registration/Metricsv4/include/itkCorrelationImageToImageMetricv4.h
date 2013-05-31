@@ -70,7 +70,7 @@ namespace itk
  * \ingroup ITKMetricsv4
  */
 template <class TFixedImage, class TMovingImage, class TVirtualImage = TFixedImage >
-class ITK_EXPORT CorrelationImageToImageMetricv4 :
+class CorrelationImageToImageMetricv4 :
 public ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage>
 {
 public:

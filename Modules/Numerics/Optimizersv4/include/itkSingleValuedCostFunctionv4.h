@@ -45,7 +45,7 @@ namespace itk
  * \ingroup Numerics Optimizers
  * \ingroup ITKOptimizersv4
  */
-class ITK_EXPORT SingleValuedCostFunctionv4:
+class SingleValuedCostFunctionv4:
   public CostFunction
 {
 public:

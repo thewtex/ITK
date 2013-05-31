@@ -35,7 +35,7 @@ namespace itk
  *
  * \ingroup ITKOptimizersv4
  */
-class ITK_EXPORT OptimizerParameterScalesEstimator : public Object
+class OptimizerParameterScalesEstimator : public Object
 {
 public:
   /** Standard class typedefs. */

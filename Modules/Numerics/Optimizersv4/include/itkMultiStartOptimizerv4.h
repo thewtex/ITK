@@ -36,7 +36,7 @@ namespace itk
  * \ingroup ITKOptimizersv4
  */
 
-class ITK_EXPORT MultiStartOptimizerv4
+class MultiStartOptimizerv4
   : public ObjectToObjectOptimizerBase
 {
 public:
