@@ -46,7 +46,7 @@ namespace itk
  *
  * \ingroup ITKOptimizersv4
  */
-class ITK_EXPORT ObjectToObjectMetricBase:
+class ObjectToObjectMetricBase:
   public SingleValuedCostFunctionv4
 {
 public:

@@ -43,7 +43,7 @@ namespace itk
  *
  * \ingroup ITKOptimizersv4
  */
-class ITK_EXPORT ConjugateGradientLineSearchOptimizerv4
+class ConjugateGradientLineSearchOptimizerv4
   : public GradientDescentLineSearchOptimizerv4
 {
 public:

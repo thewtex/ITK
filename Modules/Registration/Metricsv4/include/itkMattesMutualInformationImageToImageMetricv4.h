@@ -93,7 +93,7 @@ namespace itk
  * \ingroup ITKMetricsv4
  */
 template <class TFixedImage, class TMovingImage, class TVirtualImage = TFixedImage >
-class ITK_EXPORT MattesMutualInformationImageToImageMetricv4 :
+class MattesMutualInformationImageToImageMetricv4 :
 public ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage>
 {
 public:

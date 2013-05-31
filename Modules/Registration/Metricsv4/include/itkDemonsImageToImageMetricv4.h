@@ -52,7 +52,7 @@ namespace itk
  * \ingroup ITKMetricsv4
  */
 template <class TFixedImage, class TMovingImage, class TVirtualImage = TFixedImage >
-class ITK_EXPORT DemonsImageToImageMetricv4 :
+class DemonsImageToImageMetricv4 :
 public ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage>
 {
 public:
