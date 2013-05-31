@@ -142,10 +142,10 @@ bool TestClampFrom()
 // Visual Studio has a false failure in due to
 // imprecise integer to double conversion. It causes the comparison
 // dInValue > expectedMax to pass when it should fail.
-#ifndef _MSC_VER
+//#ifndef _MSC_VER
     TestClampFromTo< TInputPixelType, long long >() &&
     TestClampFromTo< TInputPixelType, unsigned long long >() &&
-#endif
+//#endif
     TestClampFromTo< TInputPixelType, float >() &&
     TestClampFromTo< TInputPixelType, double >();
 
