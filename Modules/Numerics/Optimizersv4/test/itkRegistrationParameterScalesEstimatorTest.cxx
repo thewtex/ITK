@@ -25,7 +25,7 @@
  *  Create a simple metric to use for testing here.
  */
 template< class TFixedImage,class TMovingImage,class TVirtualImage = TFixedImage >
-class ITK_EXPORT RegistrationParameterScalesEstimatorTestMetric:
+class RegistrationParameterScalesEstimatorTestMetric:
   public itk::ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage>
 {
 public:
@@ -104,7 +104,7 @@ private:
  *  Create a simple scales estimator class to use for testing here.
  */
 template < class TMetric >
-class ITK_EXPORT RegistrationParameterScalesEstimatorTest:
+class RegistrationParameterScalesEstimatorTest:
   public itk::RegistrationParameterScalesEstimator< TMetric >
 {
 public:

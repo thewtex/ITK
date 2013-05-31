@@ -31,7 +31,7 @@ namespace itk
  * \wikiexample{IO/TransformFileReader,Read a transform from a file}
  * \endwiki
  */
-class ITK_EXPORT TransformFileReader:public LightProcessObject
+class TransformFileReader:public LightProcessObject
 {
 public:
 

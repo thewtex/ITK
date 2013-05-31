@@ -57,7 +57,7 @@ namespace itk
  *
  * \ingroup ITKOptimizersv4
  */
-class ITK_EXPORT QuasiNewtonOptimizerv4:
+class QuasiNewtonOptimizerv4:
   public GradientDescentOptimizerv4
 {
 public:

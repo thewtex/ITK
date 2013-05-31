@@ -64,7 +64,7 @@ namespace itk
  * \ingroup ITKOptimizersv4
  */
 
-class ITK_EXPORT ObjectToObjectOptimizerBase : public Object
+class ObjectToObjectOptimizerBase : public Object
 {
 public:
   /** Standard class typedefs. */

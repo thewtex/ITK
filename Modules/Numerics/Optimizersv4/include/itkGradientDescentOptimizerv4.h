@@ -80,7 +80,7 @@ namespace itk
  *
  * \ingroup ITKOptimizersv4
  */
-class ITK_EXPORT GradientDescentOptimizerv4
+class GradientDescentOptimizerv4
   : public GradientDescentOptimizerBasev4
 {
 public:

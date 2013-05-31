@@ -25,7 +25,7 @@ namespace itk
    * \brief Create instances of TxtTransformIO objects.
    * \ingroup ITKIOTransformInsightLegacy
    */
-class ITK_EXPORT TxtTransformIO:public TransformIOBase
+class TxtTransformIO:public TransformIOBase
 {
 public:
   typedef TxtTransformIO                Self;
