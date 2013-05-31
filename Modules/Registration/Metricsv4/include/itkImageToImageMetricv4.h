@@ -166,7 +166,7 @@ namespace itk
  */
 template<class TFixedImage,class TMovingImage,class TVirtualImage = TFixedImage,
          typename TMetricTraits = DefaultImageToImageMetricTraitsv4< TFixedImage, TMovingImage, TVirtualImage > >
-class ITK_EXPORT ImageToImageMetricv4 : public ObjectToObjectMetric<TFixedImage::ImageDimension, TMovingImage::ImageDimension, TVirtualImage>
+class ImageToImageMetricv4 : public ObjectToObjectMetric<TFixedImage::ImageDimension, TMovingImage::ImageDimension, TVirtualImage>
 {
 public:
 

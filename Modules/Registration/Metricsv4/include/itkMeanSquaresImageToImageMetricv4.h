@@ -40,7 +40,7 @@ namespace itk
 template <class TFixedImage, class TMovingImage, class TVirtualImage = TFixedImage,
           class TMetricTraits = DefaultImageToImageMetricTraitsv4<TFixedImage,TMovingImage,TVirtualImage>
           >
-class ITK_EXPORT MeanSquaresImageToImageMetricv4 :
+class MeanSquaresImageToImageMetricv4 :
   public ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage, TMetricTraits>
 {
 public:
