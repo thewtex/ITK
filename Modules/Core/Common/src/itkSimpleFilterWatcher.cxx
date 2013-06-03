@@ -44,6 +44,8 @@ SimpleFilterWatcher
   m_Quiet = false;
 #endif
 
+  m_PreviousProgress = 0.0f;
+
   // Create a series of commands
   m_StartFilterCommand =      CommandType::New();
   m_EndFilterCommand =        CommandType::New();

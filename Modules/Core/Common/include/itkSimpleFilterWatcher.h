@@ -133,6 +133,14 @@ protected:
     if ( m_Process )
       {
       m_Steps++;
+      const float currentProgress = m_Process->GetProgress();
+      if ( m_PreviousProgress-currentProgress > 0.001 )
+        {
+        std::cerr << "Progress decreased from " << m_PreviousProgress
+                  << " to " << currentProgress << std::endl;
+        exit(EXIT_FAILURE);
+        }
+      m_PreviousProgress = currentProgress;
       if ( !m_Quiet )
         {
         std::cout << " | " << m_Process->GetProgress() << std::flush;
@@ -169,6 +177,7 @@ protected:
   {
     m_Steps = 0;
     m_Iterations = 0;
+    m_PreviousProgress = 0.0f;
     m_TimeProbe.Start();
     std::cout << "-------- Start "
               << ( m_Process.GetPointer() ? m_Process->GetNameOfClass() : "None" )
@@ -225,6 +234,8 @@ private:
   bool                        m_TestAbort;
   std::string                 m_Comment;
   itk::ProcessObject::Pointer m_Process;
+
+  float m_PreviousProgress;
 
   typedef SimpleMemberCommand< SimpleFilterWatcher > CommandType;
   CommandType::Pointer m_StartFilterCommand;
