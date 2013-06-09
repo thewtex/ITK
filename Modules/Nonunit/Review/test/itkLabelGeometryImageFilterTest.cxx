@@ -69,7 +69,7 @@ int itkLabelGeometryImageFilterTest( int argc, char * argv[] )
 }
 
 template < const unsigned int NDimension >
-int LabelGeometryImageFilterTest(std::string labelImageName,std::string intensityImageName,std::string outputImageName,std::string outputFileName,std::string compareFileName = "")
+int LabelGeometryImageFilterTest(std::string labelImageName,std::string intensityImageName,std::string outputImageName,std::string outputFileName,std::string compareFileName)
 {
   typedef unsigned short  LabelPixelType;
   typedef unsigned char   IntensityPixelType;
