@@ -21,6 +21,17 @@
 
 #include <string>
 
+//-----------------------------------------------------------------------------
+#if defined(WIN32)
+  #if defined(ITKIOHDF5_EXPORTS)
+    #define ITK_HDF5TransformIO_EXPORTS __declspec( dllexport )
+  #else
+    #define ITK_HDF5TransformIO_EXPORTS __declspec( dllimport )
+  #endif
+#else
+  #define ITK_HDF5TransformIO_EXPORTS
+#endif
+
 // Avoids KWStyle error from forward declaration below.
 namespace itk
 {
@@ -44,7 +55,7 @@ namespace itk
  * \ingroup ITKIOTransformHDF5
  */
 template< class TInternalComputationValueType >
-class HDF5TransformIOTemplate:public TransformIOBaseTemplate< TInternalComputationValueType >
+class ITK_HDF5TransformIO_EXPORTS HDF5TransformIOTemplate:public TransformIOBaseTemplate< TInternalComputationValueType >
 {
 public:
   typedef HDF5TransformIOTemplate                               Self;

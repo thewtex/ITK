@@ -20,7 +20,7 @@
 
 
 #include "itkObjectFactoryBase.h"
-#include "itkTransformIOBase.h"
+#include "itkHDF5TransformIO.h"
 
 namespace itk
 {
@@ -30,7 +30,7 @@ namespace itk
    * \ingroup ITKIOTransformHDF5
    */
 template<class ParametersValueType>
-class HDF5TransformIOFactoryTemplate:public ObjectFactoryBase
+class ITK_HDF5TransformIO_EXPORTS HDF5TransformIOFactoryTemplate:public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */

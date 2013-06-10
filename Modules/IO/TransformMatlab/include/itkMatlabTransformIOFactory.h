@@ -19,7 +19,7 @@
 #define __itkMatlabTransformIOFactory_h
 
 #include "itkObjectFactoryBase.h"
-#include "itkTransformIOBase.h"
+#include "itkMatlabTransformIO.h"
 
 namespace itk
 {
@@ -29,7 +29,7 @@ namespace itk
  * \ingroup ITKIOTransformMatlab
  */
 template<class ParametersValueType>
-class ITK_EXPORT MatlabTransformIOFactoryTemplate:public ObjectFactoryBase
+class ITK_MatlabTransformIO_EXPORT MatlabTransformIOFactoryTemplate:public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */

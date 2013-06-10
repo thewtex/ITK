@@ -19,6 +19,17 @@
 #define __itkMatlabTransformIO_h
 #include "itkTransformIOBase.h"
 
+//-----------------------------------------------------------------------------
+#if defined(WIN32)
+  #if defined(ITKIOTransformMatlab_EXPORTS)
+    #define ITK_MatlabTransformIO_EXPORT __declspec( dllexport )
+  #else
+    #define ITK_MatlabTransformIO_EXPORT __declspec( dllimport )
+  #endif
+#else
+  #define ITK_MatlabTransformIO_EXPORT
+#endif
+
 namespace itk
 {
 /** \class MatlabTransformIOTemplate
@@ -26,7 +37,7 @@ namespace itk
  * \ingroup ITKIOTransformMatlab
  */
 template<class ParametersValueType>
-class ITK_EXPORT MatlabTransformIOTemplate:public TransformIOBaseTemplate<ParametersValueType>
+class ITK_MatlabTransformIO_EXPORT MatlabTransformIOTemplate:public TransformIOBaseTemplate<ParametersValueType>
 {
 public:
   typedef MatlabTransformIOTemplate                       Self;

@@ -19,7 +19,7 @@
 #define __itkTxtTransformIOFactory_h
 
 #include "itkObjectFactoryBase.h"
-#include "itkTransformIOBase.h"
+#include "itkTxtTransformIO.h"
 
 namespace itk
 {
@@ -28,7 +28,7 @@ namespace itk
    * \ingroup ITKIOTransformInsightLegacy
    */
 template<class ParametersValueType>
-class ITK_EXPORT TxtTransformIOFactoryTemplate:public ObjectFactoryBase
+class ITK_TxtTransformIO_EXPORTS TxtTransformIOFactoryTemplate:public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */

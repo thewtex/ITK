@@ -19,6 +19,17 @@
 #define __itkTxtTransformIO_h
 #include "itkTransformIOBase.h"
 
+//-----------------------------------------------------------------------------
+#if defined(WIN32)
+  #if defined(ITKIOTransformInsightLegacy_EXPORTS)
+    #define ITK_TxtTransformIO_EXPORTS __declspec( dllexport )
+  #else
+    #define ITK_TxtTransformIO_EXPORTS __declspec( dllimport )
+  #endif
+#else
+  #define ITK_TxtTransformIO_EXPORTS
+#endif
+
 namespace itk
 {
 /** \class TxtTransformIOTemplate
@@ -26,7 +37,7 @@ namespace itk
    * \ingroup ITKIOTransformInsightLegacy
    */
 template<class ParametersValueType>
-class ITK_EXPORT TxtTransformIOTemplate:public TransformIOBaseTemplate<ParametersValueType>
+class ITK_TxtTransformIO_EXPORTS TxtTransformIOTemplate:public TransformIOBaseTemplate<ParametersValueType>
 {
 public:
   typedef TxtTransformIOTemplate                        Self;
