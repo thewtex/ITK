@@ -19,7 +19,7 @@
 #define __itkMatlabTransformIOFactory_h
 
 #include "itkObjectFactoryBase.h"
-#include "itkTransformIOBase.h"
+#include "itkMatlabTransformIO.h"
 
 namespace itk
 {
@@ -73,8 +73,10 @@ typedef MatlabTransformIOFactoryTemplate<double> MatlabTransformIOFactory;
 
 } // end namespace itk
 
+#ifndef itkMatlabTransformIOFactory_cxx
 extern template class itk::MatlabTransformIOFactoryTemplate<float>;
 extern template class itk::MatlabTransformIOFactoryTemplate<double>;
+#endif
 
 #ifndef ITK_MANUAL_INSTANTIATION
 #include "itkMatlabTransformIOFactory.hxx"

@@ -15,6 +15,7 @@
  *  limitations under the License.
  *
  *=========================================================================*/
+#define itkMatlabTransformIOFactory_cxx
 #include "itkMatlabTransformIOFactory.h"
 
 template class itk::MatlabTransformIOFactoryTemplate<float>;

@@ -22,6 +22,8 @@
 #include "itkObjectToObjectMetricBase.h"
 #include "itkIntTypes.h"
 
+
+
 namespace itk
 {
 /** \class ObjectToObjectOptimizerBaseTemplate

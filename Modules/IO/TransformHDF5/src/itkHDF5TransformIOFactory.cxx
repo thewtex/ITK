@@ -15,6 +15,7 @@
  *  limitations under the License.
  *
  *=========================================================================*/
+#define itkHDF5TransformIOFactory_cxx // to suppress extern template...
 #include "itkHDF5TransformIOFactory.h"
 
 template class itk::HDF5TransformIOFactoryTemplate<float>;

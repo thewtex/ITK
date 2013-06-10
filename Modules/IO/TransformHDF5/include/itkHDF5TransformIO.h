@@ -44,7 +44,7 @@ namespace itk
  * \ingroup ITKIOTransformHDF5
  */
 template< class TInternalComputationValueType >
-class HDF5TransformIOTemplate:public TransformIOBaseTemplate< TInternalComputationValueType >
+class ITK_EXPORT HDF5TransformIOTemplate:public TransformIOBaseTemplate< TInternalComputationValueType >
 {
 public:
   typedef HDF5TransformIOTemplate                               Self;

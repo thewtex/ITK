@@ -15,6 +15,7 @@
  *  limitations under the License.
  *
  *=========================================================================*/
+#define itkTxtTransformIOFactory_cxx // suppress extern template declaration
 #include "itkTxtTransformIOFactory.h"
 
 template class itk::TxtTransformIOFactoryTemplate<float>;

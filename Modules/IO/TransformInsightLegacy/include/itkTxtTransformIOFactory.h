@@ -19,7 +19,7 @@
 #define __itkTxtTransformIOFactory_h
 
 #include "itkObjectFactoryBase.h"
-#include "itkTransformIOBase.h"
+#include "itkTxtTransformIO.h"
 
 namespace itk
 {
@@ -72,8 +72,10 @@ typedef TxtTransformIOFactoryTemplate<double> TxtTransformIOFactory;
 
 } // end namespace itk
 
+#ifndef itkTxtTransformIOFactory_cxx
 extern template class itk::TxtTransformIOFactoryTemplate<float>;
 extern template class itk::TxtTransformIOFactoryTemplate<double>;
+#endif
 
 #ifndef ITK_MANUAL_INSTANTIATION
 #include "itkTxtTransformIOFactory.hxx"
