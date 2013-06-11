@@ -18,6 +18,7 @@
 
 #ifndef __itkDOMReader_h
 #define __itkDOMReader_h
+#include "ITKIOXMLModule.h"
 
 #include "itkDOMNodeXMLReader.h"
 #include "itkObject.h"

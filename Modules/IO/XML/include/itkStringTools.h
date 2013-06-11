@@ -18,6 +18,7 @@
 
 #ifndef __itkStringTools_h
 #define __itkStringTools_h
+#include "ITKIOXMLModule.h"
 
 #include <vector>
 #include <map>

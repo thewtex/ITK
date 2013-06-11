@@ -18,6 +18,7 @@
 
 #ifndef __itkCSVArray2DFileReader_h
 #define __itkCSVArray2DFileReader_h
+#include "ITKIOCSVModule.h"
 
 #include "itkCSVFileReaderBase.h"
 #include "itkCSVArray2DDataObject.h"
@@ -75,7 +76,7 @@ namespace itk
  * \ingroup ITKIOCSV
  */
 template <class TData>
-class ITK_EXPORT CSVArray2DFileReader:public CSVFileReaderBase
+class ITKIOCSV_EXPORT CSVArray2DFileReader:public CSVFileReaderBase
 {
 public:
   /** Standard class typedefs */

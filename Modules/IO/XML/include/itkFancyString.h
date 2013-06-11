@@ -18,6 +18,7 @@
 
 #ifndef __itkFancyString_h
 #define __itkFancyString_h
+#include "ITKIOXMLModule.h"
 
 #include <string>
 #include <vector>

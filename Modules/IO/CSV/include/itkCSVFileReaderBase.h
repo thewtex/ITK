@@ -18,6 +18,7 @@
 
 #ifndef __itkCSVFileReaderBase_h
 #define __itkCSVFileReaderBase_h
+#include "ITKIOCSVModule.h"
 
 #include "itkLightProcessObject.h"
 #include <vcl_limits.h>
@@ -60,7 +61,7 @@ namespace itk
  * \ingroup ITKIOCSV
  */
 
-class ITK_EXPORT CSVFileReaderBase:public LightProcessObject
+class ITKIOCSV_EXPORT CSVFileReaderBase:public LightProcessObject
 {
 public:
   /** Standard class typedefs */

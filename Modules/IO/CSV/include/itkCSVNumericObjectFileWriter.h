@@ -18,6 +18,7 @@
 
 #ifndef __itkCSVNumericObjectFileWriter_h
 #define __itkCSVNumericObjectFileWriter_h
+#include "ITKIOCSVModule.h"
 
 #include "itkLightProcessObject.h"
 #include "itkMacro.h"
@@ -58,7 +59,7 @@ namespace itk
  * \ingroup ITKIOCSV
  */
 template <class TValueType, unsigned int NRows = 0, unsigned int NColumns = 0>
-class ITK_EXPORT CSVNumericObjectFileWriter:public LightProcessObject
+class ITKIOCSV_EXPORT CSVNumericObjectFileWriter:public LightProcessObject
 {
 public:
   /** Standard class typedefs */

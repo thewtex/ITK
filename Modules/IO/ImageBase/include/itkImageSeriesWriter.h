@@ -17,6 +17,7 @@
  *=========================================================================*/
 #ifndef __itkImageSeriesWriter_h
 #define __itkImageSeriesWriter_h
+#include "ITKIOImageBaseModule.h"
 
 #include "itkImageRegion.h"
 #include "itkImageFileWriter.h"
@@ -78,7 +79,7 @@ public:
  * \ingroup ITKIOImageBase
  */
 template< class TInputImage, class TOutputImage >
-class ITK_EXPORT ImageSeriesWriter:public ProcessObject
+class ITKIOImageBase_EXPORT ImageSeriesWriter:public ProcessObject
 {
 public:
   /** Standard class typedefs. */
