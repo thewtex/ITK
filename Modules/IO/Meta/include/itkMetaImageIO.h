@@ -17,6 +17,7 @@
  *=========================================================================*/
 #ifndef __itkMetaImageIO_h
 #define __itkMetaImageIO_h
+#include "ITKIOMetaModule.h"
 
 
 #include <fstream>
@@ -36,7 +37,7 @@ namespace itk
  *  \ingroup IOFilters
  * \ingroup ITKIOMeta
  */
-class ITK_EXPORT MetaImageIO:public ImageIOBase
+class ITKIOMeta_EXPORT MetaImageIO:public ImageIOBase
 {
 public:
   /** Standard class typedefs. */

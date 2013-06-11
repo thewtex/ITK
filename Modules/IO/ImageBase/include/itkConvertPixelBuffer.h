@@ -17,6 +17,7 @@
  *=========================================================================*/
 #ifndef __itkConvertPixelBuffer_h
 #define __itkConvertPixelBuffer_h
+#include "ITKIOImageBaseModule.h"
 
 #include "itkObject.h"
 #include "itkNumericTraits.h"

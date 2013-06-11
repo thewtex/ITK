@@ -17,6 +17,7 @@
  *=========================================================================*/
 #ifndef __itkTransformFileWriter_h
 #define __itkTransformFileWriter_h
+#include "ITKIOTransformBaseModule.h"
 
 #include "itkTransformIOBase.h"
 #include <iostream>
@@ -33,7 +34,7 @@ namespace itk
  * \wikiexample{IO/TransformFileWriter,Write a transform to a file}
  * \endwiki
  */
-class ITK_EXPORT TransformFileWriter:public LightProcessObject
+class ITKIOTransformBase_EXPORT TransformFileWriter:public LightProcessObject
 {
 public:
 

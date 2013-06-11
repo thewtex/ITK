@@ -17,6 +17,7 @@
  *=========================================================================*/
 #ifndef __itkPolygonGroupSpatialObjectXMLFile_h
 #define __itkPolygonGroupSpatialObjectXMLFile_h
+#include "ITKIOSpatialObjectsModule.h"
 
 
 #include "itkPolygonGroupSpatialObject.h"
@@ -32,7 +33,7 @@ typedef PolygonGroupSpatialObject< 3 > PGroupSpatialObjectType;
  * creates a corresponding PolygonGroupSpatialObject
  * \ingroup ITKIOSpatialObjects
  */
-class ITK_EXPORT PolygonGroupSpatialObjectXMLFileReader:
+class ITKIOSpatialObjects_EXPORT PolygonGroupSpatialObjectXMLFileReader:
   public XMLReader< PGroupSpatialObjectType >
 {
 public:
@@ -84,7 +85,7 @@ private:
  * based on a PolygonGroupSpatialObject.
  * \ingroup ITKIOSpatialObjects
  */
-class ITK_EXPORT PolygonGroupSpatialObjectXMLFileWriter:
+class ITKIOSpatialObjects_EXPORT PolygonGroupSpatialObjectXMLFileWriter:
   public XMLWriterBase< PGroupSpatialObjectType >
 {
 public:

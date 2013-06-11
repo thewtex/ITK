@@ -17,6 +17,7 @@
  *=========================================================================*/
 #ifndef __itkMINCImageIOFactory_h
 #define __itkMINCImageIOFactory_h
+#include "ITKIOMINCModule.h"
 
 #include "itkObjectFactoryBase.h"
 #include "itkImageIOBase.h"
@@ -37,7 +38,7 @@ namespace itk
  * And Modified by Vladimir S. FONOV during ITK-MINC Hackathon
  *
  */
-class ITK_EXPORT MINCImageIOFactory : public ObjectFactoryBase
+class ITKIOMINC_EXPORT MINCImageIOFactory : public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */
