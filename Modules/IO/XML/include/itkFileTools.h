@@ -18,6 +18,7 @@
 
 #ifndef __itkFileTools_h
 #define __itkFileTools_h
+#include "ITKIOXMLModule.h"
 
 namespace itk
 {

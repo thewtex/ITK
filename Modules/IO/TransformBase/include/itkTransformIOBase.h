@@ -17,6 +17,7 @@
  *=========================================================================*/
 #ifndef __itkTransformIOBase_h
 #define __itkTransformIOBase_h
+#include "ITKIOTransformBaseModule.h"
 #include "itkLightProcessObject.h"
 #include "itkTransformBase.h"
 #include <list>
@@ -37,7 +38,7 @@ namespace itk
  * reading/writing of transforms.
  * \ingroup ITKIOTransformBase
  */
-class ITK_EXPORT TransformIOBase:public LightProcessObject
+class ITKIOTransformBase_EXPORT TransformIOBase:public LightProcessObject
 {
 public:
   /** Standard class typedefs */

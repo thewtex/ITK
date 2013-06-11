@@ -18,6 +18,7 @@
 
 #ifndef __itkDOMTextNode_h
 #define __itkDOMTextNode_h
+#include "ITKIOXMLModule.h"
 
 #include "itkDOMNode.h"
 

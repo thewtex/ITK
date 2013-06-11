@@ -17,6 +17,7 @@
  *=========================================================================*/
 #ifndef __itkMeshFileWriter_h
 #define __itkMeshFileWriter_h
+#include "ITKIOMeshModule.h"
 
 #include "itkProcessObject.h"
 #include "itkMeshIOBase.h"
@@ -73,7 +74,7 @@ public:
  * \ingroup ITKIOMesh
  */
 template< class TInputMesh >
-class ITK_EXPORT MeshFileWriter:public ProcessObject
+class ITKIOMesh_EXPORT MeshFileWriter:public ProcessObject
 {
 public:
   /** Standard class typedefs. */

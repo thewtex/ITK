@@ -18,6 +18,7 @@
 
 #ifndef __itkDOMNode_h
 #define __itkDOMNode_h
+#include "ITKIOXMLModule.h"
 
 #include "itkObject.h"
 #include "itkObjectFactory.h"

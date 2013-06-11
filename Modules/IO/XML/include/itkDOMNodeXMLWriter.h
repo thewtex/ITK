@@ -18,6 +18,7 @@
 
 #ifndef __itkDOMNodeXMLWriter_h
 #define __itkDOMNodeXMLWriter_h
+#include "ITKIOXMLModule.h"
 
 #include "itkDOMNode.h"
 #include "itkObject.h"

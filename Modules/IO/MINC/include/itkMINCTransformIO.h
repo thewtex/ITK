@@ -22,6 +22,7 @@
 
 #ifndef __itkMINCTransformIO_h
 #define __itkMINCTransformIO_h
+#include "ITKIOMINCModule.h"
 #include "itkTransformIOBase.h"
 
 #include <string>

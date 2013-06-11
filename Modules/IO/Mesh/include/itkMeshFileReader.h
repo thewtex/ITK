@@ -17,6 +17,7 @@
  *=========================================================================*/
 #ifndef __itkMeshFileReader_h
 #define __itkMeshFileReader_h
+#include "ITKIOMeshModule.h"
 
 #include "itkMacro.h"
 #include "itkHexahedronCell.h"
@@ -100,7 +101,7 @@ public:
 template< class TOutputMesh,
           class ConvertPointPixelTraits = MeshConvertPixelTraits< typename TOutputMesh::PixelType >,
           class ConvertCellPixelTraits = MeshConvertPixelTraits< typename TOutputMesh::CellPixelType > >
-class ITK_EXPORT MeshFileReader:public MeshSource< TOutputMesh >
+class ITKIOMesh_EXPORT MeshFileReader:public MeshSource< TOutputMesh >
 {
 public:
   /** Standard class typedefs. */
