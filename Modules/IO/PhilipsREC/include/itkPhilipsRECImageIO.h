@@ -50,7 +50,7 @@ namespace itk
  * \ingroup ITKIOPhilipsREC
  */
 
-class ITK_EXPORT PhilipsRECImageIO:public ImageIOBase
+class ITKPhilipsREC_EXPORT PhilipsRECImageIO:public ImageIOBase
 {
 public:
   /** Standard class typedefs. */

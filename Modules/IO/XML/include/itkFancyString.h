@@ -41,7 +41,7 @@ namespace itk
  *
  * \ingroup ITKIOXML
  */
-class FancyString : public std::string
+class ITKXML_EXPORT FancyString : public std::string
 {
 public:
   FancyString();

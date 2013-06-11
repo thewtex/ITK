@@ -37,7 +37,7 @@ namespace itk
  * \ingroup ITKIOTransformBase
  */
 
-class ITK_EXPORT TransformFactoryBase:public ObjectFactoryBase
+class ITKTransformBase_EXPORT TransformFactoryBase:public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */

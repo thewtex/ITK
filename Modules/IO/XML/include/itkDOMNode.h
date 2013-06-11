@@ -49,7 +49,7 @@ class DOMTextNode; // forward declaration
  *
  * \ingroup ITKIOXML
  */
-class DOMNode : public Object
+class ITKXML_EXPORT DOMNode : public Object
 {
 public:
   /** Standard class typedefs. */

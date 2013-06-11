@@ -34,7 +34,7 @@ namespace itk
  * \ingroup ITKIOMesh
  */
 
-class ITK_EXPORT FreeSurferBinaryMeshIO:public MeshIOBase
+class ITKMesh_EXPORT FreeSurferBinaryMeshIO:public MeshIOBase
 {
 public:
   /** Standard class typedefs. */

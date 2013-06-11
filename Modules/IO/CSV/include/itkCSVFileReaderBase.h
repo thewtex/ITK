@@ -60,7 +60,7 @@ namespace itk
  * \ingroup ITKIOCSV
  */
 
-class ITK_EXPORT CSVFileReaderBase:public LightProcessObject
+class ITKCSV_EXPORT CSVFileReaderBase:public LightProcessObject
 {
 public:
   /** Standard class typedefs */

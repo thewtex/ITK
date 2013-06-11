@@ -29,7 +29,7 @@ namespace itk
  *  object factory.
  * \ingroup ITKIOTransformMatlab
  */
-class ITK_EXPORT MatlabTransformIOFactory:public ObjectFactoryBase
+class ITKTransformMatlab_EXPORT MatlabTransformIOFactory:public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */

@@ -62,7 +62,7 @@ namespace itk
  * \ingroup ITKIOXML
  */
 template< class TOutput >
-class DOMReader : public Object
+class ITKXML_EXPORT DOMReader : public Object
 {
 public:
   /** Standard class typedefs. */

@@ -33,7 +33,7 @@ namespace itk
  * \wikiexample{IO/TransformFileWriter,Write a transform to a file}
  * \endwiki
  */
-class ITK_EXPORT TransformFileWriter:public LightProcessObject
+class ITKTransformBase_EXPORT TransformFileWriter:public LightProcessObject
 {
 public:
 

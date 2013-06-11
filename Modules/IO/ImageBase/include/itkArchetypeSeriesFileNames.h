@@ -64,7 +64,7 @@ namespace itk
  * \ingroup ITKIOImageBase
  */
 
-class ITK_EXPORT ArchetypeSeriesFileNames:public Object
+class ITKImageBase_EXPORT ArchetypeSeriesFileNames:public Object
 {
 public:
   /** Standard class typedefs. */

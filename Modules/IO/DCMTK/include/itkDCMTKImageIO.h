@@ -35,7 +35,7 @@ namespace itk
  *
  * \ingroup ITKIODCMTK
  */
-class ITK_EXPORT DCMTKImageIO:public ImageIOBase
+class ITKDCMTK_EXPORT DCMTKImageIO:public ImageIOBase
 {
 public:
   /** Standard class typedefs. */

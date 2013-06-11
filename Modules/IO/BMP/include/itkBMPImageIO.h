@@ -34,7 +34,7 @@ namespace itk
  *
  * \ingroup ITKIOBMP
  */
-class ITK_EXPORT BMPImageIO:public ImageIOBase
+class ITKBMP_EXPORT BMPImageIO:public ImageIOBase
 {
 public:
   /** Standard class typedefs. */

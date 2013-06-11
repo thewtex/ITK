@@ -33,7 +33,7 @@ namespace itk
  *  \ingroup IOFilters
  * \ingroup ITKIONRRD
  */
-class ITK_EXPORT NrrdImageIO:public ImageIOBase
+class ITKNRRD_EXPORT NrrdImageIO:public ImageIOBase
 {
 public:
   /** Standard class typedefs. */

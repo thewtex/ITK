@@ -43,7 +43,7 @@ namespace itk
  *
  * \ingroup ITKIOLSM
  */
-class ITK_EXPORT LSMImageIO:public TIFFImageIO
+class ITKLSM_EXPORT LSMImageIO:public TIFFImageIO
 {
 public:
   /** Standard class typedefs. */

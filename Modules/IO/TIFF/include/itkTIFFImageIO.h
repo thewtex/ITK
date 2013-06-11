@@ -39,7 +39,7 @@ class TIFFReaderInternal;
  * \wikiexample{IO/TIFFImageIO,Write a TIFF image}
  * \endwiki
  */
-class ITK_EXPORT TIFFImageIO:public ImageIOBase
+class ITKTIFF_EXPORT TIFFImageIO:public ImageIOBase
 {
 public:
   /** Standard class typedefs. */

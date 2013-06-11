@@ -27,7 +27,7 @@ namespace itk
  * \brief This is a helper class to provide file/directory manipulations such as file creation, directory creation, etc.
  * \ingroup ITKIOXML
  */
-class FileTools
+class ITKXML_EXPORT FileTools
 {
 public:
   /** Helper function to create the directory, if it does not exist. */

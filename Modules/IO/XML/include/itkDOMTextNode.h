@@ -37,7 +37,7 @@ namespace itk
  *
  * \ingroup ITKIOXML
  */
-class DOMTextNode : public DOMNode
+class ITKXML_EXPORT DOMTextNode : public DOMNode
 {
 public:
   /** Standard class typedefs. */

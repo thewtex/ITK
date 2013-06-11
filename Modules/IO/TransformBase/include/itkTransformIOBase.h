@@ -37,7 +37,7 @@ namespace itk
  * reading/writing of transforms.
  * \ingroup ITKIOTransformBase
  */
-class ITK_EXPORT TransformIOBase:public LightProcessObject
+class ITKTransformBase_EXPORT TransformIOBase:public LightProcessObject
 {
 public:
   /** Standard class typedefs */

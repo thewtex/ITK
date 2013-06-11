@@ -37,7 +37,7 @@ namespace itk
  * \brief Create instances of StimulateImageIO objects using an object factory.
  * \ingroup ITKIOStimulate
  */
-class ITK_EXPORT StimulateImageIOFactory:public ObjectFactoryBase
+class ITKStimulate_EXPORT StimulateImageIOFactory:public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */

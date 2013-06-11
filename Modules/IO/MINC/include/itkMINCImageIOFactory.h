@@ -37,7 +37,7 @@ namespace itk
  * And Modified by Vladimir S. FONOV during ITK-MINC Hackathon
  *
  */
-class ITK_EXPORT MINCImageIOFactory : public ObjectFactoryBase
+class ITKMINC_EXPORT MINCImageIOFactory : public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */

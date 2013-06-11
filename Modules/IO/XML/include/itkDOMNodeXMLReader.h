@@ -57,7 +57,7 @@ namespace itk
  *
  * \ingroup ITKIOXML
  */
-class DOMNodeXMLReader : public Object
+class ITKXML_EXPORT DOMNodeXMLReader : public Object
 {
 public:
   /** Standard class typedefs. */

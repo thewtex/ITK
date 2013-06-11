@@ -28,7 +28,7 @@ namespace itk
  * \brief Create instances of PNGImageIO objects using an object factory.
  * \ingroup ITKIOPNG
  */
-class ITK_EXPORT PNGImageIOFactory:public ObjectFactoryBase
+class ITKPNG_EXPORT PNGImageIOFactory:public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */

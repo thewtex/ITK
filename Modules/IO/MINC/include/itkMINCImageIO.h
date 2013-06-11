@@ -59,7 +59,7 @@ namespace itk
  * \ingroup IOFilters
  *
  */
-class ITK_EXPORT MINCImageIO : public ImageIOBase
+class ITKMINC_EXPORT MINCImageIO : public ImageIOBase
 {
 public:
   /** Standard class typedefs. */

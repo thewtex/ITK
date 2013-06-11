@@ -81,7 +81,7 @@ public:
  * \endwiki
  */
 template< class TInputImage >
-class ITK_EXPORT ImageFileWriter:public ProcessObject
+class ITKImageBase_EXPORT ImageFileWriter:public ProcessObject
 {
 public:
   /** Standard class typedefs. */

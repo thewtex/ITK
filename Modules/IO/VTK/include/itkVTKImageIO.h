@@ -45,7 +45,7 @@ namespace itk
  *
  * \ingroup ITKIOVTK
  */
-class ITK_EXPORT VTKImageIO:
+class ITKVTK_EXPORT VTKImageIO:
   public StreamingImageIOBase
 {
 public:

@@ -26,7 +26,7 @@
 
 namespace itk
 {
-class ITK_EXPORT MetaArrayWriter:public LightProcessObject
+class ITKMeta_EXPORT MetaArrayWriter:public LightProcessObject
 {
 public:
 

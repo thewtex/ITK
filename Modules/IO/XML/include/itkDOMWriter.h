@@ -63,7 +63,7 @@ namespace itk
  * \ingroup ITKIOXML
  */
 template< class TInput >
-class DOMWriter : public Object
+class ITKXML_EXPORT DOMWriter : public Object
 {
 public:
   /** Standard class typedefs. */
