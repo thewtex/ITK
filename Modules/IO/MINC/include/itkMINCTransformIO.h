@@ -22,6 +22,7 @@
 
 #ifndef __itkMINCTransformIO_h
 #define __itkMINCTransformIO_h
+#include "ITKIOMINCModule.h"
 #include "itkTransformIOBase.h"
 
 #include <string>
@@ -35,7 +36,7 @@ namespace itk
   *
   * \ingroup ITKIOMINC
   */
-  class MINCTransformIO:public TransformIOBase
+  class ITKIOMINC_EXPORT MINCTransformIO:public TransformIOBase
   {
   public:
     typedef MINCTransformIO               Self;

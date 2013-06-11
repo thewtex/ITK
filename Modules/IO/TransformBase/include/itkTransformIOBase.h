@@ -17,7 +17,7 @@
  *=========================================================================*/
 #ifndef __itkTransformIOBase_h
 #define __itkTransformIOBase_h
-
+#include "ITKIOTransformBaseModule.h"
 #include "itkLightProcessObject.h"
 #include "itkTransformBase.h"
 #include <list>
@@ -40,7 +40,7 @@ namespace itk
    * \ingroup ITKIOTransformBase
    */
 template<class ScalarType>
-class ITK_EXPORT TransformIOBaseTemplate:public LightProcessObject
+class ITKIOTransformBase_HIDDEN TransformIOBaseTemplate:public LightProcessObject
   {
 public:
   /** Standard class typedefs */

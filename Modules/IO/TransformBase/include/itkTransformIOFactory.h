@@ -17,6 +17,7 @@
  *=========================================================================*/
 #ifndef __itkTransformIOFactory_h
 #define __itkTransformIOFactory_h
+#include "ITKIOTransformBaseModule.h"
 
 #include "itkObject.h"
 #include "itkTransformIOBase.h"
@@ -32,7 +33,7 @@ typedef enum { ReadMode, WriteMode } TransformIOFactoryFileModeType;
  * \ingroup ITKIOTransformBase
  */
 template<class ParametersValueType>
-class ITK_EXPORT TransformIOFactoryTemplate:public Object
+class ITKIOTransformBase_EXPORT TransformIOFactoryTemplate:public Object
 {
 public:
   /** Standard class typedefs. */

@@ -17,6 +17,7 @@
  *=========================================================================*/
 #ifndef __itkCompositeTransformIOHelper_h
 #define __itkCompositeTransformIOHelper_h
+#include "ITKIOTransformBaseModule.h"
 
 #include "itkTransformIOBase.h"
 #include "itkCompositeTransform.h"
@@ -43,7 +44,7 @@ namespace itk
  * \ingroup ITKIOTransformBase
  */
 template <typename TScalar>
-class CompositeTransformIOHelperTemplate
+class ITKIOTransformBase_HIDDEN CompositeTransformIOHelperTemplate
 {
 public:
   typedef typename TransformIOBaseTemplate<TScalar>::TransformType          TransformType;

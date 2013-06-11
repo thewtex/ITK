@@ -17,6 +17,7 @@
  *=========================================================================*/
 #ifndef __itkHDF5TransformIO_h
 #define __itkHDF5TransformIO_h
+#include "ITKIOTransformHDF5Module.h"
 #include "itkTransformIOBase.h"
 
 #include <string>
@@ -66,7 +67,6 @@ struct HDF5CommonPathNames
   };
 
 
-
 /** \class HDF5TransformIOTemplate
  *  \brief Read&Write transforms in HDF5 Format
  *
@@ -77,12 +77,14 @@ struct HDF5CommonPathNames
  * \ingroup ITKIOTransformHDF5
  */
 template< class TInternalComputationValueType >
-class HDF5TransformIOTemplate:public TransformIOBaseTemplate< TInternalComputationValueType >,
-private HDF5CommonPathNames
+class ITKIOTransformHDF5_HIDDEN HDF5TransformIOTemplate:
+    public TransformIOBaseTemplate< TInternalComputationValueType >,
+    private HDF5CommonPathNames
 {
 public:
-  typedef HDF5TransformIOTemplate                               Self;
-  typedef TransformIOBaseTemplate< TInternalComputationValueType >    Superclass;
+  typedef HDF5TransformIOTemplate                                  Self;
+  typedef TransformIOBaseTemplate< TInternalComputationValueType > Superclass;
+
   typedef SmartPointer< Self >                                  Pointer;
   typedef typename Superclass::TransformType                    TransformType;
   typedef typename Superclass::TransformPointer                 TransformPointer;
