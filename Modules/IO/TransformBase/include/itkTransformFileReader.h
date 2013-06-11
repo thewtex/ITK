@@ -17,6 +17,7 @@
  *=========================================================================*/
 #ifndef __itkTransformFileReader_h
 #define __itkTransformFileReader_h
+#include "ITKIOTransformBaseModule.h"
 
 #include "itkTransformIOBase.h"
 
@@ -31,7 +32,7 @@ namespace itk
  * \wikiexample{IO/TransformFileReader,Read a transform from a file}
  * \endwiki
  */
-class ITK_EXPORT TransformFileReader:public LightProcessObject
+class ITKIOTransformBase_EXPORT TransformFileReader:public LightProcessObject
 {
 public:
 

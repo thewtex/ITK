@@ -17,6 +17,7 @@
  *=========================================================================*/
 #ifndef __itkMatlabTransformIO_h
 #define __itkMatlabTransformIO_h
+#include "ITKIOTransformMatlabModule.h"
 #include "itkTransformIOBase.h"
 
 namespace itk
@@ -25,7 +26,7 @@ namespace itk
  *  \brief Create instances of MatlabTransformIO objects.
  * \ingroup ITKIOTransformMatlab
  */
-class ITK_EXPORT MatlabTransformIO:public TransformIOBase
+class ITKIOTransformMatlab_EXPORT MatlabTransformIO:public TransformIOBase
 {
 public:
   typedef MatlabTransformIO             Self;

@@ -17,6 +17,7 @@
  *=========================================================================*/
 #ifndef __itkTxtTransformIO_h
 #define __itkTxtTransformIO_h
+#include "ITKIOTransformInsightLegacyModule.h"
 #include "itkTransformIOBase.h"
 
 namespace itk
@@ -25,7 +26,7 @@ namespace itk
    * \brief Create instances of TxtTransformIO objects.
    * \ingroup ITKIOTransformInsightLegacy
    */
-class ITK_EXPORT TxtTransformIO:public TransformIOBase
+class ITKIOTransformInsightLegacy_EXPORT TxtTransformIO:public TransformIOBase
 {
 public:
   typedef TxtTransformIO                Self;

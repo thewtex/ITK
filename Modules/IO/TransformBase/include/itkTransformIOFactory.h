@@ -17,6 +17,7 @@
  *=========================================================================*/
 #ifndef __itkTransformIOFactory_h
 #define __itkTransformIOFactory_h
+#include "ITKIOTransformBaseModule.h"
 
 #include "itkObject.h"
 #include "itkTransformIOBase.h"
@@ -27,7 +28,7 @@ namespace itk
  * \brief Create instances of TransformIO objects using an object factory.
  * \ingroup ITKIOTransformBase
  */
-class ITK_EXPORT TransformIOFactory:public Object
+class ITKIOTransformBase_EXPORT TransformIOFactory:public Object
 {
 public:
   /** Standard class typedefs. */
