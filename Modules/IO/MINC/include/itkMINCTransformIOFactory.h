@@ -18,6 +18,7 @@
 
 #ifndef __itkMINCTransformIOFactory_h
 #define __itkMINCTransformIOFactory_h
+#include "ITKIOMINCModule.h"
 
 #include "itkObjectFactoryBase.h"
 #include "itkTransformIOBase.h"

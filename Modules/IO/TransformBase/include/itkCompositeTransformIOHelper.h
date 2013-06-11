@@ -17,6 +17,7 @@
  *=========================================================================*/
 #ifndef __itkCompositeTransformIOHelper_h
 #define __itkCompositeTransformIOHelper_h
+#include "ITKIOTransformBaseModule.h"
 
 #include "itkTransformIOBase.h"
 
@@ -41,7 +42,7 @@ namespace itk
  *  of CompositeTransform.
  * \ingroup ITKIOTransformBase
  */
-class CompositeTransformIOHelper
+class ITKIOTransformBase_EXPORT CompositeTransformIOHelper
 {
 public:
   typedef TransformIOBase::TransformType          TransformType;

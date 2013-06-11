@@ -17,6 +17,7 @@
  *=========================================================================*/
 #ifndef __itkMetaArrayReader_h
 #define __itkMetaArrayReader_h
+#include "ITKIOMetaModule.h"
 
 #include "itkLightProcessObject.h"
 #include "itkArray.h"
@@ -26,7 +27,7 @@
 
 namespace itk
 {
-class ITK_EXPORT MetaArrayReader:public LightProcessObject
+class ITKIOMeta_EXPORT MetaArrayReader:public LightProcessObject
 {
 public:
 
