@@ -26,6 +26,7 @@
 
 #ifndef __itkMINCImageIO_h
 #define __itkMINCImageIO_h
+#include "ITKIOMINCModule.h"
 
 #include "itkImageIOBase.h"
 
@@ -59,7 +60,7 @@ namespace itk
  * \ingroup IOFilters
  *
  */
-class MINCImageIO : public ImageIOBase
+class ITKIOMINC_EXPORT MINCImageIO : public ImageIOBase
 {
 public:
   /** Standard class typedefs. */

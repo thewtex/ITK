@@ -17,6 +17,7 @@
  *=========================================================================*/
 #ifndef __itkTxtTransformIO_h
 #define __itkTxtTransformIO_h
+#include "ITKIOTransformInsightLegacyModule.h"
 #include "itkTransformIOBase.h"
 
 namespace itk
@@ -26,7 +27,7 @@ namespace itk
    * \ingroup ITKIOTransformInsightLegacy
    */
 template<class ParametersValueType>
-class TxtTransformIOTemplate:public TransformIOBaseTemplate<ParametersValueType>
+class ITKIOTransformInsightLegacy_HIDDEN TxtTransformIOTemplate:public TransformIOBaseTemplate<ParametersValueType>
 {
 public:
   typedef TxtTransformIOTemplate                        Self;
