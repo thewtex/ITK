@@ -27,6 +27,7 @@
  *=========================================================================*/
 #ifndef __itkTransformFactoryBase_h
 #define __itkTransformFactoryBase_h
+#include "ITKIOTransformBaseModule.h"
 
 #include "itkObjectFactoryBase.h"
 
@@ -37,7 +38,7 @@ namespace itk
  * \ingroup ITKIOTransformBase
  */
 
-class ITK_EXPORT TransformFactoryBase:public ObjectFactoryBase
+class ITKIOTransformBase_EXPORT TransformFactoryBase:public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */
