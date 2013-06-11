@@ -17,6 +17,7 @@
  *=========================================================================*/
 #ifndef __itkTransformIOFactory_h
 #define __itkTransformIOFactory_h
+#include "ITKIOTransformBaseModule.h"
 
 #include "itkObject.h"
 #include "itkTransformIOBase.h"

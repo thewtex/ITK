@@ -17,6 +17,7 @@
  *=========================================================================*/
 #ifndef __itkCompositeTransformIOHelper_h
 #define __itkCompositeTransformIOHelper_h
+#include "ITKIOTransformBaseModule.h"
 
 #include "itkTransformIOBase.h"
 #include "itkCompositeTransform.h"

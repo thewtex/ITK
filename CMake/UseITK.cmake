@@ -28,7 +28,8 @@ if(NOT ITK_NO_IO_FACTORY_REGISTER_MANAGER)
   foreach (ImageFormat  Nifti Nrrd Gipl HDF5 JPEG GDCM BMP LSM PNG TIFF VTK Stimulate BioRad Meta MINC SCIFIO MGH )
     string(TOUPPER ${ImageFormat} ImageFormat_UPPER) ## Need to check for uppercase name as well
     if (ITKIO${ImageFormat}_LOADED OR ITKIO${ImageFormat_UPPER}_LOADED)
-      set (LIST_OF_FACTORIES_REGISTRATION "${LIST_OF_FACTORIES_REGISTRATION}void ${ImageFormat}ImageIOFactoryRegister__Private(void);")
+      set (LIST_OF_FACTORIES_REGISTRATION
+    "${LIST_OF_FACTORIES_REGISTRATION}void ITK_ABI_IMPORT ${ImageFormat}ImageIOFactoryRegister__Private(void);")
       set (LIST_OF_FACTORY_NAMES  "${LIST_OF_FACTORY_NAMES}${ImageFormat}ImageIOFactoryRegister__Private,")
     endif()
   endforeach()
@@ -36,7 +37,8 @@ if(NOT ITK_NO_IO_FACTORY_REGISTER_MANAGER)
   # add ImageIOs in review to the automatic registration
   if (ITK_USE_REVIEW)
     foreach (ImageFormat MRC)
-      set (LIST_OF_FACTORIES_REGISTRATION "${LIST_OF_FACTORIES_REGISTRATION}void ${ImageFormat}ImageIOFactoryRegister__Private(void);")
+      set (LIST_OF_FACTORIES_REGISTRATION
+  "${LIST_OF_FACTORIES_REGISTRATION}void ITK_ABI_IMPORT ${ImageFormat}ImageIOFactoryRegister__Private(void);")
       set (LIST_OF_FACTORY_NAMES  "${LIST_OF_FACTORY_NAMES}${ImageFormat}ImageIOFactoryRegister__Private,")
     endforeach()
   endif()
@@ -51,10 +53,23 @@ if(NOT ITK_NO_IO_FACTORY_REGISTER_MANAGER)
   set(LIST_OF_FACTORIES_REGISTRATION "")
   set(LIST_OF_FACTORY_NAMES "")
 
-  foreach (TransformFormat  Matlab Txt HDF5)
-     set (LIST_OF_FACTORIES_REGISTRATION "${LIST_OF_FACTORIES_REGISTRATION}void ${TransformFormat}TransformIOFactoryRegister__Private(void);")
-     set (LIST_OF_FACTORY_NAMES "${LIST_OF_FACTORY_NAMES}${TransformFormat}TransformIOFactoryRegister__Private,")
+  foreach (TransformFormat  Matlab HDF5)
+    if (ITKIOTransform${TransformFormat}_LOADED)
+      set (LIST_OF_FACTORIES_REGISTRATION
+    "${LIST_OF_FACTORIES_REGISTRATION}void ITK_ABI_IMPORT ${TransformFormat}TransformIOFactoryRegister__Private(void);")
+      set (LIST_OF_FACTORY_NAMES  "${LIST_OF_FACTORY_NAMES}${TransformFormat}TransformIOFactoryRegister__Private,")
+    endif()
   endforeach()
+  if (ITKIOMINC_LOADED)
+    set (LIST_OF_FACTORIES_REGISTRATION
+    "${LIST_OF_FACTORIES_REGISTRATION}void ITK_ABI_IMPORT MINCTransformIOFactoryRegister__Private(void);")
+    set (LIST_OF_FACTORY_NAMES  "${LIST_OF_FACTORY_NAMES}MINCTransformIOFactoryRegister__Private,")
+  endif()
+  if (ITKIOTransformInsightLegacy_LOADED)
+    set (LIST_OF_FACTORIES_REGISTRATION
+    "${LIST_OF_FACTORIES_REGISTRATION}void ITK_ABI_IMPORT TxtTransformIOFactoryRegister__Private(void);")
+    set (LIST_OF_FACTORY_NAMES  "${LIST_OF_FACTORY_NAMES}TxtTransformIOFactoryRegister__Private,")
+  endif()
 
   get_filename_component(_selfdir "${CMAKE_CURRENT_LIST_FILE}" PATH)
   configure_file(${_selfdir}/itkTransformIOFactoryRegisterManager.h.in

@@ -24,6 +24,7 @@
 
 #ifndef __itkNiftiImageIO_h
 #define __itkNiftiImageIO_h
+#include "ITKIONIFTIModule.h"
 
 
 #include <fstream>
@@ -41,7 +42,7 @@ namespace itk
  * \ingroup IOFilters
  * \ingroup ITKIONIFTI
  */
-class ITK_EXPORT NiftiImageIO:public ImageIOBase
+class ITKIONIFTI_EXPORT NiftiImageIO:public ImageIOBase
 {
 public:
   /** Standard class typedefs. */

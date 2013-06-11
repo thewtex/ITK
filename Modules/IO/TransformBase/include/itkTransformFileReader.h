@@ -17,6 +17,7 @@
  *=========================================================================*/
 #ifndef __itkTransformFileReader_h
 #define __itkTransformFileReader_h
+#include "ITKIOTransformBaseModule.h"
 
 #include "itkTransformIOBase.h"
 
@@ -32,7 +33,7 @@ namespace itk
    * \endwiki
    */
 template<class ScalarType>
-class ITK_EXPORT TransformFileReaderTemplate:public LightProcessObject
+class ITKIOTransformBase_EXPORT TransformFileReaderTemplate:public LightProcessObject
 {
 public:
 

@@ -27,6 +27,7 @@
  *=========================================================================*/
 #ifndef __itkVTKImageIO_h
 #define __itkVTKImageIO_h
+#include "ITKIOVTKModule.h"
 
 
 #include <fstream>
@@ -45,7 +46,7 @@ namespace itk
  *
  * \ingroup ITKIOVTK
  */
-class ITK_EXPORT VTKImageIO:
+class ITKIOVTK_EXPORT VTKImageIO:
   public StreamingImageIOBase
 {
 public:
