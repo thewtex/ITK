@@ -26,6 +26,7 @@ nm libitktiff.a |grep " R "
 #define _TIFFDataSize itk__TIFFDataSize
 #define _TIFFSwab24BitData itk__TIFFSwab24BitData
 #define _TIFFCheckMalloc itk__TIFFCheckMalloc
+#define _TIFFCheckRealloc itk__TIFFCheckRealloc
 #define tiffDataWidth itk_tiffDataWidth
 #define LogL10fromY itk_LogL10fromY
 #define LogL10toY itk_LogL10toY
@@ -172,6 +173,7 @@ nm libitktiff.a |grep " R "
 #define TIFFWarningExt itk_TIFFWarningExt
 #define TIFFWriteBufferSetup itk_TIFFWriteBufferSetup
 #define TIFFWriteCheck itk_TIFFWriteCheck
+#define TIFFWriteCustomDirectory itk_TIFFWriteCustomDirectory
 #define TIFFWriteDirectory itk_TIFFWriteDirectory
 #define TIFFWriteEncodedStrip itk_TIFFWriteEncodedStrip
 #define TIFFWriteEncodedTile itk_TIFFWriteEncodedTile
