@@ -11,183 +11,34 @@ ITK.
 
 The following commands were used to obtain the symbol list:
 
-nm libitktiff.a |grep " T "
-nm libitktiff.a |grep " D "
-nm libitktiff.a |grep " R "
+nm libitktiff-*.a | grep " T \| D \| R " | awk '{print $3}' | awk '{sub(/itk_/,"")}; 1' | sed 's \(.*\) \1\ itk_\1 ' | sed 's/^/#define /'
+
+The first command extracts all the symbols from libitktiff.
+The second command extracts only the symbols from the Text, Data, or Readonly Data sections.
+The third command prints out only the third column which is the symbol name (the first 2 columns are address and type)
+The fourth command removes the prepended itk_ symbol if it exists because it may have been already mangled
+The fifth command prints out the symbol name and the mangled symbol name
+The sixth command prepends #define to the string
+
+This file was last updated for commit 5f0f60cef6ad0cc86f73ae447fedd5104b72920d
 
 */
 
-#define __TIFFmalloc itk___TIFFmalloc
-#define __TIFFfree itk___TIFFfree
-#define _TIFFerrorHandler itk__TIFFerrorHandler
-#define _TIFFwarningHandler itk__TIFFwarningHandler
-#define _TIFFerrorHandlerExt itk__TIFFerrorHandlerExt
-#define _TIFFwarningHandlerExt itk__TIFFwarningHandlerExt
-#define _TIFFDataSize itk__TIFFDataSize
-#define _TIFFSwab24BitData itk__TIFFSwab24BitData
 #define _TIFFCheckMalloc itk__TIFFCheckMalloc
-#define tiffDataWidth itk_tiffDataWidth
-#define LogL10fromY itk_LogL10fromY
-#define LogL10toY itk_LogL10toY
-#define LogL16fromY itk_LogL16fromY
-#define LogL16toY itk_LogL16toY
-#define LogLuv24fromXYZ itk_LogLuv24fromXYZ
-#define LogLuv24toXYZ itk_LogLuv24toXYZ
-#define LogLuv32fromXYZ itk_LogLuv32fromXYZ
-#define LogLuv32toXYZ itk_LogLuv32toXYZ
-#define TIFFCheckTile itk_TIFFCheckTile
-#define TIFFClientOpen itk_TIFFClientOpen
-#define TIFFClose itk_TIFFClose
-#define TIFFComputeStrip itk_TIFFComputeStrip
-#define TIFFComputeTile itk_TIFFComputeTile
-#define TIFFCreateDirectory itk_TIFFCreateDirectory
-#define TIFFCurrentDirOffset itk_TIFFCurrentDirOffset
-#define TIFFCurrentDirectory itk_TIFFCurrentDirectory
-#define TIFFCurrentRow itk_TIFFCurrentRow
-#define TIFFCurrentStrip itk_TIFFCurrentStrip
-#define TIFFCurrentTile itk_TIFFCurrentTile
-#define TIFFDefaultDirectory itk_TIFFDefaultDirectory
-#define TIFFDefaultStripSize itk_TIFFDefaultStripSize
-#define TIFFDefaultTileSize itk_TIFFDefaultTileSize
-#define TIFFError itk_TIFFError
-#define TIFFErrorExt itk_TIFFErrorExt
-#define TIFFFdOpen itk_TIFFFdOpen
-#define TIFFFieldWithName itk_TIFFFieldWithName
-#define TIFFFileName itk_TIFFFileName
-#define TIFFFileno itk_TIFFFileno
-#define TIFFFindCODEC itk_TIFFFindCODEC
-#define TIFFFindFieldInfoByName itk_TIFFFindFieldInfoByName
-#define TIFFFlush itk_TIFFFlush
-#define TIFFFlushData itk_TIFFFlushData
-#define TIFFFlushData1 itk_TIFFFlushData1
-#define TIFFFreeDirectory itk_TIFFFreeDirectory
-#define TIFFGetBitRevTable itk_TIFFGetBitRevTable
-#define TIFFGetField itk_TIFFGetField
+#define _TIFFCheckRealloc itk__TIFFCheckRealloc
 #define TIFFGetFieldDefaulted itk_TIFFGetFieldDefaulted
-#define TIFFGetMode itk_TIFFGetMode
-#define TIFFGetVersion itk_TIFFGetVersion
-#define TIFFInitDumpMode itk_TIFFInitDumpMode
-
-#ifdef  LZW_SUPPORT
- #define  TIFFInitLZW    itk_TIFFInitLZW
-#endif
-#ifdef  PACKBITS_SUPPORT
-#define  TIFFInitPackBits  itk_TIFFInitPackBits
-#endif
-
-#define TIFFInitThunderScan itk_TIFFInitThunderScan
-
-#ifdef  NEXT_SUPPORT
-#define  TIFFInitNeXT    itk_TIFFInitNeXT
-#endif
-#ifdef  JPEG_SUPPORT
-#define  TIFFInitJPEG    itk_TIFFInitJPEG
-#endif
-#ifdef  OJPEG_SUPPORT
-#define  TIFFInitOJPEG    itk_TIFFInitOJPEG
-#endif
-#ifdef  CCITT_SUPPORT
-#define  TIFFInitCCITTRLE  itk_TIFFInitCCITTRLE
-#define  TIFFInitCCITTRLEW  itk_TIFFInitCCITTRLEW
-#define  TIFFInitCCITTFax3  itk_TIFFInitCCITTFax3
-#define  TIFFInitCCITTFax4  itk_TIFFInitCCITTFax4
-#endif
-#ifdef JBIG_SUPPORT
-#define  TIFFInitJBIG    itk_TIFFInitJBIG
-#endif
-#ifdef  ZIP_SUPPORT
-#define  TIFFInitZIP    itk_TIFFInitZIP
-#endif
-
-#define  TIFFInitPixarLog  itk_TIFFInitPixarLog
-
-#ifdef LOGLUV_SUPPORT
-#define TIFFInitSGILog    itk_TIFFInitSGILog
-#endif
-
-#define TIFFIsByteSwapped itk_TIFFIsByteSwapped
-#define TIFFIsMSB2LSB itk_TIFFIsMSB2LSB
-#define TIFFIsTiled itk_TIFFIsTiled
-#define TIFFIsUpSampled itk_TIFFIsUpSampled
-#define TIFFLastDirectory itk_TIFFLastDirectory
-#define TIFFNumberOfDirectories itk_TIFFNumberOfDirectories
-#define TIFFNumberOfStrips itk_TIFFNumberOfStrips
-#define TIFFNumberOfTiles itk_TIFFNumberOfTiles
-#define TIFFOpen itk_TIFFOpen
-#define TIFFOpenW itk_TIFFOpenW
-#define TIFFPredictorInit itk_TIFFPredictorInit
-#define TIFFPredictorCleanup itk_TIFFPredictorCleanup
-#define TIFFPrintDirectory itk_TIFFPrintDirectory
-#define TIFFRGBAImageBegin itk_TIFFRGBAImageBegin
-#define TIFFRGBAImageEnd itk_TIFFRGBAImageEnd
-#define TIFFRGBAImageGet itk_TIFFRGBAImageGet
-#define TIFFRGBAImageOK itk_TIFFRGBAImageOK
-#define TIFFRasterScanlineSize itk_TIFFRasterScanlineSize
-#define TIFFReadBufferSetup itk_TIFFReadBufferSetup
-#define TIFFReadCustomDirectory itk_TIFFReadCustomDirectory
-#define TIFFReadDirectory itk_TIFFReadDirectory
-#define TIFFReadEncodedStrip itk_TIFFReadEncodedStrip
-#define TIFFReadEncodedTile itk_TIFFReadEncodedTile
-#define TIFFReadEXIFDirectory itk_TIFFReadEXIFDirectory
-#define TIFFReadRGBAImage itk_TIFFReadRGBAImage
-#define TIFFReadRGBAStrip itk_TIFFReadRGBAStrip
-#define TIFFReadRGBATile itk_TIFFReadRGBATile
-#define TIFFReadRawStrip itk_TIFFReadRawStrip
-#define TIFFReadRawTile itk_TIFFReadRawTile
-#define TIFFReadScanline itk_TIFFReadScanline
-#define TIFFReadTile itk_TIFFReadTile
-#define TIFFReassignTagToIgnore itk_TIFFReassignTagToIgnore
-#define TIFFRegisterCODEC itk_TIFFRegisterCODEC
-#define TIFFReverseBits itk_TIFFReverseBits
-#define TIFFRewriteDirectory itk_TIFFRewriteDirectory
-#define TIFFScanlineSize itk_TIFFScanlineSize
-#define TIFFSetCompressionScheme itk_TIFFSetCompressionScheme
-#define TIFFSetDirectory itk_TIFFSetDirectory
-#define TIFFSetErrorHandler itk_TIFFSetErrorHandler
-#define TIFFSetErrorHandlerExt itk_TIFFSetErrorHandlerExt
-#define TIFFSetField itk_TIFFSetField
-#define TIFFSetSubDirectory itk_TIFFSetSubDirectory
-#define TIFFSetTagExtender itk_TIFFSetTagExtender
-#define TIFFSetWarningHandler itk_TIFFSetWarningHandler
-#define TIFFSetWarningHandlerExt itk_TIFFSetWarningHandlerExt
-#define TIFFSetWriteOffset itk_TIFFSetWriteOffset
-#define TIFFStripSize itk_TIFFStripSize
-#define TIFFSwabArrayOfDouble itk_TIFFSwabArrayOfDouble
-#define TIFFSwabArrayOfLong itk_TIFFSwabArrayOfLong
-#define TIFFSwabArrayOfShort itk_TIFFSwabArrayOfShort
-#define TIFFSwabArrayOfTriples itk_TIFFSwabArrayOfTriples
-#define TIFFSwabDouble itk_TIFFSwabDouble
-#define TIFFSwabLong itk_TIFFSwabLong
-#define TIFFSwabShort itk_TIFFSwabShort
-#define TIFFTileRowSize itk_TIFFTileRowSize
-#define TIFFTileSize itk_TIFFTileSize
-#define TIFFUnRegisterCODEC itk_TIFFUnRegisterCODEC
-#define TIFFUnlinkDirectory itk_TIFFUnlinkDirectory
-#define TIFFVGetField itk_TIFFVGetField
+#define _TIFFMultiply32 itk__TIFFMultiply32
+#define _TIFFMultiply64 itk__TIFFMultiply64
+#define _TIFFUInt64ToDouble itk__TIFFUInt64ToDouble
+#define _TIFFUInt64ToFloat itk__TIFFUInt64ToFloat
 #define TIFFVGetFieldDefaulted itk_TIFFVGetFieldDefaulted
-#define TIFFVSetField itk_TIFFVSetField
-#define TIFFVStripSize itk_TIFFVStripSize
-#define TIFFVTileSize itk_TIFFVTileSize
-#define TIFFWarning itk_TIFFWarning
-#define TIFFWarningExt itk_TIFFWarningExt
-#define TIFFWriteBufferSetup itk_TIFFWriteBufferSetup
-#define TIFFWriteCheck itk_TIFFWriteCheck
-#define TIFFWriteDirectory itk_TIFFWriteDirectory
-#define TIFFWriteEncodedStrip itk_TIFFWriteEncodedStrip
-#define TIFFWriteEncodedTile itk_TIFFWriteEncodedTile
-#define TIFFWriteRawStrip itk_TIFFWriteRawStrip
-#define TIFFWriteRawTile itk_TIFFWriteRawTile
-#define TIFFWriteScanline itk_TIFFWriteScanline
-#define TIFFWriteTile itk_TIFFWriteTile
-#define XYZtoRGB24 itk_XYZtoRGB24
-#define _TIFFDefaultStripSize itk__TIFFDefaultStripSize
-#define _TIFFDefaultTileSize itk__TIFFDefaultTileSize
-#define _TIFFFax3fillruns itk__TIFFFax3fillruns
-#define TIFFFieldWithTag itk_TIFFFieldWithTag
-#define TIFFFindFieldInfo itk_TIFFFindFieldInfo
-#define TIFFMergeFieldInfo itk_TIFFMergeFieldInfo
-
-#define _TIFFNoPostDecode itk__TIFFNoPostDecode
+#define TIFFCleanup itk_TIFFCleanup
+#define TIFFClose itk_TIFFClose
+#define TIFFIsCODECConfigured itk_TIFFIsCODECConfigured
+#define _TIFFBuiltinCODECS itk__TIFFBuiltinCODECS
+#define TIFFFindCODEC itk_TIFFFindCODEC
+#define TIFFGetConfiguredCODECs itk_TIFFGetConfiguredCODECs
+#define _TIFFNoFixupTags itk__TIFFNoFixupTags
 #define _TIFFNoPreCode itk__TIFFNoPreCode
 #define _TIFFNoRowDecode itk__TIFFNoRowDecode
 #define _TIFFNoRowEncode itk__TIFFNoRowEncode
@@ -196,81 +47,224 @@ nm libitktiff.a |grep " R "
 #define _TIFFNoStripEncode itk__TIFFNoStripEncode
 #define _TIFFNoTileDecode itk__TIFFNoTileDecode
 #define _TIFFNoTileEncode itk__TIFFNoTileEncode
-#define _TIFFPrintFieldInfo itk__TIFFPrintFieldInfo
-#define _TIFFSampleToTagType itk__TIFFSampleToTagType
+#define TIFFRegisterCODEC itk_TIFFRegisterCODEC
+#define TIFFSetCompressionScheme itk_TIFFSetCompressionScheme
 #define _TIFFSetDefaultCompressionState itk__TIFFSetDefaultCompressionState
-#define _TIFFSetupFieldInfo itk__TIFFSetupFieldInfo
-#define _TIFFSwab16BitData itk__TIFFSwab16BitData
-#define _TIFFSwab32BitData itk__TIFFSwab32BitData
-#define _TIFFSwab64BitData itk__TIFFSwab64BitData
-#define _TIFFfree itk__TIFFfree
-#define _TIFFgetMode itk__TIFFgetMode
-#define _TIFFmalloc itk__TIFFmalloc
-#define _TIFFmemcmp itk__TIFFmemcmp
-#define _TIFFmemcpy itk__TIFFmemcpy
-#define _TIFFmemset itk__TIFFmemset
-#define _TIFFprintAscii itk__TIFFprintAscii
-#define _TIFFprintAsciiTag itk__TIFFprintAsciiTag
-#define _TIFFrealloc itk__TIFFrealloc
+#define TIFFUnRegisterCODEC itk_TIFFUnRegisterCODEC
+#define TIFFCIELabToRGBInit itk_TIFFCIELabToRGBInit
+#define TIFFCIELabToXYZ itk_TIFFCIELabToXYZ
+#define TIFFXYZToRGB itk_TIFFXYZToRGB
+#define TIFFYCbCrtoRGB itk_TIFFYCbCrtoRGB
+#define TIFFYCbCrToRGBInit itk_TIFFYCbCrToRGBInit
+#define TIFFCreateCustomDirectory itk_TIFFCreateCustomDirectory
+#define TIFFCreateDirectory itk_TIFFCreateDirectory
+#define TIFFCreateEXIFDirectory itk_TIFFCreateEXIFDirectory
+#define TIFFCurrentDirOffset itk_TIFFCurrentDirOffset
+#define TIFFDefaultDirectory itk_TIFFDefaultDirectory
+#define TIFFFreeDirectory itk_TIFFFreeDirectory
+#define TIFFGetField itk_TIFFGetField
+#define TIFFLastDirectory itk_TIFFLastDirectory
+#define TIFFNumberOfDirectories itk_TIFFNumberOfDirectories
 #define _TIFFsetByteArray itk__TIFFsetByteArray
+#define TIFFSetDirectory itk_TIFFSetDirectory
 #define _TIFFsetDoubleArray itk__TIFFsetDoubleArray
+#define TIFFSetField itk_TIFFSetField
 #define _TIFFsetFloatArray itk__TIFFsetFloatArray
+#define _TIFFsetLong8Array itk__TIFFsetLong8Array
 #define _TIFFsetLongArray itk__TIFFsetLongArray
 #define _TIFFsetNString itk__TIFFsetNString
 #define _TIFFsetShortArray itk__TIFFsetShortArray
 #define _TIFFsetString itk__TIFFsetString
+#define TIFFSetSubDirectory itk_TIFFSetSubDirectory
+#define TIFFSetTagExtender itk_TIFFSetTagExtender
+#define TIFFUnlinkDirectory itk_TIFFUnlinkDirectory
+#define TIFFUnsetField itk_TIFFUnsetField
+#define TIFFVGetField itk_TIFFVGetField
+#define TIFFVSetField itk_TIFFVSetField
+#define _TIFFCreateAnonField itk__TIFFCreateAnonField
+#define _TIFFDataSize itk__TIFFDataSize
+#define TIFFDataWidth itk_TIFFDataWidth
+#define TIFFFieldDataType itk_TIFFFieldDataType
+#define TIFFFieldName itk_TIFFFieldName
+#define TIFFFieldPassCount itk_TIFFFieldPassCount
+#define TIFFFieldReadCount itk_TIFFFieldReadCount
+#define TIFFFieldTag itk_TIFFFieldTag
+#define TIFFFieldWithName itk_TIFFFieldWithName
+#define TIFFFieldWithTag itk_TIFFFieldWithTag
+#define TIFFFieldWriteCount itk_TIFFFieldWriteCount
+#define TIFFFindField itk_TIFFFindField
+#define _TIFFFindFieldByName itk__TIFFFindFieldByName
+#define _TIFFFindOrRegisterField itk__TIFFFindOrRegisterField
+#define _TIFFGetExifFields itk__TIFFGetExifFields
+#define _TIFFGetFields itk__TIFFGetFields
+#define TIFFMergeFieldInfo itk_TIFFMergeFieldInfo
+#define _TIFFMergeFields itk__TIFFMergeFields
+#define _TIFFPrintFieldInfo itk__TIFFPrintFieldInfo
+#define _TIFFSetupFields itk__TIFFSetupFields
+#define _TIFFFillStriles itk__TIFFFillStriles
+#define TIFFReadCustomDirectory itk_TIFFReadCustomDirectory
+#define TIFFReadDirectory itk_TIFFReadDirectory
+#define TIFFReadEXIFDirectory itk_TIFFReadEXIFDirectory
+#define TIFFCheckpointDirectory itk_TIFFCheckpointDirectory
+#define TIFFRewriteDirectory itk_TIFFRewriteDirectory
+#define _TIFFRewriteField itk__TIFFRewriteField
+#define TIFFWriteCustomDirectory itk_TIFFWriteCustomDirectory
+#define TIFFWriteDirectory itk_TIFFWriteDirectory
+#define TIFFInitDumpMode itk_TIFFInitDumpMode
+#define TIFFError itk_TIFFError
+#define TIFFErrorExt itk_TIFFErrorExt
+#define TIFFSetErrorHandler itk_TIFFSetErrorHandler
+#define TIFFSetErrorHandlerExt itk_TIFFSetErrorHandlerExt
+#define TIFFAccessTagMethods itk_TIFFAccessTagMethods
+#define TIFFGetClientInfo itk_TIFFGetClientInfo
+#define TIFFGetTagListCount itk_TIFFGetTagListCount
+#define TIFFGetTagListEntry itk_TIFFGetTagListEntry
+#define TIFFSetClientInfo itk_TIFFSetClientInfo
+#define _TIFFFax3fillruns itk__TIFFFax3fillruns
+#define TIFFFaxBlackCodes itk_TIFFFaxBlackCodes
+#define TIFFFaxWhiteCodes itk_TIFFFaxWhiteCodes
+#define TIFFInitCCITTFax3 itk_TIFFInitCCITTFax3
+#define TIFFInitCCITTFax4 itk_TIFFInitCCITTFax4
+#define TIFFInitCCITTRLE itk_TIFFInitCCITTRLE
+#define TIFFInitCCITTRLEW itk_TIFFInitCCITTRLEW
+#define TIFFFlush itk_TIFFFlush
+#define TIFFFlushData itk_TIFFFlushData
+#define TIFFReadRGBAImage itk_TIFFReadRGBAImage
+#define TIFFReadRGBAImageOriented itk_TIFFReadRGBAImageOriented
+#define TIFFReadRGBAStrip itk_TIFFReadRGBAStrip
+#define TIFFReadRGBATile itk_TIFFReadRGBATile
+#define TIFFRGBAImageBegin itk_TIFFRGBAImageBegin
+#define TIFFRGBAImageEnd itk_TIFFRGBAImageEnd
+#define TIFFRGBAImageGet itk_TIFFRGBAImageGet
+#define TIFFRGBAImageOK itk_TIFFRGBAImageOK
+#define LogL10fromY itk_LogL10fromY
+#define LogL10toY itk_LogL10toY
+#define LogL16fromY itk_LogL16fromY
+#define LogL16toY itk_LogL16toY
+#define LogLuv24fromXYZ itk_LogLuv24fromXYZ
+#define LogLuv24toXYZ itk_LogLuv24toXYZ
+#define LogLuv32fromXYZ itk_LogLuv32fromXYZ
+#define LogLuv32toXYZ itk_LogLuv32toXYZ
+#define TIFFInitSGILog itk_TIFFInitSGILog
 #define uv_decode itk_uv_decode
 #define uv_encode itk_uv_encode
-#define TIFFCvtIEEEFloatToNative itk_TIFFCvtIEEEFloatToNative
-#define TIFFCvtIEEEDoubleToNative itk_TIFFCvtIEEEDoubleToNative
-#define TIFFYCbCrToRGBInit itk_TIFFYCbCrToRGBInit
-#define TIFFYCbCrtoRGB itk_TIFFYCbCrtoRGB
-#define TIFFCIELabToRGBInit itk_TIFFCIELabToRGBInit
-#define TIFFXYZToRGB itk_TIFFXYZToRGB
-#define TIFFCIELabToXYZ itk_TIFFCIELabToXYZ
-#define TIFFCvtNativeToIEEEFloat itk_TIFFCvtNativeToIEEEFloat
-#define _TIFFFaxBlackTable itk__TIFFFaxBlackTable
-#define _TIFFFaxWhiteTable itk__TIFFFaxWhiteTable
-#define _TIFFFaxMainTable itk__TIFFFaxMainTable
-#define TIFFDataWidth itk_TIFFDataWidth
-#define _TIFFCreateAnonFieldInfo itk__TIFFCreateAnonFieldInfo
-#define _TIFFFindOrRegisterFieldInfo itk__TIFFFindOrRegisterFieldInfo
-#define TIFFRawStripSize itk__TIFFRawStripSize
-#define TIFFFillStrip itk_TIFFFillStrip
-#define TIFFFillTile itk_TIFFFillTile
-#define TIFFSetupStrips itk_TIFFSetupStrips
-#define TIFFCheckpointDirectory itk_TIFFCheckpointDirectory
-
-#define TIFFAccessTagMethods itk_TIFFAccessTagMethods
-#define TIFFCleanup itk_TIFFCleanup
+#define XYZtoRGB24 itk_XYZtoRGB24
+#define TIFFInitLZW itk_TIFFInitLZW
+#define TIFFInitNeXT itk_TIFFInitNeXT
 #define TIFFClientdata itk_TIFFClientdata
-#define TIFFGetClientInfo itk_TIFFGetClientInfo
+#define TIFFClientOpen itk_TIFFClientOpen
+#define TIFFCurrentDirectory itk_TIFFCurrentDirectory
+#define TIFFCurrentRow itk_TIFFCurrentRow
+#define TIFFCurrentStrip itk_TIFFCurrentStrip
+#define TIFFCurrentTile itk_TIFFCurrentTile
+#define TIFFFileName itk_TIFFFileName
+#define TIFFFileno itk_TIFFFileno
 #define TIFFGetCloseProc itk_TIFFGetCloseProc
-#define TIFFGetConfiguredCODECs itk_TIFFGetConfiguredCODECs
 #define TIFFGetMapFileProc itk_TIFFGetMapFileProc
+#define _TIFFgetMode itk__TIFFgetMode
+#define TIFFGetMode itk_TIFFGetMode
 #define TIFFGetReadProc itk_TIFFGetReadProc
 #define TIFFGetSeekProc itk_TIFFGetSeekProc
 #define TIFFGetSizeProc itk_TIFFGetSizeProc
-#define TIFFGetTagListCount itk_TIFFGetTagListCount
-#define TIFFGetTagListEntry itk_TIFFGetTagListEntry
 #define TIFFGetUnmapFileProc itk_TIFFGetUnmapFileProc
 #define TIFFGetWriteProc itk_TIFFGetWriteProc
 #define TIFFIsBigEndian itk_TIFFIsBigEndian
-#define TIFFIsCODECConfigured itk_TIFFIsCODECConfigured
-#define TIFFReadRGBAImageOriented itk_TIFFReadRGBAImageOriented
+#define TIFFIsByteSwapped itk_TIFFIsByteSwapped
+#define TIFFIsMSB2LSB itk_TIFFIsMSB2LSB
+#define TIFFIsTiled itk_TIFFIsTiled
+#define TIFFIsUpSampled itk_TIFFIsUpSampled
 #define TIFFSetClientdata itk_TIFFSetClientdata
-#define TIFFSetClientInfo itk_TIFFSetClientInfo
 #define TIFFSetFileName itk_TIFFSetFileName
 #define TIFFSetFileno itk_TIFFSetFileno
 #define TIFFSetMode itk_TIFFSetMode
-
-#define display_sRGB itk_display_sRGB
-#define _TIFFBuiltinCODECS itk_TIFFBuiltinCODECS
-
-#define TIFFFaxBlackCodes itk_TIFFFaxBlackCodes
+#define TIFFInitPackBits itk_TIFFInitPackBits
+#define TIFFPredictorCleanup itk_TIFFPredictorCleanup
+#define TIFFPredictorInit itk_TIFFPredictorInit
+#define _TIFFprintAscii itk__TIFFprintAscii
+#define _TIFFprintAsciiTag itk__TIFFprintAsciiTag
+#define TIFFPrintDirectory itk_TIFFPrintDirectory
+#define TIFFFillStrip itk_TIFFFillStrip
+#define TIFFFillTile itk_TIFFFillTile
+#define _TIFFNoPostDecode itk__TIFFNoPostDecode
+#define TIFFReadBufferSetup itk_TIFFReadBufferSetup
+#define TIFFReadEncodedStrip itk_TIFFReadEncodedStrip
+#define TIFFReadEncodedTile itk_TIFFReadEncodedTile
+#define TIFFReadRawStrip itk_TIFFReadRawStrip
+#define TIFFReadRawTile itk_TIFFReadRawTile
+#define TIFFReadScanline itk_TIFFReadScanline
+#define TIFFReadTile itk_TIFFReadTile
+#define _TIFFSwab16BitData itk__TIFFSwab16BitData
+#define _TIFFSwab24BitData itk__TIFFSwab24BitData
+#define _TIFFSwab32BitData itk__TIFFSwab32BitData
+#define _TIFFSwab64BitData itk__TIFFSwab64BitData
+#define TIFFComputeStrip itk_TIFFComputeStrip
+#define TIFFDefaultStripSize itk_TIFFDefaultStripSize
+#define _TIFFDefaultStripSize itk__TIFFDefaultStripSize
+#define TIFFNumberOfStrips itk_TIFFNumberOfStrips
+#define TIFFRasterScanlineSize itk_TIFFRasterScanlineSize
+#define TIFFRasterScanlineSize64 itk_TIFFRasterScanlineSize64
+#define TIFFRawStripSize64 itk_TIFFRawStripSize64
+#define TIFFScanlineSize itk_TIFFScanlineSize
+#define TIFFScanlineSize64 itk_TIFFScanlineSize64
+#define TIFFStripSize itk_TIFFStripSize
+#define TIFFStripSize64 itk_TIFFStripSize64
+#define TIFFVStripSize itk_TIFFVStripSize
+#define TIFFVStripSize64 itk_TIFFVStripSize64
+#define TIFFRawStripSize itk_TIFFRawStripSize
+#define TIFFGetBitRevTable itk_TIFFGetBitRevTable
+#define TIFFReverseBits itk_TIFFReverseBits
+#define TIFFSwabArrayOfDouble itk_TIFFSwabArrayOfDouble
+#define TIFFSwabArrayOfFloat itk_TIFFSwabArrayOfFloat
+#define TIFFSwabArrayOfLong itk_TIFFSwabArrayOfLong
+#define TIFFSwabArrayOfLong8 itk_TIFFSwabArrayOfLong8
+#define TIFFSwabArrayOfShort itk_TIFFSwabArrayOfShort
+#define TIFFSwabArrayOfTriples itk_TIFFSwabArrayOfTriples
+#define TIFFSwabDouble itk_TIFFSwabDouble
+#define TIFFSwabFloat itk_TIFFSwabFloat
+#define TIFFSwabLong itk_TIFFSwabLong
+#define TIFFSwabLong8 itk_TIFFSwabLong8
+#define TIFFSwabShort itk_TIFFSwabShort
+#define TIFFCheckTile itk_TIFFCheckTile
+#define TIFFComputeTile itk_TIFFComputeTile
+#define TIFFDefaultTileSize itk_TIFFDefaultTileSize
+#define _TIFFDefaultTileSize itk__TIFFDefaultTileSize
+#define TIFFNumberOfTiles itk_TIFFNumberOfTiles
+#define TIFFTileRowSize itk_TIFFTileRowSize
+#define TIFFTileRowSize64 itk_TIFFTileRowSize64
+#define TIFFTileSize itk_TIFFTileSize
+#define TIFFTileSize64 itk_TIFFTileSize64
+#define TIFFVTileSize itk_TIFFVTileSize
+#define TIFFVTileSize64 itk_TIFFVTileSize64
+#define TIFFGetVersion itk_TIFFGetVersion
+#define TIFFSetWarningHandler itk_TIFFSetWarningHandler
+#define TIFFSetWarningHandlerExt itk_TIFFSetWarningHandlerExt
+#define TIFFWarning itk_TIFFWarning
+#define TIFFWarningExt itk_TIFFWarningExt
+#define TIFFFlushData1 itk_TIFFFlushData1
+#define TIFFSetupStrips itk_TIFFSetupStrips
+#define TIFFSetWriteOffset itk_TIFFSetWriteOffset
+#define TIFFWriteBufferSetup itk_TIFFWriteBufferSetup
+#define TIFFWriteCheck itk_TIFFWriteCheck
+#define TIFFWriteEncodedStrip itk_TIFFWriteEncodedStrip
+#define TIFFWriteEncodedTile itk_TIFFWriteEncodedTile
+#define TIFFWriteRawStrip itk_TIFFWriteRawStrip
+#define TIFFWriteRawTile itk_TIFFWriteRawTile
+#define TIFFWriteScanline itk_TIFFWriteScanline
+#define TIFFWriteTile itk_TIFFWriteTile
+#define TIFFInitZIP itk_TIFFInitZIP
+#define TIFFInitJPEG itk_TIFFInitJPEG
+#define _TIFFerrorHandler itk__TIFFerrorHandler
+#define TIFFFdOpen itk_TIFFFdOpen
+#define _TIFFfree itk__TIFFfree
+#define _TIFFmalloc itk__TIFFmalloc
+#define _TIFFmemcmp itk__TIFFmemcmp
+#define _TIFFmemcpy itk__TIFFmemcpy
+#define _TIFFmemset itk__TIFFmemset
+#define TIFFOpen itk_TIFFOpen
+#define _TIFFrealloc itk__TIFFrealloc
+#define _TIFFwarningHandler itk__TIFFwarningHandler
 #define TIFFFaxBlackTable itk_TIFFFaxBlackTable
 #define TIFFFaxMainTable itk_TIFFFaxMainTable
-#define TIFFFaxWhiteCodes itk_TIFFFaxWhiteCodes
 #define TIFFFaxWhiteTable itk_TIFFFaxWhiteTable
 
 #endif
