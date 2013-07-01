@@ -42,7 +42,7 @@ class DcmDictEntry;
 // Don't print error messages if you're not throwing
 // an exception
 //     std::cerr body;
-#define DCMTKException(body)                    \
+#define DCMTKExceptionOrErrorReturn(body)       \
   {                                             \
     if(throwException)                          \
       {                                         \
