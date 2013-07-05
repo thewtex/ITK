@@ -66,7 +66,6 @@ struct HDF5CommonPathNames
   };
 
 
-
 /** \class HDF5TransformIOTemplate
  *  \brief Read&Write transforms in HDF5 Format
  *
@@ -81,13 +80,13 @@ class HDF5TransformIOTemplate:public TransformIOBaseTemplate< TInternalComputati
 private HDF5CommonPathNames
 {
 public:
-  typedef HDF5TransformIOTemplate                               Self;
-  typedef TransformIOBaseTemplate< TInternalComputationValueType >    Superclass;
-  typedef SmartPointer< Self >                                  Pointer;
-  typedef typename Superclass::TransformType                    TransformType;
-  typedef typename Superclass::TransformPointer                 TransformPointer;
-  typedef typename Superclass::TransformListType                TransformListType;
-  typedef typename TransformType::ParametersType                ParametersType;
+  typedef HDF5TransformIOTemplate                                  Self;
+  typedef TransformIOBaseTemplate< TInternalComputationValueType > Superclass;
+  typedef SmartPointer< Self >                                     Pointer;
+  typedef typename Superclass::TransformType                       TransformType;
+  typedef typename Superclass::TransformPointer                    TransformPointer;
+  typedef typename Superclass::TransformListType                   TransformListType;
+  typedef typename TransformType::ParametersType                   ParametersType;
 
   typedef typename TransformIOBaseTemplate
                       <TInternalComputationValueType>::ConstTransformListType
@@ -136,7 +135,7 @@ private:
 extern const std::string  GetTransformName(int);
 
 /** This helps to meet backward compatibility */
-typedef HDF5TransformIOTemplate<double> HDF5TransformIO;
+typedef HDF5TransformIOTemplate< double > HDF5TransformIO;
 
 } // end namespace itk
 
