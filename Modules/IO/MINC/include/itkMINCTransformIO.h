@@ -27,29 +27,31 @@
 namespace itk
 {
 
-/** \class MINCTransformIO
-*  \brief Read&Write transforms in Minc  XFM Format
-*
+/** \class MINCTransformIOTemplate
+ *
+* \brief Read and write transforms in Minc XFM Format
 *
 * \author Vladimir S. FONOV
 *         Brain Imaging Center, Montreal Neurological Institute, McGill University, Montreal Canada 2012
 *
 * \ingroup ITKIOMINC
 */
-class MINCTransformIO: public TransformIOBase
+template< class TInternalComputationValueType >
+class MINCTransformIOTemplate: public TransformIOBaseTemplate< TInternalComputationValueType >
 {
 public:
-  typedef MINCTransformIO               Self;
-  typedef TransformIOBase               Superclass;
-  typedef SmartPointer< Self >          Pointer;
+  typedef MINCTransformIOTemplate                                  Self;
+  typedef TransformIOBaseTemplate< TInternalComputationValueType > Superclass;
+  typedef SmartPointer< Self >                                     Pointer;
 
-  typedef TransformBase                 TransformType;
-  typedef Superclass::TransformPointer  TransformPointer;
-  typedef Superclass::TransformListType TransformListType;
-  typedef TransformType::ParametersType ParametersType;
+  typedef typename Superclass::TransformType          TransformType;
+  typedef typename Superclass::TransformPointer       TransformPointer;
+  typedef typename Superclass::TransformListType      TransformListType;
+  typedef typename Superclass::ConstTransformListType ConstTransformListType;
+  typedef typename TransformType::ParametersType      ParametersType;
 
   /** Run-time type information (and related methods). */
-  itkTypeMacro(MINCTransformIO, TransformIOBase);
+  itkTypeMacro(MINCTransformIOTemplate, TransformIOBase);
   itkNewMacro(Self);
 
   /** Determine the file type. Returns true if this ImageIO can read the
@@ -66,8 +68,8 @@ public:
   virtual void Write();
 
 protected:
-  MINCTransformIO();
-  virtual ~MINCTransformIO();
+  MINCTransformIOTemplate();
+  virtual ~MINCTransformIOTemplate();
 
   VIO_General_transform m_XFM;
   bool                  m_XFM_initialized;
@@ -82,6 +84,13 @@ private:
   void ReadOneTransform(VIO_General_transform *xfm);
 };
 
+/** This helps to meet backward compatibility */
+typedef MINCTransformIOTemplate< double > MINCTransformIO;
+
 } // end namespace itk
+
+#ifndef ITK_MANUAL_INSTANTIATION
+#include "itkMINCTransformIO.hxx"
+#endif
 
 #endif // __itkMINCTransformIO_h
