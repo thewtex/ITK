@@ -26,10 +26,10 @@ public:
   class TestDomainThreader: public itk::DomainThreader< itk::ThreadedIndexedContainerPartitioner, Self >
   {
   public:
-    typedef TestDomainThreader                                                                            Self;
+    typedef TestDomainThreader                                                    Self;
     typedef itk::DomainThreader< itk::ThreadedIndexedContainerPartitioner, Self > Superclass;
-    typedef itk::SmartPointer< Self >                                                                     Pointer;
-    typedef itk::SmartPointer< const Self >                                                               ConstPointer;
+    typedef itk::SmartPointer< Self >                                             Pointer;
+    typedef itk::SmartPointer< const Self >                                       ConstPointer;
 
     typedef Superclass::DomainPartitionerType     DomainPartitionerType;
     typedef Superclass::DomainType                DomainType;

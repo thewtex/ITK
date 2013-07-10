@@ -97,7 +97,7 @@ ImageRegionSplitterDirection
     regionIndex[splitAxis] += i * valuesPerPiece;
     regionSize[splitAxis] = valuesPerPiece;
     }
-  if ( i == maxPieceIdUsed )
+  else if ( i == maxPieceIdUsed )
     {
     regionIndex[splitAxis] += i * valuesPerPiece;
     // last piece needs to process the "rest" dimension being split

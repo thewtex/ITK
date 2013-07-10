@@ -33,34 +33,60 @@ ThreadedIndexedContainerPartitioner
 
 ThreadIdType
 ThreadedIndexedContainerPartitioner
-::PartitionDomain( const ThreadIdType threadID,
+::PartitionDomain( const ThreadIdType threadId,
                         const ThreadIdType requestedTotal,
                         const DomainType& completeIndexRange,
-                        DomainType& subIndexRange) const
+                        DomainType& subindexRange) const
 {
-  // overallIndexRange is expected to be inclusive
+  // Protect against division by 0 below. Seems this would be a bug
+  // in MultiThreader if it passed 0 for requestedTotal.
+  if( requestedTotal == 0 )
+    {
+    itkExceptionMacro( "requestedTotal == 0. "
+                      << "Error in input 'requestedTotal'" );
+    }
 
-  // determine the actual number of pieces that will be generated
-  const double count = static_cast<double>( completeIndexRange[1] - completeIndexRange[0] + 1 );
-  ThreadIdType valuesPerThread =
-    Math::Ceil<ThreadIdType>( count/static_cast<double>(requestedTotal) );
+  // Determine the actual number of pieces that will be generated
+  const DomainLengthType count = static_cast<double>( completeIndexRange[1] - completeIndexRange[0] + 1 );
+
+  // Make sure we don't have a 0-valued count to avoid
+  // division by 0 below.
+  // This would be a bug in the passed completeIndexRange.
+  if( count == 0 )
+    {
+    itkExceptionMacro( "completeIndexRange[1] - completeIndexRange[0] + 1 == 0. "
+                      << "Error: input 'completeIndexRange' is zero-length." );
+    }
+
+  DomainLengthType valuesPerThread =
+    Math::Ceil<DomainLengthType>( static_cast< double >( count ) / static_cast< double >( requestedTotal ));
   ThreadIdType maxThreadIdUsed =
-    Math::Ceil<ThreadIdType>( count/static_cast<double>(valuesPerThread) ) - 1;
+    Math::Ceil<ThreadIdType>( static_cast< double >( count ) / static_cast< double >( valuesPerThread )) - 1;
 
   // Split the index range
-  if (threadID < maxThreadIdUsed)
+  if (threadId < maxThreadIdUsed)
     {
-    subIndexRange[0] = completeIndexRange[0] + threadID * valuesPerThread;
-    subIndexRange[1] = subIndexRange[0] + valuesPerThread - 1;
+    subindexRange[0] = completeIndexRange[0] + threadId * valuesPerThread;
+    subindexRange[1] = subindexRange[0] + valuesPerThread - 1;
     }
-  if (threadID == maxThreadIdUsed)
+  else if (threadId == maxThreadIdUsed)
     {
-    subIndexRange[0] = completeIndexRange[0] + threadID * valuesPerThread;
-    // last thread needs to process the "rest" of the range
-    subIndexRange[1] = completeIndexRange[1];
+    subindexRange[0] = completeIndexRange[0] + threadId * valuesPerThread;
+    // Last thread needs to process the "rest" of the range
+    subindexRange[1] = completeIndexRange[1];
+    }
+  else // if( threadId > maxThreadIdUsed )
+    {
+    // To be safe, for a threadId past the maxThreadIdUsed,
+    // subindexRange should be zero-length at the end of the completeIndexRange
+    // However, the semantics of ThreadedIndexedContainerPartitioner::DomainType
+    // don't provide a clean way to specify zero-length, so just set both to -1
+    // even though this could be interpreted as having a length of 1
+    subindexRange[0] = -1;
+    subindexRange[1] = -1;
     }
 
-  itkDebugMacro("ThreadedIndexedContainerPartitioner:  Split : " << subIndexRange );
+  itkDebugMacro("ThreadedIndexedContainerPartitioner:  Split : " << subindexRange );
 
   return maxThreadIdUsed + 1;
 }

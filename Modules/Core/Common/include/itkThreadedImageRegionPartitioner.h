@@ -57,16 +57,9 @@ public:
   /** Run-time type information (and related methods). */
   itkTypeMacro(ThreadedImageRegionPartitioner, ThreadedDomainPartitioner);
 
-  /** Type of the object being threaded over */
-  typedef typename Superclass::DomainType  DomainType;
-
-  /** Some convenient typedefs. */
-  // typedef TImageRegion ImageRegionType;
-  itkStaticConstMacro(ImageDimension, unsigned int, VDimension);
-
-  typedef ImageRegion<VDimension>   ImageRegionType;
-  typedef Size<VDimension>          SizeType;
-  typedef Index<VDimension>         IndexType;
+  /** Types for the object being partitioned */
+  typedef typename Superclass::DomainType     DomainType;
+  itkStaticConstMacro(DomainDimension, unsigned int, VDimension);
 
   /** Split the ImageRegion \c completeRegion into up to \c requestedTotal
    * non-overlapping subregions, setting subregion number \c threadId as

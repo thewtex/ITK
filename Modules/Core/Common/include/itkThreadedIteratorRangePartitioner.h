@@ -19,6 +19,7 @@
 #define __itkThreadedIteratorRangePartitioner_h
 
 #include "itkThreadedDomainPartitioner.h"
+#include "itkIntTypes.h"
 
 namespace itk
 {
@@ -120,10 +121,10 @@ public:
   /** Run-time type information (and related methods). */
   itkTypeMacro(ThreadedIteratorRangePartitioner, ThreadedDomainPartitioner);
 
-  /** Type for convenience of base class methods */
-  typedef typename Superclass::DomainType  DomainType;
-
-  typedef TIterator IteratorType;
+  /** Types for the object being partitioned */
+  typedef typename Superclass::DomainType    DomainType;
+  typedef typename DomainType::IteratorType  DomainIteratorType;
+  typedef          ::itk::SizeValueType      DomainLengthType;
 
   /** Split the domain \c completeDomain into up to \c requestedTotal
    * non-overlapping subdomains, setting subdomain number \c threadId as

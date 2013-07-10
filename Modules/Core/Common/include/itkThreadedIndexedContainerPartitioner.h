@@ -57,11 +57,9 @@ public:
   /** Run-time type information (and related methods). */
   itkTypeMacro(ThreadedIndexedContainerPartitioner, ThreadedDomainPartitioner);
 
-  /** Type for convenience of base class methods */
-  typedef Superclass::DomainType  DomainType;
-
-  /** Synonym for the domain that is more descriptive. */
-  typedef DomainType                       IndexRangeType;
+  /** Types for the object being partitioned */
+  typedef Superclass::DomainType      DomainType;
+  typedef DomainType::IndexValueType  DomainLengthType;
 
   /** Split the index range \c completeIndexRange into up to \c requestedTotal
    * non-overlapping subranges, setting subrange number \c threadId as

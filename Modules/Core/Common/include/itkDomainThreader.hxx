@@ -44,6 +44,8 @@ MultiThreader *
 DomainThreader< TDomainPartitioner, TAssociate >
 ::GetMultiThreader() const
 {
+  // Not sure why this isn't defined by itkGetStaticConstMacro,
+  // unless there's an important reason to make this method non-virtual
   return this->m_MultiThreader;
 }
 
