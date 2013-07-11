@@ -20,6 +20,8 @@
 
 #include "itkThreadedImageRegionPartitioner.h"
 
+#include "itkImageRegionSplitterSlowDimension.h"
+
 namespace itk
 {
 
@@ -38,78 +40,18 @@ ThreadedImageRegionPartitioner<VDimension>
 template <unsigned int VDimension>
 ThreadIdType
 ThreadedImageRegionPartitioner<VDimension>
-::PartitionDomain( const ThreadIdType threadID,
+::PartitionDomain( const ThreadIdType threadId,
                         const ThreadIdType requestedTotal,
                         const DomainType &completeRegion,
                         DomainType& subRegion) const
 {
-  const SizeType      requestedRegionSize = completeRegion.GetSize();
-  const ThreadIdType  singleThread = 1;
+  typedef itk::ImageRegionSplitterSlowDimension ImageRegionSplitterType;
+  ImageRegionSplitterType::Pointer imageRegionSplitter = ImageRegionSplitterType::New();
 
-  // Initialize the subRegion to the output requested region
-  subRegion            = completeRegion;
-  IndexType splitIndex = subRegion.GetIndex();
-  SizeType  splitSize  = subRegion.GetSize();
+  subRegion = completeRegion;
+  const unsigned int maxNumberOfSplits = imageRegionSplitter->GetSplit<VDimension>( threadId, requestedTotal, subRegion );
 
-  // Protect against division by 0 below. Seems this would be a bug
-  // in MultiThreader if it passed 0 for requestedTotal.
-  if( requestedTotal == 0 )
-    {
-    return singleThread;
-    }
-
-  // split on the outermost dimension available
-  int splitAxis = this->ImageDimension - 1;
-  while( requestedRegionSize[splitAxis] == 1 )
-    {
-    --splitAxis;
-    if( splitAxis < 0 )
-      {
-      // cannot split
-      itkDebugMacro( " Cannot Split Region" );
-      return singleThread;
-      }
-    }
-
-  // Make sure we don't have a 0-valued dimension size to avoid
-  // division by 0 below.
-  // This would be a bug in the passed completeRegion.
-  if( requestedRegionSize[splitAxis] == 0 )
-    {
-    itkExceptionMacro( "requestedRegionSize[splitAxis] == 0. "
-                      << "Error in input 'completeRegion'" );
-    }
-
-  // determine the actual number of pieces that will be generated
-  const SizeValueType range = requestedRegionSize[splitAxis];
-
-  ThreadIdType valuesPerThread =
-    Math::Ceil<ThreadIdType>( range / static_cast<double>(requestedTotal) );
-
-  ThreadIdType maxThreadIdUsed =
-    Math::Ceil<ThreadIdType>( range / static_cast<double>(valuesPerThread) ) - 1;
-
-  // Split the region
-  if( threadID < maxThreadIdUsed )
-    {
-    splitIndex[splitAxis] += threadID * valuesPerThread;
-    splitSize[splitAxis] = valuesPerThread;
-    }
-
-  if( threadID == maxThreadIdUsed )
-    {
-    splitIndex[splitAxis] += threadID * valuesPerThread;
-    // last thread needs to process the "rest" dimension being split
-    splitSize[splitAxis] = splitSize[splitAxis] - threadID * valuesPerThread;
-    }
-
-  // set the split region ivars
-  subRegion.SetIndex( splitIndex );
-  subRegion.SetSize( splitSize );
-
-  itkDebugMacro("  Split Piece: " << subRegion );
-
-  return maxThreadIdUsed + 1;
+  return static_cast<ThreadIdType>( maxNumberOfSplits );
 }
 
 } // end namespace itk
