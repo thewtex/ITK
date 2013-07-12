@@ -16,16 +16,17 @@ struct B
 
 // fail for gcc 4.1
 #if __GNUC__ == 4 && __GNUC_MINOR__ == 1
-#error This version of GCC is know to have a internal compilation error with this feature in ITK.
+#error This version of GCC is known to have a internal compilation error with this feature in ITK.
 #endif
 
-// BUG DETECTION: This following usage may generate a segfault during
-// compilation.
+// BUG DETECTION: This following usage may generate a segfault or
+// internal compiler error.
 //
 // The following block of code causes an internal compiler error with
 // Apple's (GCC) 4.2.1 (Apple Inc. build5666) (dot 3) compiler when
-// compiled in debug mode with the -g flag.
-//
+// compiled in debug mode with the -g flag. This compiler also
+// can generate a internal error when applications use ITK, so this
+// test should be done in a debug build with "-g".
 template <typename T>
 class foo
 {

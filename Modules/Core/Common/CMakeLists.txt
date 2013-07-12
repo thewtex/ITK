@@ -56,9 +56,15 @@ try_compile( ITK_HAS_CPP11_ALIGNAS
   ${ITK_BINARY_DIR}/CMakeTmp
   ${CMAKE_CURRENT_SOURCE_DIR}/CMake/itkCheckHasCPP11Alignas.cxx )
 
+# Check for gnu attribute aligned.
+#
+# NOTE: some version of gcc on OSX based on 4.2.1 generate an internal
+# compiler error with how ITK is using this attribute. This issue can
+#be detected when the try_compile is done in debug mode.
 try_compile( ITK_HAS_GNU_ATTRIBUTE_ALIGNED
   ${ITK_BINARY_DIR}/CMakeTmp
-  ${CMAKE_CURRENT_SOURCE_DIR}/CMake/itkCheckHasGNUAttributeAligned.cxx )
+  ${CMAKE_CURRENT_SOURCE_DIR}/CMake/itkCheckHasGNUAttributeAligned.cxx
+  CMAKE_FLAGS "-DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}" )
 
 configure_file(src/itkConfigure.h.in itkConfigure.h)
 
