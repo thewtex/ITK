@@ -356,11 +356,6 @@ void GDCMImageIO::InternalReadImageInformation()
   m_Dimensions[0] = dims[0];
   m_Dimensions[1] = dims[1];
 
-  const double *spacing = image.GetSpacing();
-  m_Spacing[0] = spacing[0];
-  m_Spacing[1] = spacing[1];
-  m_Spacing[2] = spacing[2];
-
   const double *origin = image.GetOrigin();
   m_Origin[0] = origin[0];
   m_Origin[1] = origin[1];
