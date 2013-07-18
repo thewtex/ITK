@@ -8,6 +8,7 @@ itkGDCMSeriesMissingDicomTagTest.cxx
 itkGDCMSeriesStreamReadImageWrite.cxx
 itkGDCMImagePositionPatientTest.cxx
 itkGDCMImageIOOrthoDirTest.cxx
+itkGDCMLoadImageSpacingTest.cxx
 )
 
 CreateTestDriver(ITKIOGDCM  "${ITKIOGDCM-Test_LIBRARIES}" "${ITKIOGDCMTests}")
@@ -65,3 +66,8 @@ set_property(TEST itkGDCMSeriesMissingDicomTagTest APPEND PROPERTY DEPENDS ITKDa
 
 itk_add_test(NAME itkGDCMImageIONoCrashTest
              COMMAND ITKIOGDCMTestDriver itkGDCMImageIONoCrashTest DATA{${ITK_DATA_ROOT}/Input/OT-PAL-8-face.dcm})
+
+itk_add_test(NAME itkGDCMLoadImageSpacingTest
+  COMMAND ITKIOGDCMTestDriver itkGDCMLoadImageSpacingTest
+  DATA{${ITK_DATA_ROOT}/Input/gdcmSpacingTest.dcm}
+  )
