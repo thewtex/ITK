@@ -17,6 +17,6 @@ else()
     ITKTIFF
     DESCRIPTION
     "${DOCUMENTATION}"
-    EXCLUDE_FROM_ALL
+#    EXCLUDE_FROM_ALL
     )
 endif()
