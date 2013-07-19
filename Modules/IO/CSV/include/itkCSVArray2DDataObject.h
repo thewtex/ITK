@@ -18,7 +18,6 @@
 
 #ifndef __itkCSVArray2DDataObject_h
 #define __itkCSVArray2DDataObject_h
-
 #include "itkObjectFactory.h"
 #include "itkDataObject.h"
 #include "itkArray2D.h"

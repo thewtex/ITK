@@ -18,7 +18,6 @@
 
 #ifndef __itkCSVNumericObjectFileWriter_h
 #define __itkCSVNumericObjectFileWriter_h
-
 #include "itkLightProcessObject.h"
 #include "itkMacro.h"
 #include "itkArray2D.h"
