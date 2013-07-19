@@ -38,7 +38,7 @@ namespace itk
 * \ingroup ITKIOMINC
 */
 template< typename TInternalComputationValueType >
-class MINCTransformIOTemplate: public TransformIOBaseTemplate< TInternalComputationValueType >
+class ITKIOMINC_EXPORT MINCTransformIOTemplate: public TransformIOBaseTemplate< TInternalComputationValueType >
 {
 public:
   typedef MINCTransformIOTemplate                                  Self;

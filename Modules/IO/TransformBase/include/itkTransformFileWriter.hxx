@@ -135,11 +135,13 @@ bool TransformFileWriterTemplate<ScalarType>
 }
 
 template<>
+ITKIOTransformBase_EXPORT
 void
 TransformFileWriterTemplate<double>
 ::PushBackTransformList(const Object *transObj);
 
 template<>
+ITKIOTransformBase_EXPORT
 void
 TransformFileWriterTemplate<float>
 ::PushBackTransformList(const Object *transObj);
