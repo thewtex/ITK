@@ -70,7 +70,6 @@ extern ITKIOImageBase_EXPORT const char *const SPM_ROI_SCALE;
 extern ITKIOImageBase_EXPORT const char *const ITK_FileNotes;
 extern ITKIOImageBase_EXPORT const char *const ITK_Origin;
 extern ITKIOImageBase_EXPORT const char *const ITK_Spacing;
-extern ITKIOImageBase_EXPORT const char *const ITK_ZDirection;
 extern ITKIOImageBase_EXPORT const char *const ITK_FileOriginator;
 extern ITKIOImageBase_EXPORT const char *const ITK_OriginationDate;
 extern ITKIOImageBase_EXPORT const char *const ITK_PatientID;
