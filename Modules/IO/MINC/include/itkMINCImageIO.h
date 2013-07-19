@@ -27,6 +27,8 @@
 #ifndef __itkMINCImageIO_h
 #define __itkMINCImageIO_h
 
+#include "ITKIOMINCExport.h"
+
 #include "itkImageIOBase.h"
 
 #include "itkMatrix.h"
@@ -59,7 +61,7 @@ namespace itk
  * \ingroup IOFilters
  *
  */
-class MINCImageIO : public ImageIOBase
+class ITKIOMINC_EXPORT MINCImageIO : public ImageIOBase
 {
 public:
   /** Standard class typedefs. */
