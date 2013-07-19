@@ -17,6 +17,7 @@
  *=========================================================================*/
 #ifndef __itkMatlabTransformIOFactory_h
 #define __itkMatlabTransformIOFactory_h
+#include "ITKIOTransformMatlabExport.h"
 
 
 #include "itkObjectFactoryBase.h"
@@ -29,7 +30,7 @@ namespace itk
  *  object factory.
  * \ingroup ITKIOTransformMatlab
  */
-class MatlabTransformIOFactory:public ObjectFactoryBase
+class ITKIOTransformMatlab_EXPORT MatlabTransformIOFactory:public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */

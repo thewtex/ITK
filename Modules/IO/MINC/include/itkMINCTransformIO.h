@@ -18,6 +18,8 @@
 #ifndef __itkMINCTransformIO_h
 #define __itkMINCTransformIO_h
 
+#include "ITKIOMINCExport.h"
+
 #include "itkTransformIOBase.h"
 
 #include <string>
@@ -38,7 +40,7 @@ namespace itk
 * \ingroup ITKIOMINC
 */
 template< typename TInternalComputationValueType >
-class MINCTransformIOTemplate: public TransformIOBaseTemplate< TInternalComputationValueType >
+class ITKIOMINC_EXPORT MINCTransformIOTemplate: public TransformIOBaseTemplate< TInternalComputationValueType >
 {
 public:
   typedef MINCTransformIOTemplate                                  Self;
