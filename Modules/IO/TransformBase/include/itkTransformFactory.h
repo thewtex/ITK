@@ -27,6 +27,7 @@
  *=========================================================================*/
 #ifndef __itkTransformFactory_h
 #define __itkTransformFactory_h
+#include "ITKIOTransformBaseExport.h"
 
 #include "itkTransformFactoryBase.h"
 
