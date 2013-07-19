@@ -17,6 +17,7 @@
  *=========================================================================*/
 #ifndef __itkTxtTransformIOFactory_h
 #define __itkTxtTransformIOFactory_h
+#include "ITKIOTransformInsightLegacyExport.h"
 
 
 #include "itkObjectFactoryBase.h"
@@ -28,7 +29,7 @@ namespace itk
    * \brief Create instances of TxtTransformIO objects using an object factory.
    * \ingroup ITKIOTransformInsightLegacy
    */
-class TxtTransformIOFactory:public ObjectFactoryBase
+class ITKIOTransformInsightLegacy_EXPORT TxtTransformIOFactory:public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */
