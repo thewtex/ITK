@@ -90,7 +90,7 @@ private:
  * \ingroup ITKIOXML
  */
 template< class T >
-class XMLReader: public XMLReaderBase
+class  XMLReader: public XMLReaderBase
 {
 public:
   typedef XMLReader Self;
