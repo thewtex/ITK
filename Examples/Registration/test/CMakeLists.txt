@@ -287,7 +287,7 @@ itk_add_test(NAME ImageRegistration19Test COMMAND ImageRegistration19
 itk_add_test(NAME MultiResImageRegistration1Test COMMAND ${ITK_TEST_DRIVER}
   --compare DATA{${BASELINE}/MultiResImageRegistration1Test.png,:}
             ${TEMP}/MultiResImageRegistration1Test.png
-  --compareNumberOfPixelsTolerance 100
+  --compareNumberOfPixelsTolerance 600
   $<TARGET_FILE:MultiResImageRegistration1>
         ${ITK_SOURCE_DIR}/Examples/Data/BrainT1SliceBorder20.png
         ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceShifted13x17y.png
