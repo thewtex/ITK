@@ -2,8 +2,8 @@ set(DOCUMENTATION "These classes came into the toolkit from the Insight Journal
 and are staged to be integrated into the appropriate Module if they are high
 quality and see high use.  If they are low quality or serve a very specific use
 case, they may be removed or made available as an ExternalModule.")
-
-itk_module(ITKReview
+if(ITK_USE_REVIEW)
+  itk_module(ITKReview
   DEPENDS
     ITKAnisotropicSmoothing
     ITKAntiAlias
@@ -90,4 +90,11 @@ itk_module(ITKReview
     ITKIOCSV
   DESCRIPTION
     "${DOCUMENTATION}"
-)
+ )
+ else()
+  itk_module(ITKReview
+    DESCRIPTION
+    "${DOCUMENTATION}"
+    EXCLUDE_FROM_ALL
+   )
+endif()
