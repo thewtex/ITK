@@ -90,4 +90,5 @@ itk_module(ITKReview
     ITKIOCSV
   DESCRIPTION
     "${DOCUMENTATION}"
-)
+    EXCLUDE_FROM_ALL
+ )
