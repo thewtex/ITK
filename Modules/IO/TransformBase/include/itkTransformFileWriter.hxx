@@ -73,13 +73,98 @@ bool TransformFileWriterTemplate<ScalarType>
   return ( this->m_AppendMode );
 }
 
+/* Converts between parameters with different precision types */
+template<class ScalarType>
+template<class TInputScalarType>
+OptimizerParameters< ScalarType >
+TransformFileWriterTemplate<ScalarType>
+::ParametersTypeConvertor(const itk::OptimizerParameters< TInputScalarType >  &sourceParams)
+{
+  itk::OptimizerParameters< ScalarType > outputParams;
+  outputParams.SetSize( sourceParams.GetSize() );
+  for( itk::SizeValueType i = 0; i < sourceParams.GetSize(); ++i )
+    {
+    outputParams[i] = (ScalarType)( sourceParams[i] );
+    }
+  return outputParams;
+}
+
+/* The precision type of input transform should be converted to the asked precision type */
+template<class ScalarType>
+template<class TInputScalarType>
+void TransformFileWriterTemplate<ScalarType>
+::SetInputTransformWithOutputPrecisionType(const TransformBaseTemplate<TInputScalarType> *transform)
+{
+  std::string transformName = transform->GetTransformTypeAsString();
+  // Transform name should be modified to have the output precision type.
+  TransformName<ScalarType>::CorrectPrcisionType( transformName );
+
+  TransformPointer convertedInputTransform;
+  // Instantiate the transform
+  LightObject::Pointer i = ObjectFactoryBase::CreateInstance ( transformName.c_str() );
+  convertedInputTransform = dynamic_cast< TransformType * >( i.GetPointer() );
+  if( convertedInputTransform.IsNull() )
+    {
+    itkExceptionMacro ( << "Could not create an instance of " << transformName );
+    }
+  convertedInputTransform->UnRegister();
+
+  // The precision type of the input transform parameters should be converted to the requested output precision
+  convertedInputTransform->SetParameters( this->ParametersTypeConvertor<TInputScalarType>( transform->GetParameters() ) );
+  convertedInputTransform->SetFixedParameters( this->ParametersTypeConvertor<TInputScalarType>( transform->GetFixedParameters() ) );
+  m_TransformList.push_back( ConstTransformPointer(convertedInputTransform.GetPointer()) );
+}
+
+/* Conversion between the precision types is not needed when input transform's precision type is
+the same as requested precision type */
+template<>
+template<>
+void TransformFileWriterTemplate<double>
+::SetInputTransformWithOutputPrecisionType(const TransformBaseTemplate<double> *transform)
+{
+  m_TransformList.push_back( ConstTransformPointer(transform) );
+}
+
+template<>
+template<>
+void TransformFileWriterTemplate<float>
+::SetInputTransformWithOutputPrecisionType(const TransformBaseTemplate<float> *transform)
+{
+  m_TransformList.push_back( ConstTransformPointer(transform) );
+}
+
+template<class ScalarType>
+void TransformFileWriterTemplate<ScalarType>
+::PushBackTransformList(const Object *transObj)
+{
+  Object::ConstPointer ptr;
+  ptr = dynamic_cast<const TransformBaseTemplate<double> *>( transObj );
+  if( ptr.IsNull() )
+    {
+    ptr = dynamic_cast<const TransformBaseTemplate<float> *>( transObj );
+    if( ptr.IsNull() )
+      {
+      itkExceptionMacro("The input of writer should be whether a double precision"
+                        "or a single precision transform type.");
+      }
+    else
+      {
+      this->SetInputTransformWithOutputPrecisionType<float>( dynamic_cast<const TransformBaseTemplate<float> *>( transObj ) );
+      }
+    }
+  else
+    {
+    this->SetInputTransformWithOutputPrecisionType<double>( dynamic_cast<const TransformBaseTemplate<double> *>( transObj ) );
+    }
+}
+
 /** Set the input transform and reinitialize the list of transforms */
 template<class ScalarType>
 void TransformFileWriterTemplate<ScalarType>
-::SetInput(const TransformType *transform)
+::SetInput(const Object *transform)
 {
   m_TransformList.clear();
-  m_TransformList.push_back( ConstTransformPointer(transform) );
+  this->PushBackTransformList(transform);
 }
 
 template<class ScalarType>
@@ -94,7 +179,7 @@ TransformFileWriterTemplate<ScalarType>
 /** Add a transform to be written */
 template<class ScalarType>
 void TransformFileWriterTemplate<ScalarType>
-::AddTransform(const TransformType *transform)
+::AddTransform(const Object *transform)
 {
   /* Check for a CompositeTransform.
    * The convention is that there should be one, and it should
@@ -110,7 +195,7 @@ void TransformFileWriterTemplate<ScalarType>
       }
     }
 
-  m_TransformList.push_back( ConstTransformPointer(transform) );
+  this->PushBackTransformList(transform);
 }
 
 template<class ScalarType>
@@ -122,7 +207,7 @@ void TransformFileWriterTemplate<ScalarType>
     itkExceptionMacro ("No file name given");
     }
   typename TransformIOBaseTemplate<ScalarType>::Pointer transformIO =
-    TransformIOFactoryTemplate<ScalarType>::CreateTransformIO( m_FileName.c_str(), /*TransformIOFactoryTemplate<ScalarType>::*/ WriteMode );
+    TransformIOFactoryTemplate<ScalarType>::CreateTransformIO( m_FileName.c_str(), WriteMode );
   if ( transformIO.IsNull() )
     {
     itkExceptionMacro("Can't Create IO object for file "

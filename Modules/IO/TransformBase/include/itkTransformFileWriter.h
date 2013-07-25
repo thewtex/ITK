@@ -44,6 +44,7 @@ public:
   typedef SmartPointer< Self >         Pointer;
 
   typedef TransformBaseTemplate<ScalarType>                                    TransformType;
+  typedef typename TransformIOBaseTemplate<ScalarType>::TransformPointer       TransformPointer;
   typedef typename TransformIOBaseTemplate<ScalarType>::ConstTransformPointer  ConstTransformPointer;
   typedef typename TransformIOBaseTemplate<ScalarType>::ConstTransformListType ConstTransformListType;
 
@@ -69,12 +70,12 @@ public:
   bool GetAppendMode();
 
   /** Set/Get the input transform to write */
-  void SetInput(const TransformType *transform);
+  void SetInput(const Object *transform);
 
   const TransformType * GetInput();
 
   /** Add a transform to be written */
-  void AddTransform(const TransformType *transform);
+  void AddTransform(const Object *transform);
 
   /** Set/Get the precision of the writing */
   itkSetMacro(Precision, unsigned int);
@@ -84,6 +85,14 @@ public:
   void Update();
 
 protected:
+  template<class TInputScalarType>
+  OptimizerParameters<ScalarType> ParametersTypeConvertor(const itk::OptimizerParameters<TInputScalarType>  &sourceParams);
+
+  template<class TInputScalarType>
+  void SetInputTransformWithOutputPrecisionType(const TransformBaseTemplate<TInputScalarType> *transform);
+
+  void PushBackTransformList(const Object *transObj);
+
   TransformFileWriterTemplate(const Self &); //purposely not implemented
   void operator=(const Self &);      //purposely not implemented
   void PrintSelf(std::ostream & os, Indent indent) const;
