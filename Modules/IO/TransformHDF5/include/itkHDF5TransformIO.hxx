@@ -25,7 +25,7 @@
 #include "itkCompositeTransformIOHelper.h"
 #include "itkVersion.h"
 #include <sstream>
-#include "itk_H5Cpp.h"
+//#include "itk_H5Cpp.h"
 
 namespace itk
 {
@@ -81,6 +81,29 @@ HDF5TransformIOTemplate< TInternalComputationValueType >
     {
     delete this->m_H5File;
     }
+}
+
+template< class TInternalComputationValueType >
+H5::PredType
+HDF5TransformIOTemplate< TInternalComputationValueType >
+::StringTypeToPredType(void)
+{
+const std::string typeString = TypeName<TInternalComputationValueType>::Get();
+if(typeString.compare("float") == 0)
+  {
+  return H5::PredType::NATIVE_FLOAT;
+  }
+else if(typeString.compare("double") == 0)
+  {
+  return H5::PredType::NATIVE_DOUBLE;
+  }
+else
+  {
+  itkGenericExceptionMacro(<< "unsupported data type "
+                           << typeString);
+  }
+// never reached but silences warning.
+return H5::PredType::NATIVE_DOUBLE;
 }
 
 template< class TInternalComputationValueType >
@@ -197,19 +220,26 @@ HDF5TransformIOTemplate< TInternalComputationValueType >
   ParameterArray.SetSize(dim);
   H5::FloatType ParamType = paramSet.getFloatType();
 
-  const char* nameOfComputationType = TypeName<TInternalComputationValueType>::Get();
-  TInternalComputationValueType *buf = new TInternalComputationValueType[dim];
-  if( !strcmp( nameOfComputationType, "double" ) )
+  //const char* nameOfComputationType = TypeName<TInternalComputationValueType>::Get();
+  //TInternalComputationValueType *buf = new TInternalComputationValueType[dim];
+  //if( !strcmp( nameOfComputationType, "double" ) )
+  if( ParamType.getSize() == sizeof(double) )
     {
+    double *buf = new double[dim];
     paramSet.read(buf,H5::PredType::NATIVE_DOUBLE);
-    ParameterArray.SetData(buf,dim,true);
+    // ParameterArray.SetData(buf,dim,true);
+    for(unsigned i = 0; i < dim; i++)
+      {
+      ParameterArray.SetElement(i,(TInternalComputationValueType)(buf[i]));
+      }
     }
   else
     {
+    float *buf = new float[dim];
     paramSet.read(buf,H5::PredType::NATIVE_FLOAT);
     for(unsigned i = 0; i < dim; i++)
       {
-      ParameterArray.SetElement(i,buf[i]);
+      ParameterArray.SetElement(i,(TInternalComputationValueType)(buf[i]));
       }
     delete [] buf;
     }
@@ -268,20 +298,27 @@ HDF5TransformIOTemplate< TInternalComputationValueType >
     for(unsigned int i = 0; i < transformGroup.getNumObjs(); i++)
       {
       std::string transformName(GetTransformName(i));
+
       // open /TransformGroup/N
       H5::Group currentTransformGroup = this->m_H5File->openGroup(transformName);
       //
-      // read transform type
+      // read the output transform type
       std::string transformType;
       {
       hsize_t numStrings(1);
       H5::DataSpace strSpace(1,&numStrings);
-      H5::StrType typeType(H5::PredType::C_S1,H5T_VARIABLE);
+      //H5::StrType typeType(H5::PredType::C_S1,H5T_VARIABLE);
+      H5::StrType typeType( this->StringTypeToPredType() );
       std::string typeName(transformName);
       typeName += transformTypeName;
       H5::DataSet typeSet = this->m_H5File->openDataSet(typeName);
       typeSet.read(transformType,typeType,strSpace);
       typeSet.close();
+        /////////////////
+      std::cout << "transformName: " << transformName << std::endl;//DEBUG///////////////
+      std::cout << "type name: " << typeName << std::endl;//DEBUG///////////////
+      std::cout << "Transform type: " << transformType << std::endl;//DEBUG///////////////
+        ////////////////
       }
 
       TransformPointer transform;

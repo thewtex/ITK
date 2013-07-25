@@ -32,6 +32,26 @@ const std::string HDF5CommonPathNames::HDFVersion("/HDFVersion");
 const std::string HDF5CommonPathNames::OSName("/OSName");
 const std::string HDF5CommonPathNames::OSVersion("/OSVersion");
 
+//template <typename TInternalComputationValueType>
+//H5::PredType GetType()
+//{
+//itkGenericExceptionMacro(<< "Type not handled "
+//                         << "in HDF5 File: "
+//                         << typeid(TInternalComputationValueType).name());
+//
+//}
+//#define GetH5TypeSpecialize(CXXType,H5Type) \
+//template <>                             \
+//H5::PredType GetType<CXXType>()         \
+//{                                       \
+//return H5Type;                        \
+//}
+//
+//GetH5TypeSpecialize(float,                  H5::PredType::NATIVE_FLOAT)
+//GetH5TypeSpecialize(double,                 H5::PredType::NATIVE_DOUBLE)
+//
+//#undef GetH5TypeSpecialize
+
 // I couldn't figure out a way to represent transforms
 // excepts as groups -- the HDF5 composite only allows
 // fixed-size structures.
