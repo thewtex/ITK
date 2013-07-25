@@ -222,6 +222,26 @@ TxtTransformIOTemplate<ParametersValueType>
     VectorBuffer.clear();
     if ( Name == "Transform" )
       {
+      // Modify input transform name, so it includes the requested precision type.
+      const std::string typeString = TypeName<ParametersValueType>::Get();
+      if( Value.find(typeString) == std::string::npos ) // desired type is not found in transform type
+        {
+        std::string searchFor;
+        std::string replaceBy;
+        if( typeString.compare("float") == 0 ) // desired type is float, so we should search for double and replace that.
+          {
+          searchFor = "double";
+          replaceBy = "float";
+          }
+        else
+          {
+          searchFor = "float";
+          replaceBy = "double";
+          }
+        std::string::size_type begin = Value.find(searchFor);
+        Value.replace(begin, searchFor.size(), replaceBy);
+        }
+
       this->CreateTransform(transform, Value);
       this->GetReadTransformList().push_back (transform);
       }
@@ -290,7 +310,7 @@ namespace {
 template<class ParametersValueType>
 void print_vector(std::ofstream& s, vnl_vector<ParametersValueType> const &v)
 {
-  NumberToString<double> convert;
+  NumberToString<ParametersValueType> convert;
   for (unsigned i = 0; i+1 < v.size(); ++i)
     {
     s << convert(v[i]) << ' ';

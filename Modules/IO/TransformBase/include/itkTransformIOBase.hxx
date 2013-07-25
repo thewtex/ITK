@@ -25,6 +25,43 @@
 
 namespace itk
 {
+
+namespace
+{
+
+// The following struct returns the string name of computation type
+// default implementation
+template <class TInternalComputationValueType>
+struct TypeName
+  {
+  static const char* Get()
+  {
+  return typeid(TInternalComputationValueType).name();
+  }
+  };
+
+// a specialization for each "float" and "double" type that we support
+// and don't like the string returned by typeid
+template <>
+struct TypeName<float>
+  {
+  static const char* Get()
+  {
+  return "float";
+  }
+  };
+
+template <>
+struct TypeName<double>
+  {
+  static const char* Get()
+  {
+  return "double";
+  }
+  };
+
+} // end anonymous namespace
+
 template <class ScalarType>
 TransformIOBaseTemplate<ScalarType>
 ::TransformIOBaseTemplate() :
@@ -49,10 +86,10 @@ void TransformIOBaseTemplate<ScalarType>
   TransformFactoryBase::GetFactory();
 
   // Instantiate the transform
-  itkDebugMacro ("About to call ObjectFactory");
+  //itkDebugMacro ("About to call ObjectFactory");
   LightObject::Pointer i;
   i = ObjectFactoryBase::CreateInstance ( ClassName.c_str() );
-  itkDebugMacro ("After call ObjectFactory");
+  //itkDebugMacro ("After call ObjectFactory");
   ptr = dynamic_cast< TransformType * >( i.GetPointer() );
   if ( ptr.IsNull() )
     {
@@ -66,7 +103,7 @@ void TransformIOBaseTemplate<ScalarType>
       {
       msg << "\t\"" << *it << "\"" << std::endl;
       }
-    itkExceptionMacro ( << msg.str() );
+    itkGenericExceptionMacro ( << msg.str() );
     }
   // Correct extra reference count from CreateInstance()
   ptr->UnRegister();

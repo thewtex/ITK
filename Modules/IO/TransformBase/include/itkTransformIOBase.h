@@ -95,6 +95,8 @@ public:
   itkGetConstMacro(AppendMode, bool);
   itkBooleanMacro(AppendMode);
 
+  static void CreateTransform(TransformPointer & ptr, const std::string & ClassName);
+
 protected:
   TransformIOBaseTemplate();
   virtual ~TransformIOBaseTemplate();
@@ -102,7 +104,7 @@ protected:
 
   void OpenStream(std::ofstream & outputStream, bool binary);
 
-  void CreateTransform(TransformPointer & ptr, const std::string & ClassName);
+  //void CreateTransform(TransformPointer & ptr, const std::string & ClassName);
 
   std::string            m_FileName;
   TransformListType      m_ReadTransformList;

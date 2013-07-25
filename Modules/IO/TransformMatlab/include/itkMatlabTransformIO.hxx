@@ -65,12 +65,17 @@ ReadMat(vnl_matlab_readhdr & mathdr,
     mathdr.read_data( fv.begin() );
     for ( int i = 0; i < mathdr.rows(); i++ )
       {
-      array[i] = fv[i];
+      array[i] = (ParametersValueType)(fv[i]);
       }
     }
   else
     {
-    mathdr.read_data( array.begin() );
+    vnl_vector< double > dv( mathdr.rows() );
+    mathdr.read_data( dv.begin() );
+    for ( int i = 0; i < mathdr.rows(); i++ )
+      {
+      array[i] = (ParametersValueType)(dv[i]);
+      }
     }
 }
 
@@ -104,6 +109,27 @@ MatlabTransformIOTemplate<ParametersValueType>
     typename TransformType::ParametersType TmpParameterArray( mathdr.rows() );
     ReadMat<ParametersValueType>(mathdr, TmpParameterArray);
     std::string classname( mathdr.name() );
+
+    // Convert the input transform precision type to the requested precision type.
+    const std::string typeString = TypeName<ParametersValueType>::Get();
+    if( classname.find(typeString) == std::string::npos ) // desired type is not found in transform type
+      {
+      std::string searchFor;
+      std::string replaceBy;
+      if( typeString.compare("float") == 0 ) // desired type is float, so we should search for double and replace that.
+        {
+        searchFor = "double";
+        replaceBy = "float";
+        }
+      else
+        {
+        searchFor = "float";
+        replaceBy = "double";
+        }
+      std::string::size_type begin = classname.find(searchFor);
+      classname.replace(begin, searchFor.size(), replaceBy);
+      }
+
     // create transform based on name of first vector
     TransformPointer transform;
     this->CreateTransform(transform, classname);
