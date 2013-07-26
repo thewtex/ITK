@@ -98,6 +98,26 @@
     ** Sample code snippets
     ** Extracted from git diff of changed files in Examples and Testing
     **-->
+  <SampleCode>
+    <Old>
+      <![CDATA[
+        typedef TransformFileWriter   WriterType;
+        typedef TransformFileReader   ReaderType;
+      ]]>
+    </Old>
+
+    <New>
+      <![CDATA[
+        // write/read transforms in single precision
+        typedef TransformFileWriterTemplate<float>   WriterType;
+        typedef TransformFileReaderTemplate<float>   ReaderType;
+
+        // Now, the legacy writer/reader APIs are aliases for the following definitions
+        typedef TransformFileWriterTemplate<double>   WriterType;
+        typedef TransformFileReaderTemplate<double>   ReaderType;
+      ]]>
+    </New>
+    </SampleCode>
     <SampleCode>
       <Old>
         <![CDATA[
