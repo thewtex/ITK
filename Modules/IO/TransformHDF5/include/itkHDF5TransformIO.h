@@ -18,7 +18,6 @@
 #ifndef __itkHDF5TransformIO_h
 #define __itkHDF5TransformIO_h
 #include "itkTransformIOBase.h"
-#include "itk_H5Cpp.h"
 #include <string>
 
 // Avoids KWStyle error from forward declaration below.
@@ -129,12 +128,10 @@ private:
   void WriteString(const std::string &path, const char *value);
   void WriteOneTransform(const int transformIndex,
                          const TransformType *transform);
-  H5::PredType StringTypeToPredType(void);
 
   H5::H5File *m_H5File;
 };
 extern const std::string  GetTransformName(int);
-//extern H5::PredType GetType();
 
 /** This helps to meet backward compatibility */
 typedef HDF5TransformIOTemplate< double > HDF5TransformIO;

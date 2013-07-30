@@ -25,7 +25,7 @@
 #include "itkCompositeTransformIOHelper.h"
 #include "itkVersion.h"
 #include <sstream>
-//#include "itk_H5Cpp.h"
+#include "itk_H5Cpp.h"
 
 namespace itk
 {
@@ -81,29 +81,6 @@ HDF5TransformIOTemplate< TInternalComputationValueType >
     {
     delete this->m_H5File;
     }
-}
-
-template< class TInternalComputationValueType >
-H5::PredType
-HDF5TransformIOTemplate< TInternalComputationValueType >
-::StringTypeToPredType(void)
-{
-const std::string typeString = TypeName<TInternalComputationValueType>::Get();
-if(typeString.compare("float") == 0)
-  {
-  return H5::PredType::NATIVE_FLOAT;
-  }
-else if(typeString.compare("double") == 0)
-  {
-  return H5::PredType::NATIVE_DOUBLE;
-  }
-else
-  {
-  itkGenericExceptionMacro(<< "unsupported data type "
-                           << typeString);
-  }
-// never reached but silences warning.
-return H5::PredType::NATIVE_DOUBLE;
 }
 
 template< class TInternalComputationValueType >
@@ -220,14 +197,10 @@ HDF5TransformIOTemplate< TInternalComputationValueType >
   ParameterArray.SetSize(dim);
   H5::FloatType ParamType = paramSet.getFloatType();
 
-  //const char* nameOfComputationType = TypeName<TInternalComputationValueType>::Get();
-  //TInternalComputationValueType *buf = new TInternalComputationValueType[dim];
-  //if( !strcmp( nameOfComputationType, "double" ) )
   if( ParamType.getSize() == sizeof(double) )
     {
     double *buf = new double[dim];
     paramSet.read(buf,H5::PredType::NATIVE_DOUBLE);
-    // ParameterArray.SetData(buf,dim,true);
     for(unsigned i = 0; i < dim; i++)
       {
       ParameterArray.SetElement(i,(TInternalComputationValueType)(buf[i]));
@@ -302,25 +275,43 @@ HDF5TransformIOTemplate< TInternalComputationValueType >
       // open /TransformGroup/N
       H5::Group currentTransformGroup = this->m_H5File->openGroup(transformName);
       //
-      // read the output transform type
+      // read transform type
       std::string transformType;
       {
       hsize_t numStrings(1);
       H5::DataSpace strSpace(1,&numStrings);
-      //H5::StrType typeType(H5::PredType::C_S1,H5T_VARIABLE);
-      H5::StrType typeType( this->StringTypeToPredType() );
+      H5::StrType typeType(H5::PredType::C_S1,H5T_VARIABLE);
       std::string typeName(transformName);
       typeName += transformTypeName;
       H5::DataSet typeSet = this->m_H5File->openDataSet(typeName);
       typeSet.read(transformType,typeType,strSpace);
       typeSet.close();
-        /////////////////
-      std::cout << "transformName: " << transformName << std::endl;//DEBUG///////////////
-      std::cout << "type name: " << typeName << std::endl;//DEBUG///////////////
-      std::cout << "Transform type: " << transformType << std::endl;//DEBUG///////////////
-        ////////////////
+      }
+      //////
+      std::cout << "transformType before conversion: " << transformType << std::endl;//DEBUG///////////////
+
+      const std::string typeString = TypeName<TInternalComputationValueType>::Get();
+      if( transformType.find(typeString) == std::string::npos ) // desired type is not found in transform type
+        {
+        std::string searchFor;
+        std::string replaceBy;
+        if( typeString.compare("float") == 0 ) // desired type is float, so we should search for double and replace that.
+          {
+          searchFor = "double";
+          replaceBy = "float";
+          }
+        else
+          {
+          searchFor = "float";
+          replaceBy = "double";
+          }
+
+        hsize_t begin = transformType.find(searchFor);
+        transformType.replace(begin, searchFor.size(), replaceBy);
       }
 
+      std::cout << "transformType after conversion: " << transformType << std::endl;//DEBUG///////////////
+      /////////
       TransformPointer transform;
       this->CreateTransform(transform,transformType);
       this->GetReadTransformList().push_back (transform);
