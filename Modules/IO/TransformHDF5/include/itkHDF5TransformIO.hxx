@@ -29,43 +29,6 @@
 
 namespace itk
 {
-
-namespace
-{
-
-// The following struct returns the string name of computation type
-// default implementation
-template <class TInternalComputationValueType>
-struct TypeName
-{
-  static const char* Get()
-  {
-  return typeid(TInternalComputationValueType).name();
-  }
-};
-
-// a specialization for each "float" and "double" type that we support
- // and don't like the string returned by typeid
-template <>
-struct TypeName<float>
-{
-  static const char* Get()
-  {
-  return "float";
-  }
-};
-
-template <>
-struct TypeName<double>
-{
-  static const char* Get()
-  {
-  return "double";
-  }
-};
-
-} // end anonymous namespace
-
 template< class TInternalComputationValueType >
 HDF5TransformIOTemplate< TInternalComputationValueType >
 ::HDF5TransformIOTemplate()
@@ -130,8 +93,7 @@ HDF5TransformIOTemplate< TInternalComputationValueType >
 }
 
 
-/** Write a parameter array to the location specified by name
- */
+/** Write a parameter array to the location specified by name */
 template< class TInternalComputationValueType >
 void
 HDF5TransformIOTemplate< TInternalComputationValueType >
@@ -155,7 +117,7 @@ HDF5TransformIOTemplate< TInternalComputationValueType >
     paramSet.write(buf,H5::PredType::NATIVE_DOUBLE);
     paramSet.close();
     }
-  else
+  else if( !strcmp( nameOfComputationType, "float" ) )
     {
     for(unsigned i(0); i < dim; i++)
       {
@@ -167,6 +129,12 @@ HDF5TransformIOTemplate< TInternalComputationValueType >
                                                          paramSpace);
     paramSet.write(buf,H5::PredType::NATIVE_FLOAT);
     paramSet.close();
+    }
+  else
+    {
+    itkExceptionMacro(<< "Wrong data precision type "
+                      << nameOfComputationType
+                      << "for writing in HDF5 File");
     }
   delete [] buf;
 }
@@ -287,9 +255,7 @@ HDF5TransformIOTemplate< TInternalComputationValueType >
       typeSet.read(transformType,typeType,strSpace);
       typeSet.close();
       }
-      //////
-      std::cout << "transformType before conversion: " << transformType << std::endl;//DEBUG///////////////
-
+      // Convert the input transform precision type to the requested precision type.
       const std::string typeString = TypeName<TInternalComputationValueType>::Get();
       if( transformType.find(typeString) == std::string::npos ) // desired type is not found in transform type
         {
@@ -305,13 +271,10 @@ HDF5TransformIOTemplate< TInternalComputationValueType >
           searchFor = "float";
           replaceBy = "double";
           }
-
         hsize_t begin = transformType.find(searchFor);
         transformType.replace(begin, searchFor.size(), replaceBy);
-      }
+        }
 
-      std::cout << "transformType after conversion: " << transformType << std::endl;//DEBUG///////////////
-      /////////
       TransformPointer transform;
       this->CreateTransform(transform,transformType);
       this->GetReadTransformList().push_back (transform);
