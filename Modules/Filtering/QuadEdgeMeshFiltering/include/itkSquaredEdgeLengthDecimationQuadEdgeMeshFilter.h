@@ -74,11 +74,11 @@ protected:
   virtual ~SquaredEdgeLengthDecimationQuadEdgeMeshFilter();
 
   /**
-   * \brief Compute the measure value for iEdge
+   * \brief Compute the measure value for iEdge.
    * \param[in] iEdge
    * \return measure value, here the squared edge length
    */
-  inline MeasureType MeasureEdge(OutputQEType *iEdge)
+  virtual MeasureType MeasureEdge(OutputQEType *iEdge)
     {
     OutputPointIdentifier id_org = iEdge->GetOrigin();
     OutputPointIdentifier id_dest = iEdge->GetDestination();
@@ -90,12 +90,11 @@ protected:
     }
 
   /**
-   * \brief Calculate the position of the remaining vertex from collapsing
-   * iEdge.
+   * \brief Calculate the position of the remaining vertex from collapsing iEdge.
    * \param[in] iEdge
    * \return the optimal point location
    */
-  OutputPointType Relocate(OutputQEType *iEdge);
+  virtual OutputPointType Relocate(OutputQEType *iEdge);
 
 private:
   SquaredEdgeLengthDecimationQuadEdgeMeshFilter(const Self &); // purposely not implemented
