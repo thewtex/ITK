@@ -89,7 +89,7 @@ MACRO(GENERATE_TEST_INCLUDE LIB SOURCES PREFIX)
 
   CONFIGURE_FILE("${CMAKE_ROOT}/Modules/CMakeConfigurableFile.in"
                  "${CMAKE_CURRENT_BINARY_DIR}/test_include.cxx"
-                 @ONLY IMMEDIATE)
+                 @ONLY)
 
   ADD_EXECUTABLE(${LIB}_test_include ${CMAKE_CURRENT_BINARY_DIR}/test_include.cxx)
   TARGET_LINK_LIBRARIES(${LIB}_test_include ${LIB})

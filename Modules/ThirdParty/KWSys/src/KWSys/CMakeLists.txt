@@ -241,7 +241,7 @@ STRING(COMPARE EQUAL "${PROJECT_SOURCE_DIR}" "${PROJECT_BINARY_DIR}"
   KWSYS_IN_SOURCE_BUILD)
 IF(NOT KWSYS_IN_SOURCE_BUILD)
   CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/kwsysPrivate.h
-    ${PROJECT_BINARY_DIR}/kwsysPrivate.h COPY_ONLY IMMEDIATE)
+    ${PROJECT_BINARY_DIR}/kwsysPrivate.h COPY_ONLY)
 ENDIF(NOT KWSYS_IN_SOURCE_BUILD)
 
 # Select plugin module file name convention.
@@ -739,7 +739,7 @@ FOREACH(header
       "#define ${KWSYS_NAMESPACE}_stl_${header}_including_hxx\n# include <${KWSYS_NAMESPACE}/stl/${header}.hxx>\n#undef ${KWSYS_NAMESPACE}_stl_${header}_including_hxx\n")
     CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/kwsys_stl_${header}.hxx.in
                    ${KWSYS_HEADER_DIR}/stl/${header}.hxx
-                   @ONLY IMMEDIATE)
+                   @ONLY)
     IF(KWSYS_INSTALL_INCLUDE_DIR)
       INSTALL(FILES ${KWSYS_HEADER_DIR}/stl/${header}.hxx
         DESTINATION ${KWSYS_INSTALL_INCLUDE_DIR}/${KWSYS_NAMESPACE}/stl
@@ -750,7 +750,7 @@ FOREACH(header
   ENDIF(KWSYS_STL_HEADER_EXTRA_${header})
   CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/kwsys_stl.hxx.in
                  ${KWSYS_HEADER_DIR}/stl/${header}
-                 @ONLY IMMEDIATE)
+                 @ONLY)
 
   # Create an install target for the header wrapper.
   IF(KWSYS_INSTALL_INCLUDE_DIR)
@@ -763,7 +763,7 @@ ENDFOREACH(header)
 # Provide cstddef header.
 CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/kwsys_cstddef.hxx.in
                ${KWSYS_HEADER_DIR}/cstddef
-               @ONLY IMMEDIATE)
+               @ONLY)
 IF(KWSYS_INSTALL_INCLUDE_DIR)
   INSTALL(FILES ${KWSYS_HEADER_DIR}/cstddef
     DESTINATION ${KWSYS_INSTALL_INCLUDE_DIR}/${KWSYS_NAMESPACE}
@@ -777,7 +777,7 @@ FOREACH(header iostream fstream sstream iosfwd)
   # Configure the header wrapper.
   CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/kwsys_ios_${header}.h.in
                  ${KWSYS_HEADER_DIR}/ios/${header}
-                 @ONLY IMMEDIATE)
+                 @ONLY)
 
   # Create an install target for the header wrapper.
   IF(KWSYS_INSTALL_INCLUDE_DIR)
@@ -860,7 +860,7 @@ FOREACH(c ${KWSYS_CLASSES})
 
   # Configure the header for this class.
   CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/${c}.hxx.in ${KWSYS_HEADER_DIR}/${c}.hxx
-                 @ONLY IMMEDIATE)
+                 @ONLY)
   SET(KWSYS_CXX_SRCS ${KWSYS_CXX_SRCS} ${KWSYS_HEADER_DIR}/${c}.hxx)
 
   # Create an install target for the header.
@@ -875,7 +875,7 @@ ENDFOREACH(c)
 FOREACH(h ${KWSYS_H_FILES})
   # Configure the header into the given directory.
   CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/${h}.h.in ${KWSYS_HEADER_DIR}/${h}.h
-                 @ONLY IMMEDIATE)
+                 @ONLY)
   SET(KWSYS_C_SRCS ${KWSYS_C_SRCS} ${KWSYS_HEADER_DIR}/${h}.h)
 
   # Create an install target for the header.
@@ -890,7 +890,7 @@ ENDFOREACH(h)
 FOREACH(h ${KWSYS_HXX_FILES})
   # Configure the header into the given directory.
   CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/${h}.hxx.in ${KWSYS_HEADER_DIR}/${h}.hxx
-                 @ONLY IMMEDIATE)
+                 @ONLY)
   SET(KWSYS_CXX_SRCS ${KWSYS_CXX_SRCS} ${KWSYS_HEADER_DIR}/${h}.hxx)
 
   # Create an install target for the header.
@@ -1099,7 +1099,7 @@ IF(KWSYS_STANDALONE OR CMake_SOURCE_DIR)
 
     # Test SharedForward
     CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/testSharedForward.c.in
-                   ${PROJECT_BINARY_DIR}/testSharedForward.c @ONLY IMMEDIATE)
+                   ${PROJECT_BINARY_DIR}/testSharedForward.c @ONLY)
     ADD_EXECUTABLE(${KWSYS_NAMESPACE}TestSharedForward
                    ${PROJECT_BINARY_DIR}/testSharedForward.c)
     SET_PROPERTY(TARGET ${KWSYS_NAMESPACE}TestSharedForward PROPERTY LABELS ${KWSYS_LABELS_EXE})

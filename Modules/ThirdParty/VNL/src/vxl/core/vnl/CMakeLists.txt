@@ -71,7 +71,7 @@ ELSE(VNL_CONFIG_ENABLE_SSE2_ROUNDING)
   SET(VNL_CONFIG_ENABLE_SSE2_ROUNDING 0)
 ENDIF(VNL_CONFIG_ENABLE_SSE2_ROUNDING)
 CONFIGURE_FILE(${vxl_SOURCE_DIR}/core/vnl/vnl_config.h.in
-               ${vxl_BINARY_DIR}/core/vnl/vnl_config.h @ONLY IMMEDIATE)
+               ${vxl_BINARY_DIR}/core/vnl/vnl_config.h @ONLY)
 
 SET( vnl_sources
   dll.h
