@@ -31,13 +31,13 @@ void print_vnl_matrix(T& mat)
     }
 }
 
-template <class D>  // D is often double or float
-vnl_matrix<D> solve_with_warning(vnl_matrix<D>const& M,
-         vnl_matrix<D>const& B)
+template <class T>  // D is often double or float
+vnl_matrix<T> solve_with_warning(vnl_matrix<T>const& M,
+         vnl_matrix<T>const& B)
 {
-  // Take svd of vnl_matrix<D> M, setting singular values
+  // Take svd of vnl_matrix<T> M, setting singular values
   // smaller than 1e-8 to 0, and hold the result.
-  vnl_svd<D> svd(M, 1e-8);
+  vnl_svd<T> svd(M, 1e-8);
   // Check for rank-deficiency
   if (svd.singularities() > 1)
     std::cout << "Warning: Singular matrix, condition = " << svd.well_condition() << std::endl;
