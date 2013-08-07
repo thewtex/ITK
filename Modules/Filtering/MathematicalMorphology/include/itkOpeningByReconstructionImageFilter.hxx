@@ -97,9 +97,7 @@ OpeningByReconstructionImageFilter< TInputImage, TOutputImage, TKernel >
     dilate->Update();
     typename TInputImage::Pointer tempImage = TInputImage::New();
     tempImage->SetRegions ( erode->GetOutput()->GetBufferedRegion() );
-    tempImage->SetOrigin( this->GetInput()->GetOrigin() );
-    tempImage->SetSpacing( this->GetInput()->GetSpacing() );
-    tempImage->SetDirection( this->GetInput()->GetDirection() );
+    tempImage->CopyInformation( this->GetInput() );
 
     tempImage->Allocate();
 
