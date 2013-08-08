@@ -51,6 +51,7 @@ HistogramThresholdImageFilter<TInputImage, TOutputImage, TMaskImage>
     }
 
   m_NumberOfHistogramBins = 256;
+  m_BelowThresholdAsForeground = true;
 }
 
 
@@ -105,8 +106,13 @@ HistogramThresholdImageFilter<TInputImage, TOutputImage, TMaskImage>
   typedef BinaryThresholdImageFilter<TInputImage,TOutputImage> ThresholderType;
   typename ThresholderType::Pointer thresholder = ThresholderType::New();
   thresholder->SetInput(this->GetInput());
-  thresholder->SetLowerThreshold( NumericTraits<InputPixelType>::NonpositiveMin() );
-  thresholder->SetUpperThresholdInput( m_Calculator->GetOutput() );
+  if (m_BelowThresholdAsForeground) {
+    thresholder->SetLowerThreshold( NumericTraits<InputPixelType>::NonpositiveMin() );
+    thresholder->SetUpperThresholdInput( m_Calculator->GetOutput() );
+  } else {
+    thresholder->SetLowerThresholdInput( m_Calculator->GetOutput() );
+    thresholder->SetUpperThreshold( NumericTraits<InputPixelType>::max() );
+  }
   thresholder->SetInsideValue( this->GetInsideValue() );
   thresholder->SetOutsideValue( this->GetOutsideValue() );
   thresholder->SetNumberOfThreads( this->GetNumberOfThreads() );
@@ -164,6 +170,7 @@ HistogramThresholdImageFilter<TInputImage,TOutputImage,TMaskImage>
      << static_cast<typename NumericTraits<InputPixelType>::PrintType>(m_Threshold) << std::endl;
   os << indent << "Mask image in use: " << (bool)(this->GetMaskImage() ) << std::endl;
   os << indent << "Masking of output: " << this->GetMaskOutput() << std::endl;
+  os << indent << "Pixels below threshold as foreground: " << m_BelowThresholdAsForeground << std::endl;
 
 }
 

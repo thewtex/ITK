@@ -188,6 +188,12 @@ public:
   itkSetObjectMacro(Calculator, CalculatorType);
   itkGetModifiableObjectMacro(Calculator, CalculatorType);
 
+  /** Whether pixels below the threshold should be marked as foreground
+  or pixels above the threshold. Defaults to true. */
+  itkSetMacro(BelowThresholdAsForeground, bool);
+  itkGetConstMacro(BelowThresholdAsForeground, bool);
+  itkBooleanMacro(BelowThresholdAsForeground);
+
 #ifdef ITK_USE_CONCEPT_CHECKING
   /** Begin concept checking */
   itkConceptMacro(OutputEqualityComparableCheck,
@@ -215,6 +221,7 @@ protected:
   unsigned            m_NumberOfHistogramBins;
   bool                m_AutoMinimumMaximum;
   bool                m_MaskOutput;
+  bool                m_BelowThresholdAsForeground;
 
 private:
   HistogramThresholdImageFilter(const Self&); //purposely not implemented
