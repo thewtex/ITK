@@ -40,6 +40,9 @@ public:
 
   itkStaticConstMacro(ImageDimension, unsigned int, TImage::ImageDimension);
 
+  /** Method for creation through the object factory. */
+  itkNewMacro(Self);
+
   itkTypeMacro( LevelSetDomainPartitionImage, LevelSetDomainPartitionBase );
 
   typedef TImage                             ImageType;
@@ -68,6 +71,8 @@ public:
   typedef typename ListImageType::PointType             ListPointType;
   typedef ImageRegionIteratorWithIndex< ListImageType > ListIteratorType;
 
+  typedef std::vector< RegionType > LevelSetDomainVectorType;
+
   /** Set the input image that will be used to compute an image with the list
    * of level sets domain overlaps. */
   itkSetConstObjectMacro( Image, ImageType );
@@ -76,13 +81,17 @@ public:
   /** Get the image with the list of level set domains. */
   itkGetModifiableObjectMacro(ListDomain, ListImageType );
 
-protected:
-  LevelSetDomainPartitionImage();
-  virtual ~LevelSetDomainPartitionImage();
+  /** Set/Get the current level set id */
+  itkSetMacro( LevelSetDataPointerVector, LevelSetDomainVectorType );
+  itkGetMacro( LevelSetDataPointerVector, LevelSetDomainVectorType );
 
   /** Populate a list image with each pixel being a list of overlapping
    *  level set support at that pixel */
   virtual void PopulateListDomain();
+
+protected:
+  LevelSetDomainPartitionImage();
+  virtual ~LevelSetDomainPartitionImage();
 
   /** Allocate a list image with each pixel being a list of overlapping
    *  level set support at that pixel */
@@ -92,8 +101,9 @@ private:
   LevelSetDomainPartitionImage(const Self &); //purposely not implemented
   void operator=(const Self &); //purposely not implemented
 
-  ImageConstPointer     m_Image;
-  ListImagePointer      m_ListDomain;
+  ImageConstPointer        m_Image;
+  ListImagePointer         m_ListDomain;
+  LevelSetDomainVectorType m_LevelSetDataPointerVector;
 
 };
 } //end namespace itk

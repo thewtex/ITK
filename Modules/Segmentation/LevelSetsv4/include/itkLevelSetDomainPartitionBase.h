@@ -40,6 +40,8 @@ public:
   typedef SmartPointer< Self >                  Pointer;
   typedef SmartPointer< const Self >            ConstPointer;
 
+  typedef itk::IdentifierType                   IdentifierType;
+
   itkTypeMacro(LevelSetDomainPartitionBase, LightObject);
 
   /** Get/Set the number of level set functions */
