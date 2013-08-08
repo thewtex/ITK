@@ -53,6 +53,8 @@ template< class TImage >
 void LevelSetDomainPartitionImageWithKdTree< TImage >
 ::PopulateDomainWithKdTree()
 {
+  Superclass::AllocateListDomain();
+
   const ListRegionType region = this->m_ListDomain->GetLargestPossibleRegion();
 
   ListIteratorType lIt(this->m_ListDomain, region);
@@ -72,8 +74,8 @@ void LevelSetDomainPartitionImageWithKdTree< TImage >
     IdentifierListType identifierList;
     for ( NeighborsIdType i = 0; i < this->m_NumberOfNeighbors; ++i )
       {
-      // this is not yet defined, but it will have to be !!!
-      if ( this->m_LevelSetDataPointerVector[i]->VerifyInsideRegion(ind) )
+      IdentifierType id = neighbors[i];
+      if ( this->m_LevelSetDataPointerVector[id].IsInside( ind ) )
         {
         identifierList.push_back(neighbors[i]);
         }
