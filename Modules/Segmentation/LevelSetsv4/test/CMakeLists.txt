@@ -14,7 +14,6 @@ itkLevelSetEquationChanAndVeseInternalTermTest.cxx
 itkLevelSetEquationCurvatureTermTest.cxx
 itkLevelSetEquationLaplacianTermTest.cxx
 itkLevelSetEquationPropagationTermTest.cxx
-itkLevelSetEquationRegionTermTest.cxx
 itkLevelSetEquationTermBaseTest.cxx
 itkLevelSetEquationTermContainerTest.cxx
 # domain partition classes
