@@ -202,7 +202,7 @@ endif()
 
 #-----------------------------------------------------------------------------
 # ITK uses KWStyle for checking the coding style
-include(${ITK_SOURCE_DIR}/Utilities/KWStyle/KWStyle.cmake)
+add_subdirectory(Utilities/KWStyle)
 
 #-----------------------------------------------------------------------------
 # ITK build the Examples that are illustrated in the Software Guide
