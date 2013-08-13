@@ -27,7 +27,7 @@
 #include "itkLevelSetEvolution.h"
 #include "itkLevelSetEvolutionNumberOfIterationsStoppingCriterion.h"
 #include "itkLevelSetDenseImage.h"
-#include "vtkVisualize2DSparseLevelSetLayers.h"
+#include "itkVTKVisualize2DSparseLevelSetLayers.h"
 #include "itkSinRegularizedHeavisideStepFunction.h"
 
 template< class TInputImage, class TLevelSetType >
@@ -131,7 +131,7 @@ visualizeLevelSet( TInputImage * inputImage,
   std::cout << "Stopping criteria created" << std::endl;
 
   // Create the visualizer
-  typedef vtkVisualize2DSparseLevelSetLayers< InputImageType, LevelSetType > VisualizationType;
+  typedef itk::VTKVisualize2DSparseLevelSetLayers< InputImageType, LevelSetType > VisualizationType;
   typename VisualizationType::Pointer visualizer = VisualizationType::New();
   //! \todo the visualizer should get the input image from the level set
   visualizer->SetInputImage( inputImage );
