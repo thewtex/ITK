@@ -50,7 +50,7 @@ namespace watershed
  * \ingroup WatershedSegmentation
  * \ingroup ITKWatersheds
  */
-template< class TScalarType, unsigned int TDimension >
+template< class TScalar, unsigned int TDimension >
 class Boundary:public DataObject
 {
 public:
@@ -67,7 +67,7 @@ public:
   typedef std::pair< unsigned, unsigned >                        IndexType;
   typedef Image< IdentifierType, TDimension >                    ImageType;
   typedef typename ImageType::IndexType                          ImageIndexType;
-  typedef TScalarType                                            ScalarType;
+  typedef TScalar                                            ScalarType;
 
   /** Data type stored at each pixel in a face.   */
   struct face_pixel_t {
