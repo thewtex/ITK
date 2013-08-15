@@ -43,6 +43,8 @@
 #include "vtkCaptureScreen.h"
 #include "vtkPNGWriter.h"
 
+#include "itkVTKVisualizeImageLevelSet.h"
+
 namespace itk
 {
 /**
@@ -54,12 +56,16 @@ namespace itk
  *
  * \ingroup ITKLevelSetsv4Visualization
  */
-template< class TInputImage, class TLevelSetImage >
-class VTKVisualize3DLevelSetImage : public LightObject
+template< class TInputImage, class TLevelSet >
+class VTKVisualize3DLevelSetImage : public VTKVisualizeImageLevelSet< TInputImage, ImageToVTKImageFilter< TInputImage > >
 {
 public:
+  typedef ImageToVTKImageFilter< TInputImage >  ImageConverterType;
+  typedef typename ImageConverterType::Pointer  ImageConverterPointer;
+
+
   typedef VTKVisualize3DLevelSetImage Self;
-  typedef LightObject                 Superclass;
+  typedef VTKVisualizeImageLevelSet< TInputImage, ImageConverterType > Superclass;
   typedef SmartPointer< Self >        Pointer;
   typedef SmartPointer< const Self >  ConstPointer;
 
@@ -67,99 +73,73 @@ public:
   itkNewMacro(Self);
 
   /** Run-time type information (and related methods). */
-  itkTypeMacro(VTKVisualize3DLevelSetImage, LightObject);
+  itkTypeMacro(VTKVisualize3DLevelSetImage, VTKVisualizeImageLevelSet );
 
   typedef TInputImage     InputImageType;
-  typedef TLevelSetImage  LevelSetImageType;
-
-  typedef LevelSetDenseImage< LevelSetImageType > LevelSetType;
-
-  typedef ImageToVTKImageFilter< InputImageType >  ImageConverterType;
-  typedef typename ImageConverterType::Pointer          ImageConverterPointer;
-
-  typedef LevelSetTovtkImageData< LevelSetType > LevelSetConverterType;
-  typedef typename LevelSetConverterType::Pointer     LevelSetConverterPointer;
+  typedef TLevelSet       LevelSetType;
 
   void SetInputImage( const InputImageType * iImage )
     {
-    m_ImageConverter->SetInput( iImage );
-    try
-      {
-      m_ImageConverter->Update();
-      }
-    catch( ExceptionObject& e )
-      {
-      std::cout << e << std::endl;
-      return;
-      }
+    this->m_InputImageConverter->SetInput( iImage );
+    this->m_InputImageConverter->Update();
 
-    m_Count = 0;
+    vtkSmartPointer< vtkImageShiftScale > ImageShiftScale = vtkSmartPointer< vtkImageShiftScale >::New();
+    ImageShiftScale->SetOutputScalarTypeToUnsignedChar();
+  #if VTK_MAJOR_VERSION <= 5
+    ImageShiftScale->SetInput( this->m_InputImageConverter->GetOutput() );
+  #else
+    this->m_InputImageConverter->Update();
+    ImageShiftScale->SetInputData( this->m_InputImageConverter->GetOutput() );
+  #endif
+    ImageShiftScale->Update();
+
+    int dimensions[3];
+    this->m_InputImageConverter->GetOutput()->GetDimensions( dimensions );
+
+    vtkSmartPointer< vtkImageActor > imageActor = vtkSmartPointer< vtkImageActor >::New();
+    imageActor->InterpolateOff();
+    imageActor->GetMapper()->SetInputConnection( ImageShiftScale->GetOutputPort() );
+    imageActor->SetDisplayExtent( 0, dimensions[0], 0, dimensions[1], dimensions[2] / 2, dimensions[2] / 2 );
+
+    this->m_Renderer->AddActor( imageActor );
     }
 
-  void SetLevelSet( const LevelSetType *f )
+  void SetLevelSet( LevelSetType *f )
     {
     m_LevelSetConverter->SetInput( f );
-    m_Count = 0;
     }
 
-  void SetScreenCapture( const bool& iCapture )
+  /*
+   *void Update()
     {
-    m_ScreenCapture = iCapture;
-    }
 
-  void Update()
-    {
-    try
-      {
-      m_LevelSetConverter->Update();
-      }
-    catch( ExceptionObject& e )
-      {
-      std::cout << e << std::endl;
-      return;
-      }
 
-    const int LevelSet_id = 0;
-    vtkSmartPointer< vtkMarchingCubes > contours =
-      vtkSmartPointer< vtkMarchingCubes >::New();
-#if VTK_MAJOR_VERSION <= 5
-    contours->SetInput( m_ImageConverter->GetOutput() );
-#else
     m_ImageConverter->Update();
-    contours->SetInputData( m_ImageConverter->GetOutput() );
-#endif
-    contours->GenerateValues( LevelSet_id, 0, 0 );
 
-    vtkSmartPointer< vtkPolyDataMapper > mapper =
-        vtkSmartPointer< vtkPolyDataMapper >::New();
-    mapper->SetInputConnection( contours->GetOutputPort() );
-    mapper->SetScalarRange( -10, 10 );
+    vtkSmartPointer< vtkImageData > image = m_ImageConverter->GetOutput();
 
-    vtkSmartPointer< vtkActor > ContourActor =
-        vtkSmartPointer< vtkActor >::New();
-    ContourActor->SetMapper( mapper );
-    ContourActor->GetProperty()->SetLineWidth( 2. );
-    ContourActor->GetProperty()->SetColor( 0, 0, 1 );
-    ContourActor->GetProperty()->SetOpacity( 1.0 );
+    int dimensions[3];
+    image->GetDimensions( dimensions );
 
     vtkSmartPointer< vtkImageShiftScale > shift =
         vtkSmartPointer< vtkImageShiftScale >::New();
 #if VTK_MAJOR_VERSION <= 5
-    shift->SetInput( m_ImageConverter->GetOutput() );
+    shift->SetInput( image );
 #else
-    m_ImageConverter->Update();
-    shift->SetInputData( m_ImageConverter->GetOutput() );
+    shift->SetInputData( image );
 #endif
     shift->SetOutputScalarTypeToUnsignedChar();
     shift->Update();
 
-    vtkSmartPointer< vtkImageActor > input_Actor =
+    vtkSmartPointer< vtkImageActor > imageActor =
         vtkSmartPointer< vtkImageActor >::New();
+
 #if VTK_MAJOR_VERSION <= 5
-    input_Actor->SetInput( shift->GetOutput() );
+    imageActor->SetInput( shift->GetOutput() );
 #else
-    input_Actor->GetMapper()->SetInputConnection( shift->GetOutputPort() );
+    imageActor->GetMapper()->SetInputConnection( shift->GetOutputPort() );
 #endif
+    imageActor->SetDisplayExtent( 0, dimensions[0], 0, dimensions[1], dimensions[2] / 2, dimensions[2] / 2 );
 
     vtkSmartPointer< vtkRenderer > ren =
         vtkSmartPointer< vtkRenderer >::New();
@@ -171,8 +151,8 @@ public:
     vtkSmartPointer< vtkRenderWindow > renWin =
         vtkSmartPointer< vtkRenderWindow >::New();
 
-    ren->AddActor ( input_Actor );
-    ren->AddActor ( ContourActor );
+    ren->AddActor( imageActor );
+    ren->AddActor( ContourActor );
 
     renWin->AddRenderer( ren );
 
@@ -198,30 +178,64 @@ public:
       {
       renWin->Render();
       }
-    }
+    }*/
 
 protected:
-  VTKVisualize3DLevelSetImage() : Superclass(),
-    m_Count( 0 ),
-    m_ScreenCapture( false )
+  VTKVisualize3DLevelSetImage() : Superclass()
     {
-    m_ImageConverter = ImageConverterType::New();
     m_LevelSetConverter = LevelSetConverterType::New();
+
+    this->m_MeshMapper = vtkSmartPointer< vtkPolyDataMapper >::New();
+    this->m_MeshMapper->ScalarVisibilityOff();
+
+    this->m_MeshActor = vtkSmartPointer< vtkActor >::New();
+    this->m_MeshActor->SetMapper( this->m_MeshMapper );
+    this->m_MeshActor->GetProperty( )->SetLineWidth( 2. );
+    this->m_MeshActor->GetProperty()->SetColor( 0, 0, 1 );
+    this->m_MeshActor->GetProperty()->SetOpacity( 1.0 );
+
+    this->m_Renderer->AddActor( this->m_MeshActor );
     }
 
   ~VTKVisualize3DLevelSetImage()
     {}
 
+  virtual void PrepareVTKPipeline()
+  {
+    try
+      {
+      m_LevelSetConverter->Update();
+      }
+    catch( ExceptionObject& e )
+      {
+      std::cout << e << std::endl;
+      return;
+      }
+
+    const int LevelSet_id = 0;
+    vtkSmartPointer< vtkMarchingCubes > contours =
+      vtkSmartPointer< vtkMarchingCubes >::New();
+#if VTK_MAJOR_VERSION <= 5
+    contours->SetInput( m_LevelSetConverter->GetOutput() );
+#else
+    contours->SetInputData( m_LevelSetConverter->GetOutput() );
+#endif
+    contours->SetValue( LevelSet_id, 0. );
+    contours->ComputeNormalsOff();
+
+    m_MeshMapper->SetInputConnection( contours->GetOutputPort() );
+  }
+
 private:
   VTKVisualize3DLevelSetImage ( const Self& );
   void operator = ( const Self& );
 
-  ImageConverterPointer     m_ImageConverter;
-  LevelSetConverterPointer  m_LevelSetConverter;
+  typedef LevelSetTovtkImageData< LevelSetType >    LevelSetConverterType;
+  typedef typename LevelSetConverterType::Pointer   LevelSetConverterPointer;
 
-  IdentifierType m_Count;
-  bool           m_ScreenCapture;
-
+  LevelSetConverterPointer              m_LevelSetConverter;
+  vtkSmartPointer< vtkPolyDataMapper >  m_MeshMapper;
+  vtkSmartPointer< vtkActor >           m_MeshActor;
   };
 }
 #endif
