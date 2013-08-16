@@ -33,7 +33,7 @@ OctreeNode::OctreeNode(void)
 
 OctreeNode::~OctreeNode(void)
 {
-  this->RemoveChildren();
+  delete m_Branch;
 }
 
 OctreeNode & OctreeNode::GetChild(const enum LeafIdentifier ChildID) const
@@ -80,6 +80,11 @@ void OctreeNode::SetBranch(OctreeNodeBranch *NewBranch)
  */
 bool OctreeNode::IsNodeColored(void) const
 {
+  if ( !m_Branch )
+    {
+    return false;
+    }
+
   const char *            colorTable = m_Parent->GetColorTable();
   const OctreeNodeBranch *first =
     reinterpret_cast< const OctreeNodeBranch * >( &( colorTable[0] ) );
