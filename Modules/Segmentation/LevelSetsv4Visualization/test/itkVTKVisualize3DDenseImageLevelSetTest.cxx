@@ -16,7 +16,7 @@
  *
  *=========================================================================*/
 
-#include "itkVTKVisualize3DLevelSetImage.h"
+#include "itkVTKVisualizeImageLevelSetIsoValues.h"
 
 #include "itkLevelSetDenseImage.h"
 
@@ -98,7 +98,7 @@ int itkVTKVisualize3DLevelSetImageTest( int , char* [] )
   LevelSetType::Pointer levelset = LevelSetType::New();
   levelset->SetImage( LevelSetImage );
 
-  typedef itk::VTKVisualize3DLevelSetImage< ImageType, LevelSetType > VisualizationType;
+  typedef itk::VTKVisualizeImageLevelSetIsoValues< ImageType, LevelSetType > VisualizationType;
   VisualizationType::Pointer viewer = VisualizationType::New();
   viewer->SetInputImage( image );
   viewer->SetLevelSet( levelset );
