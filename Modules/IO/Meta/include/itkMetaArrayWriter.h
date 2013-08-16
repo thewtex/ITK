@@ -22,6 +22,7 @@
 #include "itkArray.h"
 #include "itkCovariantVector.h"
 #include "itkVariableLengthVector.h"
+#include "metaTypes.h"
 #include "metaArray.h"
 
 namespace itk
