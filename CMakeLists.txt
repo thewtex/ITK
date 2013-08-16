@@ -354,8 +354,13 @@ endforeach()
 #----------------------------------------------------------------------
 
 # Provide an option for all modules.
-option(ITK_BUILD_ALL_MODULES "Request to build all modules"
+option(ITK_BUILD_DEFAULT_MODULES "Request to build all default modules"
   ${ITK_BUILD_ALL_MODULES_DEFAULT})
+
+if(ITK_BUILD_ALL_MODULES)
+  message(WARNING "ITK_BUILD_ALL_MODULES is deprecated, it is now replaced by ITK_BUILD_DEFAULT_MODULES to be more accurate.")
+  set(ITK_BUILD_DEFAULT_MODULES ON CACHE FORCE "Request to build all default modules")
+endif()
 
 # Provide module selections by groups
 include(${ITK_SOURCE_DIR}/CMake/ITKGroups.cmake)
@@ -368,7 +373,7 @@ foreach(itk-module ${ITK_MODULES_ALL})
     if(ITK_MODULE_${itk-module}_EXCLUDE_FROM_ALL)
       set(ITK_MODULE_${itk-module}_IN_ALL 0)
     else()
-      set(ITK_MODULE_${itk-module}_IN_ALL ${ITK_BUILD_ALL_MODULES})
+      set(ITK_MODULE_${itk-module}_IN_ALL ${ITK_BUILD_DEFAULT_MODULES})
     endif()
   endif()
 endforeach()
@@ -444,7 +449,7 @@ foreach(itk-module ${ITK_MODULES_ENABLED})
     if(Module_${itk-module})
       set(_reason ", requested by Module_${itk-module}")
     elseif(ITK_MODULE_${itk-module}_IN_ALL)
-      set(_reason ", requested by ITK_BUILD_ALL_MODULES")
+      set(_reason ", requested by ITK_BUILD_DEFAULT_MODULES")
     else()
       set(_reason ", needed by [${ITK_MODULE_${itk-module}_NEEDED_BY}]")
     endif()
