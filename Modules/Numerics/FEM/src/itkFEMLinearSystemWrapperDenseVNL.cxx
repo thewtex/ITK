@@ -31,10 +31,7 @@ void LinearSystemWrapperDenseVNL::InitializeMatrix(unsigned int matrixIndex)
     }
 
   // out with old, in with new
-  if( ( *m_Matrices )[matrixIndex] != 0 )
-    {
-    delete ( *m_Matrices )[matrixIndex];
-    }
+  delete ( *m_Matrices )[matrixIndex];
 
   ( *m_Matrices )[matrixIndex] = new MatrixRepresentation( this->GetSystemOrder(), this->GetSystemOrder() );
   ( *m_Matrices )[matrixIndex]->fill(0.0);
@@ -56,16 +53,11 @@ bool LinearSystemWrapperDenseVNL::IsMatrixInitialized(unsigned int matrixIndex)
 
 void LinearSystemWrapperDenseVNL::DestroyMatrix(unsigned int matrixIndex)
 {
-  if( m_Matrices == 0 )
+  if( m_Matrices )
     {
-    return;
+    delete ( *m_Matrices )[matrixIndex];
+    ( *m_Matrices )[matrixIndex] = 0;
     }
-  if( ( *m_Matrices )[matrixIndex] == 0 )
-    {
-    return;
-    }
-  delete ( *m_Matrices )[matrixIndex];
-  ( *m_Matrices )[matrixIndex] = 0;
 }
 
 void LinearSystemWrapperDenseVNL::InitializeVector(unsigned int vectorIndex)
@@ -77,10 +69,7 @@ void LinearSystemWrapperDenseVNL::InitializeVector(unsigned int vectorIndex)
     }
 
   // out with old, in with new
-  if( ( *m_Vectors )[vectorIndex] != 0 )
-    {
-    delete ( *m_Vectors )[vectorIndex];
-    }
+  delete ( *m_Vectors )[vectorIndex];
 
   ( *m_Vectors )[vectorIndex] = new vnl_vector<Float>( this->GetSystemOrder() );
   ( *m_Vectors )[vectorIndex]->fill(0.0);
@@ -102,16 +91,11 @@ bool LinearSystemWrapperDenseVNL::IsVectorInitialized(unsigned int vectorIndex)
 
 void LinearSystemWrapperDenseVNL::DestroyVector(unsigned int vectorIndex)
 {
-  if( m_Vectors == 0 )
+  if( m_Vectors )
     {
-    return;
+    delete ( *m_Vectors )[vectorIndex];
+    ( *m_Vectors )[vectorIndex] = 0;
     }
-  if( ( *m_Vectors )[vectorIndex] == 0 )
-    {
-    return;
-    }
-  delete ( *m_Vectors )[vectorIndex];
-  ( *m_Vectors )[vectorIndex] = 0;
 }
 
 void LinearSystemWrapperDenseVNL::InitializeSolution(unsigned int solutionIndex)
@@ -123,10 +107,7 @@ void LinearSystemWrapperDenseVNL::InitializeSolution(unsigned int solutionIndex)
     }
 
   // out with old, in with new
-  if( ( *m_Solutions )[solutionIndex] != 0 )
-    {
-    delete ( *m_Solutions )[solutionIndex];
-    }
+  delete ( *m_Solutions )[solutionIndex];
 
   ( *m_Solutions )[solutionIndex] = new vnl_vector<Float>( this->GetSystemOrder() );
   ( *m_Solutions )[solutionIndex]->fill(0.0);
@@ -148,16 +129,11 @@ bool LinearSystemWrapperDenseVNL::IsSolutionInitialized(unsigned int solutionInd
 
 void LinearSystemWrapperDenseVNL::DestroySolution(unsigned int solutionIndex)
 {
-  if( m_Solutions == 0 )
+  if( m_Solutions )
     {
-    return;
+    delete ( *m_Solutions )[solutionIndex];
+    ( *m_Solutions )[solutionIndex] = 0;
     }
-  if( ( *m_Solutions )[solutionIndex] == 0 )
-    {
-    return;
-    }
-  delete ( *m_Solutions )[solutionIndex];
-  ( *m_Solutions )[solutionIndex] = 0;
 }
 
 LinearSystemWrapperDenseVNL::Float LinearSystemWrapperDenseVNL::GetSolutionValue(unsigned int i,

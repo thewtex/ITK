@@ -141,10 +141,7 @@ void LinearSystemWrapperItpack::InitializeVector(unsigned int vectorIndex)
     }
 
   /* delete old vector */
-  if( ( *m_Vectors )[vectorIndex] != 0 )
-    {
-    delete[] ( *m_Vectors )[vectorIndex];
-    }
+  delete[] ( *m_Vectors )[vectorIndex];
 
   /* insert new vector */
   ( *m_Vectors )[vectorIndex] = new doublereal[m_Order];
@@ -195,10 +192,7 @@ void LinearSystemWrapperItpack::InitializeSolution(unsigned int solutionIndex)
     }
 
   /* delete old vector */
-  if( ( *m_Solutions )[solutionIndex] != 0 )
-    {
-    delete[] ( *m_Solutions )[solutionIndex];
-    }
+  delete[] ( *m_Solutions )[solutionIndex];
 
   /* insert new vector */
   ( *m_Solutions )[solutionIndex] = new doublereal[m_Order];
@@ -226,46 +220,39 @@ bool LinearSystemWrapperItpack::IsSolutionInitialized(unsigned int solutionIndex
 void LinearSystemWrapperItpack::DestroyMatrix(unsigned int matrixIndex)
 {
   /* FIX ME: exceptions */
-  if( !m_Matrices )
+  if( m_Matrices )
     {
-    return;
-    }
-  if( matrixIndex >= m_NumberOfMatrices )
-    {
-    throw FEMExceptionLinearSystemBounds(__FILE__,
-                                         __LINE__,
-                                         "LinearSystemWrapperItpack::DestroyMatrix",
-                                         "m_Matrices",
-                                         matrixIndex);
-    }
+    if( matrixIndex >= m_NumberOfMatrices )
+      {
+      throw FEMExceptionLinearSystemBounds(__FILE__,
+                                          __LINE__,
+                                          "LinearSystemWrapperItpack::DestroyMatrix",
+                                          "m_Matrices",
+                                          matrixIndex);
+      }
 
-  ( *m_Matrices )[matrixIndex].Clear();
+    ( *m_Matrices )[matrixIndex].Clear();
+    }
 }
 
 void LinearSystemWrapperItpack::DestroyVector(unsigned int vectorIndex)
 {
   /* FIXME: exceptions */
-  if( !m_Vectors )
+  if( m_Vectors )
     {
-    return;
-    }
-  if( vectorIndex >= m_NumberOfVectors )
-    {
-    throw FEMExceptionLinearSystemBounds(__FILE__,
-                                         __LINE__,
-                                         "LinearSystemWrapperItpack::DestroyVector",
-                                         "m_Vectors",
-                                         vectorIndex);
-    }
+    if( vectorIndex >= m_NumberOfVectors )
+      {
+      throw FEMExceptionLinearSystemBounds(__FILE__,
+                                          __LINE__,
+                                          "LinearSystemWrapperItpack::DestroyVector",
+                                          "m_Vectors",
+                                          vectorIndex);
+      }
 
-  if( !( *m_Vectors )[vectorIndex] )
-    {
-    return;
+    /* delete vector */
+    delete[] ( *m_Vectors )[vectorIndex];
+    ( *m_Vectors )[vectorIndex] = 0;
     }
-
-  /* delete vector */
-  delete[] ( *m_Vectors )[vectorIndex];
-  ( *m_Vectors )[vectorIndex] = 0;
 }
 
 void LinearSystemWrapperItpack::DestroySolution(unsigned int solutionIndex)
@@ -273,24 +260,19 @@ void LinearSystemWrapperItpack::DestroySolution(unsigned int solutionIndex)
   // FIXME: exceptions
   if( !m_Solutions )
     {
-    return;
-    }
-  if( solutionIndex >= m_NumberOfSolutions )
-    {
-    throw FEMExceptionLinearSystemBounds(__FILE__,
-                                         __LINE__,
-                                         "LinearSystemWrapperItpack::DestroySolution",
-                                         "m_Solutions",
-                                         solutionIndex);
-    }
-  if( !( *m_Solutions )[solutionIndex] )
-    {
-    return;
-    }
+    if( solutionIndex >= m_NumberOfSolutions )
+      {
+      throw FEMExceptionLinearSystemBounds(__FILE__,
+                                          __LINE__,
+                                          "LinearSystemWrapperItpack::DestroySolution",
+                                          "m_Solutions",
+                                          solutionIndex);
+      }
 
-  /* delete vector */
-  delete[] ( *m_Solutions )[solutionIndex];
-  ( *m_Solutions )[solutionIndex] = 0;
+    /* delete vector */
+    delete[] ( *m_Solutions )[solutionIndex];
+    ( *m_Solutions )[solutionIndex] = 0;
+    }
 }
 
 LinearSystemWrapperItpack::Float LinearSystemWrapperItpack::GetMatrixValue(unsigned int i,
@@ -1169,26 +1151,20 @@ LinearSystemWrapperItpack::~LinearSystemWrapperItpack(void)
   delete m_Matrices;
 
   unsigned int i;
-  if( m_Vectors != 0 )
+  if( m_Vectors )
     {
     for( i = 0; i < m_NumberOfVectors; i++ )
       {
-      if( ( *m_Vectors )[i] != 0 )
-        {
-        delete[] ( *m_Vectors )[i];
-        }
+      delete[] ( *m_Vectors )[i];
       }
     delete m_Vectors;
     }
 
-  if( m_Solutions != 0 )
+  if( m_Solutions )
     {
     for( i = 0; i < m_NumberOfSolutions; i++ )
       {
-      if( ( *m_Solutions )[i] != 0 )
-        {
-        delete[] ( *m_Solutions )[i];
-        }
+      delete[] ( *m_Solutions )[i];
       }
     delete m_Solutions;
     }

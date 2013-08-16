@@ -138,10 +138,12 @@ protected:
     MemoryBlock(SizeValueType n):Size(n)
     { Begin = new ObjectType[n];  }
 
-    ~MemoryBlock()  {}   // Purposely does *not* free memory
+    ~MemoryBlock() {}   // Purposely does *not* free memory
 
     void Delete()
-    { if ( Begin != 0 ) { delete[] Begin; } }
+    {
+      delete[] Begin;
+    }
 
     ObjectType *Begin;
     SizeValueType Size;

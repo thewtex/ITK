@@ -70,12 +70,7 @@ public:
   /** Destructor.  */
   ~AutoPointer ()
   {
-    if ( m_IsOwner && m_Pointer )
-      {
-      delete m_Pointer;
-      }
-    m_Pointer = 0;
-    m_IsOwner = false;
+    this->Reset();
   }
 
   /** Overload operator ->.  */
@@ -86,7 +81,7 @@ public:
       is deleted and the pointer is set to null. */
   void Reset(void)
   {
-    if ( m_IsOwner && m_Pointer )
+    if ( m_IsOwner )
       {
       delete m_Pointer;
       }
@@ -101,7 +96,7 @@ public:
   /** Explicitly set the ownership */
   void TakeOwnership(ObjectType *objectptr)
   {
-    if ( m_IsOwner && m_Pointer )
+    if ( m_IsOwner )
       {
       delete m_Pointer; // remove the current one
       }
@@ -112,7 +107,7 @@ public:
   /** Explicitly reject ownership */
   void TakeNoOwnership(ObjectType *objectptr)
   {
-    if ( m_IsOwner && m_Pointer )
+    if ( m_IsOwner )
       {
       delete m_Pointer; // remove the current one
       }
