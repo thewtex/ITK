@@ -195,7 +195,7 @@ endif()
 # ITK_USE_REVIEW is deprecated, only kept for backward compatibility
 if (ITK_USE_REVIEW)
   message(WARNING "ITK_USE_REVIEW is deprecated, please use Module_ITKReview to turn Review module ON/OFF")
-  set(Module_ITKReview ON CACHE BOOL FORCE "Module containing code from the Review directory of ITKv3.")
+  set(Module_ITKReview ON CACHE BOOL "Module containing code from the Review directory of ITKv3." FORCE)
 endif()
 
 #-----------------------------------------------------------------------------
