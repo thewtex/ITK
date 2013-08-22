@@ -117,6 +117,9 @@ public:
 
   typedef ImageRegionConstIteratorWithIndex< InputImageType > InputImageConstIteratorType;
 
+  /** Set the maximum number of threads to be used. */
+  void SetMaximumNumberOfThreads( const ThreadIdType threads );
+
 protected:
   LevelSetEvolution();
   ~LevelSetEvolution();
