@@ -1,5 +1,6 @@
 find_package(KWStyle 1.0.1
-  QUIET MODULE
+  QUIET
+#  MODULE # MODULE option makes find_package work faster, but is not supported < CMake2.8.8
   )
 option(ITK_USE_KWSTYLE
   "Enable the use of KWStyle for checking coding style."
@@ -9,7 +10,8 @@ mark_as_advanced(ITK_USE_KWSTYLE)
 
 if(ITK_USE_KWSTYLE)
   find_package(KWStyle 1.0.1
-    QUIET MODULE
+    QUIET
+#    MODULE
     REQUIRED # throw a FATAL_ERROR if KWStyle isn't found
     )
 
