@@ -234,6 +234,24 @@ LevelSetEvolution< TEquationContainer, WhitakerSparseLevelSetImage< TOutput, VDi
 template< class TEquationContainer, typename TOutput, unsigned int VDimension >
 void
 LevelSetEvolution< TEquationContainer, WhitakerSparseLevelSetImage< TOutput, VDimension > >
+::SetNumberOfThreads( const ThreadIdType numberOfThreads)
+{
+  this->m_SplitLevelSetComputeIterationThreader->SetMaximumNumberOfThreads( numberOfThreads );
+  this->m_SplitDomainMapComputeIterationThreader->SetMaximumNumberOfThreads( numberOfThreads );
+  this->m_SplitLevelSetUpdateLevelSetsThreader->SetMaximumNumberOfThreads( numberOfThreads );
+}
+
+template< class TEquationContainer, typename TOutput, unsigned int VDimension >
+ThreadIdType
+LevelSetEvolution< TEquationContainer, WhitakerSparseLevelSetImage< TOutput, VDimension > >
+::GetNumberOfThreads() const
+{
+  return this->m_SplitDomainMapComputeIterationThreader->GetMaximumNumberOfThreads();
+}
+
+template< class TEquationContainer, typename TOutput, unsigned int VDimension >
+void
+LevelSetEvolution< TEquationContainer, WhitakerSparseLevelSetImage< TOutput, VDimension > >
 ::AllocateUpdateBuffer()
 {
   typename LevelSetContainerType::Iterator it = this->m_LevelSetContainer->Begin();
