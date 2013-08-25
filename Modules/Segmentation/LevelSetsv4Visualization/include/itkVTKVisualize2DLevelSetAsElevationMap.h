@@ -61,6 +61,18 @@ public:
                    ( Concept::SameDimension< LevelSetType::Dimension, 2 > ) );
 #endif
 
+  /* Set the height scaling for visualization */
+  void SetConstant( const double c )
+    {
+    m_Constant = c;
+    }
+
+  /* Get the height scaling for visualization */
+  double GetConstant() const
+    {
+    return m_Constant;
+    }
+
 protected:
   VTKVisualize2DLevelSetAsElevationMap();
   virtual ~VTKVisualize2DLevelSetAsElevationMap();
