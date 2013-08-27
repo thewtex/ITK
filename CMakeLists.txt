@@ -336,9 +336,19 @@ foreach(itk-module ${ITK_MODULES_ALL})
 endforeach()
 
 #----------------------------------------------------------------------
+# Provide option to build all defult ITK modules. Only a small set of modules are excluded and they
+# have the "EXCLUDE_FROM_ALL" tags in their module definition files (itk-module.cmake).
+# However, if you choose to custerize the list of modules,  ITK also
+# allows you to handpick the modules, by using either the group swtiches (to select/deselect a
+# group of modules via ITKGroup_{group # name}) or the module switches (to select/deselect
+# a module via Module_{module name})
+option(ITK_BUILD_DEFAULT_MODULES "Build all default set of itk modules." ON)
 
-# By default, all defaults modules are to be built.
-option(ITK_BUILD_ALL_MODULES "Request to build all modules" ON)
+# To maintain backward compatibility
+if(DEFINED ITK_BUILD_ALL_MODULES)
+  message(WARNING "ITK_BUILD_ALL_MODULES is deprecated, please use ITK_BUILD_DEFAULT_MODULES.")
+  set(ITK_BUILD_DEFAULT_MODULES ${ITK_BUILD_ALL_MODULES} CACHE BOOL "" FORCE)
+endif()
 
 # Provide module selections by groups
 include(${ITK_SOURCE_DIR}/CMake/ITKGroups.cmake)
