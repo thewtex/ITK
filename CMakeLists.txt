@@ -422,7 +422,9 @@ set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
 include(CPack)
 
 # Report what will be built.
-foreach(itk-module ${ITK_MODULES_ENABLED})
+set(ENABLED_MODULES "${ITK_MODULES_ENABLED}")
+list(SORT ENABLED_MODULES)
+foreach(itk-module ${ENABLED_MODULES})
   if(NOT ${itk-module}_IS_TEST)
     if(Module_${itk-module})
       set(_reason ", requested by Module_${itk-module}")
