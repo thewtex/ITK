@@ -140,6 +140,18 @@ function(itk_add_test)
 endfunction()
 
 #-----------------------------------------------------------------------------
+# ITK macro to ignore a test during MemCheck
+#
+macro(itk_memcheck_ignore)
+    set(CTEST_CUSTOM_MEMCHECK_IGNORE
+      ${CTEST_CUSTOM_MEMCHECK_IGNORE} ${ARGN}
+      CACHE INTERNAL "List of tests to ignore during the MemCheck stage." FORCE)
+endmacro()
+# must reset CTEST_CUSTOM_MEMCHECK_IGNORE on every configuration,
+# or calls to 'itk_memcheck_ignore' will cause it to accumulate values from any previous configurations
+unset(CTEST_CUSTOM_MEMCHECK_IGNORE CACHE)
+
+#-----------------------------------------------------------------------------
 # ITK build configuration options.
 option(BUILD_SHARED_LIBS "Build ITK with shared libraries." OFF)
 set(ITK_BUILD_SHARED_LIBS ${BUILD_SHARED_LIBS})
