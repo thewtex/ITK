@@ -26,6 +26,7 @@
 #include "itkLevelSetEvolution.h"
 #include "itkBinaryImageToLevelSetImageAdaptor.h"
 #include "itkLevelSetEvolutionNumberOfIterationsStoppingCriterion.h"
+#include "itkLevelSetSegmentationImage.h"
 
 int itkTwoLevelSetShiImage2DTest( int argc, char* argv[] )
 {
@@ -75,6 +76,10 @@ int itkTwoLevelSetShiImage2DTest( int argc, char* argv[] )
   typedef itk::SinRegularizedHeavisideStepFunction< LevelSetOutputRealType, LevelSetOutputRealType >
                                                             HeavisideFunctionBaseType;
   typedef itk::ImageRegionIteratorWithIndex< InputImageType >     InputIteratorType;
+
+  typedef itk::LevelSetSegmentationImage< InputImageType, LevelSetContainerType >
+                                                                  LevelSetSegmentationImageType;
+  typedef LevelSetSegmentationImageType::SegmentImageType         SegmentImageType;
 
   // load binary input for segmentation
   ReaderType::Pointer reader = ReaderType::New();
@@ -269,6 +274,37 @@ int itkTwoLevelSetShiImage2DTest( int argc, char* argv[] )
     {
     std::cout << err << std::endl;
     }
+
+  // Obtain the segmentation output
+  LevelSetSegmentationImageType::Pointer segmentFilter = LevelSetSegmentationImageType::New();
+  segmentFilter->SetLevelSetContainer( lscontainer );
+  segmentFilter->SetInput( input );
+  SegmentImageType::Pointer segmentationImage = segmentFilter->GetSegmentationImage( 0 );
+  std::cout << "Segmentation using domain map created" << std::endl;
+
+
+  // Create a level-set container without the domain map filter
+  LevelSetContainerType::Pointer lscontainer2 = LevelSetContainerType::New();
+  lscontainer2->SetHeaviside( heaviside );
+
+  levelSetNotYetAdded = lscontainer2->AddLevelSet( 0, level_set0, false );
+  if ( !levelSetNotYetAdded )
+    {
+    return EXIT_FAILURE;
+    }
+
+  levelSetNotYetAdded = lscontainer2->AddLevelSet( 1, level_set1, false );
+  if ( !levelSetNotYetAdded )
+    {
+    return EXIT_FAILURE;
+    }
+  std::cout << "Level set container without domain map created" << std::endl;
+
+  LevelSetSegmentationImageType::Pointer segmentFilter2 = LevelSetSegmentationImageType::New();
+  segmentFilter2->SetLevelSetContainer( lscontainer2 );
+  segmentFilter2->SetInput( input );
+  SegmentImageType::Pointer segmentationImage2 = segmentFilter2->GetSegmentationImage( 0 );
+  std::cout << "Segmentation using level-set container created" << std::endl;
 
   return EXIT_SUCCESS;
 }

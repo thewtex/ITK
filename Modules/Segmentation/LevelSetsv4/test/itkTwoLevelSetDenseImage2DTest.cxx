@@ -25,6 +25,7 @@
 #include "itkAtanRegularizedHeavisideStepFunction.h"
 #include "itkLevelSetEvolutionNumberOfIterationsStoppingCriterion.h"
 #include "itkLevelSetEvolution.h"
+#include "itkLevelSetSegmentationImage.h"
 
 int itkTwoLevelSetDenseImage2DTest( int argc, char* argv[] )
 {
@@ -54,7 +55,8 @@ int itkTwoLevelSetDenseImage2DTest( int argc, char* argv[] )
   typedef itk::LevelSetDomainMapImageFilter< IdListImageType, CacheImageType >
                                                          DomainMapImageFilterType;
 
-  typedef itk::LevelSetContainer< IdentifierType, LevelSetType >      LevelSetContainerType;
+  typedef itk::LevelSetContainer< IdentifierType, LevelSetType > LevelSetContainerType;
+
   typedef itk::LevelSetEquationChanAndVeseInternalTerm< InputImageType, LevelSetContainerType >
                                                                       ChanAndVeseInternalTermType;
   typedef itk::LevelSetEquationChanAndVeseExternalTerm< InputImageType, LevelSetContainerType >
@@ -72,6 +74,9 @@ int itkTwoLevelSetDenseImage2DTest( int argc, char* argv[] )
   typedef  itk::FastMarchingImageFilter< ImageType, ImageType > FastMarchingFilterType;
   typedef FastMarchingFilterType::NodeContainer                 NodeContainer;
   typedef FastMarchingFilterType::NodeType                      NodeType;
+
+  typedef itk::LevelSetSegmentationImage< InputImageType, LevelSetContainerType > LevelSetSegmentationImageType;
+  typedef LevelSetSegmentationImageType::SegmentImageType         SegmentImageType;
 
   // Read the image to be segmented
   ReaderType::Pointer reader = ReaderType::New();
@@ -126,17 +131,17 @@ int itkTwoLevelSetDenseImage2DTest( int argc, char* argv[] )
   fastMarching->SetOutputSize( inputBufferedRegionSize );
   fastMarching->Update();
 
-  IdListType list_ids;
-  list_ids.push_back( 1 );
-  list_ids.push_back( 2 );
+  IdListType listIds;
+  listIds.push_back( 1 );
+  listIds.push_back( 2 );
 
-  IdListImageType::Pointer id_image = IdListImageType::New();
-  id_image->SetRegions( input->GetLargestPossibleRegion() );
-  id_image->Allocate();
-  id_image->FillBuffer( list_ids );
+  IdListImageType::Pointer idImage = IdListImageType::New();
+  idImage->SetRegions( input->GetLargestPossibleRegion() );
+  idImage->Allocate();
+  idImage->FillBuffer( listIds );
 
   DomainMapImageFilterType::Pointer domainMapFilter = DomainMapImageFilterType::New();
-  domainMapFilter->SetInput( id_image );
+  domainMapFilter->SetInput( idImage );
   domainMapFilter->Update();
   std::cout << "Domain map computed" << std::endl;
 
@@ -145,25 +150,25 @@ int itkTwoLevelSetDenseImage2DTest( int argc, char* argv[] )
   heaviside->SetEpsilon( 1.0 );
 
   // Map of levelset bases
-  LevelSetType::Pointer  level_set1 = LevelSetType::New();
-  level_set1->SetImage( fastMarching->GetOutput() );
+  LevelSetType::Pointer  levelSet1 = LevelSetType::New();
+  levelSet1->SetImage( fastMarching->GetOutput() );
 
-  LevelSetType::Pointer  level_set2 = LevelSetType::New();
-  level_set2->SetImage( fastMarching->GetOutput() );
+  LevelSetType::Pointer  levelSet2 = LevelSetType::New();
+  levelSet2->SetImage( fastMarching->GetOutput() );
 
   // Insert the levelsets in a levelset container
   LevelSetContainerType::Pointer lscontainer = LevelSetContainerType::New();
   lscontainer->SetHeaviside( heaviside );
   lscontainer->SetDomainMapFilter( domainMapFilter );
 
-  bool LevelSetNotYetAdded = lscontainer->AddLevelSet( 0, level_set1, false );
-  if ( !LevelSetNotYetAdded )
+  bool levelSetNotYetAdded = lscontainer->AddLevelSet( 0, levelSet1, false );
+  if ( !levelSetNotYetAdded )
     {
     return EXIT_FAILURE;
     }
 
-  LevelSetNotYetAdded = lscontainer->AddLevelSet( 1, level_set2, false );
-  if ( !LevelSetNotYetAdded )
+  levelSetNotYetAdded = lscontainer->AddLevelSet( 1, levelSet2, false );
+  if ( !levelSetNotYetAdded )
     {
     return EXIT_FAILURE;
     }
@@ -246,6 +251,37 @@ int itkTwoLevelSetDenseImage2DTest( int argc, char* argv[] )
     std::cerr << err << std::endl;
     return EXIT_FAILURE;
     }
+
+  // Obtain the segmentation output
+  LevelSetSegmentationImageType::Pointer segmentFilter = LevelSetSegmentationImageType::New();
+  segmentFilter->SetLevelSetContainer( lscontainer );
+  segmentFilter->SetInput( input );
+  SegmentImageType::Pointer segmentationImage = segmentFilter->GetSegmentationImage( 0 );
+  std::cout << "Segmentation using domain map created" << std::endl;
+
+
+  // Create a level-set container without the domain map filter
+  LevelSetContainerType::Pointer lscontainer2 = LevelSetContainerType::New();
+  lscontainer2->SetHeaviside( heaviside );
+
+  levelSetNotYetAdded = lscontainer2->AddLevelSet( 0, levelSet1, false );
+  if ( !levelSetNotYetAdded )
+    {
+    return EXIT_FAILURE;
+    }
+
+  levelSetNotYetAdded = lscontainer2->AddLevelSet( 1, levelSet2, false );
+  if ( !levelSetNotYetAdded )
+    {
+    return EXIT_FAILURE;
+    }
+  std::cout << "Level set container without domain map created" << std::endl;
+
+  LevelSetSegmentationImageType::Pointer segmentFilter2 = LevelSetSegmentationImageType::New();
+  segmentFilter2->SetLevelSetContainer( lscontainer2 );
+  segmentFilter2->SetInput( input );
+  SegmentImageType::Pointer segmentationImage2 = segmentFilter2->GetSegmentationImage( 0 );
+  std::cout << "Segmentation using level-set container created" << std::endl;
 
   return EXIT_SUCCESS;
 }
