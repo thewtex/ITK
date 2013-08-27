@@ -54,6 +54,7 @@ int itkTwoLevelSetWhitakerImage2DTest( int argc, char* argv[] )
 
   typedef itk::LevelSetContainer< IdentifierType, SparseLevelSetType >
                                                             LevelSetContainerType;
+  typedef LevelSetContainerType::SegmentImageType           SegmentImageType;
 
   typedef std::list< IdentifierType >                       IdListType;
   typedef itk::Image< IdListType, Dimension >               IdListImageType;
@@ -274,6 +275,8 @@ int itkTwoLevelSetWhitakerImage2DTest( int argc, char* argv[] )
     {
     std::cout << err << std::endl;
     }
+
+  SegmentImageType::Pointer segmentationImage = lscontainer->GetSegmentationImage( 0 );
 
   return EXIT_SUCCESS;
 }
