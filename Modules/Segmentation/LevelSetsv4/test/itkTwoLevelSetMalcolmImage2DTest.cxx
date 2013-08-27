@@ -26,6 +26,7 @@
 #include "itkLevelSetEvolution.h"
 #include "itkBinaryImageToLevelSetImageAdaptor.h"
 #include "itkLevelSetEvolutionNumberOfIterationsStoppingCriterion.h"
+#include "itkLevelSetSegmentationImage.h"
 
 int itkTwoLevelSetMalcolmImage2DTest( int argc, char* argv[] )
 {
@@ -74,7 +75,10 @@ int itkTwoLevelSetMalcolmImage2DTest( int argc, char* argv[] )
   typedef SparseLevelSetType::OutputRealType                LevelSetOutputRealType;
   typedef itk::SinRegularizedHeavisideStepFunction< LevelSetOutputRealType, LevelSetOutputRealType >
                                                             HeavisideFunctionBaseType;
+
   typedef itk::ImageRegionIteratorWithIndex< InputImageType >     InputIteratorType;
+  typedef itk::LevelSetSegmentationImage< LevelSetContainerType > LevelSetSegmentationImageType;
+  typedef LevelSetSegmentationImageType::SegmentImageType         SegmentImageType;
 
   // load binary mask
   ReaderType::Pointer reader = ReaderType::New();
@@ -146,14 +150,14 @@ int itkTwoLevelSetMalcolmImage2DTest( int argc, char* argv[] )
   lscontainer->SetHeaviside( heaviside );
   lscontainer->SetDomainMapFilter( domainMapFilter );
 
-  bool LevelSetNotYetAdded = lscontainer->AddLevelSet( 0, level_set0, false );
-  if ( !LevelSetNotYetAdded )
+  bool levelSetNotYetAdded = lscontainer->AddLevelSet( 0, level_set0, false );
+  if ( !levelSetNotYetAdded )
     {
     return EXIT_FAILURE;
     }
 
-  LevelSetNotYetAdded = lscontainer->AddLevelSet( 1, level_set1, false );
-  if ( !LevelSetNotYetAdded )
+  levelSetNotYetAdded = lscontainer->AddLevelSet( 1, level_set1, false );
+  if ( !levelSetNotYetAdded )
     {
     return EXIT_FAILURE;
     }
@@ -271,6 +275,34 @@ int itkTwoLevelSetMalcolmImage2DTest( int argc, char* argv[] )
     std::cout << err << std::endl;
     }
 
+  // Obtain the segmentation output
+  LevelSetSegmentationImageType::Pointer segmentFilter = LevelSetSegmentationImageType::New();
+  segmentFilter->SetLevelSetContainer( lscontainer );
+  SegmentImageType::Pointer segmentationImage = segmentFilter->GetSegmentationImage( 0 );
+  std::cout << "Segmentation using domain map created" << std::endl;
+
+
+  // Create a level-set container without the domain map filter
+  LevelSetContainerType::Pointer lscontainer2 = LevelSetContainerType::New();
+  lscontainer2->SetHeaviside( heaviside );
+
+  levelSetNotYetAdded = lscontainer2->AddLevelSet( 0, level_set0, false );
+  if ( !levelSetNotYetAdded )
+    {
+    return EXIT_FAILURE;
+    }
+
+  levelSetNotYetAdded = lscontainer2->AddLevelSet( 1, level_set1, false );
+  if ( !levelSetNotYetAdded )
+    {
+    return EXIT_FAILURE;
+    }
+  std::cout << "Level set container without domain map created" << std::endl;
+
+  LevelSetSegmentationImageType::Pointer segmentFilter2 = LevelSetSegmentationImageType::New();
+  segmentFilter2->SetLevelSetContainer( lscontainer2 );
+  SegmentImageType::Pointer segmentationImage2 = segmentFilter2->GetSegmentationImage( 0 );
+  std::cout << "Segmentation using level-set container created" << std::endl;
 
   return EXIT_SUCCESS;
 }
