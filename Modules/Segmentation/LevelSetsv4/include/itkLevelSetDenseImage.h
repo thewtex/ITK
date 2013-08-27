@@ -47,6 +47,7 @@ public:
   typedef typename ImageType::IndexType  IndexType;
   typedef typename ImageType::PixelType  PixelType;
   typedef typename ImageType::RegionType RegionType;
+  typedef typename ImageType::PointType  PointType;
 
   typedef LevelSetDenseImage                                            Self;
   typedef SmartPointer< Self >                                          Pointer;

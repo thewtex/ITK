@@ -69,6 +69,7 @@ public:
   typedef LabelMap< LabelObjectType >         LabelMapType;
   typedef typename LabelMapType::Pointer      LabelMapPointer;
   typedef typename LabelMapType::RegionType   RegionType;
+  typedef typename LabelMapType::PointType   PointType;
 
   typedef std::map< InputType, OutputType,
                     Functor::IndexLexicographicCompare< VDimension > >

@@ -87,6 +87,7 @@ public:
 
   typedef std::map< LevelSetIdentifierType, LevelSetDomainType >   DomainContainerType;
   typedef typename DomainContainerType::iterator                   DomainIteratorType;
+  typedef typename DomainContainerType::const_iterator             ConstDomainIteratorType;
 
   /** Declare iterators to container. */
   class Iterator;

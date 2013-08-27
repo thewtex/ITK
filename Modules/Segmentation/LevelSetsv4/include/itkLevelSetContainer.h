@@ -19,6 +19,8 @@
 #ifndef __itkLevelSetContainer_h
 #define __itkLevelSetContainer_h
 
+#include "itkImage.h"
+#include "itkImageRegionIteratorWithIndex.h"
 #include "itkLevelSetContainerBase.h"
 
 #include "itkLevelSetDenseImage.h"
@@ -55,6 +57,7 @@ public:
 
   typedef typename Superclass::LevelSetType       LevelSetType;
   typedef typename Superclass::LevelSetPointer    LevelSetPointer;
+  typedef typename LevelSetType::PointType        PointType;
   typedef typename Superclass::InputIndexType     InputIndexType;
   typedef typename Superclass::OutputType         OutputPixelType;
   typedef typename Superclass::OutputRealType     OutputRealType;
@@ -79,10 +82,102 @@ public:
   typedef typename Superclass::DomainMapImageFilterPointer  DomainMapImageFilterPointer;
   typedef typename Superclass::LevelSetDomainType           LevelSetDomainType;
   typedef typename Superclass::DomainIteratorType           DomainIteratorType;
+  typedef typename Superclass::ConstDomainIteratorType      ConstDomainIteratorType;
+
+  typedef Image<IdentifierType, Dimension >  SegmentImageType;
+  typedef typename SegmentImageType::Pointer SegmentImagePointer;
+
+  typedef ImageRegionIteratorWithIndex< SegmentImageType > SegmentImageIteratorType;
+
+  /* Get a segmentation image from the level-set container */
+  SegmentImageType* GetSegmentationImage( const OutputPixelType p )
+    {
+    InputIndexType idx;
+    OutputPixelType out;
+    PointType pt;
+
+    if ( this->HasDomainMap() )
+      {// If there is a domain map
+      m_SegmentationImage = SegmentImageType::New();
+      m_SegmentationImage->SetRegions( this->GetDomainMapFilter()->GetInput()->GetLargestPossibleRegion() );
+      m_SegmentationImage->CopyInformation( this->GetDomainMapFilter()->GetInput() );
+      m_SegmentationImage->Allocate();
+      m_SegmentationImage->FillBuffer( NumericTraits< LevelSetIdentifierType >::Zero );
+
+      ConstDomainIteratorType map_it   = this->GetDomainMapFilter()->GetDomainMap().begin();
+      ConstDomainIteratorType map_end  = this->GetDomainMapFilter()->GetDomainMap().end();
+
+      while( map_it != map_end )
+        {
+        const IdListType* lout = map_it->second.GetIdList();
+        const typename IdListImageType::RegionType *region = map_it->second.GetRegion();
+
+        for( typename IdListType::const_iterator lIt = lout->begin(); lIt != lout->end(); ++lIt )
+          {
+          LevelSetPointer levelSet = this->GetLevelSet( *lIt - 1 );
+          SegmentImageIteratorType it( this->m_SegmentationImage, *region );
+          it.GoToBegin();
+          while( !it.IsAtEnd() )
+            {
+            idx = it.GetIndex();
+
+            this->m_SegmentationImage->TransformIndexToPhysicalPoint( idx, pt );
+            levelSet->GetLabelMap()->TransformPhysicalPointToIndex( pt,idx );
+
+            if (it.Get() == 0 )
+              {
+              out = levelSet->Evaluate( idx );
+              if (out <= p )
+                {
+                it.Set( *lIt );
+                }
+              }
+            ++it;
+            }
+          }
+        ++map_it;
+        }
+      }
+    else
+      {// assume that the level-sets occupy the entire requested region of the input image
+      typename Superclass::Iterator It = this->Begin();
+      LevelSetPointer levelSet = It.GetLevelSet();
+
+      m_SegmentationImage = SegmentImageType::New();
+      m_SegmentationImage->SetRegions( levelSet->GetLabelMap()->GetLargestPossibleRegion() );
+      m_SegmentationImage->CopyInformation( levelSet->GetLabelMap() );
+      m_SegmentationImage->Allocate();
+      m_SegmentationImage->FillBuffer( NumericTraits< LevelSetIdentifierType >::Zero );
+
+      while( It != this->End() )
+        {
+        levelSet = It.GetLevelSet();
+        SegmentImageIteratorType it( this->m_SegmentationImage, this->m_SegmentationImage->GetLargestPossibleRegion() );
+        it.GoToBegin();
+        while( !it.IsAtEnd() )
+          {
+          idx = it.GetIndex();
+          if (it.Get() == 0 )
+            {
+            out = levelSet->Evaluate( idx );
+            if (out <= p )
+              {
+              it.Set( It.GetIdentifier() );
+              }
+            }
+          ++it;
+          }
+        ++It;
+        }
+      }
+    return m_SegmentationImage;
+    }
 
 protected:
   LevelSetContainer() {}
   ~LevelSetContainer() {}
+
+  SegmentImagePointer m_SegmentationImage;
 
 private:
   LevelSetContainer( const Self& ); // purposely not implemented
@@ -113,6 +208,7 @@ public:
   typedef typename Superclass::LevelSetIdentifierType LevelSetIdentifierType;
 
   typedef typename Superclass::LevelSetPointer    LevelSetPointer;
+  typedef typename LevelSetType::PointType        PointType;
   typedef typename Superclass::InputIndexType     InputIndexType;
   typedef typename Superclass::OutputType         OutputPixelType;
   typedef typename Superclass::OutputRealType     OutputRealType;
@@ -137,6 +233,12 @@ public:
   typedef typename Superclass::DomainMapImageFilterPointer  DomainMapImageFilterPointer;
   typedef typename Superclass::LevelSetDomainType           LevelSetDomainType;
   typedef typename Superclass::DomainIteratorType           DomainIteratorType;
+  typedef typename Superclass::ConstDomainIteratorType      ConstDomainIteratorType;
+
+  typedef Image<IdentifierType, Dimension >  SegmentImageType;
+  typedef typename SegmentImageType::Pointer SegmentImagePointer;
+
+  typedef ImageRegionIteratorWithIndex< SegmentImageType > SegmentImageIteratorType;
 
   typedef typename LevelSetType::ImageType    LevelSetImageType;
   typedef typename LevelSetImageType::Pointer LevelSetImagePointer;
@@ -179,9 +281,97 @@ public:
     this->SetContainer( newContainer );
     }
 
+  /* Get a segmentation image from the level-set container */
+  SegmentImageType* GetSegmentationImage( const OutputPixelType p )
+    {
+    InputIndexType idx;
+    OutputPixelType out;
+    PointType pt;
+
+    if ( this->HasDomainMap() )
+      {// If there is a domain map
+      m_SegmentationImage = SegmentImageType::New();
+      m_SegmentationImage->SetRegions( this->GetDomainMapFilter()->GetInput()->GetLargestPossibleRegion() );
+      m_SegmentationImage->CopyInformation( this->GetDomainMapFilter()->GetInput() );
+      m_SegmentationImage->Allocate();
+      m_SegmentationImage->FillBuffer( NumericTraits< LevelSetIdentifierType >::Zero );
+
+      ConstDomainIteratorType map_it   = this->GetDomainMapFilter()->GetDomainMap().begin();
+      ConstDomainIteratorType map_end  = this->GetDomainMapFilter()->GetDomainMap().end();
+
+      while( map_it != map_end )
+        {
+        const IdListType* lout = map_it->second.GetIdList();
+        const typename IdListImageType::RegionType *region = map_it->second.GetRegion();
+
+        for( typename IdListType::const_iterator lIt = lout->begin(); lIt != lout->end(); ++lIt )
+          {
+          LevelSetPointer levelSet = this->GetLevelSet( *lIt - 1 );
+          SegmentImageIteratorType it( this->m_SegmentationImage, *region );
+          it.GoToBegin();
+          while( !it.IsAtEnd() )
+            {
+            idx = it.GetIndex();
+
+            this->m_SegmentationImage->TransformIndexToPhysicalPoint( idx, pt );
+            levelSet->GetImage()->TransformPhysicalPointToIndex( pt,idx );
+
+            if (it.Get() == 0 )
+              {
+              out = levelSet->Evaluate( idx );
+              if (out <= p )
+                {
+                it.Set( *lIt );
+                }
+              }
+            ++it;
+            }
+          }
+        ++map_it;
+        }
+      }
+    else // assume that the level-sets occupy the entire requested region of the input image
+      {
+      typename Superclass::Iterator It = this->Begin();
+      LevelSetPointer levelSet = It.GetLevelSet();
+
+      m_SegmentationImage = SegmentImageType::New();
+      m_SegmentationImage->SetRegions( levelSet->GetImage()->GetLargestPossibleRegion() );
+      m_SegmentationImage->CopyInformation( levelSet->GetImage() );
+      m_SegmentationImage->Allocate();
+      m_SegmentationImage->FillBuffer( NumericTraits< LevelSetIdentifierType >::Zero );
+
+      while( It != this->End() )
+        {
+        levelSet = It.GetLevelSet();
+
+        SegmentImageIteratorType it( this->m_SegmentationImage, this->m_SegmentationImage->GetLargestPossibleRegion() );
+        it.GoToBegin();
+        while( !it.IsAtEnd() )
+          {
+          idx = it.GetIndex();
+          if (it.Get() == 0 )
+            {
+            out = levelSet->Evaluate( idx );
+            if (out <= p )
+              {
+              it.Set( It.GetIdentifier() );
+              }
+            }
+          ++it;
+          }
+        ++It;
+        }
+      }
+    return m_SegmentationImage;
+    }
+
+
 protected:
   LevelSetContainer() {}
   ~LevelSetContainer() {}
+
+  SegmentImagePointer m_SegmentationImage;
 
 private:
   LevelSetContainer( const Self& ); // purposely not implemented
