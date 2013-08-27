@@ -55,6 +55,8 @@ int itkTwoLevelSetDenseImage2DTest( int argc, char* argv[] )
                                                          DomainMapImageFilterType;
 
   typedef itk::LevelSetContainer< IdentifierType, LevelSetType >      LevelSetContainerType;
+  typedef LevelSetContainerType::SegmentImageType SegmentImageType;
+
   typedef itk::LevelSetEquationChanAndVeseInternalTerm< InputImageType, LevelSetContainerType >
                                                                       ChanAndVeseInternalTermType;
   typedef itk::LevelSetEquationChanAndVeseExternalTerm< InputImageType, LevelSetContainerType >
@@ -246,6 +248,8 @@ int itkTwoLevelSetDenseImage2DTest( int argc, char* argv[] )
     std::cerr << err << std::endl;
     return EXIT_FAILURE;
     }
+
+  SegmentImageType::Pointer segmentation = lscontainer->GetSegmentationImage( 0 );
 
   return EXIT_SUCCESS;
 }
