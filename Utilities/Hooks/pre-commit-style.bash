@@ -97,6 +97,10 @@ See http://public.kitware.com/KWStyle/
 
 Please run
 
+  ./Utilities/SetupForDevelopment.sh
+
+or
+
   git config hooks.KWStyle.conf path/to/KWStyle.conf.xml"
   fi
   KWStyle_overWriteRulesConf=$(git config hooks.KWStyle.overwriteRulesConf)
