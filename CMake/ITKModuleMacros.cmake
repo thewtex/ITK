@@ -12,11 +12,34 @@ if(ITK_CPPCHECK_TEST)
   include(${_ITKModuleMacros_DIR}/ITKModuleCPPCheckTest.cmake)
 endif()
 
+# itk_module: Declare a new ITK module. It is expected to be called within
+# the itk-module.cmake file for a module.
+#
+# itk_module(<module>
+#            [DEPENDS other_module1 [other_module2 ...]]
+#            [TEST_DEPENDS other_module3 [other_module4 ...]]
+#            [DESCRIPTION description]
+#            [EXCLUDE_FROM_ALL]
+#            [ENABLE_SHARED]
+#           )
+#
+# The name of the module, <module>, should only start with "ITK" if it is part
+# of the proper ITK repository.
+#
+# The DEPENDS and TEST_DEPENDS options reference lists of other modules that
+# this module and its associated tests are dependant upon.
+#
+# The DESCRIPTION option should contain a short-paragraph length description of
+# the module's content.
+#
+# The EXCLUDE_FROM_ALL option, if present, prevents this module from being
+# automatically built when the ITK_BUILD_ALL_MODULES option is enabled.
+#
+# The ENABLE_SHARED option, if present, marks this module as a shared library.
 macro(itk_module _name)
-  itk_module_check_name(${_name})
+  _itk_module_check_name(${_name})
   set(itk-module ${_name})
   set(itk-module-test ${_name}-Test)
-  set(_doing "")
   set(ITK_MODULE_${itk-module}_DECLARED 1)
   set(ITK_MODULE_${itk-module-test}_DECLARED 1)
   set(ITK_MODULE_${itk-module}_DEPENDS "")
@@ -25,28 +48,19 @@ macro(itk_module _name)
   set(ITK_MODULE_${itk-module}_EXCLUDE_FROM_ALL 0)
   set(ITK_MODULE_${itk-module}_ENABLE_SHARED 0)
   foreach(arg ${ARGN})
-    if("${arg}" MATCHES "^(DEPENDS|TEST_DEPENDS|DESCRIPTION|DEFAULT)$")
-      set(_doing "${arg}")
+    if("${arg}" MATCHES "^DEPENDS$")
+      list(APPEND ITK_MODULE_${itk-module}_DEPENDS "${arg}")
+    elseif("${arg}" MATCHES "^TEST_DEPENDS$")
+      list(APPEND ITK_MODULE_${itk-module-test}_DEPENDS "${arg}")
+    elseif("${arg}" MATCHES "^DESCRIPTION$")
+      set(ITK_MODULE_${itk-module}_DESCRIPTION "${arg}")
     elseif("${arg}" MATCHES "^EXCLUDE_FROM_ALL$")
-      set(_doing "")
       set(ITK_MODULE_${itk-module}_EXCLUDE_FROM_ALL 1)
     elseif("${arg}" MATCHES "^ENABLE_SHARED$")
-      set(_doing "")
       set(ITK_MODULE_${itk-module}_ENABLE_SHARED 1)
-    elseif("${arg}" MATCHES "^[A-Z][A-Z][A-Z]$")
-      set(_doing "")
-      message(AUTHOR_WARNING "Unknown argument [${arg}]")
-    elseif("${_doing}" MATCHES "^DEPENDS$")
-      list(APPEND ITK_MODULE_${itk-module}_DEPENDS "${arg}")
-    elseif("${_doing}" MATCHES "^TEST_DEPENDS$")
-      list(APPEND ITK_MODULE_${itk-module-test}_DEPENDS "${arg}")
-    elseif("${_doing}" MATCHES "^DESCRIPTION$")
-      set(_doing "")
-      set(ITK_MODULE_${itk-module}_DESCRIPTION "${arg}")
-    elseif("${_doing}" MATCHES "^DEFAULT")
+    elseif("${arg}" MATCHES "^DEFAULT")
       message(FATAL_ERROR "Invalid argument [DEFAULT]")
     else()
-      set(_doing "")
       message(AUTHOR_WARNING "Unknown argument [${arg}]")
     endif()
   endforeach()
@@ -54,7 +68,7 @@ macro(itk_module _name)
   list(SORT ITK_MODULE_${itk-module-test}_DEPENDS) # Deterministic order.
 endmacro()
 
-macro(itk_module_check_name _name)
+macro(_itk_module_check_name _name)
   if( NOT "${_name}" MATCHES "^[a-zA-Z][a-zA-Z0-9]*$")
     message(FATAL_ERROR "Invalid module name: ${_name}")
   endif()
