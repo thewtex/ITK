@@ -39,7 +39,8 @@ typename LevelSetSparseImage< TOutput, VDimension >::LayerIdType
 LevelSetSparseImage< TOutput, VDimension >
 ::Status( const InputType& iP ) const
 {
-  return this->m_LabelMap->GetPixel( iP );
+  InputType mapIndex = iP - this->m_DomainOffset;
+  return this->m_LabelMap->GetPixel( mapIndex );
 }
 
 
@@ -69,7 +70,9 @@ LevelSetSparseImage< TOutput, VDimension >
 {
   const RegionType largestRegion = this->m_LabelMap->GetLargestPossibleRegion();
 
-  return largestRegion.IsInside( iP );
+  InputType mapIndex = iP - this->m_DomainOffset;
+
+  return largestRegion.IsInside( mapIndex );
 }
 
 template< typename TOutput, unsigned int VDimension >

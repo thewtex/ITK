@@ -57,7 +57,6 @@ void LevelSetEquationChanAndVeseInternalTerm< TInput, TLevelSetContainer >
     {
     this->m_Mean = NumericTraits< InputPixelRealType >::Zero;
     }
-
 }
 
 template< class TInput, class TLevelSetContainer >

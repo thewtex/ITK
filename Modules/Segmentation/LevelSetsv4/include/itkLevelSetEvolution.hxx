@@ -96,6 +96,7 @@ LevelSetEvolution< TEquationContainer, LevelSetDenseImage< TImage > >
         typedef typename DomainMapImageFilterType::LevelSetDomain LevelSetListImageDomainType;
         const LevelSetListImageDomainType & levelSetListImageDomain = mapIt->second;
         this->m_IdListToProcessWhenThreading = levelSetListImageDomain.GetIdList();
+
         this->m_SplitLevelSetComputeIterationThreader->Execute( this, *(levelSetListImageDomain.GetRegion()) );
         ++mapIt;
         }
@@ -125,6 +126,7 @@ LevelSetEvolution< TEquationContainer, LevelSetDenseImage< TImage > >
       {
       LevelSetOutputRealType contribution = this->m_EquationContainer->ComputeCFLContribution();
 
+      contribution = 1;
       if( contribution > NumericTraits< LevelSetOutputRealType >::epsilon() )
         {
         this->m_Dt = this->m_Alpha / contribution;
