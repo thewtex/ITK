@@ -1,5 +1,7 @@
-# Set a list of group names
-set(group_list Core IO Filtering Registration Segmentation Numerics Video ThirdParty Bridge Nonunit Compatibility)
+# Set lists of groups
+set(default_group_list Core IO Filtering Registration Segmentation Numerics Video ThirdParty)
+set(nondefault_group_list  Bridge Nonunit Compatibility)
+set(group_list ${default_group_list} ${nondefault_group_list})
 
 set(Core_documentation "This group of modules contain the toolkit framework used
 by other modules.  There are common base classes for data objects and process
@@ -87,15 +89,19 @@ configure_file(
 
 #------------------------------------------------
 # Turn on the ITK_BUILD option for each group
-if("$ENV{DASHBOARD_TEST_FROM_CTEST}" STREQUAL "")
-  # developer build
-  option(ITKGroup_Core "Request building core modules" ON)
-endif()
+foreach(group ${default_group_list})
+  set(${group}_DEFAULT ON)
+endforeach()
+
+foreach(group ${nondefault_group_list})
+  set(${group}_DEFAULT OFF)
+endforeach()
+
 foreach( group ${group_list})
-    option(ITKGroup_${group} "Request building ${group} modules" OFF)
+    option(ITKGroup_${group} "Request building ${group} modules" ${${group}_DEFAULT})
     if (ITKGroup_${group})
       foreach (itk-module ${${group}_module_list} )
-         list(APPEND ITK_MODULE_${itk-module}_REQUEST_BY ITKGroup_${group})
+         list(APPEND ITK_MODULE_${itk-module}_REQUEST_BY_GROUP ITKGroup_${group})
       endforeach()
     endif()
     # Hide group options if building all modules anyway.
