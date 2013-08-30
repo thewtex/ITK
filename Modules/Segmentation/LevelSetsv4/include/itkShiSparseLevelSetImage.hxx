@@ -45,11 +45,12 @@ typename ShiSparseLevelSetImage< VDimension >::OutputType
 ShiSparseLevelSetImage< VDimension >
 ::Evaluate( const InputType& iP ) const
 {
+  InputType mapIndex = iP - this->m_DomainOffset;
   LayerMapConstIterator layerIt = this->m_Layers.begin();
 
   while( layerIt != this->m_Layers.end() )
     {
-    LayerConstIterator it = ( layerIt->second ).find( iP );
+    LayerConstIterator it = ( layerIt->second ).find( mapIndex );
     if( it != ( layerIt->second ).end() )
       {
       return it->second;
@@ -58,13 +59,13 @@ ShiSparseLevelSetImage< VDimension >
     ++layerIt;
     }
 
-  if( this->m_LabelMap->GetLabelObject( this->MinusThreeLayer() )->HasIndex( iP ) )
+  if( this->m_LabelMap->GetLabelObject( this->MinusThreeLayer() )->HasIndex( mapIndex ) )
     {
     return static_cast<OutputType>( this->MinusThreeLayer() );
     }
   else
     {
-    const LayerIdType status = this->m_LabelMap->GetPixel( iP );
+    const LayerIdType status = this->m_LabelMap->GetPixel( mapIndex );
 
     if( status == this->PlusThreeLayer() )
       {

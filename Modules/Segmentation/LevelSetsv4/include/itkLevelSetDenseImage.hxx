@@ -58,7 +58,8 @@ template< class TImage >
 typename LevelSetDenseImage< TImage >::OutputType
 LevelSetDenseImage< TImage >::Evaluate( const InputType& iP ) const
 {
-  return this->m_Image->GetPixel( iP );
+  InputType mapIndex = iP - this->m_DomainOffset;
+  return this->m_Image->GetPixel( mapIndex );
 }
 
 // ----------------------------------------------------------------------------
@@ -151,8 +152,8 @@ LevelSetDenseImage< TImage >
 ::IsInsideDomain(const InputType &iP) const
 {
   const RegionType largestRegion = this->m_Image->GetLargestPossibleRegion();
-
-  return largestRegion.IsInside( iP );
+  InputType mapIndex = iP - this->m_DomainOffset;
+  return largestRegion.IsInside( mapIndex );
 }
 
 }
