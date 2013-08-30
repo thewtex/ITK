@@ -46,11 +46,12 @@ template< unsigned int VDimension >
 typename MalcolmSparseLevelSetImage< VDimension >::OutputType
 MalcolmSparseLevelSetImage< VDimension >::Evaluate( const InputType& iP ) const
 {
+  InputType mapIndex = iP - this->m_DomainOffset;
   LayerMapConstIterator layerIt = this->m_Layers.begin();
 
   while( layerIt != this->m_Layers.end() )
     {
-    LayerConstIterator it = ( layerIt->second ).find( iP );
+    LayerConstIterator it = ( layerIt->second ).find( mapIndex );
     if( it != ( layerIt->second ).end() )
       {
       return it->second;
@@ -59,13 +60,13 @@ MalcolmSparseLevelSetImage< VDimension >::Evaluate( const InputType& iP ) const
     ++layerIt;
     }
 
-  if( this->m_LabelMap->GetLabelObject( MinusOneLayer() )->HasIndex( iP ) )
+  if( this->m_LabelMap->GetLabelObject( MinusOneLayer() )->HasIndex( mapIndex ) )
     {
     return MinusOneLayer();
     }
   else
     {
-    char status = this->m_LabelMap->GetPixel( iP );
+    char status = this->m_LabelMap->GetPixel( mapIndex );
     if( status == PlusOneLayer() )
       {
       return PlusOneLayer();

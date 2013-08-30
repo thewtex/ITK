@@ -30,6 +30,7 @@ UpdateShiSparseLevelSet< VDimension, TEquationContainer >
   m_CurrentLevelSetId( NumericTraits< IdentifierType >::Zero ),
   m_RMSChangeAccumulator( NumericTraits< LevelSetOutputRealType >::Zero )
 {
+  this->m_Offset.Fill( 0 );
   this->m_OutputLevelSet = LevelSetType::New();
 }
 
@@ -50,12 +51,15 @@ UpdateShiSparseLevelSet< VDimension, TEquationContainer >
     itkGenericExceptionMacro( <<"m_InputLevelSet is NULL" );
     }
 
+  this->m_Offset = this->m_InputLevelSet->GetDomainOffset();
+
   TermContainerPointer termContainer = this->m_EquationContainer->GetEquation( this->m_CurrentLevelSetId );
 
   this->m_OutputLevelSet->SetLayer( LevelSetType::MinusOneLayer(), this->m_InputLevelSet->GetLayer( LevelSetType::MinusOneLayer() ) );
   this->m_OutputLevelSet->SetLayer( LevelSetType::PlusOneLayer(), this->m_InputLevelSet->GetLayer( LevelSetType::PlusOneLayer() ) );
 
   this->m_OutputLevelSet->SetLabelMap( this->m_InputLevelSet->GetModifiableLabelMap() );
+  this->m_OutputLevelSet->SetDomainOffset( this->m_Offset );
 
   typedef LabelMapToLabelImageFilter<LevelSetLabelMapType, LabelImageType> LabelMapToLabelImageFilterType;
   typename LabelMapToLabelImageFilterType::Pointer labelMapToLabelImageFilter = LabelMapToLabelImageFilterType::New();
@@ -71,8 +75,7 @@ UpdateShiSparseLevelSet< VDimension, TEquationContainer >
   typename NeighborhoodIteratorType::RadiusType radius;
   radius.Fill( 1 );
 
-  NeighborhoodIteratorType neighIt( radius,
-                                    this->m_InternalImage,
+  NeighborhoodIteratorType neighIt( radius, this->m_InternalImage,
                                     this->m_InternalImage->GetLargestPossibleRegion() );
 
   neighIt.OverrideBoundaryCondition( &sp_nbc );
@@ -98,9 +101,11 @@ UpdateShiSparseLevelSet< VDimension, TEquationContainer >
   LevelSetLayerIterator nodeIt = list_in.begin();
   LevelSetLayerIterator nodeEnd = list_in.end();
 
+  LevelSetInputType inputIndex;
   while( nodeIt != nodeEnd )
     {
     LevelSetInputType currentIndex = nodeIt->first;
+    inputIndex = currentIndex + this->m_Offset;
 
     neighIt.SetLocation( currentIndex );
 
@@ -128,7 +133,7 @@ UpdateShiSparseLevelSet< VDimension, TEquationContainer >
       ++nodeIt;
       list_in.erase( tempIt );
 
-      termContainer->UpdatePixel( currentIndex, oldValue, newValue );
+      termContainer->UpdatePixel( inputIndex, oldValue, newValue );
       }
     else
       {
@@ -174,7 +179,7 @@ UpdateShiSparseLevelSet< VDimension, TEquationContainer >
       ++nodeIt;
       list_out.erase( tempIt );
 
-      termContainer->UpdatePixel( currentIndex, oldValue, newValue );
+      termContainer->UpdatePixel( inputIndex, oldValue, newValue );
       }
     else
       {
@@ -208,8 +213,7 @@ UpdateShiSparseLevelSet< VDimension, TEquationContainer >
   typename NeighborhoodIteratorType::RadiusType radius;
   radius.Fill( 1 );
 
-  NeighborhoodIteratorType neighIt( radius,
-                                    this->m_InternalImage,
+  NeighborhoodIteratorType neighIt( radius, this->m_InternalImage,
                                     this->m_InternalImage->GetLargestPossibleRegion() );
 
   neighIt.OverrideBoundaryCondition( &sp_nbc );
@@ -232,15 +236,18 @@ UpdateShiSparseLevelSet< VDimension, TEquationContainer >
   LevelSetLayerIterator nodeIt   = list_out.begin();
   LevelSetLayerIterator nodeEnd  = list_out.end();
 
+  LevelSetInputType inputIndex;
+
   // for each point in Lz
   while( nodeIt != nodeEnd )
     {
     bool erased = false;
     const LevelSetInputType   currentIndex = nodeIt->first;
     const LevelSetOutputType  currentValue = nodeIt->second;
+    inputIndex = currentIndex + this->m_Offset;
 
     // update the level set
-    LevelSetOutputRealType update = termContainer->Evaluate( currentIndex );
+    LevelSetOutputRealType update = termContainer->Evaluate( inputIndex );
 
     if( update < NumericTraits< LevelSetOutputRealType >::Zero )
       {
@@ -289,7 +296,7 @@ UpdateShiSparseLevelSet< VDimension, TEquationContainer >
     list_out.insert( *nodeIt );
 
     this->m_InternalImage->SetPixel( nodeIt->first, LevelSetType::PlusOneLayer() );
-    termContainer->UpdatePixel( nodeIt->first, LevelSetType::PlusThreeLayer(), LevelSetType::PlusOneLayer() );
+    termContainer->UpdatePixel( nodeIt->first + this->m_Offset , LevelSetType::PlusThreeLayer(), LevelSetType::PlusOneLayer() );
 
     ++nodeIt;
     }
@@ -302,7 +309,7 @@ UpdateShiSparseLevelSet< VDimension, TEquationContainer >
     list_in.insert( *nodeIt );
 
     this->m_InternalImage->SetPixel( nodeIt->first, LevelSetType::MinusOneLayer() );
-    termContainer->UpdatePixel( nodeIt->first, LevelSetType::PlusOneLayer(), LevelSetType::MinusOneLayer() );
+    termContainer->UpdatePixel( nodeIt->first + this->m_Offset, LevelSetType::PlusOneLayer(), LevelSetType::MinusOneLayer() );
     ++nodeIt;
     }
 }
@@ -347,15 +354,18 @@ UpdateShiSparseLevelSet< VDimension, TEquationContainer >
   LevelSetLayerIterator nodeIt   = list_in.begin();
   LevelSetLayerIterator nodeEnd  = list_in.end();
 
+  LevelSetInputType inputIndex;
+
   // for each point in Lz
   while( nodeIt != nodeEnd )
     {
     bool erased = false;
     const LevelSetInputType   currentIndex = nodeIt->first;
     const LevelSetOutputType  currentValue = nodeIt->second;
+    inputIndex = currentIndex + this->m_Offset;
 
     // update for the current level set
-    LevelSetOutputRealType update = termContainer->Evaluate( currentIndex );
+    LevelSetOutputRealType update = termContainer->Evaluate( inputIndex );
 
     if( update > NumericTraits< LevelSetOutputRealType >::Zero )
       {
@@ -402,7 +412,7 @@ UpdateShiSparseLevelSet< VDimension, TEquationContainer >
     {
     list_in.insert( *nodeIt );
     this->m_InternalImage->SetPixel( nodeIt->first, LevelSetType::MinusOneLayer() );
-    termContainer->UpdatePixel( nodeIt->first, LevelSetType::MinusThreeLayer(), LevelSetType::MinusOneLayer() );
+    termContainer->UpdatePixel( nodeIt->first + this->m_Offset, LevelSetType::MinusThreeLayer(), LevelSetType::MinusOneLayer() );
     ++nodeIt;
     }
 
@@ -414,7 +424,7 @@ UpdateShiSparseLevelSet< VDimension, TEquationContainer >
     {
     list_out.insert( *nodeIt );
     this->m_InternalImage->SetPixel( nodeIt->first, LevelSetType::PlusOneLayer() );
-    termContainer->UpdatePixel( nodeIt->first, LevelSetType::MinusOneLayer(), LevelSetType::PlusOneLayer() );
+    termContainer->UpdatePixel( nodeIt->first + this->m_Offset, LevelSetType::MinusOneLayer(), LevelSetType::PlusOneLayer() );
     ++nodeIt;
     }
 }
@@ -467,7 +477,7 @@ UpdateShiSparseLevelSet< VDimension, TEquationContainer >
       {
       LevelSetInputType tempIdx = neighIt.GetIndex( i.GetNeighborhoodOffset() );
 
-      LevelSetOutputRealType neighborUpdate = termContainer->Evaluate( tempIdx );
+      LevelSetOutputRealType neighborUpdate = termContainer->Evaluate( tempIdx + this->m_Offset );
 
       if ( neighborUpdate * iCurrentUpdate > NumericTraits< LevelSetOutputType >::Zero )
         {

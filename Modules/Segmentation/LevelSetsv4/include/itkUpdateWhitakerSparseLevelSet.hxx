@@ -33,6 +33,7 @@ m_RMSChangeAccumulator( NumericTraits< LevelSetOutputType >::Zero ),
 m_MinStatus( LevelSetType::MinusThreeLayer() ),
 m_MaxStatus( LevelSetType::PlusThreeLayer() )
 {
+  this->m_Offset.Fill( 0 );
   this->m_TempLevelSet = LevelSetType::New();
   this->m_OutputLevelSet = LevelSetType::New();
 }
@@ -68,6 +69,8 @@ void UpdateWhitakerSparseLevelSet< VDimension, TLevelSetValueType, TEquationCont
     itkGenericExceptionMacro( <<"m_Update is empty" );
     }
 
+  this->m_Offset = this->m_InputLevelSet->GetDomainOffset();
+
   // copy input to output. Will not use input again
   // store modified output in this->m_TempLevelSet
   this->m_OutputLevelSet->SetLayer( LevelSetType::MinusTwoLayer(), this->m_InputLevelSet->GetLayer( LevelSetType::MinusTwoLayer() ) );
@@ -75,6 +78,9 @@ void UpdateWhitakerSparseLevelSet< VDimension, TLevelSetValueType, TEquationCont
   this->m_OutputLevelSet->SetLayer( LevelSetType::ZeroLayer(), this->m_InputLevelSet->GetLayer( LevelSetType::ZeroLayer() ) );
   this->m_OutputLevelSet->SetLayer( LevelSetType::PlusOneLayer(), this->m_InputLevelSet->GetLayer( LevelSetType::PlusOneLayer() ) );
   this->m_OutputLevelSet->SetLayer( LevelSetType::PlusTwoLayer(), this->m_InputLevelSet->GetLayer( LevelSetType::PlusTwoLayer() ) );
+
+  this->m_OutputLevelSet->SetDomainOffset( this->m_Offset );
+  this->m_TempLevelSet->SetDomainOffset( this->m_Offset );
 
   this->m_OutputLevelSet->SetLabelMap( this->m_InputLevelSet->GetModifiableLabelMap() );
 
@@ -108,8 +114,7 @@ void UpdateWhitakerSparseLevelSet< VDimension, TLevelSetValueType, TEquationCont
   typename NeighborhoodIteratorType::RadiusType radius;
   radius.Fill( 1 );
 
-  NeighborhoodIteratorType neighIt( radius,
-                                    this->m_InternalImage,
+  NeighborhoodIteratorType neighIt( radius, this->m_InternalImage,
                                     this->m_InternalImage->GetLargestPossibleRegion() );
 
   neighIt.OverrideBoundaryCondition( &sp_nbc );
@@ -248,11 +253,14 @@ void UpdateWhitakerSparseLevelSet< VDimension, TLevelSetValueType, TEquationCont
     neighOffset[dim] = 0;
     }
 
+  LevelSetInputType inputIndex;
   while( nodeIt != nodeEnd )
     {
     itkAssertInDebugAndIgnoreInReleaseMacro( nodeIt->first == upIt->first );
 
     LevelSetInputType   currentIndex = nodeIt->first;
+    inputIndex = currentIndex + this->m_Offset;
+
     LevelSetOutputType  currentValue = nodeIt->second;
     LevelSetOutputType  tempUpdate = this->m_TimeStep * static_cast< LevelSetOutputType >( upIt->second );
 
@@ -303,7 +311,7 @@ void UpdateWhitakerSparseLevelSet< VDimension, TLevelSetValueType, TEquationCont
 
         if( tit != this->m_TempPhi.end() )
           {
-          termContainer->UpdatePixel( currentIndex, tit->second, tempValue );
+          termContainer->UpdatePixel( inputIndex, tit->second, tempValue );
           tit->second = tempValue;
           }
         else
@@ -359,7 +367,7 @@ void UpdateWhitakerSparseLevelSet< VDimension, TLevelSetValueType, TEquationCont
 
           if( tit != this->m_TempPhi.end() )
             { // change values
-            termContainer->UpdatePixel( currentIndex, tit->second, tempValue );
+            termContainer->UpdatePixel( inputIndex, tit->second, tempValue );
             tit->second = tempValue;
             }
           else
@@ -386,7 +394,7 @@ void UpdateWhitakerSparseLevelSet< VDimension, TLevelSetValueType, TEquationCont
 
       if( it != this->m_TempPhi.end() )
         { // change values
-        termContainer->UpdatePixel( currentIndex, it->second, tempValue );
+        termContainer->UpdatePixel( inputIndex, it->second, tempValue );
         it->second = tempValue;
         }
       nodeIt->second = tempValue;
@@ -435,9 +443,12 @@ void UpdateWhitakerSparseLevelSet< VDimension, TLevelSetValueType, TEquationCont
   LevelSetLayerIterator nodeIt   = outputLayerMinus1.begin();
   LevelSetLayerIterator nodeEnd  = outputLayerMinus1.end();
 
+  LevelSetInputType inputIndex;
+
   while( nodeIt != nodeEnd )
     {
     LevelSetInputType currentIndex = nodeIt->first;
+    inputIndex = currentIndex + this->m_Offset;
 
     neighIt.SetLocation( currentIndex );
 
@@ -476,7 +487,7 @@ void UpdateWhitakerSparseLevelSet< VDimension, TLevelSetValueType, TEquationCont
 
       if( phiIt != this->m_TempPhi.end() )
         {// change value
-        termContainer->UpdatePixel( currentIndex, phiIt->second, M );
+        termContainer->UpdatePixel( inputIndex, phiIt->second, M );
         phiIt->second = M;
         nodeIt->second = M;
         }
@@ -557,9 +568,12 @@ void UpdateWhitakerSparseLevelSet< VDimension, TLevelSetValueType, TEquationCont
   LevelSetLayerIterator nodeIt   = outputLayerPlus1.begin();
   LevelSetLayerIterator nodeEnd  = outputLayerPlus1.end();
 
+  LevelSetInputType inputIndex;
+
   while( nodeIt != nodeEnd )
     {
     LevelSetInputType currentIndex = nodeIt->first;
+    inputIndex = currentIndex + this->m_Offset;
 
     neighIt.SetLocation( currentIndex );
 
@@ -602,7 +616,7 @@ void UpdateWhitakerSparseLevelSet< VDimension, TLevelSetValueType, TEquationCont
 
       if( phiIt != this->m_TempPhi.end() )
         {// change in value
-        termContainer->UpdatePixel( currentIndex, phiIt->second, M );
+        termContainer->UpdatePixel( inputIndex, phiIt->second, M );
         phiIt->second = M;
         nodeIt->second = M;
         }
@@ -678,9 +692,11 @@ void UpdateWhitakerSparseLevelSet< VDimension, TLevelSetValueType, TEquationCont
   LevelSetLayerIterator nodeIt   = outputLayerMinus2.begin();
   LevelSetLayerIterator nodeEnd  = outputLayerMinus2.end();
 
+  LevelSetInputType inputIndex;
   while( nodeIt != nodeEnd )
     {
     LevelSetInputType currentIndex = nodeIt->first;
+    inputIndex = currentIndex + this->m_Offset;
 
     neighIt.SetLocation( currentIndex );
 
@@ -718,7 +734,7 @@ void UpdateWhitakerSparseLevelSet< VDimension, TLevelSetValueType, TEquationCont
 
       if( phiIt != this->m_TempPhi.end() )
         {//change values
-        termContainer->UpdatePixel( currentIndex, phiIt->second, M );
+        termContainer->UpdatePixel( inputIndex, phiIt->second, M );
         phiIt->second = M;
         nodeIt->second = M;
         }
@@ -743,7 +759,7 @@ void UpdateWhitakerSparseLevelSet< VDimension, TLevelSetValueType, TEquationCont
 
         this->m_InternalImage->SetPixel( currentIndex, LevelSetType::MinusThreeLayer() );
 
-        termContainer->UpdatePixel( currentIndex, M, LevelSetType::MinusThreeLayer() );
+        termContainer->UpdatePixel( inputIndex, M, LevelSetType::MinusThreeLayer() );
 
         this->m_TempPhi.erase( currentIndex );
         }
@@ -757,7 +773,7 @@ void UpdateWhitakerSparseLevelSet< VDimension, TLevelSetValueType, TEquationCont
       LevelSetLayerIterator tempIt = nodeIt;
       ++nodeIt;
       this->m_InternalImage->SetPixel( currentIndex, LevelSetType::MinusThreeLayer() );
-      termContainer->UpdatePixel( currentIndex, tempIt->second, LevelSetType::MinusThreeLayer() );
+      termContainer->UpdatePixel( inputIndex, tempIt->second, LevelSetType::MinusThreeLayer() );
       outputLayerMinus2.erase( tempIt );
       this->m_TempPhi.erase( currentIndex );
       }
@@ -801,9 +817,11 @@ void UpdateWhitakerSparseLevelSet< VDimension, TLevelSetValueType, TEquationCont
   LevelSetLayerIterator nodeIt   = outputLayerPlus2.begin();
   LevelSetLayerIterator nodeEnd  = outputLayerPlus2.end();
 
+  LevelSetInputType inputIndex;
   while( nodeIt != nodeEnd )
     {
     LevelSetInputType currentIndex = nodeIt->first;
+    inputIndex = currentIndex + this->m_Offset;
 
     neighIt.SetLocation( currentIndex );
 
@@ -845,7 +863,7 @@ void UpdateWhitakerSparseLevelSet< VDimension, TLevelSetValueType, TEquationCont
 
       if( phiIt != this->m_TempPhi.end() )
         {//change values
-        termContainer->UpdatePixel( currentIndex, phiIt->second, M );
+        termContainer->UpdatePixel( inputIndex, phiIt->second, M );
         phiIt->second = M;
         nodeIt->second = M;
         }
@@ -868,7 +886,7 @@ void UpdateWhitakerSparseLevelSet< VDimension, TLevelSetValueType, TEquationCont
         outputLayerPlus2.erase( tempIt );
         this->m_InternalImage->SetPixel( currentIndex, LevelSetType::PlusThreeLayer() );
 
-        termContainer->UpdatePixel( currentIndex, M, LevelSetType::PlusThreeLayer() );
+        termContainer->UpdatePixel( inputIndex, M, LevelSetType::PlusThreeLayer() );
 
         this->m_TempPhi.erase( currentIndex );
         }
@@ -882,7 +900,7 @@ void UpdateWhitakerSparseLevelSet< VDimension, TLevelSetValueType, TEquationCont
       LevelSetLayerIterator tempIt = nodeIt;
       ++nodeIt;
       this->m_InternalImage->SetPixel( currentIndex, LevelSetType::PlusThreeLayer() );
-      termContainer->UpdatePixel( currentIndex, tempIt->second, LevelSetType::PlusThreeLayer() );
+      termContainer->UpdatePixel( inputIndex, tempIt->second, LevelSetType::PlusThreeLayer() );
       outputLayerPlus2.erase( tempIt );
       this->m_TempPhi.erase( currentIndex );
       }
@@ -980,7 +998,7 @@ void UpdateWhitakerSparseLevelSet< VDimension, TLevelSetValueType, TEquationCont
           phiIt->second = currentValue - 1;
           layerMinus2.insert( NodePairType( tempIndex, currentValue - 1 ) );
 
-          termContainer->UpdatePixel( tempIndex, LevelSetType::MinusThreeLayer(), phiIt->second );
+          termContainer->UpdatePixel( tempIndex+m_Offset, LevelSetType::MinusThreeLayer(), phiIt->second );
           }
         }
       }
@@ -1055,7 +1073,7 @@ void UpdateWhitakerSparseLevelSet< VDimension, TLevelSetValueType, TEquationCont
 
           layerPlus2.insert( NodePairType( tempIndex, currentValue + 1 ) );
 
-          termContainer->UpdatePixel( tempIndex, 3, phiIt->second );
+          termContainer->UpdatePixel( tempIndex+m_Offset, 3, phiIt->second );
           }
         }
       }
