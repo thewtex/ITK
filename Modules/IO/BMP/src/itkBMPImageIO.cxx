@@ -404,9 +404,9 @@ void BMPImageIO::ReadImageInformation()
     // error checking
     if ( ( infoSize != 40 ) && ( infoSize != 12 ) )
       {
+      m_Ifstream.close();
       itkExceptionMacro(<< "Unknown file type! " << m_FileName.c_str()
                         << " is not a Windows BMP file!");
-      m_Ifstream.close();
       return;
       }
 
