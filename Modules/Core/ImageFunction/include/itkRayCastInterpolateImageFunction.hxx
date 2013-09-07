@@ -964,7 +964,6 @@ RayCastHelper< TInputImage, TCoordRep >
     err.SetDescription("The ray traversal direction is unset "
                        "- AdjustRayLength().");
     throw err;
-    return false;
     }
 
   do

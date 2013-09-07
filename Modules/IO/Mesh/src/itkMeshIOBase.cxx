@@ -216,12 +216,10 @@ MeshIOBase
     case COMPLEX:
       return std::string( "complex" );
     case UNKNOWNPIXELTYPE:
-      break;
     default:
       break;
     }
   itkExceptionMacro ("Unknown pixel type: " << t);
-  return std::string( "unknown" );
 }
 
 void

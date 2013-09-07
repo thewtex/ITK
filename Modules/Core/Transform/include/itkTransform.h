@@ -241,7 +241,6 @@ public:
   {
     itkExceptionMacro( "TransformCovariantVector( const InputCovariantVectorType & ) is "
                        "unimplemented for " << this->GetNameOfClass() );
-    return OutputCovariantVectorType();
   }
   /** Method to transform a CovariantVector, using a point. Global transforms
    * can ignore the \c point parameter. Local transforms (e.g. deformation
@@ -298,7 +297,6 @@ public:
     itkExceptionMacro(
       "TransformDiffusionTensor( const InputVectorPixelType & ) is "
       "unimplemented for " << this->GetNameOfClass() );
-    return OutputVectorPixelType();
   }
 
   virtual OutputVectorPixelType TransformDiffusionTensor3D(
