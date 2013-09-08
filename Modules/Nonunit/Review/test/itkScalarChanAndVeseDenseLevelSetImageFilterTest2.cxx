@@ -96,6 +96,8 @@ int itkScalarChanAndVeseDenseLevelSetImageFilterTest2( int argc, char * argv [] 
 
   levelSetFilter->Update();
 
+  std::cout << levelSetFilter << std::endl;
+
   WriterType::Pointer writer1 = WriterType::New();
 
   writer1->SetInput( levelSetFilter->GetOutput() );
