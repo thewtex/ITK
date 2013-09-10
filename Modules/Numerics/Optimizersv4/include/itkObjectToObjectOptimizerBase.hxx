@@ -181,7 +181,7 @@ ObjectToObjectOptimizerBaseTemplate<TInternalComputationValueType>
 template<class TInternalComputationValueType>
 const typename ObjectToObjectOptimizerBaseTemplate<TInternalComputationValueType>::ParametersType &
 ObjectToObjectOptimizerBaseTemplate<TInternalComputationValueType>
-::GetCurrentPosition()
+::GetCurrentPosition() const
 {
   if( this->m_Metric.IsNull() )
     {
