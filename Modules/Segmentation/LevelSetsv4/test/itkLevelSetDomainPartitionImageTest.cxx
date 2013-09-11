@@ -82,7 +82,7 @@ int itkLevelSetDomainPartitionImageTest( int argc, char* argv[] )
   DomainPartitionSourceType::Pointer partitionSource = DomainPartitionSourceType::New();
   partitionSource->SetNumberOfLevelSetFunctions( numberOfLevelSetFunctions );
   partitionSource->SetImage( binary );
-  partitionSource->SetLevelSetDataPointerVector( regionVector );
+  partitionSource->SetLevelSetDomainRegionVector( regionVector );
   partitionSource->PopulateListDomain();
 
 

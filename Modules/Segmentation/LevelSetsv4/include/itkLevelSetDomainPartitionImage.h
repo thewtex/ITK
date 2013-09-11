@@ -81,8 +81,8 @@ public:
   /** Get the image with the list of level set domains. */
   itkGetModifiableObjectMacro(ListDomain, ListImageType );
 
-  void SetLevelSetDataPointerVector( const LevelSetDomainVectorType& domain );
-  const LevelSetDomainVectorType& GetLevelSetDataPointerVector() const;
+  void SetLevelSetDomainRegionVector( const LevelSetDomainVectorType& domain );
+  const LevelSetDomainVectorType& GetLevelSetDomainRegionVector() const;
 
   /** Populate a list image with each pixel being a list of overlapping
    *  level set support at that pixel */
@@ -98,7 +98,7 @@ protected:
 
   ImageConstPointer        m_Image;
   ListImagePointer         m_ListDomain;
-  LevelSetDomainVectorType m_LevelSetDataPointerVector;
+  LevelSetDomainVectorType m_LevelSetDomainRegionVector;
 
 private:
   LevelSetDomainPartitionImage(const Self &); //purposely not implemented

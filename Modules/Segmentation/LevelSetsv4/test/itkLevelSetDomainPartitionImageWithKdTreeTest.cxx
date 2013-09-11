@@ -112,7 +112,7 @@ int itkLevelSetDomainPartitionImageWithKdTreeTest( int argc, char* argv[] )
   DomainPartitionSourceType::Pointer partitionSource = DomainPartitionSourceType::New();
   partitionSource->SetNumberOfLevelSetFunctions( numberOfLevelSetFunctions );
   partitionSource->SetImage( binary );
-  partitionSource->SetLevelSetDataPointerVector( regionVector );
+  partitionSource->SetLevelSetDomainRegionVector( regionVector );
   partitionSource->SetNumberOfNeighbors( 3 );
   partitionSource->SetKdTree( kdtree );
   partitionSource->PopulateListDomain();
