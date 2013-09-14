@@ -32,7 +32,7 @@ namespace
  This helper is used to:
  Create and set a new type transform that have requested output precision type.
  */
-template<class TOutputScalar, class TInputScalar>
+template<typename TOutputScalar, typename TInputScalar>
 struct TransformIOHelper
 {
   typedef TransformBaseTemplate<TInputScalar>     InputTransformType;
@@ -84,7 +84,7 @@ struct TransformIOHelper
 };
 
 /* Changes the precision type of input transform to the requested precision type */
-template<class TOutputScalar, class TInputScalar>
+template<typename TOutputScalar, typename TInputScalar>
 struct SetInputTransformWithOutputPrecisionType
 {
   typedef TransformBaseTemplate<TInputScalar>        InputTransformType;
@@ -184,7 +184,7 @@ struct SetInputTransformWithOutputPrecisionType<float, float>
 
 } // end anonymous namespace
 
-template<class ScalarType>
+template<typename ScalarType>
 TransformFileWriterTemplate<ScalarType>
 ::TransformFileWriterTemplate() :
   m_FileName(""),
@@ -193,14 +193,14 @@ TransformFileWriterTemplate<ScalarType>
   TransformFactoryBase::RegisterDefaultTransforms();
 }
 
-template<class ScalarType>
+template<typename ScalarType>
 TransformFileWriterTemplate<ScalarType>
 ::~TransformFileWriterTemplate()
 {
 }
 
 /** Set the writer to append to the specified file */
-template<class ScalarType>
+template<typename ScalarType>
 void TransformFileWriterTemplate<ScalarType>
 ::SetAppendOn()
 {
@@ -209,7 +209,7 @@ void TransformFileWriterTemplate<ScalarType>
 
 /** Set the writer to overwrite the specified file - This is the
 * default mode. */
-template<class ScalarType>
+template<typename ScalarType>
 void TransformFileWriterTemplate<ScalarType>
 ::SetAppendOff()
 {
@@ -217,7 +217,7 @@ void TransformFileWriterTemplate<ScalarType>
 }
 
 /** Set the writer mode (append/overwrite). */
-template<class ScalarType>
+template<typename ScalarType>
 void TransformFileWriterTemplate<ScalarType>
 ::SetAppendMode(bool mode)
 {
@@ -225,14 +225,14 @@ void TransformFileWriterTemplate<ScalarType>
 }
 
 /** Get the writer mode. */
-template<class ScalarType>
+template<typename ScalarType>
 bool TransformFileWriterTemplate<ScalarType>
 ::GetAppendMode()
 {
   return ( this->m_AppendMode );
 }
 
-template<class ScalarType>
+template<typename ScalarType>
 void TransformFileWriterTemplate<ScalarType>
 ::PushBackTransformList(const Object *transObj)
 {
@@ -260,7 +260,7 @@ void TransformFileWriterTemplate<ScalarType>
 }
 
 /** Set the input transform and reinitialize the list of transforms */
-template<class ScalarType>
+template<typename ScalarType>
 void TransformFileWriterTemplate<ScalarType>
 ::SetInput(const Object *transform)
 {
@@ -268,7 +268,7 @@ void TransformFileWriterTemplate<ScalarType>
   this->PushBackTransformList(transform);
 }
 
-template<class ScalarType>
+template<typename ScalarType>
 const typename TransformFileWriterTemplate<ScalarType>::TransformType *
 TransformFileWriterTemplate<ScalarType>
 ::GetInput()
@@ -278,7 +278,7 @@ TransformFileWriterTemplate<ScalarType>
 }
 
 /** Add a transform to be written */
-template<class ScalarType>
+template<typename ScalarType>
 void TransformFileWriterTemplate<ScalarType>
 ::AddTransform(const Object *transform)
 {
@@ -299,7 +299,7 @@ void TransformFileWriterTemplate<ScalarType>
   this->PushBackTransformList(transform);
 }
 
-template<class ScalarType>
+template<typename ScalarType>
 void TransformFileWriterTemplate<ScalarType>
 ::Update()
 {
@@ -320,7 +320,7 @@ void TransformFileWriterTemplate<ScalarType>
   transformIO->Write();
 }
 
-template<class ScalarType>
+template<typename ScalarType>
 void TransformFileWriterTemplate<ScalarType>
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
