@@ -25,6 +25,7 @@
 #include "itkCompositeTransformIOHelper.h"
 #include "itkVersion.h"
 #include <sstream>
+#include <typeinfo>
 #include "itk_H5Cpp.h"
 
 namespace itk
@@ -90,51 +91,53 @@ HDF5TransformIOTemplate< TInternalComputationValueType >
 }
 
 
-/** Write a parameter array to the location specified by name */
-template< typename TInternalComputationValueType >
-void
-HDF5TransformIOTemplate< TInternalComputationValueType >
-::WriteParameters(const std::string &name,
+/** Write a parameter array to the location specified by name. */
+template<>
+template<>
+inline void
+HDF5TransformIOTemplate<double>
+::WriteParameters<double>(const std::string &name,
+                          const ParametersType &parameters)
+{
+  hsize_t dim(parameters.Size());
+
+  double *buf = new double[dim];
+  for(unsigned i(0); i < dim; i++)
+    {
+    buf[i] = parameters[i];
+    }
+  H5::DataSpace paramSpace(1,&dim);
+  H5::DataSet paramSet = this->m_H5File->createDataSet(name,
+                                                       H5::PredType::NATIVE_DOUBLE,
+                                                       paramSpace);
+  paramSet.write(buf,H5::PredType::NATIVE_DOUBLE);
+  paramSet.close();
+  delete [] buf;
+}
+
+template<>
+template<>
+inline void
+HDF5TransformIOTemplate<float >
+::WriteParameters<float>(const std::string &name,
                   const ParametersType &parameters)
 {
   hsize_t dim(parameters.Size());
 
-  const std::string & nameOfComputationType = GetTypeNameString<TInternalComputationValueType>();
-  TInternalComputationValueType *buf = new TInternalComputationValueType[dim];
-  if( ! nameOfComputationType.compare( std::string("double") ))
+  float *buf = new float[dim];
+  for(unsigned i(0); i < dim; i++)
     {
-    for(unsigned i(0); i < dim; i++)
-      {
-      buf[i] = parameters[i];
-      }
-    H5::DataSpace paramSpace(1,&dim);
-    H5::DataSet paramSet = this->m_H5File->createDataSet(name,
-                                                         H5::PredType::NATIVE_DOUBLE,
-                                                         paramSpace);
-    paramSet.write(buf,H5::PredType::NATIVE_DOUBLE);
-    paramSet.close();
+    buf[i] = parameters[i];
     }
-  else if( ! nameOfComputationType.compare(std::string("float") ) )
-    {
-    for(unsigned i(0); i < dim; i++)
-      {
-      buf[i] = parameters[i];
-      }
-    H5::DataSpace paramSpace(1,&dim);
-    H5::DataSet paramSet = this->m_H5File->createDataSet(name,
-                                                         H5::PredType::NATIVE_FLOAT,
-                                                         paramSpace);
-    paramSet.write(buf,H5::PredType::NATIVE_FLOAT);
-    paramSet.close();
-    }
-  else
-    {
-    itkExceptionMacro(<< "Wrong data precision type "
-                      << nameOfComputationType
-                      << "for writing in HDF5 File");
-    }
+  H5::DataSpace paramSpace(1,&dim);
+  H5::DataSet paramSet = this->m_H5File->createDataSet(name,
+                                                       H5::PredType::NATIVE_FLOAT,
+                                                       paramSpace);
+  paramSet.write(buf,H5::PredType::NATIVE_FLOAT);
+  paramSet.close();
   delete [] buf;
 }
+
 
 /** read a parameter array from the location specified by name */
 template< typename TInternalComputationValueType >
@@ -254,7 +257,7 @@ HDF5TransformIOTemplate< TInternalComputationValueType >
       typeSet.close();
       }
       // Transform name should be modified to have the output precision type.
-      CorrectTransformPrecisionType<TInternalComputationValueType>( transformType );
+      TransformTypeUtil::CorrectTransformPrecisionType<TInternalComputationValueType>( transformType );
 
       TransformPointer transform;
       this->CreateTransform(transform,transformType);
@@ -316,12 +319,12 @@ HDF5TransformIOTemplate< TInternalComputationValueType >
     ParametersType tmpArray = curTransform->GetFixedParameters();
     std::string fixedParamsName(transformName);
     fixedParamsName += transformFixedName;
-    this->WriteParameters(fixedParamsName,tmpArray);
+    this->WriteParameters<TInternalComputationValueType>(fixedParamsName,tmpArray);
     // parameters
     tmpArray = curTransform->GetParameters();
     std::string paramsName(transformName);
     paramsName += transformParamsName;
-    this->WriteParameters(paramsName,tmpArray);
+    this->WriteParameters<TInternalComputationValueType>(paramsName,tmpArray);
     }
 }
 

@@ -84,6 +84,9 @@ void
 MINCTransformIOTemplate< TInternalComputationValueType >
 ::ReadOneTransform(VIO_General_transform *xfm)
 {
+  const std::string internalTypeName =
+    TransformTypeUtil::GetTypeNameAsString<TInternalComputationValueType>();
+
   switch(get_transform_type(xfm))
   {
     case LINEAR:
@@ -91,8 +94,9 @@ MINCTransformIOTemplate< TInternalComputationValueType >
       VIO_Transform *lin=get_linear_transform_ptr(xfm);
 
       TransformPointer transform;
+
       std::string transformTypeName = "AffineTransform_";
-      transformTypeName += TypeName< TInternalComputationValueType >::Get();
+      transformTypeName += internalTypeName;
       transformTypeName += "_3_3";
       this->CreateTransform(transform, transformTypeName);
       ParametersType parameterArray;
@@ -153,7 +157,7 @@ MINCTransformIOTemplate< TInternalComputationValueType >
 
         TransformPointer transform;
         std::string transformTypeName = "DisplacementFieldTransform_";
-        transformTypeName += TypeName< TInternalComputationValueType >::Get();
+        transformTypeName += internalTypeName;
         transformTypeName += "_3_3";
         this->CreateTransform(transform, transformTypeName);
         DisplacementFieldTransformType * gridTransform = static_cast< DisplacementFieldTransformType* >( transform.GetPointer());
