@@ -37,20 +37,6 @@ inline const std::string GetTypeNameString()
   return std::string(typeid(ScalarType).name());
 }
 
-/* a specialization for each "float" and "double" type that we support
-   and don't like the string returned by typeid */
-template <>
-inline const std::string GetTypeNameString<float>()
-{
-  return std::string("float");
-}
-
-template <>
-inline const std::string GetTypeNameString<double>()
-{
-  return std::string("double");
-}
-
 template<typename ScalarType>
 inline void CorrectTransformPrecisionType( std::string & inputTransformName )
 {
