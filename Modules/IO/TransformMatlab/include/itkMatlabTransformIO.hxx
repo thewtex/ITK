@@ -110,7 +110,7 @@ MatlabTransformIOTemplate<ParametersValueType>
     ReadMat<ParametersValueType>(mathdr, TmpParameterArray);
     std::string classname( mathdr.name() );
     // Transform name should be modified to have the output precision type.
-    CorrectTransformPrecisionType<ParametersValueType>( classname );
+    TransformTypeUtil::CorrectTransformPrecisionType<ParametersValueType>( classname );
 
     // create transform based on name of first vector
     TransformPointer transform;
