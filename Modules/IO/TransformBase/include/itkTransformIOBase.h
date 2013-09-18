@@ -110,6 +110,45 @@ protected:
   bool                   m_AppendMode;
 };
 
+namespace
+{
+/** the transform type has a string representation used when reading
+* and writing transform files.  In the case where a double-precision
+* transform is to be written as float, or vice versa, the transform
+* type name used to write the file needs to patched in order for the
+* transform I/O hierachy to work correctly. These template functions
+* will be chosen at compile time within template classes in order to
+* patch up the type name.
+*/
+template<typename TScalar>
+inline void CorrectTransformPrecisionType( std::string & )
+{
+  itkGenericExceptionMacro(<< "Unknown ScalarType" << typeid(TScalar).name());
+}
+
+template <>
+inline void CorrectTransformPrecisionType<float>( std::string &inputTransformName )
+{
+  // output precision type is not found in input transform.
+  if(inputTransformName.find("float") == std::string::npos)
+    {
+    const std::string::size_type begin = inputTransformName.find("double");
+    inputTransformName.replace(begin, 6, "float");
+    }
+}
+
+template <>
+inline void CorrectTransformPrecisionType<double>( std::string &inputTransformName )
+{
+  // output precision type is not found in input transform.
+  if(inputTransformName.find("double") == std::string::npos)
+    {
+    const std::string::size_type begin = inputTransformName.find("float");
+    inputTransformName.replace(begin, 5, "double");
+    }
+}
+}
+
 /** This helps to meet backward compatibility */
 typedef itk::TransformIOBaseTemplate<double> TransformIOBase;
 

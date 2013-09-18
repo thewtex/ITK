@@ -121,8 +121,18 @@ private:
   ParametersType ReadParameters(const std::string &DataSetName);
 
   /** Write a parameter array to the file location name */
-  void WriteParameters(const std::string &name,
-                       const ParametersType &parameters);
+  template<typename TScalar>
+  void WriteParameters(const std::string &,
+                       const ParametersType &)
+    {
+      itkExceptionMacro(<< "Wrong data precision type "
+                        << typeid(TScalar).name()
+                        << "for writing in HDF5 File");
+    }
+  // void WriteParameters(const std::string &,
+  //                      const ParametersType &, const double *);
+  // void WriteParameters(const std::string &,
+  //                      const ParametersType &, const float *);
 
   /** write a string variable */
   void WriteString(const std::string &path, const std::string &value);
