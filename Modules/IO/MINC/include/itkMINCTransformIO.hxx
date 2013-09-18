@@ -92,7 +92,7 @@ MINCTransformIOTemplate< TInternalComputationValueType >
 
       TransformPointer transform;
       std::string transformTypeName = "AffineTransform_";
-      transformTypeName += TypeName< TInternalComputationValueType >::Get();
+      transformTypeName += Superclass::GetTypeNameString();
       transformTypeName += "_3_3";
       this->CreateTransform(transform, transformTypeName);
       ParametersType parameterArray;
@@ -153,7 +153,7 @@ MINCTransformIOTemplate< TInternalComputationValueType >
 
         TransformPointer transform;
         std::string transformTypeName = "DisplacementFieldTransform_";
-        transformTypeName += TypeName< TInternalComputationValueType >::Get();
+        transformTypeName += Superclass::GetTypeNameString();
         transformTypeName += "_3_3";
         this->CreateTransform(transform, transformTypeName);
         DisplacementFieldTransformType * gridTransform = static_cast< DisplacementFieldTransformType* >( transform.GetPointer());
