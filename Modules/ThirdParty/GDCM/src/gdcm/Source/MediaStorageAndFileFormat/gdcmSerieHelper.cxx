@@ -66,7 +66,7 @@ void SerieHelper::AddRestriction(const Tag& tag)
 
 void SerieHelper::SetUseSeriesDetails( bool useSeriesDetails )
 {
-  UseSeriesDetails = useSeriesDetails;
+  m_UseSeriesDetails = useSeriesDetails;
 }
 
 void SerieHelper::CreateDefaultUniqueSeriesIdentifier()

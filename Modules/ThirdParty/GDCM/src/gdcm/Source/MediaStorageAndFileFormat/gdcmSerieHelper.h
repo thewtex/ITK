@@ -109,7 +109,6 @@ private:
   SerieRestrictions Restrictions;
   SerieRestrictions Refine;
 
-  bool UseSeriesDetails;
   bool DirectOrder;
 
   BOOL_FUNCTION_PFILE_PFILE_POINTER UserLessThanFunction;
