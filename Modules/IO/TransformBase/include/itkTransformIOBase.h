@@ -95,6 +95,26 @@ public:
   itkGetConstMacro(AppendMode, bool);
   itkBooleanMacro(AppendMode);
 
+  static inline void CorrectTransformPrecisionType( std::string & inputTransformName )
+    {
+    const std::string & outputScalarTypeAsString = GetTypeNameString();
+    if( inputTransformName.find(outputScalarTypeAsString) == std::string::npos ) // output precision type is not found in input transform.
+      {
+      const std::string floatString("float");
+      const std::string doubleString("double");
+      if( outputScalarTypeAsString.compare(floatString) == 0 ) // output precision type is float, so we should search for double and replace that.
+        {
+        const std::string::size_type begin = inputTransformName.find(doubleString);
+        inputTransformName.replace(begin, doubleString.size(), floatString);
+        }
+      else
+        {
+        const std::string::size_type begin = inputTransformName.find(floatString);
+        inputTransformName.replace(begin, floatString.size(), doubleString);
+        }
+      }
+    }
+
 protected:
   TransformIOBaseTemplate();
   virtual ~TransformIOBaseTemplate();
@@ -108,7 +128,32 @@ protected:
   TransformListType      m_ReadTransformList;
   ConstTransformListType m_WriteTransformList;
   bool                   m_AppendMode;
+
+  /* The following struct returns the string name of computation type */
+  /* default implementation */
+  static inline const std::string GetTypeNameString()
+    {
+    return std::string(typeid(ScalarType).name());
+    }
 };
+
+/* a specialization for each "float" and "double" type that we support
+   and don't like the string returned by typeid */
+template <>
+inline const std::string
+TransformIOBaseTemplate<float>
+::GetTypeNameString()
+{
+  return std::string("float");
+}
+
+template <>
+inline const std::string
+TransformIOBaseTemplate<double>
+::GetTypeNameString()
+{
+  return std::string("double");
+}
 
 /** This helps to meet backward compatibility */
 typedef itk::TransformIOBaseTemplate<double> TransformIOBase;
