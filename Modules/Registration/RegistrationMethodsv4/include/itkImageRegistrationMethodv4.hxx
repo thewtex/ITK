@@ -276,14 +276,30 @@ ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform>
     multiMetric2->SetVirtualDomainFromImage( shrinkFilter->GetOutput() );
     for( unsigned int n = 0; n < multiMetric2->GetNumberOfMetrics(); n++ )
       {
-      dynamic_cast<ImageMetricType *>( multiMetric2->GetMetricQueue()[n].GetPointer() )->SetVirtualDomainFromImage( shrinkFilter->GetOutput() );
+      typename ImageMetricType::Pointer imageMetricPtr = dynamic_cast<ImageMetricType *>( multiMetric2->GetMetricQueue()[n].GetPointer() );
+      if( imageMetricPtr.IsNotNull() )
+        {
+        imageMetricPtr->SetVirtualDomainFromImage( shrinkFilter->GetOutput() );
+        }
+      else
+        {
+        itkExceptionMacro("ERROR: Invalid metric conversion.");
+        }
       }
     }
   else
     {
-    dynamic_cast<ImageMetricType *>( this->m_Metric.GetPointer() )->SetFixedTransform( this->m_FixedInitialTransform );
-    dynamic_cast<ImageMetricType *>( this->m_Metric.GetPointer() )->SetMovingTransform( this->m_CompositeTransform );
-    dynamic_cast<ImageMetricType *>( this->m_Metric.GetPointer() )->SetVirtualDomainFromImage( shrinkFilter->GetOutput() );
+    typename ImageMetricType::Pointer imageMetricPtr = dynamic_cast<ImageMetricType *>( this->m_Metric.GetPointer() );
+    if( imageMetricPtr.IsNotNull() )
+      {
+      imageMetricPtr->SetFixedTransform( this->m_FixedInitialTransform );
+      imageMetricPtr->SetMovingTransform( this->m_CompositeTransform );
+      imageMetricPtr->SetVirtualDomainFromImage( shrinkFilter->GetOutput() );
+      }
+    else
+      {
+      itkExceptionMacro("ERROR: Invalid metric conversion.");
+      }
     }
 
   this->m_FixedSmoothImages.clear();
@@ -332,13 +348,29 @@ ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform>
     typename MultiMetricType::Pointer multiMetric3 = dynamic_cast<MultiMetricType *>( this->m_Metric.GetPointer() );
     if( multiMetric3 )
       {
-      dynamic_cast<ImageMetricType *>( multiMetric3->GetMetricQueue()[n].GetPointer() )->SetFixedImage( this->m_FixedSmoothImages[n] );
-      dynamic_cast<ImageMetricType *>( multiMetric3->GetMetricQueue()[n].GetPointer() )->SetMovingImage( this->m_MovingSmoothImages[n] );
+      typename ImageMetricType::Pointer metricQueuePtr = dynamic_cast<ImageMetricType *>( multiMetric3->GetMetricQueue()[n].GetPointer() );
+      if( metricQueuePtr.IsNotNull() )
+        {
+        metricQueuePtr->SetFixedImage( this->m_FixedSmoothImages[n] );
+        metricQueuePtr->SetMovingImage( this->m_MovingSmoothImages[n] );
+        }
+      else
+        {
+        itkExceptionMacro("ERROR: Invalid conversion from the multi metric queue.");
+        }
       }
     else
       {
-      dynamic_cast<ImageMetricType *>( this->m_Metric.GetPointer() )->SetFixedImage( this->m_FixedSmoothImages[n] );
-      dynamic_cast<ImageMetricType *>( this->m_Metric.GetPointer() )->SetMovingImage( this->m_MovingSmoothImages[n] );
+      typename ImageMetricType::Pointer metricPtr = dynamic_cast<ImageMetricType *>( this->m_Metric.GetPointer() );
+      if( metricPtr.IsNotNull() )
+        {
+        metricPtr->SetFixedImage( this->m_FixedSmoothImages[n] );
+        metricPtr->SetMovingImage( this->m_MovingSmoothImages[n] );
+        }
+      else
+        {
+        itkExceptionMacro("ERROR: Invalid metric conversion.");
+        }
       }
     }
 
@@ -471,11 +503,27 @@ ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform>
   const VirtualDomainImageType * virtualImage;
   if( numberOfLocalMetrics == 1 )
     {
-    virtualImage = dynamic_cast<ImageMetricType *>( this->m_Metric.GetPointer() )->GetVirtualImage();
+    typename ImageMetricType::Pointer metricPtr = dynamic_cast<ImageMetricType *>( this->m_Metric.GetPointer() );
+    if( metricPtr.IsNotNull() )
+      {
+      virtualImage = metricPtr->GetVirtualImage();
+      }
+    else
+      {
+      itkExceptionMacro("ERROR: Invalid metric conversion.");
+      }
     }
   else
     {
-    virtualImage = dynamic_cast<ImageMetricType *>( multiMetric->GetMetricQueue()[0].GetPointer() )->GetVirtualImage();
+    typename ImageMetricType::Pointer multiMetricPtr = dynamic_cast<ImageMetricType *>( multiMetric->GetMetricQueue()[0].GetPointer() );
+    if( multiMetricPtr.IsNotNull() )
+      {
+      virtualImage = multiMetricPtr->GetVirtualImage();
+      }
+    else
+      {
+      itkExceptionMacro("ERROR: Invalid metric conversion.");
+      }
     }
   const VirtualDomainRegionType & virtualDomainRegion = virtualImage->GetRequestedRegion();
   const typename VirtualDomainImageType::SpacingType oneThirdVirtualSpacing = virtualImage->GetSpacing() / 3.0;
