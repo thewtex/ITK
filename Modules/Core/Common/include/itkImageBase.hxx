@@ -495,6 +495,7 @@ ImageBase< VImageDimension >
 {
   if ( m_LargestPossibleRegion != region )
     {
+    m_RequestedRegion.Crop( region );
     m_LargestPossibleRegion = region;
     this->Modified();
     }

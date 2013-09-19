@@ -34,7 +34,6 @@ int itkImageSeriesWriterTest(int ac, char* av[])
   }
 
   typedef itk::Image<short,3>                 ImageNDType;
-  typedef itk::ImageSeriesReader<ImageNDType> ReaderType;
 
   itk::GDCMImageIO::Pointer io = itk::GDCMImageIO::New();
 
@@ -46,6 +45,7 @@ int itkImageSeriesWriterTest(int ac, char* av[])
   const SeriesIdContainer & seriesUID = nameGenerator->GetSeriesUIDs();
   std::string seriesIdentifier = seriesUID.begin()->c_str();
 
+  typedef itk::ImageSeriesReader< ImageNDType > ReaderType;
   ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileNames( nameGenerator->GetFileNames( seriesIdentifier ) );
   reader->SetImageIO( io );

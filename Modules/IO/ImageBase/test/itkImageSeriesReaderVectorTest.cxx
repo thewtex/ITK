@@ -52,9 +52,22 @@ int itkImageSeriesReaderVectorTest(int ac, char* av[])
     }
 
   std::cout << "testing reading image series into ImageOfVectors " << std::endl;
+  VectorImageSeriesReader::Pointer reader = VectorImageSeriesReader::New();
   try
     {
-    VectorImageSeriesReader::Pointer reader = VectorImageSeriesReader::New();
+    reader->SetFileNames(fnames);
+    reader->Update();
+    }
+  catch (itk::ExceptionObject &ex)
+    {
+    std::cout << ex;
+    return EXIT_FAILURE;
+    }
+
+  std::cout << "testing reading image series after popping the last file" << std::endl;
+  try
+    {
+    fnames.pop_back();
     reader->SetFileNames(fnames);
     reader->Update();
     }
