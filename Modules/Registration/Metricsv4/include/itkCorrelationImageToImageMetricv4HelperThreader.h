@@ -119,9 +119,17 @@ private:
   CorrelationImageToImageMetricv4HelperThreader( const Self & ); // purposely not implemented
   void operator=( const Self & ); // purposely not implemented
 
+  struct CorrelationMetricPerThreadStruct
+    {
+    InternalComputationValueType FixSum;
+    InternalComputationValueType MovSum;
+    };
+  itkPadStruct( ITK_CACHE_LINE_ALIGNMENT, CorrelationMetricPerThreadStruct,
+                                          PaddedCorrelationMetricPerThreadStruct);
+  itkAlignedTypedef( ITK_CACHE_LINE_ALIGNMENT, PaddedCorrelationMetricPerThreadStruct,
+                                               AlignedCorrelationMetricPerThreadStruct );
   /* per thread variables for correlation and its derivatives */
-  mutable std::vector< InternalComputationValueType > m_FixSumPerThread;
-  mutable std::vector< InternalComputationValueType > m_MovSumPerThread;
+  mutable std::vector< AlignedCorrelationMetricPerThreadStruct > m_CorrelationMetricPerThreadVariables;
 
   /** Internal pointer to the metric object in use by this threader.
    *  This will avoid costly dynamic casting in tight loops. */
