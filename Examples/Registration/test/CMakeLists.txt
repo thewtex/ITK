@@ -22,6 +22,7 @@ itk_add_test(NAME ImageRegistration2Test COMMAND ${ITK_TEST_DRIVER}
         ${TEMP}/ImageRegistration2BeforeTest.png
         ${TEMP}/ImageRegistration2AfterTest.png
 )
+set_property(TEST ImageRegistration2Test APPEND PROPERTY LABELS RUNS_LONG)
 
 itk_add_test(NAME ImageRegistration3Test COMMAND ${ITK_TEST_DRIVER}
   --compare DATA{${BASELINE}/ImageRegistration3TestPixelCentered.png}
@@ -231,6 +232,7 @@ itk_add_test(NAME ImageRegistration14Test COMMAND ${ITK_TEST_DRIVER}
         ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceR10X13Y17.png
         ${TEMP}/ImageRegistration14Test.png 32 0.01 0.1  0.15  10.0  14.0
 )
+set_property(TEST ImageRegistration14Test APPEND PROPERTY LABELS RUNS_LONG)
 
 itk_add_test(NAME ImageRegistration15Test COMMAND ${ITK_TEST_DRIVER}
   --compare DATA{${BASELINE}/ImageRegistration15TestPixelCentered.png}
@@ -240,6 +242,7 @@ itk_add_test(NAME ImageRegistration15Test COMMAND ${ITK_TEST_DRIVER}
         ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceShifted13x17y.png
         ${TEMP}/ImageRegistration15TestPixelCentered.png 32 0.1 0.05  0.0 0.0
 )
+set_property(TEST ImageRegistration15Test APPEND PROPERTY LABELS RUNS_LONG)
 
 itk_add_test(NAME ImageRegistration16Test COMMAND ${ITK_TEST_DRIVER}
   --compare DATA{${BASELINE}/ImageRegistration16TestPixelCentered.png}
@@ -295,6 +298,7 @@ itk_add_test(NAME MultiResImageRegistration1Test COMMAND ${ITK_TEST_DRIVER}
         ${TEMP}/MultiResImageRegistration1CheckerBoardBeforeTest.png
         ${TEMP}/MultiResImageRegistration1CheckerBoardAfterTest.png
 )
+set_property(TEST MultiResImageRegistration1Test APPEND PROPERTY LABELS RUNS_LONG)
 
 itk_add_test(NAME MultiResImageRegistration1Test2 COMMAND ${ITK_TEST_DRIVER}
   --compare DATA{${BASELINE}/MultiResImageRegistration1Test.png,:}
@@ -308,6 +312,7 @@ itk_add_test(NAME MultiResImageRegistration1Test2 COMMAND ${ITK_TEST_DRIVER}
         ${TEMP}/MultiResImageRegistration1CheckerBoardAfterTest2.png
         0
 )
+set_property(TEST MultiResImageRegistration1Test2 APPEND PROPERTY LABELS RUNS_LONG)
 
 
 itk_add_test(NAME MultiResImageRegistration2Test COMMAND ${ITK_TEST_DRIVER}
@@ -321,6 +326,7 @@ itk_add_test(NAME MultiResImageRegistration2Test COMMAND ${ITK_TEST_DRIVER}
         ${TEMP}/MultiResImageRegistration2CheckerBoardBeforeTest.png
         ${TEMP}/MultiResImageRegistration2CheckerBoardAfterTest.png
 )
+set_property(TEST MultiResImageRegistration2Test APPEND PROPERTY LABELS RUNS_LONG)
 
 
 itk_add_test(NAME MultiResImageRegistration2Test2 COMMAND ${ITK_TEST_DRIVER}
@@ -335,6 +341,7 @@ itk_add_test(NAME MultiResImageRegistration2Test2 COMMAND ${ITK_TEST_DRIVER}
         ${TEMP}/MultiResImageRegistration2CheckerBoardAfterTest2.png
         0
 )
+set_property(TEST MultiResImageRegistration2Test2 APPEND PROPERTY LABELS RUNS_LONG)
 
 
 itk_add_test(NAME DeformableRegistration2Test COMMAND ${ITK_TEST_DRIVER}
@@ -413,6 +420,7 @@ itk_add_test(NAME DeformableRegistration12Test1 COMMAND ${ITK_TEST_DRIVER}
         0 0
         ${TEMP}/DeformableRegistration12Test1FinalTransformParameters.txt
 )
+set_property(TEST DeformableRegistration12Test1 APPEND PROPERTY LABELS RUNS_LONG)
 
 itk_add_test(NAME DeformableRegistration12Test2 COMMAND ${ITK_TEST_DRIVER}
   --compare DATA{Baseline/DeformableRegistration12Test.png}
@@ -443,6 +451,7 @@ itk_add_test(NAME DeformableRegistration12Test3 COMMAND ${ITK_TEST_DRIVER}
         1 0
         ${TEMP}/DeformableRegistration12Test3FinalTransformParameters.txt
 )
+set_property(TEST DeformableRegistration12Test3 APPEND PROPERTY LABELS RUNS_LONG)
 
 itk_add_test(NAME DeformableRegistration12Test4 COMMAND ${ITK_TEST_DRIVER}
   --compare DATA{Baseline/DeformableRegistration12Test.png}
@@ -473,6 +482,7 @@ itk_add_test(NAME DeformableRegistration13Test1 COMMAND ${ITK_TEST_DRIVER}
         0 0
         ${TEMP}/DeformableRegistration13Test1FinalTransformParameters.txt
 )
+set_property(TEST DeformableRegistration13Test1 APPEND PROPERTY LABELS RUNS_LONG)
 
 itk_add_test(NAME DeformableRegistration13Test2 COMMAND ${ITK_TEST_DRIVER}
   --compare DATA{Baseline/DeformableRegistration13Test.png}
@@ -503,6 +513,7 @@ itk_add_test(NAME DeformableRegistration13Test3 COMMAND ${ITK_TEST_DRIVER}
         1 0
         ${TEMP}/DeformableRegistration13Test3FinalTransformParameters.txt
 )
+set_property(TEST DeformableRegistration13Test3 APPEND PROPERTY LABELS RUNS_LONG)
 
 itk_add_test(NAME DeformableRegistration13Test4 COMMAND ${ITK_TEST_DRIVER}
   --compare DATA{Baseline/DeformableRegistration13Test.png}
