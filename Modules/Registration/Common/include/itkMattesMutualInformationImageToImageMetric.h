@@ -227,11 +227,11 @@ public:
    */
   const typename JointPDFType::Pointer GetJointPDF () const
     {
-      if( this->m_PerThread == NULL )
+      if( this->m_MMIMetricPerThreadVariables.empty() )
       {
       return JointPDFType::Pointer(NULL);
       }
-    return this->m_PerThread[0].JointPDF;
+    return this->m_MMIMetricPerThreadVariables[0].JointPDF;
     }
 
   /**
@@ -242,11 +242,11 @@ public:
    */
   const typename JointPDFDerivativesType::Pointer GetJointPDFDerivatives () const
     {
-      if( this->m_PerThread == NULL )
+      if( this->m_MMIMetricPerThreadVariables.empty() )
       {
       return JointPDFDerivativesType::Pointer(NULL);
       }
-    return this->m_PerThread[0].JointPDFDerivatives;
+    return this->m_MMIMetricPerThreadVariables[0].JointPDFDerivatives;
     }
 
 protected:
@@ -323,7 +323,7 @@ private:
   /** The moving image marginal PDF. */
   mutable std::vector<PDFValueType>               m_MovingImageMarginalPDF;
 
-  struct PerThreadS
+  struct MMIMetricPerThreadStruct
   {
     int JointPDFStartBin;
     int JointPDFEndBin;
@@ -342,8 +342,11 @@ private:
     typename TransformType::JacobianType Jacobian;
   };
 
-  itkAlignedTypedef( ITK_CACHE_LINE_ALIGNMENT, PerThreadS, AlignedPerThreadType );
-  AlignedPerThreadType *m_PerThread;
+  itkPadStruct( ITK_CACHE_LINE_ALIGNMENT, MMIMetricPerThreadStruct,
+                                            PaddedMMIMetricPerThreadStruct);
+  itkAlignedTypedef( ITK_CACHE_LINE_ALIGNMENT, PaddedMMIMetricPerThreadStruct,
+                                               AlignedMMIMetricPerThreadStruct );
+  mutable std::vector<AlignedMMIMetricPerThreadStruct> m_MMIMetricPerThreadVariables;
 
   bool         m_UseExplicitPDFDerivatives;
   mutable bool m_ImplicitDerivativesSecondPass;
