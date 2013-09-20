@@ -76,8 +76,14 @@ protected:
   virtual void AfterThreadedExecution();
 
   typedef Image< SizeValueType, 2 >                   JointHistogramType;
-  std::vector< typename JointHistogramType::Pointer > m_JointHistogramPerThread;
-  std::vector< SizeValueType >                        m_JointHistogramCountPerThread;
+  //TODO: This needs updating
+  struct PerThreadJointHistogramMIStruct
+    {
+    typename JointHistogramType::Pointer JointHistogram;
+    SizeValueType                        JointHistogramCount;
+    char                                 __falseSharingPadding__[128];
+    };
+  std::vector< PerThreadJointHistogramMIStruct > m_PerThreadJointHistogramMI;
 
 private:
   JointHistogramMutualInformationComputeJointPDFThreaderBase( const Self & ); // purposely not implemented

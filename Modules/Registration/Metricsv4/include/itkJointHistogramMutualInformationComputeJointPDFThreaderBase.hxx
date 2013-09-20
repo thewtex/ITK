@@ -36,19 +36,18 @@ void
 JointHistogramMutualInformationComputeJointPDFThreaderBase< TDomainPartitioner, TJointHistogramMetric >
 ::BeforeThreadedExecution()
 {
-  this->m_JointHistogramPerThread.resize( this->GetNumberOfThreadsUsed() );
-  this->m_JointHistogramCountPerThread.resize( this->GetNumberOfThreadsUsed() );
+  this->m_PerThreadJointHistogramMI.resize( this->GetNumberOfThreadsUsed() );
   for( ThreadIdType i = 0; i < this->GetNumberOfThreadsUsed(); ++i )
     {
-    if( this->m_JointHistogramPerThread[i].IsNull() )
+    if( this->m_PerThreadJointHistogramMI[i].JointHistogram.IsNull() )
       {
-      this->m_JointHistogramPerThread[i] = JointHistogramType::New();
+      this->m_PerThreadJointHistogramMI[i].JointHistogram = JointHistogramType::New();
       }
-    this->m_JointHistogramPerThread[i]->CopyInformation( this->m_Associate->m_JointPDF );
-    this->m_JointHistogramPerThread[i]->SetRegions( this->m_Associate->m_JointPDF->GetLargestPossibleRegion() );
-    this->m_JointHistogramPerThread[i]->Allocate();
-    this->m_JointHistogramPerThread[i]->FillBuffer( NumericTraits< SizeValueType >::Zero );
-    this->m_JointHistogramCountPerThread[i] = NumericTraits< SizeValueType >::Zero;
+    this->m_PerThreadJointHistogramMI[i].JointHistogram->CopyInformation( this->m_Associate->m_JointPDF );
+    this->m_PerThreadJointHistogramMI[i].JointHistogram->SetRegions( this->m_Associate->m_JointPDF->GetLargestPossibleRegion() );
+    this->m_PerThreadJointHistogramMI[i].JointHistogram->Allocate();
+    this->m_PerThreadJointHistogramMI[i].JointHistogram->FillBuffer( NumericTraits< SizeValueType >::Zero );
+    this->m_PerThreadJointHistogramMI[i].JointHistogramCount = NumericTraits< SizeValueType >::Zero;
     }
 }
 
@@ -90,14 +89,14 @@ JointHistogramMutualInformationComputeJointPDFThreaderBase< TDomainPartitioner, 
     JointPDFPointType jointPDFpoint;
     this->m_Associate->ComputeJointPDFPoint( fixedImageValue, movingImageValue, jointPDFpoint );
     JointPDFIndexType jointPDFIndex;
-    this->m_JointHistogramPerThread[threadId]->TransformPhysicalPointToIndex( jointPDFpoint, jointPDFIndex );
-    if( this->m_JointHistogramPerThread[threadId]->GetBufferedRegion().IsInside( jointPDFIndex ) )
+    this->m_PerThreadJointHistogramMI[threadId].JointHistogram->TransformPhysicalPointToIndex( jointPDFpoint, jointPDFIndex );
+    if( this->m_PerThreadJointHistogramMI[threadId].JointHistogram->GetBufferedRegion().IsInside( jointPDFIndex ) )
       {
       typename JointHistogramType::PixelType jointHistogramPixel;
-      jointHistogramPixel = this->m_JointHistogramPerThread[threadId]->GetPixel( jointPDFIndex );
+      jointHistogramPixel = this->m_PerThreadJointHistogramMI[threadId].JointHistogram->GetPixel( jointPDFIndex );
       jointHistogramPixel++;
-      this->m_JointHistogramPerThread[threadId]->SetPixel( jointPDFIndex, jointHistogramPixel );
-      this->m_JointHistogramCountPerThread[threadId]++;
+      this->m_PerThreadJointHistogramMI[threadId].JointHistogram->SetPixel( jointPDFIndex, jointHistogramPixel );
+      this->m_PerThreadJointHistogramMI[threadId].JointHistogramCount++;
       }
     }
 }
@@ -113,7 +112,7 @@ JointHistogramMutualInformationComputeJointPDFThreaderBase< TDomainPartitioner, 
   this->m_Associate->m_JointHistogramTotalCount = NumericTraits<SizeValueType>::Zero;
   for( ThreadIdType i = 0; i < numberOfThreadsUsed; ++i )
     {
-    this->m_Associate->m_JointHistogramTotalCount += this->m_JointHistogramCountPerThread[i];
+    this->m_Associate->m_JointHistogramTotalCount += this->m_PerThreadJointHistogramMI[i].JointHistogramCount;
     }
 
   if( this->m_Associate->m_JointHistogramTotalCount == 0 )
@@ -129,8 +128,8 @@ JointHistogramMutualInformationComputeJointPDFThreaderBase< TDomainPartitioner, 
   std::vector< JointHistogramIteratorType > jointHistogramPerThreadIts;
   for( ThreadIdType i = 0; i < numberOfThreadsUsed; ++i )
     {
-    jointHistogramPerThreadIts.push_back( JointHistogramIteratorType( this->m_JointHistogramPerThread[i],
-        this->m_JointHistogramPerThread[i]->GetBufferedRegion() ) );
+    jointHistogramPerThreadIts.push_back( JointHistogramIteratorType( this->m_PerThreadJointHistogramMI[i].JointHistogram,
+        this->m_PerThreadJointHistogramMI[i].JointHistogram->GetBufferedRegion() ) );
     jointHistogramPerThreadIts[i].GoToBegin();
     }
 

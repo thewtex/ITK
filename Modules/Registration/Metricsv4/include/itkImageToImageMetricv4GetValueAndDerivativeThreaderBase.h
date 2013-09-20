@@ -162,19 +162,24 @@ protected:
   virtual void StorePointDerivativeResult( const VirtualIndexType & virtualIndex,
                                            const ThreadIdType threadID );
 
-  /** Intermediary threaded metric value storage. */
-  mutable std::vector< InternalComputationValueType > m_MeasurePerThread;
-  /** Intermediary threaded metric value storage. */
-  mutable std::vector< DerivativeType >               m_DerivativesPerThread;
-  /** Intermediary threaded metric value storage. This is used only with global transforms. */
-  mutable std::vector< CompensatedDerivativeType >    m_CompensatedDerivativesPerThread;
-  /** Intermediary threaded metric value storage. */
-  mutable std::vector< DerivativeType >               m_LocalDerivativesPerThread;
-  /** Intermediary threaded metric value storage. */
-  mutable std::vector< SizeValueType >                m_NumberOfValidPointsPerThread;
-  /** Pre-allocated transform jacobian objects, for use as needed by dervied
-   * classes for efficiency. */
-  mutable std::vector< JacobianType >                 m_MovingTransformJacobianPerThread;
+  struct PerThreadCacheVariablesStruct
+    {
+    /** Intermediary threaded metric value storage. */
+    InternalComputationValueType Measure;
+    /** Intermediary threaded metric value storage. */
+    DerivativeType               Derivatives;
+    /** Intermediary threaded metric value storage. This is used only with global transforms. */
+    CompensatedDerivativeType    CompensatedDerivatives;
+    /** Intermediary threaded metric value storage. */
+    DerivativeType               LocalDerivatives;
+    /** Intermediary threaded metric value storage. */
+    SizeValueType                NumberOfValidPoints;
+    /** Pre-allocated transform jacobian objects, for use as needed by dervied
+     * classes for efficiency. */
+    JacobianType                 MovingTransformJacobian;
+    char                         __falseSharingPadding__[128];
+    };
+  mutable std::vector<PerThreadCacheVariablesStruct>  m_PerThreadCacheVariables;
 
   /** Cached values to avoid call overhead.
    *  These will only be set once threading has been started. */

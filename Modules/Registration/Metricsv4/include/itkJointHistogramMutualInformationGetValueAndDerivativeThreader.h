@@ -79,7 +79,6 @@ protected:
   JointHistogramMutualInformationGetValueAndDerivativeThreader() {}
 
   typedef Image< SizeValueType, 2 > JointHistogramType;
-  std::vector< typename JointHistogramType::Pointer > m_JointHistogramPerThread;
 
   virtual void BeforeThreadedExecution();
 
@@ -110,11 +109,16 @@ protected:
                                           const JointPDFPointType & jointPDFpoint,
                                           const ThreadIdType threadID,
                                           const SizeValueType ind ) const;
-
-  std::vector< SizeValueType >                  m_JointHistogramCountPerThread;
-  std::vector< JointPDFInterpolatorPointer >    m_JointPDFInterpolatorPerThread;
-  std::vector< MarginalPDFInterpolatorPointer > m_FixedImageMarginalPDFInterpolatorPerThread;
-  std::vector< MarginalPDFInterpolatorPointer > m_MovingImageMarginalPDFInterpolatorPerThread;
+  struct PerThreadJointHistogramMIStruct
+    {
+    //HACK typename JointHistogramType::Pointer JointHistogram;
+    //HACK SizeValueType                        JointHistogramCount;
+    JointPDFInterpolatorPointer          JointPDFInterpolator;
+    MarginalPDFInterpolatorPointer       FixedImageMarginalPDFInterpolator;
+    MarginalPDFInterpolatorPointer       MovingImageMarginalPDFInterpolator;
+    char                                 __falseSharingPadding__[128];
+    };
+  std::vector< PerThreadJointHistogramMIStruct >  m_PerThreadJointHistogramMI;
 
 private:
   JointHistogramMutualInformationGetValueAndDerivativeThreader( const Self & ); // purposely not implemented

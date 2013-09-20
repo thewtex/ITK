@@ -39,25 +39,25 @@ void CorrelationImageToImageMetricv4GetValueAndDerivativeThreader< TDomainPartit
   const NumberOfParametersType globalDerivativeSize = this->GetCachedNumberOfParameters();
 
   // set size
-  m_InternalCumSumPerThread.resize(this->GetNumberOfThreadsUsed());
+  m_PerThreadInternalCumSum.resize(this->GetNumberOfThreadsUsed());
   for (ThreadIdType i = 0; i < this->GetNumberOfThreadsUsed(); i++)
     {
-    this->m_InternalCumSumPerThread[i].fdm.SetSize(globalDerivativeSize);
-    this->m_InternalCumSumPerThread[i].mdm.SetSize(globalDerivativeSize);
+    this->m_PerThreadInternalCumSum[i].fdm.SetSize(globalDerivativeSize);
+    this->m_PerThreadInternalCumSum[i].mdm.SetSize(globalDerivativeSize);
     }
 
   //---------------------------------------------------------------
   // Set initial values.
   for (ThreadIdType i = 0; i < this->GetNumberOfThreadsUsed(); i++)
     {
-    m_InternalCumSumPerThread[i].fm = NumericTraits<InternalComputationValueType>::Zero;
-    m_InternalCumSumPerThread[i].f2 = NumericTraits<InternalComputationValueType>::Zero;
-    m_InternalCumSumPerThread[i].m2 = NumericTraits<InternalComputationValueType>::Zero;
-    m_InternalCumSumPerThread[i].f = NumericTraits<InternalComputationValueType>::Zero;
-    m_InternalCumSumPerThread[i].m = NumericTraits<InternalComputationValueType>::Zero;
+    m_PerThreadInternalCumSum[i].fm = NumericTraits<InternalComputationValueType>::Zero;
+    m_PerThreadInternalCumSum[i].f2 = NumericTraits<InternalComputationValueType>::Zero;
+    m_PerThreadInternalCumSum[i].m2 = NumericTraits<InternalComputationValueType>::Zero;
+    m_PerThreadInternalCumSum[i].f = NumericTraits<InternalComputationValueType>::Zero;
+    m_PerThreadInternalCumSum[i].m = NumericTraits<InternalComputationValueType>::Zero;
 
-    this->m_InternalCumSumPerThread[i].mdm.Fill(NumericTraits<DerivativeValueType>::Zero);
-    this->m_InternalCumSumPerThread[i].fdm.Fill(NumericTraits<DerivativeValueType>::Zero);
+    this->m_PerThreadInternalCumSum[i].mdm.Fill(NumericTraits<DerivativeValueType>::Zero);
+    this->m_PerThreadInternalCumSum[i].fdm.Fill(NumericTraits<DerivativeValueType>::Zero);
     }
 
 }
@@ -76,7 +76,7 @@ CorrelationImageToImageMetricv4GetValueAndDerivativeThreader<TDomainPartitioner,
   this->m_CorrelationAssociate->m_NumberOfValidPoints = NumericTraits<SizeValueType>::Zero;
   for (ThreadIdType i = 0; i < this->GetNumberOfThreadsUsed(); i++)
     {
-    this->m_CorrelationAssociate->m_NumberOfValidPoints += this->m_NumberOfValidPointsPerThread[i];
+    this->m_CorrelationAssociate->m_NumberOfValidPoints += this->m_PerThreadCacheVariables[i].NumberOfValidPoints;
     }
 
   /* Check the number of valid points meets the default minimum.
@@ -93,11 +93,11 @@ CorrelationImageToImageMetricv4GetValueAndDerivativeThreader<TDomainPartitioner,
   InternalComputationValueType fm = NumericTraits<InternalComputationValueType>::Zero;
   InternalComputationValueType f2 = NumericTraits<InternalComputationValueType>::Zero;
   InternalComputationValueType m2 = NumericTraits<InternalComputationValueType>::Zero;
-  for (size_t i = 0; i < this->m_MeasurePerThread.size(); i++)
+  for (size_t i = 0; i < this->m_PerThreadCacheVariables.size(); i++)
     {
-    fm += this->m_InternalCumSumPerThread[i].fm;
-    m2 += this->m_InternalCumSumPerThread[i].m2;
-    f2 += this->m_InternalCumSumPerThread[i].f2;
+    fm += this->m_PerThreadInternalCumSum[i].fm;
+    m2 += this->m_PerThreadInternalCumSum[i].m2;
+    f2 += this->m_PerThreadInternalCumSum[i].f2;
     }
 
   InternalComputationValueType m2f2 = m2 * f2;
@@ -123,8 +123,8 @@ CorrelationImageToImageMetricv4GetValueAndDerivativeThreader<TDomainPartitioner,
 
     for (ThreadIdType i = 0; i < this->GetNumberOfThreadsUsed(); i++)
       {
-      fdm += this->m_InternalCumSumPerThread[i].fdm;
-      mdm += this->m_InternalCumSumPerThread[i].mdm;
+      fdm += this->m_PerThreadInternalCumSum[i].fdm;
+      mdm += this->m_PerThreadInternalCumSum[i].mdm;
       }
 
     /** There should be a minus sign of \frac{d}{dp} mathematically, which
@@ -214,7 +214,7 @@ CorrelationImageToImageMetricv4GetValueAndDerivativeThreader<TDomainPartitioner,
                                    mappedFixedImageGradient,
                                    mappedMovingPoint, mappedMovingPixelValue,
                                    mappedMovingImageGradient,
-                                   metricValueResult, this->m_LocalDerivativesPerThread[threadId],
+                                   metricValueResult, this->m_PerThreadCacheVariables[threadId].LocalDerivatives,
                                    threadId );
     }
   catch( ExceptionObject & exc )
@@ -227,7 +227,7 @@ CorrelationImageToImageMetricv4GetValueAndDerivativeThreader<TDomainPartitioner,
     }
   if( pointIsValid )
     {
-    this->m_NumberOfValidPointsPerThread[threadId]++;
+    this->m_PerThreadCacheVariables[threadId].NumberOfValidPoints++;
     }
 
   return pointIsValid;
@@ -251,16 +251,15 @@ CorrelationImageToImageMetricv4GetValueAndDerivativeThreader<TDomainPartitioner,
 
   /*
    * metricValueReturn and localDerivativeReturn will not be computed here.
-   * Instead, m_InternalCumSumPerThread will store temporary results for each thread
+   * Instead, m_PerThreadInternalCumSum will store temporary results for each thread
    * and finally compute metric and derivative in overloaded AfterThreadedExecution
    */
 
-  InternalCumSumType & cumsum = this->m_InternalCumSumPerThread[threadID];
-
   /* subtract the average of pixels (computed during InitializeIteration) */
-  InternalComputationValueType f1 = fixedImageValue - this->m_CorrelationAssociate->m_AverageFix;
-  InternalComputationValueType m1 = movingImageValue - this->m_CorrelationAssociate->m_AverageMov;
+  const InternalComputationValueType & f1 = fixedImageValue - this->m_CorrelationAssociate->m_AverageFix;
+  const InternalComputationValueType & m1 = movingImageValue - this->m_CorrelationAssociate->m_AverageMov;
 
+  InternalCumSumStruct & cumsum = this->m_PerThreadInternalCumSum[threadID];
   cumsum.f += f1;
   cumsum.m += m1;
   cumsum.f2 += f1 * f1;
@@ -271,7 +270,7 @@ CorrelationImageToImageMetricv4GetValueAndDerivativeThreader<TDomainPartitioner,
     {
     /* Use a pre-allocated jacobian object for efficiency */
     typedef typename TImageToImageMetric::JacobianType & JacobianReferenceType;
-    JacobianReferenceType jacobian = this->m_MovingTransformJacobianPerThread[threadID];
+    JacobianReferenceType jacobian = this->m_PerThreadCacheVariables[threadID].MovingTransformJacobian;
 
     /** For dense transforms, this returns identity */
     this->m_CorrelationAssociate->GetMovingTransform()->ComputeJacobianWithRespectToParameters(virtualPoint, jacobian);

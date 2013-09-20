@@ -124,7 +124,7 @@ private:
    * say f_i is the i-th pixel of fixed image, m_i is the i-th pixel of moving
    * image: see the comments below
    */
-  struct InternalCumSumType{    // keep cumlative summation over points for:
+  struct InternalCumSumStruct{    // keep cumlative summation over points for:
       InternalComputationValueType fm;  // (f_i - \bar f) * (m_i - \bar m)
       InternalComputationValueType m2;  // (m_i - \bar m)^2
       InternalComputationValueType f2;  // (f_i - \bar m)^2
@@ -132,10 +132,11 @@ private:
       InternalComputationValueType f;   // f_i
       DerivativeType fdm; // (f_i - \bar f) * dm_i/dp
       DerivativeType mdm; // (m_i - \bar m) * dm_i/dp
+      char _falseSharingPadding[128];
   };
 
   /* per thread variables for correlation and its derivatives */
-  mutable std::vector< InternalCumSumType > m_InternalCumSumPerThread;
+  mutable std::vector< InternalCumSumStruct > m_PerThreadInternalCumSum;
 
   /** Internal pointer to the metric object in use by this threader.
    *  This will avoid costly dynamic casting in tight loops. */

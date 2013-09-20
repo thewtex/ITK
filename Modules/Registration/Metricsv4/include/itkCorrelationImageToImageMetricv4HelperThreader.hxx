@@ -31,15 +31,14 @@ void CorrelationImageToImageMetricv4HelperThreader< TDomainPartitioner, TImageTo
   /* Store the casted pointer to avoid dynamic casting in tight loops. */
   this->m_CorrelationAssociate = dynamic_cast<TCorrelationMetric *>(this->m_Associate);
 
-   this->m_FixSumPerThread.resize(this->GetNumberOfThreadsUsed());
-   this->m_MovSumPerThread.resize(this->GetNumberOfThreadsUsed());
+   this->m_CorrelationMetricPerThreadCacheVariables.resize(this->GetNumberOfThreadsUsed());
 
     //---------------------------------------------------------------
     // Set initial values.
     for (ThreadIdType i = 0; i < this->GetNumberOfThreadsUsed(); i++)
       {
-      this->m_FixSumPerThread[i] = NumericTraits<InternalComputationValueType>::Zero;
-      this->m_MovSumPerThread[i] = NumericTraits<InternalComputationValueType>::Zero;
+      this->m_CorrelationMetricPerThreadCacheVariables[i].FixSum = NumericTraits<InternalComputationValueType>::Zero;
+      this->m_CorrelationMetricPerThreadCacheVariables[i].MovSum = NumericTraits<InternalComputationValueType>::Zero;
       }
 
 }
@@ -56,7 +55,7 @@ CorrelationImageToImageMetricv4HelperThreader<TDomainPartitioner,
 
   for (ThreadIdType i = 0; i < this->GetNumberOfThreadsUsed(); i++)
     {
-    this->m_CorrelationAssociate->m_NumberOfValidPoints += this->m_NumberOfValidPointsPerThread[i];
+    this->m_CorrelationAssociate->m_NumberOfValidPoints += this->m_PerThreadCacheVariables[i].NumberOfValidPoints;
     }
 
   if (this->m_CorrelationAssociate->m_NumberOfValidPoints <= 0 )
@@ -68,10 +67,10 @@ CorrelationImageToImageMetricv4HelperThreader<TDomainPartitioner,
   InternalComputationValueType sumF = NumericTraits<InternalComputationValueType>::Zero;
   InternalComputationValueType sumM = NumericTraits<InternalComputationValueType>::Zero;
 
-  for (size_t i = 0; i < this->m_MeasurePerThread.size(); i++)
+  for (size_t i = 0; i < this->m_PerThreadCacheVariables.size(); i++)
     {
-    sumF += this->m_FixSumPerThread[i];
-    sumM += this->m_MovSumPerThread[i];
+    sumF += this->m_CorrelationMetricPerThreadCacheVariables[i].FixSum;
+    sumM += this->m_CorrelationMetricPerThreadCacheVariables[i].MovSum;
     }
 
   this->m_CorrelationAssociate->m_AverageFix = sumF / this->m_CorrelationAssociate->m_NumberOfValidPoints;
@@ -130,8 +129,8 @@ TImageToImageMetric, TCorrelationMetric>
   /* Do the specific calculations for values */
   try
     {
-    this->m_FixSumPerThread[threadID] += mappedFixedPixelValue;
-    this->m_MovSumPerThread[threadID] += mappedMovingPixelValue;
+    this->m_CorrelationMetricPerThreadCacheVariables[threadID].FixSum += mappedFixedPixelValue;
+    this->m_CorrelationMetricPerThreadCacheVariables[threadID].MovSum += mappedMovingPixelValue;
     }
   catch( ExceptionObject & exc )
     {
@@ -142,7 +141,7 @@ TImageToImageMetric, TCorrelationMetric>
     }
   if( pointIsValid )
     {
-    this->m_NumberOfValidPointsPerThread[threadID]++;
+    this->m_PerThreadCacheVariables[threadID].NumberOfValidPoints++;
     }
 
   return pointIsValid;
