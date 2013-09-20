@@ -227,11 +227,11 @@ public:
    */
   const typename JointPDFType::Pointer GetJointPDF () const
     {
-      if( this->m_PerThread == NULL )
+      if( this->m_MMIMetricPerThreadVariables.empty() )
       {
       return JointPDFType::Pointer(NULL);
       }
-    return this->m_PerThread[0].JointPDF;
+    return this->m_MMIMetricPerThreadVariables[0].JointPDF;
     }
 
   /**
@@ -242,11 +242,11 @@ public:
    */
   const typename JointPDFDerivativesType::Pointer GetJointPDFDerivatives () const
     {
-      if( this->m_PerThread == NULL )
+      if( this->m_MMIMetricPerThreadVariables.empty() )
       {
       return JointPDFDerivativesType::Pointer(NULL);
       }
-    return this->m_PerThread[0].JointPDFDerivatives;
+    return this->m_MMIMetricPerThreadVariables[0].JointPDFDerivatives;
     }
 
 protected:
@@ -321,9 +321,13 @@ private:
   mutable PRatioArrayType m_PRatioArray;
 
   /** The moving image marginal PDF. */
-  mutable std::vector<PDFValueType>               m_MovingImageMarginalPDF;
+  typedef std::vector<PDFValueType> MarginalPDFType;
+  mutable MarginalPDFType           m_MovingImageMarginalPDF;
 
-  struct PerThreadS
+  //Visual Studio 9 failed compilation when this was inside the struct below.
+  mutable std::vector<MarginalPDFType> m_FixedImageMarginalPDFPerThread;
+
+  struct MMIMetricPerThreadStruct
   {
     int JointPDFStartBin;
     int JointPDFEndBin;
@@ -333,8 +337,6 @@ private:
     /** Helper variable for accumulating the derivative of the metric. */
     DerivativeType MetricDerivative;
 
-    std::vector<PDFValueType> FixedImageMarginalPDF;
-
     /** The joint PDF and PDF derivatives. */
     typename JointPDFType::Pointer            JointPDF;
     typename JointPDFDerivativesType::Pointer JointPDFDerivatives;
@@ -342,8 +344,11 @@ private:
     typename TransformType::JacobianType Jacobian;
   };
 
-  itkAlignedTypedef( ITK_CACHE_LINE_ALIGNMENT, PerThreadS, AlignedPerThreadType );
-  AlignedPerThreadType *m_PerThread;
+  itkPadStruct( ITK_CACHE_LINE_ALIGNMENT, MMIMetricPerThreadStruct,
+                                            PaddedMMIMetricPerThreadStruct);
+  itkAlignedTypedef( ITK_CACHE_LINE_ALIGNMENT, PaddedMMIMetricPerThreadStruct,
+                                               AlignedMMIMetricPerThreadStruct );
+  mutable std::vector<AlignedMMIMetricPerThreadStruct> m_MMIMetricPerThreadVariables;
 
   bool         m_UseExplicitPDFDerivatives;
   mutable bool m_ImplicitDerivativesSecondPass;
