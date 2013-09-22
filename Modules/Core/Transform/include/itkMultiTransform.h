@@ -167,13 +167,13 @@ public:
 
   /** Get transforms at the front and the back of the queue */
   virtual const
-  TransformTypePointer GetFrontTransform()
+  TransformTypePointer & GetFrontTransform() const
   {
     return this->m_TransformQueue.front();
   }
 
   virtual const
-  TransformTypePointer GetBackTransform()
+  TransformTypePointer & GetBackTransform() const
   {
     return this->m_TransformQueue.back();
   }
@@ -181,7 +181,7 @@ public:
   /** Get the Nth transform.
    * \warning No bounds checking is performed. */
   virtual const
-  TransformTypePointer GetNthTransform( SizeValueType n ) const
+  TransformTypePointer & GetNthTransform( const SizeValueType n ) const
   {
     return this->m_TransformQueue[n];
   }
