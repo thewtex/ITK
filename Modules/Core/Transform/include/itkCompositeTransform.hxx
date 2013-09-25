@@ -66,7 +66,7 @@ CompositeTransform<TScalar, NDimensions>
   for( signed long tind = static_cast<signed long>( this->GetNumberOfTransforms() ) - 1; tind >= 0; tind-- )
     {
     if( this->GetNthTransformToOptimize( tind ) &&
-      ( this->GetNthTransform( tind ).GetPointer()->GetTransformCategory() != Self::DisplacementField ) )
+      ( this->GetNthTransformConstPointer( tind )->GetTransformCategory() != Self::DisplacementField ) )
       {
       isDisplacementFieldTransform = false;
       break;
@@ -718,7 +718,7 @@ CompositeTransform<TScalar, NDimensions>
        tind >= 0; tind-- )
     {
     /* Get a raw pointer for efficiency, avoiding SmartPointer register/unregister */
-    const TransformType * transform = this->GetNthTransform( tind ).GetPointer();
+    const TransformType * transform = this->GetNthTransformConstPointer( tind );
 
     NumberOfParametersType offsetLast = offset;
 
@@ -981,7 +981,7 @@ CompositeTransform<TScalar, NDimensions>
     {
     if( this->GetNthTransformToOptimize( tind ) )
       {
-      transform = this->GetNthTransform( tind ).GetPointer();
+      transform = this->GetNthTransformConstPointer( tind );
       result += transform->GetNumberOfParameters();
       }
     }
@@ -1011,7 +1011,7 @@ CompositeTransform<TScalar, NDimensions>
     {
     if( this->GetNthTransformToOptimize( tind ) )
       {
-      transform = this->GetNthTransform( tind ).GetPointer();
+      transform = this->GetNthTransformConstPointer( tind );
       result += transform->GetNumberOfLocalParameters();
       }
     }
@@ -1037,7 +1037,7 @@ CompositeTransform<TScalar, NDimensions>
     {
     if( this->GetNthTransformToOptimize( tind ) )
       {
-      transform = this->GetNthTransform( tind ).GetPointer();
+      transform = this->GetNthTransformConstPointer( tind );
       result += transform->GetFixedParameters().Size();
       }
     }
@@ -1069,14 +1069,14 @@ CompositeTransform<TScalar, NDimensions>
 
   NumberOfParametersType offset = NumericTraits< NumberOfParametersType >::Zero;
 
-  TransformType * subtransform;
 
   for( signed long tind = (signed long) this->GetNumberOfTransforms() - 1;
        tind >= 0; tind-- )
     {
     if( this->GetNthTransformToOptimize( tind ) )
       {
-      subtransform = const_cast<TransformType*>( this->GetNthTransform( tind ).GetPointer() );
+      // HACK: The following line looks wrong, we should not need to const_cast.
+      TransformType * subtransform = const_cast<TransformType*>( this->GetNthTransformConstPointer( tind ) );
       /* The input values are in a monolithic block, so we have to point
        * to the subregion corresponding to the individual subtransform.
        * This simply creates an Array object with data pointer, no
