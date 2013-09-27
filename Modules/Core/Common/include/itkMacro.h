@@ -467,10 +467,7 @@ itkTypeMacro(newexcp, parentexcp);                                              
 // This is particularly useful for arrays of thread private variables.
 //
 #define itkPadStruct( mincachesize, oldtype, newtype )                        \
-    struct newtype: public oldtype                                            \
-      {                                                                       \
-         char _StructPadding[mincachesize - (sizeof(oldtype)%mincachesize) ]; \
-      };
+    typedef oldtype newtype;
 
 //
 // itkAlignedTypedef is a macro which creates a new typedef to make a
