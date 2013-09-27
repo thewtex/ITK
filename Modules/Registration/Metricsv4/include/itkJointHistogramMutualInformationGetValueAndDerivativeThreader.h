@@ -115,9 +115,7 @@ protected:
     MarginalPDFInterpolatorPointer       FixedImageMarginalPDFInterpolator;
     MarginalPDFInterpolatorPointer       MovingImageMarginalPDFInterpolator;
     };
-  itkPadStruct( ITK_CACHE_LINE_ALIGNMENT, JointHistogramMIPerThreadStruct,
-                                            PaddedJointHistogramMIPerThreadStruct);
-  itkAlignedTypedef( ITK_CACHE_LINE_ALIGNMENT, PaddedJointHistogramMIPerThreadStruct,
+  itkAlignedTypedef( ITK_CACHE_LINE_ALIGNMENT, JointHistogramMIPerThreadStruct,
                                                AlignedJointHistogramMIPerThreadStruct );
   std::vector< AlignedJointHistogramMIPerThreadStruct >  m_JointHistogramMIPerThreadVariables;
 

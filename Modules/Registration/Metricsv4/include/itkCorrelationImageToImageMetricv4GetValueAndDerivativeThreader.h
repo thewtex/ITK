@@ -134,9 +134,7 @@ private:
       DerivativeType mdm; // (m_i - \bar m) * dm_i/dp
   };
 
-  itkPadStruct( ITK_CACHE_LINE_ALIGNMENT, CorrelationMetricValueDerivativePerThreadStruct,
-                                            PaddedCorrelationMetricValueDerivativePerThreadStruct);
-  itkAlignedTypedef( ITK_CACHE_LINE_ALIGNMENT, PaddedCorrelationMetricValueDerivativePerThreadStruct,
+  itkAlignedTypedef( ITK_CACHE_LINE_ALIGNMENT, CorrelationMetricValueDerivativePerThreadStruct,
                                                AlignedCorrelationMetricValueDerivativePerThreadStruct );
   /* per thread variables for correlation and its derivatives */
   mutable std::vector< AlignedCorrelationMetricValueDerivativePerThreadStruct > m_CorrelationMetricValueDerivativePerThreadVariables;

@@ -76,15 +76,12 @@ protected:
   virtual void AfterThreadedExecution();
 
   typedef Image< SizeValueType, 2 >                   JointHistogramType;
-  //TODO: This needs updating
   struct JointHistogramMIPerThreadStruct
     {
     typename JointHistogramType::Pointer JointHistogram;
     SizeValueType                        JointHistogramCount;
     };
-  itkPadStruct( ITK_CACHE_LINE_ALIGNMENT, JointHistogramMIPerThreadStruct,
-                                            PaddedJointHistogramMIPerThreadStruct);
-  itkAlignedTypedef( ITK_CACHE_LINE_ALIGNMENT, PaddedJointHistogramMIPerThreadStruct,
+  itkAlignedTypedef( ITK_CACHE_LINE_ALIGNMENT, JointHistogramMIPerThreadStruct,
                                                AlignedJointHistogramMIPerThreadStruct );
   std::vector< AlignedJointHistogramMIPerThreadStruct > m_JointHistogramMIPerThreadVariables;
 

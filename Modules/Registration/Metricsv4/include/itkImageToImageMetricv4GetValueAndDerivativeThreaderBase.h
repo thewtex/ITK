@@ -178,9 +178,7 @@ protected:
      * classes for efficiency. */
     JacobianType                 MovingTransformJacobian;
     };
-  itkPadStruct( ITK_CACHE_LINE_ALIGNMENT, GetValueAndDerivativePerThreadStruct,
-                                            PaddedGetValueAndDerivativePerThreadStruct);
-  itkAlignedTypedef( ITK_CACHE_LINE_ALIGNMENT, PaddedGetValueAndDerivativePerThreadStruct,
+  itkAlignedTypedef( ITK_CACHE_LINE_ALIGNMENT, GetValueAndDerivativePerThreadStruct,
                                                AlignedGetValueAndDerivativePerThreadStruct );
   mutable std::vector<AlignedGetValueAndDerivativePerThreadStruct>  m_GetValueAndDerivativePerThreadVariables;
 

@@ -344,9 +344,7 @@ private:
     typename TransformType::JacobianType Jacobian;
   };
 
-  itkPadStruct( ITK_CACHE_LINE_ALIGNMENT, MMIMetricPerThreadStruct,
-                                            PaddedMMIMetricPerThreadStruct);
-  itkAlignedTypedef( ITK_CACHE_LINE_ALIGNMENT, PaddedMMIMetricPerThreadStruct,
+  itkAlignedTypedef( ITK_CACHE_LINE_ALIGNMENT, MMIMetricPerThreadStruct,
                                                AlignedMMIMetricPerThreadStruct );
   mutable std::vector<AlignedMMIMetricPerThreadStruct> m_MMIMetricPerThreadVariables;
 

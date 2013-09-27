@@ -124,9 +124,7 @@ private:
     InternalComputationValueType FixSum;
     InternalComputationValueType MovSum;
     };
-  itkPadStruct( ITK_CACHE_LINE_ALIGNMENT, CorrelationMetricPerThreadStruct,
-                                          PaddedCorrelationMetricPerThreadStruct);
-  itkAlignedTypedef( ITK_CACHE_LINE_ALIGNMENT, PaddedCorrelationMetricPerThreadStruct,
+  itkAlignedTypedef( ITK_CACHE_LINE_ALIGNMENT, CorrelationMetricPerThreadStruct,
                                                AlignedCorrelationMetricPerThreadStruct );
   /* per thread variables for correlation and its derivatives */
   mutable std::vector< AlignedCorrelationMetricPerThreadStruct > m_CorrelationMetricPerThreadVariables;
