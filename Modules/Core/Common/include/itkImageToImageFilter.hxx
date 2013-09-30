@@ -119,7 +119,7 @@ ImageToImageFilter< TInputImage, TOutputImage >
   for( InputDataObjectIterator it( this ); !it.IsAtEnd(); it++ )
     {
     // Check whether the input is an image of the appropriate dimension
-    TInputImage * input = dynamic_cast< TInputImage * >( it.GetInput() );
+    typename TInputImage::Superclass * input = dynamic_cast< typename TInputImage::Superclass * >( it.GetInput() );
     if ( input )
       {
       // Use the function object RegionCopier to copy the output region
