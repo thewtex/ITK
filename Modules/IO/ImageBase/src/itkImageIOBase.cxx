@@ -242,6 +242,27 @@ ImageIOBase
 
 ImageIOBase::SizeType
 ImageIOBase
+::GetIORegionSizeInPixels() const
+{
+  return m_IORegion.GetNumberOfPixels();
+}
+
+ImageIOBase::SizeType
+ImageIOBase
+::GetIORegionSizeInComponents() const
+{
+  return ( this->GetIORegionSizeInPixels() * m_NumberOfComponents );
+}
+
+ImageIOBase::SizeType
+ImageIOBase
+::GetIORegionSizeInBytes() const
+{
+  return ( this->GetIORegionSizeInComponents() * this->GetComponentSize() );
+}
+
+ImageIOBase::SizeType
+ImageIOBase
 ::GetComponentStride() const
 {
   return m_Strides[0];
