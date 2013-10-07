@@ -19,7 +19,7 @@
 #include "itkImageFileWriter.h"
 #include "itkImageFileReader.h"
 #include "itkVTKImageIO.h"
-#include <itkGenerateImageSource.h>
+#include "itkGenerateImageSource.h"
 
 #include <fstream>
 #include <iostream>
@@ -27,7 +27,7 @@
 
 namespace itk
 {
-/**
+/** \class ConstantImageSource
  * Image Source that generates an image with constant pixel value.
  */
 template< class TOutputImage >
@@ -37,7 +37,7 @@ public:
   /** Standard class typedefs. */
   typedef ConstantImageSource                 Self;
   typedef ConstantImageSource< TOutputImage > Superclass;
-  typedef SmartPointer< Self >               Pointer;
+  typedef SmartPointer< Self >                Pointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -70,11 +70,7 @@ void ConstantImageSource< TOutputImage >
   out->SetBufferedRegion(out->GetRequestedRegion());
   out->Allocate();
 
-  itk::ImageRegionIterator<TOutputImage> it(out, out->GetBufferedRegion());
-  for(it.GoToBegin(); !it.IsAtEnd(); ++it)
-    {
-      it.Set(m_Value);
-    }
+  out->FillBuffer( m_Value );
 }
 
 }// end namespace
