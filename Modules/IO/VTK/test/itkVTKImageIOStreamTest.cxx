@@ -27,7 +27,7 @@
 
 namespace itk
 {
-/**
+/** \class ConstantImageSource
  * Image Source that generates an image with constant pixel value.
  */
 template< class TOutputImage >
@@ -37,7 +37,7 @@ public:
   /** Standard class typedefs. */
   typedef ConstantImageSource                 Self;
   typedef ConstantImageSource< TOutputImage > Superclass;
-  typedef SmartPointer< Self >               Pointer;
+  typedef SmartPointer< Self >                Pointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
