@@ -187,7 +187,7 @@ GaussianDerivativeImageFunction< TInputImage, TOutput >
 {
   unsigned int direction = 0;
 
-  for ( unsigned int op = 0; op < itkGetStaticConstMacro(ImageDimension2) * 2; op++ )
+  for ( unsigned int op = 0; op < itkGetStaticConstMacro(ImageDimension2); ++op )
     {
     // Set the derivative of the gaussian first
     OperatorNeighborhoodType dogNeighborhood;
@@ -204,7 +204,6 @@ GaussianDerivativeImageFunction< TInputImage, TOutput >
     typename OperatorNeighborhoodType::Iterator it = dogNeighborhood.Begin();
 
     unsigned int i = 0;
-    //float sum = 0;
     while ( it != dogNeighborhood.End() )
       {
       pt[0] = dogNeighborhood.GetOffset(i)[direction];
@@ -221,22 +220,21 @@ GaussianDerivativeImageFunction< TInputImage, TOutput >
           }
         }
       ( *it ) = m_GaussianDerivativeFunction->Evaluate(pt);
-      i++;
-      it++;
+      ++i;
+      ++it;
       }
 
     m_OperatorArray[op] = dogNeighborhood;
 
     // Set the gaussian operator
     m_GaussianFunction->SetSigma(s);
-    op++;
     OperatorNeighborhoodType gaussianNeighborhood;
     gaussianNeighborhood.SetRadius(size);
 
     it = gaussianNeighborhood.Begin();
 
     i = 0;
-    double sum = 0;
+    double sum = 0.0;
     while ( it != gaussianNeighborhood.End() )
       {
       pt[0] = gaussianNeighborhood.GetOffset(i)[direction];
@@ -255,8 +253,8 @@ GaussianDerivativeImageFunction< TInputImage, TOutput >
 
       ( *it ) = m_GaussianFunction->Evaluate(pt);
       sum += ( *it );
-      i++;
-      it++;
+      ++i;
+      ++it;
       }
 
     // Make the filter DC-Constant
@@ -264,11 +262,11 @@ GaussianDerivativeImageFunction< TInputImage, TOutput >
     while ( it != gaussianNeighborhood.End() )
       {
       ( *it ) /= sum;
-      it++;
+      ++it;
       }
 
-    m_OperatorArray[op] = gaussianNeighborhood;
-    direction++;
+    m_OperatorArray[op + 1] = gaussianNeighborhood;
+    ++direction;
     }
 }
 
