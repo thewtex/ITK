@@ -471,35 +471,35 @@ QuadrilateralCell< TCellInterface >
 template< typename TCellInterface >
 void
 QuadrilateralCell< TCellInterface >
-::InterpolationFunctions(CoordRepType pcoords[2], InterpolationWeightType sf[4])
+::InterpolationFunctions(const CoordRepType pointCoords[2], InterpolationWeightType weights[4])
 {
-  const double rm = 1. - pcoords[0];
-  const double sm = 1. - pcoords[1];
+  const double rm = 1. - pointCoords[0];
+  const double sm = 1. - pointCoords[1];
 
-  sf[0] = rm * sm;
-  sf[1] = pcoords[0] * sm;
-  sf[2] = pcoords[0] * pcoords[1];
-  sf[3] = rm * pcoords[1];
+  weights[0] = rm * sm;
+  weights[1] = pointCoords[0] * sm;
+  weights[2] = pointCoords[0] * pointCoords[1];
+  weights[3] = rm * pointCoords[1];
 }
 
 /** Compute iso-parametric interpolation functions */
 template< typename TCellInterface >
 void
 QuadrilateralCell< TCellInterface >
-::InterpolationDerivs(CoordRepType pcoords[2], CoordRepType derivs[8])
+::InterpolationDerivs(const CoordRepType pointCoords[2], CoordRepType derivs[8])
 {
-  const double rm = 1. - pcoords[0];
-  const double sm = 1. - pcoords[1];
+  const double rm = 1. - pointCoords[0];
+  const double sm = 1. - pointCoords[1];
 
   // r-derivatives
   derivs[0] = -sm;
   derivs[1] = sm;
-  derivs[2] = pcoords[1];
-  derivs[3] = -pcoords[1];
+  derivs[2] = pointCoords[1];
+  derivs[3] = -pointCoords[1];
   // s-derivatives
   derivs[4] = -rm;
-  derivs[5] = -pcoords[0];
-  derivs[6] = pcoords[0];
+  derivs[5] = -pointCoords[0];
+  derivs[6] = pointCoords[0];
   derivs[7] = rm;
 }
 
@@ -507,10 +507,10 @@ QuadrilateralCell< TCellInterface >
 template< typename TCellInterface >
 void
 QuadrilateralCell< TCellInterface >
-::EvaluateLocation(int & itkNotUsed(subId), PointsContainer *points, CoordRepType pcoords[PointDimension],
+::EvaluateLocation(int & itkNotUsed(subId), const PointsContainer *points, const CoordRepType pointCoords[PointDimension],
                    CoordRepType x[PointDimension], InterpolationWeightType *weights)
 {
-  this->InterpolationFunctions(pcoords, weights);
+  this->InterpolationFunctions(pointCoords, weights);
 
   for ( unsigned int ii = 0; ii < NumberOfPoints; ++ii )
     {
