@@ -245,7 +245,7 @@ VTKTetrahedralMeshReader<TOutputMesh>
     //
 
     PointIdentifier numberOfCellPoints;
-    long ids[4];
+    unsigned long ids[4];
 
     for( CellIdentifier cellId = 0; cellId < numberOfCells; cellId++ )
       {
