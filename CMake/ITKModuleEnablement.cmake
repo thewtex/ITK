@@ -78,7 +78,7 @@ option(ITK_BUILD_DEFAULT_MODULES "Build the default ITK modules." ON)
 
 # To maintain backward compatibility
 if(DEFINED ITK_BUILD_ALL_MODULES)
-  message(WARNING "ITK_BUILD_ALL_MODULES is deprecated, please use ITK_BUILD_DEFAULT_MODULES.")
+  message(WARNING "ITK_BUILD_ALL_MODULES is deprecated, please remove it from your CMake Cache and use ITK_BUILD_DEFAULT_MODULES instead.")
   set(ITK_BUILD_DEFAULT_MODULES ${ITK_BUILD_ALL_MODULES} CACHE BOOL "Build the default ITK modules." FORCE)
 endif()
 # Provide module selections by groups
