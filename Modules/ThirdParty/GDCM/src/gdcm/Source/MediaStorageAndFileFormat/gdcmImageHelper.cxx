@@ -371,7 +371,6 @@ bool GetUltraSoundSpacingValueFromSequence(const DataSet& ds, std::vector<double
     }
   else if( ds.FindDataElement( tps ) )
     {
-    // (0028,0030) DS [0.175953\0.179104]                      #  18, 2 PixelSpacing
     const DataElement &de = ds.GetDataElement( tps );
     gdcm::Attribute<0x0028,0x0030> at;
     at.SetFromDataElement( de );
