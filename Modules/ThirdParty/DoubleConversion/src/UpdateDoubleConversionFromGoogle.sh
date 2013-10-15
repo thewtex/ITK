@@ -55,6 +55,17 @@ cd double-conversion
 upstream_date="$(git log -n 1 --format='%cd')"
 cd ..
 
+#
+# Check to see if LICENSE file changed -- if changed, fix in a separate
+# commit.
+license=../Modules/ThirdParty/DoubleConversion/src/LICENSE
+if [ ! diff double-conversion/LICENSE ../Modules/ThirdParty/DoubleConversion/LICENSE ]
+then
+    echo The double-conversion LICENSE file has changed.  Please
+    echo add the change in a separate commit.
+    exit 1
+fi
+
 cp -r double-conversion/src/* .
 # get rid of double-conversion clone
 rm -fr double-conversion
