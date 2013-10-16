@@ -78,6 +78,7 @@ protected:
    *
    * \param[in] iEdge
    * \return measure value, here the squared edge length
+   *
    */
   inline MeasureType MeasureEdge(OutputQEType *iEdge)
     {
@@ -95,6 +96,7 @@ protected:
    *
    * \param[in] iEdge
    * \return the optimal point location
+   *
    */
   OutputPointType Relocate(OutputQEType *iEdge);
 
