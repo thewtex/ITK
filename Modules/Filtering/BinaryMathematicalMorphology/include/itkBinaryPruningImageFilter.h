@@ -119,7 +119,7 @@ public:
                    ( Concept::Convertible< int, PixelType > ) );
   itkConceptMacro( PixelLessThanIntCheck,
                    ( Concept::LessThanComparable< PixelType, int > ) );
-  /** End concept checking */
+  // End concept checking
 #endif
 
 protected:
