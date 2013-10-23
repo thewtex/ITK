@@ -38,10 +38,33 @@ namespace itk
  * "Flat" refers to binary as opposed to grayscale structuring elements. Flat
  * structuring elements can be used for both binary and grayscale images.
  *
+ * The "ball" and "annulus" structuring elements have an optional flag called
+ * "foregroundHasAccurateArea".  Setting this flag to true will generate
+ * structuring elements with more accurate areas, which can be especially
+ * important when morphological operations are intended to remove or retain
+ * objects of particular sizes.
+ * This mode was introduced because the original ball and annulus structuring
+ * elements have a systematic bias in the radius of +0.5 voxels in each dimension
+ * relative to the analytic definition of the radius.
+ * We recommend using this mode for more accurate structuring elements.
+ * However, this mode is turned off by default for backward compatibility.
+ * As an example, a 3D ball of radius 5 should have an area of 523.
+ * With this mode turned on, the number of "on" pixels is 515 (error 1.6%),
+ * but with it turned off, the area is 739 (error 41%).
+ * For a 3D annulus of radius 5 and thickness 2, the area should be 410.
+ * With this mode turned on, the area is 392 (error 4.5%),
+ * but when turned off it is 560 (error 36%).
+ * This same trend holds for balls and annuli of any radius or dimension.
+ * For more detailed experiments with this mode, please refer to the results of the
+ * test itkFlatStructuringElementTest.cxx or the wiki example.
+ *
  * \ingroup ITKMathematicalMorphology
  *
  * \wiki
  * \wikiexample{Morphology/FlatStructuringElement,Erode a binary image using a flat (box) structuring element}
+ * \endwiki
+ * \wiki
+ * \wikiexample{Morphology/FlatStructuringElementForegroundHasAccurateArea,Generate structuring elements with accurate area}
  * \endwiki
  */
 
@@ -81,8 +104,12 @@ public:
   /** Default destructor. */
   virtual ~FlatStructuringElement() {}
 
-  /** Default consructor. */
-  FlatStructuringElement() { m_Decomposable = false; }
+  /** Default constructor. */
+  FlatStructuringElement()
+  {
+    m_Decomposable = false;
+    m_ForegroundHasAccurateArea = false;
+  }
 
   /** Various constructors */
 
@@ -93,7 +120,7 @@ public:
   static Self Box(RadiusType radius);
 
   /** Create a ball structuring element */
-  static Self Ball(RadiusType radius);
+  static Self Ball(RadiusType radius, bool foregroundHasAccurateArea = false);
 
   /** Create a cross structuring element */
   static Self Cross(RadiusType radius);
@@ -101,7 +128,8 @@ public:
   /** Create an annulus structuring element */
   static Self Annulus(RadiusType radius,
                       unsigned int thickness = 1,
-                      bool includeCenter = false);
+                      bool includeCenter = false,
+                      bool foregroundHasAccurateArea = false);
 
   /**
    * Create a polygon structuring element. The structuring element is
@@ -111,7 +139,7 @@ public:
   static Self Polygon(RadiusType radius, unsigned lines);
 
   /**
-   * Returns wether the structuring element is decomposable or not. If the
+   * Returns whether the structuring element is decomposable or not. If the
    * structuring is decomposable, the set of lines associated with the
    * structuring may be used by an algorithm instead of the standard buffer.
    */
@@ -142,6 +170,21 @@ public:
    */
   void ComputeBufferFromLines();
 
+  /**
+   * The AccurateForegroundArea mode ensures that the area of the foreground
+   * corresponds to the radius that was specified.
+   * This defaults to "off" for backward compatibility.
+   */
+  bool GetForegroundHasAccurateArea() const
+  {
+    return m_ForegroundHasAccurateArea;
+  }
+  void SetForegroundHasAccurateArea( bool flag )
+  {
+    m_ForegroundHasAccurateArea = flag;
+  }
+
+
 protected:
 
   void PrintSelf(std::ostream & os, Indent indent) const;
@@ -166,6 +209,8 @@ private:
 
   typedef Vector< float, 3 >           LType3;
   typedef StructuringElementFacet< 3 > FacetType3;
+
+  bool m_ForegroundHasAccurateArea;
 
 };
 } // namespace itk
