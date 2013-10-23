@@ -21,6 +21,25 @@
 #include "itkJointDomainImageToListSampleAdaptor.h"
 #include "itkImageRegionIteratorWithIndex.h"
 
+/** CloseEnough is a scaled approximation comparison.
+ *  It takes into account the magnitude of the numbers being compared.
+ */
+template <typename TVoxel1, typename TVoxel2>
+bool CloseEnough(const TVoxel1 a, const TVoxel2 b, const double epsilon)
+{
+  const double _a(static_cast<double>(a));
+  const double _b(static_cast<double>(b));
+
+  double absdiff = vcl_fabs(_a - _b);
+  double absmax = vcl_fabs(_a) > vcl_fabs(_b) ? vcl_fabs(_a) : vcl_fabs(_b);
+
+  if(absmax == 0.0)
+    {
+    return absdiff < epsilon;
+    }
+  return (absdiff / absmax) < epsilon;
+}
+
 int itkJointDomainImageToListSampleAdaptorTest(int, char* [] )
 {
   const unsigned int MeasurementVectorSize = 8;
@@ -181,9 +200,11 @@ int itkJointDomainImageToListSampleAdaptorTest(int, char* [] )
         MeasurementVectorType measurementVectorFromAdaptor = adaptor->GetMeasurementVector(iid);
         for ( unsigned int m=0; m < 5; m ++ )
           {
-          if ( measurementVectorFromAdaptor[m] != measurementVector[m] )
+          if ( !CloseEnough(measurementVectorFromAdaptor[m],measurementVector[m],1.0E-6) )
             {
-            std::cerr << "Error in measurment vector value accessed using the adaptor" << std::endl;
+            std::cerr << "Error in measurment vector value accessed using the adaptor "
+                      << (measurementVectorFromAdaptor[m] - measurementVector[m])
+                      << std::endl;
             return EXIT_FAILURE;
             }
           }
@@ -217,7 +238,7 @@ int itkJointDomainImageToListSampleAdaptorTest(int, char* [] )
 
   for ( unsigned int m=0; m < 5; m ++ )
     {
-    if ( vcl_fabs( v1[m] - v2[m] ) > epsilon )
+    if ( !CloseEnough(v1[m],v2[m],epsilon) )
       {
       std::cerr << "Accessing the measurement vector using the two method produced different \
                   result " << std::endl;
