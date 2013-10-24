@@ -48,11 +48,16 @@ struct ImageAlgorithm
 {
 
 #if defined(ITK_HAS_STLTR1_TR1_TYPE_TRAITS) || defined(ITK_HAS_STLTR1_TYPE_TRAITS)
-  typedef std::tr1::true_type  TrueType;
-  typedef std::tr1::false_type FalseType;
+#  if defined (ITK_HAS_TYPETRAITS_TR1_NAMESPACE)
+    typedef std::tr1::true_type  TrueType;
+    typedef std::tr1::false_type FalseType;
+#  else
+    typedef std::true_type  TrueType;
+    typedef std::false_type FalseType;
+#  endif
 #else
-  typedef itk::TrueType  TrueType;
-  typedef itk::FalseType FalseType;
+    typedef itk::TrueType  TrueType;
+    typedef itk::FalseType FalseType;
 #endif
 
 /**
@@ -95,8 +100,13 @@ struct ImageAlgorithm
     typedef Image<TPixel2, VImageDimension> _ImageType2;
     ImageAlgorithm::DispatchedCopy( inImage, outImage, inRegion, outRegion
 #if defined(ITK_HAS_STLTR1_TR1_TYPE_TRAITS) || defined(ITK_HAS_STLTR1_TYPE_TRAITS)
-                                    , std::tr1::is_convertible<typename _ImageType1::PixelType,
-                                                               typename _ImageType2::PixelType>()
+#  if defined (ITK_HAS_TYPETRAITS_TR1_NAMESPACE)
+                                   , std::tr1::is_convertible<typename _ImageType1::PixelType,
+                                   typename _ImageType2::PixelType>()
+#  else
+                                   , std::is_convertible<typename _ImageType1::PixelType,
+                                   typename _ImageType2::PixelType>()
+#  endif
 #else
                                     // note the above trait is
                                     // primarily used to get a better
@@ -116,8 +126,13 @@ struct ImageAlgorithm
     typedef VectorImage<TPixel2, VImageDimension> _ImageType2;
     ImageAlgorithm::DispatchedCopy( inImage, outImage, inRegion, outRegion
 #if defined(ITK_HAS_STLTR1_TR1_TYPE_TRAITS) || defined(ITK_HAS_STLTR1_TYPE_TRAITS)
-                                    , std::tr1::is_convertible<typename _ImageType1::PixelType,
-                                                               typename _ImageType2::PixelType>()
+#  if defined (ITK_HAS_TYPETRAITS_TR1_NAMESPACE)
+                                   , std::tr1::is_convertible<typename _ImageType1::PixelType,
+                                   typename _ImageType2::PixelType>()
+#  else
+                                   , std::is_convertible<typename _ImageType1::PixelType,
+                                   typename _ImageType2::PixelType>()
+#  endif
 #else
                                     , TrueType()
 #endif
