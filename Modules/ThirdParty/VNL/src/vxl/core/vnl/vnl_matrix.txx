@@ -340,19 +340,15 @@ vnl_matrix<T>::vnl_matrix (vnl_matrix<T> const &A, vnl_matrix<T> const &B, vnl_t
     vnl_error_matrix_dimension("vnl_tag_mul", A.num_rows, A.num_cols, B.num_rows, B.num_cols);
 #endif
 
-  unsigned int l = A.num_rows;
-  unsigned int m = A.num_cols; // == B.num_rows
-  unsigned int n = B.num_cols;
-
   vnl_matrix_construct_hack();
   vnl_matrix_alloc_blah();
 
-  for (unsigned int i=0; i<l; ++i) {
-    for (unsigned int k=0; k<n; ++k) {
-      T sum(0);
-      for (unsigned int j=0; j<m; ++j)
-        sum += T(A.data[i][j] * B.data[j][k]);
-      this->data[i][k] = sum;
+  for (unsigned int i=0; i<A.num_rows; ++i) {
+    for (unsigned int k=0; k<B.num_cols; ++k) {
+      T & thisElement = this->data[i][k];
+      thisElement = 0;
+      for (unsigned int j=0; j<A.num_cols; ++j)
+        thisElement += A.data[i][j] * B.data[j][k];
     }
   }
 }
