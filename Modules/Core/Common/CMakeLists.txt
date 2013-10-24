@@ -56,6 +56,10 @@ try_compile( ITK_HAS_CPP11_ALIGNAS
   ${ITK_BINARY_DIR}/CMakeTmp
   ${CMAKE_CURRENT_SOURCE_DIR}/CMake/itkCheckHasCPP11Alignas.cxx )
 
+try_compile( ITK_HAS_TYPETRAITS_TR1_NAMESPACE
+  ${ITK_BINARY_DIR}/CMakeTmp
+  ${CMAKE_CURRENT_SOURCE_DIR}/CMake/itkCheckStlTr1TypeTraits.cxx )
+
 try_compile( ITK_HAS_GNU_ATTRIBUTE_ALIGNED
   ${ITK_BINARY_DIR}/CMakeTmp
   ${CMAKE_CURRENT_SOURCE_DIR}/CMake/itkCheckHasGNUAttributeAligned.cxx
