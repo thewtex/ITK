@@ -28,6 +28,12 @@ ENDIF()
 SET(HDF5_LIBRARY   ${ITKHDF5_LIBRARIES} )
 SET(ZLIB_LIBRARY   ${ITKZLIB_LIBRARIES})
 
-add_subdirectory(itkminc2)
+#set(ITKMINC2_SRC
+#  itk_minc2.cxx
+#)
 
+#add_library(itkminc2 ${ITKMINC2_SRC})
+#target_link_libraries(itkminc2  ${ITKMINC_LIBRARIES})
+
+#add_subdirectory(itkminc2)
 itk_module_target(itkminc2 NO_INSTALL)#
