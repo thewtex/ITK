@@ -101,10 +101,11 @@ MINCTransformIOTemplate< TInternalComputationValueType >
 
       for(int j = 0; j < 3; ++j)
         {
-        for(int i = 0; i < 4; ++i)
+        for(int i = 0; i < 3; ++i)
           {
-          parameterArray.SetElement(i+j*4, Transform_elem(*lin,j,i));
+          parameterArray.SetElement(i+j*3, Transform_elem(*lin,j,i));
           }
+        parameterArray.SetElement(j+9, Transform_elem(*lin,j,3));
         }
 
       if(xfm->inverse_flag)
@@ -208,6 +209,9 @@ MINCTransformIOTemplate< TInternalComputationValueType >
 {
   const std::string transformType = curTransform->GetTransformTypeAsString();
 
+  const MatrixOffsetTransformBaseType * matrixOffsetTransform =
+        dynamic_cast<const MatrixOffsetTransformBaseType *>( curTransform );
+
   //
   // write out transform type.
   //
@@ -221,17 +225,25 @@ MINCTransformIOTemplate< TInternalComputationValueType >
     }
   else
     {
-    if(transformType.find("AffineTransform") != std::string::npos && curTransform->GetNumberOfParameters() == 12)
+    if(matrixOffsetTransform)
       {
       VIO_Transform lin;
       memset(&lin, 0, sizeof(VIO_Transform));
+
+      MatrixType matrix = matrixOffsetTransform->GetMatrix();
+      OffsetType offset = matrixOffsetTransform->GetOffset();
+
       for(int j=0; j < 3; ++j)
         {
-        for(int i=0; i < 4; ++i)
+        for(int i=0; i < 3; ++i)
           {
-          Transform_elem(lin,j,i)=curTransform->GetParameters()[i+j*4];
+          Transform_elem(lin,j,i)=matrix(j,i);
           }
+        Transform_elem(lin,j,3)=offset[j];
         }
+      //add 4th normalization row (not stored)
+      Transform_elem(lin,3,3)=1.0;
+
       xfm.push_back(VIO_General_transform());
       memset(&xfm[xfm.size()-1], 0, sizeof(VIO_General_transform));
       create_linear_transform(&xfm[xfm.size()-1], &lin);
