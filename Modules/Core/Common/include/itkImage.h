@@ -88,6 +88,9 @@ public:
   /** Run-time type information (and related methods). */
   itkTypeMacro(Image, ImageBase);
 
+  /** SpacePrecisionType -- value for direction/spacing/origin/etc */
+  typedef typename Superclass::SpacePrecisionType SpacePrecisionType;
+
   /** Pixel typedef support. Used to declare pixel type in filters
    * or other operations. */
   typedef TPixel PixelType;

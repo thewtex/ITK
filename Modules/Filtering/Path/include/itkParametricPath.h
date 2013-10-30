@@ -18,6 +18,7 @@
 #ifndef __itkParametricPath_h
 #define __itkParametricPath_h
 
+#include "itkImageBase.h"
 #include "itkPath.h"
 #include "itkContinuousIndex.h"
 #include "itkOffset.h"
@@ -58,12 +59,15 @@ namespace itk
  */
 template< unsigned int VDimension >
 class ParametricPath:public
-  Path< double, ContinuousIndex< double, VDimension >, VDimension >
+  Path< double, ContinuousIndex< typename ImageBase<2>::SpacePrecisionType, VDimension >, VDimension >
 {
 public:
   /** Standard class typedefs. */
-  typedef ParametricPath                                                    Self;
-  typedef Path< double, ContinuousIndex< double, VDimension >, VDimension > Superclass;
+  typedef ParametricPath                                                         Self;
+  /** All paths must be mapable to index space */
+  typedef ContinuousIndex<typename ImageBase<2>::SpacePrecisionType,VDimension > ContinuousIndexType;
+  typedef Path< double, ContinuousIndexType, VDimension >                        Superclass;
+
   typedef SmartPointer< Self >                                              Pointer;
   typedef SmartPointer< const Self >                                        ConstPointer;
 
@@ -76,8 +80,6 @@ public:
   /** Output type */
   typedef typename Superclass::OutputType OutputType;
 
-  /** All paths must be mapable to index space */
-  typedef ContinuousIndex< double, VDimension > ContinuousIndexType;
   typedef Index<  VDimension >                  IndexType;
   typedef Offset< VDimension >                  OffsetType;
   typedef Vector< double, VDimension >          VectorType;

@@ -101,6 +101,9 @@ public:
    * VariableLengthVector< T > and internally stores its data as type T. */
   typedef VariableLengthVector< TPixel > PixelType;
 
+  /** SpacePrecisionType -- value for direction/spacing/origin/etc */
+  typedef typename Superclass::SpacePrecisionType SpacePrecisionType;
+
   /** This is the actual pixel type contained in the buffer. Each vector
    * pixel is composed of 'm_VectorLength' contiguous InternalPixelType.
    */

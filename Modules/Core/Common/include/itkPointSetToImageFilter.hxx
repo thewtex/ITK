@@ -101,7 +101,11 @@ void
 PointSetToImageFilter< TInputPointSet, TOutputImage >
 ::SetSpacing(const double *v)
 {
-  SpacingType spacing(v);
+  SpacingType spacing;
+  for(unsigned i = 0; i < TOutputImage::ImageDimension; ++i)
+    {
+    spacing[i] = v[i];
+    }
 
   this->SetSpacing(spacing);
 }
