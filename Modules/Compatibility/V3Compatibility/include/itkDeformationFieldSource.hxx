@@ -72,8 +72,11 @@ DeformationFieldSource< TOutputImage >
 ::SetOutputSpacing(
   const double *spacing)
 {
-  SpacingType s(spacing);
-
+  SpacingType s;
+  for(unsigned int i = 0; i < TOutputImage::ImageDimension; ++i)
+    {
+    s[i] = spacing[i];
+    }
   this->SetOutputSpacing(s);
 }
 

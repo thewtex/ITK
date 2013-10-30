@@ -674,7 +674,7 @@ private:
     {
       typename FixedTransformType::OutputPointType localMappedFixedPoint;
       localMappedFixedPoint.CastFrom(mappedFixedPoint);
-      localMappedFixedPoint = this->m_FixedTransform->TransformPoint( VirtualPoint );
+      localMappedFixedPoint = this->m_FixedTransform->TransformPoint( virtualPoint );
       mappedFixedPoint.CastFrom(localMappedFixedPoint);
     }
   template <typename TVirtualPoint,typename TFixedImagePoint>
