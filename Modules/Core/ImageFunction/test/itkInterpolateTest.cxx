@@ -24,6 +24,7 @@
 
 typedef itk::Size<3>                              SizeType;
 typedef itk::Image<unsigned short, 3>             ImageType;
+typedef ImageType::SpacePrecisionType             SpacePrecisionType;
 typedef double                                    CoordRepType;
 typedef itk::LinearInterpolateImageFunction<ImageType,CoordRepType>
                                                   InterpolatorType;
@@ -172,7 +173,7 @@ int itkInterpolateTest(int, char *[] )
   bool passed;
 
   // an integer position inside the image
-  double darray1[3] = { 10, 20, 40};
+  SpacePrecisionType darray1[3] = { 10, 20, 40};
   cindex = ContinuousIndexType(darray1);
   passed = TestContinuousIndex<InterpolatorType>( interp, cindex, true, 70 );
 
@@ -200,7 +201,7 @@ int itkInterpolateTest(int, char *[] )
     }
 
   // position at the image border
-  double darray2[3] = {0, 20, 40};
+  SpacePrecisionType darray2[3] = {0, 20, 40};
   cindex = ContinuousIndexType(darray2);
   passed = TestContinuousIndex<InterpolatorType>( interp, cindex, true, 60 );
 
@@ -218,8 +219,8 @@ int itkInterpolateTest(int, char *[] )
     }
 
   // position near image border
-  double epsilon = 1.0e-10;
-  double darray3[3] = {19 - epsilon, 20, 40};
+  SpacePrecisionType epsilon = 1.0e-10;
+  SpacePrecisionType darray3[3] = {19 - epsilon, 20, 40};
   cindex = ContinuousIndexType(darray3);
   passed = TestContinuousIndex<InterpolatorType>( interp, cindex, true, 79 );
 
@@ -237,7 +238,7 @@ int itkInterpolateTest(int, char *[] )
     }
 
   // position outside the image
-  double darray4[3] = {20, 20, 40};
+  SpacePrecisionType darray4[3] = {20, 20, 40};
   cindex = ContinuousIndexType(darray4);
   passed = TestContinuousIndex<InterpolatorType>( interp, cindex, false, 0 );
 
@@ -255,7 +256,7 @@ int itkInterpolateTest(int, char *[] )
     }
 
   // at non-integer position, before half value
-  double darray5[3] = {5.25, 12.4, 42.0};
+  SpacePrecisionType darray5[3] = {5.25, 12.4, 42.0};
   cindex = ContinuousIndexType(darray5);
   passed = TestContinuousIndex<InterpolatorType>( interp, cindex, true, 59.65 );
 
@@ -288,7 +289,7 @@ int itkInterpolateTest(int, char *[] )
     }
 
   // at non-integer position, after half value
-  double darray6[3] = {5.25, 12.6, 42.0};
+  SpacePrecisionType darray6[3] = {5.25, 12.6, 42.0};
   cindex = ContinuousIndexType(darray6);
   passed = TestContinuousIndex<InterpolatorType>( interp, cindex, true, 59.85 );
 
@@ -316,7 +317,7 @@ int itkInterpolateTest(int, char *[] )
     }
 
   // at non-integer position, at half value with an even base number
-  double darray7[3] = {5.25, 12.5, 42.0};
+  SpacePrecisionType darray7[3] = {5.25, 12.5, 42.0};
   cindex = ContinuousIndexType(darray7);
   passed = TestContinuousIndex<InterpolatorType>( interp, cindex, true, 59.75 );
 
@@ -344,7 +345,7 @@ int itkInterpolateTest(int, char *[] )
     }
 
   // at non-integer position, at half value with an odd base number
-  double darray8[3] = {5.25, 11.5, 42.0};
+  SpacePrecisionType darray8[3] = {5.25, 11.5, 42.0};
   cindex = ContinuousIndexType(darray8);
   passed = TestContinuousIndex<InterpolatorType>( interp, cindex, true, 58.75 );
 

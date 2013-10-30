@@ -42,7 +42,7 @@ typedef RedChannelPixelAccessor::ExternalType  PixelType;
 enum{ ImageDimension = 3 };
 
 typedef itk::Image<InputPixelType,ImageDimension> ImageType;
-
+typedef ImageType::SpacePrecisionType             SpacePrecisionType;
 typedef itk::ImageAdaptor<  ImageType,
                             RedChannelPixelAccessor > ImageAdaptorType;
 
@@ -52,7 +52,7 @@ typedef itk::LinearInterpolateImageFunction<
                                   ImageAdaptorType,
                                   CoordRepType  > InterpolatorType;
 typedef InterpolatorType::IndexType               IndexType;
-typedef InterpolatorType::PointType               PointType;
+typedef ImageType::PointType                      PointType;
 typedef InterpolatorType::ContinuousIndexType     ContinuousIndexType;
 typedef InterpolatorType::OutputType              OutputType;
 
@@ -221,7 +221,7 @@ int itkImageAdaptorInterpolateImageFunctionTest(int, char* [] )
 
   // an integer position inside the image
   {
-  double darray[3] = {10, 20, 40};
+  ImageAdaptorInterpolate::SpacePrecisionType darray[3] = {10, 20, 40};
   double temp = 70.0;
   output = OutputType( temp );
   cindex = ContinuousIndexType(darray);
@@ -243,7 +243,7 @@ int itkImageAdaptorInterpolateImageFunctionTest(int, char* [] )
 
   // position at the image border
   {
-  double darray[3] = {0, 20, 40};
+  ImageAdaptorInterpolate::SpacePrecisionType darray[3] = {0, 20, 40};
   double temp = 60.0;
   output = OutputType( temp );
   cindex = ContinuousIndexType(darray);
@@ -265,8 +265,8 @@ int itkImageAdaptorInterpolateImageFunctionTest(int, char* [] )
 
   // position near image border
   {
-  double epsilon = 1.0e-10;
-  double darray[3] = {19 - epsilon, 20, 40};
+  ImageAdaptorInterpolate::SpacePrecisionType epsilon = 1.0e-10;
+  ImageAdaptorInterpolate::SpacePrecisionType darray[3] = {19 - epsilon, 20, 40};
   double temp = 79.0;
   output = OutputType( temp );
   cindex = ContinuousIndexType(darray);
@@ -288,7 +288,7 @@ int itkImageAdaptorInterpolateImageFunctionTest(int, char* [] )
 
   // position outside the image
   {
-  double darray[3] = {20, 20, 40};
+  ImageAdaptorInterpolate::SpacePrecisionType darray[3] = {20, 20, 40};
   double temp = 1.0;
   output = OutputType( temp );
   cindex = ContinuousIndexType(darray);
@@ -310,7 +310,7 @@ int itkImageAdaptorInterpolateImageFunctionTest(int, char* [] )
 
   // at non-integer position
   {
-  double darray[3] = {5.25, 12.5, 42.0};
+  ImageAdaptorInterpolate::SpacePrecisionType darray[3] = {5.25, 12.5, 42.0};
   double temp = 59.75;
   output = OutputType( temp );
   cindex = ContinuousIndexType(darray);

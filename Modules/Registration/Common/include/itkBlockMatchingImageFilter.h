@@ -67,9 +67,9 @@ namespace itk
 template<
   typename TFixedImage,
   typename TMovingImage = TFixedImage,
-  typename TFeatures = PointSet< Matrix< double, TFixedImage::ImageDimension, TFixedImage::ImageDimension>, TFixedImage::ImageDimension >,
+  typename TFeatures = PointSet< Matrix< typename TFixedImage::SpacePrecisionType, TFixedImage::ImageDimension, TFixedImage::ImageDimension>, TFixedImage::ImageDimension >,
   class TDisplacements = PointSet< Vector< typename TFeatures::PointType::ValueType, TFeatures::PointDimension >, TFeatures::PointDimension >,
-  class TSimilarities = PointSet< double, TDisplacements::PointDimension > >
+  class TSimilarities = PointSet< typename TFixedImage::SpacePrecisionType, TDisplacements::PointDimension > >
 class BlockMatchingImageFilter:
 public MeshToMeshFilter< TFeatures, TDisplacements>
 {
