@@ -525,6 +525,7 @@ void
 SparseFieldLevelSetImageFilter< TInputImage, TOutputImage >
 ::Initialize()
 {
+  typedef SpacePrecisionType SpacePrecisionType;
   unsigned int i;
 
   this->m_InputImage = this->GetInput();
@@ -532,7 +533,7 @@ SparseFieldLevelSetImageFilter< TInputImage, TOutputImage >
 
   if ( this->GetUseImageSpacing() )
     {
-    double minSpacing = NumericTraits< double >::max();
+    SpacePrecisionType minSpacing = NumericTraits< SpacePrecisionType >::max();
     for ( i = 0; i < ImageDimension; i++ )
       {
       minSpacing = vnl_math_min(minSpacing, this->GetInput()->GetSpacing()[i]);
@@ -824,12 +825,13 @@ void
 SparseFieldLevelSetImageFilter< TInputImage, TOutputImage >
 ::InitializeActiveLayerValues()
 {
+  typedef SpacePrecisionType SpacePrecisionType;
   const ValueType CHANGE_FACTOR = m_ConstantGradientValue / 2.0;
   ValueType       MIN_NORM      = 1.0e-6;
 
   if ( this->GetUseImageSpacing() )
     {
-    double minSpacing = NumericTraits< double >::max();
+    SpacePrecisionType minSpacing = NumericTraits< SpacePrecisionType >::max();
     for ( unsigned int i = 0; i < ImageDimension; i++ )
       {
       minSpacing = vnl_math_min(minSpacing, this->GetInput()->GetSpacing()[i]);
@@ -904,6 +906,7 @@ SparseFieldLevelSetImageFilter< TInputImage, TOutputImage >::TimeStepType
 SparseFieldLevelSetImageFilter< TInputImage, TOutputImage >
 ::CalculateChange()
 {
+  typedef SpacePrecisionType SpacePrecisionType;
   const typename Superclass::FiniteDifferenceFunctionType::Pointer df =
     this->GetDifferenceFunction();
   typename Superclass::FiniteDifferenceFunctionType::FloatOffsetType offset;
@@ -913,7 +916,7 @@ SparseFieldLevelSetImageFilter< TInputImage, TOutputImage >
   ValueType MIN_NORM      = 1.0e-6;
   if ( this->GetUseImageSpacing() )
     {
-    double minSpacing = NumericTraits< double >::max();
+    SpacePrecisionType minSpacing = NumericTraits< SpacePrecisionType >::max();
     for ( i = 0; i < ImageDimension; i++ )
       {
       minSpacing = vnl_math_min(minSpacing, this->GetInput()->GetSpacing()[i]);

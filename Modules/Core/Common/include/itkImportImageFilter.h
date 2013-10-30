@@ -72,6 +72,9 @@ public:
    * subset of an image. */
   typedef ImageRegion< VImageDimension > RegionType;
 
+  /** Type of spacing/origin/direction */
+  typedef SpacePrecisionType SpacePrecisionType;
+
   /** Type of the output image pixel type. */
   typedef TPixel OutputImagePixelType;
 
@@ -114,7 +117,7 @@ public:
   itkGetConstReferenceMacro(Origin, OriginType);
   itkSetVectorMacro(Origin, const float, VImageDimension);
 
-  typedef Matrix< double, VImageDimension, VImageDimension > DirectionType;
+  typedef Matrix< SpacePrecisionType, VImageDimension, VImageDimension > DirectionType;
 
   /** Set the direction of the image
    * \sa GetDirection() */

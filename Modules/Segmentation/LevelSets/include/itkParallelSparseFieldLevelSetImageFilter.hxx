@@ -501,7 +501,8 @@ ParallelSparseFieldLevelSetImageFilter< TInputImage, TOutputImage >
 
   if ( this->GetUseImageSpacing() )
     {
-    double minSpacing = NumericTraits< double >::max();
+    typedef SpacePrecisionType SpacePrecisionType;
+    SpacePrecisionType minSpacing = NumericTraits< SpacePrecisionType >::max();
     for ( unsigned int i = 0; i < ImageDimension; i++ )
       {
       minSpacing = vnl_math_min(minSpacing, this->GetInput()->GetSpacing()[i]);
@@ -1366,7 +1367,8 @@ ParallelSparseFieldLevelSetImageFilter< TInputImage, TOutputImage >
   ValueType MIN_NORM      = 1.0e-6;
   if ( this->GetUseImageSpacing() )
     {
-    double minSpacing = NumericTraits< double >::max();
+    typedef SpacePrecisionType SpacePrecisionType;
+    SpacePrecisionType minSpacing = NumericTraits< SpacePrecisionType >::max();
     for ( unsigned int i = 0; i < ImageDimension; i++ )
       {
       minSpacing = vnl_math_min(minSpacing, this->GetInput()->GetSpacing()[i]);
