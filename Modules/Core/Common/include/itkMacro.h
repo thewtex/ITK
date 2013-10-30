@@ -680,6 +680,12 @@ itkTypeMacro(newexcp, parentexcp);                                              
 #define ITK_TYPENAME typename
 #endif
 
+// Allow using single precision by default
+#if defined(ITK_USE_FLOAT_SPACE_PRECISION)
+  typedef float  ITKSpacePrecisionType;
+#else
+  typedef double ITKSpacePrecisionType;
+#endif
 /** itkDynamicCastInDebugMode
   * Use static_cast in Release builds, and dynamic_cast in Debug
   */
