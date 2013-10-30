@@ -146,6 +146,17 @@ public:
       }
   }
 
+  template< typename TScalarValue >
+  FixedArray(const TScalarValue *r)
+    {
+      for(ValueType *val = this->GetDataPointer(),
+            *limit = val + this->Size();
+          val < limit; ++val, ++r)
+        {
+        *val = *r;
+        }
+    }
+
   /** This destructor is not virtual for performance reasons. However, this
    * means that subclasses cannot allocate memory.
    *
