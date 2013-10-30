@@ -22,6 +22,7 @@
 const unsigned int ImageDimension = 3;
 typedef itk::Image<float, ImageDimension>  ImageType;
 typedef ImageType::Pointer                 ImagePointer;
+typedef ImageType::SpacePrecisionType      SpacePrecisionType;
 
 void PrintInformation(ImagePointer image1, ImagePointer image2)
 {
@@ -145,7 +146,7 @@ int itkChangeInformationImageFilterTest(int, char* [] )
   inputImage->SetOrigin (origin);
 
   double newOrigin[ImageDimension] = {1000, 2000, 3000};
-  double newSpacing[ImageDimension] = {10, 20, 30};
+  SpacePrecisionType newSpacing[ImageDimension] = {10, 20, 30};
 
   ImageType::OffsetValueType newOffset[ImageDimension] = {10, 20, 30};
 

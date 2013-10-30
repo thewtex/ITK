@@ -175,13 +175,14 @@ public:
   typedef typename CellType::PointIdIterator                PointIdIterator;
 
   /** Image typedef support */
-  typedef TOutputImage                              ImageType;
-  typedef typename ImageType::PixelType             PixelType;
-  typedef typename ImageType::RegionType            RegionType;
-  typedef typename ImageType::SizeType              SizeType;
-  typedef typename ImageType::IndexType             IndexType;
-  typedef typename ImageType::SpacingType           SpacingType;
-  typedef ContinuousIndex<double, ImageDimension>   ContinuousIndexType;
+  typedef TOutputImage                                        ImageType;
+  typedef typename ImageType::PixelType                       PixelType;
+  typedef typename ImageType::RegionType                      RegionType;
+  typedef typename ImageType::SizeType                        SizeType;
+  typedef typename ImageType::IndexType                       IndexType;
+  typedef typename ImageType::SpacingType                     SpacingType;
+  typedef typename ImageType::SpacePrecisionType              SpacePrecisionType;
+  typedef ContinuousIndex<SpacePrecisionType, ImageDimension> ContinuousIndexType;
 
   typedef ImageToRectilinearFEMObjectFilter<ImageType>      ImageToRectilinearFEMObjectFilterType;
 

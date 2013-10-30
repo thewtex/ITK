@@ -77,8 +77,11 @@ void
 VectorResampleImageFilter< TInputImage, TOutputImage, TInterpolatorPrecisionType >
 ::SetOutputSpacing(const double *spacing)
 {
-  SpacingType s(spacing);
-
+  SpacingType s;
+  for(unsigned int i = 0; i < TInputImage::ImageDimension; ++i)
+    {
+    s[i] = spacing[i];
+    }
   this->SetOutputSpacing(s);
 }
 
@@ -161,7 +164,7 @@ VectorResampleImageFilter< TInputImage, TOutputImage, TInterpolatorPrecisionType
   PointType outputPoint;         // Coordinates of current output pixel
   PointType inputPoint;          // Coordinates of current input pixel
 
-  typedef ContinuousIndex< TInterpolatorPrecisionType, ImageDimension > ContinuousIndexType;
+  typedef ContinuousIndex< typename TInputImage::SpacePrecisionType, ImageDimension > ContinuousIndexType;
   ContinuousIndexType inputIndex;
 
   // Doc says this only works for VectorImage, but Image implementation says otherwise...
