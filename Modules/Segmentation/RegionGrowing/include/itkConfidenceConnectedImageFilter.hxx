@@ -200,10 +200,13 @@ ConfidenceConnectedImageFilter< TInputImage, TOutputImage >
         }
       si++;
       }
-      if ( num == 0 )
-        {
-        itkExceptionMacro("No valid seeds!");
-        }
+
+    if ( num == 0 )
+      {
+      this->UpdateProgress(1.0);
+      // no seeds result in zero image
+      return;
+      }
 
     const double totalNum = num * sumOfSquaresFunction->GetNeighborhoodSize();
     m_Mean /= num;
@@ -233,7 +236,9 @@ ConfidenceConnectedImageFilter< TInputImage, TOutputImage >
 
     if ( num == 0 )
       {
-      itkExceptionMacro("No valid seeds!");
+      this->UpdateProgress(1.0);
+      // no seeds result in zero image
+      return;
       }
     m_Mean      = sum / double(num);
     m_Variance  = ( sumOfSquares - ( sum * sum / double(num) ) ) / ( double(num) - 1.0 );
