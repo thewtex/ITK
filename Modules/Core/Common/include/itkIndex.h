@@ -369,9 +369,12 @@ template< unsigned int VIndexDimension >
 std::ostream & operator<<(std::ostream & os, const Index< VIndexDimension > & ind)
 {
   os << "[";
-  for ( unsigned int i = 0; i + 1 < VIndexDimension; ++i )
+  if( VIndexDimension > 1 )
     {
-    os << ind[i] << ", ";
+    for ( unsigned int ii = 0; ii + 1 < VIndexDimension; ++ii )
+      {
+      os << ind[ii] << ", ";
+      }
     }
   if ( VIndexDimension >= 1 )
     {
