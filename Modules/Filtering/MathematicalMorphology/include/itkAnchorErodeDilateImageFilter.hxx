@@ -28,6 +28,7 @@ template< typename TImage, typename TKernel, typename TFunction1 >
 AnchorErodeDilateImageFilter< TImage, TKernel, TFunction1 >
 ::AnchorErodeDilateImageFilter()
 {
+  this->m_Boundary = NumericTraits< InputImagePixelType >::Zero;
 }
 
 template< typename TImage, typename TKernel, typename TFunction1 >

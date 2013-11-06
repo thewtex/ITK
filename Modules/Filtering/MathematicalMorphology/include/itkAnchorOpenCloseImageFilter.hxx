@@ -29,6 +29,8 @@ template< typename TImage, typename TKernel, typename TCompare1, typename TCompa
 AnchorOpenCloseImageFilter< TImage, TKernel, TCompare1, TCompare2 >
 ::AnchorOpenCloseImageFilter()
 {
+  this->m_Boundary1 = NumericTraits< InputImagePixelType >::Zero;
+  this->m_Boundary2 = NumericTraits< InputImagePixelType >::Zero;
 }
 
 template< typename TImage, typename TKernel, typename TCompare1, typename TCompare2 >
