@@ -151,7 +151,7 @@ GrayscaleErodeImageFilter< TInputImage, TOutputImage, TKernel >
       itkExceptionMacro(<< "Invalid algorithm");
       }
 
-    m_Algorithm = algo;
+    m_Algorithm = static_cast< AlgorithmChoice >( algo );
     this->Modified();
     }
 }
