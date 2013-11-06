@@ -28,9 +28,20 @@ namespace itk
 {
 template< typename TInputImage, typename TOutputImage >
 RecursiveSeparableImageFilter< TInputImage, TOutputImage >
-::RecursiveSeparableImageFilter()
+::RecursiveSeparableImageFilter():
+  m_N0( 1.0 ),
+  m_N1( 1.0 ),
+  m_N2( 1.0 ),
+  m_N3( 1.0 ),
+  m_Direction( 0 )
 {
-  m_Direction = 0;
+  this->m_Direction = 0;
+
+  this->m_N0 = 1.0;
+  this->m_N1 = 1.0;
+  this->m_N2 = 1.0;
+  this->m_N3 = 1.0;
+
   this->SetNumberOfRequiredOutputs(1);
   this->SetNumberOfRequiredInputs(1);
 
