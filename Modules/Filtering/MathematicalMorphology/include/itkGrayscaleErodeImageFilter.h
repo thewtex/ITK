@@ -120,12 +120,12 @@ public:
   virtual void Modified() const;
 
   /** define values used to determine which algorithm to use */
-  enum {
+  enum AlgorithmChoice {
     BASIC = 0,
     HISTO = 1,
     ANCHOR = 2,
     VHGW = 3
-    } AlgorithmChoice;
+    };
 
   void SetNumberOfThreads(ThreadIdType nb);
 
@@ -152,7 +152,7 @@ private:
   typename VHGWFilterType::Pointer m_VHGWFilter;
 
   // and the name of the filter
-  int m_Algorithm;
+  AlgorithmChoice m_Algorithm;
 
   // the boundary condition need to be stored here
   DefaultBoundaryConditionType m_BoundaryCondition;
