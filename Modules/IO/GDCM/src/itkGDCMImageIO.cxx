@@ -341,7 +341,6 @@ void GDCMImageIO::InternalReadImageInformation(std::ifstream & file)
   const gdcm::Image &   image = reader.GetImage();
   const gdcm::File &    f = reader.GetFile();
   const gdcm::DataSet & ds = f.GetDataSet();
-  const unsigned int *  dims = image.GetDimensions();
 
   const gdcm::PixelFormat & pixeltype = image.GetPixelFormat();
 
@@ -416,10 +415,10 @@ void GDCMImageIO::InternalReadImageInformation(std::ifstream & file)
                              // integer conversion is lossy
     }
 
-  // set values in case we don't find them
-  //this->SetNumberOfDimensions(  image.GetNumberOfDimensions() );
+  const unsigned int *dims = image.GetDimensions();
   m_Dimensions[0] = dims[0];
   m_Dimensions[1] = dims[1];
+  m_Dimensions[2] = ( image.GetNumberOfDimensions() == 3 ) ? dims[2] : 1;
 
   const double *spacing = image.GetSpacing();
   m_Spacing[0] = spacing[0];
@@ -430,15 +429,6 @@ void GDCMImageIO::InternalReadImageInformation(std::ifstream & file)
   m_Origin[0] = origin[0];
   m_Origin[1] = origin[1];
   m_Origin[2] = origin[2];
-
-  if ( image.GetNumberOfDimensions() == 3 )
-    {
-    m_Dimensions[2] = dims[2];
-    }
-  else
-    {
-    m_Dimensions[2] = 1;
-    }
 
   const double *       dircos = image.GetDirectionCosines();
   vnl_vector< double > rowDirection(3), columnDirection(3);
