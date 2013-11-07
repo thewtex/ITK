@@ -437,6 +437,7 @@ int itkReadWriteSpatialObjectTest(int argc, char* argv[])
           if((*j).GetPosition()[d] != value * (*obj)->GetId())
             {
             std::cout<<" [FAILED] (Position is: " << (*j).GetPosition()[d] << " expected : "<< value * (*obj)->GetId()<< " ) " <<std::endl;
+            delete mySceneChildren;
             return EXIT_FAILURE;
             }
           }
@@ -491,6 +492,7 @@ int itkReadWriteSpatialObjectTest(int argc, char* argv[])
           if((*jv).GetPosition()[d] != value * (*obj)->GetId())
             {
             std::cout<<" [FAILED] (Position is: " << (*jv).GetPosition()[d] << " expected : "<< value * (*obj)->GetId()<< " ) " <<std::endl;
+            delete mySceneChildren;
             return EXIT_FAILURE;
             }
           }
