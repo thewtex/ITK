@@ -1048,6 +1048,10 @@ JPEG2000ImageIO
 
   if ( extension == ".jp2" )
     {
+    if (cinfo)
+      {
+      opj_destroy_codec(cinfo);
+      }
     cinfo = opj_create_compress(CODEC_JP2);
     if ( !cinfo )
       {
@@ -1061,6 +1065,10 @@ JPEG2000ImageIO
 
   if ( extension == ".jpt" )
     {
+    if (cinfo)
+      {
+      opj_destroy_codec(cinfo);
+      }
     cinfo = opj_create_compress(CODEC_JPT);
     if ( !cinfo )
       {
