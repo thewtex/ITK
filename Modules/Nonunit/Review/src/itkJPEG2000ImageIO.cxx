@@ -242,8 +242,6 @@ void JPEG2000ImageIO::ReadImageInformation()
         << "Reason: "
         << "Unknown decode format: "
         << this->m_Internal->m_DecompressionParameters.decod_format );
-      opj_stream_destroy(cio);
-      return;
     }
   /* catch events using our callbacks and give a local context */
   /* setup the decoder decoding parameters using user parameters */
