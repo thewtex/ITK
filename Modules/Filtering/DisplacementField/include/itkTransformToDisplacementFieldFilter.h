@@ -15,15 +15,15 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkTransformToDisplacementFieldSource_h
-#define __itkTransformToDisplacementFieldSource_h
+#ifndef __itkTransformToDisplacementFieldFilter_h
+#define __itkTransformToDisplacementFieldFilter_h
 
 #include "itkTransform.h"
 #include "itkImageSource.h"
 
 namespace itk
 {
-/** \class TransformToDisplacementFieldSource
+/** \class TransformToDisplacementFieldFilter
  * \brief Generate a displacement field from a coordinate transform
  *
  * Output information (spacing, size and direction) for the output
@@ -49,16 +49,16 @@ namespace itk
  * http://hdl.handle.net/1926/1387
  *
  * \ingroup GeometricTransform
- * \ingroup ITKReview
+ * \ingroup ITKDisplacementField
  */
 template< typename TOutputImage,
           typename TTransformPrecisionType = double >
-class TransformToDisplacementFieldSource:
+class TransformToDisplacementFieldFilter:
   public ImageSource< TOutputImage >
 {
 public:
   /** Standard class typedefs. */
-  typedef TransformToDisplacementFieldSource Self;
+  typedef TransformToDisplacementFieldFilter Self;
   typedef ImageSource< TOutputImage >        Superclass;
   typedef SmartPointer< Self >               Pointer;
   typedef SmartPointer< const Self >         ConstPointer;
@@ -72,7 +72,7 @@ public:
   itkNewMacro(Self);
 
   /** Run-time type information (and related methods). */
-  itkTypeMacro(TransformToDisplacementFieldSource, ImageSource);
+  itkTypeMacro(TransformToDisplacementFieldFilter, ImageSource);
 
   /** Number of dimensions. */
   itkStaticConstMacro(ImageDimension, unsigned int,
@@ -167,12 +167,12 @@ public:
 #endif
 
 protected:
-  TransformToDisplacementFieldSource(void);
-  ~TransformToDisplacementFieldSource(void) {}
+  TransformToDisplacementFieldFilter(void);
+  ~TransformToDisplacementFieldFilter(void) {}
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
-  /** TransformToDisplacementFieldSource can be implemented as a multithreaded
+  /** TransformToDisplacementFieldFilter can be implemented as a multithreaded
    * filter.
    */
   void ThreadedGenerateData(
@@ -195,7 +195,7 @@ protected:
 
 private:
 
-  TransformToDisplacementFieldSource(const Self &); //purposely not implemented
+  TransformToDisplacementFieldFilter(const Self &); //purposely not implemented
   void operator=(const Self &);                    //purposely not implemented
 
   /** Member variables. */
@@ -205,11 +205,11 @@ private:
   OriginType           m_OutputOrigin;    // output image origin
   DirectionType        m_OutputDirection; // output image direction cosines
 };                                        // end class
-                                          // TransformToDisplacementFieldSource
+                                          // TransformToDisplacementFieldFilter
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkTransformToDisplacementFieldSource.hxx"
+#include "itkTransformToDisplacementFieldFilter.hxx"
 #endif
 
-#endif // end #ifndef __itkTransformToDisplacementFieldSource_h
+#endif // end #ifndef __itkTransformToDisplacementFieldFilter_h
