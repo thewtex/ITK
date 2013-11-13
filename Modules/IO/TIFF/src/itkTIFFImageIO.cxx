@@ -1907,8 +1907,17 @@ void TIFFImageIO::InternalWrite(const void *buffer)
     // Using 1 MB per strip leads to 256 rows per strip, which takes only 4 seconds to write over sshfs.
     // Rather than change that value in the third party libtiff library, we instead compute the
     // rowsperstrip here to lead to this same value.
-    uint64 scanlinesize=TIFFScanlineSize64(tif);
+
+#ifdef TIFF_INT64_T // detect if libtiff4
+  uint64_t scanlinesize = TIFFScanlineSize64(m_InternalImage->m_Image);
+#else
+  tsize_t scanlinesize = TIFFScanlineSize(m_InternalImage->m_Image);
+#endif
     rowsperstrip = (uint32)(1024*1024 / scanlinesize );
+    if (rowsperstrip < 1 )
+      {
+      rowsperstrip = 1;
+      }
 
     TIFFSetField( tif,
                   TIFFTAG_ROWSPERSTRIP,
