@@ -39,17 +39,16 @@ GradientRecursiveGaussianImageFilter< TInputImage, TOutputImage >
   if ( ImageDimension > 1 )
     {
     m_SmoothingFilters.resize(imageDimensionMinus1);
-    }
 
-  for ( unsigned int i = 0; i < imageDimensionMinus1; i++ )
-    {
-    m_SmoothingFilters[i] = GaussianFilterType::New();
-    m_SmoothingFilters[i]->SetOrder(GaussianFilterType::ZeroOrder);
-    m_SmoothingFilters[i]->SetNormalizeAcrossScale(m_NormalizeAcrossScale);
-    m_SmoothingFilters[i]->InPlaceOn();
-    m_SmoothingFilters[i]->ReleaseDataFlagOn();
+    for ( unsigned int i = 0; i < imageDimensionMinus1; i++ )
+      {
+      m_SmoothingFilters[i] = GaussianFilterType::New();
+      m_SmoothingFilters[i]->SetOrder(GaussianFilterType::ZeroOrder);
+      m_SmoothingFilters[i]->SetNormalizeAcrossScale(m_NormalizeAcrossScale);
+      m_SmoothingFilters[i]->InPlaceOn();
+      m_SmoothingFilters[i]->ReleaseDataFlagOn();
+      }
     }
-
   m_DerivativeFilter = DerivativeFilterType::New();
   m_DerivativeFilter->SetOrder(DerivativeFilterType::FirstOrder);
   m_DerivativeFilter->SetNormalizeAcrossScale(m_NormalizeAcrossScale);
@@ -60,14 +59,13 @@ GradientRecursiveGaussianImageFilter< TInputImage, TOutputImage >
   if ( ImageDimension > 1 )
     {
     m_SmoothingFilters[0]->SetInput( m_DerivativeFilter->GetOutput() );
-    }
 
-  for ( unsigned int i = 1; i < imageDimensionMinus1; i++ )
-    {
-    m_SmoothingFilters[i]->SetInput(
-      m_SmoothingFilters[i - 1]->GetOutput() );
+    for ( unsigned int i = 1; i < imageDimensionMinus1; i++ )
+      {
+      m_SmoothingFilters[i]->SetInput(
+        m_SmoothingFilters[i - 1]->GetOutput() );
+      }
     }
-
   m_ImageAdaptor = OutputImageAdaptorType::New();
 
   this->SetSigma(1.0);
@@ -81,11 +79,14 @@ void
 GradientRecursiveGaussianImageFilter< TInputImage, TOutputImage >
 ::SetSigma(ScalarRealType sigma)
 {
-  int imageDimensionMinus1 = static_cast< int >( ImageDimension ) - 1;
-
-  for ( int i = 0; i < imageDimensionMinus1; i++ )
+  if (ImageDimension > 1)
     {
-    m_SmoothingFilters[i]->SetSigma(sigma);
+    int imageDimensionMinus1 = static_cast< int >( ImageDimension ) - 1;
+
+    for ( int i = 0; i < imageDimensionMinus1; i++ )
+      {
+      m_SmoothingFilters[i]->SetSigma(sigma);
+      }
     }
   m_DerivativeFilter->SetSigma(sigma);
 
