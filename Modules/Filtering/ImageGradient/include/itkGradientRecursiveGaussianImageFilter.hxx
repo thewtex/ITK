@@ -81,11 +81,14 @@ void
 GradientRecursiveGaussianImageFilter< TInputImage, TOutputImage >
 ::SetSigma(ScalarRealType sigma)
 {
-  int imageDimensionMinus1 = static_cast< int >( ImageDimension ) - 1;
-
-  for ( int i = 0; i < imageDimensionMinus1; i++ )
+  if (ImageDimension > 1)
     {
-    m_SmoothingFilters[i]->SetSigma(sigma);
+    int imageDimensionMinus1 = static_cast< int >( ImageDimension ) - 1;
+
+    for ( int i = 0; i < imageDimensionMinus1; i++ )
+      {
+      m_SmoothingFilters[i]->SetSigma(sigma);
+      }
     }
   m_DerivativeFilter->SetSigma(sigma);
 
