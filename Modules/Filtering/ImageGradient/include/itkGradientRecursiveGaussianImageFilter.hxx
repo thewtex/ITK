@@ -35,7 +35,7 @@ GradientRecursiveGaussianImageFilter< TInputImage, TOutputImage >
   m_NormalizeAcrossScale = false;
   this->m_UseImageDirection = true;
 
-  unsigned int imageDimensionMinus1 = ImageDimension - 1;
+  const unsigned int imageDimensionMinus1 = ImageDimension - 1;
   if ( ImageDimension > 1 )
     {
     m_SmoothingFilters.resize(imageDimensionMinus1);
@@ -81,14 +81,15 @@ void
 GradientRecursiveGaussianImageFilter< TInputImage, TOutputImage >
 ::SetSigma(ScalarRealType sigma)
 {
-  int imageDimensionMinus1 = static_cast< int >( ImageDimension ) - 1;
-
-  for ( int i = 0; i < imageDimensionMinus1; i++ )
+  if (ImageDimension > 1)
     {
-    m_SmoothingFilters[i]->SetSigma(sigma);
+    const int imageDimensionMinus1 = static_cast< int >( ImageDimension ) - 1;
+    for ( int i = 0; i < imageDimensionMinus1; ++i )
+      {
+      m_SmoothingFilters[i]->SetSigma(sigma);
+      }
     }
   m_DerivativeFilter->SetSigma(sigma);
-
   this->Modified();
 }
 
@@ -114,7 +115,7 @@ GradientRecursiveGaussianImageFilter< TInputImage, TOutputImage >
 {
   m_NormalizeAcrossScale = normalize;
 
-  int imageDimensionMinus1 = static_cast< int >( ImageDimension ) - 1;
+  const int imageDimensionMinus1 = static_cast< int >( ImageDimension ) - 1;
   for ( int i = 0; i < imageDimensionMinus1; i++ )
     {
     m_SmoothingFilters[i]->SetNormalizeAcrossScale(normalize);
@@ -178,7 +179,7 @@ GradientRecursiveGaussianImageFilter< TInputImage, TOutputImage >
   // Compute the contribution of each filter to the total progress.
   const double weight = 1.0 / ( ImageDimension * ImageDimension );
 
-  unsigned int imageDimensionMinus1 = ImageDimension - 1;
+  const unsigned int imageDimensionMinus1 = ImageDimension - 1;
   for ( unsigned int i = 0; i < imageDimensionMinus1; i++ )
     {
     progress->RegisterInternalFilter(m_SmoothingFilters[i], weight);
@@ -329,7 +330,7 @@ GradientRecursiveGaussianImageFilter< TInputImage, TOutputImage >
   OutputImageType* output = this->GetOutput();
   const typename TInputImage::ConstPointer inputImage( this->GetInput() );
 
-  unsigned int nComponents = inputImage->GetNumberOfComponentsPerPixel() * ImageDimension;
+  const unsigned int nComponents = inputImage->GetNumberOfComponentsPerPixel() * ImageDimension;
 
 
   output->SetNumberOfComponentsPerPixel( nComponents );
@@ -345,6 +346,7 @@ GradientRecursiveGaussianImageFilter< TInputImage, TOutputImage >
   os << indent << "UseImageDirection :   "
      << ( this->m_UseImageDirection ? "On" : "Off" ) << std::endl;
 }
+
 } // end namespace itk
 
 #endif
