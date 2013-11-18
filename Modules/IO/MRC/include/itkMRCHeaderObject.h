@@ -44,7 +44,7 @@ const char *const magicMAP = "MAP ";
  *  http://hdl.handle.net/10380/3171
  *
  * \sa MetaDataDictionary
- * \ingroup ITKReview
+ * \ingroup ITKIOMRC
  */
 class MRCHeaderObject:
   public itk::LightObject
