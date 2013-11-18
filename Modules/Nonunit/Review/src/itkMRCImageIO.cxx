@@ -24,6 +24,8 @@
 
 #include "itksys/SystemTools.hxx"
 
+#include "itkGenericUtilities.h"
+
 namespace itk
 {
 const char *MRCImageIO:: m_MetaDataHeaderName = "MRCHeader";
@@ -330,6 +332,26 @@ bool MRCImageIO::CanWriteFile(const char *fname)
     return true;
     }
   return false;
+}
+
+template< typename TPixelType >
+void MRCImageIO::UpdateHeaderWithMinMaxMean(const TPixelType *bufferBegin)
+{
+  typedef const TPixelType *ConstPixelPointer;
+
+  ConstPixelPointer bufferEnd = bufferBegin + m_IORegion.GetNumberOfPixels();
+
+  // this could be replaced with std::min_element and
+  // std::max_element, but that is slighlty less efficient
+  std::pair< ConstPixelPointer, ConstPixelPointer > mm =
+    itk::min_max_element(bufferBegin, bufferEnd);
+
+  double mean = std::accumulate( bufferBegin, bufferEnd, double(0.0) )
+    / std::distance(bufferBegin, bufferEnd);
+
+  m_MRCHeader->m_Header.amin = float(*mm.first);
+  m_MRCHeader->m_Header.amax = float(*mm.second);
+  m_MRCHeader->m_Header.amean = float(mean);
 }
 
 void MRCImageIO::UpdateHeaderFromImageIO(void)
