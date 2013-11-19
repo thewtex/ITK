@@ -168,7 +168,7 @@ public:
     // ALL HEADERS:
     int32_t nlabl;         /**< Number of labels with useful data.  */
     char label[10][80];    /**< 10 labels of 80 characters.  */
-  };
+    };
 
   /** Fei/Agard extended header */
   struct FeiExtendedHeader {
@@ -186,7 +186,7 @@ public:
     float pixelsize;    /**< pixel size (unit=m, huh if > 1)  */
     float magnification;
     char notused[76];   /**< fill up 128 bytes  */
-  };
+    };
 
   /** pixel type enumeration */
   enum { MRCHEADER_MODE_UINT8 = 0,
@@ -242,7 +242,9 @@ public:
   SizeValueType GetExtendedHeaderSize(void) const;
 
   /** the expected number of bytes in the header */
-  SizeValueType GetHeaderSize(void) const { return sizeof( Header ); }
+  SizeValueType GetHeaderSize(void) const {
+    return sizeof( Header );
+  }
 
   /** returns true if the original header from SetHeader was big
    * endian.
@@ -269,7 +271,7 @@ private:
   void operator=(const Self &);  //purposely not implemented
 
   SizeValueType m_ExtendedHeaderSize;
-  void        * m_ExtendedHeader;
+  void *        m_ExtendedHeader;
 
   FeiExtendedHeader *m_ExtendedFeiHeader;
 

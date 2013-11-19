@@ -55,7 +55,7 @@ namespace itk
  * \sa ImageFileWriter ImageFileReader ImageIOBase
  * \ingroup ITKReview
  */
-class MRCImageIO:
+class MRCImageIO :
   public StreamingImageIOBase
 {
 public:
@@ -71,7 +71,8 @@ public:
   itkTypeMacro(MRCImageIO, StreamingImageIOBase);
 
   // we don't use this method
-  virtual void WriteImageInformation(void) {}
+  virtual void WriteImageInformation(void) {
+  }
 
   //-------- This part of the interface deals with reading data. ------
 
